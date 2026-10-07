@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class medicaid_ltss_csra_resource_eligible(Variable):
     value_type = bool
     entity = Person
-    label = "Meets modeled Medicaid LTSS resource threshold after CSRA"
+    label = "Meets modeled Medicaid LTSS resource threshold"
     definition_period = MONTH
     documentation = (
         "Tests trusted comprehensive LTSS countable-resource inputs. Texas "
@@ -17,17 +17,26 @@ class medicaid_ltss_csra_resource_eligible(Variable):
         "at the federal maximum. Texas uses the federal minimum as its "
         "floor; Delaware's $25,000 state spousal share (DSSM 20910.10) sits "
         "below the federal minimum, which therefore governs; Washington's "
-        "state spousal resource standard sits above it. Court and "
+        "state spousal resource standard sits above it. Initial eligibility "
+        "tests both spouses' current resources against the CSRA plus the "
+        "applicant's resource limit. After the eligibility month in the same "
+        "continuous LTSS period, set "
+        "medicaid_ltss_is_initial_eligibility_determination to false: only "
+        "the applicant's resources count against the individual limit, "
+        "without community spouse resources or a CSRA, under 42 USC "
+        "1396r-5(c)(4) and DSSM 20980. Court and "
         "fair-hearing adjustments, resource-hardship overrides, and "
         "detailed state asset exclusions are not modeled."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396r-5#f_2",
+        "https://www.govinfo.gov/content/pkg/USCODE-2024-title42/html/USCODE-2024-title42-chap7-subchapXIX-sec1396r-5.htm",
         "https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-358-323",
         "https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-26-2.pdf#page=465",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=10",
         "https://dhss.delaware.gov/wp-content/uploads/sites/11/2026/06/2026-SSI-Related-Income-Standards-and-Medicare-Premiums.pdf#page=2",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=69",
+        "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=71",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1350",
         "https://www.hca.wa.gov/assets/free-or-low-cost/income-standards-20260101.pdf#page=3",
     )
@@ -84,8 +93,13 @@ class medicaid_ltss_csra_resource_eligible(Variable):
             period,
         )
         has_community_spouse = person("medicaid_ltss_has_community_spouse", period)
-        community_spouse_eligible = (assistance_unit_size == 1) & (
-            current_couple_resources <= csra + resource_limit
+        is_initial_determination = person(
+            "medicaid_ltss_is_initial_eligibility_determination", period
+        )
+        community_spouse_eligible = (assistance_unit_size == 1) & where(
+            is_initial_determination,
+            current_couple_resources <= csra + resource_limit,
+            resources <= resource_limit,
         )
         modeled_pathway = pathway != pathways.UNMODELED
 

@@ -12,7 +12,11 @@ class medicaid_ltss_community_spouse_countable_resources(Variable):
     documentation = (
         "Trusted current comprehensive LTSS countable resources allocated to "
         "the community spouse after applicable ownership and exclusion "
-        "rules. Court orders, fair-hearing adjustments, and legal ownership "
+        "rules. Combined with applicant resources only for an initial "
+        "eligibility determination. After the eligibility month in the same "
+        "continuous LTSS period, these resources are not deemed available "
+        "when medicaid_ltss_is_initial_eligibility_determination is false. "
+        "Court orders, fair-hearing adjustments, and legal ownership "
         "determinations are not modeled."
     )
     reference = "https://www.law.cornell.edu/uscode/text/42/1396r-5"
