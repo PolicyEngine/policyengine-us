@@ -997,7 +997,9 @@
       2026: true
     medicaid_ltss_setting: INSTITUTIONAL
     medicaid_ltss_reported_gross_earned_income: 5455
-    medicaid_ltss_impairment_related_work_expenses: 400
+    # Actual monthly payment for non-durable impairment-related supplies.
+    medicaid_ltss_irwe_monthly_payments: 400
+    medicaid_ltss_irwe_working_when_paid: true
   output:
     # (5,455 - 20 - 65 - 400) / 2 = 2,485, exactly the SIL.
     medicaid_ltss_individual_countable_income: 2485
@@ -1018,7 +1020,8 @@
           2026: true
         medicaid_ltss_setting: INSTITUTIONAL
         medicaid_ltss_reported_gross_earned_income: 3970
-        medicaid_ltss_impairment_related_work_expenses: 200
+        medicaid_ltss_irwe_monthly_payments: 200
+        medicaid_ltss_irwe_working_when_paid: true
       spouse:
         age:
           2026: 60
@@ -1028,7 +1031,8 @@
           2026: true
         medicaid_ltss_setting: INSTITUTIONAL
         medicaid_ltss_reported_gross_earned_income: 3970
-        medicaid_ltss_impairment_related_work_expenses: 200
+        medicaid_ltss_irwe_monthly_payments: 200
+        medicaid_ltss_irwe_working_when_paid: true
     marital_units:
       couple:
         members: [applicant, spouse]
@@ -1129,7 +1133,8 @@
           '2026': true
         medicaid_ltss_setting: INSTITUTIONAL
         medicaid_ltss_reported_gross_earned_income: 5455
-        medicaid_ltss_impairment_related_work_expenses: 400
+        medicaid_ltss_irwe_monthly_payments: 400
+        medicaid_ltss_irwe_working_when_paid: true
       aged_without_history:
         age:
           '2026': 65
@@ -1139,7 +1144,8 @@
           '2026': true
         medicaid_ltss_setting: INSTITUTIONAL
         medicaid_ltss_reported_gross_earned_income: 5455
-        medicaid_ltss_impairment_related_work_expenses: 400
+        medicaid_ltss_irwe_monthly_payments: 400
+        medicaid_ltss_irwe_working_when_paid: true
       aged_with_history:
         age:
           '2026': 65
@@ -1149,7 +1155,8 @@
           '2026': true
         medicaid_ltss_setting: INSTITUTIONAL
         medicaid_ltss_reported_gross_earned_income: 5455
-        medicaid_ltss_impairment_related_work_expenses: 400
+        medicaid_ltss_irwe_monthly_payments: 400
+        medicaid_ltss_irwe_working_when_paid: true
         medicaid_ltss_received_disability_payments_before_age_65: true
       blind:
         age:
@@ -1160,7 +1167,8 @@
           '2026': true
         medicaid_ltss_setting: INSTITUTIONAL
         medicaid_ltss_reported_gross_earned_income: 5455
-        medicaid_ltss_impairment_related_work_expenses: 400
+        medicaid_ltss_irwe_monthly_payments: 400
+        medicaid_ltss_irwe_working_when_paid: true
         is_blind:
           '2026': true
       not_disabled:
@@ -1172,7 +1180,8 @@
           '2026': true
         medicaid_ltss_setting: INSTITUTIONAL
         medicaid_ltss_reported_gross_earned_income: 5455
-        medicaid_ltss_impairment_related_work_expenses: 400
+        medicaid_ltss_irwe_monthly_payments: 400
+        medicaid_ltss_irwe_working_when_paid: true
       community_spouse:
         age:
           '2026': 60
@@ -1182,7 +1191,8 @@
           '2026': true
         medicaid_ltss_setting: INSTITUTIONAL
         medicaid_ltss_reported_gross_earned_income: 5455
-        medicaid_ltss_impairment_related_work_expenses: 400
+        medicaid_ltss_irwe_monthly_payments: 400
+        medicaid_ltss_irwe_working_when_paid: true
         medicaid_ltss_has_community_spouse: true
       expense_capped_at_earnings:
         age:
@@ -1193,7 +1203,8 @@
           '2026': true
         medicaid_ltss_setting: INSTITUTIONAL
         medicaid_ltss_reported_gross_earned_income: 100
-        medicaid_ltss_impairment_related_work_expenses: 50000
+        medicaid_ltss_irwe_monthly_payments: 50000
+        medicaid_ltss_irwe_working_when_paid: true
         medicaid_ltss_reported_gross_unearned_income: 500
     marital_units:
       disabled_under_65:
@@ -1389,3 +1400,238 @@
     medicaid_ltss_countable_income: [2900, 2900]
     medicaid_ltss_financial_pathway: [SPECIAL_INCOME, SPECIAL_INCOME]
     is_medicaid_ltss_income_eligible: [true, true]
+
+
+- name: Delaware derives work expenses from payment facts and the allocation election
+  period: 2026-07
+  input:
+    people:
+      elected_allocation:
+        age:
+          2026: 60
+        meets_ssi_disability_criteria:
+          2026: true
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_reported_gross_earned_income:
+          2026-06: 5455
+          2026-07: 5455
+        # The durable item is paid for in June; there is no July payment.
+        medicaid_ltss_irwe_nonrecurring_payment:
+          2026-06: 4800
+        medicaid_ltss_irwe_allocate_over_12_months:
+          2026-06: true
+        medicaid_ltss_irwe_working_when_paid:
+          2026-06: true
+      no_allocation_election:
+        age:
+          2026: 60
+        meets_ssi_disability_criteria:
+          2026: true
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_reported_gross_earned_income:
+          2026-06: 5455
+          2026-07: 5455
+        medicaid_ltss_irwe_nonrecurring_payment:
+          2026-06: 4800
+        medicaid_ltss_irwe_working_when_paid:
+          2026-06: true
+      full_payment_in_current_month:
+        age:
+          2026: 60
+        meets_ssi_disability_criteria:
+          2026: true
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_reported_gross_earned_income: 5455
+        medicaid_ltss_irwe_nonrecurring_payment: 4800
+        medicaid_ltss_irwe_working_when_paid: true
+      net_both_payment_sources:
+        age:
+          2026: 60
+        meets_ssi_disability_criteria:
+          2026: true
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_reported_gross_earned_income:
+          2026-06: 5455
+          2026-07: 5455
+        medicaid_ltss_irwe_monthly_payments: 600
+        medicaid_ltss_irwe_monthly_reimbursements: 100
+        medicaid_ltss_irwe_monthly_business_expenses: 100
+        medicaid_ltss_irwe_nonrecurring_payment:
+          2026-06: 6000
+        medicaid_ltss_irwe_nonrecurring_reimbursement:
+          2026-06: 600
+        medicaid_ltss_irwe_nonrecurring_business_expenses:
+          2026-06: 600
+        medicaid_ltss_irwe_allocate_over_12_months:
+          2026-06: true
+        medicaid_ltss_irwe_working_when_paid:
+          2026-06: true
+          2026-07: true
+      fully_reimbursed:
+        age:
+          2026: 60
+        meets_ssi_disability_criteria:
+          2026: true
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_reported_gross_earned_income:
+          2026-06: 5455
+          2026-07: 5455
+        medicaid_ltss_irwe_monthly_payments: 400
+        medicaid_ltss_irwe_monthly_reimbursements: 400
+        medicaid_ltss_irwe_nonrecurring_payment:
+          2026-06: 4800
+        # Reimbursement cannot create a negative allowable expense.
+        medicaid_ltss_irwe_nonrecurring_reimbursement:
+          2026-06: 5000
+        medicaid_ltss_irwe_allocate_over_12_months:
+          2026-06: true
+        medicaid_ltss_irwe_working_when_paid:
+          2026-06: true
+          2026-07: true
+      not_working_when_paid:
+        age:
+          2026: 60
+        meets_ssi_disability_criteria:
+          2026: true
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_reported_gross_earned_income:
+          2026-06: 5455
+          2026-07: 5455
+        medicaid_ltss_irwe_nonrecurring_payment:
+          2026-06: 4800
+        medicaid_ltss_irwe_allocate_over_12_months:
+          2026-06: true
+        medicaid_ltss_irwe_working_when_paid:
+          2026-06: false
+      no_earnings_received_when_paid:
+        age:
+          2026: 60
+        meets_ssi_disability_criteria:
+          2026: true
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_reported_gross_earned_income:
+          2026-06: 0
+          2026-07: 5455
+        medicaid_ltss_irwe_nonrecurring_payment:
+          2026-06: 4800
+        medicaid_ltss_irwe_allocate_over_12_months:
+          2026-06: true
+        medicaid_ltss_irwe_working_when_paid:
+          2026-06: true
+    marital_units:
+      elected_allocation:
+        members: [elected_allocation]
+      no_allocation_election:
+        members: [no_allocation_election]
+      full_payment_in_current_month:
+        members: [full_payment_in_current_month]
+      net_both_payment_sources:
+        members: [net_both_payment_sources]
+      fully_reimbursed:
+        members: [fully_reimbursed]
+      not_working_when_paid:
+        members: [not_working_when_paid]
+      no_earnings_received_when_paid:
+        members: [no_earnings_received_when_paid]
+    households:
+      household:
+        members: [elected_allocation, no_allocation_election, full_payment_in_current_month,
+          net_both_payment_sources, fully_reimbursed, not_working_when_paid,
+          no_earnings_received_when_paid]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_impairment_related_work_expenses: [400, 0, 4800, 800, 0, 0, 0]
+    # The elected June purchase gives (5,455 - 20 - 65 - 400) / 2 = 2,485.
+    # The same purchase without an election leaves July's income at 2,685.
+    medicaid_ltss_countable_income: [2485, 2685, 285, 2285, 2685, 2685, 2685]
+    is_medicaid_ltss_income_eligible: [true, false, true, true, false, false, false]
+
+
+- name: Delaware allocation crosses years ends after twelve months and combines purchases
+  period: 2027-06
+  input:
+    people:
+      twelfth_allocated_month:
+        age:
+          2027: 60
+        meets_ssi_disability_criteria:
+          2027: true
+        is_ssi_aged_blind_disabled:
+          2027: true
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_reported_gross_earned_income:
+          2026-07: 5455
+          2027-06: 5455
+        medicaid_ltss_irwe_nonrecurring_payment:
+          2026-07: 4800
+        medicaid_ltss_irwe_allocate_over_12_months:
+          2026-07: true
+        medicaid_ltss_irwe_working_when_paid:
+          2026-07: true
+      allocation_finished:
+        age:
+          2027: 60
+        meets_ssi_disability_criteria:
+          2027: true
+        is_ssi_aged_blind_disabled:
+          2027: true
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_reported_gross_earned_income:
+          2026-06: 5455
+          2027-06: 5455
+        medicaid_ltss_irwe_nonrecurring_payment:
+          2026-06: 4800
+        medicaid_ltss_irwe_allocate_over_12_months:
+          2026-06: true
+        medicaid_ltss_irwe_working_when_paid:
+          2026-06: true
+      overlapping_purchases:
+        age:
+          2027: 60
+        meets_ssi_disability_criteria:
+          2027: true
+        is_ssi_aged_blind_disabled:
+          2027: true
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_reported_gross_earned_income:
+          2026-07: 5455
+          2027-06: 5455
+        medicaid_ltss_irwe_nonrecurring_payment:
+          2026-07: 4800
+          2027-06: 1200
+        medicaid_ltss_irwe_allocate_over_12_months:
+          2026-07: true
+          2027-06: true
+        medicaid_ltss_irwe_working_when_paid:
+          2026-07: true
+          2027-06: true
+    marital_units:
+      twelfth_allocated_month:
+        members: [twelfth_allocated_month]
+      allocation_finished:
+        members: [allocation_finished]
+      overlapping_purchases:
+        members: [overlapping_purchases]
+    households:
+      household:
+        members: [twelfth_allocated_month, allocation_finished, overlapping_purchases]
+        state_code:
+          2027: DE
+  output:
+    medicaid_ltss_impairment_related_work_expenses: [400, 0, 500]
+    medicaid_ltss_countable_income: [2485, 2685, 2435]

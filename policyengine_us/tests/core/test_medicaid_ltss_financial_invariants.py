@@ -786,7 +786,8 @@ def _income_exclusion_situation(state, values):
             "medicaid_ltss_non_delaware_assistance_unit_size": month(1),
             "medicaid_ltss_reported_gross_earned_income": month(float(gross[0])),
             "medicaid_ltss_reported_gross_unearned_income": month(float(gross[1])),
-            "medicaid_ltss_impairment_related_work_expenses": month(400),
+            "medicaid_ltss_irwe_monthly_payments": month(400),
+            "medicaid_ltss_irwe_working_when_paid": month(True),
             "medicaid_ltss_reported_interest_income": month(100),
             "medicaid_ltss_reported_dividend_income": month(100),
             "medicaid_ltss_ssi_income": month(100),
@@ -836,7 +837,7 @@ def test_new_exclusions_keep_countable_income_between_zero_and_gross(state):
 @pytest.mark.parametrize(
     "state, exclusion",
     [
-        ("DE", "medicaid_ltss_impairment_related_work_expenses"),
+        ("DE", "medicaid_ltss_irwe_monthly_payments"),
         ("WA", "medicaid_ltss_reported_interest_income"),
         ("WA", "medicaid_ltss_reported_dividend_income"),
         ("WA", "medicaid_ltss_ssi_income"),
@@ -889,7 +890,7 @@ def test_delaware_couple_work_expenses_share_exclusions_and_are_monotone(spouse)
     assert (base <= np.repeat(combined_gross, 2) + 0.001).all()
     for index in range(48):
         situation["people"][f"applicant_{2 * index + spouse}"][
-            "medicaid_ltss_impairment_related_work_expenses"
+            "medicaid_ltss_irwe_monthly_payments"
         ][PERIOD] += 500
     changed = Simulation(situation=situation).calculate(
         "medicaid_ltss_countable_income", PERIOD
@@ -964,3 +965,73 @@ def test_dividend_exclusion_never_exceeds_dividends_counted_in_gross(source):
     np.testing.assert_allclose(gross, 2_900 + counted_dividends, atol=0.001)
     assert (excluded <= counted_dividends + 0.001).all()
     np.testing.assert_allclose(excluded, counted_dividends, atol=0.001)
+
+
+@pytest.mark.parametrize("reimbursement_share", [0, 0.25, 1, 1.25])
+def test_irwe_twelve_month_allocation_conserves_net_purchase_cost(reimbursement_share):
+    # Conserve the allocated cost before claimant and earnings-budget caps;
+    # a month without earnings need not realize the full scheduled deduction.
+    rng = np.random.default_rng(SEED + 6)
+    costs = rng.uniform(1, 12_000, 96)
+    # June through the following May exercises both endpoints and year rollover.
+    months = [f"2026-{number:02}" for number in range(6, 13)]
+    months += [f"2027-{number:02}" for number in range(1, 6)]
+    situation = _income_exclusion_situation("DE", np.zeros((96, 2)))
+    for index, person in enumerate(situation["people"].values()):
+        person["medicaid_ltss_irwe_monthly_payments"] = month(0)
+        person["medicaid_ltss_reported_gross_earned_income"] = {
+            period: 20_000 for period in months
+        }
+        person["medicaid_ltss_irwe_working_when_paid"] = {months[0]: True}
+        person["medicaid_ltss_irwe_nonrecurring_payment"] = {
+            months[0]: float(costs[index])
+        }
+        person["medicaid_ltss_irwe_nonrecurring_reimbursement"] = {
+            months[0]: float(costs[index] * reimbursement_share)
+        }
+        person["medicaid_ltss_irwe_allocate_over_12_months"] = {months[0]: True}
+    simulation = Simulation(situation=situation)
+    deductions = np.array(
+        [
+            simulation.calculate(
+                "medicaid_ltss_impairment_related_work_expenses", period
+            )
+            for period in months
+        ]
+    )
+    net_costs = np.maximum(costs * (1 - reimbursement_share), 0)
+    np.testing.assert_allclose(deductions.sum(axis=0), net_costs, rtol=1e-6, atol=0.01)
+    np.testing.assert_allclose(
+        deductions,
+        np.broadcast_to(net_costs / 12, deductions.shape),
+        rtol=1e-6,
+        atol=0.001,
+    )
+    for outside in ["2026-05", "2027-06"]:
+        assert (
+            simulation.calculate(
+                "medicaid_ltss_impairment_related_work_expenses", outside
+            )
+            == 0
+        ).all()
+
+
+@pytest.mark.parametrize("allocate", [False, True])
+def test_more_nonrecurring_expense_never_raises_countable_income(allocate):
+    rng = np.random.default_rng(SEED + 7)
+    gross = np.column_stack((rng.uniform(3_000, 8_000, 96), np.zeros(96)))
+    situation = _income_exclusion_situation("DE", gross)
+    costs = rng.uniform(100, 1_000, 96)
+    for index, person in enumerate(situation["people"].values()):
+        person["medicaid_ltss_irwe_nonrecurring_payment"] = month(float(costs[index]))
+        person["medicaid_ltss_irwe_allocate_over_12_months"] = month(allocate)
+    base = Simulation(situation=situation).calculate(
+        "medicaid_ltss_countable_income", PERIOD
+    )
+    for person in situation["people"].values():
+        person["medicaid_ltss_irwe_nonrecurring_payment"][PERIOD] += 500
+    changed = Simulation(situation=situation).calculate(
+        "medicaid_ltss_countable_income", PERIOD
+    )
+    assert (changed <= base + 0.001).all()
+    assert (changed < base - 0.001).any()
