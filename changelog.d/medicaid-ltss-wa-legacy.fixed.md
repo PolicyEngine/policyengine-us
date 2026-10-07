@@ -1,0 +1,1 @@
+Select Washington Medicaid LTSS spousal resource rules from the onset of the most recent continuous institutionalization, including the federal-maximum allocation for October 1989 through July 2003 and the pre-October 1989 ownership rule.

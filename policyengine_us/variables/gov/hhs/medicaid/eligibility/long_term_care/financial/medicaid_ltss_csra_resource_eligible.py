@@ -16,14 +16,22 @@ class medicaid_ltss_csra_resource_eligible(Variable):
         "resources under 42 USC 1396r-5(c)(1)(A)(ii) and (f)(2)(A), capped "
         "at the federal maximum. Texas and Delaware use the first-period "
         "snapshot; Washington uses the first day of the beginning month "
-        "of the most recent continuous period under WAC 182-513-1355(2)-(4), "
-        "with a new determination after a break of at least 30 consecutive "
+        "of the most recent continuous period under WAC 182-513-1355(2)-(4). "
+        "Washington instead allocates the federal maximum for continuous "
+        "periods starting October 1989 through July 2003. For pre-October "
+        "1989 periods there is no CSRA: at both initial and continuing "
+        "determinations, one-half of the sum of applicant-sole resources "
+        "and the full jointly titled balance is tested against the individual limit, "
+        "excluding spouse-sole resources. Those ownership balances are "
+        "separate leaf inputs because attributed totals do not reveal title. "
+        "There is a new determination after a break of at least 30 consecutive "
         "days under WAC 182-513-1350(3)(b)(vi)(A). Texas uses the federal minimum as its "
         "floor; Delaware's $25,000 state spousal share (DSSM 20910.10) sits "
         "below the federal minimum, which therefore governs; Washington's "
         "state spousal resource standard sits above it. Initial eligibility "
         "tests both spouses' current resources against the CSRA plus the "
-        "applicant's resource limit. After the eligibility month in the same "
+        "applicant's resource limit. For periods starting on or after October "
+        "1989, after the eligibility month in the same "
         "continuous LTSS period, set "
         "medicaid_ltss_is_initial_eligibility_determination to false: only "
         "the applicant's resources count against the individual limit, "
@@ -72,34 +80,7 @@ class medicaid_ltss_csra_resource_eligible(Variable):
         )
         no_community_spouse_eligible = resources <= resource_limit
 
-        state_csra_minimum = select(
-            [
-                state == states.TX,
-                state == states.DE,
-                state == states.WA,
-            ],
-            [
-                p.federal.csra.minimum,
-                max_(p.de.csra.state_minimum, p.federal.csra.minimum),
-                max_(p.wa.csra.state_minimum, p.federal.csra.minimum),
-            ],
-            default=0,
-        )
-        snapshot_resources = where(
-            state == states.WA,
-            person(
-                "wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization",
-                period,
-            ),
-            person(
-                "medicaid_ltss_couple_countable_resources_at_first_institutionalization",
-                period,
-            ),
-        )
-        csra = min_(
-            max_(snapshot_resources / 2, state_csra_minimum),
-            p.federal.csra.maximum,
-        )
+        csra = person("medicaid_ltss_csra", period)
         current_couple_resources = resources + person(
             "medicaid_ltss_community_spouse_countable_resources",
             period,
@@ -113,6 +94,31 @@ class medicaid_ltss_csra_resource_eligible(Variable):
             current_couple_resources <= csra + resource_limit,
             resources <= resource_limit,
         )
+        start_year = person(
+            "wa_medicaid_ltss_most_recent_institutionalization_start_year", period
+        )
+        start_month = person(
+            "wa_medicaid_ltss_most_recent_institutionalization_start_month", period
+        )
+        onset = start_year * 100 + start_month
+        valid_onset = (
+            (start_year >= 1)
+            & (start_month >= 1)
+            & (start_month <= 12)
+            & (onset <= period.start.year * 100 + period.start.month)
+        )
+        # WAC 182-513-1355(2)(a) counts one-half of the sum of applicant-sole
+        # resources and the full joint balance, excluding spouse-sole resources. This
+        # rule continues for pre-1989 periods at redeterminations as well.
+        pre_1989_resources = (
+            person("wa_medicaid_ltss_solely_owned_countable_resources", period)
+            + person("wa_medicaid_ltss_jointly_owned_countable_resources", period)
+        ) / 2
+        community_spouse_eligible = where(
+            (state == states.WA) & (onset < 198910),
+            (assistance_unit_size == 1) & (pre_1989_resources <= resource_limit),
+            community_spouse_eligible,
+        ) & ((state != states.WA) | valid_onset)
         modeled_pathway = pathway != pathways.UNMODELED
 
         return modeled_pathway & where(

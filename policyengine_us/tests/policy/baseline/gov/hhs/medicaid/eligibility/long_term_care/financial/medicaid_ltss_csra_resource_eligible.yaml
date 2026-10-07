@@ -1010,3 +1010,284 @@
           2026: DE
   output:
     medicaid_ltss_csra_resource_eligible: [true, false, true, false, true, false]
+
+- name: Case 27, Washington continuous July 2003 period receives the federal maximum at a September 2026 initial application.
+  period: 2026-09
+  input:
+    state_code:
+      2026: WA
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_is_initial_eligibility_determination: true
+    wa_medicaid_ltss_most_recent_institutionalization_start_year: 2003
+    wa_medicaid_ltss_most_recent_institutionalization_start_month: 7
+    wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+    medicaid_ltss_countable_resources: 2_000
+    medicaid_ltss_community_spouse_countable_resources: 98_000
+  output:
+    medicaid_ltss_csra: 162_660
+    medicaid_ltss_csra_resource_eligible: true
+
+- name: Case 28, Washington applies the modern allocation on August 1 2003 and afterward, and the maximum from October 1 1989.
+  period: 2026-09
+  input:
+    people:
+      applicant_1:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2003
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 8
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        medicaid_ltss_countable_resources: 2000
+        medicaid_ltss_community_spouse_countable_resources: 98000
+      applicant_2:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2026
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 7
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        medicaid_ltss_countable_resources: 2000
+        medicaid_ltss_community_spouse_countable_resources: 98000
+      applicant_3:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 10
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        medicaid_ltss_countable_resources: 2000
+        medicaid_ltss_community_spouse_countable_resources: 98000
+    marital_units:
+      applicant_1:
+        members:
+        - applicant_1
+      applicant_2:
+        members:
+        - applicant_2
+      applicant_3:
+        members:
+        - applicant_3
+    households:
+      household:
+        members:
+        - applicant_1
+        - applicant_2
+        - applicant_3
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra:
+    - 72529
+    - 72529
+    - 162660
+    medicaid_ltss_csra_resource_eligible:
+    - false
+    - false
+    - true
+
+- name: Case 29, Washington pre-October 1989 periods count half of applicant-sole and jointly titled balances at initial and continuing determinations.
+  period: 2026-09
+  input:
+    people:
+      applicant_1:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_countable_resources: 10000
+        medicaid_ltss_community_spouse_countable_resources: 900000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 1000000
+        wa_medicaid_ltss_solely_owned_countable_resources: 4000
+        wa_medicaid_ltss_jointly_owned_countable_resources: 0
+      applicant_2:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: false
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_countable_resources: 10000
+        medicaid_ltss_community_spouse_countable_resources: 900000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 1000000
+        wa_medicaid_ltss_solely_owned_countable_resources: 4001
+        wa_medicaid_ltss_jointly_owned_countable_resources: 0
+      applicant_3:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_countable_resources: 10000
+        medicaid_ltss_community_spouse_countable_resources: 900000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 1000000
+        wa_medicaid_ltss_solely_owned_countable_resources: 0
+        wa_medicaid_ltss_jointly_owned_countable_resources: 4000
+      applicant_4:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: false
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_countable_resources: 10000
+        medicaid_ltss_community_spouse_countable_resources: 900000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 1000000
+        wa_medicaid_ltss_solely_owned_countable_resources: 0
+        wa_medicaid_ltss_jointly_owned_countable_resources: 4001
+      applicant_5:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_countable_resources: 10000
+        medicaid_ltss_community_spouse_countable_resources: 900000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 1000000
+        wa_medicaid_ltss_solely_owned_countable_resources: 2000
+        wa_medicaid_ltss_jointly_owned_countable_resources: 2000
+      applicant_6:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: false
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_countable_resources: 10000
+        medicaid_ltss_community_spouse_countable_resources: 900000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 1000000
+        wa_medicaid_ltss_solely_owned_countable_resources: 2000
+        wa_medicaid_ltss_jointly_owned_countable_resources: 2001
+    marital_units:
+      applicant_1:
+        members:
+        - applicant_1
+      applicant_2:
+        members:
+        - applicant_2
+      applicant_3:
+        members:
+        - applicant_3
+      applicant_4:
+        members:
+        - applicant_4
+      applicant_5:
+        members:
+        - applicant_5
+      applicant_6:
+        members:
+        - applicant_6
+    households:
+      household:
+        members:
+        - applicant_1
+        - applicant_2
+        - applicant_3
+        - applicant_4
+        - applicant_5
+        - applicant_6
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra: 0
+    medicaid_ltss_csra_resource_eligible:
+    - true
+    - false
+    - true
+    - false
+    - true
+    - false
+
+- name: Case 30, invalid or future Washington onset facts fail closed.
+  period: 2026-09
+  input:
+    people:
+      applicant_1:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2003
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 0
+      applicant_2:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2003
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 13
+      applicant_3:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 0
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 8
+      applicant_4:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2027
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 1
+    marital_units:
+      applicant_1:
+        members:
+        - applicant_1
+      applicant_2:
+        members:
+        - applicant_2
+      applicant_3:
+        members:
+        - applicant_3
+      applicant_4:
+        members:
+        - applicant_4
+    households:
+      household:
+        members:
+        - applicant_1
+        - applicant_2
+        - applicant_3
+        - applicant_4
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra_resource_eligible:
+    - false
+    - false
+    - false
+    - false
