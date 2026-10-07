@@ -1,1 +1,0 @@
-The qualified business income deduction's income limit subtracts net capital gain plus qualified dividends as Form 8995 line 12 defines them (keeping section 1250 and 28-percent rate gain, unaffected by a Form 4952 election, and counting only the head's and spouse's gains), rather than adjusted net capital gain.
