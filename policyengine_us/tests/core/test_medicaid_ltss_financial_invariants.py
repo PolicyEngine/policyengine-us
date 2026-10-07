@@ -933,3 +933,34 @@ def test_texas_whole_source_exclusion_applies_only_in_the_opening_month(source):
             f"medicaid_ltss_qit_adjusted_{source}_income", period
         )[index]
         assert income == (0 if (year, month_number) == (2026, 7) else 3_500)
+
+
+@pytest.mark.parametrize("source", ["ordinary", "legacy", "conflicting"])
+def test_dividend_exclusion_never_exceeds_dividends_counted_in_gross(source):
+    rng = np.random.default_rng(SEED + 5)
+    annual_dividends = rng.uniform(0, 12_000, 96)
+    situation = _income_exclusion_situation("WA", np.zeros((96, 2)))
+    for index, person in enumerate(situation["people"].values()):
+        # Keep only annual pension/dividend sources and no other exclusions.
+        person.pop("medicaid_ltss_reported_gross_unearned_income")
+        person.pop("medicaid_ltss_reported_dividend_income")
+        person["medicaid_ltss_reported_interest_income"] = month(0)
+        person["medicaid_ltss_ssi_income"] = month(0)
+        person["medicaid_ltss_state_needs_based_public_assistance_income"] = month(0)
+        person["medicaid_ltss_unearned_income_deposited_to_qit"] = month(0)
+        person["pension_income"] = {YEAR: 34_800}
+        variable = (
+            "ordinary_dividend_income" if source == "ordinary" else "dividend_income"
+        )
+        person[variable] = {YEAR: float(annual_dividends[index])}
+        if source == "conflicting":
+            person["ordinary_dividend_income"] = {
+                YEAR: float(annual_dividends[index] + 1_200)
+            }
+    simulation = Simulation(situation=situation)
+    counted_dividends = simulation.calculate("dividend_income", YEAR) / 12
+    gross = simulation.calculate("medicaid_ltss_gross_unearned_income", PERIOD)
+    excluded = simulation.calculate("medicaid_ltss_wa_excluded_income", PERIOD)
+    np.testing.assert_allclose(gross, 2_900 + counted_dividends, atol=0.001)
+    assert (excluded <= counted_dividends + 0.001).all()
+    np.testing.assert_allclose(excluded, counted_dividends, atol=0.001)

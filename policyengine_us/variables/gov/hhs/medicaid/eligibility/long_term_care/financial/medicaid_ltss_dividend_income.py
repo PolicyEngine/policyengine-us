@@ -9,14 +9,13 @@ class medicaid_ltss_dividend_income(Variable):
     definition_period = MONTH
     documentation = (
         "Each person's dividend income included in gross unearned income. "
-        "Defaults to annual ordinary_dividend_income divided by twelve, "
+        "Defaults to annual dividend_income, the same legacy-compatible "
+        "source included in gross SSI unearned income, divided by twelve, "
         "unless that person reports actual monthly dividend receipts."
     )
     reference = "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1340"
 
     def formula(person, period, parameters):
         reported = person("medicaid_ltss_reported_dividend_income", period)
-        annual_default = max_(
-            person("ordinary_dividend_income", period.this_year) / 12, 0
-        )
+        annual_default = max_(person("dividend_income", period.this_year) / 12, 0)
         return where(reported == -1, annual_default, max_(reported, 0))
