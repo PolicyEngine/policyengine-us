@@ -58,3 +58,54 @@
     # W. Va. Code 11-21-12(c): up to $8,000 of each eligible individual's
     # federal AGI. Before: [5_000, 8_000].
     wv_senior_citizen_disability_deduction_person: [4_000, 8_000]
+
+- name: On a joint return, a senior's capital loss lowers their AGI by the joint return's deduction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 10_000
+        long_term_capital_gains: -5_000
+      spouse:
+        age: 66
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WV
+  output:
+    # The joint federal return deducts $3,000 of the head's $5,000 loss, all
+    # of it the head's: 10,000 - 3,000. W. Va. Code 11-21-12(f)'s recomputation
+    # as separate federal returns ($1,500 limit, 8,500) applies only to
+    # separate West Virginia returns, which PolicyEngine does not model.
+    # Divided 50/50: [8_500, 18_500].
+    adjusted_gross_income_person: [7_000, 20_000]
+    wv_senior_citizen_disability_deduction_person: [7_000, 8_000]
+
+- name: After a separate federal return, the senior's capital loss is limited to $1,500.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 10_000
+        long_term_capital_gains: -5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head]
+        state_code: WV
+  output:
+    # 26 USC 1211(b): $1,500 for a married person filing separately.
+    # 10,000 - 1,500 = 8,500, above the $8,000 limit.
+    adjusted_gross_income_person: 8_500
+    wv_senior_citizen_disability_deduction_person: 8_000

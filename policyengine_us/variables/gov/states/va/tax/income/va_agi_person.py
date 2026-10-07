@@ -6,9 +6,27 @@ class va_agi_person(Variable):
     entity = Person
     label = "Virginia adjusted gross income for each person"
     unit = USD
+    documentation = (
+        "Each spouse's separate Virginia AGI on a joint Virginia return, as "
+        "the Spouse Tax Adjustment uses it: their part of the joint return's "
+        "federal AGI (adjusted_gross_income_person), plus their share of the "
+        "additions, less their own subtractions. Spouses who filed a joint "
+        "federal return can instead file separate Virginia returns (filing "
+        "status 3), each computing federal AGI as though they had filed "
+        "separately on their federal return. PolicyEngine uses the federal "
+        "filing status for Virginia, so it does not model that case. After a "
+        "separate federal return, federal AGI is that return's own AGI."
+    )
     definition_period = YEAR
-    # Virginia includes an individual level definition for AGI
-    reference = "https://www.tax.virginia.gov/laws-rules-decisions/rulings-tax-commissioner/13-5"
+    reference = (
+        # Virginia includes an individual level definition for AGI.
+        "https://www.tax.virginia.gov/laws-rules-decisions/rulings-tax-commissioner/13-5",
+        # Worksheet for Determining Separate Virginia Adjusted Gross Income.
+        "https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2025-760-instructions.pdf#page=18",
+        # Filing Status 3: "Compute your federal adjusted gross income as
+        # though you had filed separately on your federal return".
+        "https://www.tax.virginia.gov/filing-status",
+    )
     defined_for = StateCode.VA
 
     def formula(person, period, parameters):

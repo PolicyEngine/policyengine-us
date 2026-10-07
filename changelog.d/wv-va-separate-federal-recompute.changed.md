@@ -1,0 +1,1 @@
+Document that West Virginia and Virginia separate state returns after a joint federal return, where each spouse recomputes federal AGI as if filing separately, are not modeled, and test each spouse's capital and business losses on joint and separate returns in both states.
