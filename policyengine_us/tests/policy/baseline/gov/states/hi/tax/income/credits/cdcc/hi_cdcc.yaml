@@ -77,3 +77,56 @@
   output:
     # min_(3_000, 0) = 0
     hi_cdcc: 0
+
+- name: Case 8, separate filer treated as unmarried with employer dependent care benefits.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 4_000
+        is_separated: true
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 12_000
+        hi_agi: 38_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Line 11 cap is $5,000, so line 22 = 10_000 - 4_000 = 6_000.
+    # Line 25 = min(6_000, 38_000) = 6_000; 22% rate for AGI of 38_000.
+    hi_cdcc: 1_320
+
+- name: Case 9, separate filer treated as unmarried with employer dependent care benefits in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 4_000
+        is_separated: true
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 12_000
+        hi_agi: 38_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Line 11 cap is $7,500, so line 22 = 10_000 - 4_000 = 6_000; 6_000 * 22%.
+    hi_cdcc: 1_320

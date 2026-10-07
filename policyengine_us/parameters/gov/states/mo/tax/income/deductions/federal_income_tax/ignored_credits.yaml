@@ -4,23 +4,21 @@ description: Missouri ignores the following credits in federal income tax deduct
 # Part I Line 3, and the net premium tax credit (Schedule 3 Line 9). Credits
 # claimed on Line 28 (refundable CTC) and Line 30 (recovery rebate), and the
 # 2021 refundable CDCC (Schedule 3 Line 13g), never reduce Line 22, so they
-# are added back here. The worksheet does subtract the EIC, so its presence
-# in this list deviates from the form — see issue #9094.
+# are added back here. The EIC is not added back: the Line 9 instructions say
+# "If you have an earned income credit, you must subtract the credit from the
+# tax on your federal return."
 values:
   2018-01-01:
-    - eitc
     - recovery_rebate_credit
     - refundable_ctc
   # The CDCC is a refundable credit only in 2021 (ARPA); in other years it
   # already reduces income tax before refundable credits, so adding it back
   # would overstate the base.
   2021-01-01:
-    - eitc
     - recovery_rebate_credit
     - refundable_ctc
     - cdcc
   2022-01-01:
-    - eitc
     - recovery_rebate_credit
     - refundable_ctc
 metadata:
@@ -34,3 +32,5 @@ metadata:
       href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=7
     - title: 2024 Form MO-1040 instructions, Line 9 worksheet
       href: https://dor.mo.gov/forms/MO-1040%20Instructions_2024.pdf#page=7
+    - title: 2025 Form MO-1040 instructions, Line 9 worksheet
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=7

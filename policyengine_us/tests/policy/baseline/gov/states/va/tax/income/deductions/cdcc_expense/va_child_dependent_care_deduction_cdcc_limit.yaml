@@ -36,3 +36,32 @@
   output:
     # max($3,000 - $5,000, 0) = $0.
     va_child_dependent_care_deduction_cdcc_limit: 0
+
+# IRC § 129(a)(2)(C) treats a separate filer living apart from their spouse as
+# unmarried under § 21(e)(4), so the federal Form 2441 limit, and Virginia's,
+# is reduced by the full $4,000 exclusion rather than the $2,500 MFS cap.
+- name: Separate filer treated as unmarried has the limit reduced by the full exclusion
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 4_000
+        is_separated: true
+      person2:
+        age: 5
+      person3:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    dependent_care_assistance_exclusion: 4_000
+    # $6,000 two-child limit less the $4,000 exclusion.
+    va_child_dependent_care_deduction_cdcc_limit: 2_000

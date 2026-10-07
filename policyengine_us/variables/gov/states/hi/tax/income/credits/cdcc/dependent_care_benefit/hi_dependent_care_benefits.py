@@ -42,9 +42,17 @@ class hi_dependent_care_benefits(Variable):
         min_head_spouse_earned = tax_unit("hi_cdcc_min_head_spouse_earned", period)
         # line 10 = min(line 7, line 8, line 9):
         earned_income_cap = min_(capped_expenses, min_head_spouse_earned)
-        # line 11:
+        # line 11: $5,000, or $2,500 if married filing separately and
+        # required to enter the spouse's earned income on line 9. IRC
+        # 129(a)(2)(C) and HRS 235-55.6(e)(4) treat a separate filer living
+        # apart from their spouse as unmarried, so they take the full cap.
         filing_status = tax_unit("filing_status", period)
-        dcb_baseline = p_irs.reduction_amount[filing_status]
+        treated_as_unmarried = tax_unit("cdcc_treated_as_unmarried", period)
+        dcb_baseline = where(
+            treated_as_unmarried,
+            p_irs.reduction_amount["SINGLE"],
+            p_irs.reduction_amount[filing_status],
+        )
         # line 12 is ignored, since we do not consider sole proprietorship/partnership
         # line 13 is ignored, since it requires line 12
         # line 14:

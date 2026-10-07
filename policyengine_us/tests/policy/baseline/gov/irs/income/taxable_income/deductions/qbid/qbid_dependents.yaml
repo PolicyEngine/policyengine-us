@@ -1,0 +1,225 @@
+# 26 USC 199A(a) allows the deduction to the taxpayer, from the qualified
+# business income of the taxpayer's own trades or businesses (and, on a joint
+# return, the spouse's). A tax unit dependent with business income files their
+# own return and takes their own deduction there, so the dependent's income,
+# losses and deduction never reach the filer's.
+
+- name: A dependent's Schedule C income adds nothing to the filer's deduction
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+        self_employment_income: 20_000
+      child:
+        age: 17
+        self_employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # Each person's QBI is their Schedule C profit less half their
+    # self-employment tax (x 0.9235 x 0.153 / 2): 20,000 - 1,412.96 and
+    # 10,000 - 706.48.
+    qualified_business_income: [18_587.04, 9_293.52]
+    # 20% of the parent's; the child's is for the child's own return.
+    # The parent's taxable income (78,587.04 AGI less the 23,625 head of
+    # household standard deduction) caps it at 10,992.41, which does not bind.
+    qualified_business_income_deduction: 3_717.41
+    qualified_business_income_deduction_person: [3_717.41, 0]
+
+- name: A dependent's Schedule C loss does not reduce the filer's qualified business income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+        self_employment_income: 20_000
+      child:
+        age: 17
+        self_employment_income: -5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    qualified_business_income: [18_587.04, -5_000]
+    # The child's loss is netted on the child's own return, not the parent's.
+    qualified_business_income_deduction: 3_717.41
+    qualified_business_income_deduction_person: [3_717.41, 0]
+
+- name: Below the threshold amount the wage limit does not apply, and the dependent's income stays off the return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        qualified_business_income: 100_000
+        w2_wages_from_qualified_business: 10_000
+      child:
+        age: 17
+        qualified_business_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        taxable_income_less_qbid: 150_000
+        adjusted_net_capital_gain: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # 199A(b)(3)(A): taxable income below the 197,300 threshold, so 20% of
+    # 100,000 without the wage limit. The child's 30,000 is not the parent's.
+    qualified_business_income_deduction: 20_000
+    qualified_business_income_deduction_person: [20_000, 0]
+
+- name: In the phase-in range the wage limit is phased in on the filer's QBI only
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        qualified_business_income: 100_000
+        w2_wages_from_qualified_business: 10_000
+      child:
+        age: 17
+        qualified_business_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        taxable_income_less_qbid: 222_300
+        adjusted_net_capital_gain: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # 199A(b)(3)(B): taxable income 25,000 into the 50,000 phase-in range, so
+    # half of the excess of 20,000 over the 5,000 wage limit is lost:
+    # 20,000 - 0.5 x 15,000.
+    qualified_business_income_deduction: 12_500
+    qualified_business_income_deduction_person: [12_500, 0]
+
+- name: Above the phase-in range the filer's deduction is the full wage limit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        qualified_business_income: 100_000
+        w2_wages_from_qualified_business: 10_000
+      child:
+        age: 17
+        qualified_business_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        taxable_income_less_qbid: 300_000
+        adjusted_net_capital_gain: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # 50% of 10,000 W-2 wages.
+    qualified_business_income_deduction: 5_000
+    qualified_business_income_deduction_person: [5_000, 0]
+
+- name: A joint return nets the spouses' losses against their own income, not a dependent's
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        qualified_business_income: 40_000
+      spouse:
+        age: 45
+        qualified_business_income: -10_000
+      child:
+        age: 17
+        qualified_business_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        taxable_income_less_qbid: 100_000
+        adjusted_net_capital_gain: 0
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # The spouses' 10,000 loss leaves 30,000 of the head's 40,000: 20% is
+    # 6,000. The child's 20,000 is netted on the child's own return.
+    qualified_business_income_deduction: 6_000
+    qualified_business_income_deduction_person: [6_000, 0, 0]
+
+- name: A dependent's QBI does not qualify the filer for the minimum deduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        qualified_business_income: 500
+      child:
+        age: 17
+        qualified_business_income: 600
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        taxable_income_less_qbid: 50_000
+        adjusted_net_capital_gain: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # 199A(i): the parent's own 500 is under 1,000, so no 400 minimum;
+    # the deduction is 20% of 500.
+    qualified_business_income_deduction: 100
+
+- name: The filer's own QBI of at least 1,000 still gets the minimum deduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        qualified_business_income: 1_500
+      child:
+        age: 17
+        qualified_business_income: 600
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+        taxable_income_less_qbid: 50_000
+        adjusted_net_capital_gain: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # 20% of 1,500 is 300, raised to the 400 minimum.
+    qualified_business_income_deduction: 400

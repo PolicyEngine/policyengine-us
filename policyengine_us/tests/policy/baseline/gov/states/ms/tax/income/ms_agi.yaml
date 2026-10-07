@@ -24,14 +24,14 @@
   output:
     ms_agi: [12_000, 10_000, 0]
 
-- name: Capped at 0
+- name: A negative amount is kept, so a joint return can combine it with the other column
   period: 2021
   input:
     state_code: MS
     ms_agi_adjustments: 1_000
     employment_income: 500
   output:
-    ms_agi: 0
+    ms_agi: -500
 
 - name: SSTB self-employment income is included in Mississippi AGI
   period: 2024

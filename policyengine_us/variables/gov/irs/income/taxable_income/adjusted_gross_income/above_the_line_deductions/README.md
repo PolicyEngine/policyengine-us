@@ -4,6 +4,7 @@ Above-the-line deductions are deductions made from gross income to arrive at adj
 
 | Section | Deduction |
 | --- | --- |
+| [62(a)(2)(D)](https://www.law.cornell.edu/uscode/text/26/62#a_2_D) | Educator expenses, capped per eligible educator |
 | [85](https://www.law.cornell.edu/uscode/text/26/85) | Unemployment compensation |
 | [86](https://www.law.cornell.edu/uscode/text/26/86) | Social security |
 | [135](https://www.law.cornell.edu/uscode/text/26/135) | Tuition fees |

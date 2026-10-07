@@ -23,5 +23,6 @@
         members: [person1]
         state_code: WI
   output:
-    wi_income_tax: 6_631
-    state_income_tax: 6_631
+    # Both variables must agree (#7805).
+    wi_income_tax: 6_636.85
+    state_income_tax: 6_636.85
