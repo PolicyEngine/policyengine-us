@@ -117,7 +117,7 @@ def test_ar_gross_income_sources_cite_the_form_line_for_their_year(file_name):
     path = SOURCES / file_name
     blocks = line_comments(path)
     # The text parse must see exactly the lists the parameter loader sees, so a
-    # reformatted file cannot make this check pass with nothing to check.
+    # reformatted file cannot silently skip entries.
     values = yaml.safe_load(path.read_text())["values"]
     assert {str(period): sources for period, sources in values.items()} == {
         period: [source for source, _ in entries] for period, entries in blocks.items()
@@ -125,6 +125,9 @@ def test_ar_gross_income_sources_cite_the_form_line_for_their_year(file_name):
     assert sorted(blocks) == sorted(EXPECTED_LINES)
     errors = []
     for period, entries in blocks.items():
+        assert entries, (
+            f"{file_name} {period}: gross income source list must not be empty"
+        )
         expected = EXPECTED_LINES[period]
         for source, label in entries:
             key = re.sub(r"_(joint|indiv)$", "", source)
