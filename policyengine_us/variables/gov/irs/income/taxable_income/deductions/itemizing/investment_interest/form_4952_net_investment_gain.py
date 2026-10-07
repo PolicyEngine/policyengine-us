@@ -18,7 +18,8 @@ class form_4952_net_investment_gain(Variable):
     irs_gross_income. long_term_capital_gains already includes Schedule D
     distributions; non_sch_d_capital_gains adds distributions reported
     without Schedule D, floored at zero for each filer as in irs_gross_income.
-    There is no capital loss carryover input. Form 4797 business-property
+    The long_term_capital_loss_carryover input is a memo amount whose loss
+    is already included in long_term_capital_gains; it is not subtracted again. Form 4797 business-property
     gains (other_net_gain) are excluded.
     """
     reference = [
