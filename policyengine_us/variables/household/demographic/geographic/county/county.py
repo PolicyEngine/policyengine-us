@@ -49,8 +49,7 @@ class county(Variable):
 
         # When running over a dataset, use stored county data if available
         # (geographic variables like county are time-invariant for households)
-        if simulation.is_over_dataset:  # pragma: no cover
-            # Microsimulation-specific path - tested via microsim
+        if simulation.is_over_dataset:
             stored_county = latest_readable_county(simulation)
             if stored_county is not None:
                 return stored_county
