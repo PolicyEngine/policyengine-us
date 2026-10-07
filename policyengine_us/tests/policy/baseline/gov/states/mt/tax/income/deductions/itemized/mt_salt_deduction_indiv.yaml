@@ -147,3 +147,52 @@
   output:
     # SB 399 ended filing separately on the same form after 2023.
     mt_salt_deduction_indiv: [0, 0]
+
+# Line 5b: "Deductions that are attributable to only one spouse must be
+# claimed by that spouse" (2023 instructions, PDF p. 13). A city earnings tax
+# belongs to the spouse who earned the taxed income.
+
+- name: A city earnings tax goes in the column of the spouse who earned it
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 3_000
+        mo_kansas_city_earnings_tax_taxable_earnings: 100_000
+      person2:
+        age: 45
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Column A: 3,000 + 1% x 100,000 = 4,000; column B: 3,000.
+    mt_salt_deduction_indiv: [4_000, 3_000]
+
+- name: Both spouses' city earnings taxes, one column at the cap
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 4_500
+        mo_kansas_city_earnings_tax_taxable_earnings: 100_000
+      person2:
+        age: 45
+        mo_kansas_city_earnings_tax_taxable_earnings: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Kansas City tax: 1,000 on column A's earnings and 500 on column B's.
+    # Column A: min(4,500 + 1,000, 5,000) = 5,000; column B: 500.
+    mt_salt_deduction_indiv: [5_000, 500]

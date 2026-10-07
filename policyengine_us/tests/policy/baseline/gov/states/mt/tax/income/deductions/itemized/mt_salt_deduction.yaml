@@ -127,3 +127,36 @@
   output:
      # Line 5a: 1,800; line 5c: 2,000. Line 5: 3,800, under the 10,000 cap.
      mt_salt_deduction: 3_800
+
+- name: Single return adds another city's earnings tax
+  period: 2023
+  input:
+     filing_status: SINGLE
+     real_estate_taxes: 2_000
+     mo_kansas_city_earnings_tax_taxable_earnings: 100_000
+     state_code: MT
+  output:
+     # Line 5b: Kansas City earnings tax, 1% x 100,000 = 1,000; line 5c:
+     # 2,000. Line 5: 3,000.
+     mt_salt_deduction: 3_000
+
+- name: Joint return adds a spouse's city earnings tax before the cap
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 9_500
+      person2:
+        age: 45
+        mo_kansas_city_earnings_tax_taxable_earnings: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 5b: 1,000; line 5c: 9,500. Line 5: min(10,500, 10,000).
+    mt_salt_deduction: [10_000, 0]

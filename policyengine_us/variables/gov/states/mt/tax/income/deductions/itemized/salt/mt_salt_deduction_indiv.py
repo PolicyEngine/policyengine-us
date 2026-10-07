@@ -42,6 +42,34 @@ class mt_salt_deduction_indiv(Variable):
         # proportional amount", so a couple divides them equally.
         sales_tax = add(person.tax_unit, period, ["state_sales_tax", "local_sales_tax"])
         sales_tax_share = where(married, p_mt.spouse_allocation_rate, 1)
-        taxes = real_estate_tax + sales_tax_share * sales_tax
+        # Line 5b: "Deductions that are attributable to only one spouse must
+        # be claimed by that spouse." PolicyEngine computes local income
+        # taxes for the tax unit. The ones it levies on a Montana household
+        # are city taxes on earnings there (Kansas City, St. Louis,
+        # Philadelphia), so each person takes a share in proportion to their
+        # own earnings taxed by those cities. Without such earnings the tax
+        # is divided like the sales taxes.
+        local_base = add(
+            person,
+            period,
+            [
+                "mo_kansas_city_earnings_tax_taxable_earnings",
+                "mo_st_louis_earnings_tax_taxable_earnings",
+                "pa_philadelphia_wage_tax_taxable_wages",
+            ],
+        )
+        unit_local_base = person.tax_unit.sum(local_base)
+        has_local_base = unit_local_base > 0
+        local_share = where(
+            has_local_base,
+            local_base / where(has_local_base, unit_local_base, 1),
+            sales_tax_share,
+        )
+        local_income_tax = person.tax_unit("local_income_tax", period)
+        taxes = (
+            real_estate_tax
+            + sales_tax_share * sales_tax
+            + local_share * local_income_tax
+        )
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return head_or_spouse * min_(taxes, cap)

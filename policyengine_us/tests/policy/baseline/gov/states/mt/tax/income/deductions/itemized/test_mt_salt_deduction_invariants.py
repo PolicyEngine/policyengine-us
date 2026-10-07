@@ -1,7 +1,7 @@
 """Invariants for Montana's state and local tax deduction, 2021-2023.
 
 Form 2, Itemized Deductions Schedule, line 5 adds lines 5a (general sales
-taxes) through 5d and caps the total at $10,000, or $5,000 if married filing
+taxes), 5b (local income taxes) through 5d and caps the total at $10,000, or $5,000 if married filing
 separately. A joint return has one column, so its cap applies once to the
 couple's combined taxes (mt_salt_deduction, on the head). Spouses filing
 separately on the same form (status 2a) each have their own column, capped at
@@ -10,7 +10,8 @@ change leaves the earlier per-person amounts as they were.
 
 The YAML files hold the worked cases. This file checks what they cannot: many
 mixed tax units (single, head of household, separate, joint, joint with
-dependents, some with sales taxes) in one vectorized simulation, and how
+dependents, some with sales taxes or Kansas City earnings taxes) in one
+vectorized simulation, and how
 results move when inputs change. For every tax unit:
 
 1. Differential: both variables equal an independent numpy calculation of
@@ -38,6 +39,8 @@ TOLERANCE = 0.01  # dollars
 FORM_CAP = {"SINGLE": 10_000, "HEAD_OF_HOUSEHOLD": 10_000, "JOINT": 10_000}
 FORM_CAP["SEPARATE"] = 5_000
 SCHEDULE_YEARS = [2021, 2022, 2023]
+# Kansas City earnings tax rate, a local income tax with no residence test.
+KANSAS_CITY_RATE = 0.01
 # 26 USC 164(b)(6) and (7)(A): $10,000 ($5,000 separate) through 2024, and
 # $40,400 ($20,200 separate) for 2026.
 FEDERAL_CAP = {
@@ -63,11 +66,16 @@ taxes = st.one_of(
 )
 sales = st.one_of(st.just(0.0), st.integers(1, 3_000).map(float))
 increases = st.one_of(st.just(0.0), st.integers(1, 5_000).map(float))
+city_earnings = st.one_of(st.just(0.0), st.integers(1, 300_000).map(float))
 
 
 @st.composite
 def people(draw):
-    return {"real_estate_taxes": draw(taxes), "increase": draw(increases)}
+    return {
+        "real_estate_taxes": draw(taxes),
+        "increase": draw(increases),
+        "kansas_city_earnings": draw(city_earnings),
+    }
 
 
 @st.composite
@@ -97,6 +105,9 @@ def _seeded_units(n=150):
                 [0, rng.integers(1, 6_001), rng.integers(6_000, 30_001)][band]
             ),
             "increase": float(rng.integers(0, 5_001)) if rng.random() < 0.7 else 0.0,
+            "kansas_city_earnings": float(rng.integers(1, 300_001))
+            if rng.random() < 0.2
+            else 0.0,
         }
 
     units = []
@@ -133,6 +144,9 @@ def _situation(units, year, *, raised=False, swapped=False):
             "is_tax_unit_dependent": role == "dependent",
             "real_estate_taxes": values["real_estate_taxes"]
             + raised * values["increase"],
+            "mo_kansas_city_earnings_tax_taxable_earnings": values[
+                "kansas_city_earnings"
+            ],
         }
 
     for i, unit in enumerate(units):
@@ -178,6 +192,7 @@ def _run(units, year, **kwargs):
             "mt_salt_deduction",
             "mt_salt_deduction_indiv",
             "real_estate_taxes",
+            "mo_kansas_city_earnings_tax_taxable_earnings",
         ]
     }
     out["unit"] = sim.populations["tax_unit"].members_entity_id
@@ -199,15 +214,17 @@ def _check_schedule_year(units, year):
     joint_cap = np.array([FORM_CAP[s] for s in status])
     column_cap = np.where(married, FORM_CAP["SEPARATE"], joint_cap)
 
-    # 1. Differential against numpy.
-    total = _unit_sum(base, base["real_estate_taxes"]) + sales
+    # 1. Differential against numpy. Each person owes Kansas City tax on
+    # their own earnings there; a column takes its own spouse's tax.
+    city_tax = KANSAS_CITY_RATE * base["mo_kansas_city_earnings_tax_taxable_earnings"]
+    total = _unit_sum(base, base["real_estate_taxes"] + city_tax) + sales
     np.testing.assert_allclose(
         base["mt_salt_deduction"],
         head * np.minimum(total, joint_cap)[unit],
         atol=TOLERANCE,
     )
     share = np.where(married, 0.5, 1.0)[unit]
-    own = base["real_estate_taxes"] + share * sales[unit]
+    own = base["real_estate_taxes"] + share * sales[unit] + city_tax
     np.testing.assert_allclose(
         base["mt_salt_deduction_indiv"],
         filer * np.minimum(own, column_cap[unit]),

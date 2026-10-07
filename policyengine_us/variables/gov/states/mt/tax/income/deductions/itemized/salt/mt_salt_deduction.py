@@ -37,14 +37,19 @@ class mt_salt_deduction(Variable):
             # single, head of household or married filing jointly; or $5,000
             # if you are married filing separately".
             # 5a: general state and local sales taxes.
-            # 5b: local income taxes. No Montana locality levies one, and
-            #     local_income_tax holds only out-of-state local taxes.
+            # 5b: local income taxes. No Montana locality levies one, but
+            #     a resident can owe another city's earnings or wage tax.
             # 5c: real estate taxes.
             # 5d: value-based personal property taxes, not modeled.
             taxes = add(
                 person.tax_unit,
                 period,
-                ["real_estate_taxes", "state_sales_tax", "local_sales_tax"],
+                [
+                    "real_estate_taxes",
+                    "state_sales_tax",
+                    "local_sales_tax",
+                    "local_income_tax",
+                ],
             )
             is_head = person("is_tax_unit_head", period)
             return is_head * min_(taxes, cap)
