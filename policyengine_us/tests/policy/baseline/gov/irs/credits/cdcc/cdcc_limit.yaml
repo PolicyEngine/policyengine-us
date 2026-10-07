@@ -47,3 +47,27 @@
   output:
     # $6,000 - $2,500 = $3,500.
     cdcc_limit: 3_500
+
+# Section 129(a)(2)(C): a separate filer treated as unmarried under section
+# 21(e)(4) excludes up to $5,000, and the whole exclusion reduces the limit.
+- name: Separate filer treated as unmarried, limit reduced by the full exclusion
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 4_000
+        is_separated: true
+      person2:
+        age: 5
+      person3:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: SEPARATE
+  output:
+    dependent_care_assistance_exclusion: 4_000
+    # $6,000 - $4,000 = $2,000.
+    cdcc_limit: 2_000
