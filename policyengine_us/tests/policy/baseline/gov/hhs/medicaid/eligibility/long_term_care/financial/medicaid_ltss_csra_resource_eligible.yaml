@@ -807,3 +807,111 @@
           2026: WA
   output:
     medicaid_ltss_csra_resource_eligible: [true, false]
+
+- name: Case 19, continuing Delaware eligibility ignores community spouse resources above the initial allowance.
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_is_initial_eligibility_determination: false
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    medicaid_ltss_countable_resources: 2_000
+    medicaid_ltss_community_spouse_countable_resources: 60_000
+  output:
+    medicaid_ltss_csra_resource_eligible: true
+
+- name: Case 20, continuing Delaware eligibility cannot shelter excess applicant resources in an unused CSRA.
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_is_initial_eligibility_determination: false
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    medicaid_ltss_countable_resources: 2_001
+    medicaid_ltss_community_spouse_countable_resources: 0
+  output:
+    medicaid_ltss_csra_resource_eligible: false
+
+- name: Case 21, explicit initial Delaware eligibility tests combined current resources after CSRA.
+  period: 2026-07
+  input:
+    people:
+      spouse_resources_above_allowance: &initial_applicant
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 60_000
+      resources_available_for_transfer:
+        <<: *initial_applicant
+        medicaid_ltss_countable_resources: 2_001
+        medicaid_ltss_community_spouse_countable_resources: 0
+    households:
+      household:
+        members: [spouse_resources_above_allowance, resources_available_for_transfer]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_csra_resource_eligible: [false, true]
+
+- name: Case 22, an omitted determination input preserves initial Delaware resource treatment.
+  period: 2026-07
+  input:
+    people:
+      spouse_resources_above_allowance: &default_initial_applicant
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+        medicaid_ltss_countable_resources: 2_000
+        medicaid_ltss_community_spouse_countable_resources: 60_000
+      resources_available_for_transfer:
+        <<: *default_initial_applicant
+        medicaid_ltss_countable_resources: 2_001
+        medicaid_ltss_community_spouse_countable_resources: 0
+    households:
+      household:
+        members: [spouse_resources_above_allowance, resources_available_for_transfer]
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_is_initial_eligibility_determination: [true, true]
+    medicaid_ltss_csra_resource_eligible: [false, true]
+
+- name: Case 23, continuing community spouse eligibility still rejects a couple assistance unit.
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_assistance_unit_size: 2
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_is_initial_eligibility_determination: false
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    medicaid_ltss_countable_resources: 2_001
+    medicaid_ltss_community_spouse_countable_resources: 0
+  output:
+    medicaid_ltss_csra_resource_eligible: false

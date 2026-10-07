@@ -130,7 +130,7 @@
   output:
     medicaid_ltss_mmmna: [2_705, 2_705, 4_066.5]
 
-- name: Case 3, the Washington formula adds interior excess shelter above the threshold.
+- name: Case 3, Washington uses its published July shelter threshold.
   period: 2026-07
   absolute_error_margin: 0.01
   input:
@@ -176,7 +176,8 @@
         state_code:
           2026: WA
   output:
-    medicaid_ltss_mmmna: [3_705, 2_705]
+    # Washington publishes 812, rather than the unrounded federal 811.50.
+    medicaid_ltss_mmmna: [3_704.5, 2_705]
 
 - name: Case 4, no community spouse produces no allowance.
   period: 2026-07
@@ -312,7 +313,7 @@
   output:
     medicaid_ltss_mmmna: [4_066.5, 4_066.5, 0, 0]
 
-- name: Case 8, January 2026 uses the July 2025 federal minimum and the January 2026 maximum.
+- name: Case 8, January 2026 uses the operative federal and published state standards.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -355,8 +356,8 @@
         state_code:
           2026: WA
   output:
-    # Washington: 2_643.75 + (1_000 - 0.3 * 2_643.75) = 2_850.625.
-    medicaid_ltss_mmmna: [4_066.5, 2_643.75, 2_850.625]
+    # Washington's published values: 2_644 + (1_000 - 794) = 2_850.
+    medicaid_ltss_mmmna: [4_066.5, 2_643.75, 2_850]
 
 - name: Case 9, June 2026 is the last month before the July 2026 federal minimum.
   period: 2026-06

@@ -1,3 +1,62 @@
+- name: Delaware combines married co-owners' interests in their retained home.
+  period: 2026-07
+  input:
+    people:
+      million_first: &million_owner
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_assistance_unit_size: 2
+        medicaid_ltss_home_market_value: 1_000_000
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 0.5
+        medicaid_ltss_home_occupied_by_spouse: false
+        medicaid_ltss_home_equity_hardship_waiver: false
+      million_second: *million_owner
+      boundary_first: &boundary_owner
+        <<: *million_owner
+        medicaid_ltss_home_market_value: 752_000
+      boundary_second: *boundary_owner
+      third_party_first: &third_party_owner
+        <<: *million_owner
+        medicaid_ltss_home_market_value: 1_500_000
+        medicaid_ltss_home_ownership_share: 0.25
+      third_party_second: *third_party_owner
+    marital_units:
+      million_couple:
+        members: [million_first, million_second]
+      boundary_couple:
+        members: [boundary_first, boundary_second]
+      third_party_couple:
+        members: [third_party_first, third_party_second]
+    households:
+      delaware:
+        members: [million_first, million_second, boundary_first, boundary_second,
+          third_party_first, third_party_second]
+        state_code: {2026: DE}
+  output:
+    # DSSM 20320.7.C treats spouses as one owner, irrespective of budgeting unit.
+    # Combined interests are $1m (fail), $752k (pass), and $750k (pass).
+    medicaid_ltss_home_equity_eligible: [false, false, true, true, true, true]
+
+- name: Delaware married ownership remains combined under individual budgets.
+  period: 2026-07
+  input:
+    people:
+      first: &individual_owner
+        medicaid_ltss_setting: INSTITUTIONAL
+        medicaid_ltss_assistance_unit_size: 1
+        medicaid_ltss_home_market_value: 1_000_000
+        medicaid_ltss_home_ownership_share: 0.5
+      second: *individual_owner
+    marital_units:
+      couple:
+        members: [first, second]
+    households:
+      delaware:
+        members: [first, second]
+        state_code: {2026: DE}
+  output:
+    medicaid_ltss_home_equity_eligible: [false, false]
+
 - name: Case 1, Texas home-equity cap includes the exact boundary.
   period: 2026-07
   input:

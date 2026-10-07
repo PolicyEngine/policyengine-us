@@ -603,6 +603,25 @@
       [INSTITUTIONAL_MEDICALLY_NEEDY, INSTITUTIONAL_MEDICALLY_NEEDY]
     is_medicaid_ltss_income_eligible: [true, false]
 
+- name: Washington COPES medically needy income level follows SSI uprating in 2027.
+  period: 2027-01
+  input:
+    state_code:
+      2027: WA
+    medicaid_ltss_setting: HCBS
+    is_ssi_aged_blind_disabled:
+      2027: true
+    medicaid_ltss_waiver: WA_COPES
+    medicaid_ltss_assistance_unit_size: 1
+    medicaid_ltss_qit_adjusted_income: 4_000
+    medicaid_ltss_medically_needy_expenses: 500
+    medicaid_ltss_cost_of_care: 2_500
+  output:
+    medicaid_ltss_financial_pathway: INSTITUTIONAL_MEDICALLY_NEEDY
+    # Net income 4_000 - 500 - 2_500 = 1_000 exceeds the 2026 standard
+    # of 994 but is below the uprated one-person SSI federal benefit rate.
+    is_medicaid_ltss_income_eligible: true
+
 - name: Case 13, final Delaware countable income receives no second disregard.
   period: 2026-07
   input:
