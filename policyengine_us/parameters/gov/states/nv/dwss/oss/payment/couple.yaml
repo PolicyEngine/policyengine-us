@@ -1,0 +1,51 @@
+description: Nevada provides this monthly same-category couple payment before income reductions under the Optional State Supplementation program.
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: month
+  label: Nevada OSS couple payment
+  breakdown:
+    - nv_oss_living_arrangement
+    - ssi_category
+  reference:
+    - title: POMS SI 01415.058 I.2.b - Nevada payment levels for January 2026
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501415058#i
+
+# Full couple rates for two members of the same category. Averaging the
+# applicable rates reproduces the published mixed-category couple totals.
+INDEPENDENT_LIVING:
+  AGED:
+    2026-01-01: 74.46
+  BLIND:
+    2026-01-01: 374.6
+  DISABLED:
+    2026-01-01: 0
+  NONE:
+    2026-01-01: 0
+HOUSEHOLD_OF_ANOTHER:
+  AGED:
+    2026-01-01: 49.64
+  BLIND:
+    2026-01-01: 531.94
+  DISABLED:
+    2026-01-01: 0
+  NONE:
+    2026-01-01: 0
+DOMICILIARY_CARE:
+  AGED:
+    2026-01-01: 881
+  BLIND:
+    2026-01-01: 881
+  DISABLED:
+    2026-01-01: 0
+  NONE:
+    2026-01-01: 0
+NONE:
+  AGED:
+    2026-01-01: 0
+  BLIND:
+    2026-01-01: 0
+  DISABLED:
+    2026-01-01: 0
+  NONE:
+    2026-01-01: 0

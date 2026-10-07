@@ -33,6 +33,7 @@ class spm_unit_benefits(Variable):
             "mo_ssp",  # Missouri benefits
             "mn_msa",  # Minnesota benefits
             "ne_aabd",  # Nebraska benefits
+            "nv_oss",  # Nevada benefits
             # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
             # California SSI state supplement (SSP). The formula nets federal

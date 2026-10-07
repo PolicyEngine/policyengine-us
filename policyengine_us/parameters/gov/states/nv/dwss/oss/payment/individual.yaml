@@ -1,0 +1,48 @@
+description: Nevada provides this monthly individual payment before income reductions under the Optional State Supplementation program.
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: month
+  label: Nevada OSS individual payment
+  breakdown:
+    - nv_oss_living_arrangement
+    - ssi_category
+  reference:
+    - title: POMS SI 01415.058 I.2.a - Nevada payment levels for January 2026
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501415058#i
+INDEPENDENT_LIVING:
+  AGED:
+    2026-01-01: 36.4
+  BLIND:
+    2026-01-01: 109.3
+  DISABLED:
+    2026-01-01: 0
+  NONE:
+    2026-01-01: 0
+HOUSEHOLD_OF_ANOTHER:
+  AGED:
+    2026-01-01: 24.27
+  BLIND:
+    2026-01-01: 213.96
+  DISABLED:
+    2026-01-01: 0
+  NONE:
+    2026-01-01: 0
+DOMICILIARY_CARE:
+  AGED:
+    2026-01-01: 391
+  BLIND:
+    2026-01-01: 391
+  DISABLED:
+    2026-01-01: 0
+  NONE:
+    2026-01-01: 0
+NONE:
+  AGED:
+    2026-01-01: 0
+  BLIND:
+    2026-01-01: 0
+  DISABLED:
+    2026-01-01: 0
+  NONE:
+    2026-01-01: 0

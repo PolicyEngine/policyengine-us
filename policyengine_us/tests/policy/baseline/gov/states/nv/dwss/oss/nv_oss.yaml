@@ -1,0 +1,586 @@
+# Rates: POMS SI 01415.058 I.2.
+# Income phaseout: 20 CFR 416.2025(b).
+# Spouse deeming: POMS SI 01320.430 D; minimum payment: SI 02001.005.
+# Annual income inputs include the $20 monthly general income exclusion.
+# Mixed-category couple payments are divided equally after the joint phaseout.
+- name: Case 1, aged individual receives the published independent living supplement.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+  output:
+    nv_oss: 36.4
+
+- name: Case 2, person just below the aged threshold receives no supplement.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 64
+  output:
+    nv_oss: 0
+
+- name: Case 3, blind aged recipient gets the higher blind category.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    is_blind: true
+  output:
+    nv_oss: 109.3
+
+- name: Case 4, blind child receives the independent living supplement.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 10
+    is_blind: true
+  output:
+    nv_oss: 109.3
+
+- name: Case 5, countable resources exactly at the individual limit remain eligible.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    ssi_countable_resources: 2_000
+  output:
+    nv_oss: 36.4
+
+- name: Case 6, countable resources above the individual limit are ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    ssi_countable_resources: 2_001
+  output:
+    nv_oss: 0
+
+- name: Case 7, person without qualifying immigration status receives no supplement.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    immigration_status: UNDOCUMENTED
+  output:
+    nv_oss: 0
+
+- name: Case 8, Nevada benefit is zero outside Nevada.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: CA
+    age: 65
+  output:
+    nv_oss: 0
+
+- name: Case 9, Medicaid majority-funded medical facility receives no supplement.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    nv_oss: 0
+
+- name: Case 10, certified medical facility without majority Medicaid funding uses independent living.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: false
+  output:
+    nv_oss: 36.4
+
+- name: Case 11, uncertified private medical facility receives no supplement.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    nv_oss_care_setting: UNCERTIFIED_MEDICAL_FACILITY
+  output:
+    nv_oss: 0
+
+- name: Case 12, full month in a public emergency shelter receives no supplement.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    nv_oss_care_setting: PUBLIC_EMERGENCY_SHELTER
+  output:
+    nv_oss: 0
+
+- name: Case 13, negative earned income cannot increase the maximum supplement.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    self_employment_income: -12_000
+  output:
+    nv_oss: 36.4
+
+- name: Case 14, federal SSI absorbs income below the federal limit.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    social_security_retirement: 12_000
+  output:
+    nv_oss: 36.4
+    ssi_countable_income: 980
+    ssi: 14
+
+- name: Case 15, supplement continues after federal SSI is exhausted.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    social_security_retirement: 12_360
+  output:
+    nv_oss: 20.4
+    ssi_countable_income: 1_010
+    ssi: 0
+
+- name: Case 16, positive payment below one dollar is raised to the minimum.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    social_security_retirement: 12_603.6
+  output:
+    nv_oss: 1
+    ssi: 0
+
+- name: Case 17, income at the combined standard produces zero.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    social_security_retirement: 12_604.8
+  output:
+    nv_oss: 0
+    ssi: 0
+
+- name: Case 18, income above the combined standard produces zero.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    social_security_retirement: 12_612
+  output:
+    nv_oss: 0
+    ssi: 0
+
+- name: Case 19, earned income uses the federal general and earned exclusions.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    employment_income: 25_200
+  output:
+    nv_oss: 22.9
+    ssi_countable_income: 1_007.5
+    ssi: 0
+
+- name: Case 20, mixed category couple phases out using combined income.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        social_security_retirement: 20_400
+      person2:
+        age: 40
+        is_blind: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss: [17.77, 17.77]
+
+- name: Case 21, disabled spouse receives half of the aged disabled couple payment.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        social_security_retirement: 18_360
+      person2:
+        age: 40
+        meets_ssi_disability_criteria: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss: [9.12, 9.12]
+
+- name: Case 22, couple gets the one dollar minimum per member.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        social_security_retirement: 19_005.6
+      person2:
+        age: 65
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss: [1, 1]
+
+- name: Case 23, couple at the combined income cutoff gets zero.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        social_security_retirement: 19_025.52
+      person2:
+        age: 65
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss: [0, 0]
+
+- name: Case 24, ineligible spouse without income preserves the individual rate.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 40
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss: [36.4, 0]
+
+- name: Case 25, spousal deeming uses the blind couple rate before capping at the individual payment.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+      person2:
+        age: 40
+        social_security_retirement: 19_200
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss: [109.3, 0]
+
+- name: Case 26, spousal deeming reduces payment after exceeding the couple standard.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+      person2:
+        age: 40
+        social_security_retirement: 22_200
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss: [35.6, 0]
+
+- name: Case 27, spousal deeming cannot exceed the payment on the claimants own income.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        social_security_retirement: 12_960
+      person2:
+        age: 40
+        social_security_retirement: 7_200
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss: [43.3, 0]
+
+- name: Case 28, spousal deemed income can eliminate the supplement.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+      person2:
+        age: 40
+        social_security_retirement: 22_800
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss: [0, 0]
+
+- name: Case 29, one spouse in a Medicaid facility leaves the other on the individual rate.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 65
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss: [36.4, 0]
+
+- name: Case 30, couple resources exactly at the limit remain eligible.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        ssi_countable_resources: 1_500
+      person2:
+        age: 65
+        ssi_countable_resources: 1_500
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss: [37.23, 37.23]
+
+- name: Case 31, couple resources over the limit eliminate both payments.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        ssi_countable_resources: 1_501
+      person2:
+        age: 65
+        ssi_countable_resources: 1_500
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss: [0, 0]
+
+- name: Case 32, annual amount sums twelve monthly payments.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+  output:
+    nv_oss: 436.8
+    household_state_benefits: 436.8
+
+- name: Case 33, mixed households preserve couple sharing and Nevada residence filtering.
+  # Reverse the aged/blind order and place the couple's income on the blind
+  # member. The published $224.53 rate less $189 excess leaves $17.77 each.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+      person2:
+        age: 40
+        is_blind: true
+        social_security_retirement: 20_400
+      person3:
+        age: 65
+      person4:
+        age: 65
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+      marital_unit3:
+        members: [person4]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+      tax_unit3:
+        members: [person4]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2, person3]
+      spm_unit3:
+        members: [person4]
+    households:
+      household1:
+        members: [person1]
+        state_code: NV
+      household2:
+        members: [person2, person3]
+        state_code: NV
+      household3:
+        members: [person4]
+        state_code: CA
+  output:
+    nv_oss_payment_standard: [109.3, 112.265, 112.265, 0]
+    nv_oss: [109.3, 17.77, 17.77, 0]
