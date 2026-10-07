@@ -1,0 +1,119 @@
+# is_parent is the union of the child count and co-resident parent links, so
+# links add parents that a count misses and never erase one that a count reports.
+- name: Parent ids add parents a zero child count misses, and a positive count still identifies a parent.
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 61
+        is_female: true
+        own_children_in_household: 0
+      father:
+        person_id: 62
+        is_female: false
+        own_children_in_household: 0
+      unrelated_adult:
+        person_id: 63
+        is_female: true
+        own_children_in_household: 3
+      child:
+        person_id: 64
+        parent_1_id: 61
+        parent_2_id: 62
+      breastfeeding_adult:
+        person_id: 65
+        is_female: true
+        is_breastfeeding: true
+    households:
+      household:
+        members: [mother, father, unrelated_adult, child, breastfeeding_adult]
+  output:
+    is_parent: [true, true, true, false, false]
+    is_mother: [true, false, true, false, true]
+    is_father: [false, true, false, false, false]
+
+- name: Zero parent ids preserve the child-count inference and breastfeeding branch.
+  period: 2026
+  input:
+    people:
+      mother:
+        person_id: 71
+        is_female: true
+        own_children_in_household: 1
+        parent_1_id: 0
+        parent_2_id: 0
+      father:
+        person_id: 72
+        is_female: false
+        own_children_in_household: 1
+        parent_1_id: 0
+        parent_2_id: 0
+      breastfeeding_adult:
+        person_id: 73
+        is_breastfeeding: true
+        parent_1_id: 0
+        parent_2_id: 0
+    households:
+      household:
+        members: [mother, father, breastfeeding_adult]
+  output:
+    is_parent: [true, true, false]
+    is_mother: [true, false, true]
+    is_father: [false, true, false]
+
+- name: Parent ids resolve only within the household, and child counts still identify parents.
+  period: 2026
+  input:
+    people:
+      outside_parent:
+        person_id: 81
+        own_children_in_household: 0
+      legacy_parent:
+        person_id: 82
+        own_children_in_household: 1
+        is_female: true
+      child:
+        person_id: 83
+        parent_1_id: 81
+      unrelated_adult:
+        person_id: 84
+        own_children_in_household: 2
+    households:
+      outside:
+        members: [outside_parent, legacy_parent]
+      home:
+        members: [child, unrelated_adult]
+  output:
+    is_parent: [false, true, false, true]
+    is_mother: [false, true, false, false]
+    is_father: [false, false, false, true]
+
+- name: Unknown zero parent ids do not resolve to the default zero person id.
+  period: 2026
+  input:
+    people:
+      zero_id_person:
+        person_id: 0
+        own_children_in_household: 0
+      child:
+        person_id: 91
+        parent_1_id: 999
+        parent_2_id: 0
+    households:
+      household:
+        members: [zero_id_person, child]
+  output:
+    is_parent: [false, false]
+    is_mother: [false, false]
+    is_father: [false, false]
+
+- name: A malformed self-reference does not make someone their own parent.
+  period: 2026
+  input:
+    person_id: 92
+    parent_1_id: 92
+    own_children_in_household: 0
+  output:
+    is_parent: false
+    is_mother: false
+    is_father: false

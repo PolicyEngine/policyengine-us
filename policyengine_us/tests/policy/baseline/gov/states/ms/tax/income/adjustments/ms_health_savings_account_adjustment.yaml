@@ -1,0 +1,229 @@
+# Mississippi excludes health savings account contributions from the account
+# holder's gross income (Miss. Code Ann. § 71-9-11(3)), and Form 80-105
+# reports each spouse's adjustments in their own column, so the tax unit's
+# deduction is subtracted once, from the account holder.
+
+- name: A single filer subtracts their whole deduction
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 40
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        health_savings_account_ald: 1_500
+    households:
+      household:
+        members: [filer]
+        state_code: MS
+  output:
+    ms_health_savings_account_adjustment: 1_500
+    ms_agi_adjustments: 1_500
+    ms_agi: 38_500
+
+- name: A joint return without per-person amounts attributes the deduction once, to the head
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+      spouse:
+        age: 40
+        employment_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        health_savings_account_ald: 3_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MS
+  output:
+    ms_health_savings_account_adjustment: [3_000, 0]
+    ms_agi_adjustments: [3_000, 0]
+    # 40,000 - 3,000 and 30,000: the spouse's income is not reduced again.
+    ms_agi: [37_000, 30_000]
+
+- name: The spouse whose account it is takes the deduction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+      spouse:
+        age: 40
+        employment_income: 30_000
+        health_savings_account_ald_person: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        health_savings_account_ald: 3_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MS
+  output:
+    ms_health_savings_account_adjustment: [0, 3_000]
+    ms_agi_adjustments: [0, 3_000]
+    ms_agi: [40_000, 27_000]
+
+- name: Two account holders each take their own deduction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        health_savings_account_ald_person: 1_000
+      spouse:
+        age: 40
+        employment_income: 30_000
+        health_savings_account_ald_person: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        health_savings_account_ald: 3_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MS
+  output:
+    ms_health_savings_account_adjustment: [1_000, 2_000]
+    ms_agi: [39_000, 28_000]
+
+- name: Per-person amounts that differ from the tax unit's deduction split it in proportion
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        health_savings_account_ald_person: 1_000
+      spouse:
+        age: 40
+        employment_income: 30_000
+        health_savings_account_ald_person: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        health_savings_account_ald: 1_500
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MS
+  output:
+    # The return claims 1,500, shared 1:2.
+    ms_health_savings_account_adjustment: [500, 1_000]
+
+- name: A dependent's income is not reduced by the filer's deduction, nor by the dependent's own account
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+      spouse:
+        age: 40
+        employment_income: 30_000
+      child:
+        age: 17
+        employment_income: 5_000
+        # The child's own account belongs on the child's own return.
+        health_savings_account_ald_person: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        health_savings_account_ald: 3_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MS
+  output:
+    ms_health_savings_account_adjustment: [3_000, 0, 0]
+    ms_agi_adjustments: [3_000, 0, 0]
+    # The child's 5,000 reaches the head's Mississippi AGI in full:
+    # 40,000 - 3,000 + 5,000.
+    ms_agi: [42_000, 30_000, 0]
+
+- name: A married person filing a separate federal return takes their own deduction
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 40
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SEPARATE
+        health_savings_account_ald: 2_000
+    households:
+      household:
+        members: [filer]
+        state_code: MS
+  output:
+    ms_health_savings_account_adjustment: 2_000
+    ms_agi: 38_000
+
+- name: In separate-return columns each spouse subtracts only their own deduction
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+      spouse:
+        age: 40
+        employment_income: 30_000
+        health_savings_account_ald_person: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        health_savings_account_ald: 3_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MS
+  output:
+    ms_agi: [40_000, 27_000]
+    # Each spouse takes half of the $12,000 married exemption and of the
+    # $4,600 married standard deduction: 40,000 - 6,000 - 2,300 and
+    # 27,000 - 6,000 - 2,300.
+    ms_taxable_income_indiv: [31_700, 18_700]
+    # 4.4% above $10,000: 21,700 x 0.044 and 8,700 x 0.044.
+    ms_income_tax_before_credits_indiv: [954.8, 382.8]
+
+- name: Without per-person amounts the head takes the deduction, even above the head's own income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 1_000
+      spouse:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        health_savings_account_ald: 3_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MS
+  output:
+    # The model does not know whose account it is, so the head takes it, as
+    # on a joint return with one income column. The head's Mississippi AGI
+    # column goes negative (1,000 - 3,000 = -2,000). On a joint return the
+    # tax computation combines a negative column with the other one (Form
+    # 80-100 line 17, #9885), so the whole deduction is used.
+    ms_health_savings_account_adjustment: [3_000, 0]
+    ms_agi: [-2_000, 50_000]
+    # Combined: 1,000 + 33,400 - 3,000 = 31,400 of taxable income in Column A;
+    # (31,400 - 10,000) x 4.4% = 941.60.
+    ms_income_tax_before_credits_unit: 941.6
