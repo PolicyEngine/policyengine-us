@@ -5,8 +5,9 @@ less their own above-the-line deductions (above_the_line_deductions_person).
 On a joint return a deduction that belongs to one spouse, such as their IRA
 deduction, educator expenses, early withdrawal penalty, alimony paid, student
 loan interest or business and capital losses, lowers only that spouse's AGI.
-Only deductions recorded for the tax unit alone (here the HSA deduction and
-the tuition and fees deduction) are divided equally. States that tax spouses
+Only deductions recorded for the tax unit alone (here the tuition and fees
+deduction, and the HSA deduction, given for the tax unit with no person
+amounts) are divided equally. States that tax spouses
 separately (Kentucky, Montana, Delaware, Virginia, Ohio's joint filing credit,
 the District of Columbia, West Virginia's senior deduction) read these
 amounts.
@@ -39,8 +40,10 @@ tax unit is an input for every unit in its simulation. For every tax unit:
    pre-2019 instrument, their share of the numpy-limited business loss by
    their own business losses and of the capital loss deduction (losses up
    to the filers' capital gains and distributions, plus the net loss up to
-   the 1211(b) limit) by their own capital losses, and an equal share of the
-   HSA and tuition and fees deductions.
+   the 1211(b) limit) by their own capital losses, an equal share of the
+   tuition and fees deduction, and their share of any tax-unit deduction
+   beyond the filers' own amounts of it (an HSA deduction given only for the
+   tax unit), by those amounts or equally when there are none.
 3. Own deductions. The spouse's deductions never add to the head's: the
    head's above_the_line_deductions_person is never higher with the spouse's
    deduction inputs than without them. It is the same, and so is the head's
@@ -386,7 +389,7 @@ def _run_group(units, year, *, zero_spouse):
     # The person-level deductions and the person amounts behind the tax-unit
     # deductions other than losses and alimony, which the reference below
     # builds from the inputs.
-    own_names, shared_names = [], []
+    own_names, shared_names, reconciled_names = [], [], []
     for deduction in sorted(set(deductions)):
         if tbs.variables[deduction].entity.is_person:
             own_names.append(deduction)
@@ -394,6 +397,7 @@ def _run_group(units, year, *, zero_spouse):
             continue
         elif f"{deduction}_person" in tbs.variables:
             own_names.append(f"{deduction}_person")
+            reconciled_names.append(deduction)
         else:
             shared_names.append(deduction)
     # Amounts that are the filer's even when recorded on a dependent.
@@ -424,6 +428,20 @@ def _run_group(units, year, *, zero_spouse):
     loss = tbs.parameters(f"{year}-01-01").gov.irs.ald.loss
     out["business_loss_limit"] = np.asarray(loss.max[filing_status], dtype=float)
     out["capital_loss_limit"] = np.asarray(loss.capital.max[filing_status], dtype=float)
+    # A tax-unit deduction with person amounts that differs from the filers'
+    # sum of them, such as an HSA deduction given only for the tax unit, is
+    # divided by those amounts, or equally when they are all zero.
+    filer = ~out["is_dependent"]
+    out["reconciled"] = np.zeros(len(filer))
+    for deduction in reconciled_names:
+        own = filer * np.asarray(
+            sim.calculate(f"{deduction}_person", year), dtype=float
+        )
+        unit_own = _unit_sum(out, own)
+        difference = np.asarray(sim.calculate(deduction, year), dtype=float) - unit_own
+        out["reconciled"] += _per_person(out, difference) * _share(
+            own, _per_person(out, unit_own), _even(out)
+        )
     out["separate_capital_loss_limit"] = np.full(
         len(filing_status), float(loss.capital.max["SEPARATE"])
     )
@@ -534,7 +552,7 @@ def _reference(run):
     dependent_filer_amounts = _per_person(
         run, _unit_sum(run, run["is_dependent"] * run["filer_amounts"])
     )
-    filer_part = run["own_direct"] + alimony + losses + shared
+    filer_part = run["own_direct"] + alimony + losses + shared + run["reconciled"]
     filer_part = filer_part + dependent_filer_amounts * even
     return np.where(
         filer,
