@@ -43,6 +43,13 @@ PERSON_INPUTS = (
     "tax_preparation_fees",
     "deductible_mortgage_interest",
 )
+SPECIALTY_PERSON_INPUTS = (
+    "long_term_capital_gains_on_collectibles",
+    "long_term_capital_gains_on_small_business_stock",
+    "collectibles_gain_or_loss",
+    "section_1202_gain",
+    "long_term_capital_loss_carryover",
+)
 LINES = {
     "3": "form_4952_total_investment_interest_expense",
     "4a": "form_4952_gross_investment_income",
@@ -97,8 +104,12 @@ def _draw(seed):
     return raw
 
 
-def _simulate(year, raw):
+def _simulate(year, raw, extra_outputs=()):
     period = str(year)
+    person_inputs = (
+        *PERSON_INPUTS,
+        *(name for name in SPECIALTY_PERSON_INPUTS if name in raw),
+    )
     people, tax_units, households, marital_units = {}, {}, {}, {}
     for i in range(len(raw["adjusted_gross_income"])):
         members, spouses = [], []
@@ -112,7 +123,7 @@ def _simulate(year, raw):
                 "is_tax_unit_head": {period: role == "head"},
                 "is_tax_unit_spouse": {period: role == "spouse"},
                 "is_tax_unit_dependent": {period: role == "dependent"},
-                **{name: {period: float(raw[name][i, j])} for name in PERSON_INPUTS},
+                **{name: {period: float(raw[name][i, j])} for name in person_inputs},
             }
             if role == "dependent":
                 marital_units[f"m{i}_dependent"] = {"members": [person]}
@@ -127,6 +138,10 @@ def _simulate(year, raw):
                 period: float(raw["carryover"][i])
             },
         }
+        if "unrecaptured_section_1250_gain_before_losses" in raw:
+            tax_units[f"t{i}"]["unrecaptured_section_1250_gain_before_losses"] = {
+                period: float(raw["unrecaptured_section_1250_gain_before_losses"][i])
+            }
         households[f"h{i}"] = {"members": members}
     simulation = Simulation(
         situation={
@@ -144,6 +159,7 @@ def _simulate(year, raw):
         "dividend_income_reduced_by_investment_income",
         "dwks09",
         "dwks10",
+        *extra_outputs,
     )
     return {name: simulation.calculate(name, period) for name in outputs}
 
@@ -230,7 +246,11 @@ def _scale(raw):
     return (
         raw["adjusted_gross_income"]
         + raw["carryover"]
-        + sum(np.abs(raw[name]).sum(axis=1) for name in PERSON_INPUTS)
+        + sum(
+            np.abs(raw[name]).sum(axis=1)
+            for name in (*PERSON_INPUTS, *SPECIALTY_PERSON_INPUTS)
+            if name in raw
+        )
     )
 
 
@@ -327,17 +347,168 @@ def test_dependent_investments_do_not_change_filer_form_4952(year):
         if name != "deductible_mortgage_interest":
             changed[name][:, 2] += 50_000
     combined = {key: np.concatenate([base[key], changed[key]], axis=0) for key in base}
-    actual = _simulate(year, combined)
+    actual = _simulate(year, combined, extra_outputs=("adjusted_net_capital_gain",))
     scale = _scale(combined)
     for name in (
         *LINES.values(),
         "interest_deduction",
         "net_capital_gain",
+        "adjusted_net_capital_gain",
         "dividend_income_reduced_by_investment_income",
         "dwks09",
         "dwks10",
     ):
         _close(actual[name][N:], actual[name][:N], scale[:N] + scale[N:], name)
+
+    # Isolate each specialty worksheet component from the miscellaneous
+    # Schedule A expenses above. Both single and joint filers have the same
+    # aggregate amounts, including spouse gains offsetting the head's losses.
+    dependent_cases = (
+        ("long_term_capital_gains_on_collectibles", 10_000),
+        ("long_term_capital_gains_on_small_business_stock", 10_000),
+        ("collectibles_gain_or_loss", 10_000),
+        ("collectibles_gain_or_loss", -10_000),
+        ("section_1202_gain", 10_000),
+        ("short_term_capital_gains", -10_000),
+        ("short_term_capital_gains", 10_000),
+        ("long_term_capital_loss_carryover", 10_000),
+    )
+    joint = np.tile([False, True], 2 * len(dependent_cases))
+    excess_losses = np.repeat([False, True], 2 * len(dependent_cases))
+    size = len(joint)
+    present = np.column_stack(
+        (np.ones(size, dtype=bool), joint, np.ones(size, dtype=bool))
+    )
+    filers = present.copy()
+    filers[:, 2] = False
+    specialty_base = {
+        "present": present,
+        "filers": filers,
+        "adjusted_gross_income": np.full(size, 150_000),
+        "carryover": np.zeros(size),
+        "unrecaptured_section_1250_gain_before_losses": np.full(size, 10_000),
+        **{
+            name: np.zeros((size, len(ROLES)))
+            for name in (*PERSON_INPUTS, *SPECIALTY_PERSON_INPUTS)
+        },
+    }
+    for name, single, head, spouse in (
+        ("long_term_capital_gains", 30_000, 20_000, 10_000),
+        ("short_term_capital_gains", -2_000, -4_000, 2_000),
+        ("collectibles_gain_or_loss", 7_000, 10_000, -3_000),
+        ("section_1202_gain", 4_000, 3_000, 1_000),
+        ("long_term_capital_loss_carryover", 2_000, 1_000, 1_000),
+    ):
+        specialty_base[name][:, 0] = np.where(joint, head, single)
+        specialty_base[name][:, 1] = np.where(joint, spouse, 0)
+    # The second regime has a 3,000 excess loss that reduces section 1250
+    # gain. A dependent's positive gains cannot absorb the filer's loss.
+    specialty_base["collectibles_gain_or_loss"][excess_losses, 0] -= 10_000
+    specialty_changed = {key: value.copy() for key, value in specialty_base.items()}
+    for regime in range(2):
+        for i, (name, amount) in enumerate(dependent_cases):
+            start = 2 * (regime * len(dependent_cases) + i)
+            rows = slice(start, start + 2)
+            specialty_changed[name][rows, 2] = amount
+            if name not in (
+                "short_term_capital_gains",
+                "long_term_capital_loss_carryover",
+            ):
+                specialty_changed["long_term_capital_gains"][rows, 2] = amount
+    specialty_combined = {
+        key: np.concatenate([specialty_base[key], specialty_changed[key]], axis=0)
+        for key in specialty_base
+    }
+    specialty_actual = _simulate(
+        year,
+        specialty_combined,
+        extra_outputs=(
+            "capital_gains_28_percent_rate_gain",
+            "schedule_d_unrecaptured_section_1250_gain",
+            "adjusted_net_capital_gain",
+            "income_tax_main_rates",
+            "capital_gains_tax",
+        ),
+    )
+    specialty_scale = _scale(specialty_combined)
+    # Schedule D line 18: 7,000 + 4,000 - 2,000 - 2,000 = 7,000.
+    # Line 19 remains 10,000; adjusted net capital gain is
+    # 30,000 - 2,000 - 7,000 - 10,000 = 11,000 for either filing status.
+    # With collectibles lower by 10,000, line 18 is zero, line 19 is
+    # 10,000 - 3,000 = 7,000, and adjusted net capital gain is 21,000.
+    for name, expected in (
+        ("capital_gains_28_percent_rate_gain", np.where(excess_losses, 0, 7_000)),
+        (
+            "schedule_d_unrecaptured_section_1250_gain",
+            np.where(excess_losses, 7_000, 10_000),
+        ),
+        ("adjusted_net_capital_gain", np.where(excess_losses, 21_000, 11_000)),
+    ):
+        _close(
+            specialty_actual[name],
+            np.tile(expected, 2),
+            specialty_scale,
+            name,
+        )
+    regular_tax = (
+        specialty_actual["income_tax_main_rates"]
+        + specialty_actual["capital_gains_tax"]
+    )
+    _close(
+        regular_tax[size:],
+        regular_tax[:size],
+        specialty_scale[:size] + specialty_scale[size:],
+        "regular tax with dependent specialty gains or losses",
+    )
+
+
+def test_dependent_collectibles_do_not_change_2025_filer_regular_tax():
+    simulation = Simulation(
+        situation={
+            "people": {
+                "filer": {
+                    "age": {"2025": 45},
+                    "is_tax_unit_head": {"2025": True},
+                    "employment_income": {"2025": 140_000},
+                    "long_term_capital_gains": {"2025": 10_000},
+                },
+                "dependent": {
+                    "age": {"2025": 12},
+                    "is_tax_unit_dependent": {"2025": True},
+                    "long_term_capital_gains": {"2025": 10_000},
+                    "long_term_capital_gains_on_collectibles": {"2025": 10_000},
+                },
+            },
+            "tax_units": {
+                "return": {
+                    "members": ["filer", "dependent"],
+                    "filing_status": {"2025": "SINGLE"},
+                }
+            },
+            "households": {"household": {"members": ["filer", "dependent"]}},
+            "marital_units": {
+                "filer": {"members": ["filer"]},
+                "dependent": {"members": ["dependent"]},
+            },
+        }
+    )
+    regular_tax = (
+        simulation.calculate("income_tax_main_rates", "2025")[0]
+        + simulation.calculate("capital_gains_tax", "2025")[0]
+    )
+    np.testing.assert_allclose(
+        [
+            regular_tax,
+            simulation.calculate("adjusted_gross_income", "2025")[0],
+            simulation.calculate("standard_deduction", "2025")[0],
+            simulation.calculate("taxable_income", "2025")[0],
+            simulation.calculate("adjusted_net_capital_gain", "2025")[0],
+            simulation.calculate("alternative_minimum_tax", "2025")[0],
+        ],
+        [24_167, 150_000, 15_750, 134_250, 10_000, 0],
+        rtol=RTOL,
+        atol=ATOL,
+    )
 
 
 @pytest.mark.parametrize("year", YEARS)
