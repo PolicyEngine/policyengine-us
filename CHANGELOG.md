@@ -1,3 +1,11 @@
+## [2.30.3] - 2026-10-07
+
+### Fixed
+
+- Update the Mississippi HSA test for joint-column combination: the head's negative AGI column is now combined with the spouse's, so the full deduction is used.
+- Keep capital gains and losses out of Massachusetts Part B income, and count capital gain distributions reported without a federal Schedule D on Massachusetts Schedule D (Part C).
+
+
 ## [2.30.2] - 2026-10-07
 
 ### Changed
