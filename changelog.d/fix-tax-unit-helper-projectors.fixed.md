@@ -1,1 +1,0 @@
-Preserve person-level array shapes when tax-unit nondependent sums are called through a person-to-tax-unit projector, preventing calculation errors in student-loan MAGI and dependent state retirement tests.

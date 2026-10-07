@@ -43,7 +43,7 @@ class nc_military_retirement_deduction(Variable):
         # own and survivor pay must be split between the two income inputs.
         qualifying_pay = (
             person("military_retirement_pay", period) * military_pay_eligible
-            + survivor_pay * survivor
+            + survivor_pay * survivor * eligible
         )
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return tax_unit.sum(qualifying_pay * head_or_spouse) * p.fraction
