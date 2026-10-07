@@ -87,6 +87,7 @@
         age: 45
         is_tax_unit_head: true
         investment_expenses: 3_000
+        ar_agi_joint: 100_000
       child:
         age: 12
         is_tax_unit_dependent: true
@@ -94,7 +95,6 @@
     tax_units:
       unit:
         members: [head, child]
-        ar_agi_joint: 100_000
     households:
       household:
         members: [head, child]
