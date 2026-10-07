@@ -33,8 +33,9 @@ class nc_military_retirement_deduction(Variable):
         own_record_eligible = (
             person("years_in_military", period) >= p.minimum_years
         ) | person("is_permanently_disabled_veteran", period)
-        # Preserve explicit own-pay eligibility inputs. If eligibility comes
-        # from survivor benefits, own pay still needs its own qualifying record.
+        # With no qualifying survivor flag, preserve explicit eligibility
+        # inputs. Otherwise the combined flag cannot establish own-pay
+        # eligibility, which needs the recipient's service or medical record.
         own_pay_eligible = eligible & (~survivor | own_record_eligible)
         military_pay_eligible = where(survivor_pay > 0, own_pay_eligible, eligible)
         # With no separate survivor amount, military_retirement_pay can instead
