@@ -31,8 +31,12 @@ class loss_ald(Variable):
         # business amounts flow into gross income and losses are deducted here,
         # so allowable business losses are capped at business income plus
         # the threshold.
-        indiv_se_income = max_(0, person("total_self_employment_income", period))
-        indiv_se_loss = max_(0, -person("total_self_employment_income", period))
+        # irs_gross_income counts each Schedule C category's profit on its
+        # own, so each category's loss is deducted on its own here.
+        non_sstb_se = person("self_employment_income", period)
+        sstb_se = person("sstb_self_employment_income", period)
+        indiv_se_income = max_(0, non_sstb_se) + max_(0, sstb_se)
+        indiv_se_loss = max_(0, -non_sstb_se) + max_(0, -sstb_se)
         self_employment_income = tax_unit.sum(not_dependent * indiv_se_income)
         self_employment_loss = tax_unit.sum(not_dependent * indiv_se_loss)
 
