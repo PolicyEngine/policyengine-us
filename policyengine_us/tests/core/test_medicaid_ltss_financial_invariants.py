@@ -81,7 +81,7 @@ def month(value):
 
 
 def _situation(people, **overrides):
-    situation = {"people": {}, "households": {}}
+    situation = {"people": {}, "households": {}, "marital_units": {}}
     for state in STATES:
         situation["households"][state] = {
             "members": [],
@@ -90,6 +90,9 @@ def _situation(people, **overrides):
     for index, person in enumerate(people):
         person = {**person, **{k: v[index] for k, v in overrides.items()}}
         name = f"person_{index}"
+        # Each random record is independent; the builder otherwise places
+        # every person in one default marital unit.
+        situation["marital_units"][name] = {"members": [name]}
         situation["households"][person["state"]]["members"].append(name)
         situation["people"][name] = {
             "is_ssi_aged_blind_disabled": {YEAR: person["aged_blind_disabled"]},
