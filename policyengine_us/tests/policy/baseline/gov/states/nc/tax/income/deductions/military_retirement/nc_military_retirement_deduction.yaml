@@ -114,13 +114,17 @@
     people:
       person1:
         age: 50
+        employment_income: 60_000
         years_in_military: 20
         military_retirement_pay: 20_000
+        # Military pension descriptors do not add themselves to federal AGI.
+        taxable_public_pension_income: 20_000
       person2:
         # A civilian spouse receiving Survivor Benefit Plan payments as the
         # beneficiary of a former spouse who retired after 20 years.
         age: 48
         military_retirement_pay: 10_000
+        taxable_public_pension_income: 10_000
         nc_military_retirement_survivor_eligible: true
     tax_units:
       tax_unit:
@@ -134,6 +138,26 @@
         state_code: NC
   output:
     nc_military_retirement_deduction: 30_000
+    adjusted_gross_income: 90_000
+    # (90,000 AGI - 30,000 military deduction - 25,500 joint standard
+    # deduction) * 4.25%. Dropping the spouse's SBP increases tax by $425.
+    nc_income_tax: 1_466.25
+
+- name: Qualifying survivor benefits do not make an early retiree's own pay deductible.
+  period: 2025
+  input:
+    age: 50
+    years_in_military: 15
+    is_permanently_disabled_veteran: false
+    military_retirement_pay: 20_000
+    # The deceased member met the service test, but the recipient does not.
+    military_retirement_pay_survivors: 10_000
+    nc_military_retirement_survivor_eligible: true
+    taxable_public_pension_income: 30_000
+    state_code: NC
+  output:
+    adjusted_gross_income: 30_000
+    nc_military_retirement_deduction: 10_000
 
 - name: Survivor benefits from a member who did not qualify are not deducted.
   period: 2025

@@ -26,10 +26,20 @@ class nc_military_retirement_deduction(Variable):
         person = tax_unit.members
         eligible = person("nc_military_retirement_deduction_eligible", period)
         survivor = person("nc_military_retirement_survivor_eligible", period)
-        # military_retirement_pay includes survivor benefits; some survivor
-        # benefits are recorded separately as military_retirement_pay_survivors.
-        qualifying_pay = person("military_retirement_pay", period) * eligible + (
-            person("military_retirement_pay_survivors", period) * survivor
+        survivor_pay = person("military_retirement_pay_survivors", period)
+        # When survivor pay is recorded separately, military_retirement_pay
+        # contains the recipient's own retirement pay. A qualifying survivor
+        # benefit does not make their own otherwise ineligible pay deductible.
+        own_pay_eligible = (
+            person("years_in_military", period) >= p.minimum_years
+        ) | person("is_permanently_disabled_veteran", period)
+        military_pay_eligible = where(survivor_pay > 0, own_pay_eligible, eligible)
+        # With no separate survivor amount, military_retirement_pay can instead
+        # contain only survivor benefits, as its documentation permits. Mixed
+        # own and survivor pay must be split between the two income inputs.
+        qualifying_pay = (
+            person("military_retirement_pay", period) * military_pay_eligible
+            + survivor_pay * survivor
         )
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         return tax_unit.sum(qualifying_pay * head_or_spouse) * p.fraction

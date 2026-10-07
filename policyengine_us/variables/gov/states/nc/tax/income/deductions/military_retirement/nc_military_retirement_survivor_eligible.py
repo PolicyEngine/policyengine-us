@@ -11,9 +11,13 @@ class nc_military_retirement_survivor_eligible(Variable):
         "Whether this person receives Survivor Benefit Plan (10 U.S.C. 1447) "
         "payments as the beneficiary of a retired member who served at least "
         "20 years in the uniformed services or was medically retired under "
-        "10 U.S.C. Chapter 61. Those payments, recorded in "
-        "military_retirement_pay (which includes survivor benefits) or "
-        "military_retirement_pay_survivors, then qualify for the deduction."
+        "10 U.S.C. Chapter 61. Record survivor benefits in "
+        "military_retirement_pay_survivors when this person also receives "
+        "their own military retirement pay; military_retirement_pay then "
+        "contains only their own pay, which must independently qualify. "
+        "If military_retirement_pay_survivors is zero, this flag also allows "
+        "military_retirement_pay to contain qualifying survivor benefits. "
+        "Do not record the same survivor benefits in both income inputs."
     )
     definition_period = YEAR
     reference = (

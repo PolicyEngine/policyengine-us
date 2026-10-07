@@ -174,7 +174,12 @@ def _nc_qualifying_military_pay(income, record):
     retiree_qualifies = (
         record["years"] >= NC_MINIMUM_SERVICE_YEARS or record["medically_retired"]
     )
-    own_pay_counts = retiree_qualifies or record["nc_survivor"]
+    # When survivor income is recorded separately, the general military pay
+    # input represents only the recipient's own retirement pay. Without a
+    # separate amount, it can represent qualifying survivor benefits instead.
+    own_pay_counts = retiree_qualifies or (
+        record["nc_survivor"] and income["military_retirement_pay_survivors"] == 0
+    )
     return (
         income["military_retirement_pay"] * own_pay_counts
         + income["military_retirement_pay_survivors"] * record["nc_survivor"]
