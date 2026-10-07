@@ -1,0 +1,77 @@
+- name: Case 1, expenses above 2% of Hawaii AGI are deductible in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    unreimbursed_business_employee_expenses: 5_000
+    tax_preparation_fees: 500
+    hi_agi: 50_000
+  output:
+    # 5,500 - 2% * 50,000 = 4,500.
+    hi_misc_deduction: 4_500
+
+- name: Case 2, Act 35 ends the deduction from 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    unreimbursed_business_employee_expenses: 5_000
+    tax_preparation_fees: 500
+    hi_agi: 50_000
+  output:
+    hi_misc_deduction: 0
+
+- name: Case 3, expenses below the floor give no deduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    tax_preparation_fees: 800
+    hi_agi: 50_000
+  output:
+    hi_misc_deduction: 0
+
+- name: Case 4, the floor is zero when Hawaii AGI is negative.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    tax_preparation_fees: 800
+    hi_agi: -20_000
+  output:
+    hi_misc_deduction: 800
+
+- name: Case 5, both spouses' expenses count on a joint return.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        unreimbursed_business_employee_expenses: 3_000
+      person2:
+        age: 40
+        tax_preparation_fees: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        hi_agi: 100_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 4,000 - 2% * 100,000 = 2,000.
+    hi_misc_deduction: 2_000
+
+- name: Case 6, the deduction is part of Hawaii total itemized deductions.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    unreimbursed_business_employee_expenses: 5_000
+    tax_preparation_fees: 500
+    hi_agi: 50_000
+    hi_salt_deduction: 0
+  output:
+    hi_total_itemized_deductions: 4_500

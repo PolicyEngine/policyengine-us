@@ -1,0 +1,22 @@
+description: Hawaii allows miscellaneous itemized deductions above the adjusted gross income floor if this is true.
+values:
+  # HRS 235-2.4 made section 67 operative except for the section 67(g)
+  # suspension for 2018 through 2025. Act 35, SLH 2026 strikes that exception
+  # for taxable years beginning after December 31, 2025.
+  2021-01-01: true
+  2026-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Hawaii miscellaneous itemized deductions in effect
+  reference:
+    - title: 2021 Hawaii N-11 Instructions, Worksheet A-6, Miscellaneous Deductions
+      href: https://files.hawaii.gov/tax/forms/2021/n11ins.pdf#page=32
+    - title: 2025 Hawaii N-11 Instructions, Line 21f, Miscellaneous Deductions
+      href: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=19
+    - title: 2025 Hawaii N-11 Instructions, Worksheet A-6, Miscellaneous Deductions
+      href: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=34
+    - title: Act 35, SLH 2026 (H.B. 2329, C.D. 1), Section 3, amending HRS 235-2.4
+      href: https://data.capitol.hawaii.gov/sessions/session2026/bills/HB2329_CD1_.pdf#page=17
+    - title: Hawaii Department of Taxation Announcement No. 2026-06, Act 35
+      href: https://files.hawaii.gov/tax/news/announce/ann26-06.pdf#page=2

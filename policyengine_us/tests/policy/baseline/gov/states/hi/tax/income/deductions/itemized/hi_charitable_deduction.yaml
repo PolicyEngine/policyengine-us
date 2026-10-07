@@ -1,0 +1,73 @@
+- name: Case 1, the 2026 floor is 0.5% of Hawaii AGI, not federal AGI.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    adjusted_gross_income: 110_600
+    hi_agi: 50_000
+    charitable_cash_donations: 20_000
+  output:
+    # 20,000 - 0.5% * 50,000 = 19,750, below 60% of Hawaii AGI (30,000).
+    hi_charitable_deduction: 19_750
+
+- name: Case 2, the 60% ceiling is a share of Hawaii AGI.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    adjusted_gross_income: 110_600
+    hi_agi: 50_000
+    charitable_cash_donations: 40_000
+  output:
+    # 60% * 50,000 = 30,000.
+    hi_charitable_deduction: 30_000
+
+- name: Case 3, no floor in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 100_000
+    charitable_cash_donations: 5_000
+  output:
+    hi_charitable_deduction: 5_000
+
+- name: Case 4, the floor applies to non-cash gifts first in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 100_000
+    charitable_cash_donations: 1_000
+    charitable_non_cash_donations: 300
+  output:
+    # Floor 500: non-cash 300 is used up, then 200 of the cash.
+    # 0 + (1,000 - 200) = 800.
+    hi_charitable_deduction: 800
+
+- name: Case 5, the 50% ceiling on non-cash gifts uses Hawaii AGI.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 100_000
+    charitable_non_cash_donations: 60_000
+  output:
+    # (60,000 - 500) capped at 50% * 100,000 = 50,000.
+    hi_charitable_deduction: 50_000
+
+- name: Case 6, negative Hawaii AGI allows no deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: -10_000
+    charitable_cash_donations: 1_000
+  output:
+    hi_charitable_deduction: 0

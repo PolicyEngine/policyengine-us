@@ -6,7 +6,7 @@
     tax_unit_earned_income: 1_000
     hi_agi: 1_000
     hi_total_itemized_deductions: 5_000
-    hi_reduced_itemized_deductions: 1_000
+    hi_itemized_deductions_reduction: 0
     head_is_dependent_elsewhere: false
   output:
     hi_deductions: 5_000
@@ -19,7 +19,7 @@
     tax_unit_earned_income: 1_000_000
     hi_agi: 1_000_000
     hi_total_itemized_deductions: 5_000
-    hi_reduced_itemized_deductions: 1_000
+    hi_itemized_deductions_reduction: 4_000
     head_is_dependent_elsewhere: false
   output:
     hi_deductions: 4_400
@@ -32,7 +32,7 @@
     tax_unit_earned_income: 1_000
     hi_agi: 1_000
     hi_total_itemized_deductions: 1_000
-    hi_reduced_itemized_deductions: 1_000
+    hi_itemized_deductions_reduction: 0
     head_is_dependent_elsewhere: false
   output:
     hi_deductions: 4_400
@@ -45,7 +45,7 @@
     tax_unit_earned_income: 1_000_000
     hi_agi: 1_000_000
     hi_total_itemized_deductions: 5_000
-    hi_reduced_itemized_deductions: 1_000
+    hi_itemized_deductions_reduction: 4_000
     head_is_dependent_elsewhere: false
   output:
     hi_deductions: 2_200
@@ -58,7 +58,7 @@
     tax_unit_earned_income: 1_000_000
     hi_agi: 1_000_000
     hi_total_itemized_deductions: 5_000
-    hi_reduced_itemized_deductions: 4_500
+    hi_itemized_deductions_reduction: 500
     head_is_dependent_elsewhere: false
   output:
     hi_deductions: 4_500
@@ -71,3 +71,103 @@
     employment_income: 62_000
   output:
     hi_deductions: 8_800
+
+- name: Case 7, non-itemizer adds the charitable deduction to the standard deduction in 2026.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 60_000
+    hi_total_itemized_deductions: 0
+    charitable_cash_donations: 1_500
+    head_is_dependent_elsewhere: false
+  output:
+    # 8,000 standard deduction + min(1,000, 1,500) = 9,000.
+    hi_deductions: 9_000
+
+- name: Case 8, joint non-itemizers get up to $2,000 in 2026.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: JOINT
+    hi_agi: 90_000
+    hi_total_itemized_deductions: 0
+    charitable_cash_donations: 3_000
+    head_is_dependent_elsewhere: false
+  output:
+    # 16,000 + 2,000 = 18,000.
+    hi_deductions: 18_000
+
+- name: Case 9, no non-itemizer charitable deduction in 2025.
+  period: 2025
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 60_000
+    hi_total_itemized_deductions: 0
+    charitable_cash_donations: 1_500
+    head_is_dependent_elsewhere: false
+  output:
+    hi_deductions: 4_400
+
+- name: Case 10, Act 89 allowed up to $300 for non-itemizers in 2021.
+  period: 2021
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 60_000
+    hi_total_itemized_deductions: 0
+    charitable_cash_donations: 500
+    head_is_dependent_elsewhere: false
+  output:
+    # 2,200 + 300 = 2,500.
+    hi_deductions: 2_500
+
+- name: Case 11, itemizers do not get the non-itemizer charitable deduction.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 60_000
+    hi_itemized_deductions: 20_000
+    charitable_cash_donations: 1_500
+    head_is_dependent_elsewhere: false
+  output:
+    hi_deductions: 20_000
+
+- name: Case 12, itemizer is better off taking the standard and charitable deductions.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 60_000
+    hi_itemized_deductions: 8_500
+    charitable_cash_donations: 1_500
+    head_is_dependent_elsewhere: false
+  output:
+    # max(8,500, 8,000 + 1,000) = 9,000.
+    hi_deductions: 9_000
+
+- name: Case 13, the tips deduction is added for itemizers.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 60_000
+    hi_itemized_deductions: 20_000
+    hi_tip_income_deduction: 5_000
+    head_is_dependent_elsewhere: false
+  output:
+    hi_deductions: 25_000
+
+- name: Case 14, the tips deduction is added for non-itemizers.
+  period: 2026
+  input:
+    state_code: HI
+    filing_status: SINGLE
+    hi_agi: 60_000
+    hi_total_itemized_deductions: 0
+    hi_tip_income_deduction: 5_000
+    head_is_dependent_elsewhere: false
+  output:
+    hi_deductions: 13_000
