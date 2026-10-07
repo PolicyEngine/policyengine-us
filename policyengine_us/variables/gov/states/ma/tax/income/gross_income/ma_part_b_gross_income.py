@@ -24,7 +24,10 @@ class ma_part_b_gross_income(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         dividends = max_(0, person("dividend_income", period))
         capital_gains = max_(0, person("capital_gains", period))
+        # Capital gain distributions reported without a federal Schedule D
+        # go on Massachusetts Schedule D, line 6.
+        distributions = max_(0, person("non_sch_d_capital_gains", period))
         part_a_and_c_income = tax_unit.sum(
-            where(is_dependent, 0, dividends + capital_gains)
+            where(is_dependent, 0, dividends + capital_gains + distributions)
         )
         return max_(0, ma_gross_income - part_a_and_c_income)
