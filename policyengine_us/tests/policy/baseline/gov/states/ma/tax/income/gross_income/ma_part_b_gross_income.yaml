@@ -1,0 +1,124 @@
+# Capital gains and losses go on Schedules B and D, never on Form 1,
+# lines 3 through 10 (Part B). Expected values are computed line by line
+# from the 2023 Form 1, Schedule B and Schedule D. A single filer with
+# 60,000 of wages and no other 5.0% income has Part B taxable income of
+# 60,000 - 2,000 (Form 1, line 11a) - 4,400 (line 18) = 53,600 (line 19).
+
+- name: A long-term loss applied against short-term gains does not reduce Part B income
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        non_qualified_dividend_income: 1_000
+        short_term_capital_gains: 3_000
+        long_term_capital_gains: -1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    # Form 1, line 10 = line 3 = 60,000.
+    ma_part_b_gross_income: 60_000
+    ma_part_b_taxable_income: 53_600
+    # Schedule D, line 13 = -1,000; line 14 = Schedule B, line 25
+    # = min(1,000, 3,000) = 1,000; line 15 = -1,000 + 1,000 = 0.
+    # Schedule B: line 26 = 3,000 - 1,000 = 2,000 = line 28; line 31 = 1,000;
+    # line 32 omitted (Schedule D, line 15 is 0); line 35 = 1,000 + 2,000.
+    ma_part_a_agi: 3_000
+    # Schedule B, line 38 = line 9 = 1,000; line 39 = 3,000 - 1,000 = 2,000.
+    ma_part_a_taxable_dividend_income: 1_000
+    ma_part_a_taxable_capital_gains_income: 2_000
+    ma_part_c_agi: 0
+    # 5% x (53,600 + 1,000) + 8.5% x 2,000 = 2,730 + 170.
+    ma_income_tax_before_credits: 2_900
+
+- name: A long-term loss applied against short-term gains without dividends
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        short_term_capital_gains: 3_000
+        long_term_capital_gains: -1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    ma_part_b_gross_income: 60_000
+    # Schedule B, line 25 = 1,000; line 28 = line 39 = 2,000.
+    ma_part_a_agi: 2_000
+    ma_part_a_taxable_capital_gains_income: 2_000
+    # 5% x 53,600 + 8.5% x 2,000 = 2,680 + 170.
+    ma_income_tax_before_credits: 2_850
+
+- name: A long-term loss larger than the short-term gain does not reduce Part B income
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        non_qualified_dividend_income: 1_000
+        short_term_capital_gains: 1_000
+        long_term_capital_gains: -3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    ma_part_b_gross_income: 60_000
+    ma_part_b_taxable_income: 53_600
+    # Schedule D, line 14 = Schedule B, line 25 = min(3,000, 1,000) = 1,000;
+    # line 15 = -2,000. Line 32 worksheet: line 2 = min(1,000, 2,000) = 1,000;
+    # line 4 = 1,000; line 5 = 2,000; line 6 = 1,000. Schedule B,
+    # line 33 = 1,000 - 1,000 = 0; line 35 = 0 + 0. Schedule D, line 17
+    # = -2,000 + 1,000 = -1,000 is carried over (line 23).
+    ma_part_a_agi: 0
+    ma_part_c_agi: 0
+
+- name: One spouse's short-term loss against the other spouse's long-term gain does not add to Part B income
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        long_term_capital_gains: 5_000
+      spouse:
+        age: 40
+        short_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    # Form 1, line 10 = line 3 = 60,000; line 19 = 60,000 - 2,000 - 8,800.
+    ma_part_b_gross_income: 60_000
+    ma_part_b_taxable_income: 49_200
+    # Schedule B: line 19c = -2,000; line 20 = 0 (line 9 is 0); line 21
+    # = -2,000; line 22 = Schedule D, line 14 = min(2,000, 5,000) = 2,000.
+    # Schedule D, line 15 = 5,000 - 2,000 = 3,000 = line 21.
+    ma_part_a_agi: 0
+    ma_part_c_agi: 3_000
+    # 5% x 49,200 + 5% x 3,000 = 2,460 + 150.
+    ma_income_tax_before_credits: 2_610
