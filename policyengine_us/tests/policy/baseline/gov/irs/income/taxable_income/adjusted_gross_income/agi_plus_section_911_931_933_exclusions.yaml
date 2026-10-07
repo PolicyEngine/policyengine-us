@@ -1,0 +1,46 @@
+- name: AGI only, nothing excluded
+  period: 2024
+  input:
+    adjusted_gross_income: 50_000
+  output:
+    agi_plus_section_911_931_933_exclusions: 50_000
+
+- name: All three exclusions are added back
+  period: 2024
+  input:
+    adjusted_gross_income: 50_000
+    foreign_earned_income_exclusion: 30_000
+    specified_possession_income: 20_000
+    puerto_rico_income: 10_000
+  output:
+    agi_plus_section_911_931_933_exclusions: 110_000
+
+- name: Built from income, the section 931 and 933 deductions are reversed
+  period: 2024
+  input:
+    people:
+      person1:
+        irs_employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 15_000
+        specified_possession_income: 20_000
+        puerto_rico_income: 10_000
+  output:
+    # Income inputs are net of the section 911 exclusion; sections 931 and
+    # 933 are above-the-line deductions. AGI 100,000 - 30,000 = 70,000.
+    adjusted_gross_income: 70_000
+    agi_plus_section_911_931_933_exclusions: 115_000
+
+- name: Section 911 adds back Form 2555 lines 45 and 50, before disallowed deductions
+  period: 2024
+  input:
+    adjusted_gross_income: 180_000
+    section_911_excluded_income: 25_000
+    # Line 2c of the Foreign Earned Income Tax Worksheet: 25,000 less 10,000
+    # of disallowed deductions.
+    foreign_earned_income_exclusion: 15_000
+  output:
+    # Schedule 1-A lines 2b and 2c take Form 2555 lines 45 and 50.
+    agi_plus_section_911_931_933_exclusions: 205_000
