@@ -1,0 +1,12 @@
+description: Kentucky provides this share of the point-based heating payment to households in subsidized housing under the Low Income Home Energy Assistance Program.
+values:
+  2024-10-01: 0.3
+metadata:
+  unit: /1
+  period: year
+  label: Kentucky LIHEAP subsidized housing rate
+  reference:
+    - title: Kentucky FY2026 benefit workbook, rev benefit income range worksheet, cell E52 (ROUNDUP(E8*0.3,0))
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/KY_BenefitMatrix_Heat-Cool_2026.xlsx
+    - title: Kentucky FY2025 benefit workbook, subsidy benefits worksheet, cell E45 (ROUNDUP(E6*0.3,0))
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/KY_BenefitMatrix_2025.xlsx

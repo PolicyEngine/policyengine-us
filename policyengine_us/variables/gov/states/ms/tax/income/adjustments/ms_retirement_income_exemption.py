@@ -10,7 +10,7 @@ class ms_retirement_income_exemption(Variable):
     reference = (
         "https://law.justia.com/codes/mississippi/title-27/chapter-7/article-1/section-27-7-15/",  # (4)(k)-(l)
         "https://www.dor.ms.gov/sites/default/files/forms/individual/80100241.pdf#page=11",  # Line 46
-        "https://www.dor.ms.gov/sites/default/files/Forms/Individual/2024/80105248.pdf",
+        "https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80105248.pdf",
     )
     defined_for = StateCode.MS
 

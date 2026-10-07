@@ -1,0 +1,185 @@
+# Schedule 8812 Credit Limit Worksheets A and B with the residential clean
+# energy credit (Form 5695, Part I), following the 2025 instructions:
+# https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4 (Schedule 8812)
+# https://www.irs.gov/pub/irs-pdf/i5695.pdf#page=5 (Form 5695, line 14)
+#
+# Every case is a married couple in Texas with $60,000 of wages in 2025:
+#   Form 1040, line 18: taxable income 60,000 - 31,500 = 28,500;
+#   tax = 10% x 23,850 + 12% x 4,650 = 2,943.
+# Each qualifying child carries a $2,200 CTC, of which up to $1,700 can be
+# refunded; the earned income phase-in is 15% x (60,000 - 2,500) = 8,625.
+
+- name: Two children; the residential clean energy credit is limited and displaces the refundable CTC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+      spouse:
+        age: 40
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        solar_electric_property_expenditures: 10_000
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: TX
+  output:
+    income_tax_before_credits: 2_943
+    # Credit Limit Worksheet A, lines 1-3: no line 2 credits.
+    ctc_tax_liability_after_preceding_credits: 2_943
+    # Credit Limit Worksheet B: line 1 = 4,400; line 2 = 3,400; line 12 = 8,625;
+    # line 13 = min(3,400, 8,625) = 3,400; line 14 = 4,400 - 3,400 = 1,000.
+    ctc_credit_limit_worksheet_b_applies: true
+    ctc_non_refundable_minimum: 1_000
+    # Form 5695, line 14 worksheet: 2,943 - 1,000 = 1,943. The credit before
+    # the limit is 30% x 10,000 = 3,000, so 1,943 is allowed and 1,057 carries
+    # forward.
+    residential_clean_energy_credit_potential: 3_000
+    residential_clean_energy_credit_credit_limit: 1_943
+    residential_clean_energy_credit: 1_943
+    # Worksheet B, line 15 = 1,943 = Worksheet A, line 4; line 5 = 2,943 - 1,943.
+    ctc_limiting_tax_liability: 1_000
+    # Schedule 8812, line 14 = min(4,400, 1,000); line 27 = min(4,400 - 1,000,
+    # 3,400, 8,625).
+    non_refundable_ctc: 1_000
+    refundable_ctc: 3_400
+    income_tax_capped_non_refundable_credits: 2_943
+    income_tax_before_refundable_credits: 0
+
+- name: Two children; the residential clean energy credit is not limited but still reduces the CTC limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+      spouse:
+        age: 40
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        solar_electric_property_expenditures: 2_000
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: TX
+  output:
+    # Form 5695: the credit of 30% x 2,000 = 600 fits under the 1,943 limit.
+    residential_clean_energy_credit_credit_limit: 1_943
+    residential_clean_energy_credit: 600
+    # Worksheet A, line 5 = 2,943 - 600.
+    ctc_limiting_tax_liability: 2_343
+    # Schedule 8812, line 14 = 2,343; line 27 = min(4,400 - 2,343, 3,400, 8,625).
+    # Without the residential clean energy credit, line 27 would be 1,457.
+    non_refundable_ctc: 2_343
+    refundable_ctc: 2_057
+    income_tax_capped_non_refundable_credits: 2_943
+
+- name: Two children and no residential clean energy credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+      spouse:
+        age: 40
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: TX
+  output:
+    ctc_limiting_tax_liability: 2_943
+    # Schedule 8812, line 27 = min(4,400 - 2,943, 3,400, 8,625).
+    refundable_ctc: 1_457
+    non_refundable_ctc: 2_943
+
+- name: Credit for other dependents only; Worksheet B does not apply, so the CTC precedes the residential clean energy credit in full.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+      spouse:
+        age: 40
+      dependent:
+        age: 17 # Too old for the CTC; qualifies for the $500 credit for other dependents.
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        solar_electric_property_expenditures: 10_000
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: TX
+  output:
+    income_tax_before_credits: 2_943
+    ctc: 500
+    ctc_credit_limit_worksheet_b_applies: false
+    # Worksheet A, line 4 is zero: the limit is line 3.
+    ctc_limiting_tax_liability: 2_943
+    non_refundable_ctc: 500
+    refundable_ctc: 0
+    # Form 5695, line 14 worksheet: 2,943 - 500 (Form 1040, line 19) = 2,443.
+    residential_clean_energy_credit_credit_limit: 2_443
+    residential_clean_energy_credit: 2_443
+    income_tax_capped_non_refundable_credits: 2_943
+
+- name: The energy efficient home improvement credit precedes both the CTC and the residential clean energy credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+      spouse:
+        age: 40
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        solar_electric_property_expenditures: 10_000
+        energy_efficient_home_improvement_credit_potential: 300
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: TX
+  output:
+    # Form 5695, line 31 worksheet: nothing on Schedule 3, lines 1-4, 6d or 6l.
+    energy_efficient_home_improvement_credit: 300
+    # Credit Limit Worksheet A, line 3 = 2,943 - 300 (Schedule 3, line 5b).
+    ctc_tax_liability_after_preceding_credits: 2_643
+    # Form 5695, line 14 worksheet: 2,943 - 300 - 1,000 (Worksheet B, line 14).
+    residential_clean_energy_credit: 1_643
+    # Worksheet A, line 5 = 2,643 - 1,643.
+    ctc_limiting_tax_liability: 1_000
+    refundable_ctc: 3_400
+    # 300 + 1,643 + 1,000 = 2,943.
+    income_tax_capped_non_refundable_credits: 2_943
