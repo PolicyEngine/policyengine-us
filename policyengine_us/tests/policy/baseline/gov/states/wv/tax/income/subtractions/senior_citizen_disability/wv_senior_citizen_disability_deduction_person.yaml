@@ -82,7 +82,8 @@
     # The joint federal return deducts $3,000 of the head's $5,000 loss, all
     # of it the head's: 10,000 - 3,000. W. Va. Code 11-21-12(f)'s recomputation
     # as separate federal returns ($1,500 limit, 8,500) applies only to
-    # separate West Virginia returns, which PolicyEngine does not model.
+    # separate West Virginia returns after a joint federal return, which
+    # PolicyEngine does not model.
     # Divided 50/50: [8_500, 18_500].
     adjusted_gross_income_person: [7_000, 20_000]
     wv_senior_citizen_disability_deduction_person: [7_000, 8_000]

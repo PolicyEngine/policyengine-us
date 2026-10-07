@@ -179,7 +179,8 @@
     # The joint federal return deducts $3,000 of the head's $5,000 loss, all
     # of it the head's. Filing status 3's recomputation as a separate federal
     # return ($1,500 limit, 58,500) applies only to separate Virginia
-    # returns, which PolicyEngine does not model. Divided 50/50:
+    # returns after a joint federal return, which PolicyEngine does not
+    # model. Divided 50/50:
     # [58_500, 38_500].
     va_agi_person: [57_000, 40_000]
 
@@ -227,7 +228,8 @@
   output:
     # 2024 joint threshold $610,000, above the $400,000 loss, so the joint
     # return deducts all of it, all of it the head's: 100,000 - 400,000.
-    # Filing status 3 would apply the $305,000 separate threshold (-205,000).
+    # Filing status 3 after a joint federal return, which PolicyEngine does
+    # not model, would apply the $305,000 separate threshold (-205,000).
     # Divided 50/50: [-100_000, -150_000].
     va_agi_person: [-300_000, 50_000]
 
