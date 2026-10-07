@@ -11,7 +11,8 @@ class medicaid_ltss_impairment_related_work_expenses(Variable):
     documentation = (
         "Expenses paid by this person for items or services necessary to "
         "work because of an impairment, qualifying under 20 CFR 416.976. "
-        "Report reasonable, unreimbursed costs allocated to the month "
+        "Report reasonable costs not paid or reimbursable by another "
+        "source, allocated to the month "
         "under that section's payment and allocation rules, excluding "
         "amounts already deducted as business expenses. This input "
         "describes the qualifying costs; the model separately derives "

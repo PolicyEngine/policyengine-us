@@ -769,3 +769,167 @@ def test_indexed_minimum_home_equity_limit_is_capped_after_2028():
     )
     eligible = simulation.calculate("medicaid_ltss_home_equity_eligible", period)
     assert eligible.tolist() == [True, False]
+
+
+def _income_exclusion_situation(state, values):
+    """Independent applicants with actual monthly gross and source facts."""
+    people = {}
+    households = {}
+    marital_units = {}
+    for index, gross in enumerate(values):
+        name = f"applicant_{index}"
+        people[name] = {
+            "age": {YEAR: 60},
+            "meets_ssi_disability_criteria": {YEAR: True},
+            "is_ssi_aged_blind_disabled": {YEAR: True},
+            "medicaid_ltss_setting": month("INSTITUTIONAL"),
+            "medicaid_ltss_non_delaware_assistance_unit_size": month(1),
+            "medicaid_ltss_reported_gross_earned_income": month(float(gross[0])),
+            "medicaid_ltss_reported_gross_unearned_income": month(float(gross[1])),
+            "medicaid_ltss_impairment_related_work_expenses": month(400),
+            "medicaid_ltss_reported_interest_income": month(100),
+            "medicaid_ltss_reported_dividend_income": month(100),
+            "medicaid_ltss_ssi_income": month(100),
+            "medicaid_ltss_state_needs_based_public_assistance_income": month(100),
+            "medicaid_ltss_qit_opening_year": month(2026),
+            "medicaid_ltss_qit_opening_month": month(7),
+            "medicaid_ltss_qit_subsequent_full_deposits_verified": month(True),
+            "medicaid_ltss_qit_covered_earned_income": month(float(gross[0] / 2)),
+            "medicaid_ltss_qit_covered_unearned_income": month(float(gross[1] / 2)),
+            "medicaid_ltss_earned_income_deposited_to_qit": month(float(gross[0] / 8)),
+            "medicaid_ltss_unearned_income_deposited_to_qit": month(
+                float(gross[1] / 8)
+            ),
+            "medicaid_ltss_qit_covered_earned_income_deposited": month(
+                float(gross[0] / 8)
+            ),
+            "medicaid_ltss_qit_covered_unearned_income_deposited": month(
+                float(gross[1] / 8)
+            ),
+        }
+        households[name] = {"members": [name], "state_code": {YEAR: state}}
+        marital_units[name] = {"members": [name]}
+    return {
+        "people": people,
+        "households": households,
+        "marital_units": marital_units,
+    }
+
+
+@pytest.mark.parametrize("state", ["DE", "WA", "TX"])
+def test_new_exclusions_keep_countable_income_between_zero_and_gross(state):
+    rng = np.random.default_rng(SEED + 2)
+    # Include zero and small incomes to exercise exclusion and deposit caps.
+    gross = np.vstack(([0, 0], [1, 1], rng.uniform(0, 8_000, (96, 2))))
+    simulation = Simulation(situation=_income_exclusion_situation(state, gross))
+    income = simulation.calculate("medicaid_ltss_countable_income", PERIOD)
+    assert (income >= 0).all()
+    assert (income <= gross.sum(axis=1) + 0.001).all()
+    for component, limit in [("earned", gross[:, 0]), ("unearned", gross[:, 1])]:
+        remaining = simulation.calculate(
+            f"medicaid_ltss_qit_adjusted_{component}_income", PERIOD
+        )
+        assert (remaining >= 0).all()
+        assert (remaining <= limit + 0.001).all()
+
+
+@pytest.mark.parametrize(
+    "state, exclusion",
+    [
+        ("DE", "medicaid_ltss_impairment_related_work_expenses"),
+        ("WA", "medicaid_ltss_reported_interest_income"),
+        ("WA", "medicaid_ltss_reported_dividend_income"),
+        ("WA", "medicaid_ltss_ssi_income"),
+        ("WA", "medicaid_ltss_state_needs_based_public_assistance_income"),
+        ("TX", "medicaid_ltss_qit_covered_earned_income"),
+        ("TX", "medicaid_ltss_qit_covered_unearned_income"),
+    ],
+)
+def test_each_new_exclusion_is_monotone(state, exclusion):
+    rng = np.random.default_rng(SEED + 3)
+    gross = rng.uniform(1, 8_000, (96, 2))
+    situation = _income_exclusion_situation(state, gross)
+    base = Simulation(situation=situation).calculate(
+        "medicaid_ltss_countable_income", PERIOD
+    )
+    for person in situation["people"].values():
+        person[exclusion][PERIOD] += 500
+    changed = Simulation(situation=situation).calculate(
+        "medicaid_ltss_countable_income", PERIOD
+    )
+    assert (changed <= base + 0.001).all()
+    # Ensure the property covers effective deductions, not just a zero branch.
+    assert (changed < base - 0.001).any()
+
+
+@pytest.mark.parametrize("spouse", [0, 1])
+def test_delaware_couple_work_expenses_share_exclusions_and_are_monotone(spouse):
+    rng = np.random.default_rng(SEED + 4)
+    gross = np.column_stack((rng.uniform(1_000, 6_000, 96), np.zeros(96)))
+    situation = _income_exclusion_situation("DE", gross)
+    # Isolate the work-expense ordering from trust deductions.
+    for person in situation["people"].values():
+        person["medicaid_ltss_earned_income_deposited_to_qit"] = month(0)
+    situation["marital_units"] = {}
+    for index in range(48):
+        names = [f"applicant_{2 * index}", f"applicant_{2 * index + 1}"]
+        situation["marital_units"][f"couple_{index}"] = {
+            "members": names,
+            "medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility": month(
+                True
+            ),
+            "medicaid_ltss_spouses_months_in_same_institutional_facility": month(5),
+        }
+    base = Simulation(situation=situation).calculate(
+        "medicaid_ltss_countable_income", PERIOD
+    )
+    combined_gross = gross[:, 0].reshape(-1, 2).sum(axis=1)
+    expected = np.repeat((combined_gross - 20 - 65 - 800) / 2, 2)
+    np.testing.assert_allclose(base, expected, rtol=1e-6, atol=0.001)
+    assert (base <= np.repeat(combined_gross, 2) + 0.001).all()
+    for index in range(48):
+        situation["people"][f"applicant_{2 * index + spouse}"][
+            "medicaid_ltss_impairment_related_work_expenses"
+        ][PERIOD] += 500
+    changed = Simulation(situation=situation).calculate(
+        "medicaid_ltss_countable_income", PERIOD
+    )
+    assert (changed <= base + 0.001).all()
+    np.testing.assert_allclose(changed, base - 250, rtol=1e-6, atol=0.001)
+
+
+@pytest.mark.parametrize("source", ["earned", "unearned"])
+def test_texas_whole_source_exclusion_applies_only_in_the_opening_month(source):
+    people = {}
+    observations = [(2026, month_number) for month_number in range(1, 13)]
+    observations += [(2025, 7), (2027, 7)]
+    for year, month_number in observations:
+        period = f"{year}-{month_number:02}"
+        people[f"month_{year}_{month_number}"] = {
+            f"medicaid_ltss_reported_gross_{source}_income": {period: 4_000},
+            f"medicaid_ltss_{source}_income_deposited_to_qit": {period: 500},
+            "medicaid_ltss_qit_opening_year": {period: 2026},
+            "medicaid_ltss_qit_opening_month": {period: 7},
+            f"medicaid_ltss_qit_covered_{source}_income": {period: 4_000},
+            f"medicaid_ltss_qit_covered_{source}_income_deposited": {period: 500},
+            "medicaid_ltss_qit_subsequent_full_deposits_verified": {period: True},
+        }
+    names = list(people)
+    simulation = Simulation(
+        situation={
+            "people": people,
+            "households": {
+                "household": {
+                    "members": names,
+                    "state_code": {str(year): "TX" for year in [2025, 2026, 2027]},
+                }
+            },
+            "marital_units": {name: {"members": [name]} for name in names},
+        }
+    )
+    for index, (year, month_number) in enumerate(observations):
+        period = f"{year}-{month_number:02}"
+        income = simulation.calculate(
+            f"medicaid_ltss_qit_adjusted_{source}_income", period
+        )[index]
+        assert income == (0 if (year, month_number) == (2026, 7) else 3_500)
