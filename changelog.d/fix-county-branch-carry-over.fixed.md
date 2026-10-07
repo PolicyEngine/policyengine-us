@@ -1,1 +1,0 @@
-County and has_tin read stored values with the asking branch's name, so a branch reused for a later year keeps the household's county instead of falling to County.UNKNOWN, and a branch's own has_itin input reaches has_tin.
