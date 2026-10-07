@@ -13,11 +13,16 @@ class qualified_business_income_deduction(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # compute sum of QBID amounts for each person in TaxUnit following
-        # logic in 2018 IRS Publication 535, Worksheet 12-A, line 16
+        # compute sum of QBID amounts for the head and spouse following
+        # logic in 2018 IRS Publication 535, Worksheet 12-A, line 16. The
+        # deduction is the taxpayer's, from their own (and, on a joint
+        # return, their spouse's) qualified business income; a tax unit
+        # dependent with business income takes their deduction on their
+        # own return.
         person = tax_unit.members
+        filer = ~person("is_tax_unit_dependent", period)
         qbid_amt = person("qbid_amount", period)
-        uncapped_qbid = tax_unit.sum(qbid_amt)
+        uncapped_qbid = tax_unit.sum(qbid_amt * filer)
         # apply taxinc cap at the TaxUnit level following logic
         # in 2018 IRS Publication 535, Worksheet 12-A, lines 32-37
         taxinc_less_qbid = tax_unit("taxable_income_less_qbid", period)
@@ -42,7 +47,7 @@ class qualified_business_income_deduction(Variable):
                 legacy_sstb, qbi, 0
             )
             total_qbi = tax_unit.sum(
-                non_sstb + sstb * tax_unit.project(applicable_rate)
+                (non_sstb + sstb * tax_unit.project(applicable_rate)) * filer
             )
             floor = p.deduction_floor.amount.calc(total_qbi)
             return max_(pre_floor_qbid, floor)
