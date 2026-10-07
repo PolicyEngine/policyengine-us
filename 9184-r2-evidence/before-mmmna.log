@@ -1,0 +1,28 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.9, pytest-9.1.1, pluggy-1.6.0
+rootdir: /Users/maxghenis/.subfleet/worktrees/20261007-061058-hub-fix-9184-r2
+configfile: pyproject.toml
+plugins: hypothesis-6.168.5, platformdirs-4.12.3, anyio-4.15.1
+collected 9 items
+
+policyengine_us/tests/policy/baseline/gov/hhs/medicaid/eligibility/long_term_care/financial/medicaid_ltss_mmmna.yaml ..F....F.
+
+=================================== FAILURES ===================================
+_________________________________ test session _________________________________
+/Users/maxghenis/.subfleet/worktrees/20261007-061058-hub-fix-9184-r2/policyengine_us/tests/policy/baseline/gov/hhs/medicaid/eligibility/long_term_care/financial/medicaid_ltss_mmmna.yaml:
+  Test 'Case 3, Washington uses its published July shelter threshold.':
+    medicaid_ltss_mmmna@2026-07: [3705. 2705.] differs from [3704.5 2705. ] with an absolute margin [0.5 0. ] > 0.01
+_________________________________ test session _________________________________
+/Users/maxghenis/.subfleet/worktrees/20261007-061058-hub-fix-9184-r2/policyengine_us/tests/policy/baseline/gov/hhs/medicaid/eligibility/long_term_care/financial/medicaid_ltss_mmmna.yaml:
+  Test 'Case 8, January 2026 uses the operative federal and published state standards.':
+    medicaid_ltss_mmmna@2026-01: [4066.5   2643.75  2850.625] differs from [4066.5  2643.75 2850.  ] with an absolute margin [0.    0.    0.625] > 0.01
+=============================== warnings summary ===============================
+../20261006-084641-hub-fix-9184/.venv/lib/python3.13/site-packages/_pytest/config/__init__.py:1345
+  /Users/maxghenis/.subfleet/worktrees/20261006-084641-hub-fix-9184/.venv/lib/python3.13/site-packages/_pytest/config/__init__.py:1345: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; anyio
+    self._mark_plugins_for_rewrite(hook, disable_autoload)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED policyengine_us/tests/policy/baseline/gov/hhs/medicaid/eligibility/long_term_care/financial/medicaid_ltss_mmmna.yaml::
+FAILED policyengine_us/tests/policy/baseline/gov/hhs/medicaid/eligibility/long_term_care/financial/medicaid_ltss_mmmna.yaml::
+==================== 2 failed, 7 passed, 1 warning in 9.90s ====================

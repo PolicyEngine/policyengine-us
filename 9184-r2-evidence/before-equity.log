@@ -1,0 +1,28 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.9, pytest-9.1.1, pluggy-1.6.0
+rootdir: /Users/maxghenis/.subfleet/worktrees/20261007-061058-hub-fix-9184-r2
+configfile: pyproject.toml
+plugins: hypothesis-6.168.5, platformdirs-4.12.3, anyio-4.15.1
+collected 16 items
+
+policyengine_us/tests/policy/baseline/gov/hhs/medicaid/eligibility/long_term_care/financial/medicaid_ltss_home_equity_eligible.yaml FF..............
+
+=================================== FAILURES ===================================
+_________________________________ test session _________________________________
+/Users/maxghenis/.subfleet/worktrees/20261007-061058-hub-fix-9184-r2/policyengine_us/tests/policy/baseline/gov/hhs/medicaid/eligibility/long_term_care/financial/medicaid_ltss_home_equity_eligible.yaml:
+  Test 'Delaware combines married co-owners' interests in their retained home.':
+    medicaid_ltss_home_equity_eligible@2026-07: [1. 1. 1. 1. 1. 1.] differs from [0. 0. 1. 1. 1. 1.] with an absolute margin [1. 1. 0. 0. 0. 0.] > 0.001
+_________________________________ test session _________________________________
+/Users/maxghenis/.subfleet/worktrees/20261007-061058-hub-fix-9184-r2/policyengine_us/tests/policy/baseline/gov/hhs/medicaid/eligibility/long_term_care/financial/medicaid_ltss_home_equity_eligible.yaml:
+  Test 'Delaware married ownership remains combined under individual budgets.':
+    medicaid_ltss_home_equity_eligible@2026-07: [1. 1.] differs from [0. 0.] with an absolute margin [1. 1.] > 0.001
+=============================== warnings summary ===============================
+../20261006-084641-hub-fix-9184/.venv/lib/python3.13/site-packages/_pytest/config/__init__.py:1345
+  /Users/maxghenis/.subfleet/worktrees/20261006-084641-hub-fix-9184/.venv/lib/python3.13/site-packages/_pytest/config/__init__.py:1345: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; anyio
+    self._mark_plugins_for_rewrite(hook, disable_autoload)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED policyengine_us/tests/policy/baseline/gov/hhs/medicaid/eligibility/long_term_care/financial/medicaid_ltss_home_equity_eligible.yaml::
+FAILED policyengine_us/tests/policy/baseline/gov/hhs/medicaid/eligibility/long_term_care/financial/medicaid_ltss_home_equity_eligible.yaml::
+=================== 2 failed, 14 passed, 1 warning in 36.87s ===================
