@@ -156,3 +156,38 @@
     traditional_ira_contributions: 3_500
     roth_ira_contributions: 3_500
     mn_homestead_credit_refund_household_income: 46_500
+
+- name: Case 8, a dependent's IRA contribution is not added back to the parent's household income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 60_000
+        traditional_401k_contributions: 7_000
+      student:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 6_000
+        traditional_ira_contributions: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: MN
+  output:
+    # Federal AGI is the parent's 60,000 - 7,000 of 401(k) deferrals; the
+    # student's wages and IRA deduction are on the student's own return.
+    adjusted_gross_income: 53_000
+    # 53,000 + the parent's 401(k) addition (7,000) - the retirement
+    # subtraction (7,000) - the dependent subtraction (7,280). The student's
+    # IRA contribution is neither added back nor subtracted, as their wages
+    # are not in AGI.
+    mn_homestead_credit_refund_household_income: 45_720

@@ -8,9 +8,9 @@ class mn_child_and_working_families_credits(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revisor.mn.gov/statutes/cite/290.0661#stat.290.0661.4"
-        "https://www.revisor.mn.gov/statutes/cite/290.0671"
-        "https://www.revenue.state.mn.us/sites/default/files/2025-01/m1cwfc-23.pdf"
+        "https://www.revisor.mn.gov/statutes/cite/290.0661#stat.290.0661.4",
+        "https://www.revisor.mn.gov/statutes/cite/290.0671",
+        "https://www.revenue.state.mn.us/sites/default/files/2025-01/m1cwfc-23.pdf",
     )
     defined_for = StateCode.MN
 
@@ -29,8 +29,11 @@ class mn_child_and_working_families_credits(Variable):
         base_ctc_amount = qualifying_children * p.ctc.amount
         # Working Family Credit computation:
         wfc_eligible = tax_unit("mn_wfc_eligible", period)
-        # The credit is phased in based on earnings
-        earnings = tax_unit("filer_adjusted_earnings", period)
+        # The credit is phased in based on earned income. Schedule M1CWFC,
+        # line 2 takes it from federal EIC Worksheet B: both spouses'
+        # earnings combined, with a net self-employment loss subtracted,
+        # and not less than zero.
+        earnings = tax_unit("eitc_earned_income", period)
         base_wfc_credit = p.wfc.phase_in.calc(earnings)
         person = tax_unit.members
         # Minn. Stat. 290.0671, subd. 1a defines a qualifying older child as

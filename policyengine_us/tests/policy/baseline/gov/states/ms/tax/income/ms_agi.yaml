@@ -24,14 +24,14 @@
   output:
     ms_agi: [12_000, 10_000, 0]
 
-- name: Capped at 0
+- name: A negative amount is kept, so a joint return can combine it with the other column
   period: 2021
   input:
     state_code: MS
     ms_agi_adjustments: 1_000
     employment_income: 500
   output:
-    ms_agi: 0
+    ms_agi: -500
 
 - name: SSTB self-employment income is included in Mississippi AGI
   period: 2024
@@ -41,3 +41,56 @@
     state_code: MS
   output:
     ms_agi: 100_000
+
+- name: A dependent's self-employment adjustments are subtracted once, with the dependent's income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 17
+        self_employment_income: 10_000
+        self_employed_health_insurance_premiums: 1_000
+        self_employed_pension_contributions: 500
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    # The child's own adjustments: one-half of self-employment tax (Schedule
+    # SE line 13, 706.48), health insurance (1,000) and SEP (500), 2,206.48.
+    ms_agi_adjustments: [0, 2_206.48]
+    # The child's income and adjustments reach the parent's Mississippi AGI
+    # once: 40,000 + 10,000 - 2,206.48.
+    ms_agi: [47_793.52, 0]
+
+- name: Each spouse subtracts only their own self-employed health insurance
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        self_employment_income: 30_000
+        self_employed_health_insurance_premiums: 3_000
+      spouse:
+        age: 44
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MS
+  output:
+    # Head: one-half of self-employment tax (30,000 x 0.9235 x 0.153 / 2 =
+    # 2,119.43) plus health insurance 3,000. The spouse has no adjustment.
+    ms_agi_adjustments: [5_119.43, 0]
+    ms_agi: [24_880.57, 20_000]

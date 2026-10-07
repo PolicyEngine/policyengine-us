@@ -40,3 +40,31 @@
   output:
     al_agi: 60_000
     al_income_tax: 2_442.75
+
+- name: A dependent's self-employed health insurance and plan deductions follow their income into Alabama AGI
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 17
+        self_employment_income: 10_000
+        self_employed_health_insurance_premiums: 1_000
+        self_employed_pension_contributions: 500
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    # Alabama AGI sums every member's income, so it counts the child's 10,000
+    # of Schedule C income and subtracts the child's own self-employed health
+    # insurance (1,000) and SEP (500) deductions: 50,000 - 1,500. The federal
+    # AGI leaves all of them on the child's return.
+    adjusted_gross_income: 40_000
+    al_agi: 48_500

@@ -7,7 +7,7 @@ class pa_cdcc(Variable):
     label = "Pennsylvania Child and Dependent Care Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2022/2022_pa-40dc.pdf"  # 2022 form
+    reference = "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2022/2022_pa-40dc.pdf"  # 2022 form
     defined_for = StateCode.PA
 
     def formula(tax_unit, period, parameters):
