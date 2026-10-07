@@ -1,1 +1,0 @@
-Cap the federal educator expense deduction at each eligible educator's limit under 26 U.S.C. 62(a)(2)(D) and (d)(3): $250 through 2021, $300 for 2022 through 2025 and $350 for 2026, indexed after that. On a joint return each spouse is capped separately, and a tax unit dependent's expenses stay off the filer's return. Previously the raw expense input was deducted in full.
