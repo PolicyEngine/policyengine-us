@@ -273,3 +273,34 @@
     # 5% x (49,200 + 1,000) + 8.5% x 2,000 + 5% x 4,000
     # = 2,510 + 170 + 200.
     ma_income_tax_before_credits: 2_880
+
+- name: Capital gain distributions that cover a long-term loss leave no loss for the dividends
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        qualified_dividend_income: 1_000
+        non_sch_d_capital_gains: 5_000
+        long_term_capital_gains: -3_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MA
+  output:
+    # Schedule D: line 1 = -3,000; line 6 = 5,000; line 9 = 2,000 = line 13
+    # = line 15. Line 15 is not a loss, so Schedule B, line 32 is omitted.
+    ma_long_term_loss_against_dividends: 0
+    # Schedule B, line 33 = line 31 = 1,000 = line 38.
+    ma_part_a_adjusted_dividends: 1_000
+    ma_part_a_taxable_dividend_income: 1_000
+    ma_part_c_agi: 2_000
+    # 5% x (49,200 + 1,000) + 5% x 2,000 = 2,510 + 100.
+    ma_income_tax_before_credits: 2_610

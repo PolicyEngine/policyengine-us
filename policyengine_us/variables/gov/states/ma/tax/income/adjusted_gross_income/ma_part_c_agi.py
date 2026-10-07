@@ -24,5 +24,9 @@ class ma_part_c_agi(Variable):
             "ma_short_term_loss_against_dividends", period
         )
         remaining_short_term_loss = short_term_capital_loss - loss_against_dividends
-        long_term_capital_gains = add(tax_unit, period, ["long_term_capital_gains"])
+        # Massachusetts Schedule D, line 13 includes capital gain
+        # distributions reported without a federal Schedule D (line 6).
+        long_term_capital_gains = add(
+            tax_unit, period, ["long_term_capital_gains", "non_sch_d_capital_gains"]
+        )
         return max_(0, long_term_capital_gains - remaining_short_term_loss)
