@@ -1,4 +1,7 @@
+import functools
+
 from policyengine_us.model_api import *
+from policyengine_core.parameters import load_parameter_file
 from policyengine_core.periods import instant
 
 # Cal. Const. art. XIII, § 36(f)(2) (single, separate, and through RTC § 17045
@@ -40,6 +43,58 @@ def _active_windows(in_effect) -> list:
     return sorted(windows)
 
 
+@functools.lru_cache(maxsize=None)
+def _enacted_schedule(file_path: str):
+    # The schedule as enacted, read from the file the rates were loaded from,
+    # so the reform can tell the statutory sunset apart from a user's edit.
+    return load_parameter_file(file_path)
+
+
+def _constant_intervals(start, stop, *parameters) -> list:
+    """Split start..stop into the (start, stop) intervals on which every
+    parameter keeps one value."""
+    cuts = {start}
+    for parameter in parameters:
+        for value_at_instant in parameter.values_list:
+            cut = instant(value_at_instant.instant_str)
+            if start < cut <= stop:
+                cuts.add(cut)
+    cuts = sorted(cuts)
+    stops = [cut.offset(-1, "day") for cut in cuts[1:]] + [stop]
+    return list(zip(cuts, stops))
+
+
+def _restore_pre_sunset_rates(rates, enacted_rates: dict, windows: list) -> None:
+    """Within each window, give each bracket whose enacted rate the sunset
+    changes its 2030 rate, wherever the enacted post-sunset rate applies.
+
+    ``enacted_rates`` maps each filing status to its enacted schedule. Brackets
+    the sunset leaves unchanged keep any edit, including one bounded to 2030,
+    and so do intervals whose rate differs from the enacted rate, which a user
+    has set explicitly. Restored intervals no longer match the enacted rate, so
+    applying the reform again changes nothing.
+    """
+    updates = []
+    for status in FILING_STATUSES:
+        brackets = getattr(rates, status).brackets
+        for bracket, enacted_bracket in zip(brackets, enacted_rates[status].brackets):
+            rate = bracket.rate
+            enacted_rate = enacted_bracket.rate
+            if enacted_rate(SUNSET) == enacted_rate(LAST_PRE_SUNSET_YEAR):
+                continue
+            # The 2030 rate, including any rate the user set for 2030.
+            pre_sunset_rate = rate(LAST_PRE_SUNSET_YEAR)
+            for window_start, window_stop in windows:
+                for start, stop in _constant_intervals(
+                    window_start, window_stop, rate, enacted_rate
+                ):
+                    if rate(start) == enacted_rate(start):
+                        updates.append((rate, start, stop, pre_sunset_rate))
+    # Read every rate before writing any.
+    for rate, start, stop, value in updates:
+        rate.update(start=start, stop=stop, value=value)
+
+
 def create_ca_prop3(respect_in_effect: bool = False) -> Reform:
     def modify_parameters(parameters):
         if respect_in_effect:
@@ -47,18 +102,11 @@ def create_ca_prop3(respect_in_effect: bool = False) -> Reform:
         else:
             windows = [(SUNSET, HORIZON_END)]
         rates = parameters.gov.states.ca.tax.income.rates
-        # Snapshot every bracket's 2030 and 2031 rates before modifying any,
-        # so each window restores the pre-sunset rate, including any rate the
-        # user set for 2030.
-        restorations = []
-        for status in FILING_STATUSES:
-            for bracket in getattr(rates, status).brackets:
-                pre_sunset_rate = bracket.rate(LAST_PRE_SUNSET_YEAR)
-                if bracket.rate(SUNSET) != pre_sunset_rate:
-                    restorations.append((bracket.rate, pre_sunset_rate))
-        for rate, pre_sunset_rate in restorations:
-            for start, stop in windows:
-                rate.update(start=start, stop=stop, value=pre_sunset_rate)
+        enacted_rates = {
+            status: _enacted_schedule(getattr(rates, status).file_path)
+            for status in FILING_STATUSES
+        }
+        _restore_pre_sunset_rates(rates, enacted_rates, windows)
         return parameters
 
     class reform(Reform):
