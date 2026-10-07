@@ -15,7 +15,7 @@ import pytest
 from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 from policyengine_core.reforms import Reform
-from policyengine_core.periods import YEAR
+from policyengine_core.periods import ETERNITY, YEAR
 from policyengine_core.variables import Variable
 from spm_calculator.errors import SPMInputError
 from spm_calculator.policyengine_adapter import FORMULA_OWNED_INPUTS
@@ -676,14 +676,24 @@ def earner_dataset():
 
 
 def assert_bound_to_own_policy(simulation):
-    """Each population, holder and recorded input belongs to this arm's policy."""
+    """Each population, holder and recorded input belongs to this arm's policy.
+
+    A holder belongs to a variable only if it also suits it: it sits in that
+    variable's entity's population, with storage for an ``ETERNITY`` variable
+    exactly when the variable is one.
+    """
     policy = simulation.tax_benefit_system
     assert policy.simulation is simulation
     for population in simulation.populations.values():
         assert population.entity._tax_benefit_system is policy
         for name, holder in population._holders.items():
-            assert holder.variable is policy.variables.get(name), name
+            variable = policy.variables.get(name)
+            assert holder.variable is variable, name
             assert holder.simulation is simulation
+            assert variable.entity.key == population.entity.key, name
+            assert holder._memory_storage.is_eternal == (
+                variable.definition_period == ETERNITY
+            ), name
     assert {key[0] for key in simulation._user_input_keys} <= set(policy.variables)
     assert set(simulation.input_variables) <= set(policy.variables)
 
@@ -702,6 +712,9 @@ def test_subsampled_reform_baseline_and_clones_calculate_original_tax(simulation
     """
     changed = simulation_type(
         dataset=earner_dataset(),
+        # Reforming a supplied system clones it instead of rebuilding policy
+        # from source; the constructor tests above cover building it.
+        tax_benefit_system=system,
         reform=UserReform,
         spm={"geography_kind": "national"},
     )
@@ -756,15 +769,22 @@ class reform_only_income(Variable):
         return person.filled_array(1)
 
 
-class AddReformOnlyVariable(Reform):
+class is_household_head(Variable):
+    # Each year's input instead of one for all time: a holder the reform arm
+    # stores this in has storage the baseline's ETERNITY variable cannot use.
+    definition_period = YEAR
+
+
+class AddAndRedefineVariables(Reform):
     def apply(self):
         self.add_variable(reform_only_income)
+        self.update_variable(is_household_head)
         self.neutralize_variable("income_tax")
 
 
 SUBSAMPLED_REFORMS = {
     "replaces variables": UserReform,
-    "adds a variable": AddReformOnlyVariable,
+    "adds and redefines variables": AddAndRedefineVariables,
     "changes a parameter": Reform.from_dict(
         {"gov.irs.deductions.standard.amount.SINGLE": {"2024": 0}}
     ),
@@ -773,6 +793,7 @@ SUBSAMPLED_REFORMS = {
 CALCULATED_BEFORE_SUBSAMPLING = (
     ("reform", "household_market_income"),
     ("reform", "reform_only_income"),
+    ("reform", "is_household_head"),
     ("baseline", "household_market_income"),
     ("baseline", "income_tax"),
 )
@@ -796,8 +817,12 @@ CALCULATED_BEFORE_SUBSAMPLING = (
     ),
 )
 @example(
-    reform="adds a variable",
-    calculated=[("reform", "reform_only_income"), ("baseline", "income_tax")],
+    reform="adds and redefines variables",
+    calculated=[
+        ("reform", "reform_only_income"),
+        ("reform", "is_household_head"),
+        ("baseline", "income_tax"),
+    ],
     draws=[(1, 0, True), (2, 1, False)],
 )
 def test_subsampling_never_changes_which_policy_a_holder_belongs_to(
@@ -808,9 +833,11 @@ def test_subsampling_never_changes_which_policy_a_holder_belongs_to(
     However often a reform simulation is subsampled, each arm keeps the policy
     it had, and every population, holder and recorded input in either arm
     belongs to that policy. The rebuilt baseline arm has no baseline of its
-    own and holds nothing that only the reform defines, including what the
-    reform arm calculated, and core therefore exported as an input, before
-    subsampling.
+    own, holds nothing that only the reform defines, and keeps no holder the
+    reform built for its own definition of a variable: here, yearly storage
+    for the baseline's ``ETERNITY`` ``is_household_head``. That includes what
+    the reform arm calculated, and core therefore exported as an input,
+    before subsampling.
 
     This compares no values: values the reform arm calculated before
     subsampling become inputs of the rebuilt population, in both arms. That
@@ -843,12 +870,14 @@ def test_subsampling_never_changes_which_policy_a_holder_belongs_to(
         assert baseline.tax_benefit_system is policies["baseline"]
         for simulation in (changed, baseline):
             assert_bound_to_own_policy(simulation)
-        if reform == "adds a variable" and ("reform", "reform_only_income") in (
-            calculated
-        ):
-            # The reform-only value came through the rebuild as an input, so
-            # the baseline branch started out holding it.
-            assert changed.person._holders["reform_only_income"].get_known_periods()
+        if reform == "adds and redefines variables":
+            # What the reform arm held came through the rebuild as inputs, so
+            # the baseline branch started out holding the reform's holders.
+            for variable in ("reform_only_income", "is_household_head"):
+                if ("reform", variable) in calculated:
+                    holder = changed.person._holders[variable]
+                    assert holder.get_known_periods()
+                    assert not holder._memory_storage.is_eternal
 
 
 def test_a_national_selection_records_no_county_input_types():

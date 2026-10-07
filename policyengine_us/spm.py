@@ -678,6 +678,9 @@ class SPMSimulationMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Core switches the baseline system after cloning its populations.
+        baseline = self.branches.get("baseline")
+        if baseline is not None:
+            baseline._drop_holders_built_for_another_policy()
         self._rebind_holders()
         # Core sets ``trace`` before this simulation owns its policy state.
         self._isolate_parameter_tracing()
@@ -737,6 +740,40 @@ class SPMSimulationMixin:
         ]
         for branch in self.branches.values():
             branch._rebind_holders()
+
+    def _drop_holders_built_for_another_policy(self):
+        """Drop holders whose storage this simulation's policy cannot use.
+
+        A reform's baseline arm is a branch of the reform, so its holders were
+        built for the reform's variables. Rebinding a holder to the baseline's
+        variable keeps the holder's population and storage. A holder in
+        another entity's population, or with storage for (or not for) an
+        ``ETERNITY`` variable, therefore cannot hold the baseline's
+        definition. Drop it with its recorded inputs, as core 3.32.21 and
+        later do in ``_bind_to_tax_benefit_system``; core 3.32.8 keeps it.
+
+        Only a baseline arm does this. ``apply_reform`` keeps a simulation's
+        own inputs, as core's does.
+        """
+        variables = self.tax_benefit_system.variables
+        dropped = set()
+        for population in self.populations.values():
+            for name, holder in list(population._holders.items()):
+                variable = variables.get(name)
+                if variable is not None and (
+                    variable.entity.key != population.entity.key
+                    or (variable.definition_period == periods_.ETERNITY)
+                    != holder._memory_storage.is_eternal
+                ):
+                    del population._holders[name]
+                    dropped.add(name)
+        if dropped:
+            self._user_input_keys = {
+                key for key in self._user_input_keys if key[0] not in dropped
+            }
+            self.input_variables = [
+                name for name in self.input_variables if name not in dropped
+            ]
 
     def apply_reform(self, reform):
         policy = self.tax_benefit_system
@@ -964,6 +1001,7 @@ class SPMSimulationMixin:
             # behavioural responses, holders bound to its own policy, and that
             # policy's tracing primed for this arm.
             baseline.baseline = None
+            baseline._drop_holders_built_for_another_policy()
             baseline._rebind_holders()
             baseline._isolate_parameter_tracing()
         # Core hands the rebuilt baseline arm the previous arm's policy and so
