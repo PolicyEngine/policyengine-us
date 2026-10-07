@@ -1,7 +1,8 @@
 # Expected values are the line 13 decimals from the New York State child and
 # dependent care credit limitation table: 2017 Form IT-216-I page 6 and 2018
-# Form IT-216-I page 7. The table rounds to three decimals and each New York
-# AGI below is the midpoint of its $200 table row.
+# Form IT-216-I page 7. The table rounds to three decimals. Below $65,000, each
+# New York AGI is the midpoint of its $200 table row. New York AGI 100,000 and
+# 200,000 are in the wide rows above $65,000, where the decimal is exact.
 
 - name: 2017, New York AGI 52,100 uses the 2017 table decimal, with no Tax Law 606(c)(1-a) factor.
   period: 2017
