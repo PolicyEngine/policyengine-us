@@ -1,0 +1,126 @@
+- name: Second-residence interest, points and premiums join the federal deduction in 2026
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    home_mortgage_interest: 10_000
+    second_residence_mortgage_interest: 4_000
+    second_residence_mortgage_points: 500
+    mortgage_insurance_premiums: 1_000
+    second_residence_mortgage_insurance_premiums: 600
+  output:
+    # Interest on both residences: 10,000 + 4,000.
+    home_mortgage_interest_tax_unit: 14_000
+    # No balances are given, so the pool is fully deductible: 14,000 + 500 points.
+    deductible_mortgage_interest_tax_unit: 14_500
+    # AGI is below the $100,000 phase-out start: 1,000 + 600.
+    deductible_mortgage_insurance_premiums: 1_600
+    interest_deduction: 16_100
+    # Second residence: 4,000 + 500 + 600.
+    second_residence_interest_deduction: 5_100
+
+- name: Second-residence interest takes the acquisition-debt share and premiums take the phase-out
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 105_000
+    first_home_mortgage_balance: 900_000
+    first_home_mortgage_origination_year: 2020
+    second_home_mortgage_balance: 300_000
+    second_home_mortgage_origination_year: 2020
+    home_mortgage_interest: 30_000
+    home_mortgage_points: 2_000
+    second_residence_mortgage_interest: 12_000
+    second_residence_mortgage_insurance_premiums: 1_000
+  output:
+    # Deductible share: $750,000 / ($900,000 + $300,000) = 0.625.
+    # Pool: 30,000 + 2,000 + 12,000 = 44,000; 44,000 * 0.625 = 27,500.
+    deductible_mortgage_interest_tax_unit: 27_500
+    # AGI exceeds $100,000 by $5,000: 5 increments * 10% = 50% reduction; 1,000 * 0.5.
+    deductible_mortgage_insurance_premiums: 500
+    interest_deduction: 28_000
+    # Second residence: 12,000 * 0.625 + 500 = 8,000.
+    second_residence_interest_deduction: 8_000
+
+- name: Second-residence premiums share the phase-out with principal-residence premiums
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 100_500
+    mortgage_insurance_premiums: 900
+    second_residence_mortgage_insurance_premiums: 300
+  output:
+    # $500 above the start is one $1,000 increment, or fraction thereof: 10% reduction.
+    # (900 + 300) * 0.9 = 1,080.
+    deductible_mortgage_insurance_premiums: 1_080
+    # 300 * 0.9 = 270.
+    second_residence_interest_deduction: 270
+
+- name: Second-residence premiums are not deductible in 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    home_mortgage_interest: 10_000
+    second_residence_mortgage_interest: 4_000
+    second_residence_mortgage_insurance_premiums: 600
+  output:
+    deductible_mortgage_insurance_premiums: 0
+    interest_deduction: 14_000
+    second_residence_interest_deduction: 4_000
+
+- name: No second-residence amounts attribute nothing to the second residence
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    home_mortgage_interest: 10_000
+    home_mortgage_points: 500
+    mortgage_insurance_premiums: 1_000
+  output:
+    interest_deduction: 11_500
+    second_residence_interest_deduction: 0
+
+- name: Second-residence points join the legacy structured interest pool
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    first_home_mortgage_interest: 8_000
+    second_residence_mortgage_points: 400
+  output:
+    # No person-level interest, so the structured interest is used.
+    home_mortgage_interest_tax_unit: 8_000
+    deductible_mortgage_interest_tax_unit: 8_400
+    second_residence_interest_deduction: 400
+
+- name: Spouses' shares of the mortgage deduction count second-residence amounts
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        home_mortgage_interest: 6_000
+      spouse:
+        age: 50
+        second_residence_mortgage_interest: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income: 80_000
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    # 6,000 / (6,000 + 2,000) and 2,000 / (6,000 + 2,000).
+    home_mortgage_interest_share: [0.75, 0.25]
+    deductible_mortgage_interest: [6_000, 2_000]
+    second_residence_interest_deduction: 2_000

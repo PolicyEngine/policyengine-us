@@ -1,0 +1,1 @@
+Add `second_residence_mortgage_interest`, `second_residence_mortgage_points` and `second_residence_mortgage_insurance_premiums` inputs, which join the federal mortgage deduction, and limit Kentucky's qualified residence interest deduction to the principal residence from 2026 (KRS 141.019(2)(j), 2026 Ky. Acts ch. 161 sec. 7 as amended by ch. 198 sec. 48).

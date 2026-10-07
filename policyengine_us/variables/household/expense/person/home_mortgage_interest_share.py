@@ -8,14 +8,21 @@ class home_mortgage_interest_share(Variable):
     definition_period = YEAR
     documentation = (
         "Allocates tax-unit mortgage interest and points across filers using "
-        "reported person-level home mortgage interest and points when "
-        "available, otherwise evenly across head and spouse."
+        "reported person-level home mortgage interest and points on both "
+        "residences when available, otherwise evenly across head and spouse."
     )
 
     def formula(person, period, parameters):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         reported_interest = head_or_spouse * add(
-            person, period, ["home_mortgage_interest", "home_mortgage_points"]
+            person,
+            period,
+            [
+                "home_mortgage_interest",
+                "home_mortgage_points",
+                "second_residence_mortgage_interest",
+                "second_residence_mortgage_points",
+            ],
         )
         total_reported_interest = person.tax_unit.sum(reported_interest)
 

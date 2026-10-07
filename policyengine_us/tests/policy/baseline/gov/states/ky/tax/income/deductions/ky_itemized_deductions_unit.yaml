@@ -17,3 +17,79 @@
     medical_expense_deduction: 2
   output:
     ky_itemized_deductions_unit: 8
+
+- name: In 2025 Kentucky keeps federal second-residence mortgage interest
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    home_mortgage_interest: 10_000
+    second_residence_mortgage_interest: 4_000
+    second_residence_mortgage_points: 500
+    mortgage_insurance_premiums: 1_000
+    second_residence_mortgage_insurance_premiums: 600
+  output:
+    # Federal premiums are not deductible in 2025: 10,000 + 4,000 + 500.
+    itemized_deductions_less_salt: 14_500
+    ky_disallowed_second_residence_interest: 0
+    ky_itemized_deductions_unit: 14_500
+
+- name: From 2026 Kentucky keeps only principal-residence interest, points and premiums
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    home_mortgage_interest: 10_000
+    second_residence_mortgage_interest: 4_000
+    second_residence_mortgage_points: 500
+    mortgage_insurance_premiums: 1_000
+    second_residence_mortgage_insurance_premiums: 600
+  output:
+    # Federal: 10,000 + 4,000 + 500 + 1,000 + 600.
+    itemized_deductions_less_salt: 16_100
+    # Second residence: 4,000 + 500 + 600.
+    ky_disallowed_second_residence_interest: 5_100
+    # Principal residence: 10,000 + 1,000.
+    ky_itemized_deductions_unit: 11_000
+
+- name: From 2026 Kentucky applies the federal acquisition-debt share to principal-residence interest
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 105_000
+    first_home_mortgage_balance: 900_000
+    first_home_mortgage_origination_year: 2020
+    second_home_mortgage_balance: 300_000
+    second_home_mortgage_origination_year: 2020
+    home_mortgage_interest: 30_000
+    home_mortgage_points: 2_000
+    second_residence_mortgage_interest: 12_000
+    second_residence_mortgage_insurance_premiums: 1_000
+  output:
+    # Federal: (30,000 + 2,000 + 12,000) * 0.625 + 1,000 * 0.5 = 28,000.
+    itemized_deductions_less_salt: 28_000
+    # Second residence: 12,000 * 0.625 + 500 = 8,000.
+    ky_disallowed_second_residence_interest: 8_000
+    # Principal residence: (30,000 + 2,000) * 0.625 = 20,000.
+    ky_itemized_deductions_unit: 20_000
+
+- name: From 2026 Kentucky itemized deductions are unchanged without second-residence amounts
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: KY
+    filing_status: SINGLE
+    adjusted_gross_income: 50_000
+    home_mortgage_interest: 10_000
+    home_mortgage_points: 500
+    mortgage_insurance_premiums: 1_000
+  output:
+    itemized_deductions_less_salt: 11_500
+    ky_disallowed_second_residence_interest: 0
+    ky_itemized_deductions_unit: 11_500

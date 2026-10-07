@@ -9,13 +9,15 @@ class home_mortgage_points(Variable):
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"
     documentation = (
-        "Points on debt secured by a qualified home that are deductible this "
-        "year: points deductible in the year paid under 26 U.S.C. 461(g)(2), "
-        "plus this year's ratable share of points deducted over the life of "
-        "a loan. Exclude points already included in home_mortgage_interest. "
-        "Points reported on Form 1098 usually are, because Schedule A line 8a "
-        "combines them with interest, so this is typically Schedule A line 8c, "
-        "points not reported on Form 1098."
+        "Points on debt secured by the principal residence that are "
+        "deductible this year: points deductible in the year paid under 26 "
+        "U.S.C. 461(g)(2), plus this year's ratable share of points deducted "
+        "over the life of a loan. Exclude points already included in "
+        "home_mortgage_interest. Points reported on Form 1098 usually are, "
+        "because Schedule A line 8a combines them with interest, so this is "
+        "typically Schedule A line 8c, points not reported on Form 1098. "
+        "Report points on a second qualified residence in "
+        "second_residence_mortgage_points."
     )
     reference = [
         "https://www.law.cornell.edu/uscode/text/26/461#g_2",

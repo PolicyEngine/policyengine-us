@@ -25,7 +25,14 @@ class deductible_mortgage_insurance_premiums(Variable):
         p = parameters(
             period
         ).gov.irs.deductions.itemized.interest.mortgage_insurance_premiums
-        premiums = add(tax_unit, period, ["mortgage_insurance_premiums"])
+        premiums = add(
+            tax_unit,
+            period,
+            [
+                "mortgage_insurance_premiums",
+                "second_residence_mortgage_insurance_premiums",
+            ],
+        )
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         # Worksheet lines 3-5: the deduction falls by the rate for each

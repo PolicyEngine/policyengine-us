@@ -111,14 +111,20 @@ class home_mortgage_interest_tax_unit(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Total home mortgage interest. The person-level home_mortgage_interest "
-        "input is canonical; the deprecated structured first/second interest "
-        "inputs are used only when no person-level interest is reported "
-        "(existing datasets still supply them — see issue #9275)."
+        "Total home mortgage interest on the principal and second residences. "
+        "The person-level home_mortgage_interest and "
+        "second_residence_mortgage_interest inputs are canonical; the "
+        "deprecated structured first/second interest inputs are used only "
+        "when no person-level interest is reported (existing datasets still "
+        "supply them — see issue #9275)."
     )
 
     def formula(tax_unit, period, parameters):
-        reported_interest = add(tax_unit, period, ["home_mortgage_interest"])
+        reported_interest = add(
+            tax_unit,
+            period,
+            ["home_mortgage_interest", "second_residence_mortgage_interest"],
+        )
         structured_interest = add(
             tax_unit,
             period,
@@ -153,7 +159,11 @@ class deductible_mortgage_interest_tax_unit(Variable):
         # Falls back to reported person-level interest when the structured
         # first/second inputs are absent.
         total_interest = tax_unit("home_mortgage_interest_tax_unit", period)
-        points = add(tax_unit, period, ["home_mortgage_points"])
+        points = add(
+            tax_unit,
+            period,
+            ["home_mortgage_points", "second_residence_mortgage_points"],
+        )
 
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.irs.deductions.itemized.interest.mortgage
@@ -203,6 +213,10 @@ class non_deductible_mortgage_interest_tax_unit(Variable):
 
     def formula(tax_unit, period, parameters):
         total_interest = tax_unit("home_mortgage_interest_tax_unit", period)
-        points = add(tax_unit, period, ["home_mortgage_points"])
+        points = add(
+            tax_unit,
+            period,
+            ["home_mortgage_points", "second_residence_mortgage_points"],
+        )
         deductible_interest = tax_unit("deductible_mortgage_interest_tax_unit", period)
         return max_(0, total_interest + points - deductible_interest)

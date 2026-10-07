@@ -1,0 +1,26 @@
+- name: Kentucky allows second-residence interest before 2026
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    state_code: KY
+    second_residence_interest_deduction: 5_100
+  output:
+    ky_disallowed_second_residence_interest: 0
+
+- name: Kentucky disallows second-residence interest from 2026
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    state_code: KY
+    second_residence_interest_deduction: 5_100
+  output:
+    ky_disallowed_second_residence_interest: 5_100
+
+- name: The Kentucky disallowance applies only to Kentucky
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    state_code: OH
+    second_residence_interest_deduction: 5_100
+  output:
+    ky_disallowed_second_residence_interest: 0
