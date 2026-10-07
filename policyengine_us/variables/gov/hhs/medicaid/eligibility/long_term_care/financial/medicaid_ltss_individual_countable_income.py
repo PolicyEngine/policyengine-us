@@ -12,15 +12,22 @@ class medicaid_ltss_individual_countable_income(Variable):
         "the assistance-unit election. Delaware applies the $20 general "
         "exclusion to non-needs-based unearned income first, then carries "
         "the unused exclusion to earnings before deducting $65 and "
-        "counting half the earnings remainder (DSSM 20240.1 and 20240.3). "
+        "qualifying impairment-related work expenses, then counting "
+        "half the earnings remainder (DSSM 20200.2(f), 20240.1 and "
+        "20240.3; 20 CFR 416.1112(c)(4)-(7)). "
         "Applicants with a community spouse receive only the eligible "
-        "$20 exclusion (DSSM 20990). Other modeled states use income "
-        "remaining outside the qualified income trust without exclusions."
+        "$20 exclusion (DSSM 20990). Washington removes representable "
+        "WAC 182-513-1340 source exclusions before the SIL comparison "
+        "and income budget. Texas uses income remaining outside the "
+        "qualified income trust."
     )
     reference = (
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=9",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=10",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=71",
+        "https://regulations.delaware.gov/api/AdminCode/title16/20000/13aee487-1cd1-4726-addf-63603af28a78#page=6",
+        "https://www.ssa.gov/OP_Home/cfr20/416/416-1112.htm",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1340",
     )
 
     def formula_2026_01_01(person, period, parameters):
@@ -35,8 +42,17 @@ class medicaid_ltss_individual_countable_income(Variable):
         unused_general_disregard = max_(
             p.de.income.general_disregard - unearned_disregard, 0
         )
+        impairment_expenses = person(
+            "medicaid_ltss_excluded_impairment_related_work_expenses", period
+        )
         countable_earned = (
-            max_(earned - unused_general_disregard - p.de.income.earned_disregard, 0)
+            max_(
+                earned
+                - unused_general_disregard
+                - p.de.income.earned_disregard
+                - impairment_expenses,
+                0,
+            )
             * p.de.income.earned_income_countable_rate
         )
         ordinary_budget = unearned - unearned_disregard + countable_earned
@@ -49,4 +65,9 @@ class medicaid_ltss_individual_countable_income(Variable):
             community_spouse_budget,
             ordinary_budget,
         )
-        return where(state == state.possible_values.DE, delaware_budget, gross)
+        washington_excluded = person("medicaid_ltss_wa_excluded_income", period)
+        return where(
+            state == state.possible_values.DE,
+            delaware_budget,
+            max_(gross - washington_excluded, 0),
+        )

@@ -28,13 +28,18 @@ class medicaid_ltss_financial_pathway(Variable):
         "Aged, blind, or disabled status is an annual input, so it cannot "
         "change within a year on this monthly screen. The setting input is "
         "independent of is_in_medicaid_facility; populating only that "
-        "variable leaves the setting UNKNOWN and the pathway unmodeled."
+        "variable leaves the setting UNKNOWN and the pathway unmodeled. "
+        "Washington applies represented WAC 182-513-1340 source "
+        "exclusions before comparing income with its special income "
+        "limit, as required by WAC 182-513-1317(2)."
     )
     reference = (
         "https://www.law.cornell.edu/cfr/text/42/435.236",
         "https://www.law.cornell.edu/cfr/text/42/435.1005",
         "https://fhb.hhs.texas.gov/sites/default/files/documents/mepd-26-2.pdf#page=465",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=1",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1317",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1340",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1395",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-515-1505",
     )
@@ -48,7 +53,11 @@ class medicaid_ltss_financial_pathway(Variable):
         waiver = person("medicaid_ltss_waiver", period)
         waivers = waiver.possible_values
         assistance_unit_size = person("medicaid_ltss_assistance_unit_size", period)
-        income = person("medicaid_ltss_qit_adjusted_income", period)
+        income = max_(
+            person("medicaid_ltss_qit_adjusted_income", period)
+            - person("medicaid_ltss_wa_excluded_income", period),
+            0,
+        )
         special_income_limit = person("medicaid_ltss_special_income_limit", period)
         aged_blind_disabled = person("is_ssi_aged_blind_disabled", period.this_year)
 

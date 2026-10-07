@@ -1,0 +1,1 @@
+Apply Texas Medicaid LTSS qualified income trust opening-month whole-source exclusions to earned and unearned income after verification of subsequent full deposits, using trust-opening and covered-source facts.

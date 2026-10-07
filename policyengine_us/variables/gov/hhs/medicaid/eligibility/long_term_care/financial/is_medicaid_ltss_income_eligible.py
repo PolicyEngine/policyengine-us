@@ -9,8 +9,11 @@ class is_medicaid_ltss_income_eligible(Variable):
     documentation = (
         "Tests only the income threshold for the selected modeled Medicaid "
         "LTSS financial pathway. Gross earned and unearned income and QIT "
-        "deposits determine income after trust treatment; Washington medically "
-        "needy expenses and cost of care are trusted inputs; this variable "
+        "deposits determine income after trust treatment; Washington applies "
+        "the represented WAC 182-513-1340 source exclusions before its "
+        "special income limit and medically needy payment thresholds. "
+        "Washington medically needy expenses and cost of care are trusted "
+        "inputs; this variable "
         "does not validate a trust, expense, service, or facility rate. The "
         "Washington institutional branch models the WAC 182-513-1395(4) "
         "payment threshold using income only: the excess-resources term in "
@@ -25,9 +28,10 @@ class is_medicaid_ltss_income_eligible(Variable):
         "so the institutional setting should not be used for a hospitalized "
         "Delaware applicant. Delaware computes the $20 general exclusion "
         "from non-needs-based unearned income first, carries any unused "
-        "part to earnings, "
-        "deducts $65, and counts half the earnings remainder (DSSM "
-        "20240.1 and 20240.3). There is one exclusion per couple budget. "
+        "part to earnings, deducts $65 and qualifying impairment-related "
+        "work expenses, then counts half the earnings remainder (DSSM "
+        "20200.2(f), 20240.1, and 20240.3). There is one general and "
+        "earned exclusion per couple budget. "
         "Applicants with a community spouse receive only the eligible "
         "$20 deduction (DSSM 20990)."
     )
@@ -36,10 +40,13 @@ class is_medicaid_ltss_income_eligible(Variable):
         "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/f-6800-qualified-income-trust",
         "https://dhss.delaware.gov/wp-content/uploads/sites/11/2026/06/2026-SSI-Related-Income-Standards-and-Medicare-Premiums.pdf#page=1",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=1",
+        "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=6",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=9",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=71",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1395",
+        "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1340",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-515-1508",
+        "https://www.ssa.gov/OP_Home/cfr20/416/416-1112.htm",
     )
 
     def formula_2026_01_01(person, period, parameters):
@@ -50,14 +57,13 @@ class is_medicaid_ltss_income_eligible(Variable):
         settings = setting.possible_values
         pathway = person("medicaid_ltss_financial_pathway", period)
         pathways = pathway.possible_values
-        income = person("medicaid_ltss_qit_adjusted_income", period)
+        income = person("medicaid_ltss_countable_income", period)
         # The special income limit is zero outside the modeled states and
         # assistance-unit sizes; the SPECIAL_INCOME pathway gate below is what
         # keeps an unmodeled person from passing with zero income.
         special_income_limit = person("medicaid_ltss_special_income_limit", period)
 
-        countable_income = person("medicaid_ltss_countable_income", period)
-        special_income_eligible = countable_income <= special_income_limit
+        special_income_eligible = income <= special_income_limit
 
         medically_needy_expenses = person(
             "medicaid_ltss_medically_needy_expenses", period
