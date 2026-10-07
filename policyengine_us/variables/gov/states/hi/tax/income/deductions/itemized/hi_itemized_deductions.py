@@ -7,7 +7,7 @@ class hi_itemized_deductions(Variable):
     label = "Hawaii itemized deduction"
     unit = USD
     documentation = (
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15"
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15\n"
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=32"  # total itemized deduction worksheet
     )
     definition_period = YEAR

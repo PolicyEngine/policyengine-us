@@ -1,0 +1,32 @@
+# Sources: Kentucky FY2026 state plan, regular heating benefit workbook, and fact sheet.
+- name: Case 1, published monthly limits, including the additional-person rule.
+  period: 2026
+  input:
+    state_code: [KY, KY, KY, KY, KY, KY, KY, KY, KY, KY]
+    spm_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    ky_liheap_income: [23_484, 31_728, 39_984, 48_228, 56_484, 64_728, 72_984, 81_228, 89_484, 97_740]
+  output:
+    ky_liheap_income_eligible: [true, true, true, true, true, true, true, true, true, true]
+- name: Case 2, one dollar per month above the published limits.
+  period: 2026
+  input:
+    state_code: [KY, KY, KY, KY, KY, KY, KY, KY, KY, KY]
+    spm_unit_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    ky_liheap_income: [23_496, 31_740, 39_996, 48_240, 56_496, 64_740, 72_996, 81_240, 89_496, 97_752]
+  output:
+    ky_liheap_income_eligible: [false, false, false, false, false, false, false, false, false, false]
+- name: Case 3, twelve-person limit adds four additional-person amounts.
+  period: 2026
+  input:
+    state_code: [KY, KY]
+    spm_unit_size: [12, 12]
+    # 9_521 and 9_522 a month.
+    ky_liheap_income: [114_252, 114_264]
+  output:
+    # 2025 guideline (one-year lag): 54_150 for eight people, 5_500 for each
+    # additional person.
+    # Eight-person limit: ceil(54_150 * 1.5 / 12 = 6_768.75) = 6_769.
+    # Additional person: ceil(5_500 * 1.5 / 12 = 687.5) = 688, the amount the
+    # fact sheet states.
+    # Twelve-person limit: 6_769 + 4 * 688 = 9_521 a month.
+    ky_liheap_income_eligible: [true, false]

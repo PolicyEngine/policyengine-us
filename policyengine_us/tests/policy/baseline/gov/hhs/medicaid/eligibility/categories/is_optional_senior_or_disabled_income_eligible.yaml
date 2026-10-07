@@ -165,10 +165,12 @@
   output:
     is_optional_senior_or_disabled_income_eligible: [true]
 
-# The limits are inclusive maxima in every state, not just Missouri:
+# The poverty-level limits are inclusive maxima, not just Missouri's:
 # 42 U.S.C. § 1396a(m)(1)(B) covers income that "does not exceed" the
-# state's standard. Florida's limit is 88% FPL: 0.88 x 15,650 = 13,772
-# for one person and 0.88 x 21,150 = 18,612 for a couple in 2025.
+# state's standard. (Oregon, which sets its standard at the SSI rate,
+# requires income below it; see the Oregon cases below.) Florida's limit
+# is 88% FPL: 0.88 x 15,650 = 13,772 for one person and 0.88 x 21,150 =
+# 18,612 for a couple in 2025.
 - name: Income exactly at Florida's limit is eligible
   period: 2025
   input:
@@ -328,3 +330,304 @@
   output:
     # 18,600 combined exceeds the 18,396 couple standard.
     is_optional_senior_or_disabled_income_eligible: [false, false]
+
+# Montana tests aged, blind, and disabled people who do not receive SSI
+# against the SSI payment amounts: "Applicants with monthly countable
+# income equal to or less than these income standards are categorically
+# needy Medicaid eligible" and those "in excess of these income standards
+# are not categorically needy eligible" (DPHHS Medicaid manual ABD 008).
+# In 2026 that is $994 a month ($11,928 a year) for an individual and
+# $1,491 a month ($17,892 a year) for a couple.
+- name: Income exactly at Montana's individual standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 11_928
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+- name: Income one dollar over Montana's individual standard is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 11_929
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]
+
+# $996 a month is over the $994 standard, although it is under 75% of the
+# 2026 poverty guideline ($11,970 a year).
+- name: Montana income between the SSI rate and 75% of poverty is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 11_952
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]
+
+- name: Joint income exactly at Montana's couple standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+- name: Joint income over Montana's couple standard is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 8_947
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 8_947
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+
+# Oregon's rule excludes income equal to the standard: an individual "must
+# have adjusted income (see OAR 461-001-0000) below the standard in this
+# section" (OAR 461-155-0250(3); every version of the rule since 1-01-14
+# says "below", in section (4) until April 2017 and section (3) since). The
+# same rule's other sections say "equal to or less than" and "equal to or
+# below". The standards are $994 a month ($11,928 a year) for one person
+# and $1,491 a month ($17,892 a year) for two in 2026.
+- name: Income exactly at Oregon's individual standard is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 11_928
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    is_optional_senior_or_disabled_income_eligible: [false]
+
+- name: Income one dollar under Oregon's individual standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 11_927
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+- name: Oregon aged couple exactly at the couple standard is ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+      person2:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # 17,892 combined equals the 17,892 couple standard.
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+
+- name: Oregon aged couple one dollar under the couple standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+      person2:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 8_945
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # 17,891 combined is under the 17,892 couple standard.
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+# The other states that set the standard at the SSI rate include income
+# equal to it, as Montana does (cases above). In 2026 the standard is
+# $11,928 a year for one person and $17,892 for a couple.
+# Louisiana: "income equal to or less than the federal benefit rate (FBR)"
+# (LAC 50:III.2305(B)).
+- name: Income exactly at Louisiana's individual standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 11_928
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: LA
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+# Ohio: "countable income ... which does not exceed the income standard"
+# (OAC 5160:1-3-02.4(B)(3)), the "couple income standard" being "the current
+# supplemental security income (SSI) benefit rate for a couple" (OAC
+# 5160:1-3-03.5(B)(2)).
+- name: Joint income exactly at Ohio's couple standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true, true]
+
+# Washington: "Countable income and resources at or below the SSI-related
+# WAH CN medical monthly standard" (WAC 182-512-0100(2)(a)).
+- name: Income exactly at Washington's individual standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 11_928
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+# Colorado and Iowa cover people who meet SSI's income requirements but do
+# not receive the payment (10 CCR 2505-10 § 8.100.3.F.1.d; 441 IAC
+# 75.1(17)). SSI covers income "at a rate of not more than" the benefit
+# rate (42 U.S.C. 1382(a)(1)(A) and (2)(A)), and SSA's eligibility test
+# reads: "If the CI is equal to or less than the FBR ... the individual,
+# based on income, is eligible" (POMS SI 02005.001.C.3).
+- name: Income exactly at Colorado's individual standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 11_928
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true]
+
+- name: Joint income exactly at Iowa's couple standard is eligible
+  period: 2026
+  input:
+    people:
+      person1:
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+      person2:
+        medicaid_optional_senior_or_disabled_countable_income: 8_946
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    is_optional_senior_or_disabled_income_eligible: [true, true]
