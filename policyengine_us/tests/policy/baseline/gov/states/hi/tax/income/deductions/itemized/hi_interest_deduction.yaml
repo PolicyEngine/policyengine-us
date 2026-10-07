@@ -20,7 +20,7 @@
     # $1,100,000 / $1,500,000 * $90,000 = $66,000.
     hi_interest_deduction: 66_000
 
-- name: Case 2, mortgage and investment interest are each limited.
+- name: Case 2, mortgage interest is capped and the bundled investment-interest input is preserved.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -47,11 +47,10 @@
   output:
     # Mortgage: $1,100,000 / $1,300,000 * $65,000 = $55,000.
     hi_mortgage_interest_deduction: 55_000
-    # Investment interest: limited to $2,000 of net investment income.
-    hi_investment_interest_deduction: 2_000
-    hi_interest_deduction: 57_000
+    # Preserve the bundled $5,000 input pending the dataset leaf-input split.
+    hi_interest_deduction: 60_000
 
-- name: Case 3, interest within both limits is fully deductible.
+- name: Case 3, mortgage interest within the debt limit and the bundled input are deductible.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -73,3 +72,26 @@
         state_code: HI
   output:
     hi_interest_deduction: 21_000
+
+- name: Case 4, supplied deductible mortgage interest with a balance is kept alongside the bundled input.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        deductible_mortgage_interest: 45_000
+        investment_interest_expense: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 2023
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_mortgage_interest_deduction: 45_000
+    hi_interest_deduction: 46_000

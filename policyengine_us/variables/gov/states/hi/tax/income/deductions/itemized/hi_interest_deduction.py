@@ -14,4 +14,4 @@ class hi_interest_deduction(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
 
-    adds = ["hi_mortgage_interest_deduction", "hi_investment_interest_deduction"]
+    adds = ["hi_mortgage_interest_deduction", "investment_interest_expense"]
