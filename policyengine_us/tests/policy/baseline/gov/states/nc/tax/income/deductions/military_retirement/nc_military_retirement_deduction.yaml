@@ -159,6 +159,54 @@
     adjusted_gross_income: 30_000
     nc_military_retirement_deduction: 10_000
 
+- name: Explicit own-pay eligibility is preserved with separate nonqualifying survivor benefits.
+  period: 2025
+  input:
+    age: 50
+    military_retirement_pay: 20_000
+    military_retirement_pay_survivors: 10_000
+    taxable_public_pension_income: 30_000
+    # The caller supplies own-pay eligibility instead of service inputs.
+    nc_military_retirement_deduction_eligible: true
+    nc_military_retirement_survivor_eligible: false
+    state_code: NC
+  output:
+    adjusted_gross_income: 30_000
+    nc_military_retirement_deduction: 20_000
+
+- name: Explicit ineligibility is preserved when another filer qualifies and survivor pay is separate.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        military_retirement_pay: 20_000
+        taxable_public_pension_income: 20_000
+        nc_military_retirement_deduction_eligible: true
+      person2:
+        age: 48
+        years_in_military: 20
+        military_retirement_pay: 10_000
+        military_retirement_pay_survivors: 5_000
+        taxable_public_pension_income: 15_000
+        # The head opens the unit's gate, but the spouse's explicit false
+        # input must not be overridden by recomputing their service test.
+        nc_military_retirement_deduction_eligible: false
+        nc_military_retirement_survivor_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    adjusted_gross_income: 35_000
+    nc_military_retirement_deduction: 20_000
+
 - name: Survivor benefits from a member who did not qualify are not deducted.
   period: 2025
   input:

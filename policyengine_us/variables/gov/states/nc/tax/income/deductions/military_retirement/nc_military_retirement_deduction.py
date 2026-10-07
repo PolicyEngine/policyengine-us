@@ -30,9 +30,12 @@ class nc_military_retirement_deduction(Variable):
         # When survivor pay is recorded separately, military_retirement_pay
         # contains the recipient's own retirement pay. A qualifying survivor
         # benefit does not make their own otherwise ineligible pay deductible.
-        own_pay_eligible = (
+        own_record_eligible = (
             person("years_in_military", period) >= p.minimum_years
         ) | person("is_permanently_disabled_veteran", period)
+        # Preserve explicit own-pay eligibility inputs. If eligibility comes
+        # from survivor benefits, own pay still needs its own qualifying record.
+        own_pay_eligible = eligible & (~survivor | own_record_eligible)
         military_pay_eligible = where(survivor_pay > 0, own_pay_eligible, eligible)
         # With no separate survivor amount, military_retirement_pay can instead
         # contain only survivor benefits, as its documentation permits. Mixed
