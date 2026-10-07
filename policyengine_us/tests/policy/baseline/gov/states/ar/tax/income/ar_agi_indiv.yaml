@@ -19,7 +19,7 @@
   output:
     ar_agi_indiv: [900, 1_800]
 
-- name: Dependent AGI gets attributed to the head, AGI capped at 0
+- name: Dependent AGI goes to the spouse with the greater AGI, AGI capped at 0
   period: 2022
   input:
     people:
@@ -64,3 +64,68 @@
     ar_gross_income_indiv: 56_000
     ar_capped_retirement_or_disability_benefits_exemption_person: 6_000
     ar_agi_indiv: 50_000
+
+- name: Dependent AGI goes to the spouse with the greater AGI when that spouse is not the head
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_gross_income_indiv: 1_000
+        ar_exemptions: 100
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person2:
+        ar_gross_income_indiv: 100
+        ar_exemptions: 200
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person3:
+        ar_gross_income_indiv: 500
+        ar_exemptions: 200
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # The same couple as above with the head and spouse labels exchanged.
+    ar_agi_indiv: [1_200, 0, 0]
+
+- name: Spouses with equal AGI split the dependent AGI equally
+  period: 2022
+  input:
+    people:
+      person1:
+        ar_gross_income_indiv: 1_000
+        ar_exemptions: 0
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person2:
+        ar_gross_income_indiv: 1_000
+        ar_exemptions: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        ar_gross_income_indiv: 300
+        ar_exemptions: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    ar_agi_indiv: [1_150, 1_150, 0]

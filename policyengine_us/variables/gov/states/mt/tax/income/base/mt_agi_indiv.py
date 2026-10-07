@@ -7,6 +7,13 @@ class mt_agi_indiv(Variable):
     label = "Montana Adjusted Gross Income for each individual"
     unit = USD
     definition_period = YEAR
+    reference = (
+        # Filing separately: report items of income as on the federal return
+        "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=12",
+        # Parents filing separately: the parent with the greater taxable income
+        "https://www.law.cornell.edu/uscode/text/26/1#g_5_B",
+        "https://www.irs.gov/instructions/i8814",
+    )
     defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
     def formula(person, period, parameters):
@@ -28,9 +35,7 @@ class mt_agi_indiv(Variable):
             # 2024 and after: no longer apply the social security adjustment
             tax_unit_mt_agi = reduced_agi
 
-        # in all years
-        # allocate any dependent net_income to tax unit head
-        is_dependent = person("is_tax_unit_dependent", period)
-        sum_dep_net_income = person.tax_unit.sum(is_dependent * tax_unit_mt_agi)
-        is_head = person("is_tax_unit_head", period)
-        return ~is_dependent * tax_unit_mt_agi + is_head * sum_dep_net_income
+        # In all years, dependents' income goes on the return of the spouse
+        # with the greater income: filing separately, each spouse reports
+        # income as on a separate federal return.
+        return move_dependent_amounts_to_filer(person, period, tax_unit_mt_agi)
