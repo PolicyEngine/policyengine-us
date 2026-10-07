@@ -8,9 +8,9 @@ class mi_additions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/Schedule-1.pdf",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/MI-1040.pdf",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/Schedule-1.pdf",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/BOOK_MI-1040.pdf",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/MI-1040.pdf",
     )
     defined_for = StateCode.MI
 

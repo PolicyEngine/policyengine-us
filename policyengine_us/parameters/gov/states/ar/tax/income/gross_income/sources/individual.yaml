@@ -15,7 +15,9 @@ values:
     - taxable_pension_income # Line 18
     - disability_benefits # Line 18b
     - rental_income # Line 19
-    - farm_rent_income # Line 20
+    - estate_income # Line 19
+    - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
+    - farm_operations_income # Line 20, Schedule F
   # Act 141 of 2017 added unemployment compensation to gross income for tax
   # years beginning on or after January 1, 2018. Act 154 of 2021 then exempted
   # it for calendar years 2020 and 2021, after which it is taxable again.
@@ -33,7 +35,9 @@ values:
     - taxable_pension_income # Line 18
     - disability_benefits # Line 18b
     - rental_income # Line 19
-    - farm_rent_income # Line 20
+    - estate_income # Line 19
+    - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
+    - farm_operations_income # Line 20, Schedule F
     - unemployment_compensation # Line 21
   2020-01-01:
     - irs_employment_income # Line 8
@@ -49,7 +53,9 @@ values:
     - taxable_pension_income # Line 18
     - disability_benefits # Line 18b
     - rental_income # Line 19
-    - farm_rent_income # Line 20
+    - estate_income # Line 19
+    - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
+    - farm_operations_income # Line 20, Schedule F
   2022-01-01:
     - irs_employment_income # Line 8
     - self_employment_income # Line 8
@@ -68,7 +74,9 @@ values:
     - keogh_distributions # Line 18
     - disability_benefits # Line 18b
     - rental_income # Line 19
-    - farm_rent_income # Line 20
+    - estate_income # Line 19
+    - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
+    - farm_operations_income # Line 20, Schedule F
     - unemployment_compensation # Line 21
 
 metadata:

@@ -20,10 +20,23 @@ class ma_part_b_agi(Variable):
             for deduction in federal_deductions
             if deduction not in disallowed_deductions
         ]
-        deduction_value = add(tax_unit, period, deductions)
+        # Part B gross income starts from irs_gross_income, which leaves out
+        # tax unit dependents, so their deductions are left out too.
+        deduction_value = tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            deductions,
+            include_dependents=p.irs.ald.filer_amounts_recorded_on_dependents,
+        )
         # U.S. government bond interest is exempt from MA tax.
         us_govt_interest = add(tax_unit, period, ["us_govt_interest"])
+        # Schedule Y line 9c, which the Massachusetts AGI worksheet subtracts
+        # with Schedule Y lines 2 to 10.
+        unemployment_deduction = tax_unit("ma_qualified_unemployment_deduction", period)
         return max_(
             0,
-            part_b_gross_income - deduction_value - us_govt_interest,
+            part_b_gross_income
+            - deduction_value
+            - us_govt_interest
+            - unemployment_deduction,
         )
