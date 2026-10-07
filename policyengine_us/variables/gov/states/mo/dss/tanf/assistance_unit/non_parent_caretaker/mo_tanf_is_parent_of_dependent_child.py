@@ -39,8 +39,8 @@ class mo_tanf_is_parent_of_dependent_child(Variable):
         # its own it also marks, for example, the head's elderly mother,
         # whose own child in the home is the head. Also require the person
         # to be 12 to 50 years older than at least one of the tax unit's
-        # dependent children: a parent is at least 12 at a child's birth,
-        # and births after 50 are rare. This window is an imputation rule,
+        # dependent children. The bounds approximate typical birth ages;
+        # they do not establish parenthood. This window is an imputation rule,
         # not law: the rule covers adoptive parents of any age, so a genuine
         # adoptive parent outside the window needs this input set to true.
         # Dependent children are all under 19, so their ages span less than

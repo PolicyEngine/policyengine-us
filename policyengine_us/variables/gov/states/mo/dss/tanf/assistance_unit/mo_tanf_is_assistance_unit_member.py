@@ -79,7 +79,7 @@ class mo_tanf_is_assistance_unit_member(Variable):
         # that three-generation family file as one assistance group. For an
         # 18-year-old parent in secondary school the sources do not settle
         # the grouping; keeping her in one combined unit with her own parent
-        # is one of several readings, not settled law.
+        # is retained interpretation (i), one of several readings.
         other_parent = (
             person("mo_tanf_is_parent_of_dependent_child", period.this_year)
             & ~non_parent
