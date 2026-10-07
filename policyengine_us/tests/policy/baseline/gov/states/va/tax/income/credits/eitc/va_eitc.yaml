@@ -39,16 +39,16 @@
   output:
     va_eitc: 100
 
-- name: Prorated eitc for the head of the tax unit
+- name: Spouses filing separately in one tax unit report the whole credit the tax applies
   period: 2021
   input:
     people:
       person1:
-        va_eitc_person: 1_000
         is_tax_unit_head: true
+        employment_income: 9_000
       person2:
-        va_eitc_person: 500
-        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        employment_income: 3_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -61,4 +61,60 @@
         members: [person1, person2]
         state_code: VA
   output:
-    va_eitc: 1_000
+    # The spouses split the Virginia EIC by their shares of the earned income
+    # used for the federal EITC and claim those shares on their two separate
+    # returns, and only one of them may claim the Credit for Low-Income
+    # Individuals (2021 Form 760 instructions, p. 32), so together they claim
+    # the whole credit. It does not depend on which spouse is listed first.
+    va_eitc: 100
+
+- name: The same couple with the head and spouse labels exchanged
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_spouse: true
+        employment_income: 9_000
+      person2:
+        is_tax_unit_head: true
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        va_refundable_eitc: 0
+        va_non_refundable_eitc: 100
+        va_claims_refundable_eitc: false
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_eitc: 100
+
+- name: A separate filer's credit is not reduced by a dependent's Virginia subtractions
+  period: 2024
+  input:
+    people:
+      parent:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 12_000
+      child:
+        is_tax_unit_dependent: true
+        age: 19
+        is_full_time_student: true
+        unemployment_compensation: 4_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        va_refundable_eitc: 600
+        va_non_refundable_eitc: 15
+        va_claims_refundable_eitc: true
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    va_eitc: 600
