@@ -27,3 +27,29 @@
     oh_joint_filing_credit_agi_subtractions: 10_000
   output:
     oh_joint_filing_credit_qualifying_income: -6_000
+
+- name: The spouse's own IRA deduction counts against the spouse's qualifying income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+      spouse:
+        age: 45
+        employment_income: 3_000
+        traditional_ira_contributions: 2_800
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+  output:
+    # The spouse's AGI is $200, under the $500 each spouse needs
+    # (R.C. 5747.05(E)). Before, half the IRA deduction went to the head:
+    # [58_600, 1_600], and the couple qualified.
+    oh_joint_filing_credit_qualifying_income: [60_000, 200]
+    oh_joint_filing_credit_eligible: false

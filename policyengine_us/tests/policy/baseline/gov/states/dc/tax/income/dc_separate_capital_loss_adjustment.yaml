@@ -1,0 +1,217 @@
+# Spouses who file separately on the same DC return each deduct their own
+# capital losses up to their own capital gains plus $1,500, the limit for
+# married people filing separately (2024 D-40 instructions, p. 16, line c).
+# The joint DC computation keeps the federal joint deduction, up to $3,000.
+
+- name: A head's $5,000 capital loss is limited to $1,500 when filing separately.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -5_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # The federal joint return deducts $3,000, all of it the head's.
+    adjusted_gross_income_person: [57_000, 40_000]
+    dc_agi: [57_000, 40_000]
+    # Separately the head deducts $1,500: 3,000 - 1,500.
+    dc_separate_capital_loss_adjustment: [1_500, 0]
+    # 57,000 + 1,500 - 29,200 and 40,000.
+    dc_taxable_income_indiv: [29_300, 40_000]
+    # Joint: 97,000 - 29,200, unchanged.
+    dc_taxable_income_joint: 67_800
+    # 3,668 before, plus 6% of 1,500. Still less than the joint 4,163.
+    dc_income_tax_before_credits_indiv: 3_758
+    dc_income_tax_before_credits_joint: 4_163
+    dc_income_tax_before_credits: 3_758
+
+- name: Each spouse deducts up to $1,500 of their own losses.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -4_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        short_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # The federal $3,000 is divided in proportion to the losses: 2,000 and
+    # 1,000. Separately each spouse deducts 1,500.
+    adjusted_gross_income_person: [58_000, 39_000]
+    dc_separate_capital_loss_adjustment: [500, -500]
+    dc_taxable_income_indiv: [29_300, 38_500]
+    dc_taxable_income_joint: 67_800
+
+- name: One spouse's capital gain does not absorb the other's loss when filing separately.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -5_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        long_term_capital_gains: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # Jointly the head's $5,000 loss offsets the spouse's $4,000 gain plus
+    # $1,000 more. Separately the head deducts $1,500 and the spouse reports
+    # the whole gain.
+    adjusted_gross_income_person: [55_000, 44_000]
+    dc_separate_capital_loss_adjustment: [3_500, 0]
+    # The deduction is reallocated to the spouses' separate AGIs (58,500 and
+    # 44,000), still adding up to 29,200.
+    dc_deduction_indiv: [18_500, 10_700]
+    dc_taxable_income_indiv: [40_000, 33_300]
+    dc_taxable_income_joint: 69_800
+    dc_income_tax_before_credits_indiv: 3_998
+    dc_income_tax_before_credits_joint: 4_333
+
+- name: A spouse's own capital gain distributions absorb their own loss first.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -2_000
+        non_sch_d_capital_gains: 1_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # The whole $2,000 loss is deductible either way: $1,000 against the
+    # distributions and a $1,000 net loss.
+    dc_separate_capital_loss_adjustment: [0, 0]
+    dc_taxable_income_indiv: [29_800, 40_000]
+
+- name: No adjustment for a single filer or a dependent.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -5_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+      child:
+        age: 10
+        long_term_capital_gains: -1_000
+      single:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -5_000
+    tax_units:
+      couple_unit:
+        members: [head, spouse, child]
+      single_unit:
+        members: [single]
+    households:
+      couple_household:
+        members: [head, spouse, child]
+        state_code: DC
+      single_household:
+        members: [single]
+        state_code: DC
+  output:
+    dc_separate_capital_loss_adjustment: [1_500, 0, 0, 0]
+    dc_taxable_income_indiv: [29_300, 40_000, 0, 42_400]
+    dc_taxable_income_joint: [67_800, 42_400]
+
+- name: A loss_ald set directly to zero leaves no capital deduction in federal AGI to remove.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -5_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        loss_ald: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    adjusted_gross_income_person: [60_000, 40_000]
+    # Federal AGI deducts nothing; separately the head deducts 1,500.
+    dc_separate_capital_loss_adjustment: [-1_500, 0]
+    dc_taxable_income_indiv: [29_300, 40_000]
+    dc_taxable_income_joint: 70_800
+    dc_income_tax_before_credits_indiv: 3_758
+
+- name: A loss_ald set directly below the separate limit.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -5_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        loss_ald: 1_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # The head's federal AGI deducts the whole 1,000; separately 1,500.
+    adjusted_gross_income_person: [59_000, 40_000]
+    dc_separate_capital_loss_adjustment: [-500, 0]
+    dc_taxable_income_indiv: [29_300, 40_000]
+    dc_taxable_income_joint: 69_800

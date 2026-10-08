@@ -1,0 +1,25 @@
+- name: Household AGI counts the couple's AGI once, however it is divided between them.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 30_000
+        traditional_ira_contributions: 6_000
+      spouse:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MN
+  output:
+    # Before, the spouse's AGI was -3,000 and the head's 27,000.
+    adjusted_gross_income_person: [24_000, 0]
+    mn_renters_credit_household_agi: 24_000

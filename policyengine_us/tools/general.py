@@ -79,6 +79,34 @@ def person_share_of_tax_unit_amount(person, period, tax_unit_variable, person_va
     return where(filer, filer_share, own)
 
 
+def filer_share(person, period, amounts):
+    """
+    Each head's or spouse's share of the tax unit's total of `amounts`.
+
+    `amounts` is a person-level array. A tax unit dependent's share is zero,
+    as their items belong on their own returns. When the head's and spouse's
+    amounts add up to zero or less, they share equally.
+    """
+    tax_unit = person.tax_unit
+    filer = ~person("is_tax_unit_dependent", period)
+    filer_amounts = filer * amounts
+    total = tax_unit.sum(filer_amounts)
+    filers = tax_unit.sum(filer)
+    equal = np.divide(
+        filer.astype(float),
+        filers,
+        out=np.zeros_like(filers, dtype=float),
+        where=filers > 0,
+    )
+    proportional = np.divide(
+        filer_amounts,
+        total,
+        out=np.zeros_like(total, dtype=float),
+        where=total > 0,
+    )
+    return where(total > 0, proportional, equal)
+
+
 def sum_contained_tax_units(var, population, period):
     tax_unit = population.members.tax_unit.reference_entity
     values = tax_unit(var, period)

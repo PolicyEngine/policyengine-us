@@ -6,6 +6,15 @@ class adjusted_gross_income_person(Variable):
     entity = Person
     label = "Federal adjusted gross income for each person"
     unit = USD
+    documentation = (
+        "Each person's part of the tax unit's federal AGI: their own gross "
+        "income less their own above-the-line deductions "
+        "(above_the_line_deductions_person). On a joint return a deduction "
+        "that belongs to one spouse, such as their IRA deduction, lowers only "
+        "that spouse's AGI. The head's and spouse's amounts add up to the tax "
+        "unit's adjusted_gross_income. A tax unit dependent's income and "
+        "deductions are on their own return, so their amount here is zero."
+    )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/62"
 
@@ -14,34 +23,15 @@ class adjusted_gross_income_person(Variable):
         # A tax unit dependent's deductions are on their own return, as
         # irs_gross_income leaves their income off this one.
         not_dependent = ~person("is_tax_unit_dependent", period)
-        # calculate ald sums by person
-        PERSON_ALDS = [
-            "self_employment_tax_ald",
-            "self_employed_health_insurance_ald",
-            "self_employed_pension_contribution_ald",
-        ]
-        person_ald_vars = [f"{ald}_person" for ald in PERSON_ALDS]
-        ald_sum_person = not_dependent * add(person, period, person_ald_vars)
-        # split other alds evenly between head and spouse
-        p = parameters(period).gov.irs.ald
-        all_alds = p.deductions
-        other_alds = sorted(set(all_alds) - set(PERSON_ALDS))
-        ald_sum_taxunit = tax_unit_non_dep_add(
-            person.tax_unit,
-            period,
-            other_alds,
-            include_dependents=p.filer_amounts_recorded_on_dependents,
-        )
-        is_head = person("is_tax_unit_head", period)
-        is_spouse = person("is_tax_unit_spouse", period)
-        fstatus = person.tax_unit("filing_status", period)
-        frac = where(fstatus == fstatus.possible_values.JOINT, 0.5, 1.0)
-        ald_sum_taxunit_shared = (is_head | is_spouse) * ald_sum_taxunit * frac
-        # calculate AGI by person
-        agi = gross_income - ald_sum_person - ald_sum_taxunit_shared
+        deductions = person("above_the_line_deductions_person", period)
+        agi = gross_income - not_dependent * deductions
         if parameters(period).gov.contrib.ubi_center.basic_income.taxable:
             basic_income = person.tax_unit("basic_income", period)
             # split basic income evenly between head and spouse
+            is_head = person("is_tax_unit_head", period)
+            is_spouse = person("is_tax_unit_spouse", period)
+            fstatus = person.tax_unit("filing_status", period)
+            frac = where(fstatus == fstatus.possible_values.JOINT, 0.5, 1.0)
             basic_income_shared = (is_head | is_spouse) * basic_income * frac
             agi += basic_income_shared
         return agi
