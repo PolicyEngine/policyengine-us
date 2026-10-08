@@ -136,21 +136,6 @@ def test_a_child_killed_before_reporting_is_not_credited_a_pass():
     assert result["status"] == "failed"
 
 
-def test_the_shim_reports_the_real_runner_status():
-    """End to end against policyengine-core, not a scripted stand-in.
-
-    An empty directory collects nothing, so pytest exits 5 - a status the
-    summary line never carries and the runner now reports.
-    """
-    import tempfile
-
-    with tempfile.TemporaryDirectory() as empty:
-        result = batched.run_batch([empty], "Batch 1", stream=False)
-    assert batched.BATCH_EXIT_MARKER in result["output"]
-    assert result["returncode"] == batched.PYTEST_NO_TESTS_COLLECTED
-    assert result["status"] == "failed"
-
-
 def test_a_child_that_never_prints_a_summary_is_judged_by_its_exit_status():
     """Crashes before the summary line (OOM kill, import error) still count."""
     crashing = [sys.executable, "-u", "-c", "import sys; sys.exit(1)"]

@@ -7,10 +7,10 @@ the first year the parameters are backdated to.
 
 import pytest
 
-from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us import Simulation
+from policyengine_us.system import system as SYSTEM
 from policyengine_us.tools.parameters import FIRST_MODELED_YEAR
 
-SYSTEM = CountryTaxBenefitSystem()
 
 FILING_STATUSES = ["SINGLE", "JOINT", "SEPARATE", "HEAD_OF_HOUSEHOLD"]
 INCOMES = [0, 30_000, 150_000, 500_000]

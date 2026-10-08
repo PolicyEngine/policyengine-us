@@ -100,6 +100,7 @@ def test_directory_batch_collects_yaml_only(small_country, monkeypatch):
 
 def test_python_only_directory_is_not_a_passing_yaml_batch(small_country):
     result = batched.run_batch([str(small_country)], "no YAML", stream=False)
+    assert batched.BATCH_EXIT_MARKER in result["output"]
     assert result["returncode"] == batched.PYTEST_NO_TESTS_COLLECTED, result["output"]
     assert result["status"] == "failed"
     assert not (small_country.parent / "python-imported").exists()

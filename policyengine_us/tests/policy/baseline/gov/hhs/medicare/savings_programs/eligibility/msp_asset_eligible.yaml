@@ -103,3 +103,89 @@
     state_code: MA
   output:
     msp_asset_eligible: true
+
+# Policy examples moved from Python; retain their original inputs and outputs.
+- name: Historical msp asset eligibility uses federal default
+  period: 2014-01
+  absolute_error_margin: 0
+  input:
+    ssi_countable_resources:
+      '2014': 0
+    state_code: AR
+  output:
+    msp_asset_eligible: true
+- name: Historical msp asset limits before 2013
+  period: 2012-01
+  absolute_error_margin: 0
+  input:
+    people:
+      below_limit:
+        ssi_countable_resources:
+          '2012': 6940
+      above_limit:
+        ssi_countable_resources:
+          '2012': 7000
+      spouse_1:
+        ssi_countable_resources:
+          '2012': 5000
+      spouse_2:
+        ssi_countable_resources:
+          '2012': 5500
+    households:
+      household:
+        members:
+        - below_limit
+        - above_limit
+        - spouse_1
+        - spouse_2
+        state_code: AR
+    tax_units:
+      tax_unit_1:
+        members:
+        - below_limit
+      tax_unit_2:
+        members:
+        - above_limit
+      tax_unit_3:
+        members:
+        - spouse_1
+        - spouse_2
+    spm_units:
+      spm_unit_1:
+        members:
+        - below_limit
+      spm_unit_2:
+        members:
+        - above_limit
+      spm_unit_3:
+        members:
+        - spouse_1
+        - spouse_2
+    families:
+      family_1:
+        members:
+        - below_limit
+      family_2:
+        members:
+        - above_limit
+      family_3:
+        members:
+        - spouse_1
+        - spouse_2
+    marital_units:
+      marital_unit_1:
+        members:
+        - below_limit
+      marital_unit_2:
+        members:
+        - above_limit
+      marital_unit_3:
+        members:
+        - spouse_1
+        - spouse_2
+  output:
+    msp_asset_eligible:
+    - true
+    - false
+    - false
+    - false

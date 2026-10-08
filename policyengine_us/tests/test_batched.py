@@ -20,6 +20,8 @@ from typing import FrozenSet, List, Dict, Optional, Tuple
 
 import yaml
 
+SafeLoader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
+
 
 # policyengine-core collects both YAML suffixes
 # (policyengine_core/tools/test_runner.py accepts ".yaml" and ".yml"), so any
@@ -95,7 +97,7 @@ def file_reform_combos(yaml_file: Path) -> FrozenSet[ComboKey]:
     surfaces any genuine syntax error.
     """
     try:
-        cases = yaml.safe_load(yaml_file.read_text())
+        cases = yaml.load(yaml_file.read_text(), Loader=SafeLoader)
     except (OSError, yaml.YAMLError):
         return frozenset()
     if not isinstance(cases, list):

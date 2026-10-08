@@ -5,6 +5,8 @@ from pathlib import Path
 
 import yaml
 
+BaseLoader = getattr(yaml, "CBaseLoader", yaml.BaseLoader)
+
 
 def test_spm_caps_have_only_spm_resource_consumers():
     root = Path(__file__).resolve().parents[2]
@@ -96,7 +98,7 @@ def test_spm_caps_have_only_spm_resource_consumers():
     # Include nested values in brackets/breakdowns. BaseLoader preserves
     # year-zero date keys without constructing unsupported datetime objects.
     for path in (root / "parameters").rglob("*.yaml"):
-        parameter = yaml.load(path.read_text(), Loader=yaml.BaseLoader)
+        parameter = yaml.load(path.read_text(), Loader=BaseLoader)
         for value in scalar_values(parameter):
             if value in consumers:
                 violations.append(f"{path.relative_to(root)} names {value}")

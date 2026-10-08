@@ -4,9 +4,8 @@ Regression test for https://github.com/PolicyEngine/policyengine-us/pull/7695
 which removed the formula, breaking ACA PTC for LA County households.
 """
 
-from policyengine_us import CountryTaxBenefitSystem, Simulation
-
-system = CountryTaxBenefitSystem()
+from policyengine_us import Simulation
+from policyengine_us.system import system
 
 
 def _make_sim(zip_code):

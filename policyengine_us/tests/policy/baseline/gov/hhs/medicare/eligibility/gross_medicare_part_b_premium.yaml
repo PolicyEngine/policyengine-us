@@ -1,0 +1,80 @@
+# Policy examples moved from Python; retain their original inputs and outputs.
+- name: Gross medicare part b premium handles direct filing status inputs
+  period: 2025
+  relative_error_margin: 1.0e-06
+  input:
+    people:
+      person_1:
+        age:
+          '2025': 65
+        base_part_b_premium:
+          '2025': 2220
+        is_medicare_eligible:
+          '2025': true
+        tax_exempt_interest_income:
+          '2023': 0
+      person_2:
+        age:
+          '2025': 65
+        base_part_b_premium:
+          '2025': 2220
+        is_medicare_eligible:
+          '2025': true
+        tax_exempt_interest_income:
+          '2023': 0
+      person_3:
+        age:
+          '2025': 65
+        base_part_b_premium:
+          '2025': 2220
+        is_medicare_eligible:
+          '2025': true
+        tax_exempt_interest_income:
+          '2023': 0
+    households:
+      household:
+        members:
+        - person_1
+        - person_2
+        - person_3
+    tax_units:
+      joint_tax_unit:
+        members:
+        - person_1
+        - person_2
+        filing_status:
+          '2025': JOINT
+        adjusted_gross_income:
+          '2023': 1000000
+      single_tax_unit:
+        members:
+        - person_3
+        filing_status:
+          '2025': SINGLE
+        adjusted_gross_income:
+          '2023': 50000
+    spm_units:
+      spm_unit:
+        members:
+        - person_1
+        - person_2
+        - person_3
+    families:
+      family:
+        members:
+        - person_1
+        - person_2
+        - person_3
+    marital_units:
+      marital_unit_1:
+        members:
+        - person_1
+        - person_2
+      marital_unit_2:
+        members:
+        - person_3
+  output:
+    gross_medicare_part_b_premium:
+    - 7546.8
+    - 7546.8
+    - 2220

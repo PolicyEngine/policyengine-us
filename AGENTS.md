@@ -6,6 +6,8 @@ Follow the repository guidance in `CLAUDE.md` for commands, style, changelog ent
 
 Follow [Test design and CI cost](CLAUDE.md#test-design-and-ci-cost) before adding or expanding tests. Use variable-named YAML tests for policy calculations; reserve Python tests for behavior YAML cannot exercise. Preserve Core/data compatibility and isolation coverage, avoid repeated full-model construction, and do not add CI runners or parallel heavy processes without explicit authorization. Document the purpose and measured cost of new simulation-heavy Python tests in the PR.
 
+For read-only parameter lookups and baseline simulations in Python tests, reuse the already-loaded `system` from `policyengine_us.system` instead of constructing another `CountryTaxBenefitSystem()`. Create a fresh `Simulation` for each independent case; sharing baseline policy must not share mutable simulation state. Never modify the shared baseline's parameters or variable definitions. Keep dedicated systems where construction, mutation, reform, or cache/isolation behavior requires them, and explain that need in a code comment or the PR.
+
 ## Partner API Contract Tests
 
 Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests.

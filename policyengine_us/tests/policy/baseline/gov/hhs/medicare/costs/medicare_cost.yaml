@@ -69,3 +69,51 @@
     gross_medicare_part_b_premium: 3_000
   output:
     medicare_cost: 11_500  # $14,500 spending - $3,000 Part B premium
+
+# Policy examples moved from Python; retain their original inputs and outputs.
+- name: Medicare cost uses gross part b before msp offset
+  period: 2025
+  relative_error_margin: 1.0e-06
+  input:
+    age:
+      '2025': 65
+    is_medicare_eligible:
+      '2025': true
+    medicare_enrolled:
+      '2025': true
+    medicare_quarters_of_coverage:
+      '2025': 40
+    gross_medicare_part_b_premium:
+      '2025': 2220
+    base_part_b_premium:
+      '2025': 2220
+    msp_income_eligible:
+      2025-01: true
+    msp_asset_eligible:
+      2025-01: true
+  output:
+    medicare_part_b_premium: 0
+    medicare_cost: 12280
+- name: Gross medicare part b premium if enrolled preserves irmaa
+  period: 2025
+  relative_error_margin: 1.0e-06
+  input:
+    age:
+      '2025': 65
+    is_medicare_eligible:
+      '2025': true
+    medicare_enrolled:
+      '2025': true
+    medicare_quarters_of_coverage:
+      '2025': 40
+    gross_medicare_part_b_premium:
+      '2025': 4440
+    base_part_b_premium:
+      '2025': 2220
+    msp_income_eligible:
+      2025-01: false
+    msp_asset_eligible:
+      2025-01: false
+  output:
+    gross_medicare_part_b_premium_if_enrolled: 4440
+    medicare_cost: 10060

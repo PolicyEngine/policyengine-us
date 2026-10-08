@@ -193,3 +193,52 @@
     msp_asset_eligible: false
   output:
     medicare_part_b_premium: 8_278.8
+
+# Policy examples moved from Python; retain their original inputs and outputs.
+- name: Medicare part b premium preserves only irmaa above msp support
+  period: 2025
+  relative_error_margin: 1.0e-06
+  input:
+    age:
+      '2025': 65
+    is_medicare_eligible:
+      '2025': true
+    medicare_enrolled:
+      '2025': true
+    medicare_quarters_of_coverage:
+      '2025': 40
+    gross_medicare_part_b_premium:
+      '2025': 4440
+    base_part_b_premium:
+      '2025': 2220
+    msp_income_eligible:
+      2025-01: true
+    msp_asset_eligible:
+      2025-01: true
+  output:
+    medicare_part_b_premium: 2220
+- name: Medicare part b premium is zero when not enrolled
+  period: 2025
+  relative_error_margin: 1.0e-06
+  input:
+    age:
+      '2025': 65
+    is_medicare_eligible:
+      '2025': true
+    medicare_enrolled:
+      '2025': false
+    medicare_quarters_of_coverage:
+      '2025': 40
+    gross_medicare_part_b_premium:
+      '2025': 2220
+    base_part_b_premium:
+      '2025': 2220
+    msp_income_eligible:
+      2025-01: true
+    msp_asset_eligible:
+      2025-01: true
+  output:
+    msp_part_b_premium_coverage: 0
+    medicare_part_b_premium: 0
+    gross_medicare_part_b_premium: 2220
+    gross_medicare_part_b_premium_if_enrolled: 0

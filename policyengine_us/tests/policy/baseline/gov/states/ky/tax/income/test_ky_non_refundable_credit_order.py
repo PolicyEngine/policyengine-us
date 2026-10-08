@@ -10,7 +10,7 @@ reordered or extended, the helper must be updated to match; this test fails so
 the divergence is caught in CI.
 """
 
-from policyengine_us import CountryTaxBenefitSystem
+from policyengine_us.system import system
 
 EXPECTED_2022_ORDER = [
     "ky_personal_tax_credits",
@@ -21,7 +21,7 @@ EXPECTED_2022_ORDER = [
 
 
 def test_ky_non_refundable_credit_order_2022():
-    parameters = CountryTaxBenefitSystem().parameters
+    parameters = system.parameters
     credit_list = parameters.gov.states.ky.tax.income.credits.non_refundable(
         "2022-01-01"
     )
