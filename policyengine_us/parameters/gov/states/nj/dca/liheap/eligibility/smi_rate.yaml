@@ -1,0 +1,21 @@
+description: New Jersey limits monthly income to this share of state median income under the Low Income Home Energy Assistance Program.
+# In force since FY2022, when the test moved from a poverty-level standard to
+# 60% SMI (BPU announcement of October 19, 2021). Earlier periods are not
+# modeled (eligibility/in_effect).
+values:
+  2021-10-01: 0.6
+metadata:
+  unit: /1
+  period: year
+  label: New Jersey LIHEAP SMI rate
+  reference:
+  - title: FY2026 LIHEAP Handbook, section 2.3.A
+    href: https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=7
+  - title: FY2027 LIHEAP Handbook, section 2.3.A
+    href: https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20LIHEAP%20Handbook.pdf#page=7
+  - title: FY2026 LIHEAP State Plan, section 2.1
+    href: https://liheapch.acf.gov/docs/2026/state-plans/NJ_Plan_2026.pdf#page=9
+  - title: FY2027 LIHEAP State Plan, section 2.1
+    href: https://www.nj.gov/dca/dhcr/offices/docs/LIHEAP_Detailed_Model_Plan.pdf#page=9
+  - title: NJ Board of Public Utilities, Utility Assistance Week announcement, October 19, 2021
+    href: https://www.nj.gov/bpu/newsroom/2021/approved/20211019.html
