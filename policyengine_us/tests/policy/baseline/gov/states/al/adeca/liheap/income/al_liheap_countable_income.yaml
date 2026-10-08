@@ -489,6 +489,9 @@
 # https://www.dol.gov/agencies/whd/minimum-wage/state): 7.25 x 2_080 hours = 15_080.
 # Separate tax and marital units keep the child's wages out of SSI spousal deeming.
 # Countable income: SSI 11_928 + al_ssp 720 + wages 15_080 = 27_728.
+# Leave SSI unset for both people so the model computes receipt.
+# FY2026 Appendix D gives 390 for two people, propane and the third income band;
+# with no HUD allowance, the plan's 100 IIJA supplement makes the final award 490.
 - name: Case 15, Alabama SSP of an SSI recipient living with a working adult child is counted.
   period: 2026
   absolute_error_margin: 0.01
@@ -503,7 +506,6 @@
       person2:
         age: 42
         immigration_status: CITIZEN
-        ssi: 0
         employment_income: 15_080
     tax_units:
       tax_unit1:
@@ -530,3 +532,4 @@
     ssi: [11_928, 0]
     al_ssp: [720, 0]
     al_liheap_countable_income: 27_728
+    al_liheap: 490
