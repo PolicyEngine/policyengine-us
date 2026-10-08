@@ -7,8 +7,8 @@ class ri_liheap_eligible(Variable):
     definition_period = YEAR
     label = "Rhode Island LIHEAP regular heating eligibility"
     defined_for = StateCode.RI
-    # DHS manual physical pages 5, 6 and 12.
     reference = (
+        # PDF pages 5-6, 12
         "https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=5",
         "https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=8",
     )

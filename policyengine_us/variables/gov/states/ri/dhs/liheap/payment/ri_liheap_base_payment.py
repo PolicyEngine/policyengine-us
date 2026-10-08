@@ -20,7 +20,7 @@ class ri_liheap_base_payment(Variable):
         "https://dhs.ri.gov/media/9696/download?language=en",
         "https://webserver.rilegislature.gov/Statutes/TITLE39/39-1/39-1-27.12.htm",
         # PUC 1-5: the utility credits the enhancement only after receiving
-        # the household's federal grant, physical page 2.
+        # the household's federal grant.
         "https://ripuc.ri.gov/sites/g/files/xkgbur841/files/2025-11/LIHEAP%2025-38-GE_PUC%20Data%20Requests%20Set%201%20to%20DHS%20update.pdf#page=2",
     )
 

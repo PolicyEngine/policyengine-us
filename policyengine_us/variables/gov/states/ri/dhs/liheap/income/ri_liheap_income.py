@@ -9,8 +9,11 @@ class ri_liheap_income(Variable):
     label = "Rhode Island LIHEAP countable income"
     defined_for = StateCode.RI
     reference = (
-        # Manual sections III.E-H, pages 14-21; plan sections 1.8-1.9, pages 5-7.
+        # Manual sections III.E-H
+        # PDF pages 14-21
         "https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=14",
+        # Plan sections 1.8-1.9
+        # PDF pages 5-7
         "https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=5",
         "https://dhs.ri.gov/media/9671/download?language=en",
         "https://dhs.ri.gov/media/9701/download?language=en",
