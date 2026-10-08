@@ -1,0 +1,104 @@
+name: Python tests
+on:
+  workflow_call:
+# Group these jobs in the Actions view while retaining two independent runners.
+# Only the guarded PR workflow calls this file; it has no automatic triggers.
+jobs:
+  Rest:
+    name: Full Suite - Rest (Python + variables)
+    runs-on: ubuntu-latest
+    # Passing runs on 2026-10-04 took 42-55 minutes (#9653, #9766, #9769,
+    # #9777, #9784), so a 60-minute limit cancels PRs that add a few
+    # minutes of tests (#9695 was cancelled at 60 minutes twice).
+    timeout-minutes: 90
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
+      - name: Install dependencies
+        run: uv sync --locked --extra dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      # Each Rest group runs in a separate process to release its heap.
+      # SPM simulation/API contracts run in the Microsimulation job instead.
+      - name: Run remaining Python tests
+        # Continue after failures, but stop when the workflow is cancelled.
+        if: ${{ !cancelled() }}
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v -p no:unraisableexception -p no:threadexception"
+        run: uv run --no-sync make test-other-python-rest REST_REPORT_DIR=.
+      - name: Run tests/variables YAML tests
+        # Continue after failures, but stop when the workflow is cancelled.
+        if: ${{ !cancelled() }}
+        env:
+          PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
+      - name: Upload Rest timing and memory reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rest-test-timings
+          path: |
+            rest-python-*.xml
+            rest-variables.xml
+            rest-python-*-resources.txt
+            rest-variables-resources.txt
+  Microsimulation:
+    name: Full Suite - Microsimulation
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: 1
+      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
+      - name: Install dependencies
+        run: uv sync --locked --extra dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
+      # Keep simulation/API and dataset compatibility on this existing runner.
+      # Use separate, sequential processes: combining these suites in one
+      # pytest process previously accumulated enough memory to kill the runner.
+      - name: Run SPM Python tests
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-spm.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o simulation-spm-resources.txt uv run --no-sync make test-other-python-spm
+      - name: Run microsimulation tests
+        # Continue after failures, but stop when the workflow is cancelled.
+        if: ${{ !cancelled() }}
+        env:
+          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-microsimulation.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o simulation-microsimulation-resources.txt uv run --no-sync make test-microsimulation
+      - name: Upload simulation timing and memory reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulation-test-timings
+          path: |
+            simulation-*.xml
+            simulation-*-resources.txt

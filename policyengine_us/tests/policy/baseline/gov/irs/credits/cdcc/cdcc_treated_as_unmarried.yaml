@@ -1,0 +1,105 @@
+# IRC 21(e)(4): a married individual filing a separate return is not
+# considered married when living apart from their spouse while maintaining a
+# home for a qualifying individual. IRC 129(a)(2)(C) applies the same rule.
+
+- name: Case 1, separate filer living apart with a qualifying child is treated as unmarried.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        is_separated: true
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+  output:
+    cdcc_treated_as_unmarried: true
+
+- name: Case 2, separate filer not living apart is not treated as unmarried.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+  output:
+    cdcc_treated_as_unmarried: false
+
+- name: Case 3, separate filer living apart without a qualifying individual is not treated as unmarried.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        is_separated: true
+      person2:
+        age: 15
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+  output:
+    # A 15-year-old who can care for themself is not a qualifying individual.
+    cdcc_treated_as_unmarried: false
+
+- name: Case 4, separate filer living apart with a disabled adult dependent is treated as unmarried.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        is_separated: true
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # IRC 7703(b) needs a qualifying child for head of household status, so
+    # the filer files separately, but 21(e)(4) accepts any qualifying
+    # individual.
+    filing_status: SEPARATE
+    cdcc_treated_as_unmarried: true
+
+- name: Case 5, head of household filer living apart is not a separate filer.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        is_separated: true
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    cdcc_treated_as_unmarried: false
+
+- name: Case 6, joint filers are not treated as unmarried.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 35
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+  output:
+    cdcc_treated_as_unmarried: false

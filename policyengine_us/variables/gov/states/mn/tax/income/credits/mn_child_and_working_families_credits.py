@@ -40,15 +40,14 @@ class mn_child_and_working_families_credits(Variable):
         # an IRC 32(c) qualifying child that attained at least age 18; the
         # IRC 32(c)(3) definition incorporates IRC 152(c)(3)(B), which waives
         # the age (and student) test for permanently and totally disabled
-        # individuals. Schedule M1DQC step 4 routes a disabled dependent aged
-        # 18 or older directly to the qualifying-older-child row (row 11)
-        # without the full-time-student test.
+        # individuals, and the IRC 152(c)(2) relationship test. Schedule M1DQC
+        # step 4 routes a disabled dependent aged 18 or older directly to the
+        # qualifying-older-child row (row 11) without the full-time-student
+        # test.
         is_disabled_dependent = person("is_tax_unit_dependent", period) & person(
             "is_permanently_and_totally_disabled", period
         )
-        qualifying_child = (
-            person("is_qualifying_child_dependent", period) | is_disabled_dependent
-        )
+        qualifying_child = person("is_eitc_qualifying_child", period)
         age = person("age", period)
         full_time_student = person("is_full_time_student", period)
         qualifying_older_child = (
