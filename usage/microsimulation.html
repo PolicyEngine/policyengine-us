@@ -449,6 +449,43 @@ year loads only that year:</p>
 paths. It does not apply to an existing <code class="docutils literal notranslate"><span class="pre">USMultiYearDataset</span></code> or to the legacy
 variable-centric HDF5 format.</p>
 </section>
+<section id="tax-unit-roles">
+<h3>Tax-unit roles<a class="headerlink" href="#tax-unit-roles" title="Link to this heading">¶</a></h3>
+<p>A population file can supply the tax units its constructor built, not just
+their membership, through <code class="docutils literal notranslate"><span class="pre">tax_unit_role_input</span></code> (person): <code class="docutils literal notranslate"><span class="pre">HEAD</span></code>, <code class="docutils literal notranslate"><span class="pre">SPOUSE</span></code> or
+<code class="docutils literal notranslate"><span class="pre">DEPENDENT</span></code>. The certified Populace build supplies it. When every member of a
+tax unit has a supplied role, <code class="docutils literal notranslate"><span class="pre">is_tax_unit_head</span></code> and <code class="docutils literal notranslate"><span class="pre">is_tax_unit_spouse</span></code>
+follow it and <code class="docutils literal notranslate"><span class="pre">is_tax_unit_dependent</span></code> covers everyone else. Explicitly set
+<code class="docutils literal notranslate"><span class="pre">is_tax_unit_head</span></code>, <code class="docutils literal notranslate"><span class="pre">is_tax_unit_spouse</span></code> or <code class="docutils literal notranslate"><span class="pre">is_tax_unit_dependent</span></code> inputs
+still take precedence.</p>
+<p>Without supplied roles, a unit falls back to age ordering. The oldest adult is
+the head, skipping adults input as tax-unit dependents unless every adult in
+the unit is one. The next-oldest such adult is the spouse, unless any member of
+the unit is separated. Without dependent inputs, that pairs an adult student
+with a parent as joint filers and leaves a minor living without a parent with
+no head.</p>
+<p>The Populace build carries its constructor’s filing status in a
+<code class="docutils literal notranslate"><span class="pre">filing_status_input</span></code> column. No variable has that name, so the column is
+ignored. By default, <code class="docutils literal notranslate"><span class="pre">filing_status</span></code> is computed from the unit’s members,
+including any supplied roles, and the filing rules. Reforms to those rules
+apply when the formula computes the status. A direct <code class="docutils literal notranslate"><span class="pre">filing_status</span></code> input
+supplied by a caller still overrides the formula.</p>
+<p>Supplied roles fail closed rather than falling back. Each of these raises a
+<code class="docutils literal notranslate"><span class="pre">ValueError</span></code>:</p>
+<ul class="simple">
+<li><p>roles supplied for only some members of a unit;</p></li>
+<li><p>a unit without exactly one <code class="docutils literal notranslate"><span class="pre">HEAD</span></code>, or with more than one <code class="docutils literal notranslate"><span class="pre">SPOUSE</span></code>.</p></li>
+</ul>
+<p>Two consequences follow from honoring supplied roles. First, a dependent’s
+income is left out of the return they are claimed on, because
+<code class="docutils literal notranslate"><span class="pre">irs_gross_income</span></code> excludes tax-unit dependents, and so are their
+above-the-line deductions. The model does not yet compute a dependent’s own
+return (<a class="reference external" href="https://github.com/PolicyEngine/policyengine-us/issues/9618">#9618</a>),
+so an adult dependent’s earnings leave the income tax base. Second, a minor can
+head a return, which programs that identify minor parents as a tax-unit head or
+spouse under 18 will treat as a minor parent
+(<a class="reference external" href="https://github.com/PolicyEngine/policyengine-us/issues/9619">#9619</a>).</p>
+</section>
 <section id="filtering-by-geography">
 <h3>Filtering by geography<a class="headerlink" href="#filtering-by-geography" title="Link to this heading">¶</a></h3>
 <p>The microdata includes geographic identifiers that can be used for state-level analysis:</p>
@@ -706,6 +743,7 @@ total.</p>
 <li><a class="reference internal" href="#available-datasets">Available datasets</a><ul>
 <li><a class="reference internal" href="#the-default-build">The default build</a></li>
 <li><a class="reference internal" href="#supplying-another-population">Supplying another population</a></li>
+<li><a class="reference internal" href="#tax-unit-roles">Tax-unit roles</a></li>
 <li><a class="reference internal" href="#filtering-by-geography">Filtering by geography</a></li>
 </ul>
 </li>
