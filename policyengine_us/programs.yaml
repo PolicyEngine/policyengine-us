@@ -808,7 +808,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, TX
+    coverage: DC, Riverside County, MA, FL, IL, IN, KS, KY, MD, MS, NC, NE, TX
     state_implementations:
       - state: DC
         status: complete
@@ -822,6 +822,14 @@ programs:
         full_name: Massachusetts Low Income Home Energy Assistance Program
         variable: ma_liheap
         parameter_prefix: gov.states.ma.doer.liheap
+      - state: FL
+        status: partial
+        name: Florida LIHEAP
+        full_name: Florida Low Income Home Energy Assistance Program
+        variable: fl_liheap
+        parameter_prefix: gov.states.fl.commerce.liheap
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular heating only, from the published payment matrices. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: IL
         status: complete
         name: Illinois LIHEAP

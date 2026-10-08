@@ -1,0 +1,833 @@
+# FY2026 matrix and accepted FY2026 plan page 9: bases of 350/300/250/200.
+# FY2025 matrix: bases of 1_000/750/550/400. Both years add 100 for a member
+# age 60 or older, 100 for a disabled member and 150 for a child age 5 or
+# younger, each once per household. Manual page 23 bases the payment on the
+# matrix, not the actual bill. Categorical households with income above the
+# table receive the smallest base as a documented estimate; the sources give
+# no express instruction for that case.
+
+- name: Case 1, published income band tops include exact amounts and the next cent starts the next band.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    - FL
+    age:
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    - false
+    - false
+    - false
+    - false
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    fl_tca:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    snap:
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    employment_income:
+    - 0
+    - 16_078
+    - 16_078.01
+    - 22_509
+    - 22_509.01
+    - 27_332
+    - 27_332.01
+    - 32_155
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+  output:
+    fl_liheap:
+    - 350
+    - 350
+    - 300
+    - 300
+    - 250
+    - 250
+    - 200
+    - 200
+- name: Case 2, age sixty and disability each add one hundred and both categories can stack.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    - FL
+    - FL
+    age:
+    - 59
+    - 60
+    - 59
+    - 60
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    - 0
+    - 0
+    fl_tca:
+    - 0
+    - 0
+    - 0
+    - 0
+    snap:
+    - 0
+    - 0
+    - 0
+    - 0
+    employment_income:
+    - 0
+    - 0
+    - 0
+    - 0
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 1_200
+    - 1_200
+    - 1_200
+    - 1_200
+    is_disabled:
+    - false
+    - false
+    - true
+    - true
+  output:
+    fl_liheap:
+    - 350
+    - 450
+    - 450
+    - 550
+- name: Case 3, a child age five qualifies for the young child addition.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap: 500
+- name: Case 4, a child age six no longer qualifies for the young child addition.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 6
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap: 350
+- name: Case 5, multiple elderly disabled and young members add each category only once.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        is_disabled: true
+      person2:
+        age: 64
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        is_disabled: true
+      person3:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person4:
+        age: 5
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person5:
+        age: 3
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: FL
+  output:
+    fl_liheap: 700
+# The qualified child is assumed to be the applicant; manual 900.04D.1 (page 41) would deny
+# an application made by the undocumented parent.
+- name: Case 6, a nonqualified parent's full income determines the band for the qualified child.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 30_000
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_household_size: 1
+    fl_liheap_countable_income: 30_000
+    fl_liheap: 350
+- name: Case 7, categorical income above the table uses the documented minimum base estimate.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    age:
+    - 40
+    immigration_status:
+    - CITIZEN
+    is_full_time_student:
+    - false
+    ssi:
+    - 0
+    fl_tca:
+    - 0
+    snap:
+    - 1_200
+    employment_income:
+    - 100_000
+    heating_type:
+    - NATURAL_GAS
+    heating_expense:
+    - 1_200
+  output:
+    fl_liheap_eligible:
+    - true
+    fl_liheap:
+    - 200
+- name: Case 8, a subsidized household receives the full regular award without a HUD deduction or bill
+    cap.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    age:
+    - 40
+    immigration_status:
+    - CITIZEN
+    is_full_time_student:
+    - false
+    ssi:
+    - 0
+    fl_tca:
+    - 0
+    snap:
+    - 0
+    employment_income:
+    - 0
+    heating_type:
+    - NATURAL_GAS
+    heating_expense:
+    - 10
+    hud_utility_allowance:
+    - 2_400
+    is_in_public_housing:
+    - true
+    receives_housing_assistance:
+    - true
+  output:
+    fl_liheap:
+    - 350
+- name: Case 9, the final award follows the heat in rent and subsidized residual cost routes.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    - FL
+    age:
+    - 40
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    - 0
+    fl_tca:
+    - 0
+    - 0
+    - 0
+    snap:
+    - 0
+    - 0
+    - 0
+    employment_income:
+    - 0
+    - 0
+    - 0
+    heating_type:
+    - NATURAL_GAS
+    - NATURAL_GAS
+    - NATURAL_GAS
+    heating_expense:
+    - 0
+    - 0
+    - 10
+    heat_expense_included_in_rent:
+    - true
+    - true
+    - true
+    receives_housing_assistance:
+    - false
+    - true
+    - true
+  output:
+    fl_liheap:
+    - 350
+    - 0
+    - 350
+- name: Case 10, the regular matrix is fuel neutral and applies only within Florida.
+  period: 2026
+  input:
+    state_code:
+    - FL
+    - FL
+    - FL
+    - GA
+    age:
+    - 40
+    - 40
+    - 40
+    - 40
+    immigration_status:
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    - CITIZEN
+    is_full_time_student:
+    - false
+    - false
+    - false
+    - false
+    ssi:
+    - 0
+    - 0
+    - 0
+    - 0
+    fl_tca:
+    - 0
+    - 0
+    - 0
+    - 0
+    snap:
+    - 0
+    - 0
+    - 0
+    - 0
+    employment_income:
+    - 0
+    - 0
+    - 0
+    - 0
+    heating_type:
+    - ELECTRICITY
+    - NATURAL_GAS
+    - WOOD
+    - NATURAL_GAS
+    heating_expense:
+    - 10
+    - 10
+    - 10
+    - 10
+  output:
+    fl_liheap:
+    - 350
+    - 350
+    - 350
+    - 0
+
+# Accepted FY2026 plan section 1.9, page 7, and the FY2026 matrix: net
+# gambling of 40_000 - 30_000 = 10_000 falls in the 350 band; 40_000 of
+# periodic estate receipts exceeds the 32_155 limit. No categorical receipts.
+- name: Case 11, net gambling and periodic estate income determine ordinary awards.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [FL, FL]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_full_time_student: [false, false]
+    ssi: [0, 0]
+    fl_tca: [0, 0]
+    snap: [0, 0]
+    gambling_winnings: [40_000, 0]
+    gambling_losses: [30_000, 0]
+    estate_income: [0, 40_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200]
+  output:
+    fl_liheap_countable_income: [10_000, 40_000]
+    fl_liheap: [350, 0]
+
+# FY2026 matrix p1: five completed years includes age 5.5, before the sixth
+# birthday. Zero income gives the 350 base plus the 150 child supplement.
+- name: Case 12, a child between the fifth and sixth birthdays retains the addition.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 5.5
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap: 500
+
+# FY2025 matrix ("Updated FY 2024/2025"), size 1: the maximum income value is
+# 98_038 x 52% x 60% = 30_587.856 (printed 30_588). The first band ends at
+# 30_587.856 x 50% = 15_293.928, printed 15_294. Wages of 10_000 fall in the
+# first band, which pays 1_000; nobody qualifies for an addition.
+- name: Case 13, a one-person household in fiscal year 2025 receives the first band award.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_household_size: 1
+    fl_liheap_countable_income: 10_000
+    fl_liheap_income_limit: 30_587.856
+    fl_liheap_eligible: true
+    fl_liheap: 1_000
+
+# Boundary amounts. FY2025 matrix, size 1, prints the bands 15_294 or less,
+# 15_295-21_411, 21_412-26_000 and 26_001-30_588. These round
+# 30_587.856 x 50%, 70% and 85% (15_293.928, 21_411.499 and 25_999.678) and
+# the maximum income value to the nearest dollar. Each printed top pays its
+# band's base; one dollar more moves to the next band, and 30_589 exceeds the
+# maximum income value.
+- name: Case 14, fiscal year 2025 one-person band tops follow the printed matrix.
+  period: 2025
+  input:
+    state_code: [FL, FL, FL, FL, FL, FL, FL, FL]
+    age: [40, 40, 40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_full_time_student: [false, false, false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0]
+    fl_tca: [0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0]
+    employment_income: [15_294, 15_295, 21_411, 21_412, 26_000, 26_001, 30_588, 30_589]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    fl_liheap: [1_000, 750, 750, 550, 550, 400, 400, 0]
+
+# FY2025 matrix footnote and accepted FY2025 plan section 2.1, page 8: sizes 9
+# and above use 150% of the 2024 poverty guidelines when that exceeds 60% of
+# state median income. Guideline 15_060 + 8 x 5_380 = 58_100, so the limit is
+# 58_100 x 1.5 = 87_150; 60% of state median income is only
+# 98_038 x 141% x 60% = 82_940.148. Wages of 50_000 + 35_000 = 85_000 fall in
+# the over-125% band (72_626-87_150), which pays 400. No member is 60 or
+# older, disabled, or 5 or younger.
+- name: Case 15, a nine-person household in fiscal year 2025 qualifies under the poverty guideline limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1: {age: 44, ssi: 0, employment_income: 50_000}
+      person2: {age: 42, ssi: 0, employment_income: 35_000}
+      person3: {age: 17, ssi: 0}
+      person4: {age: 15, ssi: 0}
+      person5: {age: 13, ssi: 0}
+      person6: {age: 11, ssi: 0}
+      person7: {age: 9, ssi: 0}
+      person8: {age: 8, ssi: 0}
+      person9: {age: 6, ssi: 0}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: FL
+  output:
+    fl_liheap_household_size: 9
+    fl_liheap_countable_income: 85_000
+    fl_liheap_income_limit: 87_150
+    fl_liheap_eligible: true
+    fl_liheap: 400
+
+# Boundary amounts. FY2025 matrix, size 9: the bands are percentages of the
+# 58_100 guideline. "75% of FPG or Less" prints 43_574, and "At least 75%"
+# starts at 58_100 x 75% = 43_575. The second band ends at 58_100 (100%), the
+# third at 72_625 (125%), and the maximum income value is 87_150 (150%).
+- name: Case 16, fiscal year 2025 nine-person bands follow poverty guideline percentages.
+  period: 2025
+  input:
+    state_code: [FL, FL, FL, FL, FL, FL, FL, FL]
+    age: [40, 40, 40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_full_time_student: [false, false, false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0]
+    fl_tca: [0, 0, 0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0]
+    employment_income: [43_574, 43_575, 58_100, 58_101, 72_625, 72_626, 87_150, 87_151]
+    fl_liheap_household_size: [9, 9, 9, 9, 9, 9, 9, 9]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    fl_liheap: [1_000, 750, 750, 550, 550, 400, 400, 0]
+
+# Boundary amounts. FY2026 matrix: 70% of the maximum income value is exactly
+# half a dollar at sizes 8, 10 and 12 (85_335 x 70% = 59_734.5,
+# 89_045 x 70% = 62_331.5 and 92_755 x 70% = 64_928.5). The matrix rounds each
+# up, so the second band ends at 59_735, 62_332 and 64_929. The printed top
+# pays 300, and the next cent starts the third band, which pays 250.
+- name: Case 17, fiscal year 2026 second band tops for sizes eight, ten and twelve round half up.
+  period: 2026
+  input:
+    state_code: [FL, FL, FL, FL, FL, FL]
+    age: [40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_full_time_student: [false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0]
+    fl_tca: [0, 0, 0, 0, 0, 0]
+    snap: [0, 0, 0, 0, 0, 0]
+    employment_income: [59_735, 59_735.01, 62_332, 62_332.01, 64_929, 64_929.01]
+    fl_liheap_household_size: [8, 8, 10, 10, 12, 12]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    fl_liheap: [300, 250, 300, 250, 300, 250]
+
+# Accepted FY2026 plan section 1.9, page 6, counts retirement and pension
+# benefits; military retirement pay and railroad retirement benefits are
+# separate inputs from pension_income. 35_000 of military retirement pay
+# exceeds the 32_155 one-person limit. 20_000 of railroad retirement benefits
+# falls in the second band (16_079-22_509): 300 base + 100 for age 60 or older.
+- name: Case 18, military retirement pay and railroad retirement benefits count toward income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [FL, FL]
+    age: [50, 62]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_full_time_student: [false, false]
+    ssi: [0, 0]
+    fl_tca: [0, 0]
+    snap: [0, 0]
+    military_retirement_pay: [35_000, 0]
+    railroad_benefits: [0, 20_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200]
+  output:
+    fl_liheap_countable_income: [35_000, 20_000]
+    fl_liheap_eligible: [false, true]
+    fl_liheap: [0, 400]
+
+# Accepted FY2026 plan section 1.8, page 5, counts gross income, and section
+# 1.9, page 7, counts "net gambling or lottery winnings". A 20_000
+# self-employment loss does not offset 40_000 of wages. Gambling losses of
+# 3_000 offset only the 1_000 of winnings, leaving 34_000 of wages. Both
+# amounts exceed the 32_155 one-person limit.
+- name: Case 19, a business loss or excess gambling losses do not bring income under the limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [FL, FL]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_full_time_student: [false, false]
+    ssi: [0, 0]
+    fl_tca: [0, 0]
+    snap: [0, 0]
+    employment_income: [40_000, 34_000]
+    self_employment_income: [-20_000, 0]
+    gambling_winnings: [0, 1_000]
+    gambling_losses: [0, 3_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200]
+  output:
+    fl_liheap_countable_income: [40_000, 34_000]
+    fl_liheap_eligible: [false, false]
+    fl_liheap: [0, 0]
+
+# Accepted FY2025 plan section 2.6, page 10: "Maximum Benefit $1,350". FY2025
+# matrix, size 2: 98_038 x 68% x 60% = 39_999.504 (printed 40_000); the first
+# band ends at 39_999.504 x 50% = 19_999.752, printed 20_000. Gross Social
+# Security of 14_400 falls in the first band: 1_000 base + 100 elderly + 100
+# disabled + 150 for a child age 5 or younger = 1_350.
+- name: Case 20, a fiscal year 2025 household with every addition receives the published maximum.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        is_disabled: true
+        ssi: 0
+        social_security: 14_400
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        heating_expense: 1_200
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 14_400
+    fl_liheap_income_limit: 39_999.504
+    fl_liheap: 1_350
+
+# Part-time wages at the Florida minimum wage (Fla. Const. art. X, sec. 24):
+# 20 hours a week for 39 weeks at 14.00, then 13 weeks at 15.00 after the
+# September 30, 2026 increase, so 20 x (39 x 14 + 13 x 15) = 14_820. That is
+# under the FY2026 one-person maximum of 32_155. Heat is not included in rent
+# and no heating fuel is reported, so the reported heating cost does not
+# qualify: an unspecified fuel counts only when heat is included in rent.
+- name: Case 21, an unspecified heating fuel outside rent does not qualify despite a reported heating cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 14_820
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        has_heating_expense: true
+        heat_expense_included_in_rent: false
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 14_820
+    fl_liheap_eligible: false
+    fl_liheap: 0
+
+# Same 14_820 of part-time wages as Case 21. Heat is included in unsubsidized
+# rent and the tenant does not know the building's fuel, so heating_type stays
+# UNSPECIFIED. FY2026 matrix, size 1: 60% of the four-person state median
+# income of 103_063 is 61_837 (truncated), and 61_837 x 52% = 32_155
+# (truncated). The first band ends at 32_155 x 50% = 16_077.5, printed 16_078.
+# Wages of 14_820 fall in the first band, which pays 350. Nobody is 60 or
+# older, disabled, or 5 or younger, so no addition applies.
+- name: Case 22, an unspecified heating fuel included in unsubsidized rent receives the first band award.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 14_820
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+        is_in_public_housing: false
+  output:
+    fl_liheap_countable_income: 14_820
+    fl_liheap_income_limit: 32_155
+    fl_liheap_eligible: true
+    fl_liheap: 350
