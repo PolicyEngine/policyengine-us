@@ -99,3 +99,32 @@
   output:
     mn_renters_credit_eligible: false
     mn_renters_credit: 0
+
+# 2026 renter's credit schedule from the Minnesota DOR Tax Year 2026
+# Inflation-Adjusted Amounts, 290.0693 Subd. 3 (page 5).
+- name: Minnesota renter's credit 2026 in the $20,410 - $22,669 band
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    state_code: MN
+    mn_renters_credit_eligible: true
+    mn_renters_credit_household_income: 22_665
+    mn_rent_constituting_property_taxes: 1_500
+  output:
+    # Band: 1.4% of income, claimant pays 15%, maximum credit $2,490.
+    # Excess rent = 1,500 - 0.014 * 22,665 = 1,500 - 317.31 = 1,182.69
+    # Credit = round(1,182.69 * 0.85) = round(1,005.29) = 1,005
+    mn_renters_credit: 1_005
+
+- name: Minnesota renter's credit 2026 in the top $77,070 - $79,329 band
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    state_code: MN
+    mn_renters_credit_eligible: true
+    mn_renters_credit_household_income: 79_325
+    mn_rent_constituting_property_taxes: 3_000
+  output:
+    # Band: 2.0% of income, claimant pays 50%, maximum credit $270.
+    # Excess rent = 3,000 - 0.02 * 79,325 = 1,413.50; 50% = 706.75 > 270.
+    mn_renters_credit: 270
