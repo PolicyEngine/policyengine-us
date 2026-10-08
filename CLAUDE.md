@@ -147,28 +147,12 @@ changelog.d/medicaid-ce-exclusions.md
 - Consider real-world examples to validate implementation, including official calculators
 
 ## Parameter and variable references
-- One `reference` entry per source document. URLs that differ only by `#page=` point at the same source.
-- PDF page anchors use the file page number (1-indexed), not the printed page number.
-- **One cited page:** put it only in the URL fragment (`#page=57`); keep the title free of page text.
-- **Several cited pages:** the href opens the first cited page, and the title ends with `#page 72-75` for a consecutive run or `#page 29,32-33,36,41` for a nonconsecutive list (runs inside a list compress). Quote YAML titles that contain `#`; an unquoted ` #` starts a YAML comment and truncates the title.
-- The URL fragment is one valid destination. Never write `#page=1,3,5`.
-- Do not split one multi-page table into one entry per page.
-- Variable `reference` tuples follow the same rules. Tuple entries have no title, so a `# PDF pages …` comment above a multi-page href lists the pages in the same shape; drop the comment when the href cites one page.
-
-```yaml
-reference:
-  - title: FY2026 LIHEAP State Plan, Section 2.5
-    href: https://example.gov/state-plan.pdf#page=57
-  - title: "Energy Assistance Policy Manual, benefit matrix #page 72-75"
-    href: https://example.gov/manual.pdf#page=72
-```
-
-```python
-reference = (
-    # PDF pages 61-62, 67, 78-81.
-    "https://example.gov/manual.pdf#page=61",
-)
-```
+- One `reference` entry per source document; URLs that differ only by `#page=` are one source. Do not split a multi-page table into per-page entries.
+- PDF page numbers are file pages (1-indexed), not printed pages.
+- One cited page: `#page=57` in the href only, no page in the title.
+- Several cited pages: the href opens the first, and the title ends with `#page 72-75` (consecutive) or `#page 29,32-33,36,41` (nonconsecutive). Quote the title, since an unquoted ` #` starts a YAML comment.
+- Never put a page list in the href (`#page=1,3,5`).
+- Variable reference tuples have no title: put a `# PDF pages 61-62, 67` comment above a multi-page href.
 
 ## Axiom Parity (required for policy changes)
 - Any PR that adds, updates or fixes policy must also leave the same provision correct in rulespec-us. Put one line in the PR body: `axiom: <legal id> encoded-correct | <rulespec PR> encoded | <rulespec issue> queued | n/a: <reason>`.
