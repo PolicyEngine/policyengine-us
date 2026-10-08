@@ -1,0 +1,39 @@
+- name: Defaults to the stacking amount when no deductions are disallowed
+  period: 2024
+  input:
+    foreign_earned_income_exclusion: 15_000
+  output:
+    section_911_excluded_income: 15_000
+
+- name: A provided Form 2555 amount overrides the default
+  period: 2024
+  input:
+    foreign_earned_income_exclusion: 15_000
+    section_911_excluded_income: 25_000
+  output:
+    section_911_excluded_income: 25_000
+
+- name: The rate stacking keeps the amount net of disallowed deductions
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        irs_employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        # Form 2555 lines 45 and 50: 25,000; worksheet line 2c: 15,000.
+        section_911_excluded_income: 25_000
+        foreign_earned_income_exclusion: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 100_000
+    agi_plus_section_911_931_933_exclusions: 125_000
+    # Foreign Earned Income Tax Worksheet line 3: taxable income 85,400
+    # (100,000 less the 14,600 standard deduction) plus line 2c, 15,000.
+    taxable_income_plus_section_911_exclusion: 100_400

@@ -1,0 +1,110 @@
+# Expected values: TaxAct 2021 Schedule Y line 9c (taxsim #1106) and TAXSIM-35
+# Massachusetts AGI (v32) for the same records; the worksheet is on page 21 of
+# the 2021 Form 1 instructions.
+- name: Single filer below 200% FPL deducts up to 10,200 (taxsim 1106, TaxAct Schedule Y line 9c)
+  period: 2021
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 10_007
+        unemployment_compensation: 13_260
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MA
+  output:
+    # Household income 23,267 <= 25,520 (household of 1); min(13,260, 10,200)
+    ma_qualified_unemployment_deduction: 10_200
+
+- name: Single parent, household of 2, MA AGI drops by 10,200 (TAXSIM v32 15,951.92)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 31
+        employment_income: 11_645
+        unemployment_compensation: 14_507
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MA
+  output:
+    # Household income 26,152 <= 34,480 (household of 2)
+    ma_qualified_unemployment_deduction: 10_200
+    ma_agi: 15_952
+
+- name: Joint filers deduct the spouse's unemployment compensation
+  period: 2021
+  input:
+    people:
+      head:
+        age: 42
+        employment_income: 1_212
+        is_tax_unit_head: true
+      spouse:
+        age: 44
+        employment_income: 38_864
+        unemployment_compensation: 419
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MA
+  output:
+    # Household income 40,495 <= 43,440 (household of 3)
+    ma_qualified_unemployment_deduction: 419
+
+- name: Household income above 200% FPL gets no deduction
+  period: 2021
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 20_000
+        unemployment_compensation: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MA
+  output:
+    # Household income 30,000 > 25,520
+    ma_qualified_unemployment_deduction: 0
+
+- name: No deduction in 2022
+  period: 2022
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 10_007
+        unemployment_compensation: 13_260
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MA
+  output:
+    ma_qualified_unemployment_deduction: 0

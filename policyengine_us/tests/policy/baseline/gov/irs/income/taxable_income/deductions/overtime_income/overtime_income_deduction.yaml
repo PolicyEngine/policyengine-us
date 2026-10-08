@@ -37,3 +37,15 @@
     filing_status: JOINT
   output:
     overtime_income_deduction: 10_000
+
+- name: Income excluded under section 931 counts toward the phase-out
+  period: 2025
+  input:
+    overtime_income_deduction_ssn_requirement_met: true
+    fsla_overtime_premium: 10_000
+    adjusted_gross_income: 140_000
+    specified_possession_income: 20_000
+    filing_status: SINGLE
+  output:
+    # 26 U.S.C. 225(b)(2)(B): modified AGI 160,000; (160,000 - 150,000) x 10%.
+    overtime_income_deduction: 9_000

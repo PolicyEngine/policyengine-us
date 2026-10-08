@@ -362,6 +362,42 @@
     # 1-child federal-style EITC rather than the childless amount.
     co_eitc: 1_700
 
+- name: Colorado EITC uses the childless schedule for a disabled parent dependent (IRC 152(c)(2))
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 10_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+      disabled_parent:
+        age: 75
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        is_parent_of_filer_or_spouse: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, disabled_parent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, disabled_parent]
+    households:
+      household:
+        members: [head, disabled_parent]
+        state_code: CO
+  output:
+    # A parent fails the IRC 152(c)(2) relationship test, so the federal
+    # credit is the childless 7.65% x 10,000 capped at 649; 50% x 649.
+    eitc_child_count: 0
+    co_eitc: 324.5
+
 - name: Colorado under-25 EITC nets a spouse's self-employment loss (50% x 7.65% x 6,000)
   period: 2023
   absolute_error_margin: 0.01
