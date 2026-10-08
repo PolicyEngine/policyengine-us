@@ -39,7 +39,9 @@ import yaml
 
 REPO = Path(__file__).resolve().parents[3]
 TESTS = REPO / "policyengine_us" / "tests"
-WORKFLOWS = [REPO / ".github" / "workflows" / name for name in ("pr.yaml", "push.yaml")]
+WORKFLOWS = [
+    REPO / ".github" / "workflows" / name for name in ("python-tests.yaml", "push.yaml")
+]
 # CI runs this file under `make test-other-python-rest REST_REPORT_DIR=.`, and
 # that make exports these. Passed on, they would carry its flags and report
 # directory into the make runs below, and the stub run would overwrite the

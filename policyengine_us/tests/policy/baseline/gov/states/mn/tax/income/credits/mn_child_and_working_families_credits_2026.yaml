@@ -1,0 +1,64 @@
+# 2026 amounts from the Minnesota DOR Tax Year 2026 Inflation-Adjusted Amounts
+# (page 3): child credit $1,800 (290.0661 Subd. 3); phase-out threshold $32,680
+# for filers other than married joint (290.0661 Subd. 4); working family credit
+# of 4% of the first $9,690 of earned income plus $1,020, $2,330 or $2,770 for
+# one, two or three or more qualifying older children (290.0671 Subd. 1).
+- name: MN child and working family credits 2026 single parent with two qualifying older children
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 40_000
+        is_tax_unit_head: true
+      child1:
+        age: 19
+        is_full_time_student: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MN
+  output:
+    # Head of household. No child credit (no child under 18), so the 9%
+    # phase-out rate for filers with only qualifying older children applies.
+    # Working family credit = 4% x 9,690 + 2,330 = 387.60 + 2,330 = 2,717.60
+    # Phase-out = 9% x (40,000 - 32,680) = 9% x 7,320 = 658.80
+    # Credit = 2,717.60 - 658.80 = 2,058.80
+    mn_child_and_working_families_credits: 2_058.8
+
+- name: MN child and working family credits 2026 single parent with one child under 18
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 35_000
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MN
+  output:
+    # Child credit 1,800 + working family credit 4% x 9,690 = 387.60 -> 2,187.60
+    # Phase-out = 12% x (35,000 - 32,680) = 12% x 2,320 = 278.40
+    # Credit = 2,187.60 - 278.40 = 1,909.20
+    mn_child_and_working_families_credits: 1_909.2

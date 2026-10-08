@@ -14,7 +14,8 @@ class ca_foster_youth_tax_credit_person(Variable):
         p = parameters(period).gov.states.ca.tax.income.credits.foster_youth
         age = person("age", period)
         base_credit = p.amount.calc(age)
-        earned_income = person.tax_unit("tax_unit_earned_income", period)
+        # FTB 3514 line 34: FYTC earned income is the CalEITC line 19 amount.
+        earned_income = person.tax_unit("ca_eitc_earned_income", period)
         excess_earned_income = max_(earned_income - p.phase_out.start, 0)
         reduction_increments = excess_earned_income / p.phase_out.increment
         reduction_amount = max_(0, reduction_increments * p.phase_out.amount)

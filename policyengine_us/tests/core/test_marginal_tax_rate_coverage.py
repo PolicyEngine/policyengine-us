@@ -21,6 +21,7 @@ checked against that rule, restated here without adult_earnings_index:
    changes measured marginal tax rates and so earnings and ranks.
 """
 
+from functools import cache
 from itertools import product
 
 import numpy as np
@@ -102,20 +103,44 @@ def _calc(simulation, variable):
 
 
 @pytest.fixture(scope="module")
-def households():
-    simulation = _simulation(0)
-    return {
-        "household_id": simulation.populations["household"].members_entity_id,
-        "is_adult": _calc(simulation, "is_adult").astype(bool),
-        "market_income": _calc(simulation, "market_income"),
-    }
+def results_for_cap():
+    # The flag and rate checks use identical situations. Keep only read-only
+    # output snapshots; each cap still gets its own simulation and reform.
+    @cache
+    def calculate(cap):
+        simulation = _simulation(cap)
+        results = {
+            variable: _calc(simulation, variable)
+            for variable in ("marginal_tax_rate_computed", "cliff_evaluated")
+        }
+        if cap == 0:
+            results.update(
+                household_id=simulation.populations["household"].members_entity_id,
+                is_adult=_calc(simulation, "is_adult").astype(bool),
+                market_income=_calc(simulation, "market_income"),
+            )
+        if cap in (2, 3):
+            results.update(
+                (variable, _calc(simulation, variable)) for variable in MTR_VARIABLES
+            )
+        for variable, values in results.items():
+            results[variable] = values.copy()
+            results[variable].setflags(write=False)
+        return results
+
+    return calculate
+
+
+@pytest.fixture(scope="module")
+def households(results_for_cap):
+    return results_for_cap(0)
 
 
 @pytest.mark.parametrize("cap", [0, 1, 2, 3, 5])
-def test_flag_selects_the_top_earning_adults(households, cap):
-    simulation = _simulation(cap)
-    flag = _calc(simulation, "marginal_tax_rate_computed").astype(bool)
-    assert np.array_equal(_calc(simulation, "cliff_evaluated").astype(bool), flag)
+def test_flag_selects_the_top_earning_adults(households, results_for_cap, cap):
+    results = results_for_cap(cap)
+    flag = results["marginal_tax_rate_computed"].astype(bool)
+    assert np.array_equal(results["cliff_evaluated"].astype(bool), flag)
     assert not flag[~households["is_adult"]].any()
     for household_id in np.unique(households["household_id"]):
         in_household = households["household_id"] == household_id
@@ -129,15 +154,8 @@ def test_flag_selects_the_top_earning_adults(households, cap):
 
 
 @pytest.fixture(scope="module")
-def mtr_by_cap():
-    results = {}
-    for cap in (2, 3):
-        simulation = _simulation(cap)
-        results[cap] = {
-            variable: _calc(simulation, variable)
-            for variable in ("marginal_tax_rate_computed",) + MTR_VARIABLES
-        }
-    return results
+def mtr_by_cap(results_for_cap):
+    return {cap: results_for_cap(cap) for cap in (2, 3)}
 
 
 @pytest.mark.parametrize("variable", MTR_VARIABLES)
