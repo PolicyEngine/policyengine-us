@@ -1,13 +1,27 @@
+# Line numbers are the MI-1040CR's (2024 and 2025 MI-1040 books, pages 31-32;
+# the two years' household resources lines are the same). Total household
+# resources are "AGI, excluding net business and farm losses, net rent and
+# royalty losses, and any carryover of a net operating loss, plus all income
+# exempt or excluded from AGI" (page 26), as in MCL 206.508(4).
+# Line 16 nets U.S. Schedule C, Form 4797 Part II, Schedule E Parts II and III
+# and Schedule F; line 17 nets Schedule E Parts I, IV (REMICs, no input) and V.
+# "If the total is negative enter 0." Line 30 is "total adjustments from your
+# U.S. Form 1040, Schedule 1", and line 31 is health insurance premiums. The
+# household is "a claimant and spouse" (MCL 206.508(3)), so a dependent's
+# business and rental items stay off lines 16 and 17.
+
 - name: Cannot be negative
   period: 2024
   input:
     net_capital_gains: -2_000
     state_code: MI
     health_insurance_premiums: 0
-    above_the_line_deductions: 1_000
+    early_withdrawal_penalty: 1_000
   output:
-    # Capital gains losses are limited to -2,000 (within $3,000 limit)
-    # but mi_household_resources cannot be negative, so 0
+    # Line 19: -2,000 (within the $3,000 loss limit).
+    # Line 30: penalty on early withdrawal of savings (Schedule 1 line 18),
+    # 1,000.
+    # -2,000 - 1,000 = -3,000; household resources are not negative, so 0.
     mi_household_resources: 0
 
 - name: Reduced to 0
@@ -16,9 +30,10 @@
     net_capital_gains: 2_000
     state_code: MI
     health_insurance_premiums: 3_000
-    above_the_line_deductions: 1_000
+    early_withdrawal_penalty: 1_000
   output:
-    # 2,000 - 3,000 - 1,000 = -2,000, floored at 0
+    # Line 19: 2,000. Line 30: 1,000. Line 31: 3,000.
+    # 2,000 - 1,000 - 3,000 = -2,000, floored at 0.
     mi_household_resources: 0
 
 - name: Partially reduced
@@ -27,9 +42,10 @@
     net_capital_gains: 10_000
     state_code: MI
     health_insurance_premiums: 3_000
-    above_the_line_deductions: 1_000
+    early_withdrawal_penalty: 1_000
   output:
-    # 10,000 - 3,000 - 1,000 = 6,000
+    # Line 19: 10,000. Line 30: 1,000. Line 31: 3,000.
+    # Line 33: 10,000 - (1,000 + 3,000) = 6,000.
     mi_household_resources: 6_000
 
 - name: Negative business income floored at 0
@@ -39,11 +55,11 @@
     irs_employment_income: 100_000
     state_code: MI
   output:
-    # Per MI-1040CR-7 Line 21: "If negative, enter 0"
-    # Self-employment income floored at 0 = 0
-    # But loss_ald = 50,000 (federal above-the-line deduction for business loss)
-    # Total: 100,000 - 50,000 = 50,000
-    mi_household_resources: 50_000
+    # Line 14: 100,000. Line 16: Schedule C -50,000; the total is negative,
+    # so 0. The business loss is not a Schedule 1 adjustment, so line 30 is
+    # 0 (no self-employment tax on a loss).
+    # Line 33: 100,000.
+    mi_household_resources: 100_000
 
 - name: Negative SSTB business income floored at 0
   period: 2024
@@ -52,16 +68,22 @@
     irs_employment_income: 100_000
     state_code: MI
   output:
-    mi_household_resources: 50_000
+    # Line 14: 100,000. Line 16: Schedule C -50,000, so 0. Line 30: 0.
+    # Line 33: 100,000.
+    mi_household_resources: 100_000
 
 - name: Farm operations income counted as household resources
   period: 2024
   input:
     farm_operations_income: 50_000
-    above_the_line_deductions: 0
     state_code: MI
   output:
-    mi_household_resources: 50_000
+    # Line 16: Schedule F 50,000.
+    # Line 30: deduction for self-employment tax (Schedule 1 line 15), half
+    # of 50,000 x 0.9235 x 15.3% = 3,532.39.
+    # Line 33: 50,000 - 3,532.39 = 46,467.61.
+    mi_household_resources: 46_467.61
+  absolute_error_margin: 0.01
 
 - name: Negative rental income floored at 0
   period: 2024
@@ -70,11 +92,11 @@
     employment_income_before_lsr: 50_000
     state_code: MI
   output:
-    # Per MI-1040CR-7 Line 22: "If negative, enter 0"
-    # Rental income floored at 0 for the MI source line,
-    # but federal above_the_line_deductions includes loss_ald of 30,000.
-    # Total: 50,000 - 30,000 = 20,000
-    mi_household_resources: 20_000
+    # Line 14: 50,000. Line 17: Schedule E Part I -30,000; the total is
+    # negative, so 0. The rental loss is not a Schedule 1 adjustment, so
+    # line 30 is 0.
+    # Line 33: 50,000.
+    mi_household_resources: 50_000
 
 - name: Large capital gains loss limited to 3000
   period: 2024
@@ -85,11 +107,11 @@
     state_code: MI
     filing_status: JOINT
   output:
-    # Per MI-1040CR-7 Line 24: losses cannot exceed $3,000 for MFJ
-    # loss_limited_net_capital_gains: max(-150,000, -3,000) = -3,000
-    # above_the_line_deductions includes loss_ald of 3,000
-    # Total: 50,000 + (-3,000) - 3,000 = 44,000
-    mi_household_resources: 44_000
+    # Line 19: "losses cannot exceed $3,000 if single or married filing
+    # jointly": max(-150,000, -3,000) = -3,000.
+    # The capital loss is not a Schedule 1 adjustment, so line 30 is 0.
+    # Line 33: 50,000 - 3,000 = 47,000.
+    mi_household_resources: 47_000
 
 - name: Capital gains loss limited to 1500 for MFS
   period: 2024
@@ -99,8 +121,347 @@
     state_code: MI
     filing_status: SEPARATE
   output:
-    # Per MI-1040CR-7 Line 24: losses cannot exceed $1,500 for MFS
-    # loss_limited_net_capital_gains: max(-100,000, -1,500) = -1,500
-    # above_the_line_deductions includes loss_ald of 1,500
-    # Total: 50,000 + (-1,500) - 1,500 = 47,000
-    mi_household_resources: 47_000
+    # Line 19: "$1,500 if married filing separately": max(-100,000, -1,500)
+    # = -1,500. Line 30: 0.
+    # Line 33: 50,000 - 1,500 = 48,500.
+    mi_household_resources: 48_500
+
+- name: Capital gain distributions net against a capital loss
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        long_term_capital_gains: -20_000
+        non_sch_d_capital_gains: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Line 19: "net capital gains and losses ... from your U.S. Schedule D".
+    # Schedule D line 16 = -20,000 + 20,000 (line 13) = 0. Line 30: 0.
+    mi_household_resources: 50_000
+
+- name: Spouses' capital gains and losses net on a joint Schedule D
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        long_term_capital_gains: 40_000
+      person2:
+        age: 45
+        long_term_capital_gains: -40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 19: Schedule D line 16 = 40,000 - 40,000 = 0.
+    mi_household_resources: 50_000
+
+- name: A Schedule C loss nets against S corporation income on line 16
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        self_employment_income: -10_000
+        s_corp_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Line 14: 50,000.
+    # Line 16: Schedule C -10,000 + Schedule E Part II 30,000 = 20,000.
+    # Line 30: 0 (no self-employment tax: the Schedule C result is a loss,
+    # and S corporation income is not self-employment income).
+    # Line 33: 50,000 + 20,000 = 70,000.
+    mi_household_resources: 70_000
+
+- name: A net business loss on line 16 is floored at 0
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        self_employment_income: -40_000
+        s_corp_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Line 16: -40,000 + 30,000 = -10,000; "If the total is negative enter
+    # 0." The net business loss is excluded (MCL 206.508(4)(a)), not
+    # subtracted on line 30.
+    # Line 33: 50,000.
+    mi_household_resources: 50_000
+
+- name: A business loss does not reduce rental income
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        self_employment_income: -20_000
+        rental_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Line 16: Schedule C -20,000, so 0. Line 17: Schedule E Part I 15,000.
+    # The two lines are floored separately. Line 30: 0.
+    # Line 33: 50,000 + 0 + 15,000 = 65,000.
+    mi_household_resources: 65_000
+
+- name: A rental loss nets against farm rental income on line 17
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        rental_income: -10_000
+        farm_rent_income: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Line 17: Schedule E Part I -10,000 + Part V (Form 4835) 25,000 =
+    # 15,000. Line 30: 0.
+    # Line 33: 50,000 + 15,000 = 65,000.
+    mi_household_resources: 65_000
+
+- name: A rental loss does not reduce business income
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        rental_income: -30_000
+        s_corp_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Line 16: 20,000. Line 17: -30,000, so 0. Line 30: 0.
+    # Line 33: 50,000 + 20,000 = 70,000.
+    mi_household_resources: 70_000
+
+- name: Estate and trust income is business income on line 16
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        estate_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Line 16: Schedule E Part III 12,000. Line 30: 0.
+    # Line 33: 50,000 + 12,000 = 62,000.
+    mi_household_resources: 62_000
+
+- name: An estate loss nets against S corporation income on line 16
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        estate_income: -5_000
+        s_corp_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Line 16: Schedule E Part III -5,000 + Part II 20,000 = 15,000.
+    # Line 30: 0.
+    # Line 33: 50,000 + 15,000 = 65,000.
+    mi_household_resources: 65_000
+
+- name: Form 4797 ordinary gains are business income on line 16
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        other_net_gain: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Line 16: Form 4797 Part II 6,000. Line 30: 0.
+    # Line 33: 50,000 + 6,000 = 56,000.
+    mi_household_resources: 56_000
+
+- name: A Form 4797 ordinary loss nets against S corporation income on line 16
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        s_corp_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        other_net_gain: -8_000
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Line 16: Form 4797 Part II -8,000 + Schedule E Part II 20,000 = 12,000.
+    # Line 30: 0.
+    # Line 33: 50,000 + 12,000 = 62,000.
+    mi_household_resources: 62_000
+
+- name: Schedule 1 adjustments still reduce household resources with a business loss
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 60_000
+        self_employment_income: 10_000
+        farm_operations_income: -4_000
+        early_withdrawal_penalty: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Line 14: 60,000.
+    # Line 16: Schedule C 10,000 + Schedule F -4,000 = 6,000.
+    # Line 30: deduction for self-employment tax (Schedule 1 line 15), half
+    # of 6,000 x 0.9235 x 15.3% = 423.89, plus the early withdrawal penalty
+    # (line 18), 500: 923.89.
+    # Line 33: 60,000 + 6,000 - 923.89 = 65,076.11.
+    mi_household_resources: 65_076.11
+  absolute_error_margin: 0.01
+
+- name: A dependent's Schedule C loss does not net against the claimant's business income
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        s_corp_income: 20_000
+      person2:
+        age: 15
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # The household is the claimant (MCL 206.508(3)); the dependent's
+    # Schedule C belongs on the dependent's own return.
+    # Line 16: Schedule E Part II 20,000. Line 30: 0.
+    # Line 33: 50,000 + 20,000 = 70,000.
+    mi_household_resources: 70_000
+
+- name: A dependent's rental loss does not net against the claimant's farm rental income
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        farm_rent_income: 10_000
+      person2:
+        age: 15
+        rental_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 17: the claimant's Schedule E Part V 10,000. Line 30: 0.
+    # Line 33: 50,000 + 10,000 = 60,000.
+    mi_household_resources: 60_000
+
+- name: A dependent's S corporation income is not household resources
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+      person2:
+        age: 15
+        s_corp_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # The household is the claimant and spouse (MCL 206.508(3)); the
+    # dependent's Schedule E income is not on line 16. Line 30: 0.
+    # Line 33: 50,000.
+    mi_household_resources: 50_000

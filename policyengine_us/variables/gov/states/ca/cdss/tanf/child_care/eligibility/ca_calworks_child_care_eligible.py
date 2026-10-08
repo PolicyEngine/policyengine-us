@@ -7,7 +7,7 @@ class ca_calworks_child_care_eligible(Variable):
     label = "Eligible for the California CalWORKs Child Care"
     definition_period = YEAR
     defined_for = StateCode.CA
-    reference = "http://epolicy.dpss.lacounty.gov/epolicy/epolicy/server/general/projects_responsive/ePolicyMaster/index.htm?&area=general&type=responsivehelp&ctxid=&project=ePolicyMaster#t=mergedProjects%2FChild%20Care%2FChild_Care%2F1210_Overview%2F1210_Overview.htm%23Backgroundbc-3&rhtocid=_3_3_0_2"
+    reference = "https://my.dpss.lacounty.gov/public/en/home/epolicy/program/child-care/overview.html"
 
     def formula(spm_unit, period, parameters):
         # This variable is inside the federal tanf dependency tree (state
