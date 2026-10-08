@@ -1,3 +1,50 @@
+## [2.31.3] - 2026-10-08
+
+### Changed
+
+- Document the reference page-citation convention for parameter and variable references in CLAUDE.md.
+
+
+## [2.31.2] - 2026-10-08
+
+### Fixed
+
+- Reduce PR CI from 35 to 26 jobs by consolidating validation, package builds, and compatibility checks; group Baseline, Contrib, and Python suites while preserving their separate runners; prevent YAML batches from rerunning separately routed Python tests.
+
+
+## [2.31.1] - 2026-10-08
+
+### Changed
+
+- Reduce repeated simulation and model setup in Rest Python tests while preserving their existing cases and assertions.
+
+
+## [2.31.0] - 2026-10-08
+
+### Added
+
+- Add Maryland MEAP regular heating assistance for state FY25 to FY27.
+
+
+## [2.30.5] - 2026-10-08
+
+### Changed
+
+- Skip the pull request workflow for draft PRs; marking a PR ready for review runs the full suite, and converting it back to draft cancels any run in progress.
+
+
+## [2.30.4] - 2026-10-07
+
+### Fixed
+
+- The EITC investment income test (26 U.S.C. 32(i)) now counts only the head's and spouse's interest, dividends, capital gains, rents and passive income. A tax unit dependent's income no longer denies the credit, and a dependent's losses no longer offset the filer's income. A negative capital gain distributions input is floored at zero for each filer, as in adjusted gross income, instead of offsetting other capital gains. The test now reads the head's and spouse's long_term_capital_gains and short_term_capital_gains, as the net investment income tax does; a net_capital_gains amount supplied for the tax unit is no longer read.
+- Count gambling winnings in Arkansas gross income and deduct Arkansas gambling losses up to those winnings, outside the 2% floor on miscellaneous itemized deductions (Ark. Code § 26-51-424(a)(2)(B), Act 155 of 2017).
+- West Virginia's senior citizen or disability deduction now reduces each spouse's $8,000 by that spouse's own U.S. government interest, not the couple's total.
+- Remove a stray working log (PROGRESS.md) that was committed to the repository root by mistake.
+- Exclude dependents' specialty capital gains and losses from the filer's 28% Rate Gain and Unrecaptured Section 1250 Gain worksheets while preserving joint-filer spouse netting.
+- The qualified business income deduction's income limit subtracts net capital gain plus qualified dividends as Form 8995 line 12 defines them (keeping section 1250 and 28-percent rate gain, unaffected by a Form 4952 election, and counting only the head's and spouse's gains), rather than adjusted net capital gain.
+
+
 ## [2.30.3] - 2026-10-07
 
 ### Fixed
