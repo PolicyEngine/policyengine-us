@@ -186,14 +186,20 @@ def _sample_units(rng: np.random.Generator) -> list:
     return units
 
 
-def _with_head_gains_changed(units: list, sign: int) -> list:
+def _member(unit: dict, role: str = "head") -> dict:
+    return next(member for member in unit["members"] if member["role"] == role)
+
+
+def _with_gains_changed(units: list, sign: int, role: str = "head") -> list:
     changed = []
     for unit in units:
         members = [dict(m) for m in unit["members"]]
-        members[0]["long_term_capital_gains"] = round(
-            members[0]["long_term_capital_gains"] + sign * unit["gain_change"], 2
+        changed_unit = {**unit, "members": members}
+        member = _member(changed_unit, role)
+        member["long_term_capital_gains"] = round(
+            member["long_term_capital_gains"] + sign * unit["gain_change"], 2
         )
-        changed.append({**unit, "members": members})
+        changed.append(changed_unit)
     return changed
 
 
@@ -266,9 +272,20 @@ def _form_140ptc_line_j(units: list) -> np.ndarray:
 
 
 UNITS = _sample_units(np.random.default_rng(SEED))
-RAISED = _with_head_gains_changed(UNITS, sign=1)
-LOWERED = _with_head_gains_changed(UNITS, sign=-1)
 LINE_J = _form_140ptc_line_j(UNITS)
+# Keep every original head case, then repeat households with dependents to
+# change the dependent's gains in the same vectorized simulations.
+DEPENDENT_UNITS = [
+    unit for unit in UNITS if any(m["role"] == "dependent" for m in unit["members"])
+]
+GAIN_CHANGE_UNITS = UNITS + DEPENDENT_UNITS
+GAIN_CHANGE_ROLES = ["head"] * len(UNITS) + ["dependent"] * len(DEPENDENT_UNITS)
+RAISED = _with_gains_changed(UNITS, sign=1) + _with_gains_changed(
+    DEPENDENT_UNITS, sign=1, role="dependent"
+)
+LOWERED = _with_gains_changed(UNITS, sign=-1) + _with_gains_changed(
+    DEPENDENT_UNITS, sign=-1, role="dependent"
+)
 
 
 def test_sample_covers_the_loss_limit_and_negative_line_j():
@@ -327,24 +344,29 @@ def test_household_income_matches_form_140ptc_lines():
 
 
 def test_gains_count_once_up_to_the_loss_limit():
-    base = Simulation(situation=_situation(UNITS))
+    base = Simulation(situation=_situation(GAIN_CHANGE_UNITS))
     raised = Simulation(situation=_situation(RAISED))
     expected = np.array(
         [
-            _line_d(r["members"][0]) - _line_d(u["members"][0])
-            for u, r in zip(UNITS, RAISED)
+            _line_d(_member(r, role)) - _line_d(_member(u, role))
+            for u, r, role in zip(GAIN_CHANGE_UNITS, RAISED, GAIN_CHANGE_ROLES)
         ]
     )
     income_change = raised.calculate(
         "az_property_tax_credit_income", YEAR
     ) - base.calculate("az_property_tax_credit_income", YEAR)
     np.testing.assert_allclose(income_change, expected, atol=0.01)
-    # Where the head's net gain stays at or above the limit, the change is d.
+    # Where the changed member's net gain stays at or above the limit,
+    # the change is d, for heads and dependents alike.
     stays_above = np.array(
-        [_net_gain(u["members"][0]) >= -MEMBER_LOSS_LIMIT for u in UNITS]
+        [
+            _net_gain(_member(unit, role)) >= -MEMBER_LOSS_LIMIT
+            for unit, role in zip(GAIN_CHANGE_UNITS, GAIN_CHANGE_ROLES)
+        ]
     )
-    increase = np.array([unit["gain_change"] for unit in UNITS])
-    assert stays_above.sum() >= 20
+    increase = np.array([unit["gain_change"] for unit in GAIN_CHANGE_UNITS])
+    assert stays_above[:N].sum() >= 20
+    assert stays_above[N:].any()
     np.testing.assert_allclose(
         income_change[stays_above], increase[stays_above], atol=0.01
     )
@@ -355,23 +377,27 @@ def test_gains_count_once_up_to_the_loss_limit():
 
 
 def test_member_loss_limit():
-    base = Simulation(situation=_situation(UNITS))
+    base = Simulation(situation=_situation(GAIN_CHANGE_UNITS))
     lowered = Simulation(situation=_situation(LOWERED))
     income_change = lowered.calculate(
         "az_property_tax_credit_income", YEAR
     ) - base.calculate("az_property_tax_credit_income", YEAR)
     expected = np.array(
         [
-            _line_d(w["members"][0]) - _line_d(u["members"][0])
-            for u, w in zip(UNITS, LOWERED)
+            _line_d(_member(w, role)) - _line_d(_member(u, role))
+            for u, w, role in zip(GAIN_CHANGE_UNITS, LOWERED, GAIN_CHANGE_ROLES)
         ]
     )
     np.testing.assert_allclose(income_change, expected, atol=0.01)
     # Once a member's net gain is at or below the limit, more loss is ignored.
     at_limit = np.array(
-        [_net_gain(u["members"][0]) <= -MEMBER_LOSS_LIMIT for u in UNITS]
+        [
+            _net_gain(_member(unit, role)) <= -MEMBER_LOSS_LIMIT
+            for unit, role in zip(GAIN_CHANGE_UNITS, GAIN_CHANGE_ROLES)
+        ]
     )
-    assert at_limit.sum() >= 10
+    assert at_limit[:N].sum() >= 10
+    assert at_limit[N:].any()
     np.testing.assert_allclose(income_change[at_limit], 0, atol=0.01)
     # Each member's line D is bounded below by the limit.
     line_d = base.calculate("az_property_tax_credit_capital_gains", YEAR)

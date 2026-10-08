@@ -767,7 +767,7 @@
   period: 2025
   input:
     # The 2025 above-the-line deductions without loss_ald.
-    gov.irs.ald.deductions: [self_employment_tax_ald, student_loan_interest_ald, early_withdrawal_penalty, alimony_expense_ald, educator_expense, health_savings_account_ald, self_employed_health_insurance_ald, self_employed_pension_contribution_ald, traditional_ira_contributions, qualified_adoption_assistance_expense, us_bonds_for_higher_ed, specified_possession_income, puerto_rico_income]
+    gov.irs.ald.deductions: [self_employment_tax_ald, student_loan_interest_ald, early_withdrawal_penalty, alimony_expense_ald, educator_expense_ald, health_savings_account_ald, self_employed_health_insurance_ald, self_employed_pension_contribution_ald, traditional_ira_contributions, qualified_adoption_assistance_expense, us_bonds_for_higher_ed, specified_possession_income, puerto_rico_income]
     people:
       head:
         age: 70
