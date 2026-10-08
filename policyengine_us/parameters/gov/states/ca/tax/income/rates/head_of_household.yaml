@@ -1,4 +1,4 @@
-description: California taxes income at these rates for head of household filers. 
+description: California taxes income at these rates for head of household filers.
 brackets:
   - threshold:
       0000-01-01: 0
@@ -11,6 +11,7 @@ brackets:
         2023-01-01: 20_839
         2024-01-01: 21_527
         2025-01-01: 22_173
+        2026-01-01: 22_927
       metadata:
         uprating: gov.states.ca.cpi
     rate:
@@ -22,6 +23,7 @@ brackets:
         2023-01-01: 49_371
         2024-01-01: 51_000
         2025-01-01: 52_530
+        2026-01-01: 54_316
       metadata:
         uprating: gov.states.ca.cpi
     rate:
@@ -33,6 +35,7 @@ brackets:
         2023-01-01: 63_644
         2024-01-01: 65_744
         2025-01-01: 67_716
+        2026-01-01: 70_018
       metadata:
         uprating: gov.states.ca.cpi
     rate:
@@ -44,6 +47,7 @@ brackets:
         2023-01-01: 78_765
         2024-01-01: 81_364
         2025-01-01: 83_805
+        2026-01-01: 86_654
       metadata:
         uprating: gov.states.ca.cpi
     rate:
@@ -55,6 +59,7 @@ brackets:
         2023-01-01: 93_037
         2024-01-01: 96_107
         2025-01-01: 98_990
+        2026-01-01: 102_356
       metadata:
         uprating: gov.states.ca.cpi
     rate:
@@ -66,6 +71,7 @@ brackets:
         2023-01-01: 474_824
         2024-01-01: 490_493
         2025-01-01: 505_208
+        2026-01-01: 522_385
       metadata:
         uprating: gov.states.ca.cpi
     rate:
@@ -77,6 +83,7 @@ brackets:
         2023-01-01: 569_790
         2024-01-01: 588_593
         2025-01-01: 606_251
+        2026-01-01: 626_864
       metadata:
         uprating: gov.states.ca.cpi
     rate:
@@ -88,6 +95,7 @@ brackets:
         2023-01-01: 949_649
         2024-01-01: 980_987
         2025-01-01: 1_010_417
+        2026-01-01: 1_044_771
       metadata:
         uprating: gov.states.ca.cpi
     rate:
@@ -99,7 +107,9 @@ metadata:
   threshold_period: year
   type: marginal_rate
   label: California head of household income tax rate
-  reference: 
+  reference:
+    - title: 2026 California indexing (FTB Tax News, October 2026)
+      href: https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/#article1
     - title: California Income Tax Rate Schedules for 2021
       href: https://www.ftb.ca.gov/forms/2021/2021-540-tax-rate-schedules.pdf
     - title: California Income Tax Rate Schedules for 2022
@@ -112,4 +122,3 @@ metadata:
       href: https://www.ftb.ca.gov/forms/2025/2025-540-tax-rate-schedules.pdf
     - title: Cal. Rev. & Tax. Code § 17041
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17041.&lawCode=RTC
-      # Index according to federal tax parameter rules until we add California CPI trend.

@@ -6,12 +6,13 @@ class is_medicaid_immigration_status_eligible(Variable):
     entity = Person
     label = "Person is eligible for Medicaid due to immigration status"
     definition_period = YEAR
-    reference = [
+    reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396b#v",
+        "https://www.law.cornell.edu/uscode/text/42/1396b#v_4_A",
         "https://www.law.cornell.edu/uscode/text/8/1641",
         "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title8-section1613&num=0&edition=prelim",
         "https://www.kff.org/racial-equity-and-health-policy/fact-sheet/key-facts-on-health-coverage-of-immigrants/",
-    ]
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicaid.eligibility
@@ -30,6 +31,11 @@ class is_medicaid_immigration_status_eligible(Variable):
         federally_eligible_status = citizen | (
             eligible_immigration_status & (bar_exempt_status | past_five_year_bar)
         )
+        # 42 USC 1396b(v)(4) lets states cover lawfully residing children and
+        # pregnant individuals without the qualified-alien limit or five-year bar.
+        lawfully_residing_option_eligible = person(
+            "is_medicaid_lawfully_residing_option_eligible", period
+        )
 
         # Special handling for undocumented immigrants in states that cover them
         undocumented = (
@@ -45,6 +51,7 @@ class is_medicaid_immigration_status_eligible(Variable):
 
         return (
             federally_eligible_status
+            | lawfully_residing_option_eligible
             | undocumented_eligible
             | ca_eligible_regardless_of_immigration_status
         )

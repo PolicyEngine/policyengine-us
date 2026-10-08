@@ -28,3 +28,120 @@
         members: [child, head, spouse]
   output:
     is_tax_unit_head: [false, true, false]
+
+- name: Without dependent inputs, the oldest adult is head.
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 40
+      parent:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [filer, parent]
+  output:
+    is_tax_unit_head: [false, true]
+    age_head: 70
+
+- name: Explicit false dependent inputs leave the oldest adult as head.
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 40
+        is_tax_unit_dependent: false
+      parent:
+        age: 70
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit:
+        members: [filer, parent]
+  output:
+    is_tax_unit_head: [false, true]
+    age_head: 70
+
+- name: An elderly parent input as a dependent does not displace a married couple.
+  period: 2015
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, parent]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      parent_marital_unit:
+        members: [parent]
+    households:
+      household:
+        members: [head, spouse, parent]
+        state_code: AR
+  output:
+    is_tax_unit_head: [true, false, false]
+    is_tax_unit_spouse: [false, true, false]
+    is_tax_unit_dependent: [false, false, true]
+    age_head: 40
+    age_spouse: 40
+    filing_status: JOINT
+    tax_unit_dependents: 1
+
+- name: A single filer with an elderly parent input as a dependent stays head.
+  period: 2024
+  input:
+    people:
+      filer:
+        age: 45
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, parent]
+    households:
+      household:
+        members: [filer, parent]
+  output:
+    is_tax_unit_head: [true, false]
+    is_tax_unit_spouse: [false, false]
+    age_head: 45
+    filing_status: HEAD_OF_HOUSEHOLD
+
+- name: A lone adult input as a dependent is still the head.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 30
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person]
+  output:
+    is_tax_unit_head: true
+    age_head: 30
+
+- name: If every adult is input as a dependent, the oldest adult is head.
+  period: 2024
+  input:
+    people:
+      younger:
+        age: 40
+        is_tax_unit_dependent: true
+      older:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [younger, older]
+  output:
+    is_tax_unit_head: [false, true]
+    is_tax_unit_spouse: [true, false]

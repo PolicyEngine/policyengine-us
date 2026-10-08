@@ -2,16 +2,26 @@ description: Wisconsin phases out its standard deduction for joint filers accord
 metadata:
   type: marginal_rate
   threshold_period: year
-  threshold_unit: currency-USD 
+  threshold_unit: currency-USD
   rate_unit: /1
   label: Wisconsin standard deduction joint phase out
   reference:
-    - title: Wisconsin Tax Brackets, Rates, Forms, and Standard Deductions
-      href: https://www.efile.com/wisconsin-tax-brackets-rates-and-forms/
-    # The legal code provides inflaton unadjusted amounts
-    - title: Wisconsin Statutes 71.07 (9)(b)(5)
-      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/22/dm
-    # Instructions provide a standard deduction table, but not specific phaseout threshold starts. These are found in the efile.
+    - title: eFile.com, Wisconsin Tax Brackets, Rates, Forms, and Standard Deductions (third party, archived January 2025; the only cited source for 2021)
+      href: https://web.archive.org/web/20250119123144/https://www.efile.com/wisconsin-tax-brackets-rates-and-forms/
+    - title: Wisconsin Department of Revenue, Tax Exemption Devices 2023-25, Individual Income Tax (2022 tax year)
+      href: https://www.revenue.wi.gov/DORReports/23sumrpt.pdf#page=13
+    - title: 2023 Form 1-ES instructions, Standard Deduction Table
+      href: https://www.revenue.wi.gov/TaxForms2023/2023-Form1-ES-Inst.pdf#page=2
+    - title: Wisconsin Department of Revenue, Tax Exemption Devices 2025-27, Individual Income Tax (2024 tax year)
+      href: https://www.revenue.wi.gov/DORReports/25sumrpt.pdf#page=9
+    - title: 2025 Form 1-ES instructions, Standard Deduction Table
+      href: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-ES-Inst.pdf#page=3
+    - title: Wisconsin Statutes 71.05(22)(dp) - Standard deduction limits
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/22/dp
+    - title: Wisconsin Statutes 71.05(22)(dt) - Standard deduction indexing
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/22/dt
+    - title: 2026 Form 1-ES instructions, Standard Deduction Schedules
+      href: https://www.revenue.wi.gov/TaxForms2026/2026-Form1-ES-Inst.pdf#page=2
 
 brackets:
   - threshold:
@@ -25,11 +35,11 @@ brackets:
         2023-01-01: 26_550
         2024-01-01: 27_520
         2025-01-01: 28_210
+        2026-01-01: 29_040
       metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: nearest
-            interval: 10
+        uprating: null
+        wisconsin_indexing:
+          base: 21_360
+          base_year: 2015
     rate:
       2021-01-01: 0.19778

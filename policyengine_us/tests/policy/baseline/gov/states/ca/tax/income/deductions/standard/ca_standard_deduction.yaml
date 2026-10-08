@@ -13,3 +13,46 @@
     filing_status: JOINT
   output:
     ca_standard_deduction: 9_606
+
+# Published 2026 amounts: FTB Tax News, October 2026, 2026 Indexing.
+# https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/#article1
+
+- name: California 2026 published standard deduction for single
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SINGLE
+  output:
+    ca_standard_deduction: 5_900
+
+- name: California 2026 published standard deduction for separate
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SEPARATE
+  output:
+    ca_standard_deduction: 5_900
+
+- name: California 2026 published standard deduction for joint
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: JOINT
+  output:
+    ca_standard_deduction: 11_800
+
+- name: California 2026 published standard deduction for surviving spouse
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SURVIVING_SPOUSE
+  output:
+    ca_standard_deduction: 11_800
+
+- name: California 2026 published standard deduction for head of household
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ca_standard_deduction: 11_800
