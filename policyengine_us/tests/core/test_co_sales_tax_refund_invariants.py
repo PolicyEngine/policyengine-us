@@ -10,7 +10,7 @@ surplus, at the per-person tier amounts in the Legislative Council Staff March
 Hypothesis draws batches of tax units (single, joint, or head of household
 with a dependent), each with a modified AGI, filer ages and wages; a seeded
 population of 100 units adds breadth. Each batch runs as one vectorized
-simulation covering all three years. For every tax unit:
+simulation covering both years. For every tax unit:
 
 1. Gate: in 2026 the refund is zero, whatever the income, filing status or
    eligibility.
@@ -19,9 +19,11 @@ simulation covering all three years. For every tax unit:
    tiers taken from the forecast table rather than from the parameters.
 3. Bounds: 0 <= refund <= 2 x the top tier amount, and the refund is
    positive exactly when a filer is eligible (2025).
-4. Intended carry-forward: in 2027 the refund equals the 2025 refund. The
-   LCS June 2026 forecast expects a tax year 2027 refund, and the 2025 tier
-   amounts stand in until CDOR publishes the tax year 2027 table.
+
+Tax year 2027 is deliberately not checked. Its refund depends on the
+FY 2026-27 surplus and on a tier table CDOR has not published, so the model's
+carry-forward of the 2025 table into 2027 is a placeholder, not a value to
+lock in.
 """
 
 import numpy as np
@@ -91,7 +93,7 @@ def _seeded_units(n=100):
     return units
 
 
-YEARS = (2025, 2026, 2027)
+YEARS = (2025, 2026)
 
 
 def _situation(units):
@@ -166,9 +168,6 @@ def _check(units):
         assert (run["refund"] >= 0).all()
         assert (run["refund"] <= 2 * PUBLISHED_2025_AMOUNTS.max()).all()
     np.testing.assert_array_equal(base["refund"] > 0, base["count"] > 0)
-
-    # 4. Intended carry-forward of the 2025 table into 2027.
-    np.testing.assert_allclose(by_year[2027]["refund"], base["refund"], atol=TOLERANCE)
 
 
 @settings(
