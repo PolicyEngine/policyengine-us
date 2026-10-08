@@ -1,1 +1,1 @@
-Prevent YAML test batches from also collecting Python suites that already run in dedicated CI steps.
+Reduce PR CI from 35 to 28 jobs by consolidating validation, Python compatibility, and unpublished wheel builds; prevent YAML batches from rerunning separately routed Python tests.

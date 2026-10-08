@@ -31,11 +31,15 @@ class WorkflowTests(unittest.TestCase):
         self,
     ):
         pr = (ROOT / ".github/workflows/pr.yaml").read_text()
-        candidate = job(pr, "CandidateWheel")
+        candidate_job = job(pr, "CandidateWheel")
+        candidate_action = (
+            ROOT / ".github/actions/candidate-wheel/action.yaml"
+        ).read_text()
+        candidate = candidate_job + candidate_action
         publish = job((ROOT / ".github/workflows/push.yaml").read_text(), "Publish")
         commands = (
             "python .github/release_lock.py --committed",
-            'python .github/release_build.py --prepare "${{ matrix.kind }}"',
+            'python .github/release_build.py --prepare "${{ inputs.kind }}"',
             "python .github/release_lock.py --refresh",
             "uv sync --locked --extra dev",
             "uv run --no-sync make",
@@ -47,8 +51,12 @@ class WorkflowTests(unittest.TestCase):
             sorted(candidate.index(value) for value in commands),
         )
         self.assertIn("github.event.pull_request.head.sha", candidate)
-        self.assertIn("kind: [rc1, final]", candidate)
-        self.assertIn("release-wheel-${{ matrix.kind }}-", candidate)
+        self.assertEqual(
+            candidate_job.count("uses: ./.github/actions/candidate-wheel"), 2
+        )
+        self.assertIn("kind: rc1", candidate_job)
+        self.assertIn("kind: final", candidate_job)
+        self.assertIn("release-wheel-${{ inputs.kind }}-", candidate_action)
         for expected in (
             "runs-on: ubuntu-24.04",
             'python-version: "3.14.7"',
