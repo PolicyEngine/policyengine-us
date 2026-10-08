@@ -107,6 +107,16 @@
   output:
     va_529_plan_deduction: 4_000
 
+- name: An owner aged exactly 70 deducts the full contribution
+  period: 2024
+  input:
+    state_code: VA
+    age: 70
+    investment_in_529_plan_indv: 10_000
+    count_529_contribution_beneficiaries: 1
+  output:
+    va_529_plan_deduction: 10_000
+
 - name: Each spouse's own accounts carry their own cap
   period: 2024
   input:
