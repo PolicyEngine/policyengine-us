@@ -453,7 +453,7 @@ def test_linked_non_filer_income_matches_signed_legal_membership(magi):
     ages = [65, 35, 35, 10, 12, 30]
     people = {
         name: {
-            "person_id": i + 1,
+            "person_id": {YEAR: i + 1},
             "age": {YEAR: ages[i]},
             "medicaid_magi_person": {YEAR: magi[i]},
             # Count the children's MAGI under 435.603(d)(2)(i), including
@@ -462,9 +462,9 @@ def test_linked_non_filer_income_matches_signed_legal_membership(magi):
         }
         for i, name in enumerate(names)
     }
-    people["mother"]["parent_1_id"] = 1
+    people["mother"]["parent_1_id"] = {YEAR: 1}
     for child in ("child", "sibling"):
-        people[child].update(parent_1_id=2, parent_2_id=3)
+        people[child].update(parent_1_id={YEAR: 2}, parent_2_id={YEAR: 3})
     situation = {
         "people": people,
         "tax_units": {
