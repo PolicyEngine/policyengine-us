@@ -41,6 +41,8 @@ class ga_liheap_eligible(Variable):
         # Account credits of $1,000+ and administrative household exclusions
         # also need unavailable inputs; the selected heating account is assumed
         # to satisfy those rules. Annual expense is not an account-credit proxy.
+        # A household of lawful immigrants only has size > 0 and qualifies;
+        # see the manual conflict noted in ga_liheap_household_size.
         return (
             (size > 0)
             & (income <= limit)
