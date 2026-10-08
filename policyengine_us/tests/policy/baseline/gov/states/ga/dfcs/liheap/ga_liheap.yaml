@@ -661,3 +661,43 @@
     ga_liheap_matrix_amount: 500
     ga_liheap_eligible: true
     ga_liheap: 500
+
+# Manual section 1200.7, page 65 counts cash gifts from outside the household.
+# FY2026 matrix: size-one Level I ends at $13,589 and eligibility at $34,549.
+# Gifts of $12,000 give the $500 electric award; $24,000 gives $400; $36,000
+# exceeds the limit and gives $0. Without the counted gift, all three get $500.
+- name: Case 19, cash contributions determine the benefit band and eligibility.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    financial_assistance: [12_000, 24_000, 36_000]
+    ssi: [0, 0, 0]
+    ga_tanf: [0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200]
+  output:
+    ga_liheap_income: [12_000, 24_000, 36_000]
+    ga_liheap_income_limit: [34_549, 34_549, 34_549]
+    ga_liheap_eligible: [true, true, false]
+    ga_liheap: [500, 400, 0]
+
+# FY2025 uses the same detailed income rule. Its size-one limit is $33,038;
+# $36,000 in outside cash contributions exceeds it and gives no heating benefit.
+- name: Case 20, cash contributions above the prior year limit prevent an award.
+  period: 2025
+  input:
+    state_code: GA
+    age: 40
+    immigration_status: CITIZEN
+    financial_assistance: 36_000
+    ssi: 0
+    ga_tanf: 0
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_200
+  output:
+    ga_liheap_income: 36_000
+    ga_liheap_income_limit: 33_038
+    ga_liheap_eligible: false
+    ga_liheap: 0

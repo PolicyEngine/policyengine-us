@@ -40,8 +40,11 @@ values:
     # FY2026 plan 1.9 (page 6) leaves "winnings from lotteries" unchecked. This
     # follows the manual; the input also covers non-lottery gambling.
     - gambling_winnings
-    # Manual 1200.7 (page 65) includes "Contribution/Cash Gift" and the plan
-    # leaves "Cash gifts" unchecked; cash gifts have no input and are not modeled.
+    # Manual 1200.7 (page 65) explicitly includes "Contribution/Cash Gift".
+    # The FY2022 plan already left gifts unchecked when this manual was issued;
+    # the same FY2026 checkbox does not establish a later policy change. Follow
+    # the detailed manual, as for lottery and insurance income above.
+    - financial_assistance
     - alimony_income
     - child_support_received
 metadata:
@@ -53,3 +56,5 @@ metadata:
       href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=62
     - title: "Georgia FY2026 LIHEAP State Plan, section 1.9 (current included and excluded sources) #page 5-6"
       href: https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=5
+    - title: Georgia FY2022 LIHEAP State Plan, section 1.9 (contemporaneous unchecked gifts, lottery and insurance categories)
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/GA_Plan_2022.pdf#page=6

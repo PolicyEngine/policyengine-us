@@ -51,8 +51,7 @@ class ga_liheap_income(Variable):
         # TANF is included once at SPM level as a caregiver grant rather than
         # projecting the household award onto every member.
         household_income = add(spm_unit, period, p.sources.household)
-        # Roomer/boarder expense allowances, mortgage-sale contracts, stipends,
-        # recurring support and the manual's counted cash gifts lack the scoped
-        # handling. Lottery winnings follow the manual over the plan (see the
-        # person income sources parameter).
+        # Roomer/boarder expense allowances, mortgage-sale contracts and stipends
+        # lack scoped handling. Cash contributions use financial_assistance;
+        # gifts and lottery winnings follow the detailed manual (see sources).
         return adult_income + interest + household_income

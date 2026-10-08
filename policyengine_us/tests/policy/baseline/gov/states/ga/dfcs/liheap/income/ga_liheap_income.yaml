@@ -455,3 +455,18 @@
         state_code: GA
   output:
     ga_liheap_income: [36_000, 30_000, 30_000]
+
+# Manual section 1200.7, page 65 includes cash contributions and gifts. Section
+# 1200.2, page 62 excludes all income of members under 18. The same $6,000 cash
+# support therefore counts at age 18 but not 17. financial_assistance records
+# support from outside the household, avoiding intra-household double counting.
+- name: Case 14, cash contributions count from age eighteen.
+  period: 2026
+  input:
+    state_code: [GA, GA]
+    age: [17, 18]
+    financial_assistance: [6_000, 6_000]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+  output:
+    ga_liheap_income: [0, 6_000]
