@@ -73,7 +73,7 @@ TOLERANCE = 0.01
 # Federal above-the-line deductions that are U.S. Schedule 1 Part II
 # adjustments (2025 Schedule 1 line), written from the form.
 SCHEDULE_1_ADJUSTMENTS = {
-    "educator_expense": "11",
+    "educator_expense_ald": "11",
     "health_savings_account_ald": "13",
     "self_employment_tax_ald": "15",
     "self_employed_pension_contribution_ald": "16",

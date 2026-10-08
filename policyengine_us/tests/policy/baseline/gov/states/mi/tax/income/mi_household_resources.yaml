@@ -644,3 +644,83 @@
     # Line 33: 50,000.
     mi_household_resources: 50_000
 
+- name: Claimant educator expenses reduce household resources through Schedule 1 line 11
+  period: 2025
+  input:
+    people:
+      claimant:
+        age: 45
+        employment_income_before_lsr: 50_000
+        educator_expense: 300
+    tax_units:
+      tax_unit:
+        members: [claimant]
+    households:
+      household:
+        members: [claimant]
+        state_code: MI
+  output:
+    educator_expense_ald: 300
+    above_the_line_deductions: 300
+    adjusted_gross_income: 49_700
+    # Line 14: 50,000. Line 30: Schedule 1 line 11, 300.
+    # Line 33: 50,000 - 300 = 49,700.
+    mi_household_resources: 49_700
+
+- name: Spouse educator expenses reduce household resources on a joint return
+  period: 2025
+  input:
+    people:
+      claimant:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 50_000
+      spouse:
+        age: 45
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        educator_expense: 300
+    tax_units:
+      tax_unit:
+        members: [claimant, spouse]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [claimant, spouse]
+    households:
+      household:
+        members: [claimant, spouse]
+        state_code: MI
+  output:
+    educator_expense_ald: 300
+    above_the_line_deductions: 300
+    adjusted_gross_income: 49_700
+    # Line 30 includes the spouse's Schedule 1 line 11 deduction, 300.
+    # Line 33: 50,000 - 300 = 49,700.
+    mi_household_resources: 49_700
+
+- name: Educator expenses above the per-educator cap reduce household resources only by the capped deduction
+  period: 2025
+  input:
+    people:
+      claimant:
+        age: 45
+        employment_income_before_lsr: 50_000
+        educator_expense: 1_000
+    tax_units:
+      tax_unit:
+        members: [claimant]
+    households:
+      household:
+        members: [claimant]
+        state_code: MI
+  output:
+    educator_expense_ald: 300
+    above_the_line_deductions: 300
+    adjusted_gross_income: 49_700
+    # Schedule 1 line 11 and MI-1040CR line 30 use the 2025 cap of 300.
+    # Line 33: 50,000 - 300 = 49,700.
+    mi_household_resources: 49_700
