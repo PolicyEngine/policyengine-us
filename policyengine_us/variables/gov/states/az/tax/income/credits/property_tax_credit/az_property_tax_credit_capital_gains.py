@@ -13,7 +13,9 @@ class az_property_tax_credit_capital_gains(Variable):
         "the year's gains and losses combined, including capital gain "
         "distributions, with a net loss counted only up to the per-member limit. "
         "No prior-year capital loss carryover is used: the long-term carryover "
-        "that long_term_capital_gains nets is added back."
+        "that long_term_capital_gains nets is added back. Short-term inputs "
+        "must contain only the current year's net gains and losses, without "
+        "Schedule D line 6 carryovers; no short-term carryover memo is modeled."
     )
     reference = [
         "https://www.law.cornell.edu/regulations/arizona/Ariz-Admin-Code-SS-R15-2C-502",
