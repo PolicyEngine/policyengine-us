@@ -1,0 +1,1 @@
+Cancel a superseded full-suite shard in the Push workflow when a newer version-bump commit reaches the same shard; only the newest version is tested and published to PyPI, so superseded versions are skipped.
