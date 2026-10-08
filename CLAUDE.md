@@ -146,6 +146,14 @@ changelog.d/medicaid-ce-exclusions.md
 - Verify behavior at edge cases (income just below/above thresholds, exact boundary conditions)
 - Consider real-world examples to validate implementation, including official calculators
 
+## Parameter and variable references
+- One `reference` entry per source document; URLs that differ only by `#page=` are one source. Do not split a multi-page table into per-page entries.
+- PDF page numbers are file pages (1-indexed), not printed pages.
+- One cited page: `#page=57` in the href only, no page in the title.
+- Several cited pages: the href opens the first, and the title ends with `#page 72-75` (consecutive) or `#page 29,32-33,36,41` (nonconsecutive). Quote the title, since an unquoted ` #` starts a YAML comment.
+- Never put a page list in the href (`#page=1,3,5`).
+- Variable reference tuples have no title: put a `# PDF pages 61-62, 67` comment above a multi-page href.
+
 ## Axiom Parity (required for policy changes)
 - Any PR that adds, updates or fixes policy must also leave the same provision correct in rulespec-us. Put one line in the PR body: `axiom: <legal id> encoded-correct | <rulespec PR> encoded | <rulespec issue> queued | n/a: <reason>`.
 - Use `queued` only when the signed encoder is blocked; record the blocker in the issue. Each billed encoder run requires separate approval. A `queued` rulespec-us issue must be dispatch-ready and labelled `pe-parity`. It needs the module path and corpus citation, the verbatim law, the required outputs, and companion tests from the same external source as your YAML tests. See `CONTRIBUTING.md#axiom-parity`.
