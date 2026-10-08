@@ -808,7 +808,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, GA, Riverside County, MA, IL, IN, KS, KY, MS, NC, NE, TX
+    coverage: DC, GA, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, TX
     state_implementations:
       - state: GA
         status: partial
@@ -860,6 +860,14 @@ programs:
         parameter_prefix: gov.states.ky.dcbs.liheap
         verified_years: "2025-2026"
         notes: FY2025-FY2026 regular heating only, from the published benefit workbooks. Crisis and cooling assistance are out of scope.
+      - state: MD
+        status: partial
+        name: Maryland MEAP
+        full_name: Maryland Energy Assistance Program
+        variable: md_meap
+        parameter_prefix: gov.states.md.dhs.meap
+        verified_years: "2025-2027"
+        notes: FY25-FY27 regular heating only, with the fuel tables, the Garrett County multiplier and the subsidized and nominal levels. The SNAP nominal payment, cooling, EUSP, arrearage, crisis and equipment benefits are out of scope.
       - state: MS
         status: partial
         name: Mississippi LIHEAP
