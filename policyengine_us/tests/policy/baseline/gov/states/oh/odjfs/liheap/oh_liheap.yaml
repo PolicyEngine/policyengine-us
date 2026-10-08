@@ -1,7 +1,7 @@
 # Final 2021 workbook (also used for 2022) and final 2023 workbook: page 1 factors,
-# page 8 counties, pages 9-11 formula/tables. 2024 and 2025 use the draft workbook
-# coefficients; the 2025 values carry forward to 2026-2027. Above 150% FPG is a
-# user-approved extrapolation; PIPP enrollment/reduction remains unmodeled. Every case
+# page 8 counties, pages 9-11 formula/tables, pages 16 and 20 terminal 150+ rows.
+# 2024-2025 use coefficients estimated from draft covers; these are carried
+# forward to 2026-2027. PIPP enrollment/reduction remains unmodeled. Every case
 # gives heating_type. Case 11 uses the explicit .5523 gas factor: printed amounts are
 # 334 and 579 instead.
 - name: Case 1, published ordinary fuel amounts are not capped at a small reported heating bill.
@@ -189,10 +189,9 @@
   output:
     oh_liheap: [665, 665, 664, 599, 532]
 # 2025 draft values carried to 2026: 251.75 - 0.285 x poverty percent, 2025 FPG 15,650.
-# 150% -> 209; 150.00006% -> 208.99998 -> 209; 162.5% -> 205.44 -> 205;
-# 174.997% -> 201.88 -> 202; 27,388 is above the 27,387 limit -> 0.
-- name: Case 5, the approved extrapolation covers income above 150 percent while ordinary eligibility
-    still applies.
+# The historical 150+ payment cap also carries forward: eligible income at or
+# above 150% gives 209; 27,388 is above the 27,387 income limit and gives 0.
+- name: Case 5, estimated later awards carry forward the historical payment cap while ordinary eligibility applies.
   period: 2026
   input:
     state_code: [OH, OH, OH, OH, OH]
@@ -206,7 +205,7 @@
     heating_expense: [1, 1, 1, 1, 1]
   output:
     oh_liheap_eligible: [true, true, true, true, false]
-    oh_liheap: [209, 209, 205, 202, 0]
+    oh_liheap: [209, 209, 209, 209, 0]
 # 15,650 / 2025 FPG 15,650 = 100%: 251.75 - 28.5 = 223.25 -> 223.
 - name: Case 6, the 2026 estimate carries payment values forward but updates the lagged poverty guideline.
   period: 2026
@@ -413,7 +412,7 @@
 # gas x 0.724 = 316.39, propane 437, coal x 0.6 = 262.2. Northern elderly x 1.06 x 1.75:
 # gas 586.90, propane 810.64, coal 486.38 (the printed $587/$811/$486 maximums).
 # Southern Adams propane 437 x 0.94 = 410.78. 100% (14,580): 399. 150% (21,870): 361.
-- name: Case 16, the 2024 payments follow the 2024 draft workbook coefficients.
+- name: Case 16, the 2024 payments use coefficients estimated from the draft workbook cover.
   period: 2024
   input:
     state_code: [OH, OH, OH, OH, OH, OH, OH, OH, OH]
@@ -434,7 +433,7 @@
 # $319/$441/$264 maximums). Central elderly x 1.75: gas 300.91, propane 415.63, coal 249.38.
 # Central gas 171.95. 100% (15,060): 223.25 propane. Central non-targeted propane and coal
 # at the 50% floor (237.5 and 142.5) are exact half-dollar ties and are not asserted.
-- name: Case 17, the 2025 payments follow the 2025 draft workbook coefficients.
+- name: Case 17, the 2025 payments use coefficients estimated from the draft workbook cover.
   period: 2025
   input:
     state_code: [OH, OH, OH, OH, OH, OH, OH, OH]
@@ -452,8 +451,8 @@
 
 # A 70-year-old with $28,000 of Social Security and the 2026 standard Part B premium
 # ($202.90 x 12 = $2,434.80) counts 25,565.20, within the 27,387 limit. 25,565.20 / 15,650
-# = 163.36%: (251.75 - 46.56) x 1.75 = 359.09 -> 359. Without a premium, 28,000 is over
-# the limit and the payment is 0.
+# = 163.36%, capped at 150% for the estimated payment: 209 x 1.75 = 365.75 -> 366.
+# Without a premium, 28,000 is over the limit and the payment is 0.
 - name: Case 18, the Medicare Part B premium deduction makes an elderly Social Security recipient eligible.
   period: 2026
   input:
@@ -470,7 +469,7 @@
     heating_expense: [1_200, 1_200]
   output:
     oh_liheap_eligible: [true, false]
-    oh_liheap: [359, 0]
+    oh_liheap: [366, 0]
 
 # With no county or county_fips input, county falls back to the state's alphabetically
 # first county, Adams (southern, -6%): propane 237.5 x 0.94 = 223.25 -> 223; gas
@@ -508,7 +507,7 @@
 
 # Undocumented adult is excluded from size but not income: size 2, income 18,000 + 12,000
 # = 30,000 <= 37,012. Poverty uses the size-2 2025 FPG 21,150: 141.84%;
-# 251.75 - 40.43 = 211.32 -> 211 (SPM size 3 would give 220; size 1, 197). Not targeted.
+# 251.75 - 40.43 = 211.32 -> 211 (SPM size 3 would give 220; size 1, 209). Not targeted.
 - name: Case 21, a mixed status family payment uses qualified household size with counted income.
   period: 2026
   input:
@@ -567,3 +566,41 @@
     heating_expense: [1_200, 1_200]
   output:
     oh_liheap: [172, 162]
+
+# Final 2021 workbook, Tables 2B and 2C, physical pages 16 and 20: the last
+# row is explicitly 150+, including the displayed weighted awards. Test actual
+# income at 150%, near/at the 175% eligibility limit, and above the limit.
+- name: Case 23, final 2021 regional terminal awards remain constant above 150 percent of poverty.
+  period: 2021
+  input:
+    state_code: [OH, OH, OH, OH, OH, OH, OH]
+    county: [ASHTABULA_COUNTY_OH, ASHTABULA_COUNTY_OH, ADAMS_COUNTY_OH, ADAMS_COUNTY_OH, ASHTABULA_COUNTY_OH, ADAMS_COUNTY_OH, ASHTABULA_COUNTY_OH]
+    age: [40, 40, 40, 40, 60, 60, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0, 0]
+    employment_income: [19140, 22330, 19140, 22330, 22330, 22330, 22331]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    heating_expense: [1200, 1200, 1200, 1200, 1200, 1200, 1200]
+  output:
+    oh_liheap_eligible: [true, true, true, true, true, true, false]
+    oh_liheap: [403, 403, 357, 357, 604, 536, 0]
+
+# Final 2023 workbook, Tables 2B and 2C, physical pages 16 and 20: the last
+# row is explicitly 150+, including the displayed weighted awards. Test actual
+# income at 150%, near/at the 175% eligibility limit, and above the limit.
+- name: Case 24, final 2023 regional terminal awards remain constant above 150 percent of poverty.
+  period: 2023
+  input:
+    state_code: [OH, OH, OH, OH, OH, OH, OH]
+    county: [ASHTABULA_COUNTY_OH, ASHTABULA_COUNTY_OH, ADAMS_COUNTY_OH, ADAMS_COUNTY_OH, ASHTABULA_COUNTY_OH, ADAMS_COUNTY_OH, ASHTABULA_COUNTY_OH]
+    age: [40, 40, 40, 40, 60, 60, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0, 0]
+    employment_income: [20385, 23782, 20385, 23782, 23782, 23782, 23783]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    heating_expense: [1200, 1200, 1200, 1200, 1200, 1200, 1200]
+  output:
+    oh_liheap_eligible: [true, true, true, true, true, true, false]
+    oh_liheap: [564, 564, 500, 500, 987, 875, 0]

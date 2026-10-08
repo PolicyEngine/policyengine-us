@@ -1,9 +1,10 @@
 description: Ohio reduces the payment formula by this amount per federal poverty percentage point under the Home Energy Assistance Program.
 # The 2021 values carry through 2022; no final 2022 workbook was found.
-# For the 2024 and 2025 draft workbooks, (46% - 38%) / 100 x $950 = 0.76 and
-# (25% - 22%) / 100 x $950 = 0.285, using the 2023 workbook's page 11 method
-# and high winter cost. The 2025 draft value carries into 2026 and later,
-# which are unverified estimates.
+# For 2024 and 2025, these estimates use (46% - 38%) / 100 x $950 = 0.76
+# and (25% - 22%) / 100 x $950 = 0.285, applying the final 2023 workbook's
+# method and winter cost to draft cover percentages. No current formula
+# sheet or interior award table verifies those assumptions. The 2025
+# estimate carries into 2026 and later without extending verified coverage.
 values:
   2021-01-01: 0.9813
   2023-01-01: 1.33

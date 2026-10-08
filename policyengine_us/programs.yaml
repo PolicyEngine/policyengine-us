@@ -816,8 +816,7 @@ programs:
         full_name: Ohio Low Income Home Energy Assistance Program
         variable: oh_liheap
         parameter_prefix: gov.states.oh.odjfs.liheap
-        verified_years: "2025"
-        notes: FY2025 regular heating only, from the 2024-25 application and the 2025 benefit workbook. Crisis, cooling and weatherization assistance are out of scope.
+        notes: Regular heating only. Final 2021 and 2023 non-PIPP formula components and published payment rows are tested; some printed gas awards differ by $1. The 2024-2025 coefficients are estimates from workbook covers, and 2026 onward carries those estimates forward. No full benefit year is verified. PIPP reductions and the favorable 30-day income election remain unmodeled. Crisis, cooling and weatherization assistance are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP

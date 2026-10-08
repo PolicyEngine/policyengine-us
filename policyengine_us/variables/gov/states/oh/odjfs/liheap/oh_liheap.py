@@ -19,6 +19,8 @@ class oh_liheap(Variable):
         # 2024 and 2025 draft workbook covers.
         "https://liheapch.acf.gov/docs/2025/benefits-matricies/OH_BenefitMatrix_2025.pdf#page=1",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/OH_BenefitMatrix_2026.pdf#page=1",
+        # January 2025 customer FAQ: 75% PIPP reduction, not currently modeled.
+        "https://wofb.org/wp-content/uploads/2025/01/ATTACHMENT-2025-5-HEAP-FAQ-for-Customers.pdf#page=1",
         # Sections E-1, E-2, E-2.10 and E-4: income, disability and heating facts.
         "https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=5",
     )
@@ -35,14 +37,15 @@ class oh_liheap(Variable):
             year_lag=p.eligibility.fpg_year_lag,
         )
         income = spm_unit("oh_liheap_countable_income", period)
-        poverty_percentage = 100 * max_(
-            income / guideline, payment.formula.minimum_poverty_ratio
+        poverty_percentage = 100 * np.clip(
+            income / guideline,
+            payment.formula.minimum_poverty_ratio,
+            payment.formula.maximum_poverty_ratio,
         )
-        # Coefficients follow the final 2021 and 2023 workbooks and the 2024
-        # and 2025 draft workbooks; the 2025 values carry into 2026 and later as
-        # unverified estimates (no 2026 workbook was found). Covers allow
-        # 175% FPG but detailed tables end at 150%; extending the formula above
-        # 150% is an explicitly approved estimate, not a sourced payment rule.
+        # Final 2021 and 2023 regional tables label their terminal row 150+;
+        # eligibility can extend to 175%, but payments stop decreasing at 150%.
+        # Later coefficients are estimates reconstructed from cover figures;
+        # the 2025 estimates carry into 2026 and later without verification.
         # Annual income approximates the favorable 30-day/12-month comparison.
         # Guidelines still follow the requested year and state lag.
         base = max_(

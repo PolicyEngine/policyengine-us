@@ -1,1 +1,1 @@
-Add Ohio HEAP household, income, eligibility, and regular heating payments from the 2021, 2023, 2024 and 2025 benefit workbooks.
+Add a partial Ohio HEAP model for household composition, income, eligibility and regular heating payments, with sourced historical payment caps and explicitly estimated later awards.
