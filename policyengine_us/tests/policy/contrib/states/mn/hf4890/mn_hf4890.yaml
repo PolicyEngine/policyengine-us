@@ -69,7 +69,10 @@
     mn_taxable_income: 700_000
     state_code: MN
   output:
-    mn_basic_tax: 63_255.60
+    # 2026 baseline single schedule (DOR Tax Year 2026 Inflation-Adjusted Amounts):
+    # 5.35% x 33,310 + 6.8% x (109,430 - 33,310) + 7.85% x (203,150 - 109,430)
+    # + 9.85% x (700,000 - 203,150) = 63,254.99
+    mn_basic_tax: 63_254.99
 
 # Zero income test
 - name: Minnesota HF4890 zero income produces zero tax

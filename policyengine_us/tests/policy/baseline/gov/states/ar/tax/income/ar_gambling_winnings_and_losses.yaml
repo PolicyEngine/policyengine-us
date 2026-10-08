@@ -1,0 +1,128 @@
+# Gambling winnings are Arkansas gross income (reported as other income), and
+# gambling losses are an itemized deduction up to those winnings, outside the
+# 2% floor (Ark. Code § 26-51-424(a)(2)(B), Act 155 of 2017, from 2015).
+
+- name: 2015 gambling winnings are Arkansas gross income
+  period: 2015
+  input:
+    irs_employment_income: 50_000
+    gambling_winnings: 10_000
+    state_code: AR
+  output:
+    ar_gross_income_joint: 60_000
+    ar_gross_income_indiv: 60_000
+
+- name: 2019 gambling winnings are Arkansas gross income
+  period: 2019
+  input:
+    irs_employment_income: 50_000
+    gambling_winnings: 10_000
+    state_code: AR
+  output:
+    ar_gross_income_joint: 60_000
+    ar_gross_income_indiv: 60_000
+
+- name: 2020 gambling winnings are Arkansas gross income
+  period: 2020
+  input:
+    irs_employment_income: 50_000
+    gambling_winnings: 10_000
+    state_code: AR
+  output:
+    ar_gross_income_joint: 60_000
+    ar_gross_income_indiv: 60_000
+
+- name: 2025 gambling winnings are Arkansas gross income
+  period: 2025
+  input:
+    irs_employment_income: 50_000
+    gambling_winnings: 10_000
+    state_code: AR
+  output:
+    ar_gross_income_joint: 60_000
+    ar_gross_income_indiv: 60_000
+
+- name: A dependent's gambling winnings go to the head's Arkansas AGI
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        irs_employment_income: 50_000
+      child:
+        age: 17
+        gambling_winnings: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AR
+  output:
+    ar_gross_income_joint: [50_000, 1_000]
+    ar_agi_joint: [51_000, 0]
+
+- name: 2015 itemizer with losses below winnings is taxed on net winnings
+  period: 2015
+  input:
+    irs_employment_income: 60_000
+    gambling_winnings: 10_000
+    gambling_losses: 8_000
+    state_code: AR
+  output:
+    ar_agi_joint: 70_000
+    ar_itemized_deductions_joint: 8_000
+    ar_deduction_joint: 8_000
+    ar_taxable_income_joint: 62_000
+
+- name: 2019 itemizer with losses above winnings nets gambling to zero
+  period: 2019
+  input:
+    irs_employment_income: 60_000
+    gambling_winnings: 3_000
+    gambling_losses: 10_000
+    state_code: AR
+  output:
+    ar_agi_joint: 63_000
+    ar_itemized_deductions_joint: 3_000
+    ar_deduction_joint: 3_000
+    ar_taxable_income_joint: 60_000
+
+- name: 2019 losses below the standard deduction leave the winnings taxable
+  period: 2019
+  input:
+    irs_employment_income: 60_000
+    gambling_winnings: 1_000
+    gambling_losses: 1_000
+    state_code: AR
+  output:
+    ar_agi_joint: 61_000
+    ar_itemized_deductions_joint: 1_000
+    # The $2,200 standard deduction exceeds the $1,000 of losses.
+    ar_deduction_joint: 2_200
+    ar_taxable_income_joint: 58_800
+
+- name: 2020 itemizer with losses below winnings is taxed on net winnings
+  period: 2020
+  input:
+    irs_employment_income: 60_000
+    gambling_winnings: 10_000
+    gambling_losses: 8_000
+    state_code: AR
+  output:
+    ar_agi_joint: 70_000
+    ar_itemized_deductions_joint: 8_000
+    ar_taxable_income_joint: 62_000
+
+- name: 2025 itemizer with losses below winnings is taxed on net winnings
+  period: 2025
+  input:
+    irs_employment_income: 60_000
+    gambling_winnings: 10_000
+    gambling_losses: 8_000
+    state_code: AR
+  output:
+    ar_agi_joint: 70_000
+    ar_itemized_deductions_joint: 8_000
+    ar_taxable_income_joint: 62_000

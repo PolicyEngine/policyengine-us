@@ -18,7 +18,9 @@ class ctc_phase_out(Variable):
         # applying before and only to the increase in the maximum CTC under ARPA.
 
         # Start with the normal phase-out.
-        income = tax_unit("adjusted_gross_income", period)
+        # 26 U.S.C. 24(b)(1): modified adjusted gross income adds back
+        # income excluded under sections 911, 931 and 933.
+        income = tax_unit("agi_plus_section_911_931_933_exclusions", period)
         p = parameters(period).gov.irs.credits.ctc.phase_out
         phase_out_threshold = tax_unit("ctc_phase_out_threshold", period)
         excess = max_(0, income - phase_out_threshold)

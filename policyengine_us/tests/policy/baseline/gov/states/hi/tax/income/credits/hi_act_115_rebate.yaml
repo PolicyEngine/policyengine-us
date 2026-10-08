@@ -1,3 +1,7 @@
+# Act 115 (SLH 2022), Section 3(a): the refund per exemption is $300 or $100
+# by federal AGI, "multiplied by the number of qualified exemptions to which
+# the taxpayer is entitled". Additional exemptions for age or disability do
+# not give additional refunds.
 - name: Single, higher amount
   period: 2021
   input:
@@ -16,20 +20,145 @@
   output:
     hi_act_115_rebate: 100
 
-- name: Joint, higher amount
+- name: Single with negative federal AGI is under $100,000
   period: 2021
   input:
-    adjusted_gross_income: 100_000
-    filing_status: JOINT
+    adjusted_gross_income: -20_000
+    filing_status: SINGLE
     state_code: HI
   output:
     hi_act_115_rebate: 300
 
-- name: Joint, lower amount
+- name: Joint, higher amount for two exemptions
   period: 2021
   input:
-    adjusted_gross_income: 200_000
-    filing_status: JOINT
-    state_code: HI
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 100_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
   output:
-    hi_act_115_rebate: 100
+    # 2 exemptions * $300
+    hi_act_115_rebate: 600
+
+- name: Joint, lower amount for two exemptions
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 200_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    # 2 exemptions * $100
+    hi_act_115_rebate: 200
+
+- name: Joint with two dependents
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        adjusted_gross_income: 60_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: HI
+  output:
+    # 4 exemptions * $300
+    hi_act_115_rebate: 1_200
+
+- name: Head of household with two dependents
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        adjusted_gross_income: 60_000
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: HI
+  output:
+    # 3 exemptions * $300
+    hi_act_115_rebate: 900
+
+- name: Aged joint filers get one refund per person
+  period: 2021
+  input:
+    people:
+      head:
+        age: 70
+      spouse:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 60_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    # The additional age exemptions do not count: 2 exemptions * $300
+    hi_act_115_rebate: 600
+
+- name: Filer claimed as a dependent by another taxpayer is not eligible
+  period: 2021
+  input:
+    people:
+      head:
+        age: 19
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 5_000
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_act_115_rebate: 0

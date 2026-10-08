@@ -1,0 +1,17 @@
+description: New Jersey provides regular heating assistance under the modeled rules when this is true under the Low Income Home Energy Assistance Program.
+# The modeled rules begin with FY2022, when the income standard moved from a
+# poverty-level test to 60 percent of state median income (BPU announcement of
+# October 19, 2021). The earlier standard is not encoded, so the program is not
+# modeled before 2021-10-01; the explicit early false stops backdating.
+values:
+  0000-01-01: false
+  2021-10-01: true
+metadata:
+  unit: bool
+  period: year
+  label: New Jersey LIHEAP modeled rules in effect
+  reference:
+  - title: NJ Board of Public Utilities, Utility Assistance Week announcement, October 19, 2021
+    href: https://www.nj.gov/bpu/newsroom/2021/approved/20211019.html
+  - title: FY2026 LIHEAP Handbook, section 2.3.A
+    href: https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=7

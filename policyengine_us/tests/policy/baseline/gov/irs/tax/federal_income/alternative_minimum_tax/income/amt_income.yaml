@@ -45,3 +45,119 @@
     filing_status: JOINT
   output:
     amt_income: 801_000
+
+# Form 6251 line 1: when Form 1040 line 15 is zero, line 11 minus line 14,
+# entered as a negative amount. Line 2a adds back the standard deduction.
+- name: Single filer below the standard deduction keeps a negative line 1, 2024
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # Line 1: 5,000 - 14,600 = -9,600. Line 2a: 14,600. Line 4: 5,000.
+    taxable_income: 0
+    amt_income: 5_000
+
+- name: Single filer below the standard deduction keeps a negative line 1b, 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # Line 1a: 15,750 - 0 = 15,750. Line 1b: 5,000 - 15,750 = -10,750.
+    # Line 2a: 15,750. Line 4: 5,000.
+    amt_income: 5_000
+
+# 2025 Form 6251 line 1a subtracts Schedule 1-A line 37 (enhanced deduction
+# for seniors) from Form 1040 line 14, so the deduction is added back.
+- name: Joint filers both 70 add back the senior deduction, 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 50_000
+      person2:
+        age: 70
+        taxable_pension_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Line 14: standard deduction 31,500 + 2 x 1,600 = 34,700, plus the
+    # senior deduction 2 x 6,000 = 12,000 (MAGI 100,000 is below 150,000):
+    # 46,700. Line 15: 53,300. Line 1a: 46,700 - 12,000 = 34,700.
+    # Line 1b: 100,000 - 34,700 = 65,300. Line 2a: 34,700. Line 4: 100,000.
+    additional_senior_deduction: 12_000
+    taxable_income: 53_300
+    amt_income: 100_000
+
+- name: Single filer 70 below the standard deduction adds back the senior deduction, 2025
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person:
+        age: 70
+        taxable_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # Line 14: 15,750 + 2,000 + 6,000 = 23,750. Line 15: 0.
+    # Line 1a: 23,750 - 6,000 = 17,750. Line 1b: 10,000 - 17,750 = -7,750.
+    # Line 2a: 17,750. Line 4: 10,000.
+    taxable_income: 0
+    amt_income: 10_000
+
+- name: Joint filers both 70 in 2029, after the senior deduction ends
+  absolute_error_margin: 0.01
+  period: 2029
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 50_000
+      person2:
+        age: 70
+        taxable_pension_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # The senior deduction is not in line 14 and is not added back, so
+    # line 4 is AGI for a filer who takes the standard deduction.
+    amt_income: 100_000
