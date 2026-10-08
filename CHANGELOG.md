@@ -1,3 +1,24 @@
+## [2.32.0] - 2026-10-08
+
+### Added
+
+- Add New York HEAP regular heating assistance for FY2024 to FY2026.
+
+
+## [2.31.3] - 2026-10-08
+
+### Changed
+
+- Document the reference page-citation convention for parameter and variable references in CLAUDE.md.
+
+
+## [2.31.2] - 2026-10-08
+
+### Fixed
+
+- Reduce PR CI from 35 to 26 jobs by consolidating validation, package builds, and compatibility checks; group Baseline, Contrib, and Python suites while preserving their separate runners; prevent YAML batches from rerunning separately routed Python tests.
+
+
 ## [2.31.1] - 2026-10-08
 
 ### Changed

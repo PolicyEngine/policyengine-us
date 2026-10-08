@@ -1,0 +1,60 @@
+# 2025-2026 HEAP Monthly Income Eligibility Guidelines (Clearinghouse benefit
+# matrix), Tier II maximum column, annualized (x 12). FY2026 State Plan section
+# 2.1 (page 9) sets 60% of state median income for sizes 1 to 13 and 150% of
+# the HHS poverty guideline for size 14; HEAP Manual Chapter 8 D.9(c) (page
+# 37) uses the higher of the two.
+# https://liheapch.acf.gov/docs/2026/benefits-matricies/NY_BenefitMatrix_2026.docx
+# https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=9
+# https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37
+
+- name: Case 1, odd household sizes one through thirteen published income limits.
+  period: 2026
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [NY, NY, NY, NY, NY, NY, NY]
+    ny_heap_household_size: [1, 3, 5, 7, 9, 11, 13]
+  output:
+    # Odd sizes 1, 3, 5, 7, 9, 11 and 13 (the even Tier II maximums are not
+    # asserted; payment/ny_heap_tier_one.yaml tests the Tier I column at the
+    # even sizes). Published monthly Tier II maximums
+    # 3,473; 5,611; 7,749; 9,018; 9,419; 9,820; 10,221 (benefit matrix Tier II
+    # column; State Plan 2.1, page 9), each x 12.
+    ny_heap_income_limit: [41_676, 67_332, 92_988, 108_216, 113_028, 117_840, 122_652]
+
+- name: Case 2, size fourteen follows the plan poverty rate rather than the matrix increment.
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    state_code: NY
+    ny_heap_household_size: 14
+  output:
+    # State Plan 2.1 row 14 (page 9): 150% of the HHS poverty guideline. The
+    # 2025 guideline for 14 is 15,650 + 13 x 5,500 = 87,150;
+    # floor(1.5 x 87,150 / 12) = 10,893 a month, 130,716 a year. The matrix's
+    # 14+ row adds 687 to the size-13 maximum instead (10,908); the plan rule is
+    # encoded.
+    ny_heap_income_limit: 130_716
+
+# 2024-2025 and 2023-2024 HEAP Monthly Income Eligibility Guidelines
+# (Clearinghouse benefit matrices), Tier II maximum column, annualized.
+# https://liheapch.acf.gov/docs/2025/benefits-matricies/NY_BenefitMatrix_2025.docx
+# https://liheapch.acf.gov/docs/2024/benefits-matricies/NY_BenefitMatrix_2024.pdf#page=1
+- name: Case 3, FY2025 published income limits at sizes one, four and thirteen.
+  period: 2025
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [NY, NY, NY]
+    ny_heap_household_size: [1, 4, 13]
+  output:
+    # 2024-2025 Tier II maximums 3,322; 6,390; 9,952, each x 12.
+    ny_heap_income_limit: [39_864, 76_680, 119_424]
+
+- name: Case 4, FY2024 published income limits at sizes one, four and thirteen.
+  period: 2024
+  input:
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    state_code: [NY, NY, NY]
+    ny_heap_household_size: [1, 4, 13]
+  output:
+    # 2023-2024 Tier II maximums 3,035; 5,838; 9,532, each x 12.
+    ny_heap_income_limit: [36_420, 70_056, 114_384]
