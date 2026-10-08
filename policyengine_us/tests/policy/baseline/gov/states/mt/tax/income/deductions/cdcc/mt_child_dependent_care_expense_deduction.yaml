@@ -749,3 +749,34 @@
     # is not filing, you cannot qualify for this deduction."
     mt_child_dependent_care_expense_deduction: [0, 0]
     mt_child_dependent_care_expense_deduction_joint: 0
+
+- name: Case 29, reforming the spouse allocation rate changes each column but not the joint deduction
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    gov.states.mt.tax.income.deductions.itemized.spouse_allocation_rate: 0.25
+    people:
+      person1:
+        is_tax_unit_head: true
+        mt_agi_indiv: 9_000
+      person2:
+        is_tax_unit_spouse: true
+        mt_agi_indiv: 9_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 2_400
+        mt_agi_joint: 18_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # At combined AGI 18_000 the full 2_400 expense is deductible.
+    # Reforming the allocation rate gives each column 2_400 * 0.25 = 600;
+    # the joint return still claims the full deduction.
+    mt_child_dependent_care_expense_deduction: [600, 600, 0]
+    mt_child_dependent_care_expense_deduction_joint: 2_400
