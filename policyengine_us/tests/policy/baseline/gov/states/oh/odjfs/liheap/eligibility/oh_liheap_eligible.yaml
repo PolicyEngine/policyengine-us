@@ -1,0 +1,396 @@
+# Ohio income and eligibility components only; no payment schedule or final award is asserted.
+
+# Application p1 limit27387 is inclusive; current plan/manual has no asset test.
+- name: Case 1, exact one person income ceiling qualifies without an asset test.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 27_387
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        spm_unit_assets: 1_000_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_eligible: true
+
+# One dollar above27387fails even with categorical-benefit receipts; current plan categoricalNo.
+- name: Case 2, TANF and SNAP receipts do not bypass income above the limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 27_388
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 3_600
+        snap: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_eligible: false
+
+# Regular eligibility still requires a primary heating burden.
+- name: Case 3, no separate bill and no heat in rent means no heating responsibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_eligible: false
+
+# Canonical NONE means no heating; an unrelated gas bill cannot establish a primary heating burden.
+- name: Case 4, explicit no heating fails despite a gas bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NONE
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_eligible: false
+
+# Application p1 energy household includes undesignated heating in rent; flag represents verified arrangement in the contract.
+- name: Case 5, verified nonsubsidized heat in rent qualifies without a separate bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_eligible: true
+
+# Current plan p8 requires verification the subsidized tenant pays some utility cost.
+- name: Case 6, housing assistance with heat in rent needs a reported own portion.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_eligible: false
+
+# Positive primary gas bill is the approved proxy for the tenant own portion; no guessed benefit amount.
+- name: Case 7, reported heating portion restores subsidized heat in rent eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 120
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_eligible: true
+
+# Public-housing status independently identifies subsidized heat in rent even when receives_housing_assistance is unset.
+- name: Case 8, public housing alone identifies the subsidy restriction.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+        is_in_public_housing: true
+  output:
+    oh_liheap_eligible: false
+
+# Manual p10 requires an eligible citizen/qualified member; size0must not pass a safe fallback limit.
+- name: Case 9, no qualified household member fails eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_eligible: false
+
+# Manual pp7,10: parent excluded from size, not income. Full28000 exceeds size1limit27387; headcount proration would incorrectly approve.
+- name: Case 10, nonqualified adult income is counted in full against citizen child size.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 28_000
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_household_size: 1
+    oh_liheap_countable_income: 28_000
+    oh_liheap_income_limit: 27_387
+    oh_liheap_eligible: false
+
+# Only the Ohio component is defined for Ohio residence.
+- name: Case 11, out of state residence does not qualify for Ohio assistance.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: WV
+  output:
+    oh_liheap_eligible: false
+
+# Final FY2026 plan Section 2.3, physical p8 permits subsidized heat-in-rent
+# tenants who pay all or part of a separate electric bill; liability is verified.
+- name: Case 12, housing assistance with heat in rent and a separate electric bill qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        rent: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        electricity_expense: 1_200
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_eligible: true
+
+- name: Case 13, public housing with heat in rent and a separate electric bill qualifies.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        rent: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 0
+        electricity_expense: 1_200
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+        is_in_public_housing: true
+  output:
+    oh_liheap_eligible: true
+
+# 2022-2023 Guidelines E-2.2 (p7) apply 175% FPG to every size: size 9 limit
+# (13,590 + 8 x 4,720) x 1.75 = 89,862.5 -> 89,862. Wages 50,000 + 30,000 = 80,000 qualify;
+# 60% SMI (floor(0.6 x 93,649) = 56,189 x 1.41 = 79,226) would have denied them.
+- name: Case 14, a nine member household in 2023 uses the poverty guideline limit.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 42
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 50_000
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 30_000
+      person3:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person4:
+        age: 15
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person5:
+        age: 13
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person6:
+        age: 11
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person7:
+        age: 9
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person8:
+        age: 6
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+      person9:
+        age: 3
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_800
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9]
+        state_code: OH
+  output:
+    oh_liheap_household_size: 9
+    oh_liheap_countable_income: 80_000
+    oh_liheap_income_limit: 89_862
+    oh_liheap_eligible: true

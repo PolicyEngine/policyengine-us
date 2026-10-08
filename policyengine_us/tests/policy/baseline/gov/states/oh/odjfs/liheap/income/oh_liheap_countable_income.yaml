@@ -1,0 +1,568 @@
+# Ohio income and eligibility components only; no payment schedule or final award is asserted.
+
+# Manual p8:12000+6000+600+1200+1200=21000; existing net-business inputs need no added work-expense calculation.
+- name: Case 1, adult wages and existing net business sources count without another deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: 6_000
+        sstb_self_employment_income: 600
+        farm_operations_income: 1_200
+        partnership_s_corp_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 21_000
+
+# Current plan p6 and manual pp73–74:2400rent+1200farmrent+600survivor+1200pension+2400SSA+1200SSI=9000.
+- name: Case 2, independent rental retirement survivor and SSI receipts all count once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 1_200
+        rental_income: 2_400
+        farm_rent_income: 1_200
+        survivor_benefits: 600
+        pension_income: 1_200
+        social_security: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 9_000
+
+# Manual p74 explicitly lists IRA withdrawals, estate/trust settlements, lottery, interest, dividends and capital gain; current plan includes lump sums. Existing source inputs are disjoint.
+- name: Case 3, withdrawals estate receipts lottery winnings gains interest and dividends count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        retirement_distributions: 3_600
+        estate_income: 1_200
+        gambling_winnings: 600
+        capital_gains: 600
+        interest_income: 120
+        ordinary_dividend_income: 240
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 6_360
+
+# Guidelines E-2.2 (p7): a dependent minor's income is excluded except SS/SSDI paid to an
+# adult payee. Parent wages 12,000 + child Social Security 1,200 = 13,200; the child's
+# SSI 2,400, wages 6,000 and net business 1,200 are excluded.
+- name: Case 4, age 17 dependent income is excluded except Social Security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 2_400
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 13_200
+
+# A 17-year-old who is not a dependent minor has all income counted:
+# 12,000 + 2,400 SSI + 6,000 wages + 1,200 net business + 1,200 Social Security = 22,800.
+- name: Case 5, age 17 nondependent income follows the dependent minor boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 2_400
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 22_800
+
+# Guidelines E-2.2 (p7) count members 18 or older, so an 18-year-old dependent's income all
+# counts: 12,000 + 2,400 + 6,000 + 1,200 + 1,200 = 22,800.
+- name: Case 6, age 18 dependent income follows the adult age boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 2_400
+        employment_income: 6_000
+        self_employment_income: 1_200
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 22_800
+
+# Manual p8 directs reported business losses to0:12000wages+600positive business+1200SSI=13800; losses do not offset other sources.
+- name: Case 7, each business loss is floored before wages and positive income are added.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 1_200
+        employment_income: 12_000
+        self_employment_income: -6_000
+        farm_operations_income: -2_400
+        partnership_s_corp_income: 600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 13_800
+
+# Guidelines pp75-76 exclude TANF (OWF) and child support received; SNAP is a noncash
+# benefit and is not an income source; alimony counts (p73).
+# General assistance is on neither list, so the E-2.3 catch-all (p8) counts it; the FY2026
+# plan (p6) leaves it unchecked. 12,000 wages + 1,200 alimony + 1,200 GA = 14,400.
+- name: Case 8, TANF and child support are excluded while alimony and general assistance count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_received: 6_000
+        alimony_income: 1_200
+        general_assistance: 1_200
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 3_600
+        snap: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 14_400
+
+# Current FY2026 application physical p7 and manual physical p74 deduct child support paid. 30,000 - 3,600 = 26,400, below the one-person ceiling of 27,387.
+- name: Case 9, child support paid changes an otherwise over limit household to eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 30_000
+        child_support_expense: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 26_400
+    oh_liheap_income_limit: 27_387
+    oh_liheap_eligible: true
+
+# The same deduction cannot produce negative countable income: max(1,200 - 2,400, 0) = 0.
+- name: Case 10, child support paid above income floors countable income at zero.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 1_200
+        child_support_expense: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 0
+    oh_liheap_eligible: true
+
+# Application physical p7 excludes support received while deducting support paid. A parent receives support for the resident child and pays for another child: 12,000 + 600 dividends - 1,200 = 11,400.
+- name: Case 11, support received stays excluded when the household also pays child support.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        ordinary_dividend_income: 600
+        child_support_received: 6_000
+        child_support_expense: 1_200
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 11_400
+
+# Guidelines Appendix XXIII (p74), the 2025-2026 application (p7) and the FY2026 plan (p6)
+# deduct Medicare premiums. 2026 standard Part B premium 202.90 x 12 = 2,434.80:
+# 28,000 Social Security - 2,434.80 = 25,565.20.
+- name: Case 12, the Medicare Part B premium is deducted from an elderly member's Social Security income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        social_security: 28_000
+        medicare_part_b_premium: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 25_565.2
+
+# Guidelines Appendix XXIII (p73) lists military pensions, and E-2.3 (p8) counts income not
+# listed elsewhere, including Railroad Retirement. Each 30,000 counts in full and exceeds
+# the 27,387 one-person limit.
+- name: Case 13, military retirement pay and railroad retirement benefits count.
+  period: 2026
+  input:
+    state_code: [OH, OH]
+    age: [62, 62]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false]
+    ssi: [0, 0]
+    military_retirement_pay: [30_000, 0]
+    railroad_benefits: [0, 30_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+  output:
+    oh_liheap_countable_income: [30_000, 30_000]
+    oh_liheap_income_limit: [27_387, 27_387]
+    oh_liheap_eligible: [false, false]
+
+# Guidelines E-2.2 (p7) count only members 18 or older plus a minor's SS/SSDI. The child's
+# 1,500 of dividends and 9,000 of SSI are excluded: countable 30,000 <= 37,012 (size 2).
+- name: Case 14, a dependent child's dividends and SSI are excluded.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 30_000
+      person2:
+        age: 12
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 9_000
+        ordinary_dividend_income: 1_500
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 30_000
+    oh_liheap_income_limit: 37_012
+    oh_liheap_eligible: true
+
+# A minor's Social Security paid to an adult payee counts (Guidelines E-2.2, p7): an $800
+# monthly survivor benefit adds 9,600: 30,000 + 9,600 = 39,600 > 37,012.
+- name: Case 15, a dependent child's Social Security survivor benefit counts.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 30_000
+      person2:
+        age: 12
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: true
+        ssi: 0
+        social_security: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 39_600
+    oh_liheap_income_limit: 37_012
+    oh_liheap_eligible: false
+
+# Each source is floored at zero, so rental, farm rent and capital losses cannot offset
+# other income: 12,000 wages + 600 interest = 12,600 (offsetting would give 1,200).
+- name: Case 16, rental farm rent and capital losses do not offset other income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 12_000
+        rental_income: -6_000
+        farm_rent_income: -2_400
+        capital_gains: -3_000
+        interest_income: 600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_liheap_countable_income: 12_600
+
+# Guidelines Appendix XXIII (pp72-74) counts unemployment, Workers' Compensation, employment
+# disability payouts, strike benefits and VA pensions; the FY2026 plan (p7) counts VA
+# pension but not VA disability. Workers earn Ohio's 2026 $11.00 minimum wage (Commerce
+# poster) for 40 hours = 440 a week; each household reports one source:
+# Unemployment: 26 weeks x 440 = 11,440 + 26 weeks x 220 (half the weekly wage,
+#   ORC 4141.30(B)(3)) = 5,720 -> 17,160.
+# Strike: 46 weeks x 440 = 20,240 + 6 weeks x 500 UAW strike assistance (uaw.org strike
+#   FAQ) = 3,000 -> 23,240.
+# VA pension: a disabled veteran under 65 with no other income receives the full MAPR
+#   effective Dec. 1, 2025 for a veteran with no dependents (va.gov) -> 17,441.
+# Workers' compensation: 40 weeks x 440 = 17,600 + 12 weeks x 427 (BWC 2026 temporary
+#   total minimum; 72% of 440 is lower) = 5,124 -> 22,724.
+# Disability: 39 weeks x 440 = 17,160 + 13 weeks x 264 (60% BLS median short-term
+#   disability replacement x 440) = 3,432 -> 20,592.
+- name: Case 17, unemployment strike VA pension workers compensation and disability benefits each count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OH, OH, OH, OH, OH]
+    county: [FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH,
+      FRANKLIN_COUNTY_OH]
+    age: [40, 40, 58, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false, false, false, false]
+    is_disabled: [false, false, true, false, false]
+    ssi: [0, 0, 0, 0, 0]
+    employment_income: [11_440, 20_240, 0, 17_600, 17_160]
+    unemployment_compensation: [5_720, 0, 0, 0, 0]
+    strike_benefits: [0, 3_000, 0, 0, 0]
+    veterans_benefits: [0, 0, 17_441, 0, 0]
+    workers_compensation: [0, 0, 0, 5_124, 0]
+    disability_benefits: [0, 0, 0, 0, 3_432]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    oh_liheap_countable_income: [17_160, 23_240, 17_441, 22_724, 20_592]
+
+# Guidelines Appendix XXIII (p74) and the 2025-2026 application (p7) deduct health, dental
+# and vision premiums. Full-time at Ohio's 2026 $11.00 minimum wage: 11 x 2,080 = 22,880.
+# KFF 2025 average worker contribution for single coverage is 1,440:
+# 22,880 - 1,440 = 21,440.
+- name: Case 18, an employee health insurance premium is deducted from wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 22_880
+        health_insurance_premiums_without_medicare_part_b: 1_440
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+        county: FRANKLIN_COUNTY_OH
+  output:
+    oh_liheap_countable_income: 21_440
+
+# Case 12's household also pays the 2026 Part D base beneficiary premium (CMS), 38.99 x 12
+# = 467.88. Each premium is deducted once, so Part B is not counted twice:
+# 28,000 - 2,434.80 - 467.88 = 25,097.32.
+- name: Case 19, a Part D premium is deducted alongside the Medicare Part B premium without counting Part B twice.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        social_security: 28_000
+        medicare_part_b_premium: 2_434.8
+        health_insurance_premiums_without_medicare_part_b: 467.88
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+        county: FRANKLIN_COUNTY_OH
+  output:
+    oh_liheap_countable_income: 25_097.32

@@ -1,0 +1,66 @@
+description: Ohio does not regionally adjust payments for these counties under the Home Energy Assistance Program.
+# The final 2021 and 2023 workbooks assign all 88 counties identically.
+values:
+  2021-01-01:
+    - ALLEN_COUNTY_OH
+    - ASHLAND_COUNTY_OH
+    - ATHENS_COUNTY_OH
+    - AUGLAIZE_COUNTY_OH
+    - BELMONT_COUNTY_OH
+    - BUTLER_COUNTY_OH
+    - CARROLL_COUNTY_OH
+    - CHAMPAIGN_COUNTY_OH
+    - CLARK_COUNTY_OH
+    - CLINTON_COUNTY_OH
+    - COLUMBIANA_COUNTY_OH
+    - COSHOCTON_COUNTY_OH
+    - CRAWFORD_COUNTY_OH
+    - DARKE_COUNTY_OH
+    - DELAWARE_COUNTY_OH
+    - FAIRFIELD_COUNTY_OH
+    - FAYETTE_COUNTY_OH
+    - FRANKLIN_COUNTY_OH
+    - GREENE_COUNTY_OH
+    - GUERNSEY_COUNTY_OH
+    - HARDIN_COUNTY_OH
+    - HARRISON_COUNTY_OH
+    - HOCKING_COUNTY_OH
+    - HOLMES_COUNTY_OH
+    - JEFFERSON_COUNTY_OH
+    - KNOX_COUNTY_OH
+    - LICKING_COUNTY_OH
+    - LOGAN_COUNTY_OH
+    - MADISON_COUNTY_OH
+    - MARION_COUNTY_OH
+    - MERCER_COUNTY_OH
+    - MIAMI_COUNTY_OH
+    - MONROE_COUNTY_OH
+    - MONTGOMERY_COUNTY_OH
+    - MORGAN_COUNTY_OH
+    - MORROW_COUNTY_OH
+    - MUSKINGUM_COUNTY_OH
+    - NOBLE_COUNTY_OH
+    - PERRY_COUNTY_OH
+    - PICKAWAY_COUNTY_OH
+    - PREBLE_COUNTY_OH
+    - RICHLAND_COUNTY_OH
+    - ROSS_COUNTY_OH
+    - SHELBY_COUNTY_OH
+    - STARK_COUNTY_OH
+    - TUSCARAWAS_COUNTY_OH
+    - UNION_COUNTY_OH
+    - VAN_WERT_COUNTY_OH
+    - VINTON_COUNTY_OH
+    - WARREN_COUNTY_OH
+    - WASHINGTON_COUNTY_OH
+    - WAYNE_COUNTY_OH
+    - WYANDOT_COUNTY_OH
+metadata:
+  unit: list
+  period: year
+  label: Ohio HEAP central counties
+  reference:
+    - title: Ohio 2021 FINAL HEAP Benefit Matrix
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/OH_BenefitMatrix_2022.pdf#page=8
+    - title: Ohio 2023 FINAL LIHEAP Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/OH_BenefitMatrix_2024.pdf#page=8

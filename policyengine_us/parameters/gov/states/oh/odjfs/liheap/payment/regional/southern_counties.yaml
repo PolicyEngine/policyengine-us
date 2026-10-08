@@ -1,0 +1,24 @@
+description: Ohio decreases payments for these counties under the Home Energy Assistance Program.
+# The final 2021 and 2023 workbooks assign all 88 counties identically.
+values:
+  2021-01-01:
+    - ADAMS_COUNTY_OH
+    - BROWN_COUNTY_OH
+    - CLERMONT_COUNTY_OH
+    - GALLIA_COUNTY_OH
+    - HAMILTON_COUNTY_OH
+    - HIGHLAND_COUNTY_OH
+    - JACKSON_COUNTY_OH
+    - LAWRENCE_COUNTY_OH
+    - MEIGS_COUNTY_OH
+    - PIKE_COUNTY_OH
+    - SCIOTO_COUNTY_OH
+metadata:
+  unit: list
+  period: year
+  label: Ohio HEAP southern counties
+  reference:
+    - title: Ohio 2021 FINAL HEAP Benefit Matrix
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/OH_BenefitMatrix_2022.pdf#page=8
+    - title: Ohio 2023 FINAL LIHEAP Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/OH_BenefitMatrix_2024.pdf#page=8
