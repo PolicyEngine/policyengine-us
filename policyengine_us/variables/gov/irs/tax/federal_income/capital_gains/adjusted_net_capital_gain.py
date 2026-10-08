@@ -27,12 +27,12 @@ class adjusted_net_capital_gain(Variable):
         # definition of 'net capital gain' for the above variable, and 26 U.S. Code § 1(h)(3) for the definition
         # of adjusted net capital gain (this variable).
         # Qualified dividend income as defined in paragraph (11), which
-        # excludes dividends elected as investment income (§ 1(h)(11)(D)(i)).
-        # net_capital_gain takes a Form 4952 election from the gain before
-        # the dividends, so the dividends it still holds are the smaller of
-        # the two amounts.
+        # excludes dividends elected as investment income (§ 1(h)(11)(D)(i)):
+        # Schedule D Tax Worksheet line 6, the dividends net_capital_gain
+        # still holds after the Form 4952 line 4g election. Cap this part at
+        # net_capital_gain to preserve a directly supplied net gain amount.
         qualified_dividend_income = min_(
-            max_(0, add(tax_unit, period, ["qualified_dividend_income"])),
+            max_(0, tax_unit("dividend_income_reduced_by_investment_income", period)),
             net_capital_gain,
         )
         unrecaptured_s_1250_gain = tax_unit(

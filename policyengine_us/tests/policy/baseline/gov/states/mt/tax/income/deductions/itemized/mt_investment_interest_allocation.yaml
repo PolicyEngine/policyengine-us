@@ -1,0 +1,164 @@
+# 2023 Form 2 instructions, line 10: "following the computation on federal
+# Form 4952 but include any Montana adjustments to income."
+# https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=38
+# 2024 Worksheet A line 1: "Enter your total federal itemized deductions from
+# Form 1040, line 12."
+# https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=7
+# Federal Form 4952 line 8: "Enter the smaller of line 3 or line 6."
+# https://www.irs.gov/pub/irs-prior/f4952--2025.pdf
+
+- name: Montana separate investment interest limits handle zero debt and spouse-only debt
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      partial_head:
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        investment_interest_expense: 300
+        taxable_interest_income: 600
+        mortgage_interest: 0
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_indiv: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+      partial_spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+        investment_interest_expense: 900
+        mortgage_interest: 0
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_indiv: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+      zero_head:
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        investment_interest_expense: 0
+        mortgage_interest: 0
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_indiv: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+      zero_spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+        investment_interest_expense: 0
+        mortgage_interest: 0
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_indiv: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+      spouse_only_head:
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        investment_interest_expense: 0
+        mortgage_interest: 0
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_indiv: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+      spouse_only_spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+        investment_interest_expense: 1_200
+        taxable_interest_income: 500
+        mortgage_interest: 0
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_indiv: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_indiv: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+    tax_units:
+      partial:
+        members: [partial_head, partial_spouse]
+        filing_status: JOINT
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_unit: 0
+        mt_federal_income_tax_deduction_for_federal_itemization: 0
+      zero:
+        members: [zero_head, zero_spouse]
+        filing_status: JOINT
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_unit: 0
+        mt_federal_income_tax_deduction_for_federal_itemization: 0
+      spouse_only:
+        members: [spouse_only_head, spouse_only_spouse]
+        filing_status: JOINT
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_unit: 0
+        mt_federal_income_tax_deduction_for_federal_itemization: 0
+    households:
+      household:
+        members: [partial_head, partial_spouse, zero_head, zero_spouse, spouse_only_head, spouse_only_spouse]
+        state_code: MT
+  output:
+    # Line 3 = [300 + 900, 0 + 0, 0 + 1,200].
+    form_4952_total_investment_interest_expense: [1_200, 0, 1_200]
+    # Line 6 = taxable interest [600, 0, 500] less zero line 5 investment expenses.
+    form_4952_net_investment_income: [600, 0, 500]
+    # Line 8 = min(line 3, line 6) = [600, 0, 500].
+    investment_interest_expense_deduction: [600, 0, 500]
+    # Separate limits: [min(300, 600), min(900, 0)] = [300, 0].
+    # Zero debt remains zero; only the spouse can use the spouse's own income.
+    mt_itemized_deductions_indiv: [300, 0, 0, 0, 0, 500]
+    # Each tax unit's full line 8 is assigned to its head, including spouse interest.
+    mt_itemized_deductions_joint: [600, 0, 0, 0, 500, 0]
+    # Federal-itemization uses the same separate limits.
+    mt_itemized_deductions_for_federal_itemization_indiv: [300, 0, 0, 0, 0, 500]
+    # Federal-itemization joint totals assign line 8 to the head as well.
+    mt_itemized_deductions_for_federal_itemization_joint: [600, 0, 0, 0, 500, 0]
+
+- name: Montana joint federal itemization includes both spouses' fully deductible interest in 2024
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        investment_interest_expense: 300
+        taxable_interest_income: 2_000
+        mortgage_interest: 0
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+      spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        investment_interest_expense: 900
+        mortgage_interest: 0
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_unit: 0
+        mt_federal_income_tax_deduction_for_federal_itemization: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Form 4952 line 8 = min(line 3 300 + 900, line 6 2,000) = 1,200.
+    investment_interest_expense_deduction: 1_200
+    # The head receives the tax-unit line 8; other deductions are zero.
+    mt_itemized_deductions_joint: [1_200, 0]
+    # Federal-itemization joint totals use the same federal line 8.
+    mt_itemized_deductions_for_federal_itemization_joint: [1_200, 0]

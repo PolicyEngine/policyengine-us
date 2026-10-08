@@ -18,35 +18,35 @@ def schedule_d_tax_worksheet_form_4952_lines(tax_unit, period):
     your net capital gain from the disposition of property held for
     investment". Line 7 is "the smaller of line 15 or line 16 of Schedule D".
 
-    The model treats every capital asset as property held for investment, so
-    Form 4952 line 4d is the excess of total gains over total losses and
-    line 4e's net capital gain is the excess of net long-term capital gain
-    over net short-term capital loss (2025 Form 4952 instructions, lines 4d
-    and 4e). It has no input for the "Elec." amount a taxpayer may write next
-    to line 4e (the worksheet's line 4 footnote), so the election is
-    attributed first to net capital gain and then to qualified dividends, as
-    the line 4g instructions do by default.
+    Lines 3 and 4 are the Form 4952 amounts the investment interest deduction
+    uses: form_4952_elected_investment_income, the head's and spouse's
+    election capped at Form 4952 lines 4b plus 4e, and
+    form_4952_net_capital_gain. Those variables compute their gains directly
+    and never read this worksheet. The model has no input for the "Elec."
+    amount a taxpayer may write next to line 4e (the worksheet's line 4
+    footnote), so the election is attributed first to net capital gain and
+    then to qualified dividends, as the line 4g instructions do by default.
 
-    Capital gain distributions reported without Schedule D
+    Line 7 keeps the head's and spouse's Schedule D amounts the rest of the
+    capital gains tax uses, independently of Form 4952 line 4e. Capital gain
+    distributions reported without Schedule D
     (non_sch_d_capital_gains) belong on Schedule D line 13 (2025 Instructions
     for Schedule D, "Capital Gain Distributions"), so they enter lines 15 and
-    16, and Form 4952 counts them as long-term capital gains.
+    16.
     """
-    election = max_(0, add(tax_unit, period, ["investment_income_elected_form_4952"]))
-    long_term_gains = add(tax_unit, period, ["long_term_capital_gains"])
-    short_term_gains = add(tax_unit, period, ["short_term_capital_gains"])
-    distributions = add(tax_unit, period, ["non_sch_d_capital_gains"])
+    long_term_gains = tax_unit_non_dep_add(
+        tax_unit, period, ["long_term_capital_gains"]
+    )
+    short_term_gains = tax_unit_non_dep_add(
+        tax_unit, period, ["short_term_capital_gains"]
+    )
+    distributions = tax_unit("form_4952_capital_gain_distributions", period)
     # Schedule D line 15 (net long-term gain or loss, with line 13) and line
     # 16 (Schedule D line 7 plus line 15).
     schedule_d_line_15 = long_term_gains + distributions
-    schedule_d_line_16 = tax_unit("net_capital_gains", period) + distributions
-    # Form 4952 line 4d: total gains over total losses, if any.
-    net_gain = max_(0, schedule_d_line_16)
-    # Net capital gain from property held for investment: net long-term
-    # capital gain over net short-term capital loss, if any.
-    net_capital_gain = max_(0, schedule_d_line_15 - max_(0, -short_term_gains))
+    schedule_d_line_16 = schedule_d_line_15 + short_term_gains
     return ScheduleDTaxWorksheetForm4952Lines(
-        line_3=election,
-        line_4=min_(net_gain, net_capital_gain),
+        line_3=tax_unit("form_4952_elected_investment_income", period),
+        line_4=tax_unit("form_4952_net_capital_gain", period),
         line_7=min_(schedule_d_line_15, schedule_d_line_16),
     )

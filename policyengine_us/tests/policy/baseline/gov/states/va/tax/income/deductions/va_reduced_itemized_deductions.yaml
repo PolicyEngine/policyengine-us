@@ -40,3 +40,29 @@
     state_code: VA
   output:
     va_reduced_itemized_deductions: 35_282
+
+- name: Virginia excludes allowed investment interest from its 80 percent limitation base
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    filing_status: SINGLE
+    adjusted_gross_income: 5_000_000
+    investment_interest_expense: 10_000
+    taxable_interest_income: 2_000
+    deductible_mortgage_interest: 20_000
+    state_and_local_sales_or_income_tax: 0
+    real_estate_taxes: 0
+    medical_expense_deduction: 0
+    charitable_deduction: 0
+    casualty_loss_deduction: 0
+    gambling_losses: 0
+  output:
+    investment_interest_expense_deduction: 2_000
+    interest_deduction: 22_000
+    # Schedule A worksheet line 2 excludes allowed investment interest from
+    # line 9; line 4 limits the reduction to 80% of the remaining deductions.
+    # https://www.tax.virginia.gov/sites/default/files/taxforms/individual-income-tax/2021/schedule-2021.pdf#page=2
+    # 22,000 - 80% * (22,000 - 2,000) = 6,000; the 3% AGI limb is larger.
+    # Excluding raw 10,000 paid interest would incorrectly yield 12,400.
+    va_reduced_itemized_deductions: 6_000

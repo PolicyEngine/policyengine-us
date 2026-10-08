@@ -84,3 +84,18 @@
     # NY Casualty: 15,000 - (100,000 * 0.10) = 5,000
     # Total: 5,000 + 2,500 + 12,000 + 2,000 + 5,000 = 26,500
     ny_itemized_deductions_max: 26_500
+
+- name: 2025 New York miscellaneous pool includes investment expenses
+  # IT-196 line 24: "Other expenses - investment, safe deposit box, etc."
+  # https://www.tax.ny.gov/pdf/2025/inc/it196_2025_fill_in.pdf#page=2
+  period: 2025
+  input:
+    state_code: NY
+    employment_income: 100_000
+    investment_expenses: 3_000
+    tax_preparation_fees: 500
+  output:
+    total_misc_deductions: 3_500 # IT-196 line 25 = line 24 investment 3,000 + line 23 tax preparation 500
+    ny_misc_deduction: 1_500 # IT-196 line 28 = max(0, 3,500 - 2% * 100,000)
+    misc_deduction: 0 # Federal section 67(h) disallows miscellaneous deductions after 2017
+    form_4952_investment_expenses: 0 # Form 4952 line 5 = 0 when federal misc.applies is false

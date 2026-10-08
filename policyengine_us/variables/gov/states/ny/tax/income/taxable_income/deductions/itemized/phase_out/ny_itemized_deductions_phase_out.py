@@ -22,7 +22,7 @@ class ny_itemized_deductions_phase_out(Variable):
       (b) 80% of the deductions that are subject to the limitation (lines 1-4).
 
     Mapping of the worksheet's line-total inputs to PolicyEngine variables
-    (federal Form IT-196 line numbers in brackets):
+    (New York Form IT-196 line numbers in brackets):
 
     Worksheet line 1 (L1) = form lines 4, 9, 15, 19, 20, 28, 39, i.e. the total
     itemized deductions before the limitation. In PolicyEngine this is
@@ -36,7 +36,7 @@ class ny_itemized_deductions_phase_out(Variable):
     Worksheet line 2 (L2) = form lines 4, 14, 16a, 20, 29, 30, 37, i.e. the
     deductions NOT subject to the limitation (26 U.S.C. 68(c)):
       - line 4  medical/dental        -> medical_expense_deduction
-      - line 14 investment interest   -> investment_interest_expense
+      - line 14 investment interest   -> investment_interest_expense_deduction
       - line 20 casualty/theft loss   -> ny_casualty_loss_deduction
       - lines 16a/29/30/37 (qualified contributions, gambling losses,
         income-producing-property casualty, federal disaster loss) are not
@@ -45,8 +45,9 @@ class ny_itemized_deductions_phase_out(Variable):
     L3 = L1 - L2 (worksheet line 3) is therefore the mortgage interest, real
     estate taxes, charitable gifts, and 2%-floor miscellaneous deductions -
     exactly the 68(c) base subject to the limitation. Because investment
-    interest appears in both L1 (inside interest_deduction) and L2, it cancels
-    out of L3, as intended.
+    interest after the federal Form 4952 limit appears in both L1 (inside
+    interest_deduction) and L2, it cancels out of L3, as intended. IT-196 line
+    14 says to "enter the amount from federal Schedule A, line 9."
     """
 
     def formula(tax_unit, period, parameters):
@@ -63,7 +64,7 @@ class ny_itemized_deductions_phase_out(Variable):
         # Worksheet line 2 (L2): deductions not subject to the limitation
         # (26 U.S.C. 68(c)) - medical, investment interest, casualty/theft.
         medical = tax_unit("medical_expense_deduction", period)
-        investment_interest = add(tax_unit, period, ["investment_interest_expense"])
+        investment_interest = tax_unit("investment_interest_expense_deduction", period)
         casualty = tax_unit("ny_casualty_loss_deduction", period)
         l2 = medical + investment_interest + casualty
 

@@ -33,12 +33,12 @@ class section_911_qualified_dividend_income(Variable):
     def formula(tax_unit, period, parameters):
         net_capital_gain = tax_unit("net_capital_gain", period)
         # Qualified dividend income as section 1(h)(11) defines it, without
-        # dividends elected as investment income (§ 1(h)(11)(D)(i)).
-        # net_capital_gain takes a Form 4952 election from the gain before the
-        # dividends, so the dividends it still holds are the smaller of the
-        # two amounts.
+        # dividends elected as investment income (§ 1(h)(11)(D)(i)): Schedule
+        # D Tax Worksheet line 6, the dividends net_capital_gain still holds
+        # after the Form 4952 line 4g election. A directly supplied net gain
+        # can contain fewer dividends than this independently computed line.
         qualified_dividends = min_(
-            max_(0, add(tax_unit, period, ["qualified_dividend_income"])),
+            max_(0, tax_unit("dividend_income_reduced_by_investment_income", period)),
             net_capital_gain,
         )
         excess = tax_unit("section_911_capital_gain_excess", period)

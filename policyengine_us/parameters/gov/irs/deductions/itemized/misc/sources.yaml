@@ -3,6 +3,7 @@ values:
   2013-01-01:
     - unreimbursed_business_employee_expenses
     - tax_preparation_fees
+    - investment_expenses
 metadata:
   period: year
   unit: list
@@ -12,3 +13,11 @@ metadata:
       href: https://www.law.cornell.edu/uscode/text/26/67
     - title: 2017 Schedule A Instructions
       href: https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=12
+    # Schedule A line 23 includes investment expenses; these states continue
+    # to use the shared total in years when the federal deduction is disallowed.
+    - title: 2025 Arkansas AR3 instructions, line 21 (investment fees and expenses)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=21
+    - title: 2025 Arkansas AR3, lines 21-25 (other expenses and 2-percent floor)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR3_ItemizedDeduction.pdf
+    - title: 2025 New York IT-196, line 24 (investment expenses)
+      href: https://www.tax.ny.gov/pdf/2025/inc/it196_2025_fill_in.pdf#page=2

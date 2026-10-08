@@ -103,7 +103,8 @@
     ny_itemized_deductions_max: 100_000
     ny_college_tuition_deduction: 0
     medical_expense_deduction: 25_000
-    investment_interest_expense: 10_000
+    # IT-196 line 14 takes federal Schedule A line 9 (Form 4952 line 8).
+    investment_interest_expense_deduction: 10_000
     ny_casualty_loss_deduction: 5_000
     adjusted_gross_income: 5_000_000
     filing_status: JOINT

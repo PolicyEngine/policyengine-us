@@ -4,8 +4,10 @@ metadata:
   period: year
   label: Miscellaneous expense deduction applies
   reference:
-    - title: 26 U.S. Code § 67 - 2-percent floor on miscellaneous itemized deductions (g)
-      href: https://www.law.cornell.edu/uscode/text/26/67#g
+    # P.L. 119-21 section 70110 removed the 2025 sunset and redesignated
+    # former subsection (g) as (h), effective for tax years after 2025.
+    - title: 26 U.S. Code § 67(h) - Disallowance of miscellaneous itemized deductions (P.L. 119-21 section 70110)
+      href: https://www.law.cornell.edu/uscode/text/26/67#h
 values:
   2013-01-01: true
   2018-01-01: false
