@@ -26,9 +26,14 @@ I8. Above the federal zero floor, Montana line 3 equals federal taxable
     income PLUS QBI PLUS the addback when placed on line 2. Removing an
     amount from deductions increases income; the addback sign is positive.
 I9. All four repealed Montana itemization helpers are zero for every person.
-I10. More medical expenses cannot raise Montana taxable income, except when
-    the federal election changes to itemizing with itemized total below the
-    standard deduction. Explicit elections exercise that intended exception.
+I10. More medical expenses cannot raise Montana taxable income by more than
+    they raise the addback, and in 2024 (addback removed inside line 2) cannot
+    raise it at all. Line 3 only falls as deductions rise; from 2025 Form 2
+    floors line 3 at zero before the Schedule I line 4 addition, so a filer
+    whose line 3 is already zero can see the addback, and so taxable income,
+    rise with deductions (the R2 YAML case). The one other intended exception
+    is a federal election to itemize with an itemized total below the
+    standard deduction. Explicit elections exercise it.
 
 The federal election is pinned after calculating Schedule A and the federal
 standard deduction, before any income deductions are cached. Ordinary rows
@@ -142,6 +147,10 @@ MEDICAL_PAIRS = tuple(
 EXCEPTION_PAIR = (
     INDEX[(len(SCENARIOS) - 1, 1_000, 0)],
     INDEX[(len(SCENARIOS) - 1, 5_000, 0)],
+)
+EXCEPTION_QBI_TWIN = (
+    INDEX[(len(SCENARIOS) - 1, 1_000, 10_000)],
+    INDEX[(len(SCENARIOS) - 1, 5_000, 10_000)],
 )
 LEGACY = (
     "mt_itemized_deductions_joint",
@@ -425,9 +434,13 @@ def _check_medical_pair(run, pair):
         and run["itemizes"][high]
         and line6[high] < run["standard_deduction"][high]
     )
+    # From 2025 the addback is added after the line-3 floor, so income may
+    # rise by at most the rise in the addback; in 2024 it may not rise at all.
+    addback = run["mt_state_income_tax_addback"]
+    allowance = 0 if run["reduces_deduction"] else max(0, addback[high] - addback[low])
     if not flipped_below_standard:
-        assert income[high] <= income[low] + ATOL + RTOL * income[low], pair
-    return flipped_below_standard, income[high] > income[low] + ATOL
+        assert income[high] <= income[low] + allowance + ATOL + RTOL * income[low], pair
+    return flipped_below_standard, income[high] > income[low] + allowance + ATOL
 
 
 @settings(
@@ -448,6 +461,12 @@ def test_medical_grid_is_monotone_except_documented_election(grid_results, year)
     run = grid_results[0][year]
     results = [_check_medical_pair(run, pair) for pair in MEDICAL_PAIRS]
     assert any(exception and increase for exception, increase in results)
+    if not run["reduces_deduction"]:
+        income = _sum_people(run, "mt_taxable_income_joint")
+        assert any(
+            income[high] > income[low] + ATOL and not exception
+            for (low, high), (exception, _) in zip(MEDICAL_PAIRS, results)
+        ), "the post-floor addback rise is never exercised"
     assert _check_medical_pair(run, EXCEPTION_PAIR) == (True, True)
     if year == 2024:
         # Minimize the election exception on the cached grid, with no extra
@@ -457,7 +476,8 @@ def test_medical_grid_is_monotone_except_documented_election(grid_results, year)
             lambda pair: _check_medical_pair(run, pair)[1],
             settings=settings(max_examples=200, deadline=None, derandomize=True),
         )
-        assert smallest_exception == EXCEPTION_PAIR
+        # Either QBI twin of the forced-election row is a minimal example.
+        assert smallest_exception in (EXCEPTION_PAIR, EXCEPTION_QBI_TWIN)
         income = _sum_people(run, "mt_taxable_income_joint")
         low, high = EXCEPTION_PAIR
         _close(income[[low, high]], np.array([35_400, 47_750]))
