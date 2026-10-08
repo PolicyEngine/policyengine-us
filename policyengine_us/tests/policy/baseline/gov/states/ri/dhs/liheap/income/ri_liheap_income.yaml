@@ -1,0 +1,752 @@
+# Rhode Island independent income and primary-bill matrix components; no final award is asserted.
+
+# Manual pp14-15 income categories, approved existing-net-input approximation:12000+2400+600+1200+1200=17400; no additional40% deduction.
+- name: Case 1, adult business income uses existing net receipts without another business deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: 2_400
+        sstb_self_employment_income: 600
+        farm_operations_income: 1_200
+        partnership_s_corp_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_liheap_income: 17_400
+
+# Approved nonnegative net-source convention:12000 wages+600 positive business=12600; negative sources contribute0.
+- name: Case 2, business source losses do not offset wages or other positive receipts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+        self_employment_income: -6_000
+        farm_operations_income: -1_200
+        partnership_s_corp_income: 600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_liheap_income: 12_600
+
+# Manual III.G p20 excludes all income under age 18; the FY2026 instructions (Appendix H p2)
+# exclude every full-time student aged 18-23. The young adult has 1,200 wages and 600 Social
+# Security; the parent has 12,000 wages.
+- name: Case 3, a 17-year-old's income is excluded as a minor's.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 17
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 1_200
+        social_security: 600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_liheap_income: 12_000
+
+# Manual III.G p20 excludes all income under age 18; the FY2026 instructions (Appendix H p2)
+# exclude every full-time student aged 18-23. The young adult has 1,200 wages and 600 Social
+# Security; the parent has 12,000 wages.
+- name: Case 4, an 18-year-old full-time student's income is excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        ssi: 0
+        employment_income: 1_200
+        social_security: 600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_liheap_income: 12_000
+
+# Manual III.G p20 excludes all income under age 18; the FY2026 instructions (Appendix H p2)
+# exclude every full-time student aged 18-23. The young adult has 1,200 wages and 600 Social
+# Security; the parent has 12,000 wages.
+- name: Case 5, a 23-year-old full-time student's income is excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 23
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        ssi: 0
+        employment_income: 1_200
+        social_security: 600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_liheap_income: 12_000
+
+# Manual III.G p20 excludes all income under age 18; the FY2026 instructions (Appendix H p2)
+# exclude every full-time student aged 18-23. The young adult has 1,200 wages and 600 Social
+# Security; the parent has 12,000 wages.
+- name: Case 6, a 24-year-old full-time student's income counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 24
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        ssi: 0
+        employment_income: 1_200
+        social_security: 600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_liheap_income: 13_800
+
+# Manual III.G p20 excludes all income under age 18; the FY2026 instructions (Appendix H p2)
+# exclude every full-time student aged 18-23. The young adult has 1,200 wages and 600 Social
+# Security; the parent has 12,000 wages.
+- name: Case 7, an 18-year-old who is not a student has income counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 1_200
+        social_security: 600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_liheap_income: 13_800
+
+# Manual pp16,20:600 combined interest-500 once=100;600 dividends count fully; total700.
+- name: Case 8, one household interest exclusion applies across adults while dividends count fully.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        interest_income: 300
+        ordinary_dividend_income: 240
+      person2:
+        age: 39
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        interest_income: 300
+        ordinary_dividend_income: 360
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_liheap_income: 700
+
+# Manual pp16,20 excludes the first500 annually; excess above500 counts.
+- name: Case 9, interest at the annual allowance is excluded and positive excess counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200]
+    age: [40, 40, 40]
+    is_full_time_student: [false, false, false]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+    child_care_subsidies: [0, 0, 0]
+    interest_income: [499.99, 500, 500.5]
+  output:
+    ri_liheap_income: [0, 0, 0.5]
+
+# Manual pp16-17,20 and current rental form:12000+(6000+2400)*50%=16200; existing rent inputs approximate reported rents.
+- name: Case 10, both rental streams receive the fifty percent allowance.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+        rental_income: 6_000
+        farm_rent_income: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_liheap_income: 16_200
+
+# Manual pp15,20:6000 wages+1200 annual adult federal SSI+3600 annual family TANF=10800.
+# TANF is the take-up-gated SPM-unit tanf aggregate (which includes RI Works), counted once.
+# Child SSI2400 excluded; no invented or duplicated RI state supplement.
+- name: Case 11, adult federal SSI is annualized and family TANF counts once while child SSI is excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 1_200
+        employment_income: 6_000
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 3_600
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_liheap_income: 10_800
+
+# Manual p21:12000-1200 child support-600 alimony-2400 unsubsidized childcare=7800. Reported support represents legally mandated payments.
+- name: Case 12, court ordered support and unsubsidized childcare expenses reduce income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_expense: 1_200
+        alimony_expense: 600
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 2_400
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_liheap_income: 7_800
+
+# Manual p21 conditions child daycare deduction on no federal/state subsidy:12000-1200-600=10200;2400 reported childcare is not deducted when subsidies arepositive.
+- name: Case 13, subsidized childcare expenses do not receive the unsubsidized care deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_expense: 1_200
+        alimony_expense: 600
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 2_400
+        child_care_subsidies: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_liheap_income: 10_200
+
+# Legally mandated support2400 exceeds income1200; final countable income is floored0.
+- name: Case 14, deductions above income floor the result at zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 1_200
+        child_support_expense: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_liheap_income: 0
+
+# Manual p12: full parent income20000 despite size1; minor SSA excluded underp20.
+# Matrix size1 threshold19563 < 20000 <= 23475 yields band4 and federal gas175.
+# DHS October 2025 DIV 1-1 adds the primary utility enhancement350: total525.
+# This assumes qualifying provider and primary-grant receipt, not final eligibility.
+- name: Case 15, nonqualified parent income counts in full for the qualified child size and band.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 20_000
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        social_security: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_liheap_household_size: 1
+    ri_liheap_income: 20_000
+    ri_liheap_income_band: 4
+    ri_liheap_base_payment: 525
+
+# Manual pp16-18:12000 wages+1200 child support+600 alimony+600 family help=14400; SNAP6000 excluded.
+- name: Case 16, SNAP is excluded while ordinary support receipts count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+        child_support_received: 1_200
+        alimony_income: 600
+        financial_assistance: 600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+        snap: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_liheap_income: 14_400
+
+# Manual p17 counts estate and trust income; the FY2026 instructions (Appendix H p2) exclude a
+# full-time student aged 18-23: 12,000 adult wages + 1,200 adult periodic estate = 13,200;
+# the student's 2,400 estate income is excluded.
+- name: Case 17, periodic estate income follows the same ordinary age and student exclusions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 12_000
+        estate_income: 1_200
+      person2:
+        age: 20
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        ssi: 0
+        estate_income: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_liheap_income: 13_200
+
+# Plan 1.9 p6 counts retirement/pension benefits; manual p15 accepts 1099-R income.
+# Military retired pay and retirement account distributions are inputs separate from
+# pension_income: 30000 military retired pay, 18000 IRA and 12000 401(k) each count in full.
+- name: Case 18, military retirement pay and retirement account distributions count as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200]
+    age: [45, 60, 62]
+    is_full_time_student: [false, false, false]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+    child_care_subsidies: [0, 0, 0]
+    military_retirement_pay: [30_000, 0, 0]
+    taxable_ira_distributions: [0, 18_000, 0]
+    taxable_401k_distributions: [0, 0, 12_000]
+  output:
+    ri_liheap_income: [30_000, 18_000, 12_000]
+
+# Each source is floored at zero before summing, so no loss offsets another source:
+# 30000 wages + max(-2500 estate, 0) = 30000; 30000 + max(-4000 rent, 0) x 50% = 30000;
+# both losses together also leave 30000. Netting the estate loss would give 27500.
+- name: Case 19, estate and rental losses do not offset wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200]
+    age: [50, 50, 50]
+    is_full_time_student: [false, false, false]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    childcare_expenses: [0, 0, 0]
+    child_care_subsidies: [0, 0, 0]
+    employment_income: [30_000, 30_000, 30_000]
+    estate_income: [-2_500, 0, -2_500]
+    rental_income: [0, -4_000, -4_000]
+  output:
+    ri_liheap_income: [30_000, 30_000, 30_000]
+
+# The RI Works grant counts only through the take-up-gated SPM-unit tanf aggregate.
+# Parent and child with no other income: tanf_if_takes_up 8412 = size-2 RI Works
+# payment standard 701 x 12. Taking up TANF gives tanf 8412 and countable income 8412.
+- name: Case 20, a family that takes up TANF counts its grant once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf_if_takes_up: 8_412
+        takes_up_tanf_if_eligible: true
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    tanf: 8_412
+    ri_liheap_income: 8_412
+
+# Same family with the same 8412 RI Works entitlement, but it does not take up TANF:
+# tanf is 0, so no TANF income counts and countable income is 0.
+- name: Case 21, a family that does not take up TANF counts no TANF grant.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf_if_takes_up: 8_412
+        takes_up_tanf_if_eligible: false
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    tanf: 0
+    ri_liheap_income: 0
+
+# Manual III.E p17 lists "Cash Prizes and Lottery Winnings" as income; this follows the
+# manual over plan 1.9 p6: 20000 wages + 1500 lottery winnings = 21500.
+- name: Case 22, lottery winnings count as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 20_000
+        gambling_winnings: 1_500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_liheap_income: 21_500
+
+# Manual III.H p21 deducts "All Medicare expenses"; the Part B premium is the only one
+# with an input, so it is pinned. 24000 Social Security - 2434.80 Part B premium
+# (2026 standard 202.90 x 12) = 21565.20. A retiree paying no premium keeps 24000.
+- name: Case 23, the Medicare Part B premium paid is deducted from income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+    age: [67, 67]
+    is_full_time_student: [false, false]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    childcare_expenses: [0, 0]
+    child_care_subsidies: [0, 0]
+    social_security: [24_000, 24_000]
+    medicare_part_b_premium: [2_434.80, 0]
+  output:
+    ri_liheap_income: [21_565.20, 24_000]
+
+# The FY2026 instructions (Appendix H p2) exclude every full-time student aged 18-23,
+# including one who heads the household: 16,640 of part-time wages (20 hours a week at
+# Rhode Island's 2026 minimum wage of $16 an hour) are not counted.
+- name: Case 24, a full-time student aged 22 living alone has income excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        ssi: 0
+        employment_income: 16_640
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_liheap_income: 0

@@ -1,0 +1,17 @@
+description: Rhode Island excludes the income of full-time students below this age under the Low Income Home Energy Assistance Program.
+# Ages 18 through 23 means below the twenty-fourth birthday. The FY2026 and
+# FY2027 application instructions exclude every full-time student aged 18-23.
+# The 2020 manual excluded only a child who was not the household head; the
+# current instructions govern.
+values:
+  2025-10-01: 24
+
+metadata:
+  unit: year
+  period: year
+  label: Rhode Island LIHEAP student income exclusion age limit
+  reference:
+    - title: Rhode Island FY2026 LIHEAP Application Instructions, Appendix H, Full-time Students
+      href: https://westbaycap.org/wp-content/uploads/2025/08/Appendix-H-Application-Instructions-FY-26.pdf#page=2
+    - title: Rhode Island LIHEAP Manual, Section III.G Income Exclusions Allowed by DHS
+      href: https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=20

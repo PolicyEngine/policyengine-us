@@ -1,0 +1,71 @@
+# Rhode Island independent income and primary-bill matrix components; no final award is asserted.
+
+# Manual pp12-13 counts citizens and qualified noncitizens; all three qualifying members count regardless of age.
+- name: Case 1, qualified adults and children count while nonqualified residents do not.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        is_full_time_student: false
+        ssi: 0
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+      person3:
+        age: 35
+        immigration_status: ASYLEE
+        is_full_time_student: false
+        ssi: 0
+      person4:
+        age: 22
+        immigration_status: DACA
+        is_full_time_student: false
+        ssi: 0
+      person5:
+        age: 39
+        immigration_status: UNDOCUMENTED
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: RI
+  output:
+    ri_liheap_household_size: 3
+
+# Manual p12 excludes nonqualified members from the benefit size.
+- name: Case 2, a household of only nonqualified members has size zero.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_full_time_student: false
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_liheap_household_size: 0

@@ -1,0 +1,159 @@
+# Rhode Island independent income and primary-bill matrix components; no final award is asserted.
+
+# FY2026 matrix p1 rows A-E supplies the federal base. DHS October 2025 DIV 1-1
+# and PUC Order 25579 p3 separately establish the $350 primary utility enhancement.
+# Gas: [232, 211, 192, 175, 159] + 350; electric: [393, 357, 324, 295, 268] + 350.
+# Deliverables remain unchanged. Positive primary bills10 do not cap these amounts.
+# Qualifying utility-provider accounts and actual primary-grant receipt are assumed.
+- name: Case 1, all fifteen ordinary primary amounts include the utility enhancement where applicable.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI, RI, RI, RI, RI, RI, RI, RI, RI, RI, RI, RI, RI]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    gas_expense: [0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 0, 0, 0, 0, 0]
+    ri_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ri_liheap_income_band: [1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5]
+    fuel_oil_expense: [10, 10, 10, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    pre_subsidy_electricity_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10]
+  output:
+    ri_liheap_base_payment: [861, 805, 752, 704, 657, 582, 561, 542, 525, 509, 743, 707, 674, 645, 618]
+
+# FY2026 matrix p1 bandB deliverables805; current landlord form lists oil,kerosene,propane,wood/pellets. Coal is not asserted.
+- name: Case 2, supported delivered fuels share the same published deliverable amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI, RI]
+    heating_type: [FUEL_OIL, KEROSENE, PROPANE, WOOD]
+    gas_expense: [0, 0, 0, 0]
+    ri_liheap_household_size: [1, 1, 1, 1]
+    ri_liheap_income_band: [2, 2, 2, 2]
+    fuel_oil_expense: [10, 10, 0, 0]
+    bottled_gas_expense: [0, 0, 10, 0]
+    wood_expense: [0, 0, 0, 10]
+  output:
+    ri_liheap_base_payment: [805, 805, 805, 805]
+
+# FY2026 matrix p1 row F: subsidized households with their own primary bill get
+# deliverable657, gas159 + utility enhancement350 = 509, electric268 + 350 = 618,
+# independent of band. This is the ordinary primary route, not heat-in-rent.
+- name: Case 3, subsidized primary bill rows use the lowest fuel amount for either subsidy flag.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI, RI, RI, RI]
+    heating_type: [FUEL_OIL, NATURAL_GAS, ELECTRICITY, FUEL_OIL, NATURAL_GAS, ELECTRICITY]
+    gas_expense: [0, 10, 0, 0, 10, 0]
+    ri_liheap_household_size: [1, 1, 1, 1, 1, 1]
+    ri_liheap_income_band: [1, 2, 3, 5, 4, 1]
+    receives_housing_assistance: [true, true, true, false, false, false]
+    is_in_public_housing: [false, false, false, true, true, true]
+    fuel_oil_expense: [10, 0, 0, 10, 0, 0]
+    pre_subsidy_electricity_expense: [0, 0, 10, 0, 0, 10]
+  output:
+    ri_liheap_base_payment: [657, 509, 618, 657, 509, 618]
+
+# ExplicitNONE and zero qualified size are unsupported heating households; this does not classify unpriced fuels as legally ineligible.
+- name: Case 4, explicit no heating and zero qualified size return no base payment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI]
+    heating_type: [NONE, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+    ri_liheap_household_size: [1, 0]
+    ri_liheap_income_band: [1, 0]
+  output:
+    ri_liheap_base_payment: [0, 0]
+
+# Ordinary RI natural gas band A is federal232 + state350 = 582;
+# a Massachusetts unit has no RI primary payment component.
+- name: Case 5, state gating preserves Rhode Island and excludes an out of state household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, MA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+    ri_liheap_household_size: [1, 1]
+    ri_liheap_income_band: [1, 1]
+  output:
+    ri_liheap_base_payment: [582, 0]
+
+# The enhancement follows the qualifying primary utility grant, not every utility
+# bill. Oil861 remains861 despite an electric bill; gas232 + 350 = 582;
+# electric393 + 350 = 743. Having both gas and electric bills does not double350.
+- name: Case 6, primary fuel determines enhancement despite other utility bills.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    heating_type: [FUEL_OIL, NATURAL_GAS, ELECTRICITY]
+    ri_liheap_household_size: [1, 1, 1]
+    ri_liheap_income_band: [1, 1, 1]
+    heat_expense_included_in_rent: [false, false, false]
+    receives_housing_assistance: [false, false, false]
+    is_in_public_housing: [false, false, false]
+    fuel_oil_expense: [1_200, 0, 0]
+    gas_expense: [1_200, 1_200, 1_200]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200]
+  output:
+    ri_liheap_base_payment: [861, 582, 743]
+
+# No ordinary primary price is established for these fuels. A utility bill alone
+# cannot justify adding350. Zeros represent unsupported components, not legal
+# ineligibility findings for unknown or unpriced fuels; NONE means no heating.
+- name: Case 7, unpriced and absent heating receive no utility enhancement.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI, RI, RI]
+    heating_type: [COAL, SOLAR, OTHER, UNSPECIFIED, NONE]
+    ri_liheap_household_size: [1, 1, 1, 1, 1]
+    ri_liheap_income_band: [1, 1, 1, 1, 1]
+    heat_expense_included_in_rent: [false, false, false, false, false]
+    receives_housing_assistance: [false, false, false, false, false]
+    is_in_public_housing: [false, false, false, false, false]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    ri_liheap_base_payment: [0, 0, 0, 0, 0]
+
+# Row F uses the same primary heating obligation as eligibility, so the has_heating_expense
+# flag without a bill amount selects it: gas 159 + 350 = 509, electric 268 + 350 = 618,
+# wood 657. An unsubsidized flagged gas household stays in band 1: 232 + 350 = 582.
+- name: Case 8, a heating obligation flag without a bill amount selects the subsidized row.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI, RI]
+    heating_type: [NATURAL_GAS, ELECTRICITY, WOOD, NATURAL_GAS]
+    has_heating_expense: [true, true, true, true]
+    gas_expense: [0, 0, 0, 0]
+    pre_subsidy_electricity_expense: [0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0]
+    ri_liheap_household_size: [1, 1, 1, 1]
+    ri_liheap_income_band: [1, 1, 1, 1]
+    receives_housing_assistance: [true, true, true, false]
+    is_in_public_housing: [false, false, false, false]
+  output:
+    ri_liheap_base_payment: [509, 618, 657, 582]
+
+# Payment in_effect is false before October 1, 2025 because the FY2025 grant matrix was
+# not located, so the FY2026 band-1 amounts (oil 861, gas 582, electric 743) are not
+# backfilled into 2025.
+- name: Case 9, no primary payment is modeled before the FY2026 schedule.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI, RI]
+    heating_type: [FUEL_OIL, NATURAL_GAS, ELECTRICITY]
+    fuel_oil_expense: [1_200, 0, 0]
+    gas_expense: [0, 1_200, 0]
+    pre_subsidy_electricity_expense: [0, 0, 1_200]
+    ri_liheap_household_size: [1, 1, 1]
+    ri_liheap_income_band: [1, 1, 1]
+  output:
+    ri_liheap_base_payment: [0, 0, 0]

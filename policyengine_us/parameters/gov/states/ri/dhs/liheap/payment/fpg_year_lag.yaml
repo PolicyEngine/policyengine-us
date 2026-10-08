@@ -1,0 +1,13 @@
+description: Rhode Island uses the federal poverty guideline from this many years before the benefit year to set payment bands under the Low Income Home Energy Assistance Program.
+# The FY2026 table uses the 2025 federal poverty guidelines.
+# Backfilled years use their corresponding lagged guidelines and are unverified.
+values:
+  2025-10-01: 1
+
+metadata:
+  unit: year
+  period: year
+  label: Rhode Island LIHEAP payment federal poverty guideline year lag
+  reference:
+    - title: Rhode Island FY2026 Benefit Matrix, FPG year note
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf

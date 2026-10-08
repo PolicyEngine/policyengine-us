@@ -1,0 +1,15 @@
+description: Rhode Island counts this share of rental receipts under the Low Income Home Energy Assistance Program.
+# The manual gives the same rental rule on pages 17 and 20.
+# Existing rental fields may contain net data; they approximate gross rents.
+values:
+  2025-10-01: 0.5
+
+metadata:
+  unit: /1
+  period: year
+  label: Rhode Island LIHEAP rental income inclusion rate
+  reference:
+    - title: Rhode Island LIHEAP Manual, Sections III.E and III.G Rental Income
+      href: https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=17
+    - title: Rhode Island LIHEAP Rental Income Reported Form, May 2025 Appendix M
+      href: https://dhs.ri.gov/media/9701/download?language=en

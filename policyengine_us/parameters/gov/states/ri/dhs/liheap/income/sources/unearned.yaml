@@ -1,0 +1,53 @@
+description: Rhode Island counts these unearned income sources under the Low Income Home Energy Assistance Program.
+# Interest and rental receipts have separate allowances, and TANF (RI Works)
+# is added once through the SPM-unit tanf aggregate, so none of those
+# sources is duplicated here. Each listed source is floored at zero.
+# SSI is the federal benefit; a separate RI state supplement is not modeled.
+# disability_benefits approximates employment-related TDI/TCI receipts.
+# VA education and Aid and Attendance exclusions cannot be separated from
+# the broad veterans input. Jury duty, royalties, foster receipts and legal
+# settlements also lack sufficiently specific existing inputs.
+values:
+  2025-10-01:
+    - unemployment_compensation
+    - strike_benefits
+    - social_security
+    - ssi
+    # Military retirement pay is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other.
+    - pension_income
+    - military_retirement_pay
+    - retirement_distributions
+    - survivor_benefits
+    - railroad_benefits
+    - alimony_income
+    - child_support_received
+    # Manual Section III.E counts "Temporary Disability Insurance (TDI),
+    # Temporary Caregivers Insurance (TCI)" (page 15) and "Workers'
+    # Compensation" (page 16); FY2026 plan Section 1.9, page 6, leaves
+    # "Insurance payments made directly to the insured" unchecked. This
+    # follows the manual.
+    - workers_compensation
+    - disability_benefits
+    - financial_assistance
+    - ordinary_dividend_income
+    - veterans_benefits
+    # Manual Section III.E, Estate or Trust Income, page 17.
+    - estate_income
+    # Manual Section III.E, page 17, lists "Cash Prizes and Lottery Winnings"
+    # as income; FY2026 plan Section 1.9, page 6, leaves "winnings from
+    # lotteries" unchecked. This follows the manual.
+    - gambling_winnings
+
+metadata:
+  unit: list
+  period: year
+  label: Rhode Island LIHEAP unearned income sources
+  reference:
+    - title: Rhode Island LIHEAP Manual, Sections III.E-G Income Verification and Exclusions
+      href: https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=14
+    - title: Rhode Island FY2026 State Plan, Sections 1.8 and 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=5
+    - title: Rhode Island FY2026 Application Instructions, Proof of Income
+      href: https://dhs.ri.gov/media/9671/download?language=en

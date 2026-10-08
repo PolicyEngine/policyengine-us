@@ -1,0 +1,23 @@
+description: Rhode Island counts these earned income sources under the Low Income Home Energy Assistance Program.
+# Existing net business income is used without an additional 40% deduction.
+# Gross business receipts and business-expense inputs remain deferred.
+# Active versus passive partnership receipts are not separately identifiable.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: Rhode Island LIHEAP earned income sources
+  reference:
+    - title: Rhode Island LIHEAP Manual, Sections III.E-G Income Verification and Exclusions
+      href: https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=14
+    - title: Rhode Island FY2026 State Plan, Sections 1.8 and 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=5
+    - title: Rhode Island FY2026 Application Instructions, Proof of Income
+      href: https://dhs.ri.gov/media/9671/download?language=en

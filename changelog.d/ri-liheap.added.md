@@ -1,0 +1,1 @@
+Add Rhode Island LIHEAP direct-heating assistance, income and heating eligibility, including the qualifying utility enhancement and FY2027 income-limit references; heat-in-rent payments remain unmodeled.
