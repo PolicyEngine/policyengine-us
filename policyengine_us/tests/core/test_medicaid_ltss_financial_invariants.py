@@ -501,13 +501,13 @@ def _random_couples():
     return couples
 
 
-def _couple_results(couples, raised_spouse=None, reverse=False):
+def _couple_results(couples, raised_spouse=None, reverse=False, election=None):
     situation = {"people": {}, "households": {}, "marital_units": {}}
     for index, couple in enumerate(couples):
         names = [f"couple_{index}_a", f"couple_{index}_b"]
         situation["households"][f"couple_{index}"] = {
             "members": names,
-            "state_code": {YEAR: "DE"},
+            "state_code": {YEAR: couple.get("state", "DE")},
         }
         situation["marital_units"][f"couple_{index}"] = {
             "members": list(reversed(names)) if reverse else names,
@@ -521,6 +521,10 @@ def _couple_results(couples, raised_spouse=None, reverse=False):
                 couple["same_address_hcbs"]
             ),
         }
+        if election is not None:
+            situation["marital_units"][f"couple_{index}"][
+                "medicaid_ltss_de_post_six_month_budget_election"
+            ] = month(election)
         for spouse, name in enumerate(names):
             situation["people"][name] = {
                 "is_ssi_aged_blind_disabled": {YEAR: True},
@@ -536,8 +540,13 @@ def _couple_results(couples, raised_spouse=None, reverse=False):
                     float(couple["resources"][spouse])
                 ),
             }
+            if couple.get("state", "DE") != "DE":
+                situation["people"][name][
+                    "medicaid_ltss_non_delaware_assistance_unit_size"
+                ] = month(couple["non_delaware_unit"])
     if reverse:
-        situation["people"] = dict(reversed(list(situation["people"].items())))
+        for entity in ["people", "households", "marital_units"]:
+            situation[entity] = dict(reversed(list(situation[entity].items())))
     simulation = Simulation(situation=situation)
     results = {}
     for variable in reversed(COUPLE_OUTPUTS) if reverse else COUPLE_OUTPUTS:
@@ -625,6 +634,114 @@ def test_derived_couple_budget_maximizes_the_number_of_eligible_spouses(couples)
     np.testing.assert_allclose(
         base["medicaid_ltss_countable_income"], expected_income, rtol=1e-6, atol=0.001
     )
+
+
+@pytest.fixture(scope="module")
+def election_couples():
+    rng = np.random.default_rng(SEED + 8)
+    people = []
+    for index in range(72):
+        regime = index % 9
+        state = ["DE"] * 6 + ["TX", "WA", "CA"]
+        couple = {
+            "state": state[regime],
+            "same_facility": regime not in [4, 5],
+            "months": [6, 12, 0, 5, 12, 12, 12, 12, 12][regime],
+            "same_address_hcbs": regime == 5,
+            "setting": "HCBS" if regime == 5 else "INSTITUTIONAL",
+            "earned": rng.uniform(0, 6_000, 2),
+            "unearned": rng.uniform(0, 1_500, 2),
+            "resources": rng.uniform(0, 3_000, 2),
+            "non_delaware_unit": 2 if state[regime] == "TX" else 1,
+        }
+        if regime == 0:
+            # The couple budget admits both; individual budgets admit only
+            # the spouse whose resource inventory is below $2,000.
+            couple.update(
+                earned=rng.uniform(0, 3_000, 2),
+                unearned=rng.uniform(0, 200, 2),
+                resources=np.array([rng.uniform(2_001, 2_900), rng.uniform(0, 100)]),
+            )
+        elif regime == 1:
+            # Both individual budgets pass, but their combined inventory
+            # exceeds the couple resource limit.
+            couple.update(
+                earned=rng.uniform(0, 5_000, 2),
+                unearned=rng.uniform(0, 200, 2),
+                resources=rng.uniform(1_501, 2_000, 2),
+            )
+        people.append(couple)
+    elections = ["INDIVIDUAL", "COUPLE", "NOT_SUPPLIED"]
+    return (
+        people,
+        _couple_results(people),
+        {
+            election: _couple_results(people, election=election)
+            for election in elections
+        },
+        {
+            election: _couple_results(people, election=election, reverse=True)
+            for election in elections
+        },
+    )
+
+
+@pytest.mark.parametrize("election", ["INDIVIDUAL", "COUPLE", "NOT_SUPPLIED"])
+def test_actual_election_is_deterministic_under_spouse_record_and_calculation_order(
+    election_couples, election
+):
+    _, _, elected, reversed_results = election_couples
+    for variable in COUPLE_OUTPUTS:
+        np.testing.assert_array_equal(
+            elected[election][variable],
+            reversed_results[election][variable],
+            err_msg=variable,
+        )
+    units = elected[election]["medicaid_ltss_assistance_unit_size"].reshape(-1, 2)
+    np.testing.assert_array_equal(units[:, 0], units[:, 1])
+
+
+def test_not_supplied_election_reproduces_the_favorable_budget(election_couples):
+    _, base, elected, _ = election_couples
+    for variable in COUPLE_OUTPUTS:
+        np.testing.assert_array_equal(
+            base[variable], elected["NOT_SUPPLIED"][variable], err_msg=variable
+        )
+
+
+@pytest.mark.parametrize("election, unit_size", [("INDIVIDUAL", 1), ("COUPLE", 2)])
+def test_actual_election_changes_outputs_only_in_the_allowed_window(
+    election_couples, election, unit_size
+):
+    people, base, elected, _ = election_couples
+    allowed = np.repeat(
+        [
+            couple["state"] == "DE"
+            and couple["same_facility"]
+            and couple["months"] >= 6
+            for couple in people
+        ],
+        2,
+    )
+    assert allowed.any() and (~allowed).any()
+    np.testing.assert_array_equal(
+        elected[election]["medicaid_ltss_assistance_unit_size"],
+        np.where(allowed, unit_size, base["medicaid_ltss_assistance_unit_size"]),
+    )
+    for variable in COUPLE_OUTPUTS:
+        np.testing.assert_array_equal(
+            elected[election][variable][~allowed],
+            base[variable][~allowed],
+            err_msg=variable,
+        )
+    # An implementation that ignores every actual election cannot satisfy
+    # this property: each choice overrides a favorable budget in this cohort.
+    changed = (
+        elected[election]["is_medicaid_ltss_financial_threshold_eligible"]
+        != base["is_medicaid_ltss_financial_threshold_eligible"]
+    )
+    assert changed[allowed].any()
+    assert not changed[~allowed].any()
 
 
 @pytest.mark.parametrize("raised_spouse", [0, 1])
