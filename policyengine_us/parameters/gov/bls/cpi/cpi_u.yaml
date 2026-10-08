@@ -1363,6 +1363,8 @@ values:
   2026-04-01: 332.407
   2026-05-01: 333.979
   2026-06-01: 332.568
+  2026-07-01: 332.813
+  2026-08-01: 334.131
   # CBO's February 2026 projections of each calendar year's average CPI-U.
   # Tax parameters use the average over the 12 months ending August instead;
   # CBO's projections of that average are in tax_year_projection/cpi_u.yaml.
@@ -1381,7 +1383,7 @@ metadata:
   label: CPI-U
   economy: false
   reference:
-    - title: BLS | CPI-U, U.S. city average, all items, seasonally adjusted (CUSR0000SA0), monthly values through June 2026
+    - title: BLS | CPI-U, U.S. city average, all items, seasonally adjusted (CUSR0000SA0), monthly values through August 2026
       href: https://data.bls.gov/timeseries/CUSR0000SA0
     - title: CBO | Tax Parameters and Effective Marginal Tax Rates | June 2024
       # Source: https://www.cbo.gov/data/budget-economic-data#10

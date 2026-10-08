@@ -184,8 +184,14 @@ def test_sc_dependent_deductions_round_down_to_ten_dollars():
 
 def test_sc_income_tax_rounding_applies_to_threshold_not_rates():
     scale = SYSTEM.parameters.gov.states.sc.tax.income.rates
+    uprating = SYSTEM.parameters.gov.irs.uprating
+    factor = Decimal(str(uprating("2027-01-01"))) / Decimal(str(uprating("2026-01-01")))
+    expected_threshold = int(
+        (Decimal(30_000) * factor).quantize(Decimal("1E1"), rounding=ROUND_FLOOR)
+    )
 
-    assert scale.brackets[1].threshold("2027-01-01") == 30_890
+    assert scale.brackets[1].threshold("2026-01-01") == 30_000
+    assert scale.brackets[1].threshold("2027-01-01") == expected_threshold
     assert scale.brackets[1].rate("2027-01-01") == pytest.approx(0.0521)
     assert scale.brackets[2].rate("2027-01-01") == pytest.approx(0.06)
 

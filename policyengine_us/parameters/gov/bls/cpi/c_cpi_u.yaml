@@ -320,6 +320,8 @@ values:
   2026-04-01: 184.499
   2026-05-01: 185.589
   2026-06-01: 184.992
+  2026-07-01: 185.162
+  2026-08-01: 185.739
   # CBO's February 2026 projections of each calendar year's average C-CPI-U.
   # Tax parameters use the average over the 12 months ending August instead;
   # CBO's projections of that average are in tax_year_projection/c_cpi_u.yaml.
@@ -338,7 +340,7 @@ metadata:
   unit: currency-USD
   label: Chained CPI-U
   reference:
-    - title: BLS | Chained CPI-U, U.S. city average, all items (SUUR0000SA0), monthly values through June 2026
+    - title: BLS | Chained CPI-U, U.S. city average, all items (SUUR0000SA0), monthly values through August 2026
       href: https://data.bls.gov/timeseries/SUUR0000SA0
     - title: CBO | Tax Parameters and Effective Marginal Tax Rates | June 2024
       # Source: https://www.cbo.gov/data/budget-economic-data#10
