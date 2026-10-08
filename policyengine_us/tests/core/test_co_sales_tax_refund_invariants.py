@@ -19,9 +19,8 @@ simulation covering all three years. For every tax unit:
    tiers taken from the forecast table rather than from the parameters.
 3. Bounds: 0 <= refund <= 2 x the top tier amount, and the refund is
    positive exactly when a filer is eligible (2025).
-4. Intended carry-forward: in 2027 the refund equals the 2025 refund. The
-   LCS June 2026 forecast expects a tax year 2027 refund, and the 2025 tier
-   amounts stand in until CDOR publishes the tax year 2027 table.
+The tax year 2027 amounts are placeholders (the 2025 tier amounts stand in
+until CDOR publishes the 2027 table), so no invariant pins them.
 """
 
 import numpy as np
@@ -166,9 +165,6 @@ def _check(units):
         assert (run["refund"] >= 0).all()
         assert (run["refund"] <= 2 * PUBLISHED_2025_AMOUNTS.max()).all()
     np.testing.assert_array_equal(base["refund"] > 0, base["count"] > 0)
-
-    # 4. Intended carry-forward of the 2025 table into 2027.
-    np.testing.assert_allclose(by_year[2027]["refund"], base["refund"], atol=TOLERANCE)
 
 
 @settings(

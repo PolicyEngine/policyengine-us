@@ -5,8 +5,10 @@ values:
   # the State Controller certified on 2026-09-08, so no tax year 2026 refund.
   2026-01-01: false
   # The LCS June 2026 forecast expects the six-tier refund to apply for tax
-  # years 2027 and 2028; the tier amounts carry forward until CDOR publishes
-  # each year's table.
+  # years 2027 and 2028. Until CDOR publishes the tax year 2027 table, the
+  # tax year 2025 tier amounts stand in as placeholders; they are not
+  # published 2027 amounts (the LCS September 2026 forecast projects $43 for
+  # the lowest single tier, against the $19 carried forward).
   2027-01-01: true
 metadata:
   unit: bool
