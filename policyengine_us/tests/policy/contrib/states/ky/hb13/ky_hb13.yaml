@@ -354,7 +354,7 @@
 
 - name: KY HB 13 - end-to-end high earner through ky_income_tax
   period: 2027
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
   input:
     gov.contrib.states.ky.hb13.in_effect: true
@@ -363,6 +363,9 @@
         age: 45
         ky_taxable_income_indiv: 500_000
         ky_taxable_income_joint: 500_000
+        # Both filing paths need the underlying person-level AGI.
+        adjusted_gross_income_person: 500_000
+        ky_agi: 500_000
       person2:
         age: 43
         ky_taxable_income_indiv: 0
@@ -382,6 +385,8 @@
       - 30000
       - 0
     # High earner: family size credit rate is 0%, so no credit reduction
+    ky_family_size_tax_credit_rate_if_joint: 0
+    ky_family_size_tax_credit_rate_if_separate: 0
     # Verify reform flows through to final ky_income_tax
     ky_income_tax: 30000
 
@@ -396,19 +401,18 @@
         age: 45
         ky_taxable_income_indiv: 280_000
         ky_taxable_income_joint: 300_000
+        adjusted_gross_income_person: 280_000
+        ky_agi: 280_000
       person2:
         age: 43
         ky_taxable_income_indiv: 20_000
         ky_taxable_income_joint: 0
+        adjusted_gross_income_person: 20_000
+        ky_agi: 20_000
     tax_units:
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        # These high earners have no family size tax credit. Income is supplied
-        # directly as Kentucky taxable income, leaving modelled gross income at
-        # $0, which would otherwise give a spurious 100% family-size credit rate
-        # and zero the tax on both filing paths.
-        ky_family_size_tax_credit_rate: 0
     households:
       household:
         members: [person1, person2]
@@ -419,7 +423,52 @@
     # Joint: p1=250k*3.5%+50k*6%=11750, p2=0, total=11750
     # ky_files_separately = (11250 < 11750) = True
     ky_files_separately: true
-    # No non-refundable credits apply (FSTC rate forced to 0, high earners have no
+    ky_family_size_tax_credit_rate_if_joint: 0
+    ky_family_size_tax_credit_rate_if_separate: 0
+    # No non-refundable credits apply (high earners have no family size or
     # personal credit), so ky_income_tax equals the elected separate total.
-    # CI-RISK: hand-derived; pin the CI actual if it differs.
     ky_income_tax: 11_250
+
+- name: KY HB 13 - negative spouse income retains path-specific family size credits
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb13.in_effect: true
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        adjusted_gross_income_person: 40_000
+        ky_agi: 40_000
+        ky_taxable_income_indiv: 40_000
+        ky_taxable_income_joint: 10_000
+      person2:
+        age: 43
+        is_tax_unit_spouse: true
+        adjusted_gross_income_person: -30_000
+        ky_agi: -30_000
+        ky_taxable_income_indiv: 0
+        ky_taxable_income_joint: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # KRS 141.066(4): only the separate path floors the spouse's loss.
+    ky_modified_agi_if_joint: 10_000
+    ky_modified_agi_if_separate: 40_000
+    ky_family_size_tax_credit_rate_if_joint: 1
+    ky_family_size_tax_credit_rate_if_separate: 0
+    # HB 13 Section 1: below $250k, gross tax is 3.5% of taxable income.
+    ky_income_tax_before_non_refundable_credits_indiv: [1_400, 0]
+    ky_income_tax_before_non_refundable_credits_joint: [350, 0]
+    ky_income_tax_before_refundable_credits_if_joint: 0
+    ky_income_tax_before_refundable_credits_if_separate: 1_400
+    ky_files_separately: false
+    ky_income_tax_before_refundable_credits: 0
+    ky_income_tax: 0

@@ -26,7 +26,12 @@ it as one vectorized simulation:
 import numpy as np
 import pytest
 
+from policyengine_core.reforms import Reform
+
 from policyengine_us import Simulation
+from policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform import (
+    ky_graduated_income_tax,
+)
 
 YEAR = 2025
 N_RANDOM = 200
@@ -181,4 +186,97 @@ def test_post_election_tax_matches_the_elected_path(run):
     married = _unit_any(run, run["is_tax_unit_spouse"])
     np.testing.assert_allclose(
         tax[married], np.minimum(joint, separate)[married], atol=TOLERANCE
+    )
+
+
+@pytest.mark.parametrize("bill, rate", [("hb13", 0.035), ("hb152", 0.04)])
+def test_negative_income_credit_composes_with_graduated_tax(bill, rate):
+    """Check the bill's gross tax against both credit paths and final liability.
+
+    Federal and Kentucky AGIs agree here, so this does not choose between the
+    readings held under d1009. KRS 141.066(4) floors the loss only on the separate
+    path; Section 1 of each bill supplies the low-income tax rate.
+    """
+    year = 2027
+    rng = np.random.default_rng(SEED)
+    head_income = rng.integers(35_000, 50_001, size=32)
+    joint_income = rng.integers(0, 15_001, size=32)
+    people, tax_units, households = {}, {}, {}
+    for i, (head_agi, joint_agi) in enumerate(zip(head_income, joint_income)):
+        members = [f"head_{i}", f"spouse_{i}"]
+        for name, role, age, agi, taxable, joint_taxable in (
+            (members[0], "head", 45, head_agi, head_agi, joint_agi),
+            (members[1], "spouse", 43, joint_agi - head_agi, 0, 0),
+        ):
+            people[name] = {
+                "age": {year: age},
+                f"is_tax_unit_{role}": {year: True},
+                "adjusted_gross_income_person": {year: int(agi)},
+                "ky_agi": {year: int(agi)},
+                "ky_taxable_income_indiv": {year: int(taxable)},
+                "ky_taxable_income_joint": {year: int(joint_taxable)},
+            }
+        tax_units[f"tu_{i}"] = {
+            "members": members,
+            "filing_status": {year: "JOINT"},
+        }
+        households[f"hh_{i}"] = {
+            "members": members,
+            "state_code": {year: "KY"},
+        }
+    parameter_reform = Reform.from_dict(
+        {
+            f"gov.contrib.states.ky.{bill}.in_effect": {
+                "2027-01-01.2027-12-31": True,
+            }
+        },
+        country_id="us",
+    )
+    sim = Simulation(
+        start_instant="2027-01-01",
+        situation={
+            "people": people,
+            "tax_units": tax_units,
+            "households": households,
+        },
+    )
+    sim.apply_reform((parameter_reform, ky_graduated_income_tax))
+    system = sim.tax_benefit_system
+
+    def calc(variable):
+        return np.asarray(sim.calculate(variable, year), dtype=float)
+
+    np.testing.assert_allclose(calc("ky_modified_agi_if_joint"), joint_income)
+    np.testing.assert_allclose(calc("ky_modified_agi_if_separate"), head_income)
+    np.testing.assert_array_equal(calc("ky_family_size_tax_credit_rate_if_joint"), 1)
+    np.testing.assert_array_equal(calc("ky_family_size_tax_credit_rate_if_separate"), 0)
+    expected_separate_tax = head_income * rate
+    np.testing.assert_allclose(
+        calc("ky_income_tax_before_refundable_credits_if_separate"),
+        expected_separate_tax,
+        atol=TOLERANCE,
+    )
+    np.testing.assert_array_equal(
+        calc("ky_income_tax_before_refundable_credits_if_joint"), 0
+    )
+    np.testing.assert_array_equal(calc("ky_files_separately"), 0)
+    np.testing.assert_array_equal(calc("ky_income_tax_before_refundable_credits"), 0)
+    # Force the other election to check the post-election credit chain too.
+    for tax_unit in tax_units.values():
+        tax_unit["ky_files_separately"] = {year: True}
+    sim = Simulation(
+        tax_benefit_system=system,
+        start_instant="2027-01-01",
+        situation={
+            "people": people,
+            "tax_units": tax_units,
+            "households": households,
+        },
+    )
+    np.testing.assert_allclose(calc("ky_modified_agi"), head_income)
+    np.testing.assert_array_equal(calc("ky_family_size_tax_credit_rate"), 0)
+    np.testing.assert_allclose(
+        calc("ky_income_tax_before_refundable_credits"),
+        expected_separate_tax,
+        atol=TOLERANCE,
     )
