@@ -471,3 +471,98 @@
         state_code: OH
   output:
     oh_liheap_countable_income: 12_600
+
+# Guidelines Appendix XXIII (pp72-74) counts unemployment, Workers' Compensation, employment
+# disability payouts, strike benefits and VA pensions; the FY2026 plan (p7) counts VA
+# pension but not VA disability. Workers earn Ohio's 2026 $11.00 minimum wage (Commerce
+# poster) for 40 hours = 440 a week; each household reports one source:
+# Unemployment: 26 weeks x 440 = 11,440 + 26 weeks x 220 (half the weekly wage,
+#   ORC 4141.30(B)(3)) = 5,720 -> 17,160.
+# Strike: 46 weeks x 440 = 20,240 + 6 weeks x 500 UAW strike assistance (uaw.org strike
+#   FAQ) = 3,000 -> 23,240.
+# VA pension: a disabled veteran under 65 with no other income receives the full MAPR
+#   effective Dec. 1, 2025 for a veteran with no dependents (va.gov) -> 17,441.
+# Workers' compensation: 40 weeks x 440 = 17,600 + 12 weeks x 427 (BWC 2026 temporary
+#   total minimum; 72% of 440 is lower) = 5,124 -> 22,724.
+# Disability: 39 weeks x 440 = 17,160 + 13 weeks x 264 (60% BLS median short-term
+#   disability replacement x 440) = 3,432 -> 20,592.
+- name: Case 17, unemployment strike VA pension workers compensation and disability benefits each count.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OH, OH, OH, OH, OH]
+    county: [FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH,
+      FRANKLIN_COUNTY_OH]
+    age: [40, 40, 58, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false, false, false, false]
+    is_disabled: [false, false, true, false, false]
+    ssi: [0, 0, 0, 0, 0]
+    employment_income: [11_440, 20_240, 0, 17_600, 17_160]
+    unemployment_compensation: [5_720, 0, 0, 0, 0]
+    strike_benefits: [0, 3_000, 0, 0, 0]
+    veterans_benefits: [0, 0, 17_441, 0, 0]
+    workers_compensation: [0, 0, 0, 5_124, 0]
+    disability_benefits: [0, 0, 0, 0, 3_432]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    oh_liheap_countable_income: [17_160, 23_240, 17_441, 22_724, 20_592]
+
+# Guidelines Appendix XXIII (p74) and the 2025-2026 application (p7) deduct health, dental
+# and vision premiums. Full-time at Ohio's 2026 $11.00 minimum wage: 11 x 2,080 = 22,880.
+# KFF 2025 average worker contribution for single coverage is 1,440:
+# 22,880 - 1,440 = 21,440.
+- name: Case 18, an employee health insurance premium is deducted from wages.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        employment_income: 22_880
+        health_insurance_premiums_without_medicare_part_b: 1_440
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+        county: FRANKLIN_COUNTY_OH
+  output:
+    oh_liheap_countable_income: 21_440
+
+# Case 12's household also pays the 2026 Part D base beneficiary premium (CMS), 38.99 x 12
+# = 467.88. Each premium is deducted once, so Part B is not counted twice:
+# 28,000 - 2,434.80 - 467.88 = 25,097.32.
+- name: Case 19, a Part D premium is deducted alongside the Medicare Part B premium without counting Part B twice.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        ssi: 0
+        social_security: 28_000
+        medicare_part_b_premium: 2_434.8
+        health_insurance_premiums_without_medicare_part_b: 467.88
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+        county: FRANKLIN_COUNTY_OH
+  output:
+    oh_liheap_countable_income: 25_097.32

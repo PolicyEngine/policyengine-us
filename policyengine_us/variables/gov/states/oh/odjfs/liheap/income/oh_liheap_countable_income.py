@@ -44,13 +44,18 @@ class oh_liheap_countable_income(Variable):
         # Existing estate/financial inputs cannot capture all principal payouts,
         # nonretirement investment draws, royalties, or legal settlements.
         # Guidelines Appendix XXIII (page 74) and the application (page 7)
-        # deduct Medicare premiums and child support paid; the FY2026 plan
-        # (page 6) counts Social Security "Excluding MediCare deduction".
-        # Only the Medicare Part B premium has an input. Other premium,
-        # spenddown, disability premium, and legal-fee deductions need
-        # source/input reconciliation; existing aggregates do not isolate the
-        # covered non-Medicare amounts.
+        # deduct child support paid and health, dental, vision, prescription
+        # plan, and Medicare premiums; the FY2026 plan (page 6) counts Social
+        # Security "Excluding MediCare deduction". The non-Part-B premium input
+        # excludes the Part B premium, so no premium is deducted twice.
+        # Spenddown, disability premium, and legal-fee deductions have no input.
         deductions = add(
-            spm_unit, period, ["child_support_expense", "medicare_part_b_premium"]
+            spm_unit,
+            period,
+            [
+                "child_support_expense",
+                "health_insurance_premiums_without_medicare_part_b",
+                "medicare_part_b_premium",
+            ],
         )
         return max_(spm_unit.sum(counted) - deductions, 0)
