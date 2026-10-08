@@ -1,0 +1,31 @@
+# Source: ADECA FY2026 manual and current Appendix D; requirement bindings in the test manifest.
+
+# Plan p9/chart: monthly0,652,652.01,1305,1305.01,1956 map to1,1,2,2,3,3; fractional dollars do not create gaps.
+- name: Case 1, one person band boundaries include exact tops and adjacent cents.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AL, AL, AL, AL, AL, AL]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    bottled_gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    al_liheap_household_size: [1, 1, 1, 1, 1, 1]
+    al_liheap_countable_income: [0, 7_824, 7824.12, 15_660, 15660.12, 23_472]
+  output:
+    al_liheap_income_band: [1, 1, 2, 2, 3, 3]
+
+
+# Chart monthly boundaries: size2 881/1763; size3 1110/2221; size4 1340/2681; each paired with the next cent.
+- name: Case 2, published household specific rounded band boundaries are retained.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE]
+    bottled_gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200]
+    al_liheap_household_size: [2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4]
+    al_liheap_countable_income: [10_572, 10572.12, 21_156, 21156.12, 13_320, 13320.12, 26_652, 26652.12,
+      16_080, 16080.12, 32_172, 32172.12]
+  output:
+    al_liheap_income_band: [1, 2, 2, 3, 1, 2, 2, 3, 1, 2, 2, 3]

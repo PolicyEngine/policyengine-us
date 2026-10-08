@@ -1,0 +1,266 @@
+# Source: ADECA FY2026 manual and current Appendix D; requirement bindings in the test manifest.
+
+# Manual p21:1956per month inclusive; accepted plan has no asset test.
+- name: Case 1, exact rounded monthly income ceiling is eligible without an asset test.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 23_472
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+        spm_unit_assets: 1_000_000
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_eligible: true
+
+# 1956.01monthly exceeds the published1956limit.
+- name: Case 2, one cent per month above the income ceiling is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 23472.12
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_eligible: false
+
+# Manual pp13,21: a heating responsibility is necessary.
+- name: Case 3, no separate bill and no heat in rent means no heating responsibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 0
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_eligible: false
+
+# Canonical NONE means no heating; a nonheating gas bill does not change it.
+- name: Case 4, explicit no heating fails despite an unrelated fuel bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: NONE
+        al_tanf: 0
+        gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_eligible: false
+
+# Manual p22: verified nonsubsidized heat-in-rent arrangement is eligible.
+- name: Case 5, nonsubsidized heat included in rent qualifies with no separate bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        al_tanf: 0
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_eligible: true
+
+# Manual p21: subsidized energy-in-rent household needs out-of-pocket costs.
+- name: Case 6, subsidized heat included in rent without excess charge is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: NATURAL_GAS
+        al_tanf: 0
+        gas_expense: 0
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_eligible: false
+
+# Manual pp21–22: positive primary heating charge approximates a verified public-housing excess charge.
+- name: Case 7, reported primary heating excess charge restores public housing eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: ELECTRICITY
+        al_tanf: 0
+        pre_subsidy_electricity_expense: 120
+        heat_expense_included_in_rent: true
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+        is_in_public_housing: true
+  output:
+    al_liheap_eligible: true
+
+# Accepted plan categoricalNo; even a recipient must pass income eligibility.
+- name: Case 8, SSI receipt does not bypass the income ceiling.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 30_000
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_eligible: false
+
+# Manual pp13,22: at least one citizen or qualified household member is necessary.
+- name: Case 9, no qualified person receives no regular heating benefit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_eligible: false
+
+# Manual p13 requires Alabama residence; mixed-state lookups must remain safe.
+- name: Case 10, out of state households do not qualify for Alabama assistance.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        state_code: GA
+        hud_utility_allowance: 0
+  output:
+    al_liheap_eligible: false

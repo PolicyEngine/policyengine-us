@@ -1,0 +1,29 @@
+# Source: ADECA FY2026 manual and current Appendix D; requirement bindings in the test manifest.
+
+# AppendixD/benefit chart, sizes1–15: each literal published monthly limit is annualized once; this isolated unit test supplies size directly.
+- name: Case 1, all fifteen published monthly limits are reproduced annually.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE,
+      PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    bottled_gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200]
+    al_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  output:
+    al_liheap_income_limit: [23_472, 31_728, 39_972, 48_228, 56_472, 64_728, 72_972, 81_228, 89_472,
+      97_728, 105_972, 114_228, 122_472, 130_728, 138_972]
+
+
+# 2025 model year uses2024FPG15060 and20440; monthly150% amounts1882.5 and2555 round to1883 and2555. Historical estimate, not verified2025 policy.
+- name: Case 2, backfilled prior year still uses its own lagged federal guideline.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AL, AL]
+    heating_type: [PROPANE, PROPANE]
+    bottled_gas_expense: [1_200, 1_200]
+    al_liheap_household_size: [1, 2]
+  output:
+    al_liheap_income_limit: [22_596, 30_660]

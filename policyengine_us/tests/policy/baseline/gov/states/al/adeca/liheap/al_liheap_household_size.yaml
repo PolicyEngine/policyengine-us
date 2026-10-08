@@ -1,0 +1,84 @@
+# Source: ADECA FY2026 manual and current Appendix D; requirement bindings in the test manifest.
+
+# Manual pp13,22: qualified size excludes nonqualified members; no SNAP five-year bar is applied.
+- name: Case 1, citizens permanent residents and asylees count while nonqualified members do
+    not.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      person2:
+        age: 39
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi: 0
+      person3:
+        age: 19
+        immigration_status: ASYLEE
+        ssi: 0
+      person4:
+        age: 17
+        immigration_status: DACA
+        ssi: 0
+      person5:
+        age: 8
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_household_size: 3
+
+# Manual p22: all nonqualified members are excluded from benefit household size.
+- name: Case 2, a household without any qualified member has size zero.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      person2:
+        age: 8
+        immigration_status: DACA
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        heating_type: PROPANE
+        al_tanf: 0
+        bottled_gas_expense: 1_200
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_household_size: 0

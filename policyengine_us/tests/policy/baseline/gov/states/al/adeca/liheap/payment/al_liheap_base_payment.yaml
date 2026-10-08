@@ -1,0 +1,72 @@
+# Source: ADECA FY2026 manual and current Appendix D; requirement bindings in the test manifest.
+
+# Current AppendixD/chart literal48cells in size,band,fuel order. This isolates matrix lookup from eligibility and supplements.
+- name: Case 1, all forty eight published size band and fuel amounts are retained.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL,
+      AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL, AL,
+      AL, AL, AL]
+    heating_type: [PROPANE, NATURAL_GAS, ELECTRICITY, WOOD, PROPANE, NATURAL_GAS, ELECTRICITY, WOOD,
+      PROPANE, NATURAL_GAS, ELECTRICITY, WOOD, PROPANE, NATURAL_GAS, ELECTRICITY, WOOD, PROPANE, NATURAL_GAS,
+      ELECTRICITY, WOOD, PROPANE, NATURAL_GAS, ELECTRICITY, WOOD, PROPANE, NATURAL_GAS, ELECTRICITY,
+      WOOD, PROPANE, NATURAL_GAS, ELECTRICITY, WOOD, PROPANE, NATURAL_GAS, ELECTRICITY, WOOD, PROPANE,
+      NATURAL_GAS, ELECTRICITY, WOOD, PROPANE, NATURAL_GAS, ELECTRICITY, WOOD, PROPANE, NATURAL_GAS,
+      ELECTRICITY, WOOD]
+    bottled_gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    al_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
+    al_liheap_income_band: [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3,
+      1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    wood_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    al_liheap_base_payment: [500, 480, 440, 400, 470, 450, 410, 370, 380, 360, 320, 280, 510, 490, 450,
+      410, 480, 460, 420, 380, 390, 370, 330, 290, 520, 500, 460, 420, 490, 470, 430, 390, 400, 380,
+      340, 300, 530, 510, 470, 430, 500, 480, 440, 400, 410, 390, 350, 310]
+
+
+# The printed Wood/Coal/Kerosene column applies to all three distinct canonical enum values.
+- name: Case 2, wood coal and kerosene share the printed fuel column.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AL, AL, AL]
+    heating_type: [WOOD, COAL, KEROSENE]
+    bottled_gas_expense: [1_200, 1_200, 1_200]
+    al_liheap_household_size: [1, 1, 1]
+    al_liheap_income_band: [1, 2, 3]
+    wood_expense: [1_200, 1_200, 1_200]
+    coal_expense: [1_200, 1_200, 1_200]
+    fuel_oil_expense: [1_200, 1_200, 1_200]
+  output:
+    al_liheap_base_payment: [400, 370, 280]
+
+
+# Chart note: more than4people receives size4amount; fixed base470 is not capped by a50annual heating bill.
+- name: Case 3, large households retain their income bands but cap the payment size increment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AL, AL, AL]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    bottled_gas_expense: [1_200, 1_200, 1_200]
+    al_liheap_household_size: [4, 5, 15]
+    al_liheap_income_band: [1, 1, 1]
+    pre_subsidy_electricity_expense: [50, 50, 50]
+  output:
+    al_liheap_base_payment: [470, 470, 470]

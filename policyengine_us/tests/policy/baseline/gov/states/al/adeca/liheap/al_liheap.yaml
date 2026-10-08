@@ -1,0 +1,169 @@
+# FY2026 plan p10: funded IIJA supplement is $100 for each regular heating award.
+# Manual pp22,57: subtract one monthly HUD allowance from the regular award.
+# Interpret the supplement as requiring a positive regular payment afterward;
+# the plan does not expressly address a regular payment reduced to zero.
+# The discretionary high-need award requires an unobserved agency determination.
+
+- name: Case 1, the funded supplement is added without capping the award at a small bill.
+  period: 2026
+  input:
+    state_code: AL
+    age: 40
+    immigration_status: CITIZEN
+    employment_income: 6_000
+    ssi: 0
+    al_tanf: 0
+    heating_type: PROPANE
+    heating_expense: 50
+    hud_utility_allowance: 0
+  output:
+    al_liheap_base_payment: 500
+    al_liheap: 600
+
+# Four-person electricity, $1,000 monthly income: Appendix D gives $470.
+# The funded $100 is per household; age/disability do not award an automatic $50.
+- name: Case 2, a family with several vulnerable members receives one funded supplement.
+  period: 2026
+  input:
+    people:
+      grandparent:
+        age: 65
+        immigration_status: CITIZEN
+        is_disabled: true
+        ssi: 0
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12_000
+        ssi: 0
+      child1:
+        age: 12
+        immigration_status: CITIZEN
+        ssi: 0
+      child2:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      family:
+        members: [grandparent, parent, child1, child2]
+        al_tanf: 0
+        heating_type: ELECTRICITY
+        heating_expense: 1_200
+    households:
+      household:
+        members: [grandparent, parent, child1, child2]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_base_payment: 470
+    al_liheap: 570
+
+# Annual HUD allowances below represent $0/$100/$439/$440/$450/$600 per month.
+# The $440 electric base nets to $440/$340/$1/$0/$0/$0. Only the first three
+# households receive the full $100 supplement under the accepted interpretation.
+- name: Case 3, the supplement requires a positive regular payment after the HUD allowance.
+  period: 2026
+  input:
+    state_code: [AL, AL, AL, AL, AL, AL]
+    age: [40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [6_000, 6_000, 6_000, 6_000, 6_000, 6_000]
+    ssi: [0, 0, 0, 0, 0, 0]
+    al_tanf: [0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    heating_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    hud_utility_allowance: [0, 1_200, 5_268, 5_280, 5_400, 7_200]
+  output:
+    al_liheap_base_payment: [440, 440, 440, 440, 440, 440]
+    al_liheap: [540, 440, 101, 0, 0, 0]
+
+- name: Case 4, the funded supplement cannot pay an income or heating or immigration ineligible household.
+  period: 2026
+  input:
+    state_code: [AL, AL, AL]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, UNDOCUMENTED]
+    employment_income: [23472.12, 6_000, 6_000]
+    ssi: [0, 0, 0]
+    al_tanf: [0, 0, 0]
+    heating_type: [PROPANE, NONE, PROPANE]
+    heating_expense: [1_200, 1_200, 1_200]
+    hud_utility_allowance: [0, 0, 0]
+  output:
+    al_liheap: [0, 0, 0]
+
+# Size one, $1,000 monthly income gives the $450 gas base in Appendix D.
+- name: Case 5, nonsubsidized heat in rent receives the funded award without a separate bill.
+  period: 2026
+  input:
+    state_code: [AL, AL]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000]
+    ssi: [0, 0]
+    al_tanf: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [0, 0]
+    heat_expense_included_in_rent: [true, true]
+    receives_housing_assistance: [false, true]
+    hud_utility_allowance: [0, 0]
+  output:
+    al_liheap: [550, 0]
+
+- name: Case 6, the regular Alabama award remains restricted to Alabama in a mixed state population.
+  period: 2026
+  input:
+    state_code: [AL, GA, FL]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [6_000, 6_000, 6_000]
+    ssi: [0, 0, 0]
+    al_tanf: [0, 0, 0]
+    heating_type: [PROPANE, PROPANE, PROPANE]
+    heating_expense: [1_200, 1_200, 1_200]
+    hud_utility_allowance: [0, 0, 0]
+  output:
+    al_liheap: [600, 0, 0]
+
+# Manual p18 counts "Government employee pensions (including military retirement pay)".
+# Military retirement 24_000 > size-one limit 23_472 (1_956 x 12), so no regular award
+# or supplement. Without the military pay, income 0 would have paid electricity 440 + 100 = 540.
+- name: Case 7, military retirement pay above the income limit means no award.
+  period: 2026
+  input:
+    state_code: AL
+    age: 62
+    immigration_status: CITIZEN
+    military_retirement_pay: 24_000
+    ssi: 0
+    al_tanf: 0
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_200
+    hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 24_000
+    al_liheap_income_limit: 23_472
+    al_liheap_eligible: false
+    al_liheap: 0
+
+# Manual p17 counts cash receipts from all sources, so the rental loss is floored at zero:
+# max(24_000, 0) wages + max(-3_000, 0) rent = 24_000 > 23_472 limit, so no award.
+# Netting the loss would give 21_000 (1_750 per month, band 3) and electricity 440 - 120 + 100 = 420.
+- name: Case 8, a rental loss does not bring wages under the income limit.
+  period: 2026
+  input:
+    state_code: AL
+    age: 40
+    immigration_status: CITIZEN
+    employment_income: 24_000
+    rental_income: -3_000
+    ssi: 0
+    al_tanf: 0
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_200
+    hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 24_000
+    al_liheap_eligible: false
+    al_liheap: 0
