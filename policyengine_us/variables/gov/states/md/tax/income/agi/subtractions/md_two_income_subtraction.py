@@ -58,8 +58,8 @@ class md_two_income_subtraction(Variable):
         # above-the-line deductions, and each spouse's portion is the part
         # that is their own. The allowed business and capital losses in
         # loss_ald are each split by the spouses' own losses of that kind,
-        # and person-level deductions go to their owner. Whatever is recorded
-        # only for the tax unit is split equally.
+        # and deductions go to their owner where a person-level amount
+        # records one. Whatever has no owner is split equally.
         filer = is_head | is_spouse
         own_business = filer * sum(
             max_(0, -person(source, period)) for source in BUSINESS_LOSS_SOURCES
@@ -83,13 +83,29 @@ class md_two_income_subtraction(Variable):
             tax_unit.sum(is_spouse * own_capital),
         )
         spouse_loss = loss_ald - head_loss
-        own_deductions = 0
+        # A tax-unit deduction with a person-level counterpart is split by
+        # the spouses' own amounts, or equally when neither has one.
+        head_deductions = 0
+        spouse_deductions = 0
         for deduction in sorted(parameters(period).gov.irs.ald.deductions):
             variable = person.entity.get_variable(deduction, check_existence=True)
             if variable.entity.is_person:
-                own_deductions = own_deductions + filer * person(deduction, period)
-        head_own = -head_loss - tax_unit.sum(is_head * own_deductions)
-        spouse_own = -spouse_loss - tax_unit.sum(is_spouse * own_deductions)
+                amount = filer * person(deduction, period)
+                head_deductions = head_deductions + tax_unit.sum(is_head * amount)
+                spouse_deductions = spouse_deductions + tax_unit.sum(is_spouse * amount)
+                continue
+            counterpart = f"{deduction}_person"
+            if person.entity.get_variable(counterpart) is None:
+                continue
+            own = filer * person(counterpart, period)
+            unit_amount = tax_unit(deduction, period)
+            head_part = _head_part(
+                unit_amount, tax_unit.sum(is_head * own), tax_unit.sum(is_spouse * own)
+            )
+            head_deductions = head_deductions + head_part
+            spouse_deductions = spouse_deductions + unit_amount - head_part
+        head_own = -head_loss - head_deductions
+        spouse_own = -spouse_loss - spouse_deductions
         unattributed = us_agi - head_own - spouse_own
         no_gross_income = couple_gross_income <= 0
         head_us_agi = where(
