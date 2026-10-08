@@ -31,7 +31,7 @@ class WorkflowTests(unittest.TestCase):
         self,
     ):
         pr = (ROOT / ".github/workflows/pr.yaml").read_text()
-        candidate_job = job(pr, "CandidateWheel")
+        candidate_job = job(pr, "PackageCompatibility")
         candidate_action = (
             ROOT / ".github/actions/candidate-wheel/action.yaml"
         ).read_text()
