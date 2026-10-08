@@ -14,19 +14,19 @@ class ri_liheap_income(Variable):
         "https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=5",
         "https://dhs.ri.gov/media/9671/download?language=en",
         "https://dhs.ri.gov/media/9701/download?language=en",
+        "https://westbaycap.org/wp-content/uploads/2025/08/Appendix-H-Application-Instructions-FY-26.pdf#page=2",
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ri.dhs.liheap.income
         person = spm_unit.members
         age = person("age", period)
-        # Retain the manual's head-of-household exception. The abbreviated
-        # May 2025 instructions omit it without expressly repealing it;
-        # the current treatment of student heads remains unverified.
-        exempt_student = (
-            (age < p.student_age_limit)
-            & person("is_full_time_student", period)
-            & ~person("is_household_head", period)
+        # The FY2026 (Appendix H) and FY2027 application instructions (p2)
+        # exclude the income of every full-time student aged 18-23. The 2020
+        # manual (III.G p20) excluded only a child who was not the household
+        # head; the current instructions govern.
+        exempt_student = (age < p.student_age_limit) & person(
+            "is_full_time_student", period
         )
         counted_person = (age >= p.minimum_income_age) & ~exempt_student
         # Existing net business receipts approximate the gross-receipts rule.

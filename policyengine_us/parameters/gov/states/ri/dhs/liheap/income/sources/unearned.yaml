@@ -4,7 +4,6 @@ description: Rhode Island counts these unearned income sources under the Low Inc
 # sources is duplicated here. Each listed source is floored at zero.
 # SSI is the federal benefit; a separate RI state supplement is not modeled.
 # disability_benefits approximates employment-related TDI/TCI receipts.
-# The manual expressly counts workers compensation in Section III.E.
 # VA education and Aid and Attendance exclusions cannot be separated from
 # the broad veterans input. Jury duty, royalties, foster receipts and legal
 # settlements also lack sufficiently specific existing inputs.
@@ -24,6 +23,11 @@ values:
     - railroad_benefits
     - alimony_income
     - child_support_received
+    # Manual Section III.E counts "Temporary Disability Insurance (TDI),
+    # Temporary Caregivers Insurance (TCI)" (page 15) and "Workers'
+    # Compensation" (page 16); FY2026 plan Section 1.9, page 6, leaves
+    # "Insurance payments made directly to the insured" unchecked. This
+    # follows the manual.
     - workers_compensation
     - disability_benefits
     - financial_assistance

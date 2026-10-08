@@ -10,31 +10,26 @@
         immigration_status: LEGAL_PERMANENT_RESIDENT
         is_full_time_student: false
         ssi: 0
-        is_household_head: true
       person2:
         age: 8
         immigration_status: CITIZEN
         is_full_time_student: false
         ssi: 0
-        is_household_head: false
       person3:
         age: 35
         immigration_status: ASYLEE
         is_full_time_student: false
         ssi: 0
-        is_household_head: false
       person4:
         age: 22
         immigration_status: DACA
         is_full_time_student: false
         ssi: 0
-        is_household_head: false
       person5:
         age: 39
         immigration_status: UNDOCUMENTED
         is_full_time_student: false
         ssi: 0
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5]
@@ -60,7 +55,6 @@
         immigration_status: UNDOCUMENTED
         is_full_time_student: false
         ssi: 0
-        is_household_head: true
     spm_units:
       spm_unit:
         members: [person1]

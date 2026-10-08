@@ -16,7 +16,6 @@
         sstb_self_employment_income: 600
         farm_operations_income: 1_200
         partnership_s_corp_income: 1_200
-        is_household_head: true
     spm_units:
       spm_unit:
         members: [person1]
@@ -47,7 +46,6 @@
         self_employment_income: -6_000
         farm_operations_income: -1_200
         partnership_s_corp_income: 600
-        is_household_head: true
     spm_units:
       spm_unit:
         members: [person1]
@@ -63,8 +61,10 @@
   output:
     ri_liheap_income: 12_600
 
-# Manual p20 exempts all under18 income and all nonhead full-time student income through23. Included young-adult receipts are1200 wages+600 SSA; parent wages12000. Head-rule conflict is not tested.
-- name: Case 3, nonhead age 17 nonstudent follows the whole income exclusion.
+# Manual III.G p20 excludes all income under age 18; the FY2026 instructions (Appendix H p2)
+# exclude every full-time student aged 18-23. The young adult has 1,200 wages and 600 Social
+# Security; the parent has 12,000 wages.
+- name: Case 3, a 17-year-old's income is excluded as a minor's.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -75,7 +75,6 @@
         is_full_time_student: false
         ssi: 0
         employment_income: 12_000
-        is_household_head: true
       person2:
         age: 17
         immigration_status: CITIZEN
@@ -83,7 +82,6 @@
         ssi: 0
         employment_income: 1_200
         social_security: 600
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -99,8 +97,10 @@
   output:
     ri_liheap_income: 12_000
 
-# Manual p20 exempts all under18 income and all nonhead full-time student income through23. Included young-adult receipts are1200 wages+600 SSA; parent wages12000. Head-rule conflict is not tested.
-- name: Case 4, nonhead age 18 full time student follows the whole income exclusion.
+# Manual III.G p20 excludes all income under age 18; the FY2026 instructions (Appendix H p2)
+# exclude every full-time student aged 18-23. The young adult has 1,200 wages and 600 Social
+# Security; the parent has 12,000 wages.
+- name: Case 4, an 18-year-old full-time student's income is excluded.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -111,7 +111,6 @@
         is_full_time_student: false
         ssi: 0
         employment_income: 12_000
-        is_household_head: true
       person2:
         age: 18
         immigration_status: CITIZEN
@@ -119,7 +118,6 @@
         ssi: 0
         employment_income: 1_200
         social_security: 600
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -135,8 +133,10 @@
   output:
     ri_liheap_income: 12_000
 
-# Manual p20 exempts all under18 income and all nonhead full-time student income through23. Included young-adult receipts are1200 wages+600 SSA; parent wages12000. Head-rule conflict is not tested.
-- name: Case 5, nonhead age 23 full time student follows the whole income exclusion.
+# Manual III.G p20 excludes all income under age 18; the FY2026 instructions (Appendix H p2)
+# exclude every full-time student aged 18-23. The young adult has 1,200 wages and 600 Social
+# Security; the parent has 12,000 wages.
+- name: Case 5, a 23-year-old full-time student's income is excluded.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -147,7 +147,6 @@
         is_full_time_student: false
         ssi: 0
         employment_income: 12_000
-        is_household_head: true
       person2:
         age: 23
         immigration_status: CITIZEN
@@ -155,7 +154,6 @@
         ssi: 0
         employment_income: 1_200
         social_security: 600
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -171,8 +169,10 @@
   output:
     ri_liheap_income: 12_000
 
-# Manual p20 exempts all under18 income and all nonhead full-time student income through23. Included young-adult receipts are1200 wages+600 SSA; parent wages12000. Head-rule conflict is not tested.
-- name: Case 6, nonhead age 24 full time student follows the whole income exclusion.
+# Manual III.G p20 excludes all income under age 18; the FY2026 instructions (Appendix H p2)
+# exclude every full-time student aged 18-23. The young adult has 1,200 wages and 600 Social
+# Security; the parent has 12,000 wages.
+- name: Case 6, a 24-year-old full-time student's income counts.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -183,7 +183,6 @@
         is_full_time_student: false
         ssi: 0
         employment_income: 12_000
-        is_household_head: true
       person2:
         age: 24
         immigration_status: CITIZEN
@@ -191,7 +190,6 @@
         ssi: 0
         employment_income: 1_200
         social_security: 600
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -207,8 +205,10 @@
   output:
     ri_liheap_income: 13_800
 
-# Manual p20 exempts all under18 income and all nonhead full-time student income through23. Included young-adult receipts are1200 wages+600 SSA; parent wages12000. Head-rule conflict is not tested.
-- name: Case 7, nonhead age 18 nonstudent follows the whole income exclusion.
+# Manual III.G p20 excludes all income under age 18; the FY2026 instructions (Appendix H p2)
+# exclude every full-time student aged 18-23. The young adult has 1,200 wages and 600 Social
+# Security; the parent has 12,000 wages.
+- name: Case 7, an 18-year-old who is not a student has income counted.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -219,7 +219,6 @@
         is_full_time_student: false
         ssi: 0
         employment_income: 12_000
-        is_household_head: true
       person2:
         age: 18
         immigration_status: CITIZEN
@@ -227,7 +226,6 @@
         ssi: 0
         employment_income: 1_200
         social_security: 600
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -256,7 +254,6 @@
         ssi: 0
         interest_income: 300
         ordinary_dividend_income: 240
-        is_household_head: true
       person2:
         age: 39
         immigration_status: CITIZEN
@@ -264,7 +261,6 @@
         ssi: 0
         interest_income: 300
         ordinary_dividend_income: 360
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -290,7 +286,6 @@
     gas_expense: [1_200, 1_200, 1_200]
     age: [40, 40, 40]
     is_full_time_student: [false, false, false]
-    is_household_head: [true, true, true]
     ssi: [0, 0, 0]
     tanf: [0, 0, 0]
     childcare_expenses: [0, 0, 0]
@@ -313,7 +308,6 @@
         employment_income: 12_000
         rental_income: 6_000
         farm_rent_income: 2_400
-        is_household_head: true
     spm_units:
       spm_unit:
         members: [person1]
@@ -343,13 +337,11 @@
         is_full_time_student: false
         ssi: 1_200
         employment_income: 6_000
-        is_household_head: true
       person2:
         age: 8
         immigration_status: CITIZEN
         is_full_time_student: false
         ssi: 2_400
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -379,13 +371,11 @@
         employment_income: 12_000
         child_support_expense: 1_200
         alimony_expense: 600
-        is_household_head: true
       person2:
         age: 8
         immigration_status: CITIZEN
         is_full_time_student: false
         ssi: 0
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -415,13 +405,11 @@
         employment_income: 12_000
         child_support_expense: 1_200
         alimony_expense: 600
-        is_household_head: true
       person2:
         age: 8
         immigration_status: CITIZEN
         is_full_time_student: false
         ssi: 0
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -450,7 +438,6 @@
         ssi: 0
         employment_income: 1_200
         child_support_expense: 2_400
-        is_household_head: true
     spm_units:
       spm_unit:
         members: [person1]
@@ -481,14 +468,12 @@
         is_full_time_student: false
         ssi: 0
         employment_income: 20_000
-        is_household_head: true
       person2:
         age: 8
         immigration_status: CITIZEN
         is_full_time_student: false
         ssi: 0
         social_security: 1_200
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -522,7 +507,6 @@
         child_support_received: 1_200
         alimony_income: 600
         financial_assistance: 600
-        is_household_head: true
     spm_units:
       spm_unit:
         members: [person1]
@@ -539,7 +523,9 @@
   output:
     ri_liheap_income: 14_400
 
-# Manual p17 counts estate/trust income andp20 excludes all nonhead full-time student income through23:12000 adult wages+1200 adult periodic estate=13200;2400 student estate excluded.
+# Manual p17 counts estate and trust income; the FY2026 instructions (Appendix H p2) exclude a
+# full-time student aged 18-23: 12,000 adult wages + 1,200 adult periodic estate = 13,200;
+# the student's 2,400 estate income is excluded.
 - name: Case 17, periodic estate income follows the same ordinary age and student exclusions.
   period: 2026
   absolute_error_margin: 0.01
@@ -552,14 +538,12 @@
         ssi: 0
         employment_income: 12_000
         estate_income: 1_200
-        is_household_head: true
       person2:
         age: 20
         immigration_status: CITIZEN
         is_full_time_student: true
         ssi: 0
         estate_income: 2_400
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -587,7 +571,6 @@
     gas_expense: [1_200, 1_200, 1_200]
     age: [45, 60, 62]
     is_full_time_student: [false, false, false]
-    is_household_head: [true, true, true]
     ssi: [0, 0, 0]
     tanf: [0, 0, 0]
     childcare_expenses: [0, 0, 0]
@@ -610,7 +593,6 @@
     gas_expense: [1_200, 1_200, 1_200]
     age: [50, 50, 50]
     is_full_time_student: [false, false, false]
-    is_household_head: [true, true, true]
     ssi: [0, 0, 0]
     tanf: [0, 0, 0]
     childcare_expenses: [0, 0, 0]
@@ -634,13 +616,11 @@
         immigration_status: CITIZEN
         is_full_time_student: false
         ssi: 0
-        is_household_head: true
       person2:
         age: 5
         immigration_status: CITIZEN
         is_full_time_student: false
         ssi: 0
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -670,13 +650,11 @@
         immigration_status: CITIZEN
         is_full_time_student: false
         ssi: 0
-        is_household_head: true
       person2:
         age: 5
         immigration_status: CITIZEN
         is_full_time_student: false
         ssi: 0
-        is_household_head: false
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -708,7 +686,6 @@
         ssi: 0
         employment_income: 20_000
         gambling_winnings: 1_500
-        is_household_head: true
     spm_units:
       spm_unit:
         members: [person1]
@@ -736,7 +713,6 @@
     gas_expense: [1_200, 1_200]
     age: [67, 67]
     is_full_time_student: [false, false]
-    is_household_head: [true, true]
     ssi: [0, 0]
     tanf: [0, 0]
     childcare_expenses: [0, 0]
@@ -745,3 +721,32 @@
     medicare_part_b_premium: [2_434.80, 0]
   output:
     ri_liheap_income: [21_565.20, 24_000]
+
+# The FY2026 instructions (Appendix H p2) exclude every full-time student aged 18-23,
+# including one who heads the household: 16,640 of part-time wages (20 hours a week at
+# Rhode Island's 2026 minimum wage of $16 an hour) are not counted.
+- name: Case 24, a full-time student aged 22 living alone has income excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 22
+        immigration_status: CITIZEN
+        is_full_time_student: true
+        ssi: 0
+        employment_income: 16_640
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+        childcare_expenses: 0
+        child_care_subsidies: 0
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    ri_liheap_income: 0
