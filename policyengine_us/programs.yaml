@@ -890,8 +890,7 @@ programs:
         full_name: South Dakota Low Income Home Energy Assistance Program
         variable: sd_liheap
         parameter_prefix: gov.states.sd.dss.liheap
-        verified_years: "2024-2026"
-        notes: FY2024-FY2026 regular heating only. Crisis, cooling and weatherization assistance are out of scope.
+        notes: Regular heating only. Published FY2024 and FY2026 benefit amounts are tested, but no complete benefit year is verified. The citizenship income proration worksheet is unavailable, so mixed-status income remains overstated. FY2026 Mid thresholds are inferred from prior matrices. Crisis, cooling and weatherization assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
