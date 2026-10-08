@@ -508,3 +508,93 @@
     ar_liheap_eligible: true
     ar_liheap_matrix_amount: 79
     ar_liheap: 79
+
+# Current application section III excludes under-18 earnings. At 18,
+# wages 48_000 less 20% = 38_400 exceed the two-person FY2026 limit 36_840.
+# The published natural-gas matrix awards 308 at zero income for size two.
+- name: Case 17, age 17 nonstudent earnings determine the final heating award.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      child:
+        age: 17
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        employment_income: 48_000
+        ssi: 0
+    spm_units:
+      unit:
+        members: [parent, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 0
+    ar_liheap_income_limit: 36_840
+    ar_liheap_eligible: true
+    ar_liheap: 308
+
+# Current application section III excludes under-18 earnings. At 18,
+# wages 48_000 less 20% = 38_400 exceed the two-person FY2026 limit 36_840.
+# The published natural-gas matrix awards 308 at zero income for size two.
+- name: Case 18, age 18 nonstudent earnings determine the final heating award.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+      child:
+        age: 18
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        employment_income: 48_000
+        ssi: 0
+    spm_units:
+      unit:
+        members: [parent, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 38400
+    ar_liheap_income_limit: 36_840
+    ar_liheap_eligible: false
+    ar_liheap: 0
+
+# Current application section III requests work income only from members18+
+# who are not full-time students, without age/dependency restrictions.
+# For an independent student earning48_000, counted earnings are zero and the
+# FY2026 one-person natural-gas matrix pays308. Nonstudent earnings after20%
+# disregard are38_400, above the28_164 limit, so the comparison gets zero.
+- name: Case 19, independent adult full-time students retain the regular heating award beyond age23.
+  period: 2026
+  input:
+    state_code: [AR, AR, AR, AR]
+    age: [22, 23, 24, 24]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_full_time_student: [true, true, true, false]
+    is_tax_unit_dependent: [false, false, false, false]
+    employment_income: [48_000, 48_000, 48_000, 48_000]
+    ssi: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200, 1_200, 1_200]
+  output:
+    ar_liheap_countable_income: [0, 0, 0, 38_400]
+    ar_liheap_income_limit: [28_164, 28_164, 28_164, 28_164]
+    ar_liheap_eligible: [true, true, true, false]
+    ar_liheap: [308, 308, 308, 0]

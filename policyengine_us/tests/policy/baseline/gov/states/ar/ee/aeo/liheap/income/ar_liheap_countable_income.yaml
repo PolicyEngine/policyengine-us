@@ -25,11 +25,10 @@
   output:
     ar_liheap_countable_income: 12_000
 
-# Manual Appendix F p134 excludes only full-time college students up to 23 listed as a
-# household member's dependent. Living alone, this 22-year-old is not a dependent, so
-# work counts: (15000 + 3000) x 0.8 = 14400 + Social Security 1200 = 15600; MCI 1300.
-# Under 65 without SSDI there is no Part B premium to net from Social Security.
-- name: Case 2, a full time college student living alone has work counted.
+# Current application section III excludes work income of every full-time
+# student, without an adult age or dependency test. Only Social Security
+# 1_200 counts; under65 without SSDI there is no Part B premium to deduct.
+- name: Case 2, a full time college student living alone has work excluded.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -56,12 +55,12 @@
         members: [person1]
         state_code: AR
   output:
-    ar_liheap_countable_income: 15_600
+    ar_liheap_countable_income: 1_200
 
-# Manual Appendix F p133 excludes a minor's earnings only while attending school at
-# least half time. This 17-year-old attends no school, so work counts:
-# (15000 + 3000) x 0.8 = 14400 + SSI 2400 + child support 3600 = 20400; MCI 1700.
-- name: Case 3, a minor not attending school has work counted.
+# Current application section III and accepted plan section 1.9 exclude every
+# minor's earnings, even without school attendance. Unearned income counts:
+# SSI 2400 + child support 3600 = 6000; MCI 500.
+- name: Case 3, a minor not attending school has work excluded but unearned income counted.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -90,7 +89,7 @@
         members: [person1, person2]
         state_code: AR
   output:
-    ar_liheap_countable_income: 20_400
+    ar_liheap_countable_income: 6_000
 
 # Exactly18 and not a full-time student makes wages countable, after20%disregard.
 - name: Case 4, age eighteen nonstudent earnings are counted.
@@ -520,10 +519,9 @@
   output:
     ar_liheap_countable_income: [12_000, 12_000]
 
-# Case 3's household, but the 17-year-old attends high school and works part time
-# (manual Appendix F p133): wages 6000 and self-employment 1200 are excluded;
-# SSI 2400 + child support 3600 = 6000; MCI 500.
-# Counting the earnings would give 7200 x 0.8 = 5760 + 6000 = 11760.
+# Current application section III excludes all minor earnings. A17-year-old
+# attending high school has6_000 wages and1_200 self-employment excluded;
+# SSI2_400 + child support3_600 =6_000 remains countable.
 - name: Case 19, a minor attending high school has work excluded.
   period: 2026
   absolute_error_margin: 0.01
@@ -553,9 +551,8 @@
   output:
     ar_liheap_countable_income: 6_000
 
-# Half-time college attendance also qualifies (manual Appendix F p133): a 17-year-old
-# part-time college student who is not a full-time student has wages 6000 excluded;
-# SSI 2400 + child support 3600 = 6000; MCI 500.
+# Current application section III excludes all minor earnings, regardless of
+# part-time college attendance. Only SSI2_400 + child support3_600 counts.
 - name: Case 20, a minor attending college part time has work excluded.
   period: 2026
   absolute_error_margin: 0.01
@@ -585,10 +582,8 @@
   output:
     ar_liheap_countable_income: 6_000
 
-# Manual Appendix F p134 excludes earnings of full-time college students up to age 23
-# listed as a household member's dependent. The 22-year-old dependent's wages 6000 are
-# excluded; the parent's 24000 x 0.8 = 19200; MCI 1600. Case 2 is a 22-year-old
-# full-time college student living alone, whose work counts.
+# Current application section III excludes all full-time students work income,
+# without a dependency requirement. Only the parent's24_000 x80% =19_200 counts.
 - name: Case 21, a dependent college student aged twenty two has work excluded.
   period: 2026
   absolute_error_margin: 0.01
@@ -619,9 +614,8 @@
   output:
     ar_liheap_countable_income: 19_200
 
-# Boundary: "up to age 23" is read as including 23, so the dependent student's wages
-# 6000 remain excluded: 24000 x 0.8 = 19200; MCI 1600. Reading it as under 23 would
-# give 24000.
+# Current application section III supplies no adult-student age ceiling.
+# The student's6_000 wages remain excluded; parent24_000 x80% =19_200.
 - name: Case 22, a dependent college student aged twenty three still has work excluded.
   period: 2026
   absolute_error_margin: 0.01
@@ -652,9 +646,9 @@
   output:
     ar_liheap_countable_income: 19_200
 
-# Above the age limit a dependent full-time college student's work counts:
-# (24000 + 6000) x 0.8 = 24000; MCI 2000.
-- name: Case 23, a dependent college student aged twenty four has work counted.
+# Current application section III supplies no age ceiling for the full-time
+# student exclusion. Only the parent's 24_000 x 80% = 19_200 counts.
+- name: Case 23, a dependent college student aged twenty four has work excluded.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -682,13 +676,13 @@
         members: [person1, person2]
         state_code: AR
   output:
-    ar_liheap_countable_income: 24_000
+    ar_liheap_countable_income: 19_200
 
-# Manual Section 4.7 p41 excludes the earnings of members aged 18 and enrolled in high
-# school. Both work at Arkansas's $11.00 minimum wage (U.S. DOL state minimum wage table):
+# Current application section III excludes earnings of full-time students,
+# including high school. Both work at Arkansas's $11.00 minimum wage:
 # the parent 40 hours x 52 weeks = 22880; the 18-year-old high school senior part time,
-# 12 hours x 52 weeks = 6864, which is excluded. is_full_time_student follows
-# is_in_k12_school. 22880 x 0.8 = 18304; MCI 1525.33 rounds to 1525; x12 = 18300.
+# 12 hours x 52 weeks = 6864, which is excluded. Full-time status is explicit
+# for both people: 22880 x 0.8 = 18304; MCI 1525.33 rounds to 1525; x12 = 18300.
 # Counting the senior's wages would give 23796 (Case 25).
 - name: Case 24, an eighteen year old high school student has work excluded.
   period: 2026
@@ -705,6 +699,7 @@
         age: 18
         immigration_status: CITIZEN
         is_in_k12_school: true
+        is_full_time_student: true
         ssi: 0
         employment_income: 6_864
     spm_units:
@@ -739,6 +734,7 @@
         age: 18
         immigration_status: CITIZEN
         is_in_k12_school: false
+        is_full_time_student: false
         ssi: 0
         employment_income: 6_864
     spm_units:

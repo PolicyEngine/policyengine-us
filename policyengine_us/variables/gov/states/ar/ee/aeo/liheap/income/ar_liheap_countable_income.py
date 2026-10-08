@@ -26,41 +26,13 @@ class ar_liheap_countable_income(Variable):
         p = parameters(period).gov.states.ar.ee.aeo.liheap.income
         person = spm_unit.members
         age = person("age", period)
-        # Manual Appendix F (page 133) excludes a child's earnings only while
-        # the child attends school at least half time; plan Section 1.9 (page 6)
-        # and application Section III (page 2) exclude all earnings under 18.
-        # No input covers half-time attendance below college: K-12 enrollment
-        # counts through is_full_time_student, and preschool, vocational and
-        # training-program attendance have no input. is_full_time_student
-        # defaults to true at ages 5-17, so a minor's earnings are excluded
-        # unless school status is set to false.
-        attends_school = person("is_full_time_student", period) | person(
-            "is_part_time_college_student", period
-        )
-        excluded_child = (age < p.student_exclusion.child_age_limit) & attends_school
-        # Manual Appendix F (page 134), row "Earnings of a full-time college
-        # student", excludes full-time college students up to age 23 who are
-        # dependents of a household member; application Section III excludes
-        # every full-time student. The row text says "Income received"; the
-        # model follows the heading and excludes only earned sources, so the
-        # student's unearned income still counts. Reading the text instead
-        # would exclude all of the student's income. Tax-unit dependency
-        # stands for the dependent listing.
-        excluded_college_student = (
-            person("is_full_time_college_student", period)
-            & (age <= p.student_exclusion.college_max_age)
-            & person("is_tax_unit_dependent", period)
-        )
-        # Manual Section 4.7 (page 41) excludes the earnings of members aged
-        # 18 and enrolled in high school. Its exceptions for a member working
-        # full time or an emancipated head-of-household applicant are not
-        # modeled: the manual sets no full-time hours threshold, and no input
-        # records emancipation.
-        excluded_high_school_student = person("is_in_k12_school", period) & (
-            np.floor(age) == p.student_exclusion.high_school_age
-        )
-        counted_worker = ~(
-            excluded_child | excluded_college_student | excluded_high_school_student
+        # Current application Section III requests work income only from
+        # members 18 and older who are not full-time students. It states no
+        # adult-student age or dependency restriction. These operating rules
+        # supersede the narrower exclusions in the unadopted FY2025 draft.
+        # The accepted plans also exclude earnings of children under 18.
+        counted_worker = (age >= p.student_exclusion.child_age_limit) & ~person(
+            "is_full_time_student", period
         )
         # Existing net business income approximates gross receipts. Additional
         # business/work-expense deductions and new gross inputs are deferred.
