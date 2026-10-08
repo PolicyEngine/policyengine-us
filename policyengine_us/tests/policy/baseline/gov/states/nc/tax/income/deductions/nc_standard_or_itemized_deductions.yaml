@@ -6,3 +6,34 @@
     nc_itemized_deductions: 220
   output:
     nc_standard_or_itemized_deductions: 220
+
+- name: Itemizing with interest on debt above the federal limit
+  period: 2022
+  input:
+    people:
+      head:
+        employment_income: 150_000
+        home_mortgage_interest: 7_500
+        real_estate_taxes: 5_000
+        charitable_cash_donations: 15_000
+      spouse:
+        employment_income: 50_000
+        home_mortgage_interest: 7_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 2020
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NC
+  output:
+    # $7,500 of the $15,000 of interest is allowed under 26 U.S.C. 163(h)(3)
+    # ($750,000 of the $1,500,000 balance). $7,500 + $5,000 + $15,000 of
+    # charity is $27,500, above the $25,500 joint standard deduction.
+    nc_itemized_deductions: 27_500
+    nc_standard_or_itemized_deductions: 27_500
+    # $200,000 - $27,500, taxed at 4.99%.
+    nc_taxable_income: 172_500
+    nc_income_tax_before_credits: 8_607.75

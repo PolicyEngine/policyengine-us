@@ -1,0 +1,131 @@
+# Code of Alabama 40-18-15(a)(2) limits the interest deduction to "the amount
+# allowable as an interest deduction for federal income tax purposes in the
+# corresponding tax year", so home mortgage interest on acquisition debt above
+# the 26 U.S.C. 163(h)(3) limits is not deductible. Under 163(h)(3)(F), debt
+# incurred after Dec. 15, 2017 is limited to $750,000 ($375,000 married filing
+# separately); earlier debt keeps the $1,000,000 limit.
+
+- name: Debt incurred after 2017 above the $750,000 limit
+  period: 2022
+  input:
+    people:
+      head:
+        home_mortgage_interest: 20_000
+      spouse:
+        home_mortgage_interest: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        first_home_mortgage_balance: 1_000_000
+        first_home_mortgage_origination_year: 2019
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AL
+  output:
+    # $40,000 x $750,000 / $1,000,000.
+    al_interest_deduction: 30_000
+
+- name: Debt incurred before the TCJA date keeps the $1,000,000 limit
+  period: 2022
+  input:
+    people:
+      head:
+        home_mortgage_interest: 20_000
+      spouse:
+        home_mortgage_interest: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        first_home_mortgage_balance: 1_000_000
+        first_home_mortgage_origination_year: 2016
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AL
+  output:
+    al_interest_deduction: 40_000
+
+- name: The limit continues after 2025
+  period: 2026
+  input:
+    people:
+      head:
+        home_mortgage_interest: 30_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 2020
+    households:
+      household:
+        members: [head]
+        state_code: AL
+  output:
+    # $30,000 x $750,000 / $1,500,000.
+    al_interest_deduction: 15_000
+
+- name: Married filing separately uses the $375,000 limit
+  period: 2025
+  input:
+    people:
+      head:
+        home_mortgage_interest: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+        first_home_mortgage_balance: 500_000
+        first_home_mortgage_origination_year: 2020
+    households:
+      household:
+        members: [head]
+        state_code: AL
+  output:
+    # $20,000 x $375,000 / $500,000.
+    al_interest_deduction: 15_000
+
+- name: Debt under the limit is fully deductible, with investment interest
+  period: 2025
+  input:
+    people:
+      head:
+        home_mortgage_interest: 18_000
+        investment_interest_expense: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        first_home_mortgage_balance: 600_000
+        first_home_mortgage_origination_year: 2022
+    households:
+      household:
+        members: [head]
+        state_code: AL
+  output:
+    al_interest_deduction: 20_000
+
+- name: Itemized deductions count only the allowed interest
+  period: 2022
+  input:
+    people:
+      head:
+        employment_income: 150_000
+        home_mortgage_interest: 20_000
+      spouse:
+        employment_income: 50_000
+        home_mortgage_interest: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        first_home_mortgage_balance: 1_000_000
+        first_home_mortgage_origination_year: 2019
+    households:
+      household:
+        members: [head, spouse]
+        state_code: AL
+  output:
+    al_interest_deduction: 30_000
+    # Employee payroll tax: Social Security 6.2% of $147,000 (the 2022 wage
+    # base) and of $50,000, plus Medicare 1.45% of $200,000, is $15,114.
+    # $30,000 of interest + $15,114.
+    al_itemized_deductions: 45_114

@@ -2,7 +2,7 @@
   period: 2022
   input:
     filing_status: JOINT
-    mortgage_interest: 9_000
+    deductible_mortgage_interest: 9_000
     real_estate_taxes: 11_000
     charitable_deduction: 0
     medical_expense_deduction: 0
@@ -14,7 +14,7 @@
   period: 2022
   input:
     filing_status: SURVIVING_SPOUSE
-    mortgage_interest: 11_000
+    deductible_mortgage_interest: 11_000
     real_estate_taxes: 11_000
     charitable_deduction: 0
     medical_expense_deduction: 0
@@ -26,7 +26,7 @@
   period: 2022
   input:
     filing_status: SURVIVING_SPOUSE
-    mortgage_interest: 11_000
+    deductible_mortgage_interest: 11_000
     real_estate_taxes: 11_000
     charitable_deduction: 1_000
     medical_expense_deduction: 500
@@ -38,10 +38,129 @@
   period: 2022
   input:
     filing_status: SEPARATE
-    mortgage_interest: 9_000
+    deductible_mortgage_interest: 9_000
     real_estate_taxes: 11_000
     charitable_deduction: 0
     medical_expense_deduction: 0
     state_code: NC
   output:
     nc_itemized_deductions: 14_000
+
+# N.C. Gen. Stat. 105-153.5(a)(2)b allows "the amount allowed as a deduction
+# for interest paid or accrued during the taxable year under section 163(h) of
+# the Code with respect to any qualified residence", so interest on acquisition
+# debt above the 26 U.S.C. 163(h)(3) limits is not deductible. Under
+# 163(h)(3)(F), debt incurred after Dec. 15, 2017 is limited to $750,000
+# ($375,000 married filing separately); earlier debt keeps the $1,000,000 limit.
+
+- name: Interest on debt above the $750,000 limit is excluded
+  period: 2022
+  input:
+    people:
+      head:
+        home_mortgage_interest: 7_500
+        real_estate_taxes: 5_000
+      spouse:
+        home_mortgage_interest: 7_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 2020
+        charitable_deduction: 0
+        medical_expense_deduction: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NC
+  output:
+    # $15,000 x $750,000 / $1,500,000 = $7,500 of interest, plus $5,000.
+    nc_itemized_deductions: 12_500
+
+- name: Debt incurred before the TCJA date keeps the $1,000,000 limit
+  period: 2022
+  input:
+    people:
+      head:
+        home_mortgage_interest: 7_500
+        real_estate_taxes: 5_000
+      spouse:
+        home_mortgage_interest: 7_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 2016
+        charitable_deduction: 0
+        medical_expense_deduction: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NC
+  output:
+    # $15,000 x $1,000,000 / $1,500,000 = $10,000 of interest, plus $5,000.
+    nc_itemized_deductions: 15_000
+
+- name: The limit continues after 2025
+  period: 2026
+  input:
+    people:
+      head:
+        home_mortgage_interest: 15_000
+        real_estate_taxes: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 2020
+        charitable_deduction: 0
+        medical_expense_deduction: 0
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    nc_itemized_deductions: 12_500
+
+- name: Married filing separately uses the $375,000 limit
+  period: 2025
+  input:
+    people:
+      head:
+        home_mortgage_interest: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+        first_home_mortgage_balance: 500_000
+        first_home_mortgage_origination_year: 2020
+        charitable_deduction: 0
+        medical_expense_deduction: 0
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    # $20,000 x $375,000 / $500,000.
+    nc_itemized_deductions: 15_000
+
+- name: The $20,000 cap applies to the allowed interest
+  period: 2022
+  input:
+    people:
+      head:
+        home_mortgage_interest: 40_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        first_home_mortgage_balance: 1_000_000
+        first_home_mortgage_origination_year: 2019
+        charitable_deduction: 0
+        medical_expense_deduction: 0
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    # $30,000 of allowed interest, capped at $20,000.
+    nc_itemized_deductions: 20_000
