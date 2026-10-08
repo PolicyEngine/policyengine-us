@@ -1,0 +1,20 @@
+description: South Dakota uses its published three-month income limit table when this is true under the Low Income Energy Assistance Program.
+values:
+  # The poverty guideline and state median income rule reproduces every
+  # FY2024 matrix limit (sizes 1-15).
+  2023-10-01: false
+  # The published 2024-2025 limits for sizes 4-7 depart from that rule.
+  2024-10-01: true
+  # The rule reproduces every published 2025-2026 limit (sizes 1-10).
+  2025-10-01: false
+metadata:
+  unit: bool
+  period: year
+  label: South Dakota LIEAP published income limit table in effect
+  reference:
+    - title: "South Dakota FY2024 LIHEAP Benefit Matrix, maximum income #page 1-5"
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/SD_BenefitMatrix_2024.pdf#page=1
+    - title: South Dakota DSS, 2024-2025 Heating Season Income Limits (archived January 14, 2025)
+      href: https://web.archive.org/web/20250114001211/https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx
+    - title: South Dakota DSS, 2025-2026 Heating Season Income Limits
+      href: https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx

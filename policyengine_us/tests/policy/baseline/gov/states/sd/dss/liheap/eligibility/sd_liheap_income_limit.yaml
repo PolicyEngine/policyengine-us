@@ -1,0 +1,66 @@
+# South Dakota independent ordinary-household components; no final award is asserted.
+
+# Current DSS page explicitly labels2025-2026season and prints quarterly7825,10575,13325,16075,18825,21575,22514,23014,23514,24431. Annual model returns each multipliedby4; size9 tests the material inner SMI floor.
+- name: Case 1, all ten published FY2026 three month maxima are annualized once.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD, SD, SD, SD, SD, SD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS]
+    sd_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  output:
+    sd_liheap_income_limit: [31300, 42300, 53300, 64300, 75300, 86300, 90056, 92056, 94056, 97724]
+
+# FY2024matrix physicalpp1-5 publishes quarterly maxima for sizes1-15. Annualize each literal quarter amount by4. Size5 and7 distinguish inner SMI floor; odd large-sizequarters distinguish latest floor from older FY2022 rounding. This does not claim a common FY2022 maximum convention.
+- name: Case 2, all fifteen FY2024 published quarterly maxima retain their rounded amounts.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    sd_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  output:
+    sd_liheap_income_limit: [29160, 39308, 48560, 57808, 67056, 76308, 78040, 79776, 83548, 91260, 98968, 106680,
+      114388, 122100, 129808]
+
+# Latest reconciled rule carried forward, not printed FY2026cells:2025FPG for11-15 is70650,76150,81650,87150,92650. At150percent, floor quarter gives26493,28556,30618,32681,34743; annualizeby4. No size10 clamp.
+- name: Case 3, derived FY2026 large household limits continue beyond the printed ten person table.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    sd_liheap_household_size: [11, 12, 13, 14, 15]
+  output:
+    sd_liheap_income_limit: [105972, 114224, 122472, 130724, 138972]
+
+# A household size of 0 (no citizen or eligible alien) and another state get
+# no limit; size 1 uses $7,825 x 4 = $31,300.
+- name: Case 4, zero household size and a different state have no South Dakota income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, ND, SD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    sd_liheap_household_size: [0, 1, 1]
+  output:
+    sd_liheap_income_limit: [0, 0, 31300]
+
+# 2024-2025 published table (DSS page archived January 14, 2025), quarterly
+# $7,530, $10,220, $12,910, $15,858, $18,396, $20,933, $21,409, $21,884,
+# $22,360, $23,805, each x 4. Size 11 uses the rule: 2024 FPG $68,860 x 150% =
+# $103,290 (above 60% SMI share 63,433 x 1.47 = $93,246.51, below 200%), quarter
+# floored to $25,822 x 4 = $103,288. Cases 1 and 2 keep 2026 and 2024 unchanged.
+- name: Case 5, the published 2025 three month limits apply for sizes one to ten.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [SD, SD, SD, SD, SD, SD, SD, SD, SD, SD, SD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    sd_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+  output:
+    sd_liheap_income_limit: [30_120, 40_880, 51_640, 63_432, 73_584, 83_732, 85_636, 87_536, 89_440, 95_220,
+      103_288]

@@ -1,0 +1,30 @@
+description: South Dakota assigns these counties to heating region 1 under the Low Income Energy Assistance Program.
+values:
+  2025-10-01:
+    - BENNETT_COUNTY_SD
+    - BON_HOMME_COUNTY_SD
+    - CHARLES_MIX_COUNTY_SD
+    - CLAY_COUNTY_SD
+    - CUSTER_COUNTY_SD
+    - DAVISON_COUNTY_SD
+    - DOUGLAS_COUNTY_SD
+    - FALL_RIVER_COUNTY_SD
+    - GREGORY_COUNTY_SD
+    - HUTCHINSON_COUNTY_SD
+    - JACKSON_COUNTY_SD
+    - JONES_COUNTY_SD
+    - LINCOLN_COUNTY_SD
+    - MELLETTE_COUNTY_SD
+    - OGLALA_LAKOTA_COUNTY_SD
+    - TODD_COUNTY_SD
+    - TRIPP_COUNTY_SD
+    - TURNER_COUNTY_SD
+    - UNION_COUNTY_SD
+# Oglala Lakota is the current name of Shannon County in the rule.
+metadata:
+  unit: list
+  period: year
+  label: South Dakota LIEAP region 1 counties
+  reference:
+    - title: South Dakota Administrative Rule 67:15:01:35, Designation of regions
+      href: https://sdlegislature.gov/Rules/Administrative/67:15:01:35
