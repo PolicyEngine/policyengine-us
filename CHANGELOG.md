@@ -1,3 +1,10 @@
+## [2.31.3] - 2026-10-08
+
+### Changed
+
+- Document the reference page-citation convention for parameter and variable references in CLAUDE.md.
+
+
 ## [2.31.2] - 2026-10-08
 
 ### Fixed
