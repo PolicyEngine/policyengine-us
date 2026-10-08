@@ -7,6 +7,9 @@
   reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
   input:
     gov.states.ut.tax.income.credits.taxpayer.personal_exemption: 2_159
+    # Retain the original fixture's synthetic phase-out forecast as well;
+    # this is not asserted as a published Utah tax-year threshold.
+    gov.states.ut.tax.income.credits.taxpayer.phase_out.threshold.HEAD_OF_HOUSEHOLD: 27_939.15
     gov.contrib.states.ut.dependent_exemption.in_effect: true
     gov.contrib.states.ut.dependent_exemption.amount: 0
     gov.contrib.states.ut.dependent_exemption.age_limit.in_effect: true
