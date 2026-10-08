@@ -29,23 +29,22 @@ class mn_child_and_working_families_credits(Variable):
         base_ctc_amount = qualifying_children * p.ctc.amount
         # Working Family Credit computation:
         wfc_eligible = tax_unit("mn_wfc_eligible", period)
-        # The credit is phased in based on earnings
-        earnings = tax_unit("filer_adjusted_earnings", period)
+        # The credit is phased in based on earned income. Schedule M1CWFC,
+        # line 2 takes it from federal EIC Worksheet B: both spouses'
+        # earnings combined, with a net self-employment loss subtracted,
+        # and not less than zero.
+        earnings = tax_unit("eitc_earned_income", period)
         base_wfc_credit = p.wfc.phase_in.calc(earnings)
         person = tax_unit.members
         # Minn. Stat. 290.0671, subd. 1a defines a qualifying older child as
         # an IRC 32(c) qualifying child that attained at least age 18. IRC
-        # 32(c)(3) uses the IRC 152(c)(3) age test: under 19, under 24 if a
-        # full-time student, or any age if permanently and totally disabled.
-        # Schedule M1DQC steps 4-8 follow it: an 18-year-old qualifies whether
-        # or not a student, a 19- to 23-year-old only as a full-time student,
-        # and a disabled child aged 18 or older always.
-        is_disabled_dependent = person("is_tax_unit_dependent", period) & person(
-            "is_permanently_and_totally_disabled", period
-        )
-        qualifying_child = (
-            person("is_qualifying_child_dependent", period) | is_disabled_dependent
-        )
+        # 32(c)(3) uses the IRC 152(c)(3) age test (under 19, under 24 if a
+        # full-time student, or any age if permanently and totally disabled)
+        # and the IRC 152(c)(2) relationship test. Schedule M1DQC steps 4-8
+        # follow it: an 18-year-old qualifies whether or not a student, a 19-
+        # to 23-year-old only as a full-time student, and a disabled child
+        # aged 18 or older always.
+        qualifying_child = person("is_eitc_qualifying_child", period)
         age = person("age", period)
         qualifying_older_child = qualifying_child & (
             age >= p.wfc.additional.age_threshold
