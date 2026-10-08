@@ -1,3 +1,12 @@
+## [2.33.1] - 2026-10-08
+
+### Fixed
+
+- Use FTB 3514 line 19 for CalEITC, YCTC and FYTC earned income: net a spouse's self-employment loss against the other spouse's wages, and include farm income and partnership self-employment earnings.
+- Apply Massachusetts Schedule B short-term and long-term losses to dividends before long-term gains, and tax Part A on the dividends left (lines 20, 22 and 33).
+- Add back disqualified losses (Schedule H Schedule 4) to Wisconsin homestead credit household income.
+
+
 ## [2.33.0] - 2026-10-08
 
 ### Added
