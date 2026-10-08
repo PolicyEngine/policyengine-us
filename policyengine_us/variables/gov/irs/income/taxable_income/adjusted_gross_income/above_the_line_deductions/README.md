@@ -26,7 +26,8 @@ Several state taxes and benefits need each spouse's own AGI on a joint return: K
 | Person-level deductions: IRA, educator expenses, early withdrawal penalty, student loan interest, adoption assistance, U.S. savings bonds for education | The person who has it. Student loan interest is the return's limited deduction, divided by the interest each spouse paid. |
 | Self-employment tax, self-employed health insurance and retirement plans, alimony paid | The person who has it, through `<deduction>_person`. |
 | Business and capital losses (`loss_ald`) | `loss_ald_person`: the return's business loss after Section 461(l), by each spouse's own business losses; the capital loss after the $3,000 limit (`limited_capital_loss_person`), by each spouse's own capital losses. A Form 4797 loss, recorded for the tax unit, counts equally for both. |
-| HSA, tuition and fees, domestic production, possession income | Divided equally, since the input is the tax unit's. For an HSA, 26 USC 223(b)(5) divides a married couple's limit equally unless they agree otherwise. |
+| HSA | Attributed by supplied `health_savings_account_ald_person` amounts, which each spouse figures on their own [Form 8889](https://www.irs.gov/pub/irs-pdf/i8889.pdf#page=4). When no person amounts are recorded, this allocator retains its equal fallback for the tax-unit input. |
+| Tuition and fees, domestic production, possession income | Divided equally, since the input is the tax unit's. |
 
 A tax unit dependent's deductions are on their own return, so they never lower the filer's AGI. The dependent's `above_the_line_deductions_person` is their own person-level deductions, other than amounts that are the filer's even when recorded on the dependent (`gov.irs.ald.filer_amounts_recorded_on_dependents`), which the head and spouse divide equally; the dependent's losses and tax-unit-only deductions are not modeled there.
 

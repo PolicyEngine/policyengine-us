@@ -4,10 +4,6 @@ from policyengine_us.model_api import *
 # amount to attribute them by. Their amount is divided equally between the head
 # and spouse.
 EQUALLY_DIVIDED_DEDUCTIONS = (
-    # An HSA belongs to one person, but the input is the return's total. On a
-    # joint return, 26 USC 223(b)(5) divides the family-coverage limit equally
-    # between spouses unless they agree on another division.
-    "health_savings_account_ald",
     # Tuition and fees (26 USC 222, through 2020) the taxpayer paid for
     # themself, their spouse or a dependent, under one limit for the return.
     "capped_qualified_tuition_expenses_ald",

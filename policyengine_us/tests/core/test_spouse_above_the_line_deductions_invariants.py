@@ -5,8 +5,10 @@ less their own above-the-line deductions (above_the_line_deductions_person).
 On a joint return a deduction that belongs to one spouse, such as their IRA
 deduction, educator expenses, early withdrawal penalty, alimony paid, student
 loan interest or business and capital losses, lowers only that spouse's AGI.
-Only deductions recorded for the tax unit alone (here the HSA deduction and
-the tuition and fees deduction) are divided equally. States that tax spouses
+Only deductions recorded for the tax unit alone are divided equally. This
+generator supplies HSA amounts only for the tax unit, so it exercises that
+equal fallback; supplied person HSA amounts are attributed to their owners.
+States that tax spouses
 separately (Kentucky, Montana, Delaware, Virginia, Ohio's joint filing credit,
 the District of Columbia, West Virginia's senior deduction) read these
 amounts.
@@ -392,6 +394,11 @@ def _run_group(units, year, *, zero_spouse):
             own_names.append(deduction)
         elif deduction in ("loss_ald", "alimony_expense_ald"):
             continue
+        elif deduction == "health_savings_account_ald":
+            # These generators supply only the return's HSA amount. With
+            # no person amounts, the existing equal fallback still applies
+            # even though main now provides an optional *_person input.
+            shared_names.append(deduction)
         elif f"{deduction}_person" in tbs.variables:
             own_names.append(f"{deduction}_person")
         else:
@@ -706,7 +713,7 @@ def test_seeded_population(year):
 
 
 def test_every_deduction_is_attributed_or_divided_equally_on_purpose():
-    # A tax-unit deduction with no person amount falls back to an equal
+    # A tax-unit deduction with no person-level variable falls back to an equal
     # division between the head and spouse. Only those listed, with their
     # reasons, in EQUALLY_DIVIDED_DEDUCTIONS may do so.
     from policyengine_us import CountryTaxBenefitSystem
