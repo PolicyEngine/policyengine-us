@@ -5,6 +5,61 @@ from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_
 )
 
 
+def rate_gain_taxed_at_28_percent(
+    tax_unit,
+    period,
+    taxable_income,
+    regular_rate_income,
+    adjusted_net_capital_gain,
+    taxed_unrecaptured_gain,
+):
+    """The amount 26 U.S.C. 1(h)(1)(F) taxes at 28 percent.
+
+    Subparagraph (F) taxes "the amount of taxable income in excess of the
+    sum of the amounts on which tax is determined under the preceding
+    subparagraphs" (Schedule D Tax Worksheet lines 41 and 42): taxable
+    income less the regular rate amount (A), the adjusted net capital gain or
+    taxable income if less, which (B) to (D) tax between them, and the
+    unrecaptured section 1250 gain (E) taxes. That is the 28 percent rate gain
+    less any of it (A) taxes at the regular rates, which happens when it falls
+    in the brackets below 25 percent. The excess is never more than the 28
+    percent rate gain; taking the smaller also keeps rounding from taxing a
+    household without it.
+    """
+    return min_(
+        tax_unit("section_911_28_percent_rate_gain", period),
+        max_(
+            0,
+            taxable_income
+            - regular_rate_income
+            - adjusted_net_capital_gain
+            - taxed_unrecaptured_gain,
+        ),
+    )
+
+
+def limit_to_tax_at_main_rates(tax_unit, period, capital_gains_tax):
+    """The capital gains tax that 26 U.S.C. 1(h)(1) allows.
+
+    With a net capital gain, "the tax imposed by this section for such
+    taxable year shall not exceed the sum of" the amounts in subparagraphs
+    (A) to (F), so the regular tax is the smaller of that sum and the tax on
+    all taxable income at the main rates (Schedule D Tax Worksheet line 47,
+    "the smaller of line 45 or line 46"; Qualified Dividends and Capital Gain
+    Tax Worksheet line 25). income_tax_main_rates is subparagraph (A), so the
+    tax on the gains is at most the rest of the tax at the main rates. The
+    limit binds where gain taxed at 15 percent sits in the 12 percent bracket,
+    which happens when the 0 percent rate amount is below the top of that
+    bracket.
+    """
+    tax_at_main_rates_on_the_rest = max_(
+        0,
+        tax_unit("tax_on_taxable_income_at_main_rates", period)
+        - tax_unit("income_tax_main_rates", period),
+    )
+    return min_(capital_gains_tax, tax_at_main_rates_on_the_rest)
+
+
 class capital_gains_tax(Variable):
     value_type = float
     entity = TaxUnit
@@ -19,6 +74,10 @@ class capital_gains_tax(Variable):
         dict(
             title="26 U.S. Code § 911(f)",
             href="https://www.law.cornell.edu/uscode/text/26/911#f",
+        ),
+        dict(
+            title="2025 Instructions for Schedule D (Form 1040), Schedule D Tax Worksheet, line 47",
+            href="https://www.irs.gov/pub/irs-prior/i1040sd--2025.pdf#page=16",
         ),
     ]
 
@@ -95,8 +154,18 @@ class capital_gains_tax(Variable):
 
         unrecaptured_gain_tax = cg.unrecaptured_s_1250_rate * taxable_unrecaptured_gain
 
-        remaining_cg_tax = (
-            tax_unit("section_911_28_percent_rate_gain", period) * cg.other_cg_rate
+        # 26 U.S.C. 1(h)(1)(F): 28 percent of the rest of taxable income.
+        remaining_cg_tax = cg.other_cg_rate * rate_gain_taxed_at_28_percent(
+            tax_unit,
+            period,
+            taxable_income,
+            non_cg_taxable_income,
+            adjusted_net_cg,
+            taxable_unrecaptured_gain,
         )
 
-        return main_cg_tax + unrecaptured_gain_tax + remaining_cg_tax
+        return limit_to_tax_at_main_rates(
+            tax_unit,
+            period,
+            main_cg_tax + unrecaptured_gain_tax + remaining_cg_tax,
+        )

@@ -47,3 +47,31 @@
     state_code: MO
   output:
     mo_adjusted_gross_income: 0  # AGI cannot be negative
+
+- name: Dependent's self-employment tax deduction neither reduces nor raises the parent's Missouri AGI
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 17
+        self_employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    # The child's Schedule SE line 13 (706.48) is on the child's own federal
+    # and Missouri returns. The parent's federal AGI (Form 1040, line 11) is
+    # 40,000 and has no Missouri additions or subtractions. The parent's
+    # personal deductions and the tax unit's deductions both leave the child
+    # out, so the remaining deductions allocated between spouses are 0, not
+    # -706.48.
+    adjusted_gross_income: 40_000
+    mo_adjusted_gross_income: [40_000, 0]

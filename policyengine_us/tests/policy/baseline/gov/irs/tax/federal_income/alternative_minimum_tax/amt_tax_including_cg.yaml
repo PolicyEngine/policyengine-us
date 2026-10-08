@@ -6,6 +6,7 @@
     dwks10: 0
     dwks13: 0
     dwks14: 0
+    dwks19: 0
     unrecaptured_section_1250_gain: 0
   output:
     amt_tax_including_cg: 13_000
@@ -18,6 +19,7 @@
     dwks10: 0
     dwks13: 0
     dwks14: 0
+    dwks19: 0
     unrecaptured_section_1250_gain: 0
   output:
     amt_tax_including_cg: 26_000
@@ -30,6 +32,7 @@
     dwks10: 50_000
     dwks13: 30_000
     dwks14: 0
+    dwks19: 0
     unrecaptured_section_1250_gain: 0
   output:
     # AMTI - exemption = $100k; ordinary AMTI = $70k * 26% = $18,200.
@@ -45,6 +48,7 @@
     dwks10: 200_000
     dwks13: 150_000
     dwks14: 0
+    dwks19: 0
     unrecaptured_section_1250_gain: 0
   output:
     # Ordinary AMTI tax: 26% * $220,700 + 28% * $229,300 = $121,586.
@@ -61,6 +65,7 @@
     dwks10: 500_000
     dwks13: 300_000
     dwks14: 0
+    dwks19: 0
     unrecaptured_section_1250_gain: 200_000
   output:
     # Ordinary AMTI tax: 26% * $220,700 + 28% * $279,300 = $135,586.
@@ -81,6 +86,7 @@
     dwks10: 44_625
     dwks13: 44_625
     dwks14: 0
+    dwks19: 0
     unrecaptured_section_1250_gain: 0
   output:
     # L22 = L23 = $44,625; L24 = $0; nothing in 15% or 20%; L17 = $0.
@@ -97,6 +103,7 @@
     dwks10: 492_300
     dwks13: 492_300
     dwks14: 0
+    dwks19: 0
     unrecaptured_section_1250_gain: 0
   output:
     # 0% bracket consumes $44,625; remaining $447,675 at 15% =
@@ -113,6 +120,7 @@
     dwks10: 600_000
     dwks13: 600_000
     dwks14: 0
+    dwks19: 0
     unrecaptured_section_1250_gain: 0
   output:
     # 0%: $44,625; 15%: $447,675 (= $492,300 - $44,625) * 15% =
@@ -132,6 +140,7 @@
     dwks10: 100_000
     dwks13: 100_000
     dwks14: 50_000
+    dwks19: 50_000
     unrecaptured_section_1250_gain: 0
   output:
     # Ordinary AMTI tax: 26% * $200,000 = $52,000.
@@ -151,6 +160,7 @@
     dwks10: 400_000
     dwks13: 400_000
     dwks14: 0
+    dwks19: 0
     unrecaptured_section_1250_gain: 0
   output:
     # 0%: $89,250 (joint); 15%: $310,750 * 15% = $46,612.50;
@@ -173,6 +183,7 @@
     dwks10: 925_000
     dwks13: 925_000
     dwks14: 136_000
+    dwks19: 136_000
     unrecaptured_section_1250_gain: 0
   output:
     # Line 12: $1,061,000. Line 13: $925,000 ($25,000 of qualified
@@ -197,6 +208,7 @@
     dwks10: 50_000
     dwks13: 50_000
     dwks14: 200_000
+    dwks19: 200_000
     unrecaptured_section_1250_gain: 0
   output:
     # Line 12: $250,000. Lines 13, 15 and 16: $50,000. Line 17: $200,000.
@@ -215,6 +227,7 @@
     dwks10: 50_000
     dwks13: 50_000
     dwks14: 119_550
+    dwks19: 119_550
     unrecaptured_section_1250_gain: 0
   output:
     # Line 17: $119,550, which is "$119,550 or less", so line 18 is 26% *
@@ -231,6 +244,7 @@
     dwks10: 50_000
     dwks13: 50_000
     dwks14: 119_551
+    dwks19: 119_551
     unrecaptured_section_1250_gain: 0
   output:
     # Line 17: $119,551. Line 18: 28% * $119,551 - $2,391 = $31,083.28
@@ -246,6 +260,7 @@
     dwks10: 100_000
     dwks13: 100_000
     dwks14: 300_000
+    dwks19: 300_000
     unrecaptured_section_1250_gain: 0
   output:
     # Line 17: $300,000. Line 18: 28% * $300,000 - $2,391 = $81,609 (the
@@ -263,18 +278,25 @@
     dwks10: 300_000
     dwks13: 200_000
     dwks14: 200_000
+    # Schedule D Tax Worksheet with taxable income (line 1) of $400,000:
+    # line 18 = $400,000 - $300,000 = $100,000; line 19 = $197,300 (the
+    # smaller of line 1 or $197,300); line 20 = the smaller of line 14 or
+    # line 19 = $197,300; line 21 = the larger of line 18 or line 20.
+    dwks19: 197_300
     unrecaptured_section_1250_gain: 100_000
   output:
     # Line 12: $500,000. Line 13: $200,000. Line 14: $100,000.
     # Line 15: min($200,000 + $100,000, $300,000) = $300,000. Line 16:
     # $300,000. Line 17: $200,000. Line 18: 28% * $200,000 - $2,391 =
-    # $53,609. Line 21: $0. Line 22: $200,000. Line 23: $0. Line 24:
-    # $200,000. Line 29: $300,000 - $200,000 = $100,000. Line 30: $100,000.
-    # Line 31: $15,000. Line 32: $100,000. Line 33: $100,000. Line 34:
-    # $20,000. Line 35: $200,000 + $100,000 + $100,000 = $400,000.
-    # Line 36: $100,000. Line 37: 25% = $25,000.
-    # Line 38: $53,609 + $15,000 + $20,000 + $25,000 = $113,609.
-    amt_tax_including_cg: 113_609
+    # $53,609. Line 20: $200,000. Line 21: $0. Line 22: $200,000. Line 23:
+    # $0. Line 24: $200,000. Line 27: $197,300 (worksheet line 21, not
+    # line 14). Line 28: $197,300. Line 29: $300,000 - $197,300 =
+    # $102,700. Line 30: $102,700. Line 31: $15,405. Line 32: $102,700.
+    # Line 33: $97,300. Line 34: $19,460. Line 35: $200,000 + $102,700 +
+    # $97,300 = $400,000. Line 36: $100,000. Line 37: 25% = $25,000.
+    # Line 38: $53,609 + $15,405 + $19,460 + $25,000 = $113,474. (Line 14
+    # of the worksheet on line 27 would give $113,609.)
+    amt_tax_including_cg: 113_474
 
 - name: Single filer with the amounts of the first separate case keeps the full breakpoint
   period: 2025
@@ -284,6 +306,7 @@
     dwks10: 925_000
     dwks13: 925_000
     dwks14: 136_000
+    dwks19: 136_000
     unrecaptured_section_1250_gain: 0
   output:
     # Line 17: $136,000 <= $239,100, so line 18 is 26% * $136,000 =
@@ -301,9 +324,10 @@
     dwks10: 0
     dwks13: 0
     dwks14: 136_000
+    dwks19: 136_000
     unrecaptured_section_1250_gain: 0
   output:
-    # Rev. Proc. 2025-32, section 3.10: for 2026 the 28 percent rate applies
+    # Rev. Proc. 2025-32, section 4.10: for 2026 the 28 percent rate applies
     # above $122,250 for married individuals filing separate returns
     # ($244,500 for all other taxpayers). Line 17 is all of line 12,
     # $136,000, so line 18 is 28% * $136,000 - 2% * $122,250 = $38,080 -
@@ -334,6 +358,9 @@
     # Line 22 = 211,900, line 23 = 0, line 29 = 533,400 - 100,000 = 433,400,
     # line 30 = 211,900, line 31 = 31,785, line 33 = 0. Line 38 = 57,785.
     dwks14: 100_000
+    # Line 27: worksheet line 21, also 100,000 with no 28 percent rate or
+    # unrecaptured section 1250 gain.
+    dwks19: 100_000
     amt_tax_including_cg: 57_785
 
 - name: The same gains without the exclusion

@@ -109,7 +109,7 @@ def test_me_standard_deduction_does_not_follow_federal_in_2026():
 
 
 def test_me_standard_deduction_applies_the_federal_dependent_cap_in_2027():
-    # IRC Section 63(c)(5), as adjusted by Rev. Proc. 2025-32 section .14(2):
+    # IRC Section 63(c)(5), as adjusted by Rev. Proc. 2025-32 section 4.14(2):
     # an individual who is a dependent of another taxpayer gets at most the
     # greater of the dependent floor and earned income plus a fixed addition,
     # capped at the ordinary basic standard deduction. Maine follows the federal

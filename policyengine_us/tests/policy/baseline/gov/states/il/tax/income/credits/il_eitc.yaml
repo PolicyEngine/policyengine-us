@@ -174,3 +174,38 @@
     # child under IRC 152(c)(3)(B), so the IL EIC reflects the 1-child federal
     # EITC (rather than the childless schedule) times the IL match.
     il_eitc: 680
+
+- name: Illinois EITC uses the childless schedule for a disabled parent dependent (IRC 152(c)(2))
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 10_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+      disabled_parent:
+        age: 75
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        is_parent_of_filer_or_spouse: true
+        has_tin: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, disabled_parent]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [head, disabled_parent]
+    households:
+      household:
+        members: [head, disabled_parent]
+        state_code: IL
+  output:
+    # A parent fails the IRC 152(c)(2) relationship test: 20% x the childless
+    # federal-like credit of 649.
+    il_eitc: 129.8
