@@ -62,7 +62,7 @@ class first_home_mortgage_interest(Variable):
     documentation = (
         "DEPRECATED (issue #9275): use the person-level home_mortgage_interest "
         "input instead; the deduction only ever uses the first+second sum, and "
-        "this input is read only when no person-level interest is reported. "
+        "this input is read only when no filer interest is reported. "
         "Kept temporarily so existing datasets that supply it keep working; "
         "removal is scheduled once certified microdata stops exporting it."
     )
@@ -78,7 +78,7 @@ class second_home_mortgage_interest(Variable):
     documentation = (
         "DEPRECATED (issue #9275): use the person-level home_mortgage_interest "
         "input instead; the deduction only ever uses the first+second sum, and "
-        "this input is read only when no person-level interest is reported. "
+        "this input is read only when no filer interest is reported. "
         "Kept temporarily so existing datasets that supply it keep working; "
         "removal is scheduled once certified microdata stops exporting it."
     )
@@ -111,14 +111,20 @@ class home_mortgage_interest_tax_unit(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Total home mortgage interest. The person-level home_mortgage_interest "
+        "Total home mortgage interest paid by the tax unit's head and spouse. "
+        "The person-level home_mortgage_interest "
         "input is canonical; the deprecated structured first/second interest "
-        "inputs are used only when no person-level interest is reported "
+        "inputs are used only when no filer interest is reported "
         "(existing datasets still supply them — see issue #9275)."
     )
 
+    reference = "https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=2"
+
     def formula(tax_unit, period, parameters):
-        reported_interest = add(tax_unit, period, ["home_mortgage_interest"])
+        # Only filers' own interest belongs on their return (Pub. 936, p. 2).
+        reported_interest = tax_unit_non_dep_add(
+            tax_unit, period, ["home_mortgage_interest"]
+        )
         structured_interest = add(
             tax_unit,
             period,

@@ -1,1 +1,1 @@
-Apply Hawaii's pre-TCJA mortgage debt limits ($1 million acquisition plus $100,000 home equity debt) and preserve supplied deductible mortgage interest when gross interest is unavailable.
+Apply Hawaii's pre-TCJA mortgage debt limits ($1 million acquisition plus $100,000 home equity debt) and preserve supplied deductible mortgage interest when gross interest is unavailable. Exclude dependents' mortgage interest from filers' deductions.

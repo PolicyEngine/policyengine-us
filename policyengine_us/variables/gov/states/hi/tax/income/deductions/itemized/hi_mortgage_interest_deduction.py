@@ -15,6 +15,7 @@ class hi_mortgage_interest_deduction(Variable):
         "https://data.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0002_0004.htm",
         "https://data.capitol.hawaii.gov/sessions/session2026/bills/HB2329_CD1_.pdf#page=20",
         "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=17",
+        "https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=2",
         "https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=11",
     )
     definition_period = YEAR
@@ -50,11 +51,13 @@ class hi_mortgage_interest_deduction(Variable):
             where=debt > 0,
         )
         # Line 10 uses total interest paid, before the federal debt cap.
-        # This also preserves the canonical person input's priority over
+        # This also preserves the canonical filer input's priority over
         # the deprecated first/second-home interest inputs.
         gross_interest = tax_unit("home_mortgage_interest_tax_unit", period)
-        legacy_interest = add(tax_unit, period, ["mortgage_interest"])
-        supplied_deduction = add(tax_unit, period, ["deductible_mortgage_interest"])
+        legacy_interest = tax_unit_non_dep_add(tax_unit, period, ["mortgage_interest"])
+        supplied_deduction = tax_unit_non_dep_add(
+            tax_unit, period, ["deductible_mortgage_interest"]
+        )
         # Legacy gross interest can be supplied directly or reconstructed
         # from deductible and non-deductible components. Deductible interest
         # alone has already been limited and must not receive a second cap.
