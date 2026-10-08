@@ -1,0 +1,52 @@
+- name: New Jersey 2024 worker contributions are FLI only, at 0.09%.
+  period: 2024
+  input:
+    employment_income: 60_000
+    state_code: NJ
+  output:
+    nj_temporary_disability_insurance_taxable_wages: 60_000
+    # The 2024 worker TDI rate is 0.
+    nj_employee_temporary_disability_insurance_contribution: 0
+    # 0.09% * 60,000 = 54.00.
+    nj_employee_family_leave_insurance_contribution: 54.00
+    nj_employee_state_payroll_tax: 54.00
+    employee_state_payroll_tax: 54.00
+
+- name: New Jersey 2024 FLI contribution stops at the 161,400 taxable wage base.
+  period: 2024
+  input:
+    employment_income: 200_000
+    state_code: NJ
+  output:
+    nj_family_leave_insurance_taxable_wages: 161_400
+    # 0.09% * 161,400 = 145.26.
+    nj_employee_family_leave_insurance_contribution: 145.26
+
+- name: New Jersey 2025 worker contributions are 0.23% TDI and 0.33% FLI.
+  period: 2025
+  input:
+    employment_income: 60_000
+    state_code: NJ
+  output:
+    # 0.23% * 60,000 = 138.00.
+    nj_employee_temporary_disability_insurance_contribution: 138.00
+    # 0.33% * 60,000 = 198.00.
+    nj_employee_family_leave_insurance_contribution: 198.00
+    # 138.00 + 198.00 = 336.00.
+    nj_employee_state_payroll_tax: 336.00
+    employee_state_payroll_tax: 336.00
+
+- name: New Jersey 2025 TDI and FLI contributions stop at the 165,400 taxable wage base.
+  period: 2025
+  input:
+    employment_income: 200_000
+    state_code: NJ
+  output:
+    nj_temporary_disability_insurance_taxable_wages: 165_400
+    nj_family_leave_insurance_taxable_wages: 165_400
+    # 0.23% * 165,400 = 380.42.
+    nj_employee_temporary_disability_insurance_contribution: 380.42
+    # 0.33% * 165,400 = 545.82.
+    nj_employee_family_leave_insurance_contribution: 545.82
+    # 380.42 + 545.82 = 926.24.
+    nj_employee_state_payroll_tax: 926.24

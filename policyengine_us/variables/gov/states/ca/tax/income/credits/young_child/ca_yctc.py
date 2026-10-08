@@ -51,7 +51,8 @@ class ca_yctc(Variable):
         eligible = has_eligible_child & (gets_caleitc | is_loss_eligible)
 
         # phase out credit amount
-        eitc_earnings = tax_unit("filer_adjusted_earnings", period)
+        # FTB 3514 line 23: YCTC earned income is the CalEITC line 19 amount.
+        eitc_earnings = tax_unit("ca_eitc_earned_income", period)
         excess_earnings = max_(0, eitc_earnings - p.phase_out.start)
         increments = excess_earnings / p.phase_out.increment
         reduction = increments * p.phase_out.amount
