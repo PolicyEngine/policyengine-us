@@ -160,3 +160,58 @@
     dc_separate_capital_loss_adjustment: [1_500, 0, 0, 0]
     dc_taxable_income_indiv: [29_300, 40_000, 0, 42_400]
     dc_taxable_income_joint: [67_800, 42_400]
+
+- name: A loss_ald set directly to zero leaves no capital deduction in federal AGI to remove.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -5_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        loss_ald: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    adjusted_gross_income_person: [60_000, 40_000]
+    # Federal AGI deducts nothing; separately the head deducts 1,500.
+    dc_separate_capital_loss_adjustment: [-1_500, 0]
+    dc_taxable_income_indiv: [29_300, 40_000]
+    dc_taxable_income_joint: 70_800
+    dc_income_tax_before_credits_indiv: 3_758
+
+- name: A loss_ald set directly below the separate limit.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -5_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        loss_ald: 1_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DC
+  output:
+    # The head's federal AGI deducts the whole 1,000; separately 1,500.
+    adjusted_gross_income_person: [59_000, 40_000]
+    dc_separate_capital_loss_adjustment: [-500, 0]
+    dc_taxable_income_indiv: [29_300, 40_000]
+    dc_taxable_income_joint: 69_800

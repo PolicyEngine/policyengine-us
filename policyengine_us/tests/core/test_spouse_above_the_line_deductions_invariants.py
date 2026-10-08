@@ -56,12 +56,15 @@ tax unit is an input for every unit in its simulation. For every tax unit:
 5. Bounds. Every above_the_line_deductions_person and loss_ald_person is
    non-negative.
 6. DC separate filing on the same return. For the head and spouse of a joint
-   DC return with no deduction set directly,
-   dc_separate_capital_loss_adjustment equals their share of the federal
-   capital loss deduction less their own capital losses up to their own
-   capital gains and distributions plus the $1,500 separate limit; it is zero
-   for everyone else. Each couple's adjustments add up to zero or more:
-   filing separately never deducts more capital loss than the joint return.
+   DC return, dc_separate_capital_loss_adjustment equals the capital part of
+   their loss_ald_person (loss_ald less the business loss, by their own
+   capital losses) less their own capital losses up to their own capital
+   gains and distributions plus the $1,500 separate limit; it is zero for
+   everyone else. For units with no deduction set directly, that capital part
+   equals the numpy capital loss deduction, and each couple's adjustments add
+   up to zero or more: filing separately never deducts more capital loss than
+   the joint return. (A loss_ald set directly below the losses can make the
+   sum negative.)
    (The YAML tests check that the joint DC computation is unaffected.)
 7. Montana from 2024. Spouses no longer file separately on the same form, so
    mt_loss_ald_reallocation and mt_applicable_ald_deductions are zero.
@@ -497,6 +500,16 @@ def _capital_deduction_person(run):
     )
 
 
+def _capital_part_of_loss_ald(run):
+    """Each filer's share of loss_ald less the business loss, by own losses."""
+    business_part = np.minimum(run["limited_business_loss"], run["loss_ald"])
+    capital_part = np.maximum(0, run["loss_ald"] - business_part)
+    capital_loss = ~run["is_dependent"] * run["capital_losses"]
+    return _per_person(run, capital_part) * _share(
+        capital_loss, _per_person(run, _unit_sum(run, capital_loss)), _even(run)
+    )
+
+
 def _reference(run):
     """above_the_line_deductions_person, built from the inputs with numpy."""
     filer = ~run["is_dependent"]
@@ -637,10 +650,16 @@ def _check(units, year):
         run["capital_losses"],
         own_gains + _per_person(run, run["separate_capital_loss_limit"]),
     )
-    expected = dc_joint * (_capital_deduction_person(run) - separate)
-    _close(adjustment[~direct], expected[~direct])
+    # The capital part of each filer's loss_ald_person, which their federal
+    # AGI includes. For units with no deduction set directly it is the numpy
+    # capital loss deduction.
+    federal = _capital_part_of_loss_ald(run)
+    _close(federal[~direct], _capital_deduction_person(run)[~direct])
+    _close(adjustment, dc_joint * (federal - separate))
     assert (adjustment[~dc_joint] == 0).all()
-    assert (_unit_sum(run, adjustment) >= -TOLERANCE).all()
+    # A loss_ald set directly below the capital losses can leave the separate
+    # columns deducting more than federal AGI does.
+    assert (_unit_sum(run, adjustment)[~direct_unit] >= -TOLERANCE).all()
 
     # 7. Montana from 2024.
     if year >= 2024:
