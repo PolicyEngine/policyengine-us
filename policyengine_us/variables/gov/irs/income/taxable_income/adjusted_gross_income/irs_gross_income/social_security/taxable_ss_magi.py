@@ -35,6 +35,10 @@ class taxable_ss_magi(Variable):
             # Add positive values only - losses are deducted later.
             gross_income += not_dependent * max_(0, add(person, period, [source]))
         gross_income = tax_unit.sum(gross_income)
+        # IRC 86(b)(2)(A): determined without regard to section 911. Income
+        # inputs are net of the section 911 amounts; add them back in full
+        # (Form 2555 lines 45 and 50).
+        gross_income += tax_unit("section_911_excluded_income", period)
         above_the_line_deductions = irs.ald.deductions
         revoked_deductions = ss_magi.revoked_deductions
         deductions = [

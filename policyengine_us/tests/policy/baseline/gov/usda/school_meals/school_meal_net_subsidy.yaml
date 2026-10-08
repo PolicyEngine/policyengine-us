@@ -3,6 +3,22 @@
   output:
     school_meal_net_subsidy: 0
 
+- name: Colorado adult-only household has a free tier but receives no school-meal benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 49
+    state_code: CO
+    school_meal_countable_income: 0
+  output:
+    is_in_k12_school: false
+    school_meal_tier: FREE
+    # Annual 2025 uses SY 2024-25 NSLP 4.43 + SBP 2.37.
+    school_meal_daily_subsidy: 6.80
+    school_meal_net_subsidy: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+
 - name: One child in contiguous US with free tier.
   period: 2022
   input:
