@@ -1,0 +1,49 @@
+# Independent AR component tests; no final household eligibility or total benefit is asserted.
+
+# Official2026income chart sizes1–20 plus explicit688monthly extra person at21; source limits are literal, independent of SMI/FPG formula.
+- name: Case 1, all published household limits and the first additional person match.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ar_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
+  output:
+    ar_liheap_income_limit: [28_164, 36_840, 45_504, 54_168, 62_832, 71_496, 73_128, 81_228, 89_472,
+      97_728, 105_972, 114_228, 122_472, 130_728, 138_972, 147_228, 155_472, 163_728, 171_972, 180_228,
+      188_484]
+
+
+# FY2025 chart (2024 FPG 15060+5380 per extra person): size8 52720x1.5/12=6590; size20 117280x1.5/12=14660;
+# size21 adds the printed $672 (not the half-up 673): 14660+672=15332, x12=183984.
+- name: Case 2, FY2025 poverty guideline rows and the printed additional person amount.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200]
+    ar_liheap_household_size: [8, 20, 21]
+  output:
+    ar_liheap_income_limit: [79_080, 175_920, 183_984]
+
+# FY2025 chart and plan 2.1 (p8): sizes 1-6 use 60% SMI ($86,577 for four), size 7+ uses 150% FPG.
+# SMI x 0.6 / 12 x size factor: 0.52 -> 2251.00 -> 2251; 0.68 -> 2943.62 -> 2944; 0.84 -> 3636.23 -> 3636;
+# 1.00 -> 4328.85 -> 4329; 1.16 -> 5021.47 -> 5021; 1.32 -> 5714.08 -> 5714.
+# Size 7: 47340x1.5/12=5917.50 -> 5918 (60% SMI would be 5844); size 9: 58100x1.5/12=7262.50 -> 7263.
+# Annual = monthly x 12.
+- name: Case 3, FY2025 state median income rows and the size seven poverty guideline row.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR, AR, AR, AR]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [900, 900, 900, 900, 900, 900, 900, 900]
+    ar_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 9]
+  output:
+    ar_liheap_income_limit: [27_012, 35_328, 43_632, 51_948, 60_252, 68_568, 71_016, 87_156]

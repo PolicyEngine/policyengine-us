@@ -808,8 +808,16 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, TX
+    coverage: AR, DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, TX
     state_implementations:
+      - state: AR
+        status: partial
+        name: Arkansas LIHEAP
+        full_name: Arkansas Low Income Home Energy Assistance Program
+        variable: ar_liheap
+        parameter_prefix: gov.states.ar.ee.aeo.liheap
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular heating only, with qualified household size and the published fuel matrices. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP

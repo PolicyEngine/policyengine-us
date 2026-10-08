@@ -1,0 +1,50 @@
+description: Arkansas counts these unearned income sources under the Low Income Home Energy Assistance Program.
+# Each source is floored at zero in the income formula, so a loss in one source
+# cannot offset other income. The formula also counts Social Security and
+# railroad retirement net of the Medicare Part B premium, interest above the
+# monthly disregard, and TEA. Rental income is in the earned list.
+# Where the plan and the FY2025 draft manual differ, the manual is followed.
+# Counted loans, jury duty, royalties and foster care receipts lack
+# sufficiently specific inputs and are not represented here.
+values:
+  2024-10-01:
+    - unemployment_compensation
+    - strike_benefits
+    - ssi
+    # Military retirement pay is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other (manual Appendix F, page 141).
+    - pension_income
+    - military_retirement_pay
+    # Non-Social-Security survivor receipts.
+    - survivor_benefits
+    - alimony_income
+    - child_support_received
+    - ordinary_dividend_income
+    - veterans_benefits
+    # Cash gifts from friends and relatives outside the household.
+    - financial_assistance
+    # Manual Appendices E (page 130) and F (page 144) and the application
+    # (page 2) count workers' compensation; plan Section 1.9 leaves "Insurance
+    # payments made directly to the insured" unchecked.
+    - workers_compensation
+    # Manual Appendix F (page 135) counts all gaming or gambling winnings; plan
+    # Section 1.9 (page 7) counts lottery winnings as the only one-time lump sum.
+    - gambling_winnings
+    # Manual Appendix F (page 132) counts capital gains and excludes capital
+    # losses; plan Section 1.9 has no capital gains item.
+    - capital_gains
+
+metadata:
+  unit: list
+  period: year
+  label: Arkansas LIHEAP unearned income sources
+  reference:
+    - title: Arkansas FY2026 State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=6
+    - title: Arkansas FY2025 State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=5
+    - title: "Arkansas LIHEAP draft manual FY2025, Appendices E and F #page 130,132,135,141,144"
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=130
+    - title: Arkansas LIHEAP Application, Section III Household Income
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2

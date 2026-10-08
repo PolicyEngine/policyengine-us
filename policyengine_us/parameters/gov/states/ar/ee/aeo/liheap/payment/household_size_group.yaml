@@ -1,0 +1,26 @@
+description: Arkansas assigns this payment group by household size under the Low Income Home Energy Assistance Program.
+brackets:
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 1
+  - threshold:
+      2024-10-01: 3
+    amount:
+      2024-10-01: 2
+  - threshold:
+      2024-10-01: 5
+    amount:
+      2024-10-01: 3
+
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: /1
+  period: year
+  label: Arkansas LIHEAP payment household size group
+  reference:
+    - title: Arkansas FY2026 Winter Benefits Matrix, household size columns common to all fuel schedules
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Electric.pdf#page=1
+    - title: Arkansas FY2025 Benefits Matrix, household size columns common to all fuel schedules
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Electric.pdf#page=1

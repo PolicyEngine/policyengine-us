@@ -1,0 +1,32 @@
+description: Arkansas counts these earned income sources under the Low Income Home Energy Assistance Program.
+# Existing net business income approximates gross receipts; no additional
+# business-expense deduction or new gross-receipts input is modeled.
+# Active and passive partnership income cannot be separated by existing inputs.
+values:
+  2024-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+    # Manual Appendix F (page 141) treats rental property as a self-employment
+    # enterprise, so rental income, including farm rent, takes the earned
+    # disregard. Plan Section 1.8 (page 5) subtracts 20% from work income only
+    # and Section 1.9 (page 6) lists rental income as its own item; the manual
+    # is followed.
+    - rental_income
+    - farm_rent_income
+
+metadata:
+  unit: list
+  period: year
+  label: Arkansas LIHEAP earned income sources
+  reference:
+    - title: Arkansas FY2026 State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=6
+    - title: Arkansas FY2025 State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=5
+    - title: Arkansas LIHEAP Application, Section III Household Income
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2
+    - title: Arkansas LIHEAP draft manual FY2025, Appendix F, Rental property
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=141
