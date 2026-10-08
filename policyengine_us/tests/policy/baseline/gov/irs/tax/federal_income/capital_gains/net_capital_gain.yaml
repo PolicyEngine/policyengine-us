@@ -243,3 +243,47 @@
     # the 10,000 gain at 15% (1,500). With the input subtracted (8,000) it
     # was 15,089.
     income_tax_before_credits: 14_949
+
+- name: Supplied adult dependent roles keep capital income off the parent's return
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        tax_unit_role_input: HEAD
+        employment_income: 150_000
+        long_term_capital_gains: 10_000
+      student:
+        age: 20
+        is_full_time_student: true
+        tax_unit_role_input: DEPENDENT
+        long_term_capital_gains: 20_000
+        short_term_capital_gains: -5_000
+        non_sch_d_capital_gains: 9_000
+        qualified_dividend_income: 5_000
+        collectibles_gain_or_loss: 5_000
+        investment_income_elected_form_4952: 3_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    marital_units:
+      parent_unit:
+        members: [parent]
+      student_unit:
+        members: [student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    is_tax_unit_dependent: [false, true]
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 160_000
+    net_capital_gain: 10_000
+    dwks09: 10_000
+    dwks10: 10_000
+    dividend_income_reduced_by_investment_income: 0
+    capital_gains_28_percent_rate_gain: 0
+    capital_gains_tax: 1_500
+    # The same filer income and HOH tax calculation as the child-dividends case.
+    regular_tax_before_credits: 22_938

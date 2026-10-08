@@ -60,3 +60,41 @@
     # 8.75% * ($14,100 - $10,200) = $332.5
     # Total = $192.375 + $415.125 + $332.5 = $28,005.5
     or_income_tax_before_credits: 940
+
+# 2026 Publication OR-ESTIMATE (page 3), Chart S (single or married filing
+# separately) and Chart J (married filing jointly, head of household,
+# qualifying surviving spouse). The 2026 Withholding Tax Formulas use the
+# same brackets.
+- name: 2026 single filer with $20,000 taxable income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: OR
+    or_taxable_income: 20_000
+    filing_status: SINGLE
+  output:
+    # Chart S: 4.75% to 4,550; 6.75% to 11,400; 8.75% to 125,000.
+    # 216.125 + 462.375 + 752.50 = 1,431 (the chart rounds the base to $678).
+    or_income_tax_before_credits: 0.0475 * 4_550 + 0.0675 * (11_400 - 4_550) + 0.0875 * (20_000 - 11_400)
+
+- name: 2026 joint filer with $30,000 taxable income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: OR
+    or_taxable_income: 30_000
+    filing_status: JOINT
+  output:
+    # Chart J: $1,357 plus 8.75% of excess over $22,800 = 1,357 + 630 = 1,987.
+    or_income_tax_before_credits: 0.0475 * 9_100 + 0.0675 * (22_800 - 9_100) + 0.0875 * (30_000 - 22_800)
+
+- name: 2026 head of household filer with $15,000 taxable income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: OR
+    or_taxable_income: 15_000
+    filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # Chart J: $432 plus 6.75% of excess over $9,100.
+    or_income_tax_before_credits: 0.0475 * 9_100 + 0.0675 * (15_000 - 9_100)

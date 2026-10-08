@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.irs.tax.federal_income.capital_gains.filer_schedule_d_lines import (
-    filer_schedule_d_lines,
-)
 
 
 def rate_gains_less_losses(tax_unit, period):
@@ -29,7 +26,8 @@ def rate_gains_less_losses(tax_unit, period):
     # 26 U.S.C. 1222(6), the same net short-term capital loss net_capital_gain
     # subtracts: Schedule D line 7, if a loss.
     net_short_term_capital_loss = max_(
-        0, -filer_schedule_d_lines(tax_unit, period).line_7
+        0,
+        -tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"]),
     )
     carryover = max_(
         0,

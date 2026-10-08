@@ -14,7 +14,7 @@ A tax unit dependent's gains, losses and dividends are on the dependent's own
 return (2025 Form 8814, line 4), and adjusted gross income leaves them out.
 So for every combination of the filers' long-term (LT) and short-term (ST)
 gains and losses, distributions (D) and qualified dividends (Q), and anything
-the tax unit's dependents have:
+the tax unit's dependents have, with no filer Form 4952 election:
 
 1. net_capital_gain = max(0, min(line 15, line 16)) + Q, where line 15 is
    LT + max(0, D) and line 16 is line 15 + ST, over the head and spouse.
@@ -33,6 +33,14 @@ the tax unit's dependents have:
 6. A negative distributions input gives the same results as zero.
 7. Net capital gain never falls when a filer's LT, ST, D or Q rises, and
    rises by no more than the increase.
+8. With a nonnegative filer election E, net capital gain is
+   max(0, G + Q - E), where G = max(0, min(line 15, line 16)). Worksheet
+   line 9 is max(0, G - E) and line 6 is max(0, Q - max(0, E - G)):
+   the election consumes gain before dividends. These paths agree, and
+   regular tax before credits equals ordinary tax plus capital gains tax.
+
+These component-derived properties do not set a tax-unit net_capital_gains
+override; the supplied-aggregate contract is covered separately in YAML.
 
 Amounts are whole dollars of at most $1,000,000, so every sum is exact in
 single precision and the comparisons are exact.
@@ -79,6 +87,7 @@ TAX_OUTPUTS = [
     "capital_gains_tax",
     "income_tax_main_rates",
     "alternative_minimum_tax",
+    "regular_tax_before_credits",
     "income_tax_before_credits",
 ]
 
@@ -106,6 +115,7 @@ def build_situation(households):
                 "is_tax_unit_spouse": {YEAR: j == 1},
                 "is_tax_unit_dependent": {YEAR: False},
                 "employment_income": {YEAR: h["wages"] if j == 0 else 0},
+                "investment_income_elected_form_4952": {YEAR: p.get("election", 0)},
                 **{v: {YEAR: p[k]} for k, v in FILER_INPUTS.items()},
             }
             filers.append(name)
@@ -307,6 +317,66 @@ def household(draw):
         "filers": [draw(filer()) for _ in range(draw(st.integers(1, 2)))],
         "dependents": [draw(dependent()) for _ in range(draw(st.integers(0, 2)))],
     }
+
+
+@st.composite
+def household_with_election(draw):
+    h = draw(household())
+    return {
+        **h,
+        "filers": [{**p, "election": draw(NON_NEGATIVE)} for p in h["filers"]],
+    }
+
+
+@hypothesis.settings(max_examples=12, deadline=None)
+@hypothesis.given(st.lists(household_with_election(), min_size=1, max_size=4))
+@hypothesis.example(
+    [
+        {
+            "wages": 150_000,
+            "filers": [
+                {
+                    "long_term": 20_000,
+                    "short_term": -3_000,
+                    "distributions": 1_000,
+                    "dividends": 2_000,
+                    "election": 10_000,
+                },
+                {
+                    "long_term": -5_000,
+                    "short_term": 2_000,
+                    "distributions": 0,
+                    "dividends": 3_000,
+                    "election": 8_000,
+                },
+            ],
+            "dependents": [GRID_DEPENDENT],
+        }
+    ]
+)
+def test_filer_election_composes_with_schedule_d_and_regular_tax(households):
+    """Gain-first elections agree across paths and ignore dependent inputs."""
+    model = calculate(households)
+    without_amounts = calculate(without_dependents_amounts(households))
+    for i, h in enumerate(households):
+        line_15, line_16, dividends = schedule_d_lines(h)
+        gain = max(0, min(line_15, line_16))
+        election = sum(p["election"] for p in h["filers"])
+        assert model["net_capital_gain"][i] == max(0, gain + dividends - election), h
+        assert model["dwks09"][i] == max(0, gain - election), h
+        assert model["dividend_income_reduced_by_investment_income"][i] == max(
+            0, dividends - max(0, election - gain)
+        ), h
+        assert model["dwks10"][i] == model["net_capital_gain"][i], h
+    np.testing.assert_array_equal(
+        model["regular_tax_before_credits"],
+        model["income_tax_main_rates"] + model["capital_gains_tax"],
+    )
+    for variable in TAX_OUTPUTS:
+        assert np.array_equal(model[variable], without_amounts[variable]), (
+            variable,
+            households,
+        )
 
 
 @hypothesis.settings(max_examples=30, deadline=None)
