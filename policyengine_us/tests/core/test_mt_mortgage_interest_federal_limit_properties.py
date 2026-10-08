@@ -24,6 +24,12 @@ the same input conventions.
 2. Spouses filing separately on the same form (through 2023): each spouse's
    deduction is the allowed amount times the share of the interest that
    spouse reported, and the two sum to the allowed amount.
+
+The YAML cases check single points of this rule. The grid checks it for every
+combination of balance, origination year, interest, the spouse's share, year
+and filing path against the restatement above, so a change in the caps, the
+grandfathering year, the proration or the spouse split is caught wherever it
+binds.
 """
 
 from itertools import product
@@ -34,6 +40,10 @@ import pytest
 from policyengine_us import Simulation
 
 YEARS = range(2021, 2027)
+# Montana ended filing separately on the same form from tax year 2024 (SB 399
+# of 2021; see the references in
+# married_filing_separately_on_same_return_allowed.yaml).
+LAST_SEPARATE_ON_SAME_FORM_YEAR = 2023
 BALANCES = (0, 300_000, 750_000, 1_000_000, 2_500_000)
 ORIGINATION_YEARS = (2005, 2017, 2018, 2024)
 INTERESTS = (0, 15_000, 40_000)
@@ -124,9 +134,15 @@ def test_montana_mortgage_interest_is_the_federally_allowed_amount(year):
             err_msg=f"{variable} in {year}",
         )
 
-    # 2. Spouses filing separately on the same form.
+    # 2. Spouses filing separately on the same form, through 2023. Check the
+    # model's switch against that boundary, so turning it off by mistake
+    # fails here rather than skipping these checks.
     p = sim.tax_benefit_system.parameters(year).gov.states.mt.tax.income
-    if not p.married_filing_separately_on_same_return_allowed:
+    separate_allowed = year <= LAST_SEPARATE_ON_SAME_FORM_YEAR
+    assert bool(p.married_filing_separately_on_same_return_allowed) == (
+        separate_allowed
+    )
+    if not separate_allowed:
         return
     expected = np.stack([allowed * (1 - spouse_share), allowed * spouse_share], 1)
     for variable in (

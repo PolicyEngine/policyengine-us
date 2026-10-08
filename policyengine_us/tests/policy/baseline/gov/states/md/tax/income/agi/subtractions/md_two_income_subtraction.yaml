@@ -105,3 +105,84 @@
     # Line 5: head -2,000 + 3,000 = 1,000; spouse 0 + 3,000 = 3,000.
     adjusted_gross_income: -2_000
     md_two_income_subtraction: 1_000
+
+- name: Each spouse keeps their own allowed loss when a capital loss exceeds the limit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        long_term_capital_gains: -100_000
+      spouse:
+        age: 45
+        is_tax_unit_spouse: true
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        md_total_additions: 40_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    # Federal AGI is -23,000: the $20,000 business loss and $3,000 of the
+    # capital loss (26 U.S.C. 1211(b)). Line 5: head -3,000 + 20,000 =
+    # 17,000; spouse -20,000 + 20,000 = 0. Line 6: 0.
+    adjusted_gross_income: -23_000
+    md_two_income_subtraction: 0
+
+- name: The same couple with the head and spouse labels exchanged
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        self_employment_income: -20_000
+      spouse:
+        age: 45
+        is_tax_unit_spouse: true
+        long_term_capital_gains: -100_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        md_total_additions: 40_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    md_two_income_subtraction: 0
+
+- name: A deduction recorded only for the tax unit is split equally
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        student_loan_interest: 2_000
+      spouse:
+        age: 30
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        health_savings_account_ald: 2_000
+        md_total_additions: 7_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    # Federal AGI is -4,000. The head's own student loan interest is the
+    # head's; the HSA deduction is recorded only for the tax unit, so each
+    # spouse takes half. Line 5: head -2,000 - 1,000 + 3,500 = 500; spouse
+    # -1,000 + 3,500 = 2,500. Line 6: 500.
+    adjusted_gross_income: -4_000
+    md_two_income_subtraction: 500

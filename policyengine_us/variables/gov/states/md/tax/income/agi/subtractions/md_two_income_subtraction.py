@@ -1,16 +1,25 @@
 from policyengine_us.model_api import *
 
 
-# Person-level sources of the business and capital losses in loss_ald.
-LOSS_SOURCES = [
+# Person-level sources of the business losses in loss_ald.
+BUSINESS_LOSS_SOURCES = [
     "total_self_employment_income",
     "farm_operations_income",
     "rental_income",
     "farm_rent_income",
     "estate_income",
     "partnership_s_corp_income",
-    "capital_gains",
 ]
+
+
+def _head_part(amount, head_own, spouse_own):
+    """The head's part of an amount split by the spouses' own amounts, or
+    equally when neither has any."""
+    total = head_own + spouse_own
+    frac = np.full_like(total, 0.5)
+    mask = total > 0
+    frac[mask] = head_own[mask] / total[mask]
+    return amount * frac
 
 
 class md_two_income_subtraction(Variable):
@@ -39,33 +48,56 @@ class md_two_income_subtraction(Variable):
         is_spouse = person("is_tax_unit_spouse", period)
         head_gross_income = tax_unit.sum(where(is_head, gross_income, 0))
         couple_gross_income = tax_unit.sum(where(is_head | is_spouse, gross_income, 0))
-        # Without gross income, the couple's AGI is made up of losses and
-        # above-the-line deductions, and each spouse's portion follows the
-        # losses and deductions that are that spouse's own. Deductions
-        # recorded only for the tax unit are split equally, as in
-        # adjusted_gross_income_person. Use masks rather than where to avoid
-        # divide-by-zero warnings.
-        filer = is_head | is_spouse
-        own_items = filer * sum(
-            max_(0, -person(source, period)) for source in LOSS_SOURCES
-        )
-        for deduction in sorted(parameters(period).gov.irs.ald.deductions):
-            if deduction == "loss_ald":
-                continue
-            variable = person.entity.get_variable(deduction, check_existence=True)
-            if variable.entity.is_person:
-                own_items = own_items + filer * person(deduction, period)
-        couple_items = tax_unit.sum(own_items)
-        head_frac = np.full_like(couple_gross_income, 0.5)
-        has_items = couple_items > 0
-        head_frac[has_items] = (
-            tax_unit.sum(is_head * own_items)[has_items] / couple_items[has_items]
-        )
-        # With gross income, use the head's share of the couple's gross income.
+        # Compute the head's share of the couple's gross income.
+        # Use a mask rather than where to avoid a divide-by-zero warning.
+        head_frac = np.ones_like(couple_gross_income)
         mask = couple_gross_income > 0
         head_frac[mask] = head_gross_income[mask] / couple_gross_income[mask]
-        head_us_agi = head_frac * us_agi
-        spouse_us_agi = (1 - head_frac) * us_agi
+        # Gross income is never below zero (losses are deducted in loss_ald),
+        # so without gross income the couple's AGI is their allowed losses and
+        # above-the-line deductions, and each spouse's portion is the part
+        # that is their own. The allowed business and capital losses in
+        # loss_ald are each split by the spouses' own losses of that kind,
+        # and person-level deductions go to their owner. Whatever is recorded
+        # only for the tax unit is split equally.
+        filer = is_head | is_spouse
+        own_business = filer * sum(
+            max_(0, -person(source, period)) for source in BUSINESS_LOSS_SOURCES
+        )
+        unit_business = max_(0, -tax_unit("other_net_gain", period)) / 2
+        own_capital = filer * person("capital_losses", period)
+        capital_part = add(
+            tax_unit,
+            period,
+            ["limited_capital_loss", "capital_losses_allowed_against_gains"],
+        )
+        loss_ald = tax_unit("loss_ald", period)
+        business_part = max_(0, loss_ald - capital_part)
+        head_loss = _head_part(
+            business_part,
+            tax_unit.sum(is_head * own_business) + unit_business,
+            tax_unit.sum(is_spouse * own_business) + unit_business,
+        ) + _head_part(
+            capital_part,
+            tax_unit.sum(is_head * own_capital),
+            tax_unit.sum(is_spouse * own_capital),
+        )
+        spouse_loss = loss_ald - head_loss
+        own_deductions = 0
+        for deduction in sorted(parameters(period).gov.irs.ald.deductions):
+            variable = person.entity.get_variable(deduction, check_existence=True)
+            if variable.entity.is_person:
+                own_deductions = own_deductions + filer * person(deduction, period)
+        head_own = -head_loss - tax_unit.sum(is_head * own_deductions)
+        spouse_own = -spouse_loss - tax_unit.sum(is_spouse * own_deductions)
+        unattributed = us_agi - head_own - spouse_own
+        no_gross_income = couple_gross_income <= 0
+        head_us_agi = where(
+            no_gross_income, head_own + unattributed / 2, head_frac * us_agi
+        )
+        spouse_us_agi = where(
+            no_gross_income, spouse_own + unattributed / 2, (1 - head_frac) * us_agi
+        )
 
         # compute head and spouse MD AGI additions using ad hoc rule
         total_additions = tax_unit("md_total_additions", period)
