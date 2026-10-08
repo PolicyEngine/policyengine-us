@@ -1,3 +1,10 @@
+## [2.33.0] - 2026-10-08
+
+### Added
+
+- Add New Jersey LIHEAP regular heating assistance for FY2026 and FY2027.
+
+
 ## [2.32.0] - 2026-10-08
 
 ### Added
