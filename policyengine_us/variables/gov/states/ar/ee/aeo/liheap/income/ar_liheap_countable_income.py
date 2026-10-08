@@ -9,15 +9,16 @@ class ar_liheap_countable_income(Variable):
     label = "Arkansas LIHEAP countable income"
     defined_for = StateCode.AR
     reference = (
-        # State plan sections 1.8 (page 5) and 1.9 (pages 6-7).
+        # FY2026 state plan sections 1.8 and 1.9.
+        # PDF pages 5-7
         "https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=5",
-        # FY2025 state plan sections 1.8 and 1.9, pages 5-7.
+        # FY2025 state plan sections 1.8 and 1.9.
+        # PDF pages 5-7
         "https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=5",
-        # Draft manual section 4.7 (high-school student earnings, page 41; MCI
-        # rounding, page 42; Medicare deduction, section 4.7.2, page 43) and
-        # Appendices E-F (pages 130-144).
+        # Draft manual sections 4.7 and 4.7.2 and Appendices E-F.
+        # PDF pages 41-43, 130-144
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=41",
-        # Application section III, page 2.
+        # Application section III.
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2",
     )
 

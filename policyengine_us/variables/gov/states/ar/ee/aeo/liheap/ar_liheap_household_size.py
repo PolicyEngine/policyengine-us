@@ -14,11 +14,12 @@ class ar_liheap_household_size(Variable):
         "rights statement of a state-designated LIHEAP subgrantee."
     )
     reference = (
-        # Draft manual sections 4.4-4.4.1, pages 36-37; not an adopted FY2026 manual.
+        # Draft manual sections 4.4-4.4.1; not an adopted FY2026 manual.
+        # PDF pages 36-37
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=36",
         # Current operator's rights statement, item 9; no revision date shown.
         "https://www.cscdc.net/rights-responsibilities-of-liheap-applicants/",
-        # State designation of CSCDC, page 2; revised May 11, 2026.
+        # State designation of CSCDC; revised May 11, 2026.
         "https://adeq.state.ar.us/energy/initiatives/pdfs/LIHEAP-SubgranteeNetworkServiceTerritories.pdf#page=2",
     )
     # Do not import SNAP-specific waiting periods or immigration restrictions.

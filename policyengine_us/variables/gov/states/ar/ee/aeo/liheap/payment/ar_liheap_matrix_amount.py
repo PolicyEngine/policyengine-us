@@ -9,17 +9,27 @@ class ar_liheap_matrix_amount(Variable):
     label = "Arkansas LIHEAP regular heating matrix amount"
     defined_for = StateCode.AR
     reference = (
-        # Each fuel schedule spans pages 1-2; application fuel groups are on page 3.
+        # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Electric.pdf#page=1",
+        # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Natural-Gas.pdf#page=1",
+        # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Propane.pdf#page=1",
+        # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Fuel-Oil.pdf#page=1",
+        # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2026_Other-Wood-Pellets.pdf#page=1",
+        # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Electric.pdf#page=1",
+        # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Natural-Gas.pdf#page=1",
+        # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Propane.pdf#page=1",
+        # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Fuel-Oil.pdf#page=1",
+        # PDF pages 1-2
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/LIHEAP_Benefit-Matix_2025_Other-Wood-Pellets.pdf#page=1",
+        # Application fuel groups.
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=3",
     )
 
