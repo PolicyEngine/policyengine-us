@@ -2,9 +2,9 @@ from policyengine_us.model_api import *
 
 
 class MedicaidLTSSDEPostSixMonthBudgetElection(Enum):
-    NOT_SUPPLIED = "Not supplied"
     INDIVIDUAL = "Individual"
     COUPLE = "Couple"
+    NOT_SUPPLIED = "Not supplied"
 
 
 class medicaid_ltss_de_post_six_month_budget_election(Variable):

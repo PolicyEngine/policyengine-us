@@ -13,9 +13,14 @@ class medicaid_ltss_assistance_unit_size(Variable):
         "the same institutional facility (DSSM 20810). A two-person marital "
         "unit requesting or receiving services in the same facility must "
         "use couple budgeting until six completed months there; at six "
-        "months the model elects whichever budget allows more spouses to "
-        "pass both income and resource thresholds, choosing individual "
-        "budgets in a tie. Both spouses receive the same election. HCBS "
+        "months the couple's reported "
+        "medicaid_ltss_de_post_six_month_budget_election selects individual "
+        "or couple budgeting. When that election is NOT_SUPPLIED, the "
+        "model uses whichever budget allows more spouses to pass both "
+        "income and resource thresholds, choosing individual budgets in "
+        "a tie. Outside that same-facility post-six-month window, a "
+        "reported election has no effect. Both spouses receive the same "
+        "budget. HCBS "
         "spouses requesting or receiving services at the same address use "
         "couple standards without a six-month election. Other Delaware "
         "applicants use an individual budget. This derives the budgeting "
@@ -54,7 +59,7 @@ class medicaid_ltss_assistance_unit_size(Variable):
             period,
         )
 
-        # The election compares both candidate budgets without reading any
+        # The fallback compares both candidate budgets without reading any
         # output dependent on the elected unit, avoiding a calculation cycle.
         individual_resources = person(
             "medicaid_ltss_individual_countable_resources", period
@@ -71,8 +76,22 @@ class medicaid_ltss_assistance_unit_size(Variable):
         ) & (couple_resources <= resources_limit.couple)
         couple_eligible_spouses = 2 * couple_passes
         favorable_couple_budget = couple_eligible_spouses > individual_eligible_spouses
+        election = person.marital_unit(
+            "medicaid_ltss_de_post_six_month_budget_election", period
+        )
+        election_values = election.possible_values
+        elected_couple_budget = select(
+            [
+                election == election_values.INDIVIDUAL,
+                election == election_values.COUPLE,
+            ],
+            [False, True],
+            default=favorable_couple_budget,
+        )
+        # DSSM 20810 allows an election only after six completed months in
+        # the same facility; mandatory institutional and HCBS units prevail.
         institutional_couple = same_facility & (
-            (months_together < 6) | favorable_couple_budget
+            (months_together < 6) | elected_couple_budget
         )
         delaware_unit = where(same_address_hcbs | institutional_couple, 2, 1)
         return where(
