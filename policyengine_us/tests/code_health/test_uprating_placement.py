@@ -6,7 +6,10 @@ from policyengine_us.model_api import REPO
 PARAMETERS_ROOT = REPO / "parameters"
 
 
-class _NoTimestampSafeLoader(yaml.SafeLoader):
+SafeLoader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
+
+
+class _NoTimestampSafeLoader(SafeLoader):
     """`yaml.SafeLoader` with the implicit timestamp resolver disabled.
 
     Several parameter files use `0000-01-01` as a "since the beginning of
@@ -25,7 +28,7 @@ _NoTimestampSafeLoader.yaml_implicit_resolvers = {
         for tag, regexp in resolvers
         if tag != "tag:yaml.org,2002:timestamp"
     ]
-    for key, resolvers in yaml.SafeLoader.yaml_implicit_resolvers.items()
+    for key, resolvers in SafeLoader.yaml_implicit_resolvers.items()
 }
 
 

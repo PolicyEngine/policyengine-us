@@ -32,7 +32,8 @@ vectorized simulation:
 import numpy as np
 import pytest
 
-from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us import Simulation
+from policyengine_us.system import system
 
 YEARS = [2024, 2025]
 N_RANDOM = 300
@@ -219,9 +220,9 @@ def units():
 
 @pytest.fixture(scope="module")
 def reference_parameters():
-    # The reference calculations only read policy. Build an independent model
-    # once per module instead of rebuilding it for each assertion and year.
-    return CountryTaxBenefitSystem().parameters
+    # Read the existing baseline policy; each comparison still builds its
+    # own simulation with independent inputs and cached calculations.
+    return system.parameters
 
 
 @pytest.fixture(scope="module", params=YEARS)

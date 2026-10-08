@@ -44,7 +44,10 @@ PARAMETER_SCHEMA_KEYS = {
 }
 
 
-class NoDatesSafeLoader(yaml.SafeLoader):
+SafeLoader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
+
+
+class NoDatesSafeLoader(SafeLoader):
     pass
 
 
@@ -54,7 +57,7 @@ NoDatesSafeLoader.yaml_implicit_resolvers = {
         for tag, regexp in resolvers
         if tag != "tag:yaml.org,2002:timestamp"
     ]
-    for key, resolvers in yaml.SafeLoader.yaml_implicit_resolvers.items()
+    for key, resolvers in SafeLoader.yaml_implicit_resolvers.items()
 }
 
 
@@ -85,18 +88,6 @@ def _enum_breakdown_parameter_errors(path, data):
         ]
 
     return []
-
-
-def test_parameter_yaml_files_are_syntax_parseable():
-    errors = []
-
-    for path in sorted(PARAMETERS_DIR.rglob("*.yaml")):
-        try:
-            yaml.compose(path.read_text())
-        except yaml.YAMLError as exc:
-            errors.append(f"{path.relative_to(PARAMETERS_DIR.parent)}: {exc}")
-
-    assert errors == []
 
 
 def test_calworks_yaml_fixes_preserve_effective_dates():

@@ -34,12 +34,11 @@ Gambling losses are deducted outside total_itemized_taxable_income_deductions
 not generated here.
 """
 
-from functools import cache
-
 import numpy as np
 import pytest
 
-from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us import Simulation
+from policyengine_us.system import system
 from policyengine_core.reforms import Reform
 
 N = 600
@@ -161,13 +160,8 @@ def _worksheet_amounts(year, statuses):
     )
 
 
-@cache
-def _system():
-    return CountryTaxBenefitSystem()
-
-
 def _parameter_amounts(year, statuses):
-    p = _system().parameters(f"{year}-01-01").gov.irs.deductions.itemized.limitation
+    p = system.parameters(f"{year}-01-01").gov.irs.deductions.itemized.limitation
     return np.asarray(p.applicable_amount[np.asarray(statuses)])
 
 

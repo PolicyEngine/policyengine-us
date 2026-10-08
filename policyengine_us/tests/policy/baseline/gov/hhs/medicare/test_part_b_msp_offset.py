@@ -1,9 +1,9 @@
 import pytest
 
-from policyengine_us import CountryTaxBenefitSystem, Simulation
+from policyengine_us import Simulation
+from policyengine_us.system import system as SYSTEM
 
 
-SYSTEM = CountryTaxBenefitSystem()
 PERIOD = "2025"
 
 
