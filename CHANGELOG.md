@@ -1,3 +1,10 @@
+## [2.32.0] - 2026-10-08
+
+### Added
+
+- Add New York HEAP regular heating assistance for FY2024 to FY2026.
+
+
 ## [2.31.3] - 2026-10-08
 
 ### Changed
