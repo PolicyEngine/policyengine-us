@@ -1,1 +1,1 @@
-Reduce repeated baseline setup in Rest tests, remove duplicate runner and YAML syntax checks, and accelerate test YAML scans.
+Reduce repeated baseline setup and YAML scanning in Rest tests, remove duplicate checks, and move ordinary Medicare and self-employment policy cases from Python into YAML while retaining Python API and calculation-order coverage.

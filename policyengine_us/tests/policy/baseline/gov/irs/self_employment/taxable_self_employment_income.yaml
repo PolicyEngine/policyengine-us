@@ -56,3 +56,19 @@
     # Both non-SSTB ($50k) and SSTB ($30k) Schedule C income are subject to SE tax.
     # 80_000 * (1 - 0.5 * 0.153) = 80_000 * 0.9235 = 73_880
     taxable_self_employment_income: 73_880
+
+# Policy examples moved from Python; retain their original inputs and outputs.
+- name: Taxable self employment income uses farm operations income
+  period: 2024
+  relative_error_margin: 1.0e-06
+  input:
+    farm_operations_income: 10000
+  output:
+    taxable_self_employment_income: 9235
+- name: Taxable self employment income excludes schedule j farm income
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    farm_income: 10000
+  output:
+    taxable_self_employment_income: 0

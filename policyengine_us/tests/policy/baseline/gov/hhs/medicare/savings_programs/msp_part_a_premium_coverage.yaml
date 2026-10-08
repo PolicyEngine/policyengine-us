@@ -24,3 +24,33 @@
     base_part_a_premium: 6_780
   output:
     msp_part_a_premium_coverage: 0
+
+# Policy examples moved from Python; retain their original inputs and outputs.
+- name: Msp part a premium coverage scales with qmb eligible months
+  period: 2025
+  absolute_error_margin: 1.0e-06
+  input:
+    age:
+      '2025': 65
+    is_medicare_eligible:
+      '2025': true
+    medicare_enrolled:
+      '2025': true
+    base_part_a_premium:
+      '2025': 6216
+    is_qmb_eligible:
+      2025-01: true
+      2025-02: true
+      2025-03: true
+      2025-04: false
+      2025-05: false
+      2025-06: false
+      2025-07: false
+      2025-08: false
+      2025-09: false
+      2025-10: false
+      2025-11: false
+      2025-12: false
+  output:
+    msp_part_a_premium_coverage: 1554
+    medicare_part_a_premium: 4662

@@ -282,3 +282,45 @@
         members: [parent, child]
   output:
     medicare_irmaa_magi_two_years_prior: 105_000
+
+# Policy examples moved from Python; retain their original inputs and outputs.
+- name: Medicare irmaa magi two years prior falls back to lagged income
+  period: 2025
+  relative_error_margin: 1.0e-06
+  input:
+    age:
+      '2025': 65
+    base_part_b_premium:
+      '2025': 2220
+    is_medicare_eligible:
+      '2025': true
+    tax_exempt_interest_income:
+      '2023': 6002
+    filing_status:
+      '2025': SINGLE
+    adjusted_gross_income:
+      '2023': 100000
+  output:
+    medicare_irmaa_magi_two_years_prior: 106002
+    gross_medicare_part_b_premium: 3108
+- name: Medicare irmaa magi two years prior input drives irmaa
+  period: 2025
+  relative_error_margin: 1.0e-06
+  input:
+    age:
+      '2025': 65
+    base_part_b_premium:
+      '2025': 2220
+    is_medicare_eligible:
+      '2025': true
+    tax_exempt_interest_income:
+      '2023': 0
+    filing_status:
+      '2025': SINGLE
+    adjusted_gross_income:
+      '2023': 50000
+    medicare_irmaa_magi_two_years_prior:
+      '2025': 500000
+  output:
+    medicare_irmaa_magi_two_years_prior: 500000
+    gross_medicare_part_b_premium: 7546.8
