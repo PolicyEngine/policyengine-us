@@ -64,7 +64,7 @@
   output:
     or_wfhdc_has_qualified_individual_eligible: true
 
-- name: Household with disabled head member is not eligible
+- name: A disabled head is the other filer's qualifying spouse on a joint return
   period: 2021
   input:
     people:
@@ -72,16 +72,38 @@
         age: 40
         is_disabled: true
         is_tax_unit_head: true
+        is_tax_unit_spouse: false
       person2:
         age: 35
         is_disabled: false
         is_tax_unit_head: false
+        is_tax_unit_spouse: true
     tax_units:
       tax_unit:
         members: [person1, person2]
     households:
       household:
         members: [person1, person2]
+        state_code: OR
+  output:
+    # On a joint return "you" also means your spouse, so either spouse
+    # with a disability is the other's qualifying individual.
+    or_wfhdc_has_qualified_individual_eligible: true
+
+- name: A disabled single filer is not their own qualifying individual
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
         state_code: OR
   output:
     or_wfhdc_has_qualified_individual_eligible: false

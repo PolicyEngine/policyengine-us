@@ -84,3 +84,139 @@
     de_income_tax_after_non_refundable_credits_indv: [255, 475, 0]
     de_non_refundable_eitc: 419.32
     de_income_tax_before_refundable_credits_separate: 310.68
+
+- name: Equal incomes, the dependent care credit and EITC columns are chosen together
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      younger:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 11_750
+        de_income_tax_before_non_refundable_credits_indv: 345
+        de_aged_personal_credit_indv: 0
+      older:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 11_750
+        de_income_tax_before_non_refundable_credits_indv: 345
+        de_aged_personal_credit_indv: 110
+    tax_units:
+      tax_unit:
+        members: [younger, older]
+        exemptions_count: 3
+        de_cdcc: 13.5
+        de_non_refundable_eitc: 250
+    households:
+      household:
+        members: [younger, older]
+        state_code: DE
+  output:
+    # The dependent's $110 and the dependent care credit go to the older
+    # spouse's column (345 - 110 - 110 - 110 - 13.50 = 1.50) and the EITC
+    # clears the younger spouse's 345 - 110 = 235. Sending the dependent care
+    # credit to the column with more room instead leaves 15.
+    de_income_tax_before_refundable_credits_separate: 1.5
+
+- name: Equal incomes, the same result when the older spouse is head
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      younger:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 11_750
+        de_income_tax_before_non_refundable_credits_indv: 345
+        de_aged_personal_credit_indv: 0
+      older:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 11_750
+        de_income_tax_before_non_refundable_credits_indv: 345
+        de_aged_personal_credit_indv: 110
+    tax_units:
+      tax_unit:
+        members: [younger, older]
+        exemptions_count: 3
+        de_cdcc: 13.5
+        de_non_refundable_eitc: 250
+    households:
+      household:
+        members: [younger, older]
+        state_code: DE
+  output:
+    de_income_tax_before_refundable_credits_separate: 1.5
+
+- name: Equal incomes, the dependent split minimises tax after the EITC
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      younger:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 11_750
+        de_income_tax_before_non_refundable_credits_indv: 300
+        de_aged_personal_credit_indv: 0
+      older:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 11_750
+        de_income_tax_before_non_refundable_credits_indv: 300
+        de_aged_personal_credit_indv: 110
+    tax_units:
+      tax_unit:
+        members: [younger, older]
+        exemptions_count: 3
+        de_cdcc: 0
+        de_non_refundable_eitc: 200
+    households:
+      household:
+        members: [younger, older]
+        state_code: DE
+  output:
+    # The dependent's $110 goes to the older spouse's column, where the aged
+    # credit already uses most of the tax, so the EITC clears the younger
+    # spouse's 300 - 110 = 190. Maximising the personal credits used first
+    # would give the younger column the $110 and leave 80.
+    de_income_tax_before_refundable_credits_separate: 0
+
+- name: Equal incomes, the dependent split minimises tax after the EITC when the older spouse is head
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      younger:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 11_750
+        de_income_tax_before_non_refundable_credits_indv: 300
+        de_aged_personal_credit_indv: 0
+      older:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        de_taxable_income_indv: 11_750
+        de_income_tax_before_non_refundable_credits_indv: 300
+        de_aged_personal_credit_indv: 110
+    tax_units:
+      tax_unit:
+        members: [younger, older]
+        exemptions_count: 3
+        de_cdcc: 0
+        de_non_refundable_eitc: 200
+    households:
+      household:
+        members: [younger, older]
+        state_code: DE
+  output:
+    de_income_tax_before_refundable_credits_separate: 0

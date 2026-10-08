@@ -13,17 +13,25 @@ On main these depended on the label:
   the model counts on the head's column before taxing each column separately.
   It now goes on the column of the spouse with the greater income of their
   own, and an exact tie splits it (move_dependent_amounts_to_filer).
-- Delaware's combined separate return sent the EITC, the dependent care
-  credit and the dependent personal credits to the head's column on ties.
+- Delaware's combined separate return routed the EITC and the dependent care
+  credit by label on equal incomes and split the dependent personal credits
+  with a heuristic. They are now chosen together to minimise tax.
 - Montana's joint itemized deductions counted only the head's mortgage and
   investment interest.
 - Minnesota's child and dependent care credit and Montana's dependent care
   deduction accepted an incapacitated spouse but not an incapacitated head.
 - Missouri's property tax credit tested the survivor pathway, and Oklahoma's
   the disability pathway, on the head only.
+- Oregon's working family household and dependent care credit excluded a
+  disabled head as a qualifying spouse and counted only the head's earnings.
+
+Couples where a spouse is claimed as a dependent on another return are out
+of scope here: the federal standard deduction and several state formulas
+read only `head_is_dependent_elsewhere`, so this test leaves that input at
+its default.
 
 Hypothesis draws batches of married couples, with and without dependents
-(who may have income), in the eight states above for 2021-2026. A seeded
+(who may have income), in the nine states above for 2021-2026. A seeded
 population of those states, with crafted edge cases (offsetting incomes,
 spouses with equal income, one disabled, incapacitated, elderly or surviving
 spouse, interest paid by one spouse), adds breadth in every year, and three
@@ -54,7 +62,7 @@ TOLERANCE = 0.01  # dollars: the same to the cent
 # them, so it also allows float32 rounding.
 FLOAT32_RTOL = 1e-6
 YEARS = [2021, 2022, 2023, 2024, 2025, 2026]
-AFFECTED = ["AR", "DE", "IA", "MN", "MO", "MS", "MT", "OK"]
+AFFECTED = ["AR", "DE", "IA", "MN", "MO", "MS", "MT", "OK", "OR"]
 ALL_STATES = [s for s in STATES if s not in ("PR", "VI")]
 TAX_UNIT_OUTPUTS = [
     "state_income_tax",
@@ -310,6 +318,19 @@ def _edge_cases(states):
             ],
             [],
         ),
+        # One disabled spouse who cannot care for themselves, with care
+        # expenses; the other earns (review round 2 of #9981).
+        (
+            [
+                adult(employment_income=20_000.0),
+                adult(
+                    is_disabled=True,
+                    is_incapable_of_self_care=True,
+                    pre_subsidy_care_expenses=4_000.0,
+                ),
+            ],
+            [],
+        ),
         # One spouse a 100% disabled veteran, low income, rent.
         (
             [
@@ -518,5 +539,5 @@ def test_seeded_population(year):
 
 def test_every_state_under_current_law():
     # Simulating every state's earlier years makes this the costliest batch,
-    # so the guard outside the eight states runs for one year.
+    # so the guard outside the nine states runs for one year.
     _check(_seeded_couples(ALL_STATES, per_state=3), 2026)

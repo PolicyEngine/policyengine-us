@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.de.tax.income.de_combined_separate_credits import (
+    de_combined_separate_credit_choices,
+)
 
 
 class de_income_tax_before_refundable_credits_separate(Variable):
@@ -29,14 +32,11 @@ class de_income_tax_before_refundable_credits_separate(Variable):
 
         # The EITC "may only be applied against the tax imposed on the spouse
         # with the higher taxable income reported on Line 23". With equal
-        # taxable incomes either spouse has the higher income, so the EITC
-        # goes to the column with more tax to reduce, whichever spouse is
-        # labelled head.
-        person_taxable = members("de_taxable_income_indv", period)
-        head_taxable = tax_unit.sum(is_head * person_taxable)
-        spouse_taxable = tax_unit.sum(is_spouse * person_taxable)
-        head_higher = (head_taxable > spouse_taxable) | (
-            (head_taxable == spouse_taxable) & (head_line33 >= spouse_line33)
+        # taxable incomes either column qualifies, and the column is chosen
+        # with the other column credits to minimise tax (see
+        # de_combined_separate_credit_choices).
+        _, _, head_higher = de_combined_separate_credit_choices(
+            tax_unit, period, parameters
         )
 
         eitc = tax_unit("de_non_refundable_eitc", period)
