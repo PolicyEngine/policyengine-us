@@ -9,11 +9,13 @@ class oh_liheap_countable_income(Variable):
     label = "Ohio HEAP annual countable household income"
     defined_for = StateCode.OH
     reference = (
-        # Sections E-2.2-2.3 and Appendix XXIII, pages 7-8 and 73-74.
+        # Sections E-2.2-2.3 and Appendix XXIII.
+        # PDF pages 7-8, 73-74
         "https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=7",
-        # Current income-source checklist, pages 5-6.
+        # Current income-source checklist.
+        # PDF pages 5-6
         "https://dam.assets.ohio.gov/image/upload/v1769700600/development.ohio.gov/individual/energyassistance/DETAILED_MODEL_PLAN_LIHEAP__10_01_2025.pdf#page=5",
-        # Current application deductions and excluded VA disabilities, page 7.
+        # Current application deductions and excluded VA disabilities.
         "https://www.clevelandohio.gov/sites/clevelandohio/files/aging/Home%20repair%20Applications/2025-2026_HEAP_application_B_W.pdf#page=7",
     )
 

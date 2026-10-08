@@ -10,9 +10,11 @@ class oh_liheap(Variable):
     label = "Ohio HEAP regular heating assistance"
     defined_for = "oh_liheap_eligible"
     reference = (
-        # Final 2021 workbook, physical pages 1, 8, 9 and 11.
+        # Final 2021 workbook.
+        # PDF pages 1, 8-9, 11
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/OH_BenefitMatrix_2022.pdf#page=1",
-        # Physical pages 1,8-11,15-16,19-20,29: factors, counties and formula.
+        # Factors, counties and formula.
+        # PDF pages 1, 8-11, 15-16, 19-20, 29
         "https://liheapch.acf.gov/docs/2024/benefits-matricies/OH_BenefitMatrix_2024.pdf#page=1",
         # 2024 and 2025 draft workbook covers.
         "https://liheapch.acf.gov/docs/2025/benefits-matricies/OH_BenefitMatrix_2025.pdf#page=1",

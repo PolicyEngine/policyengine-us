@@ -15,8 +15,10 @@ class oh_liheap_income_limit(Variable):
         "https://www.clevelandohio.gov/sites/clevelandohio/files/aging/Home%20repair%20Applications/2025-2026_HEAP_application_B_W.pdf#page=1",
         "https://www.lccaa.net/wp-content/uploads/2026/07/2026-2027-EAP-Application-7-2026.pdf#page=1",
         "https://occ.ohio.gov/sites/default/files/2026-08/OCC-Home-Energy-Assistance-Program-HEAP_0.pdf#page=1",
-        # HHS 60% SMI tables, Ohio row for sizes 7-12 (page 5; footnotes page 6).
+        # HHS 60% SMI tables, Ohio row for sizes 7-12 and footnotes.
+        # PDF pages 5-6
         "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM%202024-02_Att4SMITable.pdf#page=5",
+        # PDF pages 5-6
         "https://acf.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM2025-02_SMIStateTable_Att4.pdf#page=5",
     )
 
