@@ -8,7 +8,7 @@ class al_liheap_countable_income(Variable):
     unit = USD
     label = "Alabama LIHEAP annual countable household income"
     defined_for = StateCode.AL
-    # Pages 17-19 define income; page 22 retains nonqualified members' income.
+    # PDF pages 17-19, 22
     reference = "https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=17"
 
     def formula(spm_unit, period, parameters):

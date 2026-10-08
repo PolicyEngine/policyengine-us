@@ -7,8 +7,8 @@ class al_liheap_eligible(Variable):
     definition_period = YEAR
     label = "Alabama LIHEAP eligibility"
     defined_for = StateCode.AL
-    # Pages 13 and 21-22: residency, income, immigration, and heating liability.
-    reference = "https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=21"
+    # PDF pages 13, 21-22
+    reference = "https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=13"
 
     def formula(spm_unit, period, parameters):
         size = spm_unit("al_liheap_household_size", period)

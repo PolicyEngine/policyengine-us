@@ -8,8 +8,8 @@ class al_liheap(Variable):
     unit = USD
     label = "Alabama LIHEAP regular heating assistance"
     defined_for = StateCode.AL
-    # Manual pages 22-23 cover the HUD adjustment and discretionary high need.
     reference = (
+        # PDF pages 22-23
         "https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=22",
         "https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-State-Plan.pdf#page=10",
     )
