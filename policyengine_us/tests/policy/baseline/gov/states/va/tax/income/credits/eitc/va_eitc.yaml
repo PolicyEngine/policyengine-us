@@ -64,8 +64,9 @@
     # The spouses split the Virginia EIC by their shares of the earned income
     # used for the federal EITC and claim those shares on their two separate
     # returns, and only one of them may claim the Credit for Low-Income
-    # Individuals (2021 Form 760 instructions, p. 32), so together they claim
-    # the whole credit. It does not depend on which spouse is listed first.
+    # Individuals (2021 Form 760 instructions, p. 32). The tax unit holds both
+    # returns, so va_eitc reports the credit its tax applies, the sum of the
+    # shares, whichever spouse is listed first. The credit amounts are inputs.
     va_eitc: 100
 
 - name: The same couple with the head and spouse labels exchanged

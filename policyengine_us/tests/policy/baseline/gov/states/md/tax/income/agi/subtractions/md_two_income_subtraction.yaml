@@ -1,0 +1,107 @@
+# Worksheet 13D (2025 resident booklet, p. 18) adds each spouse's portion of
+# federal AGI (line 1) and of the Maryland additions (line 2), subtracts each
+# spouse's subtractions (line 4), and takes the smaller result, at least zero
+# and at most $1,200. In these couples neither spouse has gross income, so
+# their federal AGI is their own losses and deductions. md_total_additions is
+# an input (it has no formula); the formula splits it equally, as in a couple
+# who each own half of it.
+
+- name: Both spouses have losses, so each keeps their own
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        self_employment_income: -20_000
+      spouse:
+        age: 45
+        is_tax_unit_spouse: true
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        md_total_additions: 70_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    # Line 5 for each spouse: -20,000 + 35,000 = 15,000. Line 7: the
+    # smaller, 15,000, capped at 1,200.
+    adjusted_gross_income: -40_000
+    md_two_income_subtraction: 1_200
+
+- name: One spouse has the whole loss
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+      spouse:
+        age: 45
+        is_tax_unit_spouse: true
+        self_employment_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        md_total_additions: 12_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    # Line 5: head 0 + 6,000 = 6,000; spouse -10,000 + 6,000 = -4,000.
+    # Line 6: the smaller, not less than zero, is 0.
+    md_two_income_subtraction: 0
+
+- name: The same couple with the head and spouse labels exchanged
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        self_employment_income: -10_000
+      spouse:
+        age: 45
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        md_total_additions: 12_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    md_two_income_subtraction: 0
+
+- name: One spouse paid all the student loan interest
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        student_loan_interest: 2_000
+      spouse:
+        age: 30
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        md_total_additions: 6_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    # Line 5: head -2,000 + 3,000 = 1,000; spouse 0 + 3,000 = 3,000.
+    adjusted_gross_income: -2_000
+    md_two_income_subtraction: 1_000

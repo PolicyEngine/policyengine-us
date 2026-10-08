@@ -141,3 +141,32 @@
     # $40,000 is allowed.
     deductible_mortgage_interest: [40_000, 0]
     mt_itemized_deductions_for_federal_itemization_joint: [40_000, 0]
+
+- name: A federal separate return uses the $375,000 cap
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        is_tax_unit_head: true
+        home_mortgage_interest: 40_000
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SEPARATE
+        first_home_mortgage_balance: 1_000_000
+        first_home_mortgage_origination_year: 2019
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_for_federal_itemization: 0
+    households:
+      household:
+        members: [filer]
+        state_code: MT
+  output:
+    # 26 U.S.C. 163(h)(3)(F)(i)(II): $375,000 for a married individual
+    # filing a separate return, so $15,000 of the $40,000 is allowed.
+    deductible_mortgage_interest: 15_000
+    mt_itemized_deductions_for_federal_itemization_joint: 15_000

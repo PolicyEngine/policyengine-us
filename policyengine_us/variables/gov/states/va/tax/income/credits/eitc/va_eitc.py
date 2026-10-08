@@ -7,11 +7,13 @@ class va_eitc(Variable):
     label = "Virginia Earned Income Tax Credit"
     unit = USD
     documentation = (
-        "Refundable or non-refundable Virginia EITC. Spouses filing separately "
-        "split the Virginia EIC by their shares of the earned income used for "
-        "the federal EITC, and only one of them may claim the Credit for "
-        "Low-Income Individuals, so their returns together claim the whole "
-        "credit. This is the amount the tax unit's income tax applies."
+        "The Virginia EITC the tax unit's income tax applies: the refundable "
+        "credit if it is claimed, otherwise the non-refundable credit after "
+        "its tax liability limit. Spouses filing separately split the "
+        "Virginia EIC by their shares of the earned income used for the "
+        "federal EITC, and only one of them may claim the Credit for "
+        "Low-Income Individuals, so the credit for a tax unit holding both "
+        "spouses is the sum of their shares."
     )
     definition_period = YEAR
     reference = (
