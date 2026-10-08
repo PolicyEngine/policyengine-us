@@ -210,11 +210,11 @@
     # Income: $103,800 (high exemption tier: >$80k)
     # Exemption: 1 * $1,900 = $1,900
     # Taxable income: $103,800 - $1,900 = $101,900
-    # Tax: $342 base + 2.75% * ($100,000 - $26,050) + 3.125% * ($101,900 - $100,000)
-    #     = $342 + $2,033.63 + $59.38 = $2,435
+    # Tax (ORC 5747.02(A)(3)(b)): $2,394.32 base + 3.125% * ($101,900 - $100,000)
+    #     = $2,394.32 + $59.375 = $2,453.70
     oh_personal_exemptions: 1_900
     oh_taxable_income: 101_900
-    oh_income_tax_before_non_refundable_credits: 2_435
+    oh_income_tax_before_non_refundable_credits: 2_453.70
 
 - name: 2026 - High income threshold drops to $500k (exemption phases out)
   absolute_error_margin: 10

@@ -13,4 +13,6 @@ class oh_income_tax_exempt(Variable):
     def formula(tax_unit, period, parameters):
         taxable_income = tax_unit("oh_taxable_income", period)
         p = parameters(period).gov.states.oh.tax.income
-        return taxable_income < p.agi_threshold
+        # ORC 5747.02(A)(3): no tax if the balance is "equal to or less than"
+        # the threshold.
+        return taxable_income <= p.agi_threshold
