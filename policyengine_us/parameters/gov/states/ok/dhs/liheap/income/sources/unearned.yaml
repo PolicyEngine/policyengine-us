@@ -21,6 +21,9 @@ values:
     # in one or the other.
     - pension_income
     - military_retirement_pay
+    # Plan Section 1.9 counts retirement benefits; IRA, 401(k), 403(b), SEP
+    # and Keogh distributions are separate inputs from pension_income.
+    - retirement_distributions
     - survivor_benefits
     - railroad_benefits
     - workers_compensation

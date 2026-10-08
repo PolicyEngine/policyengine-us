@@ -347,3 +347,78 @@
     ok_liheap_eligible: [true, true, false]
     ok_liheap_matrix_amount: [150, 70, 150]
     ok_liheap: [150, 70, 0]
+
+# OAC 340:20-1-11(c)(1) with OAC 340:50-7-31(a)(3)(A)(v)-(vi): a member 60+ deducts Medicare and health premiums.
+# With no Social Security to net it from, the full 2026 Part B premium 202.90 x 12 = 2,434.80 is deducted.
+# Pension 750/mo (9,000) -> gross 750/mo <= 1,696 (2026 size 1 limit), eligible.
+# Net 9,000 - 2,434.80 = 6,565.20 -> 547.10/mo rounds to 547, band 2 (401-700) -> natural gas 265.
+- name: Case 11, a retiree without Social Security deducts the full Medicare Part B premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_disabled: false
+        ssi: 0
+        social_security: 0
+        medicare_part_b_premium: 2_434.80
+        pension_income: 9_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_liheap_countable_income: 9_000
+    ok_liheap_gross_income: 9_000
+    ok_liheap_income_deductions: 2_434.80
+    ok_liheap_eligible: true
+    ok_liheap_net_income: 6_565.20
+    ok_liheap: 265
+
+# Social Security 1,000/mo (12,000) absorbs the whole 2026 Part B premium 202.90 x 12 = 2,434.80 in countable income:
+# 12,000 - 2,434.80 = 9,565.20 -> 797.10/mo rounds to 797 <= 1,696, eligible. The Part B deduction is
+# max(2,434.80 - 12,000, 0) = 0, so only the 150/mo Medigap premium (1,800) is deducted.
+# Net 9,565.20 - 1,800 = 7,765.20 -> 647.10/mo rounds to 647, band 2 (401-700) -> natural gas 265.
+- name: Case 12, a retiree deducts another health premium while the Part B premium is only netted from Social
+    Security.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        is_disabled: false
+        ssi: 0
+        social_security: 12_000
+        medicare_part_b_premium: 2_434.80
+        health_insurance_premiums_without_medicare_part_b: 1_800
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_liheap_countable_income: 9_565.20
+    ok_liheap_gross_income: 9_565.20
+    ok_liheap_income_deductions: 1_800
+    ok_liheap_eligible: true
+    ok_liheap_net_income: 7_765.20
+    ok_liheap: 265
