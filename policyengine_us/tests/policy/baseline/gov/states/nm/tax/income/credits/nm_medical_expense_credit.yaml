@@ -4,7 +4,7 @@
     state_code: NM
     age: 64
     other_medical_expenses: 30_000
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_medical_expense_credit: 0
 
@@ -16,7 +16,7 @@
     medicare_enrolled: false
     other_medical_expenses: 27_999
     filing_status: JOINT
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_medical_expense_credit: 0
 
@@ -27,7 +27,7 @@
     age: 65
     other_medical_expenses: 28_000
     filing_status: JOINT
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_medical_expense_credit: 2_800
 
@@ -38,7 +38,7 @@
     age: 65
     other_medical_expenses: 28_000
     filing_status: SEPARATE
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_medical_expense_credit: 1_400
 
@@ -49,7 +49,7 @@
     age: 65
     other_medical_expenses: 40_000
     filing_status: SINGLE
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_medical_expense_credit: 2_800
 
@@ -60,6 +60,86 @@
     age: 65
     other_medical_expenses: 40_000
     filing_status: SINGLE
-    head_is_dependent_elsewhere: true
+    claimed_as_dependent_on_another_return: true
+  output:
+    nm_medical_expense_credit: 0
+
+- name: Joint return where only one spouse is a dependent of another taxpayer (the claimable spouse is the head)
+  period: 2023
+  input:
+    people:
+      person_a:
+        age: 66
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 66
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    # A spouse who is not a dependent may still qualify (PIT-RC instructions).
+    nm_medical_expense_credit: 2_800
+
+- name: Joint return where only one spouse is a dependent of another taxpayer (the claimable spouse is the spouse)
+  period: 2023
+  input:
+    people:
+      person_b:
+        age: 66
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 66
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    # A spouse who is not a dependent may still qualify (PIT-RC instructions).
+    nm_medical_expense_credit: 2_800
+
+- name: Joint return where both spouses are a dependent of another taxpayer
+  period: 2023
+  input:
+    people:
+      person_a:
+        age: 66
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 66
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
   output:
     nm_medical_expense_credit: 0

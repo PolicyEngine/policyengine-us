@@ -68,7 +68,7 @@
     state_code: OR
     filing_status: JOINT
     age_head: 35
-    head_is_dependent_elsewhere: true
+    claimed_as_dependent_on_another_return: true
     tax_unit_earned_income: 600
   output: 
     # $1100 base 
@@ -80,7 +80,7 @@
     state_code: OR
     filing_status: SINGLE
     age_head: 35
-    head_is_dependent_elsewhere: true
+    claimed_as_dependent_on_another_return: true
     tax_unit_earned_income: 1_000
   output:
     # $1000 income + $350 addition, below the $2,350 normal standard deduction cap.
@@ -92,7 +92,7 @@
     state_code: OR
     filing_status: SINGLE
     age: 35
-    head_is_dependent_elsewhere: true
+    claimed_as_dependent_on_another_return: true
     tax_unit_earned_income: 1_000
     blind_head: true
   output:
@@ -137,3 +137,57 @@
   output:
     # $2,835 base + $1,200 aged
     or_standard_deduction: 4_035
+
+- name: 2025 joint return limited to the dependent amount when either spouse can be claimed (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 35
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 35
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        tax_unit_earned_income: 3_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: OR
+  output:
+    # max($1,350, $3,000 + $450) = $3,450, below the $5,670 joint amount.
+    or_standard_deduction: 3_450
+
+- name: 2025 joint return limited to the dependent amount when either spouse can be claimed (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 35
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 35
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        tax_unit_earned_income: 3_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: OR
+  output:
+    # max($1,350, $3,000 + $450) = $3,450, below the $5,670 joint amount.
+    or_standard_deduction: 3_450

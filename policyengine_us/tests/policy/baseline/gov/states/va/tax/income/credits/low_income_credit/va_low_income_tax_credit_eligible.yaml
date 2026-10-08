@@ -2,7 +2,7 @@
   period: 2021
   input:
     state_code: VA
-    head_is_dependent_elsewhere: true
+    claimed_as_dependent_on_another_return: true
     va_aged_blind_exemption: 0
     va_age_deduction: 0
     va_military_benefit_subtraction: 0
@@ -14,7 +14,7 @@
   period: 2021
   input:
     state_code: VA
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
     va_aged_blind_exemption: 1_600
     va_age_deduction: 12_000
     va_military_benefit_subtraction: 0
@@ -26,10 +26,60 @@
   period: 2021
   input:
     state_code: VA
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
     va_aged_blind_exemption: 0
     va_age_deduction: 0
     va_military_benefit_subtraction: 0
     va_federal_state_employees_subtraction: 0
   output:
     va_low_income_tax_credit_eligible: true
+
+- name: Joint return is ineligible when either spouse is claimed as a dependent (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VA
+  output:
+    va_low_income_tax_credit_eligible: false
+
+- name: Joint return is ineligible when either spouse is claimed as a dependent (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: VA
+  output:
+    va_low_income_tax_credit_eligible: false

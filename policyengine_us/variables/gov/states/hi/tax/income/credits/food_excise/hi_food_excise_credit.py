@@ -8,17 +8,20 @@ class hi_food_excise_credit(Variable):
     defined_for = StateCode.HI
     unit = USD
     definition_period = YEAR
-    reference = "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=44"
+    reference = (
+        "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=50",
+        "https://files.hawaii.gov/tax/forms/2025/n311_i.pdf#page=1",
+    )
 
     def formula(tax_unit, period, parameters):
-        # filer can not be a dependent on another return
-        dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
-        total_amount = add(
-            tax_unit,
-            period,
-            [
-                "hi_food_excise_credit_minor_child_amount",
-                "hi_food_excise_exemption_amount",
-            ],
+        # HRS 235-55.85(a): only a taxpayer who cannot be claimed as a
+        # dependent may claim the credit, for each qualified exemption. The
+        # exemption amount counts only filers who cannot be claimed when
+        # either can; such a return claims no dependents (IRS Publication
+        # 501), so it gets no minor child amount.
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        exemption_amount = tax_unit("hi_food_excise_exemption_amount", period)
+        minor_child_amount = tax_unit(
+            "hi_food_excise_credit_minor_child_amount", period
         )
-        return ~dependent_elsewhere * total_amount
+        return exemption_amount + where(dependent_filer, 0, minor_child_amount)

@@ -55,20 +55,36 @@
   period: 2021
   input:
     mi_personal_exemptions: 5_000
-    head_is_dependent_elsewhere: true
+    claimed_as_dependent_on_another_return: true
     filing_status: SINGLE
     state_code: MI
   output:
     mi_exemptions: 1_500
 
-- name: not disabled, is a dependent, married
+- name: not disabled, both spouses can be claimed as dependents, married
   period: 2021
   input:
-    mi_personal_exemptions: 10_000
-    head_is_dependent_elsewhere: true
-    filing_status: JOINT
-    state_code: MI
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MI
   output:
+    # $1,500 for each spouse.
     mi_exemptions: 3_000
 
 # 2025 test cases - personal exemption $5,800, disabled exemption $3,400
@@ -301,15 +317,131 @@
       person1:
         mi_disabled_exemption_eligible_person: true
         is_fully_disabled_service_connected_veteran: false
+        claimed_as_dependent_on_another_return: true
     tax_units:
       tax_unit:
         mi_personal_exemptions: 5_800
-        head_is_dependent_elsewhere: true
         filing_status: SINGLE
         members: [person1]
     household:
       members: [person1]
       state_code: MI
   output:
-    # Dependent exemption: $1,500 (for single) + $3,400 disabled = $4,900
+    # Dependent exemption: $1,500 + $3,400 disabled = $4,900
     mi_exemptions: 4_900
+
+- name: 2025 joint return where only one spouse can be claimed (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MI
+  output:
+    # MCL 206.30(4): $1,500 for the claimable spouse, plus the other
+    # spouse's own $5,800 personal exemption.
+    mi_exemptions: 7_300
+
+- name: 2025 joint return where only one spouse can be claimed (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MI
+  output:
+    # MCL 206.30(4): $1,500 for the claimable spouse, plus the other
+    # spouse's own $5,800 personal exemption.
+    mi_exemptions: 7_300
+
+- name: 2025 joint return with a child where only one spouse can be claimed (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: MI
+  output:
+    # A joint return on which a spouse can be claimed claims no dependents
+    # (IRS Publication 501), so the child adds no exemption.
+    mi_exemptions: 7_300
+
+- name: 2025 joint return with a child where only one spouse can be claimed (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: MI
+  output:
+    # A joint return on which a spouse can be claimed claims no dependents
+    # (IRS Publication 501), so the child adds no exemption.
+    mi_exemptions: 7_300

@@ -6,13 +6,22 @@ class nm_cdcc_eligible(Variable):
     entity = TaxUnit
     label = "Eligible household for the New Mexico dependent child day care credit"
     definition_period = YEAR
-    reference = "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503752/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDsfAEwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA"
+    reference = (
+        "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503752/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgDsfAEwBKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA",
+        "https://realfile.tax.newmexico.gov/2025pit-rc-ins.pdf#page=2",
+    )
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        # Filer can not be a dependent on another tax return
-        dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
+        # Filer can not be a dependent on another tax return, but "If you are
+        # a dependent with a spouse who was not a dependent of another
+        # taxpayer, your spouse may still qualify to claim rebates or
+        # credits" (PIT-RC instructions). So only a return on which every
+        # filer is a dependent elsewhere is barred.
+        independent_filer = (
+            tax_unit("head_spouse_count_not_dependent_elsewhere", period) > 0
+        )
         p = parameters(period).gov.states.nm.tax.income.credits.cdcc
         # Filer has to be be gainfully employed to receive credit
         has_earnings = person("earned_income", period) > 0
@@ -43,8 +52,5 @@ class nm_cdcc_eligible(Variable):
         )
         income_eligible = nm_modified_gross_income <= income_limit
         return (
-            ~dependent_elsewhere
-            & employment_eligible
-            & ~receives_tanf
-            & income_eligible
+            independent_filer & employment_eligible & ~receives_tanf & income_eligible
         )

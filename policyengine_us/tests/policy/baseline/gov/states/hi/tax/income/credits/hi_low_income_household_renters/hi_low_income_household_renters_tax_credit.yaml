@@ -37,3 +37,67 @@
     hi_tax_credit_for_low_income_household_renters_eligible: false
   output:
     hi_tax_credit_for_low_income_household_renters: 0
+
+- name: Joint return with a child where only one spouse can be claimed (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 66
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 66
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+        hi_tax_credit_for_low_income_household_renters_eligible: true
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: HI
+  output:
+    # Schedule X lines 8-10: the spouse who cannot be claimed, plus their age
+    # 65 exemption. 2 x $50.
+    hi_tax_credit_for_low_income_household_renters: 100
+
+- name: Joint return with a child where only one spouse can be claimed (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 66
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 66
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+        hi_tax_credit_for_low_income_household_renters_eligible: true
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: HI
+  output:
+    # Schedule X lines 8-10: the spouse who cannot be claimed, plus their age
+    # 65 exemption. 2 x $50.
+    hi_tax_credit_for_low_income_household_renters: 100

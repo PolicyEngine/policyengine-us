@@ -7,6 +7,11 @@ class hi_food_excise_exemption_amount(Variable):
     label = "Exemption amount for Hawaii Food/Excise Tax Credit"
     definition_period = YEAR
     defined_for = StateCode.HI
+    reference = (
+        "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=50",
+        "https://files.hawaii.gov/tax/forms/2025/n311_i.pdf#page=1",
+        "https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=11",
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.hi.tax.income.credits.food_excise_tax
@@ -45,4 +50,15 @@ class hi_food_excise_exemption_amount(Variable):
             claimable_exemptions = exemptions - minor_children
         else:
             claimable_exemptions = exemptions
-        return claimable_exemptions * amount_per_exemption
+        # Form N-311 counts only people who cannot be claimed as a dependent
+        # by another taxpayer. A return on which a filer can be claimed claims
+        # no dependents (IRS Publication 501), so it counts only the filers
+        # who cannot be claimed.
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        independent_filers = tax_unit(
+            "head_spouse_count_not_dependent_elsewhere", period
+        )
+        qualified_exemptions = where(
+            dependent_filer, independent_filers, claimable_exemptions
+        )
+        return qualified_exemptions * amount_per_exemption

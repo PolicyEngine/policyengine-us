@@ -133,3 +133,59 @@
     # $4,401 is below the federal EITC investment income limit ($11,950 in
     # 2025) but above Missouri's $4,400 limit.
     mo_wftc_eligible: false
+
+- name: 2025 married couple filing combined is not stopped by a claimable spouse (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        eitc: 500
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MO
+  output:
+    # A joint federal filer whose spouse can be claimed still files Form MO-1040
+    # as married filing combined, not as claimed as a dependent.
+    mo_wftc_eligible: true
+
+- name: 2025 married couple filing combined is not stopped by a claimable spouse (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        eitc: 500
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MO
+  output:
+    # A joint federal filer whose spouse can be claimed still files Form MO-1040
+    # as married filing combined, not as claimed as a dependent.
+    mo_wftc_eligible: true

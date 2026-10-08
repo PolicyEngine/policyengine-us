@@ -20,7 +20,6 @@
         adjusted_gross_income: 4_000
         filing_status: SINGLE
         exemptions_count: 3
-        head_is_dependent_elsewhere: false
     households:
       household: 
         members: [person1, person2, person3]
@@ -50,7 +49,6 @@
         adjusted_gross_income: 4_000
         filing_status: SINGLE
         exemptions_count: 3
-        head_is_dependent_elsewhere: false
     households:
       household: 
         members: [person1, person2, person3]
@@ -71,6 +69,7 @@
       person2:
         age: 39
         is_child: false
+        claimed_as_dependent_on_another_return: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -81,7 +80,6 @@
         adjusted_gross_income: 4_000
         filing_status: SINGLE
         exemptions_count: 2
-        head_is_dependent_elsewhere: true
     households:
       household: 
         members: [person1, person2]
@@ -111,7 +109,6 @@
         adjusted_gross_income: 35_000
         filing_status: SINGLE
         exemptions_count: 3
-        head_is_dependent_elsewhere: false
     households:
       household: 
         members: [person1, person2, person3]
@@ -141,7 +138,6 @@
         adjusted_gross_income: 35_000
         filing_status: JOINT
         exemptions_count: 3
-        head_is_dependent_elsewhere: false
     households:
       household: 
         members: [person1, person2, person3]
@@ -171,7 +167,6 @@
         adjusted_gross_income: 55_000
         filing_status: JOINT
         exemptions_count: 3
-        head_is_dependent_elsewhere: false
     households:
       household: 
         members: [person1, person2, person3]
@@ -197,7 +192,6 @@
         members: [person1, person2]
         adjusted_gross_income: 6_000
         filing_status: SINGLE
-        head_is_dependent_elsewhere: false
     households:
       household: 
         members: [person1, person2]
@@ -223,7 +217,6 @@
         members: [person1, person2]
         adjusted_gross_income: 6_000
         filing_status: SINGLE
-        head_is_dependent_elsewhere: false
     households:
       household:
         members: [person1, person2]
@@ -258,3 +251,83 @@
     exemptions_count: 2
     hi_food_excise_credit: 440
     hi_income_tax: -440
+
+- name: 2027 joint return where only one spouse can be claimed (the claimable spouse is the head)
+  period: 2027
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    # Form N-311 counts only the spouse who cannot be claimed: 1 x $220.
+    hi_food_excise_credit: 220
+
+- name: 2027 joint return where only one spouse can be claimed (the claimable spouse is the spouse)
+  period: 2027
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: HI
+  output:
+    # Form N-311 counts only the spouse who cannot be claimed: 1 x $220.
+    hi_food_excise_credit: 220
+
+- name: 2027 joint return where both spouses can be claimed
+  period: 2027
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    hi_food_excise_credit: 0
