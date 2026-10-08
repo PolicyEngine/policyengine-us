@@ -6,8 +6,8 @@ unit, whoever claims them for taxes. SSI recipients are excluded (13 CSR
 40-2.310(1)(F)). A parent who is also a cash-eligible child is a member as a
 child. For a minor parent (the grid's 16-year-old), DSS Manual 0210.005.30
 lets that three-generation family file as one group. For an 18-year-old
-parent in secondary school the sources leave the grouping open; the grid
-checks the model's retained interpretation (i), one combined unit. A
+parent in secondary school Max's d1049 approves interpretation (i); the
+grid checks one combined unit with her baby and her own parent. A
 non-parent caretaker relative is excluded while a parent is in the home
 (0210.005.10).
 
@@ -38,11 +38,14 @@ reads a model output, the item says so:
 6. The default input (own children in the household) gives the same answer
    as marking the parent directly, and each household gets the same answer
    alone as in the shared simulation.
-7. The default marks a person with own children in the household only when
-   some dependent child in the tax unit is 12 to 50 years younger, checked
-   pair by pair against the formula's youngest-and-oldest shortcut.
+7. With unknown parent IDs, the default marks a person with own children in
+   the household only when some dependent child in the tax unit is 12 to
+   50 years younger, checked pair by pair against the formula's
+   youngest-and-oldest shortcut.
 8. An explicit parent flag adds a person only when their own tax unit has a
    dependent child.
+9. Known parent IDs identify the named parent independently of ages and
+   own-child counts. Reusing IDs in separate households cannot link them.
 """
 
 import itertools
@@ -549,3 +552,69 @@ def test_default_parent_input_matches_the_pairwise_age_rule():
         # difference of zero never falls in the window.
         plausible = any(12 <= age - c <= 50 for c in child_ages)
         assert person_flag == (own > 0 and plausible), (age, children, student, own)
+
+
+def test_known_parent_ids_override_ages_and_stay_within_households():
+    # Pin dependency status to isolate parent identification from the age
+    # rules deciding who is a dependent child. The expected relationship
+    # stays the same across adult and child ages and both own-child counts.
+    cases = list(
+        itertools.product(
+            (19, 20, 35, 60, 90),
+            (0, 5, 17),
+            (0, 1),
+            ("first", "second", "both"),
+            ("adult", "head", "absent"),
+        )
+    )
+    people, tax_units, spm_units, households = {}, {}, {}, {}
+    expected = []
+    for i, (adult_age, child_age, own_children, slot, parent) in enumerate(cases):
+        head, adult, child = (
+            f"linked{i}_{role}" for role in ("head", "adult", "child")
+        )
+        named_id = {"head": 11, "adult": 22, "absent": 99}[parent]
+        # The ID contract allows these IDs to repeat in separate households
+        # when every tax unit stays within its household. This deliberately
+        # catches a global match that connects unrelated households.
+        people[head] = {
+            "person_id": {YEAR: 11},
+            "age": {YEAR: 45},
+            "is_tax_unit_dependent": {YEAR: False},
+            "own_children_in_household": {YEAR: 1},
+            "mo_tanf_dependent_child": {PERIOD: False},
+        }
+        people[adult] = {
+            "person_id": {YEAR: 22},
+            "age": {YEAR: adult_age},
+            "is_tax_unit_dependent": {YEAR: True},
+            "own_children_in_household": {YEAR: own_children},
+            "mo_tanf_dependent_child": {PERIOD: False},
+        }
+        people[child] = {
+            "person_id": {YEAR: 33},
+            "age": {YEAR: child_age},
+            "is_tax_unit_dependent": {YEAR: True},
+            "mo_tanf_dependent_child": {PERIOD: True},
+            "parent_1_id": {YEAR: named_id if slot in ("first", "both") else 0},
+            "parent_2_id": {YEAR: named_id if slot in ("second", "both") else 0},
+        }
+        members = [head, adult, child]
+        tax_units[f"linked{i}_tax"] = {"members": members}
+        spm_units[f"linked{i}_spm"] = {"members": members}
+        households[f"linked{i}_household"] = {
+            "members": members,
+            "state_code": {YEAR: "MO"},
+        }
+        expected.append([parent == "head", parent == "adult", False])
+    simulation = Simulation(
+        situation={
+            "people": people,
+            "tax_units": tax_units,
+            "spm_units": spm_units,
+            "households": households,
+        }
+    )
+    flag = simulation.calculate("mo_tanf_is_parent_of_dependent_child", YEAR)
+    for case, actual, wanted in zip(cases, flag.reshape(-1, 3), expected):
+        assert actual.tolist() == wanted, case

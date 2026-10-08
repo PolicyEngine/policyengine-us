@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.demographic.person._parent_links import (
+    has_parent_ids,
+)
 
 
 class mo_tanf_is_assistance_unit_member(Variable):
@@ -42,8 +45,8 @@ class mo_tanf_is_assistance_unit_member(Variable):
         # 13 CSR 40-2.300(5)(C) admits only natural or adoptive parents,
         # and a stepparent's needs are not taken into account per
         # 2.310(8)(B)1.D.(II); the tax-unit structure cannot distinguish
-        # a stepparent from a parent, so a spouse who is not the child's
-        # parent is counted here.
+        # a stepparent from a parent when child parent ids are unknown.
+        # Known ids instead determine whether the spouse is a parent.
         # The caretaker test looks for any dependent child in the home, not
         # only a payable one. Per DSS Manual 0210.005.05, "when the only
         # child in the EU receives SSI, explore Temporary Assistance (TA)
@@ -60,7 +63,12 @@ class mo_tanf_is_assistance_unit_member(Variable):
         # and otherwise included per mo_tanf_non_parent_caretaker_included
         # (13 CSR 40-2.300(5)(D); DSS Manual 0210.005.15 and 0210.005.35).
         non_parent = person("mo_tanf_is_non_parent_caretaker", period.this_year)
-        parent_caretaker = caretaker & ~non_parent
+        parent = person("mo_tanf_is_parent_of_dependent_child", period.this_year)
+        unknown_child = dependent_child & ~has_parent_ids(person, period.this_year)
+        # Known parent ids take precedence over the legacy head/spouse proxy.
+        # Preserve that proxy when a child's two parent ids are unknown.
+        presumed_parent = parent | person.tax_unit.any(unknown_child)
+        parent_caretaker = caretaker & ~non_parent & presumed_parent
         # Membership as a parent does not depend on who claims whom for
         # taxes. 13 CSR 40-2.300(5)(C) and the Combined IM Policy Manual
         # 4.2.2 (formerly DSS Manual 0210.005.05) make the "Biological or
@@ -80,11 +88,10 @@ class mo_tanf_is_assistance_unit_member(Variable):
         # parent (under 18, including the month of turning 18), the
         # manual's minor parent provision (4.2.4; formerly 0210.005.30) lets
         # that three-generation family file as one assistance group. For an
-        # 18-year-old parent in secondary school the sources do not settle
-        # the grouping; keeping her in one combined unit with her own parent
-        # is retained interpretation (i), one of several readings.
+        # 18-year-old parent in secondary school, Max's d1049 approves
+        # interpretation (i): her, her baby and her own parent form one unit.
         other_parent = (
-            person("mo_tanf_is_parent_of_dependent_child", period.this_year)
+            parent
             & ~non_parent
             & ~dependent_child
             & ~is_ssi_recipient

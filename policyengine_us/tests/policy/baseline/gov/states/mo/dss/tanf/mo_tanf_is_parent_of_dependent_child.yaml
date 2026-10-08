@@ -107,3 +107,394 @@
       # Recomputing against July's remaining infant would fail the window
       # because the age gap is 60, but the annual snapshot stays in force.
       2026-07: [true, true, false, true]
+
+- name: An explicit parent ID identifies an adoptive parent with a 55-year gap
+  period: 2026-01
+  input:
+    people:
+      head:
+        person_id: 11
+        age: 85
+      adoptive_parent:
+        person_id: 22
+        age: 60
+        is_tax_unit_dependent: true
+        own_children_in_household: 0
+      child:
+        person_id: 33
+        age: 5
+        is_tax_unit_dependent: true
+        parent_1_id: 22
+        parent_2_id: 0
+    tax_units:
+      tax_unit:
+        members: [head, adoptive_parent, child]
+    spm_units:
+      spm_unit:
+        members: [head, adoptive_parent, child]
+    households:
+      household:
+        members: [head, adoptive_parent, child]
+        state_code: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child: [false, true, false]
+
+- name: A known parent ID excludes an unrelated adult with a 30-year gap
+  period: 2026-01
+  input:
+    people:
+      head:
+        person_id: 11
+        age: 50
+        own_children_in_household: 1
+      unrelated_adult:
+        person_id: 22
+        age: 35
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      child:
+        person_id: 33
+        age: 5
+        is_tax_unit_dependent: true
+        # One known slot suffices: the unknown second slot does not allow
+        # an age-based relationship to the unrelated adult.
+        parent_1_id: 11
+        parent_2_id: 0
+    tax_units:
+      tax_unit:
+        members: [head, unrelated_adult, child]
+    spm_units:
+      spm_unit:
+        members: [head, unrelated_adult, child]
+    households:
+      household:
+        members: [head, unrelated_adult, child]
+        state_code: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child: [true, false, false]
+
+- name: The second parent ID also overrides the age window and own-child count
+  period: 2026-01
+  input:
+    people:
+      head:
+        person_id: 11
+        age: 85
+      adoptive_parent:
+        person_id: 22
+        age: 60
+        is_tax_unit_dependent: true
+        own_children_in_household: 0
+      child:
+        person_id: 33
+        age: 5
+        is_tax_unit_dependent: true
+        parent_1_id: 0
+        parent_2_id: 22
+    tax_units:
+      tax_unit:
+        members: [head, adoptive_parent, child]
+    spm_units:
+      spm_unit:
+        members: [head, adoptive_parent, child]
+    households:
+      household:
+        members: [head, adoptive_parent, child]
+        state_code: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child: [false, true, false]
+
+- name: A known absent parent suppresses the age fallback
+  period: 2026-01
+  input:
+    people:
+      head:
+        person_id: 11
+        age: 50
+      unrelated_adult:
+        person_id: 22
+        age: 35
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      child:
+        person_id: 33
+        age: 5
+        is_tax_unit_dependent: true
+        parent_1_id: 99
+        parent_2_id: 0
+    tax_units:
+      tax_unit:
+        members: [head, unrelated_adult, child]
+    spm_units:
+      spm_unit:
+        members: [head, unrelated_adult, child]
+    households:
+      household:
+        members: [head, unrelated_adult, child]
+        state_code: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child: [false, false, false]
+
+- name: Two unknown parent IDs preserve the own-child and age-window fallback
+  period: 2026-01
+  input:
+    people:
+      head:
+        person_id: 11
+        age: 85
+      adult_in_window:
+        person_id: 22
+        age: 35
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      adult_outside_window:
+        person_id: 33
+        age: 60
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      adult_without_own_children:
+        person_id: 44
+        age: 35
+        is_tax_unit_dependent: true
+        own_children_in_household: 0
+      child:
+        person_id: 55
+        age: 5
+        is_tax_unit_dependent: true
+        parent_1_id: 0
+        parent_2_id: 0
+    tax_units:
+      tax_unit:
+        members: [head, adult_in_window, adult_outside_window, adult_without_own_children, child]
+    spm_units:
+      spm_unit:
+        members: [head, adult_in_window, adult_outside_window, adult_without_own_children, child]
+    households:
+      household:
+        members: [head, adult_in_window, adult_outside_window, adult_without_own_children, child]
+        state_code: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child: [false, true, false, false, false]
+
+- name: A child with unknown IDs still permits fallback beside a linked child
+  period: 2026-01
+  input:
+    people:
+      head:
+        person_id: 11
+        age: 45
+      adult:
+        person_id: 22
+        age: 35
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      linked_child:
+        person_id: 33
+        age: 0
+        is_tax_unit_dependent: true
+        parent_1_id: 11
+        parent_2_id: 0
+      unlinked_child:
+        person_id: 44
+        age: 5
+        is_tax_unit_dependent: true
+        parent_1_id: 0
+        parent_2_id: 0
+    tax_units:
+      tax_unit:
+        members: [head, adult, linked_child, unlinked_child]
+    spm_units:
+      spm_unit:
+        members: [head, adult, linked_child, unlinked_child]
+    households:
+      household:
+        members: [head, adult, linked_child, unlinked_child]
+        state_code: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child: [true, true, false, false]
+
+- name: A linked child cannot supply the age fallback for an unrelated adult
+  period: 2026-01
+  input:
+    people:
+      head:
+        person_id: 11
+        age: 45
+      adult:
+        person_id: 22
+        age: 60
+        is_tax_unit_dependent: true
+        own_children_in_household: 1
+      linked_child:
+        person_id: 33
+        age: 17
+        is_tax_unit_dependent: true
+        parent_1_id: 11
+        parent_2_id: 0
+      unlinked_child:
+        person_id: 44
+        age: 0
+        is_tax_unit_dependent: true
+        parent_1_id: 0
+        parent_2_id: 0
+    tax_units:
+      tax_unit:
+        members: [head, adult, linked_child, unlinked_child]
+    spm_units:
+      spm_unit:
+        members: [head, adult, linked_child, unlinked_child]
+    households:
+      household:
+        members: [head, adult, linked_child, unlinked_child]
+        state_code: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child: [true, false, false, false]
+
+- name: Known parent IDs exclude an unrelated unmarked tax-unit head
+  period: 2026-01
+  input:
+    people:
+      unrelated_head:
+        person_id: 11
+        age: 30
+        own_children_in_household: 1
+      mother:
+        person_id: 22
+        age: 25
+        is_tax_unit_dependent: true
+        own_children_in_household: 0
+      baby:
+        person_id: 33
+        age: 0
+        is_tax_unit_dependent: true
+        parent_1_id: 22
+        parent_2_id: 0
+    tax_units:
+      tax_unit:
+        members: [unrelated_head, mother, baby]
+    spm_units:
+      spm_unit:
+        members: [unrelated_head, mother, baby]
+    households:
+      household:
+        members: [unrelated_head, mother, baby]
+        state_code: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child: [false, true, false]
+    mo_tanf_is_assistance_unit_member: [false, true, true]
+    mo_tanf_assistance_unit_size: 2
+
+- name: Known parent IDs retain a named head and spouse outside the age window
+  period: 2026-01
+  input:
+    people:
+      head:
+        person_id: 11
+        age: 70
+        # Isolate parent identification from computed old-age SSI.
+        ssi: 0
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        own_children_in_household: 0
+      spouse:
+        person_id: 22
+        age: 60
+        ssi: 0
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        own_children_in_household: 0
+      child:
+        person_id: 33
+        age: 5
+        is_tax_unit_dependent: true
+        parent_1_id: 11
+        parent_2_id: 22
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child: [true, true, false]
+    mo_tanf_is_assistance_unit_member: [true, true, true]
+    mo_tanf_assistance_unit_size: 3
+
+- name: Known IDs stop an unrelated unmarked head from blocking a non-parent caretaker
+  period: 2026-01
+  input:
+    people:
+      unrelated_head:
+        person_id: 11
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        own_children_in_household: 1
+        mo_tanf_is_non_parent_caretaker: false
+      caretaker_spouse:
+        person_id: 22
+        age: 35
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        own_children_in_household: 1
+        mo_tanf_is_non_parent_caretaker: true
+      child:
+        person_id: 33
+        age: 5
+        is_tax_unit_dependent: true
+        parent_1_id: 99
+        parent_2_id: 0
+    tax_units:
+      tax_unit:
+        members: [unrelated_head, caretaker_spouse, child]
+    spm_units:
+      spm_unit:
+        members: [unrelated_head, caretaker_spouse, child]
+    households:
+      household:
+        members: [unrelated_head, caretaker_spouse, child]
+        state_code: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child: [false, false, false]
+    mo_tanf_non_parent_caretaker: [false, true, false]
+
+- name: Explicit parent IDs retain the approved three-generation unit for an 18-year-old student mother
+  period: 2026-01
+  input:
+    people:
+      grandmother:
+        person_id: 11
+        age: 45
+        own_children_in_household: 0
+      mother:
+        person_id: 22
+        age: 18
+        is_tax_unit_dependent: true
+        is_in_secondary_school: true
+        own_children_in_household: 0
+        parent_1_id: 11
+        parent_2_id: 0
+      baby:
+        person_id: 33
+        age: 0
+        is_tax_unit_dependent: true
+        parent_1_id: 22
+        parent_2_id: 0
+    tax_units:
+      tax_unit:
+        members: [grandmother, mother, baby]
+    spm_units:
+      spm_unit:
+        members: [grandmother, mother, baby]
+    households:
+      household:
+        members: [grandmother, mother, baby]
+        state_code: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child: [true, true, false]
+    mo_tanf_is_assistance_unit_member: [true, true, true]
+    mo_tanf_assistance_unit_size: 3

@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.demographic.person._parent_links import (
+    co_resident_parent_indices,
+    has_parent_ids,
+)
 
 
 class mo_tanf_is_parent_of_dependent_child(Variable):
@@ -12,19 +16,25 @@ class mo_tanf_is_parent_of_dependent_child(Variable):
         "dependent, unless they receive SSI or are a dependent child "
         "themselves (then they are a member as a child). A parent in the "
         "home, other than a cash-eligible child, also excludes a non-parent "
-        "caretaker. Defaults to having one's own children in the household "
-        "(own_children_in_household) and being 12 to 50 years older than one "
-        "of the tax unit's dependent children, as of January of the year. "
-        "The age window is an imputation rule, not law. The count also "
-        "includes adult children and children outside the tax unit, so set "
-        "this input directly when it does not match: false, for example, for "
-        "a dependent whose own child in the home is an adult, and true for an "
-        "adoptive parent outside the 12-to-50-year window. Setting it for one "
+        "caretaker. Reads January's dependent children in the person's tax "
+        "unit. First uses each child's parent_1_id and parent_2_id, resolved "
+        "to a co-resident person_id: a named parent qualifies regardless of "
+        "ages or own_children_in_household. Only a child whose two parent "
+        "ids are both unknown (0) permits the existing fallback: is_parent "
+        "and an age gap of 12 to 50 years. Known ids naming another person "
+        "or an absent parent do not permit age inference for that child. "
+        "This follows d1049 and the principle to make inputs as leaf-nodey "
+        "as possible; the age window imputes a relationship, not law. "
+        "The fallback's own-child count can include adult children and "
+        "children outside the tax unit, so supply parent ids when known, "
+        "or set this input directly when the fallback does not match. "
+        "Setting it for one "
         "person for a year sets it to false for everyone else not given a "
         "value for that year, so set it for every parent it applies to; other "
         "years still use the default. Heads and spouses not marked as "
-        "non-parent caretakers are always treated as parents; this input "
-        "applies to other tax-unit members. This input cannot associate a "
+        "non-parent caretakers retain their presumed-parent status only "
+        "when a dependent child's parent ids are unknown, or this flag "
+        "identifies them as a parent. This input cannot associate a "
         "parent filing a separate tax return with a child in another tax "
         "unit: even an explicit true leaves that parent excluded when their "
         "own tax unit has no dependent child. The assistance-unit formulas "
@@ -40,24 +50,28 @@ class mo_tanf_is_parent_of_dependent_child(Variable):
     defined_for = StateCode.MO
 
     def formula(person, period, parameters):
-        # own_children_in_household counts own children of any age, so on
-        # its own it also marks, for example, the head's elderly mother,
-        # whose own child in the home is the head. Also require the person
-        # to be 12 to 50 years older than at least one of the tax unit's
-        # dependent children. The bounds approximate typical birth ages;
-        # they do not establish parenthood. This window is an imputation rule,
-        # not law: the rule covers adoptive parents of any age, so a genuine
-        # adoptive parent outside the window needs this input set to true.
-        # Dependent children are all under 19, so their ages span less than
-        # the 38-year window, and "some child is 12 to 50 years younger"
-        # reduces to the youngest being at least 12 years younger and the
-        # oldest at most 50.
         # The flag is annual and reads January's dependent children, so a
         # change in who is a dependent child later in the year (for example
         # a child aging out through monthly_age inputs) does not update it.
+        dependent_child = person("mo_tanf_dependent_child", period.first_month)
+        # Use relationship leaf inputs first (Max's d1049). Resolve within
+        # households using the shared helpers, so repeated ids in different
+        # households cannot join unrelated families. Preserve the tax-unit
+        # child grouping used by the assistance-unit formulas.
+        tax_unit = person.tax_unit.reference_entity.members_entity_id
+        linked_parent = np.zeros(person.count, dtype=bool)
+        for parent in co_resident_parent_indices(person, period):
+            relevant = dependent_child & (parent >= 0) & (tax_unit[parent] == tax_unit)
+            linked_parent |= np.bincount(parent[relevant], minlength=person.count) > 0
+
+        # Only fully unknown child links permit the unchanged 12–50 fallback.
+        # Known but absent parents are still known and do not permit it.
+        # Dependent children's ages span less than the 38-year window, so
+        # the youngest/oldest shortcut is equivalent to checking each child.
+        unknown_child = dependent_child & ~has_parent_ids(person, period)
         has_own_children = person("is_parent", period)
         age = person("age", period)
-        dependent_child = person("mo_tanf_dependent_child", period.first_month)
-        youngest = person.tax_unit.min(where(dependent_child, age, np.inf))
-        oldest = person.tax_unit.max(where(dependent_child, age, -np.inf))
-        return has_own_children & (age - youngest >= 12) & (age - oldest <= 50)
+        youngest = person.tax_unit.min(where(unknown_child, age, np.inf))
+        oldest = person.tax_unit.max(where(unknown_child, age, -np.inf))
+        fallback = has_own_children & (age - youngest >= 12) & (age - oldest <= 50)
+        return linked_parent | fallback
