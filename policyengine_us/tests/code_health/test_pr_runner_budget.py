@@ -7,10 +7,12 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[3]
 JOBS = yaml.safe_load((ROOT / ".github/workflows/pr.yaml").read_text())["jobs"]
-PYTHON_WORKFLOW = yaml.safe_load(
-    (ROOT / ".github/workflows/python-tests.yaml").read_text()
-)
-PYTHON_JOBS = PYTHON_WORKFLOW["jobs"]
+GROUP_WORKFLOWS = {
+    name: yaml.safe_load((ROOT / job["uses"]).read_text())
+    for name, job in JOBS.items()
+    if "uses" in job
+}
+PYTHON_JOBS = GROUP_WORKFLOWS["PythonTests"]["jobs"]
 KEEP_RUNNING = "${{ !cancelled() }}"
 
 
@@ -31,9 +33,10 @@ def calls(job, name):
 def test_pr_runner_budget_keeps_the_heavy_suites_separate():
     counts = {}
     runner_jobs = {name: job for name, job in JOBS.items() if "uses" not in job}
-    for name, job in PYTHON_JOBS.items():
-        assert name not in runner_jobs
-        runner_jobs[name] = job
+    for workflow in GROUP_WORKFLOWS.values():
+        for name, job in workflow["jobs"].items():
+            assert name not in runner_jobs
+            runner_jobs[name] = job
     for name, job in runner_jobs.items():
         matrix = job.get("strategy", {}).get("matrix", {})
         if "include" in matrix:
@@ -52,18 +55,22 @@ def test_pr_runner_budget_keeps_the_heavy_suites_separate():
     }
 
 
-def test_python_group_has_two_independent_runners_and_no_extra_trigger():
-    callers = [job for job in JOBS.values() if "uses" in job]
-    assert callers == [
-        {
-            "name": "Python tests",
+def test_suite_groups_have_no_extra_runners_or_triggers():
+    groups = {
+        "Baseline": ("Baseline tests", "baseline-tests.yaml"),
+        "Contrib": ("Contrib tests", "contrib-tests.yaml"),
+        "PythonTests": ("Python tests", "python-tests.yaml"),
+    }
+    assert set(GROUP_WORKFLOWS) == set(groups)
+    for name, (label, file) in groups.items():
+        assert JOBS[name] == {
+            "name": label,
             "needs": "ReleaseLock",
-            "uses": "./.github/workflows/python-tests.yaml",
+            "uses": f"./.github/workflows/{file}",
         }
-    ]
-    # PyYAML parses the bare `on` key as True. No push/PR trigger here:
-    # the draft guard must control the only route to these runners.
-    assert PYTHON_WORKFLOW[True] == {"workflow_call": None}
+        # PyYAML parses the bare `on` key as True. No push/PR trigger here:
+        # the draft guard must control the only route to these runners.
+        assert GROUP_WORKFLOWS[name][True] == {"workflow_call": None}
     assert set(PYTHON_JOBS) == {"Rest", "Microsimulation"}
     assert {name: job["timeout-minutes"] for name, job in PYTHON_JOBS.items()} == {
         "Rest": 90,

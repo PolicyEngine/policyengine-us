@@ -1,1 +1,1 @@
-Reduce PR CI from 35 to 26 jobs by consolidating validation, package builds, and compatibility checks; group Rest and Microsimulation while preserving their separate runners; prevent YAML batches from rerunning separately routed Python tests.
+Reduce PR CI from 35 to 26 jobs by consolidating validation, package builds, and compatibility checks; group Baseline, Contrib, and Python suites while preserving their separate runners; prevent YAML batches from rerunning separately routed Python tests.

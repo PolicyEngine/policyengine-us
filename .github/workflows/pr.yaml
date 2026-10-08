@@ -243,61 +243,9 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
   Baseline:
+    name: Baseline tests
     needs: ReleaseLock
-    name: Full Suite - Baseline (${{ matrix.group }})
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    env:
-      PYTHONUNBUFFERED: 1
-      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # One state per subprocess; retain four runners and one worker each.
-          # The former NY/OH/OK process peaked at 15.1 GB (run 36930199045).
-          - group: states-shard-1
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 1/4
-          - group: states-shard-2
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 2/4
-          - group: states-shard-3
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 3/4
-          - group: states-shard-4
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 4/4
-          - group: irs
-            cmd: make test-yaml-no-structural-other-irs
-          - group: household
-            cmd: make test-yaml-no-structural-other-household
-          - group: ssa-usda
-            cmd: make test-yaml-no-structural-other-ssa-usda
-          - group: rest-a
-            cmd: make test-yaml-no-structural-other-rest-a
-          - group: rest-b
-            cmd: make test-yaml-no-structural-other-rest-b
-          - group: contrib-hhs
-            cmd: make test-yaml-contrib-hhs
-          - group: reform
-            cmd: make test-yaml-reform
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v6
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: 3.14
-      - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
-        with:
-          version: "0.12.13"
-      - name: Resolve latest compatible PolicyEngine Core
-        run: uv lock --upgrade-package policyengine-core
-      - name: Install dependencies
-        run: uv sync --locked --extra dev
-      - name: Turn off default branching
-        shell: bash
-        run: bash ./update_itemization.sh
-      - name: Run Baseline YAML tests (${{ matrix.group }})
-        run: uv run --no-sync ${{ matrix.cmd }}
+    uses: ./.github/workflows/baseline-tests.yaml
   HouseholdAPIPartners:
     needs: ReleaseLock
     name: Household API Partners
@@ -327,58 +275,9 @@ jobs:
       - name: Run Household API Partners YAML tests
         run: uv run --no-sync make test-yaml-no-structural-other-partners
   Contrib:
+    name: Contrib tests
     needs: ReleaseLock
-    name: Full Suite - Contrib (${{ matrix.group }})
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    env:
-      PYTHONUNBUFFERED: 1
-      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - group: states-shard-1
-            target: test-yaml-structural-heavy-shard-1
-          - group: states-shard-2
-            target: test-yaml-structural-heavy-shard-2
-          - group: states-shard-3
-            target: test-yaml-structural-heavy-shard-3
-          - group: states-shard-4
-            target: test-yaml-structural-heavy-shard-4
-          - group: other-shard-1
-            target: test-yaml-structural-other
-          - group: other-shard-2a
-            target: test-yaml-structural-other-shard-2a
-          - group: other-shard-2b
-            target: test-yaml-structural-other-shard-2b
-          - group: other-shard-3
-            target: test-yaml-structural-other-shard-3
-          - group: congress
-            target: test-yaml-structural-congress
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v6
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: 3.14
-      - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
-        with:
-          version: "0.12.13"
-      - name: Resolve latest compatible PolicyEngine Core
-        run: uv lock --upgrade-package policyengine-core
-      - name: Install dependencies
-        run: uv sync --locked --extra dev
-      - name: Turn off default branching
-        shell: bash
-        run: bash ./update_itemization.sh
-      - name: Run Contrib YAML tests (${{ matrix.group }})
-        run: uv run --no-sync make ${{ matrix.target }}
-      - name: Run Contrib Python tests
-        if: ${{ matrix.group == 'other-shard-1' }}
-        run: uv run --no-sync make test-policy-contrib-python
+    uses: ./.github/workflows/contrib-tests.yaml
   PythonTests:
     name: Python tests
     needs: ReleaseLock
