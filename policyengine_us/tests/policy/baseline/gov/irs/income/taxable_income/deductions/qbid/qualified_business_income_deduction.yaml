@@ -3,7 +3,7 @@
   input:
     qbid_amount: 10_000
     taxable_income_less_qbid: 30_000
-    adjusted_net_capital_gain: 2_000
+    section_199a_net_capital_gain: 2_000
   output:
     qualified_business_income_deduction: 5_600
 
@@ -12,7 +12,7 @@
   input:
     qbid_amount: 3_000
     taxable_income_less_qbid: 30_000
-    adjusted_net_capital_gain: 2_000
+    section_199a_net_capital_gain: 2_000
   output:
     qualified_business_income_deduction: 3_000
 
@@ -21,7 +21,7 @@
   input:
     qbid_amount: 10_000
     taxable_income_less_qbid: 30_000
-    adjusted_net_capital_gain: 32_000
+    section_199a_net_capital_gain: 32_000
   output:
     qualified_business_income_deduction: 0
 
@@ -31,7 +31,7 @@
   input:
     qbid_amount: 200
     taxable_income_less_qbid: 600
-    adjusted_net_capital_gain: 0
+    section_199a_net_capital_gain: 0
     qualified_business_income: 1_000
   output:
     qualified_business_income_deduction: 400
@@ -42,7 +42,7 @@
   input:
     qbid_amount: 200
     taxable_income_less_qbid: 0
-    adjusted_net_capital_gain: 0
+    section_199a_net_capital_gain: 0
     qualified_business_income: 999
   output:
     qualified_business_income_deduction: 0
@@ -53,7 +53,7 @@
   input:
     qbid_amount: 2_000
     taxable_income_less_qbid: 20_000
-    adjusted_net_capital_gain: 0
+    section_199a_net_capital_gain: 0
     qualified_business_income: 1_000
   output:
     qualified_business_income_deduction: 2_000
@@ -74,7 +74,7 @@
       tax_unit:
         members: [person1]
         taxable_income_less_qbid: 600
-        adjusted_net_capital_gain: 0
+        section_199a_net_capital_gain: 0
     families:
       family:
         members: [person1]
@@ -159,3 +159,151 @@
     # Below the $197,300 single threshold so the SSTB phaseout does not apply.
     # SSTB QBI component = 0.20 * $30,000 = $6,000.
     qualified_business_income_deduction: 6_000
+
+# 26 U.S.C. 199A(a)(2) subtracts "the net capital gain (as defined in section
+# 1(h))" from taxable income, which is net capital gain plus qualified
+# dividends (2025 Form 8995 line 12), not adjusted net capital gain. Unrecaptured
+# section 1250 gain and 28-percent rate gain stay in the subtraction.
+- name: Income limitation binds with unrecaptured section 1250 gain
+  period: 2025
+  input:
+    qbid_amount: 20_000
+    taxable_income_less_qbid: 100_000
+    long_term_capital_gains: 40_000
+    unrecaptured_section_1250_gain: 30_000
+  output:
+    # Form 8995 line 10: QBI deduction before the income limitation = $20,000.
+    # Line 11: taxable income before the QBI deduction = $100,000.
+    # Line 12: net capital gain plus qualified dividends = $40,000.
+    # Line 13: $100,000 - $40,000 = $60,000.
+    # Line 14: income limitation = 20% x $60,000 = $12,000.
+    # Line 15: smaller of line 10 or line 14 = $12,000.
+    # (Subtracting adjusted net capital gain, $10,000, would allow $18,000.)
+    qualified_business_income_deduction: 12_000
+
+- name: Income limitation binds with 28-percent rate gain
+  period: 2025
+  input:
+    qbid_amount: 30_000
+    taxable_income_less_qbid: 150_000
+    long_term_capital_gains: 50_000
+    long_term_capital_gains_on_collectibles: 50_000
+    qualified_dividend_income: 10_000
+  output:
+    # Form 8995 line 10 = $30,000; line 11 = $150,000.
+    # Line 12 = $10,000 (Form 1040 line 3a) + $50,000 (Schedule D) = $60,000.
+    # Line 13 = $90,000. Line 14 = 20% x $90,000 = $18,000.
+    # Line 15 = smaller of $30,000 or $18,000 = $18,000.
+    # (Subtracting adjusted net capital gain, $10,000, would allow $28,000.)
+    qualified_business_income_deduction: 18_000
+
+- name: Income limitation ignores the Form 4952 investment income election
+  period: 2025
+  input:
+    qbid_amount: 20_000
+    taxable_income_less_qbid: 100_000
+    long_term_capital_gains: 50_000
+    qualified_dividend_income: 10_000
+    investment_income_elected_form_4952: 20_000
+  output:
+    # Form 8995 line 12 = $10,000 (line 3a, not reduced by Form 4952 line 4g)
+    # + $50,000 (smaller of Schedule D lines 15 and 16) = $60,000.
+    # Line 13 = $40,000. Line 14 = 20% x $40,000 = $8,000. Line 15 = $8,000.
+    qualified_business_income_deduction: 8_000
+
+- name: Self-employed seller of depreciated rental property
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        self_employment_income: 80_000
+        long_term_capital_gains: 50_000
+        # Zero out QBI deductions so QBI equals self-employment income.
+        self_employment_tax_ald_person: 0
+        self_employed_health_insurance_ald_person: 0
+        self_employed_pension_contribution_ald_person: 0
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # All of the long-term gain is unrecaptured section 1250 gain.
+        unrecaptured_section_1250_gain: 50_000
+    families:
+      family:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # AGI = $80,000 + $50,000 = $130,000; 2025 single standard deduction
+    # $15,750.
+    # Form 8995 line 1c/2 = $80,000 of QBI; line 4 = $80,000;
+    # line 5 = 20% x $80,000 = $16,000; line 10 = $16,000.
+    # Line 11 = $130,000 - $15,750 = $114,250 (below the $197,300 threshold).
+    taxable_income_less_qbid: 114_250
+    # Line 12 = $50,000 of net capital gain (Schedule D lines 15 and 16).
+    section_199a_net_capital_gain: 50_000
+    # Line 13 = $64,250. Line 14 = 20% x $64,250 = $12,850.
+    # Line 15 = smaller of $16,000 or $12,850 = $12,850.
+    # (Adjusted net capital gain is $0, which would leave line 10's $16,000.)
+    adjusted_net_capital_gain: 0
+    qualified_business_income_deduction: 12_850
+    # Form 1040 line 15 = $114,250 - $12,850 = $101,400.
+    taxable_income: 101_400
+
+# A tax unit dependent's gains and dividends are on the dependent's own
+# return, so they neither shrink nor widen the filer's income limitation.
+- name: Dependent gains do not reduce the parent's QBI deduction
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        qbid_amount: 20_000
+        long_term_capital_gains: 40_000
+        short_term_capital_gains: -10_000
+        qualified_dividend_income: 5_000
+      child:
+        is_tax_unit_dependent: true
+        qbid_amount: 0
+        long_term_capital_gains: 200_000
+        qualified_dividend_income: 50_000
+    tax_units:
+      unit:
+        members: [head, child]
+        taxable_income_less_qbid: 100_000
+  output:
+    # Parent: smaller of Schedule D lines 15 (40,000) and 16 (30,000), plus
+    # 5,000 of qualified dividends = 35,000.
+    section_199a_net_capital_gain: 35_000
+    # 20% x (100,000 - 35,000) = 13,000, below the 20,000 QBI amount.
+    qualified_business_income_deduction: 13_000
+
+- name: Dependent losses do not increase the parent's QBI deduction
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        qbid_amount: 20_000
+        long_term_capital_gains: 40_000
+        qualified_dividend_income: 5_000
+      child:
+        is_tax_unit_dependent: true
+        qbid_amount: 0
+        short_term_capital_gains: -100_000
+    tax_units:
+      unit:
+        members: [head, child]
+        taxable_income_less_qbid: 100_000
+  output:
+    # Parent: 40,000 + 5,000 = 45,000; the child's loss is not netted.
+    section_199a_net_capital_gain: 45_000
+    # 20% x (100,000 - 45,000) = 11,000.
+    qualified_business_income_deduction: 11_000
