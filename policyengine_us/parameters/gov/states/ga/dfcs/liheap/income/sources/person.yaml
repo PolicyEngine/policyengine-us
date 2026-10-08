@@ -1,0 +1,55 @@
+description: Georgia counts these income sources of adult household members under the Low Income Home Energy Assistance Program.
+# Interest is calculated separately after its disregard. TANF is counted once
+# at SPM-unit level. Each source is floored at zero in the formula, so a loss
+# in one source cannot offset another; net business inputs have no extra
+# deduction.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+    - unemployment_compensation
+    # Social Security is counted in the formula, net of the Medicare Part B
+    # premium.
+    - ssi
+    - pension_income
+    # Military retirement pay is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other.
+    - military_retirement_pay
+    # Manual application item 12 groups Railroad Retirement with Social
+    # Security; only Social Security is netted of the Medicare premium.
+    - railroad_benefits
+    - survivor_benefits
+    - veterans_benefits
+    # Plan vs manual: manual 1200.7 includes "Disability Payment" (page 65) and
+    # "Workers Compensation" (page 68), both paid by insurance companies, while
+    # FY2026 plan 1.9 (page 6) leaves "Insurance payments made directly to the
+    # insured" unchecked. This follows the manual.
+    - disability_benefits
+    - workers_compensation
+    - strike_benefits
+    - general_assistance
+    - rental_income
+    - farm_rent_income
+    - ordinary_dividend_income
+    - capital_gains
+    # Plan vs manual: manual 1200.7 (page 66) includes "Lottery Winnings", while
+    # FY2026 plan 1.9 (page 6) leaves "winnings from lotteries" unchecked. This
+    # follows the manual; the input also covers non-lottery gambling.
+    - gambling_winnings
+    # Manual 1200.7 (page 65) includes "Contribution/Cash Gift" and the plan
+    # leaves "Cash gifts" unchecked; cash gifts have no input and are not modeled.
+    - alimony_income
+    - child_support_received
+metadata:
+  unit: list
+  period: year
+  label: Georgia LIHEAP adult person income sources
+  reference:
+    - title: "Georgia LIHEAP Policy Manual, January 2022, sections 1200.1-1200.7 and application item 12 #page 62-69,83"
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=62
+    - title: "Georgia FY2026 LIHEAP State Plan, section 1.9 (current included and excluded sources) #page 5-6"
+      href: https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=5

@@ -1,0 +1,131 @@
+# Source-derived Georgia independent components; no final eligibility or total award asserted.
+
+# FY2026 matrix step 1: the Level I cutoff and the first cent above it for each size
+# from 1 to 16. The unusual size 4 cutoff of $25,469 is preserved exactly.
+- name: Case 1, all sixteen published lower level upper bounds remain inclusive.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA,
+      GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ga_liheap_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11,
+      12, 12, 13, 13, 14, 14, 15, 15, 16, 16]
+    ga_liheap_income: [13_589, 13589.01, 17_770, 17770.01, 21_952, 21952.01, 25_469, 25469.01, 30_315,
+      30315.01, 34_496, 34496.01, 35_280, 35280.01, 36_064, 36064.01, 36_848, 36848.01, 37_632, 37632.01,
+      38_416, 38416.01, 39_200, 39200.01, 39_984, 39984.01, 40_768, 40768.01, 41_552, 41552.01, 42_336,
+      42336.01]
+  output:
+    ga_liheap_matrix_amount: [660, 560, 660, 560, 660, 560, 660, 560, 660, 560, 660, 560, 660, 560,
+      660, 560, 660, 560, 660, 560, 660, 560, 660, 560, 660, 560, 660, 560, 660, 560, 660, 560]
+
+# FY2026 matrix heating column only, for electric, natural gas, oil, propane and wood:
+# Level I $500 / $660 / $810 / $680 / $500 and Level II $400 / $560 / $710 / $580 / $400.
+# The cooling column is not used.
+- name: Case 2, all five priced fuels match both heating benefit levels including zero income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA, GA, GA, GA, GA, GA, GA, GA, GA]
+    heating_type: [ELECTRICITY, NATURAL_GAS, FUEL_OIL, PROPANE, WOOD, ELECTRICITY, NATURAL_GAS, FUEL_OIL,
+      PROPANE, WOOD]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
+      1_200]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    fuel_oil_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    bottled_gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    wood_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ga_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ga_liheap_income: [0, 0, 0, 0, 0, 13589.01, 13589.01, 13589.01, 13589.01, 13589.01]
+  output:
+    ga_liheap_matrix_amount: [500, 660, 810, 680, 500, 400, 560, 710, 580, 400]
+
+# The regular heating matrix gives $660 for natural gas; no cap at the actual expense
+# is stated.
+- name: Case 3, a small heating bill does not cap the fixed matrix amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: GA
+    heating_type: NATURAL_GAS
+    pre_subsidy_electricity_expense: 1_200
+    gas_expense: 50
+    ga_liheap_household_size: 1
+    ga_liheap_income: 0
+  output:
+    ga_liheap_matrix_amount: 660
+
+# NONE means the home has no heating. These assertions do not establish legal
+# ineligibility for unpriced fuels or sizes above the table.
+- name: Case 4, explicit no heating has no supported matrix amount.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: GA
+    heating_type: NONE
+    pre_subsidy_electricity_expense: 1_200
+    ga_liheap_household_size: 1
+    ga_liheap_income: 0
+  output:
+    ga_liheap_matrix_amount: 0
+
+# FY2026 plan page 30 gives direct applicant payments the lowest award within the
+# income level. For size 1 the matrix gives $500 through $13,589 and $400 above it.
+# A separately paid utility keeps the ordinary natural gas award of $660; NONE remains
+# zero.
+- name: Case 5, direct rental payments use the income level minimum and preserve no heating.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA, GA, GA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NONE]
+    ga_liheap_household_size: [1, 1, 1, 1]
+    ga_liheap_income: [13_589, 13589.01, 12_000, 12_000]
+    rent: [12_000, 12_000, 12_000, 12_000]
+    heat_expense_included_in_rent: [true, true, true, true]
+    tenant_pays_utilities: [false, false, true, false]
+    receives_housing_assistance: [false, false, false, false]
+    is_in_public_housing: [false, false, false, false]
+  output:
+    ga_liheap_matrix_amount: [500, 400, 660, 0]
+
+# FY2025 matrix step 1 Level I cutoffs: size 1 $12,995, size 4 $24,355 and size 16
+# $40,485 (first, middle-table and last sizes). Deliberate boundary case: each cutoff
+# and the first cent above it. Step 2 natural gas pays $660 in Level I and $560 in
+# Level II.
+- name: Case 6, the FY2025 Level I cutoffs remain inclusive in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA, GA, GA, GA, GA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ga_liheap_household_size: [1, 1, 4, 4, 16, 16]
+    ga_liheap_income: [12_995, 12_995.01, 24_355, 24_355.01, 40_485, 40_485.01]
+  output:
+    ga_liheap_matrix_amount: [660, 560, 660, 560, 660, 560]
+
+# The FY2026 matrix publishes Level I cutoffs through size 16, so larger households use
+# the size 16 cutoff of $42,336. Deliberate boundary case: sizes 17 and 25 at $42,336
+# pay Level I natural gas $660, and size 17 one cent above pays Level II $560.
+- name: Case 7, households above the published table size use the size sixteen cutoff.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [GA, GA, GA]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200]
+    ga_liheap_household_size: [17, 17, 25]
+    ga_liheap_income: [42_336, 42_336.01, 42_336]
+  output:
+    ga_liheap_matrix_amount: [660, 560, 660]

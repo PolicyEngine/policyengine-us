@@ -1,0 +1,663 @@
+# Georgia ordinary heating route only. Categorical recipient facts, utility credits,
+# unpriced fuels and size-above-16 coverage remain documented limitations.
+
+# FY2026 matrix page 1: a size 1 household with $12,000 income is in Level I, and
+# electric heat pays $500. Manual pages 4 and 50 establish a heating burden, not an
+# expense cap, so the $25 bill does not reduce the scheduled award.
+- name: Case 1, a small positive primary bill receives the full fixed heating award.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 25
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_liheap_household_size: 1
+    ga_liheap_income: 12_000
+    ga_liheap_income_limit: 34_549
+    heating_expense: 25
+    ga_liheap_matrix_amount: 500
+    ga_liheap_eligible: true
+    ga_liheap: 500
+
+# Manual pages 51-52 and 62: the parent's income counts in full, the parent is
+# excluded from size, and all income of members under 18 is excluded. FY2026 matrix
+# page 1 gives the size 1 Level I natural gas award of $660.
+- name: Case 2, a citizen child qualifies while the nonqualified parent income counts fully.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        employment_income: 12_000
+        ssi: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        employment_income: 6_000
+        survivor_benefits: 1_200
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_liheap_household_size: 1
+    ga_liheap_income: 12_000
+    ga_liheap_income_limit: 34_549
+    ga_liheap_matrix_amount: 660
+    ga_liheap_eligible: true
+    ga_liheap: 660
+
+# Manual pages 51-52, 62 and 67: the full $30,000 of wages plus $5,000 of farm rent
+# count against qualified size 1. $35,000 exceeds the FY2026 matrix ceiling of
+# $34,549, so ordinary eligibility sets the final grant to zero.
+- name: Case 3, full nonqualified adult wages and farm rent can exceed the qualified child ceiling.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        employment_income: 30_000
+        farm_rent_income: 5_000
+        ssi: 0
+      person2:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ga_tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    ga_liheap_household_size: 1
+    ga_liheap_income: 35_000
+    ga_liheap_income_limit: 34_549
+    ga_liheap_eligible: false
+    ga_liheap: 0
+
+# FY2026 matrix page 1 prints the size 4 Level I ceiling as $25,469, despite its
+# unusual pattern. Two four-person families with wages of $25,469 and $25,469.01 are
+# both below the $66,441 limit but receive natural gas awards of $660 and $560.
+- name: Case 4, real four person families use the printed lower band boundary before the award.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 25_469
+      person2:
+        age: 39
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 0
+      person3:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 0
+      person4:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 0
+      person5:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 25469.01
+      person6:
+        age: 39
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 0
+      person7:
+        age: 10
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 0
+      person8:
+        age: 8
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 0
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3, person4]
+      tax_unit2:
+        members: [person5, person6, person7, person8]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ga_tanf: 0
+      spm_unit2:
+        members: [person5, person6, person7, person8]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ga_tanf: 0
+    households:
+      household1:
+        members: [person1, person2, person3, person4]
+        state_code: GA
+      household2:
+        members: [person5, person6, person7, person8]
+        state_code: GA
+  output:
+    ga_liheap_household_size: [4, 4]
+    ga_liheap_income_limit: [66_441, 66_441]
+    ga_liheap_eligible: [true, true]
+    ga_liheap_matrix_amount: [660, 560]
+    ga_liheap: [660, 560]
+
+# FY2026 matrix page 1: single-adult wages of $20,000 are above $13,589 and below
+# $34,549. Level II oil ($710), propane ($580) and wood ($400) pass ordinary
+# eligibility; the Alabama household receives no Georgia award. Unit cases cover the
+# full ten-cell matrix.
+- name: Case 5, ordinary upper band awards use the primary fuel and exclude another state.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA, AL]
+    age: [40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [20_000, 20_000, 20_000, 20_000]
+    ssi: [0, 0, 0, 0]
+    ga_tanf: [0, 0, 0, 0]
+    heating_type: [FUEL_OIL, PROPANE, WOOD, FUEL_OIL]
+    fuel_oil_expense: [1_200, 0, 0, 1_200]
+    bottled_gas_expense: [0, 1_200, 0, 0]
+    wood_expense: [0, 0, 1_200, 0]
+  output:
+    ga_liheap_eligible: [true, true, true, false]
+    ga_liheap: [710, 580, 400, 0]
+
+# Manual pages 4 and 57 permit a verified energy burden in subsidized heat-in-rent
+# housing. has_heating_expense is false when heat is in rent, but the reported $100
+# primary bill supplies the burden; FY2026 Level I propane pays $680 with no cap.
+- name: Case 6, a subsidized renter with verified primary expense can receive the ordinary grant.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: PROPANE
+        bottled_gas_expense: 100
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+        is_in_public_housing: true
+  output:
+    ga_liheap_household_size: 1
+    ga_liheap_income: 12_000
+    heating_expense: 100
+    has_heating_expense: false
+    ga_liheap_matrix_amount: 680
+    ga_liheap_eligible: true
+    ga_liheap: 680
+
+# Manual sections 1200.6-1200.7 (pages 64-66) net self-employment within the
+# business, so each source is floored at zero and the $18,000 self-employment loss
+# does not offset the $6,000 of wages: countable income is $6,000. That is at or
+# below the $13,589 Level I cutoff, so FY2026 Level I wood pays $500.
+- name: Case 7, a self-employment loss does not offset wages or inflate the fixed heating award.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 6_000
+        self_employment_income: -18_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: WOOD
+        wood_expense: 100
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_liheap_income: 6_000
+    ga_liheap_household_size: 1
+    ga_liheap_matrix_amount: 500
+    ga_liheap_eligible: true
+    ga_liheap: 500
+
+# Manual page 3 requires responsibility for energy costs or a verified burden; the
+# model honors an explicit has_heating_expense input even when no paid bill amount is
+# reported. FY2026 matrix page 1 gives Level I oil $810 with no spending cap.
+- name: Case 8, an explicit heating obligation with a zero reported bill receives the scheduled award.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: FUEL_OIL
+        fuel_oil_expense: 0
+        has_heating_expense: true
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_liheap_household_size: 1
+    ga_liheap_income: 12_000
+    heating_expense: 0
+    has_heating_expense: true
+    ga_liheap_matrix_amount: 810
+    ga_liheap_eligible: true
+    ga_liheap: 810
+
+# Manual page 89 recognizes an energy burden when all utilities are included in
+# unsubsidized rent. FY2026 plan page 30 pays an applicant the lowest award within the
+# income level: $500 for $12,000 of income and $400 for $15,000 of income. Both are
+# below the size 1 ceiling of $34,549 and have no separately paid bill.
+- name: Case 9, unsubsidized renters with all utilities bundled receive each income level minimum.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 12_000
+        rent: 12_000
+        ssi: 0
+      person2:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 15_000
+        rent: 12_000
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+        gas_expense: 0
+        pre_subsidy_electricity_expense: 0
+      spm_unit2:
+        members: [person2]
+        ga_tanf: 0
+        heating_type: NATURAL_GAS
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+        gas_expense: 0
+        pre_subsidy_electricity_expense: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: GA
+        is_in_public_housing: false
+        tenant_pays_utilities: false
+      household2:
+        members: [person2]
+        state_code: GA
+        is_in_public_housing: false
+        tenant_pays_utilities: false
+  output:
+    ga_liheap_household_size: [1, 1]
+    ga_liheap_income: [12_000, 15_000]
+    ga_liheap_income_limit: [34_549, 34_549]
+    heating_expense: [0, 0]
+    has_heating_expense: [false, false]
+    ga_liheap_matrix_amount: [500, 400]
+    ga_liheap_eligible: [true, true]
+    ga_liheap: [500, 400]
+
+# FY2025 matrix step 1: size 1 Level I is $0 - $12,995 and Level II is
+# $12,996 - $33,038. Deliberate boundary case: $12,995 is the Level I top and $13,000
+# is just above it (the FY2026 cutoff of $13,589 would put both in Level I).
+# Limit: floor($105,893 x 0.6) = $63,535; floor($63,535 x 0.52 = $33,038.20) = $33,038.
+# Step 2 electric heat pays $500 in Level I and $400 in Level II.
+- name: Case 10, the FY2025 Level I cutoff applies in 2025.
+  period: 2025
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_995, 13_000]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_200, 1_200]
+  output:
+    ga_liheap_household_size: [1, 1]
+    ga_liheap_income: [12_995, 13_000]
+    ga_liheap_income_limit: [33_038, 33_038]
+    heating_expense: [1_200, 1_200]
+    ga_liheap_matrix_amount: [500, 400]
+    ga_liheap_eligible: [true, true]
+    ga_liheap: [500, 400]
+
+# FY2025 and FY2026 plans, section 1.9 (page 6), count Social Security "Excluding
+# MediCare deduction", and manual section 1200.7 (page 69) excludes the premiums.
+# The 2026 Part B premium is pinned as an input: $202.90 x 12 = $2,434.80.
+# Countable income: $36,000 - $2,434.80 = $33,565.20. That is at or below the size 1
+# limit of $34,549 (gross Social Security would exceed it) and above the $13,589
+# Level I cutoff, so FY2026 Level II electric pays $400.
+- name: Case 11, a retiree's Social Security counts net of the Medicare Part B premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        social_security_retirement: 36_000
+        medicare_part_b_premium: 2_434.8
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_liheap_household_size: 1
+    ga_liheap_income: 33_565.2
+    ga_liheap_income_limit: 34_549
+    heating_expense: 1_800
+    ga_liheap_matrix_amount: 400
+    ga_liheap_eligible: true
+    ga_liheap: 400
+
+# FY2026 plan page 6 counts retirement and pension benefits; manual page 66 counts a
+# pension as unearned income, and page 83 groups Railroad Retirement with Social
+# Security. Household 1: $36,000 of military retirement pay. Household 2: $36,000 of
+# railroad retirement, counted gross; only Social Security is netted of the pinned
+# $2,434.80 premium. Both incomes of $36,000 exceed the size 1 limit of $34,549, so
+# both are ineligible. The ungated matrix amounts are Level II natural gas $560 and
+# Level II electric $400.
+- name: Case 12, military retirement pay and railroad retirement count as income.
+  period: 2026
+  input:
+    state_code: [GA, GA]
+    age: [50, 70]
+    immigration_status: [CITIZEN, CITIZEN]
+    military_retirement_pay: [36_000, 0]
+    railroad_benefits: [0, 36_000]
+    medicare_part_b_premium: [0, 2_434.8]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    heating_type: [NATURAL_GAS, ELECTRICITY]
+    gas_expense: [1_200, 0]
+    pre_subsidy_electricity_expense: [0, 1_500]
+  output:
+    ga_liheap_household_size: [1, 1]
+    ga_liheap_income: [36_000, 36_000]
+    ga_liheap_income_limit: [34_549, 34_549]
+    ga_liheap_matrix_amount: [560, 400]
+    ga_liheap_eligible: [false, false]
+    ga_liheap: [0, 0]
+
+# Manual page 65 counts capital gains, not losses, and pages 64-66 net business
+# income within each business. Each source is floored at zero before the sources are
+# added. Household 1: max($40,000, 0) + max(-$10,000, 0) = $40,000. Household 2:
+# max($36,000, 0) + max(-$5,000, 0) = $36,000. Both exceed the size 1 limit of
+# $34,549; netting the losses ($30,000 and $31,000) would have paid $400 each.
+- name: Case 13, a capital loss or a rental loss does not offset wages.
+  period: 2026
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [40_000, 36_000]
+    long_term_capital_gains: [-10_000, 0]
+    rental_income: [0, -5_000]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_500, 1_500]
+  output:
+    ga_liheap_income: [40_000, 36_000]
+    ga_liheap_income_limit: [34_549, 34_549]
+    ga_liheap_matrix_amount: [400, 400]
+    ga_liheap_eligible: [false, false]
+    ga_liheap: [0, 0]
+
+# Manual page 89 gives an energy burden to an unsubsidized renter whose rent includes
+# all utilities, and FY2026 plan page 30 pays the applicant the lowest award in the
+# income level. The heat-in-rent route does not need the fuel, so an UNSPECIFIED fuel
+# still pays: lowest Level II award min($400, $560, $710, $580, $400) = $400, plus
+# $100 in Level I. Household 1: $12,000 is at or below $13,589, so $500.
+# Household 2: $24,000 is above $13,589, so $400. Household 3 pays its own utilities
+# with heat outside rent: UNSPECIFIED has no primary fuel bill (heating_expense is $0),
+# so there is no energy burden and no award.
+- name: Case 14, bundled utilities in rent pay the income level minimum when the fuel is unspecified.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA]
+    age: [40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [12_000, 24_000, 12_000]
+    ssi: [0, 0, 0]
+    ga_tanf: [0, 0, 0]
+    rent: [12_000, 12_000, 12_000]
+    heating_type: [UNSPECIFIED, UNSPECIFIED, UNSPECIFIED]
+    heat_expense_included_in_rent: [true, true, false]
+    tenant_pays_utilities: [false, false, true]
+    receives_housing_assistance: [false, false, false]
+    is_in_public_housing: [false, false, false]
+    pre_subsidy_electricity_expense: [0, 0, 1_200]
+  output:
+    ga_liheap_income: [12_000, 24_000, 12_000]
+    heating_expense: [0, 0, 0]
+    has_heating_expense: [false, false, false]
+    ga_liheap_matrix_amount: [500, 400, 0]
+    ga_liheap_eligible: [true, true, false]
+    ga_liheap: [500, 400, 0]
+
+# The FY2026 matrix publishes Level I cutoffs through size 16, so a 17-person
+# household uses the size 16 cutoff of $42,336. Adult wages: $22,000 + $18,000 =
+# $40,000; the 13 children have no income. The eligibility limit uses the federal
+# size factor 0.52 + 5 x 0.16 + 11 x 0.03 = 1.65:
+# floor($66,441 x 1.65 = $109,627.65) = $109,627. $40,000 is at or below $42,336, so
+# Level I natural gas pays $660.
+- name: Case 15, a household above the published table size receives the size sixteen award.
+  period: 2026
+  input:
+    people:
+      person1: {age: 45, immigration_status: CITIZEN, employment_income: 22_000, ssi: 0}
+      person2: {age: 43, immigration_status: CITIZEN, employment_income: 18_000, ssi: 0}
+      person3: {age: 41, immigration_status: CITIZEN, ssi: 0}
+      person4: {age: 39, immigration_status: CITIZEN, ssi: 0}
+      person5: {age: 17, immigration_status: CITIZEN, ssi: 0}
+      person6: {age: 16, immigration_status: CITIZEN, ssi: 0}
+      person7: {age: 15, immigration_status: CITIZEN, ssi: 0}
+      person8: {age: 14, immigration_status: CITIZEN, ssi: 0}
+      person9: {age: 13, immigration_status: CITIZEN, ssi: 0}
+      person10: {age: 12, immigration_status: CITIZEN, ssi: 0}
+      person11: {age: 11, immigration_status: CITIZEN, ssi: 0}
+      person12: {age: 10, immigration_status: CITIZEN, ssi: 0}
+      person13: {age: 9, immigration_status: CITIZEN, ssi: 0}
+      person14: {age: 7, immigration_status: CITIZEN, ssi: 0}
+      person15: {age: 5, immigration_status: CITIZEN, ssi: 0}
+      person16: {age: 3, immigration_status: CITIZEN, ssi: 0}
+      person17: {age: 1, immigration_status: CITIZEN, ssi: 0}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8,
+          person9, person10, person11, person12, person13, person14, person15, person16,
+          person17]
+        ga_tanf: 0
+        heating_type: NATURAL_GAS
+        gas_expense: 1_800
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8,
+          person9, person10, person11, person12, person13, person14, person15, person16,
+          person17]
+        state_code: GA
+  output:
+    ga_liheap_household_size: 17
+    ga_liheap_income: 40_000
+    ga_liheap_income_limit: 109_627
+    heating_expense: 1_800
+    ga_liheap_matrix_amount: 660
+    ga_liheap_eligible: true
+    ga_liheap: 660
+
+# Manual page 89, third row: an unsubsidized renter with heat in rent who is billed
+# directly for electric has an energy burden, paid to the electric vendor. Page 4 also
+# makes subsidized renters eligible when the utility bill is in their name. The award
+# is the FY2026 matrix step 2 amount for the main heating fuel; it is not the
+# lowest award. Each household is one adult with heat in rent and a $1,200 a year
+# ($100 a month) electric bill. Unsubsidized rent is $9,600 ($800 a month); the
+# subsidized tenant share is $3,000 ($250 a month). The size 1 limit is $34,549 and
+# the Level I cutoff is $13,589.
+# Household 1: natural gas, $12,000 wages, Level I: $560 + $100 = $660.
+# Household 2: natural gas, $24,000 wages, Level II: $560.
+# Household 3: electric, $24,000 wages, Level II: $400.
+# Household 4: UNSPECIFIED fuel, $12,000 wages: eligible, but the matrix has no amount
+# for an unspecified fuel, so $0.
+# Household 5: subsidized, natural gas, $12,000 wages, with the electric bill: $660.
+# Household 6: subsidized, natural gas, $12,000 wages, no bill: no energy burden, so
+# the $660 matrix amount is not paid.
+- name: Case 16, heat in rent renters billed for electric receive the main heating fuel award.
+  period: 2026
+  input:
+    state_code: [GA, GA, GA, GA, GA, GA]
+    age: [40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    employment_income: [12_000, 24_000, 24_000, 12_000, 12_000, 12_000]
+    ssi: [0, 0, 0, 0, 0, 0]
+    ga_tanf: [0, 0, 0, 0, 0, 0]
+    rent: [9_600, 9_600, 9_600, 9_600, 3_000, 3_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, ELECTRICITY, UNSPECIFIED, NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true, true, true, true, true]
+    tenant_pays_utilities: [true, true, true, true, true, true]
+    receives_housing_assistance: [false, false, false, false, true, true]
+    is_in_public_housing: [false, false, false, false, false, false]
+    gas_expense: [0, 0, 0, 0, 0, 0]
+    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 0]
+  output:
+    ga_liheap_household_size: [1, 1, 1, 1, 1, 1]
+    ga_liheap_income: [12_000, 24_000, 24_000, 12_000, 12_000, 12_000]
+    ga_liheap_income_limit: [34_549, 34_549, 34_549, 34_549, 34_549, 34_549]
+    heating_expense: [0, 0, 1_200, 0, 0, 0]
+    has_heating_expense: [false, false, false, false, false, false]
+    ga_liheap_eligible: [true, true, true, true, true, false]
+    ga_liheap_matrix_amount: [660, 560, 400, 0, 660, 660]
+    ga_liheap: [660, 560, 400, 0, 660, 0]
+
+# Manual page 89 and FY2026 plan page 30: when unsubsidized rent includes all
+# utilities, the tenant pays no utility vendor and gets the lowest award in the
+# income level, even if an electric bill is also reported. Ordinary natural gas would
+# pay $660 or $560; the lowest award is min($400, $560, $710, $580, $400) = $400,
+# plus $100 in Level I. Rent is $9,600 ($800 a month).
+# Household 1: $12,000 wages, Level I: $500. Household 2: $24,000 wages, Level II: $400.
+- name: Case 17, rent including all utilities keeps the lowest award when an electric bill is reported.
+  period: 2026
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_000, 24_000]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    rent: [9_600, 9_600]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true]
+    tenant_pays_utilities: [false, false]
+    receives_housing_assistance: [false, false]
+    is_in_public_housing: [false, false]
+    gas_expense: [0, 0]
+    pre_subsidy_electricity_expense: [1_200, 1_200]
+  output:
+    ga_liheap_income: [12_000, 24_000]
+    heating_expense: [0, 0]
+    ga_liheap_eligible: [true, true]
+    ga_liheap_matrix_amount: [500, 400]
+    ga_liheap: [500, 400]
+
+# Manual section 1200.7 (page 66) counts lottery winnings. Countable income is
+# $10,000 wages + $2,000 gambling winnings = $12,000. That is at or below the size 1
+# Level I cutoff of $13,589 and the $34,549 limit, so FY2026 Level I electric pays $500.
+- name: Case 18, gambling winnings count toward the Level I award.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        employment_income: 10_000
+        gambling_winnings: 2_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ga_tanf: 0
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: GA
+  output:
+    ga_liheap_household_size: 1
+    ga_liheap_income: 12_000
+    ga_liheap_income_limit: 34_549
+    heating_expense: 1_200
+    ga_liheap_matrix_amount: 500
+    ga_liheap_eligible: true
+    ga_liheap: 500

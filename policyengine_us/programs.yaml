@@ -808,8 +808,16 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, TX
+    coverage: DC, GA, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, TX
     state_implementations:
+      - state: GA
+        status: partial
+        name: Georgia LIHEAP
+        full_name: Georgia Low Income Home Energy Assistance Program
+        variable: ga_liheap
+        parameter_prefix: gov.states.ga.dfcs.liheap
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular heating only, with the published fuel matrix and the bundled-utility rental payment. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP

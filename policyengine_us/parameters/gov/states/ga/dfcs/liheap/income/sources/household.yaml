@@ -1,0 +1,13 @@
+description: Georgia counts these household benefits once under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    # The tanf aggregate includes ga_tanf and applies take-up; ga_tanf alone is
+    # the entitlement and would count benefits a nonrecipient could get.
+    - tanf
+metadata:
+  unit: list
+  period: year
+  label: Georgia LIHEAP household income sources
+  reference:
+    - title: Georgia FY2026 LIHEAP State Plan, section 1.9 (TANF counted)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=6
