@@ -1,0 +1,156 @@
+# HEAP Manual, Chapter 8 D.12 to D.14 (PDF pages 37 to 43): countable and
+# excluded income; D.14(c) (page 43) rounds final calculations down to the
+# nearest dollar. https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=37
+# FY2026 State Plan item 1.9 (page 6) lists the counted income forms and leaves
+# the TANF box unchecked.
+# https://liheapch.acf.gov/docs/2026/state-plans/NY_Plan_2026.pdf#page=6
+
+- name: Case 1, Social Security counts net of the Medicare Part B premium and monthly household income rounds down.
+  period: 2026
+  input:
+    heating_type: NATURAL_GAS
+    state_code: NY
+    ny_heap_countable_earned_income: 12_001
+    social_security: 12_000
+    # D.12(a)(6) (page 38) counts Social Security after the Medicare premium,
+    # so the $100 a month of Part B premium reduces the total.
+    medicare_part_b_premium: 1_200
+    railroad_benefits: 600
+    pension_income: 240
+    retirement_distributions: 360
+    interest_income: 120
+    ordinary_dividend_income: 240
+    rental_income: 360
+    alimony_income: 480
+    child_support_received: 600
+    unemployment_compensation: 720
+    strike_benefits: 120
+    workers_compensation: 240
+    disability_benefits: 360
+    veterans_benefits: 480
+    estate_income: 120
+    ssi: 0
+  output:
+    # 12,001 earnings + 12,600 Social Security and railroad benefits less the
+    # 1,200 Part B premium (D.12(a)(6) and (8), page 38) + 4,440 from the other
+    # counted sources in D.12(a)(10) to (28) (pages 38 to 39) = 27,841. D.14(c)
+    # (page 43): floor(27,841 / 12) = 2,320 a month, annualized 27,840.
+    ny_heap_countable_income: 27_840
+
+- name: Case 2, TANF cash assistance is not counted as income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 28
+        ssi: 0
+      person2:
+        age: 4
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        # Two-person New York City grant with no other income: $252 basic
+        # allowance + $22.50 home energy + $17 supplemental home energy + $283
+        # shelter = $574.50 a month (18 NYCRR 352.1 to 352.3).
+        tanf: 6_894
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # State Plan item 1.9 (page 6) leaves the TANF box unchecked, and Chapter 8
+    # D.11(c)(1) (page 37) counts a TA grant only for a minor child budgeted as
+    # a roomer, so the grant adds nothing to the household's countable income.
+    ny_heap_countable_income: 0
+    # Chapter 8 D.10(c) (page 37): the recurring TA recipient household is
+    # categorically income eligible instead.
+    ny_heap_categorically_eligible: true
+
+- name: Case 3, survivor benefits, farm rent and miscellaneous income are counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 61
+        # Part-time wages of $1,000 a month.
+        employment_income: 12_000
+        # An $800 monthly survivor annuity from a late spouse's employer
+        # pension, $500 of farm cropland rent and $100 of other regular income.
+        survivor_benefits: 9_600
+        farm_rent_income: 6_000
+        miscellaneous_income: 1_200
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        # About 700 gallons of heating oil at $4.00 a gallon.
+        fuel_oil_expense: 2_800
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    # D.12(a)(1) wages (page 37); D.12(a)(13) pensions and (14) payments from
+    # insurance and annuities for the employer pension survivor annuity (page
+    # 38); (27) income from rents and (38) all other income not excluded (pages
+    # 38 to 39): 12,000 + 9,600 + 6,000 + 1,200 = 28,800, which is 2,400 a month.
+    ny_heap_countable_income: 28_800
+    # 2,400 a month exceeds the one-person Tier I maximum of 1,695 in the
+    # 2025-2026 HEAP Monthly Income Eligibility Guidelines; the wages alone
+    # would have been Tier I.
+    ny_heap_tier_one: false
+    # Oil base $900 + $35 for a member aged 60 or older (2025-2026 HEAP Direct
+    # Heating Regular Base Benefit Levels, vulnerable add-on column) = $935.
+    ny_heap: 935
+
+- name: Case 4, a rental loss does not offset wages.
+  period: 2026
+  input:
+    state_code: NY
+    heating_type: NATURAL_GAS
+    gas_expense: 1_500
+    age: 40
+    # Full-time wages of $3,600 a month.
+    ny_heap_countable_earned_income: 43_200
+    rental_income: -6_000
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    # D.14(b)(7) (page 41) converts negative income to zero and lists net loss
+    # as a deduction that is not allowed, so the loss counts as 0 and the
+    # wages count in full: 3,600 a month.
+    ny_heap_countable_income: 43_200
+    # 3,600 a month exceeds the one-person Tier II maximum of 3,473.
+    ny_heap: 0
+
+- name: Case 5, the Medicare Part B premium brings a retiree under the income limit.
+  period: 2026
+  input:
+    state_code: NY
+    heating_type: NATURAL_GAS
+    gas_expense: 1_500
+    age: 70
+    # Social Security retirement of $3,600 a month.
+    social_security: 43_200
+    # The standard 2026 Part B premium of $202.90 a month, not covered by a
+    # Medicare Savings Program at this income.
+    medicare_part_b_premium: 2_434.8
+    ssi: 0
+    snap: 0
+    tanf: 0
+  output:
+    # D.14(b)(4) (page 41): the benefit after the Part B premium is counted,
+    # 43,200 - 2,434.80 = 40,765.20; D.14(c): floor(40,765.20 / 12) = 3,397 a
+    # month, annualized 40,764.
+    ny_heap_countable_income: 40_764
+    # 3,397 a month is within the one-person Tier II maximum of 3,473 and
+    # above the Tier I maximum of 1,695: Utility 400 + 35 for a member aged 60
+    # or older (Chapter 9 B.3(b)(2), page 49) = 435.
+    ny_heap: 435
