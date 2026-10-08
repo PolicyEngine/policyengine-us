@@ -1,0 +1,22 @@
+description: New York subtracts these individual retirement account distributions, to the extent included in federal adjusted gross income, when computing income for the New York City school tax credit.
+values:
+  2022-01-01:
+    - taxable_ira_distributions
+    - taxable_sep_distributions
+metadata:
+  unit: list
+  period: year
+  label: NYC school tax credit IRA distribution sources
+  reference:
+    - title: NY Tax Law § 606(ggg)(2)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: NY Real Property Tax Law § 425(4)(b)(ii)
+      href: https://www.nysenate.gov/legislation/laws/RPT/425
+    - title: Instructions for Form IT-201, 2022, Line 69 income definition
+      href: https://www.tax.ny.gov/pdf/2022/printable-pdfs/inc/it201i-2022.pdf#page=26
+    - title: Instructions for Form IT-201, 2023, Line 69 income definition
+      href: https://web.archive.org/web/20240317205657/https://www.tax.ny.gov/pdf/2023/printable-pdfs/inc/it201i-2023.pdf#page=28
+    - title: Instructions for Form IT-201, 2024, Line 69 income definition
+      href: https://www.tax.ny.gov/pdf/2024/inc/it201i_2024.pdf#page=20
+    - title: Instructions for Form IT-201, 2025, Line 69 income definition
+      href: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=20

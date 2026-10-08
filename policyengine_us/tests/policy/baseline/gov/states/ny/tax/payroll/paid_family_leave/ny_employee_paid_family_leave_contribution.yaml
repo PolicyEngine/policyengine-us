@@ -1,0 +1,43 @@
+- name: New York Paid Family Leave 2024 contribution is 0.373% of wages.
+  period: 2024
+  input:
+    employment_income: 60_000
+    state_code: NY
+  output:
+    # 0.373% * 60,000 = 223.80, below the 2024 cap of 333.25.
+    ny_employee_paid_family_leave_contribution: 223.80
+    # Disability Benefits: min(0.5% * 60,000, 31.20) = 31.20.
+    ny_employee_disability_benefits_contribution: 31.20
+    # 223.80 + 31.20 = 255.00.
+    ny_employee_state_payroll_tax: 255.00
+    employee_state_payroll_tax: 255.00
+
+- name: New York Paid Family Leave 2024 contribution stops at the 333.25 annual maximum.
+  period: 2024
+  input:
+    employment_income: 100_000
+    state_code: NY
+  output:
+    # 0.373% * 100,000 = 373.00, capped at 333.25.
+    ny_employee_paid_family_leave_contribution: 333.25
+
+- name: New York Paid Family Leave 2025 contribution is 0.388% of wages.
+  period: 2025
+  input:
+    employment_income: 60_000
+    state_code: NY
+  output:
+    # 0.388% * 60,000 = 232.80, below the 2025 cap of 354.53.
+    ny_employee_paid_family_leave_contribution: 232.80
+    # 232.80 + 31.20 Disability Benefits = 264.00.
+    ny_employee_state_payroll_tax: 264.00
+    employee_state_payroll_tax: 264.00
+
+- name: New York Paid Family Leave 2025 contribution stops at the 354.53 annual maximum.
+  period: 2025
+  input:
+    employment_income: 100_000
+    state_code: NY
+  output:
+    # 0.388% * 100,000 = 388.00, capped at 354.53.
+    ny_employee_paid_family_leave_contribution: 354.53

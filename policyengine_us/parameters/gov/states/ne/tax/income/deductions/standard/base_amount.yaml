@@ -24,6 +24,11 @@ metadata:
     href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2024/f_Individual_Income_Tax_Booklet.pdf#page=10
   - title: 2025 Nebraska Individual Income Tax Booklet, Line 6
     href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_Individual_Income_Tax_Booklet.pdf#page=13
+  # The 2026 worksheet lists single, joint, head of household and separate
+  # amounts; the qualifying surviving spouse amount equals the joint amount,
+  # as on the 2025 booklet's line 6 table.
+  - title: 2026 Nebraska Individual Estimated Income Tax Payment Vouchers (Form 1040N-ES), Income Tax Worksheet line 5
+    href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_1040N-ES.pdf#page=4
 
 JOINT:
   values:
@@ -32,6 +37,7 @@ JOINT:
     2023-01-01: 15_800
     2024-01-01: 16_700
     2025-01-01: 17_200
+    2026-01-01: 17_700
 
 HEAD_OF_HOUSEHOLD:
   values:
@@ -40,6 +46,7 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 11_600
     2024-01-01: 12_250
     2025-01-01: 12_600
+    2026-01-01: 12_950
 
 SURVIVING_SPOUSE:
   values:
@@ -48,6 +55,7 @@ SURVIVING_SPOUSE:
     2023-01-01: 15_800
     2024-01-01: 16_700
     2025-01-01: 17_200
+    2026-01-01: 17_700
 
 SINGLE:
   values:
@@ -56,6 +64,7 @@ SINGLE:
     2023-01-01: 7_900
     2024-01-01: 8_350
     2025-01-01: 8_600
+    2026-01-01: 8_850
 
 SEPARATE:
   values:
@@ -64,3 +73,4 @@ SEPARATE:
     2023-01-01: 7_900
     2024-01-01: 8_350
     2025-01-01: 8_600
+    2026-01-01: 8_850
