@@ -119,14 +119,14 @@
     excess_business_loss: 0
     ma_excess_business_loss_adjustment: 0
 
-- name: 2026 single return with a loss equal to the $313,000 Massachusetts threshold adds back nothing
+- name: 2026 single return with a loss equal to the $320,000 Massachusetts threshold adds back nothing
   period: 2026
   absolute_error_margin: 0.01
   input:
     people:
       head:
         age: 50
-        self_employment_income: -313_000
+        self_employment_income: -320_000
     tax_units:
       tax_unit:
         members: [head]
@@ -135,9 +135,9 @@
         members: [head]
         state_code: MA
   output:
-    # Federal: 313,000 - 256,000 (Rev. Proc. 2025-32, section 4.31)
-    excess_business_loss: 57_000
-    # Massachusetts: 313,000 - 313,000 = 0 (no OBBBA reset, TIR 26-4)
+    # Federal: 320,000 - 256,000 (Rev. Proc. 2025-32, section 4.31)
+    excess_business_loss: 64_000
+    # Massachusetts: 320,000 - 320,000 = 0 (no OBBBA reset, TIR 26-4)
     ma_excess_business_loss_adjustment: 0
 
 - name: 2026 single return with wages and a Schedule C loss below the Massachusetts threshold
@@ -159,12 +159,12 @@
   output:
     # Federal: 300,000 - 256,000
     excess_business_loss: 44_000
-    # Massachusetts: 300,000 is below 313,000.
+    # Massachusetts: 300,000 is below 320,000.
     ma_excess_business_loss_adjustment: 0
     # 500,000 wages - 300,000 Form 1, line 6a loss + 0
     ma_gross_income: 200_000
 
-- name: 2026 joint return adds back the loss above $626,000
+- name: 2026 joint return adds back the loss above $640,000
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -184,8 +184,8 @@
   output:
     # Federal: 1,000,000 - 512,000
     excess_business_loss: 488_000
-    # Massachusetts: 1,000,000 - 626,000
-    ma_excess_business_loss_adjustment: 374_000
+    # Massachusetts: 1,000,000 - 640,000
+    ma_excess_business_loss_adjustment: 360_000
 
 - name: No add-back from 2029, after the limitation ends
   period: 2029

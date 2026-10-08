@@ -31,9 +31,15 @@ metadata:
 # uses the 2023 federal $289,000 / $578,000 (Rev. Proc. 2022-38).
 # From 2026 the federal threshold uses the OBBBA reset ($256,000 / $512,000,
 # Rev. Proc. 2025-32, section 4.31), which Massachusetts does not adopt
-# (TIR 26-4). The 2026 values are the 2025 values, pending the Massachusetts
-# Department of Revenue's 2026 figure under the pre-OBBBA indexing of
-# Section 461(l)(3)(B).
+# (TIR 26-4). The 2026 values follow Section 461(l)(3)(C) as of January 1,
+# 2024: $250,000 times the Section 1(f)(3) cost-of-living adjustment with
+# "2017" for "2016" (average C-CPI-U for the 12 months ending August 31),
+# rounded to the nearest $1,000. 250,000 x 177.1137 / 138.2368 = 320,309,
+# so $320,000 ($640,000 joint). The same computation gives every published
+# figure for 2022-2025 (269,580; 289,140; 304,634; 313,038). The Department
+# of Revenue has not printed a 2026 figure (TIR 26-4; 2025 Form 1
+# instructions, page 21). 320,309 is about $200 below the 320,500 rounding
+# boundary, so a different CPI series could give $321,000.
 HEAD_OF_HOUSEHOLD:
   metadata:
     uprating:
@@ -46,8 +52,7 @@ HEAD_OF_HOUSEHOLD:
     2023-01-01: 289_000
     2024-01-01: 305_000
     2025-01-01: 313_000
-    # Pending the Massachusetts Department of Revenue's 2026 figure.
-    2026-01-01: 313_000
+    2026-01-01: 320_000
 JOINT:
   metadata:
     uprating:
@@ -61,8 +66,7 @@ JOINT:
     2023-01-01: 578_000
     2024-01-01: 610_000
     2025-01-01: 626_000
-    # Pending the Massachusetts Department of Revenue's 2026 figure.
-    2026-01-01: 626_000
+    2026-01-01: 640_000
 SEPARATE:
   metadata:
     uprating:
@@ -75,8 +79,7 @@ SEPARATE:
     2023-01-01: 289_000
     2024-01-01: 305_000
     2025-01-01: 313_000
-    # Pending the Massachusetts Department of Revenue's 2026 figure.
-    2026-01-01: 313_000
+    2026-01-01: 320_000
 SINGLE:
   metadata:
     uprating:
@@ -89,8 +92,7 @@ SINGLE:
     2023-01-01: 289_000
     2024-01-01: 305_000
     2025-01-01: 313_000
-    # Pending the Massachusetts Department of Revenue's 2026 figure.
-    2026-01-01: 313_000
+    2026-01-01: 320_000
 SURVIVING_SPOUSE:
   metadata:
     uprating:
@@ -104,5 +106,4 @@ SURVIVING_SPOUSE:
     2023-01-01: 289_000
     2024-01-01: 305_000
     2025-01-01: 313_000
-    # Pending the Massachusetts Department of Revenue's 2026 figure.
-    2026-01-01: 313_000
+    2026-01-01: 320_000
