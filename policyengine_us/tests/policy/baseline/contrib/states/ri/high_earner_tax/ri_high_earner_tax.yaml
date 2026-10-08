@@ -1,22 +1,18 @@
 # Test RI H7317 Additional Tax on High-Income Filers
 # For 2027+: 3% additional tax on income above $640,000 (inflation-adjusted).
-# The $640,000 threshold has an explicit value only for 2026-01-01; #8905
-# unfroze its `uprating:` block (previously a silently-ignored sibling of
-# `values:`), so 2027 is now gov.irs.uprating(2027)/gov.irs.uprating(2026) *
-# 640,000, rounded down to the nearest 50 -- not yet an officially published
-# 2027 figure (none exists for this proposed reform).
-#
-# The baseline tax below these tests also moved: gov/states/ri/tax/income/
-# rate.yaml's bracket thresholds ($79,900 @ bracket[1] / $181,650 @ bracket[2]
-# in 2025) were frozen by the same #8905 bug and are now gov.irs.uprating
-# projections ($84,450 / $192,000 for 2027) from RI's official 2026
-# thresholds -- this remains a projection pending RI's 2027 publication.
+# Retain the original fixture's synthetic 2027 forecast assumptions:
+# baseline bracket thresholds of $84,450 / $192,000 and a proposed surtax
+# threshold of $659,050. These inputs isolate reform activation and tax
+# stacking; they are not published Rhode Island tax-year amounts.
 
 - name: RI high earner tax - income below threshold (no surtax)
   period: 2027
   reforms: policyengine_us.reforms.states.ri.high_earner_tax.ri_high_earner_tax_reform.ri_high_earner_tax
   input:
     gov.contrib.states.ri.high_earner_tax.in_effect: true
+    gov.contrib.states.ri.high_earner_tax.brackets[1].threshold: 659_050
+    gov.states.ri.tax.income.rate[1].threshold: 84_450
+    gov.states.ri.tax.income.rate[2].threshold: 192_000
     people:
       person1:
         age: 45
@@ -30,7 +26,7 @@
         members: [person1]
         state_code: RI
   output:
-    # Income below the 2027 threshold - only baseline tax applies, surtax = 0.
+    # Income below the synthetic threshold - only baseline tax applies, surtax = 0.
     # Baseline: .0375*84,450 + .0475*(192,000-84,450) + .0599*(500,000-192,000) = 26,724.70
     ri_income_tax_before_non_refundable_credits: 26_724.70
 
@@ -39,6 +35,9 @@
   reforms: policyengine_us.reforms.states.ri.high_earner_tax.ri_high_earner_tax_reform.ri_high_earner_tax
   input:
     gov.contrib.states.ri.high_earner_tax.in_effect: true
+    gov.contrib.states.ri.high_earner_tax.brackets[1].threshold: 659_050
+    gov.states.ri.tax.income.rate[1].threshold: 84_450
+    gov.states.ri.tax.income.rate[2].threshold: 192_000
     people:
       person1:
         age: 45
@@ -52,8 +51,7 @@
         members: [person1]
         state_code: RI
   output:
-    # Baseline tax (41,699.70) + 3% surtax on income above the 2027 threshold
-    # (gov.irs.uprating-projected from $640,000 @ 2026 to $659,050 @ 2027)
+    # Baseline tax (41,699.70) + 3% surtax above the synthetic $659,050 threshold.
     # Baseline: .0375*84,450 + .0475*(192,000-84,450) + .0599*(750,000-192,000) = 41,699.70
     # Surtax: (750,000 - 659,050) * 0.03 = 90,950 * 0.03 = 2,728.5
     # Total: 41,699.70 + 2,728.5 = 44,428.20
@@ -64,6 +62,9 @@
   reforms: policyengine_us.reforms.states.ri.high_earner_tax.ri_high_earner_tax_reform.ri_high_earner_tax
   input:
     gov.contrib.states.ri.high_earner_tax.in_effect: true
+    gov.contrib.states.ri.high_earner_tax.brackets[1].threshold: 659_050
+    gov.states.ri.tax.income.rate[1].threshold: 84_450
+    gov.states.ri.tax.income.rate[2].threshold: 192_000
     people:
       person1:
         age: 45
@@ -77,8 +78,7 @@
         members: [person1]
         state_code: RI
   output:
-    # Baseline tax (56,674.70) + 3% surtax on income above the 2027 threshold
-    # (gov.irs.uprating-projected from $640,000 @ 2026 to $659,050 @ 2027)
+    # Baseline tax (56,674.70) + 3% surtax above the synthetic $659,050 threshold.
     # Baseline: .0375*84,450 + .0475*(192,000-84,450) + .0599*(1,000,000-192,000) = 56,674.70
     # Surtax: (1,000,000 - 659,050) * 0.03 = 340,950 * 0.03 = 10,228.5
     # Total: 56,674.70 + 10,228.5 = 66,903.20
@@ -89,6 +89,9 @@
   reforms: policyengine_us.reforms.states.ri.high_earner_tax.ri_high_earner_tax_reform.ri_high_earner_tax
   input:
     gov.contrib.states.ri.high_earner_tax.in_effect: false
+    gov.contrib.states.ri.high_earner_tax.brackets[1].threshold: 659_050
+    gov.states.ri.tax.income.rate[1].threshold: 84_450
+    gov.states.ri.tax.income.rate[2].threshold: 192_000
     people:
       person1:
         age: 45

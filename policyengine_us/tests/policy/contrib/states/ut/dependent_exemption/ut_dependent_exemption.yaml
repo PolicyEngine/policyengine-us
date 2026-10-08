@@ -1,8 +1,12 @@
+# The baseline exemption inputs below retain the original fixture's
+# synthetic 2026 forecast assumption to isolate reform behavior. The $2,159
+# per-dependent amount is not asserted as a published Utah tax-year amount.
 - name: Under-18 repeal zeroes the young dependent, preserves the older one.
   period: 2026
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
   input:
+    gov.states.ut.tax.income.credits.taxpayer.personal_exemption: 2_159
     gov.contrib.states.ut.dependent_exemption.in_effect: true
     gov.contrib.states.ut.dependent_exemption.amount: 0
     gov.contrib.states.ut.dependent_exemption.age_limit.in_effect: true
@@ -27,11 +31,11 @@
         members: [person1, child1, person2]
         state_code: UT
   output:
-    # Only the 19-year-old keeps the uprated baseline per-dependent
-    # exemption (about $2,159 in 2026).
+    # Only the 19-year-old keeps the synthetic baseline per-dependent
+    # exemption supplied above.
     ut_personal_exemption: 2_159
     # About $130 above the same household's baseline tax of $1,379: the
-    # taxpayer credit shrinks by 6% of the repealed ~$2,159 exemption.
+    # taxpayer credit shrinks by 6% of the repealed $2,159 exemption.
     # Asserts the exemption flows through to the bottom line.
     ut_income_tax: 1_508
 
@@ -40,6 +44,7 @@
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
   input:
+    gov.states.ut.tax.income.credits.taxpayer.personal_exemption: 2_159
     gov.contrib.states.ut.dependent_exemption.in_effect: true
     people:
       person1:
@@ -60,7 +65,7 @@
         members: [person1, child1, person2]
         state_code: UT
   output:
-    # Two dependents at the uprated baseline amount.
+    # Two dependents at the synthetic baseline amount supplied above.
     ut_personal_exemption: 4_318
 
 - name: A flat reform amount applies to every dependent when the age limit is off.
@@ -125,6 +130,7 @@
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
   input:
+    gov.states.ut.tax.income.credits.taxpayer.personal_exemption: 2_159
     gov.contrib.states.ut.dependent_exemption.amount: 0
     people:
       person1:
@@ -146,5 +152,5 @@
         state_code: UT
   output:
     # in_effect is false, so the $0 amount does not apply: two dependents
-    # at the uprated baseline amount.
+    # at the synthetic baseline amount supplied above.
     ut_personal_exemption: 4_318

@@ -239,6 +239,10 @@
   absolute_error_margin: 0.01
   period: 2027
   input:
+    # Synthetic forecast assumptions retained from the original fixture to
+    # isolate credit/surtax interaction; not published RI tax-year amounts.
+    gov.states.ri.tax.income.rate[1].threshold: 84_450
+    gov.states.ri.tax.income.rate[2].threshold: 192_000
     people:
       person1:
         age: 40
@@ -264,8 +268,7 @@
     ri_ctc: 330
     ri_high_earner_tax: 2_500
     ri_social_security_modification: 10_000
-    # Baseline tax uses gov/states/ri/tax/income/rate.yaml's bracket
-    # thresholds, gov.irs.uprating-projected for 2027 from the official 2026
-    # thresholds (84,450 / 192,000): 71,649.70 before credits, + 2,500 surtax,
+    # Baseline tax uses the synthetic bracket thresholds supplied above
+    # (84,450 / 192,000): 71,649.70 before credits, + 2,500 surtax,
     # - 330 CTC = 73,819.70.
     ri_income_tax: 73_819.70
