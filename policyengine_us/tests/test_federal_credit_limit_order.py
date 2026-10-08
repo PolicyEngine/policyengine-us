@@ -133,8 +133,11 @@ def test_2020_irc_pin_keeps_the_order_in_2021(baseline_system):
         (non_refundable_ss_credit_reform(), "non_refundable_ctc"),
     ],
 )
-def test_reforms_order_the_ctc_and_25d_lists(reform, credit_before_25d):
-    credits = reform(CountryTaxBenefitSystem()).parameters.gov.irs.credits
+def test_reforms_order_the_ctc_and_25d_lists(
+    baseline_system, reform, credit_before_25d
+):
+    # Each reform clones the baseline's parameters and variable registry.
+    credits = reform(baseline_system).parameters.gov.irs.credits
     date = "2026-06-01"
     non_refundable = list(credits.non_refundable(date))
     assert non_refundable[0] == "foreign_tax_credit"
