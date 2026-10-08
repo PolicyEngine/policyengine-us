@@ -24,6 +24,8 @@ On main these depended on the label:
   the disability pathway, on the head only.
 - Oregon's working family household and dependent care credit excluded a
   disabled head as a qualifying spouse and counted only the head's earnings.
+- Mississippi's health savings account and self-employed adjustments put a
+  tax-unit deduction with no per-person split on the head's column.
 
 Couples where a spouse is claimed as a dependent on another return are out
 of scope here: the federal standard deduction and several state formulas
@@ -135,6 +137,12 @@ def couples(draw):
         "state": draw(st.sampled_from(AFFECTED)),
         "adults": [draw(adults()), draw(adults())],
         "dependents": draw(st.lists(dependents(), max_size=3)),
+        # Tax-unit deductions with no per-person split, as microdata supply
+        # the health savings account deduction.
+        "tax_unit": {
+            "health_savings_account_ald": draw(money(8_550)),
+            "self_employed_health_insurance_ald": draw(money(6_000)),
+        },
     }
 
 
@@ -340,11 +348,26 @@ def _edge_cases(states):
             [],
         ),
     ]
-    return [
+    edge = [
         {"state": state, "adults": adults, "dependents": deps}
         for state in states
         for adults, deps in couples
     ]
+    # A tax-unit health savings account deduction with no per-person split
+    # and unequal incomes, as in the microdata (#9617 cross-check).
+    edge += [
+        {
+            "state": state,
+            "adults": [
+                adult(employment_income=300_000.0),
+                adult(employment_income=2_000.0),
+            ],
+            "dependents": [teen],
+            "tax_unit": {"health_savings_account_ald": 9_000.0},
+        }
+        for state in states
+    ]
+    return edge
 
 
 def _seeded_couples(states, per_state):
@@ -357,6 +380,11 @@ def _seeded_couples(states, per_state):
             "dependents": [
                 _seeded_dependent(rng) for _ in range(int(rng.choice([0, 1, 1, 2, 3])))
             ],
+            "tax_unit": {
+                "health_savings_account_ald": (
+                    float(round(rng.uniform(1, 8_550))) if rng.random() < 0.3 else 0.0
+                ),
+            },
         }
         for state in states
         for _ in range(per_state)
@@ -405,6 +433,9 @@ def _situation(units, year):
                 ("families", "family"),
             ):
                 groups[group][f"{prefix}_{i}_{copy}"] = {"members": members}
+            groups["tax_units"][f"tax_unit_{i}_{copy}"].update(
+                {k: {year: v} for k, v in unit.get("tax_unit", {}).items()}
+            )
             groups["households"][f"household_{i}_{copy}"] = {
                 "members": members,
                 "state_code": {year: unit["state"]},

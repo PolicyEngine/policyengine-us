@@ -24,8 +24,8 @@ and with the tax unit's deduction set to zero. For every tax unit:
 2. Bounds: no share is negative or above the tax unit's deduction, and a
    dependent's is zero whatever their own amount.
 3. Attribution: when the head's and spouse's own amounts sum to the
-   deduction, each gets their own amount; when they have none, the head gets
-   all of it.
+   deduction, each gets their own amount; when they have none, the head and
+   spouse split it equally, whichever is labelled head.
 4. The deduction lowers the members' total Mississippi AGI by at least zero
    and at most the deduction itself. (On main it could lower it by more.)
 """
@@ -215,6 +215,9 @@ def _run(units, year, *, zero_deduction):
         np.asarray(sim.calculate(name, year), dtype=float) for name in others
     )
     person["is_head"] = np.asarray(sim.calculate("is_tax_unit_head", year), dtype=bool)
+    person["is_spouse"] = np.asarray(
+        sim.calculate("is_tax_unit_spouse", year), dtype=bool
+    )
     person["is_dependent"] = np.asarray(
         sim.calculate("is_tax_unit_dependent", year), dtype=bool
     )
@@ -252,7 +255,7 @@ def _check(units, year):
     assert (shares[person["is_dependent"]] == 0).all()
 
     # 3. Attribution: own amounts when they sum to the deduction; otherwise,
-    # without any, the head's.
+    # without any, an equal share for the head and the spouse.
     filer = ~person["is_dependent"]
     filers_own = _unit_sum(
         person, person["health_savings_account_ald_person"] * filer, n
@@ -263,9 +266,13 @@ def _check(units, year):
         person["health_savings_account_ald_person"][matches],
         atol=TOLERANCE,
     )
-    no_own_head = (filers_own == 0)[unit] & person["is_head"]
+    head_or_spouse = person["is_head"] | person["is_spouse"]
+    n_spouses = _unit_sum(person, head_or_spouse.astype(float), n)
+    no_own = (filers_own == 0)[unit] & head_or_spouse
     np.testing.assert_allclose(
-        shares[no_own_head], deduction[unit][no_own_head], atol=TOLERANCE
+        shares[no_own],
+        (deduction / np.maximum(n_spouses, 1))[unit][no_own],
+        atol=TOLERANCE,
     )
 
     # 4. The deduction lowers total Mississippi AGI by no more than itself.
