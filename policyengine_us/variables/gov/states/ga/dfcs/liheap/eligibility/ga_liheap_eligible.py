@@ -11,9 +11,10 @@ class ga_liheap_eligible(Variable):
     definition_period = YEAR
     label = "Georgia LIHEAP ordinary eligibility"
     defined_for = StateCode.GA
-    # State plan pages 5, 8, 9, 30; manual pages 3, 4, 50, 56, 57, 75, 89.
     reference = (
+        # PDF pages 5, 8-9, 30
         "https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=5",
+        # PDF pages 3-4, 50, 56-57, 75, 89
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=3",
     )
 

@@ -9,10 +9,12 @@ class ga_liheap_income(Variable):
     label = "Georgia LIHEAP annual countable household income"
     defined_for = StateCode.GA
     reference = (
-        # Manual pages 62-69, followed where plan pages 5-6 conflict.
+        # The manual is followed where the plan conflicts.
+        # PDF pages 62-69
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=62",
+        # PDF pages 5-6
         "https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=5",
-        # Section 1.9, page 6: Social Security "Excluding MediCare deduction".
+        # Section 1.9: Social Security "Excluding MediCare deduction".
         "https://liheapch.acf.gov/docs/2025/state-plans/GA_Plan_2025.pdf#page=6",
     )
 
