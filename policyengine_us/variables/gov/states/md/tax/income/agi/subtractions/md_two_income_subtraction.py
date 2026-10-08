@@ -61,9 +61,10 @@ class md_two_income_subtraction(Variable):
         # and deductions go to their owner where a person-level amount
         # records one. Whatever has no owner is split equally.
         filer = is_head | is_spouse
-        own_business = filer * sum(
-            max_(0, -person(source, period)) for source in BUSINESS_LOSS_SOURCES
-        )
+        own_business = 0
+        for source in BUSINESS_LOSS_SOURCES:
+            own_business = own_business + max_(0, -person(source, period))
+        own_business = filer * own_business
         unit_business = max_(0, -tax_unit("other_net_gain", period)) / 2
         own_capital = filer * person("capital_losses", period)
         capital_part = add(
