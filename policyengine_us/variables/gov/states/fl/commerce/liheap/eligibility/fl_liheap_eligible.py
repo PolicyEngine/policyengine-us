@@ -29,15 +29,24 @@ class fl_liheap_eligible(Variable):
         # from existing inputs. In subsidized heat-in-rent housing, a positive
         # heating expense represents the household's verified excess charge.
         # A direct bill or reported obligation is otherwise residual liability.
+        # Source conflict: manual 900.01A (page 39) allows "non-subsidized rent
+        # that includes utilities", but 1100.04B(1) (page 47) asks for a
+        # landlord statement that "Home energy costs are not included in their
+        # rent". This follows 900.01A, page 4 and both plans.
         responsible = where(
             heat_in_rent,
             ~subsidized | (heating_expense > 0),
             spm_unit("has_heating_expense", period) | (heating_expense > 0),
         )
         heating_type = spm_unit("heating_type", period)
+        types = heating_type.possible_values
+        # An unspecified fuel qualifies only when heat is included in rent.
+        fuel_qualifies = (heating_type != types.NONE) & (
+            heat_in_rent | (heating_type != types.UNSPECIFIED)
+        )
         return (
             (size > 0)
             & ((income <= limit) | categorical)
             & responsible
-            & (heating_type != heating_type.possible_values.NONE)
+            & fuel_qualifies
         )

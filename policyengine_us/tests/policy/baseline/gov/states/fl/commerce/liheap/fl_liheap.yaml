@@ -271,6 +271,8 @@
         state_code: FL
   output:
     fl_liheap: 700
+# The qualified child is assumed to be the applicant; manual 900.04D.1 (page 41) would deny
+# an application made by the undocumented parent.
 - name: Case 6, a nonqualified parent's full income determines the band for the qualified child.
   period: 2026
   input:
@@ -758,3 +760,74 @@
     fl_liheap_countable_income: 14_400
     fl_liheap_income_limit: 39_999.504
     fl_liheap: 1_350
+
+# Part-time wages at the Florida minimum wage (Fla. Const. art. X, sec. 24):
+# 20 hours a week for 39 weeks at 14.00, then 13 weeks at 15.00 after the
+# September 30, 2026 increase, so 20 x (39 x 14 + 13 x 15) = 14_820. That is
+# under the FY2026 one-person maximum of 32_155. Heat is not included in rent
+# and no heating fuel is reported, so the reported heating cost does not
+# qualify: an unspecified fuel counts only when heat is included in rent.
+- name: Case 21, an unspecified heating fuel outside rent does not qualify despite a reported heating cost.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 14_820
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        has_heating_expense: true
+        heat_expense_included_in_rent: false
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    fl_liheap_countable_income: 14_820
+    fl_liheap_eligible: false
+    fl_liheap: 0
+
+# Same 14_820 of part-time wages as Case 21. Heat is included in unsubsidized
+# rent and the tenant does not know the building's fuel, so heating_type stays
+# UNSPECIFIED. FY2026 matrix, size 1: 60% of the four-person state median
+# income of 103_063 is 61_837 (truncated), and 61_837 x 52% = 32_155
+# (truncated). The first band ends at 32_155 x 50% = 16_077.5, printed 16_078.
+# Wages of 14_820 fall in the first band, which pays 350. Nobody is 60 or
+# older, disabled, or 5 or younger, so no addition applies.
+- name: Case 22, an unspecified heating fuel included in unsubsidized rent receives the first band award.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 14_820
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: UNSPECIFIED
+        heat_expense_included_in_rent: true
+        receives_housing_assistance: false
+        fl_tca: 0
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+        is_in_public_housing: false
+  output:
+    fl_liheap_countable_income: 14_820
+    fl_liheap_income_limit: 32_155
+    fl_liheap_eligible: true
+    fl_liheap: 350

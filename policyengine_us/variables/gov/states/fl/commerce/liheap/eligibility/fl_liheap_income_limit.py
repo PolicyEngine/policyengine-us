@@ -34,6 +34,13 @@ class fl_liheap_income_limit(Variable):
             # The FY2025 matrix rounds this unrounded amount, and each band
             # cutoff derived from it, to the nearest dollar.
             smi_limit = size_smi * p.smi_rate
+        # Source conflict: manual 900.01D (page 39) sets 60% of SMI for sizes
+        # 1-8 and 150% of the poverty guideline for 9 or more, while 1100.03D
+        # (page 47) and 1200.01A (page 49) set 150% of the guideline for every
+        # size. The FY2025 plan and matrix match 900.01D. The FY2026 plan
+        # (page 8) and matrix use 60% of SMI for every size, and the manual
+        # says to follow DEO's current benefit matrix (page 9), so FY2026
+        # follows the matrix.
         # The printed FY2026 size-13 maximum, $157,686, equals 100% of SMI.
         # Follow the matrix's explicit 60% rule instead ($94,610). The federal
         # table restricts its 150%-FPG large-household exception to
