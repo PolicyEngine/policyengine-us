@@ -34,8 +34,10 @@ class ca_yctc(Variable):
         gets_caleitc = tax_unit("ca_eitc", period) > 0
         # ... determine (b) part two
         is_caleitc_eligible = tax_unit("ca_eitc_eligible", period)
-        # ... ... R&TC 17052.1(b)(1)(B)(i): earned income of zero or less
-        has_no_earned_income = tax_unit("tax_unit_earned_income", period) <= 0
+        # ... ... R&TC 17052.1(b)(1)(B)(i): earned income of zero or less,
+        # measured as the CalEITC earned income on FTB 3514 line 19, so a
+        # business loss that offsets wages counts (Step 8).
+        has_no_earned_income = tax_unit("ca_eitc_earned_income", period) <= 0
         # ... ... (B)(ii): net losses within the threshold. FTB 3514 line 23b
         # measures the net loss from Form 540 line 17 without utilization
         # limitations, so the capital loss limit does not apply. AGI carries
