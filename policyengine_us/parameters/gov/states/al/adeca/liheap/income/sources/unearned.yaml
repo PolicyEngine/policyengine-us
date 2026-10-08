@@ -7,6 +7,8 @@ values:
     # premiums.
     - social_security
     - ssi
+    # Page 18 excludes "Foster care benefits", read as board payments, not this SSP.
+    - al_ssp
     # Military retirement pay is a separate input from the pension inputs that
     # pension_income adds, so both are listed; a household reports the amount
     # in one or the other.

@@ -478,3 +478,55 @@
     al_tanf: [3_600, 3_600]
     tanf: [3_600, 0]
     al_liheap_countable_income: [4_800, 1_200]
+
+# Manual p17 counts cash receipts from all sources; the pp18-19 exclusions do not list
+# the Alabama State Supplementary Payment, so it counts alongside SSI.
+# person1 (70) receives SSI in their own household, computed rather than input:
+# 2026 individual FBR 994 x 12 = 11_928. Independent Homelife Care Level A in a
+# private home adds the al_ssp supplement: 60 x 12 = 720.
+# person2, the adult child, works full time at the 7.25 federal minimum wage
+# (29 U.S.C. 206(a)(1)(C); Alabama has no state minimum wage law per
+# https://www.dol.gov/agencies/whd/minimum-wage/state): 7.25 x 2_080 hours = 15_080.
+# Separate tax and marital units keep the child's wages out of SSI spousal deeming.
+# Countable income: SSI 11_928 + al_ssp 720 + wages 15_080 = 27_728.
+- name: Case 15, Alabama SSP of an SSI recipient living with a working adult child is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        al_ssp_care_setting: PRIVATE_HOME_IHC
+        al_receives_elderly_disabled_medicaid_waiver: true
+        al_meets_snf_criteria: true
+      person2:
+        age: 42
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 15_080
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    ssi: [11_928, 0]
+    al_ssp: [720, 0]
+    al_liheap_countable_income: 27_728
