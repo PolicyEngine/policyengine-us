@@ -214,6 +214,37 @@ def test_git_sha_ignores_malformed_pyproject(tmp_path):
     assert _get_git_sha(package_root) is None
 
 
+@pytest.mark.parametrize(
+    "contents",
+    [
+        b"\xff",
+        # UTF-16 with a byte order mark, as Windows PowerShell 5.1 writes.
+        '[project]\nname = "policyengine-us"\n'.encode("utf-16"),
+        # tomllib's parser recurses once per nesting level.
+        b"a = " + b"[" * 100_000 + b"]" * 100_000 + b"\n",
+    ],
+    ids=["invalid-utf-8", "utf-16", "deep-nesting"],
+)
+def test_git_sha_ignores_unparseable_pyproject(tmp_path, contents):
+    checkout = tmp_path / "policyengine-us"
+    package_root, _ = _make_policyengine_us_checkout(checkout)
+    (checkout / "pyproject.toml").write_bytes(contents)
+
+    assert build_metadata._declares_package(checkout / "pyproject.toml") is False
+    assert _get_git_sha(package_root) is None
+
+
+def test_git_sha_is_none_when_lookup_fails_unexpectedly(tmp_path, monkeypatch):
+    package_root, _ = _make_policyengine_us_checkout(tmp_path / "policyengine-us")
+
+    def broken_lookup(package_root):
+        raise RuntimeError("unexpected")
+
+    monkeypatch.setattr(build_metadata, "_get_checkout_git_sha", broken_lookup)
+
+    assert _get_git_sha(package_root) is None
+
+
 def test_git_sha_reads_own_checkout_head(tmp_path):
     package_root, head = _make_policyengine_us_checkout(tmp_path / "policyengine-us")
 
@@ -341,6 +372,31 @@ def test_git_sha_ignores_installer_record_of_another_copy(tmp_path):
     assert _get_git_sha(package_root) is None
 
 
+def test_git_sha_ignores_duplicate_installer_records(tmp_path):
+    # Two dist-info directories, for example left behind by an interrupted
+    # upgrade, cannot both describe the package that is loaded.
+    site_packages = tmp_path / "site-packages"
+    package_root = _install_with_direct_url(
+        site_packages,
+        {"url": "https://example.com", "vcs_info": {"vcs": "git", "commit_id": SHA}},
+    )
+    stale = site_packages / "policyengine_us-1.0.0.dist-info"
+    stale.mkdir()
+    (stale / "METADATA").write_text(
+        "Metadata-Version: 2.1\nName: policyengine-us\nVersion: 1.0.0\n"
+    )
+    (stale / "direct_url.json").write_text(
+        json.dumps(
+            {
+                "url": "https://example.com",
+                "vcs_info": {"vcs": "git", "commit_id": "f" * 40},
+            }
+        )
+    )
+
+    assert _get_git_sha(package_root) is None
+
+
 def test_runtime_metadata_git_sha_is_none_or_a_commit():
     # Whatever this test run's install layout is, the reported sha is either
     # unknown or a full commit id, and looking it up does not raise.
@@ -409,6 +465,20 @@ def test_git_sha_property_nested_checkout_reports_itself(tmp_path_factory, segme
     )
 
     assert _get_git_sha(package_root) == head != outer_head
+
+
+@PROPERTY_SETTINGS
+@given(contents=st.binary(max_size=64))
+def test_git_sha_property_any_pyproject_bytes_never_raise(tmp_path_factory, contents):
+    checkout = tmp_path_factory.mktemp("checkout")
+    package_root, head = _make_policyengine_us_checkout(checkout)
+    (checkout / "pyproject.toml").write_bytes(contents)
+
+    assert build_metadata._declares_package(checkout / "pyproject.toml") in {
+        True,
+        False,
+    }
+    assert _get_git_sha(package_root) in {None, head}
 
 
 JSON_VALUES = st.recursive(

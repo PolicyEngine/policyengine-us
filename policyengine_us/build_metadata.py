@@ -84,8 +84,16 @@ def _get_git_sha(package_root: Path = PACKAGE_ROOT) -> str | None:
     repository that merely contains the install, such as a data repository
     whose ``.venv`` holds policyengine-us, is never consulted: its HEAD is
     that repository's commit, not this package's.
+
+    policyengine.py reads this metadata while loading the model, and
+    provenance lookup must never stop that, so any failure means "unknown".
     """
-    return _get_checkout_git_sha(package_root) or _get_direct_url_git_sha(package_root)
+    try:
+        return _get_checkout_git_sha(package_root) or _get_direct_url_git_sha(
+            package_root
+        )
+    except Exception:
+        return None
 
 
 def _get_checkout_git_sha(package_root: Path) -> str | None:
@@ -107,8 +115,7 @@ def _get_checkout_git_sha(package_root: Path) -> str | None:
 def _get_direct_url_git_sha(package_root: Path) -> str | None:
     # The installer writes direct_url.json into the dist-info directory next
     # to the package it installed; another copy elsewhere on sys.path does
-    # not describe this one. Provenance lookup must never stop the model
-    # loading, so any failure means "unknown".
+    # not describe this one.
     try:
         distributions = list(
             metadata.distributions(
@@ -131,7 +138,9 @@ def _declares_package(pyproject_path: Path) -> bool:
     try:
         with pyproject_path.open("rb") as file:
             project = tomllib.load(file).get("project")
-    except (OSError, tomllib.TOMLDecodeError):
+    # tomllib raises UnicodeDecodeError (a ValueError, like TOMLDecodeError)
+    # for bytes that are not UTF-8 and RecursionError for very deep nesting.
+    except (OSError, ValueError, RecursionError):
         return False
     name = project.get("name") if isinstance(project, dict) else None
     return (
