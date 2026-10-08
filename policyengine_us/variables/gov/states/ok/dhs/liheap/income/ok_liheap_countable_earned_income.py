@@ -9,7 +9,8 @@ class ok_liheap_countable_earned_income(Variable):
     label = "Oklahoma LIHEAP gross countable earned income"
     defined_for = StateCode.OK
     reference = (
-        # OAC 340:20-1-11(a)-(b), PDF pages 576-578, effective September 15, 2025.
+        # OAC 340:20-1-11(a)-(b), effective September 15, 2025.
+        # PDF pages 576-578
         "https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=576",
         "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-50-7-22",
     )

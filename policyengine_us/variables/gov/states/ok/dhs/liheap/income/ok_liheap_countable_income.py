@@ -12,7 +12,7 @@ class ok_liheap_countable_income(Variable):
     # ordinary eligibility and before ineligible-member income deeming.
     reference = (
         "https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html",
-        # Section 1.9 (page 6) of the FY2025, FY2026 and FY2027 plans.
+        # Section 1.9 of the FY2025, FY2026 and FY2027 plans.
         "https://liheapch.acf.gov/docs/2025/state-plans/OK_Plan_2025.pdf#page=6",
         "https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=6",
         "https://oklahoma.gov/content/dam/ok/en/okdhs/documents/okdhs-pdf-library/adult-and-family-services/DETAILED%20MODEL%20PLAN%2010_01_2026.pdf#page=6",

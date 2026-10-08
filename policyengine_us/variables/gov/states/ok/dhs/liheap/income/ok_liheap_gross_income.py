@@ -11,7 +11,7 @@ class ok_liheap_gross_income(Variable):
     reference = (
         # OAC 340:20-1-11(a)(4), (b): deeming precedes the gross test.
         "https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html",
-        # Section 1.9 (page 6) counts TANF benefits.
+        # Section 1.9 counts TANF benefits.
         "https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=6",
     )
 
