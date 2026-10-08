@@ -16,22 +16,20 @@ class fl_liheap_countable_income(Variable):
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=49",
         # PDF pages 5-7
         "https://liheapch.acf.gov/docs/2025/state-plans/FL_Plan_2025.pdf#page=5",
+        "https://storage.googleapis.com/florida-liheap-relief-static-assets/Florida_LIHEAP_Application_English.pdf#page=1",
+        "https://floridaliheap.com/faq",
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.fl.commerce.liheap.income
         person = spm_unit.members
         age = person("age", period)
-        # Plan vs manual conflict; this follows the manual for earned and
-        # unearned income alike. Manual 1200.01D (PDF p. 49): "Any income of a
-        # household member 18 and older will be counted ... Income for any
-        # persons ages 16 and 17 who do not attend school full time will be
-        # counted." The FY2025 and FY2026 plans, item 1.9 (p. 6), leave
-        # "Earned income of a child under the age of 18" unchecked, which
-        # would exclude a 16- or 17-year-old nonstudent's earnings.
-        income_counted = (age >= p.adult_age) | (
-            (age >= p.nonstudent_min_age) & ~person("is_full_time_student", period)
-        )
+        # The current statewide application excludes all minors' income,
+        # matching the portal FAQ. The FY2026 plan endorses this portal in
+        # section 1.10. This supersedes the older manual's nonstudent exception.
+        # The application was created in March 2025 but supplies no rule-change
+        # effective date; applying it throughout FY2025 is a backfilled assumption.
+        income_counted = age >= p.adult_age
         # Use existing net business inputs without another expense deduction.
         # Plan section 1.8 counts gross income and manual 1200.01B counts "the
         # gross amount of income", so each source is floored at zero and a

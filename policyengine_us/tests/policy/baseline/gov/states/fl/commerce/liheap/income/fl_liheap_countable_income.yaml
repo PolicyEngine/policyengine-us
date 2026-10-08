@@ -118,14 +118,10 @@
   output:
     fl_liheap_countable_income: 30_000
 
-# Manual 1200.01D, page 49, applies one age and student test to all income:
-# members 18 and older count, and so do 16- and 17-year-olds who do not attend
-# school full time. The model follows it over plan item 1.9, page 6, which
-# leaves earned income of a child under 18 unchecked. Plan page 7 counts net
-# gambling and periodic estate receipts. At 15 the young member's 6_000 wages
-# + 1_200 self-employment + 1_200 Social Security + 900 estate + (600 - 100)
-# gambling = 9_800 is excluded, leaving the parent's 12_000.
-- name: Case 5, a 15-year-old nonstudent's income is excluded under the manual's age and student test.
+# The statewide application, Monthly Household Income (page 1), excludes
+# all minors' income. The FY2026 plan endorses this portal in section 1.10.
+# The young member's 9_800 total income is excluded, leaving parent income.
+- name: Case 5, a 15-year-old nonstudent's income is excluded under the statewide application.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -161,11 +157,9 @@
   output:
     fl_liheap_countable_income: 12_000
 
-# Manual 1200.01D, page 49, counts all income of a 16- or 17-year-old who does
-# not attend school full time; the model follows it over plan item 1.9, page 6.
-# Parent 12_000 + young member 6_000 wages + 1_200 self-employment + 1_200
-# Social Security + 900 estate + (600 - 100) gambling = 21_800.
-- name: Case 6, a 16-year-old nonstudent's earned and unearned income both count.
+# The statewide application page 1 and portal FAQ exclude all minors' income,
+# without a student exception. Only the parent's 12_000 counts.
+- name: Case 6, a 16-year-old nonstudent's earned and unearned income are both excluded.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -199,12 +193,10 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_liheap_countable_income: 21_800
+    fl_liheap_countable_income: 12_000
 
-# Manual 1200.01D, page 49, counts a 16- or 17-year-old's income only when the
-# member does not attend school full time. The young member's 6_000 wages +
-# 1_200 self-employment + 1_200 Social Security + 900 estate + (600 - 100)
-# gambling = 9_800 is excluded, leaving the parent's 12_000.
+# The statewide application page 1 and portal FAQ exclude all minors' income,
+# without a student exception. Only the parent's 12_000 counts.
 - name: Case 7, a 16-year-old full-time student's earned and unearned income are both excluded.
   period: 2026
   absolute_error_margin: 0.01
@@ -241,11 +233,9 @@
   output:
     fl_liheap_countable_income: 12_000
 
-# Manual 1200.01D, page 49, counts all income of a 16- or 17-year-old who does
-# not attend school full time; the model follows it over plan item 1.9, page 6.
-# Parent 12_000 + young member 6_000 wages + 1_200 self-employment + 1_200
-# Social Security + 900 estate + (600 - 100) gambling = 21_800.
-- name: Case 8, a 17-year-old nonstudent's earned and unearned income both count.
+# The statewide application page 1 and portal FAQ exclude all minors' income,
+# without a student exception. Only the parent's 12_000 counts.
+- name: Case 8, a 17-year-old nonstudent's earned and unearned income are both excluded.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -279,12 +269,10 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_liheap_countable_income: 21_800
+    fl_liheap_countable_income: 12_000
 
-# Manual 1200.01D, page 49, counts a 16- or 17-year-old's income only when the
-# member does not attend school full time. The young member's 6_000 wages +
-# 1_200 self-employment + 1_200 Social Security + 900 estate + (600 - 100)
-# gambling = 9_800 is excluded, leaving the parent's 12_000.
+# The statewide application page 1 and portal FAQ exclude all minors' income,
+# without a student exception. Only the parent's 12_000 counts.
 - name: Case 9, a 17-year-old full-time student's earned and unearned income are both excluded.
   period: 2026
   absolute_error_margin: 0.01

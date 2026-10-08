@@ -1,0 +1,12 @@
+description: Florida uses a separately published regular heating payment-band row for this household size under the Low Income Home Energy Assistance Program.
+# Zero disables the separate row before the FY2026 matrix.
+values:
+  2024-10-01: 0
+  2025-10-01: 13
+metadata:
+  unit: person
+  period: year
+  label: Florida LIHEAP separately published payment-band household size
+  reference:
+    - title: Florida FY2026 LIHEAP Payment Matrix, thirteen-person row
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf

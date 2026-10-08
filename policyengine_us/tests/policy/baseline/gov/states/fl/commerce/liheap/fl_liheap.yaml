@@ -831,3 +831,49 @@
     fl_liheap_income_limit: 32_155
     fl_liheap_eligible: true
     fl_liheap: 350
+
+# Statewide application p1 and portal FAQ exclude all minor income regardless
+# of school attendance. The adult with the same 34_000 income is over the
+# FY2026 one-person limit 32_155; minors qualify for the 350 first-band base.
+- name: Case 23, minor nonstudent income is excluded through the final benefit.
+  period: 2026
+  input:
+    state_code: [FL, FL, FL]
+    age: [16, 17, 18]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    is_full_time_student: [false, false, false]
+    employment_income: [30_000, 30_000, 30_000]
+    social_security: [4_000, 4_000, 4_000]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+    snap: [0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    heating_expense: [1_200, 1_200, 1_200]
+  output:
+    fl_liheap_countable_income: [0, 0, 34_000]
+    fl_liheap_income_limit: [32_155, 32_155, 32_155]
+    fl_liheap_eligible: [true, true, false]
+    fl_liheap: [350, 350, 0]
+
+# FY2026 printed size-13 payment row: first band ends at 78_843, second at
+# 110_380 and third at 134_033. Eligibility remains the plan's 60%-SMI rule,
+# 94_610. SNAP receipt waives the income eligibility test, allowing checks of
+# the higher printed band boundaries without inventing a higher income limit.
+- name: Case 24, thirteen-person published payment bands remain distinct from income eligibility.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [FL, FL, FL, FL, FL, FL, FL, FL, FL]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    fl_liheap_household_size: [13, 13, 13, 13, 13, 13, 13, 13, 13]
+    fl_liheap_countable_income: [60_000, 78_843, 78_843.01, 94_610, 94_610.01, 110_380, 110_380.01, 134_033, 134_033.01]
+    snap: [0, 0, 0, 0, 0, 1, 1, 1, 1]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    heating_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+  output:
+    fl_liheap_income_limit: [94_610, 94_610, 94_610, 94_610, 94_610, 94_610, 94_610, 94_610, 94_610]
+    fl_liheap_eligible: [true, true, true, true, false, true, true, true, true]
+    fl_liheap: [350, 350, 300, 300, 0, 300, 250, 250, 200]

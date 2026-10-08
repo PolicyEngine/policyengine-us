@@ -1,6 +1,7 @@
 description: Florida uses this threshold as the age at which all members' income counts under the Low Income Home Energy Assistance Program.
-# Manual 1200.01D counts earned and unearned income alike from this age,
-# whether or not the member is a full-time student.
+# The statewide application and portal FAQ exclude all minors' income.
+# The March 2025 application metadata does not establish a policy-change date;
+# FY2025 uses this current rule as a backfilled assumption.
 values:
   2024-10-01: 18
 metadata:
@@ -8,9 +9,11 @@ metadata:
   period: year
   label: Florida LIHEAP adult income age
   reference:
-    - title: Florida FY2026 LIHEAP State Plan, section 1.9 (earnings under 18; superseded by manual 1200.01D)
+    - title: Florida FY2026 LIHEAP State Plan, section 1.9
       href: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=6
-    - title: Florida LIHEAP Policies and Procedures Manual, May 27 2022, part 1200.01D
-      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=49
+    - title: Florida statewide LIHEAP application, Monthly Household Income
+      href: https://storage.googleapis.com/florida-liheap-relief-static-assets/Florida_LIHEAP_Application_English.pdf#page=1
+    - title: Florida statewide LIHEAP portal, What qualifies as income
+      href: https://floridaliheap.com/faq
     - title: Florida FY2025 LIHEAP State Plan, Section 1.9
       href: https://liheapch.acf.gov/docs/2025/state-plans/FL_Plan_2025.pdf#page=6

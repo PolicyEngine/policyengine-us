@@ -42,7 +42,8 @@ class fl_liheap_income_limit(Variable):
         # says to follow DEO's current benefit matrix (page 9), so FY2026
         # follows the matrix.
         # The printed FY2026 size-13 maximum, $157,686, equals 100% of SMI.
-        # Follow the matrix's explicit 60% rule instead ($94,610). The federal
+        # Apply the plan's explicit 60% eligibility rule ($94,610); payment
+        # bands remain the published matrix row in fl_liheap. The federal
         # table restricts its 150%-FPG large-household exception to
         # cooling/crisis. Larger sizes follow the federal factors without table
         # verification.

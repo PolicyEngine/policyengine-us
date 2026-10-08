@@ -1,0 +1,17 @@
+description: Florida publishes these regular heating payment-band upper bounds for the separately specified household size under the Low Income Home Energy Assistance Program.
+# Preserve the operative matrix's payment row independently of eligibility.
+# Its printed maximum is inconsistent with the 60%-SMI eligibility rule.
+first:
+  2025-10-01: 78_843
+second:
+  2025-10-01: 110_380
+third:
+  2025-10-01: 134_033
+metadata:
+  unit: currency-USD
+  period: year
+  label: Florida LIHEAP separately published payment-band upper bounds
+  propagate_metadata_to_children: true
+  reference:
+    - title: Florida FY2026 LIHEAP Payment Matrix, thirteen-person row
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf

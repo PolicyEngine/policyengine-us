@@ -52,6 +52,14 @@ class fl_liheap(Variable):
             guideline * band_fpg_rate.third,
             np.floor(limit * fraction.third + 0.5),
         )
+        # The operative matrix publishes a distinct FY2026 size-13 row.
+        # Its band cutoffs govern payments even though its printed maximum
+        # conflicts with the plan's 60%-SMI eligibility ceiling.
+        published_row = size == p.payment.published_band_size
+        published = p.payment.published_band_upper_bound
+        first = where(published_row, published.first, first)
+        second = where(published_row, published.second, second)
+        third = where(published_row, published.third, third)
         # The FY2025 second guideline band starts "At least 75%" of the
         # guideline, so the first guideline band excludes its upper bound.
         in_first = where(fpg_based, income < first, income <= first)
