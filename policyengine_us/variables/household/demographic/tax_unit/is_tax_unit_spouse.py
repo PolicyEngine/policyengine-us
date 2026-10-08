@@ -12,10 +12,14 @@ class is_tax_unit_spouse(Variable):
 
     def formula(person, period, parameters):
         # Only non-head adults can be spouses, skipping input dependents.
-        is_separated = person.tax_unit.any(person("is_separated", period))
         candidate = head_or_spouse_candidates(person, period)
         head = person("is_tax_unit_head", period)
-        eligible = candidate & ~head & ~is_separated
         tax_unit = person.tax_unit
         age = person("age", period)
-        return person.get_rank(tax_unit, -age, eligible) == 0
+        spouse = person.get_rank(tax_unit, -age, candidate & ~head) == 0
+        # Separation under 26 U.S.C. 7703 concerns the filer's own marriage, so
+        # only the head's or this spouse's separation means there is no spouse.
+        # A dependent's or other member's separation does not.
+        separated = person("is_separated", period)
+        head_or_spouse_separated = tax_unit.any((head | spouse) & separated)
+        return spouse & ~head_or_spouse_separated
