@@ -12,6 +12,10 @@ values:
     - railroad_benefits
     - survivor_benefits
     - unemployment_compensation
+    # The application (page 5) lists "Worker's Compensation" as gross income,
+    # rule 67:15:01:01(4) counts unearned income before deductions, and rule
+    # 67:15:01:18 does not exclude it.
+    - workers_compensation
     - veterans_benefits
     - child_support_received
     - alimony_income
@@ -35,7 +39,11 @@ metadata:
   reference:
     - title: South Dakota FY2026 LIHEAP State Plan, sections 1.5 and 1.9 and fixed-income processing, pages 5-7, 10
       href: https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf#page=5
+    - title: South Dakota Administrative Rule 67:15:01:01(4), Gross income
+      href: https://sdlegislature.gov/Rules/Administrative/67:15:01:01
     - title: South Dakota Administrative Rule 67:15:01:18, Income exclusions
       href: https://sdlegislature.gov/Rules/Administrative/67:15:01:18
+    - title: South Dakota Energy Assistance Application EA-297 (08/25), income section
+      href: https://dss.sd.gov/formsandpubs/docs/ENERGY/energyassistanceapplication.pdf#page=5
     - title: "South Dakota LIEAP Policy and Procedures Manual (2018), countable income table, #page 25,27,28"
       href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=25
