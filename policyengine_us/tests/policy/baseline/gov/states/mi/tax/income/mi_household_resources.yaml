@@ -8,12 +8,15 @@
 # "If the total is negative enter 0." Line 30 is "total adjustments from your
 # U.S. Form 1040, Schedule 1", and line 31 is health insurance premiums. The
 # household is "a claimant and spouse" (MCL 206.508(3)), so a dependent's
-# business and rental items stay off lines 16 and 17.
+# income and Schedule 1 adjustments stay off the claimant's lines, except
+# Social Security and SSI received for dependents (line 21), child support
+# (line 22) and public assistance paid to the household (line 27). Premiums
+# paid for the family (line 31) include dependents' coverage.
 
 - name: Cannot be negative
   period: 2024
   input:
-    net_capital_gains: -2_000
+    long_term_capital_gains: -2_000
     state_code: MI
     health_insurance_premiums: 0
     early_withdrawal_penalty: 1_000
@@ -27,7 +30,7 @@
 - name: Reduced to 0
   period: 2024
   input:
-    net_capital_gains: 2_000
+    long_term_capital_gains: 2_000
     state_code: MI
     health_insurance_premiums: 3_000
     early_withdrawal_penalty: 1_000
@@ -39,7 +42,7 @@
 - name: Partially reduced
   period: 2024
   input:
-    net_capital_gains: 10_000
+    long_term_capital_gains: 10_000
     state_code: MI
     health_insurance_premiums: 3_000
     early_withdrawal_penalty: 1_000
@@ -465,3 +468,642 @@
     # dependent's Schedule E income is not on line 16. Line 30: 0.
     # Line 33: 50,000.
     mi_household_resources: 50_000
+
+- name: A working dependent's wages, interest and self-employment are not household resources
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 40_000
+      person2:
+        age: 17
+        employment_income_before_lsr: 8_000
+        taxable_interest_income: 200
+        self_employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # The household is the claimant and spouse (MCL 206.508(3)); the form
+    # asks for "all taxable and nontaxable income you and your spouse
+    # received". The dependent's wages (8,000), interest (200) and Schedule C
+    # (3,000) are on the dependent's own return.
+    # Line 14: 40,000. Lines 15 and 16: 0.
+    # Line 30: the dependent's deduction for half of self-employment tax
+    # (3,000 x 0.9235 x 15.3% / 2 = 211.94) is on the dependent's own
+    # Schedule 1, so 0.
+    # Line 33: 40,000.
+    mi_household_resources: 40_000
+
+- name: Both spouses' income counts and a child's does not
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 30_000
+      person2:
+        age: 44
+        employment_income_before_lsr: 20_000
+        taxable_interest_income: 500
+      person3:
+        age: 12
+        taxable_interest_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      child_marital_unit:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Line 14: 30,000 + 20,000 = 50,000. Line 15: the spouse's 500; the
+    # child's 1,000 is the child's own income.
+    # Line 33: 50,500.
+    mi_household_resources: 50_500
+
+- name: Social Security survivors benefits paid for a child count on line 21
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income_before_lsr: 30_000
+      person2:
+        age: 10
+        social_security_survivors: 9_000
+        taxable_interest_income: 400
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 14: 30,000. Line 15: 0; the child's 400 of interest is the
+    # child's own income.
+    # Line 21: "Include death benefits and amounts received for minor
+    # children or other dependent adults who live with you": 9,000.
+    # Line 33: 30,000 + 9,000 = 39,000.
+    mi_household_resources: 39_000
+
+- name: SSI and child support received for a child count on lines 21 and 22
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 20_000
+      person2:
+        age: 8
+        ssi: 6_000
+        child_support_received: 4_800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 14: 20,000. Line 21: SSI received for a minor child, 6,000.
+    # Line 22: "child support and all payments received as a foster
+    # parent", 4,800.
+    # Line 33: 20,000 + 6,000 + 4,800 = 30,800.
+    mi_household_resources: 30_800
+
+- name: A dependent adult's Social Security counts but the dependent's pension does not
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 50_000
+      person2:
+        age: 72
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        social_security_retirement: 15_000
+        taxable_pension_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1]
+      parent_marital_unit:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 14: 50,000. Line 18: 0; the dependent parent's pension is the
+    # parent's own income.
+    # Line 21: amounts received for "other dependent adults who live with
+    # you", 15,000.
+    # Line 33: 50,000 + 15,000 = 65,000.
+    mi_household_resources: 65_000
+
+- name: A dependent's capital loss does not reduce the claimant's line 19
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        long_term_capital_gains: 2_000
+      person2:
+        age: 16
+        short_term_capital_gains: -5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 19: net capital gains "from your U.S. Schedule D", the claimant's
+    # 2,000. The dependent's -5,000 is on the dependent's own Schedule D.
+    # Line 33: 50,000 + 2,000 = 52,000.
+    mi_household_resources: 52_000
+
+- name: A dependent's early withdrawal penalty is not on the claimant's line 30
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income_before_lsr: 50_000
+        early_withdrawal_penalty: 1_000
+      person2:
+        age: 16
+        early_withdrawal_penalty: 500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 30: "total adjustments from your U.S. Form 1040, Schedule 1": the
+    # claimant's penalty on early withdrawal of savings (Schedule 1 line 18),
+    # 1,000. The dependent's 500 is on the dependent's own Schedule 1.
+    # Line 33: 50,000 - 1,000 = 49,000.
+    mi_household_resources: 49_000
+
+- name: A Family Independence Program grant for a parent and two children counts in full on line 27
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 10_000
+      person2:
+        age: 6
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 6_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    # Line 14: 10,000. Line 27: "the total payments made to your household
+    # by MDHHS", the whole 6,000 grant, including the children's share.
+    # Line 33: 10,000 + 6,000 = 16,000.
+    mi_household_resources: 16_000
+
+- name: Premiums paid for a child's coverage reduce household resources on line 31
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income_before_lsr: 40_000
+        health_insurance_premiums: 2_400
+      person2:
+        age: 9
+        health_insurance_premiums: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 31: "insurance premiums you paid for yourself and your family",
+    # 2,400 + 1,200 = 3,600, reading the child's premium as one the claimant
+    # paid for the child's coverage.
+    # Line 33: 40,000 - 3,600 = 36,400.
+    mi_household_resources: 36_400
+
+- name: A dependent's alimony payment is not on the claimant's line 30
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 40_000
+      person2:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        alimony_expense: 2_000
+        divorce_year: 2015
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1]
+      dependent_marital_unit:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 14: 40,000. Line 30: the dependent's deductible alimony (a 2015
+    # divorce) is on the dependent's own Schedule 1, so 0.
+    # Line 33: 40,000.
+    mi_household_resources: 40_000
+
+- name: Guaranteed income pilot payments count only for the claimant and spouse
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 40_000
+        gi_cash_assistance: 1_000
+      person2:
+        age: 19
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        gi_cash_assistance: 7_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1]
+      dependent_marital_unit:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 14: 40,000. The claimant's own pilot payment, 1,000, counts. The
+    # dependent's 7,000 is the dependent's own income: nothing shows it is a
+    # public assistance payment to the claimant's household (line 27).
+    # Line 33: 41,000.
+    mi_household_resources: 41_000
+
+- name: A supplied net capital gains amount counts on line 19
+  period: 2025
+  input:
+    employment_income_before_lsr: 10_000
+    net_capital_gains: 5_000
+    state_code: MI
+  output:
+    # A tax unit net_capital_gains input is the filer's Schedule D amount.
+    # Line 14: 10,000. Line 19: 5,000.
+    filer_loss_limited_net_capital_gains: 5_000
+    mi_household_resources: 15_000
+
+- name: A supplied net capital loss is limited to $3,000 on line 19
+  period: 2025
+  input:
+    employment_income_before_lsr: 10_000
+    net_capital_gains: -5_000
+    state_code: MI
+  output:
+    # Line 19: "losses cannot exceed $3,000", so -3,000.
+    # Line 33: 10,000 - 3,000 = 7,000.
+    filer_loss_limited_net_capital_gains: -3_000
+    mi_household_resources: 7_000
+
+- name: Supplied Schedule 1 adjustment amounts come off line 30
+  period: 2025
+  input:
+    employment_income_before_lsr: 10_000
+    self_employment_tax_ald: 1_000
+    self_employed_pension_contribution_ald: 1_000
+    state_code: MI
+  output:
+    # Tax unit inputs for the deduction for self-employment tax and the SEP
+    # deduction are the filer's Schedule 1 amounts.
+    # Line 33: 10,000 - 1,000 - 1,000 = 8,000.
+    mi_household_resources: 8_000
+
+# Line 31 (2025 MI-1040 book, pages 32 and 33): "insurance premiums you paid
+# for yourself and your family ... Do not include any insurance premiums
+# deducted on lines 21 or 30". Line 30 includes the self-employed health
+# insurance deduction (Schedule 1 line 17), so a premium deducted there is
+# not subtracted again on line 31.
+
+- name: A self-employed claimant's premiums are subtracted once, on line 30
+  period: 2025
+  input:
+    self_employment_income: 50_000
+    is_self_employed: true
+    health_insurance_premiums: 5_000
+    state_code: MI
+  output:
+    # Line 16: Schedule C 50,000.
+    # Line 30: deduction for self-employment tax, half of 50,000 x 0.9235 x
+    # 15.3% = 3,532.39, plus the self-employed health insurance deduction,
+    # the lesser of the 5,000 premiums and the 50,000 net earnings = 5,000.
+    # 8,532.39 in all.
+    # Line 31: premiums of 5,000, less the 5,000 deducted on line 30 = 0.
+    # Line 33: 50,000 - 8,532.39 - 0 = 41,467.61. Subtracting the premiums
+    # on both lines would give 36,467.61.
+    mi_household_resources: 41_467.61
+  absolute_error_margin: 0.01
+
+- name: Premiums above the self-employed health insurance deduction stay on line 31
+  period: 2025
+  input:
+    employment_income_before_lsr: 40_000
+    self_employment_income: 3_000
+    is_self_employed: true
+    health_insurance_premiums: 5_000
+    state_code: MI
+  output:
+    # Line 14: 40,000. Line 16: 3,000.
+    # Line 30: deduction for self-employment tax, half of 3,000 x 0.9235 x
+    # 15.3% = 211.94, plus the self-employed health insurance deduction,
+    # limited to the 3,000 net earnings = 3,000. 3,211.94 in all.
+    # Line 31: premiums of 5,000, less the 3,000 deducted on line 30 = 2,000.
+    # Line 33: 43,000 - 3,211.94 - 2,000 = 37,788.06. The premiums come off
+    # once in all: 3,000 on line 30 and 2,000 on line 31.
+    mi_household_resources: 37_788.06
+  absolute_error_margin: 0.01
+
+- name: A joint return subtracts each spouse's premiums once
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        self_employment_income: 50_000
+        is_self_employed: true
+        health_insurance_premiums: 5_000
+      person2:
+        age: 44
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 30_000
+        health_insurance_premiums: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 14: 30,000. Line 16: 50,000.
+    # Line 30: 3,532.39 for self-employment tax plus the head's 5,000
+    # self-employed health insurance deduction = 8,532.39. The spouse is not
+    # self-employed, so the spouse's premiums are not on line 30.
+    # Line 31: premiums of 5,000 + 2,000 = 7,000, less the 5,000 deducted on
+    # line 30 = 2,000.
+    # Line 33: 80,000 - 8,532.39 - 2,000 = 69,467.61.
+    mi_household_resources: 69_467.61
+  absolute_error_margin: 0.01
+
+- name: Medicare premiums withheld from Social Security are subtracted once
+  period: 2025
+  input:
+    age: 70
+    social_security_retirement: 20_000
+    health_insurance_premiums: 2_220
+    state_code: MI
+  output:
+    # The form puts Medicare premiums withheld from benefits on line 21:
+    # "Medicare premiums reported on your Social Security or Railroad
+    # Retirement statement should be deducted" (page 32), so line 21 is
+    # 20,000 - 2,220 = 17,780 and line 31 leaves them out. MCL 206.510(1)(h)
+    # excludes "Amounts deducted from monthly social security or railroad
+    # retirement benefits for medicare premiums" from income.
+    # The model enters gross benefits on line 21 and the premiums on line
+    # 31: 20,000 - 2,220. Either way the premiums come off once.
+    # Line 33: 17,780.
+    mi_household_resources: 17_780
+
+# MCL 206.510(1): income does not include "(a) The first $300.00 of gifts in
+# cash or kind from nongovernmental sources" or "(b) The first $300.00
+# received from awards, prizes, lottery, bingo, or other gambling winnings".
+# The MI-1040CR enters "awards, prizes, lottery, bingo, and other gambling
+# winnings over $300" on line 20 and "the value over $300 in gifts of cash or
+# merchandise received, or expenses paid on your behalf ... by parents,
+# relatives, or friends" on line 24 (2025 MI-1040 book, page 32), each once
+# for the claimant and spouse.
+
+- name: Gambling winnings below $300 are not household resources
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    gambling_winnings: 200
+    state_code: MI
+  output:
+    # Line 14: 20,000. Line 20: winnings over $300 = 0.
+    mi_household_resources: 20_000
+
+- name: Gambling winnings of exactly $300 are not household resources
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    gambling_winnings: 300
+    state_code: MI
+  output:
+    # Line 20: 300 - 300 = 0.
+    mi_household_resources: 20_000
+
+- name: Gambling winnings above $300 count over $300
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    gambling_winnings: 1_000
+    state_code: MI
+  output:
+    # Line 20: 1,000 - 300 = 700.
+    # Line 33: 20,000 + 700 = 20,700.
+    mi_household_resources: 20_700
+
+- name: The $300 gambling exclusion applies once to a married couple
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 20_000
+        gambling_winnings: 200
+      person2:
+        age: 44
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        gambling_winnings: 200
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 20 is one amount for the claimant and spouse: winnings of
+    # 200 + 200 = 400, over $300 = 100.
+    # Line 33: 20,000 + 100 = 20,100.
+    mi_household_resources: 20_100
+
+- name: Gifts below $300 are not household resources
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    financial_assistance: 200
+    state_code: MI
+  output:
+    # Line 24: cash gifts from relatives or friends over $300 = 0.
+    mi_household_resources: 20_000
+
+- name: Gifts of exactly $300 are not household resources
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    financial_assistance: 300
+    state_code: MI
+  output:
+    # Line 24: 300 - 300 = 0.
+    mi_household_resources: 20_000
+
+- name: Gifts above $300 count over $300
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    financial_assistance: 1_000
+    state_code: MI
+  output:
+    # Line 24: 1,000 - 300 = 700. Gifts are excluded from federal gross
+    # income (IRC 102), and total household resources include income
+    # excluded from AGI (MCL 206.510(1)).
+    # Line 33: 20,000 + 700 = 20,700.
+    mi_household_resources: 20_700
+
+- name: The $300 gift exclusion applies once to a married couple
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 20_000
+        financial_assistance: 250
+      person2:
+        age: 44
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        financial_assistance: 250
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Line 24: gifts of 250 + 250 = 500, over $300 = 200.
+    # Line 33: 20,000 + 200 = 20,200.
+    mi_household_resources: 20_200
+
+- name: Gambling winnings and gifts each have their own $300 exclusion
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    gambling_winnings: 500
+    financial_assistance: 500
+    state_code: MI
+  output:
+    # Line 20: 500 - 300 = 200. Line 24: 500 - 300 = 200.
+    # Line 33: 20,000 + 200 + 200 = 20,400.
+    mi_household_resources: 20_400
+
+- name: Miscellaneous taxable income counts in full on line 20
+  period: 2025
+  input:
+    employment_income_before_lsr: 20_000
+    miscellaneous_income: 1_000
+    state_code: MI
+  output:
+    # miscellaneous_income is other taxable income (26 CFR 1.61-14), in
+    # federal gross income, so it is not a gift. It is "other taxable
+    # income" on line 20, and the $300 exclusion covers only awards, prizes,
+    # lottery, bingo and other gambling winnings.
+    # Line 33: 20,000 + 1,000 = 21,000.
+    mi_household_resources: 21_000
+
+- name: A supplied self-employed health insurance deduction comes off line 30
+  period: 2025
+  input:
+    employment_income_before_lsr: 10_000
+    self_employed_health_insurance_ald: 1_000
+    state_code: MI
+  output:
+    # Line 33: 10,000 - 1,000 = 9,000.
+    mi_household_resources: 9_000
+

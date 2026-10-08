@@ -1,0 +1,23 @@
+description: Michigan excludes this amount of gifts in cash or kind from nongovernmental sources from household resources.
+values:
+  # MCL 206.510(1)(a): a fixed amount in the statute, not indexed. The
+  # MI-1040CR counts "the value over $300 in gifts" on line 24, one amount
+  # for the claimant and spouse.
+  2021-01-01: 300
+metadata:
+  unit: currency-USD
+  period: year
+  label: Michigan household resources gift exclusion
+  reference:
+    - title: MCL 206.510(1)(a), "The first $300.00 of gifts in cash or kind from nongovernmental sources"
+      href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-510
+    - title: 2022 MI-1040 Instructions, MI-1040CR line 24
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/BOOK_MI-1040.pdf#page=32
+    - title: 2023 MI-1040 Instructions, MI-1040CR line 24
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2023/BOOK_MI-1040.pdf#page=32
+    - title: 2024 MI-1040 Instructions, MI-1040CR line 24
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/MI-1040-Instructions.pdf#page=32
+    - title: 2025 MI-1040 Instructions, MI-1040CR line 24
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=32
+    - title: 2025 MI-1040 Instructions, total household resources do not include the first $300 in gifts of cash or merchandise
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=27

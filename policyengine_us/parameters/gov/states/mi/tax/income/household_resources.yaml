@@ -1,8 +1,12 @@
 description: Michigan accounts for the following income sources as the household resources.
 values:
   2021-01-01:
+    # Each source counts for the claimant and spouse only (MCL 206.508(3)),
+    # except those in household_resources_all_members (lines 21, 22 and 27).
+    # MI-1040CR line 14, wages, including strike pay.
     - irs_employment_income
     - strike_benefits
+    # MI-1040CR line 15, interest and dividends.
     - dividend_income
     - interest_income
     # MI-1040CR line 16, net business income: U.S. Schedule C, Form 4797
@@ -18,22 +22,45 @@ values:
     # as a total.
     - rental_income
     - farm_rent_income
+    # MI-1040CR line 18, pensions and annuities.
     - pension_income
     - retirement_benefits_from_ss_exempt_employment
-    - loss_limited_net_capital_gains
+    # MI-1040CR line 19, net capital gains and losses from the filer's U.S.
+    # Schedule D, a loss limited to $3,000 ($1,500 married filing separately).
+    - filer_loss_limited_net_capital_gains
+    # MI-1040CR line 20, alimony and other taxable income: "awards, prizes,
+    # lottery, bingo, and other gambling winnings over $300" (the first $300
+    # is household_resources_gambling_exclusion) and other taxable income,
+    # such as miscellaneous_income (26 CFR 1.61-14), in full.
     - alimony_income
     - gambling_winnings
-    - social_security
-    - ssi 
-    - railroad_benefits
-    - child_support_received
-    - unemployment_compensation
-    # Gifts received or expenses paid on your behalf
     - miscellaneous_income
+    # MI-1040CR line 21, Social Security, SSI and railroad retirement
+    # benefits, including amounts received for dependents.
+    - social_security
+    - ssi
+    - railroad_benefits
+    # MI-1040CR line 22, child support.
+    - child_support_received
+    # MI-1040CR line 23, unemployment compensation.
+    - unemployment_compensation
+    # MI-1040CR line 24, "the value over $300 in gifts of cash or merchandise
+    # received, or expenses paid on your behalf ... by parents, relatives, or
+    # friends" (the first $300 is household_resources_gift_exclusion). Gifts
+    # are excluded from federal gross income (IRC 102) but are total
+    # household resources (MCL 206.510(1)). financial_assistance is cash
+    # only; expenses others pay on the claimant's behalf (gifts in kind) have
+    # no input.
+    - financial_assistance
+    # MI-1040CR line 26, veterans' benefits and workers' compensation.
     - veterans_benefits
     - workers_compensation
+    # MI-1040CR line 14, long-term disability benefits.
     - disability_benefits
+    # Guaranteed income pilot payments, the recipient's own.
     - gi_cash_assistance
+    # MI-1040CR line 27, payments to the household by MDHHS and other public
+    # assistance.
     - tanf
     - general_assistance
 metadata:
@@ -57,3 +84,5 @@ metadata:
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=26
   - title: Michigan Compiled Laws Chapter 9 Section 206.508 - Definitions. (4)
     href: https://law.justia.com/codes/michigan/2022/chapter-206/statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/section-206-508/
+  - title: MCL 206.510(1), "Income" defined
+    href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-510
