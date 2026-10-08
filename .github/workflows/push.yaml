@@ -3,6 +3,17 @@ on:
   push:
     branches: [main]
 
+# Full-suite test jobs (Baseline, HouseholdAPIPartners, Contrib, Rest,
+# Microsimulation) run only on the bot's `Update PolicyEngine US` commit, and
+# each takes a job-level concurrency group of its own, one per matrix shard.
+# When a newer version-bump commit reaches the same shard, the older commit's
+# shard is cancelled: the newer commit contains every change in the older one,
+# so only the newest version is tested and published. The group never covers
+# ReleaseLock, ReleaseLockTests, Lint, versioning or Publish, so those are never
+# cancelled; an older run whose shards were cancelled skips its Publish because
+# a needed job did not succeed. A re-run (run_attempt > 1) waits for the newer
+# shard instead of cancelling it, so re-running an old run cannot cancel the
+# newest release's tests.
 jobs:
   ReleaseLock:
     name: Check committed registry lock
@@ -166,6 +177,9 @@ jobs:
     name: Full Suite - Baseline (${{ matrix.group }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-baseline-${{ matrix.group }}
+      cancel-in-progress: ${{ github.run_attempt == '1' }}
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -225,6 +239,9 @@ jobs:
     name: Household API Partners
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-household-api-partners
+      cancel-in-progress: ${{ github.run_attempt == '1' }}
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -256,6 +273,9 @@ jobs:
     name: Full Suite - Contrib (${{ matrix.group }})
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-contrib-${{ matrix.group }}
+      cancel-in-progress: ${{ github.run_attempt == '1' }}
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -315,6 +335,9 @@ jobs:
     # Oct 6-8 on push: p50 51 min, max success 58.8 min, and one run hit the
     # old 60-minute limit (37719726248), which skipped that version's Publish.
     timeout-minutes: 90
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-rest
+      cancel-in-progress: ${{ github.run_attempt == '1' }}
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -368,6 +391,9 @@ jobs:
     name: Full Suite - Microsimulation
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-microsimulation
+      cancel-in-progress: ${{ github.run_attempt == '1' }}
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
