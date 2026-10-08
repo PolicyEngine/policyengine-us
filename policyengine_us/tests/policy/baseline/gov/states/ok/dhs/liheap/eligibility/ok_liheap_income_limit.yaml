@@ -1,0 +1,51 @@
+# Oklahoma independent fully qualified household components; no final eligibility or award is asserted.
+
+# Jan6,2026 officialannouncement monthly[1696,2292,2888,3483,4079,4675,5271,5867], multipliedby12. No FY2027 amounts mixed into2026.
+- name: Case 1, all eight FY2026 monthly limits reproduce the official winter announcement annually.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OK, OK, OK, OK, OK, OK, OK, OK]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ok_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8]
+  output:
+    ok_liheap_income_limit: [20_352, 27_504, 34_656, 41_796, 48_948, 56_100, 63_252, 70_404]
+
+# C7effective2026-10-01 monthly[1729,2345,2960,3575,4191,4806,5421,6037]; add616perperson over8. Annualizeonce;size9=6653*12 and10=7269*12.
+- name: Case 2, FY2027 limits and separately rounded additional persons match current C7.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OK, OK, OK, OK, OK, OK, OK, OK, OK, OK]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    ok_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  output:
+    ok_liheap_income_limit: [20_748, 28_140, 35_520, 42_900, 50_292, 57_672, 65_052, 72_444, 79_836, 87_228]
+
+# Unverified2025 estimate uses2024FPG15060,size8=52720,increment5380. Monthlyceil at130% gives1632,5712 andextra583;annual19584,68544,75540. Does not verify historical fullprogram.
+- name: Case 3, historical backfill uses its own prior year federal guideline and rounded increment.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OK, OK, OK]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200, 1_200]
+    ok_liheap_household_size: [1, 8, 9]
+  output:
+    ok_liheap_income_limit: [19_584, 68_544, 75_540]
+
+# Zero-size guard has no one-person allowance; normal cases represent fullyqualifiedhouseholds.
+- name: Case 4, zero unit size receives no income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [OK]
+    heating_type: [NATURAL_GAS]
+    gas_expense: [1_200]
+    ok_liheap_household_size: [0]
+  output:
+    ok_liheap_income_limit: [0]

@@ -1,0 +1,72 @@
+# Source-derived Oklahoma ordinary heating cases under contract v1.3.
+# Current C1 need and C7 earned amounts are tested in2027.
+
+# OAC 340:20-1-10(h)(2), 340:20-1-11(a); C-7 size 1 limit $1,729/mo (20,748/yr), inclusive. Monthly gross rounds half up:
+# 20,748/12 = 1,729.00 -> eligible; 20,753/12 = 1,729.42 -> 1,729, eligible; 20,754/12 = 1,729.50 -> 1,730 > 1,729, ineligible.
+# The ordinary program has no asset test.
+- name: Case 1, the gross ceiling compares monthly income rounded to the nearest dollar and assets do not change it.
+  period: 2027
+  input:
+    state_code: [OK, OK, OK]
+    age: [40, 40, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    ok_liheap_gross_income: [20_748, 20_753, 20_754]
+    has_heating_expense: [true, true, true]
+    bank_account_assets: [1_000_000, 1_000_000, 1_000_000]
+    ssi: [0, 0, 0]
+  output:
+    ok_liheap_income_limit: [20_748, 20_748, 20_748]
+    ok_liheap_eligible: [true, true, false]
+
+# OAC 340:20-1-19(d) pays heat-in-rent renters who pay a surcharge, and 340:20-1-10(h) denies unverified
+# responsibility; a positive primary fuel bill represents the surcharge. Subsidy status no longer matters:
+# unsubsidized and subsidized with no bill -> false; the responsibility flag alone (subsidized or public housing)
+# -> false; subsidized with a 1 bill -> true.
+- name: Case 2, heat in rent needs a positive surcharge whether or not the rent is subsidized and the flag alone does
+    not qualify.
+  period: 2027
+  input:
+    state_code: [OK, OK, OK, OK, OK]
+    age: [40, 40, 40, 40, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    ok_liheap_gross_income: [0, 0, 0, 0, 0]
+    heat_expense_included_in_rent: [true, true, true, true, true]
+    receives_housing_assistance: [false, true, true, true, false]
+    is_in_public_housing: [false, false, false, false, true]
+    gas_expense: [0, 0, 0, 1, 0]
+    has_heating_expense: [false, false, true, false, true]
+    ssi: [0, 0, 0, 0, 0]
+  output:
+    ok_liheap_eligible: [false, false, false, true, false]
+
+# Current340:20-1-10(e),(h)(1) includes total or partial responsibility. Direct obligation may be reported with existing has_heating_expense or demonstrated by a positive primary bill.
+- name: Case 3, direct responsibility can be reported or established by a positive primary bill.
+  period: 2027
+  input:
+    state_code: [OK, OK, OK]
+    age: [40, 40, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    ok_liheap_gross_income: [0, 0, 0]
+    heat_expense_included_in_rent: [false, false, false]
+    has_heating_expense: [true, false, false]
+    gas_expense: [0, 0, 1]
+    ssi: [0, 0, 0]
+  output:
+    ok_liheap_eligible: [true, false, true]
+
+# Current340:20-1-10(a),(h)(3) and state scope: Oklahoma ordinary heating requires heat and at least one qualified member.
+- name: Case 4, state no heat and no qualified member each prevent eligibility.
+  period: 2027
+  input:
+    state_code: [TX, OK, OK]
+    age: [40, 40, 40]
+    heating_type: [NATURAL_GAS, NONE, NATURAL_GAS]
+    immigration_status: [CITIZEN, CITIZEN, UNDOCUMENTED]
+    ok_liheap_gross_income: [0, 0, 0]
+    has_heating_expense: [true, true, true]
+    ssi: [0, 0, 0]
+  output:
+    ok_liheap_eligible: [false, false, false]

@@ -1,0 +1,105 @@
+# Source-derived Oklahoma ordinary heating cases under contract v1.3.
+# Current C1 need and C7 earned amounts are tested in2027.
+
+# OAC 340:20-1-10(d)(3) and 340:50-5-67(a) follow SNAP alien eligibility. In January 2027 the SNAP list after
+# P.L. 119-21 sec. 10108 is citizen, permanent resident and Cuban/Haitian entrant; the permanent resident has 5
+# qualified years. Refugee, asylee, withheld, parolee and conditional entrant are now ineligible, as are DACA, TPS
+# and undocumented.
+- name: Case 1, represented statuses follow the post July 2025 SNAP alien eligibility list.
+  period: 2027
+  input:
+    state_code: [OK, OK, OK, OK, OK, OK, OK, OK, OK, OK, OK]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
+      NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [CITIZEN, LEGAL_PERMANENT_RESIDENT, REFUGEE, ASYLEE, DEPORTATION_WITHHELD, CUBAN_HAITIAN_ENTRANT,
+      PAROLED_ONE_YEAR, CONDITIONAL_ENTRANT, DACA, TPS, UNDOCUMENTED]
+    years_since_us_entry: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+    snap_alien_qualifying_quarters: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    is_snap_lpr_in_waiting_period_exempt_category: [false, false, false, false, false, false, false, false, false,
+      false, false]
+    is_snap_alien_military_connected: [false, false, false, false, false, false, false, false, false, false, false]
+    is_usda_disabled: [false, false, false, false, false, false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    ok_liheap_immigration_eligible: [true, true, false, false, false, true, false, false, false, false, false]
+
+# 7 CFR 273.4(a)(6)(iii)(A): a permanent resident needs five qualified years (years_since_us_entry approximates the
+# clock): 4 -> false, 5 -> true. Parolees and conditional entrants are off the 2027 SNAP list, so false at 4 or 5 years.
+- name: Case 2, five qualified years admit a permanent resident while parolees and conditional entrants stay ineligible.
+  period: 2027
+  input:
+    state_code: [OK, OK, OK, OK, OK, OK]
+    age: [40, 40, 40, 40, 40, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [LEGAL_PERMANENT_RESIDENT, LEGAL_PERMANENT_RESIDENT, PAROLED_ONE_YEAR, PAROLED_ONE_YEAR, CONDITIONAL_ENTRANT,
+      CONDITIONAL_ENTRANT]
+    years_since_us_entry: [4, 5, 4, 5, 4, 5]
+    snap_alien_qualifying_quarters: [0, 0, 0, 0, 0, 0]
+    is_snap_lpr_in_waiting_period_exempt_category: [false, false, false, false, false, false]
+    is_snap_alien_military_connected: [false, false, false, false, false, false]
+    is_usda_disabled: [false, false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0, 0]
+  output:
+    ok_liheap_immigration_eligible: [false, true, false, false, false, false]
+
+# 7 CFR 273.4(a)(6)(ii)(A),(H),(J) waiting-period exceptions for permanent residents with 0 qualified years: under 18
+# -> true; age 18 with 39 quarters -> false; 40 quarters -> true; disability benefits -> true. The parolee with 40
+# quarters and the 17-year-old conditional entrant are off the 2027 SNAP list -> false.
+- name: Case 3, permanent resident waiting period exceptions apply while parolee and conditional entrant statuses fail.
+  period: 2027
+  input:
+    state_code: [OK, OK, OK, OK, OK, OK]
+    age: [17, 18, 18, 18, 17, 40]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    immigration_status: [LEGAL_PERMANENT_RESIDENT, LEGAL_PERMANENT_RESIDENT, LEGAL_PERMANENT_RESIDENT, PAROLED_ONE_YEAR,
+      CONDITIONAL_ENTRANT, LEGAL_PERMANENT_RESIDENT]
+    years_since_us_entry: [0, 0, 0, 0, 0, 0]
+    snap_alien_qualifying_quarters: [0, 39, 40, 40, 0, 0]
+    is_snap_lpr_in_waiting_period_exempt_category: [false, false, false, false, false, false]
+    is_snap_alien_military_connected: [false, false, false, false, false, false]
+    is_usda_disabled: [false, false, false, false, false, true]
+    ssi: [0, 0, 0, 0, 0, 0]
+  output:
+    ok_liheap_immigration_eligible: [true, false, true, false, false, true]
+
+# OAC 340:20-1-10(d)(3) follows SNAP, and P.L. 119-21 sec. 10108 removed refugees from 7 U.S.C. 2015(f) from
+# July 2025. The annual result uses January 2027, when a refugee is not SNAP eligible -> false.
+- name: Case 4, a refugee is ineligible in 2027 because Oklahoma follows the narrowed SNAP alien eligibility.
+  period: 2027
+  input:
+    state_code: [OK]
+    age: [40]
+    heating_type: [NATURAL_GAS]
+    immigration_status: [REFUGEE]
+    years_since_us_entry: [0]
+    snap_alien_qualifying_quarters: [0]
+    is_usda_disabled: [false]
+    is_snap_alien_military_connected: [false]
+    is_snap_lpr_in_waiting_period_exempt_category: [false]
+    ssi: [0]
+  output:
+    ok_liheap_immigration_eligible: false
+    is_snap_immigration_status_eligible:
+      2027-01: false
+
+# The annual result uses January. In January 2025 the pre-P.L. 119-21 SNAP list still includes refugees, who are exempt
+# from the waiting period by status (7 CFR 273.4(a)(6)(ii)(B)) -> true. The SNAP list drops refugees from July 2025.
+- name: Case 5, a newly arrived refugee is eligible for 2025 because January precedes the SNAP narrowing.
+  period: 2025
+  input:
+    state_code: [OK]
+    age: [40]
+    heating_type: [NATURAL_GAS]
+    immigration_status: [REFUGEE]
+    years_since_us_entry: [0]
+    snap_alien_qualifying_quarters: [0]
+    is_usda_disabled: [false]
+    is_snap_alien_military_connected: [false]
+    is_snap_lpr_in_waiting_period_exempt_category: [false]
+    ssi: [0]
+  output:
+    ok_liheap_immigration_eligible: true
+    is_snap_immigration_status_eligible:
+      2025-01: true
+      2025-07: false

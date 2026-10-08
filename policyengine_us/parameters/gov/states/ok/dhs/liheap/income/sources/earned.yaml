@@ -1,0 +1,21 @@
+description: Oklahoma counts these earned income sources for fully qualified households under the Low Income Home Energy Assistance Program.
+# Use existing net business inputs without a further 50% business-expense
+# deduction or new expense input. Passive versus active partnership income
+# is not distinguishable with existing input data.
+values:
+  2025-09-15:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    - partnership_s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: Oklahoma LIHEAP earned income sources
+  reference:
+    - title: OAC 340:20-1-11(a)-(b), September 2025 permanent adoption
+      href: https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=576
+    - title: OAC 340:50-7-22, Incorporated SNAP income exclusions
+      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-50-7-22

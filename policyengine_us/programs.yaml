@@ -808,8 +808,16 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, TX
+    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, OK, TX
     state_implementations:
+      - state: OK
+        status: partial
+        name: Oklahoma LIHEAP
+        full_name: Oklahoma Low Income Home Energy Assistance Program
+        variable: ok_liheap
+        parameter_prefix: gov.states.ok.dhs.liheap
+        verified_years: "2025-2027"
+        notes: FY2025-FY2027 regular winter heating only, using the Appendix C-7-A payment matrix. Crisis, cooling, weatherization and equipment assistance are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP

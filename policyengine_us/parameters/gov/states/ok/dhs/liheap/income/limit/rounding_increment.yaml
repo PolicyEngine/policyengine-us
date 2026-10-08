@@ -1,0 +1,16 @@
+description: Oklahoma publishes monthly income limits in increments of this amount under the Low Income Home Energy Assistance Program.
+# Ceiling the base and each extra-person amount separately matches the
+# published charts and their $583, $596 and $616 additional-person amounts
+# (Appendix C-7, 10/1/2024, 10/1/2025 and 10/1/2026 editions).
+values:
+  2025-10-01: 1
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Oklahoma LIHEAP monthly income limit rounding increment
+  reference:
+    - title: Oklahoma FY2026 Winter Heating application announcement
+      href: https://oklahoma.gov/okdhs/newsroom/2026/january/comm01062026.html
+    - title: OKDHS Appendix C-7, effective October 1, 2026
+      href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7.pdf

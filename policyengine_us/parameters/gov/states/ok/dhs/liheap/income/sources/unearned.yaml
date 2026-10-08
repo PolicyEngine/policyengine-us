@@ -1,0 +1,51 @@
+description: Oklahoma counts these unearned income sources for fully qualified households under the Low Income Home Energy Assistance Program.
+# OAC 340:20-1-11(a) counts earned and unearned income unless excluded.
+# Income sources represent regular receipts, not excluded asset principal,
+# loans, nonrecurring lump sums or restricted trust distributions. The
+# September 2025 rule replaces the old 38-item list with program-specific
+# exclusions, defaulting to Oklahoma SNAP exclusions. Aggregate inputs cannot
+# distinguish every exclusion, including irregular small gifts, qualified
+# educational/VA aid, restricted tribal trust receipts, redirected support
+# and third-party payments. Those detailed pathways remain unverified.
+# State SSP receipts are not modeled; SSI is federal, and TANF is added once
+# at SPMUnit level through the take-up-gated tanf aggregate.
+values:
+  2025-09-15:
+    - unemployment_compensation
+    - strike_benefits
+    # Social Security is counted in the formula, net of the Medicare Part B
+    # premium (plan Section 1.9).
+    - ssi
+    # Military retirement pay is a separate input from the pension inputs that
+    # pension_income adds, so both are listed; a household reports the amount
+    # in one or the other.
+    - pension_income
+    - military_retirement_pay
+    # Plan Section 1.9 counts retirement benefits; IRA, 401(k), 403(b), SEP
+    # and Keogh distributions are separate inputs from pension_income.
+    - retirement_distributions
+    - survivor_benefits
+    - railroad_benefits
+    - workers_compensation
+    - disability_benefits
+    - rental_income
+    - farm_rent_income
+    - alimony_income
+    - child_support_received
+    - interest_income
+    - ordinary_dividend_income
+    - veterans_benefits
+    - financial_assistance
+    - estate_income
+
+metadata:
+  unit: list
+  period: year
+  label: Oklahoma LIHEAP unearned income sources
+  reference:
+    - title: OAC 340:20-1-11(a)-(b), September 2025 permanent adoption
+      href: https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=576
+    - title: OAC 340:50-7-22, Incorporated SNAP income exclusions
+      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-50-7-22
+    - title: Oklahoma FY2026 State Plan, Section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/OK_Plan_2026.pdf#page=6

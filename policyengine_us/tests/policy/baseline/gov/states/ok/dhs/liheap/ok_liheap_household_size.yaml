@@ -1,0 +1,119 @@
+# Source-derived Oklahoma ordinary heating cases under contract v1.3.
+# Current C1 need and C7 earned amounts are tested in2027.
+
+# OAC 340:20-1-10(h)(3) excludes ineligible members from the income standard and the benefit size. In January 2027
+# only the citizen qualifies: the refugee is off the narrowed SNAP list, the permanent resident has 4 of 5 qualified
+# years, and the child is undocumented -> size 1.
+- name: Case 1, only the qualified members enter the financial and payment household size.
+  period: 2027
+  input:
+    people:
+      citizen:
+        age: 40
+        immigration_status: CITIZEN
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+      refugee:
+        age: 35
+        immigration_status: REFUGEE
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 1
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+      recent_lpr:
+        age: 30
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 4
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+      child:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+    tax_units:
+      tax_unit:
+        members: [citizen, refugee, recent_lpr, child]
+    spm_units:
+      spm_unit:
+        members: [citizen, refugee, recent_lpr, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [citizen, refugee, recent_lpr, child]
+        state_code: OK
+  output:
+    ok_liheap_immigration_eligible: [true, false, false, false]
+    ok_liheap_household_size: 1
+
+# Current340:20-1-10(h)(3) requires at least one eligible member; zero size has no one-person income allowance.
+- name: Case 2, a household without any qualified member has zero size and is ineligible.
+  period: 2027
+  input:
+    people:
+      adult:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: false
+        is_in_k12_school: false
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+      child:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        is_disabled: false
+        ssi: 0
+        years_since_us_entry: 5
+        snap_alien_qualifying_quarters: 0
+        is_snap_lpr_in_waiting_period_exempt_category: false
+        is_snap_alien_military_connected: false
+    tax_units:
+      tax_unit:
+        members: [adult, child]
+    spm_units:
+      spm_unit:
+        members: [adult, child]
+        heating_type: NATURAL_GAS
+        gas_expense: 1200
+        ok_tanf: 0
+        ok_child_care_subsidies: 0
+        ok_ccs_copay: 0
+    households:
+      household:
+        members: [adult, child]
+        state_code: OK
+  output:
+    ok_liheap_household_size: 0
+    ok_liheap_income_limit: 0
+    ok_liheap_eligible: false

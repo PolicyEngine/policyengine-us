@@ -1,0 +1,28 @@
+description: Oklahoma assigns this payment band based on net monthly income under the Low Income Home Energy Assistance Program.
+# Printed lower bounds are inclusive. Monthly net income is rounded half up
+# to the nearest dollar before the lookup (OAC 340:20-1-11(a)).
+brackets:
+  - threshold:
+      2021-10-01: 0
+    amount:
+      2021-10-01: 1
+  - threshold:
+      2021-10-01: 401
+    amount:
+      2021-10-01: 2
+  - threshold:
+      2021-10-01: 701
+    amount:
+      2021-10-01: 3
+
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: /1
+  period: month
+  label: Oklahoma LIHEAP net monthly income band
+  reference:
+    - title: OKDHS Appendix C-7-A, Winter Heating Program
+      href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7-a.pdf#page=1
+    - title: Oklahoma FY2026 Benefits Matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/OK_BenefitMatrix_2026.docx
