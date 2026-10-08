@@ -11,7 +11,7 @@ class sd_liheap(Variable):
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/SD_BenefitMatrix_2026.pdf",
         "https://dss.sd.gov/formsandpubs/docs/ENERGY/energyassistanceapplication.pdf#page=2",
-        # Physical pages 30-32: vendor claims, rent payments, and cash fuels.
+        # PDF pages 30-32
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=30",
     )
 

@@ -10,7 +10,7 @@ class sd_liheap_income_threshold(Variable):
     label = "South Dakota LIEAP annualized first-tier income threshold"
     defined_for = StateCode.SD
     reference = (
-        # Pages 1-5 publish both income tiers for sizes 1-15.
+        # PDF pages 1-5
         "https://liheapch.acf.gov/docs/2024/benefits-matricies/SD_BenefitMatrix_2024.pdf#page=1",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/SD_BenefitMatrix_2026.pdf#page=1",
     )

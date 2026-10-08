@@ -10,7 +10,7 @@ class sd_liheap_base_payment(Variable):
     defined_for = StateCode.SD
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/SD_BenefitMatrix_2026.pdf#page=1",
-        # Pages 2 and 4: unpaid heating charges and fuel-oil/kerosene grouping.
+        # PDF pages 2, 4
         "https://dss.sd.gov/formsandpubs/docs/ENERGY/energyassistanceapplication.pdf#page=2",
     )
 

@@ -12,7 +12,7 @@ class sd_liheap_eligible(Variable):
         "https://sdlegislature.gov/Rules/Administrative/67:15:01:09",
         # Sections 1.4a and 17.3: SNAP recipients and qualified noncitizens.
         "https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf",
-        # Physical pages 9 and 17: mixed households and ineligible members.
+        # PDF pages 9, 17
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=9",
     )
 

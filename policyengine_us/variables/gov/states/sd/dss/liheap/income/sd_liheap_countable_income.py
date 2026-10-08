@@ -12,8 +12,8 @@ class sd_liheap_countable_income(Variable):
         "https://sdlegislature.gov/Rules/Administrative/67:15:01:18",
         "https://sdlegislature.gov/Rules/Administrative/67:15:01:18.01",
         "https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf#page=6",
-        # Physical pages 17 and 25-28: ineligible members and countable income.
-        "https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=25",
+        # PDF pages 17, 25-28
+        "https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=17",
     )
 
     def formula(spm_unit, period, parameters):

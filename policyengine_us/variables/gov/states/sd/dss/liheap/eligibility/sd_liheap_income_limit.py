@@ -11,7 +11,7 @@ class sd_liheap_income_limit(Variable):
     label = "South Dakota LIEAP annualized income limit"
     defined_for = StateCode.SD
     reference = (
-        # Pages 1-5 publish three-month limits for sizes 1-15.
+        # PDF pages 1-5
         "https://liheapch.acf.gov/docs/2024/benefits-matricies/SD_BenefitMatrix_2024.pdf#page=1",
         "https://web.archive.org/web/20250114001211/https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx",
         "https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx",
