@@ -21,7 +21,11 @@ from policyengine_us.tools.pinned_tbs import get_pre_arpa_eitc_tbs
 
 SINGLE_STANDARD_DEDUCTION = "gov.irs.deductions.standard.amount.SINGLE"
 BASELINE_INCOME_TAX = 4_016
-REFORMED_INCOME_TAX = 3_718
+# A $20,000 single standard deduction for a $50,000 earner in 2024 leaves
+# taxable income of 30,000: 10% of 11,600 + 12% of 18,400 = 3,368. The
+# reform must keep a nonzero tax so the isolation checks stay meaningful.
+REFORMED_STANDARD_DEDUCTION = 20_000
+REFORMED_INCOME_TAX = 3_368
 
 
 def earner_situation():
@@ -94,7 +98,9 @@ def test_parameter_reform_leaves_every_other_simulation_unreformed():
     assert reformed.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
     assert unrelated.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
 
-    reformed.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+    reformed.apply_reform(
+        {SINGLE_STANDARD_DEDUCTION: {"2024": REFORMED_STANDARD_DEDUCTION}}
+    )
 
     assert reformed.calculate("income_tax", 2024)[0] == REFORMED_INCOME_TAX
     # An existing simulation, recomputed from its own inputs. Use the same
@@ -102,7 +108,9 @@ def test_parameter_reform_leaves_every_other_simulation_unreformed():
     # cached intermediates that a contaminated tree would have to flow through.
     unrelated._invalidate_all_caches()
     assert unrelated.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
-    assert unrelated.calculate("standard_deduction", 2024)[0] < 100_000
+    assert (
+        unrelated.calculate("standard_deduction", 2024)[0] < REFORMED_STANDARD_DEDUCTION
+    )
     # And one built after the reform.
     later = Simulation(situation=earner_situation())
     assert later.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
@@ -116,7 +124,9 @@ def test_parameter_reform_detaches_the_shared_tree_and_its_warm_caches():
     assert policy.parameters is system.parameters
     assert policy._parameters_at_instant_cache is system._parameters_at_instant_cache
 
-    simulation.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+    simulation.apply_reform(
+        {SINGLE_STANDARD_DEDUCTION: {"2024": REFORMED_STANDARD_DEDUCTION}}
+    )
 
     assert policy.parameters is not system.parameters
     assert policy._parameters_at_instant_cache is not (
@@ -147,7 +157,9 @@ def test_shared_policy_branch_follows_its_parents_parameter_reform():
     simulation = Simulation(situation=earner_situation())
     branch = simulation.get_branch("shared_policy")
 
-    simulation.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+    simulation.apply_reform(
+        {SINGLE_STANDARD_DEDUCTION: {"2024": REFORMED_STANDARD_DEDUCTION}}
+    )
 
     assert branch.tax_benefit_system.parameters is (
         simulation.tax_benefit_system.parameters
@@ -322,7 +334,9 @@ def test_parameter_reform_on_a_shared_branch_leaves_its_parent_alone():
     simulation = Simulation(situation=earner_situation())
     branch = simulation.get_branch("reformed_branch")
 
-    branch.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+    branch.apply_reform(
+        {SINGLE_STANDARD_DEDUCTION: {"2024": REFORMED_STANDARD_DEDUCTION}}
+    )
 
     assert branch.calculate("income_tax", 2024)[0] == REFORMED_INCOME_TAX
     assert simulation.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
@@ -333,7 +347,7 @@ def test_parameter_reform_on_a_shared_branch_leaves_its_parent_alone():
     "mutate",
     [
         lambda policy: policy.modify_parameters(
-            {SINGLE_STANDARD_DEDUCTION: {"year:2024:1": 100_000}}
+            {SINGLE_STANDARD_DEDUCTION: {"year:2024:1": REFORMED_STANDARD_DEDUCTION}}
         ),
         lambda policy: policy.add_abolition_parameters(),
         # Core's load_extension ends in ``self.parameters.merge(...)``. Stub
@@ -409,7 +423,9 @@ def test_pinned_systems_are_rebuilt_when_their_source_tree_detaches():
     pinned = get_pre_arpa_eitc_tbs(policy)
     assert get_pre_arpa_eitc_tbs(policy) is pinned
 
-    simulation.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+    simulation.apply_reform(
+        {SINGLE_STANDARD_DEDUCTION: {"2024": REFORMED_STANDARD_DEDUCTION}}
+    )
 
     assert policy.parameters is not system.parameters
     assert get_pre_arpa_eitc_tbs(policy) is not pinned
@@ -430,7 +446,9 @@ def test_shared_branch_follows_its_parent_whether_or_not_it_is_traced(traced):
     simulation.trace = traced
     branch = simulation.get_branch("shared_policy")
 
-    simulation.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+    simulation.apply_reform(
+        {SINGLE_STANDARD_DEDUCTION: {"2024": REFORMED_STANDARD_DEDUCTION}}
+    )
 
     assert simulation.calculate("income_tax", 2024)[0] == REFORMED_INCOME_TAX
     assert branch.calculate("income_tax", 2024)[0] == REFORMED_INCOME_TAX
@@ -453,9 +471,14 @@ def test_traced_simulation_sees_a_later_parameter_reform():
     simulation.trace = True
     assert simulation.calculate("standard_deduction", 2024)[0] == 20_000
 
-    simulation.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+    simulation.apply_reform(
+        {SINGLE_STANDARD_DEDUCTION: {"2024": REFORMED_STANDARD_DEDUCTION}}
+    )
 
-    assert simulation.calculate("standard_deduction", 2024)[0] == 100_000
+    assert (
+        simulation.calculate("standard_deduction", 2024)[0]
+        == REFORMED_STANDARD_DEDUCTION
+    )
 
 
 def test_lending_a_detached_tree_stops_the_lender_writing_to_it():
@@ -466,17 +489,23 @@ def test_lending_a_detached_tree_stops_the_lender_writing_to_it():
     see everything it writes.
     """
     lender = Simulation(situation=earner_situation())
-    lender.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+    lender.apply_reform(
+        {SINGLE_STANDARD_DEDUCTION: {"2024": REFORMED_STANDARD_DEDUCTION}}
+    )
     borrower = Simulation(
         tax_benefit_system=lender.tax_benefit_system, situation=earner_situation()
     )
-    assert borrower.calculate("standard_deduction", 2024)[0] == 100_000
+    assert (
+        borrower.calculate("standard_deduction", 2024)[0] == REFORMED_STANDARD_DEDUCTION
+    )
 
     lender.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 7_777}})
 
     assert lender.calculate("standard_deduction", 2024)[0] == 7_777
     borrower._invalidate_all_caches()
-    assert borrower.calculate("standard_deduction", 2024)[0] == 100_000
+    assert (
+        borrower.calculate("standard_deduction", 2024)[0] == REFORMED_STANDARD_DEDUCTION
+    )
 
 
 def test_a_branch_reform_does_not_rewrite_its_parents_policy():
@@ -484,9 +513,13 @@ def test_a_branch_reform_does_not_rewrite_its_parents_policy():
     branch = simulation.get_branch("reforming_branch")
     simulation.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 50_000}})
 
-    branch.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+    branch.apply_reform(
+        {SINGLE_STANDARD_DEDUCTION: {"2024": REFORMED_STANDARD_DEDUCTION}}
+    )
 
-    assert branch.calculate("standard_deduction", 2024)[0] == 100_000
+    assert (
+        branch.calculate("standard_deduction", 2024)[0] == REFORMED_STANDARD_DEDUCTION
+    )
     assert simulation.calculate("standard_deduction", 2024)[0] == 50_000
 
 
@@ -524,9 +557,13 @@ def test_a_clone_keeps_the_copy_on_write_barrier_its_parent_had():
     assert clone.tax_benefit_system.shares_parameters is not None
 
     branch = clone.get_branch("reforming_branch")
-    branch.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+    branch.apply_reform(
+        {SINGLE_STANDARD_DEDUCTION: {"2024": REFORMED_STANDARD_DEDUCTION}}
+    )
 
-    assert branch.calculate("standard_deduction", 2024)[0] == 100_000
+    assert (
+        branch.calculate("standard_deduction", 2024)[0] == REFORMED_STANDARD_DEDUCTION
+    )
     assert clone.calculate("standard_deduction", 2024)[0] == 14_600
     assert simulation.calculate("standard_deduction", 2024)[0] == 14_600
 
@@ -542,9 +579,11 @@ def test_a_reform_on_a_clone_still_reaches_the_clones_own_policy():
     assert simulation.calculate("income_tax", 2024)[0] == BASELINE_INCOME_TAX
     clone = simulation.clone()
 
-    clone.apply_reform({SINGLE_STANDARD_DEDUCTION: {"2024": 100_000}})
+    clone.apply_reform(
+        {SINGLE_STANDARD_DEDUCTION: {"2024": REFORMED_STANDARD_DEDUCTION}}
+    )
 
-    assert clone.calculate("standard_deduction", 2024)[0] == 100_000
+    assert clone.calculate("standard_deduction", 2024)[0] == REFORMED_STANDARD_DEDUCTION
     assert simulation.calculate("standard_deduction", 2024)[0] == 14_600
     assert (
         system.parameters.gov.irs.deductions.standard.amount.SINGLE("2024-01-01")

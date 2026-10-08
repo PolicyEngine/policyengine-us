@@ -25,6 +25,8 @@ class amt_income(Variable):
         exemptions = tax_unit("exemptions", period)
         agi = tax_unit("adjusted_gross_income", period)
         deductions = tax_unit("taxable_income_deductions", period)
+        # From 2018 both branches equal agi - deductions; the taxable income
+        # branch only differs before 2018, when exemptions were subtracted.
         line_1 = where(
             taxable_income > 0,
             taxable_income + exemptions,
