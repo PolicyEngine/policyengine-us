@@ -12,130 +12,45 @@ concurrency:
   cancel-in-progress: true
 jobs:
   ReleaseLock:
-    name: Check committed registry lock
-    if: github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.14"
-      - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
-        with:
-          version: "0.12.13"
-      - name: Check committed registry lock
-        run: python .github/release_lock.py --committed
-      - name: Rehearse the release version refresh
-        run: python .github/release_lock.py --rehearse
-  ReleaseLockTests:
-    name: Release lock guard tests
-    if: github.event.pull_request.draft == false
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.14"
-      - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
-        with:
-          version: "0.12.13"
-      - name: Test guard without importing the country model
-        env:
-          RELEASE_LOCK_REAL_UV: "1"
-        run: python -m unittest discover -s .github/tests -p 'test_release_*.py' -v
-  CandidateWheel:
-    name: Unpublished release wheel (${{ matrix.kind }})
-    needs: [ReleaseLock, ReleaseLockTests]
-    permissions:
-      contents: read
-    runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        kind: [rc1, final]
-    steps:
-      - name: Checkout reviewed PR head
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Detect the release tooling on the PR head
-        id: tooling
-        # The job builds from the reviewed head, not the merge commit, so a
-        # branch that predates the release tooling has no script to run.
-        # Skip the build with a notice instead of failing the PR; the
-        # ReleaseLock job above still checks the lock on the merge commit.
-        run: |
-          if [ -f .github/release_lock.py ] && [ -f .github/release_build.py ]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "::notice title=Candidate wheel skipped::The PR head predates the release tooling (.github/release_lock.py and .github/release_build.py). Merge main into the branch to build its candidate wheel."
-          fi
-      - name: Set up Python
-        if: steps.tooling.outputs.present == 'true'
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.14.7"
-      - name: Install uv
-        if: steps.tooling.outputs.present == 'true'
-        uses: astral-sh/setup-uv@v8.1.0
-        with:
-          version: "0.12.13"
-      - name: Check committed registry lock
-        if: steps.tooling.outputs.present == 'true'
-        run: python .github/release_lock.py --committed
-      - name: Predict release version with the release helper
-        if: steps.tooling.outputs.present == 'true'
-        run: python .github/release_build.py --prepare "${{ matrix.kind }}"
-      - name: Refresh only the release version in the registry lock
-        if: steps.tooling.outputs.present == 'true'
-        run: python .github/release_lock.py --refresh
-      - name: Install package
-        if: steps.tooling.outputs.present == 'true'
-        run: uv sync --locked --extra dev
-      - name: Build package from unchanged policy source
-        if: steps.tooling.outputs.present == 'true'
-        run: uv run --no-sync make
-      - name: Record and verify release build
-        if: steps.tooling.outputs.present == 'true'
-        run: uv run --no-sync python .github/release_build.py
-      - name: Retain unpublished wheel and build receipt
-        if: steps.tooling.outputs.present == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-wheel-${{ matrix.kind }}-${{ github.event.pull_request.head.sha }}
-          path: |
-            dist/*.whl
-            release-build/receipt.json
-          if-no-files-found: error
-          retention-days: 14
-  Lint:
-    needs: ReleaseLock
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
-        with:
-          version: "0.12.13"
-      - name: Install dependencies
-        run: uv sync --locked --extra dev
-      - name: Check formatting
-        run: uv run --no-sync ruff format --check .
-  check-changelog:
-    name: Check changelog fragment
+    name: PR validation (lock, guard tests, lint, changelog)
     if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 2
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      # Keep collecting independent results after a failure; failed steps
+      # still fail the job, and cancellation stops the remaining checks.
+      - name: Check committed registry lock
+        run: python .github/release_lock.py --committed
+      - name: Rehearse the release version refresh
+        if: ${{ !cancelled() }}
+        run: python .github/release_lock.py --rehearse
+      - name: Test guard without importing the country model
+        if: ${{ !cancelled() }}
+        env:
+          RELEASE_LOCK_REAL_UV: "1"
+        run: python -m unittest discover -s .github/tests -p 'test_release_*.py' -v
+      - name: Install lint dependencies
+        if: ${{ !cancelled() }}
+        id: lint-install
+        run: uv sync --locked --extra dev
+      - name: Check formatting
+        if: ${{ !cancelled() && steps.lint-install.outcome == 'success' }}
+        run: uv run --no-sync ruff format --check .
       - name: Check changed changelog fragments
+        if: ${{ !cancelled() }}
         shell: bash
+        env:
+          PR_HEAD_REF: ${{ github.head_ref }}
         run: |
           set -euo pipefail
 
@@ -165,10 +80,11 @@ jobs:
           fi
 
           if [ "$valid_count" -eq 0 ]; then
-            echo "::error::No valid changelog fragment found. Add one like: changelog.d/${{ github.head_ref }}.fixed.md"
+            echo "::error::No valid changelog fragment found. Add one like: changelog.d/${PR_HEAD_REF}.fixed.md"
             exit 1
           fi
       - name: Validate changelog.d tree
+        if: ${{ !cancelled() }}
         shell: bash
         run: |
           set -euo pipefail
@@ -192,58 +108,58 @@ jobs:
           if [ "$invalid" -ne 0 ]; then
             exit 1
           fi
-  BundleMetadataContract:
+  PackageCompatibility:
+    name: Package and compatibility
     needs: ReleaseLock
-    name: Validate bundle metadata contract
-    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.14"
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-        with:
-          version: "0.12.13"
-      - name: Resolve latest compatible PolicyEngine Core
-        run: uv lock --upgrade-package policyengine-core
-      - name: Install package
-        run: uv sync --locked --extra dev
-      - name: Install bundle validation tooling
-        # Pin the test-only bundle contract dependency until policyengine-bundles
-        # has published releases suitable for ordinary dependency specifiers.
-        run: uv pip install --python .venv/bin/python "policyengine-bundles @ git+https://github.com/PolicyEngine/policyengine-bundles@8ae9f56fefcf89f69b8a7e3bc49928509c6207be"
-      - name: Validate runtime metadata contract
-        run: uv run --no-sync python -m pytest policyengine_us/tests/test_build_metadata.py
-  Python-Compat:
-    needs: ReleaseLock
-    name: Install + smoke-import (py${{ matrix.python-version }})
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.11", "3.12", "3.13", "3.14"]
-    steps:
+      # Load actions from the tested merge commit. Each area uses its own
+      # checkout and environment; wheels still build the reviewed PR head.
       - uses: actions/checkout@v6
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up wheel Python
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.14.7"
       - name: Install uv
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
-      - name: Resolve latest compatible PolicyEngine Core
-        run: uv lock --upgrade-package policyengine-core
-      - name: Install package
-        run: uv sync --locked --python "${{ matrix.python-version }}" --extra dev
-      - name: Smoke-import
-        run: |
-          uv run --no-sync --python "${{ matrix.python-version }}" python -c "from policyengine_us import CountryTaxBenefitSystem, Simulation, Microsimulation; print('import OK')"
-      - name: Dataset copy/extension tests (real pandas semantics per Python version)
-        # Fixture-based and requires no dataset downloads.
-        run: uv run --no-sync --python "${{ matrix.python-version }}" python -m pytest policyengine_us/tests/microsimulation/data/ -q
+      - name: Build and retain rc1 wheel
+        uses: ./.github/actions/candidate-wheel
+        with:
+          kind: rc1
+      - name: Build and retain final wheel
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/candidate-wheel
+        with:
+          kind: final
+      - name: Validate bundle metadata contract
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/bundle-metadata
+      # Keep running independent checks after a failure, and stop on cancel.
+      # Each version resolves its own lock and installs into its own .venv.
+      - name: Python 3.11
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/python-compat
+        with:
+          python-version: "3.11"
+      - name: Python 3.12
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/python-compat
+        with:
+          python-version: "3.12"
+      - name: Python 3.13
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/python-compat
+        with:
+          python-version: "3.13"
+      - name: Python 3.14
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/python-compat
+        with:
+          python-version: "3.14"
   Quick-Feedback:
     needs: ReleaseLock
     name: Quick Feedback (Selective Tests + Coverage)
@@ -327,61 +243,9 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           verbose: true
   Baseline:
+    name: Baseline tests
     needs: ReleaseLock
-    name: Full Suite - Baseline (${{ matrix.group }})
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    env:
-      PYTHONUNBUFFERED: 1
-      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          # One state per subprocess; retain four runners and one worker each.
-          # The former NY/OH/OK process peaked at 15.1 GB (run 36930199045).
-          - group: states-shard-1
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 1/4
-          - group: states-shard-2
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 2/4
-          - group: states-shard-3
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 3/4
-          - group: states-shard-4
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 4/4
-          - group: irs
-            cmd: make test-yaml-no-structural-other-irs
-          - group: household
-            cmd: make test-yaml-no-structural-other-household
-          - group: ssa-usda
-            cmd: make test-yaml-no-structural-other-ssa-usda
-          - group: rest-a
-            cmd: make test-yaml-no-structural-other-rest-a
-          - group: rest-b
-            cmd: make test-yaml-no-structural-other-rest-b
-          - group: contrib-hhs
-            cmd: make test-yaml-contrib-hhs
-          - group: reform
-            cmd: make test-yaml-reform
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v6
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: 3.14
-      - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
-        with:
-          version: "0.12.13"
-      - name: Resolve latest compatible PolicyEngine Core
-        run: uv lock --upgrade-package policyengine-core
-      - name: Install dependencies
-        run: uv sync --locked --extra dev
-      - name: Turn off default branching
-        shell: bash
-        run: bash ./update_itemization.sh
-      - name: Run Baseline YAML tests (${{ matrix.group }})
-        run: uv run --no-sync ${{ matrix.cmd }}
+    uses: ./.github/workflows/baseline-tests.yaml
   HouseholdAPIPartners:
     needs: ReleaseLock
     name: Household API Partners
@@ -411,155 +275,10 @@ jobs:
       - name: Run Household API Partners YAML tests
         run: uv run --no-sync make test-yaml-no-structural-other-partners
   Contrib:
+    name: Contrib tests
     needs: ReleaseLock
-    name: Full Suite - Contrib (${{ matrix.group }})
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    env:
-      PYTHONUNBUFFERED: 1
-      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - group: states-shard-1
-            target: test-yaml-structural-heavy-shard-1
-          - group: states-shard-2
-            target: test-yaml-structural-heavy-shard-2
-          - group: states-shard-3
-            target: test-yaml-structural-heavy-shard-3
-          - group: states-shard-4
-            target: test-yaml-structural-heavy-shard-4
-          - group: other-shard-1
-            target: test-yaml-structural-other
-          - group: other-shard-2a
-            target: test-yaml-structural-other-shard-2a
-          - group: other-shard-2b
-            target: test-yaml-structural-other-shard-2b
-          - group: other-shard-3
-            target: test-yaml-structural-other-shard-3
-          - group: congress
-            target: test-yaml-structural-congress
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v6
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: 3.14
-      - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
-        with:
-          version: "0.12.13"
-      - name: Resolve latest compatible PolicyEngine Core
-        run: uv lock --upgrade-package policyengine-core
-      - name: Install dependencies
-        run: uv sync --locked --extra dev
-      - name: Turn off default branching
-        shell: bash
-        run: bash ./update_itemization.sh
-      - name: Run Contrib YAML tests (${{ matrix.group }})
-        run: uv run --no-sync make ${{ matrix.target }}
-      - name: Run Contrib Python tests
-        if: ${{ matrix.group == 'other-shard-1' }}
-        run: uv run --no-sync make test-policy-contrib-python
-  Rest:
+    uses: ./.github/workflows/contrib-tests.yaml
+  PythonTests:
+    name: Python tests
     needs: ReleaseLock
-    name: Full Suite - Rest (Python + variables)
-    runs-on: ubuntu-latest
-    # Passing runs on 2026-10-04 took 42-55 minutes (#9653, #9766, #9769,
-    # #9777, #9784), so a 60-minute limit cancels PRs that add a few
-    # minutes of tests (#9695 was cancelled at 60 minutes twice).
-    timeout-minutes: 90
-    env:
-      PYTHONUNBUFFERED: 1
-      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v6
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: 3.14
-      - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
-        with:
-          version: "0.12.13"
-      - name: Resolve latest compatible PolicyEngine Core
-        run: uv lock --upgrade-package policyengine-core
-      - name: Install dependencies
-        run: uv sync --locked --extra dev
-      - name: Turn off default branching
-        shell: bash
-        run: bash ./update_itemization.sh
-      # Each Rest group runs in a separate process to release its heap.
-      # SPM simulation/API contracts run in the Microsimulation job instead.
-      - name: Run remaining Python tests
-        # Continue after failures, but stop when the workflow is cancelled.
-        if: ${{ !cancelled() }}
-        env:
-          PYTEST_ADDOPTS: "--durations=0 -v -p no:unraisableexception -p no:threadexception"
-        run: uv run --no-sync make test-other-python-rest REST_REPORT_DIR=.
-      - name: Run tests/variables YAML tests
-        # Continue after failures, but stop when the workflow is cancelled.
-        if: ${{ !cancelled() }}
-        env:
-          PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
-        run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
-      - name: Upload Rest timing and memory reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: rest-test-timings
-          path: |
-            rest-python-*.xml
-            rest-variables.xml
-            rest-python-*-resources.txt
-            rest-variables-resources.txt
-  Microsimulation:
-    needs: ReleaseLock
-    name: Full Suite - Microsimulation
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    env:
-      PYTHONUNBUFFERED: 1
-      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v6
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: 3.14
-      - name: Install uv
-        uses: astral-sh/setup-uv@v8.1.0
-        with:
-          version: "0.12.13"
-      - name: Resolve latest compatible PolicyEngine Core
-        run: uv lock --upgrade-package policyengine-core
-      - name: Install dependencies
-        run: uv sync --locked --extra dev
-      - name: Turn off default branching
-        shell: bash
-        run: bash ./update_itemization.sh
-      # Keep simulation/API and dataset compatibility on this existing runner.
-      # Use separate, sequential processes: combining these suites in one
-      # pytest process previously accumulated enough memory to kill the runner.
-      - name: Run SPM Python tests
-        env:
-          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-spm.xml -p no:unraisableexception -p no:threadexception"
-        run: /usr/bin/time -v -o simulation-spm-resources.txt uv run --no-sync make test-other-python-spm
-      - name: Run microsimulation tests
-        # Continue after failures, but stop when the workflow is cancelled.
-        if: ${{ !cancelled() }}
-        env:
-          PYTEST_ADDOPTS: "--durations=0 -v --junitxml=simulation-microsimulation.xml -p no:unraisableexception -p no:threadexception"
-        run: /usr/bin/time -v -o simulation-microsimulation-resources.txt uv run --no-sync make test-microsimulation
-      - name: Upload simulation timing and memory reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: simulation-test-timings
-          path: |
-            simulation-*.xml
-            simulation-*-resources.txt
+    uses: ./.github/workflows/python-tests.yaml
