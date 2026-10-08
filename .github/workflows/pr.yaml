@@ -2,6 +2,10 @@ name: Pull request
 on:
   pull_request:
     branches: [main]
+    # Draft PRs skip CI; marking a PR ready runs the full suite. Converting a
+    # PR back to draft starts a run whose jobs all skip, which cancels any
+    # in-progress run through the concurrency group below.
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
 # Concurrency: auto-cancels previous runs when new commits are pushed
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -9,6 +13,7 @@ concurrency:
 jobs:
   ReleaseLock:
     name: Check committed registry lock
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -26,6 +31,7 @@ jobs:
         run: python .github/release_lock.py --rehearse
   ReleaseLockTests:
     name: Release lock guard tests
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -122,6 +128,7 @@ jobs:
         run: uv run --no-sync ruff format --check .
   check-changelog:
     name: Check changelog fragment
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
