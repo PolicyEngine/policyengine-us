@@ -273,31 +273,36 @@ def test_vt_income_tax_thresholds_preserve_published_preliminary_2026(
 
 
 @pytest.mark.parametrize(
-    ("filing_status", "published_2026"),
+    ("filing_status", "published_2026", "statutory_base", "base_index"),
     (
         # 2026 Form 1-ES instructions, 2026 Standard Deduction schedules.
-        ("head_of_household", 20_120),
-        ("joint", 29_040),
-        ("separate", 13_780),
-        ("single", 20_120),
+        ("head_of_household", 20_120, 10_380, "167.1"),
+        ("joint", 29_040, 21_360, "238.316"),
+        ("separate", 13_780, 10_140, "238.316"),
+        ("single", 20_120, 10_380, "167.1"),
     ),
 )
-def test_wi_standard_deduction_phase_out_thresholds_preserve_published_2026(
+def test_wi_standard_deduction_phase_out_thresholds_use_published_then_statutory_values(
     filing_status,
     published_2026,
+    statutory_base,
+    base_index,
 ):
     # 2026 Form 1-ES instructions, p. 2, Standard Deduction Schedules.
+    # Future amounts: Wis. Stat. 71.05(22)(dp)-(dt), using prior-August
+    # CUUR0000SA0 and the statutory 1999 (single/HOH) or 2015 (joint/MFS) base.
     scale = getattr(
         SYSTEM.parameters.gov.states.wi.tax.income.deductions.standard.phase_out,
         filing_status,
     )
-    uprating = SYSTEM.parameters.gov.irs.uprating
-
     assert scale.brackets[1].threshold("2026-01-01") == published_2026
-    # Later years project from the published 2026 start, rounded to the
-    # nearest $10. Expected values follow the loaded index.
-    factor = uprating("2027-01-01") / uprating("2026-01-01")
-    expected_2027 = round(published_2026 * factor / 10) * 10
+    nsa = SYSTEM.parameters.gov.bls.cpi.cpi_u_nsa
+    assert nsa("2026-08-01") == 334.980
+    base_year = 1999 if filing_status in ("single", "head_of_household") else 2015
+    assert nsa(f"{base_year}-08-01") == float(base_index)
+    expected_2027 = _wi_independent_indexed_amount(
+        statutory_base, "334.980", base_index, published_2026
+    )
     assert scale.brackets[1].threshold("2027-01-01") == expected_2027
 
 
