@@ -9,7 +9,9 @@
   output:
     oh_insured_unreimbursed_medical_care_expense_amount: 1_100
 
-- name: Medicare ineligible with moop
+- name: Medicare eligible with an employer-paid plan and moop
+  # Line 3 takes premiums of anyone eligible for Medicare or an employer-paid
+  # plan, so an employer paying part of the premium does not remove them.
   period: 2022
   input:
     state_code: OH
@@ -18,9 +20,9 @@
     other_medical_expenses: 600
     employer_contribution_to_health_insurance_premiums_category: "SOME"
   output:
-    oh_insured_unreimbursed_medical_care_expense_amount: 600
+    oh_insured_unreimbursed_medical_care_expense_amount: 1_100
 
-- name: Medicare ineligible without moop
+- name: Medicare eligible with an employer-paid plan and no moop
   period: 2022
   input:
     state_code: OH
@@ -29,4 +31,71 @@
     other_medical_expenses: 0
     employer_contribution_to_health_insurance_premiums_category: "SOME"
   output:
-    oh_insured_unreimbursed_medical_care_expense_amount: 0
+    oh_insured_unreimbursed_medical_care_expense_amount: 500
+
+# Worksheet line 3 (2025 instructions, p. 41): premiums paid while "eligible
+# for Medicare or an employer-paid health care plan through your or your
+# spouse's employer", added to line 4 medical care, R.C. 5747.01(A)(10)(b).
+
+- name: After-tax premiums of a person with employer coverage count on line 3
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        has_esi: true
+        employment_income: 60_000
+        health_insurance_premiums_without_medicare_part_b: 6_500
+        other_medical_expenses: 800
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_insured_unreimbursed_medical_care_expense_amount: 7_300
+
+- name: Premiums with no Medicare or employer plan go to line 1, not line 3
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+        health_insurance_premiums_without_medicare_part_b: 6_000
+        other_medical_expenses: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_insured_unreimbursed_medical_care_expense_amount: 500
+    oh_uninsured_unreimbursed_medical_care_expenses: 6_000
+
+- name: Premiums paid through pre-tax payroll deductions are not deducted
+  # Line 44 instructions (p. 25) and FAQ Q2: no deduction for amounts paid
+  # with pre-tax dollars. They are excluded from federal wages instead.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        has_esi: true
+        employment_income: 60_000
+        pre_tax_health_insurance_premiums: 2_000
+        other_medical_expenses: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    irs_employment_income: 58_000
+    oh_insured_unreimbursed_medical_care_expense_amount: 500
