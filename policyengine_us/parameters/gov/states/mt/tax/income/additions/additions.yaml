@@ -2,12 +2,18 @@ description: Montana counts these sources as additions.
 
 values:
   2021-01-01: []
+  2024-01-01:
+    # State income tax addition is zero in 2024 (adjusted on Form 2 line 2),
+    # and appears on Schedule I, Part I, line 4 starting in 2025.
+    - mt_state_income_tax_addition
 
 metadata:
   unit: list
   period: year
-  label: Montana adjusted gross income additions
+  label: Montana income additions
   reference:
+    - title: 2025 Montana Form 2 | Schedule I, Part I, line 4
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2025_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=3
     - title: 2021 Montana Form 2 | Montana Subtractions Schedule
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2021_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=21
     - title: 2022 Montana Form 2 | Montana Subtractions Schedule

@@ -1,0 +1,138 @@
+- name: 2024 general sales tax election has no state income tax addback
+  # MCA 15-30-2120(2)(j) reaches only state income tax actually deducted.
+  # Schedule A L5a=6,000 sales > 2,000 income; L5b=3,000; L5c=0; L5e=9,000.
+  # Revised Worksheet A L1=9,000; L2=0; L3=3,000; L4=0;
+  # its arithmetic residual is sales tax, so statutory L5=0;
+  # L6=29,000; L7=14,600; L8=14,400; L9=0; L10=29,000.
+  # Form 2 L1=80,000; L2=29,000; L3=51,000; L4=L5=L6=0; L7=51,000.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 80_000
+        real_estate_taxes: 3_000
+        home_mortgage_interest: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 2_000
+        local_income_tax: 0
+        state_sales_tax: 6_000
+        local_sales_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: true
+    state_and_local_sales_or_income_tax: 6_000
+    salt_deduction: 9_000
+    mt_state_income_tax_addback: 0
+    mt_adjusted_federal_itemized_deductions: 29_000
+    mt_federal_taxable_income: 51_000
+
+- name: 2024 local income and property taxes retain priority within the SALT cap
+  # Revised Worksheet A L1=10,000 capped SALT; L2=3,000 local income;
+  # L3=4,000 real estate; L4=0; L5=3,000 (not the full 12,000 state tax).
+  # L6=30,000 (10,000 SALT + 20,000 mortgage); L7=14,600;
+  # L8=15,400; L9=3,000; L10=27,000.
+  # Form 2 L1=100,000; L2=27,000; L3=73,000; L4=L5=L6=0; L7=73,000.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+        real_estate_taxes: 4_000
+        home_mortgage_interest: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 12_000
+        local_income_tax: 3_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: true
+    salt_deduction: 10_000
+    mt_state_income_tax_addback: 3_000
+    mt_adjusted_federal_itemized_deductions: 27_000
+    mt_federal_taxable_income: 73_000
+
+- name: 2025 Schedule I state income tax addition belongs only to the head
+  # Worksheet B L1=5,000; L2=L3=L4=0; L5=5,000;
+  # L6=45,000 (5,000 SALT + 40,000 mortgage); L7=31,500;
+  # L8=13,500; L9=5,000; L10=0; L11=5,000.
+  # Form 2 L1=150,000; L2=45,000; L3=105,000; L4=5,000;
+  # L5=L6=0; L7=110,000. The spouse receives no duplicate addition.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 150_000
+        home_mortgage_interest: 40_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        state_withheld_income_tax: 5_000
+        local_income_tax: 0
+        state_sales_tax: 0
+        local_sales_tax: 0
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    tax_unit_itemizes: true
+    mt_state_income_tax_addback: 5_000
+    mt_state_income_tax_addition: [5_000, 0]
+    mt_additions: [5_000, 0]
+    mt_federal_taxable_income: 105_000
+    mt_taxable_income_joint: [110_000, 0]
+
+- name: 2024 worksheet total includes separately modeled wagering losses exactly once
+  # Direct federal component inputs isolate how Schedule A L16 is assembled.
+  # Revised Worksheet A L1=5,000; L2=L3=L4=0; L5=5,000;
+  # L6=5,000 itemized_taxable_income_deductions + 11,000 wagering=16,000;
+  # L7=14,600; L8=1,400; L9=1,400; L10=14,600.
+  # Form 2 L1=100,000; L2=14,600; L3=85,400; L4=L5=L6=0; L7=85,400.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_itemizes: true
+        itemized_taxable_income_deductions: 5_000
+        wagering_losses_deduction: 11_000
+        state_withheld_income_tax: 5_000
+        local_income_tax: 0
+        state_sales_tax: 0
+        local_sales_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    taxable_income_deductions: 16_000
+    mt_state_income_tax_addback: 1_400
+    mt_adjusted_federal_itemized_deductions: 14_600
+    mt_federal_taxable_income: 85_400

@@ -1,0 +1,13 @@
+description: Montana removes the state income tax deduction from federal itemized deductions on Form 2, line 2 (revised 2024 Worksheet A), instead of adding it back on Schedule I, line 4 (2025 Worksheet B), if this is true.
+values:
+  2024-01-01: true
+  2025-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Montana state income tax reduces federal deductions
+  reference:
+    - title: Revision to 2024 Form 2 Instructions for Taxpayers Claiming Itemized Deductions | Revised Worksheet A
+      href: https://revenue.mt.gov/files/Forms/SALT-Cap-Instructions.pdf#page=1
+    - title: 2025 Montana Form 2 Instructions | Worksheet B, State Income Tax Addition
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=22

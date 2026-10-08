@@ -11,10 +11,20 @@ class mt_taxable_income_joint(Variable):
     reference = (
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=1",
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=16",
+        "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2024_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=1",
+        "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2025_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=1",
     )
 
     def formula(person, period, parameters):
         is_head = person("is_tax_unit_head", period)
+
+        if parameters(period).gov.states.mt.tax.income.federal_taxable_income_base:
+            federal_taxable_income = person.tax_unit(
+                "mt_federal_taxable_income", period
+            )
+            additions = add(person.tax_unit, period, ["mt_additions"])
+            subtractions = add(person.tax_unit, period, ["mt_subtractions"])
+            return is_head * max_(0, federal_taxable_income + additions - subtractions)
 
         # For joint filers, use mt_agi_joint which pools income and subtractions
         # at tax unit level before applying them. This ensures subtractions from

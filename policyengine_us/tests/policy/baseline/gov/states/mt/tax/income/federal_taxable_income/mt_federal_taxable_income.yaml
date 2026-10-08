@@ -1,0 +1,753 @@
+- name: C1 2024 medical itemizer reaches the federal standard deduction floor
+  # Federal medical: 20,000 - 7.5% x 100,000 = 12,500; SALT = 5,000.
+  # Revised Worksheet A L1=5,000; L2=L3=L4=0; L5=5,000;
+  # L6=17,500; L7=14,600; L8=2,900; L9=2,900; L10=14,600.
+  # Form 2 L1=100,000; L2=14,600; L3=85,400; L4=L5=L6=0;
+  # L7=85,400; tax=85,400 x 5.9% - 246 = 4,792.60.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+        other_medical_expenses: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 5_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 17_500
+    mt_state_income_tax_addback: 2_900
+    mt_federal_deductions: 14_600
+    mt_federal_taxable_income: 85_400
+    mt_taxable_income: 85_400
+    mt_income_tax: 4_792.60
+    mt_itemized_deductions_joint: [0]
+    state_itemized_deductions: 14_600
+
+- name: C2 2024 federal standard deduction controls despite legacy medical expenses
+  # Federal medical: 16,000 - 7.5% x 100,000 = 8,500;
+  # itemized=8,500 + 3,000 SALT=11,500 < 14,600, so Worksheet A is unused.
+  # Form 2 L1=100,000; L2=14,600; L3=85,400; L4=L5=L6=0;
+  # L7=85,400. The repealed Montana medical schedule would deduct 16,000.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+        other_medical_expenses: 16_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 3_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: false
+    itemized_taxable_income_deductions: 11_500
+    mt_state_income_tax_addback: 0
+    mt_federal_deductions: 14_600
+    mt_federal_taxable_income: 85_400
+    mt_taxable_income: 85_400
+    state_itemized_deductions: 0
+
+- name: C3 2024 joint itemizer attributes only the remaining SALT cap to state income tax
+  # Federal SALT=min(15,000 + 8,000, 10,000)=10,000;
+  # itemized=10,000 SALT + 20,000 mortgage + 5,000 charity=35,000.
+  # Revised Worksheet A L1=10,000; L2=0; L3=8,000; L4=0; L5=2,000;
+  # L6=35,000; L7=29,200; L8=5,800; L9=2,000; L10=33,000.
+  # Form 2 L1=300,000; L2=33,000; L3=267,000; L4=L5=L6=0;
+  # L7=267,000; tax=267,000 x 5.9% - 492 = 15,261.00.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 300_000
+        real_estate_taxes: 8_000
+        home_mortgage_interest: 20_000
+        charitable_cash_donations: 5_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        state_withheld_income_tax: 15_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    salt_deduction: 10_000
+    itemized_taxable_income_deductions: 35_000
+    mt_state_income_tax_addback: 2_000
+    mt_federal_deductions: 33_000
+    mt_federal_taxable_income: 267_000
+    mt_taxable_income_joint: [267_000, 0]
+    mt_taxable_income: 267_000
+    mt_income_tax: 15_261.00
+
+- name: C4 2024 state income tax addback is limited by the standard deduction floor
+  # Federal SALT=3,000 SIT + 3,000 real estate=6,000;
+  # itemized=6,000 + 9,000 mortgage=15,000 > 14,600.
+  # Revised Worksheet A L1=6,000; L2=0; L3=3,000; L4=0; L5=3,000;
+  # L6=15,000; L7=14,600; L8=400; L9=400; L10=14,600.
+  # Form 2 L1=60,000; L2=14,600; L3=45,400; L4=L5=L6=0;
+  # L7=45,400; tax=45,400 x 5.9% - 246 = 2,432.60.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        home_mortgage_interest: 9_000
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 3_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 15_000
+    mt_state_income_tax_addback: 400
+    mt_federal_deductions: 14_600
+    mt_federal_taxable_income: 45_400
+    mt_taxable_income: 45_400
+    mt_income_tax: 2_432.60
+
+- name: C5 2024 Montana excludes the federal qualified business income deduction
+  # Itemized=3,000 < 14,600; Worksheet A is unused.
+  # Federal taxable income=80,000 - 14,600 - 10,000 QBI=55,400.
+  # Form 2 L1=80,000; L2=14,600 (QBI excluded); L3=65,400;
+  # L4=L5=L6=0; L7=65,400; tax=65,400 x 5.9% - 246 = 3,612.60.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 80_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        qualified_business_income_deduction: 10_000
+        state_withheld_income_tax: 3_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: false
+    taxable_income: 55_400
+    mt_federal_deductions: 14_600
+    mt_federal_taxable_income: 65_400
+    mt_taxable_income: 65_400
+    mt_income_tax: 3_612.60
+
+- name: C6 2025 state income tax moves to the Schedule I addition
+  # Federal medical=20,000 - 7.5% x 100,000=12,500;
+  # itemized=12,500 + 5,000 SALT=17,500 > 15,750.
+  # Worksheet B L1=5,000; L2=L3=L4=0; L5=5,000; L6=17,500;
+  # L7=15,750; L8=1,750; L9=1,750; L10=0; L11=1,750.
+  # Form 2 L1=100,000; L2=17,500; L3=82,500; L4=1,750;
+  # L5=L6=0; L7=84,250; tax=84,250 x 5.9% - 253.20 = 4,717.55.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+        other_medical_expenses: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 5_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: true
+    additional_senior_deduction: 0
+    mt_state_income_tax_addback: 1_750
+    mt_federal_deductions: 17_500
+    mt_federal_taxable_income: 82_500
+    mt_state_income_tax_addition: [1_750]
+    mt_additions: [1_750]
+    mt_taxable_income: 84_250
+    mt_income_tax: 4_717.55
+
+- name: C7 2025 enhanced senior deduction reduces Montana taxable income exactly once
+  # Itemized=2,000 < standard 15,750 + 2,000 aged=17,750;
+  # Worksheet B is unused. Schedule 1-A senior deduction=6,000.
+  # Form 2 L1=50,000; L2=17,750 + 6,000=23,750; L3=26,250;
+  # L4=L5=0; L6=5,660; L7=20,590; tax=20,590 x 4.7%=967.73.
+  # mt_subtractions combines Form 2 L5 and the separately printed L6.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 66
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 2_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: false
+    standard_deduction: 17_750
+    additional_senior_deduction: 6_000
+    mt_federal_deductions: 23_750
+    mt_federal_taxable_income: 26_250
+    mt_subtractions: [5_660]
+    mt_taxable_income: 20_590
+    mt_income_tax: 967.73
+
+- name: C8 2025 phased SALT cap leaves no state income tax deduction to add
+  # 26 USC 164(b)(7): SALT cap=max(10,000, 40,000 - 30% x
+  # (600,000 - 500,000))=10,000; SALT=min(47,000, 10,000)=10,000.
+  # Itemized=10,000 SALT + 20,000 mortgage + 10,000 charity=40,000.
+  # Worksheet B L1=10,000; L2=0; L3=12,000; L4=0; L5=0;
+  # L6=40,000; L7=31,500; L8=8,500; L9=L10=L11=0.
+  # Form 2 L1=600,000; L2=40,000; L3=560,000; L4=L5=L6=0;
+  # L7=560,000; tax=560,000 x 5.9% - 506.40 = 32,533.60.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 600_000
+        real_estate_taxes: 12_000
+        home_mortgage_interest: 20_000
+        charitable_cash_donations: 10_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        state_withheld_income_tax: 35_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    salt_cap: 10_000
+    salt_deduction: 10_000
+    itemized_taxable_income_deductions: 40_000
+    mt_state_income_tax_addback: 0
+    mt_state_income_tax_addition: [0, 0]
+    mt_federal_deductions: 40_000
+    mt_federal_taxable_income: 560_000
+    mt_taxable_income: 560_000
+    mt_income_tax: 32_533.60
+
+- name: C9 2026 statutory inference follows rolling federal conformity
+  # Statutory inference: no 2026 Montana form exists yet. Apply MCA
+  # 15-30-2101(14) rolling conformity and 15-30-2120(1), (2)(j).
+  # Federal medical=12,500; SALT=5,000; itemized=17,500 > 16,100.
+  # Inferred Worksheet B L1=5,000; L2=L3=L4=0; L5=5,000;
+  # L6=17,500; L7=16,100; L8=1,400; L9=1,400; L10=0; L11=1,400.
+  # Inferred Form 2 L1=100,000; L2=17,500; L3=82,500; L4=1,400;
+  # L5=L6=0; L7=83,900; tax=47,500 x 4.7% + 36,400 x 5.65%=4,289.10.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+        other_medical_expenses: 20_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 5_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: true
+    mt_state_income_tax_addback: 1_400
+    mt_federal_deductions: 17_500
+    mt_federal_taxable_income: 82_500
+    mt_taxable_income: 83_900
+    mt_income_tax: 4_289.10
+
+- name: C10 2024 US government interest is subtracted from federal taxable income
+  # Issue #9707: us_govt_interest_person classifies the same 1,000 of
+  # interest included in taxable_interest_income; it does not add federal income.
+  # Itemized=2,000 < 14,600; Worksheet A is unused.
+  # Form 2 L1=50,000 wages + 1,000 taxable interest=51,000; L2=14,600;
+  # L3=36,400; L4=0; L5=1,000 (Schedule I L11); L6=0; L7=35,400;
+  # tax=35,400 x 5.9% - 246 = 1,842.60.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        taxable_interest_income: 1_000
+        us_govt_interest_person: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 2_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: false
+    mt_federal_taxable_income: 36_400
+    mt_subtractions: [1_000]
+    mt_taxable_income: 35_400
+    mt_income_tax: 1_842.60
+
+- name: C11 2024 taxable disability pay gets no repealed Montana exclusion
+  # disability_benefits is a classification input absent from federal AGI sources.
+  # Employer disability pay before minimum retirement age is reported as wages:
+  # https://www.irs.gov/pub/irs-prior/i1040gi--2024.pdf#page=25 (line 1h).
+  # employment_income=40,000 ordinary wages + 5,000 taxable disability wages.
+  # Itemized=0 < 14,600; Worksheet A is unused.
+  # Form 2 L1=45,000; L2=14,600; L3=30,400; L4=L5=L6=0; L7=30,400.
+  # The 2024 instructions printed p. i repeal the partial retirement disability
+  # deduction for taxpayers under age 65, so the classification adds no subtraction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 45_000
+        disability_benefits: 5_000
+        is_permanently_and_totally_disabled: true
+        retired_on_total_disability: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 0
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    adjusted_gross_income: 45_000
+    mt_subtractions: [0]
+    mt_federal_taxable_income: 30_400
+    mt_taxable_income: 30_400
+
+- name: 2025 HoH senior retains the issue 8562 Schedule 1-A integration coverage
+  # Former Schedule 1-A subtraction coverage; issue #8562 / taxsim#948.
+  # Federal taxable Social Security=16,731.73 x 85%=14,221.9705;
+  # Form 2 L1=25,000 + 17,510.73 + 12,218.48 + 14,221.9705=68,951.1805.
+  # Standard=23,625 HoH + 2,000 aged=25,625; Worksheet B is unused.
+  # L2=25,625 + 6,000 senior=31,625; L3=37,326.1805; L4=L5=0;
+  # L6=5,660; L7=31,666.1805; tax=31,666.1805 x 4.7%=1,488.3104835.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 75
+        employment_income: 25_000
+        taxable_interest_income: 17_510.73
+        taxable_pension_income: 12_218.48
+        social_security_retirement: 16_731.73
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        tax_unit_childcare_expenses: 3_500
+        state_withheld_income_tax: 0
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head, child]
+        state_code: MT
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    additional_senior_deduction: 6_000
+    mt_federal_deductions: 31_625
+    mt_federal_taxable_income: 37_326.1805
+    mt_subtractions: [5_660, 0]
+    mt_taxable_income_joint: [31_666.1805, 0]
+    mt_income_tax: 1_488.3104835
+
+- name: 2024 senior has no Schedule 1-A deduction before its effective date
+  # Migrated pre-2025 coverage. Itemized=0; Worksheet A is unused.
+  # Form 2 L1=25,000; L2=14,600 + 1,950 aged=16,550; L3=8,450;
+  # L4=L5=0; L6=5,500; L7=2,950.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 75
+        employment_income: 25_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 0
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    additional_senior_deduction: 0
+    mt_federal_deductions: 16_550
+    mt_federal_taxable_income: 8_450
+    mt_taxable_income: 2_950
+
+- name: 2025 joint seniors receive Schedule 1-A once and the Montana floor applies
+  # Migrated two-senior coverage. Itemized=0; Worksheet B is unused.
+  # Form 2 L1=50,000; L2=31,500 + 2 x 1,600 aged + 12,000 senior=46,700;
+  # L3=3,300; L4=L5=0; L6=2 x 5,660=11,320; L7=max(0, 3,300 - 11,320)=0.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+      spouse:
+        age: 68
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        state_withheld_income_tax: 0
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    additional_senior_deduction: 12_000
+    mt_federal_deductions: 46_700
+    mt_federal_taxable_income: 3_300
+    mt_subtractions: [5_660, 5_660]
+    mt_taxable_income_joint: [0, 0]
+    mt_taxable_income: 0
+
+- name: 2025 senior deduction remains full at the single MAGI phaseout boundary
+  # Migrated $75,000 MAGI boundary coverage. Worksheet B is unused.
+  # Form 2 L1=75,000; L2=15,750 + 2,000 aged + 6,000 senior=23,750;
+  # L3=51,250; L4=L5=0; L6=5,660; L7=45,590.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 75_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 0
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    additional_senior_deduction: 6_000
+    mt_federal_deductions: 23_750
+    mt_federal_taxable_income: 51_250
+    mt_taxable_income: 45_590
+
+- name: 2025 phased-out senior deduction leaves only the regular aged standard deduction
+  # Migrated $300,000 MAGI coverage. Worksheet B is unused.
+  # Senior=max(0, 6,000 - 6% x (300,000 - 75,000))=0.
+  # Form 2 L1=300,000; L2=15,750 + 2,000 aged=17,750; L3=282,250;
+  # L4=L5=0; L6=5,660; L7=276,590.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 300_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 0
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    additional_senior_deduction: 0
+    mt_federal_deductions: 17_750
+    mt_federal_taxable_income: 282_250
+    mt_taxable_income: 276_590
+
+- name: 2025 qualified tips reduce Form 2 line 2 exactly once
+  # Migrated non-senior Schedule 1-A tip coverage. Tip income is part of wages.
+  # Itemized=0; Worksheet B is unused. Form 2 L1=30,000;
+  # L2=15,750 standard + 8,000 qualified tips=23,750; L3=6,250;
+  # L4=L5=L6=0; L7=6,250. No Schedule I subtraction repeats the tip deduction.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 30_000
+        tip_income: 8_000
+        tip_income_deduction_occupation_requirement_met: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        tip_income_deduction_ssn_requirement_met: true
+        state_withheld_income_tax: 0
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    additional_senior_deduction: 0
+    tip_income_deduction: 8_000
+    mt_federal_deductions: 23_750
+    mt_federal_taxable_income: 6_250
+    mt_subtractions: [0]
+    mt_taxable_income: 6_250
+
+- name: R1 2024 gambling losses sit in Form 1040 line 12 and change the addback
+  # Federal AGI = 50,000 wages + 20,000 gambling winnings = 70,000 (Form 1040
+  # line 11). Federal AGI is an input because the model does not yet count
+  # gambling winnings in gross income (policyengine-us#9637).
+  # Schedule A: charity 2,000 + SALT 4,000 + gambling losses 20,000 (line 16)
+  # = 26,000 > 14,600, so the filer itemizes.
+  # Revised Worksheet A L1=4,000; L2=L3=L4=0; L5=4,000; L6=26,000;
+  # L7=14,600; L8=11,400; L9=4,000; L10=22,000.
+  # Form 2 L1=70,000; L2=22,000; L3=48,000; L4=L5=L6=0; L7=48,000;
+  # tax=48,000 x 5.9% - 246 = 2,586.
+  # Leaving gambling losses out of L6 would give L6=6,000 < L7, L9=0,
+  # L2=26,000 and L3=44,000.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 50_000
+        gambling_winnings: 20_000
+        gambling_losses: 20_000
+        charitable_cash_donations: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 70_000
+        state_withheld_income_tax: 4_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: true
+    wagering_losses_deduction: 20_000
+    mt_state_income_tax_addback: 4_000
+    mt_federal_deductions: 22_000
+    mt_federal_taxable_income: 48_000
+    mt_taxable_income: 48_000
+    mt_income_tax: 2_586
+
+- name: R2 2025 Form 2 floors line 3 at zero before the Schedule I line 4 addition
+  # Federal medical: 28,000 - 7.5% x 20,000 = 26,500; SALT = 4,000;
+  # itemized = 30,500 > 15,750, so the filer itemizes.
+  # Form 2 L1=20,000; L2=30,500; L3=max(0, 20,000 - 30,500)=0.
+  # Worksheet B L5=4,000; L6=30,500; L7=15,750; L8=14,750; L9=4,000;
+  # Schedule I L4=4,000. L7=max(0, 0 + 4,000)=4,000; tax=4,000 x 4.7%=188.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+        other_medical_expenses: 28_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 4_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: true
+    mt_state_income_tax_addback: 4_000
+    mt_federal_deductions: 30_500
+    mt_federal_taxable_income: 0
+    mt_state_income_tax_addition: [4_000]
+    mt_taxable_income: 4_000
+    mt_income_tax: 188
+
+- name: R2 contrast, 2024 removes the state income tax inside line 2 before the floor
+  # Same household in 2024: medical 28,000 - 1,500 = 26,500; SALT 4,000;
+  # itemized 30,500 > 14,600. Revised Worksheet A L8=15,900; L9=4,000;
+  # L10=26,500. Form 2 L1=20,000; L2=26,500; L3=max(0, 20,000 - 26,500)=0;
+  # no Schedule I addition in 2024; L7=0.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+        other_medical_expenses: 28_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 4_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    tax_unit_itemizes: true
+    mt_state_income_tax_addback: 4_000
+    mt_federal_deductions: 26_500
+    mt_federal_taxable_income: 0
+    mt_state_income_tax_addition: [0]
+    mt_taxable_income: 0
+    mt_income_tax: 0
+
+- name: R3 2026 federal itemized limitation and SALT phase-down flow into line 2
+  # Statutory inference (MCA 15-30-2101(7) and (14); no 2026 Montana form yet).
+  # SALT cap: 40,400 - 30% x (1,000,000 - 505,000) < 10,000 floor -> 10,000.
+  # Charity after the 0.5%-of-AGI floor: 50,000 - 5,000 = 45,000.
+  # Itemized before 26 U.S.C. 68: 10,000 + 20,000 + 45,000 = 75,000.
+  # Section 68: 2/37 x min(75,000, 1,000,000 - 640,600) = 4,054.05;
+  # federal itemized = 70,945.95.
+  # Worksheet B L1=10,000; L3=15,000; L5=0, so no Schedule I addition.
+  # Form 2 L1=1,000,000; L2=70,945.95; L3=929,054.05; L7=929,054.05;
+  # tax = 47,500 x 4.7% + (929,054.05 - 47,500) x 5.65% = 52,040.30.
+  period: 2026
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 1_000_000
+        charitable_cash_donations: 50_000
+        home_mortgage_interest: 20_000
+        real_estate_taxes: 15_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_withheld_income_tax: 60_000
+        state_sales_tax: 0
+        local_sales_tax: 0
+        local_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    salt_cap: 10_000
+    salt_deduction: 10_000
+    itemized_taxable_income_deductions_reduction: 4_054.05
+    itemized_taxable_income_deductions: 70_945.95
+    tax_unit_itemizes: true
+    mt_state_income_tax_addback: 0
+    mt_federal_deductions: 70_945.95
+    mt_federal_taxable_income: 929_054.05
+    mt_taxable_income: 929_054.05
+    mt_income_tax: 52_040.30

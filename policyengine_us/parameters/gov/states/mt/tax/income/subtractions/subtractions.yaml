@@ -14,28 +14,30 @@ values:
     - salt_refund_income # Form 2 Subtractions Schedule
   2024-01-01:
     - mt_interest_exemption_person
+    - us_govt_interest_person # MCA 15-30-2120(3)(b)(i); Schedule I line 11.
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction
-    - mt_disability_income_exclusion_person
+    # Partial retirement disability deduction was repealed from 2024.
     - salt_refund_income # MCA 15-30-2120 / Form 2 Subtractions Schedule
   2025-01-01:
-    # Section 15-30-2120 starts from federal taxable income, so federal
-    # OBBBA Schedule 1-A deductions (enhanced senior deduction, qualified
-    # tip and overtime exclusions, and passenger-vehicle loan interest)
-    # flow through into MT taxable income via mt_federal_obbba_subtraction.
+    # Schedule 1-A deductions are already included on Form 2 line 2;
+    # subtracting them again here would double count them.
     - mt_interest_exemption_person
+    - us_govt_interest_person # MCA 15-30-2120(3)(b)(i); Schedule I line 9.
     - mt_tuition_subtraction_person
     - mt_old_age_subtraction
-    - mt_disability_income_exclusion_person
-    # TODO: Remove this subtraction starting in 2029 because the federal
-    # Schedule 1-A deductions expire after 2028.
-    - mt_federal_obbba_subtraction
     - salt_refund_income # MCA 15-30-2120 / Form 2 Subtractions Schedule
 metadata:
   unit: list
   period: year
-  label: Montana adjusted gross income subtractions
+  label: Montana income subtractions
   reference:
+    - title: Montana Code Annotated, 15-30-2120(3)(b)(i) | United States government interest
+      href: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html
+    - title: 2024 Montana Form 2 | Schedule I, Part I, line 11
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2024_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=3
+    - title: 2024 Montana Form 2 Instructions | Repealed deductions, printed page i
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=5
     - title: 2021 Montana Form 2 | Montana Subtractions Schedule
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2021_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=24
     - title: 2022 Montana Form 2 | Montana Subtractions Schedule

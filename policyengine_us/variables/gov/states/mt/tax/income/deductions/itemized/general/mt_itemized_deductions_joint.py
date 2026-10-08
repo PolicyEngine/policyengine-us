@@ -15,6 +15,11 @@ class mt_itemized_deductions_joint(Variable):
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
+        if not parameters(
+            period
+        ).gov.states.mt.tax.income.deductions.itemized.state_specific_deduction_applies:
+            return 0
+
         charitable_deduction = person.tax_unit("charitable_deduction", period)
         investment_interest = person("investment_interest_expense", period)
         mortgage_interest = person("mortgage_interest", period)

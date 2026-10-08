@@ -1,0 +1,15 @@
+description: Montana computes taxable income from federal taxable income (Form 2, lines 1 to 7), instead of from Montana adjusted gross income, if this is true.
+values:
+  2021-01-01: false
+  2024-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Montana federal taxable income base applies
+  reference:
+    - title: Montana Code Annotated, 15-30-2120(1) | Adjustments to federal taxable income
+      href: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0200/0150-0300-0210-0200.html
+    - title: Montana Code Annotated, 15-30-2101(7) | Federal taxable income definition
+      href: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0210/section_0010/0150-0300-0210-0010.html
+    - title: 2024 Montana Form 2 | Taxable Income, lines 1 to 7
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2024_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=1

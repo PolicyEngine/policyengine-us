@@ -49,6 +49,12 @@ class state_itemized_deductions(Variable):
             indiv_deductions = add(tax_unit, period, [variables["indiv"]])
             joint_deductions = add(tax_unit, period, [variables["joint"]])
             max_deductions = max_(indiv_deductions, joint_deductions)
+            if state == "MT":
+                p = parameters(period).gov.states.mt.tax.income.deductions.itemized
+                if not p.state_specific_deduction_applies:
+                    max_deductions = tax_unit(
+                        "mt_adjusted_federal_itemized_deductions", period
+                    )
             state_specific_base = where(is_state, max_deductions, state_specific_base)
 
         # Check if the state adopts federal itemized deductions
