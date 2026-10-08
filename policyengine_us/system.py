@@ -35,6 +35,7 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
+from .tools.marital_units import infer_missing_marital_units
 from .tools.per_capita_uprating import (
     add_per_capita_parameters_for_parameter_uprating,
     add_per_capita_uprating,
@@ -100,6 +101,9 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         "age",
     ]
     modelled_policies = COUNTRY_DIR / "programs.yaml"
+
+    def preprocess_situation(self, situation, default_period=None):
+        return infer_missing_marital_units(situation, default_period)
 
     def __init__(
         self,

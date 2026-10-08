@@ -23,7 +23,8 @@ dependencies = [
     # pandas 3 copy-on-write enables the shallow-copy fast path in dataset
     # extension and is available on every supported Python version.
     "pandas>=3.0",
-    "policyengine-core>=3.32.8",
+    # Draft prerequisite: replace with a released minimum before merging.
+    "policyengine-core @ git+https://github.com/PolicyEngine/policyengine-core.git@6d839a148cee47981e8289de37da276f3e7beeec",
     "spm-calculator>=1.0.0,<=1.0.0.post1",
     "tables>=3.9",
     "tqdm>=4.67.1",
@@ -59,6 +60,9 @@ dev = [
 
 [tool.hatch.build.targets.wheel]
 packages = ["policyengine_us"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
 
 
 [tool.towncrier]
