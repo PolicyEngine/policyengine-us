@@ -808,7 +808,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, TX
+    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, NY, TX
     state_implementations:
       - state: DC
         status: complete
@@ -884,6 +884,14 @@ programs:
         parameter_prefix: gov.states.ne.dhhs.liheap
         verified_years: "2026"
         notes: FY2026 regular heating only, with the single-family and multifamily schedules and the earned-income disregard. Crisis, cooling and weatherization assistance are out of scope.
+      - state: NY
+        status: partial
+        name: New York HEAP
+        full_name: New York Home Energy Assistance Program
+        variable: ny_heap
+        parameter_prefix: gov.states.ny.otda.heap
+        verified_years: "2024-2026"
+        notes: FY2024-FY2026 regular heating only, with the fuel base amounts, the Tier I and vulnerable supplements and the heat-included levels. Crisis, cooling, HERR and clean-and-tune assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
