@@ -1,0 +1,61 @@
+# Schedule M line 47, box (d): each spouse adds their own lines 29 through 34.
+# Jointly owned income is divided by ownership (2025 IT-140 instructions,
+# pages 27-28).
+
+- name: Senior citizen deduction example from the 2025 IT-140 instructions.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      john:
+        age: 69
+        adjusted_gross_income_person: 13_000
+        # John's $7,000 West Virginia police retirement (line 31) is not
+        # modeled; military retirement (line 32) is also a box (d) item.
+        military_retirement_pay: 7_000
+        # Each spouse owns half of the $1,000 of joint savings bond interest.
+        us_govt_interest_person: 500
+      mary:
+        age: 65
+        adjusted_gross_income_person: 13_000
+        us_govt_interest_person: 500
+    tax_units:
+      tax_unit:
+        members: [john, mary]
+    households:
+      household:
+        members: [john, mary]
+        state_code: WV
+  output:
+    # Box (d): John 7,000 + 500; Mary 500.
+    wv_senior_citizen_disability_deduction_total_modifications: [7_500, 500]
+    # min(8,000, 13,000) less box (d).
+    wv_senior_citizen_disability_deduction_person: [500, 7_500]
+    wv_senior_citizen_disability_deduction: 8_000
+
+- name: Bond interest owned by one spouse reduces only that spouse's deduction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        adjusted_gross_income_person: 20_000
+        us_govt_interest_person: 3_000
+      spouse:
+        age: 68
+        adjusted_gross_income_person: 20_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: WV
+  output:
+    wv_senior_citizen_disability_deduction_total_modifications: [3_000, 0, 0]
+    wv_senior_citizen_disability_deduction_person: [5_000, 8_000, 0]
+    wv_senior_citizen_disability_deduction: 13_000
