@@ -435,3 +435,64 @@ def test_joint_examples(head, spouse, expected):
     np.testing.assert_allclose(
         run["medicaid_household_income"], [expected, expected], atol=TOLERANCE
     )
+
+
+@settings(**SETTINGS)
+@given(st.lists(st.integers(-60_000, 60_000), min_size=6, max_size=6))
+def test_linked_non_filer_income_matches_signed_legal_membership(magi):
+    """Linked members net signed income; excluded relatives cannot affect it.
+
+    The two unmarried parents share two children. The grandmother and an
+    unrelated adult live in the same family and household. Under
+    42 CFR 435.603(f)(3), each parent's household includes their children,
+    and each child's includes both parents and their sibling. Neither child
+    includes the grandmother or unrelated adult. All members' counted MAGI
+    is supplied directly so this property isolates membership and netting.
+    """
+    names = ["grandmother", "mother", "father", "child", "sibling", "unrelated"]
+    ages = [65, 35, 35, 10, 12, 30]
+    people = {
+        name: {
+            "person_id": i + 1,
+            "age": {YEAR: ages[i]},
+            "medicaid_magi_person": {YEAR: magi[i]},
+            # Count the children's MAGI under 435.603(d)(2)(i), including
+            # negative amounts. Filing flags are inputs to this income test.
+            "medicaid_person_is_required_to_file": {YEAR: True},
+        }
+        for i, name in enumerate(names)
+    }
+    people["mother"]["parent_1_id"] = 1
+    for child in ("child", "sibling"):
+        people[child].update(parent_1_id=2, parent_2_id=3)
+    situation = {
+        "people": people,
+        "tax_units": {
+            name: {"members": [name], "tax_unit_is_filer": {YEAR: False}}
+            for name in names
+        },
+        "marital_units": {name: {"members": [name]} for name in names},
+        "families": {"family": {"members": names}},
+        "households": {"home": {"members": names, "state_code": {YEAR: "OH"}}},
+    }
+    # Independent reference membership, rather than reusing a model helper.
+    members = np.array(
+        [
+            [1, 0, 0, 0, 0, 0],
+            [0, 1, 0, 1, 1, 0],
+            [0, 0, 1, 1, 1, 0],
+            [0, 1, 1, 1, 1, 0],
+            [0, 1, 1, 1, 1, 0],
+            [0, 0, 0, 0, 0, 1],
+        ]
+    )
+    simulation = Simulation(situation=situation)
+    assert simulation.calculate("medicaid_uses_non_filer_rules", YEAR).all()
+    np.testing.assert_array_equal(
+        simulation.calculate("medicaid_household_size", YEAR), members.sum(axis=1)
+    )
+    np.testing.assert_allclose(
+        simulation.calculate("medicaid_household_income", YEAR),
+        np.maximum(0, members @ np.asarray(magi)),
+        atol=TOLERANCE,
+    )

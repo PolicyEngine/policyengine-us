@@ -60,7 +60,6 @@ def test_tax_unit_deductions_are_ordered_unique_and_exclude_person_alds(
     magi = SimpleNamespace(
         person_alds=PERSON_ALDS,
         excluded_alds=["student_loan_interest_ald", "puerto_rico_income"],
-        excluded_gross_income_sources=[],
     )
     parameters = SimpleNamespace(
         gov=SimpleNamespace(

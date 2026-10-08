@@ -3,6 +3,14 @@ from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import
     medicaid_claiming_tax_unit_value,
     medicaid_external_claimed_sum,
 )
+from policyengine_us.variables.gov.hhs.medicaid.income._non_filer_household import (
+    medicaid_filer_spouse_sum,
+    medicaid_non_filer_member_sum,
+    medicaid_tax_dependent_spouse_sum,
+)
+from policyengine_us.variables.household.demographic.person._parent_links import (
+    household_has_parent_ids,
+)
 
 
 class medicaid_household_income(Variable):
@@ -18,8 +26,11 @@ class medicaid_household_income(Variable):
         "does in the couple's joint AGI. Only the total is floored at zero, "
         "as Form 8962 combines the taxpayer's and dependents' modified AGIs "
         "'even if one or both of them are negative' before entering a "
-        "negative total as zero. In the non-filer household, whose parents "
-        "and siblings are read from the whole family, those relatives' "
+        "negative total as zero. In households with parent links "
+        "(parent_1_id, parent_2_id), the non-filer household is the members "
+        "medicaid_household_size counts, and every member's amount is added "
+        "signed. Without links, the non-filer household's parents and "
+        "siblings are read from the whole family, and those relatives' "
         "amounts are added only when positive (each child's, and each "
         "couple's parents' netted), so a relative outside the household "
         "cannot lower its income. An adult's own amount and their spouse's "
@@ -92,6 +103,14 @@ class medicaid_household_income(Variable):
             spouse_income + family_parent_income + family_child_income,
             member_income + spouse_income + family_child_income,
         )
+        # With parent links in the household, sum over the same members that
+        # medicaid_household_size counts, adding every selected amount signed.
+        has_parent_ids = household_has_parent_ids(person, period)
+        non_filer_household_income = where(
+            has_parent_ids,
+            medicaid_non_filer_member_sum(person, period, member_income),
+            non_filer_household_income,
+        )
         # A tax household includes the cohabiting spouse of a filer who files
         # separately (42 CFR 435.603(f)(4)), and so do the households of that
         # filer's dependents, which are the filer's (435.603(f)(2)).
@@ -102,8 +121,21 @@ class medicaid_household_income(Variable):
                 person("is_tax_unit_head", period) * separate_spouse_income
             ),
         )
-        tax_household_income = (
-            person.tax_unit.sum(tax_member_income) + filer_separate_spouse_income
+        tax_member_income_sum = person.tax_unit.sum(tax_member_income)
+        tax_household_income = tax_member_income_sum + filer_separate_spouse_income
+        # With parent links, every dependent shares the taxpayer's
+        # household, including that taxpayer's flagged separately filing
+        # spouse. Propagate the head's spouse income once across the unit.
+        tax_household_income = where(
+            has_parent_ids,
+            tax_member_income_sum
+            + person.tax_unit.sum(head_or_spouse * separate_spouse_income),
+            tax_household_income,
+        )
+        # With parent links, add the co-resident spouse outside the unit whom
+        # medicaid_household_size adds to the unit's tax household.
+        tax_household_income = tax_household_income + person.tax_unit.sum(
+            medicaid_filer_spouse_sum(person, period, member_income)
         )
         tax_household_income = tax_household_income + medicaid_external_claimed_sum(
             person,
@@ -116,14 +148,21 @@ class medicaid_household_income(Variable):
             person, period, tax_household_income
         )
 
+        tax_route_income = where(
+            known_claiming_tax_unit,
+            claimant_tax_household_income,
+            tax_household_income,
+        )
+        # With parent links in the household, add a tax dependent's
+        # co-resident spouse, whom medicaid_household_size adds.
+        tax_route_income = where(
+            has_parent_ids,
+            tax_route_income
+            + medicaid_tax_dependent_spouse_sum(person, period, member_income),
+            tax_route_income,
+        )
         household_income = where(
-            non_filer_rules,
-            non_filer_household_income,
-            where(
-                known_claiming_tax_unit,
-                claimant_tax_household_income,
-                tax_household_income,
-            ),
+            non_filer_rules, non_filer_household_income, tax_route_income
         )
         # Each member's MAGI-based income can be negative; only the
         # household's total is floored.

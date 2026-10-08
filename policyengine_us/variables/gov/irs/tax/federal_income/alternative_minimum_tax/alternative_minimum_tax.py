@@ -53,12 +53,13 @@ class alternative_minimum_tax(Variable):
         foreign_tax_credit = tax_unit("foreign_tax_credit_potential", period)
         # Line 9
         reduced_tax = total_amt_tax - foreign_tax_credit
-        # Line 10 contains regular tax before credits, lump sum distributions, and capital gains tax
+        # Line 10: Form 1040 line 16 less any tax from Form 4972, less the
+        # foreign tax credit. Line 16 is the regular tax including the
+        # capital gains tax, the same amount income_tax_before_credits adds.
         regular_tax_before_credits = tax_unit("regular_tax_before_credits", period)
         lump_sum_distributions = tax_unit("form_4972_lumpsum_distributions", period)
-        capital_gains_tax = tax_unit("capital_gains_tax", period)
-        tax_before_credits = regular_tax_before_credits + capital_gains_tax
         reduced_tax_before_credits = max_(
-            0, tax_before_credits - foreign_tax_credit - lump_sum_distributions
+            0,
+            regular_tax_before_credits - foreign_tax_credit - lump_sum_distributions,
         )
         return max_(0, reduced_tax - reduced_tax_before_credits)

@@ -38,3 +38,108 @@
       state_has_universal_free_school_meals: true
   output:
       school_meal_tier: FREE
+
+# North Carolina pays the reduced-price copay (G.S. 115C-264(a1)), so
+# students who qualify for reduced-price meals eat at no cost.
+- name: North Carolina assigns the free tier to the reduced-price income band.
+  period: 2026
+  input:
+      state_code: NC
+      meets_school_meal_categorical_eligibility: false
+      school_meal_fpg_ratio: 1.8
+  output:
+      school_meal_tier: FREE
+
+- name: North Carolina students above 185% of FPG still pay full price.
+  period: 2026
+  input:
+      state_code: NC
+      meets_school_meal_categorical_eligibility: false
+      school_meal_fpg_ratio: 2
+  output:
+      school_meal_tier: PAID
+
+- name: A state that does not cover the reduced-price copay keeps the reduced tier.
+  period: 2026
+  input:
+      state_code: FL
+      meets_school_meal_categorical_eligibility: false
+      school_meal_fpg_ratio: 1.8
+  output:
+      school_meal_tier: REDUCED
+
+# North Carolina covered the lunch copay for the 2020-2021 school year
+# (S.L. 2020-80 § 2.3.(b)), had no provision for 2021-2022, and has covered
+# it again since July 1, 2022 (S.L. 2022-74 § 7.3).
+- name: North Carolina did not cover the lunch copay at the start of 2020.
+  period: 2020
+  input:
+      state_code: NC
+      meets_school_meal_categorical_eligibility: false
+      school_meal_fpg_ratio: 1.8
+  output:
+      school_meal_tier: REDUCED
+
+- name: North Carolina covered the lunch copay for the 2020-2021 school year.
+  period: 2021
+  input:
+      state_code: NC
+      meets_school_meal_categorical_eligibility: false
+      school_meal_fpg_ratio: 1.8
+  output:
+      school_meal_tier: FREE
+
+- name: North Carolina had no lunch copay provision for the 2021-2022 school year.
+  period: 2022
+  input:
+      state_code: NC
+      meets_school_meal_categorical_eligibility: false
+      school_meal_fpg_ratio: 1.8
+  output:
+      school_meal_tier: REDUCED
+
+- name: North Carolina covered the lunch copay again for the 2022-2023 school year.
+  period: 2023
+  input:
+      state_code: NC
+      meets_school_meal_categorical_eligibility: false
+      school_meal_fpg_ratio: 1.8
+  output:
+      school_meal_tier: FREE
+
+# Threshold edge: 185% of the 2026 guideline for two people is
+# 1.85 * (15,960 + 5,680) = 40,034. In North Carolina that line is now the
+# boundary between free and full price.
+- name: North Carolina household exactly at 185% of FPG is free.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35, employment_income_before_lsr: 40_034}
+      person2: {age: 10}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    school_meal_tier: FREE
+
+- name: North Carolina household one dollar above 185% of FPG pays full price.
+  period: 2026
+  input:
+    people:
+      person1: {age: 35, employment_income_before_lsr: 40_035}
+      person2: {age: 10}
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    school_meal_tier: PAID

@@ -1,0 +1,36 @@
+description: Maryland uses these sources as unearned income under the Maryland Energy Assistance Program.
+# Social Security and railroad retirement benefits are counted in the formula,
+# net of the Medicare premium (COMAR 07.03.21.04D(3), D(26) and E(20)).
+values:
+  2025-07-01:
+  - ssi
+  - tanf
+  - ordinary_dividend_income
+  - interest_income
+  - estate_income
+  - pension_income
+  # Military retirement pay is a separate input from the pension inputs that
+  # pension_income adds, so both are listed. Its survivor payments are not
+  # separable from survivor_benefits, so a survivor annuity could count twice.
+  - military_retirement_pay
+  - survivor_benefits
+  - retirement_distributions
+  - child_support_received
+  - alimony_income
+  - workers_compensation
+  - unemployment_compensation
+  - veterans_benefits
+  - strike_benefits
+  - rental_income
+  - farm_rent_income
+metadata:
+  unit: list
+  period: year
+  label: Maryland MEAP unearned sources
+  reference:
+  - title: COMAR 07.03.21.04D, countable income, and E, exclusions
+    href: https://regs.maryland.gov/us/md/exec/comar/07.03.21.04#D(1)
+  - title: OHEP Operations Manual (May 2025), Attachments A and B, PDF pages 111, 112
+    href: https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=111
+  - title: FY2026 LIHEAP State Plan, section 1.9, PDF pages 6, 7
+    href: https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=6
