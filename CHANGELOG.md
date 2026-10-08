@@ -1,3 +1,10 @@
+## [2.31.1] - 2026-10-08
+
+### Changed
+
+- Reduce repeated simulation and model setup in Rest Python tests while preserving their existing cases and assertions.
+
+
 ## [2.31.0] - 2026-10-08
 
 ### Added
