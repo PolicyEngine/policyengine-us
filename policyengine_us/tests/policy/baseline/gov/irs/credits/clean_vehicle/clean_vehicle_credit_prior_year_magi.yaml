@@ -1,0 +1,15 @@
+- name: Defaults to this year's modified AGI.
+  period: 2024
+  input:
+    adjusted_gross_income: 140_000
+    foreign_earned_income_exclusion: 20_000
+  output:
+    clean_vehicle_credit_prior_year_magi: 160_000
+
+- name: A provided amount overrides the default.
+  period: 2024
+  input:
+    adjusted_gross_income: 140_000
+    clean_vehicle_credit_prior_year_magi: 130_000
+  output:
+    clean_vehicle_credit_prior_year_magi: 130_000
