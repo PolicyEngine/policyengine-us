@@ -1,1 +1,1 @@
-Add foreign earned income excluded under section 911 to Massachusetts gross income (M.G.L. c. 62 s. 2(a)(1)(C)) instead of subtracting it, through a new ma_foreign_earned_income_exclusion_addback input that defaults to the federal foreign_earned_income_exclusion stacking amount, floored at zero.
+Add section 911 gross foreign earned income and housing exclusions to Massachusetts gross income, derived from Form 2555 leaf inputs while preserving legacy federal stacking inputs and explicit Massachusetts overrides.
