@@ -196,3 +196,71 @@
     # Kansas City tax: 1,000 on column A's earnings and 500 on column B's.
     # Column A: min(4,500 + 1,000, 5,000) = 5,000; column B: 500.
     mt_salt_deduction_indiv: [5_000, 500]
+
+- name: Each column takes its own spouse's Philadelphia wage tax at that spouse's rate
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 45
+        pa_philadelphia_wage_tax_taxable_wages: 100_000
+      person2:
+        age: 45
+        pa_philadelphia_wage_tax_taxable_wages: 100_000
+        pa_philadelphia_wage_tax_reduced_rate_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Nonresident rate 3.44% x 100,000 = 3,440; reduced rate 1.5% x 100,000
+    # = 1,500. Splitting the 4,940 by wages would give 2,470 each.
+    mt_salt_deduction_indiv: [3_440, 1_500]
+
+- name: A St. Louis credit reduces only its own spouse's column
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 45
+        mo_st_louis_earnings_tax_taxable_earnings: 100_000
+        mo_st_louis_earnings_tax_credit: 1_000
+      person2:
+        age: 45
+        mo_st_louis_earnings_tax_taxable_earnings: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Column A: 1% x 100,000 - 1,000 credit = 0; column B: 1,000.
+    mt_salt_deduction_indiv: [0, 1_000]
+
+- name: Two cities' taxes, one column at the cap
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 4_000
+        mo_kansas_city_earnings_tax_taxable_earnings: 100_000
+      person2:
+        age: 45
+        pa_philadelphia_wage_tax_taxable_wages: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Column A: min(4,000 + 1% x 100,000, 5,000) = 5,000.
+    # Column B: 3.44% x 100,000 = 3,440.
+    mt_salt_deduction_indiv: [5_000, 3_440]

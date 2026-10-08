@@ -1,0 +1,24 @@
+- name: A person's credit reduces only their own St. Louis earnings tax
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        mo_st_louis_earnings_tax_taxable_earnings: 100_000
+        mo_st_louis_earnings_tax_credit: 1_200
+      person2:
+        age: 45
+        mo_st_louis_earnings_tax_taxable_earnings: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 1% x 100,000 = 1,000 each. Person 1's 1,200 credit takes their tax to
+    # zero and does not reduce person 2's.
+    mo_st_louis_earnings_tax_person: [0, 1_000]
+    mo_st_louis_earnings_tax: 1_000
+    mo_st_louis_earnings_tax_before_credit: 2_000

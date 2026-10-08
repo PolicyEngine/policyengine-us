@@ -160,3 +160,26 @@
   output:
     # Line 5b: 1,000; line 5c: 9,500. Line 5: min(10,500, 10,000).
     mt_salt_deduction: [10_000, 0]
+
+- name: Joint return adds both spouses' city taxes before the cap
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 45
+        real_estate_taxes: 4_000
+        mo_kansas_city_earnings_tax_taxable_earnings: 100_000
+      person2:
+        age: 45
+        pa_philadelphia_wage_tax_taxable_wages: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 5b: 1,000 (Kansas City) + 3,440 (Philadelphia nonresident 3.44%);
+    # line 5c: 4,000. Line 5: 8,440, under the 10,000 cap.
+    mt_salt_deduction: [8_440, 0]

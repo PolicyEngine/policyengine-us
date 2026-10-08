@@ -1,18 +1,19 @@
 """Invariants for Montana's state and local tax deduction, 2021-2023.
 
 Form 2, Itemized Deductions Schedule, line 5 adds lines 5a (general sales
-taxes), 5b (local income taxes) through 5d and caps the total at $10,000, or $5,000 if married filing
-separately. A joint return has one column, so its cap applies once to the
-couple's combined taxes (mt_salt_deduction, on the head). Spouses filing
-separately on the same form (status 2a) each have their own column, capped at
-$5,000 (mt_salt_deduction_indiv). From 2024 the schedule is gone and this
-change leaves the earlier per-person amounts as they were.
+taxes), 5b (local income taxes), 5c (real estate taxes) and 5d, and caps the
+total at $10,000, or $5,000 if married filing separately. A joint return has
+one column, so its cap applies once to the couple's combined taxes
+(mt_salt_deduction, on the head). Spouses filing separately on the same form
+(status 2a) each have their own column, capped at $5,000
+(mt_salt_deduction_indiv). From 2024 the schedule is gone and this change
+leaves the earlier per-person amounts as they were.
 
 The YAML files hold the worked cases. This file checks what they cannot: many
 mixed tax units (single, head of household, separate, joint, joint with
-dependents, some with sales taxes or Kansas City earnings taxes) in one
-vectorized simulation, and how
-results move when inputs change. For every tax unit:
+dependents, some with sales taxes or Kansas City and St. Louis earnings taxes)
+in one vectorized simulation, and how results move when inputs change. For
+every tax unit:
 
 1. Differential: both variables equal an independent numpy calculation of
    line 5, with the caps taken from the forms rather than from parameters.
@@ -39,8 +40,10 @@ TOLERANCE = 0.01  # dollars
 FORM_CAP = {"SINGLE": 10_000, "HEAD_OF_HOUSEHOLD": 10_000, "JOINT": 10_000}
 FORM_CAP["SEPARATE"] = 5_000
 SCHEDULE_YEARS = [2021, 2022, 2023]
-# Kansas City earnings tax rate, a local income tax with no residence test.
+# Kansas City and St. Louis earnings tax rates: local income taxes with no
+# residence test, on each person's own earnings in the city.
 KANSAS_CITY_RATE = 0.01
+ST_LOUIS_RATE = 0.01
 # 26 USC 164(b)(6) and (7)(A): $10,000 ($5,000 separate) through 2024, and
 # $40,400 ($20,200 separate) for 2026.
 FEDERAL_CAP = {
@@ -67,6 +70,7 @@ taxes = st.one_of(
 sales = st.one_of(st.just(0.0), st.integers(1, 3_000).map(float))
 increases = st.one_of(st.just(0.0), st.integers(1, 5_000).map(float))
 city_earnings = st.one_of(st.just(0.0), st.integers(1, 300_000).map(float))
+city_credits = st.one_of(st.just(0.0), st.integers(1, 3_000).map(float))
 
 
 @st.composite
@@ -75,6 +79,8 @@ def people(draw):
         "real_estate_taxes": draw(taxes),
         "increase": draw(increases),
         "kansas_city_earnings": draw(city_earnings),
+        "st_louis_earnings": draw(city_earnings),
+        "st_louis_credit": draw(city_credits),
     }
 
 
@@ -107,6 +113,12 @@ def _seeded_units(n=150):
             "increase": float(rng.integers(0, 5_001)) if rng.random() < 0.7 else 0.0,
             "kansas_city_earnings": float(rng.integers(1, 300_001))
             if rng.random() < 0.2
+            else 0.0,
+            "st_louis_earnings": float(rng.integers(1, 300_001))
+            if rng.random() < 0.2
+            else 0.0,
+            "st_louis_credit": float(rng.integers(1, 3_001))
+            if rng.random() < 0.3
             else 0.0,
         }
 
@@ -147,6 +159,8 @@ def _situation(units, year, *, raised=False, swapped=False):
             "mo_kansas_city_earnings_tax_taxable_earnings": values[
                 "kansas_city_earnings"
             ],
+            "mo_st_louis_earnings_tax_taxable_earnings": values["st_louis_earnings"],
+            "mo_st_louis_earnings_tax_credit": values["st_louis_credit"],
         }
 
     for i, unit in enumerate(units):
@@ -193,6 +207,8 @@ def _run(units, year, **kwargs):
             "mt_salt_deduction_indiv",
             "real_estate_taxes",
             "mo_kansas_city_earnings_tax_taxable_earnings",
+            "mo_st_louis_earnings_tax_taxable_earnings",
+            "mo_st_louis_earnings_tax_credit",
         ]
     }
     out["unit"] = sim.populations["tax_unit"].members_entity_id
@@ -214,9 +230,16 @@ def _check_schedule_year(units, year):
     joint_cap = np.array([FORM_CAP[s] for s in status])
     column_cap = np.where(married, FORM_CAP["SEPARATE"], joint_cap)
 
-    # 1. Differential against numpy. Each person owes Kansas City tax on
-    # their own earnings there; a column takes its own spouse's tax.
-    city_tax = KANSAS_CITY_RATE * base["mo_kansas_city_earnings_tax_taxable_earnings"]
+    # 1. Differential against numpy. Each person owes city tax on their own
+    # earnings there, less their own credits; a column takes its own
+    # spouse's tax.
+    city_tax = KANSAS_CITY_RATE * base[
+        "mo_kansas_city_earnings_tax_taxable_earnings"
+    ] + np.maximum(
+        0,
+        ST_LOUIS_RATE * base["mo_st_louis_earnings_tax_taxable_earnings"]
+        - base["mo_st_louis_earnings_tax_credit"],
+    )
     total = _unit_sum(base, base["real_estate_taxes"] + city_tax) + sales
     np.testing.assert_allclose(
         base["mt_salt_deduction"],
