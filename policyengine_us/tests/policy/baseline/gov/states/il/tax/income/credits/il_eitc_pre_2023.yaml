@@ -119,3 +119,57 @@
     # 35 ILCS 5/212(b-10): 20% of the credit without the federal age limit,
     # 20% x 7.65% x 5,000 = 76.50.
     il_eitc: 76.5
+
+- name: Childless filer aged 40 with an ITIN in 2022 gets no IL EIC
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 5_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    # Before 2023 the IL EIC is 18% of the federal EITC, which needs a
+    # Social Security number (IRC 32(m)), so an ITIN filer gets 0.
+    il_eitc: 0
+
+- name: Childless filer aged 40 with an ITIN in 2023 gets the expanded IL EIC
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 5_000
+        is_tax_unit_head: true
+        has_tin: true
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: IL
+  output:
+    # From 2023 35 ILCS 5/212(b-5) accepts an ITIN. Childless phase-in 7.65%
+    # of 5,000 = 382.50 (below the 2023 maximum of 600); IL EIC 20% = 76.50.
+    il_eitc: 76.5
