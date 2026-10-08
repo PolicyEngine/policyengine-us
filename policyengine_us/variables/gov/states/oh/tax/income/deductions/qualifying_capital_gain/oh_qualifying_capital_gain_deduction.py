@@ -41,4 +41,7 @@ class oh_qualifying_capital_gain_deduction(Variable):
         payroll = max_(
             person("oh_qualifying_capital_gain_deductible_payroll", period), 0
         )
-        return min_(gain, payroll)
+        # A dependent's gain is outside the filers' federal AGI; the
+        # deduction belongs on the dependent's own return (R.C. 5747.79(A)(1)).
+        not_dependent = ~person("is_tax_unit_dependent", period)
+        return where(not_dependent, min_(gain, payroll), 0)

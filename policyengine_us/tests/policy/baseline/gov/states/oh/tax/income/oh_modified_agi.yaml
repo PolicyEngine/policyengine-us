@@ -73,3 +73,75 @@
   output:
     oh_qualifying_capital_gain_deduction: 0
     oh_modified_agi: 500_000
+
+- name: A dependent's qualifying gain stays off the filer's Ohio return
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 60_000
+      child:
+        age: 15
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 100_000
+        oh_qualifying_capital_gain: 100_000
+        oh_qualifying_capital_gain_deductible_payroll: 80_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OH
+  output:
+    # R.C. 5747.79(A)(1), (B): the child's gain is outside the filer's
+    # federal AGI and cannot generate a deduction on this return.
+    adjusted_gross_income_person: [60_000, 0]
+    adjusted_gross_income: 60_000
+    oh_qualifying_capital_gain_deduction: [0, 0]
+    oh_agi: 60_000
+    # R.C. 5747.01(II) adds back only deductions actually taken.
+    oh_modified_agi: 60_000
+
+- name: Filer business and qualifying gain deductions exclude dependent income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 60_000
+        s_corp_income: 40_000
+        long_term_capital_gains: 50_000
+        oh_qualifying_capital_gain: 50_000
+        oh_qualifying_capital_gain_deductible_payroll: 20_000
+      child:
+        age: 15
+        is_tax_unit_dependent: true
+        s_corp_income: 150_000
+        long_term_capital_gains: 100_000
+        oh_qualifying_capital_gain: 100_000
+        oh_qualifying_capital_gain_deductible_payroll: 80_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OH
+  output:
+    adjusted_gross_income_person: [150_000, 0]
+    adjusted_gross_income: 150_000
+    # Schedule of Business Income includes only the filer's income.
+    oh_business_income_person: [40_000, 0]
+    oh_business_income_deduction: 40_000
+    oh_business_income_deduction_person: [40_000, 0]
+    oh_qualifying_capital_gain_deduction: [20_000, 0]
+    oh_deductions: [60_000, 0]
+    # Ohio AGI = federal AGI - business deduction - qualifying gain deduction.
+    oh_agi: 90_000
+    oh_modified_agi: 150_000
