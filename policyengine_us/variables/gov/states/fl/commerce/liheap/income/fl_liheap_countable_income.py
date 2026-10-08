@@ -8,10 +8,13 @@ class fl_liheap_countable_income(Variable):
     unit = USD
     label = "Florida LIHEAP annual countable household income"
     defined_for = StateCode.FL
-    # Plan section 1.9, pages 5-7; manual pages 49-51.
+    # Plan section 1.9
     reference = (
+        # PDF pages 5-7
         "https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=5",
+        # PDF pages 49-51
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=49",
+        # PDF pages 5-7
         "https://liheapch.acf.gov/docs/2025/state-plans/FL_Plan_2025.pdf#page=5",
     )
 

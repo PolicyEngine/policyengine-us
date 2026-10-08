@@ -9,9 +9,9 @@ class fl_liheap(Variable):
     unit = USD
     label = "Florida LIHEAP regular heating assistance"
     defined_for = StateCode.FL
-    # Manual pages 8-9, 23-24 and 43; plan page 9.
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/FL_BenefitMatrix_Heat-Cool_2026.pdf",
+        # PDF pages 8-9, 23-24, 43
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=8",
         "https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=9",
         "https://liheapch.acf.gov/docs/2025/benefits-matricies/FL_BenefitMatrix_2025.pdf",
