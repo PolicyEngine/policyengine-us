@@ -1,0 +1,31 @@
+description: Missouri starts a filer's Missouri adjusted gross income from zero instead of a negative federal adjusted gross income, and gives the whole joint federal adjusted gross income to the spouse whose separate amount is positive, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Missouri negative federal adjusted gross income floor applies
+  reference:
+    - title: 12 CSR 10-2.710(1), amended effective July 30, 2024
+      href: https://www.law.cornell.edu/regulations/missouri/12-CSR-10-2-710
+    - title: 12 CSR 10-2.010(5), amended effective April 30, 2026
+      href: https://dor.mo.gov/resources/official-final-rules/documents/12_CSR_10-2_010_Income_Tax_of_Current_or_Former_Spouses.pdf#page=4
+    - title: 2025 MO-1040 Book - Individual Income Tax Long Form, Negative Federal Adjusted Gross Income
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=6
+    - title: 2024 MO-1040 Book - Individual Income Tax Long Form, Line 1
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2024.pdf#page=6
+    - title: 2023 MO-1040 Book - Individual Income Tax Long Form, Line 7 note on negative income
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2023.pdf#page=7
+
+values:
+  # Through 2023 a spouse's column on the combined return could be negative:
+  # the 2023 instructions' Line 7 note covers "one spouse has negative income".
+  2019-01-01: false
+  # The 2024 instructions are the first to say "If the amount you would
+  # otherwise report as your federal adjusted gross income would be a negative
+  # number, enter $0 on Line 1", without saying how a combined return applies
+  # it. The 2025 instructions apply the same 12 CSR 10-2.710(1) to combined
+  # returns: both spouses enter $0 when joint federal AGI is negative, and when
+  # it is positive the spouse with a negative separate amount enters $0 and the
+  # other spouse enters the whole joint amount. That reading also keeps the 2024
+  # worksheet's rule that the two columns add up to joint federal AGI, so it is
+  # applied from 2024.
+  2024-01-01: true
