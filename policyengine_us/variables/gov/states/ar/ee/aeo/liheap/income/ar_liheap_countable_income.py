@@ -13,9 +13,10 @@ class ar_liheap_countable_income(Variable):
         "https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=5",
         # FY2025 state plan sections 1.8 and 1.9, pages 5-7.
         "https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=5",
-        # Draft manual section 4.7 (MCI rounding, page 42; Medicare deduction,
-        # section 4.7.2, page 43) and Appendices E-F (pages 130-144).
-        "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=42",
+        # Draft manual section 4.7 (high-school student earnings, page 41; MCI
+        # rounding, page 42; Medicare deduction, section 4.7.2, page 43) and
+        # Appendices E-F (pages 130-144).
+        "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=41",
         # Application section III, page 2.
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2",
     )
@@ -43,15 +44,23 @@ class ar_liheap_countable_income(Variable):
         # model follows the heading and excludes only earned sources, so the
         # student's unearned income still counts. Reading the text instead
         # would exclude all of the student's income. Tax-unit dependency
-        # stands for the dependent listing. Manual page 41 also excludes an
-        # 18-year-old high-school student's earnings unless the student works
-        # full time or is emancipated; that rule is not modeled.
+        # stands for the dependent listing.
         excluded_college_student = (
             person("is_full_time_college_student", period)
             & (age <= p.student_exclusion.college_max_age)
             & person("is_tax_unit_dependent", period)
         )
-        counted_worker = ~(excluded_child | excluded_college_student)
+        # Manual Section 4.7 (page 41) excludes the earnings of members aged
+        # 18 and enrolled in high school. Its exceptions for a member working
+        # full time or an emancipated head-of-household applicant are not
+        # modeled: the manual sets no full-time hours threshold, and no input
+        # records emancipation.
+        excluded_high_school_student = person("is_in_k12_school", period) & (
+            np.floor(age) == p.student_exclusion.high_school_age
+        )
+        counted_worker = ~(
+            excluded_child | excluded_college_student | excluded_high_school_student
+        )
         # Existing net business income approximates gross receipts. Additional
         # business/work-expense deductions and new gross inputs are deferred.
         # Each source is floored at zero, so a loss in one source cannot

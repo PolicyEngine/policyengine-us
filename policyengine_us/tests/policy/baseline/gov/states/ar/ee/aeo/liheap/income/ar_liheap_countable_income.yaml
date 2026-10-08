@@ -683,3 +683,73 @@
         state_code: AR
   output:
     ar_liheap_countable_income: 24_000
+
+# Manual Section 4.7 p41 excludes the earnings of members aged 18 and enrolled in high
+# school. Both work at Arkansas's $11.00 minimum wage (U.S. DOL state minimum wage table):
+# the parent 40 hours x 52 weeks = 22880; the 18-year-old high school senior part time,
+# 12 hours x 52 weeks = 6864, which is excluded. is_full_time_student follows
+# is_in_k12_school. 22880 x 0.8 = 18304; MCI 1525.33 rounds to 1525; x12 = 18300.
+# Counting the senior's wages would give 23796 (Case 25).
+- name: Case 24, an eighteen year old high school student has work excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 22_880
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_in_k12_school: true
+        ssi: 0
+        employment_income: 6_864
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 18_300
+
+# Case 24's household, but the 18-year-old is not enrolled in high school, so the
+# wages count: (22880 + 6864) x 0.8 = 23795.20; MCI 1982.93 rounds to 1983;
+# x12 = 23796. Case 4 leaves is_in_k12_school at its default (false at 18); this case
+# sets it explicitly.
+- name: Case 25, an eighteen year old not in high school has work counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_full_time_student: false
+        ssi: 0
+        employment_income: 22_880
+      person2:
+        age: 18
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        ssi: 0
+        employment_income: 6_864
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        ar_tea: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_liheap_countable_income: 23_796
