@@ -1,0 +1,1 @@
+Cap Montana's 2021–2023 state and local tax deduction (Itemized Deductions Schedule, line 5) once for a joint return and at $5,000 in each spouse's column when filing separately on the same form, and include general sales taxes (line 5a) and local income taxes (line 5b).

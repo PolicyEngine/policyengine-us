@@ -3,7 +3,7 @@
   input:
      charitable_deduction: 800
      investment_interest_expense: 265
-     mt_salt_deduction: 5_000
+     mt_salt_deduction_indiv: 5_000
      mt_medical_expense_deduction_indiv: 1_000
      casualty_loss_deduction: 400
      mt_child_dependent_care_expense_deduction: 123
@@ -17,7 +17,7 @@
   input:
      charitable_deduction: 0
      investment_interest_expense: 1_234
-     mt_salt_deduction: 10_000
+     mt_salt_deduction_indiv: 10_000
      mt_medical_expense_deduction_indiv: 3_000 
      casualty_loss_deduction: 0
      mt_child_dependent_care_expense_deduction: 0
@@ -31,7 +31,7 @@
   input:
      charitable_deduction: 1_000
      mortgage_interest: 34
-     mt_salt_deduction: 1_035
+     mt_salt_deduction_indiv: 1_035
      mt_medical_expense_deduction_indiv: 3_000
      casualty_loss_deduction: 745
      mt_child_dependent_care_expense_deduction: 1_004
@@ -49,20 +49,20 @@
         is_tax_unit_head_or_spouse: true
         mt_misc_deductions: 100
         mt_medical_expense_deduction_indiv: 200
-        mt_salt_deduction: 300
+        mt_salt_deduction_indiv: 300
         mt_federal_income_tax_deduction_for_federal_itemization_indiv: 400
       person2:
         is_tax_unit_head_or_spouse: true
         mt_misc_deductions: 100
         mt_medical_expense_deduction_indiv: 200
-        mt_salt_deduction: 300
+        mt_salt_deduction_indiv: 300
         mt_federal_income_tax_deduction_for_federal_itemization_indiv: 100
       person3:
         is_tax_unit_head_or_spouse: false
         is_tax_unit_dependent: true
         mt_misc_deductions: 100
         mt_medical_expense_deduction_indiv: 12
-        mt_salt_deduction: 200
+        mt_salt_deduction_indiv: 200
         mt_federal_income_tax_deduction_for_federal_itemization_indiv: 100
     tax_units:
       tax_unit:
