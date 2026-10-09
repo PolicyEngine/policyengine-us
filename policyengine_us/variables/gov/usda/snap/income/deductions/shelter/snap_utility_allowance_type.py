@@ -20,8 +20,6 @@ class snap_utility_allowance_type(Variable):
         "https://www.ecfr.gov/current/title-7/section-273.9#p-273.9(d)(6)(iii)(A)(3)",
         "https://www.law.cornell.edu/uscode/text/7/2014#e_6_C_iv_I",
         "https://www.govinfo.gov/content/pkg/PLAW-119publ21/html/PLAW-119publ21.htm",
-        # PDF pages 1-3.
-        "https://fns-prod.azureedge.us/sites/default/files/resource-files/OBBB-LIHEAP-Implementation-Memo.pdf#page=1",
     )
 
     def formula(spm_unit, period, parameters):
