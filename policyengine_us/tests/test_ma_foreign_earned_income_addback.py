@@ -4,7 +4,11 @@ earned income excluded under section 911.
 M.G.L. c. 62 s. 2(a)(1)(C) adds to federal gross income "Earned income from
 foreign sources excluded under section nine hundred and eleven of the Code",
 and s. 2(b)(2) makes Part B gross income the Massachusetts gross income "not
-included in Part A or Part C gross income". The excluded amount is
+included in Part A or Part C gross income". Part B removes the dividends and
+positive net capital gain included in federal gross income; capital losses do
+not reduce Part B under s. 2(d)(1)(M). Massachusetts Part A and Part C netting
+can differ from federal netting, so their separate gross amounts are not the
+subtraction used to isolate Part B. The excluded amount is
 `ma_foreign_earned_income_exclusion_addback` (Form 2555 line 43). It defaults
 to `foreign_earned_income_exclusion`, floored at zero, and can be entered
 directly. Before this change, `ma_gross_income` subtracted the exclusion instead.
@@ -302,6 +306,25 @@ def exclusions(households):
     return np.array([h["exclusion"] for h in households], dtype=float)
 
 
+def federally_included_capital_income(households):
+    """Independent capital-income reference from the household input amounts.
+
+    This fixture puts all dividends and gains on the head; spouses have only
+    wages, and no capital gain distributions are supplied outside Schedule D.
+    """
+    # M.G.L. c. 62 § 2(b)(2) excludes capital income from Part B, and
+    # § 2(d)(1)(M) disallows the federal capital-loss deduction. Remove the
+    # dividends and positive net gain included federally, rather than Part A
+    # and Part C amounts whose Massachusetts loss netting can differ (#9954).
+    return np.array(
+        [
+            h["dividends"] + max(0, h["short_term_gains"] + h["long_term_gains"])
+            for h in households
+        ],
+        dtype=float,
+    )
+
+
 def base_income(results):
     """B: federal gross income and the loss adjustment, less the exclusions."""
     return (
@@ -400,10 +423,11 @@ def check_foreign_earnings_enter_part_b_only(households, year):
             np.abs(high["ma_gross_income"] - low["ma_gross_income"] - gross_change)
             <= 2 * slack
         ).all()
-        # Part B is the Massachusetts gross income not in Part A or Part C.
-        parts_a_and_c = low["ma_part_a_gross_income"] + low["ma_part_c_gross_income"]
-        residual_low = low["ma_gross_income"] - parts_a_and_c
-        residual_high = high["ma_gross_income"] - parts_a_and_c
+        # c.62 § 2(b)(2), § 2(d)(1)(M): remove the capital income included
+        # federally; different Massachusetts netting cannot reduce Part B.
+        capital_income = federally_included_capital_income(low_households)
+        residual_low = low["ma_gross_income"] - capital_income
+        residual_high = high["ma_gross_income"] - capital_income
         part_b_change = np.maximum(0, residual_high) - np.maximum(0, residual_low)
         assert (
             np.abs(
