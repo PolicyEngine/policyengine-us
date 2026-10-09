@@ -42,10 +42,6 @@ def _situation(cases, year):
         situation["tax_units"][unit_name] = {
             "members": members,
             "filing_status": {str(year): "JOINT" if len(members) == 2 else "SINGLE"},
-            **{
-                variable: {str(year): value}
-                for variable, value in case.get("tax", {}).items()
-            },
         }
         situation["households"][unit_name] = {
             "members": members,
@@ -85,14 +81,13 @@ RETIREMENT_CASES = [
         ]
     },
     {
-        "people": [{"age": 68, "taxable_private_pension_income": 30_000}],
-        "tax": {
-            "wi_income_tax_before_credits": 1_000,
-            "wi_non_refundable_credits": 100,
-            "wi_retirement_income_exclusion_tax": 100,
-            "wi_earned_income_credit": 25,
-            "wi_homestead_credit": 200,
-        },
+        "people": [
+            {
+                "age": 68,
+                "taxable_private_pension_income": 24_500,
+                "real_estate_taxes": 2_000,
+            }
+        ]
     },
     {"people": [{"age": 68, "taxable_ira_distributions": 8_000}]},
     {"people": [{"age": 68, "taxable_401k_distributions": 8_000}]},
@@ -168,9 +163,9 @@ def test_retirement_election_vectorized_matches_separate_returns(wi_simulation):
         variable: simulation.calculate(variable, year)[retirement_slice]
         for variable in variables
     }
-    # Compare an unequal-pension joint return and a return retaining homestead.
+    # Compare a taxable standard return and a return retaining homestead.
     # The remaining rows exercise their vectorized accounting identities below.
-    for index in (4, 6):
+    for index in (1, 6):
         case = RETIREMENT_CASES[index]
         separate = Simulation(situation=_situation([case], year))
         for variable in variables:
@@ -195,6 +190,10 @@ def test_retirement_election_vectorized_matches_separate_returns(wi_simulation):
     ]
     standard_net = standard_before - earned_income_credit - homestead_credit
 
+    assert standard_before[1] > 0
+    assert standard_before[6] > 0
+    assert homestead_credit[6] > 0
+    assert elected[6]
     np.testing.assert_allclose(net, before - refundable, atol=0.01)
     assert np.all(net <= standard_net + 0.01)
     assert np.any(elected)
