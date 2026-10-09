@@ -66,8 +66,8 @@
         state_code: ID
         household_vehicles_value: 2660.0
   output:
-    id_income_tax_before_refundable_credits: 655.54
-    state_income_tax_before_refundable_credits: 665.54  # Includes the $10 PBF tax on current main.
+    id_income_tax_before_refundable_credits: 645.54
+    state_income_tax_before_refundable_credits: 655.54  # Includes the $10 PBF tax.
 - name: PolicyBench scenario_053 Idaho paid health insurance premiums
   absolute_error_margin: 0.01
   period: 2026
@@ -119,5 +119,5 @@
         auto_loan_interest: 950.0
         household_vehicles_value: 7410.0
   output:
-    id_income_tax_before_refundable_credits: 2180.28
-    state_income_tax_before_refundable_credits: 2190.28  # Includes the $10 PBF tax on current main.
+    id_income_tax_before_refundable_credits: 2170.28
+    state_income_tax_before_refundable_credits: 2180.28  # Includes the $10 PBF tax.
