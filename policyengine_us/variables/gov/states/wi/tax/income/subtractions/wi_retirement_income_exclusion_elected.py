@@ -27,8 +27,9 @@ class wi_retirement_income_exclusion_elected(Variable):
             - tax_unit("wi_non_refundable_credits", period),
         )
         standard_refundable = add(tax_unit, period, p.credits.refundable)
-        exclusion_refundable = add(
-            tax_unit, period, p.credits.retirement_income_exclusion_refundable
+        permitted_credits = p.credits.retirement_income_exclusion_refundable
+        exclusion_refundable = (
+            add(tax_unit, period, permitted_credits) if permitted_credits else 0
         )
         exclusion_net = (
             tax_unit("wi_retirement_income_exclusion_tax", period)

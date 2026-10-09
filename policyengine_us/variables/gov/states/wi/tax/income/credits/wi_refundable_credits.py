@@ -21,6 +21,7 @@ class wi_refundable_credits(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.wi.tax.income.credits
         standard = add(tax_unit, period, p.refundable)
-        permitted = add(tax_unit, period, p.retirement_income_exclusion_refundable)
+        permitted_credits = p.retirement_income_exclusion_refundable
+        permitted = add(tax_unit, period, permitted_credits) if permitted_credits else 0
         elected = tax_unit("wi_retirement_income_exclusion_elected", period)
         return where(elected, permitted, standard)

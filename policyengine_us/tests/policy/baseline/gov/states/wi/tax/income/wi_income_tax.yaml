@@ -85,6 +85,9 @@
   output:
     state_income_tax_before_refundable_credits: 0
     wi_capital_gain_loss_subtraction: 1125.90
+    # The standard path isolates the capital gain correction: 708.70 - 300.
+    wi_income_tax_before_credits: 708.70
+    wi_non_refundable_credits: 300
     state_refundable_credits: 0
     state_income_tax: 0
 
