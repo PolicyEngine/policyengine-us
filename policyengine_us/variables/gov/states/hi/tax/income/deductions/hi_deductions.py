@@ -7,11 +7,9 @@ class hi_deductions(Variable):
     label = "Hawaii deductions"
     unit = USD
     reference = (
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15",  # Itemized Deduction
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20",  # Standard Deduction
-    )
-    reference = (
         "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=11",
+        # PDF pages 15 (itemized deduction), 20 (standard deduction)
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15",
         # PDF pages 15, 20
         "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=15",
     )
