@@ -18,9 +18,9 @@ formula now applies its jurisdiction's rule for that case:
 - Each spouse separately: Michigan's exemptions and Hawaii's food/excise,
   renters and Act 115 credits count only the filers who cannot be claimed.
 - Only when every filer is a dependent: New Mexico's rebates, credits and
-  dependents deduction, and Maine's sales tax fairness credit. New Mexico's
-  medical care credit also needs a filer who is both 65 or older and not a
-  dependent.
+  dependents deduction, and Maine's sales tax fairness credit. When a filer
+  is a dependent elsewhere, New Mexico's medical care credit also needs a
+  filer who is both 65 or older and not a dependent.
 - Never on a joint return: Missouri's own stop in its working family credit,
   since such a couple files as married filing combined.
 

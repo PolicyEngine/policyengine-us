@@ -263,3 +263,25 @@
   output:
     # Joint earned income $16,000 + $450 = $16,450, below the $31,500 joint amount.
     basic_standard_deduction: 16_450
+
+- name: 2025 dependent filer with self-employment income uses earned income net of the self-employment tax deduction
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 20
+        self_employment_income: 3_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    # Worksheet earned income subtracts Schedule 1 line 15:
+    # $3,000 - $3,000 x 0.9235 x 15.3% / 2 = $2,788.06; plus $450 = $3,238.06.
+    basic_standard_deduction: 3238.06

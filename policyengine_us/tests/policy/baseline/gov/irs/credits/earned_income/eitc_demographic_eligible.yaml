@@ -257,3 +257,24 @@
     # The dependent condition in IRC 32(c)(1)(A)(ii)(III) applies only without a
     # qualifying child.
     eitc_demographic_eligible: true
+
+- name: 2025 childless single filer whose parent files only to claim a refund is not a dependent
+  period: 2025
+  input:
+    people:
+      head:
+        age: 26
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    # Publication 596 (2025, p.18): the credit is allowed when the person who can claim
+    # you files only to claim a refund; such a person is not a dependent, so the
+    # input is false.
+    eitc_demographic_eligible: true

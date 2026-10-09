@@ -20,8 +20,14 @@ class or_standard_deduction(Variable):
         # Core deduction based on filing status.
         filing_status = tax_unit("filing_status", period)
         initial_core_deduction = p.amount[filing_status]
-        # Replace if claimable as a dependent.
-        earned_income = tax_unit("tax_unit_earned_income", period)
+        # Replace if claimable as a dependent. Earned income is figured as in
+        # the federal worksheet, net of the deductible part of self-employment
+        # tax (Schedule 1, line 15).
+        earned_income = max_(
+            tax_unit("tax_unit_earned_income", period)
+            - tax_unit("self_employment_tax_ald", period),
+            0,
+        )
         claimable_dep_floor = p.claimable_as_dependent.min
         claimable_dep_earned_amount = (
             earned_income + p.claimable_as_dependent.earned_income_addition

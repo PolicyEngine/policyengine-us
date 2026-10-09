@@ -191,3 +191,25 @@
   output:
     # max($1,350, $3,000 + $450) = $3,450, below the $5,670 joint amount.
     or_standard_deduction: 3_450
+
+- name: 2025 dependent filer with self-employment income uses earned income net of the self-employment tax deduction
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 20
+        self_employment_income: 1_500
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: OR
+  output:
+    # $1,500 - $1,500 x 0.9235 x 15.3% / 2 = $1,394.03; plus $450 = $1,844.03,
+    # above the $1,350 minimum and below the $2,835 single amount.
+    or_standard_deduction: 1844.03

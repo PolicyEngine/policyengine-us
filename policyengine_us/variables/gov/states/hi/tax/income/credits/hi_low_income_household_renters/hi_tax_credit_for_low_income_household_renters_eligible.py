@@ -15,9 +15,11 @@ class hi_tax_credit_for_low_income_household_renters_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         # HRS 235-55.7(b) allows the credit to each resident taxpayer who
-        # cannot be claimed as a dependent. Schedule X stops at line 3 only
-        # for the first-listed filer; since a couple may list either spouse
-        # first, a joint return qualifies unless both spouses can be claimed.
+        # cannot be claimed as a dependent, and Schedule X stops at line 3 if
+        # "you" can be claimed. Neither settles a joint return where only one
+        # spouse can be claimed; since the credit and its exemption count are
+        # per person, we read them as letting the other spouse claim it, so a
+        # joint return qualifies unless both spouses can be claimed.
         every_filer_dependent = tax_unit("every_filer_is_dependent_elsewhere", period)
         p = parameters(period).gov.states.hi.tax.income.credits.lihrtc
         agi = tax_unit("hi_agi", period)

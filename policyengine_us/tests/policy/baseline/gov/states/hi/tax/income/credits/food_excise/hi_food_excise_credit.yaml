@@ -461,3 +461,137 @@
   output:
     # From 2023 the minor counts as a qualified exemption: 2 x $220.
     hi_food_excise_credit: 440
+
+- name: 2022 joint return where one spouse and the publicly supported minor can be claimed elsewhere (the claimable spouse is the head)
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        hi_food_excise_credit_child_receiving_public_support: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4_000
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: HI
+  output:
+    # Form N-311 line 3 lists only minors who cannot be claimed by another taxpayer,
+    # so only the spouse who cannot be claimed counts: $110.
+    hi_food_excise_credit: 110
+
+- name: 2022 joint return where one spouse and the publicly supported minor can be claimed elsewhere (the claimable spouse is the spouse)
+  period: 2022
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        hi_food_excise_credit_child_receiving_public_support: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4_000
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: HI
+  output:
+    # Form N-311 line 3 lists only minors who cannot be claimed by another taxpayer,
+    # so only the spouse who cannot be claimed counts: $110.
+    hi_food_excise_credit: 110
+
+- name: 2025 joint return where one spouse and the publicly supported minor can be claimed elsewhere (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        hi_food_excise_credit_child_receiving_public_support: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4_000
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: HI
+  output:
+    # Only the spouse who cannot be claimed counts: 1 x $220.
+    hi_food_excise_credit: 220
+
+- name: 2025 joint return where one spouse and the publicly supported minor can be claimed elsewhere (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        hi_food_excise_credit_child_receiving_public_support: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4_000
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: HI
+  output:
+    # Only the spouse who cannot be claimed counts: 1 x $220.
+    hi_food_excise_credit: 220
