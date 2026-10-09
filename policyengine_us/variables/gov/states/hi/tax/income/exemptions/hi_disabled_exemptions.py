@@ -25,10 +25,17 @@ class hi_disabled_exemptions(Variable):
             any_disabled_head_or_spouse, 0, dependent_amount
         )
         aged = person("age", period) >= p.aged_threshold
-        # Filer can claim greater of the disabled or base exemption.
+        # Filer can claim greater of the disabled or base exemption. HRS
+        # 235-54(c) and HAR 18-235-54(c) grant the $7,000 exemption "instead
+        # of the exemptions provided by subsection (a)" without a dependency
+        # bar, so a disabled filer keeps it even if another taxpayer can
+        # claim them.
         disabled_exemption = disabled_head_or_spouse * p.disabled
-        # Aged individuals get an extra base exemption.
-        head_or_spouse_amount = p.base * (1 + aged) * head_or_spouse
+        # Aged individuals get an extra base exemption. Under HRS 235-54(a)
+        # the regular and aged exemptions of a filer whom another taxpayer
+        # can claim are zero.
+        claimed = person("claimed_as_dependent_on_another_return", period)
+        head_or_spouse_amount = p.base * (1 + aged) * head_or_spouse * ~claimed
         conditional_head_or_spouse_amount = max_(
             disabled_exemption, head_or_spouse_amount
         )

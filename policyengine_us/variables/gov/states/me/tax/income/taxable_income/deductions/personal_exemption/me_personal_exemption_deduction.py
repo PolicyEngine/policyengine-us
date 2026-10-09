@@ -7,6 +7,13 @@ class me_personal_exemption_deduction(Variable):
     label = "Maine personal exemption deduction"
     unit = USD
     definition_period = YEAR
+    reference = (
+        "https://www.mainelegislature.org/legis/statutes/36/title36sec5126-A.html",
+        # Form 1040ME instructions, line 13: a filer who may be claimed as a
+        # dependent has no exemption; on a joint return each spouse is
+        # counted separately.
+        "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf#page=4",
+    )
     defined_for = StateCode.ME
 
     def formula(tax_unit, period, parameters):
@@ -26,8 +33,11 @@ class me_personal_exemption_deduction(Variable):
         phaseout_width = p.phaseout.width[filing_status]  # Line 4
         phaseout_percent = min_(1, excess / phaseout_width)  # Line 5
 
-        # Get their Maine personal exemptions (line 6).
-        exemptions = tax_unit("head_spouse_count", period)
+        # Get their Maine personal exemptions (line 6, from Form 1040ME line
+        # 13). A filer who may be claimed as a dependent on another person's
+        # return gets no exemption: a joint return counts 1 when only one
+        # spouse may be claimed and 0 when both may.
+        exemptions = tax_unit("head_spouse_count_not_dependent_elsewhere", period)
         max_amount = exemptions * p.amount
 
         # Calculate the phaseout amount (line 7).

@@ -89,8 +89,9 @@ def create_hi_dependent_exemption() -> Reform:
             # exactly as the baseline computes it).
             person = tax_unit.members
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            claimed = person("claimed_as_dependent_on_another_return", period)
             aged = person("age", period) >= p.aged_threshold
-            aged_head_spouse_count = tax_unit.sum(aged & head_or_spouse)
+            aged_head_spouse_count = tax_unit.sum(aged & head_or_spouse & ~claimed)
 
             personal_amount = (personal_count + aged_head_spouse_count) * p.base
 

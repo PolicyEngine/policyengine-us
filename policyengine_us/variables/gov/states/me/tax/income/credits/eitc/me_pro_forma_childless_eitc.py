@@ -29,8 +29,14 @@ class me_pro_forma_childless_eitc(Variable):
         reduction = tax_unit("eitc_reduction", period)
         investment_eligible = tax_unit("eitc_investment_income_eligible", period)
         filer_has_ssn = tax_unit("filer_meets_eitc_identification_requirements", period)
+        # § 5219-S(6) also requires the qualifications of IRC
+        # 32(c)(1)(A)(ii)(III): the filer may not be a dependent of another
+        # taxpayer, and on a joint return neither spouse may be (Publication
+        # 596, Rule 12).
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         return (
             min_(phased_in, max_(0, maximum - reduction))
             * investment_eligible
             * filer_has_ssn
+            * ~dependent_filer
         )
