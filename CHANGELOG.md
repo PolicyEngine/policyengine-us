@@ -1,3 +1,10 @@
+## [2.38.3] - 2026-10-09
+
+### Changed
+
+- Name Ziming Hua as the approver for partner API contract test edits in the agent instructions.
+
+
 ## [2.38.2] - 2026-10-09
 
 ### Fixed
