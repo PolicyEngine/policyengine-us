@@ -137,6 +137,18 @@ def test_heat_and_eat_reform_preserves_other_utility_allowance_paths():
         state_deeming = fixed.calculate(
             "snap_state_using_standard_utility_allowance", month
         ).astype(bool)
+        np.testing.assert_array_equal(
+            state_deeming,
+            legacy.calculate("snap_state_using_standard_utility_allowance", month),
+        )
+        # Check the fixture's SNAP status independently of the allowance so
+        # eligibility or disability-definition changes cannot hide the defect.
+        np.testing.assert_array_equal(
+            fixed.calculate("has_snap_elderly_disabled_member", month), ~ordinary
+        )
+        np.testing.assert_array_equal(
+            fixed.calculate("is_snap_excluded_member", month), False
+        )
 
         # The former rule grants SUA whenever the state deems a heating cost.
         np.testing.assert_array_equal(legacy_type[state_deeming], "SUA")
