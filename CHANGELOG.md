@@ -1,3 +1,10 @@
+## [2.34.5] - 2026-10-09
+
+### Fixed
+
+- Index the Arizona standard deduction for 2026 and later under A.R.S. 43-1041(H): set the 2026 amounts to $16,100 single and separate, $24,150 head of household and $32,200 joint, and move the inert parent-level uprating onto each filing-status amount.
+
+
 ## [2.34.4] - 2026-10-09
 
 ### Fixed
