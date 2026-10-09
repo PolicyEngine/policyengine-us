@@ -41,3 +41,23 @@
     foreign_earned_income_exclusion: 10_000
   output:
     ctc_credit_limit_worksheet_b_applies: true
+
+# Worksheet B reads the section 24(d)(3) bar rather than repeating its test, so
+# a bar set as an input decides both the refund and the worksheet.
+- name: Does not apply when the section 24(d)(3) bar is set as an input, even without an exclusion.
+  period: 2025
+  input:
+    ctc_qualifying_children: 2
+    foreign_earned_income_exclusion: 0
+    refundable_ctc_barred_by_section_911_exclusion: true
+  output:
+    ctc_credit_limit_worksheet_b_applies: false
+
+- name: Applies to a Form 2555 filer when the section 24(d)(3) bar is set to false as an input.
+  period: 2025
+  input:
+    ctc_qualifying_children: 2
+    foreign_earned_income_exclusion: 10_000
+    refundable_ctc_barred_by_section_911_exclusion: false
+  output:
+    ctc_credit_limit_worksheet_b_applies: true

@@ -14,6 +14,16 @@ def eitc_filing_requirement_met(tax_unit, period):
     return is_required | files_voluntarily | would_file_for_credits
 
 
+def eitc_section_911_eligible(tax_unit, period):
+    """26 U.S.C. 32(c)(1)(C): no EITC for anyone claiming section 911 benefits.
+
+    State credits that recompute a federal-style EITC waive only the federal
+    rules they name (age, SSN, separate filing), so this one still applies.
+    """
+
+    return tax_unit("foreign_earned_income_exclusion", period) <= 0
+
+
 def eitc_filing_status_eligible(
     tax_unit, period, parameters, separate_filer_eligible=None
 ):
@@ -127,6 +137,7 @@ def calculate_eitc_like_amount(
     )
     is_filer = eitc_filing_requirement_met(tax_unit, period)
     takes_up_eitc = tax_unit("takes_up_eitc", period)
+    section_911_eligible = eitc_section_911_eligible(tax_unit, period)
     return (
         calculate_eitc_amount_from_parameters(
             tax_unit, period, eitc_parameters, child_count
@@ -135,6 +146,7 @@ def calculate_eitc_like_amount(
         * filer_identification_eligible
         * investment_income_eligible
         * filing_status_eligible
+        * section_911_eligible
         * is_filer
         * takes_up_eitc
     )
