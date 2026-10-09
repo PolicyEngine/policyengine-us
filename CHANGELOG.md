@@ -1,3 +1,10 @@
+## [2.37.1] - 2026-10-09
+
+### Fixed
+
+- Count Ohio health insurance premiums on the unreimbursed medical care worksheet: line 3 now takes premiums of anyone eligible for Medicare or an employer-paid plan (R.C. 5747.01(A)(10)), and line 1 reads the premium inputs the data fills, net of the federal self-employed health insurance deduction.
+
+
 ## [2.37.0] - 2026-10-09
 
 ### Added
