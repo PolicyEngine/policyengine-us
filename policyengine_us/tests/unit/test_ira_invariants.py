@@ -403,3 +403,28 @@ def test_supplied_contributions_consume_the_limit_before_generated_ones():
     np.testing.assert_allclose(
         single_traditional, [dollar_limit - s for s in singles], atol=0.001
     )
+
+
+def test_contributions_set_after_construction_count_as_supplied():
+    """A contribution given through set_input is supplied, not generated.
+
+    YAML tests pass inputs at construction, so this needs the simulation API.
+    A single filer with $20,000 of compensation sets a $2,000 Roth
+    contribution after the simulation is built; the $7,500 limit then leaves
+    $5,500 for the desired traditional contribution (26 U.S.C. 408A(c)(2)).
+    """
+    year = 2026
+    situation = blank_situation()
+    add_household(
+        situation,
+        "single",
+        year,
+        [{"ira_compensation": 20_000, "traditional_ira_contributions_desired": 7_500}],
+        {"filing_status": "SINGLE", "ira_219g_magi": 0},
+    )
+    simulation = Simulation(situation=situation)
+    simulation.set_input("roth_ira_contributions", year, np.array([2_000.0]))
+    traditional = simulation.calculate("traditional_ira_contributions", year)
+    roth = simulation.calculate("roth_ira_contributions", year)
+    np.testing.assert_allclose(traditional, [5_500], atol=0.001)
+    np.testing.assert_allclose(roth, [2_000], atol=0)

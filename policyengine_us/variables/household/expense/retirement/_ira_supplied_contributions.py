@@ -6,23 +6,44 @@ IRA_CONTRIBUTION_VARIABLES = (
 )
 
 
+def _is_supplied(simulation, name, period):
+    """Whether the caller set ``name`` for ``period`` as an input.
+
+    Inputs given when the simulation is built are listed in
+    ``simulation.input_variables``. Core records later ``set_input`` calls in
+    ``_user_input_keys`` by variable, branch and period. Neither lists a value
+    that a formula calculated.
+    """
+    if name in simulation.input_variables:
+        return True
+    keys = getattr(simulation, "_user_input_keys", None) or ()
+    if hasattr(simulation, "_get_visible_branch_names"):
+        branches = set(simulation._get_visible_branch_names())
+    else:
+        branches = {getattr(simulation, "branch_name", "default"), "default"}
+    return any(
+        variable == name and branch in branches and set_period == period
+        for variable, branch, set_period in keys
+    )
+
+
 def supplied_ira_contributions(person, period):
     """Actual IRA contributions the caller supplied as inputs, by variable.
 
     Both variables are derived from ``ira_contribution_limit`` through
     ``ira_contribution_scale``, so neither can be calculated while the limit
-    or the scale is being calculated. This reads only variables that were set
-    as inputs (``simulation.input_variables``) and never runs a formula, so a
-    value another formula calculated is never mistaken for a supplied one.
-    A variable that is not supplied for the period maps to ``None``. Core
-    stores an input for every person once any person sets it, so a supplied
-    variable replaces its formula for the whole population.
+    or the scale is being calculated. This reads only values the caller set
+    as inputs, at construction or later through ``set_input``, and never runs
+    a formula, so a value another formula calculated is never mistaken for a
+    supplied one. A variable that is not supplied for the period maps to
+    ``None``. Core stores an input for every person once any person sets it,
+    so a supplied variable replaces its formula for the whole population.
     """
     simulation = person.simulation
     supplied = {}
     for name in IRA_CONTRIBUTION_VARIABLES:
         array = None
-        if name in simulation.input_variables:
+        if _is_supplied(simulation, name, period):
             array = simulation.get_array(name, period)
         supplied[name] = array
     return supplied
