@@ -223,3 +223,156 @@
     snap_unit_size: 0
     is_snap_eligible: false
     snap: 0
+
+# California Modified Categorical Eligibility (MCE) in FY 2026. CDSS ACIN
+# I-46-25, attachment I: net standard (100% of poverty) $1,305 for one person
+# and $2,680 for four; MCE gross standard (200%) $2,610 and $5,360; regular
+# gross standard (130%) $3,483 for four; maximum allotment $298 and $994;
+# standard deduction $209 (1-3 people) and $223 (4); minimum allotment $24.
+# No housing costs, so the excess shelter deduction is zero at these incomes
+# whichever utility allowance applies.
+- name: California MCE household of four above the net standard is eligible for the issuance-table allotment.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 48_000
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 33
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+  output:
+    # Gross $4,000 is above the regular $3,483 but within the $5,360 MCE
+    # standard, so MCE is conferred.
+    meets_snap_gross_income_test: false
+    is_tanf_non_cash_eligible: true
+    # Net $4,000 - 20% earned income deduction ($800) - $223 = $2,977, above
+    # the $2,680 net standard.
+    snap_net_income: 2_977
+    meets_snap_net_income_test: false
+    # MCE households of three or more get the issuance-table allotment "even
+    # if the household's net income exceeds the maximum amount allowable"
+    # (CDSS ACL 12-62, example 5; ACL 14-56; ACL 15-42).
+    meets_snap_categorical_eligibility: true
+    is_snap_eligible: true
+    # $994 - ceil(30% x $2,977 = $893.10) = $994 - $894.
+    snap: 100
+
+- name: California MCE elderly person above the net standard is eligible for the minimum allotment.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 65
+        social_security: 24_000
+        # The 2026 standard Medicare Part B premium, $202.90 a month.
+        health_insurance_premiums: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person]
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    # Gross $2,000 is within the $2,610 MCE standard, and elderly or
+    # disabled households at or below 200% of poverty are conferred MCE
+    # (CDSS ACL 13-32).
+    is_tanf_non_cash_eligible: true
+    # Net $2,000 - $209 - ($202.90 - $35 excess medical) = $1,623.10,
+    # rounded to $1,623, above the $1,305 net standard.
+    snap_net_income: 1_623
+    meets_snap_net_income_test: false
+    # MCE households of one or two get the minimum allotment even above the
+    # net standard (CDSS ACL 13-32, note; ACL 12-62, example 4).
+    is_snap_eligible: true
+    # $298 - ceil(30% x $1,623 = $486.90) < 0, raised to the $24 minimum.
+    snap: 24
+
+- name: California elderly person above 200% of poverty is not MCE and fails the net standard.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 65
+        social_security: 32_400
+        # The 2026 standard Medicare Part B premium, $202.90 a month.
+        health_insurance_premiums: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person]
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: CA
+  output:
+    # Gross $2,700 exceeds the $2,610 MCE standard, so MCE is not conferred
+    # and the household must be net income eligible (CDSS ACL 13-32,
+    # example 2): net $2,700 - $209 - $167.90 = $2,323.10, rounded to
+    # $2,323, exceeds $1,305.
+    is_tanf_non_cash_eligible: false
+    snap_net_income: 2_323
+    meets_snap_net_income_test: false
+    is_snap_eligible: false
+    snap: 0
+
+- name: California household of four above 200% of poverty is not MCE and fails the gross standard.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 35
+        employment_income: 66_000
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 33
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: CA
+  output:
+    # Gross $5,500 exceeds the $5,360 MCE standard, so MCE is not conferred
+    # and the $3,483 regular gross standard applies (CDSS ACL 14-56,
+    # example 2).
+    is_tanf_non_cash_eligible: false
+    meets_snap_gross_income_test: false
+    is_snap_eligible: false
+    snap: 0

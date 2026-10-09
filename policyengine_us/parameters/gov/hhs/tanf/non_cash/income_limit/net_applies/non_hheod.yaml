@@ -5,7 +5,14 @@ AL:
 AZ:
   2015-10-01: false
 CA:
-  2015-10-01: true
+  # CalFresh Modified Categorical Eligibility (MCE) has no net income test.
+  # An MCE household of three or more receives the allotment the issuance
+  # table gives for its net income, even above the net standard, and a
+  # household of one or two receives the minimum allotment (CDSS ACL 12-62,
+  # examples 4-5; ACL 14-56; ACL 15-42). Zero-allotment households of three
+  # or more are denied for that reason, not for failing a net test
+  # (ACL 14-63).
+  2015-10-01: false
 CO:
   2015-10-01: true
   2024-07-01: false
@@ -102,5 +109,17 @@ metadata:
       href: https://www.snapscreener.com/?p=table
     - title: USDA ERS SNAP Policy Database (bbce_inclmt column, Jan 1996 - Dec 2020)
       href: https://www.ers.usda.gov/data-products/snap-policy-data-sets
+    - title: "CDSS All County Letter 12-62, examples of MCE/BBCE households for CalFresh #page 4-5"
+      href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2012/12-62.pdf#page=4
+    - title: CDSS All County Letter 14-56, CalFresh Modified Categorical Eligibility
+      href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2014/14-56.pdf#page=4
+    - title: CDSS All County Letter 14-63, CalFresh households eligible but entitled to no benefits
+      href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2014/14-63.pdf#page=2
+    - title: CDSS All County Letter 15-42, MCE gross income limit and income reporting thresholds
+      href: https://www.cdss.ca.gov/lettersnotices/EntRes/getinfo/acl/2015/15-42.pdf#page=4
+    - title: CDSS Manual of Policies and Procedures 63-409.1, requirements for participation
+      href: https://www.cdss.ca.gov/ord/entres/getinfo/pdf/fsman04b.pdf#page=34
+    - title: 7 CFR 273.9(a), income eligibility standards
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#a
   breakdown:
   - state_code
