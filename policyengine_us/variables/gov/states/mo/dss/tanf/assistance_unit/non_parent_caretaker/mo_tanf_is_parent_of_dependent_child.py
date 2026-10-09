@@ -25,6 +25,18 @@ class mo_tanf_is_parent_of_dependent_child(Variable):
         "or an absent parent do not permit age inference for that child. "
         "This follows d1049 and the principle to make inputs as leaf-nodey "
         "as possible; the age window imputes a relationship, not law. "
+        "The shared parent ids include step-parents and do not record parent "
+        "type, so this default also treats a named step-parent as biological "
+        "or adoptive. Missouri admits only natural or adoptive parents under "
+        "13 CSR 40-2.300(5)(C); a step-parent must not add needs or block an "
+        "NPCR under (5)(D). Preserve shared parent ids for other programs. "
+        "When they include a step-parent, explicitly set this flag true for "
+        "every applicable biological or adoptive parent and false for "
+        "step-parents and everyone else for that year. This corrects parent "
+        "membership and NPCR identification only when all relevant children "
+        "have known links: any child with two unknown ids retains the "
+        "head/spouse proxy even with an explicit false. Step-parent income "
+        "deeming under 13 CSR 40-2.310(8)(B)1.D.(II) is not modeled. "
         "The fallback's own-child count can include adult children and "
         "children outside the tax unit, so supply parent ids when known, "
         "or set this input directly when the fallback does not match. "
@@ -46,6 +58,7 @@ class mo_tanf_is_parent_of_dependent_child(Variable):
         "https://my.mo.gov/cms_fsd?id=kb_article_view&sys_kb_id=98e1ef0c1b543650ba12657ae54bcbd1",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-05/",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-005-10/",
+        "https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-2.pdf#page=30",
     )
     defined_for = StateCode.MO
 

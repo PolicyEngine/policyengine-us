@@ -46,7 +46,10 @@ class mo_tanf_is_assistance_unit_member(Variable):
         # and a stepparent's needs are not taken into account per
         # 2.310(8)(B)1.D.(II); the tax-unit structure cannot distinguish
         # a stepparent from a parent when child parent ids are unknown.
-        # Known ids instead determine whether the spouse is a parent.
+        # Shared parent ids also include stepparents and cannot distinguish
+        # parent type. When those ids name a stepparent, use the documented
+        # annual parent-flag override for children with known links. This
+        # does not implement the required stepparent income deeming.
         # The caretaker test looks for any dependent child in the home, not
         # only a payable one. Per DSS Manual 0210.005.05, "when the only
         # child in the EU receives SSI, explore Temporary Assistance (TA)

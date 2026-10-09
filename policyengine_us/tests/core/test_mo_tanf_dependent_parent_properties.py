@@ -46,6 +46,9 @@ reads a model output, the item says so:
    dependent child.
 9. Known parent IDs identify the named parent independently of ages and
    own-child counts. Reusing IDs in separate households cannot link them.
+10. Omitted and explicitly zero parent IDs preserve the frozen pre-d1049
+    parent flags, NPCR identification, membership, unit sizes and zero-income
+    grants, checked against independent expectations from b9e7fff.
 """
 
 import itertools
@@ -618,3 +621,147 @@ def test_known_parent_ids_override_ages_and_stay_within_households():
     flag = simulation.calculate("mo_tanf_is_parent_of_dependent_child", YEAR)
     for case, actual, wanted in zip(cases, flag.reshape(-1, 3), expected):
         assert actual.tolist() == wanted, case
+
+
+@pytest.mark.parametrize("explicit_zero_ids", (False, True))
+def test_unknown_parent_ids_reproduce_the_frozen_pre_d1049_rule(explicit_zero_ids):
+    """Unknown ids preserve pre-d1049 flags, caretakers, members, sizes and grants.
+
+    Independently restate the three changed formulas at immutable commit
+    b9e7fff948caf4f33313c942c09caa7c7ccc3dea, rather than reading any current
+    model output to construct expectations. Cover 224 households (784 people)
+    for each of omitted parent ids and explicitly zero parent ids. The grid
+    includes both age-window boundaries, own-child counts, caretaker markings,
+    couples, SSI exclusions and an 18-year-old secondary-school student.
+    """
+    cases = list(
+        itertools.product(
+            (
+                (11, False),
+                (12, False),
+                (18, False),
+                (18, True),
+                (19, False),
+                (50, False),
+                (51, False),
+            ),
+            (0, 1),
+            (False, True),
+            (False, True),
+            ("none", "head", "adult", "child"),
+        )
+    )
+    people, tax_units, spm_units, households = {}, {}, {}, {}
+    expected = {
+        "mo_tanf_is_parent_of_dependent_child": [],
+        "mo_tanf_non_parent_caretaker": [],
+        "mo_tanf_is_assistance_unit_member": [],
+        "mo_tanf_assistance_unit_size": [],
+        "mo_tanf": [],
+    }
+    for i, ((adult_age, student), own, marked, married, ssi_role) in enumerate(cases):
+        roles = np.array(
+            ["head"] + (["spouse"] if married else []) + ["adult", "child"]
+        )
+        ages = np.array(
+            [
+                {"head": 55, "spouse": 53, "adult": adult_age, "child": 0}[role]
+                for role in roles
+            ]
+        )
+        own_children = np.where(roles == "adult", own, 0)
+        dependent_child = (roles == "child") | (
+            (roles == "adult") & ((adult_age < 18) | ((adult_age == 18) & student))
+        )
+        receives_ssi = roles == ssi_role
+        caretaker = np.isin(roles, ("head", "spouse"))
+        non_parent = caretaker & marked
+
+        # Frozen b9e7fff parent formula, expressed pairwise instead of through
+        # the youngest/oldest shortcut. Unknown ids must retain this fallback.
+        parent = np.array(
+            [
+                count > 0
+                and any(
+                    12 <= age - child_age <= 50 for child_age in ages[dependent_child]
+                )
+                for age, count in zip(ages, own_children)
+            ]
+        )
+        cash_eligible_child = dependent_child & ~receives_ssi
+        parent_in_home = np.any(
+            (caretaker | (parent & ~cash_eligible_child)) & ~non_parent
+        )
+        candidate = caretaker & non_parent & ~parent_in_home & ~receives_ssi
+        # Frozen b9e7fff NPCR formula: head first, otherwise the spouse.
+        npcr = candidate & ((roles == "head") | ~candidate[0])
+        # With zero non-SSI income and resources, every identified NPCR is
+        # needy and adding their needs raises the grant, so they are included.
+        member = (
+            cash_eligible_child
+            | (caretaker & ~non_parent & ~receives_ssi)
+            | (parent & ~non_parent & ~dependent_child & ~receives_ssi)
+            | npcr
+        )
+        expected["mo_tanf_is_parent_of_dependent_child"].extend(parent)
+        expected["mo_tanf_non_parent_caretaker"].extend(npcr)
+        expected["mo_tanf_is_assistance_unit_member"].extend(member)
+        expected["mo_tanf_assistance_unit_size"].append(int(member.sum()))
+        expected["mo_tanf"].append(_payment(member.sum()))
+
+        names = []
+        for role, age, count, ssi in zip(roles, ages, own_children, receives_ssi):
+            name = f"unknown{i}_{role}"
+            names.append(name)
+            people[name] = {
+                "age": {YEAR: int(age)},
+                "is_tax_unit_head": {YEAR: bool(role == "head")},
+                "is_tax_unit_spouse": {YEAR: bool(role == "spouse")},
+                "is_tax_unit_dependent": {YEAR: role in ("adult", "child")},
+                "own_children_in_household": {YEAR: int(count)},
+                "is_in_secondary_school": {YEAR: bool(role == "adult" and student)},
+                "mo_tanf_is_non_parent_caretaker": {
+                    YEAR: role in ("head", "spouse") and marked
+                },
+                # Freeze both SSI signals; computing SSI from otherwise empty
+                # income inputs would introduce unrelated benefit eligibility.
+                "receives_ssi": {YEAR: bool(ssi)},
+                "ssi": {PERIOD: 100 if ssi else 0},
+                "employment_income_before_lsr": {YEAR: 0},
+                "unemployment_compensation": {YEAR: 0},
+            }
+            if explicit_zero_ids:
+                people[name]["parent_1_id"] = {YEAR: 0}
+                people[name]["parent_2_id"] = {YEAR: 0}
+        tax_units[f"unknown{i}_tax"] = {"members": names}
+        spm_units[f"unknown{i}_spm"] = {"members": names}
+        households[f"unknown{i}_household"] = {
+            "members": names,
+            "state_code": {YEAR: "MO"},
+        }
+
+    assert len(cases) == 224 and len(people) == 784
+    # Both sides of each boolean rule occur, so constant outputs cannot pass.
+    for variable in (
+        "mo_tanf_is_parent_of_dependent_child",
+        "mo_tanf_non_parent_caretaker",
+        "mo_tanf_is_assistance_unit_member",
+    ):
+        assert any(expected[variable]) and not all(expected[variable]), variable
+    simulation = Simulation(
+        situation={
+            "people": people,
+            "tax_units": tax_units,
+            "spm_units": spm_units,
+            "households": households,
+        }
+    )
+    for variable, values in expected.items():
+        period = YEAR if variable == "mo_tanf_is_parent_of_dependent_child" else PERIOD
+        actual = simulation.calculate(variable, period)
+        if variable == "mo_tanf":
+            np.testing.assert_allclose(
+                actual, values, rtol=0, atol=1e-3, err_msg=variable
+            )
+        else:
+            np.testing.assert_array_equal(actual, values, err_msg=variable)
