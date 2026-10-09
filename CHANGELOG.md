@@ -1,3 +1,14 @@
+## [2.34.2] - 2026-10-09
+
+### Fixed
+
+- Skip, rather than fail, the Push workflow's versioning job when a newer push to main has superseded its commit, and give every Push job a timeout; the push Rest job's limit rises from 60 to 90 minutes to match the PR job.
+- D.C.'s self-employment loss addition no longer counts a dependent's self-employment loss, either in the amount added back or in its split between spouses.
+- Count Ohio's unreimbursed medical care deduction once per return: each member now takes their prorated share of worksheet line 8 rather than the full return amount, and federal AGI below zero is entered as zero on worksheet line 6.
+- Move citations that policyengine-core was dropping, or that sat in variable `documentation`, into `reference`: a Pell Grant value under a misspelled `refrence:` key, eight `metadata.references` aliases, and the URLs of 39 variables, including the doubled URL in `az_taxable_income`. Add code-health checks for misplaced citation/unit keys and known citation-key misspellings in both `.yaml` and `.yml` files, and stop the reference URL checks accepting a second URL fused after a fragment `=`.
+- Compute New York's 2026 child and dependent care credit under Tax Law 606(c-2), added by L.2026, ch. 59, Part A: qualifying expenses times a 55%-to-4% applicable percentage, less $20 per $1,000 of New York AGI above $750,000. The 606(c) percentage-of-federal credit now applies only before 2026.
+
+
 ## [2.34.1] - 2026-10-08
 
 ### Fixed
