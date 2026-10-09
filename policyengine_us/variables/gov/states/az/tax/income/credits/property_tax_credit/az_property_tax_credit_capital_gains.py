@@ -13,7 +13,8 @@ class az_property_tax_credit_capital_gains(Variable):
         "the year's gains and losses combined, including capital gain "
         "distributions, with a net loss counted only up to the per-member limit. "
         "No prior-year capital loss carryover is used: the long-term carryover "
-        "that long_term_capital_gains nets is added back. Short-term inputs "
+        "that long_term_capital_gains nets is added back, including unused "
+        "losses transferred by a terminating estate or trust. Short-term inputs "
         "must contain only the current year's net gains and losses, without "
         "Schedule D line 6 carryovers; no short-term carryover memo is modeled."
     )
@@ -23,6 +24,7 @@ class az_property_tax_credit_capital_gains(Variable):
         "https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140PTCi.pdf#page=4",
         "https://www.law.cornell.edu/uscode/text/26/852#b_3_B",
         "https://www.law.cornell.edu/uscode/text/26/1212#b_1_B",
+        "https://www.law.cornell.edu/cfr/text/26/1.642(h)-1",
     ]
     defined_for = StateCode.AZ
 
@@ -39,6 +41,9 @@ class az_property_tax_credit_capital_gains(Variable):
         # the year's gains. long_term_capital_gains includes the long-term
         # carryover (26 U.S.C. 1212(b)(1)(B)) as a loss, as Schedule D line 15
         # does, so it is added back to give the year's own net gain or loss.
+        # Reg. 1.642(h)-1(a) transfers a terminating estate/trust's unused
+        # capital loss as a carryover. Max's d1107 ruling (2026-10-09) keeps
+        # final Form 1041 K-1 box 11 code D losses in this addback.
         carryover = max_(0, person("long_term_capital_loss_carryover", period))
         net_capital_gain = (
             add(person, period, ["capital_gains", "non_sch_d_capital_gains"])

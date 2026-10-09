@@ -952,6 +952,34 @@
     # Line 11a: Schedule 1 pays nothing at 3,751 or more.
     az_property_tax_credit: 0
 
+# Reg. 1.642(h)-1(a): a terminating trust transfers its unused capital loss
+# as a carryover. Max's d1107 ruling (2026-10-09) keeps final Form 1041 K-1
+# box 11 code D in the carryover memo, even for losses from termination-year
+# sales. Arizona adds it back; the beneficiary's own gains remain 4,000.
+- name: A terminating trust capital loss remains a carryover for line D
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        # Own gains 4,000 less the trust's 3,000 loss transferred in 2025.
+        long_term_capital_gains: 1_000
+        long_term_capital_loss_carryover: 3_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    adjusted_gross_income: 1_000
+    az_property_tax_credit_capital_gains: [4_000]
+    az_property_tax_credit_agi: 4_000
+    az_property_tax_credit_income: 4_000
+    az_property_tax_credit: 0
+
 - name: A carryover that makes a net loss is not a line D loss
   period: 2025
   input:
