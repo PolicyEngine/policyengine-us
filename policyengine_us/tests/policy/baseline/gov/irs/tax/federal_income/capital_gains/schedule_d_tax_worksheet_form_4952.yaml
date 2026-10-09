@@ -11,8 +11,9 @@
 #   9. line 7 - line 8, not below zero
 #  10. line 6 + line 9
 # Line 6 is dividend_income_reduced_by_investment_income, line 9 dwks09 and
-# line 10 dwks10. Line 10 equals net_capital_gain, which applies 26 U.S.C.
-# 1(h)(2) and 1(h)(11)(D)(i) to the same inputs.
+# line 10 dwks10. With component-derived inputs, line 10 equals
+# net_capital_gain, which applies 26 U.S.C. 1(h)(2) and 1(h)(11)(D)(i).
+# The supplied-aggregate case below records a preexisting disagreement.
 
 - name: An election within the gain comes off the gain
   period: 2025
@@ -341,3 +342,8 @@
     # for Form 1040, line 16) and worksheet line 7 = min(1,000, -4,000).
     has_qdiv_or_ltcg: false
     dwks09: 0
+    dwks10: 0
+    # Preserve the preexisting aggregate/component split: the statutory
+    # path uses person-level lines 15 and 7, rather than supplied line 16.
+    net_capital_gain: 1_000
+    adjusted_net_capital_gain: 1_000

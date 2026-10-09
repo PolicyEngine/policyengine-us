@@ -10,19 +10,21 @@ FilerScheduleDLines = namedtuple(
 def filer_schedule_d_lines(tax_unit, period):
     """Schedule D (Form 1040) lines 7, 15 and 16 of the head and spouse, shared
     by the Form 1040 line 16 routing (has_qdiv_or_ltcg), net_capital_gain, the
-    Schedule D Tax Worksheet and the 28% Rate Gain Worksheet.
+    Schedule D Tax Worksheet.
 
     Line 7 is the net short-term capital gain or loss. Line 15 is the net
     long-term capital gain or loss, including capital gain distributions
-    (line 13). Line 16 is lines 7 and 15 combined (2025 Schedule D, lines 7,
-    13, 15 and 16).
+    (line 13). With component-derived inputs, line 16 is lines 7 and 15
+    combined (2025 Schedule D, lines 7, 13, 15 and 16).
 
     A tax unit dependent's gains, losses and distributions belong on the
     dependent's own return, so they are left out, as irs_gross_income leaves
     them out of adjusted gross income. Line 16 starts from net_capital_gains,
     so a tax unit amount supplied there is kept; that amount is read as
     covering every member, and any dependent's person-level gains and losses
-    are then taken out.
+    are then taken out. An explicit aggregate override can make line 16
+    differ from lines 7 and 15 combined, and the worksheet and statutory
+    net-capital-gain paths can then disagree.
 
     Capital gain distributions reported without Schedule D
     (non_sch_d_capital_gains) are long-term capital gains (26 U.S.C.
