@@ -1,0 +1,224 @@
+- name: An uncovered filer retains the IRA deduction by default despite elective deferrals.
+  period: 2026
+  input:
+    age: 40
+    employment_income: 200_000
+    traditional_401k_contributions_desired: 10_000
+    traditional_ira_contributions_desired: 7_500
+  output:
+    ira_active_participant: false
+    traditional_ira_contributions: 7_500
+    traditional_ira_deduction: 7_500
+
+- name: An active participant above the single range cannot deduct actual contributions.
+  period: 2026
+  input:
+    age: 40
+    employment_income: 100_000
+    ira_active_participant: true
+    traditional_ira_contributions: 7_500
+  output:
+    ira_219g_magi: 100_000
+    traditional_ira_contributions: 7_500
+    traditional_ira_deduction: 0
+    above_the_line_deductions: 0
+
+- name: The phaseout rounds the reduction down to ten dollars.
+  period: 2026
+  input:
+    age: 40
+    employment_income: 81_001
+    ira_active_participant: true
+    traditional_ira_contributions: 7_500
+  output:
+    ira_219g_deductible_limit: 7_500
+    traditional_ira_deduction: 7_500
+
+- name: The deduction limit stays at two hundred dollars until complete phaseout.
+  period: 2026
+  input:
+    age: 40
+    employment_income: 90_999
+    ira_active_participant: true
+    traditional_ira_contributions: 7_500
+  output:
+    ira_219g_deductible_limit: 200
+    traditional_ira_deduction: 200
+
+- name: The two hundred dollar floor cannot exceed actual contributions.
+  period: 2026
+  input:
+    age: 40
+    employment_income: 90_999
+    ira_active_participant: true
+    traditional_ira_contributions: 100
+  output:
+    ira_219g_deductible_limit: 200
+    traditional_ira_deduction: 100
+
+- name: Compensation limits direct actual contribution overrides.
+  period: 2026
+  input:
+    age: 40
+    employment_income: 300
+    traditional_ira_contributions: 5_000
+  output:
+    traditional_ira_contributions: 5_000
+    traditional_ira_deduction: 300
+    above_the_line_deductions: 300
+
+- name: A lower earning joint spouse deducts only compensation remaining after actual spouse contributions.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 5_000
+        traditional_ira_contributions: 3_000
+        roth_ira_contributions: 1_000
+      spouse:
+        age: 40
+        employment_income: 1_000
+        traditional_ira_contributions: 7_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    traditional_ira_deduction: [3_000, 2_000]
+    above_the_line_deductions: 5_000
+
+- name: IRA MAGI adds back education adoption and bond deductions and section 911 gross exclusions.
+  period: 2026
+  input:
+    employment_income: 82_000
+    ira_active_participant: true
+    traditional_ira_contributions: 7_500
+    student_loan_interest_ald: 1_000
+    qualified_adoption_assistance_expense: 1_000
+    us_bonds_for_higher_ed: 1_000
+    foreign_earned_income_exclusion_amount: 2_000
+    foreign_earned_income_exclusion_disallowed_deductions: 500
+  output:
+    ira_219g_magi: 84_000
+    ira_219g_deductible_limit: 5_250
+
+- name: IRA MAGI recomputes taxable Social Security before the IRA deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 118_000
+        social_security: 12_000
+        traditional_ira_contributions: 8_000
+        ira_active_participant: true
+      spouse:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    ira_219g_taxable_social_security: 10_200
+    ira_219g_magi: 128_200
+    traditional_ira_deduction: [7_120, 0]
+
+- name: Section 85 unemployment exclusion is disregarded for IRA MAGI in 2020.
+  period: 2020
+  input:
+    employment_income: 58_000
+    unemployment_compensation: 10_000
+    ira_active_participant: true
+    traditional_ira_contributions: 6_000
+    capped_qualified_tuition_expenses_ald: 1_000
+  output:
+    ira_219g_magi: 68_000
+    ira_219g_deductible_limit: 4_200
+
+- name: A dependent's personal deductions and income do not reduce the filer's IRA MAGI.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 85_000
+        ira_active_participant: true
+        traditional_ira_contributions_desired: 7_500
+      child:
+        age: 17
+        employment_income: 40_000
+        early_withdrawal_penalty: 10_000
+        traditional_ira_contributions_desired: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    ira_219g_magi: 85_000
+    traditional_ira_contributions: [7_500, 1_000]
+    traditional_ira_deduction: [4_500, 0]
+    above_the_line_deductions: 4_500
+
+- name: Massachusetts disallows the IRA deduction allowed federally.
+  period: 2026
+  input:
+    age: 40
+    state_code: MA
+    employment_income: 20_000
+    traditional_ira_contributions_desired: 3_000
+  output:
+    traditional_ira_deduction: 3_000
+    adjusted_gross_income: 17_000
+    ma_part_b_agi: 20_000
+
+- name: Mississippi allows only the federally deductible IRA amount.
+  period: 2026
+  input:
+    age: 40
+    state_code: MS
+    employment_income: 100_000
+    traditional_ira_contributions_desired: 7_500
+    ira_active_participant: true
+  output:
+    traditional_ira_deduction: 0
+    ms_agi_adjustments: 0
+
+- name: Excess contributions above the spouse's dollar limit do not consume the spousal allowance.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 15_000
+        traditional_ira_contributions: 10_000
+      spouse:
+        age: 40
+        traditional_ira_contributions: 7_500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    traditional_ira_contributions: [10_000, 7_500]
+    traditional_ira_deduction: [7_500, 7_500]
+    above_the_line_deductions: 15_000
+
+- name: Any spouse Roth contributions consume compensation, including excess amounts.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        roth_ira_contributions: 9_000
+      spouse:
+        age: 40
+        traditional_ira_contributions: 7_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    traditional_ira_deduction: [0, 1_000]
+    above_the_line_deductions: 1_000

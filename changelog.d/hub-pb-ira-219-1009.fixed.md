@@ -1,0 +1,1 @@
+Fix traditional IRA deductions by applying employer-plan phase-outs when the new person-level ira_active_participant input is set, limiting deductions and combined IRA contributions to compensation with the joint spousal rule, and keeping dependent contributions off the filers' return. Add IRS phase-out ranges for 2015–2026 and the 2026 IRA and catch-up dollar limits.

@@ -27,7 +27,8 @@ class ira_contribution_scale(Variable):
                 "roth_ira_contributions_desired",
             ],
         )
+        denominator = where(total_desired > 0, total_desired, 1)
         return min_(
-            person("ira_contribution_limit", period) / max_(total_desired, 1),
+            person("ira_contribution_limit", period) / denominator,
             1,
         )

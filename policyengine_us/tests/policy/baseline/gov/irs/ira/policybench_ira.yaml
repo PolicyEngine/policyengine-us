@@ -1,0 +1,695 @@
+# PolicyBench 2026 snapshot households affected by IRC section 219.
+# Coverage is an explicit leaf fact, based on the audited benchmark mapping:
+# positive 401(k)/403(b) deferrals with wages or self-employment compensation,
+# or positive self-employed pension contributions. Scenario 003 has deferrals
+# but no compensation, so neither spouse is marked as an active participant.
+# Expected taxes are the standalone IRA fixes reported by the PolicyBench audit.
+- name: PolicyBench scenario 003 IRA deduction regression
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    people:
+      head:
+        age: 64
+        employment_income: 0.0
+        bank_account_assets: 95841.1796875
+        employer_sponsored_insurance_premiums: 16407.525390625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 4800.0
+        hours_worked_last_week: 32.0
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        long_term_capital_gains: -2662.0
+        non_qualified_dividend_income: 544.0
+        other_health_insurance_premiums: 4800.0
+        other_medical_expenses: 1000.0
+        over_the_counter_health_expenses: 50.0
+        qualified_dividend_income: 3760.0
+        roth_401k_contributions_desired: 4222.2001953125
+        roth_ira_contributions_desired: 1734.0159912109375
+        short_term_capital_gains: 1080.0
+        social_security_retirement: 59509.70703125
+        stock_assets: 288735.28125
+        tax_exempt_interest_income: 5242.2353515625
+        tax_exempt_private_pension_income: 18994.705078125
+        taxable_interest_income: 2739.705810546875
+        taxable_ira_distributions: 94720.0
+        taxable_private_pension_income: 32525.294921875
+        traditional_401k_contributions_desired: 23925.80078125
+        traditional_ira_contributions_desired: 1117.9840087890625
+        weekly_hours_worked_before_lsr: 32.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: false
+      spouse:
+        age: 61
+        employment_income: 0.0
+        has_esi: true
+        hours_worked_last_week: 10.0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        other_medical_expenses: 5000.0
+        over_the_counter_health_expenses: 50.0
+        weekly_hours_worked_before_lsr: 10.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: false
+    marital_units:
+      marital_unit_1:
+        members:
+        - head
+        - spouse
+    tax_units:
+      tax_unit:
+        members: &id001
+        - head
+        - spouse
+        first_home_mortgage_balance: 39000.0
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: *id001
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: *id001
+    households:
+      household:
+        members: *id001
+        state_code: TX
+        auto_loan_balance: 47000.0
+        auto_loan_interest: 500.0
+        household_vehicles_value: 1610.0
+  output:
+    tax_units:
+      tax_unit:
+        income_tax_before_refundable_credits: 22400.65
+- name: PolicyBench scenario 005 IRA deduction regression
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 180000.0
+        bank_account_assets: 559200.0
+        charitable_cash_donations: 1069.7646484375
+        charitable_non_cash_donations: 1503.7646484375
+        employer_sponsored_insurance_premiums: 6889.27587890625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 1500.0
+        hourly_wage: 69.19999694824219
+        hours_worked_last_week: 50.0
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        long_term_capital_gains: 51920.0
+        non_qualified_dividend_income: 9722.3525390625
+        other_health_insurance_premiums: 1500.0
+        other_medical_expenses: 800.0
+        over_the_counter_health_expenses: 200.0
+        qualified_dividend_income: 77920.0
+        real_estate_taxes: 17280.0
+        roth_401k_contributions_desired: 4086.0
+        roth_ira_contributions_desired: 1678.0799560546875
+        salt_refund_income: 4147.67626953125
+        short_term_capital_gains: -62830.58984375
+        stock_assets: 4000.0
+        tax_exempt_interest_income: 8961.3525390625
+        tax_exempt_private_pension_income: 70000.0
+        taxable_interest_income: 65351.0
+        traditional_401k_contributions_desired: 23154.0
+        traditional_ira_contributions_desired: 1081.9200439453125
+        unreimbursed_business_employee_expenses: 13847.8232421875
+        weekly_hours_worked_before_lsr: 50.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: true
+      spouse:
+        age: 33
+        employment_income: 250000.0
+        employer_sponsored_insurance_premiums: 6479.69775390625
+        has_esi: true
+        hourly_wage: 108.0
+        hours_worked_last_week: 40.0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        other_medical_expenses: 500.0
+        over_the_counter_health_expenses: 50.0
+        roth_401k_contributions_desired: 4086.0
+        roth_ira_contributions_desired: 1678.0799560546875
+        taxable_interest_income: 585.0
+        traditional_401k_contributions_desired: 23154.0
+        traditional_ira_contributions_desired: 1081.9200439453125
+        weekly_hours_worked_before_lsr: 40.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: true
+    marital_units:
+      marital_unit_1:
+        members:
+        - head
+        - spouse
+    tax_units:
+      tax_unit:
+        members: &id002
+        - head
+        - spouse
+        first_home_mortgage_balance: 2850000.0
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: *id002
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: *id002
+    households:
+      household:
+        members: *id002
+        state_code: CA
+        household_vehicles_value: 8932.3525390625
+  output:
+    tax_units:
+      tax_unit:
+        income_tax_before_refundable_credits: 108525.58
+        state_income_tax_before_refundable_credits: 41200.18
+- name: PolicyBench scenario 049 IRA deduction regression
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    people:
+      head:
+        age: 53
+        employment_income: 0.0
+        has_esi: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        other_medical_expenses: 2000.0
+        over_the_counter_health_expenses: 150.0
+        taxable_interest_income: 1500.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: false
+      spouse:
+        age: 52
+        employment_income: 253000.0
+        bank_account_assets: 40500.0
+        charitable_cash_donations: 579.7647094726562
+        charitable_non_cash_donations: 2758.0
+        employer_sponsored_insurance_premiums: 16407.525390625
+        fsla_overtime_premium: 44647.05859375
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 4800.0
+        home_mortgage_interest: 2743.0
+        hourly_wage: 55.14285659790039
+        hours_worked_last_week: 70.0
+        is_paid_hourly: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        non_qualified_dividend_income: 112.0
+        other_health_insurance_premiums: 4800.0
+        other_medical_expenses: 2000.0
+        over_the_counter_health_expenses: 150.0
+        qualified_dividend_income: 6208.0
+        real_estate_taxes: 20655.0
+        roth_401k_contributions_desired: 2724.0
+        roth_ira_contributions_desired: 1118.719970703125
+        stock_assets: 1030823.5
+        taxable_interest_income: 2001.0
+        traditional_401k_contributions_desired: 15436.0
+        traditional_ira_contributions_desired: 721.280029296875
+        weekly_hours_worked_before_lsr: 70.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: true
+    marital_units:
+      marital_unit_1:
+        members:
+        - head
+        - spouse
+    tax_units:
+      tax_unit:
+        members: &id003
+        - head
+        - spouse
+        first_home_mortgage_balance: 1000000.0
+        first_home_mortgage_interest: 2743.0
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: *id003
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: *id003
+    households:
+      household:
+        members: *id003
+        state_code: NH
+        auto_loan_balance: 30000.0
+        auto_loan_interest: 927.7941284179688
+        household_vehicles_value: 40400.0
+  output:
+    tax_units:
+      tax_unit:
+        income_tax_before_refundable_credits: 30702.59
+- name: PolicyBench scenario 052 IRA deduction regression
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    people:
+      head:
+        age: 59
+        employment_income: 500000.0
+        bank_account_assets: 415000.0
+        employer_sponsored_insurance_premiums: 16207.5263671875
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 5000.0
+        hourly_wage: 170.14967346191406
+        hours_worked_last_week: 60.0
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        long_term_capital_gains: -9042.0
+        other_health_insurance_premiums: 5000.0
+        other_medical_expenses: 1300.0
+        over_the_counter_health_expenses: 200.0
+        qualified_bdc_income: 0.4030679762363434
+        qualified_dividend_income: 848.0
+        roth_401k_contributions_desired: 163.44000244140625
+        roth_ira_contributions_desired: 67.12319946289062
+        short_term_capital_gains: -20880.0
+        stock_assets: 300329.40625
+        taxable_interest_income: 7200.0
+        traditional_401k_contributions_desired: 926.1599731445312
+        traditional_ira_contributions_desired: 43.276798248291016
+        weekly_hours_worked_before_lsr: 60.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: true
+      spouse:
+        age: 55
+        employment_income: 0.0
+        has_esi: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        other_medical_expenses: 400.0
+        over_the_counter_health_expenses: 200.0
+        taxable_interest_income: 700.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: false
+    marital_units:
+      marital_unit_1:
+        members:
+        - head
+        - spouse
+    tax_units:
+      tax_unit:
+        members: &id004
+        - head
+        - spouse
+        first_home_mortgage_balance: 685735.3125
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: *id004
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: *id004
+    households:
+      household:
+        members: *id004
+        state_code: TX
+        household_vehicles_value: 28840.0
+  output:
+    tax_units:
+      tax_unit:
+        income_tax_before_refundable_credits: 104225.26
+- name: PolicyBench scenario 082 IRA deduction regression
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    people:
+      head:
+        age: 23
+        employment_income: 100195.0
+        bank_account_assets: 127030.0
+        charitable_cash_donations: 700.0
+        employer_sponsored_insurance_premiums: 21207.525390625
+        has_esi: true
+        hourly_wage: 50.0
+        hours_worked_last_week: 35.0
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        long_term_capital_gains: -33000.0
+        non_qualified_dividend_income: 7056.0
+        other_medical_expenses: 666.0
+        over_the_counter_health_expenses: 300.0
+        qualified_dividend_income: 13424.0
+        real_estate_taxes: 9216.529296875
+        roth_401k_contributions_desired: 32.00699996948242
+        roth_ira_contributions_desired: 13.144960403442383
+        salt_refund_income: 67.5
+        short_term_capital_gains: 2289.176513671875
+        stock_assets: 564000.0
+        taxable_interest_income: 100.0
+        traditional_401k_contributions_desired: 181.3730010986328
+        traditional_ira_contributions_desired: 8.475040435791016
+        weekly_hours_worked_before_lsr: 35.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: true
+      child1:
+        age: 1
+        employment_income: 0.0
+        has_esi: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        other_medical_expenses: 666.0
+        over_the_counter_health_expenses: 333.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: false
+    marital_units:
+      marital_unit_1:
+        members:
+        - head
+      marital_unit_2:
+        members:
+        - child1
+    tax_units:
+      tax_unit:
+        members: &id005
+        - head
+        - child1
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: *id005
+        spm_unit_pre_subsidy_childcare_expenses: 9600.0
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: *id005
+    households:
+      household:
+        members: *id005
+        state_code: NY
+  output:
+    tax_units:
+      tax_unit:
+        income_tax_before_refundable_credits: 9579.77
+- name: PolicyBench scenario 099 IRA deduction regression
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    people:
+      head:
+        age: 42
+        employment_income: 85000.0
+        employer_sponsored_insurance_premiums: 18707.525390625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 2500.0
+        hourly_wage: 42.0
+        hours_worked_last_week: 40.0
+        is_paid_hourly: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        other_health_insurance_premiums: 2500.0
+        other_medical_expenses: 2000.0
+        over_the_counter_health_expenses: 500.0
+        roth_401k_contributions_desired: 272.3999938964844
+        roth_ira_contributions_desired: 111.87200164794922
+        taxable_interest_income: 500.0
+        traditional_401k_contributions_desired: 1543.5999755859375
+        traditional_ira_contributions_desired: 72.12799835205078
+        weekly_hours_worked_before_lsr: 40.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: true
+      spouse:
+        age: 41
+        employment_income: 80000.0
+        bank_account_assets: 28035.294921875
+        charitable_cash_donations: 11932.94140625
+        charitable_non_cash_donations: 688.058837890625
+        educator_expense: 337.5
+        employer_sponsored_insurance_premiums: 5889.27587890625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 2500.0
+        hourly_wage: 30.799999237060547
+        hours_worked_last_week: 50.0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        long_term_capital_gains: -7018.0
+        non_qualified_dividend_income: 16.0
+        other_health_insurance_premiums: 2500.0
+        other_medical_expenses: 2000.0
+        over_the_counter_health_expenses: 500.0
+        pre_subsidy_rent: 26400.0
+        qualified_dividend_income: 128.0
+        real_estate_taxes: 8653.5
+        roth_401k_contributions_desired: 272.3999938964844
+        roth_ira_contributions_desired: 111.87200164794922
+        short_term_capital_gains: 540.0
+        stock_assets: 2230000.0
+        taxable_interest_income: 510.0
+        traditional_401k_contributions_desired: 1543.5999755859375
+        traditional_ira_contributions_desired: 72.12799835205078
+        unreimbursed_business_employee_expenses: 1262.6470947265625
+        weekly_hours_worked_before_lsr: 50.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: true
+      child1:
+        age: 9
+        employment_income: 0.0
+        has_esi: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        other_medical_expenses: 500.0
+        over_the_counter_health_expenses: 200.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: false
+      child2:
+        age: 4
+        employment_income: 0.0
+        has_esi: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        other_medical_expenses: 500.0
+        over_the_counter_health_expenses: 200.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: false
+    marital_units:
+      marital_unit_1:
+        members:
+        - head
+        - spouse
+      marital_unit_2:
+        members:
+        - child1
+      marital_unit_3:
+        members:
+        - child2
+    tax_units:
+      tax_unit:
+        members: &id006
+        - head
+        - spouse
+        - child1
+        - child2
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: *id006
+        spm_unit_pre_subsidy_childcare_expenses: 12740.0
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: *id006
+    households:
+      household:
+        members: *id006
+        state_code: CA
+        auto_loan_balance: 42000.0
+        auto_loan_interest: 1575.0
+        household_vehicles_value: 21964.705078125
+  output:
+    tax_units:
+      tax_unit:
+        income_tax_before_refundable_credits: 10711.48
+        state_income_tax_before_refundable_credits: 4505.34
+- name: PolicyBench scenario 110 IRA deduction regression
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    people:
+      head:
+        age: 51
+        employment_income: 100000.0
+        bank_account_assets: 762650.0
+        charitable_cash_donations: 387.4705810546875
+        charitable_non_cash_donations: 700.0
+        employer_sponsored_insurance_premiums: 6889.27587890625
+        estate_income: 6322.94140625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 1500.0
+        home_mortgage_interest: 7566.0
+        hourly_wage: 40.06395721435547
+        hours_worked_last_week: 50.0
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        long_term_capital_gains: 30851.765625
+        non_qualified_dividend_income: 5662.11767578125
+        other_health_insurance_premiums: 1500.0
+        other_medical_expenses: 300.0
+        over_the_counter_health_expenses: 500.0
+        qualified_dividend_income: 10032.0
+        real_estate_taxes: 2262.441162109375
+        roth_401k_contributions_desired: 749.0999755859375
+        roth_ira_contributions_desired: 307.64801025390625
+        short_term_capital_gains: 18.0
+        stock_assets: 3285294.0
+        tax_exempt_interest_income: 954.0
+        taxable_interest_income: 21301.0
+        traditional_401k_contributions_desired: 4244.89990234375
+        traditional_ira_contributions_desired: 198.3520050048828
+        unreimbursed_business_employee_expenses: 8730.1328125
+        weekly_hours_worked_before_lsr: 50.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: true
+    marital_units:
+      marital_unit_1:
+        members:
+        - head
+    tax_units:
+      tax_unit:
+        members: &id007
+        - head
+        first_home_mortgage_balance: 273000.0
+        first_home_mortgage_interest: 7566.0
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: *id007
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: *id007
+    households:
+      household:
+        members: *id007
+        state_code: OH
+        household_vehicles_value: 14630.0
+  output:
+    tax_units:
+      tax_unit:
+        income_tax_before_refundable_credits: 25444.27
+        state_income_tax_before_refundable_credits: 4236.81
+- name: PolicyBench scenario 120 IRA deduction regression
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    people:
+      head:
+        age: 76
+        employment_income: 165597.0
+        bank_account_assets: 124000.0
+        charitable_cash_donations: 20164.1171875
+        employer_sponsored_insurance_premiums: 7429.27587890625
+        farm_rent_income: -2446.588134765625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 960.0
+        home_mortgage_interest: 3744.0
+        hourly_wage: 79.5
+        hours_worked_last_week: 40.0
+        is_disabled: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        other_health_insurance_premiums: 960.0
+        other_medical_expenses: 1000.0
+        over_the_counter_health_expenses: 1000.0
+        real_estate_taxes: 2011.5
+        rental_income: 2000.0
+        roth_401k_contributions_desired: 108.95999908447266
+        roth_ira_contributions_desired: 44.74879837036133
+        salt_refund_income: 1750.2353515625
+        social_security_retirement: 41900.0
+        tax_exempt_interest_income: 2851.941162109375
+        tax_exempt_private_pension_income: 6146.94140625
+        taxable_interest_income: 2300.0
+        taxable_private_pension_income: 30216.0
+        traditional_401k_contributions_desired: 617.4400024414062
+        traditional_ira_contributions_desired: 28.851200103759766
+        unreimbursed_business_employee_expenses: 7654.5
+        weekly_hours_worked_before_lsr: 40.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+        ira_active_participant: true
+    marital_units:
+      marital_unit_1:
+        members:
+        - head
+    tax_units:
+      tax_unit:
+        members: &id008
+        - head
+        first_home_mortgage_balance: 794797.6875
+        first_home_mortgage_interest: 2975.722412109375
+        second_home_mortgage_balance: 205202.3125
+        second_home_mortgage_interest: 768.277587890625
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: *id008
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: *id008
+    households:
+      household:
+        members: *id008
+        state_code: CT
+        household_vehicles_value: 9880.0
+  output:
+    tax_units:
+      tax_unit:
+        income_tax_before_refundable_credits: 40423.18
+        state_income_tax_before_refundable_credits: 11919.06
