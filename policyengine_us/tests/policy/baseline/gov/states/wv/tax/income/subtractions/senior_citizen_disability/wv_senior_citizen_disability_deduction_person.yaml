@@ -34,3 +34,27 @@
     adjusted_gross_income_person: 20_000
   output:
     wv_senior_citizen_disability_deduction_person: 0
+
+- name: Each spouse's $8,000 limit uses their own AGI, after their own IRA deduction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 6_000
+        traditional_ira_contributions: 2_000
+      spouse:
+        age: 66
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WV
+  output:
+    # W. Va. Code 11-21-12(c): up to $8,000 of each eligible individual's
+    # federal AGI. Before: [5_000, 8_000].
+    wv_senior_citizen_disability_deduction_person: [4_000, 8_000]

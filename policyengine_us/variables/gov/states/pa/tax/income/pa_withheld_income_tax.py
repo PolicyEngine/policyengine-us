@@ -14,4 +14,6 @@ class pa_withheld_income_tax(Variable):
         # Pennsylvania does not have standard deductions, personal exemptions, or itemized deductions.
         # Also, They do not use the federal standard deduction amounts.
         p = parameters(period).gov.states.pa.tax.income
-        return agi * p.rate
+        # A spouse's AGI can be negative, as with a business loss; withholding
+        # is never negative.
+        return max_(agi, 0) * p.rate

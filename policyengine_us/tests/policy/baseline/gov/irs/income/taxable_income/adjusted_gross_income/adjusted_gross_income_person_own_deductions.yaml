@@ -1,0 +1,316 @@
+# Each spouse's own above-the-line deductions lower only that spouse's AGI.
+# Before this was fixed, every deduction other than the three self-employment
+# ones was split 50/50 between the head and spouse on a joint return.
+
+- name: The spouse's IRA deduction lowers only the spouse's AGI.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        traditional_ira_contributions: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    adjusted_gross_income: 94_000
+    above_the_line_deductions_person: [0, 6_000]
+    # Before: [57_000, 37_000].
+    adjusted_gross_income_person: [60_000, 34_000]
+
+- name: Educator expenses and an early withdrawal penalty go to the spouse who has them.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        educator_expense: 300
+      spouse:
+        age: 45
+        employment_income: 40_000
+        early_withdrawal_penalty: 200
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    adjusted_gross_income: 99_500
+    adjusted_gross_income_person: [59_700, 39_800]
+
+- name: Alimony paid goes to the payer, and only under a pre-2019 instrument.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        alimony_expense: 12_000
+        divorce_year: 2015
+      spouse:
+        age: 45
+        employment_income: 40_000
+        # Not deductible: the instrument is after 2018 (26 USC 215, repealed
+        # by Pub. L. 115-97 sec. 11051).
+        alimony_expense: 5_000
+        divorce_year: 2020
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    alimony_expense_ald_person: [12_000, 0]
+    alimony_expense_ald: 12_000
+    adjusted_gross_income: 88_000
+    # Before: [54_000, 34_000].
+    adjusted_gross_income_person: [48_000, 40_000]
+
+- name: Student loan interest is divided in proportion to the interest each spouse paid.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 60_000
+        student_loan_interest: 1_000
+      spouse:
+        age: 35
+        employment_income: 40_000
+        student_loan_interest: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # The return's $2,500 cap (26 USC 221(b)(1)) is shared 1:2.
+    student_loan_interest_ald: [833.33, 1_666.67]
+    adjusted_gross_income: 97_500
+    # Before: [58_750, 38_750].
+    adjusted_gross_income_person: [59_166.67, 38_333.33]
+
+- name: An HSA deduction, recorded only for the tax unit, is divided equally.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        # 26 USC 223(b)(5) divides a married couple's family-coverage limit
+        # equally unless they agree otherwise.
+        health_savings_account_ald: 4_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    adjusted_gross_income: 96_000
+    adjusted_gross_income_person: [58_000, 38_000]
+
+- name: The head's capital loss, after the $3,000 limit, lowers only the head's AGI.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        long_term_capital_gains: -10_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    loss_ald: 3_000
+    loss_ald_person: [3_000, 0]
+    adjusted_gross_income: 97_000
+    # Before: [58_500, 38_500].
+    adjusted_gross_income_person: [57_000, 40_000]
+
+- name: The limited capital loss is divided in proportion to each spouse's own loss.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        short_term_capital_gains: -2_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        long_term_capital_gains: -6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    loss_ald: 3_000
+    loss_ald_person: [750, 2_250]
+    adjusted_gross_income: 97_000
+    adjusted_gross_income_person: [59_250, 37_750]
+
+- name: The spouse's business loss lowers only the spouse's AGI.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        self_employment_income: -8_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    loss_ald: 8_000
+    loss_ald_person: [0, 8_000]
+    adjusted_gross_income: 92_000
+    # Before: [56_000, 36_000].
+    adjusted_gross_income_person: [60_000, 32_000]
+
+- name: A tax-unit deduction set directly, with no person amounts, is divided equally.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        alimony_expense_ald: 3_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    adjusted_gross_income: 97_000
+    above_the_line_deductions_person: [1_500, 1_500]
+    adjusted_gross_income_person: [58_500, 38_500]
+
+- name: A tax-unit deduction set directly is divided by the spouses' own amounts.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        self_employment_tax_ald_person: 1_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        self_employment_tax_ald_person: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        # Set above the $4,000 the person amounts add up to.
+        self_employment_tax_ald: 6_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    adjusted_gross_income: 94_000
+    above_the_line_deductions_person: [1_500, 4_500]
+    adjusted_gross_income_person: [58_500, 35_500]
+
+- name: A single filer keeps all of the return's deductions.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+        traditional_ira_contributions: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        health_savings_account_ald: 2_000
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    adjusted_gross_income: 52_000
+    adjusted_gross_income_person: 52_000
+
+- name: A dependent's own deductions stay on the dependent's return.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 60_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        traditional_ira_contributions: 6_000
+      dependent:
+        age: 20
+        is_full_time_student: true
+        employment_income: 5_000
+        traditional_ira_contributions: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: TX
+  output:
+    adjusted_gross_income: 94_000
+    # The dependent's amount is what they deduct on their own return.
+    above_the_line_deductions_person: [0, 6_000, 1_000]
+    adjusted_gross_income_person: [60_000, 34_000, 0]

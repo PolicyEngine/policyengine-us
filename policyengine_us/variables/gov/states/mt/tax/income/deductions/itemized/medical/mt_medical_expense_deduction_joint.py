@@ -19,6 +19,18 @@ class mt_medical_expense_deduction_joint(Variable):
         p = parameters(period).gov.irs.deductions.itemized.medical
         # Law does not define Montana AGI as the cap.
         # Tax form points to page 1, line 14, which is Montana AGI.
-        medical_floor = p.floor * add(person.tax_unit, period, ["mt_agi_indiv"])
+        if parameters(
+            period
+        ).gov.states.mt.tax.income.married_filing_separately_on_same_return_allowed:
+            # Through 2023: the joint return's Montana AGI (Form 2, line 14),
+            # not each spouse's amount floored at zero.
+            agi = person.tax_unit("mt_agi_joint", period)
+        else:
+            # From 2024 Montana starts from federal itemized deductions, whose
+            # floor is a share of federal AGI; that is not modeled here yet.
+            # mt_agi_indiv is zero for everyone from 2024, so this floor is
+            # zero, as on main.
+            agi = add(person.tax_unit, period, ["mt_agi_indiv"])
+        medical_floor = p.floor * agi
         is_head = person("is_tax_unit_head", period)
         return is_head * max_(0, expense - medical_floor)

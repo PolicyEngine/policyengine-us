@@ -6,6 +6,12 @@ class medicaid_household_income_member(Variable):
     entity = Person
     label = "Countable person income for Medicaid MAGI household income"
     unit = USD
+    documentation = (
+        "The person's MAGI-based income (medicaid_magi_person) as counted in "
+        "another member's non-filer household, or zero for a child excluded "
+        "under 42 CFR 435.603(d)(2)(i). It can be negative; "
+        "medicaid_household_income floors the household's total."
+    )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/cfr/text/42/435.603#d"
 

@@ -12,4 +12,7 @@ class dc_taxable_income_joint(Variable):
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=34",
     )
     defined_for = StateCode.DC
-    adds = ["dc_taxable_income_indiv"]
+    # The couple's DC AGI less their DC deduction. The separate filing
+    # capital loss limit (dc_separate_capital_loss_adjustment) does not apply.
+    adds = ["dc_agi"]
+    subtracts = ["dc_deduction_indiv"]
