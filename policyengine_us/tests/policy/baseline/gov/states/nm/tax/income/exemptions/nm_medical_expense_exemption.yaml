@@ -48,3 +48,81 @@
     filing_status: SURVIVING_SPOUSE
   output:
     nm_medical_expense_exemption: 3_000
+
+- name: 2025 a dependent aged 65 or older does not qualify the return for the exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, parent]
+        filing_status: JOINT
+        itemized_medical_expenses: 30_000
+    households:
+      household:
+        members: [person_a, person_b, parent]
+        state_code: NM
+  output:
+    # NMSA 7-2-5.9(A): "any individual sixty-five years of age or older";
+    # PIT-ADJ line 18: "If you or your spouse are 65 years of age or older".
+    nm_medical_expense_exemption: 0
+
+- name: 2025 joint return with a spouse aged 65 or older gets the exemption (the older spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        itemized_medical_expenses: 30_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    nm_medical_expense_exemption: 3_000
+
+- name: 2025 joint return with a spouse aged 65 or older gets the exemption (the older spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        itemized_medical_expenses: 30_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    nm_medical_expense_exemption: 3_000

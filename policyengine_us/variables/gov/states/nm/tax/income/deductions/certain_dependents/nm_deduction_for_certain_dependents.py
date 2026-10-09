@@ -16,7 +16,10 @@ class nm_deduction_for_certain_dependents(Variable):
         # The law 7-2-39(D) defines dependents as those from IRC 152.
         # IRC 152 refers to all dependents.
         # https://www.law.cornell.edu/uscode/text/26/152
-        dependents = tax_unit("tax_unit_dependents", period)
+        # IRC 152(b)(1): a return on which the filer (or, if joint, either
+        # spouse) can be claimed as a dependent has no dependents.
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependents = where(dependent_filer, 0, tax_unit("tax_unit_dependents", period))
         # New Mexico reduces the number of claimable dependents by one.
         countable_dependents = max_(dependents - 1, 0)
         amount_per_dependent = p.amount[filing_status]

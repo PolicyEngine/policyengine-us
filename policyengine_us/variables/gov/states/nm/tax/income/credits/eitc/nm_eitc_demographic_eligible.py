@@ -21,4 +21,16 @@ class nm_eitc_demographic_eligible(Variable):
         )
         max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
         meets_age_requirements = (age >= min_age) & (age <= max_age)
-        return has_child | tax_unit.any(meets_age_requirements)
+        # NMSA 7-2-18.15 takes the federal credit's eligibility rules apart
+        # from the age and identification exceptions. As federally (IRC
+        # 32(c)(1)(A)(ii)(II)), the age test applies to the filers, not to
+        # dependents. A filer without a qualifying child must not be a
+        # dependent of another taxpayer (IRC 32(c)(1)(A)(ii)(III)), and on a
+        # joint return neither spouse may be claimable (Publication 596,
+        # Rule 12).
+        filer = person("is_tax_unit_head_or_spouse", period)
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        childless_eligible = (
+            tax_unit.any(meets_age_requirements & filer) & ~dependent_filer
+        )
+        return has_child | childless_eligible

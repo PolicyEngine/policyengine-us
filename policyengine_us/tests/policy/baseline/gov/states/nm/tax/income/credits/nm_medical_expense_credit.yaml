@@ -249,3 +249,58 @@
         state_code: NM
   output:
     nm_medical_expense_credit: 2_800
+
+- name: 2025 a dependent aged 65 or older does not qualify the return
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, parent]
+        filing_status: JOINT
+        itemized_medical_expenses: 30_000
+    households:
+      household:
+        members: [person_a, person_b, parent]
+        state_code: NM
+  output:
+    # NMSA 7-2-18.13(A): "a taxpayer ... who is sixty-five years of age or
+    # older"; PIT-RC line 23: "If you or your spouse are 65 years of age or
+    # older".
+    nm_medical_expense_credit: 0
+
+- name: 2025 joint return with a spouse aged 65 or older qualifies whichever spouse is the head
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        itemized_medical_expenses: 30_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    nm_medical_expense_credit: 2_800

@@ -11,12 +11,18 @@ class nm_property_tax_rebate_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nm.tax.income.rebates.property_tax
-        # Head or spouse eligible if 65 or over.
+        # NMSA 7-2-18 allows the rebate to a resident 65 or over "who is not
+        # a dependent of another individual", so the same filer must meet
+        # both tests; on a joint return either spouse may.
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
-        head_age_eligible = age_head >= p.age_eligibility
-        spouse_age_eligible = age_spouse >= p.age_eligibility
-        age_eligible = head_age_eligible | spouse_age_eligible
+        head_eligible = (age_head >= p.age_eligibility) & ~tax_unit(
+            "head_is_dependent_elsewhere", period
+        )
+        spouse_eligible = (age_spouse >= p.age_eligibility) & ~tax_unit(
+            "spouse_is_dependent_elsewhere", period
+        )
+        age_eligible = head_eligible | spouse_eligible
         # Person eligible if income at or below $16,000
         agi = tax_unit("nm_modified_gross_income", period)
         agi_eligible = agi <= p.income_threshold

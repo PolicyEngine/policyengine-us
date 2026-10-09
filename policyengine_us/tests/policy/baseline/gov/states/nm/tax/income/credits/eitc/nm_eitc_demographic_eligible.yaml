@@ -48,3 +48,141 @@
         state_code: NM
   output:
     nm_eitc_demographic_eligible: true
+
+
+- name: 2025 childless single filer who can be claimed as a dependent is ineligible
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 21
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: NM
+  output:
+    # NMSA 7-2-18.15 imports IRC 32(c)(1)(A)(ii)(III).
+    nm_eitc_demographic_eligible: false
+
+- name: 2025 childless joint return with one claimable spouse is ineligible (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 21
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 25
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    # Publication 596, Rule 12: neither spouse may be claimable.
+    nm_eitc_demographic_eligible: false
+
+- name: 2025 childless joint return with one claimable spouse is ineligible (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 21
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    # Publication 596, Rule 12: neither spouse may be claimable.
+    nm_eitc_demographic_eligible: false
+
+- name: 2025 childless joint return with neither spouse claimable is eligible
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 21
+      person_b:
+        age: 25
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: true
+
+- name: 2025 claimable single filer with a child is not barred by the dependent test
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 35
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: NM
+  output:
+    # The dependent test applies only without a qualifying child.
+    nm_eitc_demographic_eligible: true
+
+- name: 2025 a dependent's age does not make a childless return eligible
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      relative:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, relative]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, relative]
+        state_code: NM
+  output:
+    # The age test applies to the filers (IRC 32(c)(1)(A)(ii)(II)), both
+    # above the federal maximum age of 64; the dependent aged 40 is within
+    # the age range but is not a filer, and is not a child.
+    nm_eitc_demographic_eligible: false
