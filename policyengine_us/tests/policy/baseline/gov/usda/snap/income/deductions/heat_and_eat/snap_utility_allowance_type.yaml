@@ -1,0 +1,146 @@
+# P.L. 119-21 section 10103(a) and the August 29, 2025 FNS memo.
+# SNAP evaluates monthly policy at month start: the July 4 change first
+# applies to the full benefit month beginning August 1, 2025.
+- name: Pennsylvania heat-and-eat eligibility changes after enactment
+  period: 2025
+  input:
+    age: 40
+    state_code: PA
+  output:
+    snap_state_using_standard_utility_allowance: true
+    snap_utility_allowance_type:
+      2025-06: SUA
+      2025-07: SUA
+      2025-08: NONE
+
+- name: Pennsylvania adult without qualifying utility costs loses deemed SUA
+  period: 2026
+  input:
+    age: 40
+    state_code: PA
+  output:
+    snap_utility_allowance_type: NONE
+    snap_utility_allowance: 0
+
+- name: Montana adult without qualifying utility costs loses deemed SUA
+  period: 2026
+  input:
+    age: 40
+    state_code: MT
+  output:
+    snap_utility_allowance_type: NONE
+    snap_utility_allowance: 0
+
+- name: California adult without qualifying utility costs loses deemed SUA
+  period: 2026
+  input:
+    age: 40
+    state_code: CA
+  output:
+    snap_utility_allowance_type: NONE
+    snap_utility_allowance: 0
+
+- name: The federal restriction continues after 2026
+  period: 2027
+  input:
+    age: 40
+    state_code: PA
+  output:
+    snap_utility_allowance_type: NONE
+
+- name: Age 59 does not qualify for the elderly exception
+  period: 2026
+  input:
+    age: 59
+    state_code: PA
+  output:
+    has_snap_elderly_disabled_member: false
+    snap_utility_allowance_type: NONE
+
+- name: Age 60 preserves the heat-and-eat SUA
+  period: 2026
+  input:
+    age: 60
+    state_code: PA
+  output:
+    has_snap_elderly_disabled_member: true
+    snap_utility_allowance_type: SUA
+
+- name: SSDI receipt preserves the heat-and-eat SUA below age 60
+  period: 2026
+  input:
+    age: 40
+    social_security_disability: 1_200
+    state_code: MT
+  output:
+    has_snap_elderly_disabled_member: true
+    snap_utility_allowance_type: SUA
+
+- name: General disability alone does not meet the USDA definition
+  period: 2026
+  input:
+    age: 40
+    is_disabled: true
+    state_code: PA
+  output:
+    has_snap_elderly_disabled_member: false
+    snap_utility_allowance_type: NONE
+
+- name: Actual heating costs independently preserve SUA eligibility
+  period: 2026
+  input:
+    age: 40
+    state_code: PA
+    heating_cooling_expense: 120
+  output:
+    has_snap_elderly_disabled_member: false
+    snap_utility_allowance_type: SUA
+
+- name: Two non-heating utility bills qualify for Pennsylvania LUA
+  period: 2026
+  input:
+    age: 40
+    state_code: PA
+    pre_subsidy_electricity_expense: 120
+    water_expense: 120
+  output:
+    snap_utility_allowance_type: LUA
+
+- name: A phone bill qualifies for California IUA
+  period: 2026
+  input:
+    age: 40
+    state_code: CA
+    phone_expense: 120
+  output:
+    snap_utility_allowance_type: IUA
+
+- name: Elderly members do not create heat-and-eat eligibility in Texas
+  period: 2026
+  input:
+    age: 60
+    state_code: TX
+  output:
+    snap_state_using_standard_utility_allowance: false
+    snap_utility_allowance_type: NONE
+
+- name: SNAP-excluded elderly members do not confer the heat-and-eat exception
+  period: 2026
+  input:
+    people:
+      adult:
+        age: 40
+      excluded_elder:
+        age: 65
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [adult, excluded_elder]
+    households:
+      household:
+        members: [adult, excluded_elder]
+        state_code: PA
+  output:
+    has_usda_elderly_disabled: true
+    has_snap_elderly_disabled_member: false
+    snap_utility_allowance_type: NONE
