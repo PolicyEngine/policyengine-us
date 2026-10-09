@@ -139,24 +139,31 @@ def test_vt_income_tax_thresholds_round_down_to_fifty_dollars(
 
 
 @pytest.mark.parametrize(
-    ("filing_status", "expected"),
+    ("filing_status", "published_2026"),
     (
-        ("head_of_household", 19_990),
-        ("joint", 28_850),
-        ("separate", 13_690),
-        ("single", 19_990),
+        # 2026 Form 1-ES instructions, 2026 Standard Deduction schedules.
+        ("head_of_household", 20_120),
+        ("joint", 29_040),
+        ("separate", 13_780),
+        ("single", 20_120),
     ),
 )
 def test_wi_standard_deduction_phase_out_thresholds_round_to_ten_dollars(
     filing_status,
-    expected,
+    published_2026,
 ):
     scale = getattr(
         SYSTEM.parameters.gov.states.wi.tax.income.deductions.standard.phase_out,
         filing_status,
     )
+    uprating = SYSTEM.parameters.gov.irs.uprating
 
-    assert scale.brackets[1].threshold("2026-01-01") == expected
+    assert scale.brackets[1].threshold("2026-01-01") == published_2026
+    # Later years project from the published 2026 start, rounded to the
+    # nearest $10. Expected values follow the loaded index.
+    factor = uprating("2027-01-01") / uprating("2026-01-01")
+    expected_2027 = round(published_2026 * factor / 10) * 10
+    assert scale.brackets[1].threshold("2027-01-01") == expected_2027
 
 
 @pytest.mark.parametrize(
