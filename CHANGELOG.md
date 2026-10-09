@@ -1,3 +1,10 @@
+## [2.38.4] - 2026-10-09
+
+### Fixed
+
+- Include New Jersey employee unemployment insurance and workforce development contributions in employee payroll tax, using annual employee wage bases through 2027.
+
+
 ## [2.38.3] - 2026-10-09
 
 ### Changed
