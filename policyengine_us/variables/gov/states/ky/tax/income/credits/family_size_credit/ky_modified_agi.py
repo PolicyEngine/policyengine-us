@@ -6,19 +6,22 @@ class ky_modified_agi(Variable):
     entity = TaxUnit
     label = "Kentucky modified adjusted gross income for the family size tax credit"
     unit = USD
+    documentation = (
+        "Modified gross income on the filing path the tax unit elects. "
+        "Spouses filing separately on a combined return treat a column's "
+        "negative income as zero; a joint return does not."
+    )
     definition_period = YEAR
     reference = (
-        "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=22"
+        "https://revenue.ky.gov/Forms/740%20Packet%20Instructions%205-9-23.pdf#page=22",
+        "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=49188",
     )
     defined_for = StateCode.KY
 
     def formula(tax_unit, period, parameters):
-        fed_agi = tax_unit("adjusted_gross_income", period)
-        # Lump sum distributions which are not included in federal AGI are added to the federal AGI
-        # Tax exempt interest from municipal bonds (non-Kentucky) is also added but excluded in this calculation
-        tax_exempt_lump_sum = tax_unit("form_4972_lumpsum_distributions", period)
-        total_fed_agi = fed_agi + tax_exempt_lump_sum
-        ky_agi = add(tax_unit, period, ["ky_agi"])
-        # Lump sum distributions which are not included in federal AGI are added to the state AGI
-        total_ky_agi = ky_agi + tax_exempt_lump_sum
-        return max_(total_fed_agi, total_ky_agi)
+        files_separately = tax_unit("ky_files_separately", period)
+        return where(
+            files_separately,
+            tax_unit("ky_modified_agi_if_separate", period),
+            tax_unit("ky_modified_agi_if_joint", period),
+        )

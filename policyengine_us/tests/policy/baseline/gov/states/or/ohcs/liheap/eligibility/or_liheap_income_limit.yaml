@@ -1,0 +1,50 @@
+# Sources for the expected values in this file, "60% of State Median Income by
+# Household Size", Annual Gross Income column, in the Oregon Energy Assistance
+# Intake, Operations and Policy Manuals:
+# FY2026, page 77:
+# https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=77
+# PY2025, page 57:
+# https://www.oregon.gov/ohcs/energy-weatherization/Documents/PY25%20EA%20Operations%20%20Policy%20Manual-%20FINAL%209-27-24.pdf#page=57
+# PY2027, page 71:
+# https://www.oregon.gov/ohcs/energy-weatherization/Documents/manuals/09-23-2027-PY-2027-EA-Operations-Policy-Manual.pdf#page=71
+- name: Case 1, published FY2026 annual income limits for the odd household sizes 1 to 11.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR]
+    spm_unit_size: [1, 3, 5, 7, 9, 11]
+  output:
+    # FY2026 page 77: size 1 $38,385, size 3 $62,006, size 5 $85,627, size 7
+    # $99,652, size 9 $104,081, size 11 $108,510.
+    or_liheap_income_limit: [38_385, 62_006, 85_627, 99_652, 104_081, 108_510]
+
+- name: Case 2, published PY2025 annual income limits for the odd household sizes 1 to 11.
+  period: 2025
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR]
+    spm_unit_size: [1, 3, 5, 7, 9, 11]
+  output:
+    # PY2025 page 57: size 1 $36,811, size 3 $59,464, size 5 $82,117, size 7
+    # $95,567, size 9 $99,814, size 11 $104,062.
+    or_liheap_income_limit: [36_811, 59_464, 82_117, 95_567, 99_814, 104_062]
+
+- name: Case 3, published PY2027 annual income limits at the sizes whose 60 percent product is a whole dollar.
+  period: 2027
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR]
+    spm_unit_size: [2, 3, 6, 8, 10, 12]
+  output:
+    # PY2027 page 71: size 2 $52,734, size 3 $65,142, size 6 $102,366, size 8
+    # $107,019, size 10 $111,672, size 12 $116,325. The FY2027 four-person
+    # median is $129,250, so these products are exact dollars (129,250 x 0.68
+    # x 0.6 = 52,734) and a float32 ceiling would add $1 to each.
+    or_liheap_income_limit: [52_734, 65_142, 102_366, 107_019, 111_672, 116_325]
+
+- name: Case 4, published FY2026 annual income limits for the even household sizes 2 to 12.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR]
+    spm_unit_size: [2, 4, 6, 8, 10, 12]
+  output:
+    # FY2026 page 77: size 2 $50,196, size 4 $73,817, size 6 $97,438, size 8
+    # $101,867, size 10 $106,296, size 12 $110,725.
+    or_liheap_income_limit: [50_196, 73_817, 97_438, 101_867, 106_296, 110_725]
