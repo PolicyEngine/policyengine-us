@@ -10,12 +10,27 @@ class ca_itemized_deductions_pre_limitation(Variable):
     reference = (
         "https://www.ftb.ca.gov/forms/2021/2021-540-ca-instructions.html",
         "https://www.ftb.ca.gov/forms/2022/2022-540-ca-instructions.html",
+        "https://www.ftb.ca.gov/forms/2025/2025-540-ca-instructions.html",
     )
     defined_for = StateCode.CA
 
-    adds = [
-        "itemized_deductions_less_salt",
-        "ca_investment_interest_expense_deduction",
-        "real_estate_taxes",
-    ]
-    subtracts = ["investment_interest_expense"]
+    def formula(tax_unit, period, parameters):
+        # Exclude the replaced federal amounts before summation, so changes
+        # to federal charity/misc rules cannot cause cancellation errors.
+        federal_components = parameters(period).gov.irs.deductions.itemized_deductions
+        deductions = [
+            variable
+            for variable in federal_components
+            if variable
+            not in ("salt_deduction", "charitable_deduction", "misc_deduction")
+        ]
+        deductions += [
+            "ca_investment_interest_expense_deduction",
+            "real_estate_taxes",
+            "ca_charitable_deduction",
+            "ca_misc_deduction",
+        ]
+        # Federal investment interest is nested in interest_deduction.
+        return add(tax_unit, period, deductions) - add(
+            tax_unit, period, ["investment_interest_expense"]
+        )
