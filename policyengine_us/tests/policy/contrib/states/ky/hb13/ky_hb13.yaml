@@ -361,20 +361,17 @@
     people:
       person1:
         age: 45
-        ky_taxable_income_indiv: 500_000
-        ky_taxable_income_joint: 500_000
-        # Both filing paths need the underlying person-level AGI.
-        adjusted_gross_income_person: 500_000
-        ky_agi: 500_000
+        # The 0.5% charitable floor leaves $10,000 of itemized deductions:
+        # 12,550 - (510,000 x 0.005) = 10,000.
+        employment_income: 510_000
+        charitable_cash_donations: 12_550
       person2:
         age: 43
-        ky_taxable_income_indiv: 0
-        ky_taxable_income_joint: 0
+        employment_income: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        adjusted_gross_income: 500_000
     households:
       household:
         members: [person1, person2]
@@ -384,6 +381,9 @@
     ky_income_tax_before_non_refundable_credits_joint:
       - 30000
       - 0
+    ky_taxable_income_indiv: [500_000, 0]
+    ky_taxable_income_joint: [500_000, 0]
+    ky_income_tax_before_non_refundable_credits_unit: 30_000
     # High earner: family size credit rate is 0%, so no credit reduction
     ky_family_size_tax_credit_rate_if_joint: 0
     ky_family_size_tax_credit_rate_if_separate: 0
@@ -399,16 +399,13 @@
     people:
       person1:
         age: 45
-        ky_taxable_income_indiv: 280_000
-        ky_taxable_income_joint: 300_000
-        adjusted_gross_income_person: 280_000
-        ky_agi: 280_000
+        # 16,575 - (315,000 x 0.005) = 15,000 itemized deductions,
+        # allocated 14:1 with wages, leaving taxable income 280,000/20,000.
+        employment_income: 294_000
+        charitable_cash_donations: 16_575
       person2:
         age: 43
-        ky_taxable_income_indiv: 20_000
-        ky_taxable_income_joint: 0
-        adjusted_gross_income_person: 20_000
-        ky_agi: 20_000
+        employment_income: 21_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -422,6 +419,9 @@
     # Separate: p1=250k*3.5%+30k*6%=10550, p2=20k*3.5%=700, total=11250
     # Joint: p1=250k*3.5%+50k*6%=11750, p2=0, total=11750
     # ky_files_separately = (11250 < 11750) = True
+    ky_taxable_income_indiv: [280_000, 20_000]
+    ky_taxable_income_joint: [300_000, 0]
+    ky_income_tax_before_non_refundable_credits_unit: 11_250
     ky_files_separately: true
     ky_family_size_tax_credit_rate_if_joint: 0
     ky_family_size_tax_credit_rate_if_separate: 0
@@ -439,17 +439,11 @@
       person1:
         age: 45
         is_tax_unit_head: true
-        adjusted_gross_income_person: 40_000
-        ky_agi: 40_000
-        ky_taxable_income_indiv: 40_000
-        ky_taxable_income_joint: 10_000
+        employment_income: 40_000
       person2:
         age: 43
         is_tax_unit_spouse: true
-        adjusted_gross_income_person: -30_000
-        ky_agi: -30_000
-        ky_taxable_income_indiv: 0
-        ky_taxable_income_joint: 0
+        self_employment_income: -30_000
     tax_units:
       tax_unit:
         members: [person1, person2]
@@ -464,11 +458,15 @@
     ky_modified_agi_if_separate: 40_000
     ky_family_size_tax_credit_rate_if_joint: 1
     ky_family_size_tax_credit_rate_if_separate: 0
-    # HB 13 Section 1: below $250k, gross tax is 3.5% of taxable income.
-    ky_income_tax_before_non_refundable_credits_indiv: [1_400, 0]
-    ky_income_tax_before_non_refundable_credits_joint: [350, 0]
+    # The model's 2027 standard deduction is $3,443.77. HB 13 Section 1:
+    # (40,000 - 3,443.77) x 3.5% = 1,279.47 on the separate path;
+    # (10,000 - 3,443.77) x 3.5% = 229.47 on the joint path.
+    ky_taxable_income_indiv: [36_556.23, 0]
+    ky_taxable_income_joint: [6_556.23, 0]
+    ky_income_tax_before_non_refundable_credits_indiv: [1_279.47, 0]
+    ky_income_tax_before_non_refundable_credits_joint: [229.47, 0]
     ky_income_tax_before_refundable_credits_if_joint: 0
-    ky_income_tax_before_refundable_credits_if_separate: 1_400
+    ky_income_tax_before_refundable_credits_if_separate: 1_279.47
     ky_files_separately: false
     ky_income_tax_before_refundable_credits: 0
     ky_income_tax: 0

@@ -21,7 +21,7 @@ class ky_modified_agi_if_separate(Variable):
         person = tax_unit.members
         # Worksheet lines (a)-(b) and (f)-(g): each column's federal and
         # Kentucky adjusted gross income, entering zero if zero or less.
-        fed_agi = tax_unit.sum(max_(person("adjusted_gross_income_person", period), 0))
+        fed_agi = tax_unit.sum(max_(person("ky_federal_agi", period), 0))
         ky_agi = tax_unit.sum(max_(person("ky_agi", period), 0))
         # Lump sum distributions not included in either AGI (lines (d) and
         # (h)). Tax-exempt interest from other states' municipal bonds (line

@@ -44,16 +44,15 @@
     people:
       head:
         age: 40
-        adjusted_gross_income_person: 30_000
-        ky_agi: 30_000
+        is_tax_unit_head: true
+        employment_income: 30_000
       spouse:
         age: 40
-        adjusted_gross_income_person: -10_000
-        ky_agi: -10_000
+        is_tax_unit_spouse: true
+        self_employment_income: -10_000
     tax_units:
       tax_unit:
         members: [head, spouse]
-        adjusted_gross_income: 20_000
     households:
       household:
         members: [head, spouse]

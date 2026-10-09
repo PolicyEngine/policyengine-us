@@ -8,15 +8,16 @@
   input:
     people:
       head:
-        adjusted_gross_income_person: 40_000
-        ky_agi: 40_000
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 40_000
       spouse:
-        adjusted_gross_income_person: -10_000
-        ky_agi: -10_000
+        age: 40
+        is_tax_unit_spouse: true
+        self_employment_income: -10_000
     tax_units:
       tax_unit:
         members: [head, spouse]
-        adjusted_gross_income: 30_000
     households:
       household:
         members: [head, spouse]
@@ -31,15 +32,16 @@
   input:
     people:
       head:
-        adjusted_gross_income_person: 30_000
-        ky_agi: 30_000
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 30_000
       spouse:
-        adjusted_gross_income_person: 10_000
-        ky_agi: 10_000
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 10_000
     tax_units:
       tax_unit:
         members: [head, spouse]
-        adjusted_gross_income: 40_000
     households:
       household:
         members: [head, spouse]
