@@ -11,12 +11,31 @@ class ira_active_participant(Variable):
         "Whether this person was an active participant for any part of a plan "
         "year ending within the tax year in a plan covered by section 219(g)(5), "
         "including defined benefit, 401(a), 403(a), 403(b), SEP and SIMPLE plans. "
-        "Use the person's own coverage, generally reported in Form W-2 box 13; "
-        "do not include a spouse's coverage or participation solely in a 457(b) "
-        "plan. Apply the reserve and volunteer firefighter exceptions in "
-        "section 219(g)(6)."
+        "By default, positive traditional or Roth 401(k) or 403(b) contributions "
+        "or self-employed pension contributions establish this person's own "
+        "coverage. An explicitly supplied value always overrides this default, "
+        "including false. Supply defined-benefit coverage and coverage from "
+        "employer contributions not represented by these amounts explicitly, "
+        "generally using Form W-2 box 13. Do not include a spouse's coverage or "
+        "participation solely in a 457(b) plan. Apply the reserve and volunteer "
+        "firefighter exceptions in section 219(g)(6) through an explicit input. "
+        "When supplying coverage inputs, supply every relevant person's value: "
+        "core stores a population input array and defaults omitted rows to false."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/219#g_5",
+        "https://www.irs.gov/publications/p590a",
         "https://www.irs.gov/instructions/iw2w3",
     )
+
+    def formula(person, period, parameters):
+        # Section 219(g)(5) excludes participation solely in a 457(b) plan.
+        # Check each amount separately so a negative input cannot cancel
+        # positive contributions to another qualifying plan.
+        return (
+            (person("traditional_401k_contributions", period) > 0)
+            | (person("roth_401k_contributions", period) > 0)
+            | (person("traditional_403b_contributions", period) > 0)
+            | (person("roth_403b_contributions", period) > 0)
+            | (person("self_employed_pension_contributions", period) > 0)
+        )

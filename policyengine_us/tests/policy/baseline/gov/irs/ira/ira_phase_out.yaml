@@ -1,4 +1,4 @@
-- name: An uncovered filer retains the IRA deduction by default despite elective deferrals.
+- name: Elective deferrals establish coverage and phase out the IRA deduction by default.
   period: 2026
   input:
     age: 40
@@ -6,9 +6,9 @@
     traditional_401k_contributions_desired: 10_000
     traditional_ira_contributions_desired: 7_500
   output:
-    ira_active_participant: false
+    ira_active_participant: true
     traditional_ira_contributions: 7_500
-    traditional_ira_deduction: 7_500
+    traditional_ira_deduction: 0
 
 - name: An active participant above the single range cannot deduct actual contributions.
   period: 2026

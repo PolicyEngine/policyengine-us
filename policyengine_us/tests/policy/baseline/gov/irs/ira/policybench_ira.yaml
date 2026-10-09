@@ -1,9 +1,7 @@
 # PolicyBench 2026 snapshot households affected by IRC section 219.
-# Coverage is an explicit leaf fact, based on the audited benchmark mapping:
-# positive 401(k)/403(b) deferrals with wages or self-employment compensation,
-# or positive self-employed pension contributions. Scenario 003 has deferrals
-# but no compensation, so neither spouse is marked as an active participant.
-# Expected taxes are the standalone IRA fixes reported by the PolicyBench audit.
+# Coverage is derived from each person's employer-plan contributions.
+# Compatible targets use corrected_value from the PolicyBench policyengine-us
+# 2.37.2 evidence; comments identify the standalone IRA targets retained below.
 - name: PolicyBench scenario 003 IRA deduction regression
   period: 2026
   absolute_error_margin: 0.02
@@ -40,7 +38,6 @@
         weekly_hours_worked_before_lsr: 32.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: false
       spouse:
         age: 61
         employment_income: 0.0
@@ -53,7 +50,6 @@
         weekly_hours_worked_before_lsr: 10.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: false
     marital_units:
       marital_unit_1:
         members:
@@ -87,7 +83,7 @@
   output:
     tax_units:
       tax_unit:
-        income_tax_before_refundable_credits: 22400.65
+        income_tax_before_refundable_credits: 22400.654296875
 - name: PolicyBench scenario 005 IRA deduction regression
   period: 2026
   absolute_error_margin: 0.02
@@ -127,7 +123,6 @@
         weekly_hours_worked_before_lsr: 50.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: true
       spouse:
         age: 33
         employment_income: 250000.0
@@ -147,7 +142,6 @@
         weekly_hours_worked_before_lsr: 40.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: true
     marital_units:
       marital_unit_1:
         members:
@@ -179,7 +173,9 @@
   output:
     tax_units:
       tax_unit:
-        income_tax_before_refundable_credits: 108525.58
+        income_tax_before_refundable_credits: 108525.578125
+        # Raw CA target: evidence also applies frozen CA parameter conventions
+        # and the separate r11 California itemized-deduction conformity fix.
         state_income_tax_before_refundable_credits: 41200.18
 - name: PolicyBench scenario 049 IRA deduction regression
   period: 2026
@@ -197,7 +193,6 @@
         taxable_interest_income: 1500.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: false
       spouse:
         age: 52
         employment_income: 253000.0
@@ -229,7 +224,6 @@
         weekly_hours_worked_before_lsr: 70.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: true
     marital_units:
       marital_unit_1:
         members:
@@ -264,7 +258,7 @@
   output:
     tax_units:
       tax_unit:
-        income_tax_before_refundable_credits: 30702.59
+        income_tax_before_refundable_credits: 30702.58984375
 - name: PolicyBench scenario 052 IRA deduction regression
   period: 2026
   absolute_error_margin: 0.02
@@ -297,7 +291,6 @@
         weekly_hours_worked_before_lsr: 60.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: true
       spouse:
         age: 55
         employment_income: 0.0
@@ -309,7 +302,6 @@
         taxable_interest_income: 700.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: false
     marital_units:
       marital_unit_1:
         members:
@@ -341,7 +333,7 @@
   output:
     tax_units:
       tax_unit:
-        income_tax_before_refundable_credits: 104225.26
+        income_tax_before_refundable_credits: 104225.2578125
 - name: PolicyBench scenario 082 IRA deduction regression
   period: 2026
   absolute_error_margin: 0.02
@@ -375,7 +367,6 @@
         weekly_hours_worked_before_lsr: 35.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: true
       child1:
         age: 1
         employment_income: 0.0
@@ -386,7 +377,6 @@
         over_the_counter_health_expenses: 333.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: false
     marital_units:
       marital_unit_1:
         members:
@@ -419,7 +409,7 @@
   output:
     tax_units:
       tax_unit:
-        income_tax_before_refundable_credits: 9579.77
+        income_tax_before_refundable_credits: 9579.767578125
 - name: PolicyBench scenario 099 IRA deduction regression
   period: 2026
   absolute_error_margin: 0.02
@@ -447,7 +437,6 @@
         weekly_hours_worked_before_lsr: 40.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: true
       spouse:
         age: 41
         employment_income: 80000.0
@@ -481,7 +470,6 @@
         weekly_hours_worked_before_lsr: 50.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: true
       child1:
         age: 9
         employment_income: 0.0
@@ -492,7 +480,6 @@
         over_the_counter_health_expenses: 200.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: false
       child2:
         age: 4
         employment_income: 0.0
@@ -503,7 +490,6 @@
         over_the_counter_health_expenses: 200.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: false
     marital_units:
       marital_unit_1:
         members:
@@ -545,7 +531,9 @@
   output:
     tax_units:
       tax_unit:
-        income_tax_before_refundable_credits: 10711.48
+        income_tax_before_refundable_credits: 10711.484375
+        # Raw CA target: evidence also applies frozen CA parameter conventions
+        # and the separate r11 California itemized-deduction conformity fix.
         state_income_tax_before_refundable_credits: 4505.34
 - name: PolicyBench scenario 110 IRA deduction regression
   period: 2026
@@ -586,7 +574,6 @@
         weekly_hours_worked_before_lsr: 50.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: true
     marital_units:
       marital_unit_1:
         members:
@@ -617,8 +604,10 @@
   output:
     tax_units:
       tax_unit:
+        # Standalone IRA target: evidence also applies the r03 estate-income
+        # fix and assumes unlisted estate income is not qualified for QBI.
         income_tax_before_refundable_credits: 25444.27
-        state_income_tax_before_refundable_credits: 4236.81
+        state_income_tax_before_refundable_credits: 4236.8076171875
 - name: PolicyBench scenario 120 IRA deduction regression
   period: 2026
   absolute_error_margin: 0.02
@@ -658,7 +647,6 @@
         weekly_hours_worked_before_lsr: 40.0
         takes_up_medicaid_if_eligible: true
         takes_up_ssi_if_eligible: true
-        ira_active_participant: true
     marital_units:
       marital_unit_1:
         members:
@@ -691,5 +679,5 @@
   output:
     tax_units:
       tax_unit:
-        income_tax_before_refundable_credits: 40423.18
-        state_income_tax_before_refundable_credits: 11919.06
+        income_tax_before_refundable_credits: 40423.17578125
+        state_income_tax_before_refundable_credits: 11919.0576171875
