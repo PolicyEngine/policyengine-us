@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.section_911 import SECTION_911_LEAF_INPUTS
+from policyengine_us.tools.section_911 import has_section_911_leaf_inputs
 
 
 class section_911_excluded_income(Variable):
@@ -34,14 +34,7 @@ class section_911_excluded_income(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        has_leaf_inputs = any(
-            input_period.start <= period.start
-            for variable in SECTION_911_LEAF_INPUTS
-            for input_period in tax_unit.simulation._get_exportable_input_periods(
-                variable, include_computed_variables=False
-            )
-        )
-        if not has_leaf_inputs:
+        if not has_section_911_leaf_inputs(tax_unit, period):
             return tax_unit("foreign_earned_income_exclusion", period)
 
         gross = tax_unit("foreign_earned_income_exclusion_gross", period)

@@ -2,6 +2,7 @@ from policyengine_us.model_api import *
 from policyengine_core.parameters import get_parameter
 from policyengine_core.simulations.simulation import _uprating_index_value
 from policyengine_us.tools.default_uprating import DEFAULT_DOLLAR_INPUT_UPRATING
+from policyengine_us.tools.section_911 import has_section_911_leaf_inputs
 
 
 class foreign_earned_income_exclusion(Variable):
@@ -17,20 +18,7 @@ class foreign_earned_income_exclusion(Variable):
     ]
 
     def formula(tax_unit, period, parameters):
-        leaf_inputs = [
-            "foreign_earned_income_exclusion_amount",
-            "foreign_housing_exclusion",
-            "foreign_earned_income_exclusion_allocable_deductions",
-            "foreign_housing_deduction",
-            "foreign_earned_income_exclusion_disallowed_deductions",
-        ]
-        if not any(
-            input_period.start <= period.start
-            for variable in leaf_inputs
-            for input_period in tax_unit.simulation._get_exportable_input_periods(
-                variable, include_computed_variables=False
-            )
-        ):
+        if not has_section_911_leaf_inputs(tax_unit, period):
             # A formula cannot also declare Core uprating. Preserve the
             # old dollar input's per-capita default uprating here instead,
             # including signed inputs and Core's held-flat index boundaries.
