@@ -84,7 +84,65 @@
   output:
     id_health_insurance_premiums_subtraction: 0
 
-- name: Dependent premiums deducted on their own federal return are excluded
+- name: Premiums paid by a dependent do not qualify on the parent's return
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 1_000
+        is_tax_unit_head: true
+      dependent:
+        age: 20
+        health_insurance_premiums: 500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        standard_deduction: 15_750
+        id_itemized_deductions: 0
+        medical_expense_deduction: 0
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ID
+  output:
+    id_qualified_health_insurance_premiums: 1_000
+    id_health_insurance_premiums_subtraction: 1_000
+
+- name: Both filers' payments qualify while dependent pretax payments are excluded
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 1_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        health_insurance_premiums: 2_000
+        pre_tax_health_insurance_premiums: 500
+        is_tax_unit_spouse: true
+      dependent:
+        age: 20
+        health_insurance_premiums: 500
+        pre_tax_health_insurance_premiums: 500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        standard_deduction: 31_500
+        id_itemized_deductions: 0
+        medical_expense_deduction: 0
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: ID
+  output:
+    id_qualified_health_insurance_premiums: 2_500
+    id_health_insurance_premiums_subtraction: 2_500
+
+- name: A dependent's federal deduction cannot reduce the filers' own premiums
   period: 2026
   input:
     people:

@@ -11,8 +11,8 @@ PERIOD = "2026"
 AMOUNT = st.integers(min_value=0, max_value=50_000)
 ROW = st.fixed_dictionaries(
     {
-        "premiums": st.tuples(AMOUNT, AMOUNT),
-        "pre_tax": st.tuples(AMOUNT, AMOUNT),
+        "premiums": st.tuples(AMOUNT, AMOUNT, AMOUNT),
+        "pre_tax": st.tuples(AMOUNT, AMOUNT, AMOUNT),
         "above_line": AMOUNT,
         "dependent_above_line": AMOUNT,
         "medical": AMOUNT,
@@ -28,24 +28,58 @@ ROW = st.fixed_dictionaries(
 @example(
     rows=[
         {
-            "premiums": (1_000, 500),
-            "pre_tax": (0, 0),
+            "premiums": (1_000, 500, 1_000),
+            "pre_tax": (0, 0, 0),
             "above_line": 0,
-            "dependent_above_line": 0,
+            "dependent_above_line": 900,
             "medical": 500,
             "standard": 10_000,
             "itemized": 10_500,
             "mandatory": False,
         },
         {
-            "premiums": (0, 0),
-            "pre_tax": (0, 0),
+            "premiums": (0, 0, 500),
+            "pre_tax": (0, 0, 0),
             "above_line": 0,
             "dependent_above_line": 0,
             "medical": 0,
             "standard": 10_000,
             "itemized": 1_000,
             "mandatory": True,
+        },
+    ]
+)
+@example(
+    rows=[
+        {
+            "premiums": (1_000, 0, 500),
+            "pre_tax": (0, 0, 0),
+            "above_line": 0,
+            "dependent_above_line": 0,
+            "medical": 0,
+            "standard": 16_100,
+            "itemized": 0,
+            "mandatory": False,
+        },
+        {
+            "premiums": (1_000, 0, 500),
+            "pre_tax": (0, 0, 0),
+            "above_line": 0,
+            "dependent_above_line": 500,
+            "medical": 0,
+            "standard": 16_100,
+            "itemized": 0,
+            "mandatory": False,
+        },
+        {
+            "premiums": (1_000, 400, 500),
+            "pre_tax": (100, 50, 500),
+            "above_line": 150,
+            "dependent_above_line": 500,
+            "medical": 0,
+            "standard": 16_100,
+            "itemized": 0,
+            "mandatory": False,
         },
     ]
 )
@@ -58,10 +92,13 @@ def test_premium_subtraction_and_election_match_best_legal_route(rows):
     expected_reductions = []
     available_premiums = []
     for index, row in enumerate(rows):
-        members = [f"person_{index}_{member}" for member in range(2)]
+        members = [f"person_{index}_{member}" for member in range(3)]
         for member, person_id in enumerate(members):
             people[person_id] = {
-                "age": {PERIOD: 35},
+                "age": {PERIOD: (40, 39, 20)[member]},
+                "is_tax_unit_head": {PERIOD: member == 0},
+                "is_tax_unit_spouse": {PERIOD: member == 1},
+                "is_tax_unit_dependent": {PERIOD: member == 2},
                 "health_insurance_premiums": {PERIOD: row["premiums"][member]},
                 "pre_tax_health_insurance_premiums": {PERIOD: row["pre_tax"][member]},
             }
@@ -84,12 +121,12 @@ def test_premium_subtraction_and_election_match_best_legal_route(rows):
         # Enumerate the standard and itemized routes using scalar arithmetic.
         # Their combined reduction, rather than deduction alone, determines
         # the favorable election; a spouse's itemization overrides that choice.
+        # Premium inputs identify the payer: only the head and spouse's
+        # payments enter this return. The dependent's payments and deductions
+        # belong on the dependent's own return.
         available = max(
             0,
-            sum(row["premiums"])
-            - sum(row["pre_tax"])
-            - row["above_line"]
-            - row["dependent_above_line"],
+            sum(row["premiums"][:2]) - sum(row["pre_tax"][:2]) - row["above_line"],
         )
         unclaimed_if_itemizing = max(0, available - row["medical"])
         standard_route = (row["standard"] + available, False, available)
@@ -121,6 +158,9 @@ def test_premium_subtraction_and_election_match_best_legal_route(rows):
     )
     deductions = simulation.calculate("id_deductions", PERIOD)
 
+    assert simulation.calculate(
+        "id_qualified_health_insurance_premiums", PERIOD
+    ).tolist() == pytest.approx(available_premiums)
     assert simulation.calculate("id_itemizes", PERIOD).tolist() == expected_itemizes
     assert subtraction.tolist() == pytest.approx(expected_subtractions)
     assert (deductions + subtraction).tolist() == pytest.approx(expected_reductions)
