@@ -93,7 +93,8 @@
 # earnings less the $14,600 standard deduction, so the $90,000 earner is in the
 # 22% bracket and the $60,000 and $30,000 earners are in the 12% bracket; each
 # also pays 7.65% employee payroll tax. The federal and FICA components check the
-# shared component helper, which has its own copy of the adult loop.
+# component helper, which runs the same adult loop (marginal_earnings_change) as
+# marginal_tax_rate.
 # The same household with the cap raised to 3 is in
 # tests/core/test_marginal_tax_rate_coverage.py, which avoids another cached
 # tax-benefit system in the batched YAML runner.
@@ -134,3 +135,177 @@
     marginal_tax_rate_computed: [true, true, false]
     federal_marginal_tax_rate: [0.22, 0.12, 0]
     fica_marginal_tax_rate: [0.0765, 0.0765, 0]
+
+# A single Ohio parent of children aged 4 and 8. The marginal tax rate must
+# equal the change in household net income between the two fresh simulations
+# above it: 1 - (alt - base) / 1_000. Ohio Works First counts
+# employment_income_before_lsr as earned income, so the rate's branch must
+# raise that input, not only the employment_income aggregate.
+
+- name: Ohio parent earning $6,000 while on Ohio Works First, OH-6000-base
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 6_000
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    tanf: 5_974.60
+    household_net_income: 23_294.93
+
+- name: Ohio parent earning $7,000 while on Ohio Works First, OH-6000-alt
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 7_000
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    tanf: 5_474.60
+    household_net_income: 24_175.43
+
+- name: Ohio Works First phase-out enters the marginal tax rate, OH-6000-mtr
+  absolute_error_margin: 0.0001
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 6_000
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # 1 - (24_175.43 - 23_294.93) / 1_000
+    marginal_tax_rate: [0.1195, 0, 0]
+
+- name: Ohio parent earning $28,000, OH-28000-base
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 28_000
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    tanf: 0
+    household_net_income: 41_073.76
+
+- name: Ohio parent earning $29,000, OH-28000-alt
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 29_000
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    tanf: 0
+    household_net_income: 41_546.66
+
+- name: Ohio parent above the Ohio Works First limit, OH-28000-mtr
+  absolute_error_margin: 0.0001
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 28_000
+      child1:
+        age: 4
+        is_tax_unit_dependent: true
+      child2:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
+  output:
+    # 1 - (41_546.66 - 41_073.76) / 1_000
+    marginal_tax_rate: [0.5271, 0, 0]
