@@ -1,4 +1,4 @@
-"""Draft pull requests must not run the PR workflow; ready ones run all of it."""
+"""Draft PRs skip every job; ready PRs run the tier selected by their base."""
 
 from pathlib import Path
 
@@ -21,6 +21,7 @@ def _needs(job):
 
 def test_ready_for_review_and_converted_to_draft_trigger_the_workflow():
     trigger, _ = _workflow()
+    assert set(trigger["branches"]) == {"main", "integration"}
     assert {"opened", "synchronize", "reopened", "ready_for_review"} <= set(
         trigger["types"]
     )

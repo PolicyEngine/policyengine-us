@@ -22,7 +22,7 @@ runs:
           echo "present=true" >> "$GITHUB_OUTPUT"
         else
           echo "present=false" >> "$GITHUB_OUTPUT"
-          echo "::notice title=Candidate wheel skipped::The PR head predates the release tooling (.github/release_lock.py and .github/release_build.py). Merge main into the branch to build its candidate wheel."
+          echo "::notice title=Candidate wheel skipped::The PR head predates the release tooling (.github/release_lock.py and .github/release_build.py). Merge the PR base branch into the branch to build its candidate wheel."
         fi
     - name: Check committed registry lock
       if: steps.tooling.outputs.present == 'true'

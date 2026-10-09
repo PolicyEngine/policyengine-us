@@ -3,6 +3,7 @@
 import math
 from pathlib import Path
 
+import pytest
 import yaml
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -14,6 +15,55 @@ GROUP_WORKFLOWS = {
 }
 PYTHON_JOBS = GROUP_WORKFLOWS["PythonTests"]["jobs"]
 KEEP_RUNNING = "${{ !cancelled() }}"
+READY_GUARD = "github.event.pull_request.draft == false"
+MAIN_ONLY = "github.base_ref == 'main'"
+CHEAP_JOBS = {"ReleaseLock", "PackageCompatibility", "Quick-Feedback"}
+# The main PR runner layout before the integration pilot, including each shard.
+MAIN_RUNNER_COUNTS = {
+    "ReleaseLock": 1,
+    "PackageCompatibility": 1,
+    "Quick-Feedback": 1,
+    "HouseholdAPIPartners": 1,
+    "Baseline": 11,
+    "Contrib": 9,
+    "Rest": 1,
+    "Microsimulation": 1,
+}
+
+
+def eligible_jobs(base, draft):
+    """Evaluate the supported PR guards and successful dependency chain."""
+    conditions = {None: True, READY_GUARD: not draft, MAIN_ONLY: base == "main"}
+
+    def eligible(name):
+        job = JOBS[name]
+        condition = job.get("if")
+        assert condition in conditions, (name, condition)
+        needs = job.get("needs", [])
+        if isinstance(needs, str):
+            needs = [needs]
+        return conditions[condition] and all(eligible(parent) for parent in needs)
+
+    return {name for name in JOBS if eligible(name)}
+
+
+def runner_counts(job_names):
+    runner_jobs = {}
+    for name in job_names:
+        if name in GROUP_WORKFLOWS:
+            additions = GROUP_WORKFLOWS[name]["jobs"]
+        else:
+            additions = {name: JOBS[name]}
+        assert not runner_jobs.keys() & additions.keys()
+        runner_jobs.update(additions)
+    counts = {}
+    for name, job in runner_jobs.items():
+        matrix = job.get("strategy", {}).get("matrix", {})
+        if "include" in matrix:
+            counts[name] = len(matrix["include"])
+        else:
+            counts[name] = math.prod(len(values) for values in matrix.values())
+    return counts
 
 
 def action(name):
@@ -31,27 +81,77 @@ def calls(job, name):
 
 
 def test_pr_runner_budget_keeps_the_heavy_suites_separate():
-    counts = {}
-    runner_jobs = {name: job for name, job in JOBS.items() if "uses" not in job}
-    for workflow in GROUP_WORKFLOWS.values():
-        for name, job in workflow["jobs"].items():
-            assert name not in runner_jobs
-            runner_jobs[name] = job
-    for name, job in runner_jobs.items():
-        matrix = job.get("strategy", {}).get("matrix", {})
-        if "include" in matrix:
-            counts[name] = len(matrix["include"])
-        else:
-            counts[name] = math.prod(len(values) for values in matrix.values())
+    counts = runner_counts(eligible_jobs("main", draft=False))
+    assert counts == MAIN_RUNNER_COUNTS
     assert sum(counts.values()) == 26
-    assert {
-        name: counts[name]
-        for name in ("Baseline", "Contrib", "Rest", "Microsimulation")
-    } == {
-        "Baseline": 11,
-        "Contrib": 9,
-        "Rest": 1,
-        "Microsimulation": 1,
+
+
+@pytest.mark.parametrize(
+    "base,draft,expected",
+    [
+        ("main", False, MAIN_RUNNER_COUNTS),
+        ("integration", False, {name: 1 for name in CHEAP_JOBS}),
+        ("main", True, {}),
+        ("integration", True, {}),
+    ],
+)
+def test_pr_jobs_and_runner_budget_by_base_and_draft(base, draft, expected):
+    jobs = eligible_jobs(base, draft)
+    assert runner_counts(jobs) == expected
+    if base == "integration" and not draft:
+        assert jobs == CHEAP_JOBS
+
+
+def test_main_runner_checks_and_matrix_members_are_unchanged():
+    assert set(eligible_jobs("main", draft=False)) == {
+        "ReleaseLock",
+        "PackageCompatibility",
+        "Quick-Feedback",
+        "Baseline",
+        "HouseholdAPIPartners",
+        "Contrib",
+        "PythonTests",
+    }
+    assert {name: JOBS[name]["name"] for name in CHEAP_JOBS} == {
+        "ReleaseLock": "PR validation (lock, guard tests, lint, changelog)",
+        "PackageCompatibility": "Package and compatibility",
+        "Quick-Feedback": "Quick Feedback (Selective Tests + Coverage)",
+    }
+    assert JOBS["HouseholdAPIPartners"]["name"] == "Household API Partners"
+    for name, expected_groups in {
+        "Baseline": [
+            "states-shard-1",
+            "states-shard-2",
+            "states-shard-3",
+            "states-shard-4",
+            "irs",
+            "household",
+            "ssa-usda",
+            "rest-a",
+            "rest-b",
+            "contrib-hhs",
+            "reform",
+        ],
+        "Contrib": [
+            "states-shard-1",
+            "states-shard-2",
+            "states-shard-3",
+            "states-shard-4",
+            "other-shard-1",
+            "other-shard-2a",
+            "other-shard-2b",
+            "other-shard-3",
+            "congress",
+        ],
+    }.items():
+        job = GROUP_WORKFLOWS[name]["jobs"][name]
+        assert job["name"] == f"Full Suite - {name} (${{{{ matrix.group }}}})"
+        assert [item["group"] for item in job["strategy"]["matrix"]["include"]] == (
+            expected_groups
+        )
+    assert {name: job["name"] for name, job in PYTHON_JOBS.items()} == {
+        "Rest": "Full Suite - Rest (Python + variables)",
+        "Microsimulation": "Full Suite - Microsimulation",
     }
 
 
@@ -66,6 +166,7 @@ def test_suite_groups_have_no_extra_runners_or_triggers():
         assert JOBS[name] == {
             "name": label,
             "needs": "ReleaseLock",
+            "if": MAIN_ONLY,
             "uses": f"./.github/workflows/{file}",
         }
         # PyYAML parses the bare `on` key as True. No push/PR trigger here:
@@ -198,3 +299,36 @@ def test_validation_collects_independent_results_after_failure():
     assert any("ruff format --check" in step["run"] for step in runs)
     assert any("No valid changelog fragment found" in step["run"] for step in runs)
     assert any("git ls-files -- changelog.d" in step["run"] for step in runs)
+
+
+def test_cheap_checks_use_the_actual_pr_base_or_checked_out_commit():
+    validation = JOBS["ReleaseLock"]["steps"]
+    checkout = validation[0]
+    assert checkout["uses"].startswith("actions/checkout@")
+    assert checkout["with"] == {"fetch-depth": 2}
+    # The changelog check uses the checked-out merge and its first parent.
+    changelog = next(
+        step
+        for step in validation
+        if step.get("name") == "Check changed changelog fragments"
+    )
+    assert "HEAD^1" in changelog["run"]
+    assert "HEAD \\" in changelog["run"]
+    assert "origin/main" not in changelog["run"]
+    assert any(
+        step.get("run") == "python .github/release_lock.py --rehearse"
+        for step in validation
+    )
+    feedback = JOBS["Quick-Feedback"]["steps"]
+    fetch = next(step for step in feedback if step.get("name") == "Fetch base branch")
+    assert fetch["run"] == "git fetch origin ${{ github.base_ref }} --depth=1000"
+    selective = next(
+        step
+        for step in feedback
+        if step.get("name") == "Run selective tests based on changed files"
+    )
+    assert selective["env"]["GITHUB_BASE_REF"] == "${{ github.base_ref }}"
+    assert "--base-branch ${{ github.base_ref }}" in selective["run"]
+    for job in CHEAP_JOBS:
+        assert "origin/main" not in str(JOBS[job])
+    assert "Merge main" not in str(action("candidate-wheel"))

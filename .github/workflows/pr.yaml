@@ -1,8 +1,8 @@
 name: Pull request
 on:
   pull_request:
-    branches: [main]
-    # Draft PRs skip CI; marking a PR ready runs the full suite. Converting a
+    branches: [main, integration]
+    # Draft PRs skip CI; marking a PR ready runs the tier for its base. Converting a
     # PR back to draft starts a run whose jobs all skip, which cancels any
     # in-progress run through the concurrency group below.
     types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
@@ -245,9 +245,11 @@ jobs:
   Baseline:
     name: Baseline tests
     needs: ReleaseLock
+    if: github.base_ref == 'main'
     uses: ./.github/workflows/baseline-tests.yaml
   HouseholdAPIPartners:
     needs: ReleaseLock
+    if: github.base_ref == 'main'
     name: Household API Partners
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -277,8 +279,10 @@ jobs:
   Contrib:
     name: Contrib tests
     needs: ReleaseLock
+    if: github.base_ref == 'main'
     uses: ./.github/workflows/contrib-tests.yaml
   PythonTests:
     name: Python tests
     needs: ReleaseLock
+    if: github.base_ref == 'main'
     uses: ./.github/workflows/python-tests.yaml

@@ -40,6 +40,52 @@ everything on a laptop.
 
 Python 3.9–3.14 (`requires-python = ">=3.9,<3.15"`; CI smoke-imports on every minor). Default branch: `main`.
 
+## Integration branch pilot
+
+Small independent fixes, especially agent-authored fixes, target `integration`
+during this opt-in pilot. Urgent fixes, changes that must publish today, and
+changes to CI itself target `main`. A maintainer enables the pilot by creating
+`integration` from `main` after the promotion workflow reaches `main`.
+The GitHub App installation needs contents, pull requests, and workflows write
+permissions for promotion and synchronization ([GitHub App permissions](https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/choosing-permissions-for-a-github-app)).
+
+Ready PRs into `integration` run three runner jobs: PR validation (`ReleaseLock`),
+package and compatibility (`PackageCompatibility`), and selective tests with
+coverage (`Quick-Feedback`). Ready PRs into `main`, including promotion PRs, run
+the existing full suite of 26 runner jobs. Draft PRs run no jobs for either base.
+The release and publishing workflow still runs on pushes to `main`.
+
+The promotion workflow is scheduled every four hours in UTC and also runs
+manually. It opens no promotion when `integration` is absent, has no commits
+that `main` lacks, or already has an open promotion PR. Otherwise it freezes
+the current head on `promote/<UTC timestamp>` and opens a non-draft PR into
+`main` listing its member PRs and commits. New fixes on `integration` wait for
+the next promotion; the workflow never updates an existing snapshot. The PR
+uses the GitHub App token so its CI runs automatically, as described in
+[GitHub's workflow trigger documentation](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow#triggering-a-workflow-from-a-workflow).
+
+Merge a successful promotion with a **merge commit**, preserving each fix's
+commits and changelog fragments. Do not squash the promotion. The next workflow
+tick brings `main`, including the release bot's version bump, back into
+`integration` with a clean merge. A merge conflict stops the promotion and emits
+a warning; a maintainer resolves the conflict on `integration` before running
+the workflow again. A push to `integration` starts no full-suite workflow.
+
+For a red promotion, preserve the failed PR and logs while investigating:
+
+1. In a separate local checkout of the frozen snapshot, reproduce the failure
+   with the failing shard's exact command and dependency setup from its workflow.
+   Verify that command passes at the promotion's pre-batch `main` commit.
+2. Run `git bisect start --first-parent <snapshot-sha> <known-good-main-sha>`
+   and `git bisect run <failing-shard-command>`, then `git bisect reset`.
+   First-parent history follows the member fixes in their landing order. If the
+   result is a merge, inspect the member commits or the synchronization with
+   `main` to identify the failing change.
+3. Revert the culprit on `integration` (`git revert <sha>`, or
+   `git revert -m 1 <sha>` for a member-PR merge), with a changelog fragment.
+   Close the failed promotion PR, keeping it as evidence, and run the promotion
+   workflow manually to cut a fresh snapshot. Leave the failed snapshot intact.
+
 ## Writing variables and programs
 
 Four types of files usually change together:

@@ -1,0 +1,56 @@
+name: Promote integration
+
+on:
+  schedule:
+    - cron: "17 */4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: promote-integration
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    if: github.repository == 'PolicyEngine/policyengine-us'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check whether the pilot is enabled
+        id: pilot
+        shell: bash
+        run: |
+          set -euo pipefail
+          branch=$(git ls-remote --heads origin refs/heads/integration)
+          if [ -z "$branch" ]; then
+            echo "::notice::Integration branch is absent; the pilot is inactive."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Generate GitHub App token
+        if: steps.pilot.outputs.enabled == 'true'
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+          permission-workflows: write
+      - uses: actions/checkout@v6
+        if: steps.pilot.outputs.enabled == 'true'
+        with:
+          fetch-depth: 0
+          token: ${{ steps.app-token.outputs.token }}
+      - name: Synchronize and promote integration
+        if: steps.pilot.outputs.enabled == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          python .github/promote_integration.py
