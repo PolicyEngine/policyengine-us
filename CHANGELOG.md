@@ -1,3 +1,10 @@
+## [2.38.2] - 2026-10-09
+
+### Fixed
+
+- Exclude estate and trust income from qualified business income unless its qualification is explicitly supplied.
+
+
 ## [2.38.1] - 2026-10-09
 
 ### Fixed
