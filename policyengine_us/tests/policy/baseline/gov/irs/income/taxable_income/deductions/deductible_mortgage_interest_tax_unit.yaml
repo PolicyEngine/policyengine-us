@@ -362,8 +362,9 @@
         members: [p4]
   output:
     # 2017 Pub. 936, PDF pp. 10-11: grandfathered debt has no limit (t1, and
-    # t2 above the $500,000 separate limit); t3 and t4 total 700,000 and
-    # 900,000, within $1,000,000 less grandfathered debt. These cases stay
+    # t2 above the $500,000 separate limit). t3's 700,000 is within
+    # $1,000,000; t4's 300,000 of 2012 debt is within $1,000,000 less its
+    # 600,000 of grandfathered debt. These cases stay
     # within the acquisition-debt limit for non-grandfathered debt, because
     # the pre-2018 home equity allowance is not modeled.
     deductible_mortgage_interest_tax_unit: [60_000, 35_000, 35_000, 45_000]
