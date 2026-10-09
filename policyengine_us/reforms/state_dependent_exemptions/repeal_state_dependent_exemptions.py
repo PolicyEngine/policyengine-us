@@ -8,7 +8,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         entity = TaxUnit
         label = "Hawaii regular exemptions"
         unit = USD
-        documentation = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
+        reference = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
         definition_period = YEAR
         defined_for = StateCode.HI
 
