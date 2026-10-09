@@ -9,6 +9,10 @@ metadata:
   reference:
     - title: H.R.1 - One Big Beautiful Bill Act
       href: https://www.congress.gov/bill/119th-congress/house-bill/1/text
+    - title: 26 U.S.C. 163(h)(4)(C)(ii)(I)
+      href: https://www.law.cornell.edu/uscode/text/26/163#h_4_C_ii_I
+    - title: 2025 Schedule 1-A (Form 1040), Part IV, line 26
+      href: https://www.irs.gov/pub/irs-pdf/f1040s1a.pdf#page=2
 
 SINGLE:
   2025-01-01: 100_000
@@ -19,4 +23,5 @@ HEAD_OF_HOUSEHOLD:
 JOINT:
   2025-01-01: 200_000
 SURVIVING_SPOUSE:
-  2025-01-01: 200_000
+  # Only a joint return gets the $200,000 threshold.
+  2025-01-01: 100_000

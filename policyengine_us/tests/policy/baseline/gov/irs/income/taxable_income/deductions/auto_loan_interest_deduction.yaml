@@ -48,3 +48,14 @@
     # 26 U.S.C. 163(h)(4)(C)(ii)(II): modified AGI 105,000; five $1,000
     # steps over 100,000 at $200 each.
     auto_loan_interest_deduction: 4_000
+
+- name: Surviving spouse uses the $100,000 threshold
+  period: 2025
+  input:
+    adjusted_gross_income: 120_000
+    filing_status: SURVIVING_SPOUSE
+    qualified_passenger_vehicle_loan_interest: 10_000
+  output:
+    # 26 U.S.C. 163(h)(4)(C)(ii)(I): $200,000 only for a joint return
+    # (Schedule 1-A line 26). 20 steps of $1,000 at $200 each.
+    auto_loan_interest_deduction: 6_000

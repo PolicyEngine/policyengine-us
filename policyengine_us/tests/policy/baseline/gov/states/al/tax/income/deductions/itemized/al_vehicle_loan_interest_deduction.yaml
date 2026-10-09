@@ -1,0 +1,227 @@
+# Expected values follow the 2025 Qualified Vehicle Loan Interest Worksheet
+# (Form 40 instructions, PDF page 31): the smaller of the interest and
+# $10,000, less $200 for each $1,000 (or part) of Alabama AGI (Form 40,
+# line 10) above $100,000 ($200,000 if married filing jointly).
+
+- name: Interest below the cap and Alabama AGI below the threshold
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    al_agi: 80_000
+    qualified_passenger_vehicle_loan_interest: 4_000
+  output:
+    al_vehicle_loan_interest_deduction: 4_000
+
+- name: Interest above the cap is limited to $10,000
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    al_agi: 50_000
+    qualified_passenger_vehicle_loan_interest: 12_500
+  output:
+    al_vehicle_loan_interest_deduction: 10_000
+
+- name: Alabama AGI exactly at the threshold has no reduction
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    al_agi: 100_000
+    qualified_passenger_vehicle_loan_interest: 3_000
+  output:
+    al_vehicle_loan_interest_deduction: 3_000
+
+- name: One dollar over the threshold counts as a full $1,000 step
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    al_agi: 100_001
+    qualified_passenger_vehicle_loan_interest: 3_000
+  output:
+    # Line 6: 1 / 1,000 rounds up to 1; line 7: 1 x 200 = 200.
+    al_vehicle_loan_interest_deduction: 2_800
+
+- name: A partial step rounds up
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    al_agi: 105_500
+    qualified_passenger_vehicle_loan_interest: 4_000
+  output:
+    # Line 6: 5,500 / 1,000 = 5.5, rounded up to 6; line 7: 6 x 200 = 1,200.
+    al_vehicle_loan_interest_deduction: 2_800
+
+- name: Joint return phases out above $200,000 after the cap
+  period: 2026
+  input:
+    state_code: AL
+    filing_status: JOINT
+    al_agi: 210_000
+    qualified_passenger_vehicle_loan_interest: 12_000
+  output:
+    # Line 2: 10,000; line 6: 10; line 7: 2,000.
+    al_vehicle_loan_interest_deduction: 8_000
+
+- name: Joint return fully phased out
+  period: 2027
+  input:
+    state_code: AL
+    filing_status: JOINT
+    al_agi: 250_000
+    qualified_passenger_vehicle_loan_interest: 10_000
+  output:
+    # Line 7: 50 x 200 = 10,000.
+    al_vehicle_loan_interest_deduction: 0
+
+- name: Head of family uses the $100,000 threshold
+  period: 2028
+  input:
+    state_code: AL
+    filing_status: HEAD_OF_HOUSEHOLD
+    al_agi: 130_000
+    qualified_passenger_vehicle_loan_interest: 9_000
+  output:
+    # Line 7: 30 x 200 = 6,000.
+    al_vehicle_loan_interest_deduction: 3_000
+
+- name: Married filing separately uses the $100,000 threshold
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SEPARATE
+    al_agi: 101_000
+    qualified_passenger_vehicle_loan_interest: 500
+  output:
+    al_vehicle_loan_interest_deduction: 300
+
+- name: Surviving spouse uses the $100,000 threshold
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SURVIVING_SPOUSE
+    al_agi: 120_000
+    qualified_passenger_vehicle_loan_interest: 10_000
+  output:
+    # Only a joint return gets $200,000. Line 7: 20 x 200 = 4,000.
+    al_vehicle_loan_interest_deduction: 6_000
+
+- name: Alabama AGI sets the phase-out, not federal modified AGI (federal higher)
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    adjusted_gross_income: 150_000
+    al_agi: 90_000
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    al_vehicle_loan_interest_deduction: 5_000
+    # Federal: 50 x 200 = 10,000 removes the whole 5,000.
+    auto_loan_interest_deduction: 0
+
+- name: Alabama AGI sets the phase-out, not federal modified AGI (Alabama higher)
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    adjusted_gross_income: 90_000
+    al_agi: 110_000
+    qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    # Alabama: 10 x 200 = 2,000.
+    al_vehicle_loan_interest_deduction: 3_000
+    auto_loan_interest_deduction: 5_000
+
+- name: Social Security is in federal AGI but not Alabama AGI
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 50
+        employment_income: 95_000
+        social_security_retirement: 40_000
+    households:
+      household:
+        members: [person]
+        state_code: AL
+        qualified_passenger_vehicle_loan_interest: 5_000
+  output:
+    # Federal AGI 95,000 + 34,000 taxable benefits (85% of 40,000) = 129,000,
+    # so the federal deduction phases out: 29 x 200 = 5,800 > 5,000.
+    adjusted_gross_income: 129_000
+    auto_loan_interest_deduction: 0
+    # Alabama does not tax Social Security, so Alabama AGI is 95,000.
+    al_agi: 95_000
+    al_vehicle_loan_interest_deduction: 5_000
+
+- name: Interest that is not qualified passenger vehicle loan interest is not deductible
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    al_agi: 50_000
+    auto_loan_interest: 4_000
+  output:
+    al_vehicle_loan_interest_deduction: 0
+
+- name: Not an Alabama filer
+  period: 2025
+  input:
+    state_code: GA
+    filing_status: SINGLE
+    qualified_passenger_vehicle_loan_interest: 4_000
+  output:
+    al_vehicle_loan_interest_deduction: 0
+
+- name: Single filer with wages, property tax and qualified vehicle loan interest
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 80_000
+        real_estate_taxes: 3_000
+    households:
+      household:
+        members: [person]
+        state_code: AL
+        qualified_passenger_vehicle_loan_interest: 4_000
+  output:
+    # Federal: 80,000 - 15,750 standard deduction - 4,000 = 60,250 taxable;
+    # tax 1,192.50 + 4,386 + 2,590.50 = 8,169.
+    auto_loan_interest_deduction: 4_000
+    al_vehicle_loan_interest_deduction: 4_000
+    # 3,000 real estate tax + 6,120 FICA (7.65% of wages) + 4,000.
+    al_itemized_deductions: 13_120
+    al_federal_income_tax_deduction: 8_169
+    # 80,000 - 13,120 - 8,169 - 1,500 personal exemption.
+    al_taxable_income: 57_211
+    # 2% of 500 + 4% of 2,500 + 5% of 54,211.
+    al_income_tax: 2_820.55
+
+- name: The same filer without vehicle loan interest
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        employment_income: 80_000
+        real_estate_taxes: 3_000
+    households:
+      household:
+        members: [person]
+        state_code: AL
+  output:
+    # Federal tax rises by 22% of 4,000 = 880 to 9,049, so the Alabama
+    # federal income tax deduction rises too: Alabama tax is 5% of
+    # 4,000 - 880 = 3,120, or 156, higher.
+    al_itemized_deductions: 9_120
+    al_federal_income_tax_deduction: 9_049
+    al_taxable_income: 60_331
+    al_income_tax: 2_976.55

@@ -1,0 +1,62 @@
+# Qualified vehicle loan interest (Schedule A line 11c) counts toward Alabama
+# itemized deductions for taxable years 2025 through 2028 only, the years
+# 26 U.S.C. 163(h)(4)(A) allows it.
+
+- name: Vehicle loan interest is not itemized in 2024
+  period: 2024
+  input:
+    state_code: AL
+    filing_status: JOINT
+    al_agi: 180_000
+    real_estate_taxes: 5_000
+    qualified_passenger_vehicle_loan_interest: 6_000
+  output:
+    al_itemized_deductions: 5_000
+
+- name: Vehicle loan interest is itemized in 2025
+  period: 2025
+  input:
+    state_code: AL
+    filing_status: JOINT
+    al_agi: 180_000
+    real_estate_taxes: 5_000
+    qualified_passenger_vehicle_loan_interest: 6_000
+  output:
+    al_vehicle_loan_interest_deduction: 6_000
+    al_itemized_deductions: 11_000
+
+- name: Vehicle loan interest is itemized in 2028
+  period: 2028
+  input:
+    state_code: AL
+    filing_status: JOINT
+    al_agi: 180_000
+    real_estate_taxes: 5_000
+    qualified_passenger_vehicle_loan_interest: 6_000
+  output:
+    al_vehicle_loan_interest_deduction: 6_000
+    al_itemized_deductions: 11_000
+
+- name: Vehicle loan interest is not itemized in 2029
+  period: 2029
+  input:
+    state_code: AL
+    filing_status: JOINT
+    al_agi: 180_000
+    real_estate_taxes: 5_000
+    qualified_passenger_vehicle_loan_interest: 6_000
+  output:
+    al_itemized_deductions: 5_000
+
+- name: The phased-down amount is what is itemized
+  period: 2026
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    al_agi: 112_400
+    real_estate_taxes: 2_000
+    qualified_passenger_vehicle_loan_interest: 7_000
+  output:
+    # Line 6: 12,400 / 1,000 = 12.4, rounded up to 13; line 7: 2,600.
+    al_vehicle_loan_interest_deduction: 4_400
+    al_itemized_deductions: 6_400

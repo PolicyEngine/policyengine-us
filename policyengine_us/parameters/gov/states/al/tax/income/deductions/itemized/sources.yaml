@@ -12,6 +12,27 @@ values:
     - al_casualty_loss_deduction # Section (a), (6)
     - al_misc_deduction # Section (a), (23)
     - al_interest_deduction # Section (a), (2)
+  # Section (a)(2) follows 26 U.S.C. 163, whose paragraph (h)(4) allows qualified
+  # passenger vehicle loan interest for taxable years 2025 through 2028.
+  2025-01-01:
+    - real_estate_taxes # Section (a), (3), (d)
+    - employee_payroll_tax # Section (a), (3), (a)
+    - self_employment_tax # Section (a), (3), (a)
+    - charitable_deduction # Section (a), (10)
+    - al_medical_expense_deduction # Section (a), (13)
+    - al_casualty_loss_deduction # Section (a), (6)
+    - al_misc_deduction # Section (a), (23)
+    - al_interest_deduction # Section (a), (2)
+    - al_vehicle_loan_interest_deduction # Section (a), (2); Schedule A line 11c
+  2029-01-01:
+    - real_estate_taxes # Section (a), (3), (d)
+    - employee_payroll_tax # Section (a), (3), (a)
+    - self_employment_tax # Section (a), (3), (a)
+    - charitable_deduction # Section (a), (10)
+    - al_medical_expense_deduction # Section (a), (13)
+    - al_casualty_loss_deduction # Section (a), (6)
+    - al_misc_deduction # Section (a), (23)
+    - al_interest_deduction # Section (a), (2)
 
 metadata:
   unit: list
@@ -28,3 +49,7 @@ metadata:
       href: https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2024/01/23f40schabdc_blk.pdf#page=1
     - title: 2024 Alabama Income Tax Instructions
       href: https://www.revenue.alabama.gov/wp-content/uploads/2025/01/24f40bk.pdf#page=18
+    - title: 2025 Schedule A (Form 40)
+      href: https://www.revenue.alabama.gov/wp-content/uploads/2026/01/25f40schabdc_blk.pdf#page=1
+    - title: 26 U.S.C. 163(h)(4)
+      href: https://www.law.cornell.edu/uscode/text/26/163#h_4
