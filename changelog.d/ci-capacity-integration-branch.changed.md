@@ -1,1 +1,1 @@
-Add an opt-in integration branch CI flow with selective PR checks and frozen full-suite promotion PRs into main.
+Add an opt-in integration branch CI flow with selective PR checks and frozen full-suite promotion PRs into main, stopping for manual recovery when a promotion's frozen commits were not preserved by a merge commit.

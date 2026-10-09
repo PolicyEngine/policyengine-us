@@ -45,6 +45,14 @@ def ancestor(older: str, newer: str) -> bool:
     return result.returncode == 0
 
 
+def is_promotion(repository: str, pull: dict) -> bool:
+    head = pull["head"]
+    return (
+        head["ref"].startswith("promote/")
+        and (head.get("repo") or {}).get("full_name", "").lower() == repository.lower()
+    )
+
+
 def run(repository: str, now: datetime | None = None) -> None:
     if not git("ls-remote", "--heads", "origin", "refs/heads/integration"):
         print("::notice::Integration branch is absent; the pilot is inactive.")
@@ -56,16 +64,33 @@ def run(repository: str, now: datetime | None = None) -> None:
         "+refs/heads/main:refs/remotes/origin/main",
         "+refs/heads/integration:refs/remotes/origin/integration",
     )
+    # Checking for an open promotion and creating one are separate API calls.
+    # The workflow's constant concurrency group serializes scheduled and
+    # dispatched runs so they cannot create competing snapshots.
     opened = api(repository, "pulls?state=open&base=main&per_page=100", paginate=True)
     for pull in opened:
-        head = pull["head"]
-        if (
-            head["ref"].startswith("promote/")
-            and (head.get("repo") or {}).get("full_name", "").lower()
-            == repository.lower()
-        ):
+        if is_promotion(repository, pull):
             print(f"::notice::Promotion #{pull['number']} is open; leaving it frozen.")
             return
+
+    closed_promotions = api(
+        repository, "pulls?state=closed&base=main&per_page=100", paginate=True
+    )
+    latest = max(
+        (
+            pull
+            for pull in closed_promotions
+            if pull.get("merged_at") and is_promotion(repository, pull)
+        ),
+        key=lambda pull: pull["merged_at"],
+        default=None,
+    )
+    if latest and not ancestor(latest["head"]["sha"], "origin/main"):
+        print(
+            f"::error::Promotion #{latest['number']} was not merged with a merge "
+            "commit and needs manual recovery before integration can be synchronized."
+        )
+        raise SystemExit(1)
 
     git("checkout", "-B", "integration", "origin/integration")
     if not ancestor("origin/main", "HEAD"):

@@ -63,10 +63,16 @@ the current head on `promote/<UTC timestamp>` and opens a non-draft PR into
 the next promotion; the workflow never updates an existing snapshot. The PR
 uses the GitHub App token so its CI runs automatically, as described in
 [GitHub's workflow trigger documentation](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow#triggering-a-workflow-from-a-workflow).
+When `integration` only lacks commits from `main`, the tick synchronizes and
+pushes it without opening a promotion.
 
 Merge a successful promotion with a **merge commit**, preserving each fix's
-commits and changelog fragments. Do not squash the promotion. The next workflow
-tick brings `main`, including the release bot's version bump, back into
+commits and changelog fragments. Do not squash or rebase the promotion. Before
+synchronizing, the workflow checks that the frozen head of the most recently
+merged `promote/*` PR from this repository into `main` is an ancestor of `main`.
+If it is not, the job fails with an error naming the PR and requiring manual
+recovery before another batch can proceed. The next successful workflow tick
+brings `main`, including the release bot's version bump, back into
 `integration` with a clean merge. A merge conflict stops the promotion and emits
 a warning; a maintainer resolves the conflict on `integration` before running
 the workflow again. A push to `integration` starts no full-suite workflow.
@@ -81,6 +87,10 @@ For a red promotion, preserve the failed PR and logs while investigating:
    First-parent history follows the member fixes in their landing order. If the
    result is a merge, inspect the member commits or the synchronization with
    `main` to identify the failing change.
+   Member commits before the last synchronization lack newer `main` fixes.
+   Before reverting a suspected culprit, confirm it by reverting it on the
+   frozen snapshot (or merging the recorded pre-batch `main` into the candidate)
+   and re-running the failing shard's exact command.
 3. Revert the culprit on `integration` (`git revert <sha>`, or
    `git revert -m 1 <sha>` for a member-PR merge), with a changelog fragment.
    Close the failed promotion PR, keeping it as evidence, and run the promotion

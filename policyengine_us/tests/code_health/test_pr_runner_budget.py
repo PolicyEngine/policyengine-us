@@ -18,6 +18,15 @@ KEEP_RUNNING = "${{ !cancelled() }}"
 READY_GUARD = "github.event.pull_request.draft == false"
 MAIN_ONLY = "github.base_ref == 'main'"
 CHEAP_JOBS = {"ReleaseLock", "PackageCompatibility", "Quick-Feedback"}
+JOB_DEPENDENCIES_AND_GUARDS = {
+    "ReleaseLock": {"if": READY_GUARD},
+    "PackageCompatibility": {"needs": "ReleaseLock"},
+    "Quick-Feedback": {"needs": "ReleaseLock"},
+    "Baseline": {"needs": "ReleaseLock", "if": MAIN_ONLY},
+    "HouseholdAPIPartners": {"needs": "ReleaseLock", "if": MAIN_ONLY},
+    "Contrib": {"needs": "ReleaseLock", "if": MAIN_ONLY},
+    "PythonTests": {"needs": "ReleaseLock", "if": MAIN_ONLY},
+}
 # The main PR runner layout before the integration pilot, including each shard.
 MAIN_RUNNER_COUNTS = {
     "ReleaseLock": 1,
@@ -31,8 +40,8 @@ MAIN_RUNNER_COUNTS = {
 }
 
 
-def eligible_jobs(base, draft):
-    """Evaluate the supported PR guards and successful dependency chain."""
+def eligible_jobs(base, draft, failed_jobs=()):
+    """Model supported guards and the implicit successful dependency requirement."""
     conditions = {None: True, READY_GUARD: not draft, MAIN_ONLY: base == "main"}
 
     def eligible(name):
@@ -42,7 +51,9 @@ def eligible_jobs(base, draft):
         needs = job.get("needs", [])
         if isinstance(needs, str):
             needs = [needs]
-        return conditions[condition] and all(eligible(parent) for parent in needs)
+        return conditions[condition] and all(
+            parent not in failed_jobs and eligible(parent) for parent in needs
+        )
 
     return {name for name in JOBS if eligible(name)}
 
@@ -96,10 +107,26 @@ def test_pr_runner_budget_keeps_the_heavy_suites_separate():
     ],
 )
 def test_pr_jobs_and_runner_budget_by_base_and_draft(base, draft, expected):
+    assert {
+        name: {key: job[key] for key in ("needs", "if") if key in job}
+        for name, job in JOBS.items()
+    } == JOB_DEPENDENCIES_AND_GUARDS
     jobs = eligible_jobs(base, draft)
     assert runner_counts(jobs) == expected
     if base == "integration" and not draft:
         assert jobs == CHEAP_JOBS
+
+
+@pytest.mark.parametrize("base", ["main", "integration"])
+def test_failed_release_lock_prevents_all_dependent_runners(base):
+    # The exact needs/if contract above rules out bypassing dependency success
+    # with always() or a status guard. This bounded model checks the intended
+    # failure route, including main-only suites; static YAML cannot verify
+    # GitHub's live expression evaluation or actual scheduling after a failure.
+    jobs = eligible_jobs(base, draft=False, failed_jobs={"ReleaseLock"})
+    assert jobs == {"ReleaseLock"}
+    assert runner_counts(jobs) == {"ReleaseLock": 1}
+    assert all(not job.get("continue-on-error") for job in JOBS.values())
 
 
 def test_main_runner_checks_and_matrix_members_are_unchanged():
