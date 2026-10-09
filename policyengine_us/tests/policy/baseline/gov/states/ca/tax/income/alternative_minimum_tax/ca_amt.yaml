@@ -52,3 +52,21 @@
     households: {household: {members: [head, spouse], state_code: CA}}
   output:
     ca_amt: 0
+
+- name: The 2031 rate expiry exposes AMT for a single filer with $1 million of taxable income
+  period: 2031
+  absolute_error_margin: 1
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_taxable_income: 1_000_000
+    ca_amti: 1_400_000
+    ca_amt_exemption: 0
+    ca_non_refundable_credits: 0
+  output:
+    # Regular tax falls to 88,942.90 once the rates above 9.3% expire (see
+    # ca_income_tax_before_credits.yaml). Tentative minimum tax is .07 x 1,400,000 = 98,000,
+    # so AMT is 98,000 - 88,942.90 = 9,057.10 and total tax is 98,000.
+    ca_income_tax_before_credits: 88_942.90
+    ca_amt: 9_057.10
+    ca_income_tax_before_refundable_credits: 98_000
