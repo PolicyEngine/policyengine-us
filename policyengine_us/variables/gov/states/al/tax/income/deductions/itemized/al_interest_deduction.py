@@ -13,14 +13,14 @@ class al_interest_deduction(Variable):
         "debt above the 26 U.S.C. 163(h)(3) limits is not deductible."
     )
     reference = (
-        "https://alison.legislature.state.al.us/code-of-alabama?section=40-18-15",
         # Code of Alabama Section 40-18-15(a)(2)
+        "https://alison.legislature.state.al.us/code-of-alabama?section=40-18-15",
+        # 2025 Form 40 instructions, Schedule A lines 10a through 14, PDF pages 19-20
         "https://www.revenue.alabama.gov/wp-content/uploads/2026/01/25f40bk.pdf#page=19",
-        # 2025 Form 40 instructions, Schedule A lines 10a through 14
+        # 2022 Schedule A (Form 40)
         "https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2023/01/22f40schabdc_blk.pdf#page=1",
-        # 2022 Schedule A (Form 1040)
+        # 2021 Schedule A (Form 40)
         "https://www.revenue.alabama.gov/ultraviewer/viewer/basic_viewer/index.html?form=2022/06/21f40schabdc_blk.pdf#page=1",
-        # 2021 Schedule A (Form 1040)
     )
     defined_for = StateCode.AL
 
