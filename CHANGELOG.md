@@ -1,3 +1,97 @@
+## [2.34.1] - 2026-10-08
+
+### Fixed
+
+- Stop a tax unit dependent's pension, IRA, 401(k), military or CSRS retirement income, or survivor benefits, from reducing the filer's state income tax in Connecticut, Hawaii, Illinois, Iowa, Kansas, Kentucky, Louisiana, Maryland, Massachusetts, Michigan, Minnesota, Missouri, Nebraska, New York, North Carolina, North Dakota, Oklahoma, Pennsylvania, Rhode Island, South Carolina, Utah, Vermont and West Virginia. Federal AGI already leaves out dependents' income, so these states' retirement subtractions and Utah's military retirement credit now count only the head's and spouse's amounts. North Carolina's military retirement deduction also now counts the retirement pay of a head or spouse only if they meet its 20-year or medical-retirement test, and Survivor Benefit Plan payments only to the beneficiary of a member who did, recorded with the new `nc_military_retirement_survivor_eligible` input. Qualifying survivor benefits recorded separately no longer make the recipient's otherwise ineligible own retirement pay deductible. Explicit false eligibility inputs exclude both own pay and survivor benefits. Explicit true eligibility inputs remain respected when the survivor flag is false; mixed own pay and qualifying survivor benefits require the recipient's service or medical record for the own-pay test.
+
+
+## [2.34.0] - 2026-10-08
+
+### Added
+
+- Tax-unit roles supplied by a dataset (tax_unit_role_input: HEAD, SPOUSE or DEPENDENT) now determine is_tax_unit_head, is_tax_unit_spouse and is_tax_unit_dependent in every tax unit whose members all have one, with age ordering as the fallback. Filing status is not supplied: filing_status is still computed from the resulting roles and the filing rules, and a dataset's filing_status_input column is not read. On the certified Populace default build this replaces age-ordered roles with the build's own: adult students and other adult dependents are no longer made a parent's spouse, couples are headed by the build's head, and lone minors head their own returns. Because irs_gross_income excludes tax-unit dependents and the model does not yet compute a dependent's own return (#9618), the income of adults the build makes dependents leaves the income tax base.
+
+### Fixed
+
+- California Young Child Tax Credit for filers with zero or negative earned income now applies the wage limit to wages and measures net losses without the capital loss limitation.
+- A reform simulation that is subsampled now rebuilds its baseline arm bound to baseline policy: holders, populations, inputs and parameter tracing belong to the baseline again, and the arm no longer keeps the replaced arm as its own baseline.
+- Add the 2024 and 2025 employee contribution rates and wage bases for New York Paid Family Leave, New Jersey TDI and FLI, Rhode Island TDI and Massachusetts PFML, which were 0 before 2026.
+- Make only one mother per infant WIC postpartum or breastfeeding, so a grandmother living with her grandchild no longer qualifies.
+- Keep a negative Form 6251 line 1 in AMT income and add back the 2025-2028 enhanced deduction for seniors (Form 6251 line 1a).
+- Start the New York child and dependent care credit's Tax Law 606(c)(1-a) New York AGI factors (1.1682, 1.2733, 2.322 and 3.000) in tax year 2018.
+- Use the published 2026 Kentucky, Michigan, Minnesota, Missouri, Nebraska, Oregon and Wisconsin standard deductions, exemptions, bracket thresholds and Oregon federal tax subtraction caps instead of inflation projections, use Minnesota's other published 2026 inflation-adjusted amounts, and stop indexing Minnesota's alternate Social Security subtraction, which Minnesota law does not index.
+
+
+## [2.33.1] - 2026-10-08
+
+### Fixed
+
+- Use FTB 3514 line 19 for CalEITC, YCTC and FYTC earned income: net a spouse's self-employment loss against the other spouse's wages, and include farm income and partnership self-employment earnings.
+- Apply Massachusetts Schedule B short-term and long-term losses to dividends before long-term gains, and tax Part A on the dividends left (lines 20, 22 and 33).
+- Add back disqualified losses (Schedule H Schedule 4) to Wisconsin homestead credit household income.
+
+
+## [2.33.0] - 2026-10-08
+
+### Added
+
+- Add New Jersey LIHEAP regular heating assistance for FY2026 and FY2027.
+
+
+## [2.32.0] - 2026-10-08
+
+### Added
+
+- Add New York HEAP regular heating assistance for FY2024 to FY2026.
+
+
+## [2.31.3] - 2026-10-08
+
+### Changed
+
+- Document the reference page-citation convention for parameter and variable references in CLAUDE.md.
+
+
+## [2.31.2] - 2026-10-08
+
+### Fixed
+
+- Reduce PR CI from 35 to 26 jobs by consolidating validation, package builds, and compatibility checks; group Baseline, Contrib, and Python suites while preserving their separate runners; prevent YAML batches from rerunning separately routed Python tests.
+
+
+## [2.31.1] - 2026-10-08
+
+### Changed
+
+- Reduce repeated simulation and model setup in Rest Python tests while preserving their existing cases and assertions.
+
+
+## [2.31.0] - 2026-10-08
+
+### Added
+
+- Add Maryland MEAP regular heating assistance for state FY25 to FY27.
+
+
+## [2.30.5] - 2026-10-08
+
+### Changed
+
+- Skip the pull request workflow for draft PRs; marking a PR ready for review runs the full suite, and converting it back to draft cancels any run in progress.
+
+
+## [2.30.4] - 2026-10-07
+
+### Fixed
+
+- The EITC investment income test (26 U.S.C. 32(i)) now counts only the head's and spouse's interest, dividends, capital gains, rents and passive income. A tax unit dependent's income no longer denies the credit, and a dependent's losses no longer offset the filer's income. A negative capital gain distributions input is floored at zero for each filer, as in adjusted gross income, instead of offsetting other capital gains. The test now reads the head's and spouse's long_term_capital_gains and short_term_capital_gains, as the net investment income tax does; a net_capital_gains amount supplied for the tax unit is no longer read.
+- Count gambling winnings in Arkansas gross income and deduct Arkansas gambling losses up to those winnings, outside the 2% floor on miscellaneous itemized deductions (Ark. Code § 26-51-424(a)(2)(B), Act 155 of 2017).
+- West Virginia's senior citizen or disability deduction now reduces each spouse's $8,000 by that spouse's own U.S. government interest, not the couple's total.
+- Remove a stray working log (PROGRESS.md) that was committed to the repository root by mistake.
+- Exclude dependents' specialty capital gains and losses from the filer's 28% Rate Gain and Unrecaptured Section 1250 Gain worksheets while preserving joint-filer spouse netting.
+- The qualified business income deduction's income limit subtracts net capital gain plus qualified dividends as Form 8995 line 12 defines them (keeping section 1250 and 28-percent rate gain, unaffected by a Form 4952 election, and counting only the head's and spouse's gains), rather than adjusted net capital gain.
+
+
 ## [2.30.3] - 2026-10-07
 
 ### Fixed

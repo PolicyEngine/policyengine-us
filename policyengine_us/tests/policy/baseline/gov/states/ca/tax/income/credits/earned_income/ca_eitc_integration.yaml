@@ -5,7 +5,7 @@
   input:
     state_code: CA
     eitc_child_count: 3
-    earned_income: 8_000
+    employment_income: 8_000
     # AGI equals earned income so the worksheet's earned-income/AGI credit
     # comparison isolates the table value.
     adjusted_gross_income: 8_000
@@ -19,7 +19,7 @@
   input:
     state_code: CA
     eitc_child_count: 1
-    earned_income: 6_400
+    employment_income: 6_400
     adjusted_gross_income: 6_400
   output:
     ca_eitc: 1_843
@@ -31,7 +31,7 @@
   input:
     state_code: CA
     eitc_child_count: 0
-    earned_income: 9_951
+    employment_income: 9_951
     adjusted_gross_income: 9_951
   output:
     #ca_eitc_second_phase_out_start: 8_201 # First bracket.
