@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.section_911 import SECTION_911_LEAF_INPUTS
 
 
 class ctc_credit_limit_worksheet_b_applies(Variable):
@@ -32,19 +31,7 @@ class ctc_credit_limit_worksheet_b_applies(Variable):
             # whose CTC was not fully refundable.
             return np.zeros(tax_unit.count, dtype=bool)
         has_qualifying_child = tax_unit("ctc_qualifying_children", period) > 0
-        # Form 2555 filers skip Worksheet B from 2015, when the refundable CTC
-        # was first denied to them.
-        files_form_2555 = np.logical_or.reduce(
-            [
-                tax_unit(variable, period) > 0
-                for variable in (
-                    "foreign_earned_income_exclusion",
-                    "section_911_excluded_income",
-                    *SECTION_911_LEAF_INPUTS,
-                )
-            ]
-        )
-        excluded = (
-            files_form_2555 & p.refundable.foreign_earned_income_exclusion_bar_applies
-        )
-        return has_qualifying_child & ~excluded
+        # Form 2555 filers skip Worksheet B in the years section 24(d)(3)
+        # denies them the refundable CTC (from 2015).
+        barred = tax_unit("refundable_ctc_barred_by_section_911_exclusion", period)
+        return has_qualifying_child & ~barred

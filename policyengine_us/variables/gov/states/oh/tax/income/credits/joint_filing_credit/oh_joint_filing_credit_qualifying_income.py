@@ -15,8 +15,17 @@ class oh_joint_filing_credit_qualifying_income(Variable):
 
     def formula(person, period, parameters):
         agi = person("oh_agi_person", period)
-        # Prevent negative subtractions from acting as additions
-        subtractions = max_(
-            0, person("oh_joint_filing_credit_agi_subtractions", period)
+        # Interest, dividends, capital gains and rents are excluded only to
+        # the extent included in Ohio AGI (R.C. 5747.05(E)(1)). A qualifying
+        # capital gain deducted under R.C. 5747.01(A)(34) is already out of
+        # Ohio AGI, so it is not excluded again.
+        # Capped at the capital gains reported, so a directly set multi-entity
+        # deduction cannot cancel the other exclusions.
+        deducted_gain = min_(
+            person("oh_qualifying_capital_gain_deduction", period),
+            max_(person("capital_gains", period), 0),
         )
+        excluded = person("oh_joint_filing_credit_agi_subtractions", period)
+        # Prevent negative subtractions from acting as additions
+        subtractions = max_(0, excluded - deducted_gain)
         return agi - subtractions

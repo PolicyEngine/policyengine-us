@@ -1,0 +1,496 @@
+# Form IT-270, Part 2, line 2: applicable income threshold from the 2025
+# Form IT-270-I line 2 table, which reproduces Tax Law § 1310(h)(1)(B).
+#
+# Married filing jointly or qualifying surviving spouse (§ 1310(h)(1)(B)(i)):
+#   1: 36,789  2: 46,350  3: 54,545  4: 61,071  5: 68,403  6: 75,204
+#   7 or more: 91,902
+# Single, married filing separately or head of household
+# (§ 1310(h)(1)(B)(ii)):
+#   1: 31,503  2: 36,824  3: 46,512  4: 53,711  5: 59,928  6: 65,712
+#   7: 74,565  8 or more: 88,361
+#
+# Neither table has a row for 0 dependents: § 1310(h)(1)(A) and IT-270
+# line A require at least one dependent, so a tax unit without dependents
+# has no threshold and the model returns 0.
+
+# Single filers.
+
+- name: Case 1, single filer with 0 dependents has no threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    tax_unit_dependents: 0
+  output:
+    # No 0-dependent row in § 1310(h)(1)(B)(ii).
+    nyc_income_tax_elimination_credit_income_threshold: 0
+
+- name: Case 2, single filer with 1 dependent.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    tax_unit_dependents: 1
+  output:
+    # § 1310(h)(1)(B)(ii), 1 dependent row.
+    nyc_income_tax_elimination_credit_income_threshold: 31_503
+
+- name: Case 3, single filer with 2 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    tax_unit_dependents: 2
+  output:
+    # § 1310(h)(1)(B)(ii), 2 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 36_824
+
+- name: Case 4, single filer with 7 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    tax_unit_dependents: 7
+  output:
+    # § 1310(h)(1)(B)(ii), 7 dependents row (this table has a separate row
+    # for 7 dependents, unlike the joint table).
+    nyc_income_tax_elimination_credit_income_threshold: 74_565
+
+- name: Case 5, single filer with 8 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    tax_unit_dependents: 8
+  output:
+    # § 1310(h)(1)(B)(ii), "8 or more" row.
+    nyc_income_tax_elimination_credit_income_threshold: 88_361
+
+- name: Case 6, single filer with 10 dependents uses the 8 or more row.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    tax_unit_dependents: 10
+  output:
+    # § 1310(h)(1)(B)(ii), "8 or more" row.
+    nyc_income_tax_elimination_credit_income_threshold: 88_361
+
+# Married filing separately.
+
+- name: Case 7, separate filer with 0 dependents has no threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SEPARATE
+    tax_unit_dependents: 0
+  output:
+    # No 0-dependent row in § 1310(h)(1)(B)(ii).
+    nyc_income_tax_elimination_credit_income_threshold: 0
+
+- name: Case 8, separate filer with 1 dependent.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SEPARATE
+    tax_unit_dependents: 1
+  output:
+    # § 1310(h)(1)(B)(ii), 1 dependent row.
+    nyc_income_tax_elimination_credit_income_threshold: 31_503
+
+- name: Case 9, separate filer with 2 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SEPARATE
+    tax_unit_dependents: 2
+  output:
+    # § 1310(h)(1)(B)(ii), 2 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 36_824
+
+- name: Case 10, separate filer with 7 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SEPARATE
+    tax_unit_dependents: 7
+  output:
+    # § 1310(h)(1)(B)(ii), 7 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 74_565
+
+- name: Case 11, separate filer with 8 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SEPARATE
+    tax_unit_dependents: 8
+  output:
+    # § 1310(h)(1)(B)(ii), "8 or more" row.
+    nyc_income_tax_elimination_credit_income_threshold: 88_361
+
+- name: Case 12, separate filer with 10 dependents uses the 8 or more row.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SEPARATE
+    tax_unit_dependents: 10
+  output:
+    # § 1310(h)(1)(B)(ii), "8 or more" row.
+    nyc_income_tax_elimination_credit_income_threshold: 88_361
+
+# Head of household filers.
+
+- name: Case 13, head of household filer with 0 dependents has no threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 0
+  output:
+    # No 0-dependent row in § 1310(h)(1)(B)(ii).
+    nyc_income_tax_elimination_credit_income_threshold: 0
+
+- name: Case 14, head of household filer with 1 dependent.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+  output:
+    # § 1310(h)(1)(B)(ii), 1 dependent row.
+    nyc_income_tax_elimination_credit_income_threshold: 31_503
+
+- name: Case 15, head of household filer with 2 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 2
+  output:
+    # § 1310(h)(1)(B)(ii), 2 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 36_824
+
+- name: Case 16, head of household filer with 7 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 7
+  output:
+    # § 1310(h)(1)(B)(ii), 7 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 74_565
+
+- name: Case 17, head of household filer with 8 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 8
+  output:
+    # § 1310(h)(1)(B)(ii), "8 or more" row.
+    nyc_income_tax_elimination_credit_income_threshold: 88_361
+
+- name: Case 18, head of household filer with 10 dependents uses the 8 or more row.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 10
+  output:
+    # § 1310(h)(1)(B)(ii), "8 or more" row.
+    nyc_income_tax_elimination_credit_income_threshold: 88_361
+
+# Joint filers.
+
+- name: Case 19, joint filers with 0 dependents have no threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 0
+  output:
+    # No 0-dependent row in § 1310(h)(1)(B)(i).
+    nyc_income_tax_elimination_credit_income_threshold: 0
+
+- name: Case 20, joint filers with 1 dependent.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 1
+  output:
+    # § 1310(h)(1)(B)(i), 1 dependent row.
+    nyc_income_tax_elimination_credit_income_threshold: 36_789
+
+- name: Case 21, joint filers with 2 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 2
+  output:
+    # § 1310(h)(1)(B)(i), 2 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 46_350
+
+- name: Case 22, joint filers with 7 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 7
+  output:
+    # § 1310(h)(1)(B)(i), "7 or more" row.
+    nyc_income_tax_elimination_credit_income_threshold: 91_902
+
+- name: Case 23, joint filers with 8 dependents use the 7 or more row.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 8
+  output:
+    # § 1310(h)(1)(B)(i), "7 or more" row; the joint table has no 8 row.
+    nyc_income_tax_elimination_credit_income_threshold: 91_902
+
+- name: Case 24, joint filers with 10 dependents use the 7 or more row.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 10
+  output:
+    # § 1310(h)(1)(B)(i), "7 or more" row.
+    nyc_income_tax_elimination_credit_income_threshold: 91_902
+
+# Qualifying surviving spouse filers.
+
+- name: Case 25, surviving spouse filer with 0 dependents has no threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SURVIVING_SPOUSE
+    tax_unit_dependents: 0
+  output:
+    # No 0-dependent row in § 1310(h)(1)(B)(i).
+    nyc_income_tax_elimination_credit_income_threshold: 0
+
+- name: Case 26, surviving spouse filer with 1 dependent.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SURVIVING_SPOUSE
+    tax_unit_dependents: 1
+  output:
+    # § 1310(h)(1)(B)(i), 1 dependent row.
+    nyc_income_tax_elimination_credit_income_threshold: 36_789
+
+- name: Case 27, surviving spouse filer with 2 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SURVIVING_SPOUSE
+    tax_unit_dependents: 2
+  output:
+    # § 1310(h)(1)(B)(i), 2 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 46_350
+
+- name: Case 28, surviving spouse filer with 7 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SURVIVING_SPOUSE
+    tax_unit_dependents: 7
+  output:
+    # § 1310(h)(1)(B)(i), "7 or more" row.
+    nyc_income_tax_elimination_credit_income_threshold: 91_902
+
+- name: Case 29, surviving spouse filer with 8 dependents uses the 7 or more row.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SURVIVING_SPOUSE
+    tax_unit_dependents: 8
+  output:
+    # § 1310(h)(1)(B)(i), "7 or more" row.
+    nyc_income_tax_elimination_credit_income_threshold: 91_902
+
+- name: Case 30, surviving spouse filer with 10 dependents uses the 7 or more row.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SURVIVING_SPOUSE
+    tax_unit_dependents: 10
+  output:
+    # § 1310(h)(1)(B)(i), "7 or more" row.
+    nyc_income_tax_elimination_credit_income_threshold: 91_902
+
+# Middle rows of each table (3 to 6 dependents), so every statutory amount
+# is asserted at least once.
+
+- name: Case 31, joint filers with 3 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 3
+  output:
+    # § 1310(h)(1)(B)(i), 3 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 54_545
+
+- name: Case 32, joint filers with 4 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 4
+  output:
+    # § 1310(h)(1)(B)(i), 4 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 61_071
+
+- name: Case 33, joint filers with 5 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 5
+  output:
+    # § 1310(h)(1)(B)(i), 5 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 68_403
+
+- name: Case 34, joint filers with 6 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 6
+  output:
+    # § 1310(h)(1)(B)(i), 6 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 75_204
+
+- name: Case 35, single filer with 3 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    tax_unit_dependents: 3
+  output:
+    # § 1310(h)(1)(B)(ii), 3 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 46_512
+
+- name: Case 36, single filer with 4 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    tax_unit_dependents: 4
+  output:
+    # § 1310(h)(1)(B)(ii), 4 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 53_711
+
+- name: Case 37, single filer with 5 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    tax_unit_dependents: 5
+  output:
+    # § 1310(h)(1)(B)(ii), 5 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 59_928
+
+- name: Case 38, single filer with 6 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    tax_unit_dependents: 6
+  output:
+    # § 1310(h)(1)(B)(ii), 6 dependents row.
+    nyc_income_tax_elimination_credit_income_threshold: 65_712
+
+- name: Case 39, tax unit outside NYC has no threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: false
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+  output:
+    # The credit is limited to city taxpayers (§ 1310(h)(1)(B)(i)-(ii)).
+    nyc_income_tax_elimination_credit_income_threshold: 0

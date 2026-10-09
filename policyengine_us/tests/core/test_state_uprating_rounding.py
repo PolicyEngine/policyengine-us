@@ -265,3 +265,46 @@ def test_mt_old_age_subtraction_uses_published_2025():
     assert amount.brackets[0].amount("2025-01-01") == 0
     assert amount.brackets[1].amount("2024-01-01") == 5_500
     assert amount.brackets[1].amount("2025-01-01") == 5_660
+
+
+AZ_STANDARD_DEDUCTION_STATUSES = ("SINGLE", "SEPARATE", "HEAD_OF_HOUSEHOLD")
+
+
+@pytest.mark.parametrize("status", AZ_STANDARD_DEDUCTION_STATUSES)
+def test_az_standard_deduction_is_indexed_like_the_federal_basic_amount(status):
+    # A.R.S. 43-1041(H): the subsection A amounts are adjusted "in the same
+    # manner in which the federal basic standard deduction is adjusted for
+    # inflation pursuant to section 63". Laws 2026, ch. 140 set those amounts
+    # to the federal 2025 amounts, so under current law the Arizona amounts
+    # equal the federal ones in every later year. A parent-level uprating key
+    # used to leave Arizona at its 2025 amounts from 2026 on. After 2026 this
+    # checks the model's projection, which uprates the rounded 2026 amount.
+    arizona = getattr(
+        SYSTEM.parameters.gov.states.az.tax.income.deductions.standard.amount, status
+    )
+    federal = getattr(SYSTEM.parameters.gov.irs.deductions.standard.amount, status)
+    uprating = SYSTEM.parameters.gov.irs.uprating
+    base_2026 = arizona("2026-01-01")
+    previous = arizona("2025-01-01")
+    for year in range(2025, 2036):
+        period = f"{year}-01-01"
+        amount = arizona(period)
+        assert amount == federal(period), (status, year)
+        assert amount >= previous, (status, year)
+        previous = amount
+        if year > 2026:
+            # 26 U.S.C. 63(c)(7)(B)(ii): round increases down to a multiple
+            # of $50.
+            factor = uprating(period) / uprating("2026-01-01")
+            assert amount == base_2026 * factor // 50 * 50, (status, year)
+    assert arizona("2035-01-01") > base_2026
+
+
+def test_az_joint_standard_deduction_is_twice_the_single_amount():
+    # 26 U.S.C. 63(c)(2)(A): the federal basic standard deduction for a joint
+    # return is 200% of the single amount, so the Arizona joint amount,
+    # indexed in the same manner, is twice the Arizona single amount.
+    amount = SYSTEM.parameters.gov.states.az.tax.income.deductions.standard.amount
+    for year in range(2025, 2036):
+        period = f"{year}-01-01"
+        assert amount.JOINT(period) == 2 * amount.SINGLE(period), year

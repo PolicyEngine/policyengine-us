@@ -1,5 +1,6 @@
-"""Input provenance for Form 2555 amounts."""
+"""Input provenance and election detection for Form 2555 amounts."""
 
+import numpy as np
 from policyengine_core.periods import period as parse_period
 
 
@@ -10,6 +11,33 @@ SECTION_911_LEAF_INPUTS = (
     "foreign_housing_deduction",
     "foreign_earned_income_exclusion_disallowed_deductions",
 )
+
+
+def elects_section_911_exclusion(tax_unit, period):
+    """Detect a section 911 election from aggregates or Form 2555 leaves.
+
+    Section 911(a)(1) and (2) provide separate earned-income and housing
+    exclusion elections, so housing-only filers also elect section 911.
+    Positive Form 2555 amounts identify the election even when deductions or
+    an explicit aggregate override reduce the federal stacking amount to zero.
+    Schedule 8812 (Line 13 and Part II-A) and Publication 596 (Rule 5) bar
+    Form 2555 filers from Worksheet B, refundable CTC, and EITC.
+
+    References:
+    https://www.law.cornell.edu/uscode/text/26/911#a
+    https://www.irs.gov/instructions/i1040s8
+    https://www.irs.gov/publications/p596
+    """
+    return np.logical_or.reduce(
+        [
+            tax_unit(variable, period) > 0
+            for variable in (
+                "foreign_earned_income_exclusion",
+                "section_911_excluded_income",
+                *SECTION_911_LEAF_INPUTS,
+            )
+        ]
+    )
 
 
 def validate_section_911_batch_inputs(situation, default_period):
