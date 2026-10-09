@@ -9,8 +9,8 @@ FilerScheduleDLines = namedtuple(
 
 def filer_schedule_d_lines(tax_unit, period):
     """Schedule D (Form 1040) lines 7, 15 and 16 of the head and spouse, shared
-    by the Form 1040 line 16 routing (has_qdiv_or_ltcg), net_capital_gain, the
-    Schedule D Tax Worksheet.
+    by the Form 1040 line 16 routing (has_qdiv_or_ltcg), net_capital_gain and
+    the Schedule D Tax Worksheet.
 
     Line 7 is the net short-term capital gain or loss. Line 15 is the net
     long-term capital gain or loss, including capital gain distributions
