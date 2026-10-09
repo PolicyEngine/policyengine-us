@@ -4,24 +4,29 @@ N.C. Gen. Stat. 105-153.5(a)(2)e, added by S.L. 2026-41 section 44.2 for
 taxable years beginning on or after January 1, 2025, allows the wagering
 losses allowed under 26 U.S.C. 165(d), to the extent not deducted in arriving
 at AGI. The winnings stay in AGI; NCDOR's FAQs (Q38) say they cannot be
-reduced by the losses.
+reduced by the losses. North Carolina's Code is the Internal Revenue Code as
+of July 5, 2025 (S.L. 2026-31 section 12.(a)), so P.L. 119-21 section 70114
+limits the deduction to 90% of losses from 2026.
 
-Each test evaluates every point of a winnings x losses x charitable deduction
-grid in one vectorized simulation per year, so the properties hold for all
-grid inputs rather than for a few examples. YAML cases cannot state these
-properties:
+YAML cases check single households. These tests check properties at every
+point of a winnings x losses x charitable deduction x property tax grid,
+using three vectorized simulations per year (with the winnings in AGI,
+without gambling, and with the AGI PolicyEngine computes):
 
-- the deduction is zero before 2025, never exceeds the winnings or the
-  losses, and rises with each;
-- it adds to North Carolina itemized deductions one for one, outside the
-  $20,000 mortgage and property tax cap;
+- the deduction is zero before 2025 and equals the section 165(d) amount,
+  min(share x losses, winnings), with share 1 in 2025 and 0.9 from 2026;
+- it never exceeds the winnings or the losses and rises with each;
+- it adds to North Carolina itemized deductions one for one, including when
+  property taxes already exceed the $20,000 mortgage and property tax cap;
 - with the winnings in AGI, gambling never lowers North Carolina taxable
   income and raises it by at most the winnings, by exactly the net gain for
   a filer who itemizes either way;
-- the same holds with the AGI PolicyEngine computes. This last property fails
-  until federal gross income counts gambling winnings
-  (PolicyEngine/policyengine-us#9637), so it keeps this deduction from
-  landing before that fix.
+- the same holds with the AGI PolicyEngine computes.
+
+Until PolicyEngine/policyengine-us#9637 is fixed (federal gross income leaves
+out gambling winnings, and the federal deduction has no 90% share), the 2026
+section 165(d) check and the modeled-AGI check fail. They keep this deduction
+from landing before that fix.
 """
 
 import itertools
@@ -33,12 +38,16 @@ from policyengine_us import Simulation
 
 AMOUNTS = [0, 1, 999, 5_000, 10_000, 12_000, 250_000]
 CHARITY = [0, 30_000]
-GRID = list(itertools.product(AMOUNTS, AMOUNTS, CHARITY))
-SHAPE = (len(AMOUNTS), len(AMOUNTS), len(CHARITY))
-WINNINGS, LOSSES, CHARITABLE = (
-    np.array([point[i] for point in GRID], dtype=float) for i in range(3)
+PROPERTY_TAX = [0, 25_000]
+AXES = [AMOUNTS, AMOUNTS, CHARITY, PROPERTY_TAX]
+GRID = list(itertools.product(*AXES))
+SHAPE = tuple(len(axis) for axis in AXES)
+WINNINGS, LOSSES, CHARITABLE, PROPERTY = (
+    np.array([point[i] for point in GRID], dtype=float) for i in range(len(AXES))
 )
 YEARS = [2024, 2025, 2026]
+# Share of wagering losses section 165(d) allows (P.L. 119-21 section 70114).
+LOSS_SHARE = {2025: 1.0, 2026: 0.9}
 WAGES = 60_000
 
 
@@ -50,7 +59,7 @@ def grid_simulation(year, gambling, agi=None):
         situation["people"][person] = {
             "age": {year: 40},
             "employment_income": {year: WAGES},
-            "real_estate_taxes": {year: 25_000},
+            "real_estate_taxes": {year: PROPERTY[i]},
             "gambling_winnings": {year: WINNINGS[i] if gambling else 0},
             "gambling_losses": {year: LOSSES[i] if gambling else 0},
         }
@@ -82,8 +91,6 @@ def calculate(sim, year):
 
 @pytest.fixture(scope="module")
 def results():
-    """Per year: gambling with the winnings in AGI, no gambling, and gambling
-    with the AGI PolicyEngine computes."""
     out = {}
     for year in YEARS:
         out[year] = {
@@ -98,11 +105,19 @@ def results():
 
 
 @pytest.mark.parametrize("year", YEARS)
-def test_deduction_is_bounded_monotone_and_starts_in_2025(results, year):
+def test_deduction_is_the_section_165d_amount_from_2025(results, year):
     deduction = results[year]["with"]["nc_wagering_losses_deduction"]
     if year < 2025:
         assert np.all(deduction == 0)
         return
+    np.testing.assert_allclose(
+        deduction, np.minimum(LOSS_SHARE[year] * LOSSES, WINNINGS), atol=1e-6
+    )
+
+
+@pytest.mark.parametrize("year", [2025, 2026])
+def test_deduction_is_bounded_and_monotone(results, year):
+    deduction = results[year]["with"]["nc_wagering_losses_deduction"]
     assert np.all(deduction >= 0)
     assert np.all(deduction <= WINNINGS + 1e-6)
     assert np.all(deduction <= LOSSES + 1e-6)
@@ -113,11 +128,10 @@ def test_deduction_is_bounded_monotone_and_starts_in_2025(results, year):
 
 @pytest.mark.parametrize("year", YEARS)
 def test_deduction_adds_to_itemized_deductions_outside_the_cap(results, year):
-    # Real estate taxes of 25,000 already exceed the 20,000 cap.
     with_gambling = results[year]["with"]
     change = (
         with_gambling["nc_itemized_deductions"]
-        - (results[year]["without"]["nc_itemized_deductions"])
+        - results[year]["without"]["nc_itemized_deductions"]
     )
     np.testing.assert_allclose(
         change, with_gambling["nc_wagering_losses_deduction"], atol=1e-6
@@ -127,16 +141,12 @@ def test_deduction_adds_to_itemized_deductions_outside_the_cap(results, year):
 @pytest.mark.parametrize("year", YEARS)
 def test_gambling_never_lowers_taxable_income_when_winnings_are_in_agi(results, year):
     with_gambling = results[year]["with"]
-    change = (
-        with_gambling["nc_taxable_income"]
-        - results[year]["without"]["nc_taxable_income"]
-    )
+    without = results[year]["without"]
+    change = with_gambling["nc_taxable_income"] - without["nc_taxable_income"]
     assert np.all(change >= -1e-6), "gambling lowered NC taxable income"
     assert np.all(change <= WINNINGS + 1e-6), "taxed more than the winnings"
-    itemizes = (
-        results[year]["without"]["nc_itemized_deductions"]
-        > with_gambling["nc_standard_deduction"]
-    )
+    itemizes = without["nc_itemized_deductions"] > without["nc_standard_deduction"]
+    assert itemizes.any() and not itemizes.all()
     net_gain = WINNINGS - with_gambling["nc_wagering_losses_deduction"]
     np.testing.assert_allclose(change[itemizes], net_gain[itemizes], atol=1e-6)
 
