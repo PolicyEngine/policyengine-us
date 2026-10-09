@@ -1,0 +1,285 @@
+- name: "2025 NY joint return with one claimable spouse and a child: the coverage family is one adult (the claimable spouse is the head)"
+  period: 2025-01
+  input:
+    people:
+      person_a:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NY
+        state_code_str: NY
+        slcsp_rating_area: 3
+        slcsp_age_0: 760
+  output:
+    slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    aca_ptc_slcsp_family_tier_category: ONE_ADULT
+
+- name: "2025 NY joint return with one claimable spouse and a child: the coverage family is one adult (the claimable spouse is the spouse)"
+  period: 2025-01
+  input:
+    people:
+      person_b:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: NY
+        state_code_str: NY
+        slcsp_rating_area: 3
+        slcsp_age_0: 760
+  output:
+    slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    aca_ptc_slcsp_family_tier_category: ONE_ADULT
+
+- name: "2025 NY joint return with both spouses claimable: no coverage family tier"
+  period: 2025-01
+  input:
+    people:
+      person_a:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NY
+        state_code_str: NY
+        slcsp_rating_area: 3
+        slcsp_age_0: 760
+  output:
+    aca_ptc_slcsp_family_tier_category: INDIVIDUAL_AGE_RATED
+
+- name: "2025 NY joint return with neither spouse claimable: same tier as slcsp"
+  period: 2025-01
+  input:
+    people:
+      person_a:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NY
+        state_code_str: NY
+        slcsp_rating_area: 3
+        slcsp_age_0: 760
+  output:
+    slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    aca_ptc_slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+
+- name: "2025 VT joint return with one claimable spouse and a child: the coverage family is one adult (the claimable spouse is the head)"
+  period: 2025-01
+  input:
+    people:
+      person_a:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: VT
+        state_code_str: VT
+        slcsp_rating_area: 1
+        slcsp_age_0: 760
+  output:
+    slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    aca_ptc_slcsp_family_tier_category: ONE_ADULT
+
+- name: "2025 VT joint return with one claimable spouse and a child: the coverage family is one adult (the claimable spouse is the spouse)"
+  period: 2025-01
+  input:
+    people:
+      person_b:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: VT
+        state_code_str: VT
+        slcsp_rating_area: 1
+        slcsp_age_0: 760
+  output:
+    slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    aca_ptc_slcsp_family_tier_category: ONE_ADULT
+
+- name: "2025 VT joint return with both spouses claimable: no coverage family tier"
+  period: 2025-01
+  input:
+    people:
+      person_a:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: VT
+        state_code_str: VT
+        slcsp_rating_area: 1
+        slcsp_age_0: 760
+  output:
+    aca_ptc_slcsp_family_tier_category: INDIVIDUAL_AGE_RATED
+
+- name: "2025 VT joint return with neither spouse claimable: same tier as slcsp"
+  period: 2025-01
+  input:
+    people:
+      person_a:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        monthly_age: 30
+        pays_aca_premium: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        monthly_age: 5
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: VT
+        state_code_str: VT
+        slcsp_rating_area: 1
+        slcsp_age_0: 760
+  output:
+    slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN
+    aca_ptc_slcsp_family_tier_category: TWO_ADULTS_AND_ONE_OR_MORE_CHILDREN

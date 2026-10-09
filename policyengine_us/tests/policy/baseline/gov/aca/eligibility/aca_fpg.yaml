@@ -1,0 +1,238 @@
+- name: 2025 joint return with one claimable spouse and a child uses the one-person poverty line (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    # 2024 contiguous guideline for one person (parameters/gov/hhs/fpg.yaml).
+    aca_tax_family_size: 1
+    aca_fpg: 15_060
+
+- name: 2025 joint return with one claimable spouse and a child uses the one-person poverty line (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+  output:
+    aca_tax_family_size: 1
+    aca_fpg: 15_060
+
+- name: 2025 joint return with neither spouse claimable and a child uses the three-person line
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    # 15,060 + 2 * 5,380
+    aca_fpg: 25_820
+
+- name: 2025 single filer who can be claimed keeps the tax unit's one-person line
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    # No tax family, so the line for the whole tax unit (1 person).
+    aca_tax_family_size: 0
+    aca_fpg: 15_060
+
+- name: 2025 joint return with both spouses claimable keeps the tax unit's two-person line
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    aca_tax_family_size: 0
+    aca_fpg: 20_440
+
+- name: 2026 joint return with one claimable spouse uses the 2025 one-person line (the claimable spouse is the head)
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    aca_fpg: 15_650
+
+- name: 2026 joint return with one claimable spouse uses the 2025 one-person line (the claimable spouse is the spouse)
+  period: 2026
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    aca_fpg: 15_650

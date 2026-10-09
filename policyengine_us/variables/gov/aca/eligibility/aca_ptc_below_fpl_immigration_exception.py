@@ -23,7 +23,13 @@ class aca_ptc_below_fpl_immigration_exception(Variable):
             "is_medicaid_immigration_status_eligible", period
         )
 
+        # 26 CFR 1.36B-2(b)(5): "the taxpayer or a member of the taxpayer's
+        # family" must be the lawfully present, Medicaid-ineligible person.
+        tax_family_member = person("is_aca_tax_family_member", period)
         qualifying_family_member = tax_unit.any(
-            non_citizen & aca_lawfully_present & medicaid_ineligible_due_to_status
+            tax_family_member
+            & non_citizen
+            & aca_lawfully_present
+            & medicaid_ineligible_due_to_status
         )
         return in_effect & below_fpl & qualifying_family_member

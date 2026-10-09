@@ -6,6 +6,10 @@ class is_aca_ptc_eligible(Variable):
     entity = Person
     label = "Person is eligible for ACA premium tax credit and pays ACA premium"
     definition_period = YEAR
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/36B#c_1",
+        "https://www.law.cornell.edu/cfr/text/26/1.36B-2#b",
+    )
 
     def formula(person, period, parameters):
         fstatus = person.tax_unit("filing_status", period)
@@ -20,4 +24,14 @@ class is_aca_ptc_eligible(Variable):
         )
         is_income_eligible = standard_income_eligible | below_fpl_exception
 
-        return person("pays_aca_premium", period) & ~separate & is_income_eligible
+        # Someone another taxpayer can claim is not an applicable taxpayer
+        # (26 U.S.C. 36B(c)(1)(D)) and is outside the tax family, along with
+        # the dependents of a return that has such a filer.
+        tax_family_member = person("is_aca_tax_family_member", period)
+
+        return (
+            person("pays_aca_premium", period)
+            & tax_family_member
+            & ~separate
+            & is_income_eligible
+        )
