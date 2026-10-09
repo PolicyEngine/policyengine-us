@@ -1,0 +1,39 @@
+# Sources for the expected values in this file:
+# - OHEP Operations Manual (May 2025), page 62, section 6.0 Categorical Eligibility:
+#   https://dhs.maryland.gov/documents/OHEP/OHEP-Operations-Manual.pdf#page=62
+# - FY2026 LIHEAP State Plan, page 5 (categorical eligibility by program):
+#   https://liheapch.acf.gov/docs/2026/state-plans/MD_Plan_2026.pdf#page=5
+
+- name: Case 1, SNAP, TCA or SSI receipt each confers categorical eligibility.
+  period: 2026
+  input:
+    state_code: [MD, MD, MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    # $200 a month of SNAP, $300 a month of TCA, and SSI at the 2026 federal rate
+    # of $994 a month.
+    snap: [2_400, 0, 0, 0]
+    tanf: [0, 3_600, 0, 0]
+    ssi: [0, 0, 11_928, 0]
+    veterans_benefits: [0, 0, 0, 1_000]
+  output:
+    # Manual page 62: households participating in SNAP, TANF, SSI or means-tested VA
+    # programs are categorically eligible, and any member's receipt qualifies the
+    # household. The fourth household has veterans benefits only: the model cannot
+    # tell whether they are means-tested, so they do not qualify it (documented
+    # limitation).
+    md_meap_categorically_eligible: [true, true, true, false]
+
+- name: Case 2, TCA entitlement that is not taken up does not confer categorical eligibility.
+  period: 2026
+  input:
+    state_code: [MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    md_tca: [1_200, 1_200]
+    takes_up_tanf_if_eligible: [false, true]
+    snap: [0, 0]
+    ssi: [0, 0]
+  output:
+    # State Plan page 5: a household is categorically income-eligible if a member
+    # receives the benefit on an ongoing basis. The first household is entitled to
+    # TCA but does not receive it; the second receives it.
+    md_meap_categorically_eligible: [false, true]

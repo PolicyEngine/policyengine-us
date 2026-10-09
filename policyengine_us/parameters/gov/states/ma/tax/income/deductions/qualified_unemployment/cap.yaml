@@ -1,0 +1,14 @@
+description: Massachusetts limits the qualified unemployment deduction to this amount of unemployment compensation for each eligible individual.
+values:
+  2021-01-01: 10_200
+metadata:
+  unit: currency-USD
+  period: year
+  label: Massachusetts qualified unemployment deduction cap per person
+  reference:
+    - title: St. 2021, c. 9, § 26(b) (taxable years beginning January 1, 2020 and January 1, 2021)
+      href: https://malegislature.gov/Laws/SessionLaws/Acts/2021/Chapter9
+    - title: 2021 Form 1 instructions, Schedule Y line 9c Qualified Unemployment Deduction worksheet (page 21)
+      href: https://taxsim.nber.org/historical_state_tax_forms/MA/2021/dor-2021-inc-form-1-inst.pdf#page=21
+    - title: TIR 21-6, Recent legislation on the taxation of unemployment compensation
+      href: https://www.mass.gov/technical-information-release/tir-21-6-recent-legislation-on-the-taxation-of-unemployment-compensation-forgiven-paycheck-protection-program-loans-and-other-covid-related-relief-payments
