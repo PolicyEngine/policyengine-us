@@ -75,22 +75,25 @@ jobs:
       # merge can push a version bump: the others would commit on a stale
       # parent and fail on push. The newest merge's job consumes every pending
       # changelog fragment (towncrier builds all of changelog.d), so an older
-      # job has nothing left to do. It exits successfully with a notice instead
-      # of failing. If the lookup itself fails, the job proceeds as before.
-      - name: Skip if a newer push to main superseded this commit
+      # job has nothing left to do. It skips only when GitHub's compare API
+      # says main is strictly ahead of this commit (status "ahead": this
+      # commit is an ancestor of main and main has more). Any other answer
+      # (identical, behind, diverged) or a failed lookup runs versioning as
+      # before, so a stale read can never suppress the newest merge's bump.
+      - name: Skip if main already contains this commit and more
         id: head
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if ! head=$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq .object.sha); then
-            echo "::warning::Could not read the main branch head; running versioning anyway."
-            head="$GITHUB_SHA"
+          if ! status=$(gh api "repos/${GITHUB_REPOSITORY}/compare/${GITHUB_SHA}...main" --jq .status); then
+            echo "::warning::Could not compare this commit with main; running versioning anyway."
+            status=unknown
           fi
-          if [ "$head" = "$GITHUB_SHA" ]; then
-            echo "current=true" >> "$GITHUB_OUTPUT"
-          else
+          if [ "$status" = "ahead" ]; then
             echo "current=false" >> "$GITHUB_OUTPUT"
-            echo "::notice title=Versioning superseded::main is at ${head}, not ${GITHUB_SHA}. That newer push's versioning job bumps the version once and includes this commit's changelog fragments."
+            echo "::notice title=Versioning superseded::main already contains ${GITHUB_SHA} and newer commits. The versioning job for main's newest merge bumps the version once with every pending changelog fragment, including this commit's. If that job fails, re-run it."
+          else
+            echo "current=true" >> "$GITHUB_OUTPUT"
           fi
       - name: Generate GitHub App token
         if: steps.head.outputs.current == 'true'
