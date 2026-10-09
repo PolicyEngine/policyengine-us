@@ -435,6 +435,8 @@
   reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
   input:
     gov.contrib.states.ky.hb13.in_effect: true
+    # Pin the 2027 standard deduction so the arithmetic below doesn't move with CPI projections.
+    gov.states.ky.tax.income.deductions.standard: 3_443.77
     people:
       person1:
         age: 45
@@ -458,7 +460,7 @@
     ky_modified_agi_if_separate: 40_000
     ky_family_size_tax_credit_rate_if_joint: 1
     ky_family_size_tax_credit_rate_if_separate: 0
-    # The model's 2027 standard deduction is $3,443.77. HB 13 Section 1:
+    # The 2027 standard deduction is pinned at $3,443.77 above. HB 13 Section 1:
     # (40,000 - 3,443.77) x 3.5% = 1,279.47 on the separate path;
     # (10,000 - 3,443.77) x 3.5% = 229.47 on the joint path.
     ky_taxable_income_indiv: [36_556.23, 0]
