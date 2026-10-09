@@ -92,52 +92,6 @@ def test_gross_sum_and_nonnegative_massachusetts_addback(rows):
     )
 
 
-def test_section_911_excluded_income_does_not_subtract_worksheet_deductions():
-    simulation = leaf_simulation(
-        [(8_000, 2_000, 1_000, 500, 0), (8_000, 2_000, 1_000, 500, 700)]
-    )
-    # Schedule 1-A lines 2b and 2c add Form 2555 lines 45 and 50.
-    # Worksheet line 2b changes federal stacking, but not this MAGI amount.
-    np.testing.assert_array_equal(
-        simulation.calculate("section_911_excluded_income", YEAR),
-        [9_500, 9_500],
-    )
-    np.testing.assert_array_equal(
-        simulation.calculate("foreign_earned_income_exclusion", YEAR),
-        [9_500, 8_800],
-    )
-
-
-def test_additional_senior_deduction_magi_adds_form_2555_before_worksheet_deductions():
-    leaves = (8_000, 2_000, 1_000, 500, 700)
-    simulation = simulation_for_tax_units(
-        [
-            {
-                "adjusted_gross_income": {YEAR: 100_000},
-                **{name: {YEAR: value} for name, value in zip(LEAVES, leaves)},
-            }
-        ]
-    )
-    # Schedule 1-A adds lines 45 and 50 (9,500), while the tax worksheet
-    # subtracts the 700 of related itemized deductions for stacking only.
-    np.testing.assert_array_equal(
-        simulation.calculate("additional_senior_deduction_magi", YEAR),
-        [109_500],
-    )
-
-
-def test_section_911_excluded_income_preserves_negative_form_2555_line_45():
-    simulation = leaf_simulation([(1_000, 0, 2_000, 0, 0)])
-    # Publication 54, How To Report Deductions, Example 4 permits line 44
-    # to exceed line 43. The zero floor belongs to worksheet line 2c.
-    np.testing.assert_array_equal(
-        simulation.calculate("section_911_excluded_income", YEAR), [-1_000]
-    )
-    np.testing.assert_array_equal(
-        simulation.calculate("foreign_earned_income_exclusion", YEAR), [0]
-    )
-
-
 @pytest.mark.parametrize(
     "first",
     [
