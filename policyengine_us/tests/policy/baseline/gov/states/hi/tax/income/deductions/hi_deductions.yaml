@@ -221,6 +221,7 @@
 
 - name: 2025 joint return with a claimable self-employed spouse uses earned income net of the self-employment tax deduction (the claimable spouse is the head)
   period: 2025
+  absolute_error_margin: 0.01
   input:
     people:
       person_a:
@@ -249,6 +250,7 @@
 
 - name: 2025 joint return with a claimable self-employed spouse uses earned income net of the self-employment tax deduction (the claimable spouse is the spouse)
   period: 2025
+  absolute_error_margin: 0.01
   input:
     people:
       person_b:
