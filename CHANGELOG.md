@@ -1,3 +1,14 @@
+## [2.36.0] - 2026-10-09
+
+### Fixed
+
+- Montana itemized deductions count only federally deductible mortgage interest, so interest on acquisition debt above the IRC 163(h)(3) caps is no longer deducted. The Virginia EITC reports the credit the tax applies for spouses filing separately, not only the share of the spouse listed as head. Maryland's two-income subtraction gives each spouse their own losses and deductions when the couple has no gross income, instead of giving all of them to the head.
+
+### Removed
+
+- Removed `va_eitc_person` and `va_agi_share`, which fed only the head-share branch of `va_eitc`; `va_eitc` now reports the tax unit's applied Virginia EITC for every filing status.
+
+
 ## [2.35.3] - 2026-10-09
 
 ### Fixed
