@@ -425,24 +425,40 @@ def _all_member_estate(units):
     return estate
 
 
-def test_estate_income_raises_household_net_income_by_its_after_tax_amount():
+@pytest.mark.parametrize(
+    "qualified, tax_rise",
+    [
+        # Unreported QBI is presumed zero (Treas. Reg. 1.199A-6(b)(3)(iii),
+        # applied to beneficiaries by 1.199A-6(d)(1)), so taxable estate
+        # income alone earns no QBI deduction: 12% of $10,000.
+        (None, 1_200),
+        # Estate income reported as the beneficiary's allocated qualified
+        # business items (Form 1041 Schedule K-1, box 14, code I) earns the
+        # 20% QBI deduction: 12% of $10,000 less $2,000.
+        (True, 960),
+    ],
+)
+def test_estate_income_raises_household_net_income_by_its_after_tax_amount(
+    qualified, tax_rise
+):
     """Taxing estate income must not make a household look poorer.
 
     A single Texas filer with $50,000 of wages in 2024 receives $10,000 of
-    estate income. Federal income tax rises by 12% of $10,000 less the $2,000
-    QBI deduction, or $960; Texas has no income tax and estate income carries
-    no payroll tax. So household net income rises by $9,040.
+    estate income, which stays in the 12% bracket. Texas has no income tax
+    and estate income carries no payroll tax, so household net income rises
+    by the $10,000 less the federal income tax increase.
     """
 
     def net_income(estate):
+        head = {
+            "age": {2024: 40},
+            "employment_income": {2024: 50_000},
+            "estate_income": {2024: estate},
+        }
+        if qualified is not None:
+            head["estate_income_would_be_qualified"] = {2024: qualified}
         situation = {
-            "people": {
-                "head": {
-                    "age": {2024: 40},
-                    "employment_income": {2024: 50_000},
-                    "estate_income": {2024: estate},
-                }
-            },
+            "people": {"head": head},
             "tax_units": {"tax_unit": {"members": ["head"]}},
             "households": {
                 "household": {"members": ["head"], "state_code": {2024: "TX"}}
@@ -456,5 +472,5 @@ def test_estate_income_raises_household_net_income_by_its_after_tax_amount():
 
     net_without, tax_without = net_income(0)
     net_with, tax_with = net_income(10_000)
-    assert abs((tax_with - tax_without) - 960) < TOLERANCE
-    assert abs((net_with - net_without) - 9_040) < TOLERANCE
+    assert abs((tax_with - tax_without) - tax_rise) < TOLERANCE
+    assert abs((net_with - net_without) - (10_000 - tax_rise)) < TOLERANCE
