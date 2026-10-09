@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.section_911 import elects_section_911_exclusion
 
 
 class refundable_ctc_barred_by_section_911_exclusion(Variable):
@@ -22,9 +23,7 @@ class refundable_ctc_barred_by_section_911_exclusion(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.credits.ctc.refundable
-        elects_section_911_exclusion = (
-            tax_unit("foreign_earned_income_exclusion", period) > 0
-        )
+        claims_section_911 = elects_section_911_exclusion(tax_unit, period)
         # Section 24(i)(1)(A) (2021) switched off all of subsection (d),
         # including this bar, for filers whose principal place of abode was in
         # the United States for more than half the year and for bona fide
@@ -33,4 +32,4 @@ class refundable_ctc_barred_by_section_911_exclusion(Variable):
         bar_in_force = (
             p.foreign_earned_income_exclusion_bar_applies and not p.fully_refundable
         )
-        return elects_section_911_exclusion & bar_in_force
+        return claims_section_911 & bar_in_force

@@ -185,3 +185,33 @@
   output:
     tax_unit_is_required_to_file: false
     tax_unit_is_filer: false
+
+- name: A housing-only leaf claimant with zero aggregates files according to tax-benefit propensity
+  period: 2025
+  input:
+    tax_unit_is_required_to_file: false
+    eligible_for_refundable_credits: false
+    would_file_if_eligible_for_refundable_credit: true
+    would_file_taxes_voluntarily: false
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    tax_unit_is_filer: true
+
+- name: A housing-only leaf claimant with zero aggregates and no filing propensity does not file
+  period: 2025
+  input:
+    tax_unit_is_required_to_file: false
+    eligible_for_refundable_credits: false
+    would_file_if_eligible_for_refundable_credit: false
+    would_file_taxes_voluntarily: false
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    tax_unit_is_filer: false

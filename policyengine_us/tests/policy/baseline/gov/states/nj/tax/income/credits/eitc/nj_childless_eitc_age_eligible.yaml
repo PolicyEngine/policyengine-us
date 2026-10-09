@@ -133,3 +133,26 @@
         foreign_earned_income_exclusion: 30_000
   output:
     nj_childless_eitc_age_eligible: false
+
+- name: Housing-only leaf claimant fails the non-age qualification with zero aggregates.
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 20
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_eitc_income_eligible: true
+        foreign_earned_income_exclusion_amount: 0
+        foreign_housing_exclusion: 5_000
+        foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    nj_childless_eitc_age_eligible: false

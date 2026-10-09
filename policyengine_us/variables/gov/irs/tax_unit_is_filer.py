@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.section_911 import elects_section_911_exclusion
 
 
 class tax_unit_is_filer(Variable):
@@ -54,7 +55,7 @@ class tax_unit_is_filer(Variable):
         # so those credits cannot be its reason to file. A claimant under the
         # filing threshold need not file in a later year of a continuing
         # election, so the propensity to file for a tax benefit decides.
-        claims_section_911 = tax_unit("foreign_earned_income_exclusion", period) > 0
+        claims_section_911 = elects_section_911_exclusion(tax_unit, period)
         files_for_section_911 = claims_section_911 & would_file_for_credits
 
         return required | files_for_credits | files_for_section_911 | files_voluntarily

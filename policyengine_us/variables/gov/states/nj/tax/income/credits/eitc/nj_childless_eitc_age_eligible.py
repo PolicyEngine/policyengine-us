@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.section_911 import elects_section_911_exclusion
 
 
 class nj_childless_eitc_age_eligible(Variable):
@@ -33,7 +34,7 @@ class nj_childless_eitc_age_eligible(Variable):
 
         # Section 32(c)(1)(C): a filer who claims the benefits of section 911
         # fails a federal qualification other than age.
-        claims_section_911 = tax_unit("foreign_earned_income_exclusion", period) > 0
+        claims_section_911 = elects_section_911_exclusion(tax_unit, period)
 
         return (
             ~separate

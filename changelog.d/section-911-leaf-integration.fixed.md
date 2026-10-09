@@ -1,0 +1,1 @@
+Derive the section 911 MAGI add-back from Form 2555 leaves before worksheet deductions, recognize Form 2555 filers with zero stacking amounts for CTC Worksheet B, and reject ambiguous mixed-input tax-unit batches.

@@ -189,3 +189,20 @@
     foreign_earned_income_exclusion: 30_000
   output:
     refundable_ctc: 6_000
+
+- name: Housing-only leaf election denies an otherwise positive refundable credit with zero aggregates
+  period: 2025
+  input:
+    ctc_refundable_maximum: 3_400
+    ctc: 4_400
+    ctc_phase_out: 0
+    ctc_phase_in: 10_000
+    ctc_limiting_tax_liability: 0
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    # Without the section 911 bar, the same phase-in gives a $3,400 refund.
+    refundable_ctc: 0

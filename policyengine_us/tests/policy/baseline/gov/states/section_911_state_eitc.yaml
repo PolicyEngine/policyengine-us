@@ -124,3 +124,32 @@
     tax_unit_is_required_to_file: true
     eitc: 0
     in_eitc_eligible: false
+
+- name: Housing-only leaf claimant in DC gets no recomputed EITC with zero aggregates.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion_amount: 0
+        foreign_housing_exclusion: 5_000
+        foreign_earned_income_exclusion_allocable_deductions: 5_000
+        # Ensure a reason to file remains when the aggregates are zero, so
+        # the section 911 eligibility rule is what denies the state credit.
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: false
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    tax_unit_is_required_to_file: false
+    eitc: 0
+    dc_eitc_without_qualifying_child: 0
