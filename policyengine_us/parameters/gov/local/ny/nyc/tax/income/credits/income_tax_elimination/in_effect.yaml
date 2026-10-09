@@ -1,0 +1,15 @@
+description: New York City provides the income tax elimination credit when this is true.
+values:
+  0000-01-01: false
+  # Tax Law § 1310(h)(1) applies to taxable years beginning on or after
+  # January 1, 2025.
+  2025-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: NYC income tax elimination credit in effect
+  reference:
+    - title: NY Tax Law § 1310(h)(1)
+      href: https://www.nysenate.gov/legislation/laws/TAX/1310
+    - title: 2025 Form IT-270-I, General information
+      href: https://www.tax.ny.gov/pdf/2025/inc/it270i_2025.pdf#page=1
