@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.tax.federal_income.capital_gains.filer_schedule_d_lines import (
+    filer_schedule_d_lines,
+)
 
 
 class filer_loss_limited_net_capital_gains(Variable):
@@ -14,7 +17,8 @@ class filer_loss_limited_net_capital_gains(Variable):
         "line 5a without Schedule 1 line 4. A tax unit dependent's gains and "
         "losses are on the dependent's own return. Unlike "
         "loss_limited_net_capital_gains, this leaves dependents out. It "
-        "starts from net_capital_gains, so a tax unit amount supplied there "
+        "uses the same filer Schedule D lines as the tax worksheet. A tax "
+        "unit net_capital_gains amount supplied as an input "
         "is kept; that amount is read as covering every member, and any "
         "dependent's person-level gains and losses are then taken out."
     )
@@ -28,25 +32,5 @@ class filer_loss_limited_net_capital_gains(Variable):
         p = parameters(period).gov.irs
         filing_status = tax_unit("filing_status", period)
         loss_limit = p.capital_gains.loss_limit[filing_status]
-        # net_capital_gains sums every member's Schedule D gains and losses,
-        # or holds a tax unit amount supplied as an input. A tax unit
-        # dependent's own gains and losses are on the dependent's return, so
-        # they come out here; a supplied amount is kept.
-        person = tax_unit.members
-        dependent = person("is_tax_unit_dependent", period)
-        dependent_gains = tax_unit.sum(
-            dependent
-            * (
-                person("long_term_capital_gains", period)
-                + person("short_term_capital_gains", period)
-            )
-        )
-        net_capital_gains = tax_unit("net_capital_gains", period) - dependent_gains
-        # Capital gain distributions go on Schedule D line 13 with the other
-        # gains and losses, so they net before the limit. Each filer's input
-        # is floored at zero, as in irs_gross_income.
-        not_dependent = ~dependent
-        distributions = tax_unit.sum(
-            not_dependent * max_(0, person("non_sch_d_capital_gains", period))
-        )
-        return max_(-loss_limit, net_capital_gains + distributions)
+        lines = filer_schedule_d_lines(tax_unit, period)
+        return max_(-loss_limit, lines.line_16)
