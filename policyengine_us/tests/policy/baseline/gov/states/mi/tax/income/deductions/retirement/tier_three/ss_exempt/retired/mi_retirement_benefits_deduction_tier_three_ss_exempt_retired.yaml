@@ -91,3 +91,66 @@
       state_code: MI
   output: # min(35000 < 10000, 40000)
     mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 10_000
+
+- name: A dependent's military retirement pay does not trigger the military retirement comparison for a retired filer.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        taxable_pension_income: 40_000
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 10
+        military_retirement_pay: 10_000
+        is_tax_unit_head_or_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_three_eligible: true
+        mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_people: 1
+        mi_retirement_benefits_deduction_tier_one_amount: 10_000
+        members: [person1, person2]
+        filing_status: SINGLE
+    household:
+      members: [person1, person2]
+      state_code: MI
+  output:
+    # Worksheet 3.1 line 2 takes only military retirement pay on the filer's
+    # Schedule 1, line 11, which excludes the dependent's pay, so the cap is
+    # not limited to the tier 1 amount: min(35,000, 40,000) = 35,000.
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 35_000
+
+- name: Only the head's and spouse's pensions count toward the retired tier three deduction, not a dependent's.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        taxable_pension_income: 20_000
+        military_retirement_pay: 1_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        taxable_pension_income: 30_000
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 12
+        taxable_pension_income: 30_000
+        military_retirement_pay: 5_000
+        is_tax_unit_head_or_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_three_eligible: true
+        mi_retirement_benefits_deduction_tier_three_ss_exempt_retired_eligible_people: 2
+        mi_retirement_benefits_deduction_tier_one_amount: 60_000
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    household:
+      members: [person1, person2, person3]
+      state_code: MI
+  output:
+    # The head's own military pay limits the cap: min(70,000, 60,000) = 60,000.
+    # min(20,000 + 30,000, 60,000) = 50,000
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_retired: 50_000
