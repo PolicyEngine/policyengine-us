@@ -144,3 +144,129 @@
   output:
     # Post-TCJA cap: 45,000 x 750,000 / 900,000 = 37,500
     deductible_mortgage_interest_tax_unit: 37_500
+
+# Publication 936 (2017), pages 2 and 8: only the taxpayer's paid share
+# belongs on the return, including a spouse's share on a joint return.
+# https://www.irs.gov/pub/irs-prior/p936--2017.pdf#page=2
+- name: Dependent-only canonical interest cannot create a federal filer deduction
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        home_mortgage_interest: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head, dependent]
+        state_code: CA
+  output:
+    home_mortgage_interest_tax_unit: 0
+    deductible_mortgage_interest_tax_unit: 0
+    non_deductible_mortgage_interest_tax_unit: 0
+    deductible_mortgage_interest: [0, 0]
+    interest_deduction: 0
+
+- name: Federal mortgage interest includes the single filer's payment only
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        home_mortgage_interest: 10_000
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        home_mortgage_interest: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head, dependent]
+        state_code: CA
+  output:
+    home_mortgage_interest_tax_unit: 10_000
+    deductible_mortgage_interest_tax_unit: 10_000
+    non_deductible_mortgage_interest_tax_unit: 0
+    deductible_mortgage_interest: [10_000, 0]
+    interest_deduction: 10_000
+
+- name: Capped federal interest allocates both spouses' payments without dependent interest
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        home_mortgage_interest: 30_000
+      spouse:
+        age: 44
+        is_tax_unit_spouse: true
+        home_mortgage_interest: 15_000
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        home_mortgage_interest: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        filing_status: JOINT
+        first_home_mortgage_balance: 900_000
+        first_home_mortgage_origination_year: 2023
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: CA
+  output:
+    # $45,000 * $750,000 / $900,000 = $37,500, split 2:1.
+    home_mortgage_interest_tax_unit: 45_000
+    deductible_mortgage_interest_tax_unit: 37_500
+    non_deductible_mortgage_interest_tax_unit: 7_500
+    deductible_mortgage_interest: [25_000, 12_500, 0]
+    non_deductible_mortgage_interest: [5_000, 2_500, 0]
+    interest_deduction: 37_500
+
+- name: Dependent canonical interest preserves the federal structured-interest fallback
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+      spouse:
+        age: 44
+        is_tax_unit_spouse: true
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        home_mortgage_interest: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        filing_status: JOINT
+        first_home_mortgage_interest: 45_000
+        first_home_mortgage_balance: 900_000
+        first_home_mortgage_origination_year: 2023
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: CA
+  output:
+    # With no filer canonical payments, each spouse gets half the deduction.
+    home_mortgage_interest_tax_unit: 45_000
+    deductible_mortgage_interest_tax_unit: 37_500
+    non_deductible_mortgage_interest_tax_unit: 7_500
+    deductible_mortgage_interest: [18_750, 18_750, 0]
+    non_deductible_mortgage_interest: [3_750, 3_750, 0]
+    interest_deduction: 37_500
