@@ -1,5 +1,5 @@
-# Exact PolicyBench scenario facts and conversion defaults. Expected SNAP values
-# are the HUB_BRIEF audited targets, not results verified against current gh/main.
+# PolicyBench snapshot facts and takeup defaults. Leaf input aliases mirror
+# the US Simulation adapter, which Core's YAML SimulationBuilder bypasses.
 - name: PolicyBench scenario_080 PA household receives SNAP without the heat-and-eat
     SUA
   period: 2026
@@ -9,7 +9,7 @@
       head:
         age:
           '2026': 41
-        employment_income:
+        employment_income_before_lsr:
           '2026': 0.0
         bank_account_assets:
           '2026': 19827.646484375
@@ -21,7 +21,7 @@
           '2026': true
         is_tax_unit_spouse:
           '2026': false
-        long_term_capital_gains:
+        long_term_capital_gains_before_response:
           '2026': 924.0
         other_medical_expenses:
           '2026': 12.0
@@ -84,7 +84,7 @@
       head:
         age:
           '2026': 46
-        employment_income:
+        employment_income_before_lsr:
           '2026': 5914.720703125
         bank_account_assets:
           '2026': 2800.0
@@ -129,7 +129,7 @@
       child1:
         age:
           '2026': 6
-        employment_income:
+        employment_income_before_lsr:
           '2026': 0.0
         has_esi:
           '2026': true
@@ -144,7 +144,7 @@
       child2:
         age:
           '2026': 5
-        employment_income:
+        employment_income_before_lsr:
           '2026': 0.0
         is_tax_unit_head:
           '2026': false

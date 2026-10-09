@@ -17,7 +17,7 @@
   period: 2026
   input:
     age: 40
-    weekly_hours_worked: 30
+    weekly_hours_worked_before_lsr: 30
     state_code: PA
   output:
     snap_utility_allowance_type: NONE
@@ -53,7 +53,7 @@
   period: 2026
   input:
     age: 59
-    weekly_hours_worked: 30
+    weekly_hours_worked_before_lsr: 30
     state_code: PA
   output:
     has_snap_elderly_disabled_member: false
@@ -63,7 +63,7 @@
   period: 2026
   input:
     age: 60
-    weekly_hours_worked: 30
+    weekly_hours_worked_before_lsr: 30
     state_code: PA
   output:
     has_snap_elderly_disabled_member: true
@@ -133,7 +133,7 @@
     people:
       adult:
         age: 40
-        weekly_hours_worked: 30
+        weekly_hours_worked_before_lsr: 30
       excluded_elder:
         age: 65
         immigration_status: UNDOCUMENTED
