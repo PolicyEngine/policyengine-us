@@ -369,3 +369,101 @@
     nc_taxable_income: 63_000
     # 63,000 * 4.25% = 2,677.50 (2,858.13 without the repayment).
     nc_income_tax: 2_677.50
+
+- name: No deduction when federal tax is computed under section 1341(a)(5).
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 80_000
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    nc_claim_of_right_deduction: 0
+
+- name: The deduction is allowed when federal tax is computed under section 1341(a)(4).
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 80_000
+        claim_of_right_credit_applies: false
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    nc_claim_of_right_deduction: 5_000
+
+- name: A filer the federal credit method suits loses the North Carolina deduction and is treated as paying the prior-year North Carolina tax on the item.
+  # The household above, now with a $1,100 decrease in 2024 federal tax and
+  # a $212.50 increase in 2024 North Carolina tax from the repaid $5,000.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 80_000
+        claim_of_right_repayment: 5_000
+        claim_of_right_prior_year_tax_decrease: 1_100
+        nc_claim_of_right_prior_year_tax_increase: 212.5
+        real_estate_taxes: 4_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        charitable_deduction: 8_000
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    claim_of_right_credit_applies: true
+    claim_of_right_credit: 1_100
+    nc_claim_of_right_deduction: 0
+    # 4,000 + 8,000 = 12,000 loses to the 12,750 standard deduction.
+    nc_standard_or_itemized_deductions: 12_750
+    nc_taxable_income: 67_250
+    # 67,250 * 4.25% = 2,858.13, less the 212.50 payment.
+    nc_income_tax_before_refundable_credits: 2_858.13
+    nc_claim_of_right_payment: 212.5
+    nc_income_tax: 2_645.63
+
+- name: A filer the federal deduction method suits keeps the North Carolina deduction and gets no payment.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 80_000
+        claim_of_right_repayment: 5_000
+        claim_of_right_prior_year_tax_decrease: 568
+        nc_claim_of_right_prior_year_tax_increase: 212.5
+        real_estate_taxes: 4_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        charitable_deduction: 8_000
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    claim_of_right_credit_applies: false
+    nc_claim_of_right_deduction: 5_000
+    nc_claim_of_right_payment: 0
+    nc_income_tax: 2_677.50

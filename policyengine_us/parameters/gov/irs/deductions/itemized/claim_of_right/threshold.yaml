@@ -1,0 +1,16 @@
+description: The IRS computes tax for the year of repayment as the lesser of the tax with a deduction for the repayment and the tax without it less the resulting decrease in prior-year tax, when the repayment of income held under a claim of right exceeds this amount.
+values:
+  1954-01-01: 3_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Claim of right repayment threshold
+  reference:
+    - title: 26 U.S. Code § 1341(a)(3)
+      href: https://www.govinfo.gov/content/pkg/USCODE-2024-title26/html/USCODE-2024-title26-subtitleA-chap1-subchapQ-partV-sec1341.htm
+    - title: 26 U.S. Code § 67(b)(9)
+      href: https://www.law.cornell.edu/uscode/text/26/67#b_9
+    - title: 26 CFR 1.1341-1(a)(3)
+      href: https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/subject-group-ECFR4c74bc8cf7c11fb/section-1.1341-1
+    - title: "Publication 525 (2025), Repayments #page 36-37"
+      href: https://www.irs.gov/pub/irs-prior/p525--2025.pdf#page=36

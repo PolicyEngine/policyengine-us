@@ -12,10 +12,11 @@ class nc_claim_of_right_deduction(Variable):
         "2026, only income North Carolina taxed that year. Repayments above "
         "the threshold are deductible in full. Smaller repayments are reduced "
         "by two percent of federal adjusted gross income less the filers' "
-        "other miscellaneous itemized deductions. Not modeled: the bar on the "
-        "deduction when federal tax for the year of repayment is computed "
-        "under 26 U.S.C. 1341(a)(5), and from 2026, repayments of amounts North "
-        "Carolina added to adjusted gross income that federal law excluded."
+        "other miscellaneous itemized deductions. No deduction is allowed "
+        "when federal tax for the year of repayment is computed under 26 "
+        "U.S.C. 1341(a)(5). Not modeled: from 2026, repayments of amounts "
+        "North Carolina added to adjusted gross income that federal law "
+        "excluded."
     )
     definition_period = YEAR
     reference = (
@@ -59,8 +60,13 @@ class nc_claim_of_right_deduction(Variable):
             other_misc_deductions = 0
         remaining_floor = max_(floor - other_misc_deductions, 0)
         small_repayment_deduction = max_(repayment - remaining_floor, 0)
-        return where(
+        deduction = where(
             repayment > p.claim_of_right.threshold,
             repayment,
             small_repayment_deduction,
         )
+        # No deduction when federal tax for the year of repayment is
+        # computed under section 1341(a)(5); G.S. 105-266.2 instead treats
+        # the prior-year North Carolina tax on the item as a payment.
+        credit_applies = tax_unit("claim_of_right_credit_applies", period)
+        return where(credit_applies, 0, deduction)

@@ -1,0 +1,161 @@
+# Publication 525, Repayments, Example 40, in three editions. A single filer
+# repaid $5,000 of income included in the prior year's income under a claim
+# of right. Taxable income is $49,950 without the deduction and $44,950 with
+# it; excluding the $5,000 cut the prior year's tax by $568 (2025, 2024) or
+# $750 (2018). In each edition method 1, the deduction, gives less tax.
+# Wages and charitable gifts are chosen to reproduce those taxable incomes:
+# without the repayment, itemized deductions equal the standard deduction.
+# Publication 525 figures tax with the Tax Table in 2024 and 2018 (the
+# midpoint of each $50 row); PolicyEngine applies the rate schedule.
+
+- name: Case 1, Publication 525 (2025) Example 40, the deduction gives less tax.
+  # https://www.irs.gov/pub/irs-prior/p525--2025.pdf#page=36
+  period: 2025
+  input:
+    age: 40
+    employment_income: 65_700
+    charitable_cash_donations: 15_750
+    claim_of_right_repayment: 5_000
+    claim_of_right_prior_year_tax_decrease: 568
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: TX
+  output:
+    claim_of_right_section_1341_eligible: true
+    # Method 1: tax on $44,950 = $1,192.50 + 12% x ($44,950 - $11,925).
+    # Publication 525 rounds $5,155.50 to $5,156.
+    income_tax_if_claiming_claim_of_right_deduction: 5_155.5
+    # Method 2: tax on $49,950, $5,903, less the $568 prior-year decrease.
+    income_tax_if_claiming_claim_of_right_credit: 5_335
+    claim_of_right_credit_applies: false
+    claim_of_right_deduction: 5_000
+    claim_of_right_credit: 0
+    taxable_income: 44_950
+    income_tax: 5_155.5
+
+- name: Case 2, Publication 525 (2024) Example 40, the deduction gives less tax.
+  # https://www.irs.gov/pub/irs-prior/p525--2024.pdf#page=37
+  period: 2024
+  input:
+    age: 40
+    employment_income: 64_550
+    charitable_cash_donations: 14_600
+    claim_of_right_repayment: 5_000
+    claim_of_right_prior_year_tax_decrease: 568
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: TX
+  output:
+    # $1,160 + 12% x ($44,950 - $11,600) = $5,162; the Tax Table gives
+    # $5,165.
+    income_tax_if_claiming_claim_of_right_deduction: 5_162
+    # $1,160 + $4,266 + 22% x ($49,950 - $47,150) = $6,042 (Tax Table
+    # $6,048), less $568 = $5,474 (Publication 525: $5,480).
+    income_tax_if_claiming_claim_of_right_credit: 5_474
+    claim_of_right_credit_applies: false
+    claim_of_right_deduction: 5_000
+    taxable_income: 44_950
+    income_tax: 5_162
+
+- name: Case 3, Publication 525 (2018) Example 40, the deduction gives less tax.
+  # https://www.irs.gov/pub/irs-prior/p525--2018.pdf#page=34
+  period: 2018
+  input:
+    age: 40
+    employment_income: 61_950
+    charitable_cash_donations: 12_000
+    claim_of_right_repayment: 5_000
+    claim_of_right_prior_year_tax_decrease: 750
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: TX
+  output:
+    # $952.50 + $3,501 + 22% x ($44,950 - $38,700) = $5,828.50 (Tax Table
+    # $5,834).
+    income_tax_if_claiming_claim_of_right_deduction: 5_828.5
+    # $4,453.50 + 22% x ($49,950 - $38,700) = $6,928.50 (Tax Table $6,934),
+    # less $750 = $6,178.50 (Publication 525: $6,184).
+    income_tax_if_claiming_claim_of_right_credit: 6_178.5
+    claim_of_right_credit_applies: false
+    claim_of_right_deduction: 5_000
+    taxable_income: 44_950
+    income_tax: 5_828.5
+
+- name: Case 4, a filer who takes the standard deduction gains only from the credit.
+  # Publication 525 (2025) method 2 steps: tax without the deduction, less
+  # the decrease in the earlier year's tax.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 40_000
+    claim_of_right_repayment: 10_000
+    claim_of_right_prior_year_tax_decrease: 2_200
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: TX
+  output:
+    # Itemizing $10,000 loses to the $15,750 standard deduction, so the
+    # deduction leaves tax on $24,250 at $1,192.50 + 12% x $12,325.
+    income_tax_if_claiming_claim_of_right_deduction: 2_671.5
+    income_tax_if_claiming_claim_of_right_credit: 471.5
+    claim_of_right_credit_applies: true
+    claim_of_right_deduction: 0
+    claim_of_right_credit: 2_200
+    taxable_income: 24_250
+    income_tax: 471.5
+
+- name: Case 5, a prior-year decrease above the year's tax is refunded.
+  # 26 U.S.C. 1341(b)(1): the excess is considered a payment of tax.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 40_000
+    claim_of_right_repayment: 10_000
+    claim_of_right_prior_year_tax_decrease: 3_000
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: TX
+  output:
+    claim_of_right_credit_applies: true
+    claim_of_right_credit: 3_000
+    income_tax_before_refundable_credits: 2_671.5
+    income_tax: -328.5
+
+- name: Case 6, a joint return counts the spouses' repayments and decreases, not a dependent's.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 90_000
+        claim_of_right_repayment: 2_000
+        claim_of_right_prior_year_tax_decrease: 300
+      person2:
+        age: 44
+        claim_of_right_repayment: 2_000
+        claim_of_right_prior_year_tax_decrease: 200
+      person3:
+        age: 30
+        is_tax_unit_dependent: true
+        claim_of_right_repayment: 9_000
+        claim_of_right_prior_year_tax_decrease: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        state_sales_tax: 0
+        local_sales_tax: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    tax_unit_claim_of_right_repayment: 4_000
+    claim_of_right_section_1341_eligible: true
+    # Taxable income $90,000 - $31,500 = $58,500; tax $2,385 + 12% x
+    # $34,650 = $6,543, less the $500 credit for other dependents. The
+    # $4,000 deduction loses to the standard deduction.
+    income_tax_if_claiming_claim_of_right_deduction: 6_043
+    income_tax_if_claiming_claim_of_right_credit: 5_543
+    claim_of_right_credit_applies: true
+    claim_of_right_credit: 500
+    income_tax: 5_543

@@ -81,3 +81,37 @@
     cdcc_potential: 1_000
   output:
     nc_cdcc: 0
+
+- name: NC CDCC reform keeps the baseline claim of right payment
+  # Regression test for #8775: the reform adds its CDCC to North Carolina's
+  # baseline refundable credits instead of replacing them.
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.cdcc.nc_cdcc
+  input:
+    gov.contrib.states.nc.cdcc.in_effect: true
+    state_code: NC
+    cdcc_potential: 1_000
+    nc_claim_of_right_payment: 250
+    nc_income_tax_before_credits: 600
+    nc_use_tax: 0
+    nc_non_refundable_credits: 0
+  output:
+    nc_cdcc: 300
+    nc_refundable_credits: 550
+    nc_income_tax: 50
+
+- name: NC CDCC reform does not add use tax to income tax
+  # Use tax is counted at the household level through state_use_tax (#8775).
+  period: 2026
+  reforms: policyengine_us.reforms.states.nc.cdcc.nc_cdcc
+  input:
+    gov.contrib.states.nc.cdcc.in_effect: true
+    state_code: NC
+    cdcc_potential: 1_000
+    nc_income_tax_before_credits: 600
+    nc_use_tax: 100
+    nc_non_refundable_credits: 0
+  output:
+    nc_cdcc: 300
+    # 600 - 300 = 300; it would be 400 if use tax were added.
+    nc_income_tax: 300

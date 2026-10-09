@@ -1,0 +1,54 @@
+# N.C. Gen. Stat. 105-266.2: a filer subject to section 1341(a)(5) is
+# considered to have paid North Carolina tax equal to the increase in the
+# earlier year's North Carolina tax from including the restored item.
+- name: Case 1, the payment is the prior-year North Carolina tax increase under section 1341(a)(5).
+  period: 2025
+  input:
+    claim_of_right_credit_applies: true
+    nc_claim_of_right_prior_year_tax_increase: 300
+    state_code: NC
+  output:
+    nc_claim_of_right_payment: 300
+
+- name: Case 2, no payment under section 1341(a)(4).
+  period: 2025
+  input:
+    claim_of_right_credit_applies: false
+    nc_claim_of_right_prior_year_tax_increase: 300
+    state_code: NC
+  output:
+    nc_claim_of_right_payment: 0
+
+- name: Case 3, a joint return sums the spouses' increases, not a dependent's.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        nc_claim_of_right_prior_year_tax_increase: 200
+      person2:
+        age: 44
+        nc_claim_of_right_prior_year_tax_increase: 100
+      person3:
+        age: 30
+        is_tax_unit_dependent: true
+        nc_claim_of_right_prior_year_tax_increase: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+  output:
+    nc_claim_of_right_payment: 300
+
+- name: Case 4, no payment outside North Carolina.
+  period: 2025
+  input:
+    claim_of_right_credit_applies: true
+    nc_claim_of_right_prior_year_tax_increase: 300
+    state_code: SC
+  output:
+    nc_claim_of_right_payment: 0

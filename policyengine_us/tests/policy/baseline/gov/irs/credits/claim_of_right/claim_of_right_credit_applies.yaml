@@ -1,0 +1,75 @@
+# 26 CFR 1.1341-1(b)(3): when the two computations give the same tax, tax is
+# computed under 1341(a)(4), with the deduction. The household is
+# Publication 525 (2025) Example 40: $5,155.50 with the deduction and $5,903
+# without it.
+- name: Case 1, equal tax under both methods keeps the deduction.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 65_700
+    charitable_cash_donations: 15_750
+    claim_of_right_repayment: 5_000
+    # $5,903 - $747.50 = $5,155.50, the tax with the deduction.
+    claim_of_right_prior_year_tax_decrease: 747.5
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: TX
+  output:
+    income_tax_if_claiming_claim_of_right_credit: 5_155.5
+    income_tax_if_claiming_claim_of_right_deduction: 5_155.5
+    claim_of_right_credit_applies: false
+    income_tax: 5_155.5
+
+- name: Case 2, a prior-year decrease 50 cents larger makes the credit cheaper.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 65_700
+    charitable_cash_donations: 15_750
+    claim_of_right_repayment: 5_000
+    claim_of_right_prior_year_tax_decrease: 748
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: TX
+  output:
+    claim_of_right_credit_applies: true
+    claim_of_right_deduction: 0
+    claim_of_right_credit: 748
+    income_tax: 5_155
+
+- name: Case 3, a repayment of $3,000 cannot use section 1341.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 65_700
+    charitable_cash_donations: 15_750
+    claim_of_right_repayment: 3_000
+    claim_of_right_prior_year_tax_decrease: 2_000
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: TX
+  output:
+    claim_of_right_credit_applies: false
+    claim_of_right_deduction: 0
+    claim_of_right_credit: 0
+    # Section 67(g) disallows the miscellaneous deduction, so tax is
+    # unchanged at the tax on $49,950.
+    income_tax: 5_903
+
+- name: Case 4, with no prior-year decrease the deduction applies.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 65_700
+    charitable_cash_donations: 15_750
+    # $3,001 is the smallest whole-dollar repayment that qualifies.
+    claim_of_right_repayment: 3_001
+    state_sales_tax: 0
+    local_sales_tax: 0
+    state_code: TX
+  output:
+    claim_of_right_credit_applies: false
+    claim_of_right_deduction: 3_001
+    # $65,700 - $15,750 - $3,001 = $46,949; $1,192.50 + 12% x $35,024.
+    taxable_income: 46_949
+    income_tax: 5_395.38
