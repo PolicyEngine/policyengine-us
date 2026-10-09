@@ -11,6 +11,7 @@ class ca_itemized_deductions_pre_limitation(Variable):
         "https://www.ftb.ca.gov/forms/2021/2021-540-ca-instructions.html",
         "https://www.ftb.ca.gov/forms/2022/2022-540-ca-instructions.html",
         "https://www.ftb.ca.gov/forms/2025/2025-540-ca-instructions.html",
+        "https://www.ftb.ca.gov/about-ftb/data-reports-plans/summary-of-federal-income-tax-changes/index.html",
     )
     defined_for = StateCode.CA
 
@@ -22,7 +23,12 @@ class ca_itemized_deductions_pre_limitation(Variable):
             variable
             for variable in federal_components
             if variable
-            not in ("salt_deduction", "charitable_deduction", "misc_deduction")
+            not in (
+                "salt_deduction",
+                "charitable_deduction",
+                "charitable_deduction_for_non_itemizers",
+                "misc_deduction",
+            )
         ]
         deductions += [
             "ca_investment_interest_expense_deduction",
