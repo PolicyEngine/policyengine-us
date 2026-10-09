@@ -1,3 +1,10 @@
+## [2.38.0] - 2026-10-09
+
+### Added
+
+- Add Oregon LIHEAP regular heating assistance for program years 2025 to 2027.
+
+
 ## [2.37.2] - 2026-10-09
 
 ### Fixed
