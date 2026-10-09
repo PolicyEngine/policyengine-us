@@ -82,6 +82,19 @@
     de_529_plan_subtraction: 1_000
     de_529_plan_subtraction_joint: 1_000
 
+- name: Delaware 529 subtraction - a surviving spouse over the individual AGI limit gets none
+  period: 2025
+  input:
+    state_code: DE
+    filing_status: SURVIVING_SPOUSE
+    investment_in_529_plan_indv: 1_500
+    adjusted_gross_income: 150_000
+  output:
+    # Filing Status 1 is held to the $100,000 individual AGI limit, not the
+    # $200,000 joint limit, so $150,000 of federal AGI bars the subtraction.
+    de_529_plan_subtraction: 0
+    de_529_plan_subtraction_joint: 0
+
 - name: Delaware 529 subtraction - a joint return subtracts up to 2,000 of the couple's contributions
   period: 2025
   input:

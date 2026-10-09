@@ -57,22 +57,10 @@ def create_ctc_expansion() -> Reform:
 
             relevant_earnings = earnings_over_threshold * phase_in_rate
 
-            # Compute "Social Security taxes" as defined in the US Code for the ACTC.
-            # This includes OASDI and Medicare payroll taxes, as well as half
-            # of self-employment taxes.
-            SS_ADD_VARIABLES = [
-                # Person:
-                "employee_social_security_tax",
-                "employee_medicare_tax",
-                "unreported_payroll_tax",
-                # Tax unit:
-                "self_employment_tax_ald",
-                "additional_medicare_tax",
-            ]
-            SS_SUBTRACT_VARIABLES = ["excess_payroll_tax_withheld"]
-            social_security_tax = add(tax_unit, period, SS_ADD_VARIABLES) - add(
-                tax_unit, period, SS_SUBTRACT_VARIABLES
-            )
+            # "Social Security taxes" as defined in 26 U.S.C. 24(d)(2) for the
+            # ACTC: the head's and spouse's OASDI and Medicare payroll taxes and
+            # half of their self-employment taxes, as in the baseline.
+            social_security_tax = tax_unit("ctc_social_security_tax", period)
             eitc = tax_unit("eitc", period)
             social_security_excess = max_(0, social_security_tax - eitc)
             qualifying_children = tax_unit("ctc_qualifying_children", period)
@@ -86,8 +74,13 @@ def create_ctc_expansion() -> Reform:
             ctc_capped_by_tax = min_(total_ctc, limiting_tax)
             ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + tax_increase)
             amount_ctc_would_increase = ctc_capped_by_increased_tax - ctc_capped_by_tax
+            refundable_amount = min_(maximum_refundable_ctc, amount_ctc_would_increase)
 
-            return min_(maximum_refundable_ctc, amount_ctc_would_increase)
+            # The bill's CTC changes amend section 24(h) and leave section
+            # 24(d)(3) in place: no refundable CTC for filers electing a
+            # section 911 exclusion.
+            barred = tax_unit("refundable_ctc_barred_by_section_911_exclusion", period)
+            return where(barred, 0, refundable_amount)
 
     class reform(Reform):
         def apply(self):

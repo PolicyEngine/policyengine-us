@@ -13,8 +13,10 @@
     local_tax: 3_175.1702
     spm_unit_local_tax: 3_175.1702
     spm_unit_state_tax: 4_951.75
-    spm_unit_taxes: 29_649.12
-    spm_unit_net_income: 63_234.883
+    # Includes the 2024 New York Paid Family Leave contribution,
+    # min(0.373% * 100,000, 333.25) = 333.25.
+    spm_unit_taxes: 29_982.37
+    spm_unit_net_income: 62_901.633
 
 - name: NYC refundable tax credits reduce SPM taxes and increase SPM net income
   period: 2024
@@ -27,7 +29,9 @@
   output:
     local_tax: -400
     spm_unit_local_tax: -400
-    spm_unit_taxes: -345.4
+    # Includes the 2024 New York Paid Family Leave contribution,
+    # 0.373% * 10,000 = 37.30.
+    spm_unit_taxes: -308.1
 
 - name: Maryland county income tax flows into SPM taxes and reduces SPM net income
   period: 2021

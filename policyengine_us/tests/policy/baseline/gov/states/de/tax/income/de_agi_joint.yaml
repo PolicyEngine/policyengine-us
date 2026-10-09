@@ -167,3 +167,26 @@
     # so the columns subtract only person 2's 1_000.
     de_agi_joint: [188_000, 0]
     de_agi_indiv: [120_000, 69_000]
+
+- name: Joint return takes the $4,000 exclusion when the couple, not each spouse, meets the income limits
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 66
+        employment_income: 4_000
+      spouse:
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    # Combined earned income $4,000 < $5,000; line 10 $4,000 <= $20,000.
+    # The head's $4,000 of wages is over the $2,500 individual limit.
+    de_elderly_or_disabled_income_exclusion_joint: [2_000, 2_000]
+    de_agi_joint: [0, 0]
