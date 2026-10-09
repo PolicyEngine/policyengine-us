@@ -68,5 +68,7 @@ class de_itemized_deductions_indv(Variable):
             allocated += amount * _share(head_or_spouse * expense, total_expense)
         # Prorate what could not be specifically allocated.
         unit_deductions = person.tax_unit("de_itemized_deductions_unit", period)
-        unallocated = unit_deductions - person.tax_unit.sum(allocated)
+        # An aggregate override can be below the traced deductions; never
+        # subtract a negative remainder from either spouse's allocation.
+        unallocated = max_(unit_deductions - person.tax_unit.sum(allocated), 0)
         return allocated + unallocated * income_share

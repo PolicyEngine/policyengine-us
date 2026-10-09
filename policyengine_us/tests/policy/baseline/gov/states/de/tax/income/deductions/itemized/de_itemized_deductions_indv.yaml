@@ -151,3 +151,50 @@
         state_code: DE
   output:
     de_itemized_deductions_indv: [500, 500]
+
+- name: An overridden unit total does not subtract from a spouse's traced deduction
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        real_estate_taxes: 5_000
+      spouse:
+        age: 40
+        employment_income: 40_000
+    tax_units:
+      couple:
+        members: [head, spouse]
+        # Deliberately inconsistent override: the traced expense exceeds this.
+        de_itemized_deductions_unit: 1_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_itemized_deductions_indv: [5_000, 0]
+
+- name: A zero unit override cannot create negative deductions for a nonpayer
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 0
+      spouse:
+        age: 40
+        employment_income: 0
+        real_estate_taxes: 5_000
+      dependent:
+        age: 10
+    tax_units:
+      couple:
+        members: [head, spouse, dependent]
+        de_itemized_deductions_unit: 0
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: DE
+  output:
+    de_itemized_deductions_indv: [0, 5_000, 0]
