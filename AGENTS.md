@@ -12,12 +12,12 @@ Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner 
 
 Do not rewrite these expected outputs merely to match changed model behavior or make CI pass. If a model change causes one of these tests to fail, treat that as a possible partner-facing API change.
 
-Ziming Hua (@hua7450) approves every edit to these files (Max Ghenis, 2026-10-09). Subagents must not edit partner test files. If a subagent finds that an edit is needed, it must stop and report back; the top-level agent takes the three-question gate to Ziming before any edit is made.
+Ziming Hua (@hua7450) approves every edit to these files (Max Ghenis, 2026-10-09). Subagents and agent teammates must not edit partner test files. If a subagent or agent teammate finds that an edit is needed, it must stop and report back; the top-level agent takes the three-question gate to Ziming before any edit is made.
 
 Before changing expected outputs in this folder:
 
 - Flag the partner-facing risk to the user.
-- Put these three questions to Ziming on the PR that causes the change (per CLAUDE.md): request his review with `gh pr edit <number> --add-reviewer hua7450`, and post a comment that names each changed case, its old and new expected values, and the model change and law behind it. If Ziming is the person you are working with, ask him directly with the `AskUserQuestion` tool instead; his yes to all three is then both the go and the approval, so record it in a PR comment.
+- Put these three questions to Ziming on the PR that causes the change (per CLAUDE.md): request his review with `gh pr edit <number> --add-reviewer hua7450`, and post a comment that names each changed case, its old and new expected values, and the model change and law behind it. If Ziming is the person you are working with, show him the changed cases and ask him directly with the `AskUserQuestion` tool instead; record his answer in a PR comment, which counts as his approval of those edits.
   1. Are you sure you want to edit this test file?
   2. Have you notified a team member about this change?
   3. Have you notified the API partner about this change?
