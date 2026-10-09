@@ -62,7 +62,8 @@ class first_home_mortgage_interest(Variable):
     documentation = (
         "DEPRECATED (issue #9275): use the person-level home_mortgage_interest "
         "input instead; the deduction only ever uses the first+second sum, and "
-        "this input is read only when no filer interest is reported. "
+        "this input is read only when no tax-unit member, including a "
+        "dependent, reports person-level home_mortgage_interest. "
         "Kept temporarily so existing datasets that supply it keep working; "
         "removal is scheduled once certified microdata stops exporting it."
     )
@@ -78,7 +79,8 @@ class second_home_mortgage_interest(Variable):
     documentation = (
         "DEPRECATED (issue #9275): use the person-level home_mortgage_interest "
         "input instead; the deduction only ever uses the first+second sum, and "
-        "this input is read only when no filer interest is reported. "
+        "this input is read only when no tax-unit member, including a "
+        "dependent, reports person-level home_mortgage_interest. "
         "Kept temporarily so existing datasets that supply it keep working; "
         "removal is scheduled once certified microdata stops exporting it."
     )
@@ -114,7 +116,8 @@ class home_mortgage_interest_tax_unit(Variable):
         "Total home mortgage interest paid by the tax unit's head and spouse. "
         "The person-level home_mortgage_interest "
         "input is canonical; the deprecated structured first/second interest "
-        "inputs are used only when no filer interest is reported "
+        "inputs are used only when no tax-unit member, including a dependent, "
+        "reports person-level interest "
         "(existing datasets still supply them — see issue #9275)."
     )
 
@@ -122,6 +125,7 @@ class home_mortgage_interest_tax_unit(Variable):
 
     def formula(tax_unit, period, parameters):
         # Only filers' own interest belongs on their return (Pub. 936, p. 2).
+        all_member_reported_interest = add(tax_unit, period, ["home_mortgage_interest"])
         reported_interest = tax_unit_non_dep_add(
             tax_unit, period, ["home_mortgage_interest"]
         )
@@ -130,7 +134,9 @@ class home_mortgage_interest_tax_unit(Variable):
             period,
             ["first_home_mortgage_interest", "second_home_mortgage_interest"],
         )
-        return where(reported_interest > 0, reported_interest, structured_interest)
+        return where(
+            all_member_reported_interest > 0, reported_interest, structured_interest
+        )
 
 
 class deductible_mortgage_interest_tax_unit(Variable):
@@ -151,8 +157,8 @@ class deductible_mortgage_interest_tax_unit(Variable):
         first_year = tax_unit("first_home_mortgage_origination_year", period)
         second_year = tax_unit("second_home_mortgage_origination_year", period)
         total_balance = first_balance + second_balance
-        # Falls back to reported person-level interest when the structured
-        # first/second inputs are absent.
+        # Canonical payments take priority; structured first/second interest
+        # is used only when no member reports person-level interest.
         total_interest = tax_unit("home_mortgage_interest_tax_unit", period)
 
         filing_status = tax_unit("filing_status", period)

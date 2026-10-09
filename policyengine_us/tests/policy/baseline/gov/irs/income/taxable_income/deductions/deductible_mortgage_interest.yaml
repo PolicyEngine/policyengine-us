@@ -174,6 +174,34 @@
     deductible_mortgage_interest: [0, 0]
     interest_deduction: 0
 
+- name: Dataset-like structured totals cannot restore dependent-only canonical interest
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        home_mortgage_interest: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: SINGLE
+        # Dataset exports duplicate canonical interest in deprecated inputs.
+        first_home_mortgage_interest: 12_000
+    households:
+      household:
+        members: [head, dependent]
+        state_code: CA
+  output:
+    home_mortgage_interest_tax_unit: 0
+    deductible_mortgage_interest_tax_unit: 0
+    non_deductible_mortgage_interest_tax_unit: 0
+    deductible_mortgage_interest: [0, 0]
+    interest_deduction: 0
+
 - name: Federal mortgage interest includes the single filer's payment only
   period: 2024
   input:
@@ -237,7 +265,7 @@
     non_deductible_mortgage_interest: [5_000, 2_500, 0]
     interest_deduction: 37_500
 
-- name: Dependent canonical interest preserves the federal structured-interest fallback
+- name: No member canonical interest preserves the federal structured-interest fallback
   period: 2024
   input:
     people:
@@ -250,7 +278,6 @@
       dependent:
         age: 20
         is_tax_unit_dependent: true
-        home_mortgage_interest: 12_000
     tax_units:
       tax_unit:
         members: [head, spouse, dependent]
@@ -263,7 +290,7 @@
         members: [head, spouse, dependent]
         state_code: CA
   output:
-    # With no filer canonical payments, each spouse gets half the deduction.
+    # With no member canonical payments, each spouse gets half the deduction.
     home_mortgage_interest_tax_unit: 45_000
     deductible_mortgage_interest_tax_unit: 37_500
     non_deductible_mortgage_interest_tax_unit: 7_500

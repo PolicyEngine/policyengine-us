@@ -17,8 +17,8 @@
         members: [person1]
         state_code: HI
   output:
-    # $1,100,000 / $1,500,000 * $90,000 = $66,000.
-    hi_interest_deduction: 66_000
+    # Table 1, line 11: round($1,100,000 / $1,500,000, 3) * $90,000.
+    hi_interest_deduction: 65_970
 
 - name: Case 2, mortgage interest is capped and the bundled investment-interest input is preserved.
   period: 2026
@@ -45,10 +45,10 @@
         members: [person1, person2]
         state_code: HI
   output:
-    # Mortgage: $1,100,000 / $1,300,000 * $65,000 = $55,000.
-    hi_mortgage_interest_deduction: 55_000
+    # Mortgage: round($1,100,000 / $1,300,000, 3) * $65,000 = $54,990.
+    hi_mortgage_interest_deduction: 54_990
     # Preserve the bundled $5,000 input pending the dataset leaf-input split.
-    hi_interest_deduction: 60_000
+    hi_interest_deduction: 59_990
 
 - name: Case 3, mortgage interest within the debt limit and the bundled input are deductible.
   period: 2025

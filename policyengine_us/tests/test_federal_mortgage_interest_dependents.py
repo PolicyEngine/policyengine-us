@@ -74,7 +74,14 @@ def test_dependents_do_not_change_federal_mortgage_interest_or_allocations():
 
     Varying dependents' own interest cannot change federal aggregates or
     filer allocations. Canonical payments determine proportional shares;
-    structured fallback uses equal shares. No deduction outputs are supplied.
+    zero filer payments use equal shares. Dataset-like structured totals track
+    all members' canonical payments, including dependents, without changing
+    filer aggregates. No deduction outputs are supplied.
+
+    A fixed structured fallback is eligible only while nobody reports canonical
+    interest. Adding the first canonical payment intentionally changes its
+    eligibility; the structured pairs keep dependent canonical payments positive
+    on both sides, and YAML covers the eligible fallback separately.
     """
     rng = random.Random(9950)
     situation = {
@@ -92,7 +99,13 @@ def test_dependents_do_not_change_federal_mortgage_interest_or_allocations():
 
     for joint, source, mortgage_case, dependent_count in product(
         (False, True),
-        ("canonical", "structured", "none"),
+        (
+            "canonical",
+            "dataset-like-canonical",
+            "dataset-like-dependent-only",
+            "structured",
+            "none",
+        ),
         MORTGAGE_CASES,
         (1, 2, 3),
     ):
@@ -100,11 +113,15 @@ def test_dependents_do_not_change_federal_mortgage_interest_or_allocations():
         filer_count = 2 if joint else 1
         filers = [
             {"home_mortgage_interest": rng.randint(1_000, 60_000)}
-            if source == "canonical"
+            if source in ("canonical", "dataset-like-canonical")
             else {}
             for _ in range(filer_count)
         ]
-        if joint and source == "canonical" and dependent_count < 3:
+        if (
+            joint
+            and source in ("canonical", "dataset-like-canonical")
+            and dependent_count < 3
+        ):
             # Include head-only, spouse-only, and two-payer joint returns.
             filers[dependent_count - 1] = {}
         payments = np.array(
@@ -116,14 +133,10 @@ def test_dependents_do_not_change_federal_mortgage_interest_or_allocations():
         }
         if source == "structured":
             mortgage["first_home_mortgage_interest"] = rng.randint(1_000, 120_000)
-        gross_interest = (
-            payments.sum()
-            if source == "canonical"
-            else mortgage.get("first_home_mortgage_interest", 0)
-        )
+        gross_interest = payments.sum()
         expected_shares = (
             payments / payments.sum()
-            if source == "canonical"
+            if payments.sum() > 0
             else np.full(filer_count, 1 / filer_count)
         )
         label = (
@@ -131,13 +144,25 @@ def test_dependents_do_not_change_federal_mortgage_interest_or_allocations():
             f"-{dependent_count}-dependents"
         )
         dependent_payments = [rng.randint(1, 200_000) for _ in range(dependent_count)]
+        before_dependent_payments = (
+            [rng.randint(1, 1_000) for _ in range(dependent_count)]
+            if source in ("structured", "dataset-like-dependent-only")
+            else [0] * dependent_count
+        )
         for suffix, dependent_interest in (
-            ("before", [0] * dependent_count),
+            ("before", before_dependent_payments),
             ("after", dependent_payments),
         ):
             name = f"{label}-{suffix}"
+            pair_mortgage = mortgage.copy()
+            if source.startswith("dataset-like"):
+                # Dataset exports duplicate the all-member canonical total.
+                # Its dependent component must not enter the filers' return.
+                all_member_interest = payments.sum() + sum(dependent_interest)
+                pair_mortgage["first_home_mortgage_interest"] = all_member_interest / 2
+                pair_mortgage["second_home_mortgage_interest"] = all_member_interest / 2
             filer_indices, dependent_indices = _add_tax_unit(
-                situation, name, joint, filers, mortgage, dependent_interest
+                situation, name, joint, filers, pair_mortgage, dependent_interest
             )
             records.append(
                 (
@@ -149,7 +174,7 @@ def test_dependents_do_not_change_federal_mortgage_interest_or_allocations():
                 )
             )
 
-    # One model construction covers 90 matched pairs, including both vintages.
+    # One model construction covers 150 matched pairs, including both vintages.
     simulation = Simulation(situation=situation)
     gross = simulation.calculate("home_mortgage_interest_tax_unit", PERIOD)
     deductible = simulation.calculate("deductible_mortgage_interest_tax_unit", PERIOD)

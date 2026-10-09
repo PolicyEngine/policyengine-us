@@ -21,8 +21,9 @@
     deductible_mortgage_interest_tax_unit: 45_000
     # Hawaii (2017 Pub 936 Table 1): $1,000,000 acquisition debt plus
     # $100,000 of the excess as home equity debt.
-    # $1,100,000 / $1,500,000 * $90,000 = $66,000.
-    hi_mortgage_interest_deduction: 66_000
+    # Line 11 rounds $1,100,000 / $1,500,000 to 0.733.
+    # 0.733 * $90,000 = $65,970.
+    hi_mortgage_interest_deduction: 65_970
 
 - name: Case 2, a post-TCJA mortgage under $1 million is fully deductible in Hawaii.
   period: 2026
@@ -68,8 +69,9 @@
   output:
     # Federal: $375,000 / $600,000 * $30,000 = $18,750.
     deductible_mortgage_interest_tax_unit: 18_750
-    # Hawaii: ($500,000 + $50,000) / $600,000 * $30,000 = $27,500.
-    hi_mortgage_interest_deduction: 27_500
+    # Hawaii: round(($500,000 + $50,000) / $600,000, 3) = 0.917.
+    # 0.917 * $30,000 = $27,510.
+    hi_mortgage_interest_deduction: 27_510
 
 - name: Case 4, joint filers with two mortgages apply the limits to the combined balance.
   period: 2024
@@ -97,8 +99,8 @@
   output:
     # Federal: $800,000 / $1,300,000 * $65,000 = $40,000.
     deductible_mortgage_interest_tax_unit: 40_000
-    # Hawaii: $1,100,000 / $1,300,000 * $65,000 = $55,000.
-    hi_mortgage_interest_deduction: 55_000
+    # Hawaii: round($1,100,000 / $1,300,000, 3) * $65,000 = $54,990.
+    hi_mortgage_interest_deduction: 54_990
 
 - name: Case 5, debt exactly at the combined $1.1 million limit is fully deductible.
   period: 2026
@@ -185,8 +187,8 @@
         members: [person1]
         state_code: HI
   output:
-    # $1,100,000 / $1,200,000 * $60,000 = $55,000.
-    hi_mortgage_interest_deduction: 55_000
+    # round($1,100,000 / $1,200,000, 3) * $60,000 = $55,020.
+    hi_mortgage_interest_deduction: 55_020
 
 - name: Case 9, interest without a reported balance is fully deductible.
   period: 2026
@@ -263,8 +265,8 @@
         members: [person1]
         state_code: HI
   output:
-    # $1,100,000 / $3,000,000 * $150,000 = $55,000.
-    hi_mortgage_interest_deduction: 55_000
+    # round($1,100,000 / $3,000,000, 3) * $150,000 = $55,050.
+    hi_mortgage_interest_deduction: 55_050
 
 - name: Case 13, supplied deductible interest is not capped again when only a balance is supplied.
   period: 2026
@@ -307,7 +309,7 @@
         members: [person1]
         state_code: HI
   output:
-    hi_mortgage_interest_deduction: 8800
+    hi_mortgage_interest_deduction: 8796
 
 - name: Case 15, deprecated structured gross interest still receives the Hawaii debt cap.
   period: 2026
@@ -328,7 +330,7 @@
         members: [person1]
         state_code: HI
   output:
-    hi_mortgage_interest_deduction: 66000
+    hi_mortgage_interest_deduction: 65970
 
 - name: Case 16, direct legacy gross interest still receives the Hawaii debt cap.
   period: 2026
@@ -349,7 +351,7 @@
         members: [person1]
         state_code: HI
   output:
-    hi_mortgage_interest_deduction: 66000
+    hi_mortgage_interest_deduction: 65970
 
 - name: Case 17, supplied deductible and nondeductible components reconstruct gross interest.
   period: 2026
@@ -371,7 +373,7 @@
         members: [person1]
         state_code: HI
   output:
-    hi_mortgage_interest_deduction: 66000
+    hi_mortgage_interest_deduction: 65970
 
 - name: Case 18, canonical gross interest is used with a supplied federal deduction.
   period: 2026
@@ -393,7 +395,7 @@
         members: [person1]
         state_code: HI
   output:
-    hi_mortgage_interest_deduction: 66000
+    hi_mortgage_interest_deduction: 65970
 
 - name: Case 19, canonical gross interest takes priority over deprecated structured interest.
   period: 2026
@@ -415,7 +417,7 @@
         members: [person1]
         state_code: HI
   output:
-    hi_mortgage_interest_deduction: 8800
+    hi_mortgage_interest_deduction: 8796
 
 - name: Case 20, gross interest and deductible-only fallbacks are handled per tax unit.
   period: 2026
@@ -444,11 +446,11 @@
         members: [person1, person2]
         state_code: HI
   output:
-    hi_mortgage_interest_deduction: [66000, 45000]
+    hi_mortgage_interest_deduction: [65970, 45000]
 
 # 2017 Publication 936, page 2: deduct interest paid on a home owned by
 # the filer (or spouse on a joint return), excluding a dependent's own home.
-- name: Case 21, canonical priority depends on whether the filer paid the interest.
+- name: Case 21, dependent canonical interest blocks the legacy gross-interest fallback.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -483,9 +485,10 @@
         members: [legacy_filer, dependent_owner, canonical_filer, control_dependent]
         state_code: HI
   output:
-    # The same $12,000 is excluded for the dependent, but has canonical
-    # priority when paid by the filer. The Hawaii debt ratio is 11/15.
-    hi_mortgage_interest_deduction: [66_000, 8_800]
+    # Canonical presence selects the filers' own amount, zero for the
+    # dependent-only unit, rather than falling back to legacy gross interest.
+    # The other unit deducts $12,000 * 0.733 = $8,796.
+    hi_mortgage_interest_deduction: [0, 8_796]
 
 - name: Case 22, joint filers combine both spouses' interest without dependent interest.
   period: 2026
@@ -517,10 +520,10 @@
         members: [head, spouse, dependent]
         state_code: HI
   output:
-    # $65,000 * $1,100,000 / $1,300,000 = $55,000.
-    hi_mortgage_interest_deduction: 55_000
+    # $65,000 * round($1,100,000 / $1,300,000, 3) = $54,990.
+    hi_mortgage_interest_deduction: 54_990
 
-- name: Case 23, a dependent's canonical interest does not replace structured filer interest.
+- name: Case 23, dependent-only canonical interest suppresses matching dataset structured interest.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -537,13 +540,15 @@
         filing_status: SINGLE
         first_home_mortgage_balance: 1_500_000
         first_home_mortgage_origination_year: 2023
-        first_home_mortgage_interest: 90_000
+        first_home_mortgage_interest: 12_000
     households:
       household:
         members: [head, dependent]
         state_code: HI
   output:
-    hi_mortgage_interest_deduction: 66_000
+    home_mortgage_interest_tax_unit: 0
+    deductible_mortgage_interest_tax_unit: 0
+    hi_mortgage_interest_deduction: 0
 
 - name: Case 24, supplied deductible interest excludes dependent amounts.
   period: 2026
@@ -593,7 +598,7 @@
         members: [head, dependent]
         state_code: HI
   output:
-    hi_mortgage_interest_deduction: 66_000
+    hi_mortgage_interest_deduction: 65_970
 
 - name: Case 26, dependent-only canonical interest cannot create a filer deduction.
   period: 2026
@@ -619,7 +624,7 @@
   output:
     hi_mortgage_interest_deduction: 0
 
-- name: Case 27, dependent canonical interest cannot override the supplied deductible fallback.
+- name: Case 27, dependent canonical interest blocks the supplied deductible fallback.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -642,7 +647,7 @@
         members: [head, dependent]
         state_code: HI
   output:
-    hi_mortgage_interest_deduction: 45_000
+    hi_mortgage_interest_deduction: 0
 
 - name: Case 28, dependent-only supplied deductible interest cannot create a Hawaii filer deduction.
   period: 2026

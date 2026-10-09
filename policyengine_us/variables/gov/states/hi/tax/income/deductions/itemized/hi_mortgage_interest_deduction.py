@@ -50,10 +50,16 @@ class hi_mortgage_interest_deduction(Variable):
             out=np.ones_like(debt),
             where=debt > 0,
         )
+        # Pub. 936 (2017), Table 1, line 11 rounds the ratio to three places.
+        deductible_share = np.round(deductible_share, 3)
         # Line 10 uses total interest paid, before the federal debt cap.
         # This also preserves the canonical filer input's priority over
         # the deprecated first/second-home interest inputs.
         gross_interest = tax_unit("home_mortgage_interest_tax_unit", period)
+        # Any member's canonical input selects the filers' amount, even zero,
+        # so legacy or supplied amounts cannot restore dependent interest.
+        canonical_interest = add(tax_unit, period, ["home_mortgage_interest"])
+        has_canonical_interest = (canonical_interest > 0) | (gross_interest > 0)
         legacy_interest = tax_unit_non_dep_add(tax_unit, period, ["mortgage_interest"])
         supplied_deduction = tax_unit_non_dep_add(
             tax_unit, period, ["deductible_mortgage_interest"]
@@ -61,10 +67,10 @@ class hi_mortgage_interest_deduction(Variable):
         # Legacy gross interest can be supplied directly or reconstructed
         # from deductible and non-deductible components. Deductible interest
         # alone has already been limited and must not receive a second cap.
-        has_gross_interest = (gross_interest > 0) | (
+        has_gross_interest = has_canonical_interest | (
             legacy_interest > supplied_deduction
         )
-        interest = where(gross_interest > 0, gross_interest, legacy_interest)
+        interest = where(has_canonical_interest, gross_interest, legacy_interest)
         # Line 12. Retain the supplied-deductible fallback when gross interest
         # is unavailable, even if a mortgage balance has been reported.
         return where(
