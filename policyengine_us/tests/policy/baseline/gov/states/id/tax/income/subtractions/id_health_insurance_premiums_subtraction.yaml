@@ -1,0 +1,111 @@
+- name: Standard deduction retains all post-tax premiums
+  period: 2026
+  input:
+    state_code: ID
+    health_insurance_premiums: 6_000
+    standard_deduction: 16_100
+    id_itemized_deductions: 10_000
+    medical_expense_deduction: 2_000
+  output:
+    id_health_insurance_premiums_subtraction: 6_000
+
+- name: Pretax premiums and federal above-line deductions cannot be subtracted again
+  period: 2026
+  input:
+    state_code: ID
+    health_insurance_premiums: 6_000
+    pre_tax_health_insurance_premiums: 2_000
+    self_employed_health_insurance_ald: 1_000
+    standard_deduction: 16_100
+    id_itemized_deductions: 0
+  output:
+    id_health_insurance_premiums_subtraction: 3_000
+
+- name: Itemizers allocate medical deductions to health premiums first
+  period: 2026
+  input:
+    state_code: ID
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 1_000
+    medical_expense_deduction: 2_000
+    standard_deduction: 16_100
+    id_itemized_deductions: 20_000
+  output:
+    id_health_insurance_premiums_subtraction: 3_000
+
+- name: Medical deduction exceeding available premiums leaves no subtraction
+  period: 2026
+  input:
+    state_code: ID
+    health_insurance_premiums: 6_000
+    medical_expense_deduction: 10_000
+    standard_deduction: 16_100
+    id_itemized_deductions: 25_000
+  output:
+    id_health_insurance_premiums_subtraction: 0
+
+- name: Excess federal deductions cannot create a negative subtraction
+  period: 2026
+  input:
+    state_code: ID
+    health_insurance_premiums: 1_000
+    self_employed_health_insurance_ald: 2_000
+  output:
+    id_health_insurance_premiums_subtraction: 0
+
+- name: Reported non-Medicare premiums and voluntary Medicare B premiums qualify
+  period: 2025
+  input:
+    state_code: ID
+    health_insurance_premiums_without_medicare_part_b: 2_000
+    medicare_enrolled: true
+    medicare_part_b_premium: 1_000
+    standard_deduction: 15_750
+    id_itemized_deductions: 0
+  output:
+    id_health_insurance_premiums_subtraction: 3_000
+
+- name: Premium subtraction is included in the existing 2021 subtraction list
+  period: 2021
+  input:
+    state_code: ID
+    health_insurance_premiums: 2_000
+    standard_deduction: 12_550
+    id_itemized_deductions: 0
+  output:
+    id_health_insurance_premiums_subtraction: 2_000
+    id_subtractions: 2_000
+
+- name: Subtraction is limited to Idaho
+  period: 2026
+  input:
+    state_code: WA
+    health_insurance_premiums: 2_000
+  output:
+    id_health_insurance_premiums_subtraction: 0
+
+- name: Dependent premiums deducted on their own federal return are excluded
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 1_000
+        is_tax_unit_head: true
+      dependent:
+        age: 20
+        health_insurance_premiums: 500
+        self_employment_income: 5_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        standard_deduction: 16_100
+        id_itemized_deductions: 0
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ID
+  output:
+    dependents_self_employed_health_insurance_ald: 500
+    id_health_insurance_premiums_subtraction: 1_000

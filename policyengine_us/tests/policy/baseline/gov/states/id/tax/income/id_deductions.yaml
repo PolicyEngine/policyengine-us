@@ -7,6 +7,53 @@
   output:
     id_deductions: 1_000
 
+- name: Standard deduction plus premiums beats a larger itemized deduction
+  period: 2026
+  input:
+    state_code: ID
+    health_insurance_premiums: 6_000
+    medical_expense_deduction: 2_000
+    standard_deduction: 16_100
+    id_itemized_deductions: 17_000
+  output:
+    id_deductions: 16_100
+    id_health_insurance_premiums_subtraction: 6_000
+
+- name: Combined reduction tie retains the standard deduction
+  period: 2026
+  input:
+    state_code: ID
+    health_insurance_premiums: 6_000
+    medical_expense_deduction: 2_000
+    standard_deduction: 16_100
+    id_itemized_deductions: 18_100
+  output:
+    id_deductions: 16_100
+    id_health_insurance_premiums_subtraction: 6_000
+
+- name: A larger total reduction permits itemization
+  period: 2026
+  input:
+    state_code: ID
+    health_insurance_premiums: 6_000
+    medical_expense_deduction: 2_000
+    standard_deduction: 16_100
+    id_itemized_deductions: 18_101
+  output:
+    id_deductions: 18_101
+    id_health_insurance_premiums_subtraction: 4_000
+
+- name: Separate filers must itemize even without premiums
+  period: 2026
+  input:
+    state_code: ID
+    separate_filer_itemizes: true
+    health_insurance_premiums: 0
+    standard_deduction: 1_000
+    id_itemized_deductions: 500
+  output:
+    id_deductions: 500
+
 - name: Does not itemize
   period: 2023
   input:
