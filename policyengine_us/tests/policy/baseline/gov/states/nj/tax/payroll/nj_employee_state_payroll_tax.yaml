@@ -1,5 +1,6 @@
-- name: New Jersey 2024 worker contributions are FLI only, at 0.09%.
+- name: New Jersey 2024 worker contributions include FLI, UI, and workforce development.
   period: 2024
+  absolute_error_margin: 0.01
   input:
     employment_income: 60_000
     state_code: NJ
@@ -9,11 +10,13 @@
     nj_employee_temporary_disability_insurance_contribution: 0
     # 0.09% * 60,000 = 54.00.
     nj_employee_family_leave_insurance_contribution: 54.00
-    nj_employee_state_payroll_tax: 54.00
-    employee_state_payroll_tax: 54.00
+    # FLI plus 0.425% of the 42,300 UI/workforce wage base.
+    nj_employee_state_payroll_tax: 233.775
+    employee_state_payroll_tax: 233.775
 
 - name: New Jersey 2024 FLI contribution stops at the 161,400 taxable wage base.
   period: 2024
+  absolute_error_margin: 0.01
   input:
     employment_income: 200_000
     state_code: NJ
@@ -22,8 +25,9 @@
     # 0.09% * 161,400 = 145.26.
     nj_employee_family_leave_insurance_contribution: 145.26
 
-- name: New Jersey 2025 worker contributions are 0.23% TDI and 0.33% FLI.
+- name: New Jersey 2025 worker contributions include TDI, FLI, UI, and workforce development.
   period: 2025
+  absolute_error_margin: 0.01
   input:
     employment_income: 60_000
     state_code: NJ
@@ -32,12 +36,13 @@
     nj_employee_temporary_disability_insurance_contribution: 138.00
     # 0.33% * 60,000 = 198.00.
     nj_employee_family_leave_insurance_contribution: 198.00
-    # 138.00 + 198.00 = 336.00.
-    nj_employee_state_payroll_tax: 336.00
-    employee_state_payroll_tax: 336.00
+    # TDI and FLI plus 0.425% of the 43,300 UI/workforce wage base.
+    nj_employee_state_payroll_tax: 520.025
+    employee_state_payroll_tax: 520.025
 
 - name: New Jersey 2025 TDI and FLI contributions stop at the 165,400 taxable wage base.
   period: 2025
+  absolute_error_margin: 0.01
   input:
     employment_income: 200_000
     state_code: NJ
@@ -48,5 +53,216 @@
     nj_employee_temporary_disability_insurance_contribution: 380.42
     # 0.33% * 165,400 = 545.82.
     nj_employee_family_leave_insurance_contribution: 545.82
-    # 380.42 + 545.82 = 926.24.
-    nj_employee_state_payroll_tax: 926.24
+    # TDI and FLI plus 0.425% of the 43,300 UI/workforce wage base.
+    nj_employee_state_payroll_tax: 1_110.265
+
+- name: NJ worker contributions below the UI wage base
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 10000
+  output:
+    nj_employee_state_payroll_tax: 84.5
+    employee_state_payroll_tax: 84.5
+    employee_payroll_tax: 849.5
+- name: NJ worker UI and workforce contributions stop at their own wage base
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 100000
+  output:
+    nj_employee_state_payroll_tax: 610.4
+    employee_state_payroll_tax: 610.4
+    employee_payroll_tax: 8260.4
+- name: NJ worker UI and workforce include federal pre-tax payroll deductions
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    employment_income: 10000
+    traditional_401k_contributions_desired: 2000
+    pre_tax_health_insurance_premiums: 1000
+    health_savings_account_payroll_contributions: 500
+  output:
+    nj_employee_state_payroll_tax: 84.5
+    employee_state_payroll_tax: 84.5
+- name: NJ worker UI and workforce use the 2015 wage base
+  period: 2015
+  absolute_error_margin: 0.001
+  input:
+    state_code: NJ
+    employment_income: 100000
+    nj_employee_temporary_disability_insurance_contribution: 0
+    nj_employee_family_leave_insurance_contribution: 0
+  output:
+    nj_employee_state_payroll_tax: 136.0
+    employee_state_payroll_tax: 136.0
+- name: NJ worker UI and workforce use the 2022 wage base
+  period: 2022
+  absolute_error_margin: 0.001
+  input:
+    state_code: NJ
+    employment_income: 100000
+    nj_employee_temporary_disability_insurance_contribution: 0
+    nj_employee_family_leave_insurance_contribution: 0
+  output:
+    nj_employee_state_payroll_tax: 169.15
+    employee_state_payroll_tax: 169.15
+- name: NJ worker UI and workforce use the 2023 wage base
+  period: 2023
+  absolute_error_margin: 0.001
+  input:
+    state_code: NJ
+    employment_income: 100000
+    nj_employee_temporary_disability_insurance_contribution: 0
+    nj_employee_family_leave_insurance_contribution: 0
+  output:
+    nj_employee_state_payroll_tax: 174.675
+    employee_state_payroll_tax: 174.675
+- name: NJ worker UI and workforce use the 2024 wage base
+  period: 2024
+  absolute_error_margin: 0.001
+  input:
+    state_code: NJ
+    employment_income: 100000
+    nj_employee_temporary_disability_insurance_contribution: 0
+    nj_employee_family_leave_insurance_contribution: 0
+  output:
+    nj_employee_state_payroll_tax: 179.775
+    employee_state_payroll_tax: 179.775
+- name: NJ worker UI and workforce use the 2025 wage base
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    state_code: NJ
+    employment_income: 100000
+    nj_employee_temporary_disability_insurance_contribution: 0
+    nj_employee_family_leave_insurance_contribution: 0
+  output:
+    nj_employee_state_payroll_tax: 184.025
+    employee_state_payroll_tax: 184.025
+
+- name: PolicyBench scenario 008 - New Jersey worker UI and workforce deductions
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 42
+        employment_income: 0.0
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        over_the_counter_health_expenses: 200.0
+        self_employment_income: 4000.0
+        taxable_interest_income: 15.0
+      spouse:
+        age: 41
+        employment_income: 26800.0
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        bank_account_assets: 69500.0
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        is_blind: true
+        is_disabled: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        is_pursuing_credential_for_american_opportunity_credit: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        over_the_counter_health_expenses: 300.0
+        pre_subsidy_rent: 6949.41162109375
+        taxable_interest_income: 100.0
+        weeks_unemployed: 5.0
+      child1:
+        age: 17
+        employment_income: 0.0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        over_the_counter_health_expenses: 50.0
+      child2:
+        age: 14
+        employment_income: 0.0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        over_the_counter_health_expenses: 50.0
+      child3:
+        age: 12
+        employment_income: 0.0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        over_the_counter_health_expenses: 50.0
+      child4:
+        age: 10
+        employment_income: 0.0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        over_the_counter_health_expenses: 50.0
+      child5:
+        age: 5
+        employment_income: 0.0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        over_the_counter_health_expenses: 50.0
+      child6:
+        age: 1
+        employment_income: 0.0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        over_the_counter_health_expenses: 50.0
+    marital_units:
+      couple:
+        members:
+        - head
+        - spouse
+      child1:
+        members:
+        - child1
+      child2:
+        members:
+        - child2
+      child3:
+        members:
+        - child3
+      child4:
+        members:
+        - child4
+      child5:
+        members:
+        - child5
+      child6:
+        members:
+        - child6
+    tax_units:
+      tax_unit:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        - child2
+        - child3
+        - child4
+        - child5
+        - child6
+    families:
+      family:
+        members: *id001
+    spm_units:
+      spm_unit:
+        members: *id001
+        receives_housing_assistance: true
+    households:
+      household:
+        members: *id001
+        state_code: NJ
+  output:
+    spm_unit_payroll_tax: 2276.66
+    nj_employee_state_payroll_tax:
+    - 0
+    - 226.46
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
