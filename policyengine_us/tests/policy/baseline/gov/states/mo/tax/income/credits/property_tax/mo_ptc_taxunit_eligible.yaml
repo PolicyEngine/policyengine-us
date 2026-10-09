@@ -92,7 +92,7 @@
   output:
     mo_ptc_taxunit_eligible: true
 
-- name: Survivor pathway is claimant-only, a qualifying spouse does not count
+- name: A spouse aged 60 or older with their own survivor benefits can be the claimant
   period: 2022
   absolute_error_margin: 0
   input:
@@ -110,6 +110,29 @@
         members: [person1, person2]
         state_code: MO
   output:
+    # A married couple files one claim and chooses who is listed first as
+    # the claimant (RSMo 135.010(1): "a person or persons").
+    mo_ptc_taxunit_eligible: true
+
+- name: Survivor pathway tests age and benefits on the same person
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 62
+        rent: 3_600
+      person2:
+        is_tax_unit_spouse: true
+        age: 58
+        social_security_survivors: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Neither spouse is both 60 or older and receiving survivor benefits.
     mo_ptc_taxunit_eligible: false
 
 - name: A child's survivor benefits do not qualify an aged head

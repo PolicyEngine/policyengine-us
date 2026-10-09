@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.de.tax.income.de_combined_separate_credits import (
+    de_combined_separate_credit_choices,
+)
 
 
 class de_income_tax_before_refundable_credits_separate(Variable):
@@ -9,6 +12,8 @@ class de_income_tax_before_refundable_credits_separate(Variable):
     )
     unit = USD
     definition_period = YEAR
+    # Line 34: the EITC only reduces the tax of the spouse with the higher
+    # Line 23 taxable income.
     reference = "https://revenuefiles.delaware.gov/2025/PITForms_Instructions/Instructions/PIT-RES_Instructions_2025-01.pdf#page=10"
     defined_for = StateCode.DE
 
@@ -25,12 +30,14 @@ class de_income_tax_before_refundable_credits_separate(Variable):
         head_line33 = tax_unit.sum(is_head * line33)
         spouse_line33 = tax_unit.sum(is_spouse * line33)
 
-        # Tie-break: when taxable incomes are equal, head is treated as the
-        # higher-income spouse, so EITC routes to head.
-        person_taxable = members("de_taxable_income_indv", period)
-        head_taxable = tax_unit.sum(is_head * person_taxable)
-        spouse_taxable = tax_unit.sum(is_spouse * person_taxable)
-        head_higher = head_taxable >= spouse_taxable
+        # The EITC "may only be applied against the tax imposed on the spouse
+        # with the higher taxable income reported on Line 23". With equal
+        # taxable incomes either column qualifies, and the column is chosen
+        # with the other column credits to minimise tax (see
+        # de_combined_separate_credit_choices).
+        _, _, head_higher = de_combined_separate_credit_choices(
+            tax_unit, period, parameters
+        )
 
         eitc = tax_unit("de_non_refundable_eitc", period)
         head_eitc = where(head_higher, min_(eitc, head_line33), 0)

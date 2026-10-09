@@ -16,9 +16,13 @@ class mt_itemized_deductions_joint(Variable):
 
     def formula(person, period, parameters):
         charitable_deduction = person.tax_unit("charitable_deduction", period)
-        investment_interest = person("investment_interest_expense", period)
-        mortgage_interest = person("mortgage_interest", period)
-        interest_ded = investment_interest + mortgage_interest
+        # A joint return deducts the interest either spouse paid, not a
+        # dependent's own.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        interest_ded = person.tax_unit.sum(
+            head_or_spouse
+            * add(person, period, ["investment_interest_expense", "mortgage_interest"])
+        )
         other_deductions = add(
             person.tax_unit,
             period,

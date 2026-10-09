@@ -26,7 +26,7 @@
   output:
     ia_net_income: [9_400, 0, 0]
 
-- name: IA net income unit test 2
+- name: Spouses with equal net income split the dependent net income equally
   absolute_error_margin: 0.01
   period: 2022
   input:
@@ -52,7 +52,76 @@
         members: [person1, person2, person3]
         state_code: IA
   output:
-    ia_net_income: [8_600, 8_000, 0]
+    # The spouses' net incomes are equal, so they split the dependent's.
+    ia_net_income: [8_300, 8_300, 0]
+
+- name: Dependent net income goes to the spouse with the greater net income, here not the head
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        age: 40
+        ia_gross_income: 10_000
+        ia_income_adjustments: 2_000
+      person2:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        age: 38
+        ia_gross_income: 30_000
+      person3:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        age: 17
+        ia_gross_income: 600
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    ia_net_income: [8_000, 30_600, 0]
+
+- name: Dependent net income stays with the same spouse when the head and spouse labels are exchanged
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        age: 40
+        ia_gross_income: 10_000
+        ia_income_adjustments: 2_000
+      person2:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        age: 38
+        ia_gross_income: 30_000
+      person3:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        age: 17
+        ia_gross_income: 600
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IA
+  output:
+    ia_net_income: [8_000, 30_600, 0]
 
 - name: 2022 single filer with wages and traditional IRA distribution
   period: 2022

@@ -1,4 +1,4 @@
-- name: The dependent incoome is allocated to the head
+- name: The dependent income goes to the spouse with the greater income
   period: 2021
   input:
     people: 
@@ -67,3 +67,86 @@
         state_code: MT
   output:
     mt_agi_indiv: [9_200, 1_600, 0]
+
+- name: The dependent income goes to the spouse with the greater income, here not the head
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        adjusted_gross_income_person: 10_000
+        mt_additions: 500
+        mt_subtractions: 3_000
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: false
+      person2:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        adjusted_gross_income_person: 2_000
+        mt_additions: 300
+        mt_subtractions: 700
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: false
+      person3:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        adjusted_gross_income_person: 2_000
+        mt_additions: 300
+        mt_subtractions: 700
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # The first test's couple with the head and spouse labels exchanged.
+    mt_agi_indiv: [9_100, 1_600, 0]
+
+- name: Spouses with equal income split the dependent income equally
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        adjusted_gross_income_person: 5_000
+        mt_additions: 0
+        mt_subtractions: 0
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: false
+      person2:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        adjusted_gross_income_person: 5_000
+        mt_additions: 0
+        mt_subtractions: 0
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: false
+      person3:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        adjusted_gross_income_person: 0
+        mt_additions: 1_000
+        mt_subtractions: 0
+        mt_taxable_social_security: 0
+        taxable_social_security: 0
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_agi_indiv: [5_500, 5_500, 0]

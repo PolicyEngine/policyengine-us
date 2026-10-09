@@ -74,3 +74,91 @@
         mt_federal_income_tax_deduction_unit: 600
   output:
     mt_itemized_deductions_joint: [2_212, 0, 0]
+
+- name: A joint return deducts the mortgage and investment interest either spouse paid
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        mortgage_interest: 4_000
+      person2:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        mortgage_interest: 6_000
+        investment_interest_expense: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_unit: 0
+  output:
+    mt_itemized_deductions_joint: [10_500, 0]
+
+- name: The joint deduction is the same when the head and spouse labels are exchanged
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        mortgage_interest: 4_000
+      person2:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        mortgage_interest: 6_000
+        investment_interest_expense: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_unit: 0
+  output:
+    mt_itemized_deductions_joint: [0, 10_500]
+
+- name: A dependent's own mortgage interest is not deducted on the parents' joint return
+  period: 2021
+  absolute_error_margin: 1
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        mortgage_interest: 4_000
+      person2:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      person3:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        mortgage_interest: 50_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_unit: 0
+  output:
+    mt_itemized_deductions_joint: [4_000, 0, 0]
+

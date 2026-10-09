@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.de.tax.income.de_combined_separate_credits import (
+    de_combined_separate_credit_choices,
+)
 
 
 class de_cdcc_indv(Variable):
@@ -15,15 +18,13 @@ class de_cdcc_indv(Variable):
         # the tax imposed on the spouse with the lower taxable
         # income reported on Line 23."  Locked to the lower-income
         # spouse's column under combined separate filing.
-        # Tie-break: when taxable incomes are equal, head is treated
-        # as the higher-income spouse, so CDCC routes to spouse.
+        # With equal taxable incomes either spouse has the lower income; the
+        # column is then chosen with the other column credits to minimise tax
+        # (see de_combined_separate_credit_choices).
         is_head = person("is_tax_unit_head", period)
         is_spouse = person("is_tax_unit_spouse", period)
-
-        person_taxable = person("de_taxable_income_indv", period)
-        head_taxable = person.tax_unit.sum(is_head * person_taxable)
-        spouse_taxable = person.tax_unit.sum(is_spouse * person_taxable)
-        head_higher = head_taxable >= spouse_taxable
-
-        is_lower_income = (is_head & ~head_higher) | (is_spouse & head_higher)
-        return is_lower_income * person.tax_unit("de_cdcc", period)
+        _, cdcc_head, _ = de_combined_separate_credit_choices(
+            person.tax_unit, period, parameters
+        )
+        takes = (is_head & cdcc_head) | (is_spouse & ~cdcc_head)
+        return takes * person.tax_unit("de_cdcc", period)
