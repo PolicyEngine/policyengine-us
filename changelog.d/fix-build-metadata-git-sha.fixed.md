@@ -1,1 +1,0 @@
-Fixed `build_metadata` reporting the commit of an enclosing git repository, such as a data repository whose virtualenv holds policyengine-us, as policyengine-us's `git_sha`. It now reads only policyengine-us's own checkout or the installer's PEP 610 git record, and otherwise returns `None`.
