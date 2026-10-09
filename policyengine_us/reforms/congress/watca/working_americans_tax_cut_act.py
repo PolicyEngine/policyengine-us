@@ -43,7 +43,9 @@ def create_watca() -> Reform:
             # Sec 163(d) limits the deduction to net investment income;
             # PolicyEngine does not yet model that limitation, so gross
             # investment interest expense is used as a proxy.
-            investment_interest = add(tax_unit, period, ["investment_interest_expense"])
+            investment_interest = tax_unit_non_dep_add(
+                tax_unit, period, ["investment_interest_expense"]
+            )
             return max_(0, agi - investment_interest)
 
     class watca_alternative_tax_eligible(Variable):

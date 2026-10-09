@@ -62,3 +62,35 @@
     state_code: NM
   output:
     nm_salt_add_back: 0
+
+# Lines 1-5 rebuild federal Schedule A lines 5a-5e, which hold only the
+# filers' own real estate taxes.
+- name: A dependent's real estate taxes do not dilute the filers' income tax share
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        real_estate_taxes: 3_000
+      spouse:
+        age: 43
+      child:
+        age: 15
+        real_estate_taxes: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        tax_unit_itemizes: true
+        state_and_local_sales_or_income_tax: 8_000
+        itemized_deductions_less_salt: 40_000
+        standard_deduction: 25_900
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: NM
+  output:
+    # min(10_000, 11_000) * 8_000 / 11_000 = 7_272.73, below
+    # 40_000 + 10_000 - 25_900 = 24_100.
+    nm_salt_add_back: 7_272.73

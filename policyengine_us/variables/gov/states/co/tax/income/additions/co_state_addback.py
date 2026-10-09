@@ -16,7 +16,8 @@ class co_state_addback(Variable):
     def formula(tax_unit, period, parameters):
         federal_itemizer = tax_unit("tax_unit_itemizes", period)
         state_inctax = max_(0, tax_unit("state_withheld_income_tax", period))
-        property_taxes = add(tax_unit, period, ["real_estate_taxes"])
+        # Federal Schedule A line 5b holds only the filers' own taxes.
+        property_taxes = tax_unit_non_dep_add(tax_unit, period, ["real_estate_taxes"])
         # follow worksheet on page 5 of 2021 Book cited above:
         irs_schA_line_5d = state_inctax + property_taxes
         irs_schA_line_5e = tax_unit("salt_deduction", period)

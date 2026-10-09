@@ -54,3 +54,31 @@
     households: {household: {members: [head, spouse], state_code: MO}}
   output:
     mo_net_state_income_taxes: 10_000
+
+# The Part 2 worksheet prorates federal Schedule A line 5e by income tax over
+# line 5d, which holds only the filers' own real estate taxes.
+- name: A dependent's real estate taxes do not dilute the filers' income tax share
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        real_estate_taxes: 3_000
+      spouse:
+        age: 43
+      child:
+        age: 15
+        real_estate_taxes: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        state_withheld_income_tax: 8_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MO
+  output:
+    # 10_000 cap * 8_000 / (8_000 + 3_000).
+    mo_net_state_income_taxes: 7_272.73

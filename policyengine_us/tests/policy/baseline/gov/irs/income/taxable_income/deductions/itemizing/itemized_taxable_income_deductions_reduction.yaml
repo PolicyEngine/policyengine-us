@@ -164,3 +164,44 @@
     # Excess over the 37 percent bracket: 900_000 - 640_600 = 259_400
     # Lesser: 200_000; reduction: 200_000 * 2 / 37 = 10_810.81
     itemized_taxable_income_deductions_reduction: 10_810.81
+
+# The head's and spouse's investment interest enters both line 1 (through
+# interest_deduction) and line 2; a dependent's own investment interest
+# enters neither, so the worksheet matches the case without the dependent.
+- name: 2017 joint filers with a dependent's own investment interest - the dependent's interest stays out of both lines
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        investment_interest_expense: 30_000
+      spouse:
+        age: 50
+      child:
+        age: 16
+        investment_interest_expense: 15_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        adjusted_gross_income: 600_000
+        filing_status: JOINT
+        casualty_loss_deduction: 20_000
+        charitable_deduction: 10_000
+        medical_expense_deduction: 0
+        salt_deduction: 0
+        misc_deduction: 0
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    # Same worksheet as the case without the dependent:
+    # Line 1: 30_000 + 20_000 + 10_000 = 60_000
+    # Line 2: 30_000 + 20_000 = 50_000
+    # Line 4: (60_000 - 50_000) * 80% = 8_000
+    # Line 8: (600_000 - 313_800) * 3% = 8_586
+    # Line 10: 60_000 - 8_000 = 52_000
+    interest_deduction: 30_000
+    total_itemized_taxable_income_deductions: 60_000
+    itemized_taxable_income_deductions_reduction: 8_000
+    itemized_taxable_income_deductions: 52_000

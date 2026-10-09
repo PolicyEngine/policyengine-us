@@ -9,4 +9,8 @@ class total_misc_deductions(Variable):
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/67#b"
 
-    adds = "gov.irs.deductions.itemized.misc.sources"
+    def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.irs.deductions.itemized.misc
+        # The head's and spouse's own expenses; a dependent's job expenses
+        # and return preparation fees belong on the dependent's return.
+        return tax_unit_non_dep_add(tax_unit, period, p.sources)

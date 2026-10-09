@@ -198,3 +198,28 @@
         state_code: DE
   output:
     de_itemized_deductions_indv: [0, 5_000, 0]
+
+# The federal interest deduction holds only the filers' own interest, so each
+# filer's share is of the filers' interest alone.
+- name: A dependent's interest does not dilute the payer's share of the federal interest deduction
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 60_000
+        deductible_mortgage_interest: 2_000
+      person2:
+        adjusted_gross_income_person: 40_000
+      person3:
+        is_tax_unit_dependent: true
+        deductible_mortgage_interest: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: DE
+  output:
+    de_itemized_deductions_indv: [2_000, 0, 0]

@@ -21,9 +21,15 @@ class charitable_deduction(Variable):
         # Currently we model two non-cash categories (50% vs 30% cap)
         # and treat all cash as subject to the overall cap only.
         # The cash split and the 20% category are not yet modeled.
-        cash_donations = add(tax_unit, period, ["charitable_cash_donations"])
-        non_cash_donations = add(tax_unit, period, ["charitable_non_cash_donations"])
-        non_cash_to_non_50_pct = add(
+        # Only contributions the head and spouse make count; a dependent's
+        # own contributions belong on the dependent's return.
+        cash_donations = tax_unit_non_dep_add(
+            tax_unit, period, ["charitable_cash_donations"]
+        )
+        non_cash_donations = tax_unit_non_dep_add(
+            tax_unit, period, ["charitable_non_cash_donations"]
+        )
+        non_cash_to_non_50_pct = tax_unit_non_dep_add(
             tax_unit,
             period,
             ["charitable_non_cash_donations_non_50_pct_orgs"],

@@ -23,7 +23,9 @@ class va_reduced_itemized_deductions(Variable):
             p_va.reduction.applicable,
         )
         # Line 2 medical expense ded., interest ded., casualty loss ded., and gambling losses
-        reducible_ded = add(
+        # Person-level amounts count only for the head and spouse, as in the
+        # federal interest and wagering deductions.
+        reducible_ded = tax_unit_non_dep_add(
             tax_unit,
             period,
             p_va.reduction.reducible,

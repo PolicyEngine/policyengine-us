@@ -63,7 +63,10 @@ class ny_itemized_deductions_phase_out(Variable):
         # Worksheet line 2 (L2): deductions not subject to the limitation
         # (26 U.S.C. 68(c)) - medical, investment interest, casualty/theft.
         medical = tax_unit("medical_expense_deduction", period)
-        investment_interest = add(tax_unit, period, ["investment_interest_expense"])
+        # The filers' own investment interest, as in interest_deduction.
+        investment_interest = tax_unit_non_dep_add(
+            tax_unit, period, ["investment_interest_expense"]
+        )
         casualty = tax_unit("ny_casualty_loss_deduction", period)
         l2 = medical + investment_interest + casualty
 

@@ -85,3 +85,78 @@
         state_code: PR
   output:  
     pr_mortgage_deduction: 6_000
+
+# Section 1033.15(a)(1) allows interest on "a qualified residence of the
+# taxpayer"; a dependent's own interest goes on the dependent's return.
+- name: A dependent's own mortgage interest is left out
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 38
+      child:
+        age: 15
+        deductible_mortgage_interest: 18_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        pr_agi: 100_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: PR
+  output:
+    pr_mortgage_deduction: 0
+
+- name: Filers' own mortgage interest is unchanged by a dependent's
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        deductible_mortgage_interest: 4_000
+      spouse:
+        age: 38
+        deductible_mortgage_interest: 3_000
+      child:
+        age: 15
+        deductible_mortgage_interest: 18_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        pr_agi: 100_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: PR
+  output:
+    # 4_000 + 3_000, below 30% of AGI and the 35_000 maximum.
+    pr_mortgage_deduction: 7_000
+
+- name: A dependent aged 65 or older does not lift the filers' limits
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        deductible_mortgage_interest: 4_000
+      spouse:
+        age: 38
+        deductible_mortgage_interest: 3_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        deductible_mortgage_interest: 18_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, parent]
+        pr_agi: 10_000
+    households:
+      household:
+        members: [head, spouse, parent]
+        state_code: PR
+  output:
+    # min(4_000 + 3_000, 30% * 10_000).
+    pr_mortgage_deduction: 3_000

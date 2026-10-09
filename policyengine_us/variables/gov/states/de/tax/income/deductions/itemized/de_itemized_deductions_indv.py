@@ -16,6 +16,13 @@ EXPENSE_SOURCES = {
 }
 
 
+# Federal deductions that count only the head's and spouse's own expenses.
+FILER_ONLY_DEDUCTIONS = {
+    "charitable_deduction",
+    "interest_deduction",
+}
+
+
 def _share(numerator, denominator):
     # numerator / denominator, or 0 where the denominator is not positive.
     share = np.zeros_like(denominator)
@@ -64,8 +71,15 @@ class de_itemized_deductions_indv(Variable):
                 continue
             amount = person.tax_unit(deduction, period)
             expense = add(person, period, expense_sources)
-            total_expense = person.tax_unit.sum(expense)
-            allocated += amount * _share(head_or_spouse * expense, total_expense)
+            filer_expense = head_or_spouse * expense
+            # The federal deductions hold only the head's and spouse's own
+            # expenses, so each filer's share is of those alone. Delaware's
+            # real estate tax deduction sums every member's taxes, and the
+            # part a dependent paid is prorated below.
+            total_expense = person.tax_unit.sum(
+                filer_expense if deduction in FILER_ONLY_DEDUCTIONS else expense
+            )
+            allocated += amount * _share(filer_expense, total_expense)
         # Prorate what could not be specifically allocated.
         unit_deductions = person.tax_unit("de_itemized_deductions_unit", period)
         # An aggregate override can be below the traced deductions; never

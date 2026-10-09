@@ -25,7 +25,8 @@ class mo_net_state_income_taxes(Variable):
         salt_cap = tax_unit("salt_cap", period)
 
         uncapped_itax = max_(0, add(tax_unit, period, ["state_withheld_income_tax"]))
-        uncapped_ptax = add(tax_unit, period, ["real_estate_taxes"])
+        # Federal Schedule A line 5b holds only the filers' own taxes.
+        uncapped_ptax = tax_unit_non_dep_add(tax_unit, period, ["real_estate_taxes"])
         uncapped_salt = uncapped_itax + uncapped_ptax
 
         ratio = np.zeros_like(uncapped_salt)

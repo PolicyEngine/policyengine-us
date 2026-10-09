@@ -27,7 +27,8 @@ class ut_federal_deductions_for_taxpayer_credit(Variable):
             if deduction != "salt_deduction"
         ]
         fallback_itemized = add(tax_unit, period, deductions)
-        real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
+        # The filers' own taxes, as in the federal SALT deduction.
+        real_estate_tax = tax_unit_non_dep_add(tax_unit, period, ["real_estate_taxes"])
         capped_real_estate_tax = min_(
             real_estate_tax, p.itemized.salt_and_real_estate.cap[filing_status]
         )

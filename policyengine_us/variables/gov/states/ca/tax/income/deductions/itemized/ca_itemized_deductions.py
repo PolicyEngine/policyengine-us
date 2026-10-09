@@ -18,7 +18,11 @@ class ca_itemized_deductions(Variable):
         # compute high-AGI limit on itemized deductions
         p = parameters(period).gov.states.ca.tax.income.deductions.itemized
         # ... determine part of itemized deductions subject to limit
-        excluded_itm_deds = add(tax_unit, period, p.limit.excluded_deductions)
+        # Worksheet line 2 takes federal Schedule A lines 4, 9 and 15, so
+        # person-level amounts count only for the head and spouse.
+        excluded_itm_deds = tax_unit_non_dep_add(
+            tax_unit, period, p.limit.excluded_deductions
+        )
         included_itm_deds = p.limit.ded_fraction * max_(
             0, itm_deds_max - excluded_itm_deds
         )

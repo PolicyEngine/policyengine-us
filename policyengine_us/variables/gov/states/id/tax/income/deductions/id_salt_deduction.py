@@ -19,7 +19,10 @@ class id_salt_deduction(Variable):
         ]
         # Federal Schedule A line 5b - State and local real estate taxes
         # Federal Schedule A line 5c - State and local personal property taxes
-        real_estate_taxes = add(tax_unit, period, ["real_estate_taxes"])
+        # The filers' own taxes, as in the federal SALT deduction.
+        real_estate_taxes = tax_unit_non_dep_add(
+            tax_unit, period, ["real_estate_taxes"]
+        )
         salt_and_real_estate_tax = state_and_local_tax + real_estate_taxes
         salt_above_cap = salt_and_real_estate_tax > cap
         reduced_cap = max_(cap - real_estate_taxes, 0)

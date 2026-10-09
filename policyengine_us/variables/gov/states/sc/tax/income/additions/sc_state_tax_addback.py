@@ -34,7 +34,10 @@ class sc_state_tax_addback(Variable):
         # line 4
         salt = tax_unit("state_and_local_sales_or_income_tax", period)
         # line 5
-        real_estate_and_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
+        # The filers' own taxes, as on federal Schedule A.
+        real_estate_and_property_taxes = tax_unit_non_dep_add(
+            tax_unit, period, ["real_estate_taxes"]
+        )
         less_income_amount = max_(
             0,
             p_us.itemized.salt_and_real_estate.cap[filing_status]

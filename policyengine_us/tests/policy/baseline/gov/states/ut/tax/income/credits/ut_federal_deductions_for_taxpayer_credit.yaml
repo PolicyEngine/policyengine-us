@@ -71,3 +71,36 @@
   output:
     ut_federal_deductions_for_taxpayer_credit: 6_000
 
+
+# The federal SALT deduction holds only the filers' own real estate taxes, so
+# only those are kept when removing the income tax it includes.
+- name: A dependent's real estate taxes do not displace the filers' income tax removal
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        real_estate_taxes: 3_000
+      spouse:
+        age: 43
+      child:
+        age: 15
+        real_estate_taxes: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        tax_unit_itemizes: true
+        standard_deduction: 25_900
+        itemized_taxable_income_deductions: 50_000
+        salt_deduction: 10_000
+        charitable_deduction: 40_000
+        state_and_local_sales_or_income_tax: 8_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: UT
+  output:
+    # Income tax deducted = 10_000 - 3_000 = 7_000; 50_000 - 7_000 = 43_000,
+    # equal to the fallback 40_000 + 3_000.
+    ut_federal_deductions_for_taxpayer_credit: 43_000

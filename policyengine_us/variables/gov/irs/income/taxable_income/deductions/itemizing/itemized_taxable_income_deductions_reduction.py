@@ -43,8 +43,12 @@ class itemized_taxable_income_deductions_reduction(Variable):
                 return p.obbb.rate * lesser_of_deductions_or_excess
             # Section 68(c) excludes medical expenses, investment interest,
             # and casualty, theft and wagering losses from the itemized
-            # deductions the 80 percent ceiling applies to.
-            excluded_deductions = add(tax_unit, period, p.excluded_deductions)
+            # deductions the 80 percent ceiling applies to. Person-level
+            # amounts count only for the head and spouse, as in
+            # interest_deduction.
+            excluded_deductions = tax_unit_non_dep_add(
+                tax_unit, period, p.excluded_deductions
+            )
             limited_deductions = max_(0, maximum_deductions - excluded_deductions)
             maximum_deductions_reduction = (
                 limited_deductions * p.itemized_deduction_rate

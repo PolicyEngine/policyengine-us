@@ -72,3 +72,49 @@
     filing_status: SINGLE
   output:
     charitable_deduction_for_non_itemizers: 0
+
+# Pub. 526 (2025) p. 4: "contributions of money or property you make".
+- name: A dependent's own cash contributions are left out
+  period: 2021
+  input:
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 43
+      child:
+        age: 16
+        charitable_cash_donations: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    charitable_deduction_for_non_itemizers: 0
+
+- name: Filers' own cash contributions are unchanged by a dependent's
+  period: 2021
+  input:
+    people:
+      head:
+        age: 45
+        charitable_cash_donations: 200
+      spouse:
+        age: 43
+        charitable_cash_donations: 100
+      child:
+        age: 16
+        charitable_cash_donations: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    # 200 + 100, below the 600 joint cap for 2021.
+    charitable_deduction_for_non_itemizers: 300

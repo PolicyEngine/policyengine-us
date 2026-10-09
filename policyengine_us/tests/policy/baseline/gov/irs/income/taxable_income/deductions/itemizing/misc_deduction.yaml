@@ -14,3 +14,57 @@
     adjusted_gross_income: 0
   output: 
     misc_deduction: 0
+
+# Before 2018, line 21 covered expenses of "your job" and line 22 "the fees
+# you paid for preparation of your tax return" (2017 Instructions for
+# Schedule A, p. 12), so a dependent's own expenses stay on the dependent's
+# return.
+- name: 2017 dependent's own job expenses and preparation fees are left out
+  period: 2017
+  input:
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 43
+      child:
+        age: 17
+        unreimbursed_business_employee_expenses: 4_000
+        tax_preparation_fees: 300
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    total_misc_deductions: 0
+    misc_deduction: 0
+
+- name: 2017 filers' own expenses are unchanged by a dependent's
+  period: 2017
+  input:
+    people:
+      head:
+        age: 45
+        unreimbursed_business_employee_expenses: 3_000
+      spouse:
+        age: 43
+        tax_preparation_fees: 500
+      child:
+        age: 17
+        unreimbursed_business_employee_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    total_misc_deductions: 3_500
+    # 3_500 - 2% * 50_000.
+    misc_deduction: 2_500

@@ -69,3 +69,54 @@
         members: [person1, person2]
   output:
     wagering_losses_deduction: 5
+
+# Gambling losses are deductible "only to the extent of gambling winnings
+# reported on Schedule 1 (Form 1040), line 8b" (2025 Instructions for
+# Schedule A, p. 11), so a dependent's own losses and winnings stay on the
+# dependent's return.
+- name: A dependent's own losses do not offset a filer's winnings
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        gambling_winnings: 1_000
+      spouse:
+        age: 43
+      child:
+        age: 17
+        gambling_losses: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    wagering_losses_deduction: 0
+
+- name: A dependent's own winnings do not raise the filers' limit
+  absolute_error_margin: 0
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        gambling_losses: 2_000
+        gambling_winnings: 500
+      spouse:
+        age: 43
+      child:
+        age: 17
+        gambling_winnings: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    wagering_losses_deduction: 500

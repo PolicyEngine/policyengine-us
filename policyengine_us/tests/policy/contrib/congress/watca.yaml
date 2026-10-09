@@ -550,3 +550,27 @@
     # Surtax variable still computes but income_tax_before_credits should not include it
     watca_alternative_tax_eligible: false
     watca_millionaire_surtax: 50_000
+
+- name: Surtax MAGI reduces by the filers' own investment interest only
+  period: 2026
+  reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
+  input:
+    gov.contrib.congress.watca.in_effect: true
+    people:
+      head:
+        age: 45
+        employment_income: 2_000_000
+        investment_interest_expense: 50_000
+      child:
+        age: 15
+        investment_interest_expense: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head, child]
+  output:
+    # A dependent's investment interest is not on the head's return.
+    watca_surtax_magi: 1_950_000

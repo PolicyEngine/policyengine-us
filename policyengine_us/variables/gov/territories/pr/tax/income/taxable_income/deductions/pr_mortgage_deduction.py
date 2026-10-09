@@ -18,7 +18,11 @@ class pr_mortgage_deduction(Variable):
         agi = tax_unit("pr_agi", period)
         limit = agi * p.floor  # plus any income excluded from AGI
 
-        mortgage_interest = add(tax_unit, period, ["deductible_mortgage_interest"])
+        # Only interest the head and spouse paid counts; a dependent's own
+        # interest belongs on the dependent's return.
+        mortgage_interest = tax_unit_non_dep_add(
+            tax_unit, period, ["deductible_mortgage_interest"]
+        )
         person = tax_unit.members
         age = person("age", period)
 

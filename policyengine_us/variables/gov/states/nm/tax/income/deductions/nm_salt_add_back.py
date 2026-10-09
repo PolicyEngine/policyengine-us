@@ -22,7 +22,11 @@ class nm_salt_add_back(Variable):
         # tax/income, federal Schedule A, line 5a. 1
         salt_sales_or_income = tax_unit("state_and_local_sales_or_income_tax", period)
         # state_and_local_tax, line 5d. 2
-        total_salt = add(tax_unit, period, ["real_estate_taxes"]) + salt_sales_or_income
+        # Federal Schedule A line 5b holds only the filers' own taxes.
+        real_estate_taxes = tax_unit_non_dep_add(
+            tax_unit, period, ["real_estate_taxes"]
+        )
+        total_salt = real_estate_taxes + salt_sales_or_income
         # ratio = round(salt_sales_or_income[0] / total_salt[0], 4)
         # ratio. 3
         salt_ratio = np.zeros_like(total_salt)

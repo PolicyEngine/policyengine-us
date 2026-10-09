@@ -161,3 +161,54 @@
     # cash = max(5000 - 0, 0) = 5000
     # min(14500 + 5000 + 5000, 60000) = 24500
     charitable_deduction: 24_500
+
+# A filer deducts "contributions of money or property you make" (Pub. 526
+# (2025) p. 4); a dependent's own contributions go on the dependent's return.
+- name: A dependent's own contributions are left out
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 43
+      child:
+        age: 16
+        charitable_cash_donations: 2_000
+        charitable_non_cash_donations: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        positive_agi: 100_000
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    charitable_deduction: 0
+
+- name: Filers' own contributions are unchanged by a dependent's
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        charitable_cash_donations: 3_000
+      spouse:
+        age: 43
+        charitable_non_cash_donations: 1_000
+      child:
+        age: 16
+        charitable_cash_donations: 5_000
+        charitable_non_cash_donations: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        positive_agi: 100_000
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    # 3_000 cash + 1_000 non-cash, below the AGI ceilings.
+    charitable_deduction: 4_000

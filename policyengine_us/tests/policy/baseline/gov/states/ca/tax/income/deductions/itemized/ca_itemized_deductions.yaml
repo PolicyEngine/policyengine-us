@@ -51,3 +51,33 @@
     ca_itemized_deductions_pre_limitation: 10_000
   output:
     ca_itemized_deductions: 7_000  # charity subject to limitation
+
+# Worksheet line 2 adds federal Schedule A lines 4, 9 and 15, and line 9
+# holds only the filers' own investment interest.
+- name: A dependent's investment interest is not excluded from the limitation
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+
+      spouse:
+        age: 43
+      child:
+        age: 15
+        investment_interest_expense: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        adjusted_gross_income: 2_000_000
+        ca_itemized_deductions_pre_limitation: 20_000
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CA
+  output:
+    # The 80% limb binds: 20_000 - 0.8 * (20_000 - 0).
+    ca_itemized_deductions: 4_000

@@ -13,3 +13,51 @@
     real_estate_taxes: 14_000
   output:
     capped_property_taxes: 10_000
+
+# A tax is deductible only by the person on whom it is imposed (26 CFR
+# 1.164-1(a); Pub. 17 (2025) p. 98: "The tax must be imposed on you"), so a
+# dependent's own real estate taxes stay off the filers' return.
+- name: A dependent's own real estate taxes are left out
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 43
+      child:
+        age: 15
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    capped_property_taxes: 0
+
+- name: Filers' own real estate taxes are unchanged by a dependent's
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        real_estate_taxes: 4_000
+      spouse:
+        age: 43
+        real_estate_taxes: 3_000
+      child:
+        age: 15
+        real_estate_taxes: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    # 4_000 + 3_000, below the 10_000 cap.
+    capped_property_taxes: 7_000

@@ -1,0 +1,51 @@
+# Only interest the head and spouse pay goes on their Schedule A. Home
+# mortgage interest is "interest you pay" on a home "in which you have an
+# ownership interest" (Pub. 936 (2025) p. 2); investment interest is limited
+# to "the net investment income of the taxpayer" (26 U.S.C. 163(d)(1)).
+- name: A dependent's own mortgage and investment interest are left out
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 43
+      child:
+        age: 17
+        deductible_mortgage_interest: 12_000
+        investment_interest_expense: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    interest_deduction: 0
+
+- name: Filers' own interest is unchanged by a dependent's
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        deductible_mortgage_interest: 6_000
+        investment_interest_expense: 1_000
+      spouse:
+        age: 43
+        investment_interest_expense: 500
+      child:
+        age: 17
+        deductible_mortgage_interest: 20_000
+        investment_interest_expense: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    # 6_000 + 1_000 + 500.
+    interest_deduction: 7_500

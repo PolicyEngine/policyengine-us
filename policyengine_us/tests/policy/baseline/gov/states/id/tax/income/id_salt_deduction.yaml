@@ -37,3 +37,30 @@
     state_code: ID
   output:
     id_salt_deduction: 3_400
+
+# Above the cap, Idaho subtracts federal SALT less Schedule A lines 5b and 5c,
+# which hold only the filers' own taxes.
+- name: A dependent's real estate taxes do not shrink the subtraction of the filers' income tax
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        real_estate_taxes: 3_000
+      spouse:
+        age: 43
+      child:
+        age: 15
+        real_estate_taxes: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        state_and_local_sales_or_income_tax: 8_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: ID
+  output:
+    # 8_000 + 3_000 > 10_000 cap, so 10_000 - 3_000.
+    id_salt_deduction: 7_000

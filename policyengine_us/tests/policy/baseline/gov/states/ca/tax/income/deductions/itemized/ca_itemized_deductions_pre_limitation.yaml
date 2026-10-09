@@ -15,3 +15,31 @@
     real_estate_taxes: 5_000
   output:
     ca_itemized_deductions_pre_limitation: 13_000
+
+# itemized_deductions_less_salt holds only the filers' own investment
+# interest, so only that is replaced by California's own amount.
+- name: Case 3, a dependent's investment interest is not removed from the federal amount.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        investment_interest_expense: 5_000
+      spouse:
+        age: 43
+      child:
+        age: 15
+        investment_interest_expense: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        itemized_deductions_less_salt: 25_000
+        ca_investment_interest_expense_deduction: 8_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CA
+  output:
+    # 25_000 + 8_000 - 5_000.
+    ca_itemized_deductions_pre_limitation: 28_000

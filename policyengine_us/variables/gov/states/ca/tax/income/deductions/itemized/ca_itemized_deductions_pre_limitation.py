@@ -13,9 +13,20 @@ class ca_itemized_deductions_pre_limitation(Variable):
     )
     defined_for = StateCode.CA
 
-    adds = [
-        "itemized_deductions_less_salt",
-        "ca_investment_interest_expense_deduction",
-        "real_estate_taxes",
-    ]
-    subtracts = ["investment_interest_expense"]
+    def formula(tax_unit, period, parameters):
+        deductions = add(
+            tax_unit,
+            period,
+            [
+                "itemized_deductions_less_salt",
+                "ca_investment_interest_expense_deduction",
+                "real_estate_taxes",
+            ],
+        )
+        # Remove the federal investment interest that
+        # itemized_deductions_less_salt includes through interest_deduction,
+        # which counts only the head's and spouse's own interest.
+        federal_investment_interest = tax_unit_non_dep_add(
+            tax_unit, period, ["investment_interest_expense"]
+        )
+        return deductions - federal_investment_interest

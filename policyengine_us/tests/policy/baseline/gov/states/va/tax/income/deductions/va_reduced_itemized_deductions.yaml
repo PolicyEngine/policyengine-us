@@ -40,3 +40,36 @@
     state_code: VA
   output:
     va_reduced_itemized_deductions: 35_282
+
+# The applicable deductions hold the filers' own interest through
+# interest_deduction, so the reducible ones exclude only the filers' own
+# investment interest and gambling losses.
+- name: A dependent's investment interest and gambling losses are not reducible amounts
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        deductible_mortgage_interest: 10_000
+        investment_interest_expense: 2_000
+      spouse:
+        age: 43
+      child:
+        age: 15
+        investment_interest_expense: 3_000
+        gambling_losses: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        adjusted_gross_income: 2_000_000
+        state_and_local_sales_or_income_tax: 0
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: VA
+  output:
+    # Applicable = 12_000 interest; reducible = 2_000; the 80% limb binds:
+    # 12_000 - 0.8 * (12_000 - 2_000).
+    va_reduced_itemized_deductions: 4_000
