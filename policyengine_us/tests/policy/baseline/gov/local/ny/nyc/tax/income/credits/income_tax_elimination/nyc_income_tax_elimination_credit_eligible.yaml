@@ -1,0 +1,207 @@
+# Form IT-270, Part 1 (lines A to E) and Part 2, line 3, applying
+# Tax Law § 1310(h)(1)-(2).
+#   A: at least one dependent (§ 1310(h)(1)(A), IRC § 151(c)).
+#   C: federal AGI exceeds the line 2 threshold by no more than $5,000
+#      (§ 1310(h)(1)(B), (h)(2), (h)(3)(B)).
+#   D: investment (disqualified) income under IRC § 32(i) no more than
+#      $10,000 (§ 1310(h)(1)(D)).
+#   E: no NYS or NYC pass-through entity tax credit (§ 1310(h)(1)(C)).
+# Line B (IT-201 line 54 is zero) is not an eligibility input here; a zero
+# line 54 yields a zero credit on IT-270 line 11.
+# Head of household with 1 dependent: line 2 threshold = $31,503, so the
+# line C limit is 31,503 + 5,000 = $36,503.
+
+- name: Case 1, head of household with 1 dependent and low income is eligible.
+  period: 2025
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 20_000
+    eitc_relevant_investment_income: 0
+  output:
+    # Line A: 1 dependent -> Yes.
+    # Line C: 20,000 - 31,503 < 0, does not exceed by more than 5,000 -> No.
+    # Line D: 0 <= 10,000 -> No.
+    # Line E: no PTET credit -> No.
+    nyc_income_tax_elimination_credit_eligible: true
+
+- name: Case 2, no dependents is ineligible even with low income.
+  period: 2025
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    tax_unit_dependents: 0
+    adjusted_gross_income: 1_000
+    eitc_relevant_investment_income: 0
+  output:
+    # Line A: 0 dependents -> No -> stop; does not qualify.
+    nyc_income_tax_elimination_credit_eligible: false
+
+- name: Case 3, income exactly $5,000 above the threshold is eligible.
+  period: 2025
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 36_503
+    eitc_relevant_investment_income: 0
+  output:
+    # Line 3: 36,503 - 31,503 = 5,000, not more than 5,000.
+    # Line C: does not exceed by more than 5,000 -> No -> continue.
+    nyc_income_tax_elimination_credit_eligible: true
+
+- name: Case 4, income $5,001 above the threshold is ineligible.
+  period: 2025
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 36_504
+    eitc_relevant_investment_income: 0
+  output:
+    # Line 3: 36,504 - 31,503 = 5,001 > 5,000 -> stop; does not qualify.
+    nyc_income_tax_elimination_credit_eligible: false
+
+- name: Case 5, investment income of exactly $10,000 is eligible.
+  period: 2025
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 20_000
+    eitc_relevant_investment_income: 10_000
+  output:
+    # Line D: 10,000 is not greater than 10,000 -> No -> continue
+    # (§ 1310(h)(1)(D): "in excess of ten thousand dollars").
+    nyc_income_tax_elimination_credit_eligible: true
+
+- name: Case 6, investment income of $10,000.01 is ineligible.
+  period: 2025
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 20_000
+    eitc_relevant_investment_income: 10_000.01
+  output:
+    # Line D: 10,000.01 > 10,000 -> Yes -> stop; does not qualify.
+    nyc_income_tax_elimination_credit_eligible: false
+
+- name: Case 7, claiming a pass-through entity tax credit is ineligible.
+  period: 2025
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 20_000
+    eitc_relevant_investment_income: 0
+    ny_pass_through_entity_tax_credit_claimed: true
+  output:
+    # Line E: claiming NYS or NYC PTET credit -> Yes -> stop
+    # (§ 1310(h)(1)(C), Tax Law §§ 863(a) and 870(a)).
+    nyc_income_tax_elimination_credit_eligible: false
+
+- name: Case 8, tax unit outside NYC is ineligible.
+  period: 2025
+  input:
+    state_code: NY
+    in_nyc: false
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 20_000
+    eitc_relevant_investment_income: 0
+  output:
+    # The credit is allowed only against the NYC personal income tax on
+    # city residents (§ 1310(h)(1); IT-270-I general information).
+    nyc_income_tax_elimination_credit_eligible: false
+
+- name: Case 9, the credit does not exist in 2024.
+  period: 2024
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 20_000
+    eitc_relevant_investment_income: 0
+  output:
+    # § 1310(h)(1): "for taxable years beginning on or after January first,
+    # two thousand twenty-five".
+    nyc_income_tax_elimination_credit_eligible: false
+
+- name: Case 10, joint filers with 7 dependents at threshold plus $5,000 are eligible.
+  period: 2025
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 7
+    adjusted_gross_income: 96_902
+    eitc_relevant_investment_income: 0
+  output:
+    # Line 2: joint, "7 or more" row = 91,902.
+    # Line 3: 96,902 - 91,902 = 5,000, not more than 5,000 -> continue.
+    nyc_income_tax_elimination_credit_eligible: true
+
+- name: Case 11, joint filers with 9 dependents at threshold plus $5,001 are ineligible.
+  period: 2025
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 9
+    adjusted_gross_income: 96_903
+    eitc_relevant_investment_income: 0
+  output:
+    # Line 2: joint, "7 or more" row = 91,902.
+    # Line 3: 96,903 - 91,902 = 5,001 > 5,000 -> stop; does not qualify.
+    nyc_income_tax_elimination_credit_eligible: false
+
+- name: Case 12, separate filer with 8 dependents at threshold plus $5,000 is eligible.
+  period: 2025
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SEPARATE
+    tax_unit_dependents: 8
+    adjusted_gross_income: 93_361
+    eitc_relevant_investment_income: 0
+  output:
+    # Line 2: married filing separately, "8 or more" row = 88,361.
+    # Line 3: 93,361 - 88,361 = 5,000, not more than 5,000 -> continue.
+    nyc_income_tax_elimination_credit_eligible: true
+
+- name: Case 13, surviving spouse with 2 dependents at threshold plus $5,001 is ineligible.
+  period: 2025
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SURVIVING_SPOUSE
+    tax_unit_dependents: 2
+    adjusted_gross_income: 51_351
+    eitc_relevant_investment_income: 0
+  output:
+    # Line 2: qualifying surviving spouse, 2 dependents row = 46,350.
+    # Line 3: 51,351 - 46,350 = 5,001 > 5,000 -> stop; does not qualify.
+    nyc_income_tax_elimination_credit_eligible: false
+
+- name: Case 14, negative federal AGI is eligible.
+  period: 2025
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: -5_000
+    eitc_relevant_investment_income: 0
+  output:
+    # Line 3: -5,000 <= 31,503 -> 0; line C -> No -> continue.
+    nyc_income_tax_elimination_credit_eligible: true

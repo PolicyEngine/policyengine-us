@@ -1,3 +1,64 @@
+## [2.35.1] - 2026-10-09
+
+### Fixed
+
+- Pay no Colorado state sales tax refund for tax year 2026: C.R.S. 39-22-2003(2) allows it only if the fiscal year ending in the tax year had excess state revenues, and FY 2025-26 fell short of the Referendum C cap.
+
+
+## [2.35.0] - 2026-10-09
+
+### Added
+
+- Add the New York City income tax elimination credit (NY Tax Law § 1310(h), Form IT-270) for tax years 2025 and later, with income thresholds indexed to CPI-U from 2026.
+
+### Fixed
+
+- Deny the refundable Child Tax Credit to filers who elect to exclude foreign earned income or housing amounts under section 911 (26 U.S.C. 24(d)(3)) for tax years from 2015 except fully refundable 2021, including the Puerto Rico refundable Child Tax Credit, Colorado's replica of the refundable credit, the Wyden-Smith CTC expansion reform and the American Family Act reform before 2025; deny the EITC to filers who claim the benefits of section 911 (26 U.S.C. 32(c)(1)(C)), including in New Jersey's childless EITC age exception and the Colorado, DC, Illinois, Indiana and Washington credits that recompute the federal EITC; count the section 911 exclusion in gross income for the filing requirement (26 U.S.C. 6012(c)); and treat a section 911 claimant below the filing threshold as a filer when the tax unit would file if eligible for a refundable credit (would_file_if_eligible_for_refundable_credit). Under the American Family Act, waive the shared section 911 refundable CTC bar from 2025 onward, including the Puerto Rico refund after 2039.
+- Delaware's joint-return exclusion for people 60 or older or disabled now tests the couple's combined earned income and joint line 10 against the $5,000 and $20,000 limits, instead of requiring each spouse to meet the individual limits.
+
+
+## [2.34.5] - 2026-10-09
+
+### Fixed
+
+- Index the Arizona standard deduction for 2026 and later under A.R.S. 43-1041(H): set the 2026 amounts to $16,100 single and separate, $24,150 head of household and $32,200 joint, and move the inert parent-level uprating onto each filing-status amount.
+
+
+## [2.34.4] - 2026-10-09
+
+### Fixed
+
+- Exclude tax-unit dependents' qualifying capital gain deductions from the filers' Ohio AGI and modified AGI accounting.
+- Ohio now applies the business income deduction and the 3% tax on taxable business income, and modified adjusted gross income adds back the business income deduction and, from 2026, the qualifying capital gain deduction; personal exemptions and the exemption credit use modified adjusted gross income.
+- Missouri TANF now counts a parent claimed as someone else's tax dependent, such as a young mother claimed by her own parent, as a member of the assistance unit with their child. Explicit parent IDs now take precedence over relationship imputation, with the unchanged age-window fallback used only for children whose parent IDs are unknown. The Missouri parent input documents the shared IDs' step-parent ambiguity and annual-flag override, and known-ID non-parent caretakers must be explicitly marked.
+- Michigan household resources (MI-1040CR line 30) subtract only the claimant's and spouse's U.S. Schedule 1 adjustments to income, so income excluded under IRC 135, 137, 931 and 933 (savings bond interest for higher education, employer adoption benefits, possession and Puerto Rico income) stays in household resources, and a dependent's own IRA deduction, early withdrawal penalty or educator expenses no longer come off. Educator expenses use the federal deduction capped per eligible educator.
+
+
+## [2.34.3] - 2026-10-09
+
+### Fixed
+
+- Fixed `build_metadata` reporting the commit of an enclosing git repository, such as a data repository whose virtualenv holds policyengine-us, as policyengine-us's `git_sha`. It now reads only policyengine-us's own checkout or the installer's PEP 610 git record, and otherwise returns `None`.
+
+
+## [2.34.2] - 2026-10-09
+
+### Fixed
+
+- Skip, rather than fail, the Push workflow's versioning job when a newer push to main has superseded its commit, and give every Push job a timeout; the push Rest job's limit rises from 60 to 90 minutes to match the PR job.
+- D.C.'s self-employment loss addition no longer counts a dependent's self-employment loss, either in the amount added back or in its split between spouses.
+- Count Ohio's unreimbursed medical care deduction once per return: each member now takes their prorated share of worksheet line 8 rather than the full return amount, and federal AGI below zero is entered as zero on worksheet line 6.
+- Move citations that policyengine-core was dropping, or that sat in variable `documentation`, into `reference`: a Pell Grant value under a misspelled `refrence:` key, eight `metadata.references` aliases, and the URLs of 39 variables, including the doubled URL in `az_taxable_income`. Add code-health checks for misplaced citation/unit keys and known citation-key misspellings in both `.yaml` and `.yml` files, and stop the reference URL checks accepting a second URL fused after a fragment `=`.
+- Compute New York's 2026 child and dependent care credit under Tax Law 606(c-2), added by L.2026, ch. 59, Part A: qualifying expenses times a 55%-to-4% applicable percentage, less $20 per $1,000 of New York AGI above $750,000. The 606(c) percentage-of-federal credit now applies only before 2026.
+
+
+## [2.34.1] - 2026-10-08
+
+### Fixed
+
+- Stop a tax unit dependent's pension, IRA, 401(k), military or CSRS retirement income, or survivor benefits, from reducing the filer's state income tax in Connecticut, Hawaii, Illinois, Iowa, Kansas, Kentucky, Louisiana, Maryland, Massachusetts, Michigan, Minnesota, Missouri, Nebraska, New York, North Carolina, North Dakota, Oklahoma, Pennsylvania, Rhode Island, South Carolina, Utah, Vermont and West Virginia. Federal AGI already leaves out dependents' income, so these states' retirement subtractions and Utah's military retirement credit now count only the head's and spouse's amounts. North Carolina's military retirement deduction also now counts the retirement pay of a head or spouse only if they meet its 20-year or medical-retirement test, and Survivor Benefit Plan payments only to the beneficiary of a member who did, recorded with the new `nc_military_retirement_survivor_eligible` input. Qualifying survivor benefits recorded separately no longer make the recipient's otherwise ineligible own retirement pay deductible. Explicit false eligibility inputs exclude both own pay and survivor benefits. Explicit true eligibility inputs remain respected when the survivor flag is false; mixed own pay and qualifying survivor benefits require the recipient's service or medical record for the own-pay test.
+
+
 ## [2.34.0] - 2026-10-08
 
 ### Added
