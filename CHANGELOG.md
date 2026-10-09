@@ -1,3 +1,13 @@
+## [2.34.4] - 2026-10-09
+
+### Fixed
+
+- Exclude tax-unit dependents' qualifying capital gain deductions from the filers' Ohio AGI and modified AGI accounting.
+- Ohio now applies the business income deduction and the 3% tax on taxable business income, and modified adjusted gross income adds back the business income deduction and, from 2026, the qualifying capital gain deduction; personal exemptions and the exemption credit use modified adjusted gross income.
+- Missouri TANF now counts a parent claimed as someone else's tax dependent, such as a young mother claimed by her own parent, as a member of the assistance unit with their child. Explicit parent IDs now take precedence over relationship imputation, with the unchanged age-window fallback used only for children whose parent IDs are unknown. The Missouri parent input documents the shared IDs' step-parent ambiguity and annual-flag override, and known-ID non-parent caretakers must be explicitly marked.
+- Michigan household resources (MI-1040CR line 30) subtract only the claimant's and spouse's U.S. Schedule 1 adjustments to income, so income excluded under IRC 135, 137, 931 and 933 (savings bond interest for higher education, employer adoption benefits, possession and Puerto Rico income) stays in household resources, and a dependent's own IRA deduction, early withdrawal penalty or educator expenses no longer come off. Educator expenses use the federal deduction capped per eligible educator.
+
+
 ## [2.34.3] - 2026-10-09
 
 ### Fixed
