@@ -22,13 +22,14 @@ def filer_schedule_d_lines(tax_unit, period):
     dependent's own return, so they are left out, as irs_gross_income leaves
     them out of adjusted gross income. Line 16 combines the filers' lines 7
     and 15 directly, so a large dependent's gain cannot round away a filer's
-    smaller gain in the float32 tax unit aggregate. A supplied
-    net_capital_gains is kept by adding its difference from the computed
-    all-member aggregate, rounded to the same storage dtype. The supplied
-    amount covers every member, so dependents' components are left out.
-    An explicit aggregate override can make line 16
-    differ from lines 7 and 15 combined, and the worksheet and statutory
-    net-capital-gain paths can then disagree.
+    smaller gain in the float32 tax unit aggregate. When net_capital_gains
+    differs from the computed all-member aggregate in its storage precision,
+    that supplied amount covers every member, so dependents' own gains and
+    losses are removed before the filers' distributions are added. An amount
+    equal to the computed aggregate uses the direct filer components.
+    An explicit aggregate override can make line 16 differ from lines 7 and
+    15 combined, and the worksheet and statutory net-capital-gain paths can
+    then disagree.
 
     Capital gain distributions reported without Schedule D
     (non_sch_d_capital_gains) are long-term capital gains (26 U.S.C.
@@ -47,15 +48,20 @@ def filer_schedule_d_lines(tax_unit, period):
         tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_gains"])
         + distributions
     )
-    # Sum the filers directly: subtracting a dependent's gain from a float32
-    # all-member total can lose dollars of the filer's smaller gain. Keep a
-    # supplied tax-unit aggregate as its difference from the computed total.
-    # Match net_capital_gains' adds and storage dtype, so this difference is
-    # exactly zero when the aggregate is computed rather than supplied.
+    # A component-derived aggregate may have rounded away a filer's dollar,
+    # so sum the filers directly when it matches its normal stored value.
+    # A differing supplied aggregate covers every member: subtract the
+    # dependents directly instead of reconciling it through a rounded total.
     net_capital_gains = tax_unit("net_capital_gains", period)
     computed_gains = add(
         tax_unit, period, ["long_term_capital_gains", "short_term_capital_gains"]
     ).astype(net_capital_gains.dtype)
-    aggregate_adjustment = net_capital_gains.astype(float) - computed_gains
-    line_16 = line_7 + line_15 + aggregate_adjustment
+    dependent_gains = tax_unit.sum(
+        dependent * person("long_term_capital_gains", period)
+    ) + tax_unit.sum(dependent * person("short_term_capital_gains", period))
+    line_16 = where(
+        net_capital_gains == computed_gains,
+        line_7 + line_15,
+        net_capital_gains.astype(float) - dependent_gains + distributions,
+    )
     return FilerScheduleDLines(line_7=line_7, line_15=line_15, line_16=line_16)

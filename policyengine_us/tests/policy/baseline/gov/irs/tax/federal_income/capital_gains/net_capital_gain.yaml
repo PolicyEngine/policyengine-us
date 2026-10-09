@@ -409,12 +409,64 @@
         members: [head]
         state_code: TX
   output:
-    # The aggregate is supplied, rather than the component-derived -1. Its
-    # difference from -1 is 16,777,217, which rounds down by a dollar in
-    # float32. Subtract in float64 before adding the filer's -1 back.
+    # The aggregate is supplied, rather than the component-derived -1.
+    # Reconciling through a float32 difference from -1 rounds 16,777,217
+    # down by a dollar. Read the differing supplied aggregate directly.
     filer_loss_limited_net_capital_gains: 16_777_216
     # The component-derived line 15 remains a loss, so the preexisting
     # aggregate/component split gives no statutory gain or worksheet gain.
     net_capital_gain: 0
     dwks09: 0
     dwks10: 0
+
+- name: A supplied aggregate removes a large dependent gain without borrowing its rounding error
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        long_term_capital_gains: 977
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 16_776_240
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        net_capital_gains: 20_000_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The supplied all-member gain is 20,000,000. Removing the child's
+    # own 16,776,240 gives 3,223,760. A residual against the rounded
+    # computed aggregate (16,777,216) incorrectly adds a dollar to this.
+    filer_loss_limited_net_capital_gains: 3_223_760
+    # Component-derived line 15 remains 977, so the preexisting
+    # aggregate/component split gives that gain to the worksheet and
+    # statutory net-capital-gain calculation.
+    net_capital_gain: 977
+    dwks09: 977
+    dwks10: 977
+
+- name: A supplied capital gain survives a much larger filer component
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        long_term_capital_gains: 1_152_921_504_606_846_976
+    tax_units:
+      tax_unit:
+        members: [head]
+        net_capital_gains: 1
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # The component gain is 2**60, exactly representable in float32.
+    # Even a float64 residual of 1 - 2**60 loses the supplied dollar when
+    # added back to the component gain. No dependent gains need removal.
+    filer_loss_limited_net_capital_gains: 1
