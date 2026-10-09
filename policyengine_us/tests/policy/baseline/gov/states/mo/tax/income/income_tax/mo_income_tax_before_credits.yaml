@@ -19,30 +19,33 @@
 
 - name:  $8,999 MO taxable income
   period: 2021
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0
   input:
     mo_taxable_income: 8_999
     state_code: MO
   output:
-    mo_income_tax_before_credits: 298.81
+    # $283 + 5.4% x (8,999 - 8,704) = $298.93, rounded to $299.
+    mo_income_tax_before_credits: 299
 
 - name:  $9,500 MO taxable income
   period: 2021
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0
   input:
     mo_taxable_income: 9_500
     state_code: MO
   output:
-    mo_income_tax_before_credits: 325.86
+    # $283 + 5.4% x (9,500 - 8,704) = $325.98, rounded to $326.
+    mo_income_tax_before_credits: 326
 
 - name:  $13,000 MO taxable income
   period: 2021
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0
   input:
     mo_taxable_income: 13_000
     state_code: MO
   output:
-    mo_income_tax_before_credits: 514.864
+    # $283 + 5.4% x (13,000 - 8,704) = $514.98, rounded to $515.
+    mo_income_tax_before_credits: 515
 
 - name: no income
   period: 2021
@@ -55,61 +58,540 @@
 
 - name:  $8,999 MO taxable income
   period: 2021
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0
   input:
     mo_taxable_income: 8_999
     state_code: MO
   output:
-    mo_income_tax_before_credits: 298.81
+    # $283 + 5.4% x (8,999 - 8,704) = $298.93, rounded to $299.
+    mo_income_tax_before_credits: 299
 
 - name:  $9,500 MO taxable income
   period: 2021
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0
   input:
     mo_taxable_income: 9_500
     state_code: MO
   output:
-    mo_income_tax_before_credits: 325.86
+    # $283 + 5.4% x (9,500 - 8,704) = $325.98, rounded to $326.
+    mo_income_tax_before_credits: 326
 
 - name:  $13,000 MO taxable income in 2023
   period: 2023
-  absolute_error_margin: 2.00
+  absolute_error_margin: 0
   input:
     mo_taxable_income: 13_000
     state_code: MO
   output:
-    mo_income_tax_before_credits: 459.27
+    # $234 + 4.95% x (13,000 - 8,449) = $459.27, rounded to $459.
+    mo_income_tax_before_credits: 459
 
 - name:  $50,000 MO taxable income in 2023
   period: 2023
-  absolute_error_margin: 2.00
+  absolute_error_margin: 0
   input:
     mo_taxable_income: 50_000
     state_code: MO
   output:
-    mo_income_tax_before_credits: 2_290.77
+    # $234 + 4.95% x (50,000 - 8,449) = $2,290.77, rounded to $2,291.
+    mo_income_tax_before_credits: 2_291
 
 # 2026 Form MO-1040ES Tax Rate Chart (page 2): brackets start at $1,348,
-# $2,696, $4,044, $5,392, $6,740, $8,088 and $9,436; 4.7% over $9,436.
-# The chart rounds the base amounts to whole dollars ($27, $263); the model
-# applies each rate to the bracket width of $1,348.
+# $2,696, $4,044, $5,392, $6,740, $8,088 and $9,436; 4.7% over $9,436. The
+# chart's base amounts are whole dollars ($27, ..., $263), and its examples
+# round the tax to the whole dollar entered on Line 10.
 - name: $4,000 MO taxable income in 2026 (MO-1040ES Example 1)
   period: 2026
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0
   input:
     mo_taxable_income: 4_000
     state_code: MO
   output:
-    # 2% x 1,348 + 2.5% x (4,000 - 2,696) = 26.96 + 32.60
-    mo_income_tax_before_credits: 0.02 * 1_348 + 0.025 * (4_000 - 2_696)
+    # $27 + 2.5% x (4,000 - 2,696) = $59.60; "The whole dollar to enter on
+    # Line 10 would be $60."
+    mo_income_tax_before_credits: 60
 
 - name: $12,300 MO taxable income in 2026 (MO-1040ES Example 2)
   period: 2026
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0
   input:
     mo_taxable_income: 12_300
     state_code: MO
   output:
-    # (2% + 2.5% + 3% + 3.5% + 4% + 4.5%) x 1,348 + 4.7% x (12,300 - 9,436)
-    # = 262.86 + 134.61 (the chart shows $263 + $134.61 = $397.61)
-    mo_income_tax_before_credits: 0.195 * 1_348 + 0.047 * (12_300 - 9_436)
+    # $263 + 4.7% x (12,300 - 9,436) = $397.61; "The amount to enter on Line
+    # 10 would be $398." Applying each rate to the full $1,348 bracket width
+    # would give $262.86 + $134.61 = $397.47, which rounds to $397.
+    mo_income_tax_before_credits: 398
+
+# Tax Calculation Worksheet, Examples A and B, in each year's MO-1040
+# instructions (Tax Chart page). Each example shows the unrounded tax and the
+# whole dollar entered on the tax line.
+
+- name: 2019 MO-1040 tax chart worksheet, Examples A and B
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    people:
+      example_a:
+        mo_taxable_income: 3_090
+      example_b:
+        mo_taxable_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [example_a, example_b]
+    households:
+      household:
+        members: [example_a, example_b]
+        state_code: MO
+  output:
+    # A: $37 + 2.5% x (3,090 - 2,106) = $61.60, rounded to $62.
+    # B: $274 + 5.4% x (12,000 - 8,424) = $467.10, rounded to $467.
+    mo_income_tax_before_credits: [62, 467]
+
+- name: 2020 MO-1040 tax chart worksheet, Examples A and B
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    people:
+      example_a:
+        mo_taxable_income: 3_090
+      example_b:
+        mo_taxable_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [example_a, example_b]
+    households:
+      household:
+        members: [example_a, example_b]
+        state_code: MO
+  output:
+    # A: $37 + 2.5% x (3,090 - 2,146) = $60.60, rounded to $61.
+    # B: $279 + 5.4% x (12,000 - 8,584) = $463.46, rounded to $463.
+    mo_income_tax_before_credits: [61, 463]
+
+- name: 2021 MO-1040 tax chart worksheet, Examples A and B
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      example_a:
+        mo_taxable_income: 3_090
+      example_b:
+        mo_taxable_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [example_a, example_b]
+    households:
+      household:
+        members: [example_a, example_b]
+        state_code: MO
+  output:
+    # A: $38 + 2.5% x (3,090 - 2,176) = $60.85, rounded to $61.
+    # B: $283 + 5.4% x (12,000 - 8,704) = $460.98, rounded to $461.
+    mo_income_tax_before_credits: [61, 461]
+
+- name: 2022 MO-1040 tax chart worksheet, Examples A and B
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      example_a:
+        mo_taxable_income: 3_090
+      example_b:
+        mo_taxable_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [example_a, example_b]
+    households:
+      household:
+        members: [example_a, example_b]
+        state_code: MO
+  output:
+    # A: $39 + 2.5% x (3,090 - 2,242) = $60.20, rounded to $60.
+    # B: $291 + 5.3% x (12,000 - 8,968) = $451.70, rounded to $452.
+    mo_income_tax_before_credits: [60, 452]
+
+- name: 2023 MO-1040 tax chart worksheet, Examples A and B
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    people:
+      example_a:
+        mo_taxable_income: 3_090
+      example_b:
+        mo_taxable_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [example_a, example_b]
+    households:
+      household:
+        members: [example_a, example_b]
+        state_code: MO
+  output:
+    # A: $24 + 2.5% x (3,090 - 2,414) = $40.90, rounded to $41.
+    # B: $234 + 4.95% x (12,000 - 8,449) = $409.77, rounded to $410.
+    mo_income_tax_before_credits: [41, 410]
+
+- name: 2024 MO-1040 tax chart worksheet, Examples A and B
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      example_a:
+        mo_taxable_income: 3_090
+      example_b:
+        mo_taxable_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [example_a, example_b]
+    households:
+      household:
+        members: [example_a, example_b]
+        state_code: MO
+  output:
+    # A: $25 + 2.5% x (3,090 - 2,546) = $38.60, rounded to $39.
+    # B: $248 + 4.8% x (12,000 - 8,911) = $396.27, rounded to $396.
+    mo_income_tax_before_credits: [39, 396]
+
+- name: 2025 MO-1040 tax chart worksheet, Examples A and B
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      example_a:
+        mo_taxable_income: 3_090
+      example_b:
+        mo_taxable_income: 12_000
+    tax_units:
+      tax_unit:
+        members: [example_a, example_b]
+    households:
+      household:
+        members: [example_a, example_b]
+        state_code: MO
+  output:
+    # A: $26 + 2.5% x (3,090 - 2,626) = $37.60, rounded to $38.
+    # B: $256 + 4.7% x (12,000 - 9,191) = $388.02 (the booklet prints
+    # $388.03), rounded to $388.
+    mo_income_tax_before_credits: [38, 388]
+
+# At each bracket's top, the tax equals the next bracket's published base
+# amount: each base adds the lower brackets' taxes rounded to whole dollars one
+# bracket at a time. Applying the rates to the full bracket widths instead
+# would give, for example, $24.14 rather than $24 at $2,414 in 2023, and
+# $235.37 rather than $234 at $8,449. Taxable income at the first threshold
+# is exempt from 2023, and its base is $0.
+
+- name: 2019 tax at each published bracket threshold equals the chart's next base amount
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    people:
+      at_1053:
+        mo_taxable_income: 1_053
+      at_2106:
+        mo_taxable_income: 2_106
+      at_3159:
+        mo_taxable_income: 3_159
+      at_4212:
+        mo_taxable_income: 4_212
+      at_5265:
+        mo_taxable_income: 5_265
+      at_6318:
+        mo_taxable_income: 6_318
+      at_7371:
+        mo_taxable_income: 7_371
+      at_8424:
+        mo_taxable_income: 8_424
+    tax_units:
+      tax_unit:
+        members: [at_1053, at_2106, at_3159, at_4212, at_5265, at_6318, at_7371, at_8424]
+    households:
+      household:
+        members: [at_1053, at_2106, at_3159, at_4212, at_5265, at_6318, at_7371, at_8424]
+        state_code: MO
+  output:
+    # 2019 MO-1040 instructions, Tax Rate Chart: bases $16, $37, $63, $95, $132, $174, $221, $274.
+    mo_income_tax_before_credits: [16, 37, 63, 95, 132, 174, 221, 274]
+
+- name: 2020 tax at each published bracket threshold equals the chart's next base amount
+  period: 2020
+  absolute_error_margin: 0
+  input:
+    people:
+      at_1073:
+        mo_taxable_income: 1_073
+      at_2146:
+        mo_taxable_income: 2_146
+      at_3219:
+        mo_taxable_income: 3_219
+      at_4292:
+        mo_taxable_income: 4_292
+      at_5365:
+        mo_taxable_income: 5_365
+      at_6438:
+        mo_taxable_income: 6_438
+      at_7511:
+        mo_taxable_income: 7_511
+      at_8584:
+        mo_taxable_income: 8_584
+    tax_units:
+      tax_unit:
+        members: [at_1073, at_2146, at_3219, at_4292, at_5365, at_6438, at_7511, at_8584]
+    households:
+      household:
+        members: [at_1073, at_2146, at_3219, at_4292, at_5365, at_6438, at_7511, at_8584]
+        state_code: MO
+  output:
+    # 2020 MO-1040 instructions, Tax Rate Chart: bases $16, $37, $64, $96, $134, $177, $225, $279.
+    mo_income_tax_before_credits: [16, 37, 64, 96, 134, 177, 225, 279]
+
+- name: 2021 tax at each published bracket threshold equals the chart's next base amount
+  period: 2021
+  absolute_error_margin: 0
+  input:
+    people:
+      at_1088:
+        mo_taxable_income: 1_088
+      at_2176:
+        mo_taxable_income: 2_176
+      at_3264:
+        mo_taxable_income: 3_264
+      at_4352:
+        mo_taxable_income: 4_352
+      at_5440:
+        mo_taxable_income: 5_440
+      at_6528:
+        mo_taxable_income: 6_528
+      at_7616:
+        mo_taxable_income: 7_616
+      at_8704:
+        mo_taxable_income: 8_704
+    tax_units:
+      tax_unit:
+        members: [at_1088, at_2176, at_3264, at_4352, at_5440, at_6528, at_7616, at_8704]
+    households:
+      household:
+        members: [at_1088, at_2176, at_3264, at_4352, at_5440, at_6528, at_7616, at_8704]
+        state_code: MO
+  output:
+    # 2021 MO-1040 instructions, Tax Rate Chart: bases $16, $38, $65, $98, $136, $180, $229, $283.
+    mo_income_tax_before_credits: [16, 38, 65, 98, 136, 180, 229, 283]
+
+- name: 2022 tax at each published bracket threshold equals the chart's next base amount
+  period: 2022
+  absolute_error_margin: 0
+  input:
+    people:
+      at_1121:
+        mo_taxable_income: 1_121
+      at_2242:
+        mo_taxable_income: 2_242
+      at_3363:
+        mo_taxable_income: 3_363
+      at_4484:
+        mo_taxable_income: 4_484
+      at_5605:
+        mo_taxable_income: 5_605
+      at_6726:
+        mo_taxable_income: 6_726
+      at_7847:
+        mo_taxable_income: 7_847
+      at_8968:
+        mo_taxable_income: 8_968
+    tax_units:
+      tax_unit:
+        members: [at_1121, at_2242, at_3363, at_4484, at_5605, at_6726, at_7847, at_8968]
+    households:
+      household:
+        members: [at_1121, at_2242, at_3363, at_4484, at_5605, at_6726, at_7847, at_8968]
+        state_code: MO
+  output:
+    # 2022 MO-1040 instructions, Tax Rate Chart: bases $17, $39, $67, $101, $140, $185, $235, $291.
+    mo_income_tax_before_credits: [17, 39, 67, 101, 140, 185, 235, 291]
+
+- name: 2023 tax at each published bracket threshold equals the chart's next base amount
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    people:
+      at_1207:
+        mo_taxable_income: 1_207
+      at_2414:
+        mo_taxable_income: 2_414
+      at_3621:
+        mo_taxable_income: 3_621
+      at_4828:
+        mo_taxable_income: 4_828
+      at_6035:
+        mo_taxable_income: 6_035
+      at_7242:
+        mo_taxable_income: 7_242
+      at_8449:
+        mo_taxable_income: 8_449
+    tax_units:
+      tax_unit:
+        members: [at_1207, at_2414, at_3621, at_4828, at_6035, at_7242, at_8449]
+    households:
+      household:
+        members: [at_1207, at_2414, at_3621, at_4828, at_6035, at_7242, at_8449]
+        state_code: MO
+  output:
+    # 2023 MO-1040 instructions, Tax Rate Chart: bases $0, $24, $54, $90, $132, $180, $234.
+    mo_income_tax_before_credits: [0, 24, 54, 90, 132, 180, 234]
+
+- name: 2024 tax at each published bracket threshold equals the chart's next base amount
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      at_1273:
+        mo_taxable_income: 1_273
+      at_2546:
+        mo_taxable_income: 2_546
+      at_3819:
+        mo_taxable_income: 3_819
+      at_5092:
+        mo_taxable_income: 5_092
+      at_6365:
+        mo_taxable_income: 6_365
+      at_7638:
+        mo_taxable_income: 7_638
+      at_8911:
+        mo_taxable_income: 8_911
+    tax_units:
+      tax_unit:
+        members: [at_1273, at_2546, at_3819, at_5092, at_6365, at_7638, at_8911]
+    households:
+      household:
+        members: [at_1273, at_2546, at_3819, at_5092, at_6365, at_7638, at_8911]
+        state_code: MO
+  output:
+    # 2024 MO-1040 instructions, Tax Rate Chart: bases $0, $25, $57, $95, $140, $191, $248.
+    mo_income_tax_before_credits: [0, 25, 57, 95, 140, 191, 248]
+
+- name: 2025 tax at each published bracket threshold equals the chart's next base amount
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      at_1313:
+        mo_taxable_income: 1_313
+      at_2626:
+        mo_taxable_income: 2_626
+      at_3939:
+        mo_taxable_income: 3_939
+      at_5252:
+        mo_taxable_income: 5_252
+      at_6565:
+        mo_taxable_income: 6_565
+      at_7878:
+        mo_taxable_income: 7_878
+      at_9191:
+        mo_taxable_income: 9_191
+    tax_units:
+      tax_unit:
+        members: [at_1313, at_2626, at_3939, at_5252, at_6565, at_7878, at_9191]
+    households:
+      household:
+        members: [at_1313, at_2626, at_3939, at_5252, at_6565, at_7878, at_9191]
+        state_code: MO
+  output:
+    # 2025 MO-1040 instructions, Tax Rate Chart: bases $0, $26, $59, $98, $144, $197, $256.
+    mo_income_tax_before_credits: [0, 26, 59, 98, 144, 197, 256]
+
+- name: 2026 tax at each published bracket threshold equals the chart's next base amount
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      at_1348:
+        mo_taxable_income: 1_348
+      at_2696:
+        mo_taxable_income: 2_696
+      at_4044:
+        mo_taxable_income: 4_044
+      at_5392:
+        mo_taxable_income: 5_392
+      at_6740:
+        mo_taxable_income: 6_740
+      at_8088:
+        mo_taxable_income: 8_088
+      at_9436:
+        mo_taxable_income: 9_436
+    tax_units:
+      tax_unit:
+        members: [at_1348, at_2696, at_4044, at_5392, at_6740, at_8088, at_9436]
+    households:
+      household:
+        members: [at_1348, at_2696, at_4044, at_5392, at_6740, at_8088, at_9436]
+        state_code: MO
+  output:
+    # 2026 Form MO-1040ES Tax Rate Chart: bases $0, $27, $61, $101, $148, $202, $263.
+    mo_income_tax_before_credits: [0, 27, 61, 101, 148, 202, 263]
+
+# The return instructions round 1 to 49 cents down and 50 to 99 cents up.
+
+- name: 2019 half a dollar rounds up
+  period: 2019
+  absolute_error_margin: 0
+  input:
+    people:
+      tie:
+        mo_taxable_income: 300
+      below_tie:
+        mo_taxable_income: 299
+    tax_units:
+      tax_unit:
+        members: [tie, below_tie]
+    households:
+      household:
+        members: [tie, below_tie]
+        state_code: MO
+  output:
+    # 1.5% x 300 = $4.50, rounded up to $5; 1.5% x 299 = $4.485, rounded to $4.
+    mo_income_tax_before_credits: [5, 4]
+
+- name: 2023 half a dollar rounds up
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    people:
+      tie:
+        mo_taxable_income: 1_232
+      below_tie:
+        mo_taxable_income: 1_231
+    tax_units:
+      tax_unit:
+        members: [tie, below_tie]
+    households:
+      household:
+        members: [tie, below_tie]
+        state_code: MO
+  output:
+    # 2% x (1,232 - 1,207) = $0.50, rounded up to $1; 2% x 24 = $0.48, rounded to $0.
+    mo_income_tax_before_credits: [1, 0]
+
+# One spouse's column of a combined return carrying all of the couple's
+# Missouri taxable income: the column is taxed on its own with the chart and
+# rounded.
+
+- name: 2023 combined-return column of $61,244.60
+  period: 2023
+  absolute_error_margin: 0
+  input:
+    mo_taxable_income: 61_244.60
+    state_code: MO
+  output:
+    # $234 + 4.95% x (61,244.60 - 8,449) = $2,847.38, rounded to $2,847.
+    mo_income_tax_before_credits: 2_847
+
+- name: 2025 combined-return column of $57,518.55
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    mo_taxable_income: 57_518.55
+    state_code: MO
+  output:
+    # $256 + 4.7% x (57,518.55 - 9,191) = $2,527.39, rounded to $2,527.
+    mo_income_tax_before_credits: 2_527
