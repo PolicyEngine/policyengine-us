@@ -170,12 +170,14 @@ changelog.d/medicaid-ce-exclusions.md
   - Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests
   - Do not rewrite these expected outputs merely to match changed model behavior or make CI pass
   - If a model change causes partner tests to fail, treat that as a possible partner-facing API change
-  - Before editing files in this folder, flag the partner-facing risk to the user and use the `AskUserQuestion` tool to ask these three questions in a single call:
+  - Ziming Hua (@hua7450) approves every edit to files in this folder (Max Ghenis, 2026-10-09). Before editing them, flag the partner-facing risk to the user and put these three questions to Ziming:
     1. Are you sure you want to edit this test file?
     2. Have you notified a team member about this change?
     3. Have you notified the API partner about this change?
-  - Subagents and team members must not edit partner test files. If a subagent or team member finds that an edit is needed, it must stop and report back; the top-level agent runs the three-question gate with the user before any edit is made.
-  - Before changing expected outputs in this folder, identify the underlying model change and explain the partner impact to the user
+  - Ask on the PR that causes the change. Request his review (`gh pr edit <number> --add-reviewer hua7450`) and post a comment (`gh pr comment <number> --body-file <file>`) that names each changed case, its old and new expected values, and the model change and law behind it. If Ziming is the person you are working with, ask him directly with the `AskUserQuestion` tool instead.
+  - Do not edit partner test files until Ziming has answered yes, and do not merge a PR that changes them until he has approved it.
+  - Subagents and team members must not edit partner test files. If a subagent or team member finds that an edit is needed, it must stop and report back; the top-level agent takes the three-question gate to Ziming before any edit is made.
+  - Before changing expected outputs in this folder, identify the underlying model change and explain the partner impact to Ziming and the user
 
 - **ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES**
   - NEVER add conditional logic that returns fixed values for specific input combinations
