@@ -16,3 +16,136 @@
   output:
     ks_agi_subtractions: 0
 
+
+# A tax-unit dependent's income is not in the filer's federal AGI; the
+# dependent reports it on their own return. Schedule S lines A13 and A14
+# (2025 Form K-40 instructions) subtract only amounts included in the filer's
+# federal AGI, so a dependent's amounts are not subtracted.
+- name: A dependent child's public pension is not subtracted from the filer's federal AGI
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        taxable_public_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: KS
+  output:
+    ks_agi_subtractions: 0
+    # Federal AGI of 50,000 (the child's pension is not in it); no subtractions.
+    ks_agi: 50_000
+    # Head of household: standard deduction 6,180; exemptions
+    # 9,160 + 2,320 (head of household) + 2,320 (one dependent) = 13,800.
+    # 50,000 - 6,180 - 13,800 = 30,020
+    ks_taxable_income: 30_020
+    # 23,001 * 5.2% + (30,020 - 23,001) * 5.58% = 1,196.05 + 391.66
+    ks_income_tax_before_credits: 1_587.71
+
+- name: A dependent child's state income tax refund is not subtracted from the filer's federal AGI
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        salt_refund_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: KS
+  output:
+    ks_agi_subtractions: 0
+
+- name: Only the head's and spouse's public pensions and tax refunds are subtracted, not the dependent's
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 50_000
+        taxable_public_pension_income: 8_000
+        salt_refund_income: 1_000
+      spouse:
+        age: 65
+        taxable_public_pension_income: 6_000
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+        taxable_public_pension_income: 10_000
+        salt_refund_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: KS
+  output:
+    # Pensions 8,000 + 6,000 and the head's refund of 1,000.
+    ks_agi_subtractions: 15_000
+
+- name: An aged head's tax is unchanged by a dependent child's public pension
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 50_000
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+        taxable_public_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: KS
+  output:
+    ks_agi_subtractions: 0
+    ks_agi: 50_000
+    # Head of household standard deduction 6,180 + 850 for age 65 or older;
+    # exemptions 13,800. 50,000 - 7,030 - 13,800 = 29,170
+    ks_taxable_income: 29_170
+    # 23,001 * 5.2% + (29,170 - 23,001) * 5.58% = 1,196.05 + 344.23
+    ks_income_tax_before_credits: 1_540.28

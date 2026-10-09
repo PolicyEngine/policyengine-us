@@ -1,0 +1,48 @@
+description: New York City allows the income tax elimination credit to joint filers with federal adjusted gross income up to this threshold, based on the number of dependents.
+metadata:
+  type: single_amount
+  threshold_unit: dependent
+  amount_unit: currency-USD
+  period: year
+  label: NYC income tax elimination credit income threshold for joint filers
+  # The last bracket applies to 7 or more dependents. From tax year 2026,
+  # Tax Law § 1310(h)(1)(B)(iii) multiplies these amounts by one plus
+  # the percentage by which the CPI-U for the preceding calendar year exceeds
+  # the CPI-U for 2024, each year's CPI-U being the average for the 12 months
+  # ending August 31 (§ 1310(h)(3)(A)). Values after the last Department
+  # of Taxation and Finance publication are computed in
+  # parameters/uprating_extensions.py.
+  reference:
+    - title: NY Tax Law § 1310(h)(1)(B)(i)
+      href: https://www.nysenate.gov/legislation/laws/TAX/1310
+    - title: 2025 Form IT-270-I, Part 2, line 2 income thresholds table
+      href: https://www.tax.ny.gov/pdf/2025/inc/it270i_2025.pdf#page=1
+brackets:
+  - threshold:
+      2025-01-01: 1
+    amount:
+      2025-01-01: 36_789
+  - threshold:
+      2025-01-01: 2
+    amount:
+      2025-01-01: 46_350
+  - threshold:
+      2025-01-01: 3
+    amount:
+      2025-01-01: 54_545
+  - threshold:
+      2025-01-01: 4
+    amount:
+      2025-01-01: 61_071
+  - threshold:
+      2025-01-01: 5
+    amount:
+      2025-01-01: 68_403
+  - threshold:
+      2025-01-01: 6
+    amount:
+      2025-01-01: 75_204
+  - threshold:
+      2025-01-01: 7
+    amount:
+      2025-01-01: 91_902

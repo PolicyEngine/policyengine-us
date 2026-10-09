@@ -1,1 +1,0 @@
-Fix the Arizona property tax credit Schedule 2 thresholds, which were each one dollar low: a claimant living with others with household income of exactly $2,500, $2,650, ..., $5,500 got the next band's amount ($5,500 got none) instead of the ARS 43-1072(B)(2) amount.

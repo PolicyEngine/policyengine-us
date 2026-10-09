@@ -85,24 +85,37 @@ class mi_household_resources(Variable):
                 other_income += amount
         total = other_income + max_(business_income, 0) + max_(rental_income, 0)
 
-        # Line 30: "total adjustments from your U.S. Form 1040, Schedule 1".
-        # Business, rental and capital losses are income items (Schedule 1
-        # Part I and Schedule D), not Part II adjustments. They are netted
-        # and floored on lines 16, 17 and 19 above, so loss_ald, which holds
-        # them, is left out.
-        # The Schedule 1 is the claimant's own: a dependent's adjustments,
-        # like the dependent's income, are on the dependent's return.
-        # Person-level adjustments are summed over the head and spouse, and
-        # tax-unit-level ones are the filer's own: the self-employment and
-        # alimony deductions sum only the head and spouse. Amounts that are
-        # the filer's even when recorded on a dependent are summed over every
-        # member, as in above_the_line_deductions.
+        # Line 30: "Enter total adjustments from your U.S. Form 1040,
+        # Schedule 1." These are the Schedule 1 Part II adjustments, counted
+        # while the federal above-the-line list deducts them, so a reform that
+        # drops one federally drops it here too. The rest of the federal list
+        # is not on line 30:
+        # - loss_ald holds business, rental and capital losses, which are
+        #   income items netted and floored on lines 16, 17 and 19 above;
+        # - us_bonds_for_higher_ed, qualified_adoption_assistance_expense,
+        #   specified_possession_income and puerto_rico_income are income
+        #   that IRC 135, 137, 931 and 933 exclude from gross income. Total
+        #   household resources include "all income exempt or excluded from
+        #   AGI" (book page 26). Since the federal list subtracts each from
+        #   gross income, the excluded amount is entered in the income it
+        #   comes from: savings bond interest in interest income (line 15,
+        #   "including nontaxable interest"), adoption benefits, reported on
+        #   Form W-2, in wages (line 14), and possession or Puerto Rico income
+        #   in the source that earned it. Line 30 leaves it there.
+        # The Schedule 1 is the claimant's own (MCL 206.508(3)): a person-level
+        # adjustment, such as a dependent's IRA contribution or early withdrawal
+        # penalty, is summed over the head and spouse, as above_the_line_deductions
+        # does. A tax-unit-level adjustment already describes the filer's return,
+        # including educator_expense_ald, capped per eligible educator.
         ald = parameters(period).gov.irs.ald
         adjustments = tax_unit_non_dep_add(
             tax_unit,
             period,
-            [deduction for deduction in ald.deductions if deduction != "loss_ald"],
-            include_dependents=ald.filer_amounts_recorded_on_dependents,
+            [
+                deduction
+                for deduction in p.household_resources_adjustments
+                if deduction in ald.deductions
+            ],
         )
         # Line 31: "insurance premiums you paid for yourself and your
         # family". MCL 206.510(1) lets a person deduct "the amount that

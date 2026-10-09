@@ -19,10 +19,12 @@ import) and flags
   leading or trailing spaces, or a note such as "(Line 3)" (put notes in a
   Python comment).
 
-A scheme may follow whitespace, an opening bracket or quote, or "=" (a URL
-passed as a query value, as in azleg.gov's viewdocument/?docName=https://...).
-It may follow "/" only when that slash closes an archive.org wrapper such as
-https://web.archive.org/web/<timestamp>/https://...
+A scheme may follow whitespace or an opening bracket or quote. It may follow
+"=" only when that "=" ends a query parameter (a URL passed as a query value,
+as in azleg.gov's viewdocument/?docName=https://... or ?a=1&url=https://...);
+an "=" inside a fragment, as in x.pdf#page=https://..., marks two URLs glued
+together. It may follow "/" only when that slash closes an archive.org wrapper
+such as https://web.archive.org/web/<timestamp>/https://...
 """
 
 import ast
@@ -35,12 +37,15 @@ import pytest
 PACKAGE = Path(__file__).resolve().parents[2]
 ATTRIBUTES = {"reference", "documentation"}
 SCHEME = re.compile(r"https?://", re.IGNORECASE)
-ALLOWED_BEFORE_SCHEME = set("([{<\"'`=")
+ALLOWED_BEFORE_SCHEME = set("([{<\"'`")
 BARE_URL = re.compile(r"https?://\S+", re.IGNORECASE)
 ARCHIVE_WRAPPER = re.compile(
     r"(?:^|[\s(\[{<\"'`=])(?:https?://)?(?:web\.)?archive\.org/web/[^\s/]+/$",
     re.IGNORECASE,
 )
+# "?name=" or "?a=1&name=" with no "#" since the "?": the end of a query
+# parameter whose value is a URL.
+QUERY_VALUE = re.compile(r"\?(?:[^#\s]*&)?[^?&#=\s]*=$")
 
 
 def glued_url_offsets(text: str) -> list[int]:
@@ -53,7 +58,7 @@ def glued_url_offsets(text: str) -> list[int]:
         before = text[start - 1]
         if before.isspace() or before in ALLOWED_BEFORE_SCHEME:
             continue
-        if before == "/" and ARCHIVE_WRAPPER.search(text, 0, start):
+        if is_wrapped_url(text, start):
             continue
         offsets.append(start)
     return offsets
@@ -86,9 +91,9 @@ def is_wrapped_url(text: str, start: int) -> bool:
     """True if the URL scheme at `start` sits inside another URL: as a query
     value (`...?docName=https://...`) or after an archive.org wrapper."""
     before = text[start - 1]
-    return before == "=" or (
-        before == "/" and bool(ARCHIVE_WRAPPER.search(text, 0, start))
-    )
+    if before == "=":
+        return bool(QUERY_VALUE.search(text, 0, start))
+    return before == "/" and bool(ARCHIVE_WRAPPER.search(text, 0, start))
 
 
 def is_bare_url_or_has_none(text: str) -> bool:
@@ -135,6 +140,9 @@ def find_glued_urls(source: str, filename: str = "<string>") -> list[str]:
         "https://example.gov/a)https://example.gov/b",
         "HTTPS://EXAMPLE.GOV/A.PDFHTTPS://EXAMPLE.GOV/B.PDF",
         "https://example.gov/web/2024/https://example.gov/b",
+        "https://example.gov/a.pdf#page=https://example.gov/b.pdf",
+        "https://example.gov/a.pdf#page=2&view=https://example.gov/b.pdf",
+        "https://example.gov/a?x=1#page=https://example.gov/b.pdf",
     ],
 )
 def test_glued_urls_are_flagged(text):
@@ -155,6 +163,7 @@ def test_glued_urls_are_flagged(text):
         "[IT-201-I](https://www.tax.ny.gov/it201i.pdf)",
         '"https://example.gov/a"',
         "https://www.cbo.gov/system/files/2026-02/51138-2026-02-Revenue.xlsx",
+        "https://example.gov/view?a=1&url=https://example.gov/b.pdf",
     ],
 )
 def test_separated_and_wrapped_urls_are_not_flagged(text):
@@ -176,6 +185,7 @@ def test_separated_and_wrapped_urls_are_not_flagged(text):
         "https://example.gov/a.pdf(https://example.gov/b.pdf)",
         "https://example.gov/a.pdf[https://example.gov/b.pdf]",
         "https://example.gov/web/2024/https://example.gov/b",
+        "https://example.gov/a.pdf#page=https://example.gov/b.pdf",
     ],
 )
 def test_reference_entries_that_are_not_one_bare_url_are_flagged(text):
@@ -189,6 +199,7 @@ def test_reference_entries_that_are_not_one_bare_url_are_flagged(text):
         "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01001.htm",
         "https://web.archive.org/web/20250720165524/https://www.mass.gov/doc/heap",
         "https://web.archive.org/web/2021id_/https://example.gov/a?url=https://b.gov",
+        "https://example.gov/view?a=1&url=https://example.gov/b.pdf",
         "26 U.S.C. 32(b)",
         "IRS Publication 596, page 3",
         "",

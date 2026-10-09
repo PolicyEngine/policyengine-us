@@ -1,0 +1,65 @@
+# N.Y. Tax Law 606(c-2)(2)(E), added by L.2026, ch. 59, Part A: 55% at New York
+# AGI of $15,000 or less, reduced by 0.00025 percentage points for each dollar
+# above $15,000, and never below 4%.
+- name: Case 1, New York AGI below $15,000 gets 55%.
+  period: 2026
+  input:
+    state_code: NY
+    ny_agi: 12_000
+  output:
+    ny_cdcc_applicable_percentage: 0.55
+
+- name: Case 2, New York AGI of exactly $15,000 gets 55%.
+  period: 2026
+  input:
+    state_code: NY
+    ny_agi: 15_000
+  output:
+    ny_cdcc_applicable_percentage: 0.55
+
+- name: Case 3, New York AGI of $100,000.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    state_code: NY
+    ny_agi: 100_000
+  output:
+    # 0.55 - 0.0000025 * 85,000 = 0.3375 (OSC SFY 2027 Executive Budget
+    # report, Figure 11: 33.8% at $100,000)
+    ny_cdcc_applicable_percentage: 0.3375
+
+- name: Case 4, PolicyBench scenario_082 New York AGI.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    state_code: NY
+    ny_agi: 117_585.15
+  output:
+    # 0.55 - 0.0000025 * 102,585.15 = 0.293537125
+    ny_cdcc_applicable_percentage: 0.293537125
+
+- name: Case 5, the 4% floor is reached exactly at $219,000.
+  period: 2026
+  absolute_error_margin: 0.000001
+  input:
+    state_code: NY
+    ny_agi: 219_000
+  output:
+    # 0.55 - 0.0000025 * 204,000 = 0.04
+    ny_cdcc_applicable_percentage: 0.04
+
+- name: Case 6, New York AGI above $219,000 stays at the 4% floor.
+  period: 2026
+  input:
+    state_code: NY
+    ny_agi: 300_000
+  output:
+    ny_cdcc_applicable_percentage: 0.04
+
+- name: Case 7, negative New York AGI gets 55%.
+  period: 2026
+  input:
+    state_code: NY
+    ny_agi: -10_000
+  output:
+    ny_cdcc_applicable_percentage: 0.55

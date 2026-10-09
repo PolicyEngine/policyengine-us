@@ -1,0 +1,435 @@
+# Form IT-270, Part 2, lines 1 to 11 (Tax Law § 1310(h)(1)-(2)).
+#  1  Federal AGI (IT-201 line 19)
+#  2  Income threshold (IT-270-I line 2 table)
+#  3  0 if line 1 <= line 2, else line 1 - line 2 (stop if > 5,000)
+#  4  5,000 - line 3
+#  5  line 4 / 5,000, as a decimal rounded to the fourth decimal place
+#  6  IT-201 line 54 (NYC tax after household and nonrefundable credits)
+#  7  Refundable NYC child and dependent care credit
+#  8  NYC earned income credit
+#  9  line 7 + line 8
+# 10  line 6 - line 9 (IT-270-I: if 0 or less, not eligible)
+# 11  line 10 x line 5
+# The unit inputs below set line 6 (nyc_income_tax_before_refundable_credits),
+# line 7 (nyc_cdcc) and line 8 (nyc_eitc) directly.
+# PolicyEngine carries amounts to the cent rather than applying the
+# IT-201-I whole-dollar entry rule, so line 11 is not rounded to a dollar.
+
+- name: Case 1, full credit with income below the threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 25_000
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 600
+    nyc_cdcc: 0
+    nyc_eitc: 150
+  output:
+    # Line 1: 25,000
+    # Line 2: head of household, 1 dependent = 31,503
+    # Line 3: 25,000 <= 31,503 -> 0
+    # Line 4: 5,000 - 0 = 5,000
+    # Line 5: 5,000 / 5,000 = 1.0000
+    # Line 6: 600
+    # Line 7: 0
+    # Line 8: 150
+    # Line 9: 0 + 150 = 150
+    # Line 10: 600 - 150 = 450
+    # Line 11: 450 x 1.0000 = 450
+    nyc_income_tax_elimination_credit: 450
+
+- name: Case 2, full credit with income exactly at the threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    tax_unit_dependents: 2
+    adjusted_gross_income: 36_824
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 900
+    nyc_cdcc: 100
+    nyc_eitc: 0
+  output:
+    # Line 1: 36,824
+    # Line 2: single, 2 dependents = 36,824
+    # Line 3: 36,824 <= 36,824 -> 0
+    # Line 4: 5,000 - 0 = 5,000
+    # Line 5: 5,000 / 5,000 = 1.0000
+    # Line 6: 900
+    # Line 7: 100
+    # Line 8: 0
+    # Line 9: 100 + 0 = 100
+    # Line 10: 900 - 100 = 800
+    # Line 11: 800 x 1.0000 = 800
+    nyc_income_tax_elimination_credit: 800
+
+- name: Case 3, half credit for joint filers midway through the phase-out.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 3
+    adjusted_gross_income: 57_045
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 1_500
+    nyc_cdcc: 200
+    nyc_eitc: 100
+  output:
+    # Line 1: 57,045
+    # Line 2: joint, 3 dependents = 54,545
+    # Line 3: 57,045 - 54,545 = 2,500 (not more than 5,000)
+    # Line 4: 5,000 - 2,500 = 2,500
+    # Line 5: 2,500 / 5,000 = 0.5000
+    # Line 6: 1,500
+    # Line 7: 200
+    # Line 8: 100
+    # Line 9: 200 + 100 = 300
+    # Line 10: 1,500 - 300 = 1,200
+    # Line 11: 1,200 x 0.5000 = 600
+    nyc_income_tax_elimination_credit: 600
+
+- name: Case 4, partial credit for a surviving spouse with 9 dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SURVIVING_SPOUSE
+    tax_unit_dependents: 9
+    adjusted_gross_income: 93_152
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 2_000
+    nyc_cdcc: 0
+    nyc_eitc: 0
+  output:
+    # Line 1: 93,152
+    # Line 2: qualifying surviving spouse, "7 or more" row = 91,902
+    # Line 3: 93,152 - 91,902 = 1,250
+    # Line 4: 5,000 - 1,250 = 3,750
+    # Line 5: 3,750 / 5,000 = 0.7500
+    # Line 6: 2,000
+    # Lines 7 and 8: 0
+    # Line 9: 0
+    # Line 10: 2,000 - 0 = 2,000
+    # Line 11: 2,000 x 0.7500 = 1,500
+    nyc_income_tax_elimination_credit: 1_500
+
+- name: Case 5, line 5 rounds the phase-out fraction down to four decimals.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SEPARATE
+    tax_unit_dependents: 1
+    adjusted_gross_income: 33_000.37
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 2_000
+    nyc_cdcc: 0
+    nyc_eitc: 0
+  output:
+    # Line 1: 33,000.37
+    # Line 2: married filing separately, 1 dependent = 31,503
+    # Line 3: 33,000.37 - 31,503 = 1,497.37
+    # Line 4: 5,000 - 1,497.37 = 3,502.63
+    # Line 5: 3,502.63 / 5,000 = 0.700526 -> rounded to 0.7005
+    # Line 6: 2,000
+    # Lines 7 and 8: 0
+    # Line 10: 2,000
+    # Line 11: 2,000 x 0.7005 = 1,401.00
+    #   Unrounded fraction: 2,000 x 0.700526 = 1,401.052 (1,401.05).
+    #   The 0.052 gap exceeds the 0.01 margin, so this case pins line 5
+    #   rounding.
+    nyc_income_tax_elimination_credit: 1_401.00
+
+- name: Case 6, line 5 rounds the phase-out fraction up to four decimals.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 2
+    adjusted_gross_income: 38_321.13
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 2_000
+    nyc_cdcc: 0
+    nyc_eitc: 0
+  output:
+    # Line 1: 38,321.13
+    # Line 2: head of household, 2 dependents = 36,824
+    # Line 3: 38,321.13 - 36,824 = 1,497.13
+    # Line 4: 5,000 - 1,497.13 = 3,502.87
+    # Line 5: 3,502.87 / 5,000 = 0.700574 -> rounded to 0.7006
+    # Line 6: 2,000
+    # Lines 7 and 8: 0
+    # Line 10: 2,000
+    # Line 11: 2,000 x 0.7006 = 1,401.20
+    #   Unrounded fraction: 2,000 x 0.700574 = 1,401.148 (1,401.15).
+    nyc_income_tax_elimination_credit: 1_401.20
+
+- name: Case 7, no credit when the NYC CDCC and EITC exceed line 54.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 1
+    adjusted_gross_income: 20_000
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 300
+    nyc_cdcc: 250
+    nyc_eitc: 400
+  output:
+    # Line 2: joint, 1 dependent = 36,789
+    # Line 3: 20,000 <= 36,789 -> 0; line 5: 1.0000
+    # Line 6: 300
+    # Line 7: 250
+    # Line 8: 400
+    # Line 9: 250 + 400 = 650
+    # Line 10: 300 - 650 = -350; 0 or less -> not eligible (IT-270-I)
+    # Line 11: 0
+    nyc_income_tax_elimination_credit: 0
+
+- name: Case 8, no credit when the NYC CDCC and EITC exactly equal line 54.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 1
+    adjusted_gross_income: 20_000
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 650
+    nyc_cdcc: 250
+    nyc_eitc: 400
+  output:
+    # Line 5: 1.0000 (as in Case 7)
+    # Line 9: 250 + 400 = 650
+    # Line 10: 650 - 650 = 0; 0 or less -> not eligible (IT-270-I)
+    # Line 11: 0
+    nyc_income_tax_elimination_credit: 0
+
+- name: Case 9, no credit at exactly $5,000 above the threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 10
+    adjusted_gross_income: 93_361
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 3_000
+    nyc_cdcc: 0
+    nyc_eitc: 0
+  output:
+    # Line 1: 93,361
+    # Line 2: head of household, "8 or more" row = 88,361
+    # Line 3: 93,361 - 88,361 = 5,000 (not more than 5,000, continue)
+    # Line 4: 5,000 - 5,000 = 0
+    # Line 5: 0 / 5,000 = 0.0000
+    # Line 10: 3,000 - 0 = 3,000
+    # Line 11: 3,000 x 0.0000 = 0
+    nyc_income_tax_elimination_credit: 0
+
+- name: Case 10, smallest partial credit at $1 below the phase-out end.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 10
+    adjusted_gross_income: 93_360
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 3_000
+    nyc_cdcc: 0
+    nyc_eitc: 0
+  output:
+    # Line 2: head of household, "8 or more" row = 88,361
+    # Line 3: 93,360 - 88,361 = 4,999
+    # Line 4: 5,000 - 4,999 = 1
+    # Line 5: 1 / 5,000 = 0.0002
+    # Line 10: 3,000
+    # Line 11: 3,000 x 0.0002 = 0.60
+    nyc_income_tax_elimination_credit: 0.60
+
+- name: Case 11, no credit without dependents.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: SINGLE
+    tax_unit_dependents: 0
+    adjusted_gross_income: 10_000
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 200
+    nyc_cdcc: 0
+    nyc_eitc: 0
+  output:
+    # Part 1, line A: no dependent -> stop; does not qualify.
+    nyc_income_tax_elimination_credit: 0
+
+- name: Case 12, no credit with investment income over $10,000.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 20_000
+    eitc_relevant_investment_income: 10_500
+    nyc_income_tax_before_refundable_credits: 500
+    nyc_cdcc: 0
+    nyc_eitc: 0
+  output:
+    # Part 1, line D: 10,500 > 10,000 -> stop; does not qualify.
+    nyc_income_tax_elimination_credit: 0
+
+- name: Case 13, no credit when claiming a pass-through entity tax credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 20_000
+    eitc_relevant_investment_income: 0
+    ny_pass_through_entity_tax_credit_claimed: true
+    nyc_income_tax_before_refundable_credits: 500
+    nyc_cdcc: 0
+    nyc_eitc: 0
+  output:
+    # Part 1, line E: claiming NYS or NYC PTET credit -> stop.
+    nyc_income_tax_elimination_credit: 0
+
+- name: Case 14, no credit for joint filers more than $5,000 above the threshold.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: JOINT
+    tax_unit_dependents: 2
+    adjusted_gross_income: 51_351
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 1_000
+    nyc_cdcc: 0
+    nyc_eitc: 0
+  output:
+    # Line 2: joint, 2 dependents = 46,350
+    # Line 3: 51,351 - 46,350 = 5,001 > 5,000 -> stop; does not qualify
+    # (also Part 1, line C).
+    nyc_income_tax_elimination_credit: 0
+
+- name: Case 15, no credit outside NYC.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: false
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 20_000
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 500
+    nyc_cdcc: 0
+    nyc_eitc: 0
+  output:
+    # Not a city taxpayer; § 1310(h) applies only to the NYC tax.
+    nyc_income_tax_elimination_credit: 0
+
+- name: Case 16, no credit when IT-201 line 54 is zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 20_000
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 0
+    nyc_cdcc: 0
+    nyc_eitc: 0
+  output:
+    # Part 1, line B: IT-201 line 54 is zero -> stop; does not qualify.
+    nyc_income_tax_elimination_credit: 0
+
+- name: Case 17, negative federal AGI does not inflate the credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: -2_000
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 50
+    nyc_cdcc: 0
+    nyc_eitc: 0
+  output:
+    # Line 1: -2,000
+    # Line 2: 31,503
+    # Line 3: -2,000 <= 31,503 -> 0
+    # Line 4: 5,000; line 5: 1.0000
+    # Line 10: 50
+    # Line 11: 50 x 1.0000 = 50
+    # (Without the line 3 floor the fraction would be
+    # (5,000 + 33,503) / 5,000 = 7.7006 and the credit 385.03.)
+    nyc_income_tax_elimination_credit: 50
+
+- name: Case 18, no credit in 2024, before the credit takes effect.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 25_000
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 600
+    nyc_cdcc: 0
+    nyc_eitc: 150
+  output:
+    # § 1310(h)(1) applies to taxable years beginning on or after
+    # January 1, 2025.
+    nyc_income_tax_elimination_credit: 0
+
+- name: Case 19, the NYC school tax credit does not reduce line 10.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    in_nyc: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    tax_unit_dependents: 1
+    adjusted_gross_income: 25_000
+    eitc_relevant_investment_income: 0
+    nyc_income_tax_before_refundable_credits: 600
+    nyc_cdcc: 0
+    nyc_eitc: 150
+    nyc_school_tax_credit: 63
+  output:
+    # Same as Case 1. IT-270 lines 7 to 9 subtract only the NYC CDCC and
+    # NYC EIC; the NYC school tax credit (IT-201 line 69) is a State
+    # credit under Tax Law § 606(ggg), not a credit under Article 30.
+    # Line 10: 600 - (0 + 150) = 450
+    # Line 11: 450 x 1.0000 = 450
+    nyc_income_tax_elimination_credit: 450

@@ -30,7 +30,9 @@ class is_mo_tanf_earned_income_exempt(Variable):
         head_or_spouse = person("is_tax_unit_head_or_spouse", period.this_year)
         is_dependent = person("is_tax_unit_dependent", period.this_year)
         # The exemption is for a parent; a non-parent caretaker relative or
-        # legal guardian does not qualify.
+        # legal guardian does not qualify. A parent claimed as someone else's
+        # tax dependent needs no separate test: under 19 and in secondary
+        # school, they are a dependent child, exempt above.
         non_parent = person("mo_tanf_is_non_parent_caretaker", period.this_year)
         parent = (
             head_or_spouse
