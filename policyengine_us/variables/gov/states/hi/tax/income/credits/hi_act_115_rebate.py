@@ -43,9 +43,10 @@ class hi_act_115_rebate(Variable):
         # not a qualifying resident taxpayer, and each qualifying resident
         # taxpayer claims the refund for the exemptions they are entitled to.
         # A filer who can be claimed has no exemption (HRS 235-54(a)), and a
-        # return on which a filer can be claimed claims no dependents (IRS
-        # Publication 501), so such a return counts only the filers who
-        # cannot be claimed.
+        # return on which a filer can be claimed generally claims no dependents
+        # (IRS Publication 501; its exception for a claimer who files only for
+        # a refund is not modeled), so such a return counts only the filers
+        # who cannot be claimed.
         dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         independent_filers = tax_unit(
             "head_spouse_count_not_dependent_elsewhere", period

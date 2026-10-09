@@ -15,13 +15,14 @@ class hi_food_excise_credit(Variable):
 
     def formula(tax_unit, period, parameters):
         # HRS 235-55.85(a): only a taxpayer who cannot be claimed as a
-        # dependent may claim the credit, for each qualified exemption. The
+        # dependent may claim the credit, for each qualified exemption; the
         # exemption amount counts only filers who cannot be claimed when
-        # either can; such a return claims no dependents (IRS Publication
-        # 501), so it gets no minor child amount.
-        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # either can. Minor children receiving public support count for this
+        # credit under 235-55.85(c), so they keep their amount unless every
+        # filer can be claimed.
+        every_filer_dependent = tax_unit("every_filer_is_dependent_elsewhere", period)
         exemption_amount = tax_unit("hi_food_excise_exemption_amount", period)
         minor_child_amount = tax_unit(
             "hi_food_excise_credit_minor_child_amount", period
         )
-        return exemption_amount + where(dependent_filer, 0, minor_child_amount)
+        return exemption_amount + where(every_filer_dependent, 0, minor_child_amount)

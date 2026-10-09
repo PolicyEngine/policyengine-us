@@ -14,10 +14,11 @@ class nm_deduction_for_certain_dependents_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         # The deduction uses the same "not a dependent of another individual"
-        # test as the rebates and credits on Schedule PIT-RC, whose
-        # instructions let a spouse who is not a dependent still qualify. So
-        # only a return on which every filer is a dependent elsewhere is
-        # barred.
+        # test as the rebates and credits on Schedule PIT-RC, and the law does
+        # not settle a joint return where only one spouse is a dependent. We
+        # apply the PIT-RC instructions' reading, which lets a spouse who is
+        # not a dependent still qualify, so only a return on which every
+        # filer is a dependent elsewhere is barred.
         every_filer_dependent = tax_unit("every_filer_is_dependent_elsewhere", period)
         # deduction does not apply if an exemption under IRS 151 is claimed;
         # IRC 151 refers to the federal personal exemption

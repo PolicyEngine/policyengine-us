@@ -35,11 +35,13 @@ class mi_exemptions(Variable):
 
         # MCL 206.30(4): an individual who can be claimed as a dependent on
         # another return gets no personal exemption but subtracts $1,500.
-        # This applies to each spouse separately, so on a joint return where
-        # only one spouse can be claimed, the other keeps their own personal
-        # exemption (and any stillbirth exemption). A joint return on which
-        # either spouse can be claimed claims no dependents (IRS Publication
-        # 501, "Dependent Taxpayer Test").
+        # Treasury's instructions do not address a joint return where only
+        # one spouse can be claimed; since subsection (4) speaks of an
+        # individual, we apply it to each spouse, so the other keeps their own
+        # personal exemption (and any stillbirth exemption). A joint return on
+        # which either spouse can be claimed generally claims no dependents
+        # (IRS Publication 501, "Dependent Taxpayer Test"; its exception for a
+        # claimer who files only for a refund is not modeled).
         filers = add(tax_unit, period, ["is_tax_unit_head_or_spouse"])
         independent_filers = tax_unit(
             "head_spouse_count_not_dependent_elsewhere", period

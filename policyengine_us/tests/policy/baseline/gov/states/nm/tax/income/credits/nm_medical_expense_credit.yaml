@@ -143,3 +143,109 @@
         state_code: NM
   output:
     nm_medical_expense_credit: 0
+
+- name: Joint return where only the claimable spouse is 65 or older (the claimable spouse is the head)
+  period: 2023
+  input:
+    people:
+      person_a:
+        age: 70
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 60
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    # NMSA 7-2-18.13(A): the taxpayer who is 65 or older must also not be a dependent.
+    nm_medical_expense_credit: 0
+
+- name: Joint return where only the claimable spouse is 65 or older (the claimable spouse is the spouse)
+  period: 2023
+  input:
+    people:
+      person_b:
+        age: 60
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 70
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    # NMSA 7-2-18.13(A): the taxpayer who is 65 or older must also not be a dependent.
+    nm_medical_expense_credit: 0
+
+- name: Joint return where the spouse who is not claimable is 65 or older (the claimable spouse is the head)
+  period: 2023
+  input:
+    people:
+      person_a:
+        age: 60
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 70
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    nm_medical_expense_credit: 2_800
+
+- name: Joint return where the spouse who is not claimable is 65 or older (the claimable spouse is the spouse)
+  period: 2023
+  input:
+    people:
+      person_b:
+        age: 70
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 60
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    nm_medical_expense_credit: 2_800

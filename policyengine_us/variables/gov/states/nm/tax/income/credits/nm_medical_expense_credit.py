@@ -18,15 +18,21 @@ class nm_medical_expense_credit(Variable):
         p = pcredits.unreimbursed_medical_care_expense
         age = person("age", period)
         medical_expense = tax_unit("itemized_medical_expenses", period)
-        age_eligible = tax_unit.any(age >= p.age_eligibility)
+        aged = age >= p.age_eligibility
         expense_eligible = medical_expense >= p.min_expenses
-        # The rebate and credit schedule bars a filer who is a dependent of
-        # another taxpayer, but "If you are a dependent with a spouse who was
-        # not a dependent of another taxpayer, your spouse may still qualify
-        # to claim rebates or credits" (PIT-RC instructions). So only a return
-        # on which every filer is a dependent elsewhere is barred.
-        every_filer_dependent = tax_unit("every_filer_is_dependent_elsewhere", period)
-        eligible = age_eligible & expense_eligible & ~every_filer_dependent
+        # NMSA 7-2-18.13(A) allows the credit to a taxpayer "who is sixty-five
+        # years of age or older and who is not a dependent of another
+        # taxpayer", and the PIT-RC instructions let a spouse who is not a
+        # dependent claim it when the other spouse is. So when a filer is a
+        # dependent elsewhere, a filer who is not must be 65 or older.
+        filer = person("is_tax_unit_head_or_spouse", period)
+        claimed = person("claimed_as_dependent_on_another_return", period)
+        independent_aged_filer = tax_unit.any(filer & ~claimed & aged)
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        age_eligible = where(
+            dependent_filer, independent_aged_filer, tax_unit.any(aged)
+        )
+        eligible = age_eligible & expense_eligible
         # exemption is halved for married filing separately
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE

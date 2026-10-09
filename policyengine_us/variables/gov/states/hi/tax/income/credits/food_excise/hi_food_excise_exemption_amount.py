@@ -44,21 +44,29 @@ class hi_food_excise_exemption_amount(Variable):
             ],
         )
         exemptions = tax_unit("exemptions_count", period)
+        minor_children = tax_unit("hi_food_excise_credit_minor_child_count", period)
         if p.minor_child.in_effect:
-            # Reduce number of exemptions by the number of minor children
-            minor_children = tax_unit("hi_food_excise_credit_minor_child_count", period)
+            # Reduce number of exemptions by the number of minor children,
+            # who get a fixed amount instead.
             claimable_exemptions = exemptions - minor_children
+            minor_child_exemptions = 0
         else:
             claimable_exemptions = exemptions
+            minor_child_exemptions = minor_children
         # Form N-311 counts only people who cannot be claimed as a dependent
-        # by another taxpayer. A return on which a filer can be claimed claims
-        # no dependents (IRS Publication 501), so it counts only the filers
-        # who cannot be claimed.
+        # by another taxpayer. A return on which a filer can be claimed
+        # generally claims no dependents (IRS Publication 501; its exception
+        # for a claimer who files only for a refund is not modeled), so it
+        # counts the filers who cannot be claimed and, through HRS
+        # 235-55.85(c), their minor children receiving public support.
         dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         independent_filers = tax_unit(
             "head_spouse_count_not_dependent_elsewhere", period
         )
+        mixed_return_exemptions = independent_filers + where(
+            independent_filers > 0, minor_child_exemptions, 0
+        )
         qualified_exemptions = where(
-            dependent_filer, independent_filers, claimable_exemptions
+            dependent_filer, mixed_return_exemptions, claimable_exemptions
         )
         return qualified_exemptions * amount_per_exemption

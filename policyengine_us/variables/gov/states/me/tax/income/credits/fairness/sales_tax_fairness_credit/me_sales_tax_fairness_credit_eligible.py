@@ -15,9 +15,9 @@ class me_sales_tax_fairness_credit_eligible(Variable):
     def formula(tax_unit, period, parameters):
         # 36 MRSA 5213-A(6)(C) excludes individuals who may be claimed as a
         # dependent on another return, and subsection 2 allows each resident
-        # individual the base credit for the return's filing status. On a
-        # joint return where only one spouse can be claimed, the other spouse
-        # still qualifies for the joint credit.
+        # individual the base credit for the return's filing status. Neither
+        # settles a joint return where only one spouse can be claimed; we read
+        # them as letting the other spouse qualify for the joint credit.
         every_filer_dependent = tax_unit("every_filer_is_dependent_elsewhere", period)
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE

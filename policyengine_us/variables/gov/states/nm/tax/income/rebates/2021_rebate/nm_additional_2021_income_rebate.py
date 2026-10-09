@@ -14,11 +14,14 @@ class nm_additional_2021_income_rebate(Variable):
     defined_for = StateCode.NM
 
     def formula(tax_unit, period, parameters):
-        # The rebate and credit schedule bars a filer who is a dependent of
-        # another taxpayer, but "If you are a dependent with a spouse who was
-        # not a dependent of another taxpayer, your spouse may still qualify
-        # to claim rebates or credits" (PIT-RC instructions). So only a return
-        # on which every filer is a dependent elsewhere is barred.
+        # The rebate goes to "a resident ... who is not a dependent of another
+        # individual", and the law does not settle a joint return where only
+        # one spouse is. For the same phrase on its rebate and credit schedule,
+        # TRD says "If you are a dependent with a spouse who was not a
+        # dependent of another taxpayer, your spouse may still qualify to
+        # claim rebates or credits" (PIT-RC instructions); we apply that
+        # reading, so only a return on which every filer is a dependent
+        # elsewhere is barred.
         every_filer_dependent = tax_unit("every_filer_is_dependent_elsewhere", period)
         p = parameters(period).gov.states.nm.tax.income.rebates["2021_income"]
         filing_status = tax_unit("filing_status", period)

@@ -6,7 +6,10 @@ class eitc_demographic_eligible(Variable):
     entity = TaxUnit
     label = "Meets demographic eligibility for EITC"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii_II"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii",
+        "https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=18",
+    )
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
@@ -27,4 +30,13 @@ class eitc_demographic_eligible(Variable):
         # IRC § 32(c)(1)(A)(ii)(II) applies the age test to the filer or,
         # on a joint return, either spouse — never to dependents.
         is_filer_or_spouse = ~person("is_tax_unit_dependent", period)
-        return has_child | tax_unit.any(meets_age_requirements & is_filer_or_spouse)
+        # IRC § 32(c)(1)(A)(ii)(III): without a qualifying child, the filer
+        # must not be a dependent of another taxpayer; on a joint return,
+        # "neither you nor your spouse can be claimed as a dependent by another
+        # person" (IRS Publication 596).
+        dependent_elsewhere = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        childless_eligible = (
+            tax_unit.any(meets_age_requirements & is_filer_or_spouse)
+            & ~dependent_elsewhere
+        )
+        return has_child | childless_eligible

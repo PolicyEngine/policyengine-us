@@ -4,34 +4,40 @@ spouse is labelled head.
 A married couple may list either spouse first, so exchanging the two adults'
 `is_tax_unit_head` and `is_tax_unit_spouse` labels, with every other input
 kept, must not change their taxes. On main, the federal standard deduction and
-seventeen state formulas read only `head_is_dependent_elsewhere`, so a joint
-return where one spouse can be claimed on another return (a joint return filed
-only to recover withholding can meet the federal exception, IRS Publication
-501) was taxed differently depending on which spouse was labelled head. Each
+16 state formulas read only `head_is_dependent_elsewhere`, so a joint return
+where one spouse can be claimed on another return (a joint return filed only
+to recover withholding can meet the federal exception, IRS Publication 501)
+was taxed differently depending on which spouse was labelled head. Each
 formula now applies its jurisdiction's rule for that case:
 
 - Either spouse limits the return (the IRC 63(c)(5) worksheet): the federal
   standard deduction, Oregon's and Hawaii's standard deductions, and
-  Virginia's credit for low-income individuals.
+  Virginia's credit for low-income individuals. The federal EITC without a
+  qualifying child now also requires that neither spouse can be claimed.
 - Only single filers: New York's dependent standard deduction.
 - Each spouse separately: Michigan's exemptions and Hawaii's food/excise,
   renters and Act 115 credits count only the filers who cannot be claimed.
 - Only when every filer is a dependent: New Mexico's rebates, credits and
-  dependents deduction, and Maine's sales tax fairness credit.
-- Never on a joint return: Missouri's working family credit, since such a
-  couple files as married filing combined.
+  dependents deduction, and Maine's sales tax fairness credit. New Mexico's
+  medical care credit also needs a filer who is both 65 or older and not a
+  dependent.
+- Never on a joint return: Missouri's own stop in its working family credit,
+  since such a couple files as married filing combined.
 
 Hypothesis draws batches of married couples, with and without dependents, in
 the eight states with such a rule and one without, for 2021-2026, with either,
-both or neither spouse claimed elsewhere. A seeded population and crafted
-cases add breadth in every year, and two seeded couples plus the review case
-in every state guard 2026. Each batch is one vectorized simulation. For each couple:
+both or neither spouse claimed elsewhere, and checks 1 and 3. A seeded
+population and crafted cases check 1, 2 and 3 in every year, and two seeded
+couples plus the review case in every state check 1 for federal and state
+income tax in 2026. Each batch is one vectorized simulation. For each couple:
 
 1. Swap invariance: federal income tax, state income tax before and after
-   refundable credits, and each of the eighteen formulas are the same to the
-   cent (or the same boolean) under either labelling.
+   refundable credits, and each formula in CONSUMERS are the same to the cent
+   (or the same boolean) under either labelling.
 2. Monotonicity: marking another filer as claimed elsewhere never raises any
-   of the eighteen amounts or turns an eligibility on.
+   amount in CONSUMERS or turns an eligibility on. This holds for current
+   parameters and inputs the model derives; for example, a Hawaii standard
+   deduction input below the itemization threshold could break it.
 3. The helper identities: `head_or_spouse_is_dependent_elsewhere` equals
    `head_is_dependent_elsewhere | spouse_is_dependent_elsewhere`,
    `every_filer_is_dependent_elsewhere` equals their conjunction for a
@@ -59,6 +65,7 @@ TAX_UNIT_OUTPUTS = [
 # The formulas that read whether a filer is claimed elsewhere.
 CONSUMERS = [
     "basic_standard_deduction",
+    "eitc",
     "ny_standard_deduction",
     "mi_exemptions",
     "or_standard_deduction",
@@ -73,6 +80,7 @@ CONSUMERS = [
     "me_sales_tax_fairness_credit_eligible",
     "hi_deductions",
     "hi_act_115_rebate",
+    "hi_food_excise_exemption_amount",
     "hi_food_excise_credit",
     "hi_tax_credit_for_low_income_household_renters_eligible",
     "hi_tax_credit_for_low_income_household_renters",

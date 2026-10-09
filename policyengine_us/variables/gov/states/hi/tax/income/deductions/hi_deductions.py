@@ -37,8 +37,13 @@ class hi_deductions(Variable):
         is_dependent_on_another_return = tax_unit(
             "head_or_spouse_is_dependent_elsewhere", period
         )
+        # Worksheet earned income: wages and self-employment income minus the
+        # deductible part of self-employment tax (Schedule 1, line 15).
+        worksheet_earned_income = max_(
+            tax_unit_earned_income - tax_unit("self_employment_tax_ald", period), 0
+        )
         dependent_standard_deduction = min_(
-            max_(p.threshold.dependent, tax_unit_earned_income), standard_deduction
+            max_(p.threshold.dependent, worksheet_earned_income), standard_deduction
         )
         applicable_standard_deduction = where(
             is_dependent_on_another_return,
