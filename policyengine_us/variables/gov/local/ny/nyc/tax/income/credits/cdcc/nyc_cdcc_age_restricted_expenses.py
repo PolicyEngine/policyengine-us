@@ -18,7 +18,15 @@ class nyc_cdcc_age_restricted_expenses(Variable):
 
         children = tax_unit("tax_unit_children", period)
         person = tax_unit.members
-        qualifying_child = person("age", period) < p.child_age_restriction
+        # NYC Admin Code 11-1706(e)(1) counts children "who are dependents of
+        # the taxpayer"; a return on which the filer (or, if joint, either
+        # spouse) can be claimed as a dependent has none (IRC 152(b)(1)).
+        dependent_filer = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
+        qualifying_child = (
+            person("age", period) < p.child_age_restriction
+        ) & ~dependent_filer
         qualifying_children = tax_unit.sum(qualifying_child)
         tax_unit_childcare_expenses = tax_unit("tax_unit_childcare_expenses", period)
         # avoid divide-by-zero warnings by not using where() function
