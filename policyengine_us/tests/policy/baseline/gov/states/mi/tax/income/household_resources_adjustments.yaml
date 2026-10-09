@@ -1,0 +1,21 @@
+- name: Household resources subtract the federal IRA deduction (Schedule 1 line 20)
+  # MI-1040CR line 30: "Enter total adjustments from your U.S. Form 1040,
+  # Schedule 1." A $7,000 deductible traditional IRA contribution reduces
+  # $50,000 of wages to $43,000 of household resources.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        traditional_ira_contributions: 7_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MI
+  output:
+    traditional_ira_deduction: 7_000
+    mi_household_resources: 43_000

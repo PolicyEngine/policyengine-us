@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.expense.retirement._ira_supplied_contributions import (
+    supplied_ira_contributions,
+)
 
 
 class ira_contribution_limit(Variable):
@@ -31,20 +34,37 @@ class ira_contribution_limit(Variable):
             head_or_spouse, joint_compensation - compensation, 0
         )
 
-        total_desired = add(
-            person,
-            period,
-            [
-                "traditional_ira_contributions_desired",
-                "roth_ira_contributions_desired",
-            ],
-        )
+        own_limit = min_(dollar_limit, compensation)
+        # Supplied actual contributions consume compensation as given:
+        # traditional amounts up to this person's own limit, Roth amounts in
+        # full, as in traditional_ira_deduction. Generated contributions then
+        # fill only what remains of the person's own limit.
+        supplied = supplied_ira_contributions(person, period)
+        supplied_traditional = supplied["traditional_ira_contributions"]
+        supplied_roth = supplied["roth_ira_contributions"]
+        supplied_consumed = 0
+        generated_desired = 0
+        if supplied_traditional is None:
+            generated_desired = generated_desired + person(
+                "traditional_ira_contributions_desired", period
+            )
+        else:
+            supplied_consumed = supplied_consumed + min_(
+                max_(supplied_traditional, 0), own_limit
+            )
+        if supplied_roth is None:
+            generated_desired = generated_desired + person(
+                "roth_ira_contributions_desired", period
+            )
+        else:
+            supplied_consumed = supplied_consumed + max_(supplied_roth, 0)
         # Only the lower-compensation spouse can use the spousal rule. The
         # higher-compensation spouse's generated contributions therefore use
-        # their own compensation limit. Calculate these without referring to
-        # actual contributions, which depend on this limit through the scale.
-        own_contributions = min_(
-            max_(total_desired, 0), min_(dollar_limit, compensation)
+        # their own compensation limit. Generated amounts are calculated
+        # without referring to actual contributions, which depend on this
+        # limit through the scale.
+        own_contributions = supplied_consumed + min_(
+            max_(generated_desired, 0), max_(own_limit - supplied_consumed, 0)
         )
         joint_own_contributions = person.tax_unit.sum(
             own_contributions * head_or_spouse

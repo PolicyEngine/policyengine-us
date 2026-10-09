@@ -1,0 +1,79 @@
+# A dependent deducts their own traditional IRA contributions on their own
+# return (26 U.S.C. 219(b)(1), 219(g)); the filer's traditional_ira_deduction
+# excludes them.
+- name: A student dependent deducts their own contribution in full
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 80_000
+        is_tax_unit_head: true
+      student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        employment_income: 29_000
+        traditional_ira_contributions: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    dependent_traditional_ira_deduction: [0, 5_000]
+    traditional_ira_deduction: [0, 0]
+
+- name: The dependent's deduction is limited to their compensation
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 80_000
+        is_tax_unit_head: true
+      student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        employment_income: 3_000
+        traditional_ira_contributions: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    dependent_traditional_ira_deduction: [0, 3_000]
+
+- name: An active-participant dependent is phased out on the single schedule
+  # Notice 2024-80: the 2025 single range is $79,000 to $89,000 and the dollar
+  # limit $7,000. Modified AGI of $85,000 is 60% through the range, so the
+  # limit falls by $4,200 to $2,800.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 80_000
+        is_tax_unit_head: true
+      student:
+        age: 22
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        employment_income: 85_000
+        ira_active_participant: true
+        traditional_ira_contributions: 7_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    dependent_traditional_ira_deduction: [0, 2_800]

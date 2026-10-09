@@ -332,3 +332,74 @@ def test_compensation_excludes_net_self_employment_losses():
     np.testing.assert_allclose(
         simulation.calculate("ira_compensation", year), expected, rtol=0, atol=0.001
     )
+
+
+def test_supplied_contributions_consume_the_limit_before_generated_ones():
+    """Actual IRA contributions supplied as inputs use up compensation first.
+
+    26 U.S.C. 219(c)(1)(B) reduces the lower-compensation spouse's limit by the
+    other spouse's deductible and Roth contributions, and 408A(c)(2) shares one
+    dollar limit between a person's traditional and Roth contributions. So a
+    supplied Roth amount leaves only the remainder for generated contributions,
+    whether it is the spouse's or the person's own.
+    """
+    year = 2026
+    dollar_limit = 7_500
+    situation = blank_situation()
+    expected_spouse, conserved = [], []
+    head_compensation = (0, 5_000, 10_000, 20_000)
+    supplied_roth = (0, 2_000, 7_000, 9_000)
+    for case, (comp, roth) in enumerate(product(head_compensation, supplied_roth)):
+        add_household(
+            situation,
+            f"couple{case}",
+            year,
+            [
+                {"ira_compensation": comp, "roth_ira_contributions": roth},
+                {
+                    "ira_compensation": 0,
+                    "roth_ira_contributions": 0,
+                    "traditional_ira_contributions_desired": 7_500,
+                },
+            ],
+            {"filing_status": "JOINT", "ira_219g_magi": 0},
+            couple=True,
+        )
+        # The spouse has no compensation, so only the spousal rule can apply,
+        # and only when the other spouse has compensation to share.
+        expected_spouse.append(min(7_500, dollar_limit, max(0, comp - roth)))
+        conserved.append(roth <= comp)
+    singles = (0, 2_000, 7_500)
+    for case, roth in enumerate(singles):
+        add_household(
+            situation,
+            f"single{case}",
+            year,
+            [
+                {
+                    "ira_compensation": 20_000,
+                    "roth_ira_contributions": roth,
+                    "traditional_ira_contributions_desired": 7_500,
+                }
+            ],
+            {"filing_status": "SINGLE", "ira_219g_magi": 0},
+        )
+    simulation = Simulation(situation=situation)
+    traditional = simulation.calculate("traditional_ira_contributions", year)
+    roth = simulation.calculate("roth_ira_contributions", year)
+    couples = len(head_compensation) * len(supplied_roth)
+    couple_traditional = traditional[: 2 * couples].reshape(-1, 2)
+    couple_roth = roth[: 2 * couples].reshape(-1, 2)
+    np.testing.assert_allclose(couple_traditional[:, 1], expected_spouse, atol=0.001)
+    np.testing.assert_allclose(couple_traditional[:, 0], 0, atol=0)
+    # Joint contributions never exceed joint compensation when the supplied
+    # amount itself fits within it.
+    totals = couple_traditional.sum(axis=1) + couple_roth.sum(axis=1)
+    compensation = np.repeat(head_compensation, len(supplied_roth))
+    assert np.all(
+        totals[np.array(conserved)] <= compensation[np.array(conserved)] + 0.01
+    )
+    single_traditional = traditional[2 * couples :]
+    np.testing.assert_allclose(
+        single_traditional, [dollar_limit - s for s in singles], atol=0.001
+    )

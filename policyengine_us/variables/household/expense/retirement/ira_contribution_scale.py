@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.household.expense.retirement._ira_supplied_contributions import (
+    supplied_ira_contributions,
+)
 
 
 class ira_contribution_scale(Variable):
@@ -19,16 +22,20 @@ class ira_contribution_scale(Variable):
     )
 
     def formula(person, period, parameters):
-        total_desired = add(
-            person,
-            period,
-            [
-                "traditional_ira_contributions_desired",
-                "roth_ira_contributions_desired",
-            ],
-        )
-        denominator = where(total_desired > 0, total_desired, 1)
-        return min_(
-            person("ira_contribution_limit", period) / denominator,
-            1,
-        )
+        # Supplied actual contributions use up the limit first; generated
+        # contributions share what remains, in proportion to their desired
+        # amounts.
+        supplied = supplied_ira_contributions(person, period)
+        supplied_own = 0
+        generated_desired = 0
+        for name, desired in (
+            ("traditional_ira_contributions", "traditional_ira_contributions_desired"),
+            ("roth_ira_contributions", "roth_ira_contributions_desired"),
+        ):
+            if supplied[name] is None:
+                generated_desired = generated_desired + person(desired, period)
+            else:
+                supplied_own = supplied_own + max_(supplied[name], 0)
+        available = max_(person("ira_contribution_limit", period) - supplied_own, 0)
+        denominator = where(generated_desired > 0, generated_desired, 1)
+        return min_(available / denominator, 1)

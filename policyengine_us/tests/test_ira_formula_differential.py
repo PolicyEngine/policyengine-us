@@ -98,6 +98,12 @@ def formula(path, variable):
         "add": lambda person, period, names: sum(
             person(name, period) for name in names
         ),
+        # These stubs carry desired contributions only, so no actual
+        # contribution is supplied as an input.
+        "supplied_ira_contributions": lambda person, period: {
+            "traditional_ira_contributions": None,
+            "roth_ira_contributions": None,
+        },
     }
     exec(
         compile(ast.Module(body=[function], type_ignores=[]), str(path), "exec"),
