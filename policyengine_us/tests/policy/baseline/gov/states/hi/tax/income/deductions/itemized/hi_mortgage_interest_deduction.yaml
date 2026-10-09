@@ -643,3 +643,27 @@
         state_code: HI
   output:
     hi_mortgage_interest_deduction: 45_000
+
+- name: Case 28, dependent-only supplied deductible interest cannot create a Hawaii filer deduction.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        deductible_mortgage_interest: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: SINGLE
+        first_home_mortgage_balance: 1_500_000
+        first_home_mortgage_origination_year: 2023
+    households:
+      household:
+        members: [head, dependent]
+        state_code: HI
+  output:
+    # Pub. 936 (2017), p. 2: the dependent's paid share is not the filer's.
+    hi_mortgage_interest_deduction: 0
