@@ -17,16 +17,16 @@ tax unit:
 
 1. Bound: 0 <= al_vehicle_loan_interest_deduction <= min(interest, $10,000),
    and it is 0 outside Alabama.
-2. Differential (worksheet): it equals an independent numpy statement of the
-   worksheet, with the dollar amounts typed from the worksheet rather than
-   read from the model's parameters, and with Alabama AGI as line 3.
-3. Differential (federal): where Alabama AGI equals federal modified AGI, it
-   equals the federal auto_loan_interest_deduction, which states the same
-   163(h)(4) limits.
+2. Differential (worksheet): in 2025 through 2028 it equals an independent
+   numpy statement of the worksheet, with the dollar amounts typed from the
+   worksheet rather than read from the model's parameters, and with Alabama
+   AGI as line 3. In 2024 and 2029 it is 0.
+3. Differential (federal): in 2025 through 2028, where Alabama AGI equals
+   federal modified AGI, it equals the federal auto_loan_interest_deduction,
+   which states the same 163(h)(4) limits.
 4. Monotone: more interest never lowers it; more wages never raise it.
 5. Accounting: al_itemized_deductions less al_itemized_deductions with no
-   interest equals the deduction in 2025 through 2028 and is 0 in 2024 and
-   2029.
+   interest equals the deduction.
 """
 
 import numpy as np
@@ -184,6 +184,7 @@ def _worksheet(interest, al_agi, joint):
 
 def _check(units, year):
     alabama = np.array([u["state_code"] == "AL" for u in units])
+    allowed = alabama & (year in ALLOWED_YEARS)
     joint = np.array([u["filing_status"] == "JOINT" for u in units])
     interest = np.array([u["interest"] for u in units])
     raised_interest = interest + np.array([u["interest_increase"] for u in units])
@@ -197,11 +198,11 @@ def _check(units, year):
     assert (deduction[~alabama] == 0).all()
 
     # 2. Differential against the worksheet.
-    expected = np.where(alabama, _worksheet(interest, base["al_agi"], joint), 0)
+    expected = np.where(allowed, _worksheet(interest, base["al_agi"], joint), 0)
     np.testing.assert_allclose(deduction, expected, atol=TOLERANCE)
 
     # 3. Differential against the federal deduction where the incomes agree.
-    same_income = alabama & (
+    same_income = allowed & (
         np.abs(base["al_agi"] - base["agi_plus_section_911_931_933_exclusions"])
         < TOLERANCE
     )
@@ -218,7 +219,7 @@ def _check(units, year):
     ).all()
     np.testing.assert_allclose(
         more_interest["al_vehicle_loan_interest_deduction"],
-        np.where(alabama, _worksheet(raised_interest, base["al_agi"], joint), 0),
+        np.where(allowed, _worksheet(raised_interest, base["al_agi"], joint), 0),
         atol=TOLERANCE,
     )
     more_wages = _run(units, year, raise_wages=True)
@@ -226,13 +227,10 @@ def _check(units, year):
         more_wages["al_vehicle_loan_interest_deduction"] <= deduction + TOLERANCE
     ).all()
 
-    # 5. Itemized only in 2025 through 2028.
+    # 5. The deduction is what the interest adds to itemized deductions.
     no_interest = _run(units, year, interest_scale=0)
     added = base["al_itemized_deductions"] - no_interest["al_itemized_deductions"]
-    if year in ALLOWED_YEARS:
-        np.testing.assert_allclose(added, deduction, atol=TOLERANCE)
-    else:
-        np.testing.assert_allclose(added, 0, atol=TOLERANCE)
+    np.testing.assert_allclose(added, deduction, atol=TOLERANCE)
 
 
 # A batch's cost is mostly per-variable overhead, so each example is a large

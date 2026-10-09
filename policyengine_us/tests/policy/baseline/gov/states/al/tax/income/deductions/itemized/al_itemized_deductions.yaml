@@ -11,6 +11,7 @@
     real_estate_taxes: 5_000
     qualified_passenger_vehicle_loan_interest: 6_000
   output:
+    al_vehicle_loan_interest_deduction: 0
     al_itemized_deductions: 5_000
 
 - name: Vehicle loan interest is itemized in 2025
@@ -46,6 +47,7 @@
     real_estate_taxes: 5_000
     qualified_passenger_vehicle_loan_interest: 6_000
   output:
+    al_vehicle_loan_interest_deduction: 0
     al_itemized_deductions: 5_000
 
 - name: The phased-down amount is what is itemized

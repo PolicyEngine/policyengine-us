@@ -158,6 +158,26 @@
     al_agi: 95_000
     al_vehicle_loan_interest_deduction: 5_000
 
+- name: No deduction in 2024, before 26 U.S.C. 163(h)(4) applies
+  period: 2024
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    al_agi: 80_000
+    qualified_passenger_vehicle_loan_interest: 4_000
+  output:
+    al_vehicle_loan_interest_deduction: 0
+
+- name: No deduction in 2029, after 26 U.S.C. 163(h)(4) ends
+  period: 2029
+  input:
+    state_code: AL
+    filing_status: SINGLE
+    al_agi: 80_000
+    qualified_passenger_vehicle_loan_interest: 4_000
+  output:
+    al_vehicle_loan_interest_deduction: 0
+
 - name: Interest that is not qualified passenger vehicle loan interest is not deductible
   period: 2025
   input:

@@ -36,5 +36,6 @@ class al_vehicle_loan_interest_deduction(Variable):
         excess = max_(al_agi - phase_out_start, 0)
         increments = np.ceil(excess / p.phase_out.increment)
         phase_out_amount = increments * p.phase_out.step
-        # Worksheet line 8.
-        return max_(capped_interest - phase_out_amount, 0)
+        # Worksheet line 8, for taxable years 2025 through 2028
+        # (26 U.S.C. 163(h)(4)(A)).
+        return p.in_effect * max_(capped_interest - phase_out_amount, 0)

@@ -1,0 +1,14 @@
+description: Qualified passenger vehicle loan interest is not personal interest, and so is deductible, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Qualified passenger vehicle loan interest deduction in effect
+  reference:
+    - title: 26 U.S.C. 163(h)(4)(A)
+      href: https://www.law.cornell.edu/uscode/text/26/163#h_4_A
+
+values:
+  0000-01-01: false
+  # Taxable years beginning after December 31, 2024, and before January 1, 2029.
+  2025-01-01: true
+  2029-01-01: false
