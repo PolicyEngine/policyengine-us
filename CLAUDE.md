@@ -174,9 +174,9 @@ changelog.d/medicaid-ce-exclusions.md
     1. Are you sure you want to edit this test file?
     2. Have you notified a team member about this change?
     3. Have you notified the API partner about this change?
-  - Ask on the PR that causes the change. Request his review (`gh pr edit <number> --add-reviewer hua7450`) and post a comment (`gh pr comment <number> --body-file <file>`) that names each changed case, its old and new expected values, and the model change and law behind it. If Ziming is the person you are working with, ask him directly with the `AskUserQuestion` tool instead.
-  - Do not edit partner test files until Ziming has answered yes, and do not merge a PR that changes them until he has approved it.
-  - Subagents and team members must not edit partner test files. If a subagent or team member finds that an edit is needed, it must stop and report back; the top-level agent takes the three-question gate to Ziming before any edit is made.
+  - Ask on the PR that causes the change. Request his review (`gh pr edit <number> --add-reviewer hua7450`) and post a comment (`gh pr comment <number> --body-file <file>`) that names each changed case, its old and new expected values, and the model change and law behind it. If Ziming is the person you are working with, ask him directly with the `AskUserQuestion` tool instead; his yes to all three is then both the go and the approval, so record it in a PR comment.
+  - Do not edit partner test files until Ziming has answered yes to all three questions, and do not merge a PR that changes them until he has approved a head that contains the edits.
+  - Subagents and agent teammates must not edit partner test files. If a subagent or agent teammate finds that an edit is needed, it must stop and report back; the top-level agent takes the three-question gate to Ziming before any edit is made.
   - Before changing expected outputs in this folder, identify the underlying model change and explain the partner impact to Ziming and the user
 
 - **ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES**
