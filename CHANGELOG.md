@@ -1,3 +1,10 @@
+## [2.35.2] - 2026-10-09
+
+### Fixed
+
+- Figure net capital gain and the Schedule D Tax Worksheet from the head and spouse's Schedule D, qualified dividends and Form 4952 election only, leaving out tax unit dependents' amounts as adjusted gross income does, and treat each filer's negative capital gain distributions input as zero. Apply the same filer-only scope in Hawaii's alternative capital gains tax worksheet and in the qualified dividends Vermont's flat capital gains exclusion subtracts.
+
+
 ## [2.35.1] - 2026-10-09
 
 ### Fixed
