@@ -158,13 +158,14 @@ OUTPUTS = [
 def calculate(households, reform=None):
     simulation = Simulation(situation=build_situation(households), reform=reform)
     results = {v: np.asarray(simulation.calculate(v, YEAR)) for v in OUTPUTS}
-    # Line 30 summed directly, as the formula does: subtracting a large
-    # loss_ald from above_the_line_deductions would lose cents in float32.
-    deductions = simulation.tax_benefit_system.parameters.gov.irs.ald.deductions
+    # Line 30 summed directly, as the formula does: the Schedule 1
+    # adjustments the federal list deducts. Subtracting a large loss_ald from
+    # above_the_line_deductions would lose cents in float32.
+    gov = simulation.tax_benefit_system.parameters(f"{YEAR}-01-01").gov
     results["schedule_1_adjustments"] = sum(
         np.asarray(simulation.calculate(d, YEAR, map_to="tax_unit"))
-        for d in deductions(f"{YEAR}-01-01")
-        if d != "loss_ald"
+        for d in gov.states.mi.tax.income.household_resources_adjustments
+        if d in gov.irs.ald.deductions
     )
     return results
 
