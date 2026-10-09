@@ -18,10 +18,8 @@ class nm_deduction_for_certain_dependents_eligible(Variable):
         # instructions let a spouse who is not a dependent still qualify. So
         # only a return on which every filer is a dependent elsewhere is
         # barred.
-        independent_filer = (
-            tax_unit("head_spouse_count_not_dependent_elsewhere", period) > 0
-        )
+        every_filer_dependent = tax_unit("every_filer_is_dependent_elsewhere", period)
         # deduction does not apply if an exemption under IRS 151 is claimed;
         # IRC 151 refers to the federal personal exemption
         federal_exemption_amount = tax_unit("exemptions", period)
-        return independent_filer & (federal_exemption_amount == 0)
+        return ~every_filer_dependent & (federal_exemption_amount == 0)

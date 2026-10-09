@@ -19,9 +19,7 @@ class nm_additional_2021_income_rebate(Variable):
         # not a dependent of another taxpayer, your spouse may still qualify
         # to claim rebates or credits" (PIT-RC instructions). So only a return
         # on which every filer is a dependent elsewhere is barred.
-        independent_filer = (
-            tax_unit("head_spouse_count_not_dependent_elsewhere", period) > 0
-        )
+        every_filer_dependent = tax_unit("every_filer_is_dependent_elsewhere", period)
         p = parameters(period).gov.states.nm.tax.income.rebates["2021_income"]
         filing_status = tax_unit("filing_status", period)
-        return independent_filer * p.additional.amount[filing_status]
+        return ~every_filer_dependent * p.additional.amount[filing_status]

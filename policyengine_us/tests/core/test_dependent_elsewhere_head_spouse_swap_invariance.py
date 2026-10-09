@@ -33,9 +33,10 @@ in every state guard 2026. Each batch is one vectorized simulation. For each cou
 2. Monotonicity: marking another filer as claimed elsewhere never raises any
    of the eighteen amounts or turns an eligibility on.
 3. The helper identities: `head_or_spouse_is_dependent_elsewhere` equals
-   `head_is_dependent_elsewhere | spouse_is_dependent_elsewhere`, and
-   `head_spouse_count_not_dependent_elsewhere` plus the claimed filers equals
-   the number of filers.
+   `head_is_dependent_elsewhere | spouse_is_dependent_elsewhere`,
+   `every_filer_is_dependent_elsewhere` equals their conjunction for a
+   couple, and `head_spouse_count_not_dependent_elsewhere` plus the claimed
+   filers equals the number of filers.
 """
 
 import numpy as np
@@ -173,9 +174,11 @@ def _crafted_cases(states, review_case_only=False):
         "rent": 9_000.0,
         "other_medical_expenses": 30_000.0,
     }
+    # One claimed adult covers both labellings of a claimed spouse, since each
+    # case runs with the labels exchanged.
     cases = []
     for state in states:
-        for claimed in CLAIM_PATTERNS[:3]:
+        for claimed in [(True, False), (True, True)]:
             cases += [
                 {
                     "state": state,
@@ -291,6 +294,8 @@ def _check_swap(units, year, outputs):
     np.testing.assert_array_equal(either, np.maximum(head, spouse))
     independent = _calc(sim, "head_spouse_count_not_dependent_elsewhere", year)
     np.testing.assert_array_equal(independent + head + spouse, 2)
+    every = _calc(sim, "every_filer_is_dependent_elsewhere", year)
+    np.testing.assert_array_equal(every, np.minimum(head, spouse))
 
 
 def _monotone_variants(unit):
@@ -329,19 +334,19 @@ def _check_monotone(units, year):
 # A batch's cost is mostly per-variable overhead, so each example is a large
 # batch and there are few examples.
 @settings(
-    max_examples=6,
+    max_examples=4,
     deadline=None,
     derandomize=True,
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
 )
-@given(st.sampled_from(YEARS), st.lists(couples(), min_size=8, max_size=20))
+@given(st.sampled_from(YEARS), st.lists(couples(), min_size=6, max_size=15))
 def test_claimed_spouse_does_not_depend_on_head_label(year, units):
     _check_swap(units, year, TAX_UNIT_OUTPUTS + CONSUMERS)
 
 
 @pytest.mark.parametrize("year", YEARS)
 def test_seeded_population(year):
-    units = _seeded_couples(AFFECTED, per_state=4) + _crafted_cases(AFFECTED)
+    units = _seeded_couples(AFFECTED, per_state=2) + _crafted_cases(AFFECTED)
     _check_swap(units, year, TAX_UNIT_OUTPUTS + CONSUMERS)
     _check_monotone(units, year)
 

@@ -18,9 +18,7 @@ class me_sales_tax_fairness_credit_eligible(Variable):
         # individual the base credit for the return's filing status. On a
         # joint return where only one spouse can be claimed, the other spouse
         # still qualifies for the joint credit.
-        independent_filer = (
-            tax_unit("head_spouse_count_not_dependent_elsewhere", period) > 0
-        )
+        every_filer_dependent = tax_unit("every_filer_is_dependent_elsewhere", period)
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-        return independent_filer & ~separate
+        return ~every_filer_dependent & ~separate

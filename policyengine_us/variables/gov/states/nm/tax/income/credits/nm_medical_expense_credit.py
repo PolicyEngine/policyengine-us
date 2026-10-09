@@ -25,10 +25,8 @@ class nm_medical_expense_credit(Variable):
         # not a dependent of another taxpayer, your spouse may still qualify
         # to claim rebates or credits" (PIT-RC instructions). So only a return
         # on which every filer is a dependent elsewhere is barred.
-        independent_filer = (
-            tax_unit("head_spouse_count_not_dependent_elsewhere", period) > 0
-        )
-        eligible = age_eligible & expense_eligible & independent_filer
+        every_filer_dependent = tax_unit("every_filer_is_dependent_elsewhere", period)
+        eligible = age_eligible & expense_eligible & ~every_filer_dependent
         # exemption is halved for married filing separately
         filing_status = tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE

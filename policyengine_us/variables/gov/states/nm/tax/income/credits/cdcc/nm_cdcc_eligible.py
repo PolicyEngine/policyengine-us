@@ -19,9 +19,7 @@ class nm_cdcc_eligible(Variable):
         # taxpayer, your spouse may still qualify to claim rebates or
         # credits" (PIT-RC instructions). So only a return on which every
         # filer is a dependent elsewhere is barred.
-        independent_filer = (
-            tax_unit("head_spouse_count_not_dependent_elsewhere", period) > 0
-        )
+        every_filer_dependent = tax_unit("every_filer_is_dependent_elsewhere", period)
         p = parameters(period).gov.states.nm.tax.income.credits.cdcc
         # Filer has to be be gainfully employed to receive credit
         has_earnings = person("earned_income", period) > 0
@@ -52,5 +50,8 @@ class nm_cdcc_eligible(Variable):
         )
         income_eligible = nm_modified_gross_income <= income_limit
         return (
-            independent_filer & employment_eligible & ~receives_tanf & income_eligible
+            ~every_filer_dependent
+            & employment_eligible
+            & ~receives_tanf
+            & income_eligible
         )
