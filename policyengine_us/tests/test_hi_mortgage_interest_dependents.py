@@ -1,6 +1,7 @@
 import random
 
 import numpy as np
+import pytest
 
 from policyengine_us import Simulation
 
@@ -94,7 +95,8 @@ def _add_tax_unit(situation, name, joint, filers, mortgage, dependents):
     situation["marital_units"][name] = {"members": filer_names}
 
 
-def test_dependent_mortgage_inputs_never_change_hawaii_deduction():
+@pytest.mark.parametrize("reconstructed", (False, True))
+def test_dependent_mortgage_inputs_never_change_hawaii_deduction(reconstructed):
     """Dependent payments cannot change deductions within a fixed source path.
 
     Dataset-like structured inputs equal all members' canonical payments;
@@ -116,9 +118,14 @@ def test_dependent_mortgage_inputs_never_change_hawaii_deduction():
     }
     labels = []
     expected = []
+    sources = (
+        ("reconstructed",)
+        if reconstructed
+        else tuple(source for source in INTEREST_SOURCES if source != "reconstructed")
+    )
 
     for joint in (False, True):
-        for source in INTEREST_SOURCES:
+        for source in sources:
             # Exercise each person input alone, then arbitrary combinations.
             for sample in range(len(MORTGAGE_INPUTS) + 2):
                 filers = [
@@ -151,6 +158,17 @@ def test_dependent_mortgage_inputs_never_change_hawaii_deduction():
                     {variable: rng.randint(1, 200_000) for variable in variables}
                     for _ in range(1 + sample % 3)
                 ]
+                if reconstructed:
+                    # Supplying a variable for one person installs a complete
+                    # input vector, defaulting omitted persons to zero. Keep
+                    # mortgage_interest calculated in this separate batch.
+                    for inputs in dependents:
+                        legacy_gross = inputs.pop("mortgage_interest", None)
+                        if legacy_gross is not None and len(inputs) == 0:
+                            inputs["deductible_mortgage_interest"] = legacy_gross / 2
+                            inputs["non_deductible_mortgage_interest"] = (
+                                legacy_gross / 2
+                            )
                 label = f"{'joint' if joint else 'single'}-{source}-{sample}"
                 labels.append(label)
                 before_dependents = [{} for _ in dependents]
