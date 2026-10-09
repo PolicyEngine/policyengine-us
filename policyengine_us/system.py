@@ -35,6 +35,7 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
+from .tools.section_911 import validate_section_911_batch_inputs
 from .tools.per_capita_uprating import (
     add_per_capita_parameters_for_parameter_uprating,
     add_per_capita_uprating,
@@ -241,6 +242,10 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
     def __init__(self, *args, **kwargs):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = kwargs.pop(
             "start_instant", DEFAULT_START_DATE
+        )
+        situation = kwargs.get("situation", args[2] if len(args) > 2 else None)
+        validate_section_911_batch_inputs(
+            situation, kwargs.get("default_input_period") or self.default_input_period
         )
         args, kwargs = self._prepare_spm_system(
             args, kwargs, kwargs.pop("spm", None), start_instant
