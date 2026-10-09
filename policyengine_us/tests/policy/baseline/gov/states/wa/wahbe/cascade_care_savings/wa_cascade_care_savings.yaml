@@ -749,3 +749,166 @@
         state_code: WA
   output:
     wa_cascade_care_savings: 3_000
+
+- name: 2026 WA joint return with one claimable spouse (the claimable spouse is the head)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WA
+  output:
+    # Tax family of one: 23,475 / 15,650 = 150% FPL; aca_ptc_slcsp 6,000;
+    # aca_ptc = 6,000 - 0.0419 * 23,475 = 5,016.40.
+    # Group 2 ($250 PMPM) for the claimable spouse, who is QHP-eligible but
+    # has no federal subsidy, and Group 1 ($55) for the other: 3,000 + 660;
+    # cap = 12,000 - 5,016.40 = 6,983.60 (both enrollees' net premium).
+    wa_cascade_care_savings: 3660
+
+- name: 2026 WA joint return with one claimable spouse (the claimable spouse is the spouse)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: WA
+  output:
+    wa_cascade_care_savings: 3660
+
+- name: 2026 WA joint return with neither spouse claimable
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WA
+  output:
+    # Tax family of two: 110% FPL; aca_ptc = 12,000 - 0.021 * 23,475 = 11,507.03.
+    wa_cascade_care_savings: 492.97
+
+- name: 2026 WA joint return with both spouses claimable gets nothing from the wrap
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WA
+  output:
+    # Both spouses are Group 2: 2 * 12 * 250 = 6,000, below the cap of 12,000.
+    wa_cascade_care_savings: 6000

@@ -10,6 +10,7 @@ class wa_cascade_care_savings_member_amount(Variable):
     defined_for = StateCode.WA
     reference = (
         "https://app.leg.wa.gov/rcw/default.aspx?cite=43.71.110",
+        # PDF pages 1, 5 (the PMPM amounts and the three groups).
         "https://www.wahbexchange.org/content/dam/materials/communications/legislative/2025/WAHBE_Final_PY_2026_Cascade_Care_Savings_Maximum_Per_Member_Per_Month_Methodology.pdf#page=1",
         "https://www.wahbexchange.org/content/dam/wahbe-assets/materials/collateral/cc/FinalPY2026CascadeCareSavingsPolicy_Combined.pdf#page=14",
     )
@@ -22,15 +23,18 @@ class wa_cascade_care_savings_member_amount(Variable):
         "with-federal-subsidy amount ($55 PMPM for PY2026), and Group 3 "
         "members without a federally recognized immigration status who lack "
         "minimum essential coverage through a state medical assistance program "
-        "receive the without-federal-subsidy amount ($250 PMPM for PY2026). "
+        "receive the without-federal-subsidy amount ($250 PMPM for PY2026), "
+        "as do Group 2 members modeled as QHP-eligible enrollees outside the "
+        "federal tax family (someone another taxpayer can claim). "
         "Group 3 excludes members eligible for Washington Apple Health "
         "Expansion (undocumented adults) or Apple Health for Kids (children "
         "under 19), per Policy Section 4(1)(f), which also avoids double "
         "counting with the Medicaid-cost proxy in healthcare_benefit_value; it "
         "further requires the member not be premium-tax-credit-eligible, so "
-        "Groups 1 and 3 are mutually exclusive. Group 2 (lawfully present but "
-        "premium-tax-credit-ineligible) is not separately identifiable in the "
-        "model and is documented away. The monthly amount is annualized by "
+        "Groups 1 and 3 are mutually exclusive. Other Group 2 members "
+        "(lawfully present but premium-tax-credit-ineligible for other "
+        "reasons) are not separately identifiable in the model and are "
+        "documented away. The monthly amount is annualized by "
         "MONTHS_IN_YEAR, assuming full-year enrollment."
     )
 
@@ -54,6 +58,11 @@ class wa_cascade_care_savings_member_amount(Variable):
         apple_health_expansion = person("wa_apple_health_expansion_eligible", period)
         apple_health_kids = person("wa_apple_health_kids_eligible", period)
         group_3 = undocumented & ~apple_health_expansion & ~apple_health_kids & ~group_1
+        # Group 2: QHP-eligible enrollees outside the federal tax family, who
+        # have no federal subsidy (see wa_cascade_care_savings_member_eligible).
+        group_2 = person("pays_aca_premium", period) & ~person(
+            "is_aca_tax_family_member", period
+        )
         with_subsidy = where(group_1, p.amount.with_federal_subsidy, 0)
-        without_subsidy = where(group_3, p.amount.without_federal_subsidy, 0)
+        without_subsidy = where(group_2 | group_3, p.amount.without_federal_subsidy, 0)
         return MONTHS_IN_YEAR * (with_subsidy + without_subsidy)

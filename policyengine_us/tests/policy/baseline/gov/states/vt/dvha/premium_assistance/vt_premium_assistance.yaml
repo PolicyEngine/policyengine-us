@@ -406,3 +406,161 @@
         state_code: VT
   output:
     vt_premium_assistance: 0
+
+- name: 2026 VT joint return with one claimable spouse (the claimable spouse is the head)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VT
+        slcsp_age_0: 6000
+  output:
+    # Tax family of one: 23,475 / 15,650 = 150% FPL; aca_ptc_slcsp 6,000;
+    # aca_ptc = 6,000 - 0.0419 * 23,475 = 5,016.40.
+    # 33 V.S.A. 1812(a)(1). Family tier ONE_ADULT: benchmark 6,000.
+    # min(23,475 * 0.015, 6,000 - 5,016.40) = 352.13.
+    vt_premium_assistance: 352.13
+
+- name: 2026 VT joint return with one claimable spouse (the claimable spouse is the spouse)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: VT
+        slcsp_age_0: 6000
+  output:
+    vt_premium_assistance: 352.13
+
+- name: 2026 VT joint return with neither spouse claimable
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VT
+        slcsp_age_0: 6000
+  output:
+    # Tax family of two: 110% FPL; aca_ptc = 12,000 - 0.021 * 23,475 = 11,507.03.
+    vt_premium_assistance: 352.13
+
+- name: 2026 VT joint return with both spouses claimable gets nothing from the wrap
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 23_475
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VT
+        slcsp_age_0: 6000
+  output:
+    # Neither spouse is in a federal tax family.
+    vt_premium_assistance: 0

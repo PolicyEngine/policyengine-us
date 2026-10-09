@@ -36,9 +36,11 @@ class nm_premium_assistance(Variable):
         # Clamp income to zero so a negative ACA MAGI cannot inflate the top-up
         # above the benchmark - APTC residual via the -pct*income term.
         income = max_(tax_unit("aca_magi", period), 0)
-        # slcsp is a MONTH-period variable; core sums the 12 months when
-        # called from this YEAR formula.
-        slcsp = add(tax_unit, period, ["slcsp"])
+        # The benchmark for the federal coverage family, a MONTH variable that
+        # core sums over the year here: both components cover only enrollees
+        # who meet the federal PTC criteria (the base program in full, the
+        # Middle Income Household component except for income).
+        slcsp = add(tax_unit, period, ["aca_ptc_slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
         magi_frac = tax_unit("aca_magi_fraction", period)
 
