@@ -1,1 +1,0 @@
-Pay no Colorado state sales tax refund for tax year 2026: C.R.S. 39-22-2003(2) allows it only if the fiscal year ending in the tax year had excess state revenues, and FY 2025-26 fell short of the Referendum C cap.
