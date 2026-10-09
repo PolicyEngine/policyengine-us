@@ -60,7 +60,7 @@ class ca_eitc(Variable):
                 amount_after_first_phase_out,
             )
 
-        earned_income = tax_unit("filer_adjusted_earnings", period)
+        earned_income = tax_unit("ca_eitc_earned_income", period)
         agi = tax_unit("adjusted_gross_income", period)
         # The California Earned Income Tax Credit Worksheet (FTB 3514
         # instructions) figures the credit on California earned income (line 2)

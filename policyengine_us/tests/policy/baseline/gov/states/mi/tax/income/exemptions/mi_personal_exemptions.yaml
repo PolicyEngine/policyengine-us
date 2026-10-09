@@ -124,3 +124,14 @@
   output:
     # 2 filers * $5,800 = $11,600
     mi_personal_exemptions: 11_600
+
+- name: 2026 joint filers with two dependents use the $5,900 personal exemption
+  period: 2026
+  input:
+    tax_unit_size: 4
+    tax_unit_stillborn_children: 0
+    state_code: MI
+  output:
+    # 2026 Form 446, page 1: "Personal Exemption Amount: $5,900".
+    # 4 * 5,900 = 23,600
+    mi_personal_exemptions: 23_600

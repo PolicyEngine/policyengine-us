@@ -1,0 +1,165 @@
+# Iowa Code 422.7(20) and (29) subtract military retirement pay and active
+# duty pay "to the extent included" in federal taxable income. A tax-unit
+# dependent's income is not in the filer's federal taxable income (the
+# dependent reports it on their own return), so it is not subtracted.
+
+- name: A dependent child's military retirement pay is not subtracted from the head's income.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: IA
+  output:
+    ia_subtractions_consolidated: 0
+
+- name: A dependent child's military retirement pay leaves Iowa taxable income at federal taxable income.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        taxable_income: 50_000
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: IA
+  output:
+    ia_subtractions_consolidated: 0
+    # 50,000 federal taxable income + 0 additions - 0 subtractions.
+    ia_taxable_income_consolidated: 50_000
+
+- name: Only the head's and spouse's military pay is subtracted, not a dependent's.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 30_000
+        military_retirement_pay: 20_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        military_service_income: 5_000
+        is_tax_unit_spouse: true
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+        military_service_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      parents_marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: IA
+  output:
+    # Head's 20,000 military retirement pay + spouse's 5,000 active duty pay.
+    ia_subtractions_consolidated: 25_000
+
+- name: Military retirement pay subtraction counts the spouse's pay and not a dependent's in 2024.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 40_000
+        is_tax_unit_head: true
+      spouse:
+        age: 48
+        military_retirement_pay: 15_000
+        is_tax_unit_spouse: true
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      parents_marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: IA
+  output:
+    ia_subtractions_consolidated: 15_000
+
+- name: Pension exclusion subtraction counts only an age-eligible spouse, not an age-eligible dependent.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        # Under 55 and not disabled, so the head's pension is not excluded.
+        age: 50
+        taxable_private_pension_income: 8_000
+        is_tax_unit_head: true
+      spouse:
+        age: 56
+        taxable_public_pension_income: 12_000
+        is_tax_unit_spouse: true
+      parent:
+        # A dependent aged 70 meets the age test but is not the taxpayer or
+        # spouse, so the dependent's pension is not excluded on this return.
+        age: 70
+        is_tax_unit_dependent: true
+        taxable_private_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, parent]
+    marital_units:
+      couple_marital_unit:
+        members: [head, spouse]
+      parent_marital_unit:
+        members: [parent]
+    households:
+      household:
+        members: [head, spouse, parent]
+        state_code: IA
+  output:
+    ia_pension_exclusion: [0, 12_000, 0]
+    ia_subtractions_consolidated: 12_000

@@ -26,9 +26,12 @@ class auto_loan_interest_deduction(Variable):
 
         # Get the phaseout start amount based on filing status (line 4).
         phaseout_start = p.phase_out.start[filing_status]
-        agi_pre_ald = tax_unit("adjusted_gross_income", period)
+        # 26 U.S.C. 163(h)(4)(C)(ii)(II): modified adjusted gross income adds
+        # back income excluded under sections 911, 931 and 933 (Schedule 1-A,
+        # line 3).
+        magi = tax_unit("agi_plus_section_911_931_933_exclusions", period)
         # Get the excess amount, if any, in thousands of dollars (rounded up) [lines 5 and 6].
-        excess = max_(agi_pre_ald - phaseout_start, 0)
+        excess = max_(magi - phaseout_start, 0)
         increments = np.ceil(excess / p.phase_out.increment)
 
         # Calculate the excess part phase out amount (line 7).

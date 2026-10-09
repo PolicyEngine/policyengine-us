@@ -10,6 +10,8 @@ metadata:
       href: https://www.revisor.mn.gov/statutes/cite/290.0693/pdf#page=2
     - title: 2025 Schedule M1RENT, Renter's Credit
       href: https://www.revenue.state.mn.us/sites/default/files/2026-07/m1rent-25.pdf#page=5
+    - title: Minnesota Department of Revenue, Tax Year 2026 Inflation-Adjusted Amounts, 290.0693 Subd. 3 Renter's Credit, Percent Paid by Claimant column
+      href: https://www.revenue.state.mn.us/sites/default/files/2025-12/inflation-adjusted-amounts-2026.pdf#page=5
 
 brackets:
   - threshold:
@@ -41,6 +43,7 @@ brackets:
   - threshold:
       values:
         2024-01-01: 21_540
+        2026-01-01: 22_670
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -52,6 +55,7 @@ brackets:
   - threshold:
       values:
         2024-01-01: 30_160
+        2026-01-01: 31_740
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -107,6 +111,7 @@ brackets:
   - threshold:
       values:
         2024-01-01: 66_790
+        2026-01-01: 70_280
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -118,6 +123,7 @@ brackets:
   - threshold:
       values:
         2024-01-01: 75_390
+        2026-01-01: 79_330
       metadata:
         uprating:
           parameter: gov.irs.uprating
