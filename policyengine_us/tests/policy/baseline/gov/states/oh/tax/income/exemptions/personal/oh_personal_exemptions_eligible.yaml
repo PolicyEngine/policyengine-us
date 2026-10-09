@@ -27,3 +27,57 @@
     is_tax_unit_dependent: true
   output:
     oh_personal_exemptions_eligible_person: true
+
+
+- name: 2025 joint return with one claimable spouse makes neither that spouse nor the child eligible (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OH
+  output:
+    # Ohio R.C. 5747.025; IRC 152(b)(1) leaves the return no dependents.
+    oh_personal_exemptions_eligible_person: [false, true, false]
+
+- name: 2025 joint return with one claimable spouse makes neither that spouse nor the child eligible (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: OH
+  output:
+    oh_personal_exemptions_eligible_person: [true, false, false]

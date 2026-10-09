@@ -47,3 +47,115 @@
         members: [parent, child_1, child_2]
   output:
     recovery_rebate_credit: 3_920 # https://www.efile.com/stimulus-check-three/
+
+
+- name: 2021 single filer who can be claimed as a dependent gets no ARPA rebate
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: TX
+  output:
+    # IRC 6428B(c)(2): an eligible individual excludes "any individual who is a
+    # dependent of another taxpayer".
+    rrc_arpa: 0
+
+- name: 2021 claimable single filer's child adds no ARPA rebate
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # IRC 152(b)(1): such a filer has no dependents.
+    rrc_arpa: 0
+
+- name: 2021 joint return with one claimable spouse gets the other spouse's ARPA rebate (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # Each spouse is an eligible individual or not on their own; $1,400 for
+    # the spouse who cannot be claimed.
+    rrc_arpa: 1_400
+
+- name: 2021 joint return with one claimable spouse gets the other spouse's ARPA rebate (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    rrc_arpa: 1_400
+
+- name: 2021 joint return with neither spouse claimable gets both rebates and the child's
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 22
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    # 3 x $1,400.
+    rrc_arpa: 4_200

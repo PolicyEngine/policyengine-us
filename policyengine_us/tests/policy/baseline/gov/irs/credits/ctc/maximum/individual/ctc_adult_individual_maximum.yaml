@@ -43,3 +43,96 @@
     ctc_child_individual_maximum: 0
   output:
     ctc_adult_individual_maximum: 500
+
+- name: 2025 single filer who can be claimed as a dependent gets no credit for other dependents
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        claimed_as_dependent_on_another_return: true
+      sibling:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [filer, sibling]
+    households:
+      household:
+        members: [filer, sibling]
+        state_code: TX
+  output:
+    # IRC 24(h)(4) "any dependent of the taxpayer"; IRC 152(b)(1).
+    ctc_adult_individual_maximum: [0, 0]
+
+- name: 2025 joint return with one claimable spouse gets no credit for other dependents (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      sibling:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, sibling]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, sibling]
+        state_code: TX
+  output:
+    ctc_adult_individual_maximum: [0, 0, 0]
+
+- name: 2025 joint return with one claimable spouse gets no credit for other dependents (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 22
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      sibling:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, sibling]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, sibling]
+        state_code: TX
+  output:
+    ctc_adult_individual_maximum: [0, 0, 0]
+
+- name: 2025 joint return with neither spouse claimable gets the credit for other dependents
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+      person_b:
+        age: 22
+      sibling:
+        age: 18
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, sibling]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, sibling]
+        state_code: TX
+  output:
+    ctc_adult_individual_maximum: [0, 0, 500]

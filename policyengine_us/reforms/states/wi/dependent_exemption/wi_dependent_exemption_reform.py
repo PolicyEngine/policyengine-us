@@ -15,7 +15,11 @@ def create_wi_dependent_exemption() -> Reform:
 
             person = tax_unit.members
             age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)).
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
 
             # Apply age limit if in effect
             if p.age_limit.in_effect:
@@ -49,7 +53,11 @@ def create_wi_dependent_exemption() -> Reform:
 
         def formula(tax_unit, period, parameters):
             person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)).
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
             total_dependents = tax_unit.sum(is_dependent)
             eligible_dependent_exemptions = tax_unit(
                 "wi_eligible_dependents_count", period
@@ -68,12 +76,13 @@ def create_wi_dependent_exemption() -> Reform:
             p_base = parameters(period).gov.states.wi.tax.income
 
             # Personal exemptions exclude the dependent portion.
-            total_exemptions_count = tax_unit("exemptions_count", period)
-            dependents = tax_unit("tax_unit_dependents", period)
-            older_dependents = tax_unit("wi_older_dependents_count", period)
-            personal_exemptions_count = (
-                total_exemptions_count - dependents + older_dependents
+            # These are the filers' own exemptions (none for a filer who can
+            # be claimed as a dependent) plus over-age dependents.
+            own_exemptions = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
             )
+            older_dependents = tax_unit("wi_older_dependents_count", period)
+            personal_exemptions_count = own_exemptions + older_dependents
             personal_exemption_amount = (
                 personal_exemptions_count * p_base.exemption.base
             )

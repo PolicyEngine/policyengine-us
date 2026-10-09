@@ -15,7 +15,11 @@ def create_hi_dependent_exemption() -> Reform:
 
             person = tax_unit.members
             age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)).
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
 
             # Apply age limit if in effect
             if p.age_limit.in_effect:
@@ -49,7 +53,11 @@ def create_hi_dependent_exemption() -> Reform:
 
         def formula(tax_unit, period, parameters):
             person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)).
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
             total_dependents = tax_unit.sum(is_dependent)
             eligible_dependent_exemptions = tax_unit(
                 "hi_eligible_dependents_count", period
@@ -66,14 +74,16 @@ def create_hi_dependent_exemption() -> Reform:
         defined_for = StateCode.HI
 
         def formula(tax_unit, period, parameters):
-            exemptions_count = tax_unit("exemptions_count", period)
             p = parameters(period).gov.states.hi.tax.income.exemptions
 
-            # Personal exemptions exclude the dependent portion. Over-age
-            # dependents fall back to the personal count.
-            dependents = tax_unit("tax_unit_dependents", period)
+            # Personal exemptions exclude the dependent portion: the filers'
+            # own exemptions (none for a filer who can be claimed as a
+            # dependent). Over-age dependents fall back to the personal count.
+            own_exemptions = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
+            )
             older_dependents = tax_unit("hi_older_dependents_count", period)
-            personal_count = exemptions_count - dependents + older_dependents
+            personal_count = own_exemptions + older_dependents
 
             # Aged heads and spouses get an extra base exemption (preserved
             # exactly as the baseline computes it).

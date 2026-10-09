@@ -13,6 +13,12 @@ class rrc_arpa_dependents_with_valid_ssn(Variable):
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
-        is_dependent = person("is_tax_unit_dependent", period)
+        # IRC 6428B(b)(2) counts "the number of dependents of the taxpayer", and
+        # under 152(b)(1) a return on which the filer (or, if joint, either
+        # spouse) can be claimed as a dependent has none.
+        dependent_filer = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
+        is_dependent = person("is_tax_unit_dependent", period) & ~dependent_filer
         has_valid_ssn = person("meets_eitc_identification_requirements", period)
         return tax_unit.sum(is_dependent & has_valid_ssn)

@@ -15,6 +15,7 @@ class ctc_adult_individual_maximum(Variable):
         "https://www.law.cornell.edu/uscode/text/26/24#a",
         "https://www.law.cornell.edu/uscode/text/26/24#h",
         "https://www.law.cornell.edu/uscode/text/26/24#i",
+        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
     )
 
     def formula(person, period, parameters):
@@ -24,9 +25,16 @@ class ctc_adult_individual_maximum(Variable):
         filer_meets_tin_requirement = person.tax_unit(
             "filer_meets_ctc_identification_requirements", period
         )
+        # IRC 24(h)(4) gives the credit for "any dependent of the taxpayer";
+        # under IRC 152(b)(1) a return on which the filer (or, if joint,
+        # either spouse) can be claimed as a dependent has no dependents.
+        filer_is_dependent = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
         return (
             is_adult
             * dependent_has_tin
             * filer_meets_tin_requirement
+            * ~filer_is_dependent
             * p.amount.adult_dependent
         )

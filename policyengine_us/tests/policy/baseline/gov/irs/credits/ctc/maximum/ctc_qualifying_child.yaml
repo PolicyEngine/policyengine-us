@@ -56,3 +56,106 @@
         members: [adult, child, child2]
   output:
     ctc_qualifying_child: [False, True, False]
+
+- name: 2025 single filer who can be claimed as a dependent has no CTC-qualifying child
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # IRC 24(a), 152(b)(1); Publication 501, Dependent Taxpayer Test.
+    ctc_qualifying_child: [false, false]
+    ctc_maximum: 0
+
+- name: 2025 joint return with one claimable spouse has no CTC-qualifying child (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    # "If you are filing a joint return and your spouse can be claimed as a
+    # dependent by another taxpayer, you and your spouse can't claim any
+    # dependents on your joint return" (Publication 501).
+    ctc_qualifying_child: [false, false, false]
+    ctc_maximum: 0
+
+- name: 2025 joint return with one claimable spouse has no CTC-qualifying child (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, false, false]
+    ctc_maximum: 0
+
+- name: 2025 joint return with neither spouse claimable keeps the CTC-qualifying child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 20
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    ctc_qualifying_child: [false, false, true]
+    ctc_maximum: 2_200

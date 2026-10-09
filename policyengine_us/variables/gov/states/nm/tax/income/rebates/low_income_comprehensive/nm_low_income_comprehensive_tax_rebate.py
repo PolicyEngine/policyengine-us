@@ -49,4 +49,10 @@ class nm_low_income_comprehensive_tax_rebate(Variable):
             p.divisor,
             1,
         )
-        return rebate / divisor
+        # NMSA 7-2-14(A) allows the rebate only to a resident "who is not a
+        # dependent of another individual"; on a joint return the spouse who
+        # is not may still claim it (PIT-RC). The table starts at one
+        # exemption.
+        every_filer_dependent = tax_unit("every_filer_is_dependent_elsewhere", period)
+        eligible = ~every_filer_dependent & (exemptions > 0)
+        return where(eligible, rebate / divisor, 0)

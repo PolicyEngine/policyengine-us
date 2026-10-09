@@ -1,64 +1,52 @@
-- name: Ineligible SINGLE
-  period: 2023
+- name: 2025 single filer with a child counts both
+  period: 2025
   input:
-    state_code: NM
-    filing_status: SINGLE
-    adjusted_gross_income: 36_668
-    exemptions_count: 1
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
   output:
-    nm_low_and_middle_income_exemption: 0
-
-- name: Joint with 2 exemptions and no reduction
-  period: 2023
-  input:
-    state_code: NM
-    filing_status: JOINT
-    adjusted_gross_income: 30_000
     exemptions_count: 2
-  output:
-    nm_low_and_middle_income_exemption: 5_000
-
-- name: Surviving spouse with 3 exemptions + reduction # 2_500 - ((40_000 - 30_000) * 0.1) = 1_500 * 3
-  period: 2023
-  input:
-    state_code: NM
-    filing_status: SURVIVING_SPOUSE
-    adjusted_gross_income: 40_000
-    exemptions_count: 3
-  output:
-    nm_low_and_middle_income_exemption: 4_500
-
 
 - name: 2025 single filer who can be claimed as a dependent has no exemptions
   period: 2025
   input:
     people:
-      filer:
-        age: 30
+      parent:
+        age: 20
         claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
     tax_units:
       tax_unit:
-        members: [filer]
-        adjusted_gross_income: 10_000
+        members: [parent, child]
     households:
       household:
-        members: [filer]
-        state_code: NM
+        members: [parent, child]
+        state_code: TX
   output:
-    # NMSA 7-2-5.8 counts federal exemptions; IRC 151(d)(2).
-    nm_low_and_middle_income_exemption: 0
+    # IRC 151(d)(2) for the filer; IRC 152(b)(1) for the child.
+    exemptions_count: 0
 
 - name: 2025 joint return with one claimable spouse counts only the other spouse (the claimable spouse is the head)
   period: 2025
   input:
     people:
       person_a:
-        age: 30
+        age: 20
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
-        age: 30
+        age: 20
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
@@ -67,25 +55,23 @@
       tax_unit:
         members: [person_a, person_b, child]
         filing_status: JOINT
-        adjusted_gross_income: 10_000
     households:
       household:
         members: [person_a, person_b, child]
-        state_code: NM
+        state_code: TX
   output:
-    # One exemption (the child is not a dependent, IRC 152(b)(1)) x $2,500.
-    nm_low_and_middle_income_exemption: 2_500
+    exemptions_count: 1
 
 - name: 2025 joint return with one claimable spouse counts only the other spouse (the claimable spouse is the spouse)
   period: 2025
   input:
     people:
       person_b:
-        age: 30
+        age: 20
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
-        age: 30
+        age: 20
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -95,34 +81,53 @@
       tax_unit:
         members: [person_b, person_a, child]
         filing_status: JOINT
-        adjusted_gross_income: 10_000
     households:
       household:
         members: [person_b, person_a, child]
-        state_code: NM
+        state_code: TX
   output:
-    # One exemption (the child is not a dependent, IRC 152(b)(1)) x $2,500.
-    nm_low_and_middle_income_exemption: 2_500
+    exemptions_count: 1
 
-- name: 2025 joint return with neither spouse claimable counts everyone
+- name: 2025 joint return with both spouses claimable has no exemptions
   period: 2025
   input:
     people:
       person_a:
-        age: 30
+        age: 20
+        claimed_as_dependent_on_another_return: true
       person_b:
-        age: 30
+        age: 20
+        claimed_as_dependent_on_another_return: true
       child:
         age: 5
     tax_units:
       tax_unit:
         members: [person_a, person_b, child]
         filing_status: JOINT
-        adjusted_gross_income: 10_000
     households:
       household:
         members: [person_a, person_b, child]
-        state_code: NM
+        state_code: TX
   output:
-    # 3 exemptions x $2,500.
-    nm_low_and_middle_income_exemption: 7_500
+    exemptions_count: 0
+
+- name: 2025 joint return with neither spouse claimable counts everyone
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 20
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    exemptions_count: 3

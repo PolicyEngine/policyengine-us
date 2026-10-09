@@ -25,5 +25,8 @@ class nm_low_and_middle_income_exemption(Variable):
         exemption_amount = p.max_amount - reduction_amount
 
         # Multiply the exemption amount by the number of exemptions
+        # NMSA 7-2-5.8 multiplies by the number of federal exemptions, which
+        # leaves out a filer who can be claimed as a dependent and, on such a
+        # return, the dependents.
         exemptions_count = tax_unit("exemptions_count", period)
         return eligible * exemption_amount * exemptions_count

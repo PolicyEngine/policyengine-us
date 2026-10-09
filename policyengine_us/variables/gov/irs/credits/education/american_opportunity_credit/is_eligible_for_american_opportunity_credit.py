@@ -18,6 +18,11 @@ class is_eligible_for_american_opportunity_credit(Variable):
         filing_status = tax_unit("filing_status", period)
         filing_status_values = filing_status.possible_values
         filing_status_eligible = filing_status != filing_status_values.SEPARATE
+        # IRC 25A(g)(3): no credit to an individual claimed as a dependent by
+        # another taxpayer, and the Form 1040 instructions extend this to
+        # "your spouse if filing jointly", so either filer being claimed bars
+        # the return's credit.
+        filer_claimed = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         requires_1098_t = aoc.eligibility.requires_1098_t_or_exception
         has_1098_t_or_exception = (
             person("has_american_opportunity_credit_1098_t_or_exception", period)
@@ -66,4 +71,5 @@ class is_eligible_for_american_opportunity_credit(Variable):
                 period,
             )
             & filing_status_eligible
+            & ~filer_claimed
         )

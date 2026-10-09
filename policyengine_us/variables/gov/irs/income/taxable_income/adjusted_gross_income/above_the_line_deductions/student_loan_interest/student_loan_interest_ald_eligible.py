@@ -19,9 +19,13 @@ class student_loan_interest_ald_eligible(Variable):
     )
 
     def formula(person, period, parameters):
-        # Per IRC § 221(c), taxpayer cannot be claimed as a dependent
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        # Per IRC § 221(c), no deduction for an individual claimed as a
+        # dependent by another taxpayer; the Form 1040 instructions require
+        # that "you, or your spouse if filing jointly, aren't claimed as a
+        # dependent", so either filer being claimed bars the return.
+        filer_claimed = person.tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         # Per IRC § 221(e)(2), taxpayer cannot file as Married Filing Separately
         filing_status = person.tax_unit("filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
-        return head_or_spouse & ~separate
+        return head_or_spouse & ~separate & ~filer_claimed

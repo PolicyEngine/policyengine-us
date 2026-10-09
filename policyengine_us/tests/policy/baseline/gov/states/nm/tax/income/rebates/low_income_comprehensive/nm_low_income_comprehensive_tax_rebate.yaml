@@ -246,3 +246,83 @@
         state_code: NM
   output:
     nm_low_income_comprehensive_tax_rebate: 583
+
+- name: 2025 single filer who can be claimed as a dependent gets no rebate
+  period: 2025
+  input:
+    people:
+      person:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        nm_modified_gross_income: 5_000
+    households:
+      household:
+        members: [person]
+        state_code: NM
+  output:
+    # NMSA 7-2-14(A): only a resident "who is not a dependent of another
+    # individual" may claim the rebate.
+    nm_low_income_comprehensive_tax_rebate: 0
+
+- name: 2025 single filer who cannot be claimed gets the one-exemption rebate
+  period: 2025
+  input:
+    people:
+      person:
+        age: 20
+    tax_units:
+      tax_unit:
+        members: [person]
+        nm_modified_gross_income: 5_000
+    households:
+      household:
+        members: [person]
+        state_code: NM
+  output:
+    # $1,000-$7,500 row, one exemption.
+    nm_low_income_comprehensive_tax_rebate: 252
+
+- name: 2025 single filer aged 65 or older who can be claimed as a dependent gets no rebate
+  period: 2025
+  input:
+    people:
+      person:
+        age: 70
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person]
+        nm_modified_gross_income: 5_000
+    households:
+      household:
+        members: [person]
+        state_code: NM
+  output:
+    # The age-65 exemptions do not make a dependent of another individual a
+    # claimant (NMSA 7-2-14(A)).
+    nm_low_income_comprehensive_tax_rebate: 0
+
+- name: 2025 joint return with one claimable spouse keeps the rebate with the couple's combined income
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        nm_modified_gross_income: 8_500
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    # One exemption; the $8,000-$9,000 row of the one-exemption table.
+    nm_low_income_comprehensive_tax_rebate: 212
