@@ -9,8 +9,9 @@ class oh_insured_unreimbursed_medical_care_expense_amount(Variable):
     definition_period = YEAR
     reference = (
         "https://codes.ohio.gov/ohio-revised-code/section-5747.01",  # R.C. 5747.01(A)(10)(b)
-        "https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=25",  # Line 44
+        "https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=25",  # Line 44, pp. 25-26
         "https://dam.assets.ohio.gov/image/upload/v1767095693/tax.ohio.gov/forms/ohio_individual/individual/2025/it1040-booklet.pdf#page=41",  # Worksheet lines 3 and 4
+        "https://tax.ohio.gov/help-center/faqs/income-medical-and-health-care-expenses/income-medical-and-health-care-expenses",  # Q8 and Q9: after-tax premiums go on line 3
     )
     defined_for = StateCode.OH
 
