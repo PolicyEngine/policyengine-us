@@ -20,6 +20,8 @@ CA_VARIABLES = (
     "ca_itemized_deductions",
     "ca_deductions",
     "ca_amti_adjustments",
+    "ca_pre_exemption_amti",
+    "ca_amti",
     "ca_charitable_deduction",
     "ca_misc_deduction",
 )
@@ -65,7 +67,7 @@ def _generated_facts():
         cash = random.randint(0, 160_000)
         noncash = random.randint(0, 160_000)
         noncash_non50 = random.randint(0, noncash)
-        employee_expenses = random.randint(0, 60_000)
+        employee_expenses = random.randint(0, 300_000)
         preparation_fees = random.randint(0, 6_000)
         facts.append(
             (
@@ -132,6 +134,12 @@ def test_ca_itemized_rules_are_independent_vectorized_and_monotone():
     facts = [
         (50_000, 0, 0, 0, 0, 0),
         (100_000, 30_000, 0, 0, 10_000, 0),
+        (200_000, 0, 0, 0, 100_000, 0),
+        (200_000, 0, 0, 0, 300_000, 0),
+        (50_000, 0, 0, 0, 150_000, 0),
+        (20_000, 0, 0, 0, 100_000, 0),
+        (50_000, 0, 0, 0, 51_000, 0),
+        (50_000, 0, 0, 0, 50_999, 0),
         (-10_000, 1_000, 1_000, 500, 1_000, 100),
         (0, 1_000, 1_000, 500, 1_000, 100),
         (100_000, 100, 0, 0, 1_999, 0),
@@ -210,3 +218,39 @@ def test_ca_itemized_rules_are_independent_vectorized_and_monotone():
         )
         assert itemized[ca[0]] < standard[ca[0]]
         assert itemized[ca[1]] > standard[ca[1]]
+
+        # Schedule P line 15 retains the signed AGI less deductions before
+        # adding back AMT-disallowed deductions. These wage, gift, and misc
+        # facts have no AMT preferences that could raise AMTI above AGI.
+        agi = baseline.calculate("ca_agi", year)
+        adjustments = baseline.calculate("ca_amti_adjustments", year)
+        limitation = baseline.calculate("ca_itemized_deductions_limitation", year)
+        pre_exemption_amti = baseline.calculate("ca_pre_exemption_amti", year)
+        amti = baseline.calculate("ca_amti", year)
+        form_amti = agi - chosen + adjustments - limitation
+        np.testing.assert_allclose(
+            pre_exemption_amti[ca], form_amti[ca], atol=0.02, rtol=0
+        )
+        # Every generated tax unit is single, so the separate-filer AMTI
+        # adjustment does not apply.
+        np.testing.assert_allclose(amti[ca], form_amti[ca], atol=0.02, rtol=0)
+        assert np.all(pre_exemption_amti[ca] <= agi[ca] + 0.02)
+
+        excess_deductions = chosen[ca] > agi[ca]
+        assert np.any(excess_deductions)
+        assert np.any(chosen[ca] == agi[ca])
+        assert np.any(np.isclose(agi[ca] - chosen[ca], 1, atol=0.02, rtol=0))
+        assert chosen[ca[2]] < agi[ca[2]]
+        assert pre_exemption_amti[ca[2]] > 0
+
+        exemption = baseline.tax_benefit_system.parameters(
+            f"{year}-01-01"
+        ).gov.states.ca.tax.income.amt.exemption.amount.SINGLE
+        below_exemption_excess = excess_deductions & (agi[ca] < exemption)
+        assert np.any(below_exemption_excess)
+        amt = baseline.calculate("ca_amt", year)
+        np.testing.assert_array_equal(amt[ca[below_exemption_excess]], 0)
+        # High-income filers can owe AMT when disallowed deductions exceed
+        # income; the zero-AMT invariant requires income below the exemption.
+        assert excess_deductions[3]
+        assert amt[ca[3]] > 0
