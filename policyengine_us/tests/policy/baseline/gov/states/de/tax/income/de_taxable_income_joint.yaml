@@ -36,3 +36,40 @@
         state_code: DE
   output:
     de_taxable_income_joint: [800, 0]
+
+- name: Joint and separate exclusion tests flow through positive taxable income
+  # PIT-RES 2023, line 11 worksheet (p. 7): the couple qualifies jointly,
+  # while only the spouse meets the separate-column earnings and line 10 limits.
+  # https://revenuefiles.delaware.gov/2023/PIT-RES_TY23_2023-01_Instructions.pdf#page=7
+  period: 2023
+  input:
+    people:
+      head:
+        age: 61
+        is_tax_unit_head: true
+        employment_income: 4_000
+        de_pre_exclusions_agi: 15_000
+        de_deduction_joint: 6_500
+        de_deduction_indv: 3_250
+      spouse:
+        age: 61
+        is_tax_unit_spouse: true
+        de_pre_exclusions_agi: 5_000
+        de_deduction_joint: 0
+        de_deduction_indv: 3_250
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_elderly_or_disabled_income_exclusion_eligible_person: [false, true]
+    de_elderly_or_disabled_income_exclusion_joint: [2_000, 2_000]
+    de_elderly_or_disabled_income_exclusion_indiv: [0, 2_000]
+    de_agi_joint: [16_000, 0]
+    de_agi_indiv: [15_000, 3_000]
+    de_taxable_income_joint: [9_500, 0]
+    de_taxable_income_indv: [11_750, 0]

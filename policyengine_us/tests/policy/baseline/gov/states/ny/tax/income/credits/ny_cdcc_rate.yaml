@@ -1,0 +1,161 @@
+# Expected values are the line 13 decimals from the New York State child and
+# dependent care credit limitation table: 2017 Form IT-216-I page 6 and 2018
+# Form IT-216-I page 7. The table rounds to three decimals. Below $65,000, each
+# New York AGI is the midpoint of its $200 table row. New York AGI 100,000 and
+# 200,000 are in the wide rows above $65,000, where the decimal is exact.
+
+- name: 2017, New York AGI 52,100 uses the 2017 table decimal, with no Tax Law 606(c)(1-a) factor.
+  period: 2017
+  absolute_error_margin: 0.001
+  input:
+    ny_agi: 52_100
+    state_code: NY
+  output:
+    # 2017 table row 52,000 - 52,200: 0.888
+    ny_cdcc_rate: 0.888
+
+- name: 2017, New York AGI 57,500.
+  period: 2017
+  absolute_error_margin: 0.001
+  input:
+    ny_agi: 57_500
+    state_code: NY
+  output:
+    # 2017 table row 57,400 - 57,600: 0.600
+    ny_cdcc_rate: 0.6
+
+- name: 2017, New York AGI 61,100.
+  period: 2017
+  absolute_error_margin: 0.001
+  input:
+    ny_agi: 61_100
+    state_code: NY
+  output:
+    # 2017 table row 61,000 - 61,200: 0.408
+    ny_cdcc_rate: 0.408
+
+- name: 2017, New York AGI 100,000 is in the 2017 65,000 - No Limit row.
+  period: 2017
+  absolute_error_margin: 0.001
+  input:
+    ny_agi: 100_000
+    state_code: NY
+  output:
+    # 2017 table row 65,000 - No Limit: 0.200
+    ny_cdcc_rate: 0.2
+
+- name: 2018, New York AGI 52,100 gets the 1.1682 factor.
+  period: 2018
+  absolute_error_margin: 0.001
+  input:
+    ny_agi: 52_100
+    state_code: NY
+  output:
+    # 2018 table row 52,000 - 52,200: 1.037
+    ny_cdcc_rate: 1.037
+
+- name: 2018, New York AGI 57,500 gets the 1.2733 factor.
+  period: 2018
+  absolute_error_margin: 0.001
+  input:
+    ny_agi: 57_500
+    state_code: NY
+  output:
+    # 2018 table row 57,400 - 57,600: 0.764
+    ny_cdcc_rate: 0.764
+
+- name: 2018, New York AGI 61,100 gets the 2.322 factor.
+  period: 2018
+  absolute_error_margin: 0.001
+  input:
+    ny_agi: 61_100
+    state_code: NY
+  output:
+    # 2018 table row 61,000 - 61,200: 0.947
+    ny_cdcc_rate: 0.947
+
+- name: 2018, New York AGI 100,000 gets the 3.000 factor.
+  period: 2018
+  absolute_error_margin: 0.001
+  input:
+    ny_agi: 100_000
+    state_code: NY
+  output:
+    # 2018 table row 65,000 - 150,000: 0.600
+    ny_cdcc_rate: 0.6
+
+- name: 2018, New York AGI 200,000 gets no factor.
+  period: 2018
+  absolute_error_margin: 0.001
+  input:
+    ny_agi: 200_000
+    state_code: NY
+  output:
+    # 2018 table row 150,000 - No Limit: 0.200
+    ny_cdcc_rate: 0.2
+
+- name: 2017 joint return, one child, New York AGI 100,000, expenses 3,000.
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 40
+        employment_income: 50_000
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    ny_agi: 100_000
+    # 2017 Form IT-216:
+    # line 8: smallest of 3,000 expenses, 3,000 limit, and earned incomes = 3,000
+    # line 10: federal AGI 100,000 is in the 43,000 - No limit row = .20
+    # line 11: 3,000 x .20 = 600
+    # line 13: New York AGI 100,000 is in the 65,000 - No Limit row = 0.200
+    # line 14: 600 x 0.200 = 120
+    ny_cdcc: 120
+
+- name: 2018 joint return, one child, New York AGI 100,000, expenses 3,000.
+  period: 2018
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 40
+        employment_income: 50_000
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    ny_agi: 100_000
+    # 2018 Form IT-216:
+    # line 11: 3,000 x .20 = 600
+    # line 13: New York AGI 100,000 is in the 65,000 - 150,000 row = 0.600
+    # line 14: 600 x 0.600 = 360
+    ny_cdcc: 360

@@ -6,9 +6,9 @@ class hi_deductions(Variable):
     entity = TaxUnit
     label = "Hawaii deductions"
     unit = USD
-    documentation = (
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15\n"  # Itemized Deduction
-        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"  # Standard Deduction
+    reference = (
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15",  # Itemized Deduction
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20",  # Standard Deduction
     )
     reference = (
         "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=11",
