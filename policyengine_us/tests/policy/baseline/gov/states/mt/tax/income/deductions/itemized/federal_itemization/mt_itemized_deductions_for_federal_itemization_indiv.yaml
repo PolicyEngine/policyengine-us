@@ -74,3 +74,222 @@
         state_code: MT
   output:
     mt_itemized_deductions_for_federal_itemization_indiv: [1_000, 700, 0]
+
+- name: Charitable allocation agrees across separate paths at default half share
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 2_000
+      spouse:
+        age: 30
+        is_tax_unit_spouse: true
+        employment_income: 2_000
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: MT
+    axes:
+      - - name: charitable_cash_donations
+          count: 3
+          min: 0
+          max: 800
+          index: 0
+  output:
+    # Donations of 0, 400 and 800 are below the charitable AGI cap.
+    # Income is below both federal taxable income and MT withholding thresholds,
+    # so the aggregates contain only charity; the two separate paths must agree.
+    charitable_deduction: [0, 400, 800]
+    mt_federal_income_tax_deduction_indiv: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    mt_federal_income_tax_deduction_for_federal_itemization_indiv: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # Each spouse receives 0.5 times charity; dependents receive zero.
+    mt_itemized_deductions_indiv: [0, 0, 0, 200, 200, 0, 400, 400, 0]
+    mt_itemized_deductions_for_federal_itemization_indiv: [0, 0, 0, 200, 200, 0, 400, 400, 0]
+    # Joint charity remains intact regardless of the separate allocation rate.
+    mt_itemized_deductions_joint: [0, 0, 0, 400, 0, 0, 800, 0, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [0, 0, 0, 400, 0, 0, 800, 0, 0]
+
+- name: Charitable allocation agrees across separate paths at reformed share 0
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    gov.states.mt.tax.income.deductions.itemized.spouse_allocation_rate: 0
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 2_000
+      spouse:
+        age: 30
+        is_tax_unit_spouse: true
+        employment_income: 2_000
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: MT
+    axes:
+      - - name: charitable_cash_donations
+          count: 3
+          min: 0
+          max: 800
+          index: 0
+  output:
+    # Donations of 0, 400 and 800 are below the charitable AGI cap.
+    # Income is below both federal taxable income and MT withholding thresholds,
+    # so the aggregates contain only charity; the two separate paths must agree.
+    charitable_deduction: [0, 400, 800]
+    mt_federal_income_tax_deduction_indiv: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    mt_federal_income_tax_deduction_for_federal_itemization_indiv: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # Each spouse receives 0 times charity; dependents receive zero.
+    mt_itemized_deductions_indiv: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    mt_itemized_deductions_for_federal_itemization_indiv: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # Joint charity remains intact regardless of the separate allocation rate.
+    mt_itemized_deductions_joint: [0, 0, 0, 400, 0, 0, 800, 0, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [0, 0, 0, 400, 0, 0, 800, 0, 0]
+
+- name: Charitable allocation agrees across separate paths at reformed share 0.25
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    gov.states.mt.tax.income.deductions.itemized.spouse_allocation_rate: 0.25
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 2_000
+      spouse:
+        age: 30
+        is_tax_unit_spouse: true
+        employment_income: 2_000
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: MT
+    axes:
+      - - name: charitable_cash_donations
+          count: 3
+          min: 0
+          max: 800
+          index: 0
+  output:
+    # Donations of 0, 400 and 800 are below the charitable AGI cap.
+    # Income is below both federal taxable income and MT withholding thresholds,
+    # so the aggregates contain only charity; the two separate paths must agree.
+    charitable_deduction: [0, 400, 800]
+    mt_federal_income_tax_deduction_indiv: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    mt_federal_income_tax_deduction_for_federal_itemization_indiv: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # Each spouse receives 0.25 times charity; dependents receive zero.
+    mt_itemized_deductions_indiv: [0, 0, 0, 100, 100, 0, 200, 200, 0]
+    mt_itemized_deductions_for_federal_itemization_indiv: [0, 0, 0, 100, 100, 0, 200, 200, 0]
+    # Joint charity remains intact regardless of the separate allocation rate.
+    mt_itemized_deductions_joint: [0, 0, 0, 400, 0, 0, 800, 0, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [0, 0, 0, 400, 0, 0, 800, 0, 0]
+
+- name: Charitable allocation agrees across separate paths at reformed share 0.75
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    gov.states.mt.tax.income.deductions.itemized.spouse_allocation_rate: 0.75
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 2_000
+      spouse:
+        age: 30
+        is_tax_unit_spouse: true
+        employment_income: 2_000
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: MT
+    axes:
+      - - name: charitable_cash_donations
+          count: 3
+          min: 0
+          max: 800
+          index: 0
+  output:
+    # Donations of 0, 400 and 800 are below the charitable AGI cap.
+    # Income is below both federal taxable income and MT withholding thresholds,
+    # so the aggregates contain only charity; the two separate paths must agree.
+    charitable_deduction: [0, 400, 800]
+    mt_federal_income_tax_deduction_indiv: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    mt_federal_income_tax_deduction_for_federal_itemization_indiv: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # Each spouse receives 0.75 times charity; dependents receive zero.
+    mt_itemized_deductions_indiv: [0, 0, 0, 300, 300, 0, 600, 600, 0]
+    mt_itemized_deductions_for_federal_itemization_indiv: [0, 0, 0, 300, 300, 0, 600, 600, 0]
+    # Joint charity remains intact regardless of the separate allocation rate.
+    mt_itemized_deductions_joint: [0, 0, 0, 400, 0, 0, 800, 0, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [0, 0, 0, 400, 0, 0, 800, 0, 0]
+
+- name: Charitable allocation agrees across separate paths at reformed share 1
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    gov.states.mt.tax.income.deductions.itemized.spouse_allocation_rate: 1
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 2_000
+      spouse:
+        age: 30
+        is_tax_unit_spouse: true
+        employment_income: 2_000
+      dependent:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: MT
+    axes:
+      - - name: charitable_cash_donations
+          count: 3
+          min: 0
+          max: 800
+          index: 0
+  output:
+    # Donations of 0, 400 and 800 are below the charitable AGI cap.
+    # Income is below both federal taxable income and MT withholding thresholds,
+    # so the aggregates contain only charity; the two separate paths must agree.
+    charitable_deduction: [0, 400, 800]
+    mt_federal_income_tax_deduction_indiv: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    mt_federal_income_tax_deduction_for_federal_itemization_indiv: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # Each spouse receives 1 times charity; dependents receive zero.
+    mt_itemized_deductions_indiv: [0, 0, 0, 400, 400, 0, 800, 800, 0]
+    mt_itemized_deductions_for_federal_itemization_indiv: [0, 0, 0, 400, 400, 0, 800, 800, 0]
+    # Joint charity remains intact regardless of the separate allocation rate.
+    mt_itemized_deductions_joint: [0, 0, 0, 400, 0, 0, 800, 0, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [0, 0, 0, 400, 0, 0, 800, 0, 0]

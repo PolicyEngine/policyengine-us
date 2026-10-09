@@ -778,5 +778,6 @@
     # At combined AGI 18_000 the full 2_400 expense is deductible.
     # Reforming the allocation rate gives each column 2_400 * 0.25 = 600;
     # the joint return still claims the full deduction.
+    # Columns sum to the joint amount only at the default allocation rate of 0.5.
     mt_child_dependent_care_expense_deduction: [600, 600, 0]
     mt_child_dependent_care_expense_deduction_joint: 2_400
