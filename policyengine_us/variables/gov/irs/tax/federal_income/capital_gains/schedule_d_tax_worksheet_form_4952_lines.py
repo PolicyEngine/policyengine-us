@@ -1,6 +1,9 @@
 from collections import namedtuple
 
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.tax.federal_income.capital_gains.filer_schedule_d_lines import (
+    filer_schedule_d_lines,
+)
 
 ScheduleDTaxWorksheetForm4952Lines = namedtuple(
     "ScheduleDTaxWorksheetForm4952Lines", ["line_3", "line_4", "line_7"]
@@ -31,22 +34,22 @@ def schedule_d_tax_worksheet_form_4952_lines(tax_unit, period):
     (non_sch_d_capital_gains) belong on Schedule D line 13 (2025 Instructions
     for Schedule D, "Capital Gain Distributions"), so they enter lines 15 and
     16, and Form 4952 counts them as long-term capital gains.
+
+    The worksheet and Form 4952 are the head and spouse's: a tax unit
+    dependent's gains, losses and election are on the dependent's own return.
     """
-    election = max_(0, add(tax_unit, period, ["investment_income_elected_form_4952"]))
-    long_term_gains = add(tax_unit, period, ["long_term_capital_gains"])
-    short_term_gains = add(tax_unit, period, ["short_term_capital_gains"])
-    distributions = add(tax_unit, period, ["non_sch_d_capital_gains"])
-    # Schedule D line 15 (net long-term gain or loss, with line 13) and line
-    # 16 (Schedule D line 7 plus line 15).
-    schedule_d_line_15 = long_term_gains + distributions
-    schedule_d_line_16 = tax_unit("net_capital_gains", period) + distributions
+    election = max_(
+        0,
+        tax_unit_non_dep_add(tax_unit, period, ["investment_income_elected_form_4952"]),
+    )
+    lines = filer_schedule_d_lines(tax_unit, period)
     # Form 4952 line 4d: total gains over total losses, if any.
-    net_gain = max_(0, schedule_d_line_16)
+    net_gain = max_(0, lines.line_16)
     # Net capital gain from property held for investment: net long-term
     # capital gain over net short-term capital loss, if any.
-    net_capital_gain = max_(0, schedule_d_line_15 - max_(0, -short_term_gains))
+    net_capital_gain = max_(0, lines.line_15 - max_(0, -lines.line_7))
     return ScheduleDTaxWorksheetForm4952Lines(
         line_3=election,
         line_4=min_(net_gain, net_capital_gain),
-        line_7=min_(schedule_d_line_15, schedule_d_line_16),
+        line_7=min_(lines.line_15, lines.line_16),
     )

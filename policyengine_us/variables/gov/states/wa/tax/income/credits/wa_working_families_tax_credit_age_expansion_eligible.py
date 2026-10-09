@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.tools.state_eitc_helpers import (
     eitc_filing_requirement_met,
+    eitc_section_911_eligible,
 )
 
 
@@ -77,6 +78,7 @@ class wa_working_families_tax_credit_age_expansion_eligible(Variable):
             & income_eligible
             & investment_income_eligible
             & filers_have_tin
+            & eitc_section_911_eligible(tax_unit, period)
             & is_filer
             & takes_up_eitc
         )

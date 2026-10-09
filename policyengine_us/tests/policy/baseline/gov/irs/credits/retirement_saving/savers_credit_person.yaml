@@ -275,3 +275,22 @@
         adjusted_gross_income: 24_250
   output:
     savers_credit_person: [1_000]
+
+- name: Income excluded under section 911 counts toward the rate thresholds
+  period: 2024
+  input:
+    people:
+      person1:
+        savers_credit_eligible_person: true
+        traditional_ira_contributions_desired: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 22_000
+        foreign_earned_income_exclusion: 2_000
+  output:
+    # 26 U.S.C. 25B(e): AGI without regard to section 911 is 24,000, or
+    # 48,000 on the joint schedule (divided by 0.5), so the rate is 20%,
+    # not the 50% that 22,000 (44,000) would give.
+    savers_credit_person: 400

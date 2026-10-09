@@ -11,8 +11,9 @@
 #   9. line 7 - line 8, not below zero
 #  10. line 6 + line 9
 # Line 6 is dividend_income_reduced_by_investment_income, line 9 dwks09 and
-# line 10 dwks10. Line 10 equals net_capital_gain, which applies 26 U.S.C.
-# 1(h)(2) and 1(h)(11)(D)(i) to the same inputs.
+# line 10 dwks10. With component-derived inputs, line 10 equals
+# net_capital_gain, which applies 26 U.S.C. 1(h)(2) and 1(h)(11)(D)(i).
+# The supplied-aggregate case below records a preexisting disagreement.
 
 - name: An election within the gain comes off the gain
   period: 2025
@@ -293,3 +294,56 @@
     # 48,350; line 29 = 533,400 - 48,350 = 485,050; line 30 = 197,800; line
     # 31 = 29,670; line 38 = 29,670. Before the fix: 24,532.50.
     amt_tax_including_cg: 29_670
+
+- name: A dependent's gains are not in the head's worksheet or Form 4952
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        long_term_capital_gains: 2_000
+        qualified_dividend_income: 6_000
+        investment_income_elected_form_4952: 5_000
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 10_000
+        qualified_dividend_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    # Line 2 = 6,000; line 3 = 5,000; line 4 = min(2,000, 2,000) = 2,000;
+    # line 5 = 3,000; line 6 = 3,000.
+    dividend_income_reduced_by_investment_income: 3_000
+    # Line 7 = min(2,000, 2,000); line 8 = min(5,000, 2,000); line 9 = 0.
+    dwks09: 0
+    dwks10: 3_000
+    net_capital_gain: 3_000
+
+- name: A tax unit net_capital_gains input reaches Schedule D line 16
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        non_sch_d_capital_gains: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        net_capital_gains: -5_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Schedule D line 15 = 1,000 (line 13); line 16 = -5,000 + 1,000 =
+    # -4,000, a loss, so neither tax worksheet applies (2025 Instructions
+    # for Form 1040, line 16) and worksheet line 7 = min(1,000, -4,000).
+    has_qdiv_or_ltcg: false
+    dwks09: 0
+    dwks10: 0
+    # Preserve the preexisting aggregate/component split: the statutory
+    # path uses person-level lines 15 and 7, rather than supplied line 16.
+    net_capital_gain: 1_000
+    adjusted_net_capital_gain: 1_000

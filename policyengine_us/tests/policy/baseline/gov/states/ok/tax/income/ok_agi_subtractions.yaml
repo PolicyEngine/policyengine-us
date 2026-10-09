@@ -28,3 +28,38 @@
         state_code: OK
   output:
     ok_agi_subtractions: 24_000 + 10_000   +   14_000 + 9_000
+
+- name: A dependent child's retirement income does not reduce the parent's Oklahoma AGI.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 50_000
+      child:
+        is_tax_unit_dependent: true
+        age: 10
+        taxable_public_pension_income: 10_000
+        military_retirement_pay: 10_000
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: OK
+  output:
+    # The child's income is not in federal AGI, so nothing is subtracted.
+    ok_agi_subtractions: 0
+    # Federal AGI is the head's $50,000 of wages.
+    ok_agi: 50_000

@@ -60,3 +60,34 @@
         state_code: OH
   output:
     oh_joint_filing_credit_eligible: true
+
+- name: Business income deducted from Ohio AGI is not qualifying income (2025 instructions example)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+        taxable_interest_income: 5_000
+      person2:
+        age: 45
+        s_corp_income: 40_000
+        taxable_social_security: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # 2025 Ohio IT 1040 instructions, Schedule of Credits line 12 (PDF p. 29):
+    # "Kevin has $50,000 of wage income and $5,000 of interest income. Krysten
+    # has $40,000 of business income and $20,000 of taxable Social Security
+    # benefits. While Kevin has $50,000 of qualifying income (his wages),
+    # Krysten has no qualifying income because her business income and
+    # taxable Social Security benefits were both deducted in calculating their
+    # Ohio AGI. Therefore, they are not entitled to the joint filing credit."
+    oh_joint_filing_credit_qualifying_income: [50_000, 0]
+    oh_joint_filing_credit_eligible: false

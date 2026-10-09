@@ -18,7 +18,7 @@
   input:
      filing_status: HEAD_OF_HOUSEHOLD
      charitable_deduction: 0
-     mortgage_interest: 1_234
+     deductible_mortgage_interest: 1_234
      mt_salt_deduction: 10_000
      mt_medical_expense_deduction_joint: 3_000 
      casualty_loss_deduction: 0
@@ -33,7 +33,7 @@
   input:
      filing_status: SINGLE
      charitable_deduction: 1_000
-     mortgage_interest: 34
+     deductible_mortgage_interest: 34
      mt_salt_deduction: 1_035
      mt_medical_expense_deduction_joint: 3_000
      casualty_loss_deduction: 745
@@ -74,3 +74,99 @@
         mt_federal_income_tax_deduction_unit: 600
   output:
     mt_itemized_deductions_joint: [2_212, 0, 0]
+
+- name: Mortgage interest on post-2017 debt above the federal cap is not deductible
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        home_mortgage_interest: 40_000
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+      spouse:
+        is_tax_unit_spouse: true
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        first_home_mortgage_balance: 1_000_000
+        first_home_mortgage_origination_year: 2019
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_unit: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # $750,000 of the $1,000,000 acquisition debt incurred after Dec. 15,
+    # 2017 qualifies, so $30,000 of the $40,000 interest is allowed by
+    # federal law and in Montana (2022 Form 2 instructions, line 9).
+    deductible_mortgage_interest: [30_000, 0]
+    mt_itemized_deductions_joint: [30_000, 0]
+
+- name: Mortgage interest on pre-2018 debt keeps the $1,000,000 cap
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        home_mortgage_interest: 40_000
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+      spouse:
+        is_tax_unit_spouse: true
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        first_home_mortgage_balance: 1_000_000
+        first_home_mortgage_origination_year: 2016
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_unit: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Debt incurred before Dec. 16, 2017 keeps the $1,000,000 cap, so all
+    # $40,000 is allowed.
+    deductible_mortgage_interest: [40_000, 0]
+    mt_itemized_deductions_joint: [40_000, 0]
+
+- name: A federal separate return uses the $375,000 cap
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        is_tax_unit_head: true
+        home_mortgage_interest: 40_000
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SEPARATE
+        first_home_mortgage_balance: 1_000_000
+        first_home_mortgage_origination_year: 2019
+        charitable_deduction: 0
+        mt_federal_income_tax_deduction_unit: 0
+    households:
+      household:
+        members: [filer]
+        state_code: MT
+  output:
+    # 26 U.S.C. 163(h)(3)(F)(i)(II): $375,000 for a married individual
+    # filing a separate return, so $15,000 of the $40,000 is allowed.
+    deductible_mortgage_interest: 15_000
+    mt_itemized_deductions_joint: 15_000

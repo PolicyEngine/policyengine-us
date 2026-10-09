@@ -1,0 +1,188 @@
+# Ohio Schedule of Business Income (2024 IT 1040 bundle, PDF p. 5) and IT 1040
+# lines 1-8c (PDF p. 1); 2024 Ohio IT 1040 instructions, pp. 16-18 and 26-27.
+# 2024 nonbusiness brackets: 0 up to 26,050; 360.69 + 2.75% of the excess over
+# 26,050 up to 100,000; 2,394.32 + 3.50% of the excess over 100,000.
+# Exemption by MAGI: 2,400 (40,000 or less), 2,150 (to 80,000), 1,900 (above).
+
+- name: Pass-through income under the cap is fully deducted
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 200_000
+        s_corp_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Schedule lines 4 and 10: 100_000; line 11: min(100_000, 300_000);
+    # line 13: min(100_000, 250_000).
+    oh_business_income: 100_000
+    oh_business_income_deduction: 100_000
+    # IT 1040 line 3 = 300_000 - 100_000.
+    oh_agi: 200_000
+    # MAGI = Ohio AGI + business income deduction (R.C. 5747.01(II)).
+    oh_modified_agi: 300_000
+    oh_personal_exemptions: 1_900
+    # Line 5 = 198_100; line 6 = 0; line 7 = 198_100.
+    oh_taxable_income: 198_100
+    oh_taxable_business_income: 0
+    oh_taxable_nonbusiness_income: 198_100
+    # Line 8a = 2_394.32 + 3.5% * 98_100 = 5_827.82; line 8b = 0.
+    oh_income_tax_before_non_refundable_credits: 5_827.82
+
+- name: Business income above the cap is taxed at the flat 3% rate
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+        s_corp_income: 400_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Line 11 = 400_000; line 13 = 250_000; line 14 = 150_000.
+    oh_business_income_deduction: 250_000
+    oh_agi: 200_000
+    oh_modified_agi: 450_000
+    # Line 5 = 200_000 - 1_900 = 198_100; line 15 = min(150_000, 198_100).
+    oh_taxable_business_income: 150_000
+    # Line 7 = 198_100 - 150_000 = 48_100.
+    oh_taxable_nonbusiness_income: 48_100
+    # Line 16 / 8b = 3% * 150_000.
+    oh_business_income_tax: 4_500
+    # Line 8a = 360.69 + 2.75% * 22_050 = 967.065; line 8c = 5_467.065.
+    oh_income_tax_before_non_refundable_credits: 5_467.065
+
+- name: Married filing separately is capped at 125,000
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        s_corp_income: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Line 12: 125_000 for married filing separately.
+    oh_business_income_deduction: 125_000
+
+- name: Business losses net against business gains on the schedule
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+        self_employment_income: -15_000
+      person2:
+        age: 45
+        self_employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # 2024 instructions, line 2 example: "Sam has a business that incurs a
+    # loss of -$15,000. Sam's spouse Suzy has a separate business that
+    # generates a profit of $10,000. ... they must report -$5,000 on this
+    # line." Line 11 is then zero: no deduction.
+    oh_business_income: -5_000
+    oh_business_income_deduction: 0
+    oh_business_income_deduction_person: [0, 0]
+
+- name: The deduction is limited to federal adjusted gross income
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        s_corp_income: 100_000
+        rental_income: -80_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Line 10 = 100_000 (the rental loss is nonbusiness); line 11 = the
+    # lesser of line 10 or federal AGI (20_000).
+    oh_business_income: 100_000
+    oh_business_income_deduction: 20_000
+    oh_agi: 0
+
+- name: Exemptions above nonbusiness income reduce taxable business income
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        s_corp_income: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    # Line 3 = 50_000; MAGI 300_000 so line 4 = 1_900; line 5 = 48_100.
+    # Line 14 = 50_000; line 15 = min(50_000, 48_100) = 48_100
+    # (R.C. 5747.02(A)(4)(b)); line 7 = 0.
+    oh_taxable_business_income: 48_100
+    oh_taxable_nonbusiness_income: 0
+    # Line 8a = 0; line 8b = 3% * 48_100 = 1_443.
+    oh_income_tax_before_non_refundable_credits: 1_443
+
+- name: Each spouse's deduction comes from their own business income
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        s_corp_income: 300_000
+      person2:
+        age: 45
+        self_employment_income: 0
+        farm_operations_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # Line 10 = 400_000; line 13 = 250_000, taken from each spouse's business
+    # income in proportion: 3/4 and 1/4.
+    oh_business_income_person: [300_000, 100_000]
+    oh_business_income_deduction_person: [187_500, 62_500]
