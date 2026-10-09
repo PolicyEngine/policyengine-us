@@ -8,7 +8,10 @@ class ma_gross_income(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section2"
+        "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section2",
+        # c.62C s.6(a): each individual with Massachusetts gross income over
+        # $8,000 files a return, so a dependent reports their own income.
+        "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62C/Section6",
     )
     defined_for = StateCode.MA
 
@@ -30,9 +33,17 @@ class ma_gross_income(Variable):
         # Massachusetts, or reciprocal states are excluded from MA gross income.
         # Noncontributory or non-reciprocal public pensions are not exempt.
         # PolicyEngine treats taxable_public_pension_income as exempt public pensions.
+        # c.62 s.2(a)(2) deducts these items from the filer's federal gross
+        # income. Dependents' income is not in it (irs_gross_income excludes
+        # it; they report it on their own return), so deduct only the head's
+        # and spouse's amounts.
         social_security_in_agi = add(tax_unit, period, ["taxable_social_security"])
-        salt_refund_income = add(tax_unit, period, ["salt_refund_income"])
-        public_pension = add(tax_unit, period, ["taxable_public_pension_income"])
+        salt_refund_income = tax_unit_non_dep_sum(
+            "salt_refund_income", tax_unit, period
+        )
+        public_pension = tax_unit_non_dep_sum(
+            "taxable_public_pension_income", tax_unit, period
+        )
         deductions = social_security_in_agi + salt_refund_income + public_pension
         return max_(
             0,

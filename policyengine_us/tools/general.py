@@ -1,4 +1,5 @@
 from policyengine_core.model_api import *
+from policyengine_core.projectors import Projector
 from policyengine_us.entities import *
 from policyengine_us.tools.branched_simulation import BranchedSimulation
 from policyengine_us.tools.period_branch import (
@@ -24,19 +25,30 @@ def tax_unit_non_dep_add(tax_unit, period, variables, include_dependents=()):
     Add variables over a tax unit's head and spouse, leaving out dependents.
 
     Like `add`, but a person-level variable is summed only over members who
-    are not tax unit dependents, whose items belong on their own returns. A
-    tax-unit-level variable is added as is, so it must already describe the
-    filer's own return. Person-level variables named in `include_dependents`
-    are summed over every member: they are the filer's amounts even when
-    recorded on a dependent. Variables are added in the order given.
+    are not tax unit dependents, whose items belong on their own returns
+    (irs_gross_income leaves them out of the filer's federal AGI the same
+    way). Person-level variables named in `include_dependents` are summed
+    over every member: they are the filer's amounts even when recorded on a
+    dependent. A variable of any other entity falls back to `add`, so a
+    tax-unit-level variable is added as is and must already describe the
+    filer's own return. Variables are added in the order given.
     """
-    total = 0
+    if tax_unit.entity.key != "tax_unit":
+        raise ValueError(
+            f"tax_unit_non_dep_add needs a tax unit, not a {tax_unit.entity.key}."
+        )
+    # float32 like the model's values, so the sum rounds as `add`'s does.
+    total = np.zeros(tax_unit.count, dtype=np.float32)
+    # A person.tax_unit projector reports the underlying tax-unit count,
+    # but its calculations and sums return one value per person.
+    if isinstance(tax_unit, Projector):
+        total = tax_unit.transform_and_bubble_up(total)
     for variable in variables:
         variable_entity = tax_unit.entity.get_variable(
             variable, check_existence=True
         ).entity
         if not variable_entity.is_person:
-            total = total + tax_unit(variable, period)
+            total = total + add(tax_unit, period, [variable])
         elif variable in include_dependents:
             total = total + tax_unit.sum(tax_unit.members(variable, period))
         else:

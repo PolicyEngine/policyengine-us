@@ -38,14 +38,14 @@
   output:
     student_loan_interest_ald_magi: [80_000, 79_000]
 
-- name: Unemployment comp excluded
+- name: Unemployment compensation counts in full
   period: 2021
   absolute_error_margin: 1
   input:
     people:
       person1:
         miscellaneous_income: 80_000
-        taxable_unemployment_compensation: 10_000
+        unemployment_compensation: 10_000
         student_loan_interest_ald_eligible: true
       person2:
         self_employment_income: 80_000
@@ -55,7 +55,9 @@
         members: [person1, person2]
         filing_status: SEPARATE
   output:
-    student_loan_interest_ald_magi: [80_000, 74_348]
+    # 26 U.S.C. 221(b)(2)(C)(i) disregards only the section 85(c) exclusion;
+    # unemployment compensation is otherwise in AGI: 80,000 + 10,000.
+    student_loan_interest_ald_magi: [90_000, 74_348]
 
 - name: One person with no income
   period: 2021
@@ -98,3 +100,153 @@
         basic_income: 1_000
   output:
     student_loan_interest_ald_magi: [79_000, 0]
+
+- name: Section 931 possession income is added back
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        irs_employment_income: 85_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        specified_possession_income: 10_000
+  output:
+    # AGI is 85,000 - 10,000 = 75,000; MAGI is figured without regard to
+    # section 931: 75,000 + 10,000.
+    adjusted_gross_income: 75_000
+    student_loan_interest_ald_magi: 85_000
+
+- name: Section 933 Puerto Rico income is added back
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        irs_employment_income: 85_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        puerto_rico_income: 10_000
+  output:
+    adjusted_gross_income: 75_000
+    student_loan_interest_ald_magi: 85_000
+
+- name: Section 911 foreign earned income exclusion is added back
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        # Income inputs are net of the exclusion.
+        irs_employment_income: 75_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        foreign_earned_income_exclusion: 10_000
+  output:
+    adjusted_gross_income: 75_000
+    student_loan_interest_ald_magi: 85_000
+
+- name: Joint return splits the section 911 and 931 add-backs between spouses
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        irs_employment_income: 100_000
+        student_loan_interest_ald_eligible: true
+      person2:
+        irs_employment_income: 80_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        foreign_earned_income_exclusion: 10_000
+        specified_possession_income: 20_000
+  output:
+    # AGI 180,000 - 20,000 = 160,000. MAGI 160,000 + 20,000 + 10,000 =
+    # 190,000; each spouse carries half of the 10,000 exclusion.
+    adjusted_gross_income: 160_000
+    student_loan_interest_ald_magi: [105_000, 85_000]
+
+- name: Section 85(c) unemployment exclusion is added back in 2020
+  period: 2020
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        irs_employment_income: 67_000
+        unemployment_compensation: 10_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+  output:
+    # Section 85(c) excludes all 10,000 (up to 10,200), so none is taxable,
+    # but MAGI is figured without regard to it: 67,000 + 10,000.
+    tax_unit_taxable_unemployment_compensation: 0
+    student_loan_interest_ald_magi: 77_000
+
+- name: Section 222 tuition and fees deduction is added back before 2021
+  period: 2019
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        irs_employment_income: 60_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        capped_qualified_tuition_expenses_ald: 4_000
+  output:
+    adjusted_gross_income: 56_000
+    student_loan_interest_ald_magi: 60_000
+
+- name: Section 199 domestic production deduction is added back before 2018
+  period: 2017
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        irs_employment_income: 60_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        domestic_production_ald: 3_000
+  output:
+    adjusted_gross_income: 57_000
+    student_loan_interest_ald_magi: 60_000
+
+- name: Section 911 adds back Form 2555 lines 45 and 50, before disallowed deductions
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        irs_employment_income: 70_000
+        student_loan_interest_ald_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        # Form 2555 lines 45 and 50: 15,000. The rate stacking amount is
+        # 5,000 after 10,000 of disallowed deductions.
+        section_911_excluded_income: 15_000
+        foreign_earned_income_exclusion: 5_000
+  output:
+    # Pub. 970 Worksheet 4-1 lines 5 and 6 take Form 2555 lines 45 and 50.
+    student_loan_interest_ald_magi: 85_000
