@@ -210,6 +210,77 @@
     # Earned income -10,000; net loss 10,000; wages 20,000.
     ca_yctc: 1_083
 
+# R&TC 17052.1(b)(1)(B)(iii), (b)(2); 2025 FTB 3514 lines 13 and 23a:
+# the wage ceiling uses California taxable wages (W-2 box 16), excluding
+# traditional elective deferrals. Line 23 uses the net earned income on line 19.
+- name: Traditional deferrals and a business loss leave zero earned income and eligible California taxable wages
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+        traditional_401k_contributions_desired: 10_000
+        self_employment_income: -30_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_eitc_earned_income: 0
+    ca_eitc: 0
+    ca_agi: 0
+    ca_yctc: 1_189
+
+- name: California taxable wages exactly at the zero-earned-income YCTC ceiling remain eligible
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_640
+        traditional_401k_contributions_desired: 10_000
+        self_employment_income: -35_640
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_eitc_earned_income: 0
+    ca_yctc: 1_189
+
+- name: California taxable wages one dollar above the zero-earned-income YCTC ceiling are ineligible
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_641
+        traditional_401k_contributions_desired: 10_000
+        self_employment_income: -35_641
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_eitc_earned_income: 0
+    ca_yctc: 0
+
 - name: Wages above $32,490 with negative earned income, so not eligible in 2022.
   period: 2022
   input:

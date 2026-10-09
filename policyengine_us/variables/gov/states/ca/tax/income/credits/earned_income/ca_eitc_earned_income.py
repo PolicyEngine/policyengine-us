@@ -16,23 +16,8 @@ class ca_eitc_earned_income(Variable):
     defined_for = StateCode.CA
 
     def formula(tax_unit, period, parameters):
-        person = tax_unit.members
-        # FTB 3514 line 13 uses California wages (W-2 box 16). Traditional
-        # elective deferrals and pre-tax health premiums are excluded, but
-        # payroll HSA contributions remain California-taxable wages. Compute
-        # state wages directly so deductions exceeding wages are floored once.
-        excluded_wages = add(
-            person,
-            period,
-            [
-                "traditional_401k_contributions",
-                "traditional_403b_contributions",
-                "pre_tax_health_insurance_premiums",
-            ],
-        )
-        wages = max_(0, person("employment_income", period) - excluded_wages)
-        is_dependent = person("is_tax_unit_dependent", period)
-        filer_wages = tax_unit.sum(wages * ~is_dependent)
+        # FTB 3514 line 13: filers' California taxable wages (W-2 box 16).
+        filer_wages = tax_unit_non_dep_sum("ca_taxable_wages", tax_unit, period)
 
         # FTB 3514 line 19 nets wages and business income or losses for the
         # whole return. Worksheet 3 includes farm income and partnership
