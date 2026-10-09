@@ -1,0 +1,266 @@
+# N.C. Gen. Stat. 105-153.5(a)(2)d and the Repayment of Claim of Right
+# Worksheet (2025 Form D-401 instructions, PDF p. 20; 2016 Form D-401
+# instructions, PDF p. 13). Worksheet for repayments of $3,000 or less, 2018
+# and later: line 3 = 2% of federal AGI (zero if negative), line 4 = line 1 -
+# line 3. Repayments above $3,000 are deductible in full.
+
+- name: Repayment of $3,000 or less is reduced by 2% of federal AGI.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 2_500
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    # Worksheet: line 1 2,500; line 3 = 0.02 * 50,000 = 1,000; line 4 = 1,500.
+    nc_claim_of_right_deduction: 1_500
+
+- name: A repayment of exactly $3,000 is still reduced by the floor.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    # "If the repayment is three thousand dollars ($3,000) or less":
+    # 3,000 - 0.02 * 100,000 = 1,000.
+    nc_claim_of_right_deduction: 1_000
+
+- name: A repayment above $3,000 is deductible in full.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 3_001
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    nc_claim_of_right_deduction: 3_001
+
+- name: No deduction when 2% of AGI exceeds a small repayment.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    # 1,000 - 2,000 is negative; the deduction is zero.
+    nc_claim_of_right_deduction: 0
+
+- name: Negative AGI gives a zero floor.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 2_500
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: -5_000
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    # Worksheet line 3: "If negative, enter the number zero".
+    nc_claim_of_right_deduction: 2_500
+
+- name: Spouses' repayments are combined on a joint return; a dependent's is not.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 1_500
+      spouse:
+        age: 40
+        claim_of_right_repayment: 1_000
+      child:
+        age: 17
+        claim_of_right_repayment: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        adjusted_gross_income: 60_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: NC
+  output:
+    # The child's repayment belongs on the child's own return. Line 1 is
+    # 1,500 + 1,000 = 2,500, not above 3,000; 2,500 - 0.02 * 60,000 = 1,300.
+    nc_claim_of_right_deduction: 1_300
+
+- name: From 2018 other miscellaneous expenses do not absorb the floor.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 2_500
+        unreimbursed_business_employee_expenses: 600
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    # Section 67(g) disallows other miscellaneous itemized deductions from
+    # 2018, so the worksheet subtracts the whole 2% floor: 2,500 - 1,000.
+    nc_claim_of_right_deduction: 1_500
+
+- name: Before 2018 other miscellaneous deductions absorb the floor first.
+  period: 2016
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 2_500
+        unreimbursed_business_employee_expenses: 600
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    # 2016 worksheet: line 1 2,500; line 2 = 0.02 * 50,000 = 1,000; line 3
+    # (federal Schedule A line 24) 3,100; line 4 = 3,100 - 2,500 = 600;
+    # line 5 = 1,000 - 600 = 400; line 6 = 2,500 - 400 = 2,100.
+    nc_claim_of_right_deduction: 2_100
+
+- name: Before 2018 other miscellaneous deductions above the floor leave the whole repayment.
+  period: 2016
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 2_500
+        unreimbursed_business_employee_expenses: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    # Line 4 = 2,000; line 5 = 1,000 - 2,000, entered as zero; line 6 = 2,500.
+    nc_claim_of_right_deduction: 2_500
+
+- name: No deduction outside North Carolina.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [head]
+        state_code: SC
+  output:
+    nc_claim_of_right_deduction: 0
+
+- name: The deduction is added to itemized deductions outside the $20,000 cap.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 5_000
+        mortgage_interest: 18_000
+        real_estate_taxes: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+        adjusted_gross_income: 90_000
+        charitable_deduction: 2_000
+        medical_expense_deduction: 1_000
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    # Schedule A: line 5 = min(18,000 + 6,000, 20,000) = 20,000; line 6
+    # 2,000; line 7d 1,000; line 8 5,000; line 10 = 28,000.
+    nc_claim_of_right_deduction: 5_000
+    nc_itemized_deductions: 28_000
+
+- name: A full repayment makes itemizing worthwhile and lowers North Carolina tax.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 80_000
+        claim_of_right_repayment: 5_000
+        real_estate_taxes: 4_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        charitable_deduction: 8_000
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    adjusted_gross_income: 80_000
+    # Schedule A: 4,000 + 8,000 + 5,000 = 17,000, above the 12,750 single
+    # standard deduction. Without the repayment, 12,000 would lose to it.
+    nc_itemized_deductions: 17_000
+    nc_standard_or_itemized_deductions: 17_000
+    nc_taxable_income: 63_000
+    # 63,000 * 4.25% = 2,677.50 (2,858.13 without the repayment).
+    nc_income_tax: 2_677.50
