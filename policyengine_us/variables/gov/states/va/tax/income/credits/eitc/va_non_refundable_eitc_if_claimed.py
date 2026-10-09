@@ -16,4 +16,9 @@ class va_non_refundable_eitc_if_claimed(Variable):
         # The filer can either claim the non-refundable EITC or the low income credit.
         va_non_refundable_eitc = p.non_refundable * federal_eitc
         low_income_credit = tax_unit("va_low_income_tax_credit", period)
-        return max_(va_non_refundable_eitc, low_income_credit)
+        # Va. Code 58.1-339.8(B)(1) bars a dependent's return from both
+        # alternatives; either spouse being claimed bars a joint return.
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        return where(
+            dependent_filer, 0, max_(va_non_refundable_eitc, low_income_credit)
+        )
