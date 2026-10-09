@@ -243,12 +243,12 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
         start_instant: Annotated[str, "ISO date format YYYY-MM-DD"] = kwargs.pop(
             "start_instant", DEFAULT_START_DATE
         )
-        situation = kwargs.get("situation", args[2] if len(args) > 2 else None)
-        validate_section_911_batch_inputs(
-            situation, kwargs.get("default_input_period") or self.default_input_period
-        )
         args, kwargs = self._prepare_spm_system(
             args, kwargs, kwargs.pop("spm", None), start_instant
+        )
+        validate_section_911_batch_inputs(
+            kwargs.get("situation"),
+            kwargs.get("default_input_period") or self.default_input_period,
         )
         super().__init__(*args, **kwargs)
 

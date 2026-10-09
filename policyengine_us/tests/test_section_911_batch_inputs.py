@@ -4,9 +4,12 @@ Python coverage exercises JSON provenance and the Simulation constructor, which
 the YAML runner's Core SimulationBuilder does not exercise.
 """
 
+from copy import deepcopy
+
 import numpy as np
 import pytest
 
+from policyengine_us import Simulation
 from policyengine_us.tests.test_foreign_earned_income_exclusion_leaves import (
     LEAVES,
     YEAR,
@@ -18,10 +21,51 @@ st = pytest.importorskip("hypothesis.strategies")
 
 OUTPUTS = (
     "foreign_earned_income_exclusion",
+    "section_911_excluded_income",
     "foreign_earned_income_exclusion_gross",
     "ma_foreign_earned_income_exclusion_addback",
     "ma_gross_income",
 )
+
+
+@pytest.fixture(scope="module")
+def scalar_period_situation():
+    # Reuse only the raw entity layout, with independent dictionaries per case.
+    return simulation_for_tax_units([{}, {}]).situation_input
+
+
+@pytest.mark.parametrize("constructor_style", ["keyword", "positional"])
+@pytest.mark.parametrize("other_period", [YEAR, YEAR + 1])
+def test_scalar_leaf_period_matches_constructor_default_input_period(
+    scalar_period_situation, constructor_style, other_period
+):
+    situation = deepcopy(scalar_period_situation)
+    situation["tax_units"]["tax_unit_0"]["foreign_earned_income_exclusion_amount"] = (
+        8_000
+    )
+    situation["tax_units"]["tax_unit_1"]["foreign_earned_income_exclusion_amount"] = {
+        other_period: 2_000
+    }
+
+    def construct():
+        if constructor_style == "keyword":
+            return Simulation(situation=situation, default_input_period=YEAR)
+        # Core's default_input_period is its seventh positional argument.
+        return Simulation(None, None, situation, None, None, False, YEAR)
+
+    if other_period != YEAR:
+        with pytest.raises(ValueError, match=r"(?i)(batch|tax.unit)"):
+            construct()
+    else:
+        simulation = construct()
+        for variable in (
+            "foreign_earned_income_exclusion",
+            "section_911_excluded_income",
+            "ma_foreign_earned_income_exclusion_addback",
+        ):
+            np.testing.assert_array_equal(
+                simulation.calculate(variable, YEAR), [8_000, 2_000]
+            )
 
 
 @pytest.mark.parametrize(
