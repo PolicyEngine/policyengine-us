@@ -16,6 +16,15 @@ class mi_household_resources(Variable):
         # MCL 206.510(1): "Income", including premiums paid for the family.
         "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-510",
         "https://web.archive.org/web/20250202150154/https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf",
+        # 2025 MI-1040CR-7 book (archived; michigan.gov removed it):
+        # "Total Household Resources" (page 4) and lines 17 to 23 (page 8)
+        # and 24 to 33 (page 9). They match MI-1040CR lines 14 to 31 on whose
+        # income counts: CR-7 lines 24, 25 and 30 are MI-1040CR lines 21, 22
+        # and 27.
+        "https://web.archive.org/web/20260218211009/https://www.michigan.gov/"
+        "taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/"
+        "MI-1040CR-7-Book.pdf?rev=e4ba4fedc63942e48442037517312d4a"
+        "&hash=AF396E577B1932DF55BFD7F22D7EF06A#page=8",
         # 2025 MI-1040 book: "Total Household Resources" (page 26) and
         # MI-1040CR lines 14 to 17 (page 31) and 18 to 31 (pages 32 and 33).
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
