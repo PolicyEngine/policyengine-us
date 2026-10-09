@@ -53,6 +53,46 @@ def is_promotion(repository: str, pull: dict) -> bool:
     )
 
 
+def recovered_promotions() -> set[int]:
+    path = ".github/promotion-recovered.txt"
+    try:
+        contents = git("show", f"origin/main:{path}")
+    except subprocess.CalledProcessError:
+        # Only an absent file is empty; other Git failures must stop the tick.
+        if git("ls-tree", "origin/main", "--", path):
+            raise
+        return set()
+    numbers = (line.partition("#")[0].strip() for line in contents.splitlines())
+    return {int(number) for number in numbers if number}
+
+
+def latest_merged_promotion(repository: str, recovered: set[int]) -> dict | None:
+    latest = None
+    page = 1
+    while True:
+        pulls = api(
+            repository,
+            "pulls?state=closed&base=main&sort=updated&direction=desc"
+            f"&per_page=100&page={page}",
+        )
+        for pull in pulls:
+            if (
+                pull.get("merged_at")
+                and pull["number"] not in recovered
+                and is_promotion(repository, pull)
+                and (latest is None or pull["merged_at"] > latest["merged_at"])
+            ):
+                latest = pull
+        if len(pulls) < 100:
+            return latest
+        # merged_at <= updated_at for every PR. In updated-descending order,
+        # once this page's oldest update precedes the best merge, no later
+        # page can contain a newer merge (including unacknowledged promotions).
+        if latest and pulls[-1]["updated_at"] < latest["merged_at"]:
+            return latest
+        page += 1
+
+
 def run(repository: str, now: datetime | None = None) -> None:
     if not git("ls-remote", "--heads", "origin", "refs/heads/integration"):
         print("::notice::Integration branch is absent; the pilot is inactive.")
@@ -73,24 +113,32 @@ def run(repository: str, now: datetime | None = None) -> None:
             print(f"::notice::Promotion #{pull['number']} is open; leaving it frozen.")
             return
 
-    closed_promotions = api(
-        repository, "pulls?state=closed&base=main&per_page=100", paginate=True
-    )
-    latest = max(
-        (
-            pull
-            for pull in closed_promotions
-            if pull.get("merged_at") and is_promotion(repository, pull)
-        ),
-        key=lambda pull: pull["merged_at"],
-        default=None,
-    )
-    if latest and not ancestor(latest["head"]["sha"], "origin/main"):
-        print(
-            f"::error::Promotion #{latest['number']} was not merged with a merge "
-            "commit and needs manual recovery before integration can be synchronized."
-        )
-        raise SystemExit(1)
+    latest = latest_merged_promotion(repository, recovered_promotions())
+    if latest:
+        try:
+            # GitHub retains the PR head ref after deleting the source branch.
+            git(
+                "fetch",
+                "--no-tags",
+                "origin",
+                f"+refs/pull/{latest['number']}/head:refs/remotes/origin/promotion-head",
+            )
+            preserved = ancestor("origin/promotion-head", "origin/main")
+        except (subprocess.CalledProcessError, OSError) as exc:
+            detail = (
+                (exc.stderr or exc.stdout or str(exc))
+                if isinstance(exc, subprocess.CalledProcessError)
+                else str(exc)
+            )
+            reason = " ".join(detail.splitlines())
+            print(f"::error::Cannot verify promotion #{latest['number']}: {reason}")
+            raise SystemExit(1) from None
+        if not preserved:
+            print(
+                f"::error::Promotion #{latest['number']} was not merged with a merge "
+                "commit and needs manual recovery before integration can be synchronized."
+            )
+            raise SystemExit(1)
 
     git("checkout", "-B", "integration", "origin/integration")
     if not ancestor("origin/main", "HEAD"):

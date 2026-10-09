@@ -5,6 +5,7 @@ import importlib.util
 import json
 from pathlib import Path
 import subprocess
+from urllib.parse import parse_qs, urlsplit
 
 import pytest
 import yaml
@@ -39,6 +40,7 @@ class GitRepository:
         return command(self.work, *args)
 
     def commit(self, name, contents, subject):
+        (self.work / name).parent.mkdir(parents=True, exist_ok=True)
         (self.work / name).write_text(contents)
         self.git("add", name)
         self.git("commit", "-m", subject)
@@ -47,6 +49,9 @@ class GitRepository:
     def integration(self):
         self.git("checkout", "-b", "integration")
         self.git("push", "origin", "integration")
+
+    def publish_pull_head(self, number, snapshot):
+        self.git("push", "origin", f"{snapshot}:refs/pull/{number}/head")
 
     def refs(self):
         output = command(
@@ -101,11 +106,25 @@ def api(monkeypatch, promotion, repository):
                 self.created.append(fields)
                 return {"html_url": f"https://github.com/{REPOSITORY}/pull/123"}
             self.queries.append((resource, paginate))
-            assert paginate, "An existing promotion must be found beyond the first page"
+            if "state=closed&base=main" in resource:
+                assert not paginate
+                query = parse_qs(urlsplit(resource).query)
+                assert query == {
+                    "state": ["closed"],
+                    "base": ["main"],
+                    "sort": ["updated"],
+                    "direction": ["desc"],
+                    "per_page": ["100"],
+                    "page": query["page"],
+                }
+                page = int(query["page"][0])
+                ordered = sorted(
+                    self.closed_main, key=lambda pull: pull["updated_at"], reverse=True
+                )
+                return ordered[(page - 1) * 100 : page * 100]
+            assert paginate, "Open and integration PR queries must read every page"
             if "state=open&base=main" in resource:
                 return self.opened
-            if "state=closed&base=main" in resource:
-                return self.closed_main
             assert "state=closed&base=integration" in resource
             return self.closed
 
@@ -115,16 +134,127 @@ def api(monkeypatch, promotion, repository):
     return fake
 
 
-def closed_promotion(snapshot, *, number=42, merged_at="2026-10-08T12:00:00Z"):
+def closed_promotion(
+    snapshot,
+    *,
+    number=42,
+    merged_at="2026-10-08T12:00:00Z",
+    updated_at=None,
+):
     return {
         "number": number,
         "merged_at": merged_at,
+        "updated_at": updated_at or merged_at or "2026-10-08T12:00:00Z",
         "head": {
             "ref": f"promote/{number}",
             "sha": snapshot,
             "repo": {"full_name": REPOSITORY},
         },
     }
+
+
+def ordinary_pulls(count, updated_at, *, first_number=1000):
+    pulls = [
+        closed_promotion(
+            "unused", number=first_number + index, updated_at=updated_at, merged_at=None
+        )
+        for index in range(count)
+    ]
+    for pull in pulls:
+        pull["head"]["ref"] = "ordinary-fix"
+    return pulls
+
+
+def page_api(promotion, monkeypatch, pages):
+    calls = []
+
+    def api(repository, resource, *, paginate=False):
+        assert repository == REPOSITORY
+        assert not paginate
+        page = len(calls) + 1
+        assert resource == (
+            "pulls?state=closed&base=main&sort=updated&direction=desc"
+            f"&per_page=100&page={page}"
+        )
+        calls.append(resource)
+        return pages[page - 1]
+
+    monkeypatch.setattr(promotion, "api", api)
+    return calls
+
+
+def test_latest_promotion_stops_after_first_full_page(promotion, monkeypatch):
+    candidate = closed_promotion("latest", updated_at="2026-10-08T13:00:00Z")
+    pages = [
+        [candidate, *ordinary_pulls(99, "2026-10-08T11:00:00Z")],
+        [closed_promotion("older", number=41, merged_at="2026-10-07T12:00:00Z")],
+    ]
+    calls = page_api(promotion, monkeypatch, pages)
+    assert promotion.latest_merged_promotion(REPOSITORY, set()) is candidate
+    assert len(calls) == 1
+
+
+def test_latest_promotion_can_be_on_third_page(promotion, monkeypatch):
+    candidate = closed_promotion("latest")
+    calls = page_api(
+        promotion,
+        monkeypatch,
+        [
+            ordinary_pulls(100, "2026-10-10T12:00:00Z"),
+            ordinary_pulls(100, "2026-10-09T12:00:00Z", first_number=1100),
+            [candidate],
+        ],
+    )
+    assert promotion.latest_merged_promotion(REPOSITORY, set()) is candidate
+    assert len(calls) == 3
+
+
+def test_newer_update_does_not_hide_newest_merge_on_later_page(promotion, monkeypatch):
+    older = closed_promotion(
+        "older",
+        number=41,
+        merged_at="2026-10-07T12:00:00Z",
+        updated_at="2026-10-10T12:00:00Z",
+    )
+    latest = closed_promotion("latest", updated_at="2026-10-08T13:00:00Z")
+    calls = page_api(
+        promotion,
+        monkeypatch,
+        [
+            [older, *ordinary_pulls(99, "2026-10-09T12:00:00Z")],
+            [latest],
+        ],
+    )
+    assert promotion.latest_merged_promotion(REPOSITORY, set()) is latest
+    assert len(calls) == 2
+
+
+def test_no_promotion_reads_every_page_and_returns_none(promotion, monkeypatch):
+    fork = closed_promotion("fork")
+    fork["head"]["repo"]["full_name"] = "fork/repo"
+    closed = closed_promotion("unmerged", number=43, merged_at=None)
+    calls = page_api(
+        promotion,
+        monkeypatch,
+        [
+            ordinary_pulls(100, "2026-10-10T12:00:00Z"),
+            ordinary_pulls(100, "2026-10-09T12:00:00Z", first_number=1100),
+            [fork, closed],
+        ],
+    )
+    assert promotion.latest_merged_promotion(REPOSITORY, set()) is None
+    assert len(calls) == 3
+
+
+def test_equal_update_boundary_continues_to_next_page(promotion, monkeypatch):
+    candidate = closed_promotion("latest")
+    calls = page_api(
+        promotion,
+        monkeypatch,
+        [[candidate, *ordinary_pulls(99, candidate["merged_at"])], []],
+    )
+    assert promotion.latest_merged_promotion(REPOSITORY, set()) is candidate
+    assert len(calls) == 2
 
 
 def test_absent_integration_is_inert(repository, promotion, api, capsys):
@@ -208,7 +338,10 @@ def test_ready_batch_creates_non_draft_frozen_snapshot(repository, promotion, ap
     ]
     promotion.run(REPOSITORY, NOW)
     assert not api.closed_main
-    assert ("pulls?state=closed&base=main&per_page=100", True) in api.queries
+    assert (
+        "pulls?state=closed&base=main&sort=updated&direction=desc&per_page=100&page=1",
+        False,
+    ) in api.queries
     (pull,) = api.created
     assert pull["head"] == "promote/20261008T201700000000Z"
     assert pull["base"] == "main"
@@ -254,6 +387,7 @@ def test_rewritten_promotion_fails_before_sync_push_or_api_writes(
     repository.integration()
     snapshot = repository.commit("fix.txt", "fix", "Promoted fix")
     repository.git("push", "origin", "integration")
+    repository.publish_pull_head(42, snapshot)
     repository.git("checkout", "main")
     if method == "squash":
         repository.git("merge", "--squash", "integration")
@@ -300,6 +434,160 @@ def test_rewritten_promotion_fails_before_sync_push_or_api_writes(
     assert "needs manual recovery" in output
 
 
+def test_unfetchable_promotion_head_reports_error_before_any_writes(
+    repository, promotion, api, monkeypatch, capsys
+):
+    repository.integration()
+    repository.commit("fix.txt", "fix", "Unpromoted fix")
+    repository.git("push", "origin", "integration")
+    repository.git("checkout", "main")
+    repository.commit("main.txt", "main", "New main fix")
+    repository.git("push", "origin", "main")
+    api.closed_main = [closed_promotion("f" * 40)]
+    before = repository.refs()
+    calls = []
+    original_git = promotion.git
+
+    def tracked_git(*args):
+        calls.append(args)
+        return original_git(*args)
+
+    monkeypatch.setattr(promotion, "git", tracked_git)
+    with pytest.raises(SystemExit) as exc:
+        promotion.run(REPOSITORY, NOW)
+    assert exc.value.code == 1
+    assert (
+        "fetch",
+        "--no-tags",
+        "origin",
+        "+refs/pull/42/head:refs/remotes/origin/promotion-head",
+    ) in calls
+    assert not any(args[0] in {"checkout", "merge", "push"} for args in calls)
+    assert repository.refs() == before
+    assert not api.created
+    assert not api.writes
+    output = capsys.readouterr().out
+    assert "::error::Cannot verify promotion #42" in output
+    assert "refs/pull/42/head" in output
+
+
+def test_ancestry_error_reports_promotion_instead_of_unhandled_exception(
+    repository, promotion, api, monkeypatch, capsys
+):
+    repository.integration()
+    snapshot = repository.commit("fix.txt", "fix", "Promoted fix")
+    repository.git("push", "origin", "integration")
+    repository.publish_pull_head(42, snapshot)
+    api.closed_main = [closed_promotion(snapshot)]
+    before = repository.refs()
+
+    def broken_ancestor(older, newer):
+        assert (older, newer) == ("origin/promotion-head", "origin/main")
+        raise subprocess.CalledProcessError(
+            128,
+            ["git", "merge-base", "--is-ancestor", older, newer],
+            stderr="fatal: unable to read tree object\n",
+        )
+
+    monkeypatch.setattr(promotion, "ancestor", broken_ancestor)
+    with pytest.raises(SystemExit) as exc:
+        promotion.run(REPOSITORY, NOW)
+    assert exc.value.code == 1
+    assert repository.refs() == before
+    assert not api.created
+    assert not api.writes
+    output = capsys.readouterr().out
+    assert "::error::Cannot verify promotion #42" in output
+    assert "fatal: unable to read tree object" in output
+
+
+def test_recovered_promotion_file_is_read_from_main_with_comments(
+    repository, promotion
+):
+    repository.commit(
+        ".github/promotion-recovered.txt",
+        "# Reconciled promotions\n42\n\n  41  # Older repaired batch\n",
+        "Acknowledge repaired promotions",
+    )
+    repository.git("push", "origin", "main")
+    # An uncommitted local file cannot acknowledge recovery for the guard.
+    (repository.work / ".github/promotion-recovered.txt").write_text("99\n")
+    assert promotion.recovered_promotions() == {41, 42}
+
+
+def test_missing_recovery_file_is_empty(repository, promotion):
+    assert promotion.recovered_promotions() == set()
+
+
+def test_acknowledged_squash_allows_repaired_integration_to_run(
+    repository, promotion, api, capsys
+):
+    repository.integration()
+    snapshot = repository.commit("fix.txt", "fix", "Promoted fix")
+    repository.git("push", "origin", "integration")
+    repository.publish_pull_head(42, snapshot)
+    repository.git("checkout", "main")
+    repository.git("merge", "--squash", "integration")
+    repository.git("commit", "-m", "Squash promotion")
+    repository.commit(
+        ".github/promotion-recovered.txt",
+        "# Reconciled promotions\n42\n",
+        "Recover #42",
+    )
+    repository.git("push", "origin", "main")
+    repository.git("checkout", "integration")
+    repository.git("reset", "--hard", "main")
+    repository.git("push", "--force", "origin", "integration")
+    api.closed_main = [closed_promotion(snapshot)]
+    before = repository.refs()
+    promotion.run(REPOSITORY, NOW)
+    assert repository.refs() == before
+    assert not api.created
+    assert not api.writes
+    assert "no unpromoted commits" in capsys.readouterr().out
+
+
+def test_acknowledged_squash_does_not_hide_older_unreconciled_squash(
+    repository, promotion, api, capsys
+):
+    repository.integration()
+    older = repository.commit("older.txt", "older", "Older promoted fix")
+    repository.git("push", "origin", "integration")
+    repository.publish_pull_head(41, older)
+    repository.git("checkout", "main")
+    repository.git("merge", "--squash", "integration")
+    repository.git("commit", "-m", "Squash older promotion")
+    repository.git("checkout", "integration")
+    repository.git("reset", "--hard", "main")
+    latest = repository.commit("latest.txt", "latest", "Latest promoted fix")
+    repository.git("push", "--force", "origin", "integration")
+    repository.publish_pull_head(42, latest)
+    repository.git("checkout", "main")
+    repository.git("merge", "--squash", "integration")
+    repository.git("commit", "-m", "Squash latest promotion")
+    repository.commit(
+        ".github/promotion-recovered.txt", "42\n", "Acknowledge latest repaired batch"
+    )
+    repository.git("push", "origin", "main")
+    repository.git("checkout", "integration")
+    repository.git("reset", "--hard", "main")
+    repository.git("push", "--force", "origin", "integration")
+    api.closed_main = [
+        closed_promotion(latest),
+        closed_promotion(older, number=41, merged_at="2026-10-07T12:00:00Z"),
+    ]
+    before = repository.refs()
+    with pytest.raises(SystemExit) as exc:
+        promotion.run(REPOSITORY, NOW)
+    assert exc.value.code == 1
+    assert repository.refs() == before
+    assert not api.created
+    assert not api.writes
+    output = capsys.readouterr().out
+    assert "::error::Promotion #41" in output
+    assert "needs manual recovery" in output
+
+
 def test_existing_snapshot_ref_is_never_advanced(repository, promotion, api):
     repository.integration()
     frozen = repository.commit("first.txt", "first", "First member")
@@ -321,15 +609,21 @@ def test_promoted_integration_receives_version_bump_without_new_pr(
     repository.integration()
     snapshot = repository.commit("fix.txt", "fix", "Promoted fix")
     repository.git("push", "origin", "integration")
+    repository.publish_pull_head(42, snapshot)
     repository.git("checkout", "main")
     repository.git("merge", "--no-ff", "integration", "-m", "Merge promotion")
     bumped = repository.commit("version.txt", "1.0.1", "Update PolicyEngine US")
     repository.git("push", "origin", "main")
-    # API order is unrelated to merge order; the latest promotion's head is
-    # preserved in main even though an older API record is not an ancestor.
+    # Update order is unrelated to merge order; the latest promotion's head is
+    # preserved in main even though the more recently updated older one is not.
     unrelated = repository.commit("unused.txt", "unused", "Unmerged local commit")
     api.closed_main = [
-        closed_promotion(unrelated, number=41, merged_at="2026-10-07T12:00:00Z"),
+        closed_promotion(
+            unrelated,
+            number=41,
+            merged_at="2026-10-07T12:00:00Z",
+            updated_at="2026-10-09T12:00:00Z",
+        ),
         closed_promotion(snapshot),
     ]
     promotion.run(REPOSITORY, NOW)

@@ -69,13 +69,24 @@ pushes it without opening a promotion.
 Merge a successful promotion with a **merge commit**, preserving each fix's
 commits and changelog fragments. Do not squash or rebase the promotion. Before
 synchronizing, the workflow checks that the frozen head of the most recently
-merged `promote/*` PR from this repository into `main` is an ancestor of `main`.
+merged, unreconciled `promote/*` PR from this repository into `main` is an ancestor
+of `main`.
 If it is not, the job fails with an error naming the PR and requiring manual
 recovery before another batch can proceed. The next successful workflow tick
 brings `main`, including the release bot's version bump, back into
 `integration` with a clean merge. A merge conflict stops the promotion and emits
 a warning; a maintainer resolves the conflict on `integration` before running
 the workflow again. A push to `integration` starts no full-suite workflow.
+
+If a promotion is accidentally squashed or rebased, first reset `integration`
+to `main` or repair its history so the commits already replayed into `main` are
+dropped. Then add the reconciled promotion's PR number to
+`.github/promotion-recovered.txt` through a PR into `main`. The file accepts one
+PR number per line and `#` comments. This acknowledges that the rewritten merge
+has been reconciled; resetting `integration` alone does not clear the guard.
+The workflow reads the file from `main`, skips acknowledged promotions, and
+checks the next-newest promotion. An older unreconciled promotion still stops
+the workflow if its frozen head is outside `main`'s ancestry.
 
 For a red promotion, preserve the failed PR and logs while investigating:
 
@@ -89,8 +100,10 @@ For a red promotion, preserve the failed PR and logs while investigating:
    `main` to identify the failing change.
    Member commits before the last synchronization lack newer `main` fixes.
    Before reverting a suspected culprit, confirm it by reverting it on the
-   frozen snapshot (or merging the recorded pre-batch `main` into the candidate)
-   and re-running the failing shard's exact command.
+   frozen snapshot and requiring the failing shard's exact command to pass.
+   Alternatively, merge the recorded pre-batch `main` into both the candidate
+   and its first-parent predecessor, then require that command to fail on the
+   candidate and pass on its predecessor with the same `main` merged in.
 3. Revert the culprit on `integration` (`git revert <sha>`, or
    `git revert -m 1 <sha>` for a member-PR merge), with a changelog fragment.
    Close the failed promotion PR, keeping it as evidence, and run the promotion
