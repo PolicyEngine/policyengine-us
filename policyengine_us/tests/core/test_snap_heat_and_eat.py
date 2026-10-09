@@ -81,11 +81,6 @@ def _household_grid():
             spm_unit["pre_subsidy_electricity_expense"] = annual(600)
             spm_unit["water_expense"] = annual(300)
         if reference:
-            # Matched control: derive expense-based fallback through the
-            # existing allowance formulas without duplicating those formulas.
-            spm_unit["snap_state_using_standard_utility_allowance"] = {
-                month: False for month in PERIODS
-            }
             fallback_indices[(state, bills)] = index
         situation["spm_units"][key] = spm_unit
         situation["households"][key] = {
@@ -124,8 +119,27 @@ def test_heat_and_eat_reform_preserves_other_utility_allowance_paths():
     ordinary = np.array([status == "ordinary" for _, status, _, _, _ in facts])
     heating = np.array([heat for _, _, heat, _, _ in facts])
     bill_style = np.array([bills for _, _, _, bills, _ in facts])
+    reference = np.array([control for _, _, _, _, control in facts])
 
     for month in PERIODS:
+        state_deeming = fixed.calculate(
+            "snap_state_using_standard_utility_allowance", month
+        ).astype(bool)
+        np.testing.assert_array_equal(
+            state_deeming,
+            legacy.calculate("snap_state_using_standard_utility_allowance", month),
+        )
+        # Derive matched expense-only controls from the existing formulas.
+        # Sparse inputs default the entire vector to False, so preserve the
+        # computed state option for every primary case in a full input array.
+        # Set this before calculating dependent utility types or amounts.
+        state_deeming[reference] = False
+        for simulation in (fixed, legacy):
+            simulation.set_input(
+                "snap_state_using_standard_utility_allowance",
+                month,
+                state_deeming.copy(),
+            )
         legacy_type = legacy.calculate(
             "snap_utility_allowance_type", month
         ).decode_to_str()
@@ -134,13 +148,6 @@ def test_heat_and_eat_reform_preserves_other_utility_allowance_paths():
         ).decode_to_str()
         legacy_allowance = legacy.calculate("snap_utility_allowance", month)
         fixed_allowance = fixed.calculate("snap_utility_allowance", month)
-        state_deeming = fixed.calculate(
-            "snap_state_using_standard_utility_allowance", month
-        ).astype(bool)
-        np.testing.assert_array_equal(
-            state_deeming,
-            legacy.calculate("snap_state_using_standard_utility_allowance", month),
-        )
         # Check the fixture's SNAP status independently of the allowance so
         # eligibility or disability-definition changes cannot hide the defect.
         np.testing.assert_array_equal(
