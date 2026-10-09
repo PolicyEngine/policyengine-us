@@ -1,3 +1,18 @@
+## [2.35.3] - 2026-10-09
+
+### Fixed
+
+- Delaware's itemized deductions for spouses filing combined separate returns now go to the spouse who paid them, with income proration only for amounts that cannot be allocated; and the 529 plan subtraction applies the 2,000 joint limit to the couple on a joint return and the 1,000 and 100,000 limits to each spouse's column, head of household and surviving spouse filers included.
+  Inconsistent itemized deduction total overrides no longer create negative spouse deductions.
+
+
+## [2.35.2] - 2026-10-09
+
+### Fixed
+
+- Figure net capital gain and the Schedule D Tax Worksheet from the head and spouse's Schedule D, qualified dividends and Form 4952 election only, leaving out tax unit dependents' amounts as adjusted gross income does, and treat each filer's negative capital gain distributions input as zero. Apply the same filer-only scope in Hawaii's alternative capital gains tax worksheet and in the qualified dividends Vermont's flat capital gains exclusion subtracts.
+
+
 ## [2.35.1] - 2026-10-09
 
 ### Fixed
