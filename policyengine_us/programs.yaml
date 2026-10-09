@@ -89,7 +89,7 @@ programs:
         status: complete
         name: Colorado Healthy School Meals for All
         effective: 2023-07-01
-        reference: HB 22-1414 / Proposition FF (2022); C.R.S. § 22-82.9-101 et seq.
+        reference: HB 22-1414 / Proposition FF (2022); C.R.S. § 22-82.9-201 et seq.
       - state: MA
         status: complete
         name: Massachusetts universal meals
@@ -104,17 +104,23 @@ programs:
         status: complete
         name: Michigan School Meals
         effective: 2023-07-01
-        reference: PA 103 of 2023 (SB 0173); MCL 388.1631aa
+        reference: PA 103 of 2023 (SB 0173); MCL 388.1630d
       - state: MN
         status: complete
         name: Minnesota Free School Meals for Kids
         effective: 2023-07-01
         reference: HF 5 (2023); Minn. Stat. § 124D.111
+      - state: NC
+        status: complete
+        name: North Carolina reduced-price meal copay coverage
+        effective: 2020-07-01
+        notes: Both-meal copay coverage in SY2020-21 and from SY2022-23 onward; the SY2021-22 state provision covers breakfast only. Assumes a covered school participating in both meal programs.
+        reference: G.S. 115C-264(a1) (S.L. 2025-89 § 2A.8); S.L. 2023-134 § 7.58; S.L. 2022-74 § 7.3; S.L. 2020-80 § 2.3.(b); S.L. 2011-342 § 1
       - state: NM
         status: complete
         name: New Mexico Healthy Universal School Meals
         effective: 2023-07-01
-        reference: SB 4 (2023), Chapter 30; N.M. Stat. § 22-13D-3
+        reference: SB 4 (2023), Chapter 30, § 3; N.M. Stat. § 22-13C-4(A)
       - state: NY
         status: complete
         name: New York Universal Free School Meals
@@ -802,34 +808,105 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX
+    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, TX
     state_implementations:
-      - state: OR
-        status: in_progress
-        name: LIHEAP
-        full_name: Low Income Home Energy Assistance Program (Oregon)
       - state: DC
         status: complete
         name: DC LIHEAP
         full_name: DC Low Income Home Energy Assistance Program
-        variable: dc_liheap
+        variable: dc_liheap_payment
+        parameter_prefix: gov.states.dc.doee.liheap
       - state: MA
         status: complete
         name: Massachusetts LIHEAP
         full_name: Massachusetts Low Income Home Energy Assistance Program
         variable: ma_liheap
+        parameter_prefix: gov.states.ma.doer.liheap
       - state: IL
         status: complete
         name: Illinois LIHEAP
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
+        parameter_prefix: gov.states.il.dceo.liheap
+      - state: IN
+        status: partial
+        name: Indiana EAP
+        full_name: Indiana Energy Assistance Program
+        variable: in_eap
+        parameter_prefix: gov.states.in.ihcda.eap
+        verified_years: "2026"
+        notes: PY2026 regular heating and the winter electric allowance only. Crisis, cooling and weatherization assistance are out of scope.
+      - state: KS
+        status: partial
+        name: Kansas LIEAP
+        full_name: Kansas Low Income Energy Assistance Program
+        variable: ks_liheap
+        parameter_prefix: gov.states.ks.dcf.liheap
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular heating only. The FY2026 $130 minimum comes from the plan's estimated benefit levels; crisis, cooling and weatherization assistance are out of scope.
+      - state: KY
+        status: partial
+        name: Kentucky LIHEAP
+        full_name: Kentucky Low Income Home Energy Assistance Program
+        variable: ky_liheap
+        parameter_prefix: gov.states.ky.dcbs.liheap
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular heating only, from the published benefit workbooks. Crisis and cooling assistance are out of scope.
+      - state: MD
+        status: partial
+        name: Maryland MEAP
+        full_name: Maryland Energy Assistance Program
+        variable: md_meap
+        parameter_prefix: gov.states.md.dhs.meap
+        verified_years: "2025-2027"
+        notes: FY25-FY27 regular heating only, with the fuel tables, the Garrett County multiplier and the subsidized and nominal levels. The SNAP nominal payment, cooling, EUSP, arrearage, crisis and equipment benefits are out of scope.
+      - state: MS
+        status: partial
+        name: Mississippi LIHEAP
+        full_name: Mississippi Low Income Home Energy Assistance Program
+        variable: ms_liheap
+        parameter_prefix: gov.states.ms.mdhs.liheap
+        verified_years: "2026"
+        notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
+      - state: NC
+        status: partial
+        name: North Carolina LIEAP
+        full_name: North Carolina Low Income Energy Assistance Program
+        variable: nc_lieap
+        parameter_prefix: gov.states.nc.ncdhhs.lieap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating only, with the dated resource waiver. Crisis, cooling and weatherization assistance are out of scope.
+      - state: NE
+        status: partial
+        name: Nebraska LIHEAP
+        full_name: Nebraska Low Income Home Energy Assistance Program
+        variable: ne_liheap
+        parameter_prefix: gov.states.ne.dhhs.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating only, with the single-family and multifamily schedules and the earned-income disregard. Crisis, cooling and weatherization assistance are out of scope.
+      - state: NJ
+        status: partial
+        name: New Jersey LIHEAP
+        full_name: New Jersey Low Income Home Energy Assistance Program
+        variable: nj_liheap
+        parameter_prefix: gov.states.nj.dca.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid, including the one renters cell that changes in FY2027; the program is not modeled before FY2022. Crisis, cooling and equipment assistance are out of scope.
+      - state: NY
+        status: partial
+        name: New York HEAP
+        full_name: New York Home Energy Assistance Program
+        variable: ny_heap
+        parameter_prefix: gov.states.ny.otda.heap
+        verified_years: "2024-2026"
+        notes: FY2024-FY2026 regular heating only, with the fuel base amounts, the Tier I and vulnerable supplements and the heat-included levels. Crisis, cooling, HERR and clean-and-tune assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
         full_name: Texas Comprehensive Energy Assistance Program
         variable: tx_ceap
         parameter_prefix: gov.states.tx.tdhca.ceap
-        notes: Models the FPG income limit, the FY2024-only SMI limit, benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
+        notes: Models the 150% FPG income limit, the alternative 60% SMI limit from the FY2024 state plan (applied through 2024), benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
 
   # --- SSA programs ---
   - id: ssi
@@ -1673,7 +1750,7 @@ programs:
     status: complete
     coverage: Riverside County
     variable: ca_riv_liheap_eligible
-    parameter_prefix: gov.local.ca.riv.liheap
+    parameter_prefix: gov.local.ca.riv.cap.liheap
     notes: Only includes eligibility rules
 
   - id: share

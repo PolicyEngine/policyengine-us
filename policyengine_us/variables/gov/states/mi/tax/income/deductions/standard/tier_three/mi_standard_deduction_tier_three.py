@@ -8,11 +8,11 @@ class mi_standard_deduction_tier_three(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (9)(e)
-        "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30",  # (9)(e)
+        "https://web.archive.org/web/20250202140014/https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction",
         "https://www.michigan.gov/treasury/reference/taxpayer-notices/2025/11/17/social-security-taxation-changes-in-public-act-24-of-2025",
         "https://www.michigan.gov/taxes/rep-legal/rab/2026-revenue-administrative-bulletins/revenue-administrative-bulletin-2026-1",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=16",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/BOOK_MI-1040.pdf#page=16",
     )
     defined_for = "mi_standard_deduction_tier_three_eligible"
 

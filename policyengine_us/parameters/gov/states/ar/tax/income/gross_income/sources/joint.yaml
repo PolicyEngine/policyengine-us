@@ -1,75 +1,95 @@
 description: Arkansas accounts for these sources when calculating the gross income.
 values:
   # Unemployment compensation was exempt income through tax year 2017.
+  # Line numbers in this block follow the TY2015-2017 AR1000F, which
+  # has no unemployment or military retirement line: pensions are on
+  # Lines 17A/17B, Schedule E on Line 18, Schedule F on Line 19 and
+  # other income on Line 20.
   2015-01-01:
     - irs_employment_income # Line 8
-    - self_employment_income # Line 8
-    - sstb_self_employment_income
+    - self_employment_income # Line 13
+    - sstb_self_employment_income # Line 13
     - interest_income # Line 10
     - dividend_income # Line 11
     - alimony_income # Line 12
-    - ar_taxable_capital_gains_joint # Line 13
-    - taxable_ira_distributions # Line 16
-    - taxable_roth_conversions # Line 16
-    - military_retirement_pay # Line 17
-    - taxable_pension_income # Line 18
-    - disability_benefits # Line 18b
-    - rental_income # Line 19
-    - farm_rent_income # Line 20
+    - ar_taxable_capital_gains_joint # Line 14
+    - taxable_ira_distributions # Line 16, or Lines 17A/17B after age 59 1/2
+    - taxable_roth_conversions # Line 16, or Lines 17A/17B after age 59 1/2
+    - military_retirement_pay # Line 17A/17B
+    - taxable_pension_income # Line 17A/17B
+    - disability_benefits # Line 17A/17B
+    - rental_income # Line 18
+    - estate_income # Line 18
+    - farm_rent_income # Line 18, Form 4835 rent is reported on Schedule E
+    - farm_operations_income # Line 19, Schedule F
+    # Winnings from Arkansas electronic games of skill are not income
+    # (Ark. Code § 26-51-1310(f), Act 732 of 2007); DFA applies this to
+    # winnings before July 1, 2019. The model has a single gambling_winnings
+    # input and does not separate them.
+    - gambling_winnings # Line 20, other income (Form AR-OI)
   # Act 141 of 2017 added unemployment compensation to gross income for tax
   # years beginning on or after January 1, 2018. Act 154 of 2021 then exempted
   # it for calendar years 2020 and 2021, after which it is taxable again.
   2018-01-01:
     - irs_employment_income # Line 8
-    - self_employment_income # Line 8
-    - sstb_self_employment_income
+    - self_employment_income # Line 13
+    - sstb_self_employment_income # Line 13
     - interest_income # Line 10
     - dividend_income # Line 11
     - alimony_income # Line 12
-    - ar_taxable_capital_gains_joint # Line 13
-    - taxable_ira_distributions # Line 16
-    - taxable_roth_conversions # Line 16
-    - military_retirement_pay # Line 17
-    - taxable_pension_income # Line 18
-    - disability_benefits # Line 18b
+    - ar_taxable_capital_gains_joint # Line 14
+    - taxable_ira_distributions # Line 16, or Lines 18A/18B after age 59 1/2
+    - taxable_roth_conversions # Line 16, or Lines 18A/18B after age 59 1/2
+    - military_retirement_pay # Line 17 (Lines 17A/17B on the 2018 form)
+    - taxable_pension_income # Line 18A/18B
+    - disability_benefits # Line 18A/18B
     - rental_income # Line 19
-    - farm_rent_income # Line 20
+    - estate_income # Line 19
+    - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
+    - farm_operations_income # Line 20, Schedule F
     - unemployment_compensation # Line 21
+    - gambling_winnings # Line 22, other income (Form AR-OI)
   2020-01-01:
     - irs_employment_income # Line 8
-    - self_employment_income # Line 8
-    - sstb_self_employment_income
+    - self_employment_income # Line 13
+    - sstb_self_employment_income # Line 13
     - interest_income # Line 10
     - dividend_income # Line 11
     - alimony_income # Line 12
-    - ar_taxable_capital_gains_joint # Line 13
-    - taxable_ira_distributions # Line 16
-    - taxable_roth_conversions # Line 16
+    - ar_taxable_capital_gains_joint # Line 14
+    - taxable_ira_distributions # Line 16, or Lines 18A/18B after age 59 1/2
+    - taxable_roth_conversions # Line 16, or Lines 18A/18B after age 59 1/2
     - military_retirement_pay # Line 17
-    - taxable_pension_income # Line 18
-    - disability_benefits # Line 18b
+    - taxable_pension_income # Line 18A/18B
+    - disability_benefits # Line 18A/18B
     - rental_income # Line 19
-    - farm_rent_income # Line 20
+    - estate_income # Line 19
+    - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
+    - farm_operations_income # Line 20, Schedule F
+    - gambling_winnings # Line 22, other income (Form AR-OI)
   2022-01-01:
     - irs_employment_income # Line 8
-    - self_employment_income # Line 8
-    - sstb_self_employment_income
+    - self_employment_income # Line 13
+    - sstb_self_employment_income # Line 13
     - interest_income # Line 10
     - dividend_income # Line 11
     - alimony_income # Line 12
-    - ar_taxable_capital_gains_joint # Line 13
-    - taxable_ira_distributions # Line 16
-    - taxable_roth_conversions # Line 16
+    - ar_taxable_capital_gains_joint # Line 14
+    - taxable_ira_distributions # Line 16, or Lines 18A/18B after age 59 1/2
+    - taxable_roth_conversions # Line 16, or Lines 18A/18B after age 59 1/2
     - military_retirement_pay # Line 17
-    - taxable_pension_income # Line 18
-    - taxable_401k_distributions # Line 18
-    - taxable_403b_distributions # Line 18
-    - taxable_sep_distributions # Line 18
-    - keogh_distributions # Line 18
-    - disability_benefits # Line 18b
+    - taxable_pension_income # Line 18A/18B
+    - taxable_401k_distributions # Line 18A/18B
+    - taxable_403b_distributions # Line 18A/18B
+    - taxable_sep_distributions # Line 18A/18B
+    - keogh_distributions # Line 18A/18B
+    - disability_benefits # Line 18A/18B
     - rental_income # Line 19
-    - farm_rent_income # Line 20
+    - estate_income # Line 19
+    - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
+    - farm_operations_income # Line 20, Schedule F
     - unemployment_compensation # Line 21
+    - gambling_winnings # Line 22, other income (Form AR-OI)
 
 metadata:
   unit: list
@@ -86,6 +106,20 @@ metadata:
       href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions.pdf#page=5
     - title: Arkansas 2025 Individual Income Tax Forms and Instructions
       href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=13
+    - title: Arkansas 2025 Individual Income Tax Forms and Instructions (gambling winnings are subject to tax, reported on Form AR-OI line 4 and carried to Line 22)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=14
+    - title: Arkansas 2025 Form AR-OI (line 4, gambling winnings, an addition to income)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR-OI_OtherIncomeLoss_and_DepreciationDifferences.pdf#page=1
+    - title: Arkansas 2019 Individual Income Tax Forms and Instructions (gambling winnings are subject to tax)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/2019_AR1000F_and_AR1000NR_Instructions.pdf#page=13
+    - title: Arkansas 2018 Individual Income Tax Instructions (gambling winnings of any type, except from Arkansas electronic games of skill; other income on Line 22)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions_2018.pdf#page=13
+    - title: Arkansas 2015 Individual Income Tax Instructions (gambling winnings of any type, except from Arkansas electronic games of skill; other income on Line 20)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2015.pdf#page=15
+    - title: Arkansas 2015 Form AR1000F (TY2015-2017 income lines; Schedule C on Line 13, pensions on Lines 17A/17B, Schedule E on Line 18, Schedule F on Line 19, other income on Line 20)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2015.pdf#page=17
+    - title: Arkansas 2018 Form AR1000F (TY2018 and later income lines; Schedule C on Line 13, pensions on Lines 18A/18B, Schedule E on Line 19, other income on Line 22)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions_2018.pdf#page=15
     - title: Arkansas 2022 AR1000F Instructions
       href: https://www.dfa.arkansas.gov/wp-content/uploads/2022_AR1000F_and_AR1000NR_Instructions.pdf#page=13
     - title: 2022 Arkansas AR1000F
@@ -99,4 +133,4 @@ metadata:
     - title: Arkansas Act 141 of 2017 (unemployment compensation added to gross income, effective for tax years beginning on and after January 1, 2018)
       href: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2017R%2FPublic%2F&file=141.pdf&ddBienniumSession=2017%2F2017R
     - title: Arkansas Code § 26-51-404
-      href: https://casetext.com/statute/arkansas-code-of-1987/title-26-taxation/subtitle-5-state-taxes/chapter-51-income-taxes/subchapter-4-computation-of-tax-liability/section-26-51-404-gross-income-generally
+      href: https://law.justia.com/codes/arkansas/title-26/subtitle-5/chapter-51/subchapter-4/section-26-51-404/

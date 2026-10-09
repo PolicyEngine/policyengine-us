@@ -1,0 +1,144 @@
+- name: A dependent's rental loss reduces their modified AGI.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 20_000
+        taxable_interest_income: 18_000
+        rental_income: -3_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Modified AGI = 18,000 - 3,000 = 15,000. The head is not a dependent.
+    dependent_taxable_ss_magi: [0, 15_000]
+    # Provisional income = 15,000 + 0.5 * 20,000 = 25,000, not above the
+    # 25,000 base amount.
+    dependent_taxable_social_security: [0, 0]
+
+- name: A dependent's above-the-line deductions reduce their modified AGI.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 20_000
+        taxable_interest_income: 17_000
+        early_withdrawal_penalty: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Modified AGI = 17,000 - 1,000 early withdrawal penalty = 16,000.
+    dependent_taxable_ss_magi: [0, 16_000]
+    # Provisional income = 16,000 + 10,000 = 26,000.
+    # Taxable = min(0.5 * 20,000, 0.5 * (26,000 - 25,000)) = 500.
+    dependent_taxable_social_security: [0, 500]
+
+- name: A dependent's educator expenses reduce their modified AGI up to the cap.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 20_000
+        taxable_interest_income: 16_000
+        educator_expense: 500
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Modified AGI = 16,000 - 300, the 2022 cap of 26 USC 62(a)(2)(D)
+    # (Rev. Proc. 2021-45 sec. 3.13) on the 500 of expenses = 15,700.
+    dependent_taxable_ss_magi: [0, 15_700]
+    # Provisional income = 15,700 + 10,000 = 25,700.
+    # Taxable = min(0.5 * 20,000, 0.5 * (25,700 - 25,000)) = 350.
+    dependent_taxable_social_security: [0, 350]
+
+- name: A married dependent who lives with their spouse has the separate-return capital loss limit.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      mother:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 30_000
+        taxable_pension_income: 14_000
+        short_term_capital_gains: -5_000
+      father:
+        age: 72
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parents_marital_unit:
+        members: [mother, father]
+    tax_units:
+      tax_unit:
+        members: [head, mother, father]
+    households:
+      household:
+        members: [head, mother, father]
+  output:
+    # IRC 1211(b)(1): 1,500 limit for a married individual filing a separate
+    # return. Modified AGI = 14,000 - min(5,000, 1,500) = 12,500.
+    dependent_taxable_ss_magi: [0, 12_500, 0]
+
+- name: Unemployment compensation and tax-exempt interest count in a dependent's modified AGI.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 20_000
+        unemployment_compensation: 3_000
+        tax_exempt_interest_income: 13_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Modified AGI = 3,000 + 13,000 tax-exempt interest (IRC 86(b)(2)(B)).
+    dependent_taxable_ss_magi: [0, 16_000]

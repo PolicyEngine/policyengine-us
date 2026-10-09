@@ -3,7 +3,8 @@
 Calling `refundable_ctc` on an `itemizing` reform branch used to form a
 dependency cycle
 
-    refundable_ctc -> ctc_limiting_tax_liability -> (no_salt branch)
+    refundable_ctc -> ctc_limiting_tax_liability
+      -> ctc_tax_liability_after_preceding_credits -> (no_salt branch)
       -> income_tax_before_credits -> taxable_income -> tax_unit_itemizes
       -> tax_liability_if_itemizing -> (itemizing branch)
       -> income_tax -> income_tax_before_refundable_credits
@@ -15,9 +16,10 @@ which bottomed out as a RecursionError. Surfaced by downstream
 consumers (e.g. policyengine.py's household-impact integration tests)
 on `policyengine-core >= 3.24`.
 
-The fix in `ctc_limiting_tax_liability.py` propagates the parent's
-`tax_unit_itemizes` value to the no_salt child branch so the
-`tax_unit_itemizes` formula is never re-entered there.
+`ctc_tax_liability_after_preceding_credits` no longer creates the no_salt
+branch: it reads the branch's own `income_tax_before_credits`, which the
+itemizing branch calculates with `tax_unit_itemizes` set, so the chain cannot
+re-enter it.
 """
 
 import numpy as np

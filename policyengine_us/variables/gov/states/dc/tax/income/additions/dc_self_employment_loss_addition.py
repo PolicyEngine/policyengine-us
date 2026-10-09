@@ -8,20 +8,31 @@ class dc_self_employment_loss_addition(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=63"
-        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=55"
+        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=63",
+        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=55",
     )
     defined_for = StateCode.DC
 
     def formula(person, period, parameters):
-        loss_person = max_(0, -person("total_self_employment_income", period))
+        # Only the head's and spouse's losses are on this return. A tax-unit
+        # dependent's losses are not in loss_ald, so counting them would raise
+        # the addition or dilute the filers' shares of it.
+        is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        loss_person = is_head_or_spouse * max_(
+            0, -person("total_self_employment_income", period)
+        )
         loss_taxunit = person.tax_unit.sum(loss_person)
-        # Cap at SE loss actually deducted in federal AGI via loss_ald.
-        # loss_ald includes both SE and capital losses; isolate SE portion.
+        # Cap at the business losses actually deducted in federal AGI: loss_ald
+        # less its capital loss parts (self-employment, farm, rental,
+        # partnership, estate and other business losses after section 461(l)).
         loss_ald = person.tax_unit("loss_ald", period)
-        limited_capital_loss = person.tax_unit("limited_capital_loss", period)
-        se_loss_in_ald = max_(0, loss_ald - limited_capital_loss)
-        effective_loss = min_(loss_taxunit, se_loss_in_ald)
+        capital_loss_in_ald = add(
+            person.tax_unit,
+            period,
+            ["capital_losses_allowed_against_gains", "limited_capital_loss"],
+        )
+        business_loss_in_ald = max_(0, loss_ald - capital_loss_in_ald)
+        effective_loss = min_(loss_taxunit, business_loss_in_ald)
         p = parameters(period).gov.states.dc.tax.income.additions
         addition_taxunit = max_(0, effective_loss - p.self_employment_loss.threshold)
         # allocate taxunit addition in proportion to head and spouse losses
@@ -31,6 +42,4 @@ class dc_self_employment_loss_addition(Variable):
         mask = loss_taxunit > 0
         loss_fraction[mask] = loss_person[mask] / loss_taxunit[mask]
         addition_fraction = where(is_joint, loss_fraction, 1)
-        is_head = person("is_tax_unit_head", period)
-        is_spouse = person("is_tax_unit_spouse", period)
-        return (is_head | is_spouse) * addition_taxunit * addition_fraction
+        return is_head_or_spouse * addition_taxunit * addition_fraction

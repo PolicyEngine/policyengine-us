@@ -11,6 +11,8 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
         "https://dor.mo.gov/forms/MO-A_2021.pdf#page=3",
         "https://dor.mo.gov/forms/MO-1040%20Fillable%20Calculating_2021.pdf#page=2",
         "https://revisor.mo.gov/main/OneSection.aspx?section=143.124",
+        "https://dor.mo.gov/forms/MO-A_2025.pdf#page=3",
+        "https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=17",
     )
     defined_for = StateCode.MO
 
@@ -41,7 +43,13 @@ class mo_pension_and_ss_or_ssd_deduction_section_a(Variable):
             agi_in_excess_of_taxable_social_security - public_pension_allowance,
             0,
         )
-        public_pension_amount = person("taxable_public_pension_income", period)
+        # Form MO-A Line 1 takes the public pension of the filer and spouse
+        # from their federal return. Dependents' income is not in federal
+        # AGI; they report it on their own return.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        public_pension_amount = (
+            person("taxable_public_pension_income", period) * head_or_spouse
+        )
         max_social_security_benefit = (
             p.mo_max_social_security_benefit
         )  # Seen on Line 7, Section A

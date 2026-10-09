@@ -89,7 +89,10 @@
     real_estate_taxes: 100
     rent: 1_500
   output:
-    az_property_tax_credit: 0
+    # ARS 43-1072(B)(2): $5,500 is in the $5,351-5,500 band ($56), below the
+    # (A)(3)(b) limit of "less than" $5,501. Taxes paid: 100 + 0.15 * 1,500 =
+    # 325, so the credit is the $56 table amount.
+    az_property_tax_credit: 56
 
 - name: tax unit head does not meet the criteria
   period: 2023

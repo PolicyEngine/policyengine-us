@@ -201,6 +201,9 @@ def subdir_batches(subdir: Path) -> List[List[str]]:
     instead.
     """
     files = yaml_files(subdir)
+    if not files:
+        # Python-only folders are covered by the dedicated Python suites.
+        return []
     combos: set = set()
     for file in files:
         combos |= set(file_reform_combos(file))
@@ -512,8 +515,15 @@ MARKER_GRACE_SECONDS = 300
 BATCH_EXIT_MARKER = "__POLICYENGINE_BATCH_EXIT__"
 
 RUNNER_SHIM = f"""
+import os
 import runpy
 import sys
+
+# Python suites run separately; directory batches must collect only YAML.
+# Set this in the child so the later Python step keeps its normal collection.
+os.environ["PYTEST_ADDOPTS"] = (
+    os.environ.get("PYTEST_ADDOPTS", "") + " --ignore-glob=*.py"
+)
 
 code = 0
 try:

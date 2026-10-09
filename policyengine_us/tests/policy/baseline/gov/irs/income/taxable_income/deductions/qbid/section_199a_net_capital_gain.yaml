@@ -1,0 +1,142 @@
+# Net capital gain for the 26 U.S.C. 199A(a)(2) income limitation: 2025 Form
+# 8995 line 12 (Form 8995-A line 34), "Form 1040 ... line 3a, plus your net
+# capital gain", where net capital gain is "the smaller of Schedule D (Form
+# 1040), line 15 or 16, unless line 15 or 16 is zero or less", or "Form 1040
+# ... line 7a" without Schedule D. Treas. Reg. 1.199A-1(b)(3): "net capital gain
+# as defined in section 1222(11) plus any qualified dividend income".
+
+- name: Unrecaptured section 1250 gain stays in net capital gain
+  period: 2025
+  input:
+    long_term_capital_gains: 40_000
+    unrecaptured_section_1250_gain: 30_000
+  output:
+    # Schedule D line 15 = line 16 = $40,000; Form 1040 line 3a = $0.
+    # Form 8995 line 12 = $0 + $40,000 = $40,000.
+    section_199a_net_capital_gain: 40_000
+    # 26 U.S.C. 1(h)(3) takes the 1250 gain out: $40,000 - $30,000.
+    adjusted_net_capital_gain: 10_000
+
+- name: 28-percent rate gain stays in net capital gain
+  period: 2025
+  input:
+    long_term_capital_gains: 50_000
+    long_term_capital_gains_on_collectibles: 50_000
+    qualified_dividend_income: 10_000
+  output:
+    # Schedule D line 15 = line 16 = $50,000, all collectibles gain (line 18).
+    # Form 8995 line 12 = $10,000 (line 3a) + $50,000 = $60,000.
+    section_199a_net_capital_gain: 60_000
+    # 26 U.S.C. 1(h)(3): ($50,000 - $50,000) + $10,000 of dividends.
+    adjusted_net_capital_gain: 10_000
+
+- name: Short-term loss nets against long-term gain
+  period: 2025
+  input:
+    long_term_capital_gains: 30_000
+    short_term_capital_gains: -10_000
+    qualified_dividend_income: 5_000
+  output:
+    # Schedule D line 7 = -$10,000; line 15 = $30,000;
+    # line 16 = -$10,000 + $30,000 = $20,000. Smaller of 15 or 16 = $20,000.
+    # Form 8995 line 12 = $5,000 + $20,000 = $25,000.
+    section_199a_net_capital_gain: 25_000
+
+- name: Short-term gain is not net capital gain
+  period: 2025
+  input:
+    long_term_capital_gains: 30_000
+    short_term_capital_gains: 8_000
+  output:
+    # Schedule D line 15 = $30,000; line 16 = $38,000. Smaller = $30,000.
+    section_199a_net_capital_gain: 30_000
+
+- name: Combined loss leaves only qualified dividends
+  period: 2025
+  input:
+    long_term_capital_gains: 10_000
+    short_term_capital_gains: -15_000
+    qualified_dividend_income: 2_000
+  output:
+    # Schedule D line 15 = $10,000; line 16 = -$5,000, zero or less, so
+    # "nothing is added to the qualified dividends". Line 12 = $2,000.
+    section_199a_net_capital_gain: 2_000
+
+- name: Long-term loss leaves only qualified dividends
+  period: 2025
+  input:
+    long_term_capital_gains: -5_000
+    short_term_capital_gains: 20_000
+    qualified_dividend_income: 1_000
+  output:
+    # Schedule D line 15 = -$5,000, zero or less. Line 12 = $1,000.
+    section_199a_net_capital_gain: 1_000
+
+- name: Capital gain distributions without Schedule D
+  period: 2025
+  input:
+    non_sch_d_capital_gains: 8_000
+    qualified_dividend_income: 2_000
+  output:
+    # Not required to file Schedule D: net capital gain is Form 1040 line 7a.
+    # Form 8995 line 12 = $2,000 + $8,000 = $10,000.
+    section_199a_net_capital_gain: 10_000
+
+- name: Form 4952 investment income election does not reduce it
+  period: 2025
+  input:
+    long_term_capital_gains: 50_000
+    qualified_dividend_income: 10_000
+    investment_income_elected_form_4952: 20_000
+  output:
+    # Form 8995 line 12 uses Form 1040 line 3a ($10,000), which the Form 4952
+    # line 4g instructions say not to reduce, plus the smaller of Schedule D
+    # lines 15 and 16 ($50,000). Treas. Reg. 1.199A-1(b)(3) uses section
+    # 1222(11) net capital gain and section 1(h)(11)(B) qualified dividends.
+    section_199a_net_capital_gain: 60_000
+    # 26 U.S.C. 1(h)(2) takes the $20,000 elected gain out for section 1(h).
+    net_capital_gain: 40_000
+
+- name: Gains and dividends of both spouses
+  period: 2025
+  input:
+    people:
+      head:
+        long_term_capital_gains: 20_000
+      spouse:
+        short_term_capital_gains: -5_000
+        qualified_dividend_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    # Schedule D line 15 = $20,000; line 16 = $15,000. Line 3a = $3,000.
+    # Form 8995 line 12 = $3,000 + $15,000 = $18,000.
+    section_199a_net_capital_gain: 18_000
+
+- name: A negative qualified dividend input adds nothing
+  period: 2025
+  input:
+    long_term_capital_gains: 10_000
+    qualified_dividend_income: -2_000
+  output:
+    # Form 1040 line 3a cannot be negative; the gain is not reduced.
+    section_199a_net_capital_gain: 10_000
+
+- name: Spouses' qualified dividends are summed before the zero floor
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        long_term_capital_gains: 10_000
+        qualified_dividend_income: 5_000
+      spouse:
+        is_tax_unit_spouse: true
+        qualified_dividend_income: -2_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+  output:
+    # 10,000 + max(0, 5,000 - 2,000).
+    section_199a_net_capital_gain: 13_000
