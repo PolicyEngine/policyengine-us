@@ -1,0 +1,14 @@
+description: New York reduces the child and dependent care credit applicable percentage by this rate for each dollar of New York adjusted gross income above the phase-down threshold.
+values:
+  # "twenty-five hundred thousandths of a percentage point for each dollar":
+  # 0.00025 percentage points, or 0.0000025 as a decimal rate.
+  2026-01-01: 0.0000025
+metadata:
+  unit: /1
+  period: year
+  label: New York expense-based child and dependent care credit rate phase-down rate
+  reference:
+    - title: N.Y. Tax Law 606(c-2)(2)(E)(ii)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: L.2026, ch. 59 (S.9009-C), Part A, sec. 2
+      href: https://www.nysenate.gov/legislation/bills/2025/S9009/amendment/C
