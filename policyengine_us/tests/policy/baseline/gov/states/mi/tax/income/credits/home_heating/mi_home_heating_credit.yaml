@@ -199,7 +199,7 @@
         employment_income: 10_000
         is_tax_unit_head: true
         is_tax_unit_dependent: false
-        ssi: 0
+        takes_up_ssi_if_eligible: false
       dependent_without_pension:
         age: 75
         is_tax_unit_head: false
@@ -211,7 +211,7 @@
         employment_income: 10_000
         is_tax_unit_head: true
         is_tax_unit_dependent: false
-        ssi: 0
+        takes_up_ssi_if_eligible: false
       dependent_with_pension:
         age: 75
         is_tax_unit_head: false
