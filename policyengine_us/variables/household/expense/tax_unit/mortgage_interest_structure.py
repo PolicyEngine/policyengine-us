@@ -103,6 +103,16 @@ class second_home_mortgage_interest(Variable):
     )
 
 
+_ORIGINATION_YEAR_CONVENTION = (
+    "The federal debt limits treat 1987 as on or before October 13, 1987 and "
+    "2017 as on or before December 15, 2017. A refinancing that still counts as "
+    "grandfathered debt takes the original debt's year: up to the principal "
+    "refinanced, and only for the original term or, for a balloon loan, the "
+    "first refinancing's term up to 30 years (26 U.S.C. 163(h)(3)(D)(iii)-(iv)). "
+    "Enter 0 if unknown."
+)
+
+
 class first_home_mortgage_origination_year(Variable):
     value_type = int
     entity = TaxUnit
@@ -110,9 +120,8 @@ class first_home_mortgage_origination_year(Variable):
     definition_period = YEAR
     default_value = 0
     documentation = (
-        "Calendar year when the first home acquisition mortgage originated. The "
-        "federal debt limits treat 1987 as before October 14, 1987 and 2017 as "
-        "before December 16, 2017. Enter 0 if unknown."
+        "Calendar year when the first home acquisition mortgage originated. "
+        + _ORIGINATION_YEAR_CONVENTION
     )
 
 
@@ -123,9 +132,8 @@ class second_home_mortgage_origination_year(Variable):
     definition_period = YEAR
     default_value = 0
     documentation = (
-        "Calendar year when the second home acquisition mortgage originated. The "
-        "federal debt limits treat 1987 as before October 14, 1987 and 2017 as "
-        "before December 16, 2017. Enter 0 if unknown."
+        "Calendar year when the second home acquisition mortgage originated. "
+        + _ORIGINATION_YEAR_CONVENTION
     )
 
 

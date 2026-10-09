@@ -15,7 +15,8 @@ IRS Publication 936 (2025), Table 1 (PDF page 14), computes the qualified loan
 limit in that order, reducing each limit by grandfathered debt once ("The
 limits above are reduced (but not below zero) by the amount of your
 grandfathered debt", PDF page 12). Interest is deductible in the ratio of the
-limit to the total balance (lines 12-15).
+limit to the total balance (lines 12-15); the model uses the exact ratio, where
+line 14 rounds it to three decimals.
 
 The model stores two loans per tax unit with a balance and an origination
 year. Hypothesis draws pairs of loans around every cutoff and limit and checks
@@ -29,25 +30,20 @@ from Table 1 with its "stop here" branch and one in the statute's order:
 3. Order: swapping the two loans never changes the limit.
 4. Monotone: a larger balance, or an older vintage, never lowers the limit.
 
-One vectorized simulation then checks a seeded grid of tax units in 2017 and
-2024 end to end: the deductible interest equals the restatement, lies between
-0 and the interest paid, and with the non-deductible interest adds up to the
-interest paid. The YAML cases in
-deductible_mortgage_interest_tax_unit.yaml check single households; this grid
-checks the parameter lookups for mixed filing statuses in one vectorized run.
+These are for-all properties of the helpers, which YAML cannot state. The
+policy outcomes, parameter lookups for every filing status, and the interest
+proration and accounting are checked in deductible_mortgage_interest_tax_unit.yaml,
+including vectorized runs that mix filing statuses and vintages.
 
 Cutoff years are written here, not read from the parameters: only the year is
 known, so 1987 counts as on or before October 13, 1987 and 2017 as on or
 before December 15, 2017. An unknown year (0) counts as post-2017 debt.
 """
 
-from itertools import product
-
 import numpy as np
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
-from policyengine_us import Simulation
 from policyengine_us.variables.household.expense.tax_unit.mortgage_interest_structure import (
     _debt_by_vintage,
     _qualified_loan_limit,
@@ -173,63 +169,3 @@ def test_vintage_split_conserves_debt():
     np.testing.assert_array_equal(debt[1], [0, 0, 300, 400, 0])
     np.testing.assert_array_equal(debt[2], [100, 0, 0, 0, 500])
     np.testing.assert_array_equal(sum(debt), balances)
-
-
-GRID_BALANCES = (0, 400_000, 900_000, 1_200_000)
-GRID_YEARS = (0, 1986, 1987, 1988, 2017, 2018)
-GRID_STATUSES = ("JOINT", "SEPARATE")
-GRID_PERIODS = (2017, 2024)
-INTEREST = 60_000.0
-
-
-def test_simulated_deduction_matches_restatement():
-    loan_options = list(product(GRID_BALANCES, GRID_YEARS))
-    rng = np.random.default_rng(20261009)
-    pairs = [
-        (loan_options[i], loan_options[j])
-        for i, j in rng.integers(0, len(loan_options), size=(150, 2))
-    ]
-    units = list(product(pairs, GRID_STATUSES))
-    people, tax_units, households = {}, {}, {}
-    for k, ((first, second), status) in enumerate(units):
-        values = {
-            "first_home_mortgage_balance": first[0],
-            "first_home_mortgage_origination_year": first[1],
-            "second_home_mortgage_balance": second[0],
-            "second_home_mortgage_origination_year": second[1],
-            "filing_status": status,
-        }
-        people[f"p{k}"] = {
-            "age": {str(p): 50 for p in GRID_PERIODS},
-            "home_mortgage_interest": {str(p): INTEREST for p in GRID_PERIODS},
-        }
-        tax_units[f"t{k}"] = {
-            "members": [f"p{k}"],
-            **{
-                name: {str(p): value for p in GRID_PERIODS}
-                for name, value in values.items()
-            },
-        }
-        households[f"h{k}"] = {"members": [f"p{k}"]}
-    sim = Simulation(
-        situation={"people": people, "tax_units": tax_units, "households": households}
-    )
-    for period in GRID_PERIODS:
-        deductible = sim.calculate("deductible_mortgage_interest_tax_unit", period)
-        non_deductible = sim.calculate(
-            "non_deductible_mortgage_interest_tax_unit", period
-        )
-        expected = []
-        for (first, second), status in units:
-            key = ("2018+" if period >= 2018 else "pre-2018") + (
-                " separate" if status == "SEPARATE" else ""
-            )
-            total = first[0] + second[0]
-            limit = table_1([first, second], LIMITS[key])
-            expected.append(INTEREST * (min(1, limit / total) if total else 1))
-        np.testing.assert_allclose(deductible, expected, atol=TOLERANCE)
-        assert (deductible >= -TOLERANCE).all()
-        assert (deductible <= INTEREST + TOLERANCE).all()
-        np.testing.assert_allclose(
-            deductible + non_deductible, INTEREST, atol=TOLERANCE
-        )
