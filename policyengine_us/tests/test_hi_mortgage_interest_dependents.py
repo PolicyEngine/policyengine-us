@@ -19,7 +19,7 @@ INTEREST_SOURCES = (
     "legacy",
     "reconstructed",
     "supplied_deduction",
-    "structured",
+    "structured_with_filer_legacy",
     "dataset_like",
     "dataset_like_dependent_only",
     "none",
@@ -97,12 +97,14 @@ def _add_tax_unit(situation, name, joint, filers, mortgage, dependents):
 
 @pytest.mark.parametrize("reconstructed", (False, True))
 def test_dependent_mortgage_inputs_never_change_hawaii_deduction(reconstructed):
-    """Dependent payments cannot change deductions within a fixed source path.
+    """Dependent payments cannot change deductions with filer payments fixed.
 
     Dataset-like structured inputs equal all members' canonical payments;
     changing dependent payments and these matching totals leaves the filers'
-    deduction unchanged. Canonical presence selects the filers' own amount,
-    including zero, before any legacy gross or supplied-deduction fallback.
+    deduction unchanged, including when dependent payments go from zero to
+    positive. Structured exports also have their totals explicitly attributed
+    to filers through legacy gross inputs, so disabling the federal structured
+    fallback cannot erase those filers' payments from the Hawaii deduction.
     """
     rng = random.Random(9950)
     situation = {
@@ -141,13 +143,21 @@ def test_dependent_mortgage_inputs_never_change_hawaii_deduction(reconstructed):
                     ),
                     "second_home_mortgage_origination_year": 2023,
                 }
-                if source == "structured":
+                if source == "structured_with_filer_legacy":
                     mortgage["first_home_mortgage_interest"] = rng.randint(
                         1_000, 150_000
                     )
                     mortgage["second_home_mortgage_interest"] = rng.randint(
                         1_000, 150_000
                     )
+                    structured_total = (
+                        mortgage["first_home_mortgage_interest"]
+                        + mortgage["second_home_mortgage_interest"]
+                    )
+                    filers = [
+                        {"mortgage_interest": structured_total / len(filers)}
+                        for _ in filers
+                    ]
 
                 variables = (
                     (MORTGAGE_INPUTS[sample],)
@@ -172,39 +182,22 @@ def test_dependent_mortgage_inputs_never_change_hawaii_deduction(reconstructed):
                 label = f"{'joint' if joint else 'single'}-{source}-{sample}"
                 labels.append(label)
                 before_dependents = [{} for _ in dependents]
-                canonical_guard = "home_mortgage_interest" in variables and source in (
-                    "legacy",
-                    "reconstructed",
-                    "supplied_deduction",
-                    "structured",
-                )
-                if canonical_guard:
-                    # Both sides already have canonical interest. Crossing
-                    # from no canonical input to a positive one intentionally
-                    # changes eligibility for the lower-priority fallbacks.
-                    before_dependents = [
-                        {"home_mortgage_interest": 1} for _ in dependents
-                    ]
 
                 filer_total = sum(sum(inputs.values()) for inputs in filers)
                 if source == "canonical_with_supplied_deduction":
                     filer_total = sum(
                         inputs["home_mortgage_interest"] for inputs in filers
                     )
-                if source == "structured":
+                if source == "structured_with_filer_legacy":
                     filer_total = (
                         mortgage["first_home_mortgage_interest"]
                         + mortgage["second_home_mortgage_interest"]
                     )
                 share = round(min(debt, 1_100_000) / debt, 3) if debt else 1
                 expected.append(
-                    0
-                    if canonical_guard
-                    else (
-                        filer_total
-                        if source == "supplied_deduction"
-                        else filer_total * share
-                    )
+                    filer_total
+                    if source == "supplied_deduction"
+                    else filer_total * share
                 )
                 # Membership, filer inputs, and tax-unit debt remain identical.
                 # Dataset-like exports additionally mirror all members'
