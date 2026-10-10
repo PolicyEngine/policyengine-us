@@ -1,0 +1,26 @@
+- name: Case 1, the credit is the prior-year decrease when tax is computed under section 1341(a)(5).
+  period: 2025
+  input:
+    claim_of_right_section_1341_eligible: true
+    claim_of_right_credit_applies: true
+    claim_of_right_prior_year_tax_decrease: 1_234
+  output:
+    claim_of_right_credit: 1_234
+
+- name: Case 2, no credit under section 1341(a)(4).
+  period: 2025
+  input:
+    claim_of_right_section_1341_eligible: true
+    claim_of_right_credit_applies: false
+    claim_of_right_prior_year_tax_decrease: 1_234
+  output:
+    claim_of_right_credit: 0
+
+- name: Case 3, no credit without a qualifying repayment.
+  period: 2025
+  input:
+    claim_of_right_section_1341_eligible: false
+    claim_of_right_credit_applies: true
+    claim_of_right_prior_year_tax_decrease: 1_234
+  output:
+    claim_of_right_credit: 0

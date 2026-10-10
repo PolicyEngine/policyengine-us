@@ -10,6 +10,7 @@ class ks_itemized_deductions(Variable):
     reference = (
         "https://www.ksrevenue.gov/pdf/ip21.pdf",
         "https://www.ksrevenue.gov/pdf/ip22.pdf",
+        "https://www.ksrevisor.gov/statutes/chapters/ch79/079_032_0120.html",
     )
     defined_for = StateCode.KS
 
@@ -25,4 +26,9 @@ class ks_itemized_deductions(Variable):
         # compute itemized deduction maximum
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
         uncapped_property_taxes = add(tax_unit, period, ["real_estate_taxes"])
-        return itm_deds_less_salt + uncapped_property_taxes
+        # K.S.A. 79-32,120(a) limits Kansas itemized deductions to charitable
+        # contributions, medical care, qualified residence interest and
+        # property taxes, so the federal claim of right repayment deduction
+        # is not one of them.
+        claim_of_right_deduction = tax_unit("claim_of_right_deduction", period)
+        return itm_deds_less_salt - claim_of_right_deduction + uncapped_property_taxes

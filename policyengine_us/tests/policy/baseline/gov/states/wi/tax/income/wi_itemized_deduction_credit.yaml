@@ -25,3 +25,17 @@
     state_code: WI
   output:
     wi_itemized_deduction_credit_potential: 0
+
+- name: WI itemized deduction credit leaves out the federal claim of right repayment deduction
+  # Wis. Stat. 71.07(5)(a)7; Schedule 1 has lines for medical expenses,
+  # interest, gifts to charity and casualty losses only.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    wi_standard_deduction: 10_000
+    charitable_deduction: 3_000
+    interest_deduction: 12_000
+    claim_of_right_deduction: 20_000
+    state_code: WI
+  output:
+    wi_itemized_deduction_credit_potential: 250  # = (3K + 12K - 10K) * 5%

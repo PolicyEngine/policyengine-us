@@ -23,35 +23,28 @@ def create_nc_eitc() -> Reform:
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.NC
+        # Baseline computes this via `adds`; replacing it with a
+        # formula requires clearing the inherited computation mode
+        # (the core engine rejects `formula` + `adds`/`subtracts`).
+        adds = None
+        subtracts = None
 
         def formula(tax_unit, period, parameters):
-            return tax_unit("nc_eitc", period)
-
-    class nc_income_tax(Variable):
-        value_type = float
-        entity = TaxUnit
-        label = "North Carolina income tax"
-        unit = USD
-        definition_period = YEAR
-        defined_for = StateCode.NC
-
-        def formula(tax_unit, period, parameters):
-            # Mirror baseline nc_income_tax, which uses
-            # nc_income_tax_before_credits and does NOT add nc_use_tax. This
-            # reform's only change is subtracting the new refundable EITC;
-            # adding use tax here would raise tax for every filer (even those
-            # with no EITC). See #8775.
-            tax_before_credits = tax_unit("nc_income_tax_before_credits", period)
-            non_refundable_credits = tax_unit("nc_non_refundable_credits", period)
-            tax_before_refundable = max_(0, tax_before_credits - non_refundable_credits)
-            refundable_credits = tax_unit("nc_refundable_credits", period)
-            return tax_before_refundable - refundable_credits
+            # Preserve the baseline refundable credits and ADD the new
+            # EITC. Baseline nc_income_tax subtracts nc_refundable_credits
+            # and excludes nc_use_tax, so no override of it is needed.
+            # See #8775.
+            baseline_credits = parameters(
+                period
+            ).gov.states.nc.tax.income.credits.refundable
+            return add(tax_unit, period, list(baseline_credits)) + tax_unit(
+                "nc_eitc", period
+            )
 
     class reform(Reform):
         def apply(self):
             self.update_variable(nc_eitc)
             self.update_variable(nc_refundable_credits)
-            self.update_variable(nc_income_tax)
 
     return reform
 

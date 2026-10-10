@@ -19,3 +19,16 @@
     state_code: KS
   output:
     ks_itemized_deductions: 12 + 9 + 2
+
+- name: KS itemized deductions leave out the federal claim of right repayment deduction
+  # K.S.A. 79-32,120(a) lists charitable contributions, medical care,
+  # qualified residence interest and property taxes only.
+  period: 2025
+  input:
+    real_estate_taxes: 3_000
+    interest_deduction: 9_000
+    claim_of_right_deduction: 5_000
+    state_code: KS
+  output:
+    itemized_deductions_less_salt: 14_000
+    ks_itemized_deductions: 12_000
