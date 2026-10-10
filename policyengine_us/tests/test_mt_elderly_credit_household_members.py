@@ -267,6 +267,46 @@ def test_worked_example():
     assert_properties([case])
 
 
+def negative_household_cases():
+    return [
+        {
+            "claimant_age": claimant_age,
+            "pension": 0,
+            "claimant_ss": 347,
+            "property_tax": 319,
+            "rent": 0,
+            "member_age": 43,
+            "interest": interest,
+            "capital_gain": 0,
+            "member_ss": member_ss,
+            "self_employment_income": 0,
+            "early_withdrawal_penalty": penalty,
+            "health_premiums": 0,
+            "pension_contributions": 0,
+            "extra_interest": extra_interest,
+        }
+        for claimant_age, interest, member_ss, penalty, extra_interest in (
+            (62, 4_420, 894, 5_986, 377),
+            (86, 0, 0, 894, 1),
+        )
+    ]
+
+
+def test_negative_household_income_keeps_full_multiplier():
+    # 347 + 4,420 + 894 - 5,986 = -325; adding 377 gives 52;
+    # removing the penalty gives 5,661. In the second case, 347 - 894
+    # = -547, or -546 with extra interest, or 347 without the penalty.
+    # Every total is below 12,600, so net household contribution is zero.
+    # Line 29 gives 100% below 35,000, so the 319 property tax is paid:
+    # https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=49
+    result = calculate(negative_household_cases())
+    assert result["gross_household_income"] == pytest.approx(
+        np.array([[-325, -547], [-325, -547], [52, -546], [5_661, 347]]),
+        abs=TOLERANCE,
+    )
+    assert result["credit"] == pytest.approx(np.full((4, 2), 319), abs=TOLERANCE)
+
+
 try:
     import hypothesis
     import hypothesis.strategies as st
@@ -311,6 +351,7 @@ if hypothesis is not None:
     @hypothesis.settings(
         max_examples=15, derandomize=True, deadline=None, suppress_health_check=SLOW
     )
+    @hypothesis.example(negative_household_cases())
     @hypothesis.example(
         [
             # P2: 10,000 * .9235 * .153 / 2 = 706.4775;

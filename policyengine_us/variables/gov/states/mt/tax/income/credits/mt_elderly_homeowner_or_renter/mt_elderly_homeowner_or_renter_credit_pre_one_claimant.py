@@ -13,6 +13,8 @@ class mt_elderly_homeowner_or_renter_credit_pre_one_claimant(Variable):
         "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0400/0150-0300-0230-0400.html",
         # 2024 Form 2, Schedule 2EC
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2/2024_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=10",
+        # 2024 instructions, line 29 Credit Multiplier Table
+        "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=49",
     )
 
     def formula(person, period, parameters):
@@ -46,5 +48,8 @@ class mt_elderly_homeowner_or_renter_credit_pre_one_claimant(Variable):
         )
         uncapped_credit = uncapped_credit_unit * head
         capped_credit = min_(uncapped_credit, p.cap)
-        multiplier = p.multiplier.calc(gross_household_income)
+        # The table gives 100% for all income less than $35,000, including
+        # negative AGI after permitted adjustments. Preserve signed income
+        # and floor only the lookup input at its first threshold.
+        multiplier = p.multiplier.calc(max_(0, gross_household_income))
         return capped_credit * multiplier
