@@ -7,19 +7,35 @@ class basic_standard_deduction(Variable):
     label = "Basic standard deduction"
     definition_period = YEAR
     unit = USD
-    reference = "https://www.law.cornell.edu/uscode/text/26/63#c_2"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/63#c_2",
+        "https://www.law.cornell.edu/uscode/text/26/63#c_5",
+        # Standard Deduction Worksheet for Dependents: "Use this worksheet
+        # only if someone can claim you, or your spouse if filing jointly,
+        # as a dependent."
+        "https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=35",
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.deductions.standard
         filing_status = tax_unit("filing_status", period)
         separate_filer_itemizes = tax_unit("separate_filer_itemizes", period)
-        dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
+        # A joint return uses the dependent worksheet, with the couple's
+        # earned income and the joint amount as the cap, when either spouse
+        # can be claimed.
+        dependent_elsewhere = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         standard_deduction = p.amount[filing_status]
+        # Worksheet earned income: wages and self-employment income minus the
+        # deductible part of self-employment tax (Schedule 1, line 15).
+        worksheet_earned_income = max_(
+            tax_unit("tax_unit_earned_income", period)
+            - tax_unit("self_employment_tax_ald", period),
+            0,
+        )
         standard_deduction_if_dependent = min_(
             standard_deduction,
             max_(
-                p.dependent.additional_earned_income
-                + tax_unit("tax_unit_earned_income", period),
+                p.dependent.additional_earned_income + worksheet_earned_income,
                 p.dependent.amount,
             ),
         )

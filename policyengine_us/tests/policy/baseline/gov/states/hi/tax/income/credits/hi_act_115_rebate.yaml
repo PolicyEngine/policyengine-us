@@ -162,3 +162,156 @@
         state_code: HI
   output:
     hi_act_115_rebate: 0
+
+- name: Joint return with a child where only one spouse can be claimed (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 5_000
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: HI
+  output:
+    # Only the spouse who cannot be claimed has a qualified exemption; a joint
+    # return on which a spouse can be claimed claims no dependents. 1 x $300.
+    hi_act_115_rebate: 300
+
+- name: Joint return with a child where only one spouse can be claimed (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 5_000
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: HI
+  output:
+    # Only the spouse who cannot be claimed has a qualified exemption; a joint
+    # return on which a spouse can be claimed claims no dependents. 1 x $300.
+    hi_act_115_rebate: 300
+
+- name: Joint return where both spouses can be claimed
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        adjusted_gross_income: 5_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    hi_act_115_rebate: 0
+
+# Act 115 sec.3(a)-(b), HRS 235-54(a), and Pub. 501 PDF p.11.
+- name: Joint return filing exception restores own dependent but excludes claimable head from Act 115
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 26
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4000
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: HI
+  output:
+    hi_act_115_rebate: 600
+
+- name: Joint return filing exception restores own dependent but excludes claimable spouse from Act 115
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 26
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4000
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: HI
+  output:
+    hi_act_115_rebate: 600
