@@ -1,0 +1,48 @@
+# TAXSIM-35 v17 is "Itemized Deductions in taxable income": 0 when the filer
+# takes the standard deduction. Expected values are the TAXSIM-35 executable's
+# v17 for the same Texas households (no state income tax). TAXSIM has no
+# sales tax deduction, so the general sales tax deduction is set to 0.
+
+- name: Itemized deductions below the standard deduction are not in taxable income
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 50_000
+        deductible_mortgage_interest: 5_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_and_local_sales_or_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # 7,000 of itemized deductions is below the 14,600 standard deduction.
+    itemized_taxable_income_deductions: 7_000
+    taxsim_v17: 0
+
+- name: An itemizer reports the itemized deductions
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 200_000
+        deductible_mortgage_interest: 30_000
+        real_estate_taxes: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        state_and_local_sales_or_income_tax: 0
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    taxsim_v17: 38_000
