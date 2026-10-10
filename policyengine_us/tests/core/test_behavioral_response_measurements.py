@@ -133,6 +133,8 @@ def make_parameters(
     income_change_bound=0.3,
     wage_change_bound=0.4,
     capital_gains_elasticity=-0.62,
+    capital_gains_semi_elasticity=0.0,
+    capital_gains_net_of_tax_elasticity=0.0,
     lsr_income_elasticity=-0.05,
     lsr_substitution_elasticity=0.25,
 ):
@@ -150,7 +152,9 @@ def make_parameters(
                     ),
                 ),
                 capital_gains_responses=SimpleNamespace(
-                    elasticity=capital_gains_elasticity
+                    elasticity=capital_gains_elasticity,
+                    semi_elasticity=capital_gains_semi_elasticity,
+                    net_of_tax_elasticity=capital_gains_net_of_tax_elasticity,
                 ),
             )
         )

@@ -6,6 +6,11 @@ from policyengine_us.variables.gov.simulation.behavioral_response_measurements i
     calculate_relative_capital_gains_mtr_change,
     get_behavioral_response_measurements,
 )
+from policyengine_us.variables.gov.simulation.capital_gains_response_forms import (
+    CAPITAL_GAINS_RESPONSE_FORM_VARIABLES,
+    capital_gains_response_factor,
+    selected_capital_gains_response_form,
+)
 
 
 class relative_capital_gains_mtr_change(Variable):
@@ -32,10 +37,40 @@ class capital_gains_elasticity(Variable):
         return gov.simulation.capital_gains_responses.elasticity
 
 
+class capital_gains_semi_elasticity(Variable):
+    value_type = float
+    entity = Person
+    label = "semi-elasticity of capital gains realizations"
+    unit = "/1"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        gov = parameters(period).gov
+        return gov.simulation.capital_gains_responses.semi_elasticity
+
+
+class capital_gains_net_of_tax_elasticity(Variable):
+    value_type = float
+    entity = Person
+    label = "net-of-tax elasticity of capital gains realizations"
+    unit = "/1"
+    definition_period = YEAR
+
+    def formula(person, period, parameters):
+        gov = parameters(period).gov
+        return gov.simulation.capital_gains_responses.net_of_tax_elasticity
+
+
 class capital_gains_behavioral_response(Variable):
     value_type = float
     entity = Person
     label = "capital gains behavioral response"
+    documentation = (
+        "Change in long-term capital gains realizations from the change in the"
+        " person's capital gains marginal tax rate. The functional form is the"
+        " one whose parameter under gov.simulation.capital_gains_responses is"
+        " nonzero; see capital_gains_response_forms.py."
+    )
     unit = USD
     definition_period = YEAR
 
@@ -44,19 +79,21 @@ class capital_gains_behavioral_response(Variable):
         if simulation.baseline is None:
             return 0
 
-        if parameters(period).gov.simulation.capital_gains_responses.elasticity == 0:
+        form = selected_capital_gains_response_form(
+            parameters(period).gov.simulation.capital_gains_responses
+        )
+        if form is None:
             return 0
 
         capital_gains = person("long_term_capital_gains_before_response", period)
         measurements = get_behavioral_response_measurements(person, period)
-        tax_rate_change = calculate_relative_capital_gains_mtr_change(measurements)
-        elasticity = person("capital_gains_elasticity", period)
-
-        # Calculate response using log differences
-        response_factor = np.exp(elasticity * tax_rate_change) - 1
-        response = capital_gains * response_factor
-
-        return response
+        response_factor = capital_gains_response_factor(
+            form,
+            measurements["baseline_capital_gains_mtr"],
+            measurements["reform_capital_gains_mtr"],
+            person(CAPITAL_GAINS_RESPONSE_FORM_VARIABLES[form], period),
+        )
+        return capital_gains * response_factor
 
 
 class long_term_capital_gains_before_response(Variable):
