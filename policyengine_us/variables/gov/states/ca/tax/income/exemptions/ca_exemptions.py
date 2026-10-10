@@ -41,9 +41,12 @@ class ca_exemptions(Variable):
             tax_unit("head_spouse_count_not_dependent_elsewhere", period),
             p.personal_scale[filing_status],
         )
-        aged_blind_count = tax_unit.sum(
-            (filer & ~claimed)
+        claimed_aged_blind_count = tax_unit.sum(
+            (filer & claimed)
             * (person("is_irs_aged", period).astype(int) + person("is_blind", period))
+        )
+        aged_blind_count = (
+            tax_unit("aged_blind_count", period) - claimed_aged_blind_count
         )
         personal_aged_blind_exemption_count = (
             personal_exemption_count + aged_blind_count
