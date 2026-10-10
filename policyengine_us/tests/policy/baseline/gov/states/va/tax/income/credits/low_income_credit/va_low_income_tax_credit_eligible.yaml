@@ -83,3 +83,80 @@
         state_code: VA
   output:
     va_low_income_tax_credit_eligible: false
+
+# Va. Code 58.1-339.8(D)(4): no credit when "any person claimed as a dependent"
+# claims the additional exemption for blind or aged taxpayers on their own
+# return. The model takes a blind or aged dependent to claim it.
+- name: 2025 blind dependent bars the low income tax credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 16
+        is_blind: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    va_aged_blind_exemption: 0
+    va_low_income_tax_credit_eligible: false
+
+- name: 2025 aged dependent bars the low income tax credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, parent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, parent]
+        state_code: VA
+  output:
+    va_aged_blind_exemption: 0
+    va_low_income_tax_credit_eligible: false
+
+- name: 2025 dependent who is neither blind nor aged does not bar the low income tax credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 16
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    va_low_income_tax_credit_eligible: true

@@ -20,7 +20,11 @@ class va_standard_deduction(Variable):
         # "limited to the amount of your earned income"), with no federal
         # floor or add-on. Virginia taxes a joint return on one joint taxable
         # income (58.1-324(B)(1)), so either spouse being claimable caps the
-        # joint deduction at the couple's earned income.
+        # joint deduction at the couple's earned income. Earned income here
+        # is the model's earned_income (wages and net self-employment
+        # earnings), with each filer's loss floored at zero; 23VAC10-110-143
+        # counts wages, salaries, professional fees and other pay for
+        # services.
         person = tax_unit.members
         filer = person("is_tax_unit_head_or_spouse", period)
         filer_earned_income = tax_unit.sum(

@@ -1,11 +1,18 @@
 """Virginia rules for a filer who can be claimed as a dependent.
 
-The standard deduction, personal and aged/blind exemptions and both Virginia
-EITC alternatives apply Va. Code 58.1-322.03 and 58.1-339.8(B)(1).
+The standard deduction is limited to the filers' earned income, personal
+exemptions follow those allowable federally, and the EITC alternatives are
+barred (Va. Code 58.1-322.03, 58.1-339.8).
 
-For couples drawn by Hypothesis and a seeded population in VA, with
-either, both or neither spouse claimed, each output is the same under either
-head/spouse labelling, and marking another filer as claimed never raises it.
+For couples with either, both or neither spouse claimed:
+
+1. Swap invariance: each tax-unit output is the same under either head/spouse
+   labelling (Hypothesis batches and the seeded population).
+2. Monotonicity: marking another filer as claimed never raises an output
+   (seeded population only).
+
+The outputs are tax-unit totals; which spouse an exemption goes to is checked
+by YAML cases on the person-level variables.
 """
 
 import pytest

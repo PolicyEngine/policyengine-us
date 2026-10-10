@@ -45,6 +45,8 @@
   output:
     # IRC 152(b)(1): such a return has no dependents.
     va_personal_exemption: 930
+    # Members in order: the claimable spouse, the other spouse, the child.
+    va_personal_exemption_person: [0, 930, 0]
 
 - name: 2025 joint return with one claimable spouse keeps the other spouse's exemption but no dependents (the claimable spouse is the spouse)
   period: 2025
@@ -71,6 +73,8 @@
         state_code: VA
   output:
     va_personal_exemption: 930
+    # Members in order: the other spouse, the claimable spouse, the child.
+    va_personal_exemption_person: [930, 0, 0]
 
 - name: 2025 joint return with neither spouse claimable counts both spouses and the child
   period: 2025
