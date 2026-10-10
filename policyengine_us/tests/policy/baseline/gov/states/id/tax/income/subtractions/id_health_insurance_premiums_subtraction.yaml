@@ -374,3 +374,43 @@
     medical_expense_deduction: 1_250
     id_health_insurance_premiums_medical_deduction: 750
     id_health_insurance_premiums_subtraction: 2_250
+
+- name: A supplied Schedule A expense subtotal includes unreported claimant bills
+  # Review r3's P2; Form 39R worksheet, PDF page 49, lines 1-6 and 8.
+  # $6,000 claimant expenses - $2,250 floor = $3,750 medical deduction,
+  # exhausting the $3,000 premiums even without person-level other bills.
+  period: 2025
+  input:
+    state_code: ID
+    health_insurance_premiums: 3_000
+    adjusted_gross_income: 30_000
+    itemized_medical_expenses: 6_000
+    standard_deduction: 15_750
+    id_itemized_deductions: 20_000
+  output:
+    medical_expense_deduction: 3_750
+    id_health_insurance_premiums_medical_deduction: 3_750
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 0
+    id_taxable_income: 10_000
+
+- name: A supplied Schedule A expense subtotal already excludes disallowed premiums
+  # Schedule A line 1 excludes pretax premiums and the Schedule 1 deduction.
+  # $6,000 premiums - $2,000 pretax - $1,000 above-line + $500 other bills
+  # = $3,500 supplied expenses; subtract only the $2,250 medical floor.
+  period: 2025
+  input:
+    state_code: ID
+    health_insurance_premiums: 6_000
+    pre_tax_health_insurance_premiums: 2_000
+    self_employed_health_insurance_ald: 1_000
+    adjusted_gross_income: 30_000
+    itemized_medical_expenses: 3_500
+    standard_deduction: 15_750
+    id_itemized_deductions: 20_000
+  output:
+    medical_expense_deduction: 1_250
+    id_qualified_health_insurance_premiums: 3_000
+    id_health_insurance_premiums_medical_deduction: 1_250
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 1_750
