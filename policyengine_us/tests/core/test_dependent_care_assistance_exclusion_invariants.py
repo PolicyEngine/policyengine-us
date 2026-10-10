@@ -39,7 +39,7 @@ TOLERANCE = 0.01  # dollars
 # https://www.irs.gov/pub/irs-prior/f2441--2021.pdf#page=2
 # https://www.irs.gov/pub/irs-prior/f2441--2022.pdf#page=2
 # The post-2025 cap is Pub. L. 119-21 section 70404:
-# https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf
+# https://www.govinfo.gov/content/pkg/PLAW-119publ21/pdf/PLAW-119publ21.pdf#page=144
 PUBLISHED_CAP = {
     2020: (5_000, 2_500),
     2021: (10_500, 5_250),
