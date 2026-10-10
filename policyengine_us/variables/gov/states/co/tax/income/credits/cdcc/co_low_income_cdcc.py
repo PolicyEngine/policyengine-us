@@ -28,7 +28,9 @@ class co_low_income_cdcc(Variable):
         # 13. A return on which the filer (or, if joint, either spouse) can be
         # claimed as a dependent has no dependents (IRC 152(b)(1)); only the
         # federal tax-liability condition is waived.
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = tax_unit.members.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
         eligible_kid = (
             age < p.cdcc.low_income.child_age_threshold
         ) & ~filer_is_dependent
