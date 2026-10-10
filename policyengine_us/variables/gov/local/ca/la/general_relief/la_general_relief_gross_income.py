@@ -3,7 +3,9 @@ from policyengine_us.model_api import *
 
 class la_general_relief_gross_income(Variable):
     value_type = float
-    entity = Person
+    # SPM unit level so that the person-level sources are summed over members
+    # and SPM-unit-level sources (tanf) are counted once, not once per member.
+    entity = SPMUnit
     unit = USD
     label = (
         "Gross Income sources accounted for under the Los Angeles County General Relief"
