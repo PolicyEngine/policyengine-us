@@ -14,6 +14,11 @@ reforms replace household_benefits or spm_unit_benefits with their own
 hardcoded list, so a contributed program added to the baseline aggregates is
 silently dropped under those reforms unless it is added to every copy. That
 shipped with the Trump dividend, which #9430 added to the baseline lists only.
+
+The last test keeps reforms from copying the household tax totals at all. The
+abolish-federal-income-tax and abolish-payroll-tax reforms once did, from a
+separate list that lost the Idaho permanent building fund tax, five states'
+use taxes and every local tax except New York City's.
 """
 
 import ast
@@ -224,4 +229,35 @@ def test_reform_aggregates_keep_baseline_contrib_entries(
         f"{missing}, which the baseline {variable_name} counts. Add the entry "
         "here too, or record a deliberate omission in "
         "ALLOWED_REFORM_OMISSIONS in this test."
+    )
+
+
+# --- Household tax totals -------------------------------------------------
+
+HOUSEHOLD_TAX_TOTALS = {
+    "household_tax_before_refundable_credits",
+    "household_state_tax_before_refundable_credits",
+    "household_refundable_tax_credits",
+    "household_refundable_state_tax_credits",
+    "household_refundable_local_tax_credits",
+    "household_tax",
+    "household_net_income",
+}
+
+
+def test_no_reform_redefines_a_household_tax_total():
+    """Change a component or the baseline formula instead of copying a total.
+
+    A copy keeps the components it was written with, so it misses any that
+    the baseline total gains later.
+    """
+    redefinitions = []
+    for source in sorted((PACKAGE / "reforms").rglob("*.py")):
+        tree = ast.parse(source.read_text())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ClassDef) and node.name in HOUSEHOLD_TAX_TOTALS:
+                redefinitions.append(f"{source.relative_to(PACKAGE)}::{node.name}")
+    assert not redefinitions, (
+        "Reforms redefine household tax totals, which then drift from the "
+        f"baseline: {redefinitions}"
     )
