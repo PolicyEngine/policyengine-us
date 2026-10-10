@@ -270,7 +270,7 @@ def test_rate_on_long_term_gains_stacks_on_wages_and_covers_both_spouses():
 #   alternative minimum tax and faces 28%: 28.38% to 28.40% with $20 million
 #   of gains, 28.074% to 28.078% with $100 million.
 # - 37% to 38%. The tax on all taxable income at the ordinary rates becomes
-#   the smaller regular tax at 37.09% with $100 million of gains and 37.43%
+#   the smaller regular tax at 37.08% with $100 million of gains and 37.43%
 #   with $20 million, and within the rise of that point the rate is a blend.
 TOP_RATES = st.one_of(
     st.floats(CAPITAL_GAINS_RATES[2], 0.28),
