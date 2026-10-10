@@ -20,6 +20,11 @@ def _ssi_established_spouse_indices(person, period, first, second):
     one can claim a spouse), so a default unit never pairs a parent with the
     child they claim. Explicit marital units otherwise stand, whatever tax
     roles the model infers. Ambiguous candidates resolve to no spouse.
+    Known limitation: a simulation holding only a married couple in which
+    one spouse is the other's tax dependent (as the model infers for a
+    married minor when tax roles are omitted) cannot be told apart from a
+    default group, so that couple is not treated as married; supply tax roles
+    that do not make a spouse a dependent.
     """
     head_or_spouse = person("is_tax_unit_head_or_spouse", period)
     dependent = person("is_tax_unit_dependent", period)

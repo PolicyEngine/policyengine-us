@@ -128,16 +128,26 @@ class ssi_resources_deemed_from_ineligible_parent(Variable):
         active = person("is_ssi_resource_deeming_child", period) & (
             own_resources <= p.individual
         )
+        # SI 01330.200 B divides among SSI-eligible children. A child whose
+        # countable income (with income deemed from parents) already reaches
+        # the payment is ineligible 'for any reason': they are still deemed a
+        # share, but do not count in the division. Neither variable reads the
+        # resource test.
+        income_eligible = person(
+            "ssi_countable_income", period.this_year
+        ) / MONTHS_IN_YEAR < person("ssi_amount_if_eligible", period)
         deemed = np.zeros(person.count)
         # SI 01330.200 B: 'equally divide' among eligible children; when a
         # child is ineligible 'divide ... among the remaining eligible children'.
-        # Retain the last tested share for a failed child, then redistribute.
+        # A child outside the division is deemed the eligible children's share,
+        # or the whole excess when none is left. Retain the last tested share
+        # for a child who fails on resources, then redistribute.
         # Each round removes at least one child or leaves the result stable;
         # at most the largest household size rounds are needed (Goode, .280).
         rounds = int(np.max(person.household.nb_persons(), initial=0))
         pool_count = int(np.max(pool, initial=-1)) + 1
         for _ in range(rounds):
-            count = np.bincount(pool[active], minlength=pool_count)
+            count = np.bincount(pool[active & income_eligible], minlength=pool_count)
             share = excess / max_(1, count[pool])
             deemed = where(active, share, deemed)
             remaining = active & (own_resources + share <= p.individual)

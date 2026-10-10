@@ -20,12 +20,19 @@ class ssi_resources_deemed_from_ineligible_spouse(Variable):
         spouse = np.maximum(_ssi_spouse_index(person, period), 0)
         # 416.1202(a): an ineligible spouse's resources count 'whether or not
         # such resources are available', less the exclusions 416.1202(a)(2)
-        # grants an ineligible spouse. An aged, blind or disabled spouse is
-        # tested as part of a couple under 416.1205(b), with only the
-        # exclusions an eligible individual gets.
-        aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
+        # grants an ineligible spouse. An aged, blind or disabled spouse who
+        # meets the immigration condition is tested as part of a couple under
+        # 416.1205(b), with only the exclusions an eligible individual gets.
+        # A spouse who fails SSI's citizenship or qualified-noncitizen
+        # condition is 'not eligible for SSI benefits' (416.1160) whatever
+        # their age or disability, so keeps the ineligible-spouse exclusions.
+        immigration_status = person("immigration_status", period)
+        could_be_eligible = person("is_ssi_aged_blind_disabled", period) & (
+            (immigration_status == immigration_status.possible_values.CITIZEN)
+            | person("is_ssi_qualified_noncitizen", period)
+        )
         resources = where(
-            aged_blind_disabled[spouse],
+            could_be_eligible[spouse],
             person("ssi_countable_resources", period)[spouse],
             person("ssi_resources_for_deeming", period)[spouse],
         )

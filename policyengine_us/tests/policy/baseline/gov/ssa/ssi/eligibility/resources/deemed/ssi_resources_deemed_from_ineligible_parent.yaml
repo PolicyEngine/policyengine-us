@@ -2073,8 +2073,10 @@
     meets_ssi_resource_test: [true, true, true, true, true, true, true, true]
 
 # SI 01330.200 B divides the excess among SSI-eligible children. A sibling
-# whose own countable income already exceeds the payment is ineligible, so
-# the eligible child takes the whole 5,000 - 2,000 = 3,000 and fails.
+# whose countable income already exceeds the payment is ineligible, so the
+# eligible child's share is the whole 5,000 - 2,000 = 3,000 and the child
+# fails. 416.1202(b) still deems the parents' resources to the sibling, who
+# is deemed the same share and fails too.
 - name: An income-ineligible sibling does not share the parental excess
   period: 2026-01
   input:
@@ -2114,9 +2116,9 @@
       home:
         members: [mother, child, sibling]
   output:
-    is_ssi_resource_deeming_child: [false, true, false]
-    ssi_resources_deemed_from_ineligible_parent: [0, 3000, 0]
-    meets_ssi_resource_test: [false, false, true]
+    is_ssi_resource_deeming_child: [false, true, true]
+    ssi_resources_deemed_from_ineligible_parent: [0, 3000, 3000]
+    meets_ssi_resource_test: [false, false, false]
 
 # 416.1856: a married 17-year-old is not a child, even when the model infers
 # tax roles that make the 19-year-old spouse a dependent.
@@ -2154,4 +2156,41 @@
   output:
     is_ssi_resource_deeming_child: [false, false, false]
     ssi_resources_deemed_from_ineligible_parent: [0, 0, 0]
+
+# An only child who is ineligible on income still has the parents' excess
+# deemed (416.1202(b)), so a state supplement that reads the resource test
+# does not see them pass it: 10,000 - 2,000 = 8,000.
+- name: An income-ineligible only child is still deemed the whole excess
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 10000
+      child:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+        ssi_countable_income:
+          '2026': 120000
+    tax_units:
+      family:
+        members: [mother, child]
+    marital_units:
+      mother_unit:
+        members: [mother]
+      child_unit:
+        members: [child]
+    households:
+      home:
+        members: [mother, child]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 8000]
+    meets_ssi_resource_test: [false, false]
 

@@ -30,16 +30,9 @@ class is_ssi_resource_deeming_child(Variable):
         # default marital unit of a situation that omits marital units does
         # not marry a child to the parent who claims them.
         # age is annual in the model: supply the relevant attained age.
-        # A child whose own countable income (including income deemed from
-        # parents) already reaches the payment is ineligible 'for any reason'
-        # and does not share the excess. Neither reads the resource test.
-        income_eligible = person(
-            "ssi_countable_income", period.this_year
-        ) / MONTHS_IN_YEAR < person("ssi_amount_if_eligible", period)
         return (
             person("is_ssi_aged_blind_disabled", period)
             & meets_immigration_status
-            & income_eligible
             & (person("age", period.this_year) < 18)
             & (_ssi_spouse_index(person, period) < 0)
             & ~person("is_household_head", period)

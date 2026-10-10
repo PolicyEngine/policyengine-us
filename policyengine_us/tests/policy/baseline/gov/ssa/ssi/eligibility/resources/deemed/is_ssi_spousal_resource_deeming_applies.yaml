@@ -444,3 +444,51 @@
     ssi_resources_deemed_from_ineligible_spouse: [0, 2000, 2000]
     meets_ssi_resource_test: [true, false, false]
 
+# A spouse who fails SSI's citizenship or qualified-noncitizen condition is
+# 'not eligible for SSI benefits' (416.1160), so keeps the ineligible-spouse
+# exclusion of retroactive military pay (416.1202(a)(2)): 3,001 - 2,000 =
+# 1,001 counted, and the claimant passes the 3,000 couple limit.
+- name: An immigration-ineligible disabled spouse keeps ineligible-spouse exclusions
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 55
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      claimant:
+        age: 30
+        is_ssi_aged_blind_disabled: true
+        immigration_status: CITIZEN
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 30
+        is_ssi_aged_blind_disabled: true
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 3001
+        ssi_resource_deeming_excluded_military_resources: 2000
+    tax_units:
+      family:
+        members: [mother, claimant, spouse]
+    marital_units:
+      mother_unit:
+        members: [mother]
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [mother, claimant, spouse]
+  output:
+    ssi_resources_deemed_from_ineligible_spouse: [0, 1001, 0]
+    meets_ssi_resource_test: [true, true, false]
+
