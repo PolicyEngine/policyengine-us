@@ -52,3 +52,56 @@
     households: {household: {members: [head, spouse], state_code: CA}}
   output:
     ca_amt: 0
+
+
+- name: Excess employee deductions do not create California AMT below the exemption
+  # Schedule P line 15 uses -99,000, not the zero on Form 540 line 19.
+  # https://www.ftb.ca.gov/forms/2025/2025-540-p-instructions.html
+  period: 2025
+  absolute_error_margin: 0.02
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        unreimbursed_business_employee_expenses: 150_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    ca_amt: 0
+    ca_misc_deduction: 149_000
+    ca_deductions: 149_000
+    ca_taxable_income: 0
+    ca_pre_exemption_amti: 50_000
+    ca_amti: 50_000
+
+- name: California AMT with income exceeding deductions is unchanged
+  period: 2025
+  absolute_error_margin: 0.02
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 200_000
+        unreimbursed_business_employee_expenses: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    ca_amt: 1_396.932
+    ca_misc_deduction: 96_000
+    ca_deductions: 96_000
+    ca_taxable_income: 104_000
+    ca_pre_exemption_amti: 200_000
+    ca_amti: 200_000

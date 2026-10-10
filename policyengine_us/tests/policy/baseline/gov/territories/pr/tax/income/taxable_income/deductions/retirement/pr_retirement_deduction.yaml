@@ -1,7 +1,10 @@
+# IRA contributions cannot exceed compensation (26 U.S.C. 219(b)(1)(B)), so each
+# case gives the filer wages equal to their Puerto Rico AGI.
 - name: Contributions are higher than maximum deduction
   period: 2024
   input:
     pr_agi_person: 10_000
+    employment_income: 10_000
     traditional_ira_contributions_desired: 3_001
     roth_ira_contributions_desired: 2_000
     state_code: PR
@@ -12,6 +15,7 @@
   period: 2024
   input:
     pr_agi_person: 1_300
+    employment_income: 1_300
     traditional_ira_contributions_desired: 500
     roth_ira_contributions_desired: 300
     state_code: PR
@@ -22,6 +26,7 @@
   period: 2024
   input:
     pr_agi_person: 4_000
+    employment_income: 4_000
     traditional_ira_contributions_desired: 500
     roth_ira_contributions_desired: 301
     state_code: PR
@@ -32,6 +37,7 @@
   period: 2024
   input:
     pr_agi_person: 4_000
+    employment_income: 4_000
     traditional_ira_contributions_desired: 5000
     roth_ira_contributions_desired: 3000
     state_code: PR

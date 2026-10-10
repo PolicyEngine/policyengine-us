@@ -1,0 +1,10 @@
+description: The IRS does not reduce the IRA deductible dollar limit below this amount before the active-participant phase-out is complete.
+values:
+  2015-01-01: 200
+metadata:
+  unit: currency-USD
+  period: year
+  label: IRA deduction phase-out minimum deductible limit
+  reference:
+    - title: 26 U.S. Code § 219(g)(2)(B)
+      href: https://www.law.cornell.edu/uscode/text/26/219#g_2_B

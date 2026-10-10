@@ -13,15 +13,28 @@ class mi_household_resources(Variable):
         "statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/"
         "section-206-508/",
         "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-508",
+        # MCL 206.510(1): "Income", including premiums paid for the family.
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-510",
         "https://web.archive.org/web/20250202150154/https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf",
+        # 2025 MI-1040CR-7 book (archived; michigan.gov removed it):
+        # "Total Household Resources" (page 4) and lines 17 to 23 (page 8)
+        # and 24 to 33 (page 9). They match MI-1040CR lines 14 to 31 on whose
+        # income counts: CR-7 lines 24, 25 and 30 are MI-1040CR lines 21, 22
+        # and 27.
+        "https://web.archive.org/web/20260218211009/https://www.michigan.gov/"
+        "taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/"
+        "MI-1040CR-7-Book.pdf?rev=e4ba4fedc63942e48442037517312d4a"
+        "&hash=AF396E577B1932DF55BFD7F22D7EF06A#page=8",
         # 2025 MI-1040 book: "Total Household Resources" (page 26) and
-        # MI-1040CR lines 16 and 17 (page 31), 19 and 30 (page 32).
+        # MI-1040CR lines 14 to 17 (page 31) and 18 to 31 (pages 32 and 33).
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
         "Forms/IIT/TY2025/MI-1040-Book.pdf#page=26",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
         "Forms/IIT/TY2025/MI-1040-Book.pdf#page=31",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
         "Forms/IIT/TY2025/MI-1040-Book.pdf#page=32",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
+        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=33",
     )
 
     def formula(tax_unit, period, parameters):
@@ -47,22 +60,38 @@ class mi_household_resources(Variable):
             "farm_rent_income",
         }
 
-        # MCL 206.508(3): "'Household' means a claimant and spouse." A
-        # dependent's business and rental items belong on the dependent's own
-        # return, so they neither add to nor net against lines 16 and 17, as
-        # loss_ald leaves them off this return. tax_unit_non_dep_add sums a
-        # person-level source over the head and spouse and takes a
-        # tax-unit-level one (other_net_gain) as is.
+        # MCL 206.508(3): "'Household' means a claimant and spouse", and
+        # (4) counts "all income received by all persons of a household".
+        # The MI-1040CR says "Include all taxable and nontaxable income you
+        # and your spouse received" (2025 MI-1040 book, page 31). A
+        # dependent's own income belongs on the dependent's return, so a
+        # source is summed over the head and spouse only, as in
+        # irs_gross_income. A tax-unit-level source (other_net_gain,
+        # filer_loss_limited_net_capital_gains) already describes the
+        # filer's return.
+        # The sources in household_resources_all_members are amounts the
+        # claimant receives for others in the household (lines 21, 22 and
+        # 27), so they are summed over every member. So is a source defined
+        # for a larger group than the tax unit, such as tanf for the SPM
+        # unit: add gives the tax unit its members' shares.
+        all_members = p.household_resources_all_members
+
         business_income = 0
         rental_income = 0
         other_income = 0
         for source in p.household_resources:
-            if source in business_sources:
-                business_income += tax_unit_non_dep_add(tax_unit, period, [source])
-            elif source in rental_sources:
-                rental_income += tax_unit_non_dep_add(tax_unit, period, [source])
+            entity = tax_unit.entity.get_variable(source).entity
+            own_return = entity.is_person or entity.key == tax_unit.entity.key
+            if source in all_members or not own_return:
+                amount = add(tax_unit, period, [source])
             else:
-                other_income += add(tax_unit, period, [source])
+                amount = tax_unit_non_dep_add(tax_unit, period, [source])
+            if source in business_sources:
+                business_income += amount
+            elif source in rental_sources:
+                rental_income += amount
+            else:
+                other_income += amount
         total = other_income + max_(business_income, 0) + max_(rental_income, 0)
 
         # Line 30: "Enter total adjustments from your U.S. Form 1040,
@@ -85,7 +114,8 @@ class mi_household_resources(Variable):
         # The Schedule 1 is the claimant's own (MCL 206.508(3)): a person-level
         # adjustment, such as a dependent's IRA contribution or early withdrawal
         # penalty, is summed over the head and spouse, as above_the_line_deductions
-        # does. A tax-unit-level adjustment already describes the filer's return.
+        # does. A tax-unit-level adjustment already describes the filer's return,
+        # including educator_expense_ald, capped per eligible educator.
         ald = parameters(period).gov.irs.ald
         adjustments = tax_unit_non_dep_add(
             tax_unit,
@@ -95,8 +125,11 @@ class mi_household_resources(Variable):
                 for deduction in p.household_resources_adjustments
                 if deduction in ald.deductions
             ],
-            include_dependents=ald.filer_amounts_recorded_on_dependents,
         )
-        # Line 31: health insurance premiums.
+        # Line 31: "insurance premiums you paid for yourself and your
+        # family". MCL 206.510(1) lets a person deduct "the amount that
+        # person paid in premiums ... for that insurance plan for the
+        # person's family". A premium on any member's record is read as one
+        # the claimant or spouse paid for the family's coverage.
         health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
         return max_(0, total - adjustments - health_insurance_premiums)
