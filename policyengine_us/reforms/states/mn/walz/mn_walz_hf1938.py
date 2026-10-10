@@ -115,10 +115,17 @@ def create_mn_walz_hf1938_repeal() -> Reform:
             mn_itm_deds = itm_deds_less_salt + capped_property_taxes
             # ... calculate itemized deductions offset
             p = parameters(period).gov.states.mn.tax.income.deductions.itemized
+            # As in the baseline: Minn. Stat. 290.0122, subd. 2(d)(3) leaves
+            # the subd. 8 losses, including wagering losses, out of the
+            # limitation.
             exempt_deds = add(
                 tax_unit,
                 period,
-                ["medical_expense_deduction", "casualty_loss_deduction"],
+                [
+                    "medical_expense_deduction",
+                    "casualty_loss_deduction",
+                    "wagering_losses_deduction",
+                ],
             )
             net_deds = max_(0, mn_itm_deds - exempt_deds)
             net_deds_offset = p.reduction.alternate.rate * net_deds
