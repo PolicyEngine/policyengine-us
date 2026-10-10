@@ -21,8 +21,13 @@ class ny_inflation_refund_credit(Variable):
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
         # Tax Law 606(qqq): recipients, including "taxpayers filing joint
-        # returns", "must not have been claimed as a dependent".
-        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # returns", "must not have been claimed as a dependent". This turns on
+        # an actual claim, so it reads the claimed input rather than a
+        # claimability helper.
+        person = tax_unit.members
+        filer = person("is_tax_unit_head_or_spouse", period)
+        claimed = person("claimed_as_dependent_on_another_return", period)
+        dependent_filer = tax_unit.any(filer & claimed)
 
         amount = select(
             [

@@ -7,7 +7,6 @@
   output:
     ny_allowable_college_tuition_expenses: 10_000
 
-
 - name: 2025 single student claimed as a dependent elsewhere has no allowable tuition
   period: 2025
   input:
@@ -100,3 +99,92 @@
         state_code: NY
   output:
     ny_allowable_college_tuition_expenses: 12_000
+
+# Tax Law 606(t): the tuition of a dependent counts only for a dependent for whom
+# an exemption is allowed under section 616, and a return on which a filer can be
+# claimed has none (IRC 152(b)(1)).
+- name: 2025 dependent student's tuition does not count on a joint return with one claimable spouse (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 45
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 45
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      student:
+        age: 19
+        qualified_tuition_expenses: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, student]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, student]
+        state_code: NY
+  output:
+    ny_allowable_college_tuition_expenses: 0
+
+- name: 2025 dependent student's tuition does not count on a joint return with one claimable spouse (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 45
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      student:
+        age: 19
+        qualified_tuition_expenses: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, student]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, student]
+        state_code: NY
+  output:
+    ny_allowable_college_tuition_expenses: 0
+
+- name: 2025 dependent student's tuition counts on a joint return with neither spouse claimable
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 45
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      student:
+        age: 19
+        qualified_tuition_expenses: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, student]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, student]
+        state_code: NY
+  output:
+    ny_allowable_college_tuition_expenses: 6000

@@ -4,9 +4,17 @@ The household credit, real property tax credit, dependent exemptions, college
 tuition, 2023 inflation refund and 2026 child and dependent care credit apply
 Tax Law 606 and 616's dependent tests.
 
-For couples drawn by Hypothesis and a seeded population in NY, with
-either, both or neither spouse claimed, each output is the same under either
-head/spouse labelling, and marking another filer as claimed never raises it.
+For couples with either, both or neither spouse claimed:
+
+1. Swap invariance: each output is the same under either head/spouse
+   labelling (Hypothesis batches, the seeded population and the crafted
+   tuition cases).
+2. Monotonicity: marking another filer as claimed never raises an output
+   (seeded population and crafted cases only).
+
+The crafted cases give both spouses and a dependent student tuition, which the
+generated population never has. The New York City credits need a New York City
+household and, like the contributed reforms, are covered by YAML cases only.
 """
 
 import pytest
@@ -37,6 +45,37 @@ OUTPUTS = [
 ]
 
 
+def _tuition_cases():
+    # Both spouses and a dependent student with tuition, with and without a
+    # young child and childcare expenses.
+    first = {
+        "age": 45,
+        "employment_income": 20_000.0,
+        "qualified_tuition_expenses": 6_000.0,
+    }
+    second = {
+        "age": 44,
+        "employment_income": 12_000.0,
+        "qualified_tuition_expenses": 3_000.0,
+    }
+    student = {
+        "age": 19,
+        "is_full_time_student": True,
+        "qualified_tuition_expenses": 8_000.0,
+    }
+    child = {"age": 3, "pre_subsidy_childcare_expenses": 4_000.0}
+    return [
+        {
+            "state": "NY",
+            "adults": [first, second],
+            "dependents": others,
+            "claimed": claimed,
+        }
+        for others in ([], [student], [student, child])
+        for claimed in [(True, False), (False, True), (True, True)]
+    ]
+
+
 @st.composite
 def couples(draw):
     return {
@@ -60,6 +99,8 @@ def test_ny_claimable_filer_rules_are_label_free(year, units):
 
 @pytest.mark.parametrize("year", YEARS)
 def test_ny_claimable_filer_rules_seeded_population(year):
-    units = _seeded_couples(STATES, per_state=3) + _crafted_cases(STATES)
+    units = (
+        _seeded_couples(STATES, per_state=3) + _crafted_cases(STATES) + _tuition_cases()
+    )
     check_swap(units, year, OUTPUTS)
     check_monotone(units, year, OUTPUTS)

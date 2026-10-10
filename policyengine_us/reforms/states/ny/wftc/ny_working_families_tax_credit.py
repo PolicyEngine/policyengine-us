@@ -468,7 +468,15 @@ def create_ny_working_families_tax_credit() -> Reform:
         defined_for = StateCode.NY
 
         def formula(tax_unit, period, parameters):
-            count_dependents = add(tax_unit, period, ["ny_exemptions_dependent"])
+            # As in the baseline, a return on which a filer (or, if joint,
+            # either spouse) can be claimed as a dependent has no dependents
+            # (Tax Law 616(a), IRC 152(b)(1)).
+            dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+            count_dependents = where(
+                dependent_filer,
+                0,
+                add(tax_unit, period, ["ny_exemptions_dependent"]),
+            )
             dependent_exemption = parameters(
                 period
             ).gov.states.ny.tax.income.exemptions.dependent

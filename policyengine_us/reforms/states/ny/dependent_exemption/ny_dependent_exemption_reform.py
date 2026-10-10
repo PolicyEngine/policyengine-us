@@ -24,7 +24,11 @@ def create_ny_dependent_exemption() -> Reform:
                 eligible = is_child_dependent & (age < p.age_limit.threshold)
             else:
                 eligible = is_child_dependent
-            count = tax_unit.sum(eligible)
+            # As in the baseline, a return on which a filer (or, if joint,
+            # either spouse) can be claimed as a dependent has no dependents
+            # (Tax Law 616(a), IRC 152(b)(1)).
+            dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+            count = where(dependent_filer, 0, tax_unit.sum(eligible))
             return count * p.amount
 
     class reform(Reform):

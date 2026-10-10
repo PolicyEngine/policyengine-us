@@ -42,11 +42,10 @@ class ny_household_credit_potential(Variable):
             total_amount_if_not_single / where(separate, 2, 1)
         )
         non_single_amount = amount_if_not_single * ~single
-        # Tax Law 606(b)(3)(B) excludes an individual "with respect to whom a
-        # deduction under section one hundred fifty-one ... is allowable to
-        # another taxpayer", and IT-201 line 40 says "If you marked the Yes box
-        # at item C ... you do not qualify for this credit". Item C is one box
-        # per return, so a joint return whose either spouse can be claimed
-        # marks it.
+        # Tax Law 606(b)(3)(B) excludes an individual for whom a deduction
+        # under IRC 151(c) "is allowable to another taxpayer", and IT-201 line
+        # 40 says "If you marked the Yes box at item C ... you do not qualify
+        # for this credit". Item C is one box per return; this formula reads
+        # it as marked when either spouse of a joint return can be claimed.
         dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         return where(dependent_filer, 0, single_amount + non_single_amount)

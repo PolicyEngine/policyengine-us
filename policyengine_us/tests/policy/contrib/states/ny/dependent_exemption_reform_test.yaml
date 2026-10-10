@@ -71,3 +71,43 @@
     households: {household: {members: [parent, child1], state_name: NY}}
   # Dependent one year under the limit (12 < 13) receives the exemption.
   output: {ny_exemptions: 1_000}
+
+# As in the baseline, a return on which a filer (or, if joint, either spouse) can
+# be claimed as a dependent has no dependents (Tax Law 616(a), IRC 152(b)(1)).
+- name: NY dependent exemption reform - no exemption for the child of a filer who can be claimed as a dependent
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.dependent_exemption.ny_dependent_exemption_reform.ny_dependent_exemption_reform
+  input:
+    gov.contrib.states.ny.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 60_000, claimed_as_dependent_on_another_return: true}
+      child1: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: NY}}
+  output: {ny_exemptions: 0}
+
+- name: NY dependent exemption reform - no exemption on a joint return with one claimable spouse (the claimable spouse is the head)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.dependent_exemption.ny_dependent_exemption_reform.ny_dependent_exemption_reform
+  input:
+    gov.contrib.states.ny.dependent_exemption.in_effect: true
+    people:
+      person_a: {age: 40, claimed_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 40, employment_income: 60_000, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child1: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_a, person_b, child1], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child1], state_name: NY}}
+  output: {ny_exemptions: 0}
+
+- name: NY dependent exemption reform - no exemption on a joint return with one claimable spouse (the claimable spouse is the spouse)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ny.dependent_exemption.ny_dependent_exemption_reform.ny_dependent_exemption_reform
+  input:
+    gov.contrib.states.ny.dependent_exemption.in_effect: true
+    people:
+      person_b: {age: 40, employment_income: 60_000, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 40, claimed_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child1: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_b, person_a, child1], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a, child1], state_name: NY}}
+  output: {ny_exemptions: 0}
