@@ -61,3 +61,171 @@
     tax_unit_stillborn_children: 1
   output:
     nd_stillborn_subtraction: 0
+
+
+- name: 2025 single filer who can be claimed as a dependent: North Dakota stillborn child subtraction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        tax_unit_stillborn_children: 1
+    households:
+      household:
+        members: [person_a]
+        state_code: ND
+  output:
+    # Schedule ND-1SA line 8: "You would have been eligible to claim the
+    # child as a dependent" on your federal return. IRC 152(b)(1): a return on which the filer (or, if joint, either spouse) can be claimed as a dependent has no dependents.
+    nd_stillborn_subtraction: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent: North Dakota stillborn child subtraction (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        tax_unit_stillborn_children: 1
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: ND
+  output:
+    nd_stillborn_subtraction: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent: North Dakota stillborn child subtraction (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      person_a:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        tax_unit_stillborn_children: 1
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: ND
+  output:
+    nd_stillborn_subtraction: 0
+
+- name: 2025 joint return on which both spouses can be claimed as dependents: North Dakota stillborn child subtraction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        tax_unit_stillborn_children: 1
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: ND
+  output:
+    nd_stillborn_subtraction: 0
+
+- name: 2025 joint return on which neither spouse can be claimed: North Dakota stillborn child subtraction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        tax_unit_stillborn_children: 1
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: ND
+  output:
+    # One stillbirth at the 2025 amount of $5,241.
+    nd_stillborn_subtraction: 5241
+
+- name: 2025 single filer who cannot be claimed as a dependent: North Dakota stillborn child subtraction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        tax_unit_stillborn_children: 1
+    households:
+      household:
+        members: [person_a]
+        state_code: ND
+  output:
+    nd_stillborn_subtraction: 5241

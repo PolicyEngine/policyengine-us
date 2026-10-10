@@ -92,3 +92,30 @@
     households: {household: {members: [parent, child1], state_name: NJ}}
   # Dependent one year under the limit (12 < 13) is re-priced to the reform amount (0).
   output: {nj_dependents_exemption: 0}
+
+- name: NJ dependent exemption reform - a filer who can be claimed as a dependent has no dependents
+  period: 2025
+  reforms: policyengine_us.reforms.states.nj.dependent_exemption.nj_dependent_exemption_reform.nj_dependent_exemption_reform
+  input:
+    gov.contrib.states.nj.dependent_exemption.in_effect: true
+    gov.contrib.states.nj.dependent_exemption.amount: 3_000
+    people:
+      parent: {age: 20, employment_income: 10_000, claimed_as_dependent_on_another_return: true}
+      child1: {age: 2, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: NJ}}
+  output: {nj_dependents_exemption: 0}  # IRC 152(b)(1)
+
+- name: NJ dependent exemption reform - one claimable spouse leaves the joint return with no dependents
+  period: 2025
+  reforms: policyengine_us.reforms.states.nj.dependent_exemption.nj_dependent_exemption_reform.nj_dependent_exemption_reform
+  input:
+    gov.contrib.states.nj.dependent_exemption.in_effect: true
+    gov.contrib.states.nj.dependent_exemption.amount: 3_000
+    people:
+      spouse_b: {age: 22, employment_income: 10_000, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      spouse_a: {age: 20, is_tax_unit_head: false, is_tax_unit_spouse: true, claimed_as_dependent_on_another_return: true}
+      child1: {age: 2, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [spouse_b, spouse_a, child1], filing_status: JOINT}}
+    households: {household: {members: [spouse_b, spouse_a, child1], state_name: NJ}}
+  output: {nj_dependents_exemption: 0}

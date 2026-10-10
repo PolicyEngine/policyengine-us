@@ -9,6 +9,8 @@ class ok_federal_eitc_demographic_eligible(Variable):
     reference = (
         # Oklahoma Statutes 68 O.S. Section 2357.43
         "https://law.justia.com/codes/oklahoma/title-68/section-68-2357-43/",
+        "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii",
+        "https://www.irs.gov/pub/irs-prior/p596--2020.pdf#page=17",
     )
     defined_for = StateCode.OK
     documentation = """
@@ -16,7 +18,8 @@ class ok_federal_eitc_demographic_eligible(Variable):
 
     Tax units are demographically eligible if:
     1. They have qualifying children, OR
-    2. At least one filer meets age requirements (without children)
+    2. At least one filer meets age requirements (without children), and
+       neither filer can be claimed as a dependent on another return
 
     2020 Age requirements (for filers without qualifying children):
     - Minimum age: 25 (or 19 if full-time student)
@@ -42,6 +45,18 @@ class ok_federal_eitc_demographic_eligible(Variable):
         # Students have a lower minimum age requirement
         min_age = where(student, min_age_student, min_age_non_student)
         max_age = parameters.gov.irs.credits.eitc.eligibility.age.max("2020-01-01")
-        # Check if at least one filer meets age requirements
+        # Check if at least one filer meets age requirements. The age test
+        # applies to the filer or, on a joint return, either spouse, never to
+        # a dependent (IRC 32(c)(1)(A)(ii)(II)).
         meets_age_requirements = (age >= min_age) & (age <= max_age)
-        return has_child | tax_unit.any(meets_age_requirements)
+        is_filer_or_spouse = ~person("is_tax_unit_dependent", period)
+        # IRC 32(c)(1)(A)(ii)(III), unchanged since 2020: without a
+        # qualifying child, the filer must not be a dependent of another
+        # taxpayer; on a joint return, "neither you nor your spouse can be
+        # claimed as a dependent by another person" (2020 Publication 596).
+        dependent_elsewhere = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        childless_eligible = (
+            tax_unit.any(meets_age_requirements & is_filer_or_spouse)
+            & ~dependent_elsewhere
+        )
+        return has_child | childless_eligible

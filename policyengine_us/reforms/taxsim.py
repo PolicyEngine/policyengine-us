@@ -20,7 +20,12 @@ class pa_tax_forgiveness_rate(Variable):
         is_child_dependent = person("is_child_of_tax_head", period) & person(
             "is_tax_unit_dependent", period
         )
-        child_dependents = tax_unit.sum(is_child_dependent)
+        # As in the baseline, a return on which the filer (or, if joint,
+        # either spouse) can be claimed as a dependent has no dependents.
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        child_dependents = where(
+            filer_is_dependent, 0, tax_unit.sum(is_child_dependent)
+        )
         # filing status affects the base, where it doubles for married claimants
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values

@@ -121,17 +121,27 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             fagi = tax_unit("adjusted_gross_income", period) - roth_conversions
             filing_status = tax_unit("filing_status", period)
             agi_eligible = fagi <= p.special_agi_limit[filing_status]
+            # Regular exemptions as in the baseline: none for a filer who can
+            # be claimed as a dependent on another return.
+            claimed = person("claimed_as_dependent_on_another_return", period)
+            head_claimed = tax_unit.any(person("is_tax_unit_head", period) & claimed)
+            spouse_claimed = tax_unit.any(
+                person("is_tax_unit_spouse", period) & claimed
+            )
             # head exemptions
             age_eligible = tax_unit("age_head", period) >= p.special_age_minimum
-            head_exemptions = where(tax_unit("blind_head", period), 2, 1) + where(
-                agi_eligible & age_eligible, 1, 0
+            head_exemptions = (
+                where(head_claimed, 0, 1)
+                + where(tax_unit("blind_head", period), 1, 0)
+                + where(agi_eligible & age_eligible, 1, 0)
             )
             # spouse exemptions
             age_eligible = tax_unit("age_spouse", period) >= p.special_age_minimum
             spouse_exemptions = where(
                 filing_status == filing_status.possible_values.JOINT,
                 (
-                    where(tax_unit("blind_spouse", period), 2, 1)
+                    where(spouse_claimed, 0, 1)
+                    + where(tax_unit("blind_spouse", period), 1, 0)
                     + where(agi_eligible & age_eligible, 1, 0)
                 ),
                 0,
