@@ -117,7 +117,9 @@
         household_vehicles_value: 14630.0
         state_code: OH
   output:
-    income_tax_before_refundable_credits: 25700.17
+    # With the IRA 219(g) phase-out as well, the two-cause cell lands on its
+    # PolicyBench target.
+    income_tax_before_refundable_credits: 25747.77
 
 - name: Unspecified estate income is taxable but does not qualify as QBI
   period: 2026

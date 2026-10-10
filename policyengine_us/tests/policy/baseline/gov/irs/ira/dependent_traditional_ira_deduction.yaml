@@ -24,7 +24,8 @@
         state_code: TX
   output:
     dependent_traditional_ira_deduction: [0, 5_000]
-    traditional_ira_deduction: [0, 0]
+    # The dependent's own-return deduction is recorded on the dependent.
+    traditional_ira_deduction: [0, 5_000]
 
 - name: The dependent's deduction is limited to their compensation
   period: 2025

@@ -176,7 +176,9 @@
         income_tax_before_refundable_credits: 108525.578125
         # Raw CA target: evidence also applies frozen CA parameter conventions
         # and the separate r11 California itemized-deduction conformity fix.
-        state_income_tax_before_refundable_credits: 41200.18
+        # Also includes #10034's California itemized conformity (merged), since
+        # this is a two-cause IRA + CA cell.
+        state_income_tax_before_refundable_credits: 40683.11
 - name: PolicyBench scenario 049 IRA deduction regression
   period: 2026
   absolute_error_margin: 0.02
@@ -534,7 +536,9 @@
         income_tax_before_refundable_credits: 10711.484375
         # Raw CA target: evidence also applies frozen CA parameter conventions
         # and the separate r11 California itemized-deduction conformity fix.
-        state_income_tax_before_refundable_credits: 4505.34
+        # Also includes #10034's California itemized conformity (merged), since
+        # this is a two-cause IRA + CA cell.
+        state_income_tax_before_refundable_credits: 4441.45
 - name: PolicyBench scenario 110 IRA deduction regression
   period: 2026
   absolute_error_margin: 0.02
@@ -604,9 +608,9 @@
   output:
     tax_units:
       tax_unit:
-        # Standalone IRA target: evidence also applies the r03 estate-income
-        # fix and assumes unlisted estate income is not qualified for QBI.
-        income_tax_before_refundable_credits: 25444.27
+        # A two-cause cell: with estate income out of QBI (#10027) and the IRA
+        # phase-out, it lands on its PolicyBench target.
+        income_tax_before_refundable_credits: 25747.77
         state_income_tax_before_refundable_credits: 4236.8076171875
 - name: PolicyBench scenario 120 IRA deduction regression
   period: 2026

@@ -157,7 +157,9 @@
   output:
     ira_219g_magi: 85_000
     traditional_ira_contributions: [7_500, 1_000]
-    traditional_ira_deduction: [4_500, 0]
+    # The dependent's $1,000 is their own-return deduction; the filer's is
+    # unchanged.
+    traditional_ira_deduction: [4_500, 1_000]
     above_the_line_deductions: 4_500
 
 - name: Massachusetts disallows the IRA deduction allowed federally.
