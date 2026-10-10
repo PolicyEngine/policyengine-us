@@ -12,7 +12,7 @@
     tax_units:
       tax_unit:
         members: [head, child]
-        filer_adjusted_earnings: 2_941.176470588235
+        eitc_earned_income: 2_941.176470588235
         adjusted_gross_income: 2_941.176470588235
     households:
       household:
@@ -44,7 +44,7 @@
     tax_units:
       tax_unit:
         members: [head, child]
-        filer_adjusted_earnings: 2_941.176470588235
+        eitc_earned_income: 2_941.176470588235
         adjusted_gross_income: 2_941.176470588235
     households:
       household:
@@ -175,6 +175,108 @@
     # EITC (rather than the childless schedule) times the IL match.
     il_eitc: 680
 
+- name: IL EIC nets a spouse's self-employment loss, 2021 (18% x 2,400)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -4_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: IL
+  output:
+    # The spouse's $4,000 self-employment loss offsets the head's $10,000 of
+    # wages, so federal earned income is $6,000 (Form 1040 EIC Worksheet B,
+    # line 4b, combines both spouses' amounts on a joint return).
+    il_eitc: 432
+
+- name: IL EIC nets a spouse's self-employment loss, 2023 (20% x 2,400)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -4_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: IL
+  output:
+    # The spouse's $4,000 self-employment loss offsets the head's $10,000 of
+    # wages, so federal earned income is $6,000 (Form 1040 EIC Worksheet B,
+    # line 4b, combines both spouses' amounts on a joint return).
+    il_eitc: 480
+
+- name: IL EIC for a 65+ couple nets a self-employment loss, 2023 (20% x 7.65% x 5,000)
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 65
+        self_employment_income: -2_000
+        is_tax_unit_head: true
+      spouse:
+        age: 65
+        employment_income: 7_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: IL
+  output:
+    # 35 ILCS 5/212(b-10) waives the federal age limit for filers 65 or older.
+    # Earned income is $7,000 - $2,000 = $5,000, so the childless credit is
+    # 7.65% x 5,000 = 382.50 and the IL EIC is 20% of it.
+    il_eitc: 76.5
+
 - name: Illinois EITC uses the childless schedule for a disabled parent dependent (IRC 152(c)(2))
   period: 2025
   absolute_error_margin: 0.01
@@ -209,3 +311,41 @@
     # A parent fails the IRC 152(c)(2) relationship test: 20% x the childless
     # federal-like credit of 649.
     il_eitc: 129.8
+
+- name: IL EIC nets a spouse's self-employment loss in the phase-out range, 2023
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -5_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 7
+        is_tax_unit_dependent: true
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: IL
+  output:
+    # Earned income and AGI are 40,000 - 5,000 = 35,000. Two children, 2023
+    # (Rev. Proc. 2022-38, section 3.06): maximum credit 6,604, phase-out
+    # 21.06% above the joint 28,120. Federal EITC: 6,604 - 0.2106 x 6,880 =
+    # 5,155.07; IL EIC 20%: 1,031.01. Without netting, earned income would be
+    # 40,000 and the IL EIC 20% x (6,604 - 0.2106 x 11,880) = 820.41.
+    il_eitc: 1_031.01
