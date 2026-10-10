@@ -79,3 +79,26 @@
     state_code: AL
   output:
     al_agi: 70_000
+
+- name: A dependent's gambling winnings are not in the parent's Alabama AGI.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        gambling_winnings: 2_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        gambling_winnings: 20_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    al_gambling_winnings: [2_000, 0]
+    al_agi: 2_000
