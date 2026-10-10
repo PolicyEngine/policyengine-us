@@ -153,7 +153,7 @@
   output:
     vt_personal_exemptions: 13_050 # 3*4350
 
-- name: 2025 single filer who can be claimed as a dependent: Vermont personal exemptions count only filers who cannot be claimed and, when none can be, the dependents
+- name: "2025 single filer who can be claimed as a dependent: Vermont personal exemptions count only filers who cannot be claimed and, when none can be, the dependents"
   period: 2025
   input:
     people:
@@ -175,7 +175,7 @@
     # IRC 152(b)(1) leaves a claimable filer no dependents.
     vt_personal_exemptions: 0
 
-- name: 2025 joint return with one claimable spouse: Vermont personal exemptions count only filers who cannot be claimed and, when none can be, the dependents (the claimable spouse is the head)
+- name: "2025 joint return with one claimable spouse: Vermont personal exemptions count only filers who cannot be claimed and, when none can be, the dependents (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -204,7 +204,7 @@
     # The unclaimed spouse's exemption only: 1 x $5,300.
     vt_personal_exemptions: 5300
 
-- name: 2025 joint return with one claimable spouse: Vermont personal exemptions count only filers who cannot be claimed and, when none can be, the dependents (the claimable spouse is the spouse)
+- name: "2025 joint return with one claimable spouse: Vermont personal exemptions count only filers who cannot be claimed and, when none can be, the dependents (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -232,7 +232,7 @@
   output:
     vt_personal_exemptions: 5300
 
-- name: 2025 joint return with both spouses claimable: Vermont personal exemptions count only filers who cannot be claimed and, when none can be, the dependents
+- name: "2025 joint return with both spouses claimable: Vermont personal exemptions count only filers who cannot be claimed and, when none can be, the dependents"
   period: 2025
   input:
     people:
@@ -261,7 +261,7 @@
   output:
     vt_personal_exemptions: 0
 
-- name: 2025 joint return with neither spouse claimable: Vermont personal exemptions count only filers who cannot be claimed and, when none can be, the dependents
+- name: "2025 joint return with neither spouse claimable: Vermont personal exemptions count only filers who cannot be claimed and, when none can be, the dependents"
   period: 2025
   input:
     people:

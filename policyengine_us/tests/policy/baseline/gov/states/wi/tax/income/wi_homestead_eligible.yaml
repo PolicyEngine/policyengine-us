@@ -153,7 +153,7 @@
   output:
     wi_homestead_eligible: false
 
-- name: 2025 single filer who can be claimed as a dependent: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older
+- name: "2025 single filer who can be claimed as a dependent: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older"
   period: 2025
   input:
     people:
@@ -175,7 +175,7 @@
     wi_homestead_eligible: false
     wi_homestead_credit: 0
 
-- name: 2025 joint return with one claimable spouse: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older (the claimable spouse is the head)
+- name: "2025 joint return with one claimable spouse: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -207,7 +207,7 @@
     wi_homestead_eligible: true
     wi_homestead_credit: 800
 
-- name: 2025 joint return with one claimable spouse: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older (the claimable spouse is the spouse)
+- name: "2025 joint return with one claimable spouse: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -236,7 +236,7 @@
     wi_homestead_eligible: true
     wi_homestead_credit: 800
 
-- name: 2025 joint return with both spouses claimable: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older
+- name: "2025 joint return with both spouses claimable: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older"
   period: 2025
   input:
     people:
@@ -266,7 +266,7 @@
     wi_homestead_eligible: false
     wi_homestead_credit: 0
 
-- name: 2025 joint return with neither spouse claimable: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older
+- name: "2025 joint return with neither spouse claimable: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older"
   period: 2025
   input:
     people:
@@ -295,7 +295,7 @@
     wi_homestead_eligible: true
     wi_homestead_credit: 800
 
-- name: 2025 joint return with both spouses claimable: Wisconsin homestead credit allows a claimant aged 62 or older even if claimed
+- name: "2025 joint return with both spouses claimable: Wisconsin homestead credit allows a claimant aged 62 or older even if claimed"
   period: 2025
   input:
     people:
@@ -326,7 +326,7 @@
     wi_homestead_eligible: true
     wi_homestead_credit: 800
 
-- name: 2025 joint return where only the claimable spouse has earned income: no Wisconsin homestead claimant (the claimable spouse is the head)
+- name: "2025 joint return where only the claimable spouse has earned income: no Wisconsin homestead claimant (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -357,7 +357,7 @@
     wi_homestead_eligible: false
     wi_homestead_credit: 0
 
-- name: 2025 joint return where only the claimable spouse has earned income: no Wisconsin homestead claimant (the claimable spouse is the spouse)
+- name: "2025 joint return where only the claimable spouse has earned income: no Wisconsin homestead claimant (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:

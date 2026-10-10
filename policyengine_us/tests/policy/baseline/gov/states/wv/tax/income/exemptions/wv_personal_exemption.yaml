@@ -29,7 +29,7 @@
   output:
     wv_personal_exemption: 4_000
 
-- name: 2025 single filer who can be claimed as a dependent: West Virginia personal exemption counts only exemptions that may be claimed
+- name: "2025 single filer who can be claimed as a dependent: West Virginia personal exemption counts only exemptions that may be claimed"
   period: 2025
   input:
     people:
@@ -49,7 +49,7 @@
     # can be claimed; a return with no exemptions takes $500 instead.
     wv_personal_exemption: 500
 
-- name: 2025 joint return with one claimable spouse: West Virginia personal exemption counts only exemptions that may be claimed (the claimable spouse is the head)
+- name: "2025 joint return with one claimable spouse: West Virginia personal exemption counts only exemptions that may be claimed (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -76,7 +76,7 @@
     # One exemption for the spouse who cannot be claimed: $2,000.
     wv_personal_exemption: 2000
 
-- name: 2025 joint return with one claimable spouse: West Virginia personal exemption counts only exemptions that may be claimed (the claimable spouse is the spouse)
+- name: "2025 joint return with one claimable spouse: West Virginia personal exemption counts only exemptions that may be claimed (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -102,7 +102,7 @@
   output:
     wv_personal_exemption: 2000
 
-- name: 2025 joint return with both spouses claimable: West Virginia personal exemption counts only exemptions that may be claimed
+- name: "2025 joint return with both spouses claimable: West Virginia personal exemption counts only exemptions that may be claimed"
   period: 2025
   input:
     people:
@@ -130,7 +130,7 @@
     # No exemptions on the return: the $500 fallback, once per return.
     wv_personal_exemption: 500
 
-- name: 2025 joint return with neither spouse claimable: West Virginia personal exemption counts only exemptions that may be claimed
+- name: "2025 joint return with neither spouse claimable: West Virginia personal exemption counts only exemptions that may be claimed"
   period: 2025
   input:
     people:
@@ -156,7 +156,7 @@
     # Two exemptions x $2,000.
     wv_personal_exemption: 4000
 
-- name: 2025 joint return with one claimable spouse and a child: West Virginia personal exemption has no dependent exemption (the claimable spouse is the head)
+- name: "2025 joint return with one claimable spouse and a child: West Virginia personal exemption has no dependent exemption (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -186,7 +186,7 @@
     # dependents; one exemption x $2,000 (the control below gets $6,000).
     wv_personal_exemption: 2000
 
-- name: 2025 joint return with one claimable spouse and a child: West Virginia personal exemption has no dependent exemption (the claimable spouse is the spouse)
+- name: "2025 joint return with one claimable spouse and a child: West Virginia personal exemption has no dependent exemption (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -214,7 +214,7 @@
   output:
     wv_personal_exemption: 2000
 
-- name: 2025 joint return with neither spouse claimable and a child: West Virginia personal exemption
+- name: "2025 joint return with neither spouse claimable and a child: West Virginia personal exemption"
   period: 2025
   input:
     people:

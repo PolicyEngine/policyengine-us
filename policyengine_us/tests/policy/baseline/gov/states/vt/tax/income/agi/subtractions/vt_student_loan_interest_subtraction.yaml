@@ -1,4 +1,4 @@
-- name: 2025 single filer who can be claimed as a dependent: Vermont subtracts the student loan interest not deducted federally
+- name: "2025 single filer who can be claimed as a dependent: Vermont subtracts the student loan interest not deducted federally"
   period: 2025
   input:
     people:
@@ -21,7 +21,7 @@
     vt_student_loan_interest_subtraction: 1000
     vt_agi: 9000
 
-- name: 2025 joint return with one claimable spouse: Vermont subtracts the student loan interest not deducted federally (the claimable spouse is the head)
+- name: "2025 joint return with one claimable spouse: Vermont subtracts the student loan interest not deducted federally (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -53,7 +53,7 @@
     vt_student_loan_interest_subtraction: 1000
     vt_agi: 9000
 
-- name: 2025 joint return with one claimable spouse: Vermont subtracts the student loan interest not deducted federally (the claimable spouse is the spouse)
+- name: "2025 joint return with one claimable spouse: Vermont subtracts the student loan interest not deducted federally (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -83,7 +83,7 @@
     vt_student_loan_interest_subtraction: 1000
     vt_agi: 9000
 
-- name: 2025 joint return with both spouses claimable: Vermont subtracts the student loan interest not deducted federally
+- name: "2025 joint return with both spouses claimable: Vermont subtracts the student loan interest not deducted federally"
   period: 2025
   input:
     people:
@@ -114,7 +114,7 @@
     vt_student_loan_interest_subtraction: 1000
     vt_agi: 9000
 
-- name: 2025 joint return with neither spouse claimable: Vermont subtracts the student loan interest not deducted federally
+- name: "2025 joint return with neither spouse claimable: Vermont subtracts the student loan interest not deducted federally"
   period: 2025
   input:
     people:
@@ -146,7 +146,7 @@
     vt_student_loan_interest_subtraction: 0
     vt_agi: 9000
 
-- name: 2025 interest above the $2,500 federal cap: Vermont subtracts the excess
+- name: "2025 interest above the $2,500 federal cap: Vermont subtracts the excess"
   period: 2025
   input:
     people:

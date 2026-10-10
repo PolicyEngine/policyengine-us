@@ -98,7 +98,7 @@
     # within $0.05 of the schedule.
     wi_standard_deduction: 13_960 - 0.12 * (70_000 - 20_120)
 
-- name: 2025 single filer who can be claimed as a dependent: Wisconsin standard deduction limited for a filer who can be claimed
+- name: "2025 single filer who can be claimed as a dependent: Wisconsin standard deduction limited for a filer who can be claimed"
   period: 2025
   input:
     people:
@@ -118,7 +118,7 @@
     # max($1,350, earned income + $450) = max($1,350, $1,000 + $450).
     wi_standard_deduction: 1450
 
-- name: 2025 joint return with one claimable spouse: Wisconsin standard deduction limited for a filer who can be claimed (the claimable spouse is the head)
+- name: "2025 joint return with one claimable spouse: Wisconsin standard deduction limited for a filer who can be claimed (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -146,7 +146,7 @@
     # couple's earned income is $1,000, so $1,450.
     wi_standard_deduction: 1450
 
-- name: 2025 joint return with one claimable spouse: Wisconsin standard deduction limited for a filer who can be claimed (the claimable spouse is the spouse)
+- name: "2025 joint return with one claimable spouse: Wisconsin standard deduction limited for a filer who can be claimed (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -172,7 +172,7 @@
   output:
     wi_standard_deduction: 1450
 
-- name: 2025 joint return with both spouses claimable: Wisconsin standard deduction limited for a filer who can be claimed
+- name: "2025 joint return with both spouses claimable: Wisconsin standard deduction limited for a filer who can be claimed"
   period: 2025
   input:
     people:
@@ -199,7 +199,7 @@
   output:
     wi_standard_deduction: 1450
 
-- name: 2025 joint return with neither spouse claimable: Wisconsin standard deduction limited for a filer who can be claimed
+- name: "2025 joint return with neither spouse claimable: Wisconsin standard deduction limited for a filer who can be claimed"
   period: 2025
   input:
     people:
@@ -261,7 +261,7 @@
     # max($1,350, $0 + $450) = $1,350.
     wi_standard_deduction: 1350
 
-- name: 2021 single filer who can be claimed: Wisconsin dependent standard deduction
+- name: "2021 single filer who can be claimed: Wisconsin dependent standard deduction"
   period: 2021
   input:
     people:
@@ -280,7 +280,7 @@
     # 2021 Form 1 worksheet: max($1,100, $600 + $350) = $1,100.
     wi_standard_deduction: 1100
 
-- name: 2023 single filer who can be claimed: Wisconsin dependent standard deduction
+- name: "2023 single filer who can be claimed: Wisconsin dependent standard deduction"
   period: 2023
   input:
     people:

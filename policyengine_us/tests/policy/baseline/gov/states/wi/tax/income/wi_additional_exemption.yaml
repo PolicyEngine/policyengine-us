@@ -54,7 +54,7 @@
   output:
     wi_additional_exemption: 0
 
-- name: 2025 single filer who can be claimed as a dependent: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed
+- name: "2025 single filer who can be claimed as a dependent: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed"
   period: 2025
   input:
     people:
@@ -73,7 +73,7 @@
     # someone else can claim as a dependent.
     wi_additional_exemption: 0
 
-- name: 2025 joint return with one claimable spouse: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed (the claimable spouse is the head)
+- name: "2025 joint return with one claimable spouse: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -98,7 +98,7 @@
     # Each spouse is tested separately: only the unclaimed spouse counts.
     wi_additional_exemption: 250
 
-- name: 2025 joint return with one claimable spouse: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed (the claimable spouse is the spouse)
+- name: "2025 joint return with one claimable spouse: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -122,7 +122,7 @@
   output:
     wi_additional_exemption: 250
 
-- name: 2025 joint return with both spouses claimable: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed
+- name: "2025 joint return with both spouses claimable: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed"
   period: 2025
   input:
     people:
@@ -147,7 +147,7 @@
   output:
     wi_additional_exemption: 0
 
-- name: 2025 joint return with neither spouse claimable: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed
+- name: "2025 joint return with neither spouse claimable: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed"
   period: 2025
   input:
     people:
@@ -171,7 +171,7 @@
     # Two filers aged 65 or older x $250.
     wi_additional_exemption: 500
 
-- name: 2025 joint return where only the claimable spouse is 65 or older: no Wisconsin $250 exemption (the claimable spouse is the head)
+- name: "2025 joint return where only the claimable spouse is 65 or older: no Wisconsin $250 exemption (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -195,7 +195,7 @@
   output:
     wi_additional_exemption: 0
 
-- name: 2025 joint return where only the claimable spouse is 65 or older: no Wisconsin $250 exemption (the claimable spouse is the spouse)
+- name: "2025 joint return where only the claimable spouse is 65 or older: no Wisconsin $250 exemption (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:

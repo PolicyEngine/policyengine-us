@@ -84,7 +84,7 @@
   output:
     vt_ctc: 500
 
-- name: Two children halfway phased out at $150,000: each child's $1,000 is reduced by $500
+- name: "Two children halfway phased out at $150,000: each child's $1,000 is reduced by $500"
   period: 2023
   input:
     people:
@@ -184,7 +184,7 @@
   output:
     vt_ctc: 0
 
-- name: 2025 single filer who can be claimed as a dependent: no Vermont child tax credit
+- name: "2025 single filer who can be claimed as a dependent: no Vermont child tax credit"
   period: 2025
   input:
     people:
@@ -207,7 +207,7 @@
     # a claimable filer no dependents and so no federal credit.
     vt_ctc: 0
 
-- name: 2025 joint return with one claimable spouse: no Vermont child tax credit (the claimable spouse is the head)
+- name: "2025 joint return with one claimable spouse: no Vermont child tax credit (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -236,7 +236,7 @@
     # Either spouse being claimable leaves the joint return no dependents.
     vt_ctc: 0
 
-- name: 2025 joint return with one claimable spouse: no Vermont child tax credit (the claimable spouse is the spouse)
+- name: "2025 joint return with one claimable spouse: no Vermont child tax credit (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -264,7 +264,7 @@
   output:
     vt_ctc: 0
 
-- name: 2025 joint return with both spouses claimable: no Vermont child tax credit
+- name: "2025 joint return with both spouses claimable: no Vermont child tax credit"
   period: 2025
   input:
     people:
@@ -293,7 +293,7 @@
   output:
     vt_ctc: 0
 
-- name: 2025 joint return with neither spouse claimable (control): Vermont child tax credit
+- name: "2025 joint return with neither spouse claimable (control): Vermont child tax credit"
   period: 2025
   input:
     people:

@@ -64,7 +64,7 @@
     # 2025 dependent exemption amount is $4,930; 3 * $4,930 = $14,790.
     sc_dependent_exemption: 14_790
 
-- name: 2025 single filer who can be claimed as a dependent: no South Carolina dependent exemption
+- name: "2025 single filer who can be claimed as a dependent: no South Carolina dependent exemption"
   period: 2025
   input:
     people:
@@ -86,7 +86,7 @@
     # under IRC 151 and 152; IRC 152(b)(1) leaves a claimable filer none.
     sc_dependent_exemption: 0
 
-- name: 2025 joint return with one claimable spouse: no South Carolina dependent exemption (the claimable spouse is the head)
+- name: "2025 joint return with one claimable spouse: no South Carolina dependent exemption (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -116,7 +116,7 @@
     # dependents (Publication 501, Dependent Taxpayer Test).
     sc_dependent_exemption: 0
 
-- name: 2025 joint return with one claimable spouse: no South Carolina dependent exemption (the claimable spouse is the spouse)
+- name: "2025 joint return with one claimable spouse: no South Carolina dependent exemption (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -144,7 +144,7 @@
   output:
     sc_dependent_exemption: 0
 
-- name: 2025 joint return with both spouses claimable: no South Carolina dependent exemption
+- name: "2025 joint return with both spouses claimable: no South Carolina dependent exemption"
   period: 2025
   input:
     people:
@@ -173,7 +173,7 @@
   output:
     sc_dependent_exemption: 0
 
-- name: 2025 joint return with neither spouse claimable (control): South Carolina dependent exemption
+- name: "2025 joint return with neither spouse claimable (control): South Carolina dependent exemption"
   period: 2025
   input:
     people:

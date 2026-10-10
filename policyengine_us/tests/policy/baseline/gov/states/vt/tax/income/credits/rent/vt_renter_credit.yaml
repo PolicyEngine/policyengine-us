@@ -146,7 +146,7 @@
   output:
     vt_renter_credit: 1_692
 
-- name: 2025 single filer who can be claimed as a dependent: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions
+- name: "2025 single filer who can be claimed as a dependent: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions"
   period: 2025
   input:
     people:
@@ -168,7 +168,7 @@
     # dependent by any taxpayer.
     vt_renter_credit: 0
 
-- name: 2025 joint return with one claimable spouse: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions (the claimable spouse is the head)
+- name: "2025 joint return with one claimable spouse: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -200,7 +200,7 @@
     # below the full-credit limit: round($1,476 x 12 x 10%) = $1,771.
     vt_renter_credit: 1771
 
-- name: 2025 joint return with one claimable spouse: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions (the claimable spouse is the spouse)
+- name: "2025 joint return with one claimable spouse: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -229,7 +229,7 @@
   output:
     vt_renter_credit: 1771
 
-- name: 2025 joint return with both spouses claimable: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions
+- name: "2025 joint return with both spouses claimable: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions"
   period: 2025
   input:
     people:
@@ -259,7 +259,7 @@
   output:
     vt_renter_credit: 0
 
-- name: 2025 joint return with neither spouse claimable: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions
+- name: "2025 joint return with neither spouse claimable: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions"
   period: 2025
   input:
     people:

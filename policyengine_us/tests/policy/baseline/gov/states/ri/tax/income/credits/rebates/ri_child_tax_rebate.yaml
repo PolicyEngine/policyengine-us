@@ -201,7 +201,7 @@
     # 1,000 before refundable credits - 250 refundable credits = 750.
     ri_income_tax: 750
 
-- name: 2021 single filer who can be claimed as a dependent: the 2021 child tax rebate needs a child validly claimed as a dependent
+- name: "2021 single filer who can be claimed as a dependent: the 2021 child tax rebate needs a child validly claimed as a dependent"
   period: 2021
   input:
     people:
@@ -224,7 +224,7 @@
     # claimed has no dependents.
     ri_child_tax_rebate: 0
 
-- name: 2021 joint return with one claimable spouse: the 2021 child tax rebate needs a child validly claimed as a dependent (the claimable spouse is the head)
+- name: "2021 joint return with one claimable spouse: the 2021 child tax rebate needs a child validly claimed as a dependent (the claimable spouse is the head)"
   period: 2021
   input:
     people:
@@ -254,7 +254,7 @@
     # dependents (Publication 501, Dependent Taxpayer Test).
     ri_child_tax_rebate: 0
 
-- name: 2021 joint return with one claimable spouse: the 2021 child tax rebate needs a child validly claimed as a dependent (the claimable spouse is the spouse)
+- name: "2021 joint return with one claimable spouse: the 2021 child tax rebate needs a child validly claimed as a dependent (the claimable spouse is the spouse)"
   period: 2021
   input:
     people:
@@ -282,7 +282,7 @@
   output:
     ri_child_tax_rebate: 0
 
-- name: 2021 joint return with both spouses claimable: the 2021 child tax rebate needs a child validly claimed as a dependent
+- name: "2021 joint return with both spouses claimable: the 2021 child tax rebate needs a child validly claimed as a dependent"
   period: 2021
   input:
     people:
@@ -311,7 +311,7 @@
   output:
     ri_child_tax_rebate: 0
 
-- name: 2021 joint return with neither spouse claimable: the 2021 child tax rebate needs a child validly claimed as a dependent
+- name: "2021 joint return with neither spouse claimable: the 2021 child tax rebate needs a child validly claimed as a dependent"
   period: 2021
   input:
     people:

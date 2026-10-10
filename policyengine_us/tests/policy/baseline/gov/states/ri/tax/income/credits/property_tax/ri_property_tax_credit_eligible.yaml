@@ -109,7 +109,7 @@
   output:
     ri_property_tax_credit_eligible: true
 
-- name: 2025 single filer who can be claimed as a dependent: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent
+- name: "2025 single filer who can be claimed as a dependent: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent"
   period: 2025
   input:
     people:
@@ -130,7 +130,7 @@
     ri_property_tax_credit_eligible: false
     ri_property_tax_credit: 0
 
-- name: 2025 joint return with one claimable spouse: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent (the claimable spouse is the head)
+- name: "2025 joint return with one claimable spouse: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -161,7 +161,7 @@
     ri_property_tax_credit_eligible: true
     ri_property_tax_credit: 700
 
-- name: 2025 joint return with one claimable spouse: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent (the claimable spouse is the spouse)
+- name: "2025 joint return with one claimable spouse: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -188,7 +188,7 @@
     ri_property_tax_credit_eligible: true
     ri_property_tax_credit: 700
 
-- name: 2025 joint return with both spouses claimable: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent
+- name: "2025 joint return with both spouses claimable: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent"
   period: 2025
   input:
     people:
@@ -216,7 +216,7 @@
     ri_property_tax_credit_eligible: false
     ri_property_tax_credit: 0
 
-- name: 2025 joint return with neither spouse claimable: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent
+- name: "2025 joint return with neither spouse claimable: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent"
   period: 2025
   input:
     people:
@@ -243,7 +243,7 @@
     ri_property_tax_credit_eligible: true
     ri_property_tax_credit: 700
 
-- name: 2025 joint return where only the claimable spouse is 65 or older: property tax relief has no eligible claimant (the claimable spouse is the head)
+- name: "2025 joint return where only the claimable spouse is 65 or older: property tax relief has no eligible claimant (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -272,7 +272,7 @@
     ri_property_tax_credit_eligible: false
     ri_property_tax_credit: 0
 
-- name: 2025 joint return where only the claimable spouse is 65 or older: property tax relief has no eligible claimant (the claimable spouse is the spouse)
+- name: "2025 joint return where only the claimable spouse is 65 or older: property tax relief has no eligible claimant (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -299,7 +299,7 @@
     ri_property_tax_credit_eligible: false
     ri_property_tax_credit: 0
 
-- name: 2025 joint return where the unclaimed spouse is disabled: property tax relief stays available (the claimable spouse is the head)
+- name: "2025 joint return where the unclaimed spouse is disabled: property tax relief stays available (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -328,7 +328,7 @@
     ri_property_tax_credit_eligible: true
     ri_property_tax_credit: 700
 
-- name: 2025 joint return where the unclaimed spouse is disabled: property tax relief stays available (the claimable spouse is the spouse)
+- name: "2025 joint return where the unclaimed spouse is disabled: property tax relief stays available (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:

@@ -1,4 +1,4 @@
-- name: 2025 single filer who can be claimed as a dependent: no Utah dependents for the taxpayer credit
+- name: "2025 single filer who can be claimed as a dependent: no Utah dependents for the taxpayer credit"
   period: 2025
   input:
     people:
@@ -22,7 +22,7 @@
     ut_total_dependents: 0
     ut_personal_exemption: 0
 
-- name: 2025 joint return with one claimable spouse: no Utah dependents for the taxpayer credit (the claimable spouse is the head)
+- name: "2025 joint return with one claimable spouse: no Utah dependents for the taxpayer credit (the claimable spouse is the head)"
   period: 2025
   input:
     people:
@@ -52,7 +52,7 @@
     ut_total_dependents: 0
     ut_personal_exemption: 0
 
-- name: 2025 joint return with one claimable spouse: no Utah dependents for the taxpayer credit (the claimable spouse is the spouse)
+- name: "2025 joint return with one claimable spouse: no Utah dependents for the taxpayer credit (the claimable spouse is the spouse)"
   period: 2025
   input:
     people:
@@ -81,7 +81,7 @@
     ut_total_dependents: 0
     ut_personal_exemption: 0
 
-- name: 2025 joint return with both spouses claimable: no Utah dependents for the taxpayer credit
+- name: "2025 joint return with both spouses claimable: no Utah dependents for the taxpayer credit"
   period: 2025
   input:
     people:
@@ -111,7 +111,7 @@
     ut_total_dependents: 0
     ut_personal_exemption: 0
 
-- name: 2025 joint return with neither spouse claimable (control): Utah dependents for the taxpayer credit
+- name: "2025 joint return with neither spouse claimable (control): Utah dependents for the taxpayer credit"
   period: 2025
   input:
     people:
