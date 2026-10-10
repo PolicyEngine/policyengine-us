@@ -155,3 +155,108 @@
   output:
     # One dependent aged 65 or older: $3,200.
     md_aged_dependent_exemption: 3200
+
+
+- name: 2025 aged dependent exemption is limited like the personal exemption at $110,000 of single AGI
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 50
+        employment_income: 110000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, parent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, parent]
+        state_code: MD
+  output:
+    # Single AGI over $100,000 but not over $125,000: each exemption is $1,600 (10-211(c)(1)(i)).
+    # The chart's "reduction applies to the additional dependency exemptions as well".
+    md_aged_dependent_exemption: 1600
+
+- name: 2025 aged dependent exemption is limited like the personal exemption at $130,000 of single AGI
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 50
+        employment_income: 130000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, parent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, parent]
+        state_code: MD
+  output:
+    # Single AGI over $125,000 but not over $150,000: each exemption is $800 (10-211(c)(1)(ii)).
+    # The chart's "reduction applies to the additional dependency exemptions as well".
+    md_aged_dependent_exemption: 800
+
+- name: 2025 aged dependent exemption is limited like the personal exemption at $160,000 of single AGI
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 50
+        employment_income: 160000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, parent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, parent]
+        state_code: MD
+  output:
+    # Single AGI over $150,000: each exemption is $0 (10-211(c)(1)(iii)).
+    # The chart's "reduction applies to the additional dependency exemptions as well".
+    md_aged_dependent_exemption: 0
+
+- name: 2025 aged dependent exemption is limited at $160,000 of joint AGI
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 50
+        employment_income: 80000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 50
+        employment_income: 80000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, parent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, parent]
+        state_code: MD
+  output:
+    # Joint AGI over $150,000 but not over $175,000: $1,600 (10-211(c)(2)(i)).
+    md_aged_dependent_exemption: 1600
