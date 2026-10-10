@@ -17,9 +17,10 @@ vectorized simulation:
    filer's `net_investment_income`, `filer_loss_limited_net_capital_gains`,
    AGI, NIIT MAGI or `net_investment_income_tax`.
 2. `net_investment_income` equals an independent numpy computation over the
-   head and spouse: their interest, dividends, rents, passive pass-through,
-   estate and trust income, plus their netted Schedule D gain or loss with
-   capital gain distributions on line 13, limited under 26 USC 1211(b).
+   head and spouse: their interest, dividends, rents (including Form 4835
+   farm rent), passive pass-through, estate and trust income, plus their
+   netted Schedule D gain or loss with capital gain distributions on line 13,
+   limited under 26 USC 1211(b).
 3. -loss limit <= `filer_loss_limited_net_capital_gains`, and it equals
    `loss_limited_net_capital_gains` when the unit has no dependents.
 4. For tax units without dependents, `net_investment_income` equals the
@@ -43,6 +44,7 @@ TOLERANCE = 0.01  # dollars
 # income is drawn as a share of partnership_s_corp_income below.
 SIGNED_INPUTS = [
     "rental_income",
+    "farm_rent_income",
     "estate_income",
     "short_term_capital_gains",
     "long_term_capital_gains",
@@ -70,6 +72,7 @@ NII_PERSON_INPUTS = [
     "qualified_dividend_income",
     "non_qualified_dividend_income",
     "rental_income",
+    "farm_rent_income",
     "passive_partnership_s_corp_income",
     "estate_income",
 ]

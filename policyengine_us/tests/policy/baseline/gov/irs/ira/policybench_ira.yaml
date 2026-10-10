@@ -683,5 +683,9 @@
   output:
     tax_units:
       tax_unit:
-        income_tax_before_refundable_credits: 40423.17578125
+        # The 2.37.2 evidence value was 40423.17578125. Net investment income
+        # now includes the -2,446.59 Form 4835 farm rental loss (Schedule E
+        # line 40), as AGI already did: NII 4,300 -> 1,853.41 with MAGI
+        # 234,414.20, so NIIT falls by 3.8% x 2,446.59 = 92.97.
+        income_tax_before_refundable_credits: 40330.20703125
         state_income_tax_before_refundable_credits: 11919.0576171875

@@ -10,6 +10,17 @@ values:
     - taxable_interest_income
     - dividend_income
     - rental_income
+    # Form 4835 net farm rental income or loss goes on Schedule E line 40,
+    # then into line 41 and Schedule 1 line 5, which Form 8960 line 4a takes.
+    # Form 4835 is only for a rental activity under the passive activity
+    # rules, and its income isn't subject to self-employment tax, so it is
+    # rent under § 1411(c)(1)(A)(i). Form 8960 line 4b removes a rental's net
+    # income or loss only when the rental is nonpassive and rises to a section
+    # 162 trade or business (for example a real estate professional's rental,
+    # or property rented to the owner's own nonpassive business). The model
+    # has no input for that, here or for rental_income, so it counts all of
+    # both.
+    - farm_rent_income
     - passive_partnership_s_corp_income
     # Income from estates and trusts (Schedule E Part III) keeps its character
     # in the beneficiary's hands (§§ 652(b), 662(b)). Form 8960 line 4a
@@ -49,3 +60,11 @@ metadata:
       href: https://www.irs.gov/pub/irs-prior/i8960--2024.pdf#page=11
     - title: 2025 Instructions for Form 8814, Net Investment Income Tax (NIIT)
       href: https://www.irs.gov/pub/irs-pdf/i8814.pdf#page=2
+    - title: 26 U.S. Code § 1411(c)(2) - Trades and businesses to which tax applies
+      href: https://www.law.cornell.edu/uscode/text/26/1411#c_2
+    - title: "2025 Instructions for Form 8960, passive activity rules and lines 4a and 4b #page 4,8"
+      href: https://www.irs.gov/pub/irs-prior/i8960--2025.pdf#page=4
+    - title: 2025 Form 4835, Farm Rental Income and Expenses, purpose of form
+      href: https://www.irs.gov/pub/irs-prior/f4835--2025.pdf#page=2
+    - title: 2025 Schedule E (Form 1040), lines 40 and 41
+      href: https://www.irs.gov/pub/irs-prior/f1040se--2025.pdf#page=2
