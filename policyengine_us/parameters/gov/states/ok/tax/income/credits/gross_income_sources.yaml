@@ -11,6 +11,9 @@ values:
     - long_term_capital_gains
     - interest_income
     - rental_income
+    # Forms 538-S and 538-H, line 11: gross (positive) income from rentals,
+    # royalties, partnerships, estates and trusts.
+    - estate_income
     - dividend_income
     - pension_income
     - debt_relief
@@ -39,3 +42,9 @@ metadata:
       href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2024/511-Pkt-2024.pdf
     - title: 2025 Form 511 instructions
       href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf
+    - title: 2025 Form 538-S, Part 3, line 11 (gross positive income from rentals, royalties, partnerships, estates, trusts)
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf#page=51
+    - title: 2025 Form 538-H, line 11 (gross positive income from rentals, royalties, partnerships, estates and trusts)
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/538-H.pdf#page=1
+    - title: Okla. Admin. Code 710:50-15-96(c) (gross household income is the gross income of every type)
+      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-710-50-15-96

@@ -17,11 +17,15 @@ values:
     - self_employment_income
     - sstb_self_employment_income
     - veterans_benefits
+    # NMSA 1978 § 7-2-2(L)(15): income from an interest in an estate or a trust
+    - estate_income
     # income such as gambling winnings, insurance settlements, scholarships,
-    # grants, trust income and inheritance,
+    # grants and inheritance,
 metadata:
   unit: list
   label: New Mexico modified gross income elements
   reference:
     - title: New Mexico Income Tax Act, Chapter 7 - Taxation, 7-2-2. Definitions, L
       href: https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503656/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgBsfYQEoANMmylCEAIqJCuAJ7QA5BskRCYXAiUr1WnXoMgAynlIAhdQCUAogBknANQCCAOQDCTyVIwACNoUnZxcSA
+    - title: 2025 PIT-RC instructions, line 11 (income from an estate or trust)
+      href: https://taxsim.nber.org/historical_state_tax_forms/NM/2025/NM_PIT_RC_INST.PDF#page=4
