@@ -1,60 +1,7 @@
-- name: Four exemptions in 2021
-  period: 2021
-  input:
-    ks_count_exemptions: 4
-    state_code: KS
-  output:
-    ks_exemptions: 2_250 * 4
 
-- name: Two exemptions in 2022
+
+- name: 2022 single filer who can be claimed as a dependent has no Kansas exemptions
   period: 2022
-  input:
-    ks_count_exemptions: 2
-    state_code: KS
-  output:
-    ks_exemptions: 2_250 * 2
-
-- name: Case 3,two exemptions in 2023, and one disabled veteran exemption.
-  period: 2023
-  input:
-    people:
-      person1:
-        ks_disabled_veteran_exemptions_eligible_person: true
-      person2:
-        ks_disabled_veteran_exemptions_eligible_person: false
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        ks_count_exemptions: 2
-    households:
-      household:
-        members: [person1, person2]
-        state_code: KS
-  output:
-    ks_exemptions: 6_750
-
-- name: Case 4,two exemptions in 2023, and two disabled veteran exemption.
-  period: 2023
-  input:
-    people:
-      person1:
-        ks_disabled_veteran_exemptions_eligible_person: true
-      person2:
-        ks_disabled_veteran_exemptions_eligible_person: true
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        ks_count_exemptions: 2
-    households:
-      household:
-        members: [person1, person2]
-        state_code: KS
-  output:
-    ks_exemptions: 9_000
-
-
-- name: 2024 single filer who can be claimed as a dependent keeps the personal exemption allowance but no dependent exemption
-  period: 2024
   input:
     people:
       person_a:
@@ -74,13 +21,13 @@
         members: [person_a, child]
         state_code: KS
   output:
-    # K.S.A. 79-32,121b: $9,160; a claimable taxpayer "will qualify for the
-    # personal exemption allowance of $9,160" (KDOR FAQ). No $2,320 dependent
-    # exemption: "enter '0' in the number of dependents box".
-    ks_exemptions: 9160
+    # 2022 K-40 instructions, p.6: "If you are claimed as a dependent by
+    # another taxpayer, enter '0' in the Total Kansas exemptions box."
+    ks_count_exemptions: 0
+    ks_exemptions: 0
 
-- name: 2024 joint return with one claimable spouse keeps the joint allowance but no dependent exemption (the claimable spouse is the head)
-  period: 2024
+- name: 2022 joint return with one claimable spouse has no Kansas exemptions (the claimable spouse is the head)
+  period: 2022
   input:
     people:
       person_a:
@@ -104,11 +51,12 @@
         members: [person_a, person_b, child]
         state_code: KS
   output:
-    # $18,320 joint allowance; no dependents under IRC 152(b)(1).
-    ks_exemptions: 18320
+    # Either spouse being claimable zeroes the joint return's exemptions.
+    ks_count_exemptions: 0
+    ks_exemptions: 0
 
-- name: 2024 joint return with one claimable spouse keeps the joint allowance but no dependent exemption (the claimable spouse is the spouse)
-  period: 2024
+- name: 2022 joint return with one claimable spouse has no Kansas exemptions (the claimable spouse is the spouse)
+  period: 2022
   input:
     people:
       person_b:
@@ -132,10 +80,11 @@
         members: [person_b, person_a, child]
         state_code: KS
   output:
-    ks_exemptions: 18320
+    ks_count_exemptions: 0
+    ks_exemptions: 0
 
-- name: 2024 joint return with both spouses claimable keeps the joint allowance but no dependent exemption
-  period: 2024
+- name: 2022 joint return with both spouses claimable has no Kansas exemptions
+  period: 2022
   input:
     people:
       person_a:
@@ -160,10 +109,11 @@
         members: [person_a, person_b, child]
         state_code: KS
   output:
-    ks_exemptions: 18320
+    ks_count_exemptions: 0
+    ks_exemptions: 0
 
-- name: 2024 joint return with no claimable spouse gets the dependent exemption
-  period: 2024
+- name: 2022 joint return with no claimable spouse has three Kansas exemptions
+  period: 2022
   input:
     people:
       person_a:
@@ -186,5 +136,6 @@
         members: [person_a, person_b, child]
         state_code: KS
   output:
-    # $18,320 + $2,320 = $20,640.
-    ks_exemptions: 20640
+    # 2 + 1 child = 3 exemptions x $2,250 = $6,750.
+    ks_count_exemptions: 3
+    ks_exemptions: 6750

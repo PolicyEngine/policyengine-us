@@ -1,0 +1,21 @@
+description: Iowa exempts a single filer who can be claimed as a dependent on another return from income tax when that filer's income is below this amount.
+values:
+  2021-01-01: 5_000
+
+metadata:
+  label: Iowa tax exemption income limit for single filers claimed as dependents
+  period: year
+  unit: currency-USD
+  reference:
+  - title: Iowa Code 422.13(1)(a)
+    href: https://www.legis.iowa.gov/docs/code/2026/422.pdf#page=46
+  - title: 2021 IA1040 Income Tax Return instructions
+    href: https://revenue.iowa.gov/media/2650/download?inline#page=38
+  - title: 2022 IA1040 Income Tax Return instructions
+    href: https://revenue.iowa.gov/media/2721/download?inline#page=37
+  - title: 2023 IA 1040 Income Tax Return instructions
+    href: https://revenue.iowa.gov/media/2811/download?inline#page=12
+  - title: 2024 IA 1040 Income Tax Return instructions
+    href: https://revenue.iowa.gov/media/4152/download?inline#page=10
+  - title: 2025 IA 1040 Income Tax Return instructions
+    href: https://revenue.iowa.gov/media/4435/download?inline#page=11

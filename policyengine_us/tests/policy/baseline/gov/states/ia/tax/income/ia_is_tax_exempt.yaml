@@ -45,3 +45,246 @@
     state_code: IA
   output:
     ia_is_tax_exempt: true
+
+
+- name: 2022 single filer who can be claimed as a dependent with $4,999 of net income is exempt
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        ia_net_income: 4999
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: IA
+  output:
+    # "less than $5,000 and you are claimed as a dependent" (2022 IA 1040
+    # instructions, p.37).
+    ia_is_tax_exempt: true
+
+- name: 2022 single filer who can be claimed as a dependent with $5,000 of net income is not exempt
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        ia_net_income: 5000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: IA
+  output:
+    # "less than $5,000 and you are claimed as a dependent" (2022 IA 1040
+    # instructions, p.37).
+    ia_is_tax_exempt: false
+
+- name: 2022 single filer who can be claimed as a dependent with $6,000 of net income is not exempt
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        ia_net_income: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: IA
+  output:
+    # $6,000 is not less than $5,000.
+    ia_is_tax_exempt: false
+
+- name: 2022 single filer who cannot be claimed with $6,000 of net income is exempt
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        ia_net_income: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: IA
+  output:
+    # $6,000 <= $9,000 single limit.
+    ia_is_tax_exempt: true
+
+- name: 2022 joint return with one claimable spouse is not exempt (the claimable spouse is the head)
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        ia_net_income: 3000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        ia_net_income: 3000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: IA
+  output:
+    # Joint returns are exempt only if "You are not claimed as a
+    # dependent on another person's Iowa return"; either spouse bars it.
+    ia_is_tax_exempt: false
+
+- name: 2022 joint return with one claimable spouse is not exempt (the claimable spouse is the spouse)
+  period: 2022
+  input:
+    people:
+      person_b:
+        age: 30
+        ia_net_income: 3000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        ia_net_income: 3000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: IA
+  output:
+    ia_is_tax_exempt: false
+
+- name: 2022 joint return with both spouses claimable is not exempt
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        ia_net_income: 3000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        ia_net_income: 3000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: IA
+  output:
+    ia_is_tax_exempt: false
+
+- name: 2022 joint return with no claimable spouse with $6,000 of net income is exempt
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        ia_net_income: 3000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        ia_net_income: 3000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: IA
+  output:
+    # $3,000 + $3,000 = $6,000 <= $13,500 joint limit.
+    ia_is_tax_exempt: true
+
+- name: 2025 single filer who can be claimed as a dependent is exempt on Iowa taxable income below $5,000
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        ia_taxable_income_consolidated: 4000
+        ia_modified_income: 19750
+    households:
+      household:
+        members: [person_a]
+        state_code: IA
+  output:
+    # IA 1040 line 4 is $4,000 < $5,000; "none of the income listed
+    # above is required to be added back" (2025 instructions, p.11).
+    ia_is_tax_exempt: true
+
+- name: 2025 single filer who cannot be claimed is not exempt once deductions are added back
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        ia_taxable_income_consolidated: 4000
+        ia_modified_income: 19750
+    households:
+      household:
+        members: [person_a]
+        state_code: IA
+  output:
+    # $4,000 + $15,750 standard deduction added back = $19,750 > $9,000.
+    ia_is_tax_exempt: false

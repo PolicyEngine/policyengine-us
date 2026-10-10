@@ -1,34 +1,12 @@
-- name: Two dependents gets $2k exemption.
-  period: 2022
-  input:
-    state_code: LA
-    tax_unit_dependents: 2
-  output:
-    la_dependents_exemption: 2_000
-
-- name: One dependent gets $1k exemption.
-  period: 2022
-  input:
-    state_code: LA
-    tax_unit_dependents: 1
-  output:
-    la_dependents_exemption: 1_000
-
-- name: No dependent gets $0 exemption.
-  period: 2022
-  input:
-    state_code: LA
-    tax_unit_dependents: 0
-  output:
-    la_dependents_exemption: 0
 
 
-- name: 2024 single filer who can be claimed as a dependent gets no dependent exemption
-  period: 2024
+- name: 2025 single filer who can be claimed as a dependent gets no personal exemptions
+  period: 2025
   input:
     people:
       person_a:
-        age: 20
+        age: 23
+        employment_income: 1000
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
@@ -42,18 +20,19 @@
     households:
       household:
         members: [person_a, child]
-        state_code: LA
+        state_code: MD
   output:
-    # Line 6C counts "the dependents claimed on your federal return" (2024
-    # IT-540 instructions, p.3); IRC 152(b)(1) leaves none.
-    la_dependents_exemption: 0
+    # Filing status 6: "You do not get an exemption for yourself" (2025
+    # Resident Booklet, p.12); IRC 152(b)(1) leaves no dependents.
+    md_total_personal_exemptions: 0
 
-- name: 2024 single filer who cannot be claimed gets the dependent exemption
-  period: 2024
+- name: 2025 single filer who cannot be claimed gets personal exemptions for the filer and the child
+  period: 2025
   input:
     people:
       person_a:
-        age: 20
+        age: 23
+        employment_income: 1000
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       child:
@@ -66,22 +45,24 @@
     households:
       household:
         members: [person_a, child]
-        state_code: LA
+        state_code: MD
   output:
-    # 1 dependent x $1,000.
-    la_dependents_exemption: 1000
+    # 2 exemptions x $3,200 (AGI under $100,000).
+    md_total_personal_exemptions: 6400
 
-- name: 2024 joint return with one claimable spouse gets no dependent exemption (the claimable spouse is the head)
-  period: 2024
+- name: 2025 joint return with one claimable spouse gets only the other spouse's exemption (the claimable spouse is the head)
+  period: 2025
   input:
     people:
       person_a:
-        age: 20
+        age: 23
+        employment_income: 1000
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
-        age: 20
+        age: 23
+        employment_income: 1000
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
@@ -94,21 +75,24 @@
     households:
       household:
         members: [person_a, person_b, child]
-        state_code: LA
+        state_code: MD
   output:
-    # Either spouse being claimable leaves the federal return no dependents.
-    la_dependents_exemption: 0
+    # Separate Maryland returns: "Each spouse must claim their own personal
+    # exemption" and the spouses split the federal return's dependents (none).
+    md_total_personal_exemptions: 3200
 
-- name: 2024 joint return with one claimable spouse gets no dependent exemption (the claimable spouse is the spouse)
-  period: 2024
+- name: 2025 joint return with one claimable spouse gets only the other spouse's exemption (the claimable spouse is the spouse)
+  period: 2025
   input:
     people:
       person_b:
-        age: 20
+        age: 23
+        employment_income: 1000
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
-        age: 20
+        age: 23
+        employment_income: 1000
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -122,21 +106,23 @@
     households:
       household:
         members: [person_b, person_a, child]
-        state_code: LA
+        state_code: MD
   output:
-    la_dependents_exemption: 0
+    md_total_personal_exemptions: 3200
 
-- name: 2024 joint return with both spouses claimable gets no dependent exemption
-  period: 2024
+- name: 2025 joint return with both spouses claimable gets no personal exemptions
+  period: 2025
   input:
     people:
       person_a:
-        age: 20
+        age: 23
+        employment_income: 1000
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
-        age: 20
+        age: 23
+        employment_income: 1000
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -150,20 +136,22 @@
     households:
       household:
         members: [person_a, person_b, child]
-        state_code: LA
+        state_code: MD
   output:
-    la_dependents_exemption: 0
+    md_total_personal_exemptions: 0
 
-- name: 2024 joint return with no claimable spouse gets the dependent exemption
-  period: 2024
+- name: 2025 joint return with no claimable spouse gets exemptions for both spouses and the child
+  period: 2025
   input:
     people:
       person_a:
-        age: 20
+        age: 23
+        employment_income: 1000
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
-        age: 20
+        age: 23
+        employment_income: 1000
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
@@ -176,7 +164,7 @@
     households:
       household:
         members: [person_a, person_b, child]
-        state_code: LA
+        state_code: MD
   output:
-    # 1 dependent x $1,000.
-    la_dependents_exemption: 1000
+    # 3 exemptions x $3,200 = $9,600.
+    md_total_personal_exemptions: 9600

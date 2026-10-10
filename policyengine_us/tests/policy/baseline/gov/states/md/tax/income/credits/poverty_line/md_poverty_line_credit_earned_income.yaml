@@ -324,3 +324,213 @@
     # TAXSIM: low-income credit 0.00.
     is_eligible_md_poverty_line_credit: false
     md_poverty_line_credit: 0
+
+
+# Rules for a filer who can be claimed as a dependent on another return.
+# Expected values are hand-computed from Md. Code, Tax-General 10-709
+# and 10-211, the 2025 Resident Booklet and the repository parameters.
+
+- name: 2025 single filer who can be claimed as a dependent gets no poverty line credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        md_income_tax_before_credits: 200
+        md_married_or_has_child_non_refundable_eitc: 0
+        md_local_income_tax_before_credits: 100
+        md_local_eitc: 0
+    households:
+      household:
+        members: [person_a]
+        state_code: MD
+        county_str: BALTIMORE_CITY_MD
+  output:
+    # "You are not eligible for this credit if you checked filing status 6
+    # (dependent taxpayer)" (2025 Resident Booklet, p.23).
+    md_poverty_line_credit_earned_income: 0
+    is_eligible_md_poverty_line_credit: false
+    md_poverty_line_credit_potential: 0
+    md_local_poverty_line_credit: 0
+
+- name: 2025 single filer who cannot be claimed gets the poverty line credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        md_income_tax_before_credits: 200
+        md_married_or_has_child_non_refundable_eitc: 0
+        md_local_income_tax_before_credits: 100
+        md_local_eitc: 0
+    households:
+      household:
+        members: [person_a]
+        state_code: MD
+        county_str: BALTIMORE_CITY_MD
+  output:
+    # Poverty level for 1 exemption $15,650; 5% x $1,000 = $50 <= $200 tax;
+    # Baltimore City .032 x $1,000 = $32 <= $100 local tax.
+    md_poverty_line_credit_earned_income: 1000
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 50
+    md_local_poverty_line_credit: 32
+    md_poverty_line_credit_income_level: 15650
+
+- name: 2025 joint return with one claimable spouse gets the poverty line credit on the other spouse's earnings (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        md_income_tax_before_credits: 200
+        md_married_or_has_child_non_refundable_eitc: 0
+        md_local_income_tax_before_credits: 100
+        md_local_eitc: 0
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MD
+        county_str: BALTIMORE_CITY_MD
+  output:
+    # The claimable spouse files a separate status 6 return; the other spouse's
+    # separate return has 1 exemption (poverty level $15,650) and $500 earned:
+    # 5% x $500 = $25; .032 x $500 = $16.
+    md_poverty_line_credit_earned_income: 500
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 25
+    md_local_poverty_line_credit: 16
+    md_poverty_line_credit_income_level: 15650
+
+- name: 2025 joint return with one claimable spouse gets the poverty line credit on the other spouse's earnings (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        md_income_tax_before_credits: 200
+        md_married_or_has_child_non_refundable_eitc: 0
+        md_local_income_tax_before_credits: 100
+        md_local_eitc: 0
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MD
+        county_str: BALTIMORE_CITY_MD
+  output:
+    md_poverty_line_credit_earned_income: 500
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 25
+    md_local_poverty_line_credit: 16
+    md_poverty_line_credit_income_level: 15650
+
+- name: 2025 joint return with both spouses claimable gets no poverty line credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        md_income_tax_before_credits: 200
+        md_married_or_has_child_non_refundable_eitc: 0
+        md_local_income_tax_before_credits: 100
+        md_local_eitc: 0
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MD
+        county_str: BALTIMORE_CITY_MD
+  output:
+    md_poverty_line_credit_earned_income: 0
+    is_eligible_md_poverty_line_credit: false
+    md_poverty_line_credit_potential: 0
+    md_local_poverty_line_credit: 0
+
+- name: 2025 joint return with no claimable spouse gets the poverty line credit on both spouses' earnings
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        md_income_tax_before_credits: 200
+        md_married_or_has_child_non_refundable_eitc: 0
+        md_local_income_tax_before_credits: 100
+        md_local_eitc: 0
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MD
+        county_str: BALTIMORE_CITY_MD
+  output:
+    # 2 exemptions: $15,650 + $5,500 = $21,150; 5% x $1,000 = $50; .032 x $1,000 = $32.
+    md_poverty_line_credit_earned_income: 1000
+    is_eligible_md_poverty_line_credit: true
+    md_poverty_line_credit_potential: 50
+    md_local_poverty_line_credit: 32
+    md_poverty_line_credit_income_level: 21150

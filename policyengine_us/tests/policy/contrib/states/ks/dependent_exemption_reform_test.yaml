@@ -105,3 +105,31 @@
   # Dependent one year under the limit (17 < 18) gets the exemption.
   # 9,160 personal + 1 eligible dependent * 2,320 = 11,480.
   output: {ks_exemptions: 11_480}
+
+
+- name: KS dependent exemption reform - joint return with a claimable spouse has no dependent exemption (the claimable spouse is the head)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ks.dependent_exemption.ks_dependent_exemption_reform.ks_dependent_exemption_reform
+  input:
+    gov.contrib.states.ks.dependent_exemption.in_effect: true
+    people:
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_a, person_b, child], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child], state_name: KS}}
+  # Joint base 18,320; IRC 152(b)(1): no dependents when either spouse can be claimed.
+  output: {ks_exemptions: 18_320}
+
+- name: KS dependent exemption reform - joint return with a claimable spouse has no dependent exemption (the claimable spouse is the spouse)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ks.dependent_exemption.ks_dependent_exemption_reform.ks_dependent_exemption_reform
+  input:
+    gov.contrib.states.ks.dependent_exemption.in_effect: true
+    people:
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_b, person_a, child], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a, child], state_name: KS}}
+  output: {ks_exemptions: 18_320}

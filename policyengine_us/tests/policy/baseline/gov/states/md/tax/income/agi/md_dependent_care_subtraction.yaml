@@ -1,65 +1,18 @@
-- name: IA exemption credit unit test 1
-  period: 2021
-  input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        age: 65
-      person2:
-        age: 10
-        is_blind: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: IA
-  output:
-    ia_exemption_credit: 140  # = 40(adult) + 40(hoh) + 20(child) + 40(aged)
-
-- name: IA exemption credit unit test 2
-  period: 2022
-  input:
-    people:
-      person1:
-        is_tax_unit_head: true
-        age: 65
-      person2:
-        is_tax_unit_spouse: true
-        age: 65
-        is_blind: true
-      person3:
-        age: 14
-        is_blind: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2, person3]
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: IA
-  output:
-    ia_exemption_credit: 180  # = 40*2 + 20*3 + 40*1
 
 
-- name: 2024 single filer who can be claimed as a dependent keeps the personal credit but gets no dependent credit
+- name: 2024 single filer who can be claimed as a dependent gets no dependent care subtraction
   period: 2024
   input:
     people:
       person_a:
         age: 30
+        employment_income: 10000
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       child:
-        age: 8
+        age: 5
+        pre_subsidy_childcare_expenses: 1000
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
@@ -68,27 +21,54 @@
     households:
       household:
         members: [person_a, child]
-        state_code: IA
+        state_code: MD
   output:
-    # Iowa Code 422.12(2)(a): $40 personal credit, kept "even if you are
-    # claimed"; IRC 152(b)(1) leaves the return no dependents.
-    ia_exemption_credit: 40
+    # Section 10-208(e) uses section 21's qualifying individuals; none here.
+    md_dependent_care_subtraction: 0
 
-- name: 2024 joint return with one claimable spouse keeps both personal credits but gets no dependent credit (the claimable spouse is the head)
+- name: 2024 single filer who cannot be claimed gets the dependent care subtraction
   period: 2024
   input:
     people:
       person_a:
         age: 30
+        employment_income: 10000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        pre_subsidy_childcare_expenses: 1000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MD
+  output:
+    # min($3,000 x 1 qualifying child, $1,000 expenses) = $1,000.
+    md_dependent_care_subtraction: 1000
+
+- name: 2024 joint return with one claimable spouse gets no dependent care subtraction (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
         age: 30
+        employment_income: 5000
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
-        age: 8
+        age: 5
+        pre_subsidy_childcare_expenses: 1000
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
@@ -97,26 +77,29 @@
     households:
       household:
         members: [person_a, person_b, child]
-        state_code: IA
+        state_code: MD
   output:
-    # $80 for a joint return; no $40 dependent credit (IRC 152(b)(1)).
-    ia_exemption_credit: 80
+    # Either spouse being claimable leaves the return no dependents.
+    md_dependent_care_subtraction: 0
 
-- name: 2024 joint return with one claimable spouse keeps both personal credits but gets no dependent credit (the claimable spouse is the spouse)
+- name: 2024 joint return with one claimable spouse gets no dependent care subtraction (the claimable spouse is the spouse)
   period: 2024
   input:
     people:
       person_b:
         age: 30
+        employment_income: 5000
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
         age: 30
+        employment_income: 5000
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
-        age: 8
+        age: 5
+        pre_subsidy_childcare_expenses: 1000
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
@@ -125,26 +108,29 @@
     households:
       household:
         members: [person_b, person_a, child]
-        state_code: IA
+        state_code: MD
   output:
-    ia_exemption_credit: 80
+    md_dependent_care_subtraction: 0
 
-- name: 2024 joint return with both spouses claimable keeps both personal credits but gets no dependent credit
+- name: 2024 joint return with both spouses claimable gets no dependent care subtraction
   period: 2024
   input:
     people:
       person_a:
         age: 30
+        employment_income: 5000
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
         age: 30
+        employment_income: 5000
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
-        age: 8
+        age: 5
+        pre_subsidy_childcare_expenses: 1000
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
@@ -153,24 +139,27 @@
     households:
       household:
         members: [person_a, person_b, child]
-        state_code: IA
+        state_code: MD
   output:
-    ia_exemption_credit: 80
+    md_dependent_care_subtraction: 0
 
-- name: 2024 joint return with no claimable spouse gets the dependent credit
+- name: 2024 joint return with no claimable spouse gets the dependent care subtraction
   period: 2024
   input:
     people:
       person_a:
         age: 30
+        employment_income: 5000
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
         age: 30
+        employment_income: 5000
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
-        age: 8
+        age: 5
+        pre_subsidy_childcare_expenses: 1000
         is_tax_unit_dependent: true
     tax_units:
       tax_unit:
@@ -179,7 +168,7 @@
     households:
       household:
         members: [person_a, person_b, child]
-        state_code: IA
+        state_code: MD
   output:
-    # $80 + $40 for the child = $120.
-    ia_exemption_credit: 120
+    # min($3,000, $1,000) = $1,000.
+    md_dependent_care_subtraction: 1000

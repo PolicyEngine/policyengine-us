@@ -34,10 +34,13 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         defined_for = StateCode.MD
 
         def formula(tax_unit, period, parameters):
-            # Get md_personal_exemption from tax_unit multiplied by tax_unit_size
+            # Only the filers' own exemptions remain; a filer who can be
+            # claimed as a dependent has none (filing status 6).
             md_personal_exemption = tax_unit("md_personal_exemption", period)
-            tax_unit_size = tax_unit("head_spouse_count", period)
-            return md_personal_exemption * tax_unit_size
+            own_exemptions = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
+            )
+            return md_personal_exemption * own_exemptions
 
     class mi_personal_exemptions(Variable):
         value_type = float
@@ -351,6 +354,11 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             joint = filing_status == statuses.JOINT
             hoh = filing_status == statuses.HEAD_OF_HOUSEHOLD
             adults = where(joint | hoh, 2, 1)
+            # A filer who can be claimed as a dependent enters "0" exemptions.
+            filer_is_dependent = tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
+            adults = where(filer_is_dependent, 0, adults)
             return adults * p.consolidated.amount + veterans_exemption_amount
 
     class ma_income_tax_exemption_threshold(Variable):

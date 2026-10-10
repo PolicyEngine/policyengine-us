@@ -11,6 +11,11 @@ class ia_is_tax_exempt(Variable):
         "https://revenue.iowa.gov/media/2650/download?inline#page=37",
         "https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf",
         "https://revenue.iowa.gov/media/2721/download?inline#page=37",
+        "https://revenue.iowa.gov/media/2811/download?inline#page=12",
+        "https://revenue.iowa.gov/media/4152/download?inline#page=10",
+        "https://revenue.iowa.gov/media/4435/download?inline#page=11",
+        # PDF pages 7-8: Iowa Code 422.5(2)(a) and (3)(a).
+        "https://www.legis.iowa.gov/docs/code/2026/422.pdf#page=7",
     )
     defined_for = StateCode.IA
 
@@ -27,4 +32,16 @@ class ia_is_tax_exempt(Variable):
             where(is_elderly, pil.single_elderly, pil.single_nonelderly),
             where(is_elderly, pil.other_elderly, pil.other_nonelderly),
         )
-        return tax_unit("ia_modified_income", period) <= modified_income_limit
+        exempt = tax_unit("ia_modified_income", period) <= modified_income_limit
+        # The instructions limit the ordinary exemption to filers who are "not
+        # claimed as a dependent on another person's Iowa return". A single
+        # filer who is claimed is instead exempt when income, without adding
+        # back deductions, is "less than $5,000"; a joint, head of household
+        # or surviving spouse return is not exempt if either spouse is
+        # claimed. Iowa Code 422.5(2)-(3) denies the exemption only when the
+        # claimer's own net income exceeds the limit; the model has no input
+        # for the claimer's income, so it follows the instructions.
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependent_income = add(tax_unit, period, p.dependent.income_sources)
+        dependent_exempt = is_single & (dependent_income < p.dependent.income_limit)
+        return where(filer_is_dependent, dependent_exempt, exempt)
