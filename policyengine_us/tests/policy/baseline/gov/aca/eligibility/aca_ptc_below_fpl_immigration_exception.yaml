@@ -1,0 +1,105 @@
+- name: 2025 below-FPL exception does not apply when the lawfully present spouse can be claimed elsewhere (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        immigration_status: TPS
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi_fraction: 0.75
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 26 CFR 1.36B-2(b)(5): the taxpayer or a member of the taxpayer's
+    # family must be the lawfully present person.
+    aca_ptc_below_fpl_immigration_exception: false
+
+- name: 2025 below-FPL exception does not apply when the lawfully present spouse can be claimed elsewhere (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        immigration_status: TPS
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi_fraction: 0.75
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    aca_ptc_below_fpl_immigration_exception: false
+
+- name: 2025 below-FPL exception applies when the lawfully present spouse is in the tax family
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        immigration_status: TPS
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi_fraction: 0.75
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    aca_ptc_below_fpl_immigration_exception: true

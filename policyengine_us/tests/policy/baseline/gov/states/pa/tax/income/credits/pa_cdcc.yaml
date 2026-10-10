@@ -79,3 +79,207 @@
     # cdcc_rate at 45k AGI = 20% floor; potential = 600; PA match 100% in 2023
     cdcc_potential: 600
     pa_cdcc: 600
+
+
+- name: 2025 single filer who can be claimed as a dependent: Pennsylvania child care credit for an ordinary child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 20_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      child_1:
+        age: 4
+        pre_subsidy_childcare_expenses: 1000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child_1]
+    households:
+      household:
+        members: [person_a, child_1]
+        state_code: PA
+  output:
+    # IRC 21(b)(1)(A) needs a dependent of the taxpayer under 13; IRC 152(b)(1)
+    # leaves none here.
+    pa_cdcc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania child care credit for an ordinary child (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      child_1:
+        age: 4
+        pre_subsidy_childcare_expenses: 1000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: PA
+  output:
+    pa_cdcc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent: Pennsylvania child care credit for an ordinary child (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      person_a:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      child_1:
+        age: 4
+        pre_subsidy_childcare_expenses: 1000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: PA
+  output:
+    pa_cdcc: 0
+
+- name: 2025 joint return on which both spouses can be claimed as dependents: Pennsylvania child care credit for an ordinary child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      child_1:
+        age: 4
+        pre_subsidy_childcare_expenses: 1000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: PA
+  output:
+    pa_cdcc: 0
+
+- name: 2025 joint return on which neither spouse can be claimed: Pennsylvania child care credit for an ordinary child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      child_1:
+        age: 4
+        pre_subsidy_childcare_expenses: 1000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: PA
+  output:
+    # AGI $20,000: 35% less 3 points = 32% of $1,000 = $320, matched 100%.
+    pa_cdcc: 320
+
+- name: 2025 single filer who cannot be claimed as a dependent: Pennsylvania child care credit for an ordinary child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 20_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      child_1:
+        age: 4
+        pre_subsidy_childcare_expenses: 1000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child_1]
+    households:
+      household:
+        members: [person_a, child_1]
+        state_code: PA
+  output:
+    pa_cdcc: 320

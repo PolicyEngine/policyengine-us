@@ -144,3 +144,178 @@
   output:
     # No federal EITC = no OK EITC
     ok_eitc: 0
+
+
+- name: 2025 single filer who can be claimed as a dependent: Oklahoma childless EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: OK
+  output:
+    # 68 O.S. 2357.43 uses the 2020 federal rules, which bar a childless
+    # filer who can be claimed as a dependent (IRC 32(c)(1)(A)(ii)(III); on a
+    # joint return, either spouse).
+    ok_federal_eitc_demographic_eligible: false
+    ok_eitc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent: Oklahoma childless EITC (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: OK
+  output:
+    ok_federal_eitc_demographic_eligible: false
+    ok_eitc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent: Oklahoma childless EITC (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      person_a:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: OK
+  output:
+    ok_federal_eitc_demographic_eligible: false
+    ok_eitc: 0
+
+- name: 2025 joint return on which both spouses can be claimed as dependents: Oklahoma childless EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: OK
+  output:
+    ok_federal_eitc_demographic_eligible: false
+    ok_eitc: 0
+
+- name: 2025 joint return on which neither spouse can be claimed: Oklahoma childless EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: OK
+  output:
+    # 2020 rules: min($5,000 x 7.65%, $538) = $382.50; 5% = $19.125.
+    ok_federal_eitc_demographic_eligible: true
+    ok_eitc: 19.125
+
+- name: 2025 single filer who cannot be claimed as a dependent: Oklahoma childless EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: OK
+  output:
+    ok_federal_eitc_demographic_eligible: true
+    ok_eitc: 19.125

@@ -8,6 +8,7 @@ class vt_renter_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://legislature.vermont.gov/statutes/fullchapter/32/154",  # 6066(b)(2), (c)(2)
         "https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/",  # b
         "https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=35",
         # the formula used in this file is based on the excel sheet provided on the official Vermont government website
@@ -20,6 +21,11 @@ class vt_renter_credit(Variable):
         # get tax unit size and county.
         tax_unit_size = tax_unit("tax_unit_size", period)
         county = tax_unit.household("county", period)
+        # 32 V.S.A. 6066(b)(2): the fair market rent is for "a number of
+        # bedrooms equal to the number of personal exemptions" under
+        # 5811(21)(C), which allows none for a filer who can be claimed as a
+        # dependent and no dependents on a return where either filer can be.
+        exemptions = clip(tax_unit("exemptions_count", period), 1, 8)
         # locate the values by family size and county
         full_credit_income_limit = p.income_limit_ami.thirty_percent[tax_unit_size][
             county
@@ -27,7 +33,7 @@ class vt_renter_credit(Variable):
         partial_credit_income_limit = p.income_limit_ami.fifty_percent[tax_unit_size][
             county
         ]
-        fmr = p.fair_market_rent[tax_unit_size][county]
+        fmr = p.fair_market_rent[exemptions][county]
         base_credit_amount = fmr * MONTHS_IN_YEAR * p.fmr_rate
 
         # Compute what the spreadsheet calls the "percent rebate claimable"
@@ -71,4 +77,8 @@ class vt_renter_credit(Variable):
         # 6066(b)(1)); 2026 Vt. Act 169 raises this for claim year 2027 only.
         capped_credit = min_(credit_value, p.max_credit)
         unrounded = capped_credit * (1 - shared_residence_reduction)
-        return np.round(unrounded)
+        # 6066(c)(2): the claimant "may not be a person claimed as a dependent
+        # by any taxpayer". On a joint return either spouse may be the
+        # claimant, so only a return on which every filer is claimed loses it.
+        claimant_eligible = ~tax_unit("every_filer_is_dependent_elsewhere", period)
+        return claimant_eligible * np.round(unrounded)

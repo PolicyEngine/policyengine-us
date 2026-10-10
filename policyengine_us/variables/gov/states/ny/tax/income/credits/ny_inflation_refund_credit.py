@@ -20,8 +20,11 @@ class ny_inflation_refund_credit(Variable):
         agi = tax_unit("ny_agi", period)
         filing_status = tax_unit("filing_status", period)
         filing_statuses = filing_status.possible_values
+        # Tax Law 606(qqq): recipients, including "taxpayers filing joint
+        # returns", "must not have been claimed as a dependent".
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
 
-        return select(
+        amount = select(
             [
                 filing_status == filing_statuses.SINGLE,
                 filing_status == filing_statuses.JOINT,
@@ -37,6 +40,7 @@ class ny_inflation_refund_credit(Variable):
                 p.surviving_spouse.calc(agi, right=True),
             ],
         )
+        return where(dependent_filer, 0, amount)
 
     def formula_2024(tax_unit, period, parameters):
         return 0

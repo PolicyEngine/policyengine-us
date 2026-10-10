@@ -42,7 +42,10 @@ class ca_premium_subsidy_eligible(Variable):
         # must be a filer. This gate replaces reliance on the federal 100% FPL
         # floor exception: the federal PTC gate admits a below-poverty
         # immigration exception that the applicable-return-filer definition
-        # excludes. Dependents claimed by another filer do not form separate
-        # claiming units in the model, so the dependent exclusion is structural.
+        # excludes. Program Design (d)(7)(B) allows no assistance to an
+        # individual claimed as a dependent of another return filer; the
+        # federal gate already leaves such a person out of the tax family
+        # (26 U.S.C. 36B(c)(1)(D)), and Program Design (c)(2) requires every
+        # federal APTC eligibility requirement.
         is_filer = tax_unit("tax_unit_is_filer", period)
         return in_effect & aptc_eligible & income_eligible & is_filer

@@ -18,11 +18,15 @@ def create_nj_dependent_exemption() -> Reform:
                 period
             ).gov.states.nj.tax.income.exemptions.dependents.amount
             person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)).
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
             # Age gate: when in effect, only dependents under the chosen age
             # are re-priced to the reform amount; older dependents keep the
             # baseline exemption. Otherwise every dependent is re-priced,
-            # matching the baseline tax_unit_dependents count at the default.
+            # matching the baseline dependent count at the default.
             if p.age_limit.in_effect:
                 age = person("age", period)
                 young = is_dependent & (age < p.age_limit.threshold)

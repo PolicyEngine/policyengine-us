@@ -18,5 +18,11 @@ class wi_homestead_income(Variable):
         p = parameters(period).gov.states.wi.tax.income.credits
         income = add(tax_unit, period, p.homestead.income.sources)
         disqualified_losses = tax_unit("wi_homestead_disqualified_losses", period)
-        dependents = tax_unit("tax_unit_dependents", period)
+        # The $500 deduction is for each dependent under IRC 152; a return on
+        # which the claimant (or, if joint, either spouse) can be claimed as a
+        # dependent has none (IRC 152(b)(1)).
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependents = where(
+            filer_is_dependent, 0, tax_unit("tax_unit_dependents", period)
+        )
         return income + disqualified_losses - dependents * p.homestead.income.exemption

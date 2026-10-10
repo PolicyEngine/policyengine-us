@@ -1,0 +1,49 @@
+
+
+- name: 2025 aged and blind filer who can be claimed as a dependent keeps the aged and blind exemptions
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 70
+        is_blind: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VA
+  output:
+    # Va. Code 58.1-322.03(2)(b) has no dependency bar; 2 x $800.
+    va_aged_blind_exemption: 1_600
+
+- name: 2025 an aged dependent adds no aged exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 70
+        is_blind: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, parent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, parent]
+        state_code: VA
+  output:
+    # The exemption is for "each blind or aged taxpayer".
+    va_aged_blind_exemption: 0

@@ -68,7 +68,16 @@ class ny_real_property_tax_credit(Variable):
         # IT-214 income limit ("$18,000 or less").
         meets_income_condition = income <= rptc.max_agi
 
-        eligible = meets_value_conditions & meets_income_condition
+        # Tax Law 606(e)(7)(E) excludes an individual whom another taxpayer can
+        # claim as a dependent ("You could not be claimed as a dependent",
+        # IT-214), while 606(e)(6)(C) covers "a qualified taxpayer and their
+        # spouse", so one qualified spouse keeps the credit.
+        independent_filers = tax_unit(
+            "head_spouse_count_not_dependent_elsewhere", period
+        )
+        eligible = (
+            meets_value_conditions & meets_income_condition & (independent_filers > 0)
+        )
 
         # From 2025 (Part RR of Chapter 59 of the Laws of 2025) the credit is a
         # flat amount looked up by federal AGI bracket, allowed only when the

@@ -1,0 +1,123 @@
+- name: 2025 joint return with one claimable spouse measures income against the one-person line (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 22,590 / 15,060 = 1.50
+    aca_magi_fraction: 1.5
+
+- name: 2025 joint return with one claimable spouse measures income against the one-person line (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    aca_magi_fraction: 1.5
+
+- name: 2025 joint return with neither spouse claimable measures income against the two-person line
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 22,590 / 20,440 = 1.105, truncated to 1.10 (Form 8962 Worksheet 2)
+    aca_magi_fraction: 1.1
+
+- name: 2025 single filer who can be claimed keeps the one-person line
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    aca_magi_fraction: 1.5

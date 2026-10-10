@@ -13,4 +13,10 @@ class ut_personal_exemption_additional_dependent_eligible(Variable):
         is_dependent = person("is_tax_unit_dependent", period)
         birth_year = person("birth_year", period)
         born_this_year = birth_year == period.start.year
-        return is_dependent & born_this_year
+        # The additional dependent must also be a dependent of the return, and
+        # a return on which the filer (or, if joint, either spouse) can be
+        # claimed as a dependent has none (IRC 152(b)(1)).
+        filer_is_dependent = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
+        return is_dependent & born_this_year & ~filer_is_dependent

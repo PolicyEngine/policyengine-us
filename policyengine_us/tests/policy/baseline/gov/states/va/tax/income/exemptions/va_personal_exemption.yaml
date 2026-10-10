@@ -1,0 +1,95 @@
+
+
+- name: 2025 single filer who can be claimed as a dependent has no personal exemption
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VA
+  output:
+    # Va. Code 58.1-322.03(2)(a) counts exemptions allowable for federal purposes;
+    # IRC 151(d)(2).
+    va_personal_exemption: 0
+
+- name: 2025 joint return with one claimable spouse keeps the other spouse's exemption but no dependents (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: VA
+  output:
+    # IRC 152(b)(1): such a return has no dependents.
+    va_personal_exemption: 930
+
+- name: 2025 joint return with one claimable spouse keeps the other spouse's exemption but no dependents (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: VA
+  output:
+    va_personal_exemption: 930
+
+- name: 2025 joint return with neither spouse claimable counts both spouses and the child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 22
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: VA
+  output:
+    # 3 x $930.
+    va_personal_exemption: 2_790

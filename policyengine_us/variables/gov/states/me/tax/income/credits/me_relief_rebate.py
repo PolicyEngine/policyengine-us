@@ -12,5 +12,7 @@ class me_relief_rebate(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.credits.relief_rebate
-        head_spouse_count = tax_unit("head_spouse_count", period)
-        return head_spouse_count * p.amount
+        # P.L. 2021, c. 635, Part L-3 pays each eligible resident who "may not
+        # be claimed as a dependent on another taxpayer's return".
+        recipients = tax_unit("head_spouse_count_not_dependent_elsewhere", period)
+        return recipients * p.amount

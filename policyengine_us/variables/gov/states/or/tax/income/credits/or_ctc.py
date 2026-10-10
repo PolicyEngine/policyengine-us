@@ -22,7 +22,12 @@ class or_ctc(Variable):
         dependent = person("is_tax_unit_dependent", period)
         # Get the number of qualifying dependents in the tax unit.
         age_eligible = age < p.ineligible_age
-        eligible = age_eligible & dependent
+        # HB 3235 (2023) section 2 counts dependents as defined in IRC 152(a),
+        # disregarding only 152(b)(3), so IRC 152(b)(1) applies: a return on
+        # which the filer (or, if joint, either spouse) can be claimed as a
+        # dependent has no dependents.
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        eligible = age_eligible & dependent & ~dependent_filer
         count_eligible = tax_unit.sum(eligible)
         # Cap the number of qualifying dependents.
         capped_count_eligible = min_(count_eligible, p.child_limit)

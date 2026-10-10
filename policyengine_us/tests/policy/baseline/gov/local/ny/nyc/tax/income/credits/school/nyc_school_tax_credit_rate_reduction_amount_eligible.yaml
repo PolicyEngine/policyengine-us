@@ -83,3 +83,83 @@
     nyc_taxable_income: 0
   output:
     nyc_school_tax_credit_rate_reduction_amount_eligible: false
+
+- name: 2025 joint return with one claimable spouse stays eligible for the rate reduction amount (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 13025
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 13025
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NY
+        in_nyc: true
+  output:
+    # IT-201 line 69a bars a filer who can be claimed; the other spouse
+    # still qualifies.
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+
+- name: 2025 joint return with one claimable spouse stays eligible for the rate reduction amount (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        employment_income: 13025
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 22
+        employment_income: 13025
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: true
+
+- name: 2025 joint return with both spouses claimable is not eligible for the rate reduction amount
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 13025
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 13025
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_school_tax_credit_rate_reduction_amount_eligible: false

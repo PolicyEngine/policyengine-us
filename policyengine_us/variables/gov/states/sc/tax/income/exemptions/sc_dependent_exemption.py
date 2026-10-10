@@ -17,7 +17,13 @@ class sc_dependent_exemption(Variable):
     def formula(tax_unit, period, parameters):
         # Section 12-6-1140(13): a dependent exemption for every dependent.
         p = parameters(period).gov.states.sc.tax.income.deductions.dependent_exemption
-        # every dependent is eligible
-        dependents = tax_unit("tax_unit_dependents", period)
+        # Section 12-6-1140(13): "each dependent must meet the eligibility
+        # requirements of Section 151 and 152", and under IRC 152(b)(1) a
+        # return on which the filer (or, if joint, either spouse) can be
+        # claimed as a dependent has no dependents.
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependents = where(
+            filer_is_dependent, 0, tax_unit("tax_unit_dependents", period)
+        )
         # Multiply by the amount per exemption.
         return dependents * p.amount

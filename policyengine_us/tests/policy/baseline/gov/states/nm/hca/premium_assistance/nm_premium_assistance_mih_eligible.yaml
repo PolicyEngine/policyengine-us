@@ -237,3 +237,126 @@
         state_code: NM
   output:
     nm_premium_assistance_mih_eligible: false
+
+- name: "2026 NM above 400% FPL for a tax family of one: the other spouse qualifies for the MIH component (the claimable spouse is the head)"
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 70_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    # 70,000 / 15,650 = 447% FPL; 6,000 - 0.085 * 70,000 = 50.
+    aca_magi_fraction: 4.47
+    nm_premium_assistance_mih_eligible: true
+    nm_premium_assistance: 50
+
+- name: "2026 NM above 400% FPL for a tax family of one: the other spouse qualifies for the MIH component (the claimable spouse is the spouse)"
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 70_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    aca_magi_fraction: 4.47
+    nm_premium_assistance_mih_eligible: true
+    nm_premium_assistance: 50
+
+- name: "2026 NM above 400% FPL with both spouses claimable: no MIH component"
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 70_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    # The Addendum requires every federal PTC criterion except income.
+    nm_premium_assistance_mih_eligible: false

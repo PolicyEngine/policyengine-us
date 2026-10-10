@@ -1,0 +1,163 @@
+- name: 2025 single filer who can be claimed as a dependent: no Utah at-home parent credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 2000
+        claimed_as_dependent_on_another_return: true
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [filer, newborn]
+    households:
+      household:
+        members: [filer, newborn]
+        state_code: UT
+  output:
+    # Utah Code 59-10-1005: the parent must claim the qualifying child as a
+    # dependent; under IRC 152(b)(1) a claimable filer has no dependents.
+    ut_at_home_parent_credit_potential: 0
+
+- name: 2025 joint return with one claimable spouse: no Utah at-home parent credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 2000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 24
+        employment_income: 4000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, newborn]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, newborn]
+        state_code: UT
+  output:
+    # Either spouse being claimable leaves the joint return no dependents.
+    ut_at_home_parent_credit_potential: 0
+
+- name: 2025 joint return with one claimable spouse: no Utah at-home parent credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 24
+        employment_income: 4000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 22
+        employment_income: 2000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, newborn]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, newborn]
+        state_code: UT
+  output:
+    ut_at_home_parent_credit_potential: 0
+
+- name: 2025 joint return with both spouses claimable: no Utah at-home parent credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 2000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 24
+        employment_income: 4000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, newborn]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, newborn]
+        state_code: UT
+  output:
+    ut_at_home_parent_credit_potential: 0
+
+- name: 2025 joint return with neither spouse claimable (control): Utah at-home parent credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 2000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 24
+        employment_income: 4000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, newborn]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, newborn]
+        state_code: UT
+  output:
+    # One child under 1 x $100 x one parent earning $3,000 or less
+    # (the other parent earns $4,000); AGI $6,000 is under $50,000.
+    ut_at_home_parent_credit_potential: 100
+
+- name: 2025 two at-home parents with one newborn: one Utah at-home parent credit per child on the return
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 2000
+      spouse:
+        age: 30
+        employment_income: 1000
+        is_tax_unit_spouse: true
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, newborn]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, newborn]
+        state_code: UT
+  output:
+    # Utah Code 59-10-1005(2): $100 for each qualifying child if the claimant
+    # or a joint-filing spouse is an at-home parent; both spouses earning
+    # $3,000 or less does not double it.
+    ut_at_home_parent_credit_potential: 100

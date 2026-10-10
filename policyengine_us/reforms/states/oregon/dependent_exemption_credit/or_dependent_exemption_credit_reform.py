@@ -15,7 +15,11 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
 
             person = tax_unit.members
             age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)).
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
 
             # Apply age limit if in effect
             age_threshold = p.age_limit.threshold
@@ -39,7 +43,11 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
 
         def formula(tax_unit, period, parameters):
             person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)).
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
             total_dependents = tax_unit.sum(is_dependent)
             eligible_dependents = tax_unit("or_eligible_dependents_count", period)
             return max_(0, total_dependents - eligible_dependents)
@@ -87,9 +95,10 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
 
             qualifies = federal_agi <= p.income_limit.regular[filing_status]
 
-            # Count head and spouse only (1 for single/hoh, 2 for joint)
-            head_spouse_count = where(
-                filing_status == filing_status.possible_values.JOINT, 2, 1
+            # Count the filers' own exemptions: none for a filer whom another
+            # taxpayer can claim (ORS 316.085(1)(b)).
+            head_spouse_count = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
             )
 
             # Add older dependents (those excluded from dependent credit by age limit)

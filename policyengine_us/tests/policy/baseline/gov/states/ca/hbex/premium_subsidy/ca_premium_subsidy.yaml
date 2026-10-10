@@ -504,3 +504,123 @@
   output:
     ca_premium_subsidy_eligible: true
     ca_premium_subsidy: 3_935
+
+- name: 2026 CA joint return with one claimable spouse (the claimable spouse is the head)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # Program Design (c)(2), (d)(7)(B). 22,000 / 15,650 = 140% FPL;
+    # federal 3.5724%: aca_ptc = 6,000 - 785.92 = 5,214.08; CA 0%:
+    # 6,000 - 5,214.08 = 785.92.
+    ca_premium_subsidy: 785.92
+
+- name: 2026 CA joint return with one claimable spouse (the claimable spouse is the spouse)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 22_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: CA
+  output:
+    ca_premium_subsidy: 785.92
+
+- name: 2026 CA joint return with neither spouse claimable
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # 104% FPL, 2.1%: aca_ptc = 12,000 - 462 = 11,538; CA 0%: 462.
+    ca_premium_subsidy: 462

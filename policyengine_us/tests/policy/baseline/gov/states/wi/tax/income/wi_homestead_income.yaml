@@ -99,3 +99,154 @@
     # loss_ald deducts the loss of total_self_employment_income (0 here), so
     # the add-back follows that total and household income is the same.
     wi_homestead_income: 5_000
+
+- name: 2025 single filer who can be claimed as a dependent: no Wisconsin homestead $500 dependent deduction
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 62
+        employment_income: 10000
+        real_estate_taxes: 1000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: WI
+  output:
+    # The $500 deduction is for a dependent under IRC 152, and a claimant
+    # who can be claimed has none (IRC 152(b)(1)). The claimant, 62 or
+    # older, stays eligible: ($1,000 - ($10,000 - $8,060) x 8.785%) x 80%.
+    wi_homestead_income: 10000
+    wi_homestead_credit: 663.6568
+
+- name: 2025 joint return with one claimable spouse: no Wisconsin homestead $500 dependent deduction (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WI
+  output:
+    # Either spouse being claimable leaves the joint return no dependents.
+    wi_homestead_income: 10000
+    wi_homestead_credit: 663.6568
+
+- name: 2025 joint return with one claimable spouse: no Wisconsin homestead $500 dependent deduction (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: WI
+  output:
+    wi_homestead_income: 10000
+    wi_homestead_credit: 663.6568
+
+- name: 2025 joint return with both spouses claimable: no Wisconsin homestead $500 dependent deduction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WI
+  output:
+    wi_homestead_income: 10000
+    wi_homestead_credit: 663.6568
+
+- name: 2025 joint return with neither spouse claimable (control): Wisconsin homestead $500 dependent deduction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 62
+        employment_income: 5000
+        real_estate_taxes: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WI
+  output:
+    # $10,000 - $500 = $9,500; ($1,000 - $1,440 x 8.785%) x 80% = $698.7968.
+    wi_homestead_income: 9500
+    wi_homestead_credit: 698.7968

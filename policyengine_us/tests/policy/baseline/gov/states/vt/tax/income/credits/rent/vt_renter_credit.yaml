@@ -145,3 +145,145 @@
     state_code: VT
   output:
     vt_renter_credit: 1_692
+
+- name: 2025 single filer who can be claimed as a dependent: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 1000
+        rent: 12000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # 32 V.S.A. 6066(c)(2): the claimant may not be a person claimed as a
+    # dependent by any taxpayer.
+    vt_renter_credit: 0
+
+- name: 2025 joint return with one claimable spouse: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # The unclaimed spouse is the claimant. 6066(b)(2) sizes fair market
+    # rent by the number of personal exemptions: one. Income $1,000 is
+    # below the full-credit limit: round($1,476 x 12 x 10%) = $1,771.
+    vt_renter_credit: 1771
+
+- name: 2025 joint return with one claimable spouse: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    vt_renter_credit: 1771
+
+- name: 2025 joint return with both spouses claimable: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    vt_renter_credit: 0
+
+- name: 2025 joint return with neither spouse claimable: Vermont renter credit needs a claimant who is not claimed as a dependent and sizes rent by personal exemptions
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        rent: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # Two exemptions: round($1,936 x 12 x 10%) = $2,323.
+    vt_renter_credit: 2323

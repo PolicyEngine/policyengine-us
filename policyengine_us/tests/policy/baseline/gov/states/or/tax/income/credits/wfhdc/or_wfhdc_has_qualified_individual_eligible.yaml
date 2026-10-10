@@ -85,3 +85,129 @@
         state_code: OR
   output:
     or_wfhdc_has_qualified_individual_eligible: false
+
+
+- name: 2025 child of a joint return with one claimable spouse is not a qualified individual (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OR
+  output:
+    # The child must be a dependent (ORS 315.264, IRC 21(b)(1)(A)); IRC 152(b)(1).
+    or_wfhdc_has_qualified_individual_eligible: false
+
+- name: 2025 child of a joint return with one claimable spouse is not a qualified individual (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: OR
+  output:
+    or_wfhdc_has_qualified_individual_eligible: false
+
+- name: 2025 child of a joint return with neither spouse claimable is a qualified individual
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 22
+      child:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OR
+  output:
+    or_wfhdc_has_qualified_individual_eligible: true
+
+- name: 2025 incapacitated spouse who can be claimed is still a qualified individual (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        is_disabled: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: OR
+  output:
+    # IRC 21(b)(1)(C): a disabled spouse, whichever spouse is labelled head.
+    or_wfhdc_has_qualified_individual_eligible: true
+
+- name: 2025 incapacitated spouse who can be claimed is still a qualified individual (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 40
+        is_disabled: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: OR
+  output:
+    or_wfhdc_has_qualified_individual_eligible: true

@@ -44,3 +44,209 @@
         state_code: HI
   output:
     hi_cdcc_eligible: true
+
+
+- name: 2025 single filer who can be claimed as a dependent cannot claim the credit
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 20
+        employment_income: 10000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: HI
+  output:
+    # HRS 235-55.6(a)(1): the taxpayer "is not claimed or is not otherwise
+    # eligible to be claimed as a dependent".
+    hi_cdcc_eligible: false
+
+- name: 2025 joint return with one claimable spouse has no qualifying child (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 10000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 10000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: HI
+  output:
+    hi_cdcc_eligible: false
+
+- name: 2025 joint return with one claimable spouse has no qualifying child (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        employment_income: 10000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 10000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: HI
+  output:
+    hi_cdcc_eligible: false
+
+- name: 2025 joint return with neither spouse claimable can claim the credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 10000
+      person_b:
+        age: 22
+        employment_income: 10000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: HI
+  output:
+    hi_cdcc_eligible: true
+
+- name: 2025 spouse who cannot be claimed can claim the credit for a claimable incapacitated spouse (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        is_incapable_of_self_care: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        employment_income: 10000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    hi_cdcc_eligible: true
+
+- name: 2025 spouse who cannot be claimed can claim the credit for a claimable incapacitated spouse (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        employment_income: 10000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 40
+        is_incapable_of_self_care: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: HI
+  output:
+    hi_cdcc_eligible: true
+
+- name: 2025 incapacitated spouse is not the qualifying individual of a spouse who can be claimed (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        employment_income: 10000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    hi_cdcc_eligible: false
+
+- name: 2025 incapacitated spouse is not the qualifying individual of a spouse who can be claimed (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        is_incapable_of_self_care: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 40
+        employment_income: 10000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: HI
+  output:
+    hi_cdcc_eligible: false
