@@ -1,12 +1,14 @@
-description: Maryland applies the capital gains surtax to filers with adjusted gross income exceeding this threshold.
+description: Maryland applies the capital gains surtax to filers with federal adjusted gross income exceeding this threshold.
 values:
   2025-01-01: 350_000
 metadata:
   reference:
-    - title: Maryland 2025 Resident Tax Forms and Instructions - Capital Gains Surtax
-      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/instructions/2025/resident-booklet.pdf#page=22
-    - title: Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
+    - title: Md. Code, Tax-General § 10-105(a)(4)
+      href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-105&enactments=false
+    - title: 2025 Md. Laws ch. 604 (HB 352), § 3, amending Tax-General § 10-105(a)(4)
       href: https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=164
+    - title: 2025 Maryland Form 502CG instructions, general instructions
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/forms/2025/502cg.pdf#page=2
   unit: currency-USD
   period: year
-  label: Maryland capital gains surtax AGI threshold
+  label: Maryland capital gains surtax federal AGI threshold

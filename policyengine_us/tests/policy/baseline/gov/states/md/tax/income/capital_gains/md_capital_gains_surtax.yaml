@@ -1,4 +1,21 @@
-- name: MD Capital gains surtax 2024 - Not yet effective
+# Md. Code, Tax-General 10-105(a)(3) and (4): an additional 2% of the net
+# capital gain, as defined under the Internal Revenue Code, included in
+# Maryland adjusted gross income, for filers with federal adjusted gross
+# income over $350,000. Net capital gain is the excess of the net long-term
+# capital gain over the net short-term capital loss (26 U.S.C. 1222(11);
+# Technical Bulletin No. 58, section I): the smaller of Schedule D lines 15
+# and 16, not below zero.
+#
+# 2025 Form 502CG: line 1 is that net capital gain, line 8 the part from
+# excepted assets, and line 9 = line 1 - line 8, not below zero. Form 502
+# line 21b = line 9 (carried to line 20a) x 2%.
+#
+# Form 502CG line 1 points to Form 502 line 1c, the federal Form 1040 line 7a
+# gain, which also counts a net short-term capital gain. Where a case has a
+# net short-term gain its comment gives the line 7a figure too; the model
+# follows the statute.
+
+- name: Not yet in effect in 2024
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -17,7 +34,7 @@
   output:
     md_capital_gains_surtax: 0
 
-- name: MD Capital gains surtax 2025 - Below AGI threshold (no surtax)
+- name: Federal AGI below the threshold
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -34,9 +51,11 @@
         members: [person1]
         state_code: MD
   output:
+    # Form 502CG line 1 is $50,000, but federal AGI is not over $350,000.
+    md_net_capital_gain: 50_000
     md_capital_gains_surtax: 0
 
-- name: MD Capital gains surtax 2025 - At AGI threshold (no surtax)
+- name: Federal AGI at the threshold is not over it
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -55,7 +74,26 @@
   output:
     md_capital_gains_surtax: 0
 
-- name: MD Capital gains surtax 2025 - Above AGI threshold with capital gains
+- name: Federal AGI one dollar over the threshold
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 350_001
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Line 1 = line 9 = $100,000; $100,000 x 2% = $2,000.
+    md_capital_gains_surtax: 2_000
+
+- name: A net short-term capital gain is not net capital gain
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -72,11 +110,14 @@
         members: [person1]
         state_code: MD
   output:
-    # Net capital gains: $100,000 + $50,000 = $150,000
-    # Surtax: $150,000 * 2% = $3,000
-    md_capital_gains_surtax: 3_000
+    # Schedule D line 15 = $100,000, line 16 = $150,000.
+    # Form 502CG line 1 = the smaller, $100,000; line 9 = $100,000.
+    # $100,000 x 2% = $2,000. (Form 1040 line 7a is $150,000, which would
+    # give $3,000.)
+    md_net_capital_gain: 100_000
+    md_capital_gains_surtax: 2_000
 
-- name: MD Capital gains surtax 2025 - Long-term gains only
+- name: Long-term gains only
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -93,11 +134,10 @@
         members: [person1]
         state_code: MD
   output:
-    # Net capital gains: $200,000
-    # Surtax: $200,000 * 2% = $4,000
+    # Line 1 = line 9 = $200,000; $200,000 x 2% = $4,000.
     md_capital_gains_surtax: 4_000
 
-- name: MD Capital gains surtax 2025 - Short-term gains only
+- name: Short-term gains only
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -114,19 +154,21 @@
         members: [person1]
         state_code: MD
   output:
-    # Net capital gains: $80,000
-    # Surtax: $80,000 * 2% = $1,600
-    md_capital_gains_surtax: 1_600
+    # Schedule D line 15 = $0, line 16 = $80,000. No net long-term capital
+    # gain, so no net capital gain: line 1 = $0. (Form 1040 line 7a is
+    # $80,000, which would give $1,600.)
+    md_net_capital_gain: 0
+    md_capital_gains_surtax: 0
 
-- name: MD Capital gains surtax 2025 - With capital losses (no net gains)
+- name: Short-term losses larger than the long-term gains
   period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         long_term_capital_gains: 50_000
-        short_term_capital_gains: 25_000
-        capital_losses: 80_000
+        # $25,000 of short-term gains less $80,000 of short-term losses.
+        short_term_capital_gains: -55_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -136,13 +178,13 @@
         members: [person1]
         state_code: MD
   output:
-    # Gross gains: $50,000 + $25,000 = $75,000
-    # Capital losses limited to $3,000 federal cap
-    # Net gains after losses: max($75,000 - $3,000, 0) = $72,000
-    # Surtax: $72,000 * 2% = $1,440
-    md_capital_gains_surtax: 1_440
+    # Schedule D line 15 = $50,000, line 16 = -$5,000.
+    # Line 1 = max(0, min($50,000, -$5,000)) = $0. The $3,000 capital loss
+    # deduction is part of the same netting and is not subtracted again.
+    md_net_capital_gain: 0
+    md_capital_gains_surtax: 0
 
-- name: MD Capital gains surtax 2025 - With capital losses (partial offset)
+- name: Short-term losses partly offset the long-term gains
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -160,14 +202,14 @@
         members: [person1]
         state_code: MD
   output:
-    # Federal Schedule D line 16 = $120,000 - $20,000 = $100,000. Losses up
-    # to the gains are allowed in full (26 U.S.C. 1211(b)); the $3,000 cap
-    # applies only to losses in excess of gains.
-    # 2025 Form 502CG line 1 (Form 502 line 1c, federal line 7a): $100,000
-    # Surtax: $100,000 * 2% = $2,000
+    # Schedule D line 15 = $120,000, line 16 = $100,000. Losses up to the
+    # gains are allowed in full (26 U.S.C. 1211(b)); the $3,000 limit applies
+    # only to losses in excess of gains.
+    # Form 502CG line 1 = $100,000; line 9 = $100,000.
+    # $100,000 x 2% = $2,000.
     md_capital_gains_surtax: 2_000
 
-- name: MD Capital gains surtax 2025 - One spouse's loss within the other's gains
+- name: One spouse's loss within the other's gains
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -190,15 +232,40 @@
         members: [person1, person2]
         state_code: MD
   output:
-    # Joint federal Schedule D line 16 = $100,000 - $20,000 = $80,000. The
-    # loss is within the gains, so 26 U.S.C. 1211(b) allows it in full and
-    # no $3,000 capped loss is left to subtract again.
-    # 2025 Form 502CG line 1 (federal line 7a): $80,000
-    # Surtax: $80,000 * 2% = $1,600 (subtracting a $3,000 capped loss again
-    # gave $1,540)
+    # Joint Schedule D line 15 = $100,000, line 16 = $80,000. The loss is
+    # within the gains, so 26 U.S.C. 1211(b) allows it in full and no $3,000
+    # capped loss is left to subtract again.
+    # Form 502CG line 1 = $80,000. Surtax: $80,000 x 2% = $1,600.
     md_capital_gains_surtax: 1_600
 
-- name: MD Capital gains surtax 2025 - High earner with large gains
+- name: One spouse's short-term gain is not net capital gain
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        long_term_capital_gains: 100_000
+      person2:
+        age: 48
+        short_term_capital_gains: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 450_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Joint Schedule D line 15 = $100,000, line 16 = $130,000.
+    # Form 502CG line 1 = $100,000. Surtax: $100,000 x 2% = $2,000.
+    md_capital_gains_surtax: 2_000
+
+- name: High earner with large long-term and short-term gains
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -215,32 +282,228 @@
         members: [person1]
         state_code: MD
   output:
-    # Net capital gains: $500,000 + $200,000 = $700,000
-    # Surtax: $700,000 * 2% = $14,000
-    md_capital_gains_surtax: 14_000
+    # Schedule D line 15 = $500,000, line 16 = $700,000.
+    # Form 502CG line 1 = $500,000. Surtax: $500,000 x 2% = $10,000.
+    md_capital_gains_surtax: 10_000
 
-# NOTE: The following test case represents a limitation of the current implementation
-# In reality, primary residence sales under $1.5M should be excluded from the surtax
-- name: MD Capital gains surtax 2025 - Limitation test (includes all gains)
+- name: A net long-term capital loss leaves no net capital gain
   period: 2025
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        long_term_capital_gains: 300_000  # Could include primary residence sale
-        short_term_capital_gains: 0
+        long_term_capital_gains: -10_000
+        short_term_capital_gains: 50_000
     tax_units:
       tax_unit:
         members: [person1]
-        adjusted_gross_income: 750_000
+        adjusted_gross_income: 450_000
     households:
       household:
         members: [person1]
         state_code: MD
   output:
-    # Current implementation includes ALL capital gains
-    # Real implementation should exclude primary residence < $1.5M
-    # This test documents current behavior, not ideal behavior
-    # Net capital gains: $300,000 (should potentially be less with exclusions)
-    # Surtax: $300,000 * 2% = $6,000 (may overstate actual liability)
-    md_capital_gains_surtax: 6_000
+    # Schedule D line 15 = -$10,000, line 16 = $40,000.
+    # No net long-term capital gain: line 1 = $0. (Form 1040 line 7a is
+    # $40,000, which would give $800.)
+    md_net_capital_gain: 0
+    md_capital_gains_surtax: 0
+
+- name: Capital gain distributions are net capital gain
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 400_000
+        # Form 1099-DIV box 2a, reported on Form 1040 line 7a without
+        # Schedule D.
+        non_sch_d_capital_gains: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Capital gain distributions are long-term capital gains (26 U.S.C.
+    # 852(b)(3)(B)). Federal AGI = $420,000.
+    # Form 502CG line 1 = $20,000. Surtax: $20,000 x 2% = $400.
+    md_net_capital_gain: 20_000
+    md_capital_gains_surtax: 400
+
+- name: Capital gain distributions net against a short-term loss
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        non_sch_d_capital_gains: 10_000
+        short_term_capital_gains: -4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 400_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # With a capital loss the distributions go on Schedule D line 13.
+    # Line 15 = $10,000, line 16 = $6,000.
+    # Form 502CG line 1 = $6,000. Surtax: $6,000 x 2% = $120.
+    md_net_capital_gain: 6_000
+    md_capital_gains_surtax: 120
+
+- name: A negative distributions input counts as zero
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 10_000
+        non_sch_d_capital_gains: -5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 400_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Form 1099-DIV box 2a amounts are paid amounts and never negative.
+    # Line 1 = $10,000. Surtax: $10,000 x 2% = $200.
+    md_net_capital_gain: 10_000
+    md_capital_gains_surtax: 200
+
+- name: A dependent's gains are on the dependent's own return
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 400_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        long_term_capital_gains: 300_000
+    household:
+      state_code: MD
+  output:
+    # The head's federal AGI is $410,000. Only the head's gain is on the
+    # head's return: line 1 = $10,000. Surtax: $10,000 x 2% = $200.
+    md_net_capital_gain: 10_000
+    md_capital_gains_surtax: 200
+
+- name: A dependent's loss does not reduce the filer's gain
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 400_000
+        long_term_capital_gains: 100_000
+      child:
+        age: 10
+        short_term_capital_gains: -50_000
+    household:
+      state_code: MD
+  output:
+    # Line 1 = $100,000 from the head's return. Surtax: $2,000.
+    md_net_capital_gain: 100_000
+    md_capital_gains_surtax: 2_000
+
+- name: Gain from excepted assets is not subject to the surtax
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 750_000
+        # Form 502CG line 2: $200,000 of the gain is from a primary
+        # residence sold for less than $1,500,000.
+        md_capital_gains_surtax_excepted_gain: 200_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Line 1 = $300,000; line 8 = $200,000; line 9 = $100,000.
+    # Surtax: $100,000 x 2% = $2,000.
+    md_capital_gains_surtax: 2_000
+
+- name: Excepted gain larger than line 1 leaves nothing subject to the surtax
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 120_000
+        short_term_capital_gains: -70_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 750_000
+        md_capital_gains_surtax_excepted_gain: 80_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # Line 1 = $50,000; line 8 = $80,000; line 9 = max(0, -$30,000) = $0.
+    md_net_capital_gain: 50_000
+    md_capital_gains_surtax: 0
+
+- name: Technical Bulletin No. 58 example (Jane McDonald)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # TB-58 section III.A: $10,000 from horses (Form 4797), $50,000 from
+        # E.I.O., LLC (of which $32,000 from cattle), a $400,000 gain on her
+        # principal residence sold for $1.2 million, and a $150,000 gain on
+        # her beach house. The bulletin enters all $610,000 on line 1.
+        long_term_capital_gains: 610_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # "FAGI in excess of $350,000"
+        adjusted_gross_income: 900_000
+        # Line 2 (residence) $400,000 + line 4 (horses and cattle) $42,000.
+        md_capital_gains_surtax_excepted_gain: 442_000
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # TB-58 page 3, Form 502CG: line 1 = $610,000, line 1a = $50,000,
+    # line 2 = $400,000, line 4 = $42,000, line 8 = $442,000,
+    # line 9 = $168,000. Form 502 line 21b: $168,000 x 2% = $3,360.
+    md_net_capital_gain: 610_000
+    md_capital_gains_surtax: 3_360
+
+- name: No surtax outside Maryland
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        long_term_capital_gains: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 600_000
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    md_capital_gains_surtax: 0

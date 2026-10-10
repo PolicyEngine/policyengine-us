@@ -1,0 +1,1 @@
+Tax Maryland's 2% capital gains surtax on net capital gain as the Internal Revenue Code defines it (net long-term gain over net short-term loss, with capital gain distributions, for the head and spouse), test the $350,000 threshold on federal rather than Maryland AGI, and add an input for gain from excepted assets (Form 502CG line 8).
