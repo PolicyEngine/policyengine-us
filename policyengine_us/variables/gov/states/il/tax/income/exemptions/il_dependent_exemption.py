@@ -11,7 +11,7 @@ class il_dependent_exemption(Variable):
     reference = (
         # 35 ILCS 5/204(c): an exemption for each exemption "allowable" under
         # IRC 151.
-        "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003500050K204",
+        "https://www.ilga.gov/Documents/legislation/ilcs/documents/003500050K204.htm",
         "https://www.law.cornell.edu/uscode/text/26/152#b_1",
     )
 
