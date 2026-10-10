@@ -11,7 +11,10 @@ return. The model records one loss amount per person and no event count, so a
 return's losses are treated as one casualty.
 
 `ca_casualty_loss_deduction` and `mn_casualty_loss_deduction` are two copies
-of that computation. Hypothesis draws batches of tax units (single or joint,
+of that computation for an ordinary loss. The model has no disaster input and
+no Minnesota Schedule M1NC, so the properties below do not cover the 2020
+Schedule M1SA's net qualified disaster loss or the 2018 M1CAT's Schedule M1NC
+line 38 base. Hypothesis draws batches of tax units (single or joint,
 with up to two dependents who have their own losses), places each in
 California and in Minnesota, and runs each batch as one vectorized baseline
 simulation. For every tax unit and year:
