@@ -18,8 +18,8 @@ every eligible tax unit, the method must:
 3. Allocate no tax when neither filer has positive AGI, as main does when
    its allocation denominator is nonpositive.
 4. Keep deductions nonnegative and at most $5,000 per person; conserve
-   nonnegative federal tax when filer AGI is positive and federal tax is at
-   most $5,000, so no cap can bind.
+   nonnegative federal tax when filer AGI is positive and each spouse's
+   uncapped deduction is at most $5,000.
 
 Each generated case is simulated alongside clipped-income, changed-dependent,
 and zero-filer-income variants. Comparisons allow one cent for float32 tax
@@ -128,7 +128,7 @@ def assert_properties(cases):
         assert np.all(case_deductions[:, 2] == 0), case
         if not has_positive_filer_income:
             assert np.all(case_deductions == 0), case
-        elif federal_tax <= CAP:
+        elif np.all(case_shares[:3] * federal_tax <= CAP):
             assert case_deductions[:3].sum(axis=1) == pytest.approx(
                 [federal_tax] * 3, abs=AMOUNT_TOLERANCE
             ), case
@@ -164,14 +164,24 @@ def test_worked_allocations():
             "dependent_agi": 10_000,
             "federal_tax": 2_000,
         },
+        # 9_000 * 40_000 / (40_000 + 40_000) = 4_500 per spouse.
+        # Neither individual cap binds, so the full 9_000 is conserved.
+        {
+            "head_agi": 40_000,
+            "spouse_agi": 40_000,
+            "dependent_agi": 10_000,
+            "federal_tax": 9_000,
+        },
     ]
     shares, deductions = calculate(cases)
     assert shares[:, 0] == pytest.approx(
-        np.array([[1, 0, 0], [0, 1, 0], [0, 0, 0], [0, 0, 0]]),
+        np.array([[1, 0, 0], [0, 1, 0], [0, 0, 0], [0, 0, 0], [0.5, 0.5, 0]]),
         abs=SHARE_TOLERANCE,
     )
     assert deductions[:, 0] == pytest.approx(
-        np.array([[2_000, 0, 0], [0, 2_000, 0], [0, 0, 0], [0, 0, 0]]),
+        np.array(
+            [[2_000, 0, 0], [0, 2_000, 0], [0, 0, 0], [0, 0, 0], [4_500, 4_500, 0]]
+        ),
         abs=AMOUNT_TOLERANCE,
     )
 
