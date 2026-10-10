@@ -39,3 +39,108 @@
   output:
     ca_state_supplement_eligible_person: true
     ca_state_supplement: 4_101.72
+
+# 2026: federal SSI is $994 (individual) and $1,491 (couple); the California
+# payment standard is $1,233.94 (individual) and $2,098.83 (couple), per CDSS,
+# SSI Total Monthly Payment Amounts 2026, and SSA POMS SI 01415.058.
+- name: 2026 aged individual living independently with no income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ssi: 11_928 # 994 * 12
+    ca_state_supplement_payment_standard: 14_807.28 # 1,233.94 * 12
+    ca_state_supplement: 2_879.28 # (1,233.94 - 994) * 12
+
+- name: 2026 aged couple living independently with no income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    ssi: [8_946, 8_946] # 1,491 * 12 / 2
+    ca_state_supplement_payment_standard: 25_185.96 # 2,098.83 * 12
+    ca_state_supplement: 7_293.96 # (2,098.83 - 1,491) * 12
+
+- name: 2026 aged individual with Social Security below the federal benefit rate
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 6_000 # 500 a month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Countable income is 500 - 20 = 480 a month, so SSI is 994 - 480 = 514.
+    ssi: 6_168 # 514 * 12
+    # The supplement is 1,233.94 - 514 - 480 = 239.94 a month.
+    ca_state_supplement: 2_879.28 # 239.94 * 12
+
+- name: 2026 aged individual with Social Security above the federal benefit rate
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 13_200 # 1,100 a month
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+  output:
+    # Countable income is 1,100 - 20 = 1,080 a month, above the 994 federal
+    # benefit rate, so SSI is 0 and the supplement is 1,233.94 - 1,080 = 153.94.
+    ssi: 0
+    ca_state_supplement: 1_847.28 # 153.94 * 12
