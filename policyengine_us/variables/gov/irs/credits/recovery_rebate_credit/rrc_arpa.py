@@ -47,4 +47,8 @@ class rrc_arpa(Variable):
         excess = max_(0, agi - rrc.arpa.phase_out.threshold[filing_status])
         payment_reduction_percent = excess / phase_out_length
         payment_reduction = max_payment * payment_reduction_percent
-        return max_(0, max_payment - payment_reduction)
+        # IRC 6428B(a) allows the credit to "an eligible individual", so a
+        # return whose every filer is a dependent of another taxpayer gets
+        # none, even for its own dependents.
+        no_eligible_filer = tax_unit("every_filer_is_dependent_elsewhere", period)
+        return where(no_eligible_filer, 0, max_(0, max_payment - payment_reduction))
