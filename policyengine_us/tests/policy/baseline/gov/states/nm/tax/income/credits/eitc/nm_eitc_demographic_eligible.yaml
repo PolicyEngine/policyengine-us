@@ -49,7 +49,6 @@
   output:
     nm_eitc_demographic_eligible: true
 
-
 - name: 2025 childless single filer who can be claimed as a dependent is ineligible
   period: 2025
   input:
@@ -186,3 +185,147 @@
     # above the federal maximum age of 64; the dependent aged 40 is within
     # the age range but is not a filer, and is not a child.
     nm_eitc_demographic_eligible: false
+
+# The dependent test applies only without a qualifying child (IRC
+# 32(c)(1)(A)(ii)), and a qualifying child is a dependent under 19, a student
+# under 24, or permanently and totally disabled (IRC 32(c)(3), 152(c)(3)).
+- name: 2025 claimable single filer with a child aged 18 is not barred by the dependent test
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 18
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: true
+
+- name: 2025 claimable single filer with a student aged 22 is not barred by the dependent test
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 22
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: true
+
+- name: 2025 claimable single filer with a permanently disabled adult child is not barred by the dependent test
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 60
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 30
+        is_permanently_and_totally_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: true
+
+- name: 2025 filer above the maximum age with a student aged 20 is eligible
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 70
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: true
+
+- name: 2025 claimable single filer with a dependent aged 22 who is not a student is barred
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 45
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+  output:
+    # The dependent aged 22 is not a qualifying child, so the return is childless.
+    nm_eitc_demographic_eligible: false
+
+- name: 2025 childless joint return with neither spouse claimable is eligible (the younger spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 21
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 25
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: true
