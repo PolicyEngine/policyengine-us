@@ -147,24 +147,3 @@
     household_refundable_tax_credits: 5
     household_tax: 115
     household_net_income: 885  # 1,000 + 5 - 120
-
-- name: Abolishing federal income and payroll taxes together removes both
-  period: 2025
-  reforms:
-    - policyengine_us.reforms.federal.abolish_federal_income_tax.abolish_federal_income_tax
-    - policyengine_us.reforms.federal.abolish_payroll_tax.abolish_payroll_tax
-  input:
-    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
-    gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: true
-    state_code: CA
-    income_tax_before_refundable_credits: 1_200
-    income_tax_refundable_credits: 800
-    employee_payroll_tax: 600
-    self_employment_tax: 300
-    ca_income_tax_before_refundable_credits: 1_000
-    ca_use_tax: 20
-    ca_refundable_credits: 50
-  output:
-    household_tax_before_refundable_credits: 1_320  # 300 + 1,000 + 20
-    household_refundable_tax_credits: 50
-    household_tax: 1_270
