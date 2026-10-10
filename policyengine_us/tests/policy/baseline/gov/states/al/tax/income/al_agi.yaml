@@ -41,7 +41,7 @@
     al_agi: 60_000
     al_income_tax: 2_442.75
 
-- name: A dependent's self-employed health insurance and plan deductions follow their income into Alabama AGI
+- name: A dependent's self-employment income and deductions stay on the dependent's own return
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -62,9 +62,104 @@
         members: [parent, child]
         state_code: AL
   output:
-    # Alabama AGI sums every member's income, so it counts the child's 10,000
-    # of Schedule C income and subtracts the child's own self-employed health
-    # insurance (1,000) and SEP (500) deductions: 50,000 - 1,500. The federal
-    # AGI leaves all of them on the child's return.
+    # The child's 10,000 of Schedule C income and their own self-employed
+    # health insurance (1,000) and SEP (500) deductions all go on the child's
+    # Alabama return (Ala. Code 40-18-27(a); Form 40 booklet p. 5,
+    # "Dependent's and Student's Income"), as on the federal return.
     adjusted_gross_income: 40_000
-    al_agi: 48_500
+    al_agi: 40_000
+
+- name: A dependent's wages stay off the parent's Alabama AGI
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 10_000
+      child:
+        age: 16
+        employment_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    # The child files their own Alabama return if their income is over the
+    # filing threshold (2021 Form 40 booklet p. 5).
+    adjusted_gross_income: 10_000
+    al_agi: 10_000
+
+- name: A joint return combines the spouses' income but not a dependent's
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+      spouse:
+        age: 40
+        taxable_interest_income: 2_000
+      child:
+        age: 15
+        qualified_dividend_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: AL
+  output:
+    # Ala. Admin. Code r. 810-3-27-.01(1)(b)1: a husband and wife "may elect to
+    # file a joint return reporting their combined income and deductions".
+    # 30,000 + 2,000; the child's dividends are on the child's own return.
+    al_agi: 32_000
+
+- name: A dependent's business loss does not reduce the parent's Alabama AGI
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 17
+        self_employment_income: -5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    al_agi: 40_000
+
+- name: Only the filers' own U.S. government interest is subtracted from Alabama AGI
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        taxable_interest_income: 6_000
+        us_govt_interest_person: 1_000
+      child:
+        age: 15
+        employment_income: 3_000
+        taxable_interest_income: 2_000
+        us_govt_interest_person: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    # 6,000 of interest less the parent's 1,000 of exempt U.S. obligation
+    # interest. The child's wages and interest, and the child's U.S.
+    # obligation interest, are on the child's own return.
+    al_agi: 5_000

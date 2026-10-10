@@ -20,7 +20,10 @@ def create_al_hb527_overtime_deduction() -> Reform:
             overtime_income = person("fsla_overtime_premium", period)
             # Cap at per-taxpayer limit per AL HB527 Section 40-18-15(a)(29)
             person_capped = min_(overtime_income, p.cap)
-            return tax_unit.sum(person_capped)
+            # A dependent's overtime is on the dependent's own return, like the
+            # rest of their income (see al_agi).
+            is_dependent = person("is_tax_unit_dependent", period)
+            return tax_unit.sum(person_capped * ~is_dependent)
 
     class al_agi(Variable):
         value_type = float
@@ -39,8 +42,8 @@ def create_al_hb527_overtime_deduction() -> Reform:
                 period
             ).gov.states.al.tax.income.agi.gross_income_sources
             deductions = parameters(period).gov.states.al.tax.income.agi.deductions
-            gross_income = add(tax_unit, period, gross_sources)
-            agi_deductions = add(tax_unit, period, deductions)
+            gross_income = tax_unit_non_dep_add(tax_unit, period, gross_sources)
+            agi_deductions = tax_unit_non_dep_add(tax_unit, period, deductions)
             base_al_agi = gross_income - agi_deductions
             # If HB527 is in effect, subtract the overtime deduction
             overtime_deduction = tax_unit("al_hb527_overtime_deduction", period)

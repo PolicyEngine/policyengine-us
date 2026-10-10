@@ -1,4 +1,7 @@
 description: Alabama provides these deductions for the state adjusted gross income.
+# Alabama adjusted gross income leaves out a tax unit dependent's income and
+# deductions, which belong on the dependent's own return (Ala. Code
+# §§ 40-18-2(a)(1) and 40-18-27(a); Ala. Admin. Code r. 810-3-27-.01(1)).
 values:
   2021-01-01:
   # IRA distributions prior to 1982 are not deductible.
@@ -6,12 +9,9 @@ values:
     - alimony_expense # Line 4
     - early_withdrawal_penalty # Line 5
     - self_employed_health_insurance_ald # Line 7
-    # Alabama AGI counts dependents' income, so their deductions too.
-    - dependents_self_employed_health_insurance_ald
     - health_savings_account_ald # Line 8
     - self_employed_pension_contribution_ald # Line 9
-    - dependents_self_employed_pension_contribution_ald
-    - us_govt_interest
+    - us_govt_interest_person
     - taxable_public_pension_income
   2023-01-01:
   # IRA distributions prior to 1982 are not deductible.
@@ -19,12 +19,9 @@ values:
     - alimony_expense # Line 4
     - early_withdrawal_penalty # Line 5
     - self_employed_health_insurance_ald # Line 7
-    # Alabama AGI counts dependents' income, so their deductions too.
-    - dependents_self_employed_health_insurance_ald
     - health_savings_account_ald # Line 8
     - self_employed_pension_contribution_ald # Line 9
-    - dependents_self_employed_pension_contribution_ald
-    - us_govt_interest
+    - us_govt_interest_person
     - al_retirement_exemption #Schedule RS Line 10
     - taxable_public_pension_income
 
