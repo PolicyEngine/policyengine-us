@@ -330,3 +330,99 @@
         state_code: TX
   output:
     rrc_arpa: 0
+
+# IRC 6428B(a) allows the credit to an eligible individual, so a return whose only
+# filer is a dependent of another taxpayer gets none, even when the filing
+# exception lets that filer claim the child.
+- name: 2021 claimable single filer within the filing exception gets no ARPA rebate for the child
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    rrc_arpa: 0
+
+# IRC 6428(g)(1)(C) and 6428A(g)(3): children count when a spouse has a valid SSN,
+# whether or not that spouse is an eligible individual. Here the spouse with the
+# SSN can be claimed (within the filing exception) and serves in the Armed
+# Forces; the other spouse has no SSN.
+- name: 2020 child payments need a spouse with an SSN, not an eligible spouse with one (the claimable spouse is the head)
+  period: 2020
+  input:
+    people:
+      person_a:
+        age: 30
+        is_military: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        meets_eitc_identification_requirements: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    # One adult payment under the Armed Forces exception plus the child's.
+    rrc_cares: 1700
+    rrc_caa: 1200
+
+- name: 2020 child payments need a spouse with an SSN, not an eligible spouse with one (the claimable spouse is the spouse)
+  period: 2020
+  input:
+    people:
+      person_b:
+        age: 30
+        meets_eitc_identification_requirements: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_military: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+  output:
+    rrc_cares: 1700
+    rrc_caa: 1200

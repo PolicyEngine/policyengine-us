@@ -20,7 +20,7 @@ class ca_cdcc_relevant_expenses(Variable):
         # Qualifying expenses cover childcare plus care for a disabled
         # qualifying individual of any age (FTB 3506 instructions,
         # Section D).
-        childcare = tax_unit("tax_unit_childcare_expenses", period)
+        childcare = tax_unit("cdcc_qualifying_childcare_expenses", period)
         adult_care = add(tax_unit, period, ["care_expenses"])
         expenses = childcare + adult_care
         # First, cap based on the number of eligible care receivers

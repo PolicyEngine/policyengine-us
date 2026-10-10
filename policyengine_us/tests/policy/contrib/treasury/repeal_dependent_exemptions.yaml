@@ -63,3 +63,46 @@
   output:
     exemptions_count: 2
     exemptions: 0
+
+# The personal exemptions that remain are the filers' own, and a filer who can be
+# claimed as a dependent has none (IRC 151(d)(2)).
+- name: Claimable single filer with a child has no personal exemption
+  period: 2022
+  reforms: policyengine_us.reforms.treasury.repeal_dependent_exemptions.repeal_dependent_exemptions
+  input:
+    gov.contrib.treasury.repeal_dependent_exemptions: true
+    people:
+      parent: {age: 30, claimable_as_dependent_on_another_return: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child]}}
+    households: {household: {members: [parent, child], state_code: TX}}
+  output:
+    exemptions_count: 0
+
+- name: Joint return with one claimable spouse keeps the other spouse's exemption (the claimable spouse is the head)
+  period: 2022
+  reforms: policyengine_us.reforms.treasury.repeal_dependent_exemptions.repeal_dependent_exemptions
+  input:
+    gov.contrib.treasury.repeal_dependent_exemptions: true
+    people:
+      person_a: {age: 30, claimable_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 30, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_a, person_b, child], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child], state_code: TX}}
+  output:
+    exemptions_count: 1
+
+- name: Joint return with one claimable spouse keeps the other spouse's exemption (the claimable spouse is the spouse)
+  period: 2022
+  reforms: policyengine_us.reforms.treasury.repeal_dependent_exemptions.repeal_dependent_exemptions
+  input:
+    gov.contrib.treasury.repeal_dependent_exemptions: true
+    people:
+      person_b: {age: 30, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 30, claimable_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_b, person_a, child], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a, child], state_code: TX}}
+  output:
+    exemptions_count: 1
