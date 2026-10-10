@@ -15,12 +15,16 @@ time park unused brackets there, and no finite value reaches them. `-inf` is
 a reachable bottom row, so duplicates there are flagged.
 """
 
+import calendar
 import math
+import re
 from collections import defaultdict
 from datetime import date
 
 import pytest
-from policyengine_core.parameters import ParameterNode, ParameterScale
+from hypothesis import example, given
+from hypothesis import strategies as st
+from policyengine_core.parameters import Parameter, ParameterNode, ParameterScale
 from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
@@ -212,15 +216,127 @@ def test_duplicate_threshold_guard_reads_tied_dates_like_core():
     assert _duplicate_threshold_errors(distinct) == []
 
 
+# Several parameter files key a value at 0000-01-01 to mean "since the
+# beginning of time" (see tests/code_health/test_uprating_placement.py). Python
+# dates have no year zero, so it is the one instant that is not a calendar date.
+YEAR_ZERO_SENTINEL = "0000-01-01"
+
+
 def _is_calendar_date(instant_str):
-    # Core's public lookup parses the instant, which fails for padded
-    # 0000-01-01 entries and for 2021-06-31 in
-    # gov.states.ny.nyserda.drive_clean.amount.
+    # Core compares instants as strings and its INSTANT_PATTERN checks only the
+    # digit ranges, so an impossible day such as 2021-06-31 loads and sorts
+    # without error while naming no date.
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", instant_str) is None:
+        return False
     try:
         date.fromisoformat(instant_str)
     except ValueError:
         return False
     return True
+
+
+def _non_calendar_instants(parameter):
+    return [
+        value_at_instant.instant_str
+        for value_at_instant in parameter.values_list
+        if value_at_instant.instant_str != YEAR_ZERO_SENTINEL
+        and not _is_calendar_date(value_at_instant.instant_str)
+    ]
+
+
+def test_calendar_date_guard_flags_impossible_dates_only():
+    parameter = Parameter(
+        "test_parameter",
+        {
+            "values": {
+                YEAR_ZERO_SENTINEL: 0,
+                "2021-06-30": 1,
+                "2021-06-31": 2,
+                "2024-02-29": 3,
+                "2025-02-29": 4,
+                "2025-04-31": 5,
+            }
+        },
+    )
+
+    assert sorted(_non_calendar_instants(parameter)) == [
+        "2021-06-31",
+        "2025-02-29",
+        "2025-04-31",
+    ]
+    # Forms core's INSTANT_PATTERN or date.fromisoformat accept that are not
+    # full YYYY-MM-DD days.
+    for instant_str in ["2021", "2021-06", "20210630", "2021-W26-3"]:
+        assert not _is_calendar_date(instant_str)
+
+
+@given(st.dates())
+@example(date(2000, 2, 29))
+@example(date(2024, 2, 29))
+def test_calendar_date_guard_accepts_real_calendar_dates(calendar_date):
+    assert _is_calendar_date(calendar_date.isoformat())
+
+
+@given(
+    year=st.integers(min_value=1, max_value=9999),
+    month=st.integers(min_value=1, max_value=12),
+    day=st.integers(min_value=1, max_value=31),
+)
+@example(year=2021, month=6, day=31)
+@example(year=1900, month=2, day=29)
+@example(year=2000, month=2, day=29)
+def test_calendar_date_guard_matches_gregorian_month_lengths(year, month, day):
+    instant_str = f"{year:04d}-{month:02d}-{day:02d}"
+    # The Gregorian month-length oracle independently checks impossible days,
+    # including century years that are leap years only when divisible by 400.
+    assert _is_calendar_date(instant_str) == (
+        day <= calendar.monthrange(year, month)[1]
+    )
+
+
+@given(st.dates())
+@example(date(2021, 6, 30))
+def test_calendar_date_guard_requires_full_calendar_form(calendar_date):
+    canonical = calendar_date.isoformat()
+    iso_year, iso_week, iso_day = calendar_date.isocalendar()
+    alternatives = (
+        canonical[:4],
+        canonical[:7],
+        canonical.replace("-", ""),
+        f"{iso_year:04d}-W{iso_week:02d}-{iso_day}",
+    )
+    for instant_str in alternatives:
+        assert not _is_calendar_date(instant_str)
+
+
+@given(
+    month=st.integers(min_value=1, max_value=12),
+    day=st.integers(min_value=1, max_value=31),
+)
+@example(month=1, day=1)
+@example(month=1, day=2)
+@example(month=2, day=29)
+def test_calendar_date_guard_exempts_only_beginning_of_time(month, day):
+    instant_str = f"0000-{month:02d}-{day:02d}"
+    parameter = Parameter(
+        "test_parameter",
+        {"values": {YEAR_ZERO_SENTINEL: 0, instant_str: 1}},
+    )
+    # Year zero is not a calendar year; only the exact documented sentinel is
+    # exempt when validating the parameter's loaded instants.
+    expected = [] if instant_str == YEAR_ZERO_SENTINEL else [instant_str]
+    assert _non_calendar_instants(parameter) == expected
+
+
+def test_parameter_instants_are_calendar_dates():
+    errors = [
+        f"{parameter.name}: {instant_str}"
+        for parameter in system.parameters.get_descendants()
+        if isinstance(parameter, Parameter)
+        for instant_str in _non_calendar_instants(parameter)
+    ]
+
+    assert not errors, "\n".join(errors)
 
 
 def test_add_bracket_thresholds_match_core_for_every_scale_and_instant(monkeypatch):
@@ -240,7 +356,8 @@ def test_add_bracket_thresholds_match_core_for_every_scale_and_instant(monkeypat
     mismatches = []
     for scale in _all_scales():
         for instant_str in _change_instants(scale):
-            if not _is_calendar_date(instant_str):
+            if instant_str == YEAR_ZERO_SENTINEL:
+                # Core's public lookup cannot parse year zero.
                 continue
             passed.clear()
             scale(instant_str)
