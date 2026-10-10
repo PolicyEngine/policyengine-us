@@ -1,0 +1,91 @@
+# Wis. Stat. 71.07(1): a refundable credit for the decrease in the earlier
+# year's Wisconsin tax from subtracting income taxed under the claim of right
+# doctrine but repaid, when the repayment is greater than $3,000 and is not
+# subtracted in computing Wisconsin adjusted gross income.
+- name: Case 1, the credit is the prior-year Wisconsin tax decrease when the filer takes it.
+  period: 2025
+  input:
+    claim_of_right_repayment: 10_000
+    wi_claim_of_right_credit_applies: true
+    wi_claim_of_right_prior_year_tax_decrease: 600
+    state_code: WI
+  output:
+    wi_claim_of_right_credit: 600
+    wi_claim_of_right_subtraction: 0
+
+- name: Case 2, no credit when the filer subtracts the repayment instead.
+  # Wis. Stat. 71.05(6)(b)29: "no amount that is used in calculating the
+  # credit under s. 71.07 (1) may be included" in the subtraction.
+  period: 2025
+  input:
+    claim_of_right_repayment: 10_000
+    wi_claim_of_right_credit_applies: false
+    wi_claim_of_right_prior_year_tax_decrease: 600
+    state_code: WI
+  output:
+    wi_claim_of_right_credit: 0
+    wi_claim_of_right_subtraction: 10_000
+
+- name: Case 3, a repayment of exactly $3,000 gives neither.
+  # Form 1 instructions, line 32: "the amount repaid must be over $3,000".
+  period: 2025
+  input:
+    claim_of_right_repayment: 3_000
+    wi_claim_of_right_prior_year_tax_decrease: 159
+    state_code: WI
+  output:
+    wi_claim_of_right_eligible: false
+    wi_claim_of_right_credit_applies: false
+    wi_claim_of_right_credit: 0
+    wi_claim_of_right_subtraction: 0
+
+- name: Case 4, a repayment of $3,001 qualifies.
+  period: 2025
+  input:
+    claim_of_right_repayment: 3_001
+    wi_claim_of_right_credit_applies: true
+    wi_claim_of_right_prior_year_tax_decrease: 159
+    state_code: WI
+  output:
+    wi_claim_of_right_eligible: true
+    wi_claim_of_right_credit: 159
+
+- name: Case 5, a joint return counts the spouses' repayments and decreases, not a dependent's.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        claim_of_right_repayment: 2_000
+        wi_claim_of_right_prior_year_tax_decrease: 100
+      person2:
+        age: 44
+        claim_of_right_repayment: 2_000
+        wi_claim_of_right_prior_year_tax_decrease: 100
+      person3:
+        age: 20
+        is_tax_unit_dependent: true
+        claim_of_right_repayment: 9_000
+        wi_claim_of_right_prior_year_tax_decrease: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        wi_claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_claim_of_right_eligible: true
+    wi_claim_of_right_credit: 200
+
+- name: Case 6, neither outside Wisconsin.
+  period: 2025
+  input:
+    claim_of_right_repayment: 10_000
+    wi_claim_of_right_prior_year_tax_decrease: 600
+    state_code: MN
+  output:
+    wi_claim_of_right_eligible: false
+    wi_claim_of_right_credit: 0
+    wi_claim_of_right_subtraction: 0

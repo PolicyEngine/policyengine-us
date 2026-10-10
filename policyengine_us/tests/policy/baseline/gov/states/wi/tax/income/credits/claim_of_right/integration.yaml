@@ -1,0 +1,221 @@
+# Wisconsin claim of right repayments, end to end (Wis. Stat. 71.07(1) and
+# 71.05(6)(b)29). A filer who repays more than $3,000 may subtract the
+# repayment from income or take the credit, not both; the model takes the
+# option with less Wisconsin tax.
+#
+# 2025 values for a single filer: rates of 3.5% to $14,680, 4.4% to $50,480
+# and 5.3% to $323,290; a standard deduction of $13,560 less 12% of income
+# over $19,550 (nothing from $132,550); a $700 exemption.
+#
+# Cases 1 to 5: wages of $200,000 and a $10,000 repayment. With no repayment,
+# taxable income is 200,000 - 700 = 199,300 and tax is
+# 513.80 + 1,575.20 + 5.3% x 148,820 = 9,976.46. Subtracting the repayment
+# saves 5.3% x 10,000 = 530.
+- name: Case 1, the credit when the prior-year decrease exceeds the saving from subtracting.
+  # 9,976.46 - 600 = 9,376.46.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 200_000
+        claim_of_right_repayment: 10_000
+        wi_claim_of_right_prior_year_tax_decrease: 600
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_income_tax_if_claiming_claim_of_right_credit: 9_376.46
+    wi_income_tax_if_claiming_claim_of_right_subtraction: 9_446.46
+    wi_claim_of_right_credit_applies: true
+    wi_claim_of_right_subtraction: 0
+    wi_agi: 200_000
+    wi_claim_of_right_credit: 600
+    wi_income_tax: 9_376.46
+
+- name: Case 2, the subtraction when it saves more than the prior-year decrease.
+  # 9,976.46 - 530 = 9,446.46.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 200_000
+        claim_of_right_repayment: 10_000
+        wi_claim_of_right_prior_year_tax_decrease: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_claim_of_right_credit_applies: false
+    wi_claim_of_right_subtraction: 10_000
+    wi_agi: 190_000
+    wi_claim_of_right_credit: 0
+    wi_income_tax: 9_446.46
+
+- name: Case 3, equal tax under both keeps the subtraction.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 200_000
+        claim_of_right_repayment: 10_000
+        wi_claim_of_right_prior_year_tax_decrease: 530
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_claim_of_right_credit_applies: false
+    wi_claim_of_right_subtraction: 10_000
+    wi_income_tax: 9_446.46
+
+- name: Case 4, one dollar more of prior-year decrease switches to the credit.
+  # 9,976.46 - 531 = 9,445.46.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 200_000
+        claim_of_right_repayment: 10_000
+        wi_claim_of_right_prior_year_tax_decrease: 531
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_claim_of_right_credit_applies: true
+    wi_claim_of_right_credit: 531
+    wi_income_tax: 9_445.46
+
+- name: Case 5, the Wisconsin choice does not follow the federal method.
+  # A prior-year federal decrease of $4,000 puts the federal return on the
+  # section 1341(a)(5) credit. Wisconsin still subtracts the repayment,
+  # which saves more than the $500 prior-year Wisconsin decrease.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 200_000
+        claim_of_right_repayment: 10_000
+        claim_of_right_prior_year_tax_decrease: 4_000
+        wi_claim_of_right_prior_year_tax_decrease: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    claim_of_right_credit_applies: true
+    wi_claim_of_right_credit_applies: false
+    wi_claim_of_right_subtraction: 10_000
+    wi_income_tax: 9_446.46
+
+- name: Case 6, the subtraction also raises the sliding standard deduction.
+  # Wages of $60,000. No repayment: standard deduction 13,560 - 12% x 40,450
+  # = 8,706; taxable income 60,000 - 8,706 - 700 = 50,594; tax 513.80 +
+  # 1,575.20 + 5.3% x 114 = 2,095.04. Subtracting $10,000: standard
+  # deduction 13,560 - 12% x 30,450 = 9,906; taxable income 50,000 - 9,906 -
+  # 700 = 39,394; tax 513.80 + 4.4% x 24,714 = 1,601.22, a saving of
+  # 493.83. That beats a prior-year decrease of $450.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        claim_of_right_repayment: 10_000
+        wi_claim_of_right_prior_year_tax_decrease: 450
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_income_tax_if_claiming_claim_of_right_credit: 1_645.04
+    wi_income_tax_if_claiming_claim_of_right_subtraction: 1_601.22
+    wi_claim_of_right_credit_applies: false
+    wi_claim_of_right_subtraction: 10_000
+    wi_standard_deduction: 9_906
+    wi_taxable_income: 39_394
+    wi_income_tax: 1_601.22
+
+- name: Case 7, the same filer with a prior-year decrease of $500 takes the credit.
+  # 2,095.04 - 500 = 1,595.04, less than 1,601.22.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        claim_of_right_repayment: 10_000
+        wi_claim_of_right_prior_year_tax_decrease: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_claim_of_right_credit_applies: true
+    wi_standard_deduction: 8_706
+    wi_taxable_income: 50_594
+    wi_claim_of_right_credit: 500
+    wi_income_tax: 1_595.04
+
+- name: Case 8, a credit above the year's tax is paid to the filer.
+  # Wages of $15,000: the $13,560 standard deduction and $700 exemption
+  # leave taxable income of $740 and tax of 3.5% x 740 = 25.90. A prior-year
+  # decrease of $400 gives 25.90 - 400 = -374.10; subtracting would only
+  # bring the tax to zero.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 15_000
+        claim_of_right_repayment: 5_000
+        wi_claim_of_right_prior_year_tax_decrease: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+        wi_earned_income_credit: 0
+        wi_homestead_credit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_claim_of_right_credit_applies: true
+    wi_claim_of_right_credit: 400
+    wi_income_tax: -374.10
