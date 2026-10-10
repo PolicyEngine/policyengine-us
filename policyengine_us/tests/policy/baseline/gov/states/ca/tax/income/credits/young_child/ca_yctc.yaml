@@ -232,6 +232,8 @@
         members: [parent, child]
         state_code: CA
   output:
+    # FTB 3514 line 13 feeds the line 23a compensation ceiling.
+    ca_taxable_wages: [30_000, 0]
     ca_eitc_earned_income: 0
     ca_eitc: 0
     ca_agi: 0
@@ -256,7 +258,10 @@
         members: [parent, child]
         state_code: CA
   output:
+    ca_taxable_wages: [35_640, 0]
     ca_eitc_earned_income: 0
+    ca_eitc: 0
+    ca_agi: 0
     ca_yctc: 1_189
 
 - name: California taxable wages one dollar above the zero-earned-income YCTC ceiling are ineligible
@@ -278,7 +283,10 @@
         members: [parent, child]
         state_code: CA
   output:
+    ca_taxable_wages: [35_641, 0]
     ca_eitc_earned_income: 0
+    ca_eitc: 0
+    ca_agi: 0
     ca_yctc: 0
 
 - name: Wages above $32,490 with negative earned income, so not eligible in 2022.
