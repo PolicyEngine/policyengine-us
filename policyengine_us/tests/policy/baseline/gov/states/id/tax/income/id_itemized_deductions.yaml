@@ -18,6 +18,76 @@
   output:
     id_itemized_deductions: 0
 
+- name: Derived Idaho itemized deductions exclude independently paid dependent medical costs
+  # 2025 Form 39R worksheet: claimant medical deduction is $750.
+  # $20,000 interest + $750 medical + $2,250 premiums = $23,000 reduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 3_000
+        is_tax_unit_head: true
+      dependent:
+        age: 20
+        health_insurance_premiums: 500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        adjusted_gross_income: 30_000
+        interest_deduction: 20_000
+        salt_deduction: 0
+        id_salt_deduction: 0
+        standard_deduction: 15_750
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ID
+  output:
+    medical_expense_deduction: 1_250
+    id_health_insurance_premiums_medical_deduction: 750
+    itemized_taxable_income_deductions: 21_250
+    id_itemized_deductions: 20_750
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 2_250
+    id_taxable_income: 7_000
+
+- name: Corrected Idaho medical costs also reduce the 2026 itemized limitation
+  # P.L. 119-21 sec. 70111: $70,000 * (1 - 2/37) = $66,216.21622.
+  # Subtracting $500 from the already-limited federal total would be too low.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 100_000
+        is_tax_unit_head: true
+      dependent:
+        age: 20
+        health_insurance_premiums: 500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: SINGLE
+        adjusted_gross_income: 800_000
+        interest_deduction: 30_000
+        salt_deduction: 0
+        id_salt_deduction: 0
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ID
+  output:
+    medical_expense_deduction: 40_500
+    id_health_insurance_premiums_medical_deduction: 40_000
+    itemized_taxable_income_deductions: 66_689.18919
+    id_itemized_deductions: 66_216.21622
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 60_000
+
 - name: Idaho does not add back the federal foreign tax credit when it is claimed as a credit
   period: 2025
   input:
