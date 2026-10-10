@@ -38,7 +38,6 @@
   output:
     student_loan_interest_ald_eligible: false
 
-
 - name: 2024 single filer claimed as a dependent elsewhere cannot deduct student loan interest
   period: 2024
   input:
@@ -106,3 +105,21 @@
         state_code: TX
   output:
     student_loan_interest_ald_eligible: [false, false]
+
+# IRC 221(c): the bar applies to an individual who is claimed.
+- name: 2024 single filer who can be claimed but is not claimed can deduct student loan interest
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    student_loan_interest_ald_eligible: true

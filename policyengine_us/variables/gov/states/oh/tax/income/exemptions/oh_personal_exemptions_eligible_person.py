@@ -22,7 +22,7 @@ class oh_personal_exemptions_eligible_person(Variable):
         # on which the filer (or, if joint, either spouse) can be claimed as a
         # dependent has none (IRC 152(b)(1)).
         dependent_filer = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         dependent = person("is_tax_unit_dependent", period) & ~dependent_filer
         return (~dependent_on_another_return & head_or_spouse) | dependent

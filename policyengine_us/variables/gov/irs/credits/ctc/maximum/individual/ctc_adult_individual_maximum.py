@@ -29,7 +29,7 @@ class ctc_adult_individual_maximum(Variable):
         # under IRC 152(b)(1) a return on which the filer (or, if joint,
         # either spouse) can be claimed as a dependent has no dependents.
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         return (
             is_adult
