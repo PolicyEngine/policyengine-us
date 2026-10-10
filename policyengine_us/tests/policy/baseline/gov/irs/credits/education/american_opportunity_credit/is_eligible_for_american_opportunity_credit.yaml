@@ -178,7 +178,6 @@
   output:
     is_eligible_for_american_opportunity_credit: false
 
-
 - name: 2024 student claimed as a dependent elsewhere cannot claim the credit
   period: 2024
   input:
@@ -307,3 +306,28 @@
         state_code: TX
   output:
     is_eligible_for_american_opportunity_credit: [true, true]
+
+# IRC 25A(g)(3) and 26 CFR 1.25A-1(f): the bar applies to a student who is
+# claimed; a student who can be claimed but is not keeps the credit.
+- name: 2024 student who can be claimed but is not claimed keeps the credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        is_pursuing_credential_for_american_opportunity_credit: true
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_tin: true
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    is_eligible_for_american_opportunity_credit: true
