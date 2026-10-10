@@ -9,8 +9,8 @@ from policyengine_us import Simulation
 MONTH = "2024-01"
 YEAR = "2024"
 VARIABLES = (
-    "la_general_relief_housing_subsidy_amount",
     "la_general_relief_housing_subsidy",
+    "la_general_relief_housing_subsidy_amount",
     "la_general_relief_rent_contribution",
     "la_general_relief",
 )
