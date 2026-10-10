@@ -35,6 +35,9 @@
     age: 40
     employment_income: 400_000
     claim_of_right_repayment: 50_000
+    # Federal income tax is modeled from 2018, so fix the method here
+    # instead of deriving it from 2017 tax.
+    claim_of_right_credit_applies: false
     state_sales_tax: 0
     local_sales_tax: 0
     state_code: TX

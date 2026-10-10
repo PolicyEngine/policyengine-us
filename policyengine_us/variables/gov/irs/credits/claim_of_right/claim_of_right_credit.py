@@ -25,8 +25,5 @@ class claim_of_right_credit(Variable):
     def formula(tax_unit, period, parameters):
         eligible = tax_unit("claim_of_right_section_1341_eligible", period)
         credit_applies = tax_unit("claim_of_right_credit_applies", period)
-        person = tax_unit.members
-        decrease = person("claim_of_right_prior_year_tax_decrease", period)
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        prior_year_tax_decrease = tax_unit.sum(decrease * head_or_spouse)
-        return where(eligible & credit_applies, prior_year_tax_decrease, 0)
+        decrease = tax_unit("claim_of_right_prior_year_tax_decrease", period)
+        return where(eligible & credit_applies, decrease, 0)

@@ -15,3 +15,15 @@
     real_estate_taxes: 5_000
   output:
     ca_itemized_deductions_pre_limitation: 13_000
+
+- name: Case 3, the federal claim of right repayment deduction does not carry over.
+  # 2025 Schedule CA (540) instructions, Part II line 16: California allows
+  # its own deduction or credit, and neither for income it did not tax.
+  period: 2025
+  input:
+    state_code: CA
+    interest_deduction: 6_000
+    claim_of_right_deduction: 5_000
+  output:
+    itemized_deductions_less_salt: 11_000
+    ca_itemized_deductions_pre_limitation: 6_000

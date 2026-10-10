@@ -28,6 +28,9 @@ class az_itemized_deductions(Variable):
         # Arizona adds the federal claim of right repayment deduction back to
         # Arizona gross income (A.R.S. 43-1021(9)) and computes its tax
         # without it (A.R.S. 43-1029), so it gives no net Arizona deduction.
+        # Leaving it out here gives the same taxable income for an Arizona
+        # itemizer, but Arizona AGI is not raised by the addition, and the
+        # Arizona claim of right credit is not modeled.
         deductions = [
             deduction
             for deduction in p.itemized_deductions

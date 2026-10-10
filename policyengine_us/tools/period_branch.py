@@ -25,6 +25,12 @@ calculates:
   inputs, each for the periods it was set for, and calculates the rest
   itself.
 - A branch reused within its period with different inputs is created again.
+- A caller can ask the branch never to keep the parent's calculated values
+  (``inherit_calculated=False``). The parent can hold a value that depends on
+  the overridden variable although it has no value for that variable yet:
+  one it calculated in another branch, which chose the overridden variable
+  for itself. The branches that fix the claim of right method (26 U.S.C.
+  1341) start from inputs for that reason.
 
 ``get_branch_for_period`` is the same with no inputs, for branches that
 change the tax-benefit system rather than inputs: the caller swaps the system
@@ -110,11 +116,14 @@ def get_override_branch(
     name: str,
     period: Period,
     inputs: Dict[str, Override],
+    inherit_calculated: bool = True,
 ) -> Simulation:
     """Return ``simulation``'s branch ``name`` for ``period``, with ``inputs`` set.
 
     ``inputs`` maps each overridden variable to its value for ``period``, or
-    to a ``(period, value)`` pair for another period (e.g. a month).
+    to a ``(period, value)`` pair for another period (e.g. a month). With
+    ``inherit_calculated=False`` a new branch keeps only inputs, whether or
+    not the parent has calculated an overridden variable.
     """
     period = to_period(period)
     overrides = list(_overrides(period, inputs))
@@ -138,7 +147,7 @@ def get_override_branch(
         )
         branch = simulation.get_branch(name)
         branch.branch_period = period
-        if parent_knows_override:
+        if parent_knows_override or not inherit_calculated:
             drop_inherited_values(branch)
         for variable, input_period, value in overrides:
             branch.set_input(variable, input_period, value)

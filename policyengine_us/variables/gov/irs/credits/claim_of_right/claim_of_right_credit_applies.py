@@ -12,7 +12,9 @@ class claim_of_right_credit_applies(Variable):
         "repaid income (the credit method). Section 1341 makes the tax the "
         "lesser of this and the tax computed with the deduction under "
         "1341(a)(4), so the method is computed, not elected. When the two "
-        "are equal, the tax is computed under 1341(a)(4)."
+        "are equal, the tax is computed under 1341(a)(4). The comparison is "
+        "of federal income tax after credits; the parts of it outside "
+        "chapter 1 do not depend on the repayment."
     )
     definition_period = YEAR
     reference = (
@@ -33,7 +35,6 @@ class claim_of_right_credit_applies(Variable):
         tax_if_deduction = tax_unit(
             "income_tax_if_claiming_claim_of_right_deduction", period
         )
-        # Ties go to the deduction (26 CFR 1.1341-1(b)(3)); the tolerance
-        # keeps floating-point noise from deciding a tie.
-        TOLERANCE = 0.01
-        return eligible & (tax_if_credit < tax_if_deduction - TOLERANCE)
+        # Ties go to the deduction (26 CFR 1.1341-1(b)(3)). Comparing to the
+        # cent keeps floating-point noise from deciding a tie.
+        return eligible & (np.round(tax_if_credit, 2) < np.round(tax_if_deduction, 2))

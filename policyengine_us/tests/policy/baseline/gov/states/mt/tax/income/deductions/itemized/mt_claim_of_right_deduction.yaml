@@ -1,0 +1,82 @@
+# 2023 Form 2 instructions, itemized deductions line 18: "These deductions
+# are the same deductions that are allowed on your federal Form 1040,
+# Schedule A, line 16."
+- name: Case 1, Montana follows the federal deduction through 2023.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        claim_of_right_deduction: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_claim_of_right_deduction: 5_000
+    mt_misc_deductions: 5_000
+
+- name: Case 2, no Montana deduction when the federal deduction is zero.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        claim_of_right_deduction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_claim_of_right_deduction: 0
+
+- name: Case 3, each spouse deducts their own repayment and a dependent's is left out.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 45
+        claim_of_right_repayment: 3_000
+      person2:
+        age: 44
+        claim_of_right_repayment: 1_500
+      person3:
+        age: 20
+        is_tax_unit_dependent: true
+        claim_of_right_repayment: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        claim_of_right_deduction: 4_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_claim_of_right_deduction: [3_000, 1_500, 0]
+
+- name: Case 4, from 2024 the miscellaneous deductions list is empty.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        claim_of_right_deduction: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_misc_deductions: 0

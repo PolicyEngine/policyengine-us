@@ -11,7 +11,11 @@ class nc_claim_of_right_payment(Variable):
         "considered to have paid North Carolina tax equal to the increase in "
         "the earlier year's North Carolina tax from including the restored "
         "income, minus the decrease in this year's North Carolina tax because "
-        "the item was deductible. An overpayment it creates is refunded."
+        "the item was deductible. An overpayment it creates is refunded. "
+        "Modeled for current North Carolina residents only: a filer who "
+        "paid the earlier North Carolina tax and has since moved away is "
+        "not covered, because the model computes a state's tax for its "
+        "residents."
     )
     definition_period = YEAR
     reference = (
@@ -22,10 +26,9 @@ class nc_claim_of_right_payment(Variable):
 
     def formula(tax_unit, period, parameters):
         credit_applies = tax_unit("claim_of_right_credit_applies", period)
-        person = tax_unit.members
-        increase = person("nc_claim_of_right_prior_year_tax_increase", period)
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        prior_year_tax_increase = tax_unit.sum(increase * head_or_spouse)
+        prior_year_tax_increase = tax_unit(
+            "nc_claim_of_right_prior_year_tax_increase", period
+        )
         # Term (ii), the decrease in this year's North Carolina tax because
         # the item was deductible, is zero: under section 1341(a)(5) the
         # repayment is not deducted federally (section 1341(b)(3)), and

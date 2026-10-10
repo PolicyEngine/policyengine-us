@@ -11,12 +11,13 @@ class claim_of_right_deduction(Variable):
         "of income included in an earlier year under a claim of right "
         "(Schedule A, line 16), when tax is computed with the deduction "
         "under section 1341(a)(4). It is not a miscellaneous itemized "
-        "deduction, so neither the two percent floor nor section 67(g) "
-        "applies. Under section 1341(a)(5) the repayment is not deducted "
-        "(section 1341(b)(3)). Not modeled: before 2018 a repayment of the "
-        "threshold amount or less was a miscellaneous itemized deduction "
-        "subject to the two percent floor; section 67(g) disallows it from "
-        "2018."
+        "deduction (section 67(b)(9)), so neither the two percent floor nor "
+        "the suspension of those deductions from 2018 applies. Under "
+        "section 1341(a)(5) the repayment is not deducted (section "
+        "1341(b)(3)). Not modeled: before 2018 a repayment of the threshold "
+        "amount or less was a miscellaneous itemized deduction subject to "
+        "the two percent floor; from 2018 it is disallowed (section 67(g), "
+        "redesignated 67(h) by P.L. 119-21)."
     )
     definition_period = YEAR
     reference = (

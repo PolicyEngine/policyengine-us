@@ -3,6 +3,8 @@ values:
   2021-01-01:
     - mt_child_dependent_care_expense_deduction  
     - casualty_loss_deduction  
+    # Form 2 itemized deductions line 18 follows federal Schedule A line 16.
+    - mt_claim_of_right_deduction
   2024-01-01: []
     
 metadata:
@@ -10,6 +12,8 @@ metadata:
   label: Montana miscellaneous deductions 
   period: year
   reference:
+    - title: 2023 Montana Form 2 instructions, itemized deductions line 18
+      href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=39
     - title: Montana Individual Income Tax Return (Form 2) 2024
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=8
     - title: Montana Individual Income Tax Return (Form 2) 2022

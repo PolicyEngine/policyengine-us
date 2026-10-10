@@ -19,32 +19,10 @@
   output:
     nc_claim_of_right_payment: 0
 
-- name: Case 3, a joint return sums the spouses' increases, not a dependent's.
-  period: 2025
-  input:
-    people:
-      person1:
-        age: 45
-        nc_claim_of_right_prior_year_tax_increase: 200
-      person2:
-        age: 44
-        nc_claim_of_right_prior_year_tax_increase: 100
-      person3:
-        age: 30
-        is_tax_unit_dependent: true
-        nc_claim_of_right_prior_year_tax_increase: 1_000
-    tax_units:
-      tax_unit:
-        members: [person1, person2, person3]
-        claim_of_right_credit_applies: true
-    households:
-      household:
-        members: [person1, person2, person3]
-        state_code: NC
-  output:
-    nc_claim_of_right_payment: 300
-
-- name: Case 4, no payment outside North Carolina.
+- name: Case 3, the payment is modeled for current North Carolina residents only.
+  # A coverage limit of the model, not a rule of G.S. 105-266.2: a filer who
+  # paid the earlier North Carolina tax and has since moved away is not
+  # covered.
   period: 2025
   input:
     claim_of_right_credit_applies: true

@@ -20,5 +20,8 @@ class income_tax_if_claiming_claim_of_right_credit(Variable):
             "claim_of_right_credit",
             period,
             {"claim_of_right_credit_applies": np.ones(tax_unit.count, dtype=bool)},
+            # A value the parent calculated in another branch reflects the
+            # method that branch chose, so start from inputs only.
+            inherit_calculated=False,
         )
         return branch.calculate("income_tax", period)

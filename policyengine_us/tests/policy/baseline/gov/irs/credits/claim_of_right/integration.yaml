@@ -121,7 +121,7 @@
     income_tax_before_refundable_credits: 2_671.5
     income_tax: -328.5
 
-- name: Case 6, a joint return counts the spouses' repayments and decreases, not a dependent's.
+- name: Case 6, a joint return counts the spouses' repayments, not a dependent's.
   period: 2025
   input:
     people:
@@ -129,19 +129,19 @@
         age: 45
         employment_income: 90_000
         claim_of_right_repayment: 2_000
-        claim_of_right_prior_year_tax_decrease: 300
       person2:
         age: 44
         claim_of_right_repayment: 2_000
-        claim_of_right_prior_year_tax_decrease: 200
       person3:
         age: 30
         is_tax_unit_dependent: true
         claim_of_right_repayment: 9_000
-        claim_of_right_prior_year_tax_decrease: 1_000
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+        # The decrease in the couple's earlier joint tax from excluding the
+        # $4,000 they repaid.
+        claim_of_right_prior_year_tax_decrease: 500
         state_sales_tax: 0
         local_sales_tax: 0
     households:

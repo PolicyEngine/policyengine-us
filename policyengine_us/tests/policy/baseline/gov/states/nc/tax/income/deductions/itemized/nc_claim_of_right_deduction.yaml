@@ -419,13 +419,13 @@
         age: 40
         employment_income: 80_000
         claim_of_right_repayment: 5_000
-        claim_of_right_prior_year_tax_decrease: 1_100
-        nc_claim_of_right_prior_year_tax_increase: 212.5
         real_estate_taxes: 4_000
     tax_units:
       tax_unit:
         members: [head]
         charitable_deduction: 8_000
+        claim_of_right_prior_year_tax_decrease: 1_100
+        nc_claim_of_right_prior_year_tax_increase: 212.5
     households:
       household:
         members: [head]
@@ -451,13 +451,13 @@
         age: 40
         employment_income: 80_000
         claim_of_right_repayment: 5_000
-        claim_of_right_prior_year_tax_decrease: 568
-        nc_claim_of_right_prior_year_tax_increase: 212.5
         real_estate_taxes: 4_000
     tax_units:
       tax_unit:
         members: [head]
         charitable_deduction: 8_000
+        claim_of_right_prior_year_tax_decrease: 568
+        nc_claim_of_right_prior_year_tax_increase: 212.5
     households:
       household:
         members: [head]
@@ -467,3 +467,24 @@
     nc_claim_of_right_deduction: 5_000
     nc_claim_of_right_payment: 0
     nc_income_tax: 2_677.50
+
+- name: Before 2018 a repayment above $3,000 with no prior-year decrease keeps the deduction.
+  # No method is supplied: with no prior-year tax decrease the credit method
+  # cannot give less tax, so tax is computed with the deduction.
+  period: 2016
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [head]
+        state_code: NC
+  output:
+    claim_of_right_credit_applies: false
+    nc_claim_of_right_deduction: 5_000
