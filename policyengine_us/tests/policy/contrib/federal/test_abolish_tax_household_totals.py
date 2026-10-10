@@ -169,6 +169,35 @@ def test_reforms_leave_the_default_system_unchanged():
         assert system.variables[total].adds == baseline_adds(total)
 
 
+def test_exclude_from_total_changes_nothing_but_adds():
+    class total(Variable):
+        value_type = float
+        entity = Household
+        label = "total"
+        documentation = "A total."
+        unit = USD
+        definition_period = YEAR
+        defined_for = "eligible"
+        adds = ["a", "b"]
+        subtracts = ["c"]
+
+    bare = TaxBenefitSystem(entities)
+    bare.add_variable(total)
+    bare.neutralize_variable("total")
+    before = dict(vars(bare.variables["total"]))
+
+    exclude_from_total(bare, "total", "a")
+    after = dict(vars(bare.variables["total"]))
+
+    assert before.pop("adds") == ["a", "b"]
+    assert after.pop("adds") == ["b"]
+    assert after == before
+    # Two attributes a new class passed to `update_variable` would reset.
+    assert after["defined_for"] == "eligible"
+    assert after["is_neutralized"]
+    assert bare.data_modified
+
+
 def test_exclude_from_total_rejects_a_total_computed_by_a_formula():
     class total(Variable):
         value_type = float
@@ -245,13 +274,20 @@ def test_exclude_from_total_properties(adds, first, second):
 
 YEAR_OF_POPULATION = 2025
 
-# name: (state, household inputs, person inputs, earnings). One adult each.
+# name: (state, household inputs, person inputs, earnings, the tax or credit the
+# household is here to exercise). One adult each.
 POPULATION = {
-    "ID permanent building fund tax": ("ID", {}, {}, 60_000),
-    "CA use tax": ("CA", {}, {}, 60_000),
-    "IN county tax": ("IN", {"county_str": "BOONE_COUNTY_IN"}, {}, 60_000),
-    "NC use tax": ("NC", {}, {}, 60_000),
-    "OK use tax": ("OK", {}, {}, 60_000),
+    "ID permanent building fund tax": ("ID", {}, {}, 60_000, "id_pbf"),
+    "CA use tax": ("CA", {}, {}, 60_000, "ca_use_tax"),
+    "IN county tax": (
+        "IN",
+        {"county_str": "BOONE_COUNTY_IN"},
+        {},
+        60_000,
+        "in_county_tax",
+    ),
+    "NC use tax": ("NC", {}, {}, 60_000, "nc_use_tax"),
+    "OK use tax": ("OK", {}, {}, 60_000, "ok_use_tax"),
     "PA use tax and Philadelphia wage tax": (
         "PA",
         {"county_str": "PHILADELPHIA_COUNTY_PA"},
@@ -260,50 +296,77 @@ POPULATION = {
             "pa_philadelphia_wage_tax_resident": True,
         },
         60_000,
+        "pa_philadelphia_wage_tax",
     ),
-    "PA refundable credits": ("PA", {}, {}, 12_000),
-    "IL use tax": ("IL", {}, {}, 60_000),
-    "MD county tax": ("MD", {"county_str": "MONTGOMERY_COUNTY_MD"}, {}, 60_000),
-    "DE Wilmington earned income tax": ("DE", {"in_wilmington": True}, {}, 60_000),
+    "PA use tax and refundable credits": (
+        "PA",
+        {},
+        {},
+        12_000,
+        "pa_refundable_tax_credits",
+    ),
+    "IL use tax": ("IL", {}, {}, 60_000, "il_use_tax"),
+    "MD county tax": (
+        "MD",
+        {"county_str": "MONTGOMERY_COUNTY_MD"},
+        {},
+        60_000,
+        "md_local_income_tax_before_refundable_credits",
+    ),
+    "DE Wilmington earned income tax": (
+        "DE",
+        {"in_wilmington": True},
+        {},
+        60_000,
+        "de_wilmington_earned_income_tax",
+    ),
     "KY Jefferson County occupational tax": (
         "KY",
         {"county_str": "JEFFERSON_COUNTY_KY"},
         {},
         60_000,
+        "ky_jefferson_occupational_tax",
     ),
     "MO Kansas City earnings tax": (
         "MO",
         {},
         {"mo_kansas_city_earnings_tax_taxable_earnings": 60_000},
         60_000,
+        "mo_kansas_city_earnings_tax",
     ),
-    "NY Yonkers surcharge": ("NY", {"in_yonkers": True}, {}, 60_000),
+    "NY Yonkers surcharge": (
+        "NY",
+        {"in_yonkers": True},
+        {},
+        60_000,
+        "ny_yonkers_income_tax",
+    ),
     "OR Multnomah County tax": (
         "OR",
         {"in_multnomah_county_or": True},
         {},
         200_000,
+        "or_multnomah_pfa_tax",
     ),
     "CO Denver occupational privilege tax": (
         "CO",
         {},
         {"co_denver_employee_occupational_privilege_tax_months": 12},
         60_000,
+        "co_denver_employee_occupational_privilege_tax",
     ),
-    "NY New York City income tax": ("NY", {"in_nyc": True}, {}, 60_000),
-    "TX no state or local income tax": ("TX", {}, {}, 60_000),
+    "NY New York City income tax": (
+        "NY",
+        {"in_nyc": True},
+        {},
+        60_000,
+        "nyc_income_tax_before_refundable_credits",
+    ),
+    "TX no state or local income tax": ("TX", {}, {}, 60_000, None),
 }
-
-# Baseline components that a separate list of components has dropped or
-# miscounted before. Each must be nonzero for some household, or the value
-# check below would pass without testing it.
-DRIFT_PRONE_COMPONENTS = [
-    "id_pbf",
-    "state_use_tax",
-    "local_income_tax_before_refundable_credits",
-    "local_occupational_tax",
-    "pa_refundable_tax_credits",
-]
+EXERCISED = sorted(
+    {case[4] for case in POPULATION.values() if case[4]} | {"pa_use_tax"}
+)
 
 CALCULATED = [
     TAX,
@@ -331,7 +394,7 @@ def population_situation():
             "marital_units",
         )
     }
-    for index, (state, household_inputs, person_inputs, earnings) in enumerate(
+    for index, (state, household_inputs, person_inputs, earnings, _) in enumerate(
         POPULATION.values()
     ):
         person = f"person_{index}"
@@ -363,7 +426,7 @@ def household_values(simulation, variables):
 @pytest.fixture(scope="module")
 def baseline():
     simulation = Simulation(situation=population_situation())
-    return household_values(simulation, CALCULATED + DRIFT_PRONE_COMPONENTS)
+    return household_values(simulation, CALCULATED + EXERCISED)
 
 
 @pytest.fixture(scope="module")
@@ -383,11 +446,13 @@ def assert_close(actual, expected):
     np.testing.assert_allclose(actual, expected, rtol=0, atol=TOLERANCE)
 
 
-def test_population_exercises_the_drift_prone_components(baseline):
-    for component in DRIFT_PRONE_COMPONENTS:
-        assert baseline[component].max() > 0, component
-    not_nyc = np.array(["New York City" not in name for name in POPULATION])
-    assert baseline["local_income_tax_before_refundable_credits"][not_nyc].max() > 0
+def test_each_household_exercises_its_tax(baseline):
+    # Otherwise the value check below could pass without testing a component.
+    for index, (name, case) in enumerate(POPULATION.items()):
+        if case[4]:
+            assert baseline[case[4]][index] > 0, name
+    pennsylvania = [i for i, case in enumerate(POPULATION.values()) if case[0] == "PA"]
+    assert baseline["pa_use_tax"][pennsylvania].min() > 0
     for abolished in (FEDERAL_INCOME_TAX, FEDERAL_REFUNDABLE_CREDITS, PAYROLL_TAX):
         assert baseline[abolished].max() > 0, abolished
 
