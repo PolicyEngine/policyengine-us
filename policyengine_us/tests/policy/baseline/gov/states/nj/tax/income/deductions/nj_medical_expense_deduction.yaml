@@ -20,6 +20,32 @@
   output:
     nj_medical_expense_deduction: 1_000
 
+- name: New Jersey preserves dependent premiums when the filer's deduction exceeds reported filer premiums
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        health_insurance_premiums: 300
+        other_medical_expenses: 100
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 500
+        other_medical_expenses: 200
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        self_employed_health_insurance_ald: 1_000
+        nj_agi: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    itemized_medical_expenses: 800
+    nj_medical_expense_deduction: 1_800
+
 - name: Partial out of pocket expenses deductable
   period: 2022
   absolute_error_margin: 0
@@ -55,3 +81,73 @@
     # child's 1,000 of self-employed health insurance is deducted too.
     nj_agi: 50_000
     nj_medical_expense_deduction: 1_000
+
+- name: New Jersey counts self-employed premiums once across its medical deductions
+  period: 2025
+  input:
+    state_code: NJ
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 1_000
+    other_medical_expenses: 500
+    nj_agi: 30_000
+  output:
+    # Worksheet F adds the SE deduction after applying the 2% floor to the remainder.
+    nj_medical_expense_deduction: 5_900
+
+- name: New Jersey excludes a dependent's separately deducted premiums from its medical base
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 30_000
+      child:
+        age: 17
+        self_employment_income: 10_000
+        health_insurance_premiums: 1_000
+        is_self_employed: true
+        other_medical_expenses: 500
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    nj_agi: 40_000
+    dependents_self_employed_health_insurance_ald: 1_000
+    # Only the 500 of other expenses remains subject to the 800 floor.
+    nj_medical_expense_deduction: 1_000
+
+- name: New Jersey cannot subtract one dependent's deduction from another dependent's premiums
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+      dependent_a:
+        age: 17
+        is_tax_unit_dependent: true
+        self_employment_income: 10_000
+        self_employed_health_insurance_premiums: 1_000
+      dependent_b:
+        age: 16
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 1_000
+    tax_units:
+      tax_unit:
+        members: [parent, dependent_a, dependent_b]
+        nj_agi: 0
+    households:
+      household:
+        members: [parent, dependent_a, dependent_b]
+        state_code: NJ
+  output:
+    dependents_self_employed_health_insurance_ald: 1_000
+    itemized_medical_expenses: 1_000
+    # C.54A:3-3(c)(3) excludes separately deducted amounts, not another
+    # person's paid premiums: min(1,000, 0) + min(0, 1,000) = 0 excluded.
+    # Separate SE deduction 1,000 + general medical premiums 1,000 = 2,000.
+    # https://pub.njleg.gov/bills/9899/PL99/222_.HTM
+    nj_medical_expense_deduction: 2_000

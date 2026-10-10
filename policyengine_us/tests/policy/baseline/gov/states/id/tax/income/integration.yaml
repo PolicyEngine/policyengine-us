@@ -265,4 +265,10 @@
     additional_senior_deduction: 6_000
     id_additional_senior_deduction: 6_000
     id_qualified_business_income_and_federal_schedule_1a_deductions: 6_000
-    id_taxable_income: 134_000
+    # Idaho Code 63-3022P and 2025 Form 39R line 18 allow Medicare B premiums:
+    # https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3022P/
+    # https://tax.idaho.gov/wp-content/uploads/forms/EFO00088/EFO00088_03-02-2026.pdf#page=11
+    # Modeled premiums: 2 * $185 * 12 = $4,440, below the $15,000 medical floor.
+    # Taxable income: $200,000 - $60,000 - $6,000 - $4,440 = $129,560.
+    id_health_insurance_premiums_subtraction: 4_440
+    id_taxable_income: 129_560

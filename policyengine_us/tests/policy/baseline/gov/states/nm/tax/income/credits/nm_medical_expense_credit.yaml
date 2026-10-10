@@ -8,6 +8,43 @@
   output:
     nm_medical_expense_credit: 0
 
+- name: New Mexico senior medical credit uses expenses paid before federal premium deductions
+  period: 2025
+  input:
+    state_code: NM
+    age: 65
+    medicare_enrolled: false
+    health_insurance_premiums: 6_000
+    other_medical_expenses: 22_000
+    self_employed_health_insurance_ald: 1_000
+    head_is_dependent_elsewhere: false
+  output:
+    itemized_medical_expenses: 27_000
+    nm_medical_expense_credit: 2_800
+
+- name: New Mexico senior credit preserves caller-supplied medical expenses
+  period: 2025
+  input:
+    state_code: NM
+    age: 65
+    medicare_enrolled: false
+    itemized_medical_expenses: 28_000
+    head_is_dependent_elsewhere: false
+  output:
+    nm_medical_expense_credit: 2_800
+
+- name: New Mexico credit cannot add back an SE deduction without reported premiums
+  period: 2025
+  input:
+    state_code: NM
+    age: 65
+    medicare_enrolled: false
+    itemized_medical_expenses: 27_999
+    self_employed_health_insurance_ald: 1_000
+    head_is_dependent_elsewhere: false
+  output:
+    nm_medical_expense_credit: 0
+
 - name: Below expense eligibility
   period: 2023
   input:
@@ -63,3 +100,20 @@
     head_is_dependent_elsewhere: true
   output:
     nm_medical_expense_credit: 0
+
+- name: New Mexico supplied subtotal and SE premiums do not create senior credit eligibility
+  period: 2025
+  input:
+    state_code: NM
+    age: 65
+    medicare_enrolled: false
+    head_is_dependent_elsewhere: false
+    itemized_medical_expenses: 27_999
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 1_000
+  output:
+    itemized_medical_expenses: 27_999
+    itemized_medical_expenses_excluded_premiums: 1_000
+    itemized_medical_expenses_applied_exclusion: 0
+    nm_medical_expense_credit: 0
+    nm_medical_expense_exemption: 0

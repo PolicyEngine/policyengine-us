@@ -7,6 +7,53 @@
   output:
     id_deductions: 1_000
 
+- name: Standard deduction plus premiums beats a larger itemized deduction
+  period: 2026
+  input:
+    state_code: ID
+    health_insurance_premiums: 6_000
+    medical_expense_deduction: 2_000
+    standard_deduction: 16_100
+    id_itemized_deductions: 17_000
+  output:
+    id_deductions: 16_100
+    id_health_insurance_premiums_subtraction: 6_000
+
+- name: Combined reduction tie retains the standard deduction
+  period: 2026
+  input:
+    state_code: ID
+    health_insurance_premiums: 6_000
+    medical_expense_deduction: 2_000
+    standard_deduction: 16_100
+    id_itemized_deductions: 18_100
+  output:
+    id_deductions: 16_100
+    id_health_insurance_premiums_subtraction: 6_000
+
+- name: A larger total reduction permits itemization
+  period: 2026
+  input:
+    state_code: ID
+    health_insurance_premiums: 6_000
+    medical_expense_deduction: 2_000
+    standard_deduction: 16_100
+    id_itemized_deductions: 18_101
+  output:
+    id_deductions: 18_101
+    id_health_insurance_premiums_subtraction: 4_000
+
+- name: Separate filers must itemize even without premiums
+  period: 2026
+  input:
+    state_code: ID
+    separate_filer_itemizes: true
+    health_insurance_premiums: 0
+    standard_deduction: 1_000
+    id_itemized_deductions: 500
+  output:
+    id_deductions: 500
+
 - name: Does not itemize
   period: 2023
   input:
@@ -15,3 +62,36 @@
     state_code: ID
   output:
     id_deductions: 1_000
+
+- name: Claimant medical overlap determines the combined deduction election
+  # Form 39R worksheet: claimant medical deduction is $750, not $1,250.
+  # Itemized route: $16,750 + $2,250 = $19,000.
+  # Standard route: $15,750 + $3,000 = $18,750.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 3_000
+        is_tax_unit_head: true
+      dependent:
+        age: 20
+        health_insurance_premiums: 500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        adjusted_gross_income: 30_000
+        standard_deduction: 15_750
+        id_itemized_deductions: 16_750
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ID
+  output:
+    medical_expense_deduction: 1_250
+    id_health_insurance_premiums_medical_deduction: 750
+    id_itemizes: true
+    id_deductions: 16_750
+    id_health_insurance_premiums_subtraction: 2_250
+    id_taxable_income: 11_000
