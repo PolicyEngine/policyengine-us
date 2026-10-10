@@ -8,7 +8,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         entity = TaxUnit
         label = "Hawaii regular exemptions"
         unit = USD
-        documentation = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
+        reference = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
         definition_period = YEAR
         defined_for = StateCode.HI
 
@@ -408,17 +408,15 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             head_spouse_count = tax_unit("head_spouse_count", period)
             return p.personal_credits.personal * head_spouse_count
 
-    class ky_family_size_tax_credit_rate(Variable):
+    class ky_family_size_tax_credit_threshold(Variable):
         value_type = float
         entity = TaxUnit
-        label = "Kentucky family size tax credit rate"
-        unit = "/1"
+        label = "Kentucky family size tax credit threshold amount"
+        unit = USD
         definition_period = YEAR
         reference = "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=49188"
-        defined_for = StateCode.KY
 
         def formula(tax_unit, period, parameters):
-            income = tax_unit("ky_modified_agi", period)
             fpg = parameters(period).gov.hhs.fpg
             # This will be CONTIGUOUS_US for Kentucky.
             state_group = tax_unit.household("state_group_str", period)
@@ -428,9 +426,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             # No more than 4 people are accounted for in the credit
             p = parameters(period).gov.states.ky.tax.income.credits.family_size
             capped_family_size = min_(family_size, p.family_size_cap)
-            poverty_index = p1 + padd * (capped_family_size - 1)
-            share = income / poverty_index
-            return p.rate.calc(share, right=True)
+            return p1 + padd * (capped_family_size - 1)
 
     class ok_child_care_child_tax_credit(Variable):
         value_type = float
@@ -499,7 +495,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             self.update_variable(wi_base_exemption)
             self.update_variable(ia_exemption_credit)
             self.update_variable(de_personal_credit)
-            self.update_variable(ky_family_size_tax_credit_rate)
+            self.update_variable(ky_family_size_tax_credit_threshold)
             self.update_variable(ok_child_care_child_tax_credit)
 
     return reform

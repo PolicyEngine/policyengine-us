@@ -54,6 +54,35 @@
     # Taxable = min(0.5 * 20,000, 0.5 * (26,000 - 25,000)) = 500.
     dependent_taxable_social_security: [0, 500]
 
+- name: A dependent's educator expenses reduce their modified AGI up to the cap.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        social_security_retirement: 20_000
+        taxable_interest_income: 16_000
+        educator_expense: 500
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # Modified AGI = 16,000 - 300, the 2022 cap of 26 USC 62(a)(2)(D)
+    # (Rev. Proc. 2021-45 sec. 3.13) on the 500 of expenses = 15,700.
+    dependent_taxable_ss_magi: [0, 15_700]
+    # Provisional income = 15,700 + 10,000 = 25,700.
+    # Taxable = min(0.5 * 20,000, 0.5 * (25,700 - 25,000)) = 350.
+    dependent_taxable_social_security: [0, 350]
+
 - name: A married dependent who lives with their spouse has the separate-return capital loss limit.
   period: 2022
   input:
@@ -113,3 +142,31 @@
   output:
     # Modified AGI = 3,000 + 13,000 tax-exempt interest (IRC 86(b)(2)(B)).
     dependent_taxable_ss_magi: [0, 16_000]
+
+- name: A dependent's own IRA deduction reduces their modified AGI
+  # Pub. 915 Worksheet 1: $29,000 wages less a $5,000 IRA deduction gives
+  # modified AGI of $24,000. Adding half of $10,000 in benefits gives $29,000,
+  # $4,000 over the $25,000 base, so half of that, $2,000, is taxable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 80_000
+        is_tax_unit_head: true
+      student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        employment_income: 29_000
+        traditional_ira_contributions: 5_000
+        social_security_survivors: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    dependent_taxable_ss_magi: [0, 24_000]

@@ -10,16 +10,41 @@
   output:
     household_state_income_tax: 3_900
 
-- name: Wisconsin household state income tax follows the lower exclusion path
+- name: Wisconsin household state income tax follows the lower elected exclusion path
   period: 2025
+  # 2025 Schedule SB instructions, p. 7, line 16: the exclusion forfeits
+  # Form 1 credits on lines 13-20 and 30-35, including the earned income credit.
+  # https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleSB-Inst.pdf#page=7
+  # Form 1, p. 2, lines 12, 21-22, and 30: standard net tax is
+  # 5_000 - 500 - 200 = 4_300; elected exclusion tax is 3_000 with no credits.
+  # https://www.revenue.wi.gov/TaxForms2025/2025-Form1.pdf#page=2
   input:
     state_code: WI
     wi_income_tax_before_credits: 5_000
     wi_non_refundable_credits: 500
+    wi_retirement_income_exclusion_amount: 24_000
     wi_retirement_income_exclusion_tax: 3_000
-    wi_refundable_credits: 200
+    wi_earned_income_credit: 200
+    wi_homestead_credit: 0
+    # Isolate Wisconsin tax in household net income, preserving its aggregation.
+    household_market_income: 10_000
+    household_benefits: 0
+    household_health_costs: 0
+    income_tax_before_refundable_credits: 0
+    income_tax_refundable_credits: 0
+    employee_payroll_tax: 0
+    self_employment_tax: 0
+    flat_tax: 0
+    local_income_tax_before_refundable_credits: 0
+    local_occupational_tax: 0
+    state_use_tax: 0
   output:
+    wi_retirement_income_exclusion_elected: true
+    wi_income_tax_before_refundable_credits: 3_000
+    wi_refundable_credits: 0
+    wi_income_tax: 3_000
     household_state_income_tax: 3_000
+    household_net_income: 7_000  # 10_000 - 3_000, with no refundable credits.
 
 - name: Case 3, New Jersey household state income tax uses filing-threshold zero-out.
   period: 2025

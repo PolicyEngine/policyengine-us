@@ -84,3 +84,29 @@
   output:
     # Only flat $5,000 applies (financial instruments are NOT eligible for 40%)
     vt_capital_gains_exclusion: 5_000
+
+- name: A dependent's qualified dividends do not reduce the head's flat exclusion
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 50_000
+        long_term_capital_gains: 4_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        qualified_dividend_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: VT
+  output:
+    # The head's adjusted net capital gain is 4,000 and has no qualified
+    # dividends; the child's 3,000 is on the child's own return.
+    adjusted_net_capital_gain: 4_000
+    # min(4,000, 5,000); 40% of taxable income (54,000 - 23,625) is 12,150.
+    vt_capital_gains_exclusion: 4_000

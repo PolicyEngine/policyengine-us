@@ -9,7 +9,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        filer_adjusted_earnings: 25_000
+        ca_eitc_earned_income: 25_000
         ca_eitc: 1
     households:
       household:
@@ -29,7 +29,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        filer_adjusted_earnings: 25_100
+        ca_eitc_earned_income: 25_100
         ca_eitc: 1
     households:
       household:
@@ -49,7 +49,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        filer_adjusted_earnings: 25_100
+        ca_eitc_earned_income: 25_100
         ca_eitc: 1
     households:
       household:
@@ -90,7 +90,7 @@
     tax_units:
       tax_unit:
         members: [parent, child]
-        filer_adjusted_earnings: 30_000
+        ca_eitc_earned_income: 30_000
         ca_eitc: 1
     households:
       household:
@@ -113,7 +113,7 @@
     tax_units:
       tax_unit:
         members: [parent, child1, child2]
-        filer_adjusted_earnings: 25_100
+        ca_eitc_earned_income: 25_100
         ca_eitc: 1
     households:
       household:
@@ -148,7 +148,7 @@
     people:
       parent:
         age: 30
-        irs_gross_income: -20_000  # modest capital losses
+        short_term_capital_gains: -20_000  # modest capital losses
       child:
         age: 5
         ca_is_qualifying_child_for_caleitc: true
@@ -169,7 +169,7 @@
     people:
       parent:
         age: 30
-        irs_gross_income: -40_000  # large capital losses
+        short_term_capital_gains: -40_000  # large capital losses
       child:
         age: 5
         ca_is_qualifying_child_for_caleitc: true
@@ -183,3 +183,226 @@
   output:
     # ca_eitc: 0  # because of zero earnings
     ca_yctc: 0  # not eligible for YCTC in 2022 because of large losses
+
+# R&TC 17052.1(b)(1)(B) and the 2022 FTB 3514 instructions, Step 8 (lines 23a
+# and 23b): a filer with zero or negative earned income qualifies only if net
+# losses (Form 540 line 17 without utilization limitations) and wages are each
+# $32,490 or less in 2022.
+- name: Self-employment loss above wages, modest net loss, so eligible in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+        self_employment_income: -30_000
+      child:
+        age: 3
+        ca_is_qualifying_child_for_caleitc: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # Earned income -10,000; net loss 10,000; wages 20,000.
+    ca_yctc: 1_083
+
+# R&TC 17052.1(b)(1)(B)(iii), (b)(2); 2025 FTB 3514 lines 13 and 23a:
+# the wage ceiling uses California taxable wages (W-2 box 16), excluding
+# traditional elective deferrals. Line 23 uses the net earned income on line 19.
+- name: Traditional deferrals and a business loss leave zero earned income and eligible California taxable wages
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+        traditional_401k_contributions_desired: 10_000
+        self_employment_income: -30_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # FTB 3514 line 13 feeds the line 23a compensation ceiling.
+    ca_taxable_wages: [30_000, 0]
+    ca_eitc_earned_income: 0
+    ca_eitc: 0
+    ca_agi: 0
+    ca_yctc: 1_189
+
+- name: California taxable wages exactly at the zero-earned-income YCTC ceiling remain eligible
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_640
+        traditional_401k_contributions_desired: 10_000
+        self_employment_income: -35_640
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_taxable_wages: [35_640, 0]
+    ca_eitc_earned_income: 0
+    ca_eitc: 0
+    ca_agi: 0
+    ca_yctc: 1_189
+
+- name: California taxable wages one dollar above the zero-earned-income YCTC ceiling are ineligible
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 45_641
+        traditional_401k_contributions_desired: 10_000
+        self_employment_income: -35_641
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_taxable_wages: [35_641, 0]
+    ca_eitc_earned_income: 0
+    ca_eitc: 0
+    ca_agi: 0
+    ca_yctc: 0
+
+- name: Wages above $32,490 with negative earned income, so not eligible in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 71_846
+        self_employment_income: -92_009
+      child:
+        age: 3
+        ca_is_qualifying_child_for_caleitc: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # Line 23a: wages of $71,846 exceed $32,490.
+    ca_yctc: 0
+
+- name: Self-employment net loss above $32,490, so not eligible in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+        self_employment_income: -80_000
+      child:
+        age: 3
+        ca_is_qualifying_child_for_caleitc: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # Line 23b: net loss of $60,000 exceeds $32,490.
+    ca_yctc: 0
+
+- name: Capital gain distributions reduce a self-employment loss to within $32,490, so eligible in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        self_employment_income: -35_000
+        non_sch_d_capital_gains: 3_000
+      child:
+        age: 3
+        ca_is_qualifying_child_for_caleitc: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # Line 23b: Form 540 line 17 is -35,000 + 3,000 = -32,000, a net loss of
+    # $32,000, within $32,490. Investment income of $3,000 is within $4,389.
+    ca_yctc: 1_083
+
+- name: A dependent's wages do not count toward the $32,490 wage limit in 2022.
+  period: 2022
+  input:
+    people:
+      parent:
+        age: 30
+        self_employment_income: -10_000
+      child:
+        age: 3
+        ca_is_qualifying_child_for_caleitc: true
+      teen:
+        age: 17
+        employment_income: 40_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child, teen]
+    households:
+      household:
+        members: [parent, child, teen]
+        state_code: CA
+  output:
+    # Line 23a carries the filer's wages (line 13), which are $0; the
+    # dependent's $40,000 is on the dependent's own return.
+    ca_yctc: 1_083
+
+- name: Wages offset by a farm loss give zero CalEITC earned income, 2022
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 10_000
+        farm_operations_income: -15_000
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: CA
+  output:
+    # FTB 3514 line 19: 10,000 wages - 15,000 farm loss, floored at 0.
+    ca_eitc_earned_income: 0
+    # Step 8: earned income of zero or less; the 5,000 net loss and the
+    # 10,000 wages are within the 2022 $32,490 limits, so the full $1,083.
+    ca_yctc: 1_083

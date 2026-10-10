@@ -4,6 +4,7 @@
     people:
       person1:
         age: 40
+        employment_income: 100_000
         traditional_ira_contributions_desired: 4_000
         roth_ira_contributions_desired: 2_000
   output:
@@ -19,6 +20,7 @@
     people:
       person1:
         age: 40
+        employment_income: 100_000
         traditional_ira_contributions_desired: 9_000
         roth_ira_contributions_desired: 3_000
   output:
@@ -34,6 +36,7 @@
     people:
       person1:
         age: 50
+        employment_income: 100_000
         traditional_ira_contributions_desired: 9_000
         roth_ira_contributions_desired: 3_000
   output:
@@ -48,6 +51,7 @@
     people:
       person1:
         age: 45
+        employment_income: 100_000
         traditional_ira_contributions_desired: 2_000
         roth_ira_contributions_desired: 8_000
   output:
@@ -76,6 +80,7 @@
     people:
       person1:
         age: 40
+        employment_income: 100_000
         traditional_ira_contributions_desired: 9_000
         roth_ira_contributions_desired: 3_000
   output:
@@ -87,6 +92,7 @@
     people:
       person1:
         age: 40
+        employment_income: 100_000
         pr_agi_person: 10_000
         traditional_ira_contributions_desired: 9_000
         roth_ira_contributions_desired: 3_000
@@ -96,3 +102,33 @@
         state_code: PR
   output:
     pr_retirement_deduction: 5_000
+
+- name: A supplied Roth contribution uses up the spouse's shared compensation
+  # 26 U.S.C. 219(c)(1)(B): the nonworking spouse's limit is the other
+  # spouse's $10,000 compensation less their $7,000 Roth contribution.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 10_000
+        roth_ira_contributions: 7_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        roth_ira_contributions: 0
+        traditional_ira_contributions_desired: 7_500
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    ira_contribution_limit: [7_500, 3_000]
+    traditional_ira_contributions: [0, 3_000]

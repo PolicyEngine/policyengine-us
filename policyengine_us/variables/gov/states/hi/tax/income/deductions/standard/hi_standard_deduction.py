@@ -6,7 +6,7 @@ class hi_standard_deduction(Variable):
     entity = TaxUnit
     label = "Hawaii standard deduction"
     unit = USD
-    documentation = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf"
+    reference = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf"
     definition_period = YEAR
     defined_for = StateCode.HI
 

@@ -30,7 +30,7 @@
   period: 2021
   input:
      charitable_deduction: 1_000
-     mortgage_interest: 34
+     deductible_mortgage_interest: 34
      mt_salt_deduction: 1_035
      mt_medical_expense_deduction_indiv: 3_000
      casualty_loss_deduction: 745
@@ -74,3 +74,44 @@
         state_code: MT
   output:
     mt_itemized_deductions_for_federal_itemization_indiv: [1_000, 700, 0]
+
+- name: Spouses filing separately on the same form split the federally capped mortgage interest of their joint federal return
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        home_mortgage_interest: 30_000
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_indiv: 0
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+      spouse:
+        is_tax_unit_spouse: true
+        home_mortgage_interest: 10_000
+        mt_misc_deductions: 0
+        mt_medical_expense_deduction_indiv: 0
+        mt_salt_deduction: 0
+        mt_federal_income_tax_deduction_for_federal_itemization_indiv: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        first_home_mortgage_balance: 1_000_000
+        first_home_mortgage_origination_year: 2019
+        charitable_deduction: 0
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # $30,000 of the $40,000 interest is allowed by federal law on the joint
+    # federal return (the $750,000 cap on $1,000,000 of post-2017 debt).
+    # Each spouse reported a share of the interest and deducts that share
+    # of the allowed amount. No Montana source says whether spouses filing
+    # separately on the same form each get the $375,000 separate cap; the
+    # instructions let them split jointly paid expenses in any proportion
+    # (2023 Form 2 instructions, p. 13), so the joint federal amount is used.
+    deductible_mortgage_interest: [22_500, 7_500]
+    mt_itemized_deductions_for_federal_itemization_indiv: [22_500, 7_500]

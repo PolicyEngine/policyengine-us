@@ -209,3 +209,31 @@
         state_code: VT
   output:
     vt_retirement_income_exemption_eligible: True  # Fully qualified
+
+- name: A dependent child's military retirement pay does not make the filer eligible.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: VT
+  output:
+    # The filer has no Social Security, CSRS or military retirement income of
+    # their own; the dependent's pay is not on the filer's return.
+    vt_retirement_income_exemption_eligible: false

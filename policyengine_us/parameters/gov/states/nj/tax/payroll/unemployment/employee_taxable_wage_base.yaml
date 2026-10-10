@@ -1,0 +1,24 @@
+description: New Jersey limits employee unemployment insurance and workforce fund contributions to this amount of annual covered wages.
+values:
+  2015-01-01: 32_000
+  2016-01-01: 32_600
+  2017-01-01: 33_500
+  2018-01-01: 33_700
+  2019-01-01: 34_400
+  2020-01-01: 35_300
+  2021-01-01: 36_200
+  2022-01-01: 39_800
+  2023-01-01: 41_100
+  2024-01-01: 42_300
+  2025-01-01: 43_300
+  2026-01-01: 44_800
+  2027-01-01: 46_400
+metadata:
+  period: year
+  unit: currency-USD
+  label: New Jersey employee unemployment and workforce taxable wage base
+  reference:
+    - title: N.J.S.A. 43:21-7(b)(3) - annual unemployment insurance wage base
+      href: https://www.nj.gov/labor/myunemployment/assets/pdfs/UI_statute.pdf#page=47
+    - title: New Jersey Department of Labor - annual taxable wage bases
+      href: https://www.nj.gov/labor/ea/employer-services/rate-info/
