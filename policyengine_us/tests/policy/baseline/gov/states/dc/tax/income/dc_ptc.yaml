@@ -290,3 +290,163 @@
         state_code: MN
   output:
     dc_ptc: 0
+
+
+- name: 2025 single filer who can be claimed as a dependent, property tax credit only through a claimant who is not a dependent
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 10_000
+        rent: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: DC
+  output:
+    # D.C. Code 47-1806.06(k) bars a claimant who was a dependent,
+    # unless 65 or older; one claimant per tax filing unit, so the
+    # spouse who is not a dependent claims it.
+    # min(0.20 x 10,000 - 3% x 10,000, 1,425) = 1,425
+    dc_ptc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, property tax credit only through a claimant who is not a dependent (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: DC
+  output:
+    dc_ptc: 1_425
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, property tax credit only through a claimant who is not a dependent (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: DC
+  output:
+    dc_ptc: 1_425
+
+- name: 2025 joint return with both spouses claimable as dependents, property tax credit only through a claimant who is not a dependent
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: DC
+  output:
+    dc_ptc: 0
+
+- name: 2025 joint return with neither spouse claimable, property tax credit only through a claimant who is not a dependent
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 5_000
+        rent: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: DC
+  output:
+    dc_ptc: 1_425
+
+- name: 2025 single filer aged 65 who can be claimed as a dependent claims the property tax credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 65
+        employment_income: 10_000
+        rent: 10_000
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: DC
+  output:
+    # The dependent bar does not apply at 65 or older; the
+    # elderly fractions start at 70.
+    dc_ptc: 1_425

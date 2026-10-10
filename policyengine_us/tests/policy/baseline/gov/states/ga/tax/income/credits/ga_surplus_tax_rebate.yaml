@@ -123,3 +123,267 @@
     ga_surplus_tax_rebate: 200
     ga_refundable_credits: 200
     ga_income_tax: 0
+
+
+- name: 2021 single filer who can be claimed as a dependent, no surplus tax rebate when the claimed filer had no earned income
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 30
+        taxable_interest_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        ga_income_tax_before_non_refundable_credits: 600
+    households:
+      household:
+        members: [filer]
+        state_code: GA
+  output:
+    # O.C.G.A. 48-7-20.2(a)(1)(B): an individual claimed as a
+    # dependent for 2021 is excluded unless that individual had
+    # earned income ((a)(2)); a joint return needs both spouses.
+    ga_surplus_tax_rebate: 0
+
+- name: 2021 joint return with one spouse who can be claimed as a dependent, no surplus tax rebate when the claimed filer had no earned income (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        taxable_interest_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ga_income_tax_before_non_refundable_credits: 600
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: GA
+  output:
+    ga_surplus_tax_rebate: 0
+
+- name: 2021 joint return with one spouse who can be claimed as a dependent, no surplus tax rebate when the claimed filer had no earned income (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        taxable_interest_income: 1_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        ga_income_tax_before_non_refundable_credits: 600
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: GA
+  output:
+    ga_surplus_tax_rebate: 0
+
+- name: 2021 joint return with both spouses claimable as dependents, no surplus tax rebate when the claimed filer had no earned income
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        taxable_interest_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ga_income_tax_before_non_refundable_credits: 600
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: GA
+  output:
+    ga_surplus_tax_rebate: 0
+
+- name: 2021 joint return with neither spouse claimable, no surplus tax rebate when the claimed filer had no earned income
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        taxable_interest_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ga_income_tax_before_non_refundable_credits: 600
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: GA
+  output:
+    # min(500, 600)
+    ga_surplus_tax_rebate: 500
+
+- name: 2021 single filer who can be claimed as a dependent, surplus tax rebate kept when the claimed filer had earned income
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        ga_income_tax_before_non_refundable_credits: 600
+    households:
+      household:
+        members: [filer]
+        state_code: GA
+  output:
+    # (a)(2) restores an individual with 2021 earned income.
+    ga_surplus_tax_rebate: 250
+
+- name: 2021 joint return with one spouse who can be claimed as a dependent, surplus tax rebate kept when the claimed filer had earned income (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 1_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ga_income_tax_before_non_refundable_credits: 600
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: GA
+  output:
+    ga_surplus_tax_rebate: 500
+
+- name: 2021 joint return with one spouse who can be claimed as a dependent, surplus tax rebate kept when the claimed filer had earned income (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 1_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        ga_income_tax_before_non_refundable_credits: 600
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: GA
+  output:
+    ga_surplus_tax_rebate: 500
+
+- name: 2021 joint return with both spouses claimable as dependents, surplus tax rebate kept when the claimed filer had earned income
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 1_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ga_income_tax_before_non_refundable_credits: 600
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: GA
+  output:
+    ga_surplus_tax_rebate: 500
+
+- name: 2021 joint return with neither spouse claimable, surplus tax rebate kept when the claimed filer had earned income
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 1_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ga_income_tax_before_non_refundable_credits: 600
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: GA
+  output:
+    ga_surplus_tax_rebate: 500

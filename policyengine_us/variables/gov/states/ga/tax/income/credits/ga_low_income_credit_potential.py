@@ -7,7 +7,14 @@ class ga_low_income_credit_potential(Variable):
     label = "Georgia low income credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://dor.georgia.gov/document/document/2022-it-511-individual-income-tax-booklet/download"
+    reference = (
+        "https://dor.georgia.gov/document/document/2022-it-511-individual-income-tax-booklet/download",
+        # 2025 IT-511, Line 17: only if "you are not claimed or eligible to be
+        # claimed as a dependent on another taxpayer's Federal or Georgia
+        # income tax return".
+        "https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=17",
+        "https://dor.georgia.gov/low-income-tax-credit",
+    )
     defined_for = StateCode.GA
 
     def formula(tax_unit, period, parameters):
@@ -32,4 +39,9 @@ class ga_low_income_credit_potential(Variable):
         total_exemptions = aged_count + exemptions
         federal_agi = tax_unit("adjusted_gross_income", period)
         amount_per_exemption = p.amount.calc(federal_agi)
-        return total_exemptions * amount_per_exemption
+        # O.C.G.A. 48-7A-3 allows the credit only to a taxpayer who is not
+        # claimed or eligible to be claimed as a dependent. The return-level
+        # worksheet counts self, spouse and children, so either spouse being
+        # claimable bars the joint return.
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        return total_exemptions * amount_per_exemption * ~filer_is_dependent

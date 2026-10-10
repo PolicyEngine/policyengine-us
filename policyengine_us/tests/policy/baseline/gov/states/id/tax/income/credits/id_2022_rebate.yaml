@@ -15,3 +15,131 @@
     id_2022_rebate_floor: 0
   output:
     id_2022_rebate: 120
+
+
+- name: 2020 single filer who can be claimed as a dependent, 2022 rebate floor counts the filers but no dependent
+  period: 2020
+  input:
+    people:
+      filer:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: ID
+  output:
+    # Idaho Code 63-3024B(3): $75 per taxpayer and each dependent;
+    # a return with a claimable filer has no dependents.
+    id_2022_rebate: 75
+
+- name: 2020 joint return with one spouse who can be claimed as a dependent, 2022 rebate floor counts the filers but no dependent (the claimable spouse is the head)
+  period: 2020
+  input:
+    people:
+      person_a:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: ID
+  output:
+    id_2022_rebate: 150
+
+- name: 2020 joint return with one spouse who can be claimed as a dependent, 2022 rebate floor counts the filers but no dependent (the claimable spouse is the spouse)
+  period: 2020
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: ID
+  output:
+    id_2022_rebate: 150
+
+- name: 2020 joint return with both spouses claimable as dependents, 2022 rebate floor counts the filers but no dependent
+  period: 2020
+  input:
+    people:
+      person_a:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: ID
+  output:
+    id_2022_rebate: 150
+
+- name: 2020 joint return with neither spouse claimable, 2022 rebate floor counts the filers but no dependent
+  period: 2020
+  input:
+    people:
+      person_a:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: ID
+  output:
+    id_2022_rebate: 225

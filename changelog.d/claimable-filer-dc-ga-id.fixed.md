@@ -1,0 +1,1 @@
+Apply District of Columbia, Georgia and Idaho rules for a filer who can be claimed as a dependent: DC's property tax credit claimant, childless EITC, child care and child tax credit children; Georgia's dependent exemption, low income credit and 2023 surplus refund; Idaho's food tax credit, household and dependent care deduction and 2022 rebate.
