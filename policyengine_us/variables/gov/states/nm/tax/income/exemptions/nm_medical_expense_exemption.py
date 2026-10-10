@@ -26,11 +26,14 @@ class nm_medical_expense_exemption(Variable):
         # dependent aged 65 or older does not qualify the return.
         filer = person("is_tax_unit_head_or_spouse", period)
         age_eligible = tax_unit.any(filer & (age >= p.age_eligibility))
+        # NMSA 7-2-5.9(A) requires expenses that "exceed twenty-eight thousand
+        # dollars ($28,000)"; PIT-ADJ line 18 instructions allow expenses "of
+        # $28,000 or more". This keeps the instructions' reading, under which
+        # expenses of exactly $28,000 qualify, until the conflict is resolved.
         expense_eligible = medical_expense >= p.min_expenses
         eligible = age_eligible & expense_eligible
-        # Exemption is halved for married filing separately
-        filing_status = tax_unit("filing_status", period)
-        separate = filing_status == filing_status.possible_values.SEPARATE
-        denominator = where(separate, 2, 1)
-        numerator = eligible * p.amount
-        return numerator / denominator
+        # Neither 7-2-5.9 nor the PIT-ADJ line 18 instructions halve the
+        # exemption for married individuals filing separately. Sections that
+        # do, such as the 65+ medical care credit (7-2-18.13(B)) and the organ
+        # donation deduction (7-2-36(B), the next PIT-ADJ line), say so.
+        return eligible * p.amount

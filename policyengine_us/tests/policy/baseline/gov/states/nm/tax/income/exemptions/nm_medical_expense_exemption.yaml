@@ -29,7 +29,7 @@
   output:
     nm_medical_expense_exemption: 3_000
 
-- name: Eligible - halved for separate filers
+- name: Eligible - not halved for separate filers
   period: 2023
   input:
     state_code: NM
@@ -37,7 +37,45 @@
     other_medical_expenses: 28_000
     filing_status: SEPARATE
   output:
-    nm_medical_expense_exemption: 1_500
+    # Neither NMSA 7-2-5.9 nor the PIT-ADJ line 18 instructions halve the
+    # exemption for married filing separately.
+    nm_medical_expense_exemption: 3_000
+
+- name: 2025 married filing separately gets the full exemption
+  period: 2025
+  input:
+    state_code: NM
+    age: 70
+    medicare_enrolled: false
+    other_medical_expenses: 30_000
+    filing_status: SEPARATE
+  output:
+    # PIT-ADJ line 18: "enter $3,000 on line 18 to claim the exemption".
+    nm_medical_expense_exemption: 3_000
+
+- name: 2025 expenses of exactly $28,000 qualify under the PIT-ADJ instructions
+  period: 2025
+  input:
+    state_code: NM
+    age: 70
+    medicare_enrolled: false
+    other_medical_expenses: 28_000
+    filing_status: SINGLE
+  output:
+    # PIT-ADJ line 18: expenses "of $28,000 or more". NMSA 7-2-5.9(A) says
+    # expenses that "exceed" $28,000, which would give 0 here.
+    nm_medical_expense_exemption: 3_000
+
+- name: 2025 expenses one dollar under $28,000 do not qualify
+  period: 2025
+  input:
+    state_code: NM
+    age: 70
+    medicare_enrolled: false
+    other_medical_expenses: 27_999
+    filing_status: SINGLE
+  output:
+    nm_medical_expense_exemption: 0
 
 - name: Output always $3,000
   period: 2023

@@ -1,0 +1,308 @@
+- name: 2025 a child with an ITIN counts although the federal EITC does not count them
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+  output:
+    eitc_child_count: 0
+    # NMSA 7-2-18.34(J)(2): "qualifying child" as defined by IRC 152(c).
+    nm_ctc_qualifying_children: 1
+
+- name: 2025 a child without a Social Security number card counts
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+        ssn_card_type: NONE
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+  output:
+    eitc_child_count: 0
+    # IRC 152(c) has no identification number requirement.
+    nm_ctc_qualifying_children: 1
+
+- name: 2025 age test of IRC 152(c)(3) - under 19, a full-time student under 24, or permanently and totally disabled
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+      child_18:
+        age: 18
+        is_tax_unit_dependent: true
+      child_19:
+        age: 19
+        is_tax_unit_dependent: true
+      student_23:
+        age: 23
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+      student_24:
+        age: 24
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+      disabled_30:
+        age: 30
+        is_permanently_and_totally_disabled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_18, child_19, student_23, student_24, disabled_30]
+    households:
+      household:
+        members: [parent, child_18, child_19, student_23, student_24, disabled_30]
+        state_code: NM
+  output:
+    # The 18-year-old, the 23-year-old student and the disabled 30-year-old.
+    nm_ctc_qualifying_children: 3
+
+- name: 2025 a dependent parent is not a qualifying child (IRC 152(c)(2) relationship test)
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 40
+        is_tax_unit_dependent: false
+      grandmother:
+        age: 70
+        is_tax_unit_dependent: true
+        is_parent_of_filer_or_spouse: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, grandmother, child]
+    households:
+      household:
+        members: [filer, grandmother, child]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: 1
+
+- name: 2025 children still count on a joint return with one claimable spouse (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NM
+  output:
+    # 7-2-18.34 counts IRC 152(c) qualifying children, not dependents, so
+    # the IRC 152(b)(1) rule that a claimable filer has no dependents does
+    # not remove the child.
+    nm_ctc_qualifying_children: 1
+
+- name: 2025 children still count on a joint return with one claimable spouse (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+        ssn_card_type: OTHER_NON_CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: 1
+
+- name: 2025 no New Mexico count outside New Mexico
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    nm_ctc_qualifying_children: 0
+
+- name: 2025 a student sibling older than the filer is not a qualifying child (IRC 152(c)(3)(A))
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        employment_income: 20_000
+        is_tax_unit_dependent: false
+      sibling:
+        age: 22
+        is_full_time_student: true
+        ssn_card_type: OTHER_NON_CITIZEN
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, sibling]
+    households:
+      household:
+        members: [filer, sibling]
+        state_code: NM
+  output:
+    # The child must be "younger than the taxpayer claiming such individual
+    # as a qualifying child".
+    nm_ctc_qualifying_children: 0
+    nm_ctc: 0
+
+- name: 2025 a student sibling the same age as the filer is not a qualifying child
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_dependent: false
+      sibling:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, sibling]
+    households:
+      household:
+        members: [filer, sibling]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: 0
+
+- name: 2025 a permanently and totally disabled sibling older than the filer is a qualifying child (IRC 152(c)(3)(B))
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        is_tax_unit_dependent: false
+      sibling:
+        age: 30
+        is_permanently_and_totally_disabled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, sibling]
+    households:
+      household:
+        members: [filer, sibling]
+        state_code: NM
+  output:
+    # 152(c)(3)(B): "the requirements of subparagraph (A) shall be treated as
+    # met".
+    nm_ctc_qualifying_children: 1
+
+- name: 2025 on a joint return a child younger than either spouse qualifies (the older spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person_b:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      sibling:
+        age: 22
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, sibling]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, sibling]
+        state_code: NM
+  output:
+    # Publication 596: "younger than you (or your spouse if filing jointly)".
+    nm_ctc_qualifying_children: 1
+
+- name: 2025 on a joint return a child younger than either spouse qualifies (the older spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      person_a:
+        age: 25
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      sibling:
+        age: 22
+        is_full_time_student: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, sibling]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, sibling]
+        state_code: NM
+  output:
+    nm_ctc_qualifying_children: 1
