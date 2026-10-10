@@ -16,9 +16,11 @@ def exclude_from_total(system, total: str, component: str) -> None:
     hold.
     """
     current = system.get_variable(total, check_existence=True)
-    if not isinstance(current.adds, list):
+    # The replacement inherits any formula of `current`, and a formula is
+    # computed in place of `adds`, so editing the list would then do nothing.
+    if current.formulas or not isinstance(current.adds, list):
         raise ValueError(
-            f"{total} must list its components in `adds` for a reform to "
+            f"{total} must be an `adds` list with no formula for a reform to "
             f"exclude {component} from it."
         )
     # A new list: `current.adds` belongs to the variable being replaced.

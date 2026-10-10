@@ -169,20 +169,28 @@ def test_reforms_leave_the_default_system_unchanged():
         assert system.variables[total].adds == baseline_adds(total)
 
 
-def test_exclude_from_total_rejects_a_total_without_an_adds_list():
-    class total_with_a_formula(Variable):
+def test_exclude_from_total_rejects_a_total_computed_by_a_formula():
+    class total(Variable):
         value_type = float
         entity = Household
-        label = "total with a formula"
+        label = "total"
         definition_period = YEAR
 
         def formula(household, period, parameters):
             return 0
 
-    bare = TaxBenefitSystem(entities)
-    bare.add_variable(total_with_a_formula)
-    with pytest.raises(ValueError, match="total_with_a_formula"):
-        exclude_from_total(bare, "total_with_a_formula", "component")
+    without_adds = TaxBenefitSystem(entities)
+    without_adds.add_variable(total)
+    with pytest.raises(ValueError, match="total must be an `adds` list"):
+        exclude_from_total(without_adds, "total", "a")
+
+    # A formula that replaced an `adds` variable inherits the list, but the
+    # formula is what is computed.
+    with_inherited_adds = system_with_total(["a", "b"])
+    with_inherited_adds.update_variable(total)
+    assert with_inherited_adds.variables["total"].adds == ["a", "b"]
+    with pytest.raises(ValueError, match="total must be an `adds` list"):
+        exclude_from_total(with_inherited_adds, "total", "a")
 
 
 COMPONENT_NAMES = st.sampled_from(["a", "b", "c", "d", "e"])
