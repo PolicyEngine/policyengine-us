@@ -4,7 +4,8 @@ Moving employee-paid premiums from non-pretax payments to pretax payroll
 deductions leaves total medical spending unchanged. SNAP, HUD,
 child-care deductions, Orange County General Relief and New Jersey
 medical expenses count both payment methods. Michigan's wage exclusion
-and non-pretax premium deduction likewise leave household resources unchanged.
+and non-pretax premium deduction likewise leave household resources unchanged
+with other benefit amounts held fixed.
 North Dakota excludes pretax premiums from income and deducts non-pretax
 premiums as medical expenses, also leaving renters' refund income unchanged.
 
@@ -46,11 +47,12 @@ def _situation(batch, moved):
     tax_units = {}
     spm_units = {}
     households = {}
+    marital_units = {}
     for row, (total, initial_pretax, transfer) in enumerate(batch):
         pretax = initial_pretax + (transfer if moved else 0)
         non_pretax = total - pretax
-        for state in STATES:
-            key = f"{state}_{row}"
+        for state, size in ((state, size) for state in STATES for size in (1, 2)):
+            key = f"{state}_{size}_{row}"
             people[key] = {
                 "age": {YEAR: 40},
                 "is_tax_unit_head": {YEAR: True},
@@ -72,12 +74,24 @@ def _situation(batch, moved):
                 "employer_sponsored_insurance_premiums": {YEAR: 0},
                 "self_employed_health_insurance_ald_person": {YEAR: 0},
                 "general_assistance": {YEAR: 0},
+                # Hold other benefits fixed for the Michigan invariant.
+                "ssi": {YEAR: 0},
                 "ca_oc_general_relief_countable_earned_income": {MONTH: 5_000},
                 "ca_oc_general_relief_gross_unearned_income": {MONTH: 0},
                 "ca_oc_general_relief_receives_other_cash_assistance": {MONTH: False},
             }
+            members = [key]
+            if size == 2:
+                spouse = f"{key}_spouse"
+                people[spouse] = {
+                    **people[key],
+                    "is_tax_unit_head": {YEAR: False},
+                    "is_tax_unit_spouse": {YEAR: True},
+                }
+                members.append(spouse)
+            marital_units[key] = {"members": members}
             tax_units[key] = {
-                "members": [key],
+                "members": members,
                 "chip_premium": {YEAR: 0},
                 "medicaid_premium": {YEAR: 0},
                 "marketplace_net_premium": {YEAR: 0},
@@ -91,14 +105,14 @@ def _situation(batch, moved):
                 "oh_employer_subsidized_health_plan_eligible": {YEAR: True},
             }
             spm_units[key] = {
-                "members": [key],
+                "members": members,
                 "tanf": {YEAR: 0},
                 "mo_ccs_countable_income": {MONTH: 5_000},
                 "pa_ccw_countable_income": {YEAR: 60_000},
                 "pa_ccw_stepparent_deduction": {MONTH: 0},
             }
             households[key] = {
-                "members": [key],
+                "members": members,
                 "state_code": {YEAR: state},
                 "in_oc": {YEAR: state == "CA"},
             }
@@ -107,8 +121,10 @@ def _situation(batch, moved):
         "tax_units": tax_units,
         "spm_units": spm_units,
         "households": households,
-        "marital_units": {key: {"members": [key]} for key in people},
-        "families": {key: {"members": [key]} for key in people},
+        "marital_units": marital_units,
+        "families": {
+            key: {"members": unit["members"]} for key, unit in marital_units.items()
+        },
     }
 
 
@@ -121,16 +137,21 @@ def _situation(batch, moved):
 @example(batch=[(12_000, 12_000, 0), (1, 0, 1)])
 @given(batch=st.lists(premium_transfers(), min_size=1, max_size=3))
 def test_premium_transfer_respects_each_consumers_tax_treatment(batch):
+    # Each batch contains both single adults and two-person married units.
     # Reusing the reference system avoids rebuilding the country per example.
     baseline = Simulation(situation=_situation(batch, False), tax_benefit_system=system)
     moved = Simulation(situation=_situation(batch, True), tax_benefit_system=system)
-    transfer = np.repeat([row[2] for row in batch], len(STATES))
-    total = np.repeat([row[0] for row in batch], len(STATES))
-    states = np.tile(STATES, len(batch))
+    sizes = np.tile((1, 2), len(batch) * len(STATES))
+    transfer = np.repeat([row[2] for row in batch], len(STATES) * 2)
+    total = np.repeat([row[0] for row in batch], len(STATES) * 2) * sizes
+    states = np.tile(np.repeat(STATES, 2), len(batch))
+    person_transfer = np.repeat(transfer, sizes)
+    person_states = np.repeat(states, sizes)
+    unit_transfer = transfer * sizes
 
     np.testing.assert_allclose(
         baseline.calculate("spm_unit_medical_out_of_pocket_expenses", YEAR),
-        total + 400,
+        total + 400 * sizes,
         rtol=0,
         atol=0.02,
     )
@@ -138,7 +159,7 @@ def test_premium_transfer_respects_each_consumers_tax_treatment(batch):
     # contribution once, and deducts only the remaining medical expenses.
     np.testing.assert_allclose(
         baseline.calculate("nd_renters_refund_income", YEAR),
-        (250_000 - total - 300) * (states == "ND"),
+        (250_000 * sizes - total - 300 * sizes) * (states == "ND"),
         rtol=0,
         atol=0.02,
     )
@@ -180,7 +201,9 @@ def test_premium_transfer_respects_each_consumers_tax_treatment(batch):
     for variable in tax_status_sensitive_consumers:
         np.testing.assert_allclose(
             baseline.calculate(variable, YEAR) - moved.calculate(variable, YEAR),
-            transfer,
+            person_transfer
+            if system.variables[variable].entity.key == "person"
+            else unit_transfer,
             rtol=0,
             atol=0.02,
             err_msg=variable,
@@ -191,7 +214,7 @@ def test_premium_transfer_respects_each_consumers_tax_treatment(batch):
     np.testing.assert_allclose(
         baseline.calculate("ssi_countable_income", YEAR)
         - moved.calculate("ssi_countable_income", YEAR),
-        transfer / 2,
+        person_transfer / 2,
         rtol=0,
         atol=0.02,
     )
@@ -202,7 +225,7 @@ def test_premium_transfer_respects_each_consumers_tax_treatment(batch):
     ):
         np.testing.assert_allclose(
             baseline.calculate(variable, YEAR) - moved.calculate(variable, YEAR),
-            transfer * (states == state),
+            person_transfer * (person_states == state),
             rtol=0,
             atol=0.02,
             err_msg=variable,

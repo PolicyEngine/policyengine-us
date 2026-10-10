@@ -63,3 +63,39 @@
     ssi_earned_income: 20_000
   output:
     ssi_blind_or_disabled_working_student_exclusion: 433.33 # 5,200/12
+
+- name: Student earned-income exclusion applies to wages after qualified pretax premiums.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 20
+    is_disabled: true
+    is_ssi_disabled: true
+    is_full_time_student: true
+    employment_income: 9_600
+    pre_tax_health_insurance_premiums: 2_400
+  output:
+    # POMS SI 00820.102C.2: SSI wages = 9,600 - 2,400 = 7,200.
+    # 20 CFR 416.1112(c)(3): min(600, 2,350) * 12 = 7,200,
+    # below the 2025 annual cap of 9,460. No earned income remains.
+    ssi_earned_income: 7_200
+    ssi_blind_or_disabled_working_student_exclusion: 7_200
+    ssi_countable_income: 0
+
+- name: Student with pretax premiums reaches the annual exclusion cap before standard exclusions.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 20
+    is_disabled: true
+    is_ssi_disabled: true
+    is_full_time_student: true
+    employment_income: 18_000
+    pre_tax_health_insurance_premiums: 2_400
+  output:
+    # POMS SI 00820.102C.2: SSI wages = 18,000 - 2,400 = 15,600.
+    # 20 CFR 416.1112(c)(3)-(7): student exclusion is capped at 9,460,
+    # then (15,600 - 9,460 - 20 * 12 - 65 * 12) / 2 = 2,560.
+    ssi_earned_income: 15_600
+    ssi_blind_or_disabled_working_student_exclusion: 9_460
+    ssi_countable_income: 2_560

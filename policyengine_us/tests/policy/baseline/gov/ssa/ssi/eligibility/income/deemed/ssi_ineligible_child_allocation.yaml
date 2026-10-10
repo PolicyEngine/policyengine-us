@@ -4,3 +4,16 @@
     age: 14
   output:
     ssi_ineligible_child_allocation: 5_040 # (1,261 - 841) * 12
+
+- name: Ineligible child's pretax premiums do not reduce the child allocation as wages.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 14
+    employment_income: 2_400
+    pre_tax_health_insurance_premiums: 1_200
+  output:
+    # POMS SI 00820.102C.2: wages for SSI = 2,400 - 1,200 = 1,200.
+    # 20 CFR 416.1163(b)(1)-(2): (1,450 - 967) * 12 - 1,200 = 4,596.
+    ssi_earned_income: 1_200
+    ssi_ineligible_child_allocation: 4_596
