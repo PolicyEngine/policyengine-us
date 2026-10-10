@@ -19,4 +19,11 @@ class il_income_tax_rebate_eligible(Variable):
             p.amount.joint.thresholds[1],
             p.amount.other.thresholds[1],
         )
-        return federal_agi < income_threshold
+        # Section 212.1(a): a taxpayer "who is claimed as a dependent on
+        # another individual's return for that year, is ineligible". The
+        # exclusion is per taxpayer, so a joint return qualifies while either
+        # spouse is not claimed.
+        has_eligible_filer = (
+            tax_unit("head_spouse_count_not_dependent_elsewhere", period) > 0
+        )
+        return (federal_agi < income_threshold) & has_eligible_filer

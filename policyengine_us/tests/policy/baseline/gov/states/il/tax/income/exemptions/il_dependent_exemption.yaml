@@ -21,3 +21,140 @@
     state_code: IL
   output:
     il_dependent_exemption: 4_850
+
+
+- name: 2025 single filer who can be claimed as a dependent, no Illinois dependent exemption
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  output:
+    # 35 ILCS 5/204(c) counts exemptions allowable under IRC 151;
+    # a return with a claimable filer has no dependents.
+    il_dependent_exemption: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, no Illinois dependent exemption (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IL
+  output:
+    il_dependent_exemption: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, no Illinois dependent exemption (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: IL
+  output:
+    il_dependent_exemption: 0
+
+- name: 2025 joint return with both spouses claimable as dependents, no Illinois dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IL
+  output:
+    il_dependent_exemption: 0
+
+- name: 2025 joint return with neither spouse claimable, no Illinois dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IL
+  output:
+    il_dependent_exemption: 2_850

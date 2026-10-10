@@ -15,7 +15,13 @@ def create_in_dependent_exemption() -> Reform:
 
             person = tax_unit.members
             age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)), as in
+            # the baseline formula.
+            filer_is_dependent = person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
+            is_dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
 
             # Apply age limit if in effect
             if p.age_limit.in_effect:
@@ -49,7 +55,12 @@ def create_in_dependent_exemption() -> Reform:
 
         def formula(tax_unit, period, parameters):
             person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
+            # Dependents barred by a claimable filer are not moved into the
+            # personal portion either.
+            filer_is_dependent = person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
+            is_dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
             total_dependents = tax_unit.sum(is_dependent)
             eligible_dependent_exemptions = tax_unit(
                 "in_eligible_dependents_count", period

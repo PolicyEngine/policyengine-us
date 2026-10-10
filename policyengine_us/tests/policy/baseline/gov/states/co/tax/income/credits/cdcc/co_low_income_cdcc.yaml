@@ -219,3 +219,205 @@
         members: [head, spouse, child_1]
   output:
     co_low_income_cdcc: 0
+
+
+- name: 2025 single filer who can be claimed as a dependent, no Colorado low-income child care credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 25
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [filer, child]
+        state_code: CO
+  output:
+    # Only the federal liability condition is waived; the child must
+    # still be the taxpayer's dependent under 13 (IRC 152(b)(1)).
+    co_low_income_cdcc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, no Colorado low-income child care credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CO
+  output:
+    co_low_income_cdcc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, no Colorado low-income child care credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: CO
+  output:
+    co_low_income_cdcc: 0
+
+- name: 2025 joint return with both spouses claimable as dependents, no Colorado low-income child care credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CO
+  output:
+    co_low_income_cdcc: 0
+
+- name: 2025 joint return with neither spouse claimable, no Colorado low-income child care credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CO
+  output:
+    # No federal liability at AGI 10,000:
+    # min(0.25 x min(1,000, 5,000), 500) = 250.
+    co_low_income_cdcc: 250
+
+- name: 2025 two returns in one household, only the return whose filer can be claimed loses the low-income child care credit
+  period: 2025
+  input:
+    people:
+      parent_claimed:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+      child_a:
+        age: 3
+      parent:
+        age: 30
+        employment_income: 5_000
+      child_b:
+        age: 3
+    tax_units:
+      claimed_return:
+        members: [parent_claimed, child_a]
+        tax_unit_childcare_expenses: 1_000
+      other_return:
+        members: [parent, child_b]
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [parent_claimed, child_a, parent, child_b]
+        state_code: CO
+  output:
+    # min(0.25 x min(1,000, 5,000), 500) = 250 for the return without a
+    # claimable filer.
+    co_low_income_cdcc: [0, 250]
+
+
+- name: 2025 single filer who can be claimed as a dependent gets the low-income child care credit for a child incapable of self-care
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 25
+        employment_income: 10_000
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 10
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [filer, child]
+        state_code: CO
+  output:
+    # IRC 21(b)(1)(B) keeps a dependent incapable of self-care
+    # regardless of IRC 152(b)(1), so the federal credit would be
+    # allowed: min(0.25 x min(1,000, 10,000), 500) = 250.
+    co_low_income_cdcc: 250
