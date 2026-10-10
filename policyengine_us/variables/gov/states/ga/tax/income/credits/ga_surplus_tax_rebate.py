@@ -26,11 +26,12 @@ class ga_surplus_tax_rebate(Variable):
         # before credits); it pays out past a zero balance due.
         line_16_tax = tax_unit("ga_income_tax_before_non_refundable_credits", period)
         # 48-7-20.2(a)(1)(B) and (a)(2): an individual claimed as a dependent
-        # for 2021 qualifies only if that individual had 2021 earned income. A
-        # joint return qualifies only if neither spouse is so excluded.
+        # for 2021 is a qualified taxpayer only if that individual had 2021
+        # earned income. The refund is credited to a qualified taxpayer, so a
+        # joint return gets the joint amount while either spouse qualifies.
         person = tax_unit.members
         filer = person("is_tax_unit_head_or_spouse", period)
         claimed = person("claimed_as_dependent_on_another_return", period)
         own_earnings = person("earned_income", period) > 0
-        qualified = ~tax_unit.any(filer & claimed & ~own_earnings)
+        qualified = tax_unit.any(filer & (~claimed | own_earnings))
         return min_(cap, line_16_tax) * qualified

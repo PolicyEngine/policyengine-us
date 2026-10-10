@@ -88,7 +88,7 @@
     ga_low_income_credit: 16
 
 
-- name: 2025 single filer who can be claimed as a dependent, no low income credit
+- name: 2025 single filer who can be claimed as a dependent, low income credit only through a spouse who cannot be claimed, with no child units
   period: 2025
   input:
     people:
@@ -98,20 +98,23 @@
         is_tax_unit_head: true
         is_tax_unit_spouse: false
         claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
     tax_units:
       tax_unit:
-        members: [filer]
+        members: [filer, child]
     households:
       household:
-        members: [filer]
+        members: [filer, child]
         state_code: GA
   output:
-    # O.C.G.A. 48-7A-3 and IT-511 Line 17: only a taxpayer who is not
-    # claimed or eligible to be claimed as a dependent; the joint
-    # return is barred when either spouse can be claimed.
+    # O.C.G.A. 48-7A-3(a): each resident taxpayer who is not claimed
+    # or eligible to be claimed may claim it, and joint spouses are
+    # each deemed a unit; a return with a claimable filer has no
+    # dependents (IRC 152(b)(1)): 2 x 26 at federal AGI 5,000.
     ga_low_income_credit_potential: 0
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent, no low income credit (the claimable spouse is the head)
+- name: 2025 joint return with one spouse who can be claimed as a dependent, low income credit only through a spouse who cannot be claimed, with no child units (the claimable spouse is the head)
   period: 2025
   input:
     people:
@@ -126,92 +129,100 @@
         employment_income: 2_500
         is_tax_unit_head: false
         is_tax_unit_spouse: true
+      child:
+        age: 5
     tax_units:
       tax_unit:
-        members: [person_a, person_b]
+        members: [person_a, person_b, child]
         filing_status: JOINT
     households:
       household:
-        members: [person_a, person_b]
+        members: [person_a, person_b, child]
         state_code: GA
   output:
-    ga_low_income_credit_potential: 0
-
-- name: 2025 joint return with one spouse who can be claimed as a dependent, no low income credit (the claimable spouse is the spouse)
-  period: 2025
-  input:
-    people:
-      person_b:
-        age: 30
-        employment_income: 2_500
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
-      person_a:
-        age: 30
-        employment_income: 2_500
-        is_tax_unit_head: false
-        is_tax_unit_spouse: true
-        claimed_as_dependent_on_another_return: true
-    tax_units:
-      tax_unit:
-        members: [person_b, person_a]
-        filing_status: JOINT
-    households:
-      household:
-        members: [person_b, person_a]
-        state_code: GA
-  output:
-    ga_low_income_credit_potential: 0
-
-- name: 2025 joint return with both spouses claimable as dependents, no low income credit
-  period: 2025
-  input:
-    people:
-      person_a:
-        age: 30
-        employment_income: 2_500
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
-        claimed_as_dependent_on_another_return: true
-      person_b:
-        age: 30
-        employment_income: 2_500
-        is_tax_unit_head: false
-        is_tax_unit_spouse: true
-        claimed_as_dependent_on_another_return: true
-    tax_units:
-      tax_unit:
-        members: [person_a, person_b]
-        filing_status: JOINT
-    households:
-      household:
-        members: [person_a, person_b]
-        state_code: GA
-  output:
-    ga_low_income_credit_potential: 0
-
-- name: 2025 joint return with neither spouse claimable, no low income credit
-  period: 2025
-  input:
-    people:
-      person_a:
-        age: 30
-        employment_income: 2_500
-        is_tax_unit_head: true
-        is_tax_unit_spouse: false
-      person_b:
-        age: 30
-        employment_income: 2_500
-        is_tax_unit_head: false
-        is_tax_unit_spouse: true
-    tax_units:
-      tax_unit:
-        members: [person_a, person_b]
-        filing_status: JOINT
-    households:
-      household:
-        members: [person_a, person_b]
-        state_code: GA
-  output:
-    # 2 exemptions x 26 at federal AGI 5,000
     ga_low_income_credit_potential: 52
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, low income credit only through a spouse who cannot be claimed, with no child units (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: GA
+  output:
+    ga_low_income_credit_potential: 52
+
+- name: 2025 joint return with both spouses claimable as dependents, low income credit only through a spouse who cannot be claimed, with no child units
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: GA
+  output:
+    ga_low_income_credit_potential: 0
+
+- name: 2025 joint return with neither spouse claimable, low income credit only through a spouse who cannot be claimed, with no child units
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 2_500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: GA
+  output:
+    # 3 units x 26
+    ga_low_income_credit_potential: 78
