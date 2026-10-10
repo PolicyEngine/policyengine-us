@@ -1,97 +1,386 @@
 - name: wi_homestead_eligible unit test 1
-  absolute_error_margin: 0.01
   period: 2021
   input:
-    age_head: 18
-    age_spouse: 17
-    employment_income: 8_000
-    head_is_disabled: false
-    spouse_is_disabled: false
-    wi_homestead_income: 9_000
-    state_code: WI
+    people:
+      head:
+        age: 18
+        employment_income: 8000
+      spouse:
+        age: 17
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        wi_homestead_income: 9000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
   output:
     wi_homestead_eligible: true
 
 - name: wi_homestead_eligible unit test 2
-  absolute_error_margin: 0.01
   period: 2021
   input:
-    age_head: 17
-    age_spouse: 17
-    employment_income: 8_000
-    head_is_disabled: false
-    spouse_is_disabled: false
-    wi_homestead_income: 9_000
-    state_code: WI
+    people:
+      head:
+        age: 17
+        employment_income: 8000
+      spouse:
+        age: 17
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        wi_homestead_income: 9000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
   output:
     wi_homestead_eligible: false
 
 - name: wi_homestead_eligible unit test 3
-  absolute_error_margin: 0.01
   period: 2021
   input:
-    age_head: 18
-    age_spouse: 17
-    employment_income: 0
-    head_is_disabled: false
-    spouse_is_disabled: false
-    wi_homestead_income: 9_000
-    state_code: WI
+    people:
+      head:
+        age: 18
+        employment_income: 0
+      spouse:
+        age: 17
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        wi_homestead_income: 9000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
   output:
     wi_homestead_eligible: false
 
 - name: wi_homestead_eligible unit test 4
-  absolute_error_margin: 0.01
   period: 2021
   input:
-    age_head: 62
-    age_spouse: 60
-    employment_income: 0
-    head_is_disabled: false
-    spouse_is_disabled: false
-    wi_homestead_income: 9_000
-    state_code: WI
+    people:
+      head:
+        age: 62
+        employment_income: 0
+      spouse:
+        age: 60
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        wi_homestead_income: 9000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
   output:
     wi_homestead_eligible: true
 
 - name: wi_homestead_eligible unit test 5
-  absolute_error_margin: 0.01
   period: 2022
   input:
-    age_head: 61
-    age_spouse: 60
-    employment_income: 0
-    head_is_disabled: false
-    spouse_is_disabled: false
-    wi_homestead_income: 9_000
-    state_code: WI
+    people:
+      head:
+        age: 61
+        employment_income: 0
+      spouse:
+        age: 60
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        wi_homestead_income: 9000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
   output:
     wi_homestead_eligible: false
 
 - name: wi_homestead_eligible unit test 6
-  absolute_error_margin: 0.01
   period: 2022
   input:
-    age_head: 61
-    age_spouse: 60
-    employment_income: 0
-    head_is_disabled: false
-    spouse_is_disabled: true
-    wi_homestead_income: 9_000
-    state_code: WI
+    people:
+      head:
+        age: 61
+        employment_income: 0
+      spouse:
+        age: 60
+        is_disabled: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        wi_homestead_income: 9000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
   output:
     wi_homestead_eligible: true
 
 - name: wi_homestead_eligible unit test 7
-  absolute_error_margin: 0.01
   period: 2021
   input:
-    age_head: 18
-    age_spouse: 17
-    employment_income: 8_000
-    head_is_disabled: false
-    spouse_is_disabled: false
-    wi_homestead_income: 25_000
-    state_code: WI
+    people:
+      head:
+        age: 18
+        employment_income: 8000
+      spouse:
+        age: 17
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        wi_homestead_income: 25000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
   output:
     wi_homestead_eligible: false
+
+- name: "2025 single filer who can be claimed as a dependent: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older"
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 1000
+        real_estate_taxes: 1000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: WI
+  output:
+    # Wis. Stat. 71.53(2)(d): no claim by a claimant claimed as a dependent
+    # by another person, unless the claimant is 62 or older.
+    wi_homestead_eligible: false
+    wi_homestead_credit: 0
+
+- name: "2025 joint return with one claimable spouse: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        real_estate_taxes: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WI
+  output:
+    # The unclaimed spouse may be the claimant (Tax 14.02). Household
+    # income $1,000 is below the $8,060 phaseout start; property tax
+    # $1,000 x 80% = $800.
+    wi_homestead_eligible: true
+    wi_homestead_credit: 800
+
+- name: "2025 joint return with one claimable spouse: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        real_estate_taxes: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 500
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: WI
+  output:
+    wi_homestead_eligible: true
+    wi_homestead_credit: 800
+
+- name: "2025 joint return with both spouses claimable: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WI
+  output:
+    wi_homestead_eligible: false
+    wi_homestead_credit: 0
+
+- name: "2025 joint return with neither spouse claimable: Wisconsin homestead credit needs a claimant not claimed as a dependent unless 62 or older"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        real_estate_taxes: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        real_estate_taxes: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WI
+  output:
+    # Same as above: $1,000 x 80% = $800.
+    wi_homestead_eligible: true
+    wi_homestead_credit: 800
+
+- name: "2025 joint return with both spouses claimable: Wisconsin homestead credit allows a claimant aged 62 or older even if claimed"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 62
+        employment_income: 500
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 62
+        employment_income: 500
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WI
+  output:
+    # The age-62 exception keeps both claimed spouses eligible: $800.
+    wi_homestead_eligible: true
+    wi_homestead_credit: 800
+
+- name: "2025 joint return where only the claimable spouse has earned income: no Wisconsin homestead claimant (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1000
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        real_estate_taxes: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WI
+  output:
+    # Schedule H instructions: the spouse with earned income must be the
+    # claimant, and a claimant under 62 may not be claimed as a dependent;
+    # the unclaimed spouse has no earned income and is not 62 or disabled.
+    wi_homestead_eligible: false
+    wi_homestead_credit: 0
+
+- name: "2025 joint return where only the claimable spouse has earned income: no Wisconsin homestead claimant (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        real_estate_taxes: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 1000
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: WI
+  output:
+    wi_homestead_eligible: false
+    wi_homestead_credit: 0

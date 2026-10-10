@@ -18,7 +18,14 @@ class vt_personal_exemptions(Variable):
         eligible_head = (~elsewhere_head).astype(int)
         eligible_spouse = (~elsewhere_spouse).astype(int)
         eligible_count = eligible_head + (eligible_spouse * is_joint)
-        # add number of other dependents claimed on federal Form 1040 (line 5c)
-        dependents = tax_unit("tax_unit_count_dependents", period)
+        # add number of other dependents claimed on federal Form 1040 (line 5c).
+        # 32 V.S.A. 5811(21)(C): "no exemption may be claimed" for a dependent
+        # individual, and under IRC 152(b)(1) a return on which the filer (or,
+        # if joint, either spouse) can be claimed as a dependent has no
+        # dependents.
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependents = where(
+            filer_is_dependent, 0, tax_unit("tax_unit_count_dependents", period)
+        )
         total_exemption_count = eligible_count + dependents
         return total_exemption_count * p.personal

@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.wi.tax.income.wi_standard_deduction import (
+    wi_dependent_standard_deduction_limit,
     wi_standard_deduction_for_income,
 )
 
@@ -35,8 +36,13 @@ class wi_retirement_income_exclusion_tax(Variable):
         fstatus = tax_unit("filing_status", period)
         wi_agi = tax_unit("wi_agi", period)
         standard_deduction_full = tax_unit("wi_standard_deduction", period)
-        standard_deduction_reduced = wi_standard_deduction_for_income(
-            max_(0, wi_agi - line16), fstatus, parameters, period
+        # The dependent limit (71.05(22)(f)) caps the deduction on this path
+        # too; it depends on earned income, which line 16 does not change.
+        standard_deduction_reduced = min_(
+            wi_standard_deduction_for_income(
+                max_(0, wi_agi - line16), fstatus, parameters, period
+            ),
+            wi_dependent_standard_deduction_limit(tax_unit, period, parameters),
         )
         extra_standard_deduction = standard_deduction_reduced - standard_deduction_full
         exclusion_taxinc = max_(0, taxinc - line16 - extra_standard_deduction)

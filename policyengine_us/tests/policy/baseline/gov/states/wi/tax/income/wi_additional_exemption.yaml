@@ -1,25 +1,220 @@
 - name: Aged head
   period: 2022
   input:
-    age_head: 65
-    state_code: WI
+    people:
+      head:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WI
   output:
     wi_additional_exemption: 250
 
 - name: Aged head and aged spouse
   period: 2022
   input:
-    age_head: 65
-    age_spouse: 65
-    state_code: WI
+    people:
+      head:
+        age: 65
+      spouse:
+        age: 65
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
   output:
     wi_additional_exemption: 500
 
 - name: No aged head or aged spouse
   period: 2022
   input:
-    age_head: 64
-    age_spouse: 64
-    state_code: WI
+    people:
+      head:
+        age: 64
+      spouse:
+        age: 64
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WI
+  output:
+    wi_additional_exemption: 0
+
+- name: "2025 single filer who can be claimed as a dependent: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed"
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 65
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: WI
+  output:
+    # Form 1 instructions, line 10b: no $250 exemption for a filer whom
+    # someone else can claim as a dependent.
+    wi_additional_exemption: 0
+
+- name: "2025 joint return with one claimable spouse: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 65
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WI
+  output:
+    # Each spouse is tested separately: only the unclaimed spouse counts.
+    wi_additional_exemption: 250
+
+- name: "2025 joint return with one claimable spouse: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 65
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: WI
+  output:
+    wi_additional_exemption: 250
+
+- name: "2025 joint return with both spouses claimable: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 65
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 65
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WI
+  output:
+    wi_additional_exemption: 0
+
+- name: "2025 joint return with neither spouse claimable: Wisconsin $250 exemption for a filer aged 65 or older who cannot be claimed"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 65
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WI
+  output:
+    # Two filers aged 65 or older x $250.
+    wi_additional_exemption: 500
+
+- name: "2025 joint return where only the claimable spouse is 65 or older: no Wisconsin $250 exemption (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 65
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WI
+  output:
+    wi_additional_exemption: 0
+
+- name: "2025 joint return where only the claimable spouse is 65 or older: no Wisconsin $250 exemption (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 65
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: WI
   output:
     wi_additional_exemption: 0

@@ -28,3 +28,215 @@
     tax_unit_size: 2
   output:
     wv_personal_exemption: 4_000
+
+- name: "2025 single filer who can be claimed as a dependent: West Virginia personal exemption counts only exemptions that may be claimed"
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 16000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: WV
+  output:
+    # W. Va. Code 11-21-16 and IRC 151(d)(2): no exemption for a filer who
+    # can be claimed; a return with no exemptions takes $500 instead.
+    wv_personal_exemption: 500
+
+- name: "2025 joint return with one claimable spouse: West Virginia personal exemption counts only exemptions that may be claimed (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WV
+  output:
+    # One exemption for the spouse who cannot be claimed: $2,000.
+    wv_personal_exemption: 2000
+
+- name: "2025 joint return with one claimable spouse: West Virginia personal exemption counts only exemptions that may be claimed (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: WV
+  output:
+    wv_personal_exemption: 2000
+
+- name: "2025 joint return with both spouses claimable: West Virginia personal exemption counts only exemptions that may be claimed"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WV
+  output:
+    # No exemptions on the return: the $500 fallback, once per return.
+    wv_personal_exemption: 500
+
+- name: "2025 joint return with neither spouse claimable: West Virginia personal exemption counts only exemptions that may be claimed"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WV
+  output:
+    # Two exemptions x $2,000.
+    wv_personal_exemption: 4000
+
+- name: "2025 joint return with one claimable spouse and a child: West Virginia personal exemption has no dependent exemption (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WV
+  output:
+    # IRC 152(b)(1): either spouse being claimable leaves the return no
+    # dependents; one exemption x $2,000 (the control below gets $6,000).
+    wv_personal_exemption: 2000
+
+- name: "2025 joint return with one claimable spouse and a child: West Virginia personal exemption has no dependent exemption (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: WV
+  output:
+    wv_personal_exemption: 2000
+
+- name: "2025 joint return with neither spouse claimable and a child: West Virginia personal exemption"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WV
+  output:
+    wv_personal_exemption: 6000

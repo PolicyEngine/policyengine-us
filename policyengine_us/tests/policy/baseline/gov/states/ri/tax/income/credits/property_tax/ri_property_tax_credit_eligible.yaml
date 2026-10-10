@@ -1,59 +1,357 @@
 - name: Head above minimum age, and disabled
   period: 2022
   input:
-    state_code: RI
-    greater_age_head_spouse: 65
-    head_is_disabled: true
-    spouse_is_disabled: false
+    people:
+      head:
+        age: 65
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: RI
   output:
     ri_property_tax_credit_eligible: true
 
-- name: Head above minimum age, not diabled
+- name: Head above minimum age, not disabled
   period: 2022
   input:
-    state_code: RI
-    greater_age_head_spouse: 65
-    head_is_disabled: false
-    spouse_is_disabled: false
+    people:
+      head:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: RI
   output:
     ri_property_tax_credit_eligible: true
 
 - name: Head disabled, not above minimum age
   period: 2022
   input:
-    state_code: RI
-    greater_age_head_spouse: 64
-    head_is_disabled: true
-    spouse_is_disabled: false
+    people:
+      head:
+        age: 64
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: RI
   output:
     ri_property_tax_credit_eligible: true
-  
+
 - name: Spouse above minimum age, not disabled
   period: 2021
   input:
-    state_code: RI
-    greater_age_head_spouse: 65
-    head_is_disabled: false
-    spouse_is_disabled: false
+    people:
+      head:
+        age: 64
+      spouse:
+        age: 65
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: RI
   output:
     ri_property_tax_credit_eligible: true
 
 - name: Not above minimum age, not disabled
   period: 2021
   input:
-    state_code: RI
-    greater_age_head_spouse: 64
-    head_is_disabled: false
-    spouse_is_disabled: false
+    people:
+      head:
+        age: 64
+      spouse:
+        age: 64
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: RI
   output:
     ri_property_tax_credit_eligible: false
 
 - name: Spouse disabled
   period: 2021
   input:
-    state_code: RI
-    greater_age_head_spouse: 64
-    head_is_disabled: false
-    spouse_is_disabled: true
+    people:
+      head:
+        age: 64
+      spouse:
+        age: 64
+        is_disabled: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: RI
   output:
     ri_property_tax_credit_eligible: true
+
+- name: "2025 single filer who can be claimed as a dependent: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent"
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 65
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: RI
+  output:
+    # R.I. Gen. Laws 44-33-3: the claimant does not include any person
+    # claimed as a dependent by any taxpayer.
+    ri_property_tax_credit_eligible: false
+    ri_property_tax_credit: 0
+
+- name: "2025 joint return with one claimable spouse: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 65
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 65
+        real_estate_taxes: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: RI
+  output:
+    # The unclaimed spouse, aged 65, may be the claimant (household
+    # members choose who claims). Household income $0, so the
+    # threshold is $0; property tax $1,000 is capped at the 2025
+    # maximum of $700.
+    ri_property_tax_credit_eligible: true
+    ri_property_tax_credit: 700
+
+- name: "2025 joint return with one claimable spouse: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 65
+        real_estate_taxes: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 65
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible: true
+    ri_property_tax_credit: 700
+
+- name: "2025 joint return with both spouses claimable: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 65
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 65
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible: false
+    ri_property_tax_credit: 0
+
+- name: "2025 joint return with neither spouse claimable: property tax relief needs a claimant aged 65 or older or disabled who is not claimed as a dependent"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 65
+        real_estate_taxes: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 65
+        real_estate_taxes: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: RI
+  output:
+    # Same as above: min($1,000 - 0 x 3%, $700) = $700.
+    ri_property_tax_credit_eligible: true
+    ri_property_tax_credit: 700
+
+- name: "2025 joint return where only the claimable spouse is 65 or older: property tax relief has no eligible claimant (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 65
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        real_estate_taxes: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: RI
+  output:
+    # The age test and the dependency test apply to the same claimant,
+    # so the claimed spouse's age does not qualify the other spouse.
+    ri_property_tax_credit_eligible: false
+    ri_property_tax_credit: 0
+
+- name: "2025 joint return where only the claimable spouse is 65 or older: property tax relief has no eligible claimant (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        real_estate_taxes: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 65
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible: false
+    ri_property_tax_credit: 0
+
+- name: "2025 joint return where the unclaimed spouse is disabled: property tax relief stays available (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 65
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_disabled: true
+        real_estate_taxes: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: RI
+  output:
+    # The disabled, unclaimed spouse is the claimant.
+    ri_property_tax_credit_eligible: true
+    ri_property_tax_credit: 700
+
+- name: "2025 joint return where the unclaimed spouse is disabled: property tax relief stays available (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        is_disabled: true
+        real_estate_taxes: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 65
+        real_estate_taxes: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: RI
+  output:
+    ri_property_tax_credit_eligible: true
+    ri_property_tax_credit: 700

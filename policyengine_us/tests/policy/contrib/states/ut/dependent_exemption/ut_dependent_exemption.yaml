@@ -148,3 +148,112 @@
     # in_effect is false, so the $0 amount does not apply: two dependents
     # at the uprated baseline amount.
     ut_personal_exemption: 4_318
+
+- name: Reform in effect counts no dependents on a claimable filer's return (single filer)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 3_000
+    people:
+      filer:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1]
+    households:
+      household:
+        members: [filer, child1]
+        state_code: UT
+  output:
+    # IRC 152(b)(1): a filer who can be claimed has no dependents, as in the
+    # baseline ut_total_dependents.
+    ut_personal_exemption: 0
+
+- name: Reform in effect counts no dependents when one joint spouse can be claimed (the claimable spouse is the spouse)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 3_000
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+      person_a:
+        age: 20
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child1]
+        state_code: UT
+  output:
+    ut_personal_exemption: 0
+
+- name: Reform in effect counts no dependents when one joint spouse can be claimed (the claimable spouse is the head)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 3_000
+    people:
+      person_a:
+        age: 20
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        is_tax_unit_spouse: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child1]
+        state_code: UT
+  output:
+    ut_personal_exemption: 0
+
+- name: Reform in effect, neither spouse claimable (control)
+  period: 2026
+  reforms: policyengine_us.reforms.states.ut.dependent_exemption.ut_dependent_exemption_reform
+  input:
+    gov.contrib.states.ut.dependent_exemption.in_effect: true
+    gov.contrib.states.ut.dependent_exemption.amount: 3_000
+    people:
+      person_a:
+        age: 20
+        is_tax_unit_head: true
+      person_b:
+        age: 22
+        is_tax_unit_spouse: true
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child1]
+        state_code: UT
+  output:
+    # One dependent at the reform amount (no age limit): $3,000.
+    ut_personal_exemption: 3_000

@@ -1,16 +1,32 @@
 - name: WI exemption unit test 1
   period: 2021
   input:
-    exemptions_count: 5
-    state_code: WI
+    people:
+      head:
+    tax_units:
+      tax_unit:
+        members: [head]
+        exemptions_count: 5
+    households:
+      household:
+        members: [head]
+        state_code: WI
   output:
     wi_exemption: 5 * 700
 
 - name: WI exemption unit test 2
   period: 2022
   input:
-    exemptions_count: 5
-    age_head: 65
-    state_code: WI
+    people:
+      head:
+        age: 65
+    tax_units:
+      tax_unit:
+        members: [head]
+        exemptions_count: 5
+    households:
+      household:
+        members: [head]
+        state_code: WI
   output:
     wi_exemption: 5 * 700 + 250
