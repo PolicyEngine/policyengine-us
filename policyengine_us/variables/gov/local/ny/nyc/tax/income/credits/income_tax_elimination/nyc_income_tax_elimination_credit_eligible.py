@@ -21,7 +21,9 @@ class nyc_income_tax_elimination_credit_eligible(Variable):
         # dependent deduction under IRC § 151(c).
         # A return on which the filer (or, if joint, either spouse) can be
         # claimed as a dependent has no dependents (IRC 152(b)(1)).
-        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependent_filer = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         has_dependent = (tax_unit("tax_unit_dependents", period) > 0) & ~dependent_filer
         # § 1310(h)(1)(B) and (h)(2); line C: federal adjusted gross income
         # (§ 1310(h)(3)(B)) is no more than the phase-out width above the

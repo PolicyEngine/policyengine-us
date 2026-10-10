@@ -22,7 +22,7 @@ class ny_allowable_college_tuition_expenses(Variable):
         claimed = person("claimed_as_dependent_on_another_return", period)
         dependent = person("is_tax_unit_dependent", period)
         dependent_filer = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         allowed = ~claimed & ~(dependent & dependent_filer)
         capped = min_(person("qualified_tuition_expenses", period), p.cap)

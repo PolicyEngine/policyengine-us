@@ -471,7 +471,9 @@ def create_ny_working_families_tax_credit() -> Reform:
             # As in the baseline, a return on which a filer (or, if joint,
             # either spouse) can be claimed as a dependent has no dependents
             # (Tax Law 616(a), IRC 152(b)(1)).
-            dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+            dependent_filer = tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
             count_dependents = where(
                 dependent_filer,
                 0,

@@ -27,7 +27,9 @@ def create_ny_dependent_exemption() -> Reform:
             # As in the baseline, a return on which a filer (or, if joint,
             # either spouse) can be claimed as a dependent has no dependents
             # (Tax Law 616(a), IRC 152(b)(1)).
-            dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+            dependent_filer = tax_unit(
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+            )
             count = where(dependent_filer, 0, tax_unit.sum(eligible))
             return count * p.amount
 

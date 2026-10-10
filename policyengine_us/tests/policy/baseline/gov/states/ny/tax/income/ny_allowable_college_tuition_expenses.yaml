@@ -188,3 +188,25 @@
         state_code: NY
   output:
     ny_allowable_college_tuition_expenses: 6000
+
+# Tax Law 606(t)(2)(D) bars a student who is claimed on another return; a student
+# who can be claimed but is not keeps their own tuition.
+- name: 2025 single student who can be claimed but is not claimed keeps their tuition
+  period: 2025
+  input:
+    people:
+      student:
+        age: 20
+        qualified_tuition_expenses: 6000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [student]
+    households:
+      household:
+        members: [student]
+        state_code: NY
+  output:
+    ny_allowable_college_tuition_expenses: 6000

@@ -228,3 +228,22 @@
         state_code: NY
   output:
     ny_inflation_refund_credit: 400
+
+- name: 2023 single filer who could be claimed but was not claimed gets the inflation refund
+  period: 2023
+  input:
+    people:
+      filer:
+        age: 22
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        ny_agi: 10000
+    households:
+      household:
+        members: [filer]
+        state_code: NY
+  output:
+    # Tax Law 606(qqq) turns on having been claimed, not on being claimable.
+    ny_inflation_refund_credit: 200
