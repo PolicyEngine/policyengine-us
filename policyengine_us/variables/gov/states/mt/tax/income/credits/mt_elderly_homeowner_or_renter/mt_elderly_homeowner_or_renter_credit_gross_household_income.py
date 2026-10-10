@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.irs_gross_income.social_security.dependent_taxable_ss_magi import (
+    PERSON_ABOVE_THE_LINE_DEDUCTIONS,
+)
 
 
 class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
@@ -11,15 +14,15 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
     reference = (
         "https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-23/section-15-30-2337/",
         "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html",
-        # 2023 Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 9
-        # (renamed Schedule 2EC from 2024)
-        "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=52",
-        # 2023 instructions, lines 1 and 8: the returns of each member of
-        # the household, and the wages of members who do not file
+        # 2023 Form 2 instructions, PDF pages 51-52: each household member's
+        # return (line 1), nonfilers' wages (line 8), no losses (line 9).
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=51",
         # 2024 Schedule 2EC, line 17: income received by other members of
         # the household
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=48",
+        # The statutory federal-AGI definition remains after the 2024 form
+        # began displaying separate income categories: HB191 § 1(9), p.2.
+        "https://archive.legmt.gov/bills/2021/HB0199/HB0191_X.pdf#page=2",
     )
 
     def formula(person, period, parameters):
@@ -27,14 +30,28 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
             period
         ).gov.states.mt.tax.income.credits.elderly_homeowner_or_renter
         sources = add(person, period, p.gross_income_sources)
-        # Gross household income counts every member of the household
-        # (§ 15-30-2337(4)). A tax unit dependent's income is on their own
-        # return, not in adjusted_gross_income_person (irs_gross_income
-        # leaves dependents out), so count their gross income directly:
-        # gains but not losses, and the taxable part of their Social
-        # Security.
+        # Gross household income counts every member's federal AGI without
+        # losses (§ 15-30-2337(4), (9)(a)). The dependent's gross income is
+        # omitted from this return's AGI, but their own valid non-loss
+        # adjustments still belong on their own return (2023 instructions,
+        # line 1). Do not subtract the parent's TaxUnit-level deductions.
+        ald = parameters(period).gov.irs.ald
+        deduction_variables = [
+            PERSON_ABOVE_THE_LINE_DEDUCTIONS[name]
+            for name in ald.deductions
+            if name in PERSON_ABOVE_THE_LINE_DEDUCTIONS
+            and name not in ald.filer_amounts_recorded_on_dependents
+        ]
+        # The shared mapping uses capped/eligible person-level deductions,
+        # including the dependent's own IRA deduction. It excludes loss_ald:
+        # business/capital losses never reduce Montana household income.
+        # Parent-owned adoption/bond exclusions recorded on dependents
+        # remain with the filer under the existing convention.
+        own_deductions = add(person, period, deduction_variables)
         is_dependent = person("is_tax_unit_dependent", period)
-        dependent_income = is_dependent * person("dependent_gross_income", period)
+        dependent_income = is_dependent * (
+            person("dependent_gross_income", period) - own_deductions
+        )
         # The income above counts only the taxable portion of Social
         # Security: a filer's in federal AGI, a dependent's in their own
         # gross income. Add the untaxed portion so all SS is counted per
