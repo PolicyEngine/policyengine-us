@@ -55,3 +55,37 @@
   output:
     # 51,830 - 14,600 = 37,230 (no HoH exemption)
     mo_taxable_income: 37_230
+
+- name: Line 7 gives a spouse with negative Missouri AGI zero percent
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      spouse_1:
+        age: 40
+        is_tax_unit_head: true
+        mo_adjusted_gross_income: -15_000
+      spouse_2:
+        age: 40
+        is_tax_unit_spouse: true
+        mo_adjusted_gross_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [spouse_1, spouse_2]
+        mo_federal_income_tax_deduction: 0
+        tax_unit_itemizes: false
+        standard_deduction: 0
+        mo_itemized_deductions: 0
+    marital_units:
+      marital_unit:
+        members: [spouse_1, spouse_2]
+    households:
+      household:
+        members: [spouse_1, spouse_2]
+        state_code: MO
+  output:
+    # The 2023 instructions' example (page 7): "your income is -$15,000 and
+    # your spouse's income is $30,000 ... enter zero percent on Line 7Y and
+    # 100 percent on Line 7S." Line 6 adds the columns: 15,000. With no
+    # deductions Line 26 is 15,000, all of it spouse 2's.
+    mo_taxable_income: [0, 15_000]

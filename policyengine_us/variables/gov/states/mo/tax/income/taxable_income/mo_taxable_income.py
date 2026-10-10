@@ -11,13 +11,16 @@ class mo_taxable_income(Variable):
         "https://dor.mo.gov/forms/MO-A_2021.pdf",
         "https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=8",
         "https://dor.mo.gov/forms/MO-1040%20Instructions_2022.pdf#page=8",
+        # Line 7 note on negative income.
+        "https://dor.mo.gov/forms/MO-1040%20Instructions_2023.pdf#page=7",
         "https://dor.mo.gov/forms/MO-1040%20Instructions_2024.pdf#page=8",
         "https://www.revisor.mo.gov/main/OneSection.aspx?section=143.111&bid=7201&hl=",
     )
     defined_for = StateCode.MO
 
     def formula(person, period, parameters):
-        # calculate tax unit MO AGI
+        # calculate tax unit MO AGI: Form MO-1040 Line 6 adds columns 5Y and
+        # 5S, either of which can be negative
         tax_unit = person.tax_unit
         mo_agi = person("mo_adjusted_gross_income", period)
         unit_mo_agi = tax_unit.sum(mo_agi)
@@ -50,10 +53,15 @@ class mo_taxable_income(Variable):
         unit_taxinc = max_(0, unit_mo_agi - unit_mo_deductions)
 
         # allocate tax unit taxable income by each individual's share of
-        # unit AGI (use a mask rather than where to avoid a divide-by-zero
+        # unit AGI (Line 7). The 2023 instructions (page 7) say: "If one
+        # spouse has negative income and the other spouse has positive
+        # income ... enter zero percent on Line 7Y and 100 percent on Line
+        # 7S." (use a mask rather than where to avoid a divide-by-zero
         # warning with default share value being zero)
-        ind_agi_share = np.zeros_like(unit_mo_agi)
-        mask = unit_mo_agi > 0
-        ind_agi_share[mask] = mo_agi[mask] / unit_mo_agi[mask]
+        positive_mo_agi = max_(0, mo_agi)
+        unit_positive_mo_agi = tax_unit.sum(positive_mo_agi)
+        ind_agi_share = np.zeros_like(unit_positive_mo_agi)
+        mask = unit_positive_mo_agi > 0
+        ind_agi_share[mask] = positive_mo_agi[mask] / unit_positive_mo_agi[mask]
 
         return ind_agi_share * unit_taxinc

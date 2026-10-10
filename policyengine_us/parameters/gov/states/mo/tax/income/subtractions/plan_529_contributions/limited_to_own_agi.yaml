@@ -1,0 +1,22 @@
+description: Missouri limits each filer's 529 plan contribution subtraction to their Missouri adjusted gross income before it, if this is true.
+metadata:
+  unit: bool
+  period: year
+  label: Missouri 529 plan contribution subtraction limited to the filer's Missouri adjusted gross income
+  reference:
+    - title: 12 CSR 10-2.010(4)(A)3, amended effective February 29, 2024
+      href: https://dor.mo.gov/resources/official-final-rules/documents/12_CSR_10-2_010.pdf#page=5
+    - title: 12 CSR 10-2.010(4)(A)2, amended effective April 30, 2026
+      href: https://dor.mo.gov/resources/official-final-rules/documents/12_CSR_10-2_010_Income_Tax_of_Current_or_Former_Spouses.pdf#page=4
+
+values:
+  # The 2019 version of 12 CSR 10-2.010 covers only capital losses, and RSMo
+  # 166.435 sets no limit beyond the dollar cap.
+  2019-01-01: false
+  # The version effective February 29, 2024 gives a spouse with $1,000 of
+  # federal AGI and a $5,000 MOST contribution a Missouri AGI of zero "because
+  # the MOST subtraction is limited to the spouse's Missouri adjusted gross
+  # income". It governs the 2024 and 2025 returns.
+  2024-01-01: true
+  # The version effective April 30, 2026 gives the same spouse -$4,000.
+  2026-01-01: false
