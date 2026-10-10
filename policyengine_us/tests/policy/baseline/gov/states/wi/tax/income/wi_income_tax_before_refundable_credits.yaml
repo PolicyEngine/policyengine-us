@@ -19,29 +19,34 @@
     wi_income_tax_before_refundable_credits: 0
 
 - name: WI income tax before refundable credits with retirement exclusion
-  # This intermediate remains the standard pre-refundable-credit tax,
-  # even when the exclusion path wins in wi_income_tax.
-  # standard_before_refundable = max(0, 5000 - 500) = 4500
+  # The elected path must be reported before refundable credits as well.
   absolute_error_margin: 0.01
   period: 2025
   input:
+    age: 68
+    taxable_private_pension_income: 30_000
+    is_tax_unit_head: true
     wi_income_tax_before_credits: 5_000
     wi_non_refundable_credits: 500
     wi_retirement_income_exclusion_tax: 3_000
-    wi_refundable_credits: 200
+    wi_earned_income_credit: 200
     state_code: WI
   output:
-    wi_income_tax_before_refundable_credits: 4_500
+    wi_income_tax_before_refundable_credits: 3_000
+    wi_refundable_credits: 0
 
 - name: WI income tax before refundable credits - standard path lower
   # standard_before_refundable = max(0, 2000 - 500) = 1500
   absolute_error_margin: 0.01
   period: 2025
   input:
+    age: 68
+    taxable_private_pension_income: 30_000
+    is_tax_unit_head: true
     wi_income_tax_before_credits: 2_000
     wi_non_refundable_credits: 500
     wi_retirement_income_exclusion_tax: 5_000
-    wi_refundable_credits: 200
+    wi_earned_income_credit: 200
     state_code: WI
   output:
     wi_income_tax_before_refundable_credits: 1_500
@@ -50,10 +55,13 @@
   absolute_error_margin: 0.01
   period: 2025
   input:
+    age: 68
+    taxable_private_pension_income: 30_000
+    is_tax_unit_head: true
     wi_income_tax_before_credits: 5_000
     wi_non_refundable_credits: 500
     wi_retirement_income_exclusion_tax: 3_000
-    wi_refundable_credits: 200
+    wi_earned_income_credit: 200
     state_code: WI
   output:
     wi_income_tax: 3_000

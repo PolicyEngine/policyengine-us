@@ -27,3 +27,41 @@
     state_code: WI
   output:
     wi_capital_gain_loss_subtraction: 0
+
+- name: Directly reported capital gain distributions receive the long term subtraction
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    non_sch_d_capital_gains: 1000
+    state_code: WI
+  output:
+    wi_capital_gain_loss_subtraction: 300
+
+- name: Capital gain distribution exclusion is limited by net gain after short term losses
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    non_sch_d_capital_gains: 1000
+    short_term_capital_gains: -800
+    state_code: WI
+  output:
+    wi_capital_gain_loss_subtraction: 60
+
+- name: Capital gain distributions do not create a subtraction for a net capital loss
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    non_sch_d_capital_gains: 1000
+    short_term_capital_gains: -1200
+    state_code: WI
+  output:
+    wi_capital_gain_loss_subtraction: 0
+
+- name: Direct capital gain distribution treatment also applies before Act 15
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    non_sch_d_capital_gains: 1000
+    state_code: WI
+  output:
+    wi_capital_gain_loss_subtraction: 300
