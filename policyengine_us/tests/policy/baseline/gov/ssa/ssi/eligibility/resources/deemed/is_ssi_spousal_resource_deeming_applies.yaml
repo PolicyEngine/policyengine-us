@@ -196,3 +196,150 @@
     meets_ssi_resource_test:
     - false
     - true
+
+# 416.1160 and 416.1205(a): a married claimant who is a tax dependent still
+# lives with an ineligible spouse; tax roles do not decide marriage.
+- name: Married dependents in a parent's tax unit deem the ineligible spouse's resources
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 55
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ssi_countable_resources:
+          '2026': 0
+      claimant:
+        age: 25
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 25
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 3001
+    tax_units:
+      family:
+        members: [mother, claimant, spouse]
+    marital_units:
+      mother_unit:
+        members: [mother]
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [mother, claimant, spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, true, false]
+    ssi_resources_deemed_from_ineligible_spouse: [0, 3001, 0]
+    meets_ssi_resource_test: [true, false, false]
+
+# A situation that omits marital units puts everyone in one default unit; a
+# co-resident head of another tax unit is not thereby a spouse (416.1160).
+- name: Omitted marital units do not make a co-resident head of another tax unit a spouse
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 2500
+      son:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      claimant_unit:
+        members: [claimant]
+      son_unit:
+        members: [son]
+    households:
+      home:
+        members: [claimant, son]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, false]
+    ssi_resources_deemed_from_ineligible_spouse: [0, 0]
+    meets_ssi_resource_test: [false, true]
+
+# Spouses filing separately are spouses when the tax unit records that they
+# live together (cohabitating_spouses), as for Medicaid and Social Security
+# taxation; 416.1205(a) then applies the couple limit to their combined
+# resources.
+- name: Cohabiting spouses filing separately deem the ineligible spouse's resources
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 68
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 3001
+    tax_units:
+      claimant_unit:
+        members: [claimant]
+        cohabitating_spouses: true
+      spouse_unit:
+        members: [spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [claimant, spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [true, false]
+    ssi_resources_deemed_from_ineligible_spouse: [3001, 0]
+    meets_ssi_resource_test: [false, false]
+
+# Without that record, separate filers in one marital unit are not shown to
+# be married, for the claimant's spouse as for a parent's spouse.
+- name: Separate filers without cohabitation evidence do not deem resources
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 70
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      partner:
+        age: 68
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 3001
+    tax_units:
+      claimant_unit:
+        members: [claimant]
+      partner_unit:
+        members: [partner]
+    marital_units:
+      couple:
+        members: [claimant, partner]
+    households:
+      home:
+        members: [claimant, partner]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, false]
+    ssi_resources_deemed_from_ineligible_spouse: [0, 0]
+    meets_ssi_resource_test: [true, false]

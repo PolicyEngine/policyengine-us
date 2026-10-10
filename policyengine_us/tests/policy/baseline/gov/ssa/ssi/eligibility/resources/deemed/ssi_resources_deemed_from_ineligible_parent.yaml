@@ -1857,3 +1857,48 @@
     - 0
     - 0
     - 500
+
+# 416.1202(b)(1) and POMS SI 01330.200 A deem 'the countable resources of the
+# parent(s) or spouse of a parent'. Without parent ids, a parent's
+# established spouse who files separately still counts: 2,500 + 5,000 less
+# the 3,000 couple allowance leaves 4,500.
+- name: Without parent links a parent's cohabiting spouse in another tax unit counts
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 2500
+      stepfather:
+        age: 42
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 5000
+      child:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      mother_unit:
+        members: [mother, child]
+        cohabitating_spouses: true
+      stepfather_unit:
+        members: [stepfather]
+    marital_units:
+      parents:
+        members: [mother, stepfather]
+      child_unit:
+        members: [child]
+    households:
+      home:
+        members: [mother, stepfather, child]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 0, 4500]
+    meets_ssi_resource_test: [false, false, false]

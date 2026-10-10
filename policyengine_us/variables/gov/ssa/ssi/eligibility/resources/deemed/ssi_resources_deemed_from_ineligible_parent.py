@@ -1,57 +1,12 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_established_spouse_indices,
+)
 from policyengine_us.variables.household.demographic.person._parent_links import (
     co_resident_parent_indices,
     has_parent_ids,
     unlinked_parent,
 )
-
-
-def _ssi_established_spouse_indices(person, period, first, second):
-    """Rows of established co-resident spouses, with the Medicaid bound.
-
-    As in _medicaid_parents, marriage is shown by the other head/spouse of
-    a married tax unit, or a two-person marital unit with cohabitating_spouses
-    on either tax unit. tax_unit_married is exactly when filing_status is
-    JOINT; reading filing_status would pull the tax-filing chain (dependents,
-    gross income, retirement-contribution limits) into SSI eligibility. A marital unit alone is insufficient: situations
-    omitting marital units put everyone in one. Parent-child links exclude
-    candidates even when tax roles suggest marriage; ambiguous candidates
-    resolve to no spouse. Apply this test to each named parent, without
-    inferring additional relatives beyond their spouses.
-    """
-    head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-    tax_unit = person.tax_unit.reference_entity.members_entity_id
-    joint = head_or_spouse & person.tax_unit("tax_unit_married", period)
-    married = person.marital_unit.nb_persons() == 2
-    marital_unit = person.marital_unit.reference_entity.members_entity_id
-    cohabiting = person.tax_unit("cohabitating_spouses", period)
-    own_index = np.arange(person.count)
-    spouse = np.full(person.count, -1, dtype=int)
-    candidates = np.zeros(person.count, dtype=int)
-    household = person.household
-    for position in range(
-        int(np.max(household.reference_entity.members_position, initial=-1)) + 1
-    ):
-        member = household.value_nth_person(position, own_index, default=-1)
-        names_applicant = (first[member] == own_index) | (second[member] == own_index)
-        named_by_applicant = (first == member) | (second == member)
-        shown = (
-            (member >= 0)
-            & (member != own_index)
-            & ~names_applicant
-            & ~named_by_applicant
-            & (
-                (joint & head_or_spouse[member] & (tax_unit[member] == tax_unit))
-                | (
-                    married
-                    & (marital_unit[member] == marital_unit)
-                    & (cohabiting | cohabiting[member])
-                )
-            )
-        )
-        spouse = np.where(shown, member, spouse)
-        candidates += shown
-    return np.where(candidates == 1, spouse, -1)
 
 
 def _ssi_unlinked_parental_resource_pool(person, resources, parent, spouse):
@@ -65,22 +20,34 @@ def _ssi_unlinked_parental_resource_pool(person, resources, parent, spouse):
     their two spouses), so its fifth column identifies its tax-unit and
     household intersection. Thus keys are exact, with linear memory.
     """
+    named = parent
     parent = parent | ((spouse >= 0) & parent[spouse])
     group = person.tax_unit
     indices = np.arange(person.count)
     households = person.household.reference_entity.members_entity_id
+    tax_units = group.reference_entity.members_entity_id
     total = np.zeros(person.count)
     count = np.zeros(person.count, dtype=int)
     keys = np.full((person.count, 5), -1, dtype=int)
+
+    def add(rows, selected):
+        nonlocal total, count
+        store = selected & (count < 4)
+        keys[indices[store], count[store]] = rows[store]
+        total = total + np.where(selected, resources[np.maximum(rows, 0)], 0)
+        count = count + selected
+
     for position in range(
         int(np.max(group.reference_entity.members_position, initial=-1)) + 1
     ):
         member = group.value_nth_person(position, indices, default=-1)
-        selected = (member >= 0) & (households[member] == households) & parent[member]
-        store = selected & (count < 4)
-        keys[indices[store], count[store]] = member[store]
-        total += np.where(selected, resources[member], 0)
-        count += selected
+        safe = np.maximum(member, 0)
+        selected = (member >= 0) & (households[safe] == households) & parent[safe]
+        add(member, selected)
+        # A parent's established spouse counts wherever they file
+        # (416.1202(b)(1)); members of this tax unit were counted above.
+        partner = np.where(selected & named[safe], spouse[safe], -1)
+        add(partner, (partner >= 0) & (tax_units[np.maximum(partner, 0)] != tax_units))
     keys[:, :4].sort(axis=1)
     large = count > 4
     if np.any(large):

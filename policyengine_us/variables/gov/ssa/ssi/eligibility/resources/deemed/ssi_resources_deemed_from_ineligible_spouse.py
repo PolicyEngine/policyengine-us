@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_spouse_index,
+)
 
 
 class ssi_resources_deemed_from_ineligible_spouse(Variable):
@@ -15,11 +18,10 @@ class ssi_resources_deemed_from_ineligible_spouse(Variable):
 
     def formula(person, period, parameters):
         resources = person("ssi_resources_for_deeming", period)
-        ineligible = person("is_ssi_ineligible_spouse", period)
-        spouse_resources = (
-            person.marital_unit.sum(resources * ineligible) - resources * ineligible
-        )
+        spouse = _ssi_spouse_index(person, period)
         # 416.1202(a): 'whether or not such resources are available'.
-        return person("is_ssi_spousal_resource_deeming_applies", period) * max_(
-            0, spouse_resources
+        return where(
+            person("is_ssi_spousal_resource_deeming_applies", period),
+            resources[np.maximum(spouse, 0)],
+            0,
         )

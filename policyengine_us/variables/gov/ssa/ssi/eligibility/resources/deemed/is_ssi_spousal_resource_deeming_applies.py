@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
+    _ssi_spouse_index,
+)
 
 
 class is_ssi_spousal_resource_deeming_applies(Variable):
@@ -8,27 +11,25 @@ class is_ssi_spousal_resource_deeming_applies(Variable):
     definition_period = MONTH
     reference = (
         "https://www.ecfr.gov/current/title-20/section-416.1202#p-416.1202(a)",
+        "https://www.ecfr.gov/current/title-20/section-416.1160",
         "https://secure.ssa.gov/poms.nsf/lnx/0501330100",
         "https://www.ecfr.gov/current/title-20/section-416.1167",
     )
 
     def formula(person, period, parameters):
-        # Use the same tax-head/spouse convention as SSI income deeming and
-        # ssi_claim_is_joint. A marital unit alone cannot establish marriage:
-        # situations omitting marital units put everyone in one default unit.
-        ineligible = person("is_ssi_ineligible_spouse", period)
-        # Marital units represent spouses living together. Subtract self:
-        # an unmarried ineligible adult is not their own ineligible spouse.
-        has_ineligible_spouse = person.marital_unit.sum(ineligible) > ineligible
-        households = person.household.reference_entity.members_entity_id
-        first_home = person.marital_unit.value_nth_person(0, households, default=-1)
-        second_home = person.marital_unit.value_nth_person(1, households, default=-2)
-        # 416.1167 retains the absent person's household membership. Enter a
-        # temporarily absent spouse in the household they remain a member of.
+        # 416.1160: an ineligible spouse 'lives with you as your husband or
+        # wife and is not eligible for SSI benefits'. Identify the spouse with
+        # the same evidence as a parent's spouse in parental deeming, so one
+        # couple is never married for one rule and not the other. 416.1167
+        # retains an absent person's household membership: enter a temporarily
+        # absent spouse in the household they remain a member of.
+        spouse = _ssi_spouse_index(person, period)
+        aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
+        # As is_ssi_ineligible_spouse, a spouse who is not aged, blind or
+        # disabled cannot be eligible; two such spouses claim jointly.
+        spouse_ineligible = (spouse >= 0) & ~aged_blind_disabled[np.maximum(spouse, 0)]
         return (
-            person("is_ssi_aged_blind_disabled", period)
-            & person("is_tax_unit_head_or_spouse", period)
+            aged_blind_disabled
             & ~person("ssi_claim_is_joint", period)
-            & has_ineligible_spouse
-            & (first_home == second_home)
+            & spouse_ineligible
         )
