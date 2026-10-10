@@ -8,6 +8,8 @@ class mn_msa_gross_income(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.MN
+    # Section 256D.35 directly defines MSA gross income. Rule 9500.1206
+    # describes GA conventions, which CM 0017 adopts for non-SSI recipients.
     reference = (
         "https://www.revisor.mn.gov/statutes/cite/256D.35#stat.256D.35.10",
         "https://www.revisor.mn.gov/rules/9500.1206/#rule.9500.1206.15a",
