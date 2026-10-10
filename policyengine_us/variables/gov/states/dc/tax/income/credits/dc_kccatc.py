@@ -10,6 +10,10 @@ class dc_kccatc(Variable):
     reference = (
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=67",
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=59",
+        # D.C. Code 47-1806.15(a)(3), (d)(1): the child must be claimed as a
+        # dependent on the taxpayer's federal and District returns.
+        "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.15",
+        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
     )
     defined_for = StateCode.DC
 
@@ -21,7 +25,13 @@ class dc_kccatc(Variable):
         income_eligible = taxinc <= p.kccatc.income_limit[filing_status]
         # determine count of KCCATC age eligible children
         person = tax_unit.members
-        is_dependent = person("is_tax_unit_dependent", period)
+        # The child must be the taxpayer's dependent on the federal and District
+        # returns. A return on which the filer (or, if joint, either spouse)
+        # can be claimed as a dependent has no dependents (IRC 152(b)(1)).
+        filer_is_dependent = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
+        is_dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
         age = person("age", period)
         kccatc_age_eligible = is_dependent & (age <= p.kccatc.max_age)
         kccatc_eligible_count = tax_unit.sum(kccatc_age_eligible)

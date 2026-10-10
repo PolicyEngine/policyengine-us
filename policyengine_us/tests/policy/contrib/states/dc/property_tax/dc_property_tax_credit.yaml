@@ -182,3 +182,28 @@
   output:
     dc_ptc_income_limit: 65_600
     dc_ptc: 1_160
+
+- name: DC property tax reform keeps the dependent claimant bar for a filer under 65 who can be claimed
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    people:
+      filer: {age: 30, employment_income: 10_000, claimed_as_dependent_on_another_return: true}
+    tax_units: {tax_unit: {members: [filer]}}
+    households: {household: {members: [filer], state_code: DC}}
+  # D.C. Code 47-1806.06(k).
+  output:
+    dc_ptc: 0
+
+- name: DC property tax reform pays the same filer when nobody can claim them
+  period: 2025
+  reforms: policyengine_us.reforms.states.dc.property_tax.dc_property_tax_reform.dc_property_tax_credit
+  input:
+    gov.contrib.states.dc.property_tax.in_effect: true
+    people:
+      filer: {age: 30, employment_income: 10_000}
+    tax_units: {tax_unit: {members: [filer]}}
+    households: {household: {members: [filer], state_code: DC}}
+  output:
+    dc_ptc: 1_400

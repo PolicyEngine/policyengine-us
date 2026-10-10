@@ -141,3 +141,141 @@
     # Georgia uses the IRC 24(c) qualifying-child definition only; whether IRC
     # 152(b)(1) reaches it is not settled, so the child test is kept.
     ga_ctc: 250
+
+
+- name: 2026 single filer who can be claimed as a dependent, Georgia child tax credit kept for an IRC 24(c) qualifying child
+  period: 2026
+  input:
+    people:
+      filer:
+        age: 25
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: GA
+  output:
+    # O.C.G.A. 48-7-29.27 uses the IRC 24(c) qualifying child only,
+    # with its own one-claimant rule; it does not require the child
+    # to be the taxpayer's dependent.
+    ga_ctc_potential: 250
+
+- name: 2026 joint return with one spouse who can be claimed as a dependent, Georgia child tax credit kept for an IRC 24(c) qualifying child (the claimable spouse is the head)
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: GA
+  output:
+    ga_ctc_potential: 250
+
+- name: 2026 joint return with one spouse who can be claimed as a dependent, Georgia child tax credit kept for an IRC 24(c) qualifying child (the claimable spouse is the spouse)
+  period: 2026
+  input:
+    people:
+      person_b:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: GA
+  output:
+    ga_ctc_potential: 250
+
+- name: 2026 joint return with both spouses claimable as dependents, Georgia child tax credit kept for an IRC 24(c) qualifying child
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: GA
+  output:
+    ga_ctc_potential: 250
+
+- name: 2026 joint return with neither spouse claimable, Georgia child tax credit kept for an IRC 24(c) qualifying child
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 25
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: GA
+  output:
+    ga_ctc_potential: 250

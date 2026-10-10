@@ -10,6 +10,9 @@ class dc_ptc(Variable):
     reference = (
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=49",
         "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=47",
+        # D.C. Code 47-1806.06(b)(4) (one claimant per tax filing unit) and (k)
+        # (no credit for a claimant who was a dependent, unless 65 or older).
+        "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.06",
     )
     defined_for = StateCode.DC
 
@@ -33,4 +36,12 @@ class dc_ptc(Variable):
             p_dc.ptc.fraction_nonelderly.calc(positive_agi, right=True),
         )
         uncapped_ptc = max_(0, ptax - ptax_offset)
-        return min_(p_dc.ptc.max, uncapped_ptc) * tax_unit("takes_up_dc_ptc", period)
+        # D.C. Code 47-1806.06(k): no credit for a claimant who was a dependent
+        # under any income tax law that year, unless 65 or older; a couple can
+        # claim it through a spouse who is not such a dependent ((b)(4)).
+        has_claimant = tax_unit("dc_ptc_has_eligible_claimant", period)
+        return (
+            min_(p_dc.ptc.max, uncapped_ptc)
+            * tax_unit("takes_up_dc_ptc", period)
+            * has_claimant
+        )

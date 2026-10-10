@@ -14,6 +14,11 @@ class dc_eitc_without_qualifying_child(Variable):
     definition_period = YEAR
     reference = (
         "https://code.dccouncil.gov/us/dc/council/code/sections/47-1806.04",  # (f)
+        # IRC 32(c)(1)(A)(ii)(III): a filer without a qualifying child must not
+        # be a dependent of another taxpayer.
+        "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii",
+        # Publication 596: on a joint return, neither spouse may be claimable.
+        "https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=18",
     )
     defined_for = StateCode.DC
 
@@ -36,9 +41,14 @@ class dc_eitc_without_qualifying_child(Variable):
         age_eligible = is_head_or_spouse & (age >= min_age) & (age <= max_age)
         # (f)(1)(C) is limited to an individual without a qualifying child.
         no_qualifying_child = ~tax_unit("dc_eitc_has_qualifying_child", period)
+        # (f) keeps the IRC 32 framework: a filer without a qualifying child
+        # must not be a dependent of another taxpayer, and on a joint return
+        # neither spouse may be (Publication 596).
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         us_eligible = (
             filer_meets_identification
             & no_qualifying_child
+            & ~filer_is_dependent
             & tax_unit.any(age_eligible)
             & tax_unit("eitc_investment_income_eligible", period)
             & eitc_filing_status_eligible(tax_unit, period, parameters)
