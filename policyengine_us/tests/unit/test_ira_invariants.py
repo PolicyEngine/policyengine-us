@@ -465,3 +465,40 @@ def test_marginal_tax_rate_keeps_contributions_set_after_construction():
     at_construction = simulation(True).calculate("marginal_tax_rate", year)
     set_afterwards = simulation(False).calculate("marginal_tax_rate", year)
     np.testing.assert_allclose(set_afterwards, at_construction, atol=1e-6)
+
+
+def test_marginal_tax_rate_ignores_internal_set_input_calls():
+    """A formula's own set_input call must not leak into an MTR branch.
+
+    The SSA revenue formulas set tax_unit_taxable_social_security through
+    holder.set_input. Calculating one before the marginal tax rate must not
+    freeze taxable Social Security in the branch: for a single filer aged 67
+    in Texas in 2026 with $30,000 of wages and $20,000 of benefits, a $1,000
+    earnings increase raises taxable benefits, so the rate is the same as in
+    a fresh simulation.
+    """
+    year = 2026
+
+    def simulation():
+        situation = blank_situation()
+        add_household(
+            situation,
+            "retiree",
+            year,
+            [
+                {
+                    "age": 67,
+                    "employment_income": 30_000,
+                    "social_security_retirement": 20_000,
+                }
+            ],
+            {},
+        )
+        return Simulation(situation=situation)
+
+    fresh = simulation().calculate("federal_marginal_tax_rate", year)
+    after_revenue = simulation()
+    after_revenue.calculate("tob_revenue_oasdi", year)
+    np.testing.assert_allclose(
+        after_revenue.calculate("federal_marginal_tax_rate", year), fresh, atol=1e-6
+    )
