@@ -33,7 +33,9 @@ class me_pro_forma_childless_eitc(Variable):
         # 32(c)(1)(A)(ii)(III): the filer may not be a dependent of another
         # taxpayer, and on a joint return neither spouse may be (Publication
         # 596, Rule 12).
-        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependent_filer = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         return (
             min_(phased_in, max_(0, maximum - reduction))
             * investment_eligible

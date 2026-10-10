@@ -18,7 +18,7 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
             # A return on which the filer (or, if joint, either spouse) can be
             # claimed as a dependent has no dependents (IRC 152(b)(1)).
             is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
-                "head_or_spouse_is_dependent_elsewhere", period
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
             )
 
             # Apply age limit if in effect
@@ -46,7 +46,7 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
             # A return on which the filer (or, if joint, either spouse) can be
             # claimed as a dependent has no dependents (IRC 152(b)(1)).
             is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
-                "head_or_spouse_is_dependent_elsewhere", period
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
             )
             total_dependents = tax_unit.sum(is_dependent)
             eligible_dependents = tax_unit("or_eligible_dependents_count", period)

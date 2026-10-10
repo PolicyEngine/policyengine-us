@@ -20,7 +20,7 @@ class me_dependent_exemption_credit_amount_person(Variable):
         # joint, either spouse) can be claimed as a dependent has no
         # dependents (IRC 152(b)(1)).
         dependent_filer = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         dependent = dependent & ~dependent_filer
         p = parameters(period).gov.states.me.tax.income.credits.dependent_exemption

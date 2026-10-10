@@ -27,7 +27,7 @@ class or_wfhdc_qualifying_individual(Variable):
         filer = person("is_tax_unit_head_or_spouse", period)
         married = person.tax_unit("tax_unit_married", period)
         dependent_filer = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         child = dependent & (age <= p.child_age_limit) & ~dependent_filer
         disabled_dependent = dependent & disabled

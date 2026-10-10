@@ -350,3 +350,70 @@
   output:
     hi_cdcc_qualifying_individuals: 1
     hi_cdcc_eligible: true
+
+# Publication 501, Dependent Taxpayer Test: a filer whose would-be claimant is not
+# required to file and files no return or only for a refund can claim dependents.
+# The spouse who cannot be claimed can then claim the credit for the child.
+- name: 2025 joint return whose claimable spouse is within the filing exception has a qualifying child (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10000
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: HI
+  output:
+    hi_cdcc_qualifying_individuals: 1
+    hi_cdcc_eligible: true
+
+- name: 2025 joint return whose claimable spouse is within the filing exception has a qualifying child (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 10000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 10000
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: HI
+  output:
+    hi_cdcc_qualifying_individuals: 1
+    hi_cdcc_eligible: true

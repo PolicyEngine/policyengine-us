@@ -25,6 +25,8 @@ class or_disabled_child_dependent_exemptions(Variable):
         # ORS 316.099 requires "a dependent of the taxpayer"; under IRC
         # 152(b)(1) a return on which the filer (or, if joint, either spouse)
         # can be claimed as a dependent has no dependents.
-        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependent_filer = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         count = tax_unit.sum(eitc_qualifying_child & disabled)
         return qualifies * where(dependent_filer, 0, count)

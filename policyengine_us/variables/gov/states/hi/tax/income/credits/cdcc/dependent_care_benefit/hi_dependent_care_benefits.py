@@ -31,7 +31,9 @@ class hi_dependent_care_benefits(Variable):
         # A return on which a filer can be claimed as a dependent has no
         # dependent qualifying individual (hi_cdcc_qualifying_individual), so
         # its childcare expenses do not count.
-        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependent_filer = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         childcare_expenses = where(
             dependent_filer, 0, tax_unit("tax_unit_childcare_expenses", period)
         )

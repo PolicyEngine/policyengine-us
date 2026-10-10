@@ -34,7 +34,7 @@ class hi_disabled_exemptions(Variable):
         # Aged individuals get an extra base exemption. Under HRS 235-54(a)
         # the regular and aged exemptions of a filer whom another taxpayer
         # can claim are zero.
-        claimed = person("claimed_as_dependent_on_another_return", period)
+        claimed = person("claimable_as_dependent_on_another_return", period)
         head_or_spouse_amount = p.base * (1 + aged) * head_or_spouse * ~claimed
         conditional_head_or_spouse_amount = max_(
             disabled_exemption, head_or_spouse_amount

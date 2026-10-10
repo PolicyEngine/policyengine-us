@@ -26,7 +26,7 @@ class hi_regular_exemptions(Variable):
         # exemption.
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        claimed = person("claimed_as_dependent_on_another_return", period)
+        claimed = person("claimable_as_dependent_on_another_return", period)
         aged = person("age", period) >= p.aged_threshold
         aged_head_spouse_count = tax_unit.sum(aged & head_or_spouse & ~claimed)
         total_exemption_count_including_aged = exemptions_count + aged_head_spouse_count
