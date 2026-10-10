@@ -9,6 +9,7 @@ class wv_low_income_family_tax_credit_fpg(Variable):
     )
     unit = USD
     definition_period = YEAR
+    reference = "https://code.wvlegislature.gov/11-21-22A/"
     defined_for = "wv_low_income_family_tax_credit_eligible"
 
     def formula(tax_unit, period, parameters):
@@ -16,8 +17,11 @@ class wv_low_income_family_tax_credit_fpg(Variable):
             period
         ).gov.states.wv.tax.income.credits.liftc  # low_income_family_tax_credit
 
-        # max family size limit
-        n = tax_unit("tax_unit_size", period)
+        # W. Va. Code 11-21-22A: family size is "the total number of exemptions
+        # that may be legally claimed", not the number of people in the unit.
+        # A filer who can be claimed as a dependent has no exemption, and a
+        # return where either filer can be has no dependent exemptions.
+        n = tax_unit("exemptions_count", period)
         state_group = tax_unit.household("state_group_str", period)
 
         p_fpg = parameters(period).gov.hhs.fpg
