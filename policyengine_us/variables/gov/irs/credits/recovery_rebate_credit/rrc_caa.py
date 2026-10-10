@@ -28,7 +28,7 @@ class rrc_caa(Variable):
         person = tax_unit.members
         dependent_filers = tax_unit.sum(
             person("is_tax_unit_head_or_spouse", period)
-            & person("claimed_as_dependent_on_another_return", period)
+            & person("claimable_as_dependent_on_another_return", period)
         )
         count_adults = where(
             armed_forces_exception,
