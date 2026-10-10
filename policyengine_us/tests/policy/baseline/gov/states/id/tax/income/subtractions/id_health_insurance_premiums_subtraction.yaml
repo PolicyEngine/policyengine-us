@@ -299,8 +299,8 @@
     id_health_insurance_premiums_subtraction: 2_500
 
 - name: An actual claimant medical deduction can include otherwise unreported expenses
-  # Supply the Idaho claimant deduction when its underlying expense facts
-  # are not modeled; an aggregate federal amount alone cannot identify payers.
+  # An explicit Idaho claimant deduction can override the supplied federal
+  # amount when the caller has a different state-specific medical claim.
   period: 2025
   input:
     people:
@@ -316,7 +316,7 @@
       tax_unit:
         members: [head, dependent]
         adjusted_gross_income: 30_000
-        medical_expense_deduction: 3_000
+        medical_expense_deduction: 4_000
         id_health_insurance_premiums_medical_deduction: 3_000
         standard_deduction: 15_750
         id_itemized_deductions: 20_000
@@ -325,4 +325,52 @@
         members: [head, dependent]
         state_code: ID
   output:
+    id_health_insurance_premiums_medical_deduction: 3_000
     id_health_insurance_premiums_subtraction: 0
+
+- name: A supplied Schedule A medical deduction includes unreported underlying expenses
+  # Form 39R worksheet lines 6 and 8 use the actual Schedule A deduction.
+  # The supplied $3,000 includes $2,250 of other bills omitted from inputs;
+  # reconstructing from premiums alone would incorrectly allow $2,250 twice.
+  period: 2025
+  input:
+    state_code: ID
+    health_insurance_premiums: 3_000
+    adjusted_gross_income: 30_000
+    medical_expense_deduction: 3_000
+    standard_deduction: 15_750
+    id_itemized_deductions: 20_000
+  output:
+    id_health_insurance_premiums_medical_deduction: 3_000
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 0
+    id_taxable_income: 10_000
+
+- name: A supplied medical deduction for another year cannot override claimant scope
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 3_000
+        is_tax_unit_head: true
+      dependent:
+        age: 20
+        health_insurance_premiums: 500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        adjusted_gross_income: 30_000
+        medical_expense_deduction:
+          2026: 3_000
+        standard_deduction: 15_750
+        id_itemized_deductions: 20_000
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ID
+  output:
+    medical_expense_deduction: 1_250
+    id_health_insurance_premiums_medical_deduction: 750
+    id_health_insurance_premiums_subtraction: 2_250

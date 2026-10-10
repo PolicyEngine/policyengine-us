@@ -1,6 +1,7 @@
 """Compare Idaho premium election with independently enumerated legal routes."""
 
 from hypothesis import example, given, settings, strategies as st
+import numpy as np
 import pytest
 
 from policyengine_us import Simulation
@@ -168,3 +169,49 @@ def test_premium_subtraction_and_election_match_best_legal_route(rows):
         0 <= actual <= available
         for actual, available in zip(subtraction, available_premiums)
     )
+
+
+def test_actual_medical_deduction_is_scoped_to_period_and_branch():
+    years = (2025, 2026)
+    simulation = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "head": {
+                    "age": {year: 40 for year in years},
+                    "health_insurance_premiums": {year: 3_000 for year in years},
+                }
+            },
+            "tax_units": {
+                "tax_unit": {
+                    "members": ["head"],
+                    "adjusted_gross_income": {year: 30_000 for year in years},
+                    "medical_expense_deduction": {2026: 3_000},
+                }
+            },
+            "households": {
+                "household": {
+                    "members": ["head"],
+                    "state_code": {year: "ID" for year in years},
+                }
+            },
+        },
+    )
+    # Create branches before calculating the helper so they inherit no
+    # previously calculated Idaho value. A sibling's input must not change
+    # the parent's derived claim, but a nested branch inherits that input.
+    actual_claim = simulation.get_branch("actual_claim")
+    actual_claim.set_input("medical_expense_deduction", 2025, np.array([3_000]))
+    nested_claim = actual_claim.get_branch("nested_claim")
+    deleted_claim = simulation.get_branch("deleted_claim")
+    deleted_claim.set_input("medical_expense_deduction", 2025, np.array([3_000]))
+    deleted_claim.delete_arrays("medical_expense_deduction", 2025)
+
+    variable = "id_health_insurance_premiums_medical_deduction"
+    assert simulation.calculate(variable, 2025).tolist() == [750]
+    assert simulation.calculate(variable, 2026).tolist() == [3_000]
+    assert actual_claim.calculate(variable, 2025).tolist() == [3_000]
+    assert nested_claim.calculate(variable, 2025).tolist() == [3_000]
+    # Core retains source keys after deletion; an absent input array must
+    # not turn the newly calculated federal deduction into an actual claim.
+    assert deleted_claim.calculate(variable, 2025).tolist() == [750]

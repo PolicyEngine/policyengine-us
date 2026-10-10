@@ -73,6 +73,32 @@ def _input_keys(branch: Simulation) -> Set[Tuple[str, str, Period]]:
     }
 
 
+def has_input_for_period(simulation: Simulation, variable: str, period: Period) -> bool:
+    """Whether the visible array for this exact period was set as an input.
+
+    Applies to variables with a finite definition period, including variables
+    that also have formulas. A stored array in a nearer branch shadows arrays
+    from its ancestors, whether the nearer value was supplied or calculated.
+    Sibling inputs and inputs from another period do not apply.
+
+    Call before calculating the queried variable. Core retains input keys
+    after deleting an array; a subsequently computed cache at that same key
+    cannot be distinguished from the deleted input by this metadata.
+    """
+    period = to_period(period)
+    holder = simulation.get_holder(variable)
+    if holder.variable.definition_period == ETERNITY:
+        raise ValueError("has_input_for_period does not support eternal variables.")
+    if holder.variable.is_neutralized:
+        return False
+    stored_keys = set(holder.get_known_branch_periods())
+    input_keys = _input_keys(simulation)
+    for branch_name in simulation._get_visible_branch_names():
+        if (branch_name, period) in stored_keys:
+            return (variable, branch_name, period) in input_keys
+    return False
+
+
 def drop_inherited_values(branch: Simulation) -> None:
     """Delete every array ``branch`` holds except inputs.
 
