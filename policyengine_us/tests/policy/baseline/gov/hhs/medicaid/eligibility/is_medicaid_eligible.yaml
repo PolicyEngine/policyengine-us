@@ -77,6 +77,8 @@
   input:
     medicaid_category: YOUNG_ADULT
     immigration_status: LEGAL_PERMANENT_RESIDENT
+    # Past the five-year bar; this case checks an eligible status.
+    years_since_us_entry: 5
     ca_ffyp_eligible: false
   output:
     is_medicaid_eligible: true
