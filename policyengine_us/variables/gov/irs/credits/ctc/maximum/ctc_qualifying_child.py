@@ -9,7 +9,7 @@ class ctc_qualifying_child(Variable):
     definition_period = YEAR
     defined_for = "is_tax_unit_dependent"
     reference = (
-        "https://www.law.cornell.edu/uscode/text/26/24#a",
+        # Subsections (a) and (c).
         "https://www.law.cornell.edu/uscode/text/26/24#c",
         "https://www.law.cornell.edu/uscode/text/26/152#b_1",
         # Publication 501, Dependent Taxpayer Test.

@@ -23,9 +23,17 @@ class rrc_caa(Variable):
             "rrc_qualifies_for_armed_forces_exception", period
         )
         is_joint = tax_unit("tax_unit_is_joint", period)
+        # The exception waives the identification rule, not the exclusion of
+        # a spouse who is another taxpayer's dependent.
+        person = tax_unit.members
+        dependent_filers = tax_unit.sum(
+            person("is_tax_unit_head_or_spouse", period)
+            & person("claimed_as_dependent_on_another_return", period)
+        )
         count_adults = where(
             armed_forces_exception,
-            2,  # Joint filers always have 2 adults (structural constant)
+            # Joint filers always have 2 adults (structural constant)
+            max_(2 - dependent_filers, 0),
             where(is_joint, adults_with_ssn, min_(adults_with_ssn, 1)),
         )
         # Per 26 USC 6428A(g)(3), children count only if:
