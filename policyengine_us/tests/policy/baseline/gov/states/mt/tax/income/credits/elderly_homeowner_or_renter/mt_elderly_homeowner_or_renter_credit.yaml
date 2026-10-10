@@ -460,6 +460,11 @@
     mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true]
     mt_elderly_homeowner_or_renter_credit: [0, 460]
     mt_refundable_credits: [0, 460]
+    taxsim_state_property_tax_credit: [0, 460]
+    # 2024 Form 2, PDF p. 1: federal standard deduction 16,550 plus
+    # old-age subtraction 5,500 exceeds either pension. Tax before
+    # refundable credits is zero, so only person2 receives a refund.
+    mt_income_tax: [0, -460]
 
 - name: 2024 Schedule 2EC, one eligible tax unit and one younger household member who files separately
   period: 2024
@@ -580,3 +585,36 @@
     # line 27 = 6_000 x 0.15 = 900. Each household has its own claimant.
     mt_elderly_homeowner_or_renter_credit_selected_claimant: [true, true]
     mt_elderly_homeowner_or_renter_credit: [1_150, 900]
+
+- name: 2023 dependent self-employment income preserves the deductible half of SE tax
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      claimant:
+        age: 70
+        is_tax_unit_dependent: false
+        taxable_pension_income: 20_000
+        rent: 12_000
+      child:
+        age: 18
+        is_tax_unit_dependent: true
+        self_employment_income: 10_000
+    tax_units:
+      claimant_unit:
+        members: [claimant, child]
+    households:
+      household:
+        members: [claimant, child]
+        state_code: MT
+  output:
+    # 2023 Schedule SE, PDF p. 1, lines 4a and 10-13:
+    # https://www.irs.gov/pub/irs-prior/f1040sse--2023.pdf#page=1
+    # 10,000 * .9235 * (.124 + .029) / 2 = 706.4775 deductible SE tax.
+    # 2023 MT instructions, PDF pp. 51-52, lines 1 and 9: use each
+    # member's federal AGI and add back losses, preserving other adjustments.
+    # https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=51
+    # Income = 20,000 + 10,000 - 706.4775 = 29,293.5225.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 9_293.5225]
+    # Credit = 12,000 * .15 - (29,293.5225 - 12,600) * .05 = 965.323875.
+    mt_elderly_homeowner_or_renter_credit: [965.323875, 0]

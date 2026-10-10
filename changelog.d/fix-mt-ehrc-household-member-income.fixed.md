@@ -1,1 +1,1 @@
-Count household members' income in the Montana elderly homeowner/renter credit: a tax unit dependent's gross income, and the income of household members who file their own returns.
+Count household members' income in the Montana elderly homeowner/renter credit, preserving dependents' permitted person-level federal AGI adjustments and excluding losses, as well as including the income of members who file their own returns.

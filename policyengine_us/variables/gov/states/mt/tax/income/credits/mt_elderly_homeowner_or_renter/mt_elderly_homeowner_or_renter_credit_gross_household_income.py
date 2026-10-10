@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.irs_gross_income.social_security.dependent_taxable_ss_magi import (
+    PERSON_ABOVE_THE_LINE_DEDUCTIONS,
+)
 
 
 class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
@@ -30,11 +33,20 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         # Gross household income counts every member of the household
         # (§ 15-30-2337(4)). A tax unit dependent's income is on their own
         # return, not in adjusted_gross_income_person (irs_gross_income
-        # leaves dependents out), so count their gross income directly:
-        # gains but not losses, and the taxable part of their Social
-        # Security.
+        # leaves dependents out). Start with their gross income without
+        # losses, then retain the permitted non-loss AGI adjustments
+        # attributable to that person (2023 instructions, lines 1 and 9).
+        # Do not floor an individual's AGI contribution at zero: an
+        # adjustment such as an early-withdrawal penalty can exceed income.
         is_dependent = person("is_tax_unit_dependent", period)
-        dependent_income = is_dependent * person("dependent_gross_income", period)
+        deductions = [
+            PERSON_ABOVE_THE_LINE_DEDUCTIONS[deduction]
+            for deduction in parameters(period).gov.irs.ald.deductions
+            if deduction in PERSON_ABOVE_THE_LINE_DEDUCTIONS
+        ]
+        dependent_income = is_dependent * (
+            person("dependent_gross_income", period) - add(person, period, deductions)
+        )
         # The income above counts only the taxable portion of Social
         # Security: a filer's in federal AGI, a dependent's in their own
         # gross income. Add the untaxed portion so all SS is counted per
