@@ -49,6 +49,9 @@ YEARS = [2024, 2025, 2026]
 # Share of wagering losses section 165(d) allows (P.L. 119-21 section 70114).
 LOSS_SHARE = {2025: 1.0, 2026: 0.9}
 WAGES = 60_000
+# From 2026 the deduction is 90% of losses, so it is no longer a whole number,
+# and float32 sums near 30,000 resolve to about 0.002.
+FLOAT32_ATOL = 0.01
 
 
 def grid_simulation(year, gambling, agi=None):
@@ -134,7 +137,7 @@ def test_deduction_adds_to_itemized_deductions_outside_the_cap(results, year):
         - results[year]["without"]["nc_itemized_deductions"]
     )
     np.testing.assert_allclose(
-        change, with_gambling["nc_wagering_losses_deduction"], atol=1e-6
+        change, with_gambling["nc_wagering_losses_deduction"], atol=FLOAT32_ATOL
     )
 
 
@@ -148,7 +151,7 @@ def test_gambling_never_lowers_taxable_income_when_winnings_are_in_agi(results, 
     itemizes = without["nc_itemized_deductions"] > without["nc_standard_deduction"]
     assert itemizes.any() and not itemizes.all()
     net_gain = WINNINGS - with_gambling["nc_wagering_losses_deduction"]
-    np.testing.assert_allclose(change[itemizes], net_gain[itemizes], atol=1e-6)
+    np.testing.assert_allclose(change[itemizes], net_gain[itemizes], atol=FLOAT32_ATOL)
 
 
 @pytest.mark.parametrize("year", [2025, 2026])
