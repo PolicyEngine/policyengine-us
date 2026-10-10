@@ -25,7 +25,7 @@ class ctc_adult_individual_maximum(Variable):
         filer_meets_tin_requirement = person.tax_unit(
             "filer_meets_ctc_identification_requirements", period
         )
-        # IRC 24(h)(4) gives the credit for "any dependent of the taxpayer";
+        # IRC 24(h)(4)(A) gives the credit for "each dependent of the taxpayer";
         # under IRC 152(b)(1) a return on which the filer (or, if joint,
         # either spouse) can be claimed as a dependent has no dependents.
         filer_is_dependent = person.tax_unit(
