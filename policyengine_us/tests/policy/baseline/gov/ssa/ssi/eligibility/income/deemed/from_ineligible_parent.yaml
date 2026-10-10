@@ -95,6 +95,15 @@
     tax_units:
       tax_unit:
         members: [recipient, sibling, parent]
+    # A parent and children are not a married couple. Explicit singleton
+    # units prevent default grouping from also applying spousal deeming.
+    marital_units:
+      recipient_unit:
+        members: [recipient]
+      sibling_unit:
+        members: [sibling]
+      parent_unit:
+        members: [parent]
   output:
     # POMS SI 00820.102C.2: parent wages 32,400; sibling wages 1,200.
     # 20 CFR 416.1165(b): sibling allocation = (1,450 - 967) * 12
@@ -104,4 +113,6 @@
     ssi_earned_income: [0, 1_200, 32_400]
     ssi_ineligible_child_allocation: [0, 4_596, 0]
     ssi_unearned_income_deemed_from_ineligible_parent: [1_788, 0, 0]
+    is_ssi_spousal_deeming_applies: [false, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [0, 0, 0]
     ssi_countable_income: [1_548, 0, 0]

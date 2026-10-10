@@ -39,6 +39,15 @@
     tax_units:
       tax_unit:
         members: [recipient, sibling, parent]
+    # A parent and children are not a married couple. Explicit singleton
+    # units prevent default grouping from also applying spousal deeming.
+    marital_units:
+      recipient_unit:
+        members: [recipient]
+      sibling_unit:
+        members: [sibling]
+      parent_unit:
+        members: [parent]
     households:
       household:
         members: [recipient, sibling, parent]
@@ -50,6 +59,8 @@
     # (32,400 - 4,596 - 20 * 12 - 65 * 12) / 2 - 967 * 12 = 1,788 deemed.
     # Under (e)(1), apply child's general exclusion: 1,788 - 20 * 12 = 1,548.
     medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [1_788, 0, 0]
+    is_ssi_spousal_deeming_applies: [false, false, false]
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [0, 0, 0]
     medicaid_optional_senior_or_disabled_countable_income: [1_548, 0, 0]
 
 # Missouri MHDC deems only a natural or adoptive parent's income, never a
