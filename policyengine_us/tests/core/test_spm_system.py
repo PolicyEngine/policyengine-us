@@ -835,13 +835,13 @@ def test_subsampling_never_changes_which_policy_a_holder_belongs_to(
     belongs to that policy. The rebuilt baseline arm has no baseline of its
     own, holds nothing that only the reform defines, and keeps no holder the
     reform built for its own definition of a variable: here, yearly storage
-    for the baseline's ``ETERNITY`` ``is_household_head``. That includes what
-    the reform arm calculated, and core therefore exported as an input,
-    before subsampling.
+    for the baseline's ``ETERNITY`` ``is_household_head``.
 
-    This compares no values: values the reform arm calculated before
-    subsampling become inputs of the rebuilt population, in both arms. That
-    is core's export, not a binding, and is not this invariant.
+    Core 3.33.1 and later rebuild from recorded inputs without exporting
+    calculated values as inputs; earlier versions also exported calculated
+    values. Recalculating after each subsample exercises the reform's own
+    definitions under either behavior. This compares no values: core's
+    export behavior is not the policy-binding invariant.
     """
     changed = Microsimulation(
         dataset=earner_dataset(),
@@ -871,13 +871,16 @@ def test_subsampling_never_changes_which_policy_a_holder_belongs_to(
         for simulation in (changed, baseline):
             assert_bound_to_own_policy(simulation)
         if reform == "adds and redefines variables":
-            # What the reform arm held came through the rebuild as inputs, so
-            # the baseline branch started out holding the reform's holders.
+            # Core 3.33.1 and later discard calculated caches when rebuilding;
+            # earlier versions imported them as inputs. Calculate again so
+            # both behaviors exercise holders for the reform's definitions.
             for variable in ("reform_only_income", "is_household_head"):
-                if ("reform", variable) in calculated:
-                    holder = changed.person._holders[variable]
-                    assert holder.get_known_periods()
-                    assert not holder._memory_storage.is_eternal
+                changed.calculate(variable, 2024)
+                holder = changed.get_holder(variable)
+                assert holder.get_known_periods()
+                assert not holder._memory_storage.is_eternal
+            assert_bound_to_own_policy(changed)
+            assert "reform_only_income" not in baseline.person._holders
 
 
 def test_a_national_selection_records_no_county_input_types():
