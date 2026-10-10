@@ -107,6 +107,11 @@ LEGACY_UMBRELLA_CASES = [
         make_tax_unit_situation(year=2023, state="OK", wages=40_000.0),
     ),
     (
+        "taxsim_state_agi",
+        ["mt_agi"],
+        make_tax_unit_situation(year=2023, state="MT", wages=40_000.0),
+    ),
+    (
         "taxsim_state_taxable_income",
         ["ok_taxable_income"],
         make_tax_unit_situation(year=2023, state="OK", wages=40_000.0),
@@ -143,6 +148,30 @@ def test_legacy_state_umbrellas_match_state_specific_components(
 ):
     expected = calculate_sum(situation, 2023, state_specific_vars)
     actual = calculate_sum(situation, 2023, [legacy_var])
+    assert actual == pytest.approx(expected, abs=0.01)
+
+
+@pytest.mark.parametrize("year", [2021, 2022, 2023, 2024, 2025, 2026])
+def test_mt_state_agi_is_montana_agi_then_federal_agi(year):
+    # Through 2023 Montana's state AGI is Form 2 line 14, Montana AGI. From
+    # 2024 Form 2 starts from federal AGI (line 1), so Montana joins the
+    # states that report federal AGI. A filer aged 70 has a Montana
+    # subtraction from 2024, so the two measures differ.
+    federal_agi_states = configured_component_vars("states_using_federal_agi", year)
+    assert ("MT" in federal_agi_states) == (year >= 2024)
+    situation = make_tax_unit_situation(
+        year=year, state="MT", primary_age=70, wages=40_000.0
+    )
+    if year >= 2024:
+        expected_vars = ["adjusted_gross_income"]
+        assert calculate_sum(situation, year, ["mt_agi"]) < calculate_sum(
+            situation, year, expected_vars
+        )
+    else:
+        expected_vars = configured_component_vars("state_agis", year)
+    expected = calculate_sum(situation, year, expected_vars)
+    assert expected > 0
+    actual = calculate_sum(situation, year, ["taxsim_state_agi"])
     assert actual == pytest.approx(expected, abs=0.01)
 
 

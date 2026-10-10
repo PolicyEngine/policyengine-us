@@ -1,0 +1,193 @@
+# Montana. Through 2023 the state AGI is Form 2, page 1, line 14 (Montana
+# adjusted gross income) of the filing path used: one column on a joint
+# return, a column per spouse under status 2a. From 2024 Form 2 starts from
+# federal adjusted gross income (line 1) and has no Montana AGI line, so the
+# state AGI is federal AGI. Where noted, the expected value is what TAXSIM
+# (taxsimtest build 2025Aug23) reports as state AGI (v32) for the same inputs.
+
+- name: Montana 2022 joint return pools a spouse's loss with the other spouse's wages
+  # TAXSIM v32: 80,000.
+  period: 2022
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+      spouse:
+        age: 40
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_files_separately: false
+    mt_agi_joint: 80_000
+    taxsim_state_agi: 80_000
+    state_agi: 80_000
+
+- name: Montana 2023 joint return pools a spouse's loss with the other spouse's wages
+  # TAXSIM v32: 80,000.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+      spouse:
+        age: 40
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_files_separately: false
+    taxsim_state_agi: 80_000
+
+- name: Montana 2023 state AGI is Montana AGI, after the senior interest exemption
+  # TAXSIM v32: 121,200. Federal AGI is 122,000: wages 70,000, pension
+  # 30,000, interest 5,000 and 17,000 of the 20,000 of Social Security.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 70_000
+        taxable_private_pension_income: 30_000
+        social_security_retirement: 20_000
+        taxable_interest_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    adjusted_gross_income: 122_000
+    taxsim_state_agi: 121_200
+
+- name: Montana 2022 separate filing on the same form adds each spouse's Montana AGI
+  period: 2022
+  input:
+    people:
+      head:
+        mt_agi_indiv: 60_000
+      spouse:
+        mt_agi_indiv: 30_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        mt_agi_joint: 85_000
+        mt_files_separately: true
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    taxsim_state_agi: 90_000
+
+- name: Montana 2022 joint filing reports the joint Montana AGI
+  period: 2022
+  input:
+    people:
+      head:
+        mt_agi_indiv: 60_000
+      spouse:
+        mt_agi_indiv: 30_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        mt_agi_joint: 85_000
+        mt_files_separately: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    taxsim_state_agi: 85_000
+
+- name: Montana 2024 state AGI is federal AGI
+  # TAXSIM v32: 100,000.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    taxsim_state_agi: 100_000
+    state_agi: 100_000
+
+- name: Montana 2024 state AGI is federal AGI, not federal AGI less the senior subtraction
+  # TAXSIM v32: 100,000, while TAXSIM's Montana taxable income (77,950) nets
+  # the 5,500 subtraction for a taxpayer aged 65 or older.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    adjusted_gross_income: 100_000
+    mt_agi: 94_500
+    taxsim_state_agi: 100_000
+
+- name: Montana 2024 joint return reports the couple's federal AGI
+  # TAXSIM v32: 80,000.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+      spouse:
+        age: 40
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    taxsim_state_agi: 80_000
+
+- name: Montana 2026 state AGI is federal AGI
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MT
+  output:
+    taxsim_state_agi: 100_000

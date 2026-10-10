@@ -5,21 +5,20 @@ class taxsim_state_agi(Variable):
     value_type = float
     entity = TaxUnit
     label = "State adjusted gross income"
+    documentation = (
+        "State adjusted gross income as TAXSIM reports it in its state AGI "
+        "output. States listed in gov.states.household.states_using_federal_agi "
+        "report federal adjusted gross income; other states report the state "
+        "AGI variables in gov.states.household.state_agis."
+    )
     unit = USD
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        # States that adopt the federal AGI
-        # Based on comments in state_agis.yaml
-        FEDERAL_AGI_STATES = [
-            "CO",  # Colorado
-            "MI",  # Michigan
-            "MN",  # Minnesota
-            "NC",  # North Carolina
-            "ND",  # North Dakota
-            "NM",  # New Mexico
-            "SC",  # South Carolina
-        ]
+        # States that report federal AGI as state AGI
+        federal_agi_states = parameters(
+            period
+        ).gov.states.household.states_using_federal_agi
 
         # Get the current state
         state_code = tax_unit.household("state_code_str", period)
@@ -47,7 +46,7 @@ class taxsim_state_agi(Variable):
             state_specific_base = where(is_state, max_agi, state_specific_base)
 
         # Check if the state adopts federal AGI
-        uses_federal = np.isin(state_code, FEDERAL_AGI_STATES)
+        uses_federal = np.isin(state_code, federal_agi_states)
 
         # Get federal AGI
         federal_agi = tax_unit("adjusted_gross_income", period)
