@@ -71,6 +71,7 @@
     age: 20
     is_disabled: true
     is_ssi_disabled: true
+    meets_ssi_disability_criteria: true
     is_full_time_student: true
     employment_income: 9_600
     pre_tax_health_insurance_premiums: 2_400
@@ -79,6 +80,7 @@
     # 20 CFR 416.1112(c)(3): min(600, 2,350) * 12 = 7,200,
     # below the 2025 annual cap of 9,460. No earned income remains.
     ssi_earned_income: 7_200
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
     ssi_blind_or_disabled_working_student_exclusion: 7_200
     ssi_countable_income: 0
 
@@ -89,6 +91,7 @@
     age: 20
     is_disabled: true
     is_ssi_disabled: true
+    meets_ssi_disability_criteria: true
     is_full_time_student: true
     employment_income: 18_000
     pre_tax_health_insurance_premiums: 2_400
@@ -97,5 +100,6 @@
     # 20 CFR 416.1112(c)(3)-(7): student exclusion is capped at 9,460,
     # then (15,600 - 9,460 - 20 * 12 - 65 * 12) / 2 = 2,560.
     ssi_earned_income: 15_600
+    is_ssi_blind_or_disabled_working_student_exclusion_eligible: true
     ssi_blind_or_disabled_working_student_exclusion: 9_460
     ssi_countable_income: 2_560
