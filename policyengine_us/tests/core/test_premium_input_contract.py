@@ -107,6 +107,8 @@ def _situation(batch, moved):
         "tax_units": tax_units,
         "spm_units": spm_units,
         "households": households,
+        "marital_units": {key: {"members": [key]} for key in people},
+        "families": {key: {"members": [key]} for key in people},
     }
 
 
