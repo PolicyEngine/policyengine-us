@@ -20,8 +20,8 @@ values:
     - farm_operations_income
     - farm_rent_income
     # Form 40, Part I, line 5: rents, royalties, partnerships, S corporations,
-    # trusts and estates. Estate and trust losses do not pass through.
-    - al_estate_and_trust_income
+    # trusts and estates (Alabama Schedule E, Part II).
+    - estate_income
 
 metadata:
   unit: list
@@ -43,5 +43,7 @@ metadata:
     # trusts, etc. (page 15).
     - title: "2025 Alabama Income Tax Instructions, Form 40 Booklet #page 7,14-15"
       href: https://www.revenue.alabama.gov/wp-content/uploads/2026/01/25f40bk.pdf#page=7
-    - title: Code of Alabama 1975 Section 40-18-25(b) (income of beneficiaries of estates and trusts)
+    - title: Code of Alabama 1975 Section 40-18-25(b) (income and deductions of beneficiaries of estates and trusts)
       href: https://alison.legislature.state.al.us/code-of-alabama?section=40-18-25
+    - title: Ala. Admin. Code r. 810-3-25-.11 (Alabama taxable income of beneficiaries for taxable years beginning after December 31, 2004)
+      href: https://admincode.legislature.state.al.us/administrative-code/810-3-25

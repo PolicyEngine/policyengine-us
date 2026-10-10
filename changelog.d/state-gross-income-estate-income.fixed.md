@@ -1,1 +1,1 @@
-Count a beneficiary's estate and trust income in Alabama AGI, Iowa gross income (2021 and 2022), Mississippi AGI, New Jersey gross income, New Mexico modified gross income, and Oklahoma gross household income for the sales tax and property tax credits.
+Count a beneficiary's estate and trust income in Alabama AGI, Iowa gross income (which Iowa's tax uses through tax year 2022), Mississippi AGI, New Jersey gross income, New Mexico modified gross income, and Oklahoma gross household income for the sales tax and property tax credits.

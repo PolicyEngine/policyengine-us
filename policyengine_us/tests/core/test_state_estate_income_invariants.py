@@ -4,8 +4,9 @@ Six states build an income concept from their own source list rather than
 from federal AGI, and each state's form puts a beneficiary's estate or trust
 income on a line the list already covers:
 
-- Alabama AGI: Form 40, Part I, line 5. Losses do not pass through (Code of
-  Ala. § 40-18-25(b)(4) switches off IRC § 642(h)).
+- Alabama AGI: Form 40, Part I, line 5. Code of Ala. § 40-18-25(b) follows
+  federal Subchapter J for a beneficiary's income and deductions, so the
+  Schedule E amount enters signed.
 - Iowa gross income, tax years 2021 and 2022: IA 1040 line 10, "the income or
   loss from federal Schedule E".
 - Mississippi AGI: Form 80-105 line 41, "the income or loss from activities
@@ -23,16 +24,14 @@ population adds breadth. Each batch runs as one vectorized simulation holding
 three copies of every filer in every state: no estate income, the estate
 amount, and the same amount entered as rental income instead. For every filer:
 
-1. Signed pass-through (Iowa, Mississippi): the concept moves by exactly the
-   estate amount, loss or gain.
-2. Floored pass-through (Alabama, New Jersey, New Mexico, Oklahoma): the
-   concept moves by exactly max(estate amount, 0), so a loss never lowers it
-   and never offsets wages, interest or partnership income.
+1. Signed pass-through (Alabama, Iowa, Mississippi): the concept moves by
+   exactly the estate amount, loss or gain.
+2. Floored pass-through (New Jersey, New Mexico, Oklahoma): the concept moves
+   by exactly max(estate amount, 0), so a loss never lowers it and never
+   offsets wages, interest or partnership income.
 3. Differential against the existing rental line: the estate amount moves the
-   concept exactly as the same amount of rental income does. Every state but
-   Alabama treats the two alike for losses too; Alabama passes a rental loss
-   through but not an estate or trust loss, so there the two agree only for
-   gains.
+   concept exactly as the same amount of rental income does, loss or gain.
+   Each state puts both on the same form line or under the same loss rule.
 
 The identities hold for this income mix. The federal EITC is set to zero
 because Oklahoma counts it (Form 538-S line 9) and an estate loss changes it.
@@ -48,7 +47,7 @@ TOLERANCE = 0.01  # dollars
 
 # (state, variable, year, whether an estate or trust loss passes through)
 CONCEPTS = [
-    ("AL", "al_agi", 2025, False),
+    ("AL", "al_agi", 2025, True),
     ("IA", "ia_gross_income", 2022, True),
     ("MS", "ms_agi", 2025, True),
     ("NJ", "nj_gross_income", 2025, False),
@@ -155,12 +154,10 @@ def _check(units):
             with_estate - none, expected, atol=TOLERANCE, err_msg=f"{state} {variable}"
         )
 
-        # 3. Differential against the rental line. Alabama passes a rental
-        # loss through but not an estate or trust loss.
-        alike = np.ones(n, dtype=bool) if state != "AL" else estate >= 0
+        # 3. Differential against the rental line.
         np.testing.assert_allclose(
-            with_estate[alike],
-            with_rental[alike],
+            with_estate,
+            with_rental,
             atol=TOLERANCE,
             err_msg=f"{state} {variable} against rental income",
         )
