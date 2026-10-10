@@ -4,23 +4,27 @@ description: Missouri ignores the following credits in federal income tax deduct
 # Part I Line 3, and the net premium tax credit (Schedule 3 Line 9). Credits
 # claimed on Line 28 (refundable CTC) and Line 30 (recovery rebate), and the
 # 2021 refundable CDCC (Schedule 3 Line 13g), never reduce Line 22, so they
-# are added back here. The EIC is not added back: the Line 9 instructions say
+# are added back here. So is the section 1341 credit for repaid claim of right
+# income (Schedule 3 Line 13b). The EIC is not added back: the Line 9 instructions say
 # "If you have an earned income credit, you must subtract the credit from the
 # tax on your federal return."
 values:
   2018-01-01:
     - recovery_rebate_credit
     - refundable_ctc
+    - claim_of_right_credit
   # The CDCC is a refundable credit only in 2021 (ARPA); in other years it
   # already reduces income tax before refundable credits, so adding it back
   # would overstate the base.
   2021-01-01:
     - recovery_rebate_credit
     - refundable_ctc
+    - claim_of_right_credit
     - cdcc
   2022-01-01:
     - recovery_rebate_credit
     - refundable_ctc
+    - claim_of_right_credit
 metadata:
   unit: list
   label: Missouri ignored credits in federal income tax deduction

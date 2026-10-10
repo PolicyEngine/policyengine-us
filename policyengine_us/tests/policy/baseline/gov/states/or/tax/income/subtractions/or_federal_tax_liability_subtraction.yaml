@@ -112,3 +112,18 @@
   output:
     # 50% x 8,750
     or_federal_tax_liability_subtraction: 4_375
+
+- name: The section 1341 credit does not reduce the federal tax liability subtraction
+  # 2025 Publication OR-17, federal tax worksheet: Form 1040 line 22 less the
+  # American Opportunity, refundable adoption and premium tax credits only.
+  period: 2025
+  input:
+    state_code: OR
+    filing_status: SINGLE
+    adjusted_gross_income: 60_000
+    # 4,000 on Form 1040 line 22 less a 1,500 section 1341 credit.
+    income_tax: 2_500
+    eitc: 0
+    claim_of_right_credit: 1_500
+  output:
+    or_federal_tax_liability_subtraction: 4_000

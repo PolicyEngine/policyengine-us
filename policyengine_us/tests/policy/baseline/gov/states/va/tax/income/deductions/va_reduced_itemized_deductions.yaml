@@ -40,3 +40,20 @@
     state_code: VA
   output:
     va_reduced_itemized_deductions: 35_282
+
+- name: The federal claim of right repayment deduction stays in the limited itemized deduction total
+  # 2025 Schedule A line 16b is in line 1 of the Limited Itemized Deduction
+  # Worksheet and not in line 2.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 500_000 # > $332,700
+    charitable_deduction: 20_000
+    claim_of_right_deduction: 10_000
+    state_and_local_sales_or_income_tax: 0
+    state_code: VA
+  output:
+    # Line 1: 30,000. Line 9: min(80% x 30,000, 3% x (500,000 - 332,700))
+    # = 5,019. Line 12a: 30,000 - 5,019.
+    va_reduced_itemized_deductions: 24_981

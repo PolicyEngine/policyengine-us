@@ -12,6 +12,8 @@ class az_itemized_deductions(Variable):
     reference = (
         "https://law.justia.com/codes/arizona/2022/title-43/section-43-1042/",
         "https://www.azleg.gov/ars/43/01042.htm",
+        "https://www.azleg.gov/ars/43/01021.htm",
+        "https://www.azleg.gov/ars/43/01029.htm",
         "https://azdor.gov/forms/individual/itemized-deduction-adjustments-form",
         "https://azdor.gov/forms/individual/form-140-resident-personal-income-tax-form-calculating",
     )
@@ -23,6 +25,9 @@ class az_itemized_deductions(Variable):
         az_itemized = parameters(period).gov.states.az.tax.income.deductions.itemized
         # Medical and charitable are handled separately below; the state and
         # local tax deduction is also handled separately so Arizona can cap it.
+        # Arizona adds the federal claim of right repayment deduction back to
+        # Arizona gross income (A.R.S. 43-1021(9)) and computes its tax
+        # without it (A.R.S. 43-1029), so it gives no net Arizona deduction.
         deductions = [
             deduction
             for deduction in p.itemized_deductions
@@ -31,6 +36,7 @@ class az_itemized_deductions(Variable):
                 "medical_expense_deduction",
                 "charitable_deduction",
                 "salt_deduction",
+                "claim_of_right_deduction",
             ]
         ]
         federal_deductions = add(tax_unit, period, deductions)
