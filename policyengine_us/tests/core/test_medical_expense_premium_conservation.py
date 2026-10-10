@@ -310,3 +310,197 @@ def test_nj_excludes_each_dependents_deduction_only_from_their_own_premiums(
     assert (actual_exclusion <= excluded).all()
     np.testing.assert_array_equal(actual_exclusion, excluded)
     np.testing.assert_array_equal(nj_deduction, paid + other + deductions - excluded)
+
+
+# Flat strategies keep generation small while varying independent caller
+# subtotals, component inputs, filing units and the senior-benefit gates.
+state_expenses = st.fixed_dictionaries(
+    {
+        "premiums": st.tuples(*(st.integers(0, 25_000) for _ in range(3))),
+        "other": st.tuples(*(st.integers(0, 30_000) for _ in range(3))),
+        "direct": st.tuples(*(st.booleans() for _ in range(3))),
+        "income": st.integers(0, 100_000),
+        "age": st.sampled_from([64, 65, 80]),
+        "filing_status": st.sampled_from(["SINGLE", "JOINT", "SEPARATE"]),
+        "dependent_elsewhere": st.booleans(),
+        "subtotal_mode": st.sampled_from(["derived", "supplied", "subtotal_only"]),
+        "subtotal": st.one_of(
+            st.integers(0, 100_000), st.sampled_from([27_999, 28_000, 28_001])
+        ),
+        "deduction": st.integers(-10_000, 75_000),
+    }
+)
+state_units = st.lists(state_expenses, min_size=2, max_size=3)
+
+
+def _state_case(**values):
+    return {
+        "premiums": (0, 0, 0),
+        "other": (0, 0, 0),
+        "direct": (True, True, True),
+        "income": 30_000,
+        "age": 65,
+        "filing_status": "SINGLE",
+        "dependent_elsewhere": False,
+        "subtotal_mode": "derived",
+        "subtotal": 0,
+        "deduction": 1_000,
+        **values,
+    }
+
+
+def _state_simulation(cases, reference_system, with_se_deduction):
+    people, tax_units, households, marital_units = {}, {}, {}, {}
+    subtotal_overrides = []
+    expectations = {
+        "nd_renters_refund_income": [],
+        "nm_medical_expense_credit": [],
+        "nm_medical_expense_exemption": [],
+    }
+    for case_index, case in enumerate(cases):
+        joint = case["filing_status"] == "JOINT"
+        person_indices = [0, 1, 2] if joint else [0, 2]
+        subtotal_only = case["subtotal_mode"] == "subtotal_only"
+        premiums = [0 if subtotal_only else case["premiums"][i] for i in person_indices]
+        other = [0 if subtotal_only else case["other"][i] for i in person_indices]
+        deduction = case["deduction"] if with_se_deduction else 0
+        filer_premiums = premiums[0] + (premiums[1] if joint else 0)
+        excluded = min(filer_premiums, max(0, deduction))
+        gross = sum(premiums) + sum(other)
+        subtotal = None
+        if case["subtotal_mode"] != "derived":
+            # A supplied net subtotal with SE deduction is made consistent with
+            # its components, so restoring the exclusion recovers main's gross
+            # base. Without SE, an arbitrary caller subtotal must take precedence
+            # over the components, just as it did on main.
+            subtotal = (
+                gross - excluded
+                if with_se_deduction and not subtotal_only
+                else case["subtotal"]
+            )
+        main_base = gross if subtotal is None else subtotal + excluded
+        senior_eligible = case["age"] >= 65 and main_base >= 28_000
+        denominator = 2 if case["filing_status"] == "SEPARATE" else 1
+
+        for state in ("ND", "NM"):
+            unit_name = f"{state}_{case_index}"
+            names = []
+            for position, person_index in enumerate(person_indices):
+                name = f"{unit_name}_person_{person_index}"
+                names.append(name)
+                premium_variable = (
+                    "health_insurance_premiums"
+                    if case["direct"][person_index]
+                    else "health_insurance_premiums_without_medicare_part_b"
+                )
+                values = {
+                    "age": case["age"]
+                    if person_index == 0
+                    else 40
+                    if person_index == 1
+                    else 17,
+                    "is_tax_unit_head": person_index == 0,
+                    "is_tax_unit_spouse": person_index == 1,
+                    "is_tax_unit_dependent": person_index == 2,
+                    "employment_income": case["income"] if person_index == 0 else 0,
+                    "medicare_enrolled": False,
+                    premium_variable: premiums[position],
+                    "other_medical_expenses": other[position],
+                }
+                people[name] = {
+                    variable: {PERIOD: value} for variable, value in values.items()
+                }
+                if person_index == 2:
+                    marital_units[f"{unit_name}_dependent_marital_unit"] = {
+                        "members": [name]
+                    }
+            marital_units[f"{unit_name}_marital_unit"] = {"members": names[:-1]}
+            tax_unit = {
+                "members": names,
+                "self_employed_health_insurance_ald": {PERIOD: deduction},
+                "filing_status": {PERIOD: case["filing_status"]},
+                "head_is_dependent_elsewhere": {PERIOD: case["dependent_elsewhere"]},
+            }
+            tax_units[unit_name] = tax_unit
+            subtotal_overrides.append(subtotal)
+            households[unit_name] = {"members": names, "state_code": {PERIOD: state}}
+            # This independent accounting oracle reproduces main's state
+            # outputs from its paid-cost base rather than reading this head's
+            # medical subtotal or excluded-premium calculations as expectations.
+            expectations["nd_renters_refund_income"].append(
+                max(0, case["income"] - main_base) if state == "ND" else 0
+            )
+            expectations["nm_medical_expense_credit"].append(
+                2_800 / denominator
+                if state == "NM" and senior_eligible and not case["dependent_elsewhere"]
+                else 0
+            )
+            expectations["nm_medical_expense_exemption"].append(
+                3_000 / denominator if state == "NM" and senior_eligible else 0
+            )
+    simulation = Simulation(
+        tax_benefit_system=reference_system,
+        situation={
+            "people": people,
+            "tax_units": tax_units,
+            "households": households,
+            "marital_units": marital_units,
+        },
+    )
+    if any(value is not None for value in subtotal_overrides):
+        # Core fills omitted entries in a partially supplied input vector with
+        # defaults. Preserve the actual derived values first, then splice in
+        # caller subtotals before any state result is calculated or cached.
+        medical_base = simulation.calculate("itemized_medical_expenses", PERIOD).copy()
+        for index, subtotal in enumerate(subtotal_overrides):
+            if subtotal is not None:
+                medical_base[index] = subtotal
+        simulation.set_input("itemized_medical_expenses", PERIOD, medical_base)
+    return simulation, expectations
+
+
+def _assert_state_outputs(cases, reference_system, with_se_deduction):
+    simulation, expectations = _state_simulation(
+        cases, reference_system, with_se_deduction
+    )
+    for variable, expected in expectations.items():
+        np.testing.assert_array_equal(simulation.calculate(variable, PERIOD), expected)
+
+
+@settings(max_examples=12, deadline=None, derandomize=True)
+@example(
+    cases=[
+        _state_case(subtotal_mode="subtotal_only", subtotal=6_500),
+        _state_case(subtotal_mode="subtotal_only", subtotal=28_000),
+        _state_case(
+            premiums=(6_000, 0, 0),
+            other=(22_000, 0, 0),
+            subtotal_mode="supplied",
+            subtotal=27_999,
+        ),
+        _state_case(premiums=(6_000, 0, 0), other=(21_999, 0, 0)),
+        _state_case(premiums=(6_000, 0, 0), other=(22_001, 0, 0)),
+    ]
+)
+@given(cases=state_units)
+def test_state_paid_cost_bases_match_main_without_se_deduction(reference_system, cases):
+    _assert_state_outputs(cases, reference_system, with_se_deduction=False)
+
+
+@settings(max_examples=12, deadline=None, derandomize=True)
+@example(
+    cases=[
+        _state_case(premiums=(6_000, 0, 0), other=(500, 0, 0)),
+        _state_case(
+            premiums=(6_000, 0, 0), other=(22_000, 0, 0), subtotal_mode="supplied"
+        ),
+        _state_case(premiums=(6_000, 0, 0), other=(21_999, 0, 0), deduction=75_000),
+        _state_case(subtotal_mode="subtotal_only", subtotal=28_000, deduction=75_000),
+        _state_case(premiums=(0, 0, 28_000), deduction=75_000),
+    ]
+)
+@given(cases=state_units)
+def test_state_paid_cost_bases_restore_main_gross_costs_with_se_deduction(
+    reference_system, cases
+):
+    _assert_state_outputs(cases, reference_system, with_se_deduction=True)

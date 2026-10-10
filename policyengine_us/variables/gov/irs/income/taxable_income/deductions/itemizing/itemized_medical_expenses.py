@@ -36,10 +36,8 @@ class itemized_medical_expenses(Variable):
         # The federal ALD covers the head and spouse; dependents take their
         # own SE deductions on their own returns. Bound the exclusion to the
         # corresponding filer premiums, leaving other medical costs intact.
-        filer_premiums = tax_unit_non_dep_sum(
-            "medical_expense_health_insurance_premiums", tax_unit, period
+        excluded_premiums = tax_unit(
+            "itemized_medical_expenses_excluded_premiums", period
         )
-        se_health_insurance_ald = tax_unit("self_employed_health_insurance_ald", period)
-        excluded_premiums = min_(filer_premiums, max_(0, se_health_insurance_ald))
         other_expenses = add(tax_unit, period, ["other_medical_expenses"])
         return premiums - excluded_premiums + other_expenses

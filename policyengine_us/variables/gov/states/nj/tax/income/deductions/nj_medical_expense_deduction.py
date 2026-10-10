@@ -40,12 +40,8 @@ class nj_medical_expense_deduction(Variable):
         # The federal base already excludes the filers' deduction. Apply
         # each dependent's deduction only to that person's own paid premiums.
         person = tax_unit.members
-        dependent_premiums = person("medical_expense_health_insurance_premiums", period)
-        dependent_deduction = person(
-            "self_employed_health_insurance_ald_person", period
-        )
         excluded_dependent_premiums = tax_unit.sum(
-            min_(dependent_premiums, max_(0, dependent_deduction))
+            person("self_employed_health_insurance_ald_excluded_premiums", period)
             * person("is_tax_unit_dependent", period)
         )
         medical_expenses = (
