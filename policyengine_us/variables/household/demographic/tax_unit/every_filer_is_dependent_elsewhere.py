@@ -5,9 +5,9 @@ class every_filer_is_dependent_elsewhere(Variable):
     value_type = bool
     entity = TaxUnit
     definition_period = YEAR
-    label = "Every head and spouse is a dependent elsewhere"
+    label = "Every head and spouse is claimable elsewhere"
     documentation = (
-        "Whether the tax unit has a head or spouse claimed as a dependent in "
+        "Whether the tax unit has a head or spouse claimable as a dependent in "
         "another tax unit and none who is not. False for a tax unit with "
         "neither a head nor a spouse."
     )

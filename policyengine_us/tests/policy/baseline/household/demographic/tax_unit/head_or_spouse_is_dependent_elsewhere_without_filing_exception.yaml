@@ -1,0 +1,119 @@
+- name: Claimable unclaimed head prevents claiming the return's own dependents
+  period: 2025
+  input:
+    people:
+      person_a:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+      person_b:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+  output:
+    head_or_spouse_is_dependent_elsewhere: true
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: true
+
+- name: Claimable unclaimed spouse prevents claiming the return's own dependents
+  period: 2025
+  input:
+    people:
+      person_b:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person_a:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+  output:
+    head_or_spouse_is_dependent_elsewhere: true
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: true
+
+- name: The head's nonrequired claimant filing exception restores own-dependent eligibility
+  period: 2025
+  input:
+    people:
+      person_a:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      person_b:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+  output:
+    head_or_spouse_is_dependent_elsewhere: true
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: false
+
+- name: The spouse's nonrequired claimant filing exception restores own-dependent eligibility
+  period: 2025
+  input:
+    people:
+      person_b:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      person_a:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+  output:
+    head_or_spouse_is_dependent_elsewhere: true
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: false
+
+- name: One exception is insufficient when the other spouse has an ordinary claimant
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      spouse:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+  output:
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: true
+
+- name: A claimable child does not apply the dependent taxpayer test to independent filers
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: false
+      child:
+        age: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+  output:
+    head_or_spouse_is_dependent_elsewhere_without_filing_exception: false
