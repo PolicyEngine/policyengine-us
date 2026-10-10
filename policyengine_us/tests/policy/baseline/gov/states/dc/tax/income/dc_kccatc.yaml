@@ -327,3 +327,32 @@
   output:
     # min(2,000, 1,200)
     dc_kccatc: 1_200
+
+- name: 2025 two returns in one household, only the return whose filer can be claimed loses the keep child care affordable credit
+  period: 2025
+  input:
+    people:
+      parent_claimed:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+      child_a:
+        age: 2
+      parent:
+        age: 30
+        employment_income: 5_000
+      child_b:
+        age: 2
+    tax_units:
+      claimed_return:
+        members: [parent_claimed, child_a]
+        tax_unit_childcare_expenses: 2_000
+      other_return:
+        members: [parent, child_b]
+        tax_unit_childcare_expenses: 2_000
+    households:
+      household:
+        members: [parent_claimed, child_a, parent, child_b]
+        state_code: DC
+  output:
+    dc_kccatc: [0, 1_200]

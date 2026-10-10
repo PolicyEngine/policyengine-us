@@ -28,7 +28,9 @@ class dc_kccatc(Variable):
         # The child must be the taxpayer's dependent on the federal and District
         # returns. A return on which the filer (or, if joint, either spouse)
         # can be claimed as a dependent has no dependents (IRC 152(b)(1)).
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
         is_dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
         age = person("age", period)
         kccatc_age_eligible = is_dependent & (age <= p.kccatc.max_age)
