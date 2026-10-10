@@ -6,9 +6,10 @@
 # 2024 Schedule M1CAT (PDF p. 1): line 11 "Enter $100"; line 18 "Enter the
 # amount from line 1 of Form M1" (federal adjusted gross income); line 19
 # "Multiply line 18 by 10%"; line 20 subtracts line 19 from line 17, not below
-# 0, and goes to M1SA line 19. The 2018 M1CAT has the same lines, except that
-# line 18 takes Schedule M1NC line 38 (federal adjustments) from filers of that
-# schedule, which the model does not have. These cases are ordinary losses:
+# 0, and goes to M1SA line 19. The 2018 M1CAT has the same $100 reduction and
+# 10% floor; its line 20 goes to M1SA line 18, and its line 18 takes Schedule
+# M1NC line 38 (federal adjustments) from filers of that schedule, which the
+# model does not have. These cases are ordinary losses:
 # the 2020 Schedule M1SA's net qualified disaster loss (federal Form 4684 line
 # 15, $500 and no 10% floor) is not modeled.
 # A joint return is one individual for the $100 rule (165(h)(4)(B)). The model
