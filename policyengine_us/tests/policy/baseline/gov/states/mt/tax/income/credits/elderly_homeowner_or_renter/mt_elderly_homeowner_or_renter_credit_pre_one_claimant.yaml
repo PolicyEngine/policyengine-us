@@ -1,0 +1,107 @@
+- name: Case 1, each eligible tax unit's credit before the one-claimant limit.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 10_000
+        rent: 4_800
+      person2:
+        age: 70
+        taxable_pension_income: 15_000
+        rent: 7_200
+      person3:
+        age: 40
+        taxable_interest_income: 5_000
+        rent: 3_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: MT
+  output:
+    # 2024 Schedule 2EC. Line 18 = 10_000 + 15_000 + 5_000 = 30_000 for the
+    # whole household; line 20 = 17_400; line 21 = 0.05; line 22 = 870.
+    # person1: line 25 = 720; line 27 = max(720 - 870, 0) = 0.
+    # person2: line 25 = 1_080; line 27 = 1_080 - 870 = 210.
+    # person3 is under 62, so not a claimant (§ 15-30-2338(1)(a)).
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [0, 210, 0]
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true, false]
+    mt_elderly_homeowner_or_renter_credit: [0, 210, 0]
+
+- name: Case 2, a tax unit billed no property tax counts another member's bill as rent.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        taxable_pension_income: 14_000
+        rent: 0
+      person2:
+        age: 72
+        taxable_pension_income: 4_000
+        rent: 0
+        real_estate_taxes: 900
+      person3:
+        age: 45
+        taxable_interest_income: 2_000
+        rent: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: MT
+  output:
+    # 2024 Schedule 2EC. Line 18 = 14_000 + 4_000 + 2_000 = 20_000; line 20
+    # = 7_400; line 21 = 0.035; line 22 = 259.
+    # person1 (home in person2's name): line 24 = 900; line 25 = 135; line
+    # 27 = max(135 - 259, 0) = 0.
+    # person2: line 23 = 900; line 27 = 900 - 259 = 641.
+    # person3 is billed nothing either, so their line 24 is also 900, but
+    # they are under 62 and not a claimant.
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [900, 0, 900]
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [0, 641, 0]
+
+- name: Case 3, the home's bill as rent makes the only eligible tax unit's credit positive.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 64
+        taxable_pension_income: 9_000
+        rent: 0
+      person2:
+        age: 60
+        taxable_pension_income: 3_000
+        rent: 0
+        real_estate_taxes: 2_500
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 18 = 12_000; line 20 = max(12_000 - 12_600, 0) = 0; line 22 = 0.
+    # person1: line 24 = 2_500; line 25 = 375; line 27 = 375.
+    # person2 is 60, so not a claimant, though the home is in their name.
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [375, 0]
+    mt_elderly_homeowner_or_renter_credit: [375, 0]

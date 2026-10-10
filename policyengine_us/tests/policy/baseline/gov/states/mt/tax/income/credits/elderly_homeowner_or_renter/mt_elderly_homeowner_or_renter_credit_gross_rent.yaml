@@ -1,0 +1,286 @@
+- name: Case 1, rent paid, with no property tax billed in the household.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Schedule 2EC line 24: "the rent that you paid".
+    mt_elderly_homeowner_or_renter_credit_gross_rent: 6_000
+
+- name: Case 2, a parent living in an adult child's home counts the child's property tax as rent.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        rent: 0
+      person2:
+        age: 45
+        rent: 0
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # The parent is billed nothing: the home is "in a name other than the
+    # claimant", so the child's 3_000 bill goes on the parent's line 24 as
+    # rent (ARM 42.4.302(2)(b)). The child is billed their own property tax
+    # (line 23) and pays no rent.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: [0, 3_000]
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [3_000, 0]
+
+- name: Case 3, a claimant billed their own property tax does not count another member's bill.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        rent: 0
+        real_estate_taxes: 500
+      person2:
+        age: 45
+        rent: 0
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # The home is in person1's name too, so ARM 42.4.302(2)(b) does not
+    # apply: line 23 = 500 and line 24 = 0.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: [500, 3_000]
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [0, 0]
+
+- name: Case 4, rent paid below the other member's bill; the bill counts.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        rent: 2_400
+      person2:
+        age: 50
+        rent: 0
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 24 = max(2_400, 3_000): the bill is an alternative measure of the
+    # rent for the same home, not an addition to it.
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [3_000, 0]
+
+- name: Case 5, rent paid above the other member's bill; the rent counts.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        rent: 4_800
+      person2:
+        age: 50
+        rent: 0
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Line 24 = max(4_800, 3_000), not 4_800 + 3_000.
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [4_800, 0]
+
+- name: Case 6, a home in a dependent's name counts as rent.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        rent: 0
+        is_tax_unit_dependent: false
+      person2:
+        age: 50
+        rent: 0
+        is_tax_unit_dependent: true
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # The dependent is not the claimant, so their bill "can qualify as rent
+    # only": line 23 = 0 and line 24 = 2_000.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 0
+    mt_elderly_homeowner_or_renter_credit_gross_rent: 2_000
+
+- name: Case 7, a home co-owned by two other members counts the whole bill.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        rent: 0
+      person2:
+        age: 45
+        rent: 0
+        real_estate_taxes: 1_000
+      person3:
+        age: 48
+        rent: 0
+        real_estate_taxes: 1_500
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # "The property taxes billed for that property": 1_000 + 1_500.
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [2_500, 0, 0]
+
+- name: Case 8, a joint couple billed through the spouse does not count another member's bill.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        rent: 0
+      person2:
+        age: 66
+        rent: 0
+        real_estate_taxes: 1_800
+      person3:
+        age: 40
+        rent: 0
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # A joint return is one claimant, billed 1_800 through the spouse.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: [1_800, 2_000]
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [0, 0]
+
+- name: Case 9, in 2010 only property billed to a trust counted as rent.
+  period: 2010
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        rent: 0
+      person2:
+        age: 45
+        rent: 0
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [0, 0]
+
+- name: Case 10, from 2011 property in another person's name counts as rent.
+  period: 2011
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        rent: 0
+      person2:
+        age: 45
+        rent: 0
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [3_000, 0]
+
+- name: Case 11, outside Montana.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        rent: 0
+      person2:
+        age: 45
+        rent: 0
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [0, 0]

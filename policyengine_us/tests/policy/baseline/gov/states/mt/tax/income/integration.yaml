@@ -564,9 +564,12 @@
   output:
     # $2,500 per-return cap split $1,250 per spouse (was double-counted to $5,000)
     mt_income_tax_rebate: [1_250, 1_250]
-    # Files separately: 5,099.51 - 1,250 + 3,719.51 - 1,250 = 6,319.02
+    # Each spouse deducts their own federal income tax up to $5,000 (2021
+    # federal tax 21,175 attributed 90/160 and 70/160), so both itemize 5,000
+    # over the 4,830 standard deduction. Taxable income 82,420 and 62,420.
+    # Files separately: 5,087.78 - 1,250 + 3,707.78 - 1,250 = 6,295.56
     # (old double-count subtracted $2,500 per column, understating tax by $2,500)
-    mt_income_tax: 6_319.02
+    mt_income_tax: 6_295.56
 
 - name: MT property tax rebate is not a Form 2 credit and is not tripled (issue 9347)
   absolute_error_margin: 0.01
