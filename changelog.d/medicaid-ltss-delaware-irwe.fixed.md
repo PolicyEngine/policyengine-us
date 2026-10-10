@@ -1,0 +1,1 @@
+Apply qualifying Delaware Medicaid LTSS impairment-related work expenses after the $20 and $65 income exclusions and before halving remaining earnings, deriving expenses from payment, reimbursement, business-expense, allocation-election and age-65 disability-payment history facts.

@@ -1,0 +1,1 @@
+Correct Delaware married home-equity interests and continuing spousal resource eligibility, index Washington's LTSS medically needy income limit to SSI, and use Washington's published maintenance and shelter standards.

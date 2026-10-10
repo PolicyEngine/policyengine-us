@@ -1,0 +1,1 @@
+Add a reported individual or couple budgeting election for Delaware Medicaid LTSS couples after six months together in the same facility, retaining favorable-budget selection when unspecified and mandatory budgeting elsewhere.

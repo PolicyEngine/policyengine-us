@@ -1,0 +1,603 @@
+- name: Case 1, MMMNA does not convert above-SIL applicant income into eligibility.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_reported_gross_unearned_income: 3_000
+    medicaid_ltss_individual_countable_resources: 2_000
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 0
+    medicaid_ltss_community_spouse_shelter_expenses: 3_000
+  output:
+    medicaid_ltss_financial_pathway: SPECIAL_INCOME
+    medicaid_ltss_mmmna: 4_066.5
+    is_medicaid_ltss_income_eligible: false
+    is_medicaid_ltss_financial_threshold_eligible: false
+
+- name: Case 2, identical facts produce state-specific TX, DE, and WA home-equity results.
+  period: 2026-07
+  input:
+    people:
+      texas:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2500
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_home_market_value: 800000
+        medicaid_ltss_home_ownership_share: 1
+      delaware:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_reported_gross_unearned_income: 2500
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_home_market_value: 800000
+        medicaid_ltss_home_ownership_share: 1
+      washington:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2500
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_home_market_value: 800000
+        medicaid_ltss_home_ownership_share: 1
+    tax_units:
+      texas:
+        members:
+        - texas
+      delaware:
+        members:
+        - delaware
+      washington:
+        members:
+        - washington
+    marital_units:
+      texas:
+        members:
+        - texas
+      delaware:
+        members:
+        - delaware
+      washington:
+        members:
+        - washington
+    spm_units:
+      texas:
+        members:
+        - texas
+      delaware:
+        members:
+        - delaware
+      washington:
+        members:
+        - washington
+    households:
+      texas:
+        members:
+        - texas
+        state_code:
+          2026: TX
+      delaware:
+        members:
+        - delaware
+        state_code:
+          2026: DE
+      washington:
+        members:
+        - washington
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_financial_pathway:
+    - SPECIAL_INCOME
+    - SPECIAL_INCOME
+    - SPECIAL_INCOME
+    is_medicaid_ltss_income_eligible:
+    - true
+    - true
+    - true
+    medicaid_ltss_csra_resource_eligible:
+    - true
+    - true
+    - true
+    medicaid_ltss_home_equity_eligible:
+    - false
+    - false
+    - true
+    is_medicaid_ltss_financial_threshold_eligible:
+    - false
+    - false
+    - true
+
+- name: Case 3, vectorized assistance units and explicit ownership inputs remain separate.
+  period: 2026-07
+  input:
+    people:
+      single:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_home_market_value: 900_000
+        medicaid_ltss_home_encumbrances: 200_000
+        medicaid_ltss_home_ownership_share: 1
+      couple:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_reported_gross_unearned_income: 5_000
+        medicaid_ltss_individual_countable_resources: 3_000
+        medicaid_ltss_home_market_value: 1_600_000
+        medicaid_ltss_home_ownership_share: 0.5
+      community_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 50_000
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+        medicaid_ltss_home_market_value: 1_500_000
+        medicaid_ltss_home_ownership_share: 0.5
+    tax_units:
+      single:
+        members: [single]
+      couple:
+        members: [couple]
+      community_spouse:
+        members: [community_spouse]
+    marital_units:
+      single:
+        members: [single]
+      couple:
+        members: [couple]
+      community_spouse:
+        members: [community_spouse]
+    spm_units:
+      single:
+        members: [single]
+      couple:
+        members: [couple]
+      community_spouse:
+        members: [community_spouse]
+    households:
+      single:
+        members: [single]
+        state_code:
+          2026: TX
+      couple:
+        members: [couple]
+        state_code:
+          2026: TX
+      community_spouse:
+        members: [community_spouse]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_financial_pathway:
+      [SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME]
+    is_medicaid_ltss_income_eligible: [true, true, true]
+    medicaid_ltss_csra_resource_eligible: [true, true, true]
+    medicaid_ltss_home_equity_eligible: [true, false, true]
+    is_medicaid_ltss_financial_threshold_eligible: [true, false, true]
+
+- name: Case 4, a Delaware non-homeowner with qualifying income and resources passes end to end.
+  period: 2026-07
+  input:
+    state_code:
+      2026: DE
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_reported_gross_unearned_income: 2400
+    medicaid_ltss_individual_countable_resources: 1500
+    medicaid_ltss_home_market_value: 0
+    medicaid_ltss_home_encumbrances: 0
+    medicaid_ltss_home_ownership_share: 1
+  output:
+    medicaid_ltss_financial_pathway: SPECIAL_INCOME
+    is_medicaid_ltss_income_eligible: true
+    medicaid_ltss_csra_resource_eligible: true
+    medicaid_ltss_home_equity_eligible: true
+    is_medicaid_ltss_financial_threshold_eligible: true
+
+- name: Case 5, a non-aged-blind-disabled applicant with qualifying finances is unmodeled end to end.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: false
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_reported_gross_unearned_income: 2_400
+    medicaid_ltss_individual_countable_resources: 1_500
+    medicaid_ltss_home_market_value: 0
+    medicaid_ltss_home_encumbrances: 0
+    medicaid_ltss_home_ownership_share: 1
+  output:
+    medicaid_ltss_financial_pathway: UNMODELED
+    is_medicaid_ltss_financial_threshold_eligible: false
+
+- name: Case 6, identical above-SIL facts diverge across TX, DE, and WA income pathways.
+  period: 2026-07
+  input:
+    people:
+      texas:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 3100
+        medicaid_ltss_individual_countable_resources: 1500
+        medicaid_ltss_cost_of_care: 3500
+        medicaid_ltss_home_market_value: 0
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+      delaware:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_reported_gross_unearned_income: 3100
+        medicaid_ltss_individual_countable_resources: 1500
+        medicaid_ltss_cost_of_care: 3500
+        medicaid_ltss_home_market_value: 0
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+      washington:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 3100
+        medicaid_ltss_individual_countable_resources: 1500
+        medicaid_ltss_cost_of_care: 3500
+        medicaid_ltss_home_market_value: 0
+        medicaid_ltss_home_encumbrances: 0
+        medicaid_ltss_home_ownership_share: 1
+    tax_units:
+      texas:
+        members:
+        - texas
+      delaware:
+        members:
+        - delaware
+      washington:
+        members:
+        - washington
+    marital_units:
+      texas:
+        members:
+        - texas
+      delaware:
+        members:
+        - delaware
+      washington:
+        members:
+        - washington
+    spm_units:
+      texas:
+        members:
+        - texas
+      delaware:
+        members:
+        - delaware
+      washington:
+        members:
+        - washington
+    households:
+      texas:
+        members:
+        - texas
+        state_code:
+          2026: TX
+      delaware:
+        members:
+        - delaware
+        state_code:
+          2026: DE
+      washington:
+        members:
+        - washington
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_financial_pathway:
+    - SPECIAL_INCOME
+    - SPECIAL_INCOME
+    - INSTITUTIONAL_MEDICALLY_NEEDY
+    is_medicaid_ltss_income_eligible:
+    - false
+    - false
+    - true
+    medicaid_ltss_csra_resource_eligible:
+    - true
+    - true
+    - true
+    medicaid_ltss_home_equity_eligible:
+    - true
+    - true
+    - true
+    is_medicaid_ltss_financial_threshold_eligible:
+    - false
+    - false
+    - true
+
+- name: Case 7, the composite fails when the resource screen is the only failing screen.
+  period: 2026-07
+  input:
+    people:
+      applicant:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 2_001
+    households:
+      household:
+        members: [applicant]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_financial_pathway: SPECIAL_INCOME
+    is_medicaid_ltss_income_eligible: true
+    medicaid_ltss_csra_resource_eligible: false
+    medicaid_ltss_home_equity_eligible: true
+    is_medicaid_ltss_financial_threshold_eligible: false
+
+- name: Case 8, a Delaware applicant and community spouse in one household pass end to end.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_reported_gross_unearned_income: 2400
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 50000
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_home_market_value: 900000
+        medicaid_ltss_home_ownership_share: 0.5
+        medicaid_ltss_home_occupied_by_spouse: true
+      community_spouse:
+        is_ssi_aged_blind_disabled:
+          2026: false
+        medicaid_ltss_individual_countable_resources: 32532
+    households:
+      household:
+        members:
+        - applicant
+        - community_spouse
+        state_code:
+          2026: DE
+    marital_units:
+      applicant:
+        members:
+        - applicant
+        - community_spouse
+  output:
+    medicaid_ltss_financial_pathway:
+    - SPECIAL_INCOME
+    - UNMODELED
+    is_medicaid_ltss_income_eligible:
+    - true
+    - false
+    medicaid_ltss_csra_resource_eligible:
+    - true
+    - false
+    medicaid_ltss_home_equity_eligible:
+    - true
+    - true
+    medicaid_ltss_mmmna:
+    - 2705
+    - 0
+    is_medicaid_ltss_financial_threshold_eligible:
+    - true
+    - false
+
+- name: Case 9, Washington community-spouse applicants bracket the state spousal resource standard end to end.
+  period: 2026-07
+  input:
+    people:
+      at_state_standard:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2_500
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 72_529
+      above_state_standard:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2_500
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 72_530
+    households:
+      at_household:
+        members: [at_state_standard]
+        state_code:
+          2026: WA
+      above_household:
+        members: [above_state_standard]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_financial_pathway: [SPECIAL_INCOME, SPECIAL_INCOME]
+    is_medicaid_ltss_income_eligible: [true, true]
+    medicaid_ltss_csra_resource_eligible: [true, false]
+    medicaid_ltss_home_equity_eligible: [true, true]
+    is_medicaid_ltss_financial_threshold_eligible: [true, false]
+
+- name: Case 10, every screen is unmodeled before 2026.
+  period: 2025-12
+  absolute_error_margin: 0.01
+  input:
+    people:
+      applicant:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2025: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_has_community_spouse: true
+    households:
+      household:
+        members: [applicant]
+        state_code:
+          2025: TX
+  output:
+    medicaid_ltss_financial_pathway: UNMODELED
+    medicaid_ltss_special_income_limit: 0
+    is_medicaid_ltss_income_eligible: false
+    medicaid_ltss_csra_resource_eligible: false
+    medicaid_ltss_home_equity_eligible: false
+    medicaid_ltss_mmmna: 0
+    is_medicaid_ltss_financial_threshold_eligible: false
+
+- name: Case 11, Washington re-entry passes every financial screen using its new period snapshot.
+  period: 2026-09
+  input:
+    state_code:
+      2026: WA
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_reported_gross_unearned_income: 2_500
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_is_initial_eligibility_determination: true
+    # 2024 first episode, followed by a qualifying break and July 2026 re-entry.
+    # Use July 1 resources, rather than the 2024 or September current resources.
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400_000
+    medicaid_ltss_individual_countable_resources: 2_000
+    medicaid_ltss_non_delaware_community_spouse_countable_resources: 98_000
+  output:
+    medicaid_ltss_financial_pathway: SPECIAL_INCOME
+    is_medicaid_ltss_income_eligible: true
+    medicaid_ltss_csra_resource_eligible: true
+    medicaid_ltss_home_equity_eligible: true
+    is_medicaid_ltss_financial_threshold_eligible: true
+
+- name: Case 12, Washington July 2003 legacy period passes all financial screens while the August 1 boundary and modern period fail solely on resources.
+  period: 2026-09
+  input:
+    people:
+      applicant_1:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: &id001
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2000
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2003
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 7
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 98000
+      applicant_2:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: *id001
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2000
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2003
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 8
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 98000
+      applicant_3:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: *id001
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 2000
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2026
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 7
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 98000
+    marital_units:
+      applicant_1:
+        members:
+        - applicant_1
+      applicant_2:
+        members:
+        - applicant_2
+      applicant_3:
+        members:
+        - applicant_3
+    households:
+      household:
+        members:
+        - applicant_1
+        - applicant_2
+        - applicant_3
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra:
+    - 162660
+    - 72529
+    - 72529
+    is_medicaid_ltss_income_eligible:
+    - true
+    - true
+    - true
+    medicaid_ltss_home_equity_eligible:
+    - true
+    - true
+    - true
+    medicaid_ltss_csra_resource_eligible:
+    - true
+    - false
+    - false
+    is_medicaid_ltss_financial_threshold_eligible:
+    - true
+    - false
+    - false

@@ -1,0 +1,32 @@
+description: The Department of Health and Human Services applies this federal minimum limit on home equity for Medicaid long-term care eligibility in states that do not elect a higher limit.
+values:
+  2025-01-01: 730_000
+  2026-01-01: 752_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicaid long-term care federal minimum home equity limit
+  # 42 USC 1396p(f)(1)(C) increases the limit from year to year by CPI-U,
+  # rounded to the nearest $1,000. CMS applies the September-to-September
+  # change each January 1, which reproduces the published 2026 value from
+  # 2025. From 2028 the consuming formula caps the result at the
+  # non-agricultural maximum under P.L. 119-21 section 71108.
+  uprating:
+    parameter: gov.bls.cpi.cpi_u
+    at_defined_interval:
+      start: "0001-09-01"
+      end: "0002-09-01"
+      enactment: "0003-01-01"
+    rounding:
+      type: nearest
+      interval: 1_000
+  reference:
+    - title: 42 USC 1396p(f)(1)(A) and (C) - Disqualification for long-term care assistance for individuals with substantial home equity
+      href: https://www.law.cornell.edu/uscode/text/42/1396p#f_1
+    - title: Updated 2025 SSI and Spousal Impoverishment Standards, CMCS Informational Bulletin, May 28, 2025
+      href: https://www.medicaid.gov/federal-policy-guidance/downloads/cib05282025.pdf#page=2
+    - title: Updated 2026 SSI and Spousal Impoverishment Standards, CMCS Informational Bulletin, April 27, 2026
+      href: https://www.medicaid.gov/sites/default/files/2026-04/cib04272026.pdf#page=2
+    - title: CMCS Informational Bulletin, November 18, 2025, Section 71108 - Revising Home Equity Limit
+      href: https://www.medicaid.gov/federal-policy-guidance/downloads/cib11182025.pdf#page=9

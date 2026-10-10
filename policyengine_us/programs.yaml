@@ -178,6 +178,52 @@ programs:
     verified_start_year: 2021
     notes: 8 pathways
 
+  - id: medicaid_ltss_financial_screen
+    name: Medicaid LTSS financial screen
+    full_name: Medicaid long-term services and supports financial-threshold screen
+    category: Healthcare
+    agency: HHS
+    status: partial
+    coverage: US
+    has_state_variation: true
+    variable: is_medicaid_ltss_financial_threshold_eligible
+    parameter_prefix: gov.hhs.medicaid.eligibility.long_term_care.financial
+    verified_years: "2026"
+    notes: >-
+      Opt-in screen of the financial thresholds for Medicaid long-term
+      services and supports: the special income limit, qualified income
+      trusts, Washington's medically needy route, resources, the community
+      spouse resource allowance, home equity, and the community spouse
+      maintenance needs allowance. Income and resources are trusted inputs.
+      The screen does not feed Medicaid eligibility, enrollment, or benefit
+      values, and states other than Texas, Delaware, and Washington are
+      unmodeled.
+    state_implementations:
+      - state: TX
+        status: partial
+        name: Texas Medicaid LTSS financial screen
+        full_name: Texas Medicaid long-term services and supports financial-threshold screen
+        variable: is_medicaid_ltss_financial_threshold_eligible
+        parameter_prefix: gov.hhs.medicaid.eligibility.long_term_care.financial.tx
+        verified_years: "2026"
+        notes: Institutional special income limit for individuals and couples; home and community-based waivers are unmodeled.
+      - state: DE
+        status: partial
+        name: Delaware Medicaid LTSS financial screen
+        full_name: Delaware Medicaid long-term services and supports financial-threshold screen
+        variable: is_medicaid_ltss_financial_threshold_eligible
+        parameter_prefix: gov.hhs.medicaid.eligibility.long_term_care.financial.de
+        verified_years: "2026"
+        notes: Nursing facility 250% special income limit for individuals and couples; the hospital standard and home and community-based waivers are unmodeled.
+      - state: WA
+        status: partial
+        name: Washington Medicaid LTSS financial screen
+        full_name: Washington Medicaid long-term services and supports financial-threshold screen
+        variable: is_medicaid_ltss_financial_threshold_eligible
+        parameter_prefix: gov.hhs.medicaid.eligibility.long_term_care.financial.wa
+        verified_years: "2026"
+        notes: Institutional and COPES, New Freedom, and Residential Support waiver applicants without a spouse in the assistance unit, through the special income level or medically needy route.
+
   - id: chip
     name: CHIP
     full_name: Children's Health Insurance Program

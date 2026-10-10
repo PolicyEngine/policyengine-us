@@ -1,0 +1,18 @@
+description: Washington uses this monthly medically needy income level for a single person under Medicaid long-term services and supports, equal to the one-person SSI federal benefit rate and updated each January with the Social Security cost-of-living adjustment.
+values:
+  2026-01-01: 994
+
+metadata:
+  uprating: gov.ssa.ssi.amount.individual
+  unit: currency-USD
+  period: month
+  label: Washington Medicaid LTSS medically needy income level for a single person
+  reference:
+    - title: WAC 182-519-0050(1) and (5) - Annual COLA and the effective one-person medically needy income level
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=182-519-0050
+    - title: Washington Apple Health Income and Resource Standards, January 1, 2026
+      href: https://www.hca.wa.gov/assets/free-or-low-cost/income-standards-20260101.pdf#page=3
+    - title: WAC 182-513-1395 - Institutional SSI-related medically needy eligibility
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1395
+    - title: WAC 182-515-1508 - HCS waiver financial eligibility using institutional rules
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=182-515-1508

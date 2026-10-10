@@ -1,0 +1,1642 @@
+- name: Case 1, Texas individual resource limit includes the exact boundary.
+  period: 2026-07
+  input:
+    people:
+      below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_individual_countable_resources: 1_999
+      at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_individual_countable_resources: 2_000
+      above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_individual_countable_resources: 2_001
+    tax_units:
+      below_tax_unit:
+        members: [below]
+      at_tax_unit:
+        members: [at]
+      above_tax_unit:
+        members: [above]
+    families:
+      below_family:
+        members: [below]
+      at_family:
+        members: [at]
+      above_family:
+        members: [above]
+    spm_units:
+      below_spm_unit:
+        members: [below]
+      at_spm_unit:
+        members: [at]
+      above_spm_unit:
+        members: [above]
+    marital_units:
+      below_marital_unit:
+        members: [below]
+      at_marital_unit:
+        members: [at]
+      above_marital_unit:
+        members: [above]
+    households:
+      below_household:
+        members: [below]
+        state_code:
+          2026: TX
+      at_household:
+        members: [at]
+        state_code:
+          2026: TX
+      above_household:
+        members: [above]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, true, false]
+
+- name: Case 2, Texas couple resource limit includes the exact boundary.
+  period: 2026-07
+  input:
+    people:
+      below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_individual_countable_resources: 2_999
+      at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_individual_countable_resources: 3_000
+      above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_individual_countable_resources: 3_001
+    tax_units:
+      below_tax_unit:
+        members: [below]
+      at_tax_unit:
+        members: [at]
+      above_tax_unit:
+        members: [above]
+    families:
+      below_family:
+        members: [below]
+      at_family:
+        members: [at]
+      above_family:
+        members: [above]
+    spm_units:
+      below_spm_unit:
+        members: [below]
+      at_spm_unit:
+        members: [at]
+      above_spm_unit:
+        members: [above]
+    marital_units:
+      below_marital_unit:
+        members: [below]
+      at_marital_unit:
+        members: [at]
+      above_marital_unit:
+        members: [above]
+    households:
+      below_household:
+        members: [below]
+        state_code:
+          2026: TX
+      at_household:
+        members: [at]
+        state_code:
+          2026: TX
+      above_household:
+        members: [above]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, true, false]
+
+- name: Case 3, Delaware individual and couple resource limits include their exact boundaries.
+  period: 2026-07
+  input:
+    people:
+      below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_individual_countable_resources: 2999
+      at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_individual_countable_resources: 3000
+      above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_individual_countable_resources: 3001
+      individual_below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_individual_countable_resources: 1999
+      individual_at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_individual_countable_resources: 2000
+      individual_above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_individual_countable_resources: 2001
+      below_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_individual_countable_resources: 0
+      at_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_individual_countable_resources: 0
+      above_spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_individual_countable_resources: 0
+    tax_units:
+      below_tax_unit:
+        members:
+        - below
+        - below_spouse
+      at_tax_unit:
+        members:
+        - at
+        - at_spouse
+      above_tax_unit:
+        members:
+        - above
+        - above_spouse
+      individual_below_tax_unit:
+        members:
+        - individual_below
+      individual_at_tax_unit:
+        members:
+        - individual_at
+      individual_above_tax_unit:
+        members:
+        - individual_above
+    families:
+      below_family:
+        members:
+        - below
+        - below_spouse
+      at_family:
+        members:
+        - at
+        - at_spouse
+      above_family:
+        members:
+        - above
+        - above_spouse
+      individual_below_family:
+        members:
+        - individual_below
+      individual_at_family:
+        members:
+        - individual_at
+      individual_above_family:
+        members:
+        - individual_above
+    spm_units:
+      below_spm_unit:
+        members:
+        - below
+        - below_spouse
+      at_spm_unit:
+        members:
+        - at
+        - at_spouse
+      above_spm_unit:
+        members:
+        - above
+        - above_spouse
+      individual_below_spm_unit:
+        members:
+        - individual_below
+      individual_at_spm_unit:
+        members:
+        - individual_at
+      individual_above_spm_unit:
+        members:
+        - individual_above
+    marital_units:
+      below_marital_unit:
+        members:
+        - below
+        - below_spouse
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+      at_marital_unit:
+        members:
+        - at
+        - at_spouse
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+      above_marital_unit:
+        members:
+        - above
+        - above_spouse
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+      individual_below_marital_unit:
+        members:
+        - individual_below
+      individual_at_marital_unit:
+        members:
+        - individual_at
+      individual_above_marital_unit:
+        members:
+        - individual_above
+    households:
+      below_household:
+        members:
+        - below
+        - below_spouse
+        state_code:
+          2026: DE
+      at_household:
+        members:
+        - at
+        - at_spouse
+        state_code:
+          2026: DE
+      above_household:
+        members:
+        - above
+        - above_spouse
+        state_code:
+          2026: DE
+      individual_below_household:
+        members:
+        - individual_below
+        state_code:
+          2026: DE
+      individual_at_household:
+        members:
+        - individual_at
+        state_code:
+          2026: DE
+      individual_above_household:
+        members:
+        - individual_above
+        state_code:
+          2026: DE
+  output:
+    medicaid_ltss_csra_resource_eligible:
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+    - true
+    - true
+    - false
+
+- name: Case 4, Washington individual resource boundary is inclusive and assistance unit of two fails closed.
+  period: 2026-07
+  input:
+    people:
+      below:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_individual_countable_resources: 1_999
+      at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_individual_countable_resources: 2_000
+      above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_individual_countable_resources: 2_001
+      unsupported_couple:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_individual_countable_resources: 0
+    tax_units:
+      below_tax_unit:
+        members: [below]
+      at_tax_unit:
+        members: [at]
+      above_tax_unit:
+        members: [above]
+      unsupported_couple_tax_unit:
+        members: [unsupported_couple]
+    families:
+      below_family:
+        members: [below]
+      at_family:
+        members: [at]
+      above_family:
+        members: [above]
+      unsupported_couple_family:
+        members: [unsupported_couple]
+    spm_units:
+      below_spm_unit:
+        members: [below]
+      at_spm_unit:
+        members: [at]
+      above_spm_unit:
+        members: [above]
+      unsupported_couple_spm_unit:
+        members: [unsupported_couple]
+    marital_units:
+      below_marital_unit:
+        members: [below]
+      at_marital_unit:
+        members: [at]
+      above_marital_unit:
+        members: [above]
+      unsupported_couple_marital_unit:
+        members: [unsupported_couple]
+    households:
+      below_household:
+        members: [below]
+        state_code:
+          2026: WA
+      at_household:
+        members: [at]
+        state_code:
+          2026: WA
+      above_household:
+        members: [above]
+        state_code:
+          2026: WA
+      unsupported_couple_household:
+        members: [unsupported_couple]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_financial_pathway:
+      [SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME, UNMODELED]
+    medicaid_ltss_csra_resource_eligible: [true, true, false, false]
+
+- name: Case 5, the CSRA floor controls when half of snapshot resources is lower.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 60_000
+    medicaid_ltss_individual_countable_resources: 2_000
+    medicaid_ltss_non_delaware_community_spouse_countable_resources: 32_532
+  output:
+    medicaid_ltss_csra_resource_eligible: true
+
+- name: Case 6, half of snapshot resources controls between the CSRA bounds.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    medicaid_ltss_individual_countable_resources: 2_000
+    medicaid_ltss_non_delaware_community_spouse_countable_resources: 50_000
+  output:
+    medicaid_ltss_csra_resource_eligible: true
+
+- name: Case 7, the federal CSRA maximum controls when half of snapshot resources is higher.
+  period: 2026-07
+  input:
+    people:
+      at_maximum:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 162_660
+      above_maximum:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400_000
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 162_661
+    tax_units:
+      at_maximum_tax_unit:
+        members: [at_maximum]
+      above_maximum_tax_unit:
+        members: [above_maximum]
+    families:
+      at_maximum_family:
+        members: [at_maximum]
+      above_maximum_family:
+        members: [above_maximum]
+    spm_units:
+      at_maximum_spm_unit:
+        members: [at_maximum]
+      above_maximum_spm_unit:
+        members: [above_maximum]
+    marital_units:
+      at_maximum_marital_unit:
+        members: [at_maximum]
+      above_maximum_marital_unit:
+        members: [above_maximum]
+    households:
+      at_maximum_household:
+        members: [at_maximum]
+        state_code:
+          2026: TX
+      above_maximum_household:
+        members: [above_maximum]
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false]
+
+- name: Case 8, a couple assistance unit with a community spouse flag fails closed.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_non_delaware_assistance_unit_size: 2
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_individual_countable_resources: 0
+    medicaid_ltss_non_delaware_community_spouse_countable_resources: 0
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 0
+  output:
+    medicaid_ltss_csra_resource_eligible: false
+
+- name: Case 9, one dollar above the CSRA floor allowance fails.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 60_000
+    medicaid_ltss_individual_countable_resources: 2_000
+    medicaid_ltss_non_delaware_community_spouse_countable_resources: 32_533
+  output:
+    medicaid_ltss_csra_resource_eligible: false
+
+- name: Case 10, one dollar above the half-of-snapshot allowance fails.
+  period: 2026-07
+  input:
+    state_code:
+      2026: TX
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    medicaid_ltss_individual_countable_resources: 2_000
+    medicaid_ltss_non_delaware_community_spouse_countable_resources: 50_001
+  output:
+    medicaid_ltss_csra_resource_eligible: false
+
+- name: Case 11, half of snapshot resources ties the Washington state minimum.
+  period: 2026-07
+  input:
+    people:
+      at_tie:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 145_058
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 72_529
+      above_tie:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 145_058
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 72_530
+    tax_units:
+      at_tie_tax_unit:
+        members: [at_tie]
+      above_tie_tax_unit:
+        members: [above_tie]
+    families:
+      at_tie_family:
+        members: [at_tie]
+      above_tie_family:
+        members: [above_tie]
+    spm_units:
+      at_tie_spm_unit:
+        members: [at_tie]
+      above_tie_spm_unit:
+        members: [above_tie]
+    marital_units:
+      at_tie_marital_unit:
+        members: [at_tie]
+      above_tie_marital_unit:
+        members: [above_tie]
+    households:
+      at_tie_household:
+        members: [at_tie]
+        state_code:
+          2026: WA
+      above_tie_household:
+        members: [above_tie]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false]
+
+- name: Case 12, a genuine two-person institutionalized couple uses the couple limit.
+  period: 2026-07
+  input:
+    people:
+      first_spouse_at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_individual_countable_resources: 1500.0
+      second_spouse_at:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_individual_countable_resources: 1500.0
+      first_spouse_above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_individual_countable_resources: 1500.5
+      second_spouse_above:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_individual_countable_resources: 1500.5
+    tax_units:
+      couple_at_tax_unit:
+        members:
+        - first_spouse_at
+        - second_spouse_at
+      couple_above_tax_unit:
+        members:
+        - first_spouse_above
+        - second_spouse_above
+    families:
+      couple_at_family:
+        members:
+        - first_spouse_at
+        - second_spouse_at
+      couple_above_family:
+        members:
+        - first_spouse_above
+        - second_spouse_above
+    spm_units:
+      couple_at_spm_unit:
+        members:
+        - first_spouse_at
+        - second_spouse_at
+      couple_above_spm_unit:
+        members:
+        - first_spouse_above
+        - second_spouse_above
+    marital_units:
+      couple_at_marital_unit:
+        members:
+        - first_spouse_at
+        - second_spouse_at
+      couple_above_marital_unit:
+        members:
+        - first_spouse_above
+        - second_spouse_above
+    households:
+      couple_at_household:
+        members:
+        - first_spouse_at
+        - second_spouse_at
+        state_code:
+          2026: TX
+      couple_above_household:
+        members:
+        - first_spouse_above
+        - second_spouse_above
+        state_code:
+          2026: TX
+  output:
+    medicaid_ltss_financial_pathway:
+    - SPECIAL_INCOME
+    - SPECIAL_INCOME
+    - SPECIAL_INCOME
+    - SPECIAL_INCOME
+    medicaid_ltss_csra_resource_eligible:
+    - true
+    - true
+    - false
+    - false
+
+- name: Case 13, the federal minimum governs over the Delaware state spousal share.
+  period: 2026-07
+  input:
+    people:
+      at_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 50000
+        medicaid_ltss_individual_countable_resources: 2000
+      above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 50000
+        medicaid_ltss_individual_countable_resources: 2000
+      at_allowance_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 32532
+      above_allowance_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 32533
+    households:
+      household:
+        members:
+        - at_allowance
+        - above_allowance
+        - at_allowance_spouse
+        - above_allowance_spouse
+        state_code:
+          2026: DE
+    marital_units:
+      at_allowance:
+        members:
+        - at_allowance
+        - at_allowance_spouse
+      above_allowance:
+        members:
+        - above_allowance
+        - above_allowance_spouse
+  output:
+    medicaid_ltss_csra_resource_eligible:
+    - true
+    - false
+    - false
+    - false
+
+- name: Case 14, half of snapshot resources governs between the Delaware CSRA bounds.
+  period: 2026-07
+  input:
+    people:
+      at_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2000
+      above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2000
+      at_allowance_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 50000
+      above_allowance_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 50001
+    households:
+      household:
+        members:
+        - at_allowance
+        - above_allowance
+        - at_allowance_spouse
+        - above_allowance_spouse
+        state_code:
+          2026: DE
+    marital_units:
+      at_allowance:
+        members:
+        - at_allowance
+        - at_allowance_spouse
+      above_allowance:
+        members:
+        - above_allowance
+        - above_allowance_spouse
+  output:
+    medicaid_ltss_csra_resource_eligible:
+    - true
+    - false
+    - false
+    - false
+
+- name: Case 15, the federal CSRA maximum caps the Delaware allowance.
+  period: 2026-07
+  input:
+    people:
+      at_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400000
+        medicaid_ltss_individual_countable_resources: 2000
+      above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400000
+        medicaid_ltss_individual_countable_resources: 2000
+      at_allowance_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 162660
+      above_allowance_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 162661
+    households:
+      household:
+        members:
+        - at_allowance
+        - above_allowance
+        - at_allowance_spouse
+        - above_allowance_spouse
+        state_code:
+          2026: DE
+    marital_units:
+      at_allowance:
+        members:
+        - at_allowance
+        - at_allowance_spouse
+      above_allowance:
+        members:
+        - above_allowance
+        - above_allowance_spouse
+  output:
+    medicaid_ltss_csra_resource_eligible:
+    - true
+    - false
+    - false
+    - false
+
+- name: Case 16, the Washington state spousal resource standard binds above half of snapshot resources.
+  period: 2026-07
+  input:
+    people:
+      at_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 72_529
+      above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 72_530
+    households:
+      household:
+        members: [at_allowance, above_allowance]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false]
+
+- name: Case 17, half of snapshot resources governs between the Washington CSRA bounds.
+  period: 2026-07
+  input:
+    people:
+      at_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 200_000
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 100_000
+      above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 200_000
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 100_001
+    households:
+      household:
+        members: [at_allowance, above_allowance]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false]
+
+- name: Case 18, the federal CSRA maximum caps the Washington allowance.
+  period: 2026-07
+  input:
+    people:
+      at_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400_000
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 162_660
+      above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400_000
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 162_661
+    households:
+      household:
+        members: [at_allowance, above_allowance]
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra_resource_eligible: [true, false]
+
+- name: Case 19, continuing Delaware eligibility ignores community spouse resources above the initial allowance.
+  period: 2026-07
+  input:
+    people:
+      applicant:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: false
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2000
+      applicant_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 60000
+    households:
+      household:
+        members:
+        - applicant
+        - applicant_spouse
+        state_code:
+          2026: DE
+    marital_units:
+      applicant:
+        members:
+        - applicant
+        - applicant_spouse
+  output:
+    medicaid_ltss_csra_resource_eligible:
+    - true
+    - false
+
+- name: Case 20, continuing Delaware eligibility cannot shelter excess applicant resources in an unused CSRA.
+  period: 2026-07
+  input:
+    people:
+      applicant:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: false
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2001
+      applicant_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 0
+    households:
+      household:
+        members:
+        - applicant
+        - applicant_spouse
+        state_code:
+          2026: DE
+    marital_units:
+      applicant:
+        members:
+        - applicant
+        - applicant_spouse
+  output:
+    medicaid_ltss_csra_resource_eligible:
+    - false
+    - false
+
+- name: Case 21, explicit initial Delaware eligibility tests combined current resources after CSRA.
+  period: 2026-07
+  input:
+    people:
+      spouse_resources_above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2000
+      resources_available_for_transfer:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2001
+      spouse_resources_above_allowance_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 60000
+      resources_available_for_transfer_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 0
+    households:
+      household:
+        members:
+        - spouse_resources_above_allowance
+        - resources_available_for_transfer
+        - spouse_resources_above_allowance_spouse
+        - resources_available_for_transfer_spouse
+        state_code:
+          2026: DE
+    marital_units:
+      spouse_resources_above_allowance:
+        members:
+        - spouse_resources_above_allowance
+        - spouse_resources_above_allowance_spouse
+      resources_available_for_transfer:
+        members:
+        - resources_available_for_transfer
+        - resources_available_for_transfer_spouse
+  output:
+    medicaid_ltss_csra_resource_eligible:
+    - false
+    - true
+    - false
+    - false
+
+- name: Case 22, an omitted determination input preserves initial Delaware resource treatment.
+  period: 2026-07
+  input:
+    people:
+      spouse_resources_above_allowance:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2000
+      resources_available_for_transfer:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2001
+      spouse_resources_above_allowance_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 60000
+      resources_available_for_transfer_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 0
+    households:
+      household:
+        members:
+        - spouse_resources_above_allowance
+        - resources_available_for_transfer
+        - spouse_resources_above_allowance_spouse
+        - resources_available_for_transfer_spouse
+        state_code:
+          2026: DE
+    marital_units:
+      spouse_resources_above_allowance:
+        members:
+        - spouse_resources_above_allowance
+        - spouse_resources_above_allowance_spouse
+      resources_available_for_transfer:
+        members:
+        - resources_available_for_transfer
+        - resources_available_for_transfer_spouse
+  output:
+    medicaid_ltss_is_initial_eligibility_determination:
+    - true
+    - true
+    - true
+    - true
+    medicaid_ltss_csra_resource_eligible:
+    - false
+    - true
+    - false
+    - false
+
+- name: Case 23, continuing community spouse eligibility still rejects a couple assistance unit.
+  period: 2026-07
+  input:
+    people:
+      applicant:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: false
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2001
+      spouse:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_individual_countable_resources: 0
+    households:
+      household:
+        members:
+        - applicant
+        - spouse
+        state_code:
+          2026: DE
+    marital_units:
+      couple:
+        members:
+        - applicant
+        - spouse
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+  output:
+    medicaid_ltss_assistance_unit_size:
+    - 2
+    - 2
+    medicaid_ltss_csra_resource_eligible:
+    - false
+    - true
+
+- name: Case 24, Washington re-entry uses the July 2026 snapshot after a qualifying break.
+  period: 2026-09
+  input:
+    state_code:
+      2026: WA
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_is_initial_eligibility_determination: true
+    # First episode in 2024; a break of at least 30 consecutive days precedes
+    # the July 2026 episode, whose beginning-month snapshot is $400,000.
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400_000
+    # By the September initial determination, lawful depletion leaves these
+    # current resources. The new period's CSRA is capped at $162,660.
+    medicaid_ltss_individual_countable_resources: 2_000
+    medicaid_ltss_non_delaware_community_spouse_countable_resources: 98_000
+  output:
+    medicaid_ltss_csra_resource_eligible: true
+
+- name: Case 25, Washington re-entry control passes even against the earlier snapshot allowance.
+  period: 2026-09
+  input:
+    state_code:
+      2026: WA
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_waiver: NONE
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_is_initial_eligibility_determination: true
+    # Same 2024 first episode and July 2026 re-entry as Case 24, with fewer
+    # community-spouse resources at the September determination.
+    medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100_000
+    wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400_000
+    medicaid_ltss_individual_countable_resources: 2_000
+    medicaid_ltss_non_delaware_community_spouse_countable_resources: 72_529
+  output:
+    medicaid_ltss_csra_resource_eligible: true
+
+- name: Case 26, only Washington replaces the first-period snapshot after re-entry.
+  period: 2026-09
+  input:
+    people:
+      at_wa_floor:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 72529
+      above_wa_floor:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 400000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 72530
+      at_tx_half:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400000
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 50000
+      above_tx_half:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400000
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 50001
+      at_de_half:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400000
+        medicaid_ltss_individual_countable_resources: 2000
+      above_de_half:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_waiver: NONE
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 400000
+        medicaid_ltss_individual_countable_resources: 2000
+      at_de_half_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 50000
+      above_de_half_spouse:
+        is_ssi_aged_blind_disabled:
+          '2026': false
+        medicaid_ltss_individual_countable_resources: 50001
+    households:
+      wa_household:
+        members:
+        - at_wa_floor
+        - above_wa_floor
+        state_code:
+          2026: WA
+      tx_household:
+        members:
+        - at_tx_half
+        - above_tx_half
+        state_code:
+          2026: TX
+      de_household:
+        members:
+        - at_de_half
+        - above_de_half
+        - at_de_half_spouse
+        - above_de_half_spouse
+        state_code:
+          2026: DE
+    marital_units:
+      at_wa_floor:
+        members:
+        - at_wa_floor
+      above_wa_floor:
+        members:
+        - above_wa_floor
+      at_tx_half:
+        members:
+        - at_tx_half
+      above_tx_half:
+        members:
+        - above_tx_half
+      at_de_half:
+        members:
+        - at_de_half
+        - at_de_half_spouse
+      above_de_half:
+        members:
+        - above_de_half
+        - above_de_half_spouse
+  output:
+    medicaid_ltss_csra_resource_eligible:
+    - true
+    - false
+    - true
+    - false
+    - true
+    - false
+    - false
+    - false
+
+- name: Case 27, Washington continuous July 2003 period receives the federal maximum at a September 2026 initial application.
+  period: 2026-09
+  input:
+    state_code:
+      2026: WA
+    medicaid_ltss_setting: INSTITUTIONAL
+    is_ssi_aged_blind_disabled:
+      2026: true
+    medicaid_ltss_non_delaware_assistance_unit_size: 1
+    medicaid_ltss_has_community_spouse: true
+    medicaid_ltss_is_initial_eligibility_determination: true
+    wa_medicaid_ltss_most_recent_institutionalization_start_year: 2003
+    wa_medicaid_ltss_most_recent_institutionalization_start_month: 7
+    wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+    medicaid_ltss_individual_countable_resources: 2_000
+    medicaid_ltss_non_delaware_community_spouse_countable_resources: 98_000
+  output:
+    medicaid_ltss_csra: 162_660
+    medicaid_ltss_csra_resource_eligible: true
+
+- name: Case 28, Washington applies the modern allocation on August 1 2003 and afterward, and the maximum from October 1 1989.
+  period: 2026-09
+  input:
+    people:
+      applicant_1:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2003
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 8
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 98000
+      applicant_2:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2026
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 7
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 98000
+      applicant_3:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 10
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 98000
+    marital_units:
+      applicant_1:
+        members:
+        - applicant_1
+      applicant_2:
+        members:
+        - applicant_2
+      applicant_3:
+        members:
+        - applicant_3
+    households:
+      household:
+        members:
+        - applicant_1
+        - applicant_2
+        - applicant_3
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra:
+    - 72529
+    - 72529
+    - 162660
+    medicaid_ltss_csra_resource_eligible:
+    - false
+    - false
+    - true
+
+- name: Case 29, Washington pre-October 1989 periods count half of applicant-sole and jointly titled balances at initial and continuing determinations.
+  period: 2026-09
+  input:
+    people:
+      applicant_1:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_individual_countable_resources: 10000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 900000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 1000000
+        wa_medicaid_ltss_solely_owned_countable_resources: 4000
+        wa_medicaid_ltss_jointly_owned_countable_resources: 0
+      applicant_2:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: false
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_individual_countable_resources: 10000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 900000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 1000000
+        wa_medicaid_ltss_solely_owned_countable_resources: 4001
+        wa_medicaid_ltss_jointly_owned_countable_resources: 0
+      applicant_3:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_individual_countable_resources: 10000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 900000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 1000000
+        wa_medicaid_ltss_solely_owned_countable_resources: 0
+        wa_medicaid_ltss_jointly_owned_countable_resources: 4000
+      applicant_4:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: false
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_individual_countable_resources: 10000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 900000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 1000000
+        wa_medicaid_ltss_solely_owned_countable_resources: 0
+        wa_medicaid_ltss_jointly_owned_countable_resources: 4001
+      applicant_5:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_individual_countable_resources: 10000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 900000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 1000000
+        wa_medicaid_ltss_solely_owned_countable_resources: 2000
+        wa_medicaid_ltss_jointly_owned_countable_resources: 2000
+      applicant_6:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: false
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_individual_countable_resources: 10000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 900000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 1000000
+        wa_medicaid_ltss_solely_owned_countable_resources: 2000
+        wa_medicaid_ltss_jointly_owned_countable_resources: 2001
+    marital_units:
+      applicant_1:
+        members:
+        - applicant_1
+      applicant_2:
+        members:
+        - applicant_2
+      applicant_3:
+        members:
+        - applicant_3
+      applicant_4:
+        members:
+        - applicant_4
+      applicant_5:
+        members:
+        - applicant_5
+      applicant_6:
+        members:
+        - applicant_6
+    households:
+      household:
+        members:
+        - applicant_1
+        - applicant_2
+        - applicant_3
+        - applicant_4
+        - applicant_5
+        - applicant_6
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra: 0
+    medicaid_ltss_csra_resource_eligible:
+    - true
+    - false
+    - true
+    - false
+    - true
+    - false
+
+- name: Case 30, invalid or future Washington onset facts fail closed.
+  period: 2026-09
+  input:
+    people:
+      applicant_1:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2003
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 0
+      applicant_2:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2003
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 13
+      applicant_3:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 0
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 8
+      applicant_4:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2027
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 1
+    marital_units:
+      applicant_1:
+        members:
+        - applicant_1
+      applicant_2:
+        members:
+        - applicant_2
+      applicant_3:
+        members:
+        - applicant_3
+      applicant_4:
+        members:
+        - applicant_4
+    households:
+      household:
+        members:
+        - applicant_1
+        - applicant_2
+        - applicant_3
+        - applicant_4
+        state_code:
+          2026: WA
+  output:
+    medicaid_ltss_csra_resource_eligible:
+    - false
+    - false
+    - false
+    - false
