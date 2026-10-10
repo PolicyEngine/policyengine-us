@@ -1,0 +1,14 @@
+description: Minnesota computes tax for the year of repayment as the lesser of the tax with a deduction for the repayment and the tax without it less the resulting decrease in prior-year Minnesota tax, when the repayment of income held under a claim of right exceeds this amount.
+values:
+  2021-01-01: 3_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Minnesota claim of right repayment threshold
+  reference:
+    - title: Minn. Stat. 290.07, subdivision 4
+      href: https://www.revisor.mn.gov/statutes/cite/290.07
+    - title: Minn. R. 8007.0300, subpart 1
+      href: https://www.revisor.mn.gov/rules/8007.0300/
+    - title: 2025 Schedule M1REF, line 11
+      href: https://www.revenue.state.mn.us/sites/default/files/2025-12/m1ref-25.pdf#page=3

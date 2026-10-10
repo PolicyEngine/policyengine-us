@@ -12,16 +12,19 @@ class ca_itemized_deductions_pre_limitation(Variable):
         "https://www.ftb.ca.gov/forms/2022/2022-540-ca-instructions.html",
         # Schedule CA (540) Part II line 16, claim of right
         "https://www.ftb.ca.gov/forms/2025/2025-540-ca-instructions.html",
+        # 2025 Form 540 booklet, Schedule CA (540) instructions, line 16
+        "https://www.ftb.ca.gov/forms/2025/2025-540-booklet.pdf#page=67",
     )
     defined_for = StateCode.CA
 
+    # California chooses between its own claim of right deduction and credit
+    # whichever method federal tax used (Cal. Rev. & Tax. Code 17049), so the
+    # federal repayment deduction comes out (Schedule CA (540), Part II, line
+    # 16, column B) and California's goes in (column C).
     adds = [
         "itemized_deductions_less_salt",
         "ca_investment_interest_expense_deduction",
         "real_estate_taxes",
+        "ca_claim_of_right_deduction",
     ]
-    # California chooses between its own claim of right deduction and credit
-    # whichever method federal tax used, and allows neither for income it did
-    # not tax, so the federal deduction does not carry over. California's own
-    # rule is not modeled.
     subtracts = ["investment_interest_expense", "claim_of_right_deduction"]

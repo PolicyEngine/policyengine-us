@@ -12,6 +12,10 @@ class mn_itemized_deductions(Variable):
         "https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_inst_21.pdf",
         "https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_22.pdf",
         "https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-22.pdf",
+        # Minn. Stat. 290.0122, subdivision 9(4)
+        "https://www.revisor.mn.gov/statutes/cite/290.0122",
+        # 2025 Schedule M1SA instructions, line 24
+        "https://www.revenue.state.mn.us/sites/default/files/2025-12/m1sa-25_0.pdf#page=7",
     )
     defined_for = StateCode.MN
 
@@ -24,7 +28,17 @@ class mn_itemized_deductions(Variable):
         # ... calculate pre-limitation itemized deductions
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
         capped_property_taxes = tax_unit("capped_property_taxes", period)
-        mn_itm_deds = itm_deds_less_salt + capped_property_taxes
+        # Minnesota computes its own claim of right method (Minn. Stat.
+        # 290.07, subdivision 4), so its deduction under section 1341
+        # (Minn. Stat. 290.0122, subdivision 9(4)) replaces the federal one.
+        federal_claim_of_right = tax_unit("claim_of_right_deduction", period)
+        mn_claim_of_right = tax_unit("mn_claim_of_right_deduction", period)
+        mn_itm_deds = (
+            itm_deds_less_salt
+            - federal_claim_of_right
+            + mn_claim_of_right
+            + capped_property_taxes
+        )
         # ... calculate itemized deductions offset
         p = parameters(period).gov.states.mn.tax.income.deductions.itemized
         exempt_deds = add(

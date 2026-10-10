@@ -3,15 +3,21 @@ values:
   2021-01-01:
     - ca_eitc
     - ca_yctc
+    - ca_claim_of_right_credit
   2022-01-01:
     - ca_foster_youth_tax_credit
     - ca_eitc
     - ca_yctc
     - ca_sf_wftc
+    - ca_claim_of_right_credit
 metadata:
   reference:
     - title: California Form 540
       href: "https://www.ftb.ca.gov/forms/Search/Home/Confirmation"
+    - title: Cal. Rev. & Tax. Code 17049(b), claim of right credit, as amended by Stats. 2005, ch. 349 (AB 1767)
+      href: https://www.leginfo.ca.gov/pub/05-06/bill/asm/ab_1751-1800/ab_1767_bill_20050922_chaptered.html
+    - title: 2025 Form 540 booklet, line 78, Claim of Right
+      href: https://www.ftb.ca.gov/forms/2025/2025-540-booklet.pdf#page=17
     # San Francisco working families tax credit
     - title: CHAPTER 12S-SEC. 12S.1. WORKING FAMILIES CREDIT PROGRAM
       href: https://codelibrary.amlegal.com/codes/san_francisco/latest/sf_admin/0-0-0-8675
