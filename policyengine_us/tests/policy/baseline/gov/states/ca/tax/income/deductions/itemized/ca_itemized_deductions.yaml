@@ -51,3 +51,26 @@
     ca_itemized_deductions_pre_limitation: 10_000
   output:
     ca_itemized_deductions: 7_000  # charity subject to limitation
+
+# 2024 Schedule CA (540) instructions, line 29 worksheet (Form 540 booklet,
+# PDF p. 68): line 2 takes medical expenses, investment interest, casualty and
+# theft losses and gambling losses out before the 80%/6% limitation. Cal. Rev.
+# & Tax. Code 17077 adopts 26 U.S.C. 68, which leaves 165(c)(3) losses out.
+- name: California casualty loss is not subject to the high-AGI limitation
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    adjusted_gross_income: 244_857 + 50_000
+    ca_charitable_deduction: 1_000
+    casualty_loss: 40_000
+  output:
+    # Form 4684: (40,000 - 100) - 10% x 294,857 = 39,900 - 29,485.70
+    ca_casualty_loss_deduction: 10_414.30
+    ca_itemized_deductions_pre_limitation: 11_414.30
+    # Worksheet: line 3 = 11,414.30 - 10,414.30 = 1,000; line 4 = 80% x 1,000
+    # = 800; line 8 = 6% x 50,000 = 3,000; line 9 = 800.
+    # 11,414.30 - 800. Were the loss limited too, line 4 would be 9,131.44,
+    # line 9 would be 3,000 and the result 8,414.30.
+    ca_itemized_deductions: 10_614.30
