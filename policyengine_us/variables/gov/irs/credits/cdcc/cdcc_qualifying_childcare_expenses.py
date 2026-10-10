@@ -17,14 +17,14 @@ class cdcc_qualifying_childcare_expenses(Variable):
         # IRC 21(b)(2)(A)(ii) counts only expenses "for the care of a
         # qualifying individual". A return on which a filer can be claimed as
         # a dependent (outside the claimant filing exception) has no
-        # qualifying child under 13 unless the child is incapable of
-        # self-care, so its childcare expenses do not count. The model records
-        # childcare as a tax-unit total, so it cannot leave out one child's
-        # share when another child qualifies.
-        p = parameters(period).gov.irs.credits.cdcc.eligibility
+        # qualifying child unless the child is incapable of self-care, so its
+        # childcare expenses do not count otherwise. Childcare expenses are
+        # those of the tax unit's children under 18, recorded as a tax-unit
+        # total, so one child's share cannot be left out when another child
+        # qualifies.
         person = tax_unit.members
-        qualifying_child = person("is_cdcc_eligible", period) & (
-            person("age", period) < p.child_age
+        qualifying_child = person("is_cdcc_eligible", period) & person(
+            "is_child", period
         )
         dependent_filer = tax_unit(
             "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
