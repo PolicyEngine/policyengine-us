@@ -190,6 +190,9 @@
         ca_care_categorically_eligible: false
         tenant_pays_utilities: false
   output:
+    # Countable income is $30,000 in annual wages. The two $23 SNAP
+    # minimum allotments in November and December are excluded under
+    # 7 USC 2017(b): $30,000 + $0 counted SNAP = $30,000.
     ca_cpuc_countable_income: 30_000
     ca_care_income_eligible: true
     # The model's CARE gate treats a household with utilities included in

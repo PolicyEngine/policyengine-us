@@ -5,7 +5,16 @@ AL:
 AZ:
   2015-10-01: false
 CA:
-  2015-10-01: true
+  # Elderly or disabled households with gross income at or below 200% of the
+  # poverty line are conferred MCE like any other household, and MCE has no
+  # net income test (CDSS ACL 13-32 note; ACL 15-42). Those above 200% are
+  # not MCE and face the regular net income and resource tests instead,
+  # which gross_hheod.yaml routes them to.
+  # ACL 11-11 expanded MCE to all non-assistance CalFresh households on
+  # 2011-02-01. Retain 2015-10-01 as this model's BBCE baseline, matching
+  # the surrounding California gross, asset, and poverty-year parameters;
+  # this flag alone does not establish modeled eligibility in 2011.
+  2015-10-01: false
 CO:
   2015-10-01: true
   2024-07-01: false
@@ -104,5 +113,23 @@ metadata:
       href: https://www.snapscreener.com/?p=table
     - title: USDA ERS SNAP Policy Database (bbce_elddisinclmt column, Jan 1996 - Dec 2020)
       href: https://www.ers.usda.gov/data-products/snap-policy-data-sets
+    - title: CDSS All County Letter 13-32, MCE/BBCE and elderly/disabled CalFresh households
+      href: https://www.cdss.ca.gov/lettersnotices/EntRes/getinfo/acl/2013/13-32.pdf#page=3
+    - title: "CDSS All County Letter 14-56, CalFresh Modified Categorical Eligibility #page 2,4"
+      href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2014/14-56.pdf#page=2
+    - title: CDSS All County Letter 14-63, CalFresh households eligible but entitled to no benefits
+      href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2014/14-63.pdf#page=2
+    - title: CDSS All County Letter 15-42, MCE gross income limit and income reporting thresholds
+      href: https://www.cdss.ca.gov/lettersnotices/EntRes/getinfo/acl/2015/15-42.pdf#page=4
+    - title: CDSS Manual of Policies and Procedures 63-409.1, requirements for participation
+      href: https://www.cdss.ca.gov/ord/entres/getinfo/pdf/fsman04b.pdf#page=34
+    - title: CDSS June 30, 2014 letter, CalFresh Modified Categorical Eligibility
+      href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/coletters/calfreshmodifiedcategoricaleligibility.pdf#page=3
+    - title: CDSS All County Letter 11-11, statewide expansion of MCE to all NACF households
+      href: https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2011/11-11.pdf
+    - title: 7 CFR 273.2(j)(2)(xi), categorical eligibility exemptions
+      href: https://www.law.cornell.edu/cfr/text/7/273.2#j_2_xi
+    - title: 7 CFR 273.9(a), income eligibility standards
+      href: https://www.law.cornell.edu/cfr/text/7/273.9#a
   breakdown:
   - state_code

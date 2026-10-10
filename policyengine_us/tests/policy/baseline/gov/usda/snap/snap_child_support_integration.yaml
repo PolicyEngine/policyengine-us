@@ -46,6 +46,9 @@
     spm_units:
       spm_unit:
         members: [head]
+        # Isolate California MCE from the separate heat-and-eat change.
+        # No utility costs are entered and this case assumes no allowance.
+        snap_utility_allowance: 0
     households:
       household:
         members: [head]
@@ -54,8 +57,19 @@
     snap_child_support_gross_income_deduction: 433.33
     snap_gross_income: 2_589.63
     snap_child_support_deduction: 0
+    # The earned deduction uses full wages under 7 CFR 273.9(d)(2):
+    # $36,275.59 / 12 x 20% = $604.5931667, before excluding child support.
+    snap_earned_income_deduction: 604.59
+    # Net before shelter: $2,589.6325 - $604.5931667 - $209 = $1,776.0393333.
+    snap_net_income_pre_shelter: 1_776.04
+    # Rent $880 is below half-net $888.0196667, so shelter deduction is zero.
+    snap_excess_shelter_expense_deduction: 0
+    snap_net_income: 1_776
+    meets_snap_net_income_test: false
     meets_snap_categorical_eligibility: true
     is_snap_eligible: true
+    # MCE retains the one-person minimum: $298 - ceil(30% x $1,776)
+    # = $298 - $533 = -$235, raised to $24 (CDSS MCE letter, page 3).
     snap: 24
 
 - name: New York excludes child support from gross income and does not deduct it again from net income.
