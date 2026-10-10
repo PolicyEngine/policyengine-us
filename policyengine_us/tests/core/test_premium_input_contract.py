@@ -12,7 +12,8 @@ premiums as medical expenses, also leaving renters' refund income unchanged.
 Federal taxable and FICA wages, ACA/Medicaid MAGI, and tax deductions that
 exclude pretax premiums distinguish the payment methods. SSI also excludes
 qualified salary-reduction premiums from wages before its earned-income
-disregard. Program premiums and
+disregard. The SGA work-earnings test retains payroll premium deductions.
+Program premiums and
 eligibility are held fixed here: changing MAGI can otherwise legitimately change
 Marketplace, CHIP or Medicaid premiums, obscuring the spending invariant.
 
@@ -168,6 +169,7 @@ def test_premium_transfer_respects_each_consumers_tax_treatment(batch):
         ("mi_household_resources", YEAR),
         ("nd_renters_refund_income", YEAR),
         ("agi_surtax", YEAR),
+        ("ssi_engaged_in_sga", YEAR),
     )
     for variable, period in invariant_consumers:
         np.testing.assert_allclose(
