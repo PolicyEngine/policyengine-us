@@ -31,9 +31,11 @@ change the tax-benefit system rather than inputs: the caller swaps the system
 and deletes the variables it recalculates.
 """
 
+from functools import wraps
 from typing import Dict, Set, Tuple, Union
 
 import numpy as np
+from policyengine_core.holders import Holder
 from policyengine_core.periods import ETERNITY, Period
 from policyengine_core.periods import period as to_period
 from policyengine_core.simulations import Simulation
@@ -81,9 +83,9 @@ def has_input_for_period(simulation: Simulation, variable: str, period: Period) 
     from its ancestors, whether the nearer value was supplied or calculated.
     Sibling inputs and inputs from another period do not apply.
 
-    Call before calculating the queried variable. Core retains input keys
-    after deleting an array; a subsequently computed cache at that same key
-    cannot be distinguished from the deleted input by this metadata.
+    The deletion compatibility wrapper below clears the provenance of
+    deleted inputs before recalculation, including for Core simulations and
+    direct holder deletion.
     """
     period = to_period(period)
     holder = simulation.get_holder(variable)
@@ -97,6 +99,48 @@ def has_input_for_period(simulation: Simulation, variable: str, period: Period) 
         if (branch_name, period) in stored_keys:
             return (variable, branch_name, period) in input_keys
     return False
+
+
+def _track_input_deletion(delete_arrays):
+    """Keep Core's input provenance in sync with its holder deletion.
+
+    Core shares input keys across cloned simulations, but deleting an array
+    only changes the caller's holder storage. Replace its key set so the
+    parent's, siblings', and existing children's provenance stays intact.
+    Delegate storage deletion unchanged and reconcile only the requested
+    variable and branch. This compatibility hook is needed until Core
+    removes deleted inputs from ``_user_input_keys`` itself.
+    """
+
+    @wraps(delete_arrays)
+    def delete_with_provenance(holder, period=None, branch_name="default"):
+        result = delete_arrays(holder, period, branch_name)
+        simulation = holder.simulation
+        input_keys = getattr(simulation, "_user_input_keys", set())
+        tracked_keys = {
+            key
+            for key in input_keys
+            if key[0] == holder.variable.name and key[1] == branch_name
+        }
+        if not tracked_keys:
+            return result
+        stored_keys = set(holder.get_known_branch_periods())
+        eternal = holder.variable.definition_period == ETERNITY
+        deleted_keys = {
+            key
+            for key in tracked_keys
+            if (key[1], to_period(ETERNITY) if eternal else key[2]) not in stored_keys
+        }
+        if deleted_keys:
+            simulation._user_input_keys = input_keys - deleted_keys
+        return result
+
+    delete_with_provenance._tracks_input_deletion = True
+    return delete_with_provenance
+
+
+if not getattr(Holder.delete_arrays, "_tracks_input_deletion", False):
+    Holder.delete_arrays = _track_input_deletion(Holder.delete_arrays)
 
 
 def drop_inherited_values(branch: Simulation) -> None:
