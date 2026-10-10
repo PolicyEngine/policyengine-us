@@ -82,3 +82,40 @@
     # Earned $250 → bracket 1 (251-500) → $6
     # Unearned $250 → bracket 1 (251-500) → $19
     # Total: $6 + $19 = $25
+
+- name: Case 7, married couple both disabled, each premium uses only their own withholding.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        employment_income: 25_200  # $2,100/month
+      person2:
+        age: 40
+        is_disabled: true
+        employment_income: 25_200  # $2,100/month
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+  output:
+    il_hbwd_eligible: [true, true]
+    # Each: 2,100 - (92.19 own IL withholding + 130.20 Social Security tax)
+    #   - 25 (flat) - 50 (20 + 0.5 x 60) = 1,802.61
+    il_hbwd_countable_earned_income: [1_802.61, 1_802.61]
+    il_hbwd_countable_unearned_income: [0, 0]
+    il_hbwd_premium: [44, 44]
+    # Earned $1,802.61 → bracket 7 (1751-2000) → $44
+    # Unearned $0 → bracket 0 → $0
+    # Deducting the couple's combined withholding would give 1,710.41 → $38
