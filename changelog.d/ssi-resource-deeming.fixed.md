@@ -1,0 +1,1 @@
+Deem SSI resources from cohabiting ineligible spouses and parents, apply the couple limit to spousal deeming, and use reformable parental resource allowances with eligible-child allocation and exceptions.

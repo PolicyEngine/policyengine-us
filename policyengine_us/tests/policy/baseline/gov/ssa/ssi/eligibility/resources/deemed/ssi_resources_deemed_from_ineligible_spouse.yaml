@@ -1,0 +1,136 @@
+# 20 CFR 416.1202(a) deems ineligible spouse resources after exclusions.
+# Paragraph (a) excludes pension funds and qualified unspent retroactive military
+# special pay/family separation allowance for the nine-month exclusion period.
+# https://www.ecfr.gov/current/title-20/section-416.1202
+# The military input certifies the pay type, unspent amount and exclusion period.
+# Countable-resource inputs already exclude pension funds; the model has no
+# dedicated pension-account stock variable. The asset-source case checks liquid
+# assets plus the existing home/vehicle exclusions.
+
+# 20 CFR 416.1202(a): all spouse countable resources are deemed regardless of availability.
+- name: All countable resources held by the ineligible spouse are deemed
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 3001
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    ssi_resources_deemed_from_ineligible_spouse: [3001, 0]
+    meets_ssi_resource_test: [false, false]
+
+# 20 CFR 416.1202(a)(2)-(3): certified qualified unspent retroactive military pay is excluded.
+- name: Qualified unspent military retroactive pay is excluded from spousal resources
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 4000
+        ssi_resource_deeming_excluded_military_resources: 1000
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    ssi_resources_deemed_from_ineligible_spouse: [3000, 0]
+    meets_ssi_resource_test: [true, false]
+
+# 20 CFR 416.1202(a): excluded resources cannot leave negative resources to deem.
+- name: Excluding military resources cannot produce negative spousal deeming
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 1000
+        ssi_resource_deeming_excluded_military_resources: 1500
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    ssi_resources_deemed_from_ineligible_spouse: [0, 0]
+
+# 20 CFR 416.1202(a), 416.1210: count liquid assets and retain existing asset exclusions.
+- name: Spouse liquid asset sources count while home and one vehicle remain excluded
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        bank_account_assets:
+          '2026': 1000
+        stock_assets:
+          '2026': 1500
+        bond_assets:
+          '2026': 501
+        primary_residence_value:
+          '2026': 500000
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+        household_vehicles_value:
+          '2026': 3000
+  output:
+    ssi_countable_resources: [0, 3001]
+    ssi_resources_deemed_from_ineligible_spouse: [3001, 0]
+    meets_ssi_resource_test: [false, false]

@@ -1,0 +1,189 @@
+# 20 CFR 416.1202(a): an eligible individual living with an ineligible spouse.
+# https://www.ecfr.gov/current/title-20/section-416.1202
+# The resource rule is independent of the income deeming threshold.
+
+# 20 CFR 416.1202(a): resources are deemed independently of an income threshold.
+- name: ABD claimant with an ineligible spouse applies resource deeming without income
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [true, false]
+
+# 20 CFR 416.1202(a): the spouse must be ineligible; joint claims retain the couple test.
+- name: Both ABD spouses jointly claiming do not apply ineligible spouse resource deeming
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, false]
+
+# 20 CFR 416.1202(c): an eligible individual must be aged, blind, or disabled.
+- name: Neither spouse ABD does not apply resource deeming
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      family:
+        members: [claimant, spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, false]
+
+# 20 CFR 416.1202(a): the other adult must be the claimant spouse.
+- name: An unrelated adult in a tax unit is not an ineligible spouse
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      adult:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members: [claimant, adult]
+    marital_units:
+      family_claimant:
+        members: [claimant]
+      family_adult:
+        members: [adult]
+    households:
+      family:
+        members: [claimant, adult]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, false]
+
+# 20 CFR 416.1202(a): the spouses must be living together.
+- name: Spouses living in separate households do not deem resources
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      family_couple_0:
+        members: [claimant, spouse]
+    households:
+      first:
+        members: [claimant]
+      second:
+        members: [spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [false, false]
+
+# 20 CFR 416.1167: an adjudicated temporary absence preserves spousal deeming.
+# The monthly input certifies that the separately housed spouse remains part of
+# the household for deeming; their physical household id alone is insufficient.
+# https://www.ecfr.gov/current/title-20/section-416.1167
+- name: Temporary spousal absence preserves resource deeming across physical households
+  period: 2026-01
+  input:
+    people:
+      claimant:
+        age: 40
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_spouse: true
+        ssi_resource_deeming_temporary_absence: true
+        ssi_countable_resources:
+          '2026': 3001
+    tax_units:
+      family:
+        members: [claimant, spouse]
+    marital_units:
+      couple:
+        members: [claimant, spouse]
+    households:
+      claimant_home:
+        members: [claimant]
+      spouse_temporary_home:
+        members: [spouse]
+  output:
+    is_ssi_spousal_resource_deeming_applies: [true, false]
+    ssi_resources_deemed_from_ineligible_spouse: [3001, 0]
+    meets_ssi_resource_test: [false, false]
