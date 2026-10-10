@@ -35,6 +35,7 @@ from policyengine_core.parameters.operations.uprate_parameters import (
     uprate_parameters,
 )
 from .tools.default_uprating import add_default_uprating
+from .tools.section_911 import validate_section_911_batch_inputs
 from .tools.per_capita_uprating import (
     add_per_capita_parameters_for_parameter_uprating,
     add_per_capita_uprating,
@@ -125,6 +126,16 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         self.parameters = propagate_parameter_metadata(self.parameters)
         add_default_uprating(self)
 
+        # Backdated before any reform is applied. Backdating copies each
+        # parameter's earliest value back to the start of FIRST_MODELED_YEAR,
+        # so on a parameter first dated after that it would copy a reform
+        # value that starts on or before that first date back to that year,
+        # and a reform ending before that date would leave the years between
+        # the two undefined.
+        self.parameters = backdate_parameters(
+            self.parameters, first_instant=f"{FIRST_MODELED_YEAR}-01-01"
+        )
+
         if reform:
             # Applied after the parameter processing pipeline so that values
             # a reform inserts at future dates cannot act as defined values
@@ -134,6 +145,13 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
             # structural-reform detection, which reads reformed parameter
             # values.
             self.apply_reform_set(reform)
+            # Backdates parameters the reform added or replaced, as before.
+            # Those it only updated already have a value dated by the start of
+            # FIRST_MODELED_YEAR, and ``Parameter.update`` never removes
+            # values dated before the period it sets, so they keep it.
+            self.parameters = backdate_parameters(
+                self.parameters, first_instant=f"{FIRST_MODELED_YEAR}-01-01"
+            )
 
         structural_reform = create_structural_reforms_from_parameters(
             self.parameters, start_instant
@@ -141,10 +159,6 @@ class CountryTaxBenefitSystem(TaxBenefitSystem):
         if reform is None:
             reform = ()
         reform = (reform, structural_reform)
-
-        self.parameters = backdate_parameters(
-            self.parameters, first_instant=f"{FIRST_MODELED_YEAR}-01-01"
-        )
 
         for parameter in self.parameters.get_descendants():
             parameter.modified = False
@@ -231,6 +245,10 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
         )
         args, kwargs = self._prepare_spm_system(
             args, kwargs, kwargs.pop("spm", None), start_instant
+        )
+        validate_section_911_batch_inputs(
+            kwargs.get("situation"),
+            kwargs.get("default_input_period") or self.default_input_period,
         )
         super().__init__(*args, **kwargs)
 

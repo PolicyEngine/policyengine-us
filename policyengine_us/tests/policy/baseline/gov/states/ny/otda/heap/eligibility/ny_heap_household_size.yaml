@@ -1,0 +1,105 @@
+# HEAP Manual, Chapter 8 D.4(a) (PDF page 36): foster members and federal
+# living arrangement Code C SSI recipients are not household members; D.4(a)(7)
+# still counts nonqualified members' income.
+# https://otda.ny.gov/programs/heap/HEAP-manual.pdf#page=36
+
+- name: Case 1, foster members and federal Code C SSI recipients do not affect the household award.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        # Full-time wages of $2,000 a month.
+        employment_income: 24_000
+        ssi: 0
+      person2:
+        age: 3
+        is_in_foster_care:
+          2026-01: true
+        social_security: 6_000
+        ssi: 0
+      person3:
+        age: 10
+        ssi: 6_000
+        ssi_federal_living_arrangement:
+          2026-01: CHILD_IN_PARENTAL_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_500
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    # Only the adult counts: D.4(a)(3) excludes the foster child, and the model
+    # maps D.4(a)(5) to the federal child-in-parental-household arrangement
+    # with SSI receipt.
+    ny_heap_household_size: 1
+    # The excluded members' income leaves with them: 24,000 of wages, which is
+    # 2,000 a month.
+    ny_heap_countable_income: 24_000
+    # Chapter 9 B.3(b) (page 49): the only members under six or receiving SSI
+    # are excluded, and the adult is 40.
+    ny_heap_vulnerable: false
+    # No SNAP or TA, and the SSI recipient is not a household member (D.11(b),
+    # page 37).
+    ny_heap_categorically_eligible: false
+    # 2,000 a month exceeds the one-person Tier I maximum of 1,695 and is
+    # within the 3,473 limit (2025-2026 HEAP Monthly Income Eligibility
+    # Guidelines).
+    ny_heap_tier_one: false
+    # Utility base $400 with no add-ons (2025-2026 HEAP Direct Heating Regular
+    # Base Benefit Levels).
+    ny_heap: 400
+
+- name: Case 2, the federal Code C arrangement without SSI receipt does not exclude a child.
+  period: 2026
+  input:
+    state_code: NY
+    heating_type: NATURAL_GAS
+    age: 10
+    ssi: 0
+    receives_ssi: false
+    ssi_federal_living_arrangement:
+      2026-01: CHILD_IN_PARENTAL_HOUSEHOLD
+  output:
+    # D.4(a)(5) (page 36) names SSI recipients, so a child in that arrangement
+    # who receives no SSI is counted.
+    ny_heap_household_size: 1
+    # Chapter 9 B.3(b) (page 49): aged 10, so not under six, and no SSI receipt.
+    ny_heap_vulnerable: false
+
+- name: Case 3, reported SSI receipt in the federal Code C arrangement excludes a child.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        # Full-time wages of $2,000 a month.
+        employment_income: 24_000
+        ssi: 0
+      person2:
+        age: 10
+        ssi: 0
+        receives_ssi: true
+        ssi_federal_living_arrangement:
+          2026-01: CHILD_IN_PARENTAL_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_500
+        tanf: 0
+        snap: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # D.4(a)(5) (page 36): the child is an SSI recipient by reported receipt,
+    # so only the adult counts.
+    ny_heap_household_size: 1

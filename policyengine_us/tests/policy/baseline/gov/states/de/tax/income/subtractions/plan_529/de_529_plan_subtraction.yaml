@@ -22,18 +22,6 @@
     # Subtraction = min(1,500, 1,000) = 1,000
     de_529_plan_subtraction: 1_000
 
-- name: Delaware 529 subtraction - joint under cap
-  period: 2025
-  input:
-    state_code: DE
-    filing_status: JOINT
-    investment_in_529_plan_indv: 1_500
-    adjusted_gross_income: 150_000
-  output:
-    # Cap for joint is $2,000, AGI limit $200K
-    # Subtraction = min(1,500, 2,000) = 1,500
-    de_529_plan_subtraction: 1_500
-
 - name: Delaware 529 subtraction - over AGI limit
   period: 2025
   input:
@@ -42,7 +30,7 @@
     investment_in_529_plan_indv: 500
     adjusted_gross_income: 110_000
   output:
-    # AGI $110K >= $100K limit, not eligible
+    # AGI $110K > $100K limit, not eligible
     de_529_plan_subtraction: 0
 
 - name: Delaware 529 subtraction - no contribution
@@ -53,3 +41,127 @@
     adjusted_gross_income: 50_000
   output:
     de_529_plan_subtraction: 0
+
+- name: Delaware 529 subtraction - exactly at the AGI limit
+  period: 2025
+  input:
+    state_code: DE
+    filing_status: SINGLE
+    investment_in_529_plan_indv: 500
+    adjusted_gross_income: 100_000
+  output:
+    # 30 Del. C. § 1106(b)(11) bars the subtraction only when federal AGI is
+    # "greater than $100,000".
+    de_529_plan_subtraction: 500
+
+- name: Delaware 529 subtraction - head of household uses the individual AGI limit
+  period: 2025
+  input:
+    state_code: DE
+    filing_status: HEAD_OF_HOUSEHOLD
+    investment_in_529_plan_indv: 1_000
+    adjusted_gross_income: 150_000
+  output:
+    # § 1106(b)(11): no subtraction for "an individual, head of household,
+    # married filing separate combined, or married filing separate filer" with
+    # federal AGI greater than $100,000. 2023 PIT-RES instructions, line 8b,
+    # also list head of household with the $1,000 / $100,000 filers.
+    de_529_plan_subtraction: 0
+    de_529_plan_subtraction_joint: 0
+
+- name: Delaware 529 subtraction - surviving spouse files as an individual
+  period: 2025
+  input:
+    state_code: DE
+    filing_status: SURVIVING_SPOUSE
+    investment_in_529_plan_indv: 1_500
+    adjusted_gross_income: 90_000
+  output:
+    # Delaware has no surviving spouse status; a widow(er) files Filing
+    # Status 1 and is held to the individual $1,000 limit.
+    de_529_plan_subtraction: 1_000
+    de_529_plan_subtraction_joint: 1_000
+
+- name: Delaware 529 subtraction - a surviving spouse over the individual AGI limit gets none
+  period: 2025
+  input:
+    state_code: DE
+    filing_status: SURVIVING_SPOUSE
+    investment_in_529_plan_indv: 1_500
+    adjusted_gross_income: 150_000
+  output:
+    # Filing Status 1 is held to the $100,000 individual AGI limit, not the
+    # $200,000 joint limit, so $150,000 of federal AGI bars the subtraction.
+    de_529_plan_subtraction: 0
+    de_529_plan_subtraction_joint: 0
+
+- name: Delaware 529 subtraction - a joint return subtracts up to 2,000 of the couple's contributions
+  period: 2025
+  input:
+    people:
+      person1:
+        employment_income: 90_000
+        investment_in_529_plan_indv: 2_000
+      person2:
+        employment_income: 60_000
+        investment_in_529_plan_indv: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # § 1106(b)(11): "For spouses filing a joint return with federal adjusted
+    # gross income not greater than $200,000, the amount of the subtraction
+    # shall be the amount contributed by the spouses, up to a limit of $2,000."
+    de_529_plan_subtraction_joint: 2_000
+    # In combined separate columns (Filing Status 4) each spouse subtracts up
+    # to 1,000 of their own contributions.
+    de_529_plan_subtraction: [1_000, 1_000]
+
+- name: Delaware 529 subtraction - a combined separate column is tested on that spouse's federal AGI
+  period: 2025
+  input:
+    people:
+      person1:
+        employment_income: 120_000
+        investment_in_529_plan_indv: 1_000
+      person2:
+        employment_income: 70_000
+        investment_in_529_plan_indv: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Joint federal AGI 190_000 is within the 200_000 joint limit.
+    de_529_plan_subtraction_joint: 2_000
+    # Person 1's column has federal AGI 120_000, over the 100_000 limit for a
+    # married filing separate combined filer; person 2's 70_000 is within it.
+    de_529_plan_subtraction: [0, 1_000]
+
+- name: Delaware 529 subtraction - a dependent's contribution is not on the parents' return
+  period: 2025
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+      person2:
+        age: 15
+        is_tax_unit_dependent: true
+        investment_in_529_plan_indv: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_529_plan_subtraction: [0, 0]
+    de_529_plan_subtraction_joint: 0

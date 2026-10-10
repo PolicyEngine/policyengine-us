@@ -1,0 +1,172 @@
+- name: No employer plan contributions leave coverage false by default.
+  period: 2025
+  input:
+    age: 40
+  output:
+    ira_active_participant: false
+
+- name: Traditional 401k deferrals trigger the single IRA deduction phaseout.
+  period: 2025
+  input:
+    age: 40
+    traditional_401k_contributions: 1_000
+    traditional_ira_contributions: 7_000
+    ira_compensation: 100_000
+    ira_219g_magi: 84_000
+  output:
+    ira_active_participant: true
+    ira_219g_deductible_limit: 3_500
+    traditional_ira_deduction: 3_500
+
+- name: Roth 401k deferrals trigger the single IRA deduction phaseout.
+  period: 2025
+  input:
+    age: 40
+    roth_401k_contributions: 1_000
+    traditional_ira_contributions: 7_000
+    ira_compensation: 100_000
+    ira_219g_magi: 84_000
+  output:
+    ira_active_participant: true
+    traditional_ira_deduction: 3_500
+
+- name: Traditional 403b deferrals trigger the single IRA deduction phaseout.
+  period: 2025
+  input:
+    age: 40
+    traditional_403b_contributions: 1_000
+    traditional_ira_contributions: 7_000
+    ira_compensation: 100_000
+    ira_219g_magi: 84_000
+  output:
+    ira_active_participant: true
+    traditional_ira_deduction: 3_500
+
+- name: Roth 403b deferrals trigger the single IRA deduction phaseout.
+  period: 2025
+  input:
+    age: 40
+    roth_403b_contributions: 1_000
+    traditional_ira_contributions: 7_000
+    ira_compensation: 100_000
+    ira_219g_magi: 84_000
+  output:
+    ira_active_participant: true
+    traditional_ira_deduction: 3_500
+
+- name: Self employed pension contributions trigger the single IRA deduction phaseout.
+  period: 2025
+  input:
+    age: 40
+    self_employed_pension_contributions: 1_000
+    traditional_ira_contributions: 7_000
+    ira_compensation: 100_000
+    ira_219g_magi: 84_000
+  output:
+    ira_active_participant: true
+    traditional_ira_deduction: 3_500
+
+- name: IRA contributions alone do not establish employer plan coverage.
+  period: 2025
+  input:
+    age: 40
+    traditional_ira_contributions: 4_000
+    roth_ira_contributions: 3_000
+    ira_compensation: 100_000
+    ira_219g_magi: 89_000
+  output:
+    ira_active_participant: false
+    traditional_ira_deduction: 4_000
+
+- name: Negative employer plan contributions do not establish coverage.
+  period: 2025
+  input:
+    traditional_401k_contributions: -1_000
+    roth_401k_contributions: -1_000
+    traditional_403b_contributions: -1_000
+    roth_403b_contributions: -1_000
+    self_employed_pension_contributions: -1_000
+  output:
+    ira_active_participant: false
+
+- name: A negative contribution does not cancel positive coverage from another plan.
+  period: 2025
+  input:
+    traditional_401k_contributions: 1_000
+    roth_401k_contributions: -2_000
+  output:
+    ira_active_participant: true
+
+- name: Desired 401k contributions derive the deferrals that establish coverage.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 85_000
+    traditional_401k_contributions_desired: 1_000
+    traditional_ira_contributions_desired: 7_000
+  output:
+    traditional_401k_contributions: 1_000
+    ira_active_participant: true
+    ira_219g_magi: 84_000
+    traditional_ira_deduction: 3_500
+
+- name: Explicit coverage true overrides zero contributions for defined benefit coverage.
+  period: 2025
+  input:
+    age: 40
+    ira_active_participant: true
+    traditional_ira_contributions: 7_000
+    ira_compensation: 100_000
+    ira_219g_magi: 84_000
+  output:
+    ira_active_participant: true
+    traditional_ira_deduction: 3_500
+
+- name: Explicit coverage false overrides positive deferrals.
+  period: 2025
+  input:
+    age: 40
+    ira_active_participant: false
+    traditional_401k_contributions: 1_000
+    traditional_ira_contributions: 7_000
+    ira_compensation: 100_000
+    ira_219g_magi: 89_000
+  output:
+    ira_active_participant: false
+    traditional_ira_deduction: 7_000
+
+- name: Derived coverage fully phases out the deduction at the upper single threshold.
+  period: 2025
+  input:
+    age: 40
+    traditional_401k_contributions: 1_000
+    traditional_ira_contributions: 7_000
+    ira_compensation: 100_000
+    ira_219g_magi: 89_000
+  output:
+    ira_active_participant: true
+    ira_219g_deductible_limit: 0
+    traditional_ira_deduction: 0
+
+- name: Each spouse uses their own coverage and the appropriate joint phaseout range.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        traditional_401k_contributions: 1_000
+        traditional_ira_contributions: 7_000
+        ira_compensation: 150_000
+      spouse:
+        age: 40
+        traditional_ira_contributions: 7_000
+        ira_compensation: 100_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        ira_219g_magi: 241_000
+  output:
+    ira_active_participant: [true, false]
+    ira_219g_deductible_limit: [0, 3_500]
+    traditional_ira_deduction: [0, 3_500]

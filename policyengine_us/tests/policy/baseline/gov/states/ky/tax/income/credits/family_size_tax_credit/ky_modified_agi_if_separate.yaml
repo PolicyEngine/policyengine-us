@@ -1,0 +1,76 @@
+# KRS 141.066(4): spouses filing separately on a combined return use their
+# combined modified gross income, with a separately computed amount below zero
+# treated as zero. The modified gross income worksheet enters each spouse's
+# federal and Kentucky AGI as zero if zero or less.
+
+- name: A spouse's negative AGI counts as zero.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 40_000
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        self_employment_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    ky_modified_agi_if_separate: 40_000
+    # A joint return nets the loss.
+    ky_modified_agi_if_joint: 30_000
+
+- name: With no negative AGI, both paths give the same modified gross income.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 30_000
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    ky_modified_agi_if_separate: 40_000
+    ky_modified_agi_if_joint: 40_000
+
+- name: The greater of the federal and Kentucky totals, each after the zero floor.
+  period: 2024
+  input:
+    people:
+      head:
+        adjusted_gross_income_person: 40_000
+        ky_agi: 30_000
+      spouse:
+        adjusted_gross_income_person: -10_000
+        ky_agi: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 30_000
+        form_4972_lumpsum_distributions: 100
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    # Federal: 40,000 + 0 + 100; Kentucky: 30,000 + 5,000 + 100.
+    ky_modified_agi_if_separate: 40_100
+    # Federal: 30,000 + 100; Kentucky: 35,000 + 100.
+    ky_modified_agi_if_joint: 35_100

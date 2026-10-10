@@ -1,0 +1,65 @@
+from policyengine_us.model_api import *
+
+
+class or_liheap(Variable):
+    value_type = float
+    entity = SPMUnit
+    definition_period = YEAR
+    label = "Oregon LIHEAP regular heating benefit"
+    unit = USD
+    defined_for = "or_liheap_eligible"
+    reference = (
+        # PDF pages 47, 58-59.
+        "https://www.oregon.gov/ohcs/energy-weatherization/Documents/PY25%20EA%20Operations%20%20Policy%20Manual-%20FINAL%209-27-24.pdf#page=58",
+        # PDF pages 61-62, 67, 78-81, 93-94.
+        "https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=61",
+        # PDF pages 59, 72-75.
+        "https://www.oregon.gov/ohcs/energy-weatherization/Documents/manuals/09-23-2027-PY-2027-EA-Operations-Policy-Manual.pdf#page=72",
+    )
+    documentation = (
+        "Annual regular heating assistance, verified for program years 2025 to 2027. "
+        "Earlier years use parameter backfilling and are unverified historical "
+        "estimates. No actual-expense cap applies. Heat-in-rent households need the "
+        "building heating fuel; a fuel without a matrix column pays zero as a coverage "
+        "gap, not a denial. Discretionary bulk-fuel minimum-delivery payments and local "
+        "supplements are unsupported because the necessary award information is "
+        "absent. Cooling, crisis and equipment assistance are excluded."
+    )
+
+    def formula(spm_unit, period, parameters):
+        p = parameters(period).gov.states["or"].ohcs.liheap.payment
+        region = max_(spm_unit("or_liheap_region", period), 1)
+        size = clip(spm_unit("spm_unit_size", period), 1, p.max_payment_size)
+        # Out-of-state units carry band 0; the floor keeps them on a valid key.
+        band = max_(spm_unit("or_liheap_income_band", period), 1)
+        fuel = spm_unit("heating_type", period)
+        types = fuel.possible_values
+        # Kerosene is billed as heating oil and a grid-tied solar home pays an
+        # electricity bill, the same pairing heating_expense uses.
+        amount = select(
+            [
+                (fuel == types.ELECTRICITY) | (fuel == types.SOLAR),
+                (fuel == types.FUEL_OIL) | (fuel == types.KEROSENE),
+                fuel == types.PROPANE,
+                fuel == types.NATURAL_GAS,
+                fuel == types.WOOD,
+            ],
+            [
+                p.amount.electricity[region][size][band],
+                p.amount.fuel_oil[region][size][band],
+                p.amount.propane[region][size][band],
+                p.amount.natural_gas[region][size][band],
+                p.amount.wood[region][size][band],
+            ],
+            # Coal, other and unspecified fuels have no matrix column; the
+            # unspecified default is tracked in #9754.
+            default=0,
+        )
+        dwelling = spm_unit("or_liheap_dwelling_type", period)
+        separate = dwelling == dwelling.possible_values.ROOMER_BOARDER_OWNER
+        # Missing payment-table dimensions are coverage gaps, not eligibility
+        # restrictions. Keep them separate from the legal income/housing test.
+        supported = (spm_unit("or_liheap_region", period) > 0) & (
+            spm_unit("spm_unit_size", period) <= p.max_household_size
+        )
+        return where(supported, amount * where(separate, p.roomer_rate, 1), 0)

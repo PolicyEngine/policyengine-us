@@ -296,3 +296,50 @@
     # The MFS/SEPARATE gate zeroes the credit in both units. The scalar
     # assertion checks per-unit credit = 0 for both units.
     ma_senior_circuit_breaker: 0
+
+- name: A dependent's pensions do not reduce a senior renter's credit.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 50_000
+        rent: 24_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        ssi: 0
+        ma_state_supplement: 0
+      child:
+        age: 16
+        taxable_public_pension_income: 5_000
+        tax_exempt_private_pension_income: 10_000
+        is_tax_unit_dependent: true
+        ssi: 0
+        ma_state_supplement: 0
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        tanf: 0
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MA
+  output:
+    # Total income: 50,000 wages - 700 aged exemption - 1,000 dependent
+    # exemption = 48,300; the child's pensions are neither deducted from MA
+    # gross income nor re-added.
+    ma_scb_total_income: 48_300
+    # equivalent rent: 24,000 * 0.25 = 6,000
+    # income threshold: 48,300 * 0.10 = 4,830
+    # credit: min(6,000 - 4,830, 2,820) = 1,170
+    ma_senior_circuit_breaker: 1_170

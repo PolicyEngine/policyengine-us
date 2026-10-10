@@ -70,7 +70,7 @@ PERSON_DEDUCTIONS = [
     "student_loan_interest_ald",
     "early_withdrawal_penalty",
     "educator_expense_ald_person",
-    "traditional_ira_contributions",
+    "traditional_ira_deduction",
 ]
 # Person-level amounts that are the filer's wherever they are recorded.
 FILER_AMOUNTS = [

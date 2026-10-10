@@ -56,3 +56,329 @@
         members: [person]
   output:
     eitc_earned_income: 0
+
+# Full PolicyBench snapshot inputs plus isolated earned-income rules.
+- name: PolicyBench scenario_100 excludes traditional elective deferrals from credit earnings
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 46
+        employment_income: 5914.720703125
+        bank_account_assets: 2800.0
+        employer_sponsored_insurance_premiums: 20643.525390625
+        fsla_overtime_premium: 709.7664794921875
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 564.0
+        hourly_wage: 2.319999933242798
+        hours_worked_last_week: 55.0
+        is_disabled: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        other_health_insurance_premiums: 564.0
+        other_medical_expenses: 500.0
+        over_the_counter_health_expenses: 480.0
+        roth_401k_contributions_desired: 681.0
+        roth_ira_contributions_desired: 279.67999267578125
+        traditional_401k_contributions_desired: 3859.0
+        traditional_ira_contributions_desired: 180.32000732421875
+        weekly_hours_worked_before_lsr: 55.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+      child1:
+        age: 6
+        employment_income: 0.0
+        has_esi: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+      child2:
+        age: 5
+        employment_income: 0.0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        other_medical_expenses: 500.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child1_marital_unit:
+        members: [child1]
+      child2_marital_unit:
+        members: [child2]
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: MT
+        household_vehicles_value: 1980.88232421875
+  output:
+    income_tax_refundable_credits: 822.29
+    state_refundable_credits: 164.46
+    eitc_earned_income: 2055.720703125
+    filer_adjusted_earnings: 2055.720703125
+
+- name: PolicyBench scenario_119 excludes traditional elective deferrals from credit earnings
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 55000.0
+        bank_account_assets: 123797.0625
+        employer_sponsored_insurance_premiums: 6389.27587890625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 2000.0
+        hourly_wage: 33.0625
+        hours_worked_last_week: 32.0
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        other_health_insurance_premiums: 2000.0
+        other_medical_expenses: 1000.0
+        over_the_counter_health_expenses: 250.0
+        roth_401k_contributions_desired: 544.7999877929688
+        roth_ira_contributions_desired: 223.74400329589844
+        stock_assets: 300000.0
+        taxable_interest_income: 800.0
+        traditional_401k_contributions_desired: 3087.199951171875
+        traditional_ira_contributions_desired: 144.25599670410156
+        weekly_hours_worked_before_lsr: 32.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+      child1:
+        age: 14
+        employment_income: 0.0
+        has_esi: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        other_medical_expenses: 500.0
+        over_the_counter_health_expenses: 250.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+      child2:
+        age: 11
+        employment_income: 0.0
+        has_esi: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        other_medical_expenses: 2500.0
+        over_the_counter_health_expenses: 250.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child1_marital_unit:
+        members: [child1]
+      child2_marital_unit:
+        members: [child2]
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        first_home_mortgage_balance: 88911.765625
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+        spm_unit_pre_subsidy_childcare_expenses: 1560.0
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: VA
+        household_vehicles_value: 4232.05859375
+  output:
+    income_tax_refundable_credits: 3366.07
+    state_income_tax: 1756.68
+    eitc_earned_income: 51912.800048828125
+    filer_adjusted_earnings: 51912.800048828125
+
+- name: Traditional 401k deferrals reduce EITC and ACTC wages while Roth deferrals remain taxable
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 10000
+        traditional_401k_contributions_desired: 2000
+        roth_401k_contributions_desired: 1000
+      child:
+        age: 5
+        is_tax_unit_head: false
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    irs_employment_income: [8000, 0]
+    earned_income: [10000, 0]
+    eitc_earned_income: 8000
+    filer_adjusted_earnings: 8000
+    ctc_phase_in_relevant_earnings: 825
+
+- name: Traditional 403b deferrals reduce credit wages while Roth deferrals remain taxable
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 10000
+        traditional_403b_contributions_desired: 2000
+        roth_403b_contributions_desired: 1000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    eitc_earned_income: 8000
+    filer_adjusted_earnings: 8000
+
+- name: Elective deferral exclusion also applies before 2026
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 10000
+        traditional_401k_contributions_desired: 2000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    eitc_earned_income: 8000
+    filer_adjusted_earnings: 8000
+
+- name: Already supplied federal taxable wages are not reduced a second time
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 10000
+        irs_employment_income: 8000
+        traditional_401k_contributions_desired: 2000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    eitc_earned_income: 8000
+    filer_adjusted_earnings: 8000
+
+- name: Tax unit dependent wages and deferrals do not change filer earnings
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 10000
+        traditional_401k_contributions_desired: 2000
+      child:
+        age: 5
+        is_tax_unit_head: false
+        employment_income: 3000
+        traditional_401k_contributions_desired: 1000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_earned_income: 8000
+    filer_adjusted_earnings: 8000
+
+- name: Federal credit earnings exclude pre-tax health premiums and payroll HSA contributions
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 10000
+        pre_tax_health_insurance_premiums: 500
+        health_savings_account_payroll_contributions: 1000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    eitc_earned_income: 8500
+    filer_adjusted_earnings: 8500
+
+- name: AMT kiddie-tax exemption retains its original gross earnings cap
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 20
+        is_tax_unit_head: true
+        employment_income: 10000
+        traditional_401k_contributions_desired: 2000
+    tax_units:
+      tax_unit:
+        members: [head]
+        amt_kiddie_tax_applies: true
+        amt_income: 200000
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    filer_adjusted_earnings: 8000
+    amt_exemption: 18200
