@@ -22,18 +22,11 @@ LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS = (
 )
 
 
-def get_irs_cpi(parameters: ParameterNode, year: int) -> float:
-    """Calculate IRS CPI based on Chained CPI-U average from Sep to Aug."""
-    cpi = parameters.gov.bls.cpi.c_cpi_u
-    end = instant(f"{year}-08-01")
-    start = end.offset(-MONTHS_IN_YEAR, MONTH)
-    monthly_cpi_values = []
-    for month in range(MONTHS_IN_YEAR):
-        monthly_cpi_values += [cpi(start.offset(month, MONTH))]
-    return sum(monthly_cpi_values) / MONTHS_IN_YEAR
-
-
-def get_average_for_12_months_ending_august(cpi: Parameter, year: int) -> float:
+def get_average_for_12_months_ending_august(
+    cpi: Parameter,
+    year: int,
+    projection: Parameter,
+) -> float:
     """Average a monthly price index over the 12 months ending August 31.
 
     Covers September of ``year - 1`` through August of ``year``: the
@@ -41,14 +34,29 @@ def get_average_for_12_months_ending_august(cpi: Parameter, year: int) -> float:
     ORS 315.273(5).
 
     The BLS index series hold monthly observations through the latest BLS
-    release, then annual projection points at February instants; a monthly
-    refresh that reaches a February replaces that instant's projection with
-    the observed value. Windows with observed months average them, carrying
-    the last observation flat through any unobserved tail; windows with no
-    observed month read the year's annual projection point, whose
-    February instant necessarily lies beyond the last observation and so
-    can only hold a projection. No branch reads an instant a refresh could
-    have turned from projection into observation.
+    release, then (for the seasonally adjusted and chained series) CBO's
+    calendar-year averages at February instants; a monthly refresh that
+    reaches a February replaces that instant's projection with the observed
+    value. Windows with no observed month read ``projection``, CBO's
+    projection of this 12-month average keyed by the tax year it indexes
+    (``year + 1``); a calendar-year average would run about four months of
+    inflation high.
+
+    Windows with observed months average them, and complete any month
+    without an observation with the latest value published before it. Those
+    completed months are estimates, not observations, and the model's
+    completion policy rather than a statutory or agency rule:
+
+    - a month BLS did not publish inside the observed range takes the prior
+      month's value (October 2025, lost to the 2025 lapse in
+      appropriations, takes September 2025's);
+    - each month after the last observation takes the last observation, so
+      the unobserved tail of the latest window is held flat.
+
+    The levels averaged are those in the parameter file, one vintage per
+    month. Where BLS revises a series after first publication (the C-CPI-U
+    moves from initial to interim to final estimates), that vintage need not
+    be the one a statute reads; see ``get_irs_cpi``.
     """
     # February instants can hold annual projections, so only non-February
     # instants identify the end of the observed monthly series (one month
@@ -59,20 +67,42 @@ def get_average_for_12_months_ending_august(cpi: Parameter, year: int) -> float:
         if not value.instant_str.endswith("-02-01")
     )
     window_start = instant(f"{year - 1}-09-01")
+    if window_start > last_observation:
+        return projection(f"{year + 1}-01-01")
     window_months = [
         window_start.offset(month, MONTH) for month in range(MONTHS_IN_YEAR)
     ]
-    observed = [month for month in window_months if month <= last_observation]
-    if not observed:
-        # Since #7394 the projection points cite CBO's calendar-year
-        # averages, which run about 0.7% above the 12-months-ending-August
-        # averages this window stands for, so projected windows read slightly
-        # high until that series is fixed (#9608).
-        return cpi(f"{year}-02-01")
-    unobserved_tail = MONTHS_IN_YEAR - len(observed)
+    # A parameter lookup returns the latest value dated on or before the
+    # month, which is the completion policy above for a month inside the
+    # observed range; capping the month at the last observation extends it
+    # to the tail.
     return (
-        sum(cpi(month) for month in observed) + cpi(observed[-1]) * unobserved_tail
-    ) / MONTHS_IN_YEAR
+        sum(cpi(min(month, last_observation)) for month in window_months)
+        / MONTHS_IN_YEAR
+    )
+
+
+def get_irs_cpi(parameters: ParameterNode, year: int) -> float:
+    """The C-CPI-U for a calendar year under 26 U.S.C. 1(f)(6)(B).
+
+    The average over the 12 months ending August 31 of ``year``, which
+    indexes tax parameters for ``year + 1``.
+
+    1(f)(6)(A) fixes the vintage: the C-CPI-U values to use are the latest
+    ones as of the date BLS publishes the initial August value for ``year``.
+    c_cpi_u.yaml holds one vintage per month, whichever was current when the
+    month was entered, and BLS revises C-CPI-U values after first
+    publication (August 2025 is 179.656 in the file and was 179.839 in the
+    BLS data API on 2026-10-06). So for a past year this reconstructs the
+    statutory index from the file's vintages, not necessarily from the
+    statutory vintage. Amounts the IRS has published are encoded in the
+    parameter files and take precedence for their own years; this index
+    only extends them.
+    """
+    cpi = parameters.gov.bls.cpi
+    return get_average_for_12_months_ending_august(
+        cpi.c_cpi_u, year, cpi.tax_year_projection.c_cpi_u
+    )
 
 
 def get_cpi_u_average_for_12_months_ending_august(
@@ -90,9 +120,11 @@ def get_or_ctc_cola(parameters: ParameterNode, tax_year: int) -> float:
     ending August 31 of the prior calendar year exceeds the monthly averaged
     index for the second quarter of calendar year 2022.
     """
-    cpi = parameters.gov.bls.cpi.cpi_u
-    base = sum(cpi(f"2022-{month:02d}-01") for month in (4, 5, 6)) / 3
-    window = get_average_for_12_months_ending_august(cpi, tax_year - 1)
+    cpi = parameters.gov.bls.cpi
+    base = sum(cpi.cpi_u(f"2022-{month:02d}-01") for month in (4, 5, 6)) / 3
+    window = get_average_for_12_months_ending_august(
+        cpi.cpi_u, tax_year - 1, cpi.tax_year_projection.cpi_u
+    )
     return max(window / base - 1, 0)
 
 
@@ -110,13 +142,14 @@ def get_irs_cola_denominator(parameters: ParameterNode, base_year: int) -> float
             "1(f)(3)(C) replaces this denominator with the C-CPI-U for base "
             f"years after 2016; got {base_year}."
         )
-    cpi = parameters.gov.bls.cpi.cpi_u
-    chained_2016 = get_average_for_12_months_ending_august(
-        parameters.gov.bls.cpi.c_cpi_u, 2016
+    cpi = parameters.gov.bls.cpi
+    cpi_2016, cpi_base_year = (
+        get_average_for_12_months_ending_august(
+            cpi.cpi_u, year, cpi.tax_year_projection.cpi_u
+        )
+        for year in (2016, base_year)
     )
-    cpi_2016 = get_average_for_12_months_ending_august(cpi, 2016)
-    cpi_base_year = get_average_for_12_months_ending_august(cpi, base_year)
-    return cpi_base_year * chained_2016 / cpi_2016
+    return cpi_base_year * get_irs_cpi(parameters, 2016) / cpi_2016
 
 
 def get_irs_cola(
@@ -130,9 +163,7 @@ def get_irs_cola(
     preceding ``tax_year`` exceeds the denominator for ``base_year``; see
     ``get_irs_cola_denominator``.
     """
-    chained = get_average_for_12_months_ending_august(
-        parameters.gov.bls.cpi.c_cpi_u, tax_year - 1
-    )
+    chained = get_irs_cpi(parameters, tax_year - 1)
     return max(chained / get_irs_cola_denominator(parameters, base_year) - 1, 0)
 
 
@@ -156,8 +187,8 @@ def extend_dependent_standard_deduction_parameters(
     2016, and 1(f)(7)(A) rounds each increase down to the next lowest
     multiple of $50. Each year is computed from the statutory base rather
     than chained from the last rounded value, which can lag the statute by
-    a full $50 step; IRS and CBO values encoded in the YAML take precedence
-    for their own years.
+    a full $50 step; IRS values encoded in the YAML take precedence for
+    their own years.
     """
     ROUNDING_INTERVAL = 50
     dependent = parameters.gov.irs.deductions.standard.dependent
@@ -337,6 +368,137 @@ def get_projected_cpi_u_for_month(cpi: Parameter, month: Instant) -> float:
             share = (target - start) / (end - start)
             return start_level * (end_level / start_level) ** share
     return anchors[-1][1]
+
+
+def extend_nsa_cpi_u_projections(parameters: ParameterNode) -> None:
+    """Append calendar-year CPI-U forecast points to the independent NSA series.
+
+    BLS CUUR0000SA0 observations take precedence. After the last observation,
+    use the existing CBO calendar-year CPI-U forecast and monthly interpolation
+    policy as a proxy for future NSA months; CBO does not forecast individual
+    August observations. These appended February points are forecasts, not BLS
+    observations. Vermont uses the separate CBO tax-year averages instead.
+    """
+    cpi = parameters.gov.bls.cpi
+    nsa = cpi.cpi_u_nsa
+    last_observation = max(instant(value.instant_str) for value in nsa.values_list)
+    for value in sorted(cpi.cpi_u.values_list, key=lambda value: value.instant_str):
+        date = instant(value.instant_str)
+        if date > last_observation and value.instant_str.endswith("-02-01"):
+            nsa.update(start=date, value=value.value)
+
+
+def get_vt_cpi(parameters: ParameterNode, tax_year: int) -> float:
+    """Vermont's unchained NSA CPI-U average under 32 V.S.A. 5811 and 5822."""
+    cpi = parameters.gov.bls.cpi
+    return get_average_for_12_months_ending_august(
+        cpi.cpi_u_nsa, tax_year - 1, cpi.tax_year_projection.cpi_u
+    )
+
+
+def extend_vt_cpi_u_indexed_amounts(parameters: ParameterNode, end_year: int) -> None:
+    """Extend Vermont amounts from statutory bases, preserving published anchors.
+
+    32 V.S.A. 5811(21)(C)-(D) and 5822(a)-(b) substitute unchained CPI-U
+    in the federal September-August window. The 2017 base window is inferred
+    from agency amounts, not expressly specified in the statute. That window
+    and rounding reproduce published 2021-2025 deductions and 2024-2026
+    brackets. Earlier agency rounding differs in some years, so historical
+    anchors are retained.
+    The 2026 bracket anchors are explicitly labelled preliminary in the YAML;
+    2026 deductions and exemptions are calculated estimates pending publication.
+    """
+    tax = parameters.gov.states.vt.tax.income
+    standard = tax.deductions.standard
+    amounts = [(standard.additional, 1_000, 50), (tax.exemption.personal, 4_150, 50)]
+    for status, base in (
+        ("SINGLE", 6_000),
+        ("SEPARATE", 6_000),
+        ("HEAD_OF_HOUSEHOLD", 9_000),
+        ("JOINT", 12_000),
+        ("SURVIVING_SPOUSE", 12_000),
+    ):
+        amounts.append((standard.base.children[status], base, 50))
+    for status, bases in (
+        ("single", (38_700, 93_700, 195_450)),
+        ("head_of_household", (51_850, 133_850, 216_700)),
+        ("joint", (64_600, 156_150, 237_950)),
+        ("surviving_spouse", (64_600, 156_150, 237_950)),
+        ("separate", (32_300, 78_075, 118_975)),
+    ):
+        scale = getattr(tax.rates, status)
+        for bracket, base in zip(scale.brackets[1:], bases):
+            amounts.append(
+                (bracket.threshold, base, 25 if status == "separate" else 50)
+            )
+    denominator = get_vt_cpi(parameters, 2018)
+    for parameter, base, interval in amounts:
+        first_year = 1 + max(
+            int(value.instant_str[:4]) for value in parameter.values_list
+        )
+        for year in range(first_year, end_year + 1):
+            cola = max(get_vt_cpi(parameters, year) / denominator - 1, 0)
+            value = base + math.floor(base * cola / interval) * interval
+            parameter.update(start=instant(f"{year}-01-01"), value=float(value))
+
+
+def round_wi_amount(amount: float) -> float:
+    """Wis. Stat. 71.05(22)(dt), 71.06(2e)(c): nearest $10, $5 ties upward."""
+    return float(
+        (Decimal(str(amount)) / 10).quantize(Decimal(1), rounding=ROUND_HALF_UP) * 10
+    )
+
+
+def get_wi_august_cpi(parameters: ParameterNode, tax_year: int) -> float:
+    """Prior-August NSA CPI-U; unobserved August levels are forecast proxies."""
+    return get_projected_cpi_u_for_month(
+        parameters.gov.bls.cpi.cpi_u_nsa, instant(f"{tax_year - 1}-08-01")
+    )
+
+
+def extend_wi_cpi_u_indexed_amounts(parameters: ParameterNode, end_year: int) -> None:
+    """Apply Wisconsin's statutory bases, August index, rounding and no decrease.
+
+    71.05(22)(dp)-(dt) uses August 1999 for single/head amounts and August
+    2015 for joint/separate amounts. 71.06(2e)(bm) indexes the Act 15 bracket
+    bases against August 2024. Only years beyond each published anchor are
+    generated. The dependent limitation in 71.05(22)(f) uses federal indexing
+    and is outside this helper.
+    """
+    tax = parameters.gov.states.wi.tax.income
+    for parameter in tax.get_descendants():
+        if not isinstance(parameter, Parameter):
+            continue
+        rule = parameter.metadata.get("wisconsin_indexing")
+        if not rule or "base" not in rule:
+            continue
+        first_year = 1 + max(
+            int(value.instant_str[:4]) for value in parameter.values_list
+        )
+        base_index = parameters.gov.bls.cpi.cpi_u_nsa(f"{rule['base_year']}-08-01")
+        for year in range(first_year, end_year + 1):
+            unrounded = (
+                Decimal(str(rule["base"]))
+                * Decimal(str(get_wi_august_cpi(parameters, year)))
+                / Decimal(str(base_index))
+            )
+            value = max(parameter(f"{year - 1}-01-01"), round_wi_amount(unrounded))
+            parameter.update(start=instant(f"{year}-01-01"), value=value)
+
+    standard = tax.deductions.standard
+    crossover = standard.phase_out.head_of_household.brackets[2].threshold
+    first_year = 1 + max(int(value.instant_str[:4]) for value in crossover.values_list)
+    for year in range(first_year, end_year + 1):
+        date = f"{year}-01-01"
+        difference = standard.max.HEAD_OF_HOUSEHOLD(date) - standard.max.SINGLE(date)
+        rate_difference = standard.phase_out.head_of_household.brackets[1].rate(
+            date
+        ) - standard.phase_out.single.brackets[1].rate(date)
+        value = (
+            standard.phase_out.single.brackets[1].threshold(date)
+            + difference / rate_difference
+        )
+        crossover.update(start=instant(date), value=float(math.floor(value + 0.5)))
 
 
 def get_la_cpi_u_percentage_increase(cpi: ParameterNode, year: int) -> float:
@@ -720,25 +882,27 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     """
     END_YEAR = 2100
 
-    # IRS uprating - special case that computes from CPI
+    # CBO's tax-year CPI projections (January values, last projection year
+    # 2036) cover 12-month windows with no BLS observation. Extend them first
+    # so every IRS uprating year below has a window average.
+    for projection in (
+        parameters.gov.bls.cpi.tax_year_projection.c_cpi_u,
+        parameters.gov.bls.cpi.tax_year_projection.cpi_u,
+    ):
+        extend_parameter_values(
+            projection,
+            last_projected_year=2036,
+            end_year=END_YEAR,
+            period_month=1,
+            period_day=1,
+        )
+
+    # IRS uprating: the 26 U.S.C. 1(f)(6)(B) C-CPI-U for the calendar year
+    # before each tax year.
     IRS_UPRATING_START_YEAR = 2010
-    IRS_LAST_PROJECTED_YEAR = 2035
-
     uprating_index = parameters.gov.irs.uprating
-
-    # Calculate the growth rate from the last two years of CPI projections
-    cpi_second_to_last = get_irs_cpi(parameters, IRS_LAST_PROJECTED_YEAR - 2)
-    cpi_last = get_irs_cpi(parameters, IRS_LAST_PROJECTED_YEAR - 1)
-    growth_rate = cpi_last / cpi_second_to_last
-
-    # Apply IRS uprating
     for year in range(IRS_UPRATING_START_YEAR, END_YEAR + 1):
-        if year <= IRS_LAST_PROJECTED_YEAR:
-            # Use actual CPI values through the last projected year
-            irs_cpi = get_irs_cpi(parameters, year - 1)
-        else:
-            # For all years after LAST_PROJECTED_YEAR, apply the constant growth rate
-            irs_cpi = uprating_index(f"{year - 1}-01-01") * growth_rate
+        irs_cpi = get_irs_cpi(parameters, year - 1)
         uprating_index.update(period=f"year:{year}-01-01:1", value=irs_cpi)
     uprating_index.update(start=instant(f"{END_YEAR}-01-01"), value=irs_cpi)
 
@@ -795,19 +959,19 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
-    # CPI-U (February values, last projection year 2034)
+    # CPI-U (February values, last projection year 2035)
     extend_parameter_values(
         parameters.gov.bls.cpi.cpi_u,
-        last_projected_year=2034,
+        last_projected_year=2035,
         end_year=END_YEAR,
         period_month=2,
         period_day=1,
     )
 
-    # Chained CPI-U (February values, last projection year 2034)
+    # Chained CPI-U (February values, last projection year 2035)
     extend_parameter_values(
         parameters.gov.bls.cpi.c_cpi_u,
-        last_projected_year=2034,
+        last_projected_year=2035,
         end_year=END_YEAR,
         period_month=2,
         period_day=1,
@@ -883,9 +1047,15 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # Oregon Kids' Credit dollar amounts follow the ORS 315.273(5)
     # cost-of-living schedule (unchained CPI-U over a 2022 Q2 base), computed
-    # from the statutory base amounts. Must run after the CPI-U extension
-    # above so projected windows are available.
+    # from the statutory base amounts. Must run after the tax-year CPI
+    # projection extension above so projected windows are available.
     extend_or_ctc_parameters(parameters, end_year=END_YEAR)
+
+    # Independent state schedules use unchained NSA observations and keep
+    # published anchors; future monthly NSA values are explicitly forecasts.
+    extend_nsa_cpi_u_projections(parameters)
+    extend_vt_cpi_u_indexed_amounts(parameters, end_year=END_YEAR)
+    extend_wi_cpi_u_indexed_amounts(parameters, end_year=END_YEAR)
 
     # Louisiana's standard deduction and age-65 retirement income exemption
     # follow R.S. 47:294(B) and 47:44.1(A): the prior year's amount times the
@@ -895,8 +1065,8 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # The limits on a dependent's standard deduction follow 26 U.S.C.
     # 63(c)(4)'s chained CPI-U schedule, computed from the statutory 1987 and
-    # 1997 bases. Must run after the Chained CPI-U extension above so
-    # projected windows are available.
+    # 1997 bases. Must run after the tax-year CPI projection extension above
+    # so projected windows are available.
     extend_dependent_standard_deduction_parameters(parameters, end_year=END_YEAR)
 
     # The educator expense cap follows 26 U.S.C. 62(d)(3)'s chained CPI-U

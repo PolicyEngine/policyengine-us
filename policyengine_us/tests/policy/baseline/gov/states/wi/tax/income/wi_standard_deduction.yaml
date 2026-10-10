@@ -36,7 +36,9 @@
     wi_agi: 49_705 + 10_000
     state_code: WI
   output:
-    wi_standard_deduction: 7_864.22 - 0.12 * 10_000
+    # Above the published HOH crossover, §71.05(22)(dp) uses the single
+    # formula, rather than continuing the rounded HOH amount at the switch.
+    wi_standard_deduction: 11_790 - (59_705 - 16_990) * 0.12
 
 # 2026 Form 1-ES instructions, page 2, "2026 Standard Deduction" schedules.
 - name: WI 2026 single standard deduction below the phase-out
@@ -93,7 +95,64 @@
     state_code: WI
   output:
     # Head of household, over $58,827 but not over $136,453:
-    # 13,960 less 12% of the amount over $20,120. The model reaches the
-    # same amount through the 22.515% and 12% segments that meet at $58,827,
-    # within $0.05 of the schedule.
+    # 13,960 less 12% of the amount over $20,120 (the single schedule).
     wi_standard_deduction: 13_960 - 0.12 * (70_000 - 20_120)
+
+# Published schedules: 2026 Form 1-ES instructions, PDF page 2.
+- name: WI 2026 published single deduction before phaseout
+  period: 2026
+  input:
+    state_code: WI
+    filing_status: SINGLE
+    wi_agi: 20_000
+  output:
+    wi_standard_deduction: 13_960
+
+- name: WI 2026 published joint deduction after phaseout
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    filing_status: JOINT
+    wi_agi: 30_000
+  output:
+    # 25,840 - (30,000 - 29,040) * 19.778%.
+    wi_standard_deduction: 25_650.1312
+
+- name: WI 2026 published head deduction after phaseout
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    filing_status: HEAD_OF_HOUSEHOLD
+    wi_agi: 20_130
+  output:
+    # 18,030 - (20,130 - 20,120) * 22.515%.
+    wi_standard_deduction: 18_027.7485
+
+- name: WI 2026 published separate deduction after phaseout
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    filing_status: SEPARATE
+    wi_agi: 14_000
+  output:
+    # 12,280 - (14,000 - 13,780) * 19.778%.
+    wi_standard_deduction: 12_236.4884
+
+- name: WI 2026 surviving spouse shares joint schedule
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    filing_status: SURVIVING_SPOUSE
+    wi_agi: 30_000
+  output:
+    wi_standard_deduction: 25_650.1312
+
+- name: WI 2026 head uses the exact single formula above published crossover
+  period: 2026
+  absolute_error_margin: 0.001
+  input: {state_code: WI, filing_status: HEAD_OF_HOUSEHOLD, wi_agi: 60_000}
+  output: {wi_standard_deduction: 9_174.4}

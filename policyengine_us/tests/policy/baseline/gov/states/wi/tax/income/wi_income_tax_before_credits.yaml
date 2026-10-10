@@ -28,6 +28,49 @@
   output:
     wi_income_tax_before_credits: 22_232.83  # same as for SINGLE filing unit
 
+# 2025 Act 15 bracket tops, corroborated by 2025 Form 1-ES, PDF page 4.
+- name: WI 2025 single third bracket starts at the statutory amount
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    filing_status: SINGLE
+    wi_taxable_income: 51_000
+  output:
+    # 2,089.00 + (51,000 - 50,480) * 5.3%.
+    wi_income_tax_before_credits: 2_116.56
+
+- name: WI 2025 head of household shares the statutory single brackets
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    filing_status: HEAD_OF_HOUSEHOLD
+    wi_taxable_income: 51_000
+  output:
+    wi_income_tax_before_credits: 2_116.56
+
+- name: WI 2025 joint third bracket starts at the statutory amount
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    filing_status: JOINT
+    wi_taxable_income: 68_000
+  output:
+    # 2,784.98 + (68,000 - 67,300) * 5.3%.
+    wi_income_tax_before_credits: 2_822.08
+
+- name: WI 2025 separate third bracket starts at the statutory amount
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WI
+    filing_status: SEPARATE
+    wi_taxable_income: 34_000
+  output:
+    # 1,392.49 + (34,000 - 33,650) * 5.3%.
+    wi_income_tax_before_credits: 1_411.04
 - name: WI 2025 single tax matches the Tax Computation Worksheet
   absolute_error_margin: 0.01
   period: 2025

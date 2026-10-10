@@ -47,3 +47,106 @@
     rent: 0
   output:
     ca_renter_credit: 0
+
+# Published 2026 amounts: FTB Tax News, October 2026, 2026 Indexing.
+# https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/#article1
+
+- name: California 2026 renter credit at the published single ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_agi: 55_830
+    rent: 1
+  output:
+    ca_renter_credit: 60
+
+- name: California 2026 renter credit one dollar above the published single ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_agi: 55_831
+    rent: 1
+  output:
+    ca_renter_credit: 0
+
+- name: California 2026 renter credit at the published separate ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SEPARATE
+    ca_agi: 55_830
+    rent: 1
+  output:
+    ca_renter_credit: 60
+
+- name: California 2026 renter credit one dollar above the published separate ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SEPARATE
+    ca_agi: 55_831
+    rent: 1
+  output:
+    ca_renter_credit: 0
+
+- name: California 2026 renter credit at the published joint ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: JOINT
+    ca_agi: 111_660
+    rent: 1
+  output:
+    ca_renter_credit: 120
+
+- name: California 2026 renter credit one dollar above the published joint ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: JOINT
+    ca_agi: 111_661
+    rent: 1
+  output:
+    ca_renter_credit: 0
+
+- name: California 2026 renter credit at the published surviving spouse ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SURVIVING_SPOUSE
+    ca_agi: 111_660
+    rent: 1
+  output:
+    ca_renter_credit: 120
+
+- name: California 2026 renter credit one dollar above the published surviving spouse ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SURVIVING_SPOUSE
+    ca_agi: 111_661
+    rent: 1
+  output:
+    ca_renter_credit: 0
+
+- name: California 2026 renter credit at the published head of household ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: HEAD_OF_HOUSEHOLD
+    ca_agi: 111_660
+    rent: 1
+  output:
+    ca_renter_credit: 120
+
+- name: California 2026 renter credit one dollar above the published head of household ceiling
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: HEAD_OF_HOUSEHOLD
+    ca_agi: 111_661
+    rent: 1
+  output:
+    ca_renter_credit: 0

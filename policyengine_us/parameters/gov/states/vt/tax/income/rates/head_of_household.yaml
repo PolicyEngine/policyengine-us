@@ -5,6 +5,8 @@ metadata:
   rate_unit: /1
   label: Vermont income tax rates head of household filers
   reference:
+    - title: 2026 Preliminary Vermont Tax Rates (estimated tax instructions, not final schedule)
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-114-Instr-2026.pdf#page=2
       # Law does not specify inflation adjusted thresholds for each year
     - title: Vermont §5822. Tax on income of individuals, estates, and trusts
       href: https://legislature.vermont.gov/statutes/section/32/151/05822
@@ -17,7 +19,7 @@ metadata:
     - title: Vermont 2024 Income Tax Return Booklet Forms and Instructions
       href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2024.pdf#page=1
     - title: Vermont 2025 Income Tax Rate Schedules
-      href: https://tax.vermont.gov/sites/tax/files/documents/RateSched-2025.pdf#page=1
+      href: https://tax.vermont.gov/sites/tax/files/documents/TaxRateSched-2025.pdf#page=1
 brackets:
   - threshold:
       2021-01-01: 0
@@ -30,12 +32,9 @@ brackets:
         2023-01-01: 60_850
         2024-01-01: 64_200
         2025-01-01: 66_200
+        2026-01-01: 68_000
       metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: downwards
-            interval: 50
+        uprating: null
     rate:
       2021-01-01: 0.066
   - threshold:
@@ -45,12 +44,9 @@ brackets:
         2023-01-01: 157_150
         2024-01-01: 165_700
         2025-01-01: 171_000
+        2026-01-01: 175_500
       metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: downwards
-            interval: 50
+        uprating: null
     rate:
       2021-01-01: 0.076
   - threshold:
@@ -60,11 +56,8 @@ brackets:
         2023-01-01: 254_500
         2024-01-01: 268_300
         2025-01-01: 276_850
+        2026-01-01: 284_150
       metadata:
-        uprating:
-          parameter: gov.irs.uprating
-          rounding:
-            type: downwards
-            interval: 50
+        uprating: null
     rate:
       2021-01-01: 0.0875

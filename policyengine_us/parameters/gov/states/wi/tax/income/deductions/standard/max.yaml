@@ -5,15 +5,13 @@ metadata:
     - filing_status
   period: year
   unit: currency-USD
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 10
+  # Wisconsin indexes from statutory bases using prior-August NSA CPI-U.
+  uprating: null
   propagate_metadata_to_children: true
   reference:
-    # The legal code includes uprating.
-    - title: Wisconsin Statutes 71.07 (9)(b)(5)
+    - title: Wisconsin Statutes 71.05(22)(dp) - Standard deduction limits
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/22/dp
+    - title: Wisconsin Statutes 71.05(22)(dt) - Standard deduction indexing
       href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/22/dt
     - title: eFile.com, Wisconsin Tax Brackets, Rates, Forms, and Standard Deductions (third party, archived January 2025; the only cited source for 2021)
       href: https://web.archive.org/web/20250119123144/https://www.efile.com/wisconsin-tax-brackets-rates-and-forms/
@@ -25,45 +23,70 @@ metadata:
       href: https://www.revenue.wi.gov/DORReports/25sumrpt.pdf#page=9
     - title: 2025 Form 1-ES instructions, Standard Deduction Table
       href: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-ES-Inst.pdf#page=3
-    - title: 2026 Form 1-ES instructions, 2026 Standard Deduction schedules
-      href: https://www.revenue.wi.gov/TaxForms2026/2026-Form1-ES-Inst.pdf#page=2
     - title: 2024 Form 1 instructions, Standard Deduction Table
       href: https://www.revenue.wi.gov/TaxForms2024/2024-Form1-inst.pdf#page=35
     - title: 2025 Form 1 instructions, Standard Deduction Table
       href: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-inst.pdf#page=35
-    
+    - title: 2026 Form 1-ES instructions, Standard Deduction Schedules
+      href: https://www.revenue.wi.gov/TaxForms2026/2026-Form1-ES-Inst.pdf#page=2
+
 SINGLE:
-  2021-01-01: 11_200
-  2022-01-01: 11_790
-  2023-01-01: 12_760
-  2024-01-01: 13_230
-  2025-01-01: 13_560
-  2026-01-01: 13_960
+  values:
+    2021-01-01: 11_200
+    2022-01-01: 11_790
+    2023-01-01: 12_760
+    2024-01-01: 13_230
+    2025-01-01: 13_560
+    2026-01-01: 13_960
+  metadata:
+    wisconsin_indexing:
+      base: 7_200
+      base_year: 1999
 JOINT:
-  2021-01-01: 20_730
-  2022-01-01: 21_820
-  2023-01-01: 23_620
-  2024-01-01: 24_490
-  2025-01-01: 25_110
-  2026-01-01: 25_840
+  values:
+    2021-01-01: 20_730
+    2022-01-01: 21_820
+    2023-01-01: 23_620
+    2024-01-01: 24_490
+    2025-01-01: 25_110
+    2026-01-01: 25_840
+  metadata:
+    wisconsin_indexing:
+      base: 19_010
+      base_year: 2015
 SURVIVING_SPOUSE:
-  2021-01-01: 20_730
-  2022-01-01: 21_820
-  2023-01-01: 23_620
-  2024-01-01: 24_490
-  2025-01-01: 25_110
-  2026-01-01: 25_840
+  values:
+    2021-01-01: 20_730
+    2022-01-01: 21_820
+    2023-01-01: 23_620
+    2024-01-01: 24_490
+    2025-01-01: 25_110
+    2026-01-01: 25_840
+  metadata:
+    wisconsin_indexing:
+      base: 19_010
+      base_year: 2015
 SEPARATE:
-  2021-01-01:  9_850
-  2022-01-01: 10_370
-  2023-01-01: 11_220
-  2024-01-01: 11_630
-  2025-01-01: 11_930
-  2026-01-01: 12_280
+  values:
+    2021-01-01: 9_850
+    2022-01-01: 10_370
+    2023-01-01: 11_220
+    2024-01-01: 11_630
+    2025-01-01: 11_930
+    2026-01-01: 12_280
+  metadata:
+    wisconsin_indexing:
+      base: 9_030
+      base_year: 2015
 HEAD_OF_HOUSEHOLD:
-  2021-01-01: 14_470
-  2022-01-01: 15_230
-  2023-01-01: 16_480
-  2024-01-01: 17_090
-  2025-01-01: 17_520
-  2026-01-01: 18_030
+  values:
+    2021-01-01: 14_470
+    2022-01-01: 15_230
+    2023-01-01: 16_480
+    2024-01-01: 17_090
+    2025-01-01: 17_520
+    2026-01-01: 18_030
+  metadata:
+    wisconsin_indexing:
+      base: 9_300
+      base_year: 1999
