@@ -1,0 +1,1 @@
+Count Form 2555 line 43, the gross section 911 exclusion, toward the federal filing threshold under 26 U.S.C. 6012(c), instead of the Foreign Earned Income Tax Worksheet line 2c amount, and share one Form 2555 leaf input check across the formulas that choose between leaf and legacy inputs.

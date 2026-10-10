@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.section_911 import section_911_gross_exclusion
 
 
 class ma_foreign_earned_income_exclusion_addback(Variable):
@@ -42,22 +43,4 @@ class ma_foreign_earned_income_exclusion_addback(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        leaf_inputs = [
-            "foreign_earned_income_exclusion_amount",
-            "foreign_housing_exclusion",
-            "foreign_earned_income_exclusion_allocable_deductions",
-            "foreign_housing_deduction",
-            "foreign_earned_income_exclusion_disallowed_deductions",
-        ]
-        # Core's input export helper tracks supplied values by year and
-        # branch. Cached default zeros must not replace the legacy fallback;
-        # explicitly supplied zeros must. Available since core 3.32.8.
-        if any(
-            input_period.start <= period.start
-            for variable in leaf_inputs
-            for input_period in tax_unit.simulation._get_exportable_input_periods(
-                variable, include_computed_variables=False
-            )
-        ):
-            return max_(0, tax_unit("foreign_earned_income_exclusion_gross", period))
-        return max_(0, tax_unit("foreign_earned_income_exclusion", period))
+        return section_911_gross_exclusion(tax_unit, period)
