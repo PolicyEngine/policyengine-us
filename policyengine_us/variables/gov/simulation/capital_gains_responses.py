@@ -85,10 +85,34 @@ class adult_index_cg(Variable):
         )
 
 
+# marginal_tax_rate_on_capital_gains raises long-term gains by at least $1,000.
+# The rate is a difference in household_net_income, a float32 that resolves
+# only about 1.2e-7 of its own size (8 dollars at $100 million), so a fixed
+# $1,000 rise would resolve a $100 million household's rate only to 0.008.
+# The rise is therefore 0.1% of the larger of the household's net income and
+# the person's long-term gains, in absolute value, where that exceeds $1,000,
+# which keeps the resolution near 1e-4. Below $1 million both give $1,000.
+CAPITAL_GAINS_MTR_MINIMUM_RISE = 1_000
+CAPITAL_GAINS_MTR_RELATIVE_RISE = 1e-3
+
+
+def capital_gains_mtr_rise(household_net_income, long_term_capital_gains):
+    """Rise in long-term gains that measures each person's rate."""
+    scale = np.maximum(
+        np.abs(np.asarray(household_net_income, dtype=np.float64)),
+        np.abs(np.asarray(long_term_capital_gains, dtype=np.float64)),
+    )
+    return np.maximum(
+        CAPITAL_GAINS_MTR_MINIMUM_RISE, CAPITAL_GAINS_MTR_RELATIVE_RISE * scale
+    )
+
+
 class marginal_tax_rate_on_capital_gains(Variable):
     label = "capital gains marginal tax rate"
     documentation = (
-        "Percent of marginal capital gains that do not increase household net income."
+        "Share of a rise in long-term capital gains that does not increase"
+        " household net income. The rise is $1,000, or 0.1% of the household's"
+        " net income or of the person's long-term gains where that is more."
         " Simulated only for the two adults in each household with the largest"
         " long-term capital gains (adult_index_cg 1 and 2), regardless of"
         " simulation.marginal_tax_rate_adults; zero for everyone else."
@@ -99,11 +123,14 @@ class marginal_tax_rate_on_capital_gains(Variable):
     unit = "/1"
 
     def formula(person, period, parameters):  # pragma: no cover
-        # Requires simulation branching - tested via microsim
+        # Requires simulation branching - tested via household simulations
+        # in tests/core/test_capital_gains_mtr_measurement.py
         mtr_values = np.zeros(person.count, dtype=np.float32)
         simulation = person.simulation
-        DELTA = 1_000
         adult_index_values = person("adult_index_cg", period)
+        long_term_capital_gains = person("long_term_capital_gains", period)
+        household_net_income = person.household("household_net_income", period)
+        rise = capital_gains_mtr_rise(household_net_income, long_term_capital_gains)
         inputs = user_set_variables(simulation)
         for adult_index in [1, 2]:
             alt_simulation = simulation.get_branch(f"adult_{adult_index}_cg_rise")
@@ -112,18 +139,26 @@ class marginal_tax_rate_on_capital_gains(Variable):
                 variable_data = simulation.tax_benefit_system.variables[variable]
                 if variable not in inputs and not variable_data.is_input_variable():
                     alt_simulation.delete_arrays(variable)
+            # Raise long-term gains, which net capital gain and so the
+            # preferential rates read. Raising capital_gains, the sum of
+            # short- and long-term gains, reached adjusted gross income but
+            # not net capital gain, so the rise was taxed as ordinary income.
+            # The override holds any behavioral response at its value here.
             alt_simulation.set_input(
-                "capital_gains",
+                "long_term_capital_gains",
                 period,
-                person("capital_gains", period) + mask * DELTA,
+                long_term_capital_gains + mask * rise,
             )
             alt_person = alt_simulation.person
-            household_net_income = person.household("household_net_income", period)
-            household_net_income_higher_earnings = alt_person.household(
+            # Divide by the rise as stored, after rounding to float32.
+            stored_rise = (
+                alt_person("long_term_capital_gains", period) - long_term_capital_gains
+            )
+            household_net_income_higher_gains = alt_person.household(
                 "household_net_income", period
             )
-            increase = household_net_income_higher_earnings - household_net_income
-            mtr_values += where(mask, 1 - increase / DELTA, 0)
+            increase = household_net_income_higher_gains - household_net_income
+            mtr_values += where(mask, 1 - increase / where(mask, stored_rise, 1), 0)
 
             del simulation.branches[f"adult_{adult_index}_cg_rise"]
         return mtr_values
