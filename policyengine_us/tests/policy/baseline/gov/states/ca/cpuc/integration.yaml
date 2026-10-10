@@ -190,7 +190,12 @@
         ca_care_categorically_eligible: false
         tenant_pays_utilities: false
   output:
-    ca_cpuc_countable_income: 30_000
+    # Countable income includes SNAP. With no work hours entered, this adult
+    # fails the SNAP ABAWD work requirement through October 2024. In November
+    # and December, as an MCE household above the net standard, the household
+    # receives the $23 FY 2025 minimum allotment (CDSS ACL 12-62, example 4):
+    # 30,000 + 2 x 23.
+    ca_cpuc_countable_income: 30_046
     ca_care_income_eligible: true
     # The model's CARE gate treats a household with utilities included in
     # rent as ineligible, so neither the electricity nor the gas discount is
