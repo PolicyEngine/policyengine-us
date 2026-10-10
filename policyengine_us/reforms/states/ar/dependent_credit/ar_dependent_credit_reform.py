@@ -18,7 +18,12 @@ def create_ar_dependent_credit() -> Reform:
             # age; this person-level amount is summed via adds in
             # ar_personal_credits_potential, so the age gate composes.
             p = parameters(period).gov.contrib.states.ar.dependent_credit
-            is_dependent = person("is_tax_unit_dependent", period)
+            # As in the baseline, a return on which the filer (or, if joint,
+            # either spouse) can be claimed has no dependents (IRC 152(b)(1)).
+            filer_is_dependent = person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
+            is_dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
             if p.age_limit.in_effect:
                 age = person("age", period)
                 eligible = is_dependent & (age < p.age_limit.threshold)

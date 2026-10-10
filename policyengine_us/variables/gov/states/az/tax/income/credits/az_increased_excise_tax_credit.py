@@ -28,17 +28,11 @@ class az_increased_excise_tax_credit(Variable):
         # filer whom another taxpayer can claim is not counted, and a return
         # on which the filer (or, if joint, either spouse) can be claimed
         # counts no dependents (IRC 152(b)(1)).
-        person = tax_unit.members
-        filers = tax_unit.sum(person("is_tax_unit_head_or_spouse", period))
-        claimed_filers = filers - tax_unit(
-            "head_spouse_count_not_dependent_elsewhere", period
-        )
         filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
-        disallowed_dependents = where(
-            filer_is_dependent, tax_unit("tax_unit_dependents", period), 0
-        )
-        persons = (
-            tax_unit("tax_unit_size", period) - claimed_filers - disallowed_dependents
+        persons = where(
+            filer_is_dependent,
+            tax_unit("head_spouse_count_not_dependent_elsewhere", period),
+            tax_unit("tax_unit_size", period),
         )
         uncapped_credit = persons * p.amount
         return min_(uncapped_credit, p.max_amount)

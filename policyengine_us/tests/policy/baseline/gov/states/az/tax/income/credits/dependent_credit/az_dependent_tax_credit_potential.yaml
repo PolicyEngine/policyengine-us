@@ -146,15 +146,19 @@
   output:
     az_dependent_tax_credit_potential: 100
 
-- name: 2026 joint return with one claimable spouse gets no dependent credit
+- name: 2026 joint return with one claimable spouse gets no dependent credit (the claimable spouse is the head)
   period: 2026
   input:
     people:
       person_a:
         age: 20
         claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
       person_b:
         age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
       child:
         age: 5
     tax_units:
@@ -165,6 +169,33 @@
     households:
       household:
         members: [person_a, person_b, child]
+        state_code: AZ
+  output:
+    az_dependent_tax_credit_potential: 0
+
+- name: 2026 joint return with one claimable spouse gets no dependent credit (the claimable spouse is the spouse)
+  period: 2026
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [person_b, person_a, child]
         state_code: AZ
   output:
     az_dependent_tax_credit_potential: 0

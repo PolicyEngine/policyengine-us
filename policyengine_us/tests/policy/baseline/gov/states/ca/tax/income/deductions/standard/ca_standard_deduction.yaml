@@ -215,3 +215,25 @@
   output:
     # min($4,803, max($1,100, $3,000 + $350)).
     ca_standard_deduction: 3_350
+
+- name: 2025 single filer who can be claimed counts farm income as earned income on the dependent worksheet
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 19
+        farm_operations_income: 2_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    # Federal worksheet earned income includes Schedule 1 line 6 (farm) less
+    # line 15: $2,000 - $2,000 x 0.9235 x 0.153 / 2 = $1,858.70; plus $450.
+    ca_standard_deduction: 2_308.70

@@ -208,3 +208,50 @@
   output:
     # ca_standard_deduction is defined_for=CA, so non-CA returns 0
     ca_standard_deduction: 0
+
+# The dependent worksheet (RTC 17073.5(c)(2), IRC 63(c)(5)) still limits the
+# deduction of a filer who can be claimed as a dependent: in a year the
+# election is not in effect (the baseline amount), and, assuming the bill
+# leaves (c)(2) in place, on the elected amount.
+- name: Single filer who can be claimed uses the dependent worksheet in a year the election is not in effect.
+  period: 2025
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    people:
+      person1:
+        age: 19
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # max($1,350, $2,000 + $450) = $2,450 < $5,706.
+    ca_standard_deduction: 2_450
+
+- name: Single filer who can be claimed and has no earnings is limited to the dependent minimum under the election.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
+  input:
+    gov.contrib.states.ca.ab2591.in_effect: true
+    people:
+      person1:
+        age: 19
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    # min($16,334 one-person FPL, max($1,400, $0 + $500)) = $1,400.
+    ca_standard_deduction: 1_400

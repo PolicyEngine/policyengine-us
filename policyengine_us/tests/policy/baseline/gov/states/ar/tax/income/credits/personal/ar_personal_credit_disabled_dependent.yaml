@@ -455,3 +455,37 @@
         state_code: AR
   output:
     ar_personal_credit_disabled_dependent: [0, 0, 500]
+
+- name: 2025 parent ids elsewhere in the household do not decide whose child an unlinked disabled dependent is
+  period: 2025
+  input:
+    people:
+      filer_a:
+        age: 19
+        person_id: 1
+        claimed_as_dependent_on_another_return: true
+      child_a:
+        age: 6
+        person_id: 2
+        is_disabled: true
+      adult_b:
+        age: 40
+        person_id: 3
+      child_b:
+        age: 10
+        person_id: 4
+        parent_1_id: 3
+    tax_units:
+      tax_unit_a:
+        members: [filer_a, child_a]
+        filing_status: SINGLE
+      tax_unit_b:
+        members: [adult_b, child_b]
+    households:
+      household:
+        members: [filer_a, child_a, adult_b, child_b]
+        state_code: AR
+  output:
+    # child_a has no parent ids of their own, so the relationship is unknown
+    # and the child route stays open; child_b is not disabled.
+    ar_personal_credit_disabled_dependent: [0, 500, 0, 0]

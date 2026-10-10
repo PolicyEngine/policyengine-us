@@ -146,3 +146,57 @@
   output:
     # $40 x 3.
     az_family_tax_credit_potential: 120
+
+- name: 2025 joint return with one claimable spouse and a tax unit size input counts only the filers (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        tax_unit_size: 4
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: AZ
+  output:
+    # $40 x 2 filers. A tax unit size of 4 does not say who the
+    # other two are; a return with a claimable filer counts no dependents.
+    az_family_tax_credit_potential: 80
+
+- name: 2025 joint return with one claimable spouse and a tax unit size input counts only the filers (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        tax_unit_size: 4
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: AZ
+  output:
+    # $40 x 2 filers. A tax unit size of 4 does not say who the
+    # other two are; a return with a claimable filer counts no dependents.
+    az_family_tax_credit_potential: 80

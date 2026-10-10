@@ -7,8 +7,10 @@ and California's standard deduction, exemption credits, CalEITC, foster youth
 credit and renter credit apply IRC 151(d)(2) and 152(b)(1) and each state's
 own text.
 
-For couples drawn by Hypothesis and a seeded population in the three states,
-with either, both or neither spouse claimed:
+For couples drawn by Hypothesis, a seeded population and crafted cases in the
+three states (renters who lived with the person who can claim them, and a
+disabled dependent who is a filer's own child, someone else's child, or of
+unknown relationship), with either, both or neither spouse claimed:
 
 1. Swap invariance: each output is the same under either head/spouse
    labelling.
@@ -74,6 +76,46 @@ def _identities(sim, year):
     assert not _calc(sim, "az_increased_excise_tax_credit", year)[every_filer].any()
 
 
+def _claimable_rule_cases():
+    """Cases for the inputs the shared strategies never set."""
+    renter = {
+        "age": 20,
+        "employment_income": 2_000.0,
+        "rent": 6_000.0,
+        "lives_with_claiming_taxpayer": True,
+    }
+    earner = {"age": 30, "person_id": 1, "employment_income": 20_000.0}
+    cases = []
+    for state in STATES:
+        for claimed in CLAIM_PATTERNS:
+            cases.append(
+                {
+                    "state": state,
+                    "adults": [
+                        {**renter, "person_id": 1},
+                        {**renter, "person_id": 2, "age": 22},
+                    ],
+                    "dependents": [],
+                    "claimed": claimed,
+                }
+            )
+            # Parent id 1 is the first adult; 99 is a parent outside the
+            # household; no id leaves the relationship unknown.
+            for parent in (1, 99, None):
+                dependent = {"age": 8, "is_disabled": True, "person_id": 3}
+                if parent is not None:
+                    dependent["parent_1_id"] = parent
+                cases.append(
+                    {
+                        "state": state,
+                        "adults": [earner, {"age": 32, "person_id": 2}],
+                        "dependents": [dependent],
+                        "claimed": claimed,
+                    }
+                )
+    return cases
+
+
 @st.composite
 def couples(draw):
     return {
@@ -97,6 +139,10 @@ def test_az_ar_ca_claimable_filer_rules_are_label_free(year, units):
 
 @pytest.mark.parametrize("year", YEARS)
 def test_az_ar_ca_claimable_filer_rules_seeded_population(year):
-    units = _seeded_couples(STATES, per_state=3) + _crafted_cases(STATES)
+    units = (
+        _seeded_couples(STATES, per_state=3)
+        + _crafted_cases(STATES)
+        + _claimable_rule_cases()
+    )
     check_swap(units, year, OUTPUTS, _identities)
     check_monotone(units, year, MONOTONE, _identities)
