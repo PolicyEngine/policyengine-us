@@ -13,6 +13,9 @@ class is_ssi_spousal_resource_deeming_applies(Variable):
     )
 
     def formula(person, period, parameters):
+        # Use the same tax-head/spouse convention as SSI income deeming and
+        # ssi_claim_is_joint. A marital unit alone cannot establish marriage:
+        # situations omitting marital units put everyone in one default unit.
         ineligible = person("is_ssi_ineligible_spouse", period)
         # Marital units represent spouses living together. Subtract self:
         # an unmarried ineligible adult is not their own ineligible spouse.
@@ -20,14 +23,12 @@ class is_ssi_spousal_resource_deeming_applies(Variable):
         households = person.household.reference_entity.members_entity_id
         first_home = person.marital_unit.value_nth_person(0, households, default=-1)
         second_home = person.marital_unit.value_nth_person(1, households, default=-2)
+        # 416.1167 retains the absent person's household membership. Enter a
+        # temporarily absent spouse in the household they remain a member of.
         return (
             person("is_ssi_aged_blind_disabled", period)
+            & person("is_tax_unit_head_or_spouse", period)
             & ~person("ssi_claim_is_joint", period)
             & has_ineligible_spouse
-            & (
-                (first_home == second_home)
-                | person.marital_unit.any(
-                    person("ssi_resource_deeming_temporary_absence", period)
-                )
-            )
+            & (first_home == second_home)
         )

@@ -151,39 +151,48 @@
   output:
     is_ssi_spousal_resource_deeming_applies: [false, false]
 
-# 20 CFR 416.1167: an adjudicated temporary absence preserves spousal deeming.
-# The monthly input certifies that the separately housed spouse remains part of
-# the household for deeming; their physical household id alone is insufficient.
-# https://www.ecfr.gov/current/title-20/section-416.1167
-- name: Temporary spousal absence preserves resource deeming across physical households
+# Keep SSI tax head/spouse roles: an omitted marital unit is not evidence
+# that a parent and adult dependent are spouses under 416.1202(a).
+- name: Omitted marital units do not make a tax head parent an adult dependent spouse
   period: 2026-01
   input:
     people:
-      claimant:
-        age: 40
-        is_ssi_aged_blind_disabled: true
-        is_tax_unit_head: true
-        ssi_countable_resources:
-          '2026': 0
-      spouse:
+      parent:
         age: 40
         is_ssi_aged_blind_disabled: false
-        is_tax_unit_spouse: true
-        ssi_resource_deeming_temporary_absence: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_household_head: false
         ssi_countable_resources:
-          '2026': 3001
+          '2026': 5000
+        is_parent: true
+      adult_child:
+        age: 25
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_household_head: false
+        ssi_countable_resources:
+          '2026': 0
     tax_units:
       family:
-        members: [claimant, spouse]
-    marital_units:
-      couple:
-        members: [claimant, spouse]
+        members:
+        - parent
+        - adult_child
     households:
-      claimant_home:
-        members: [claimant]
-      spouse_temporary_home:
-        members: [spouse]
+      home:
+        members:
+        - parent
+        - adult_child
   output:
-    is_ssi_spousal_resource_deeming_applies: [true, false]
-    ssi_resources_deemed_from_ineligible_spouse: [3001, 0]
-    meets_ssi_resource_test: [false, false]
+    is_ssi_spousal_resource_deeming_applies:
+    - false
+    - false
+    ssi_resources_deemed_from_ineligible_spouse:
+    - 0
+    - 0
+    meets_ssi_resource_test:
+    - false
+    - true

@@ -9,17 +9,19 @@ Another 81 four-axis households exercise sibling reallocation. All 578
 independent households (1,654 people) share one vectorized simulation per
 policy: baseline and $10,000/$20,000 limits.
 
-The grids keep household relationships fixed and certify no temporary absence;
-this is the default-false behavior. Dedicated YAML cases cover the certified
-temporary medical and spousal absence exceptions under 20 CFR 416.1167.
+The grids keep household relationships fixed. Household membership represents
+coresidence, including retained membership during a temporary absence under
+20 CFR 416.1167.
 
 YAML covers the source examples. Python is needed here to compare a frozen
-prechange formula and to check every ordered edge of each Cartesian grid using
-the Simulation API. A single module fixture builds two independent simulation
-caches from the read-only system singleton; it never constructs a model per
-grid point. This file routes to the existing Rest/core Python group in Makefile.
-Local elapsed time and peak RSS must be reported after the guarded test run;
-there is no claim that a local measurement represents Linux CI cost.
+prechange formula, check every ordered edge of each Cartesian grid, and compare
+independent resource-test oracles using the Simulation API. Those oracles fail
+if either deemed-resource formula is removed. A single module fixture builds
+two independent simulation caches from the read-only system singleton; it never
+constructs a model per grid point. This file routes to the existing Rest/core
+Python group in Makefile. Local elapsed time and peak RSS must be reported after
+the test run; there is no claim that a local measurement represents Linux CI
+cost.
 """
 
 from copy import deepcopy
@@ -125,7 +127,6 @@ def _situation():
                     "is_tax_unit_spouse": {YEAR: is_spouse},
                     "is_tax_unit_dependent": {YEAR: is_child},
                     "is_household_head": {YEAR: is_head},
-                    "ssi_resource_deeming_temporary_absence": {PERIOD: False},
                     "ssi_countable_resources": {YEAR: amount_by_role[role]},
                 }
                 frozen_own.append(amount_by_role[role])
@@ -184,6 +185,54 @@ def _frozen_old_formula(frozen, individual_limit, couple_limit):
     return countable <= limits
 
 
+def _redistributed_child_passes(own_resources, parental_excess, individual_limit):
+    """Independent SI 01330.200 B equal-division eligibility calculation.
+
+    Start with children whose own resources pass. Repeatedly divide the excess
+    among the remaining children and remove every child who fails that share.
+    This oracle needs neither a deeming amount nor the model's entity helpers.
+    """
+    own_resources = np.asarray(own_resources, dtype=float)
+    eligible = own_resources <= individual_limit
+    while np.any(eligible):
+        share = parental_excess / np.count_nonzero(eligible)
+        remaining = eligible & (own_resources + share <= individual_limit)
+        if np.array_equal(remaining, eligible):
+            break
+        eligible = remaining
+    return eligible
+
+
+def _resource_test_oracles(individual_limit, couple_limit):
+    """Closed-form references built only from the resource coordinates/limits."""
+    expected = {}
+    own, spouse = np.meshgrid(*CASE_GRIDS["spouse"], indexing="ij")
+    expected["spouse"] = own + spouse <= couple_limit
+    for kind, allowance in (
+        ("one_parent", individual_limit),
+        ("two_parents", couple_limit),
+    ):
+        own, *parents = np.meshgrid(*CASE_GRIDS[kind], indexing="ij")
+        parental_excess = np.maximum(0, np.sum(parents, axis=0) - allowance)
+        expected[kind] = own + parental_excess <= individual_limit
+
+    children = []
+    for own, parent, parent_spouse, sibling in product(*CASE_GRIDS["two_children"]):
+        children.append(
+            _redistributed_child_passes(
+                [own, sibling],
+                max(0, parent + parent_spouse - couple_limit),
+                individual_limit,
+            )
+        )
+    children = np.asarray(children)
+    expected["two_children"] = children[:, 0].reshape(GRID_SHAPES["two_children"])
+    expected["two_children_sibling"] = children[:, 1].reshape(
+        GRID_SHAPES["two_children_sibling"]
+    )
+    return expected
+
+
 @pytest.fixture(scope="module")
 def resource_grids():
     situation, positions, frozen = _situation()
@@ -198,6 +247,7 @@ def resource_grids():
         snapshots.append(
             {
                 "passes": passes,
+                "limits": (limits.individual, limits.couple),
                 "grids": {
                     kind: passes[indices].reshape(GRID_SHAPES[kind])
                     for kind, indices in positions.items()
@@ -224,6 +274,15 @@ def test_no_deemor_matches_frozen_old_formula(resource_grids):
         np.testing.assert_array_equal(
             snapshot["passes"][no_deemor], snapshot["old"][no_deemor]
         )
+
+
+def test_resource_grids_match_independent_oracles(resource_grids):
+    snapshots, _ = resource_grids
+    for snapshot in snapshots:
+        for kind, expected in _resource_test_oracles(*snapshot["limits"]).items():
+            np.testing.assert_array_equal(
+                snapshot["grids"][kind], expected, err_msg=kind
+            )
 
 
 def test_resource_and_limit_monotonicity(resource_grids):
