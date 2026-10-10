@@ -200,8 +200,16 @@
         members: [person1]
         state_code: MT
   output:
-    # (863.08 - (gross_hh - 6,300) x 0.05) x 1.0, capped at $1,000 = $133.
-    mt_elderly_homeowner_or_renter_credit: 133.33
+    # (863.08 - (gross_hh - 6,300) x 0.05) x 1.0, capped at $1,000.
+    # 2021 instructions, line 7: "Refundable credits include the federal and
+    # Montana Earned Income Tax Credit, the federal Child Tax Credits,
+    # Economic Impact Payments". Federal EITC (ARPA, no qualifying child)
+    # 1_502 - 15.3% x (20_892.60 - 11_610) = 81.76; Montana EITC 3% = 2.45;
+    # Economic Impact Payment 1_400. Line 10 = 20_892.60 + 1_484.21 =
+    # 22_376.81; line 12 = 16_076.81; line 14 = 803.84; line 19 = 863.08 -
+    # 803.84 = 59.24. The earlier expected value, 133.33, counted only the
+    # Montana EITC.
+    mt_elderly_homeowner_or_renter_credit: 59.24
 
 - name: MT EHRC uses the $12,600 exclusion from 2022 (HB 191)
   period: 2022
@@ -223,3 +231,352 @@
     # Same household, larger exclusion ($12,600) leaves a smaller expected
     # contribution, so the credit is higher: $539.67.
     mt_elderly_homeowner_or_renter_credit: 539.67
+
+- name: 2023 Elderly Homeowner/Renter Credit Schedule worked case, a capital loss does not reduce gross household income
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        long_term_capital_gains: -3_000
+        social_security_retirement: 10_000
+        real_estate_taxes: 2_000
+        mt_refundable_credits_before_renter_credit: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Line 1 federal AGI 17_000 (Social Security untaxed: 17_000 + 5_000 is
+    # under the 25_000 base); line 5 untaxed Social Security 10_000; line 9
+    # losses 3_000; line 10 gross household income 30_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 30_000
+    # Line 12 = 30_000 - 12_600 = 17_400; line 13 multiplier 0.05;
+    # line 14 = 870.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: 870
+    # Line 18 = 2_000; line 19 = 1_130; line 20 = min(1_130, 1_150);
+    # line 21 = 100% (under 35_000); line 22 = 1_130.
+    mt_elderly_homeowner_or_renter_credit: 1_130
+
+- name: 2024 Schedule 2EC worked case, a dependent's wages count toward gross household income
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 16
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 5 pensions 20_000; line 17 other household members' income
+    # 10_000 (the dependent's wages); line 18 gross household income 30_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 10_000]
+    # Line 19 12_600; line 20 = 30_000 - 12_600 = 17_400; line 21 = 0.05;
+    # line 22 = 870.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [870, 0]
+    # Line 23 = 2_000; line 26 = 2_000; line 27 = 2_000 - 870 = 1_130;
+    # line 28 = min(1_130, 1_150) = 1_130; line 29 = 100% (line 18 is under
+    # 35_000); line 30 = 1_130. Without the dependent's wages, gross
+    # household income would be 20_000 and the credit the 1_150 cap.
+    mt_elderly_homeowner_or_renter_credit: [1_130, 0]
+
+- name: 2024 Schedule 2EC worked case, a household member filing their own return counts
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 45
+        taxable_interest_income: 10_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The claimant's adult daughter lives in the household and files her
+    # own return. § 15-30-2337(7)(a): a household is "an association of
+    # persons who live in the same dwelling"; the 2024 instructions: "You do
+    # not need to be related to be in the same household." Line 5 = 20_000;
+    # line 17 = 10_000 (her interest); line 18 = 30_000; line 22 = 870;
+    # line 27 = 2_000 - 870 = 1_130; line 30 = 1_130. Her tax unit has no
+    # one aged 62 or older, so it claims nothing.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [870, 0]
+    mt_elderly_homeowner_or_renter_credit: [1_130, 0]
+
+- name: 2024 Schedule 2EC worked case, a dependent's wages move the credit into the 40 percent band
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 17
+        employment_income: 16_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 18 = 20_000 + 16_000 = 36_000; line 20 = 23_400; line 22 =
+    # 23_400 x 0.05 = 1_170; line 27 = 2_000 - 1_170 = 830; line 28 = 830;
+    # line 29 = 40% (36_000 is in the 35_000 to 37_500 band);
+    # line 30 = 830 x 0.4 = 332.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [1_170, 0]
+    mt_elderly_homeowner_or_renter_credit: [332, 0]
+
+- name: 2024 Schedule 2EC, a dependent's wages bring gross household income to 45,000
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 17
+        employment_income: 25_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 18 = 45_000. The claimant must have gross household income "less
+    # than $45,000"; line 29 = 0% at 45_000 and above.
+    mt_elderly_homeowner_or_renter_credit: [0, 0]
+
+- name: 2023 Elderly Homeowner/Renter Credit Schedule worked case, a non-filing dependent's wages count
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 16
+        employment_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 1 federal AGI 20_000 (the head's return). The dependent's 10_000
+    # of wages is under the 13_850 filing threshold for dependents; the
+    # 2023 instructions say members of the household not filing a Form 2 or
+    # federal Form 1040 "must report all wages" on line 8. Line 10 = 30_000;
+    # line 12 = 17_400; line 13 = 0.05; line 14 = 870; line 15 = 2_000;
+    # line 18 = 2_000; line 19 = 1_130; line 20 = 1_130; line 21 = 100%;
+    # line 22 = 1_130.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 10_000]
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [870, 0]
+    mt_elderly_homeowner_or_renter_credit: [1_130, 0]
+
+- name: 2024 Schedule 2EC worked case, a household member's federal EITC counts as a refundable credit received
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 40
+        employment_income: 10_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The claimant's adult son lives in the household and files his own
+    # return. Line 5 pensions 20_000. Line 8, refundable credits received by
+    # all household members: his federal EITC 632 (Rev. Proc. 2023-34, no
+    # qualifying child, wages between 8_260 and 10_330) and Montana EITC
+    # 10% x 632 = 63.20, 695.20 in all. Line 17 his wages 10_000. Line 18
+    # gross household income 30_695.20; line 20 = 30_695.20 - 12_600 =
+    # 18_095.20; line 21 = 0.05; line 22 = 904.76; line 27 = 2_000 - 904.76
+    # = 1_095.24; line 28 = 1_095.24 (under 1_150); line 29 = 100%; line 30 =
+    # 1_095.24. Counting only his Montana EITC gave 1_126.84.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [904.76, 0]
+    mt_elderly_homeowner_or_renter_credit: [1_095.24, 0]
+
+- name: 2024 Schedule 2EC worked case, a parent's federal EITC and refundable child tax credit count
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 30
+        employment_income: 10_000
+      person3:
+        age: 5
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: MT
+  output:
+    # The claimant's daughter and grandchild live in the household; the
+    # daughter files her own return. Line 8: federal EITC 34% x 10_000 =
+    # 3_400, refundable part of the federal child tax credit
+    # min(1_700, 15% x (10_000 - 2_500)) = 1_125, Montana EITC 340; 4_865 in
+    # all. Line 17 her wages 10_000. Line 18 = 20_000 + 4_865 + 10_000 =
+    # 34_865; line 20 = 22_265; line 22 = 22_265 x 0.05 = 1_113.25; line 27 =
+    # 2_000 - 1_113.25 = 886.75; line 29 = 100% (under 35_000); line 30 =
+    # 886.75.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 14_865, 0]
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [1_113.25, 0, 0]
+    mt_elderly_homeowner_or_renter_credit: [886.75, 0, 0]
+
+- name: 2024 Schedule 2EC worked case, federal credits move gross household income into the 30 percent band
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes: 2_000
+      person2:
+        age: 30
+        employment_income: 12_000
+      person3:
+        age: 5
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: MT
+  output:
+    # Line 8: federal EITC 34% x 12_000 = 4_080 (under the 12_390 earned
+    # income amount), refundable child tax credit
+    # min(1_700, 15% x 9_500) = 1_425, Montana EITC 408; 5_913 in all.
+    # Line 18 = 20_000 + 5_913 + 12_000 = 37_913; line 20 = 25_313;
+    # line 22 = 1_265.65; line 27 = 734.35; line 29 = 30% (37_501 to 40_000);
+    # line 30 = 734.35 x 0.3 = 220.31. Counting only the Montana EITC, line
+    # 18 was 32_408 and the credit 1_009.60.
+    mt_elderly_homeowner_or_renter_credit: [220.31, 0, 0]
+
+- name: 2025 Schedule 2EC worked case, the credit and the property tax rebate received in 2025 count
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        taxable_pension_income: 20_000
+        real_estate_taxes:
+          2024: 1_000
+          2025: 1_000
+        mt_elderly_homeowner_or_renter_credit_received: 1_150
+        mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2024: MT
+          2025: MT
+  output:
+    # Line 5 pensions 20_000. Line 8: "your elderly homeowner/renter credit
+    # received in 2025", 1_150 (the 2024 credit), and "the 2024 Montana
+    # property tax rebate", min(400, 1_000) = 400; 1_550 in all. Line 18 =
+    # 21_550; line 20 = 8_950; line 21 = 0.039 (8_000 to 9_000); line 22 =
+    # 349.05; line 27 = 1_000 - 349.05 = 650.95; line 30 = 650.95. Without
+    # line 8, line 22 would be 7_400 x 0.035 = 259 and the credit 741.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 21_550
+    mt_elderly_homeowner_or_renter_credit_net_household_income: 349.05
+    mt_elderly_homeowner_or_renter_credit: 650.95
+
+- name: 2023 Elderly Homeowner/Renter Credit Schedule worked case, a household member's federal EITC counts on line 7
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes:
+          2022: 2_000
+          2023: 2_000
+      person2:
+        age: 40
+        employment_income: 10_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2022: MT
+          2023: MT
+  output:
+    # Line 1 federal AGI of all household members 30_000. Line 7, the
+    # refundable credits received by the members of the household: the
+    # son's federal EITC, Rev. Proc. 2022-38, no qualifying child,
+    # 600 - 7.65% x (10_000 - 9_800) = 584.70, and Montana EITC 3%, 17.54;
+    # 602.24 in all. No actual property-rebate receipt is supplied, so
+    # none counts. Line 10 = 30_602.24; line 12 = 18_002.24; line 13 =
+    # 0.05; line 14 = 900.11; line 19 = 2_000 - 900.11 = 1_099.89; line 20
+    # = 1_099.89; line 21 = 100%; line 22 = 1_099.89.
+    mt_elderly_homeowner_or_renter_credit_net_household_income: [900.11, 0]
+    mt_elderly_homeowner_or_renter_credit: [1_099.89, 0]

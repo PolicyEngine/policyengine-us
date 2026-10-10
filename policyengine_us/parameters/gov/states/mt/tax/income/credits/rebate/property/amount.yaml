@@ -1,7 +1,13 @@
 description: Montana provides the following property tax rebate amount.
 values:
+  # Tax years 2022 and 2023: $500 (HB 222, Ch. 47, L. 2023) plus the $175
+  # bonus (HB 816, Ch. 764, L. 2023).
   2022-01-01: 675
-  # The property tax rebate was only offered in the 2022 and 2023 tax years
+  # Tax year 2024: $400 (SB 542, Ch. 767, L. 2025, sec. 3).
+  2024-01-01: 400
+  # No rebate has been enacted for tax year 2025 or later; the tax year 2024
+  # rebate terminates June 30, 2026 (Ch. 767, L. 2025, sec. 29(2)).
+  2025-01-01: 0
 metadata:
   period: year
   unit: currency-USD
@@ -16,3 +22,9 @@ metadata:
       href: https://docs.legmt.gov/download-ticket?ticketId=ff6faf83-515f-4472-a079-c41a4a75e827#page=1
     - title: 2024 Montana Form 2 Instructions
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=3
+    - title: Montana Department of Revenue, Income tax and property tax rebate report, May 2024 (maximum rebate $675 in each of tax years 2022 and 2023)
+      href: https://archive.legmt.gov/content/Committees/Interim/2023-2024/Revenue/Meetings/May-2024/5.1-DOR-rebate-report.pdf#page=13
+    - title: 2025 Montana Session Laws, Chapter 767 (SB 542), sec. 3(1), property tax rebate for tax year 2024
+      href: https://archive.legmt.gov/content/Sessions/69th/Contractor_index/CH0767.pdf#page=2
+    - title: 2025 Montana Session Laws, Chapter 767 (SB 542), sec. 29(2), termination of the tax year 2024 rebate
+      href: https://archive.legmt.gov/content/Sessions/69th/Contractor_index/CH0767.pdf#page=44

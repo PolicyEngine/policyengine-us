@@ -1,0 +1,1 @@
+Count federal refundable credits, the elderly homeowner/renter credit received during the year, and actual property tax rebate receipts (including in 2023) in Montana's elderly homeowner/renter credit gross household income; date the Montana property tax rebate ($400 for tax year 2024, none after).

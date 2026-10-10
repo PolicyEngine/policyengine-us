@@ -1,0 +1,95 @@
+- name: Case 1, a single parent's federal EITC and refundable CTC are counted once, on the head.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 10_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Rev. Proc. 2023-34, one qualifying child: 34% x 10_000 = 3_400 (under
+    # the 12_390 earned income amount). Refundable CTC: no tax before credits
+    # (10_000 is under the standard deduction), so
+    # min(1_700, 15% x (10_000 - 2_500)) = 1_125.
+    eitc: 3_400
+    refundable_ctc: 1_125
+    # 3_400 + 1_125 = 4_525, on the head only.
+    mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: [4_525, 0]
+
+- name: Case 2, a joint return's federal refundable credits go to the head, not the spouse or child.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 15_000
+      person2:
+        age: 33
+      person3:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Rev. Proc. 2023-34, one child: 15_000 is above the 12_390 earned income
+    # amount and under the 29_640 joint phaseout threshold, so the maximum
+    # 4_213. Refundable CTC: min(1_700, 15% x (15_000 - 2_500) = 1_875)
+    # = 1_700. Total 5_913.
+    mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: [5_913, 0, 0]
+
+- name: Case 3, the 2021 Economic Impact Payment counts with the federal EITC.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 63
+        employment_income: 20_892.60
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # 2021 Elderly Homeowner/Renter Credit Schedule instructions, line 7:
+    # "Refundable credits include the federal and Montana Earned Income Tax
+    # Credit, the federal Child Tax Credits, Economic Impact Payments".
+    # 2021 childless EITC (ARPA): 1_502 - 15.3% x (20_892.60 - 11_610)
+    # = 81.76. Recovery rebate credit (third-round payment): 1_400.
+    eitc: 81.76
+    mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: 1_481.76
+
+- name: Case 4, zero outside Montana.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 10_000
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    mt_elderly_homeowner_or_renter_credit_federal_refundable_credits: [0, 0]
