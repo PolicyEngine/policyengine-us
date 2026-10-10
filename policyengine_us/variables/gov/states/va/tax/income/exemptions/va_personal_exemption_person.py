@@ -19,10 +19,10 @@ class va_personal_exemption_person(Variable):
         # allow "the same number of dependent exemptions allowed on your
         # federal return").
         filer = person("is_tax_unit_head_or_spouse", period)
-        claimed = person("claimed_as_dependent_on_another_return", period)
+        claimed = person("claimable_as_dependent_on_another_return", period)
         dependent = person("is_tax_unit_dependent", period)
         dependent_filer = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         eligible = (filer & ~claimed) | (dependent & ~dependent_filer)
         p = parameters(period).gov.states.va.tax.income.exemptions
