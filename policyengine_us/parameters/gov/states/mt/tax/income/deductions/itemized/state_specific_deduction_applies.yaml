@@ -1,0 +1,16 @@
+description: Montana computes itemized deductions on its own Itemized Deductions Schedule, in lieu of adjusted federal itemized deductions, if this is true.
+metadata:
+  label: Montana state specific itemized deductions apply
+  period: year
+  unit: bool
+  reference:
+    - title: Montana Individual Income Tax Return (Form 2) 2023 | Itemized Deductions Schedule
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2023_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7
+    - title: 2024 Montana Form 2 Instructions | Discontinued Worksheets and Schedules
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=8
+    - title: 2024 Montana Form 2 Instructions | Line 2 and Worksheet A, Adjusted Federal Itemized Deductions
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15
+
+values:
+  2021-01-01: true
+  2024-01-01: false

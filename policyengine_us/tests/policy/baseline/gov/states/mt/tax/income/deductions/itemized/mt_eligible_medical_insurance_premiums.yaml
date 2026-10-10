@@ -1,0 +1,83 @@
+- name: Premiums paid with after-tax dollars qualify in full
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    health_insurance_premiums: 4_000
+    state_code: MT
+  output:
+    mt_eligible_medical_insurance_premiums: 4_000
+
+- name: Medicare Part B premiums qualify alongside other premiums
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    health_insurance_premiums_without_medicare_part_b: 1_000
+    medicare_enrolled: true
+    medicare_part_b_premium: 2_000
+    state_code: MT
+  output:
+    # The 2022 Form 2 instructions for line 2 make Medicare Part B premiums
+    # 100 percent deductible on this line.
+    medical_expense_health_insurance_premiums: 3_000
+    mt_eligible_medical_insurance_premiums: 3_000
+
+- name: Pre-tax premiums do not qualify
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    pre_tax_health_insurance_premiums: 3_000
+    state_code: MT
+  output:
+    # Premiums paid through a cafeteria plan are excluded from wages and are
+    # not counted as medical expenses.
+    medical_expense_health_insurance_premiums: 0
+    mt_eligible_medical_insurance_premiums: 0
+
+- name: Premiums fully taken as the self-employed health insurance deduction do not qualify
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    self_employment_income: 40_000
+    health_insurance_premiums: 6_000
+    state_code: MT
+  output:
+    self_employed_health_insurance_ald_person: 6_000
+    mt_eligible_medical_insurance_premiums: 0
+
+- name: Premiums above the self-employed health insurance deduction qualify
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    self_employment_income: 2_000
+    health_insurance_premiums: 6_000
+    state_code: MT
+  output:
+    # The self-employed health insurance deduction is limited to 2,000 of
+    # self-employment earnings, so 6,000 - 2,000 = 4,000 was not deducted in
+    # Montana AGI.
+    self_employed_health_insurance_ald_person: 2_000
+    mt_eligible_medical_insurance_premiums: 4_000
+
+- name: Self-employed person with a loss deducts none of the premiums in AGI
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    self_employment_income: -5_000
+    health_insurance_premiums: 3_000
+    state_code: MT
+  output:
+    self_employed_health_insurance_ald_person: 0
+    mt_eligible_medical_insurance_premiums: 3_000
+
+- name: Outside Montana the amount is zero
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    health_insurance_premiums: 4_000
+    state_code: ID
+  output:
+    mt_eligible_medical_insurance_premiums: 0
