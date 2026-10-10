@@ -7,7 +7,8 @@ class or_wfhdc_qualifying_individual(Variable):
     label = "Qualifying individual for the Oregon Working Family Household and Dependent Care Credit"
     definition_period = YEAR
     reference = (
-        "https://www.oregon.gov/dor/forms/FormsPubs/schedule-or-wfhdc-inst_101-195-1_2025.pdf#page=2",
+        # PDF pages 1-2
+        "https://www.oregon.gov/dor/forms/FormsPubs/schedule-or-wfhdc-inst_101-195-1_2025.pdf#page=1",
         "https://law.justia.com/codes/oregon/2021/volume-08/chapter-315/section-315-264/",
         "https://www.law.cornell.edu/uscode/text/26/21#b_1",
     )

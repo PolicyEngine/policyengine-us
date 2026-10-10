@@ -8,7 +8,11 @@ class me_relief_rebate(Variable):
     defined_for = "me_relief_rebate_eligible"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.maine.gov/governor/mills/relief-checks"
+    reference = (
+        "https://www.maine.gov/governor/mills/relief-checks",
+        # P.L. 2021, c. 635, Part L, section L-3.
+        "https://www.legislature.maine.gov/legis/bills/getPDF.asp?item=3&paper=HP1482&snum=130#page=176",
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.me.tax.income.credits.relief_rebate

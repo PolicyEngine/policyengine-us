@@ -38,3 +38,104 @@
     state_code: OR
   output:
     or_cdcc_relevant_expenses: 5_000 # min(5000, 12000, 30000)
+
+# ORS 315.264(1)(a) covers expenses for qualifying individuals. The child of a
+# return on which a filer can be claimed as a dependent is not one; the
+# incapacitated spouse is, but has no care expenses here.
+- name: 2025 childcare for the child of a joint return with one claimable spouse does not count (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        employment_income: 5000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        employment_income: 5000
+        is_disabled: true
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OR
+  output:
+    or_cdcc_relevant_expenses: 0
+
+- name: 2025 childcare for the child of a joint return with one claimable spouse does not count (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        employment_income: 5000
+        is_disabled: true
+        is_incapable_of_self_care: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 40
+        employment_income: 5000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1000
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: OR
+  output:
+    or_cdcc_relevant_expenses: 0
+
+- name: 2025 the same joint return with neither spouse claimable counts the childcare
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        employment_income: 5000
+        is_disabled: true
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OR
+  output:
+    or_cdcc_relevant_expenses: 1000
