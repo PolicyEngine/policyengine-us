@@ -16,6 +16,11 @@ class il_eitc(Variable):
         "https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003500050K212",
         # IRC 32(c)(3)(A) applies the IRC 152(c) qualifying-child definition.
         "https://www.law.cornell.edu/uscode/text/26/32#c_3_A",
+        # IRC 32(c)(1)(A)(ii)(III): a filer without a qualifying child must not
+        # be a dependent of another taxpayer.
+        "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii",
+        # Publication 596: on a joint return, neither spouse may be claimable.
+        "https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=18",
     )
     defined_for = StateCode.IL
 
@@ -30,8 +35,14 @@ class il_eitc(Variable):
         child_count = tax_unit.sum(qualifying_child)
         filer_has_tin = tax_unit.sum(is_head_or_spouse & ~has_tin) == 0
         p = parameters(period).gov.states.il.tax.income.credits.eitc
-        demographic_eligible = (child_count > 0) | tax_unit.any(
-            is_head_or_spouse & (age >= p.childless_min_age)
+        # The state extension waives only the identification and age rules. A
+        # filer without a qualifying child still must not be a dependent of
+        # another taxpayer (IRC 32(c)(1)(A)(ii)(III)); on a joint return
+        # neither spouse may be (Publication 596).
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        demographic_eligible = (child_count > 0) | (
+            tax_unit.any(is_head_or_spouse & (age >= p.childless_min_age))
+            & ~filer_is_dependent
         )
         state_eitc = calculate_eitc_like_amount(
             tax_unit,

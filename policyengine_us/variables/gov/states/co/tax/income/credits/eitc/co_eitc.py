@@ -16,6 +16,11 @@ class co_eitc(Variable):
         "https://leg.colorado.gov/sites/default/files/images/olls/crs2023-title-39.pdf",
         # IRC 32(c)(3)(A) applies the IRC 152(c) qualifying-child definition.
         "https://www.law.cornell.edu/uscode/text/26/32#c_3_A",
+        # IRC 32(c)(1)(A)(ii)(III): a filer without a qualifying child must not
+        # be a dependent of another taxpayer.
+        "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii",
+        # Publication 596: on a joint return, neither spouse may be claimable.
+        "https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=18",
     )
     defined_for = StateCode.CO
 
@@ -48,12 +53,18 @@ class co_eitc(Variable):
             & (age >= federal_childless_age_floor)
             & (age <= federal_eitc_parameters.eligibility.age.max)
         )
+        # The state routes waive only the identification and age rules. A
+        # filer without a qualifying child still must not be a dependent of
+        # another taxpayer (IRC 32(c)(1)(A)(ii)(III)); on a joint return
+        # neither spouse may be (Publication 596).
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         itin_eitc = calculate_eitc_like_amount(
             tax_unit,
             period,
             parameters,
             child_count_with_tin,
-            (child_count_with_tin > 0) | childless_filer_age_eligible,
+            (child_count_with_tin > 0)
+            | (childless_filer_age_eligible & ~filer_is_dependent),
             filer_has_tin,
         )
 
@@ -76,8 +87,9 @@ class co_eitc(Variable):
                 & homeless_or_foster
             )
         )
-        under_25_demographic_eligible = tax_unit.any(
-            is_head_or_spouse & under_25_age_eligible
+        under_25_demographic_eligible = (
+            tax_unit.any(is_head_or_spouse & under_25_age_eligible)
+            & ~filer_is_dependent
         )
         under_25_eitc = calculate_eitc_like_amount(
             tax_unit,

@@ -17,7 +17,14 @@ class il_ctc(Variable):
         # 35 ILCS 5/212.3 incorporates IRC §32 EITC qualifying-child rules,
         # which tie to IRC §152(c) (excluding §152(d) qualifying relatives).
         qualifying_child = person("is_qualifying_child_dependent", period)
-        eligible_child = qualifying_child & (age < p.age_limit)
+        # The child must also be the taxpayer's dependent. A return on which
+        # the filer (or, if joint, either spouse) can be claimed as a
+        # dependent has no dependents (IRC 152(b)(1)), even if the filer's own
+        # EITC still counts a qualifying child.
+        filer_is_dependent = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
+        eligible_child = qualifying_child & (age < p.age_limit) & ~filer_is_dependent
         eligible_child_present = tax_unit.any(eligible_child)
         state_eitc = tax_unit("il_eitc", period)
         return eligible_child_present * state_eitc * p.rate

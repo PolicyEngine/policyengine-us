@@ -130,3 +130,167 @@
     # A dependent who is not a 152(c) qualifying child (e.g. qualifying relative)
     # does not generate the IL CTC.
     il_ctc: 0
+
+
+- name: 2025 single filer who can be claimed as a dependent, no Illinois child tax credit although the filer's own EITC counts the child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 20
+        employment_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    spm_units:
+      spm_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  output:
+    # The filer keeps the EITC for a qualifying child (0.34 x 1,000
+    # x 20% = 68), but the credit's child must be the taxpayer's
+    # dependent and a return with a claimable filer has none.
+    il_eitc: 68
+    il_ctc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, no Illinois child tax credit although the filer's own EITC counts the child (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 20
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IL
+  output:
+    il_eitc: 68
+    il_ctc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, no Illinois child tax credit although the filer's own EITC counts the child (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 20
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person_b, person_a, child]
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: IL
+  output:
+    il_eitc: 68
+    il_ctc: 0
+
+- name: 2025 joint return with both spouses claimable as dependents, no Illinois child tax credit although the filer's own EITC counts the child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 20
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IL
+  output:
+    il_eitc: 68
+    il_ctc: 0
+
+- name: 2025 joint return with neither spouse claimable, no Illinois child tax credit although the filer's own EITC counts the child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IL
+  output:
+    # 40% x 68 = 27.20
+    il_eitc: 68
+    il_ctc: 27.2

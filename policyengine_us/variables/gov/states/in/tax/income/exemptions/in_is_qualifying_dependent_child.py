@@ -7,7 +7,9 @@ class in_is_qualifying_dependent_child(Variable):
     label = "Indiana additional exemption qualifying dependent child"
     definition_period = YEAR
     reference = (
-        "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5"  # (5)(B)(i)
+        "http://iga.in.gov/legislative/laws/2021/ic/titles/006#6-3-1-3.5",  # (5)(B)(i)
+        "https://www.in.gov/dor/files/ib117.pdf#page=2",
+        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
     )
     defined_for = StateCode.IN
 
@@ -22,4 +24,9 @@ class in_is_qualifying_dependent_child(Variable):
         )
         max_age = where(student, max_ages.student, max_ages.non_student)
         age_qualifies = age <= max_age
-        return dependent & age_qualifies
+        # A return on which the filer (or, if joint, either spouse) can be
+        # claimed as a dependent has no dependents (IRC 152(b)(1)).
+        filer_is_dependent = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
+        return dependent & age_qualifies & ~filer_is_dependent

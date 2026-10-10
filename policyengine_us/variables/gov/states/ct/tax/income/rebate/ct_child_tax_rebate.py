@@ -15,6 +15,7 @@ class ct_child_tax_rebate(Variable):
     reference = (
         "https://cga.ct.gov/2022/ACT/PA/PDF/2022PA-00118-R00HB-05506-PA.PDF#page=548",
         "https://portal.ct.gov/-/media/drs/publications/tssb/2022/tssb-2022-5.pdf#page=1",
+        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
     )
 
     def formula(tax_unit, period, parameters):
@@ -35,7 +36,13 @@ class ct_child_tax_rebate(Variable):
         # Sec. 411(b)(1)'s requirement that the child be validly claimed as a
         # dependent on the 2021 federal return.
         dependent = person("is_tax_unit_dependent", period)
-        eligible_child = (age <= p.age_limit) & dependent
+        # A return on which the filer (or, if joint, either spouse) can be
+        # claimed as a dependent has no dependents (IRC 152(b)(1)), so it
+        # validly claims no child.
+        filer_is_dependent = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
+        eligible_child = (age <= p.age_limit) & dependent & ~filer_is_dependent
         count_children = tax_unit.sum(eligible_child)
         capped_children = min_(count_children, p.child_cap)
         total_rebate = capped_children * p.amount
