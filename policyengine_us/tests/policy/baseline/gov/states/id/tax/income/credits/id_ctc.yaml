@@ -126,3 +126,22 @@
   output:
     # 5 children under 17 * $205
     id_ctc: 1025
+
+- name: No Idaho child tax credit after 2025
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: ID
+  output:
+    # Idaho Code 63-3029L(1): taxable years beginning before January 1, 2026.
+    id_ctc: 0
