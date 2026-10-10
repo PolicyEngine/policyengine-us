@@ -4,7 +4,13 @@ from policyengine_us.model_api import *
 class traditional_ira_deduction(Variable):
     value_type = float
     entity = Person
-    label = "Traditional IRA deduction on this tax return"
+    label = "Traditional IRA deduction"
+    documentation = (
+        "The IRC 219 deduction for traditional IRA contributions. For the head "
+        "and spouse it is the deduction on this tax return. For a tax unit "
+        "dependent it is the deduction on the dependent's own return, which "
+        "the filers' above-the-line total leaves out."
+    )
     unit = USD
     definition_period = YEAR
     reference = (
@@ -51,4 +57,12 @@ class traditional_ira_deduction(Variable):
         claimant = person("is_tax_unit_head", period) | (
             person("is_tax_unit_spouse", period) & joint
         )
-        return max_(0, min_(contributions, limit)) * claimant
+        filer_deduction = max_(0, min_(contributions, limit)) * claimant
+        # A tax unit dependent's deduction is on the dependent's own return.
+        # It is recorded on the dependent so that person-level consumers see
+        # it; the filers' above-the-line total sums the head and spouse only.
+        return where(
+            person("is_tax_unit_dependent", period),
+            person("dependent_traditional_ira_deduction", period),
+            filer_deduction,
+        )

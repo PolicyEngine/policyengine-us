@@ -1,6 +1,26 @@
 from policyengine_us.model_api import *
 
 
+def user_set_variables(sim):
+    """Names of the variables the caller set as inputs on this simulation.
+
+    ``sim.input_variables`` lists inputs given when the simulation was built.
+    Core records later ``set_input`` calls in ``_user_input_keys``, by
+    variable, branch and period; those made on this simulation's own branch
+    or its ancestors count too. A counterfactual branch must keep all of
+    them, or a value set after construction would be recomputed by its
+    formula in the branch only.
+    """
+    names = set(sim.input_variables)
+    keys = getattr(sim, "_user_input_keys", None) or ()
+    if hasattr(sim, "_get_visible_branch_names"):
+        branches = set(sim._get_visible_branch_names())
+    else:
+        branches = {getattr(sim, "branch_name", "default"), "default"}
+    names.update(name for name, branch, _period in keys if branch in branches)
+    return names
+
+
 def compute_component_mtr(person, period, parameters, tax_variable, branch_prefix):
     """Compute the marginal tax rate for a specific tax component.
 
@@ -31,11 +51,12 @@ def compute_component_mtr(person, period, parameters, tax_variable, branch_prefi
     self_employment_income = person("self_employment_income", period)
     emp_self_emp_ratio = person("emp_self_emp_ratio", period)
 
+    inputs = user_set_variables(sim)
     for adult_index in range(1, 1 + adult_count):
         branch_name = f"{branch_prefix}_for_adult_{adult_index}"
         alt_sim = sim.get_branch(branch_name)
         for variable in sim.tax_benefit_system.variables:
-            if variable not in sim.input_variables or variable == "employment_income":
+            if variable not in inputs or variable == "employment_income":
                 alt_sim.delete_arrays(variable)
         mask = adult_index == adult_indexes
         alt_sim.set_input(

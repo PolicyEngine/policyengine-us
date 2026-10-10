@@ -277,7 +277,14 @@ def test_joint_contributions_conserve_compensation_and_exclude_dependents():
     assert np.all(
         contributions[:, :2].sum(axis=1) <= np.array(compensation_total) + 0.01
     )
-    np.testing.assert_allclose(deduction.reshape(-1, 3)[:, 2], 0, rtol=0, atol=0)
+    # The dependent's own-return deduction is recorded on the dependent: their
+    # $1,000 traditional contribution fits their $2,000 of compensation. The
+    # filers' above-the-line total sums the head and spouse only.
+    np.testing.assert_allclose(deduction.reshape(-1, 3)[:, 2], 1_000, atol=0.001)
+    filer_total = simulation.calculate("above_the_line_deductions", year)
+    np.testing.assert_allclose(
+        filer_total, deduction.reshape(-1, 3)[:, :2].sum(axis=1), atol=0.01
+    )
     np.testing.assert_allclose(
         deduction.reshape(-1, 3)[:, :2], traditional.reshape(-1, 3)[:, :2]
     )
@@ -428,3 +435,33 @@ def test_contributions_set_after_construction_count_as_supplied():
     roth = simulation.calculate("roth_ira_contributions", year)
     np.testing.assert_allclose(traditional, [5_500], atol=0.001)
     np.testing.assert_allclose(roth, [2_000], atol=0)
+
+
+def test_marginal_tax_rate_keeps_contributions_set_after_construction():
+    """A counterfactual branch keeps an input set through set_input.
+
+    The earnings perturbation must compare like with like: the marginal tax
+    rate is the same whether the Roth contribution is given when the
+    simulation is built or set afterwards. A branch that dropped the later
+    input would regenerate a different IRA allocation alongside the bump.
+    """
+    year = 2026
+    person = {
+        "ira_compensation": 60_000,
+        "traditional_ira_contributions_desired": 7_500,
+    }
+
+    def simulation(roth_at_construction):
+        situation = blank_situation()
+        inputs = dict(person, employment_income=60_000)
+        if roth_at_construction:
+            inputs["roth_ira_contributions"] = 2_000
+        add_household(situation, "single", year, [inputs], {})
+        sim = Simulation(situation=situation)
+        if not roth_at_construction:
+            sim.set_input("roth_ira_contributions", year, np.array([2_000.0]))
+        return sim
+
+    at_construction = simulation(True).calculate("marginal_tax_rate", year)
+    set_afterwards = simulation(False).calculate("marginal_tax_rate", year)
+    np.testing.assert_allclose(set_afterwards, at_construction, atol=1e-6)
