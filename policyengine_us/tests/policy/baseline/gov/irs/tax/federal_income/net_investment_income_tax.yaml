@@ -488,3 +488,120 @@
     # The default (the full 100,000) would give 1,900.
     niit_magi: 220_000
     net_investment_income_tax: 760
+
+- name: Farm rental income counts as net investment income
+  # 2025 Form 4835 line 32 net farm rental income of 30,000 goes on Schedule
+  # E line 40, then into line 41 and Schedule 1 line 5. Form 8960 line 4a
+  # takes Schedule 1 line 5. Form 4835 is only for a rental activity under the
+  # passive activity rules, so line 4b removes nothing. Line 12 NII 30,000;
+  # line 13 MAGI 190,000 + 30,000 = 220,000; line 15 220,000 - 200,000 =
+  # 20,000; line 16 min(30,000, 20,000) = 20,000; line 17 3.8% x 20,000 = 760.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        employment_income: 190_000
+        farm_rent_income: 30_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 220_000
+    net_investment_income: 30_000
+    net_investment_income_tax: 760
+
+- name: A farm rental loss nets against other rents on Schedule E line 41
+  # Schedule E line 26 rents of 40,000 and a Form 4835 line 34c loss of
+  # 10,000 (allowed in full against the passive rental income) give line 41
+  # and Schedule 1 line 5 of 30,000, so Form 8960 line 4a is 30,000. AGI and
+  # MAGI 250,000 + 30,000 = 280,000; line 15 80,000; line 16 min(30,000,
+  # 80,000) = 30,000; line 17 3.8% x 30,000 = 1,140. Leaving the loss out
+  # would give 3.8% x 40,000 = 1,520.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        employment_income: 250_000
+        rental_income: 40_000
+        farm_rent_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 280_000
+    net_investment_income: 30_000
+    net_investment_income_tax: 1_140
+
+- name: A spouse's farm rental income counts on a joint return
+  # 2024 Form 8960 line 4a also takes Schedule 1 line 5. Line 12 NII 35,000;
+  # line 13 MAGI 240,000 + 35,000 = 275,000; line 14 joint threshold
+  # 250,000; line 15 25,000; line 16 min(35,000, 25,000) = 25,000; line 17
+  # 3.8% x 25,000 = 950.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 60
+        is_tax_unit_head: true
+        employment_income: 240_000
+      spouse:
+        age: 58
+        is_tax_unit_spouse: true
+        farm_rent_income: 35_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    adjusted_gross_income: 275_000
+    net_investment_income: 35_000
+    net_investment_income_tax: 950
+
+- name: A dependent's farm rental income stays off the filer's Form 8960
+  # The child's Form 4835 income goes on the child's own return, so the
+  # parent's line 12 NII is the 5,000 of interest. MAGI 210,000 + 5,000 =
+  # 215,000; line 15 15,000; line 17 3.8% x min(5,000, 15,000) = 190.
+  # Counting the child's rent would give 3.8% x 15,000 = 570.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 210_000
+        taxable_interest_income: 5_000
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+        farm_rent_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    irs_gross_income: [215_000, 0]
+    adjusted_gross_income: 215_000
+    net_investment_income: 5_000
+    net_investment_income_tax: 190
