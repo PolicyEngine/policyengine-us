@@ -133,3 +133,95 @@
         state_code: CA
   output:
     ca_eitc_earned_income: 18_587.045
+
+- name: California credit earnings retain payroll HSA contributions and exclude deferrals and premiums
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 10000
+        traditional_401k_contributions_desired: 2000
+        pre_tax_health_insurance_premiums: 500
+        health_savings_account_payroll_contributions: 1000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    eitc_earned_income: 6500
+    filer_adjusted_earnings: 6500
+    ca_eitc_earned_income: 7500
+
+- name: California wage zero floor is applied before including state taxable HSA amounts
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 1000
+        traditional_401k_contributions_desired: 600
+        health_savings_account_payroll_contributions: 700
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    eitc_earned_income: 0
+    filer_adjusted_earnings: 0
+    ca_eitc_earned_income: 400
+
+- name: California HSA wage inclusion is netted against self-employment losses before the credit floor
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 1000
+        health_savings_account_payroll_contributions: 500
+        self_employment_income: -1200
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    eitc_earned_income: 0
+    filer_adjusted_earnings: 0
+    ca_eitc_earned_income: 0
+
+- name: California credit wages exclude traditional elective deferrals
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 10000
+        traditional_401k_contributions_desired: 2000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    eitc_earned_income: 8000
+    filer_adjusted_earnings: 8000
+    ca_eitc_earned_income: 8000
