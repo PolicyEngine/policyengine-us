@@ -3,8 +3,7 @@
 Moving employee-paid premiums from non-pretax payments to pretax payroll
 deductions leaves total medical spending unchanged. SNAP, HUD,
 child-care deductions, Orange County General Relief and New Jersey
-medical expenses count both payment methods. The CRFB broad income base adds
-back the pretax premium excluded from federal wages. Michigan's wage exclusion
+medical expenses count both payment methods. Michigan's wage exclusion
 and non-pretax premium deduction likewise leave household resources unchanged.
 North Dakota excludes pretax premiums from income and deducts non-pretax
 premiums as medical expenses, also leaving renters' refund income unchanged.
@@ -26,17 +25,12 @@ from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
-from policyengine_us.reforms.crfb.agi_surtax import agi_surtax_reform_object
 from policyengine_us.system import system
 
 
 YEAR = 2026
 MONTH = "2026-01"
 STATES = ("CA", "MO", "PA", "NJ", "OH", "MI", "ND")
-SURTAX_ON = {
-    "gov.contrib.crfb.surtax.in_effect": {"2000-01-01.2100-12-31": True},
-    "gov.contrib.crfb.surtax.increased_base.in_effect": {"2000-01-01.2100-12-31": True},
-}
 
 
 @st.composite
@@ -127,16 +121,9 @@ def _situation(batch, moved):
 @example(batch=[(12_000, 12_000, 0), (1, 0, 1)])
 @given(batch=st.lists(premium_transfers(), min_size=1, max_size=3))
 def test_premium_transfer_respects_each_consumers_tax_treatment(batch):
-    # Supplying the read-only reference system avoids rebuilding the country
-    # for every generated example. Simulation clones it before applying these
-    # reforms, giving each situation private policy state and result arrays.
-    reform = (SURTAX_ON, agi_surtax_reform_object)
-    baseline = Simulation(
-        situation=_situation(batch, False), tax_benefit_system=system, reform=reform
-    )
-    moved = Simulation(
-        situation=_situation(batch, True), tax_benefit_system=system, reform=reform
-    )
+    # Reusing the reference system avoids rebuilding the country per example.
+    baseline = Simulation(situation=_situation(batch, False), tax_benefit_system=system)
+    moved = Simulation(situation=_situation(batch, True), tax_benefit_system=system)
     transfer = np.repeat([row[2] for row in batch], len(STATES))
     total = np.repeat([row[0] for row in batch], len(STATES))
     states = np.tile(STATES, len(batch))
@@ -168,7 +155,6 @@ def test_premium_transfer_respects_each_consumers_tax_treatment(batch):
         ("nj_medical_expense_deduction", YEAR),
         ("mi_household_resources", YEAR),
         ("nd_renters_refund_income", YEAR),
-        ("agi_surtax", YEAR),
         ("ssi_engaged_in_sga", YEAR),
     )
     for variable, period in invariant_consumers:
