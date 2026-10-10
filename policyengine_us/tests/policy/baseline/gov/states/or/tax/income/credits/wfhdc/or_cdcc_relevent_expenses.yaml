@@ -139,3 +139,72 @@
         state_code: OR
   output:
     or_cdcc_relevant_expenses: 1000
+
+# A dependent incapable of self-care is a qualifying individual at any age, also
+# when a filer can be claimed (IRC 21(b)(1)(B)), so the childcare of an
+# incapacitated 14-year-old counts.
+- name: 2025 childcare for the incapacitated teenager of a joint return with one claimable spouse counts (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        employment_income: 5000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        employment_income: 5000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 14
+        is_disabled: true
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OR
+  output:
+    or_cdcc_relevant_expenses: 1000
+
+- name: 2025 childcare for the incapacitated teenager of a joint return with one claimable spouse counts (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 40
+        employment_income: 5000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 14
+        is_disabled: true
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1000
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: OR
+  output:
+    or_cdcc_relevant_expenses: 1000
