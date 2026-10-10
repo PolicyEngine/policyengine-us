@@ -1069,6 +1069,20 @@ programs:
         name: New Mexico SSI supplement
         full_name: New Mexico SSI state supplement
         variable: nm_ssi_state_supplement
+      - state: NV
+        status: partial
+        name: Nevada OSS
+        full_name: Nevada Optional State Supplementation
+        variable: nv_oss
+        parameter_prefix: gov.states.nv.dwss.oss
+        verified_years: "2026"
+        notes: >-
+          Models optional supplementation for independent living, another
+          person's household, and state-certified domiciliary care, including
+          mixed-category couples and spouse deeming. Does not model mandatory
+          minimum-income protection for recipients converted in December 1973.
+          Uses the federal SSI eligibility and income framework; historical
+          rates before 2026 have not been verified.
       - state: SC
         status: complete
         name: South Carolina SSI supplement

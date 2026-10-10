@@ -1,0 +1,752 @@
+# POMS SI 01415.058 I.2.a-b: January 2026 state-only payment levels.
+# Couple amounts are divided equally per POMS SI 02005.030 G.1.
+- name: Case 1, aged and aged couple in independent matches the published total of 74.46.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 65
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [37.23, 37.23]
+    nv_oss: [37.23, 37.23]
+
+- name: Case 2, blind and blind couple in independent matches the published total of 374.6.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+      person2:
+        age: 40
+        is_blind: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [187.3, 187.3]
+    nv_oss: [187.3, 187.3]
+
+- name: Case 3, aged and blind couple in independent matches the published total of 224.53.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 40
+        is_blind: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [112.265, 112.265]
+    nv_oss: [112.27, 112.27]
+
+- name: Case 4, aged and disabled couple in independent matches the published total of 37.23.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 40
+        meets_ssi_disability_criteria: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [18.615, 18.615]
+    nv_oss: [18.62, 18.62]
+
+- name: Case 5, blind and disabled couple in independent matches the published total of 187.3.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+      person2:
+        age: 40
+        meets_ssi_disability_criteria: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [93.65, 93.65]
+    nv_oss: [93.65, 93.65]
+
+- name: Case 6, disabled and disabled couple in independent matches the published total of 0.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 40
+        meets_ssi_disability_criteria: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [0, 0]
+    nv_oss: [0, 0]
+
+- name: Case 7, aged and aged couple in another household matches the published total of 49.64.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 65
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [24.82, 24.82]
+    nv_oss: [24.82, 24.82]
+
+- name: Case 8, blind and blind couple in another household matches the published total of 531.94.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 40
+        is_blind: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [265.97, 265.97]
+    nv_oss: [265.97, 265.97]
+
+- name: Case 9, aged and blind couple in another household matches the published total of 290.79.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 40
+        is_blind: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [145.395, 145.395]
+    nv_oss: [145.4, 145.4]
+
+- name: Case 10, aged and disabled couple in another household matches the published total of 24.82.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 40
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [12.41, 12.41]
+    nv_oss: [12.41, 12.41]
+
+- name: Case 11, blind and disabled couple in another household matches the published total of 265.97.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 40
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [132.985, 132.985]
+    nv_oss: [132.99, 132.99]
+
+- name: Case 12, disabled and disabled couple in another household matches the published total of 0.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 40
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [0, 0]
+    nv_oss: [0, 0]
+
+- name: Case 13, aged and aged couple in domiciliary care matches the published total of 881.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        nv_oss_care_setting: DOMICILIARY_CARE
+      person2:
+        age: 65
+        nv_oss_care_setting: DOMICILIARY_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [440.5, 440.5]
+    nv_oss: [440.5, 440.5]
+
+- name: Case 14, blind and blind couple in domiciliary care matches the published total of 881.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        nv_oss_care_setting: DOMICILIARY_CARE
+      person2:
+        age: 40
+        is_blind: true
+        nv_oss_care_setting: DOMICILIARY_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [440.5, 440.5]
+    nv_oss: [440.5, 440.5]
+
+- name: Case 15, aged and blind couple in domiciliary care matches the published total of 881.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        nv_oss_care_setting: DOMICILIARY_CARE
+      person2:
+        age: 40
+        is_blind: true
+        nv_oss_care_setting: DOMICILIARY_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [440.5, 440.5]
+    nv_oss: [440.5, 440.5]
+
+- name: Case 16, aged and disabled couple in domiciliary care matches the published total of 440.5.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        nv_oss_care_setting: DOMICILIARY_CARE
+      person2:
+        age: 40
+        meets_ssi_disability_criteria: true
+        nv_oss_care_setting: DOMICILIARY_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [220.25, 220.25]
+    nv_oss: [220.25, 220.25]
+
+- name: Case 17, blind and disabled couple in domiciliary care matches the published total of 440.5.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        nv_oss_care_setting: DOMICILIARY_CARE
+      person2:
+        age: 40
+        meets_ssi_disability_criteria: true
+        nv_oss_care_setting: DOMICILIARY_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [220.25, 220.25]
+    nv_oss: [220.25, 220.25]
+
+- name: Case 18, disabled and disabled couple in domiciliary care matches the published total of 0.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        meets_ssi_disability_criteria: true
+        nv_oss_care_setting: DOMICILIARY_CARE
+      person2:
+        age: 40
+        meets_ssi_disability_criteria: true
+        nv_oss_care_setting: DOMICILIARY_CARE
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [0, 0]
+    nv_oss: [0, 0]
+
+- name: Case 19, all individual categories in independent match the published rates.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        is_blind: false
+        meets_ssi_disability_criteria: false
+      person2:
+        age: 40
+        is_blind: true
+        meets_ssi_disability_criteria: false
+      person3:
+        age: 40
+        is_blind: false
+        meets_ssi_disability_criteria: true
+      person4:
+        age: 40
+        is_blind: false
+        meets_ssi_disability_criteria: false
+    marital_units:
+      marital_units1:
+        members: [person1]
+      marital_units2:
+        members: [person2]
+      marital_units3:
+        members: [person3]
+      marital_units4:
+        members: [person4]
+    tax_units:
+      tax_units1:
+        members: [person1]
+      tax_units2:
+        members: [person2]
+      tax_units3:
+        members: [person3]
+      tax_units4:
+        members: [person4]
+    spm_units:
+      spm_units1:
+        members: [person1]
+      spm_units2:
+        members: [person2]
+      spm_units3:
+        members: [person3]
+      spm_units4:
+        members: [person4]
+    households:
+      households1:
+        members: [person1]
+        state_code: NV
+      households2:
+        members: [person2]
+        state_code: NV
+      households3:
+        members: [person3]
+        state_code: NV
+      households4:
+        members: [person4]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [36.4, 109.3, 0, 0]
+    nv_oss: [36.4, 109.3, 0, 0]
+
+- name: Case 20, all individual categories in another household match the published rates.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        is_blind: false
+        meets_ssi_disability_criteria: false
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 40
+        is_blind: true
+        meets_ssi_disability_criteria: false
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person3:
+        age: 40
+        is_blind: false
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person4:
+        age: 40
+        is_blind: false
+        meets_ssi_disability_criteria: false
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      marital_units1:
+        members: [person1]
+      marital_units2:
+        members: [person2]
+      marital_units3:
+        members: [person3]
+      marital_units4:
+        members: [person4]
+    tax_units:
+      tax_units1:
+        members: [person1]
+      tax_units2:
+        members: [person2]
+      tax_units3:
+        members: [person3]
+      tax_units4:
+        members: [person4]
+    spm_units:
+      spm_units1:
+        members: [person1]
+      spm_units2:
+        members: [person2]
+      spm_units3:
+        members: [person3]
+      spm_units4:
+        members: [person4]
+    households:
+      households1:
+        members: [person1]
+        state_code: NV
+      households2:
+        members: [person2]
+        state_code: NV
+      households3:
+        members: [person3]
+        state_code: NV
+      households4:
+        members: [person4]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [24.27, 213.96, 0, 0]
+    nv_oss: [24.27, 213.96, 0, 0]
+
+- name: Case 21, all individual categories in domiciliary care match the published rates.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        is_blind: false
+        meets_ssi_disability_criteria: false
+        nv_oss_care_setting: DOMICILIARY_CARE
+      person2:
+        age: 40
+        is_blind: true
+        meets_ssi_disability_criteria: false
+        nv_oss_care_setting: DOMICILIARY_CARE
+      person3:
+        age: 40
+        is_blind: false
+        meets_ssi_disability_criteria: true
+        nv_oss_care_setting: DOMICILIARY_CARE
+      person4:
+        age: 40
+        is_blind: false
+        meets_ssi_disability_criteria: false
+        nv_oss_care_setting: DOMICILIARY_CARE
+    marital_units:
+      marital_units1:
+        members: [person1]
+      marital_units2:
+        members: [person2]
+      marital_units3:
+        members: [person3]
+      marital_units4:
+        members: [person4]
+    tax_units:
+      tax_units1:
+        members: [person1]
+      tax_units2:
+        members: [person2]
+      tax_units3:
+        members: [person3]
+      tax_units4:
+        members: [person4]
+    spm_units:
+      spm_units1:
+        members: [person1]
+      spm_units2:
+        members: [person2]
+      spm_units3:
+        members: [person3]
+      spm_units4:
+        members: [person4]
+    households:
+      households1:
+        members: [person1]
+        state_code: NV
+      households2:
+        members: [person2]
+        state_code: NV
+      households3:
+        members: [person3]
+        state_code: NV
+      households4:
+        members: [person4]
+        state_code: NV
+  output:
+    nv_oss_payment_standard: [391, 391, 0, 0]
+    nv_oss: [391, 391, 0, 0]

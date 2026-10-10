@@ -1,0 +1,76 @@
+# POMS SI SF01415.300 A-E: Nevada living arrangements and exclusions.
+- name: Case 1, ordinary living uses independent living.
+  period: 2026-01
+  input:
+    state_code: NV
+  output:
+    nv_oss_living_arrangement: INDEPENDENT_LIVING
+
+- name: Case 2, federal parental household uses independent living.
+  period: 2026-01
+  input:
+    state_code: NV
+    ssi_federal_living_arrangement: CHILD_IN_PARENTAL_HOUSEHOLD
+  output:
+    nv_oss_living_arrangement: INDEPENDENT_LIVING
+
+- name: Case 3, federal one third reduction identifies another household.
+  period: 2026-01
+  input:
+    state_code: NV
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    nv_oss_living_arrangement: HOUSEHOLD_OF_ANOTHER
+
+- name: Case 4, state certification identifies domiciliary care.
+  period: 2026-01
+  input:
+    state_code: NV
+    nv_oss_care_setting: DOMICILIARY_CARE
+  output:
+    nv_oss_living_arrangement: DOMICILIARY_CARE
+
+- name: Case 5, Medicaid majority funding overrides a conflicting care setting.
+  period: 2026-01
+  input:
+    state_code: NV
+    nv_oss_care_setting: DOMICILIARY_CARE
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    nv_oss_living_arrangement: NONE
+
+- name: Case 6, uncertified medical facility is excluded.
+  period: 2026-01
+  input:
+    state_code: NV
+    nv_oss_care_setting: UNCERTIFIED_MEDICAL_FACILITY
+  output:
+    nv_oss_living_arrangement: NONE
+
+- name: Case 7, public emergency shelter is excluded.
+  period: 2026-01
+  input:
+    state_code: NV
+    nv_oss_care_setting: PUBLIC_EMERGENCY_SHELTER
+  output:
+    nv_oss_living_arrangement: NONE
+
+- name: Case 8, outside Nevada defaults to no supplementation.
+  period: 2026-01
+  input:
+    state_code: CA
+  output:
+    nv_oss_living_arrangement: NONE
+
+- name: Case 9, a child does not qualify for adult domiciliary care.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 17
+    is_blind: true
+    nv_oss_care_setting: DOMICILIARY_CARE
+  output:
+    nv_oss_living_arrangement: NONE

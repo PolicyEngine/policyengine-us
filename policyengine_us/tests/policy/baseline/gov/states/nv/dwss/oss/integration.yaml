@@ -1,0 +1,191 @@
+- name: Case 1, aged individual integrates federal SSI and Nevada OSS once.
+  # POMS I.2.a: $994 + $36.40 = $1,030.40; 7 CFR 273.9(b)(2)(i).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NV
+    age: 65
+    snap:
+      2026: 0
+  output:
+    is_ssi_eligible: true
+    ssi_category: AGED
+    nv_oss_living_arrangement: INDEPENDENT_LIVING
+    nv_oss_payment_standard: 36.4
+    ssi_countable_income: 0
+    ssi_amount_if_eligible: 994
+    ssi: 994
+    nv_oss: 36.4
+    household_state_benefits:
+      2026: 436.8
+    snap_unearned_income: 1_030.4
+    spm_unit_benefits:
+      2026: 12_364.8
+
+- name: Case 2, state-only payment remains after federal SSI is exhausted.
+  # $1,030 Social Security - $20 exclusion = $1,010 countable income.
+  # Excess over $994 is $16, so Nevada pays $36.40 - $16 = $20.40.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NV
+    age: 65
+    social_security_retirement: 12_360
+    snap:
+      2026: 0
+  output:
+    is_ssi_eligible: true
+    ssi_category: AGED
+    nv_oss_living_arrangement: INDEPENDENT_LIVING
+    nv_oss_payment_standard: 36.4
+    ssi_countable_income: 1_010
+    ssi_amount_if_eligible: 994
+    ssi: 0
+    nv_oss: 20.4
+    household_state_benefits:
+      2026: 244.8
+    snap_unearned_income: 1_050.4
+    spm_unit_benefits:
+      2026: 12_604.8
+
+- name: Case 3, mixed aged blind couple shares the joint payment after income reduction.
+  # $1,700 - $20 = $1,680 countable income; excess over $1,491 is $189.
+  # $224.53 - $189 = $35.53; each $17.765 rounds up to $17.77.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        social_security_retirement: 20_400
+      person2:
+        age: 40
+        is_blind: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap:
+          2026: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    is_ssi_eligible: [true, true]
+    ssi_category: [AGED, BLIND]
+    ssi_couple_computation_applies: [true, true]
+    nv_oss_payment_standard: [112.265, 112.265]
+    ssi_countable_income: [840, 840]
+    ssi_amount_if_eligible: [745.5, 745.5]
+    ssi: [0, 0]
+    nv_oss: [17.77, 17.77]
+    household_state_benefits:
+      2026: 426.48
+    snap_unearned_income: 1_735.54
+    spm_unit_benefits:
+      2026: 20_826.48
+
+- name: Case 4, blind claimant with an ineligible spouse uses the couple deeming standard.
+  # SI 01320.430 D: spouse's $1,850 - $20 = $1,830 countable.
+  # $374.60 - ($1,830 - $1,491) = $35.60, below the $109.30 own-income cap.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+      person2:
+        age: 40
+        social_security_retirement: 22_200
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap:
+          2026: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    is_ssi_eligible: [true, false]
+    ssi_category: [BLIND, NONE]
+    ssi_couple_computation_applies: [false, false]
+    is_ssi_spousal_deeming_applies: [true, false]
+    nv_oss_payment_standard: [109.3, 0]
+    ssi_countable_income: [1_830, 0]
+    ssi_amount_if_eligible: [1_491, 994]
+    ssi: [0, 0]
+    nv_oss: [35.6, 0]
+    household_state_benefits:
+      2026: 427.2
+    snap_unearned_income: 1_885.6
+    spm_unit_benefits:
+      2026: 22_627.2
+
+- name: Case 5, blind recipient in another household uses the reduced federal rate.
+  # POMS I.2.a: federal $662.67 plus Nevada $213.96 = $876.63.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NV
+    age: 40
+    is_blind: true
+    ssi_lives_in_another_persons_household:
+      2026: true
+    ssi_receives_shelter_from_others_in_household:
+      2026: true
+    ssi_others_pay_all_meals:
+      2026: true
+    snap:
+      2026: 0
+  output:
+    is_ssi_eligible: true
+    ssi_category: BLIND
+    ssi_federal_living_arrangement: ANOTHER_PERSONS_HOUSEHOLD
+    nv_oss_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    nv_oss_payment_standard: 213.96
+    ssi_countable_income: 0
+    ssi_amount_if_eligible: 662.67
+    ssi: 662.67
+    nv_oss: 213.96
+    household_state_benefits:
+      2026: 2_567.52
+    snap_unearned_income: 876.63
+    spm_unit_benefits:
+      2026: 10_519.52
+
+- name: Case 6, July domiciliary care uses monthly benefits and annual income inputs.
+  # $1,200 monthly Social Security - $20 = $1,180 countable income.
+  # $391 - ($1,180 - $994) = $205 Nevada OSS; no federal SSI remains.
+  period: 2026-07
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: NV
+    age:
+      2026: 65
+    social_security_retirement:
+      2026: 14_400
+    nv_oss_care_setting: DOMICILIARY_CARE
+  output:
+    is_ssi_eligible: true
+    ssi_category: AGED
+    nv_oss_living_arrangement: DOMICILIARY_CARE
+    nv_oss_payment_standard: 391
+    ssi_countable_income: 1_180
+    ssi_amount_if_eligible: 994
+    ssi: 0
+    nv_oss: 205
