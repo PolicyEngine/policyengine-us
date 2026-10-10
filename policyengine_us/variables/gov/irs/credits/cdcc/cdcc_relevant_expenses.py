@@ -28,7 +28,9 @@ class cdcc_relevant_expenses(Variable):
         qualifying_child = person("is_cdcc_eligible", period) & (
             person("age", period) < p.child_age
         )
-        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependent_filer = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         childcare = where(
             dependent_filer & ~tax_unit.any(qualifying_child), 0, childcare
         )

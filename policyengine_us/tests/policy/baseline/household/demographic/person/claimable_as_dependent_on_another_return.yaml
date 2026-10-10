@@ -1,0 +1,34 @@
+- name: An existing actual claim supplies the default claimability
+  period: 2025
+  input:
+    claimed_as_dependent_on_another_return: true
+  output:
+    claimable_as_dependent_on_another_return: true
+
+- name: An existing false claim input preserves default independence
+  period: 2025
+  input:
+    claimed_as_dependent_on_another_return: false
+  output:
+    claimable_as_dependent_on_another_return: false
+
+- name: No claim inputs preserves default independence
+  period: 2025
+  input:
+    age: 26
+  output:
+    claimed_as_dependent_on_another_return: false
+    claimable_as_dependent_on_another_return: false
+
+- name: A parent can claim the filer without making or expecting a claim
+  period: 2025
+  input:
+    age: 26
+    employment_income: 2_000
+    claimed_as_dependent_on_another_return: false
+    claimable_as_dependent_on_another_return: true
+  output:
+    claimed_as_dependent_on_another_return: false
+    claimable_as_dependent_on_another_return: true
+    basic_standard_deduction: 2_450
+    eitc_demographic_eligible: false

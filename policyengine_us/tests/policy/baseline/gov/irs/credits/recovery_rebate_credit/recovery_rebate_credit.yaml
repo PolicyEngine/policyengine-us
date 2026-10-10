@@ -311,3 +311,22 @@
         state_code: TX
   output:
     rrc_arpa: 2800
+
+# IRC 6428B(c)(2): an individual "who is a dependent of another taxpayer" is not
+# eligible, whether or not that taxpayer claims them.
+- name: 2021 single filer who can be claimed but is not claimed gets no ARPA rebate
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    rrc_arpa: 0

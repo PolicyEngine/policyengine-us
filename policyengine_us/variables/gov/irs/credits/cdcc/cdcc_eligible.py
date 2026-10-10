@@ -31,7 +31,7 @@ class is_cdcc_eligible(Variable):
         # input for an IRC 152(e) release, so the 21(e)(5) child of a
         # custodial parent who can be claimed is not kept.
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         qualifies_by_age = ~head_or_spouse & (age < p.child_age) & ~filer_is_dependent
         # Subsections (b)(1)(B) (dependent) and (b)(1)(C) (spouse). Subsection

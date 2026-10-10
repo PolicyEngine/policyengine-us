@@ -29,8 +29,8 @@ class nm_medical_expense_credit(Variable):
         # ("If you are a dependent with a spouse who was not a dependent of
         # another taxpayer, your spouse may still qualify").
         filer = person("is_tax_unit_head_or_spouse", period)
-        claimed_elsewhere = person("claimed_as_dependent_on_another_return", period)
-        qualifying_filer = filer & (age >= p.age_eligibility) & ~claimed_elsewhere
+        claimable = person("claimable_as_dependent_on_another_return", period)
+        qualifying_filer = filer & (age >= p.age_eligibility) & ~claimable
         eligible = tax_unit.any(qualifying_filer) & expense_eligible
         # exemption is halved for married filing separately
         filing_status = tax_unit("filing_status", period)

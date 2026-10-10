@@ -116,3 +116,21 @@
         state_code: TX
   output:
     tuition_and_fees_deduction_eligible: true
+
+- name: 2020 single filer who can be claimed but is not claimed is not eligible
+  period: 2020
+  input:
+    people:
+      person_a:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    # IRC 222(c)(3): a section 151 deduction "may be allowed to another taxpayer".
+    tuition_and_fees_deduction_eligible: false

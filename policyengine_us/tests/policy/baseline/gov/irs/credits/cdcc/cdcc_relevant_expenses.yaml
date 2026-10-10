@@ -209,3 +209,32 @@
   output:
     count_cdcc_eligible: 2
     cdcc_relevant_expenses: 3000
+
+# Publication 501, Dependent Taxpayer Test: a filer whose would-be claimant is not
+# required to file and files no return or only for a refund can claim dependents.
+- name: 2025 childcare for the child of a claimable filer within the filing exception counts
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 5000
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        tax_unit_childcare_expenses: 3000
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    count_cdcc_eligible: 1
+    cdcc_relevant_expenses: 3000
