@@ -19,8 +19,9 @@ class mt_federal_income_tax_deduction_share(Variable):
     def formula(person, period, parameters):
         # Each filer's share of the federal income the tax was paid on,
         # counting only positive federal adjusted gross income. A dependent's
-        # income is on the dependent's own return. With no positive income,
-        # the tax is attributed to the head.
+        # income is on the dependent's own return. With no positive filer
+        # income, retain main's zero allocation; the instructions do not
+        # establish which spouse made the payments in that case.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         income = head_or_spouse * max_(
             person("adjusted_gross_income_person", period), 0
@@ -29,5 +30,4 @@ class mt_federal_income_tax_deduction_share(Variable):
         share = np.zeros_like(total_income)
         mask = total_income > 0
         share[mask] = income[mask] / total_income[mask]
-        head = person("is_tax_unit_head", period)
-        return where(total_income > 0, share, head)
+        return share
