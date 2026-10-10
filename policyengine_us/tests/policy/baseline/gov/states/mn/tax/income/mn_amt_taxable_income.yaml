@@ -19,3 +19,29 @@
     state_code: MN
   output:
     mn_amt_taxable_income: 200_000 - 250 - 3_000
+
+# 2024 Schedule M1MT, line 12 (PDF p. 1): "Casualty and theft losses (from line
+# 19 of Schedule M1SA)", Minnesota's own amount from Schedule M1CAT.
+- name: MN AMT taxable income subtracts the Minnesota casualty loss
+  period: 2024
+  input:
+    adjusted_gross_income: 200_000
+    mn_itemizing: true
+    casualty_loss: 40_000
+    state_code: MN
+  output:
+    # The federal deduction is suspended.
+    casualty_loss_deduction: 0
+    # M1CAT: (40,000 - 100) - 10% x 200,000 = 19,900
+    mn_casualty_loss_deduction: 19_900
+    mn_amt_taxable_income: 200_000 - 19_900
+
+- name: MN AMT taxable income leaves the casualty loss out for a non-itemizer
+  period: 2024
+  input:
+    adjusted_gross_income: 200_000
+    mn_itemizing: false
+    casualty_loss: 40_000
+    state_code: MN
+  output:
+    mn_amt_taxable_income: 200_000
