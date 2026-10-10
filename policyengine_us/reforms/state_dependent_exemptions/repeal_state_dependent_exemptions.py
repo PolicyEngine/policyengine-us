@@ -13,13 +13,19 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         defined_for = StateCode.HI
 
         def formula(tax_unit, period, parameters):
-            exemptions_count = tax_unit("head_spouse_count", period)
+            # The filers' own exemptions: none for a filer who can be claimed
+            # as a dependent, as in the baseline (HRS 235-54(a)).
+            exemptions_count = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
+            )
             p = parameters(period).gov.states.hi.tax.income.exemptions
-            # Aged heads and spouses get an extra base exemption.
+            # Aged heads and spouses who cannot be claimed get an extra base
+            # exemption.
             person = tax_unit.members
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            claimed = person("claimed_as_dependent_on_another_return", period)
             aged = person("age", period) >= p.aged_threshold
-            aged_head_spouse_count = tax_unit.sum(aged & head_or_spouse)
+            aged_head_spouse_count = tax_unit.sum(aged & head_or_spouse & ~claimed)
             total_exemption_count_including_aged = (
                 exemptions_count + aged_head_spouse_count
             )
@@ -162,7 +168,11 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.ri.tax.income.exemption
 
-            exemptions_count = tax_unit("head_spouse_count", period)
+            # The filers' own exemptions: none for a filer who can be claimed
+            # as a dependent, as in the baseline's federal count.
+            exemptions_count = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
+            )
 
             exemption_amount = exemptions_count * p.amount
 
@@ -188,15 +198,12 @@ def create_repeal_state_dependent_exemptions() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.vt.tax.income.exemption
-            is_joint = tax_unit("tax_unit_is_joint", period)
-            elsewhere_head = tax_unit("head_is_dependent_elsewhere", period)
-            elsewhere_spouse = tax_unit("spouse_is_dependent_elsewhere", period)
-            eligible_head = (~elsewhere_head).astype(int)
-            eligible_spouse = (~elsewhere_spouse).astype(int)
-            eligible_count = eligible_head + (eligible_spouse * is_joint)
-            # add number of other dependents claimed on federal Form 1040 (line 5c)
-            total_exemption_count = eligible_count
-            return total_exemption_count * p.personal
+            # The filers' own exemptions: one for each head or spouse who
+            # cannot be claimed as a dependent, whichever spouse is head.
+            eligible_count = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
+            )
+            return eligible_count * p.personal
 
     class va_personal_exemption_person(Variable):
         value_type = float
@@ -210,9 +217,12 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         )
 
         def formula(person, period, parameters):
+            # The filers' own exemptions: none for a filer who can be claimed
+            # as a dependent, as in the baseline (IRC 151(d)(2)).
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+            claimed = person("claimed_as_dependent_on_another_return", period)
             amount = parameters(period).gov.states.va.tax.income.exemptions.personal
-            return amount * head_or_spouse
+            return amount * (head_or_spouse & ~claimed)
 
     class wv_personal_exemption(Variable):
         value_type = float
@@ -221,13 +231,20 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         defined_for = StateCode.WV
         unit = USD
         definition_period = YEAR
-        reference = "https://code.wvlegislature.gov/11-21/"
+        reference = "https://code.wvlegislature.gov/11-21-16/"
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.wv.tax.income.exemptions
-            tax_unit_size = tax_unit("head_spouse_count", period)
+            # The filers' own exemptions: none for a filer who can be claimed
+            # as a dependent, and $500 once per return when no filer has one
+            # (11-21-16(d)), as in the baseline.
+            own_exemptions = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
+            )
             return where(
-                tax_unit_size == 0, p.base_personal, p.personal * tax_unit_size
+                own_exemptions == 0,
+                p.base_personal,
+                p.personal * own_exemptions,
             )
 
     class ca_exemptions(Variable):
@@ -383,7 +400,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             )
             return exempt_status.base[filing_status] + personal_exemptions_added
 
-    # Using head and spouse count instead of exemptions count
+    # Counting the filers' own exemptions instead of all exemptions
     class wi_base_exemption(Variable):
         value_type = float
         entity = TaxUnit
@@ -400,9 +417,13 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         defined_for = StateCode.WI
 
         def formula(tax_unit, period, parameters):
-            # compute base exemption amount
+            # compute base exemption amount: none for a filer who can be
+            # claimed as a dependent, as in the baseline's federal count
             p = parameters(period).gov.states.wi.tax.income
-            return tax_unit("head_spouse_count", period) * p.exemption.base
+            own_exemptions = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
+            )
+            return own_exemptions * p.exemption.base
 
     class de_personal_credit(Variable):
         value_type = float
@@ -415,8 +436,12 @@ def create_repeal_state_dependent_exemptions() -> Reform:
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.de.tax.income.credits
-            head_spouse_count = tax_unit("head_spouse_count", period)
-            return p.personal_credits.personal * head_spouse_count
+            # The filers' own credits: none for a filer who can be claimed as
+            # a dependent, as in the baseline's federal count.
+            own_exemptions = tax_unit(
+                "head_spouse_count_not_dependent_elsewhere", period
+            )
+            return p.personal_credits.personal * own_exemptions
 
     class ky_family_size_tax_credit_threshold(Variable):
         value_type = float

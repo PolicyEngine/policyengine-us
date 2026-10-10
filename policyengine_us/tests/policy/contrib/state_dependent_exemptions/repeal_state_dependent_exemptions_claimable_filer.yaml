@@ -1,0 +1,1148 @@
+- name: Hawaii - a single filer who can be claimed elsewhere has no personal exemption under the reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      filer:
+        age: 19
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: HI
+  output:
+    # As in the baseline, a filer who can be claimed has no exemption.
+    hi_regular_exemptions: 0
+
+- name: Hawaii - joint return whose head can be claimed elsewhere keeps only the spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: HI
+  output:
+    # One exemption for the spouse who cannot be claimed; HRS 235-54(a); $1,144 each.
+    # The reform drops the child's exemption.
+    hi_regular_exemptions: 1_144
+
+- name: Hawaii - joint return whose spouse can be claimed elsewhere keeps only the head's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: HI
+  output:
+    # The same couple with the head and spouse labels exchanged.
+    hi_regular_exemptions: 1_144
+
+- name: Hawaii - joint return where neither spouse can be claimed keeps both personal exemptions
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: HI
+  output:
+    # 2 x 1,144; the reform drops the child's exemption.
+    hi_regular_exemptions: 2_288
+
+- name: Rhode Island - a single filer who can be claimed elsewhere has no personal exemption under the reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      filer:
+        age: 19
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: RI
+  output:
+    # As in the baseline, a filer who can be claimed has no exemption.
+    ri_exemptions: 0
+
+- name: Rhode Island - joint return whose head can be claimed elsewhere keeps only the spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: RI
+  output:
+    # One exemption for the spouse who cannot be claimed; $5,100 each in 2025.
+    # The reform drops the child's exemption.
+    ri_exemptions: 5_100
+
+- name: Rhode Island - joint return whose spouse can be claimed elsewhere keeps only the head's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: RI
+  output:
+    # The same couple with the head and spouse labels exchanged.
+    ri_exemptions: 5_100
+
+- name: Rhode Island - joint return where neither spouse can be claimed keeps both personal exemptions
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: RI
+  output:
+    # 2 x 5,100; the reform drops the child's exemption.
+    ri_exemptions: 10_200
+
+- name: Vermont - a single filer who can be claimed elsewhere has no personal exemption under the reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      filer:
+        age: 19
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VT
+  output:
+    # As in the baseline, a filer who can be claimed has no exemption.
+    vt_personal_exemptions: 0
+
+- name: Vermont - joint return whose head can be claimed elsewhere keeps only the spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: VT
+  output:
+    # One exemption for the spouse who cannot be claimed; $5,300 each in 2025.
+    # The reform drops the child's exemption.
+    vt_personal_exemptions: 5_300
+
+- name: Vermont - joint return whose spouse can be claimed elsewhere keeps only the head's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: VT
+  output:
+    # The same couple with the head and spouse labels exchanged.
+    vt_personal_exemptions: 5_300
+
+- name: Vermont - joint return where neither spouse can be claimed keeps both personal exemptions
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: VT
+  output:
+    # 2 x 5,300; the reform drops the child's exemption.
+    vt_personal_exemptions: 10_600
+
+- name: Virginia - a single filer who can be claimed elsewhere has no personal exemption under the reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      filer:
+        age: 19
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VA
+  output:
+    # As in the baseline, a filer who can be claimed has no exemption.
+    va_personal_exemption: 0
+
+- name: Virginia - joint return whose head can be claimed elsewhere keeps only the spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: VA
+  output:
+    # One exemption for the spouse who cannot be claimed; Va. Code 58.1-322.03; $930 each.
+    # The reform drops the child's exemption.
+    va_personal_exemption: 930
+
+- name: Virginia - joint return whose spouse can be claimed elsewhere keeps only the head's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: VA
+  output:
+    # The same couple with the head and spouse labels exchanged.
+    va_personal_exemption: 930
+
+- name: Virginia - joint return where neither spouse can be claimed keeps both personal exemptions
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: VA
+  output:
+    # 2 x 930; the reform drops the child's exemption.
+    va_personal_exemption: 1_860
+
+- name: Wisconsin - a single filer who can be claimed elsewhere has no personal exemption under the reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      filer:
+        age: 19
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: WI
+  output:
+    # As in the baseline, a filer who can be claimed has no exemption.
+    wi_base_exemption: 0
+
+- name: Wisconsin - joint return whose head can be claimed elsewhere keeps only the spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WI
+  output:
+    # One exemption for the spouse who cannot be claimed; $700 each.
+    # The reform drops the child's exemption.
+    wi_base_exemption: 700
+
+- name: Wisconsin - joint return whose spouse can be claimed elsewhere keeps only the head's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WI
+  output:
+    # The same couple with the head and spouse labels exchanged.
+    wi_base_exemption: 700
+
+- name: Wisconsin - joint return where neither spouse can be claimed keeps both personal exemptions
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WI
+  output:
+    # 2 x 700; the reform drops the child's exemption.
+    wi_base_exemption: 1_400
+
+- name: Delaware - a single filer who can be claimed elsewhere has no personal exemption under the reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      filer:
+        age: 19
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: DE
+  output:
+    # As in the baseline, a filer who can be claimed has no exemption.
+    de_personal_credit: 0
+
+- name: Delaware - joint return whose head can be claimed elsewhere keeps only the spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: DE
+  output:
+    # One exemption for the spouse who cannot be claimed; $110 each.
+    # The reform drops the child's exemption.
+    de_personal_credit: 110
+
+- name: Delaware - joint return whose spouse can be claimed elsewhere keeps only the head's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: DE
+  output:
+    # The same couple with the head and spouse labels exchanged.
+    de_personal_credit: 110
+
+- name: Delaware - joint return where neither spouse can be claimed keeps both personal exemptions
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: DE
+  output:
+    # 2 x 110; the reform drops the child's exemption.
+    de_personal_credit: 220
+
+- name: West Virginia - a single filer who can be claimed elsewhere gets only the $500 exemption under the reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      filer:
+        age: 19
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: WV
+  output:
+    # No $2,000 exemption, but $500 once per return when the federal
+    # exemption count is zero (11-21-16(d)), as in the baseline.
+    wv_personal_exemption: 500
+
+- name: West Virginia - joint return whose head can be claimed elsewhere keeps only the spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WV
+  output:
+    # One exemption for the spouse who cannot be claimed; W. Va. Code 11-21-16; $2,000 each.
+    # The reform drops the child's exemption.
+    wv_personal_exemption: 2_000
+
+- name: West Virginia - joint return whose spouse can be claimed elsewhere keeps only the head's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WV
+  output:
+    # The same couple with the head and spouse labels exchanged.
+    wv_personal_exemption: 2_000
+
+- name: West Virginia - joint return where neither spouse can be claimed keeps both personal exemptions
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WV
+  output:
+    # 2 x 2,000; the reform drops the child's exemption.
+    wv_personal_exemption: 4_000
+
+- name: Hawaii - aged joint return whose head can be claimed elsewhere gets one personal and one aged exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 70
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 70
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    # (1 personal + 1 aged) x $1,144 for the spouse who cannot be claimed.
+    hi_regular_exemptions: 2_288
+
+- name: Hawaii - aged joint return whose spouse can be claimed elsewhere gets one personal and one aged exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 70
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 70
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: HI
+  output:
+    # (1 personal + 1 aged) x $1,144 for the spouse who cannot be claimed.
+    hi_regular_exemptions: 2_288
+
+- name: Michigan - a single filer who can be claimed elsewhere gets the $1,500 dependent subtraction under the reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      filer:
+        age: 19
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: MI
+  output:
+    # MCL 206.30(4): no personal exemption, but $1,500, as in the baseline.
+    mi_exemptions: 1_500
+
+- name: Michigan - joint return whose head can be claimed elsewhere keeps the other spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MI
+  output:
+    # $5,800 for the spouse who cannot be claimed + $1,500 for the one who can;
+    # no exemption for the child, as in the baseline.
+    mi_exemptions: 7_300
+
+- name: Michigan - joint return whose spouse can be claimed elsewhere keeps the other spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MI
+  output:
+    # $5,800 for the spouse who cannot be claimed + $1,500 for the one who can;
+    # no exemption for the child, as in the baseline.
+    mi_exemptions: 7_300
+
+- name: Michigan - joint return where neither spouse can be claimed keeps both personal exemptions
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MI
+  output:
+    # 2 x $5,800; the reform drops the child's exemption.
+    mi_exemptions: 11_600
+
+- name: Ohio - a single filer who can be claimed elsewhere is not eligible for the personal exemption under the reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      filer:
+        age: 19
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: OH
+  output:
+    # R.C. 5747.025: as in the baseline.
+    oh_personal_exemptions_eligible_person: [false]
+
+- name: Ohio - joint return whose head can be claimed elsewhere keeps only the spouse's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OH
+  output:
+    # person_a (head) can be claimed; the reform drops the child.
+    oh_personal_exemptions_eligible_person: [false, true, false]
+
+- name: Ohio - joint return whose spouse can be claimed elsewhere keeps only the head's exemption
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: OH
+  output:
+    # person_a (now the spouse) can be claimed; person_b is head.
+    oh_personal_exemptions_eligible_person: [false, true, false]
+
+- name: Maryland - the reform keeps a claimable spouse's exemption, as the baseline does
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MD
+  output:
+    # The baseline counts every member (tax_unit_size), so 2 x $3,200;
+    # the reform drops only the child's exemption.
+    md_total_personal_exemptions: 6_400
+
+- name: West Virginia - joint return where both spouses can be claimed elsewhere gets the $500 exemption once
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 8_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: WV
+  output:
+    # No filer has a federal exemption and the return has no dependents (IRC 152(b)(1)),
+    # so $500 once per return (11-21-16(d)), as in the baseline.
+    wv_personal_exemption: 500
+
+- name: Oklahoma - a single filer who can be claimed elsewhere has no regular exemption under the reform
+  period: 2025
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      filer:
+        age: 19
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: OK
+  output:
+    # Form 511 item F: no regular exemption for a filer who can be claimed;
+    # the filer is under 65 and not blind, so no special or blind exemption.
+    ok_count_exemptions: 0

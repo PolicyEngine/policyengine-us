@@ -1,0 +1,1 @@
+Keep each state's rule for a filer who can be claimed as a dependent on another return in the repeal of state dependent exemptions: Delaware, Hawaii, Rhode Island, Virginia, West Virginia and Wisconsin no longer give such a filer a personal exemption, and Vermont's count no longer depends on which spouse is labelled head.
