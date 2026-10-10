@@ -37,14 +37,9 @@ class dc_ptc(Variable):
         )
         uncapped_ptc = max_(0, ptax - ptax_offset)
         # D.C. Code 47-1806.06(k): no credit for a claimant who was a dependent
-        # under any income tax law that year, unless 65 or older. Only one
-        # claimant per tax filing unit may claim the credit ((b)(4)), so a
-        # couple can claim it through a spouse who is not such a dependent.
-        person = tax_unit.members
-        filer = person("is_tax_unit_head_or_spouse", period)
-        claimed = person("claimed_as_dependent_on_another_return", period)
-        old_enough = person("age", period) >= p_dc.ptc.dependent_claimant_min_age
-        has_claimant = tax_unit.any(filer & (~claimed | old_enough))
+        # under any income tax law that year, unless 65 or older; a couple can
+        # claim it through a spouse who is not such a dependent ((b)(4)).
+        has_claimant = tax_unit("dc_ptc_has_eligible_claimant", period)
         return (
             min_(p_dc.ptc.max, uncapped_ptc)
             * tax_unit("takes_up_dc_ptc", period)

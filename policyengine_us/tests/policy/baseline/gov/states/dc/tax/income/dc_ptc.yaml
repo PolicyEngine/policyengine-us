@@ -313,7 +313,7 @@
   output:
     # D.C. Code 47-1806.06(k) bars a claimant who was a dependent,
     # unless 65 or older; one claimant per tax filing unit, so the
-    # spouse who is not a dependent claims it.
+    # spouse who is not a dependent claims it (and pays the rent).
     # min(0.20 x 10,000 - 3% x 10,000, 1,425) = 1,425
     dc_ptc: 0
 
@@ -324,14 +324,13 @@
       person_a:
         age: 30
         employment_income: 5_000
-        rent: 5_000
         is_tax_unit_head: true
         is_tax_unit_spouse: false
         claimed_as_dependent_on_another_return: true
       person_b:
         age: 30
         employment_income: 5_000
-        rent: 5_000
+        rent: 10_000
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:
@@ -352,13 +351,12 @@
       person_b:
         age: 30
         employment_income: 5_000
-        rent: 5_000
+        rent: 10_000
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
         age: 30
         employment_income: 5_000
-        rent: 5_000
         is_tax_unit_head: false
         is_tax_unit_spouse: true
         claimed_as_dependent_on_another_return: true
@@ -380,14 +378,13 @@
       person_a:
         age: 30
         employment_income: 5_000
-        rent: 5_000
         is_tax_unit_head: true
         is_tax_unit_spouse: false
         claimed_as_dependent_on_another_return: true
       person_b:
         age: 30
         employment_income: 5_000
-        rent: 5_000
+        rent: 10_000
         is_tax_unit_head: false
         is_tax_unit_spouse: true
         claimed_as_dependent_on_another_return: true
@@ -409,13 +406,12 @@
       person_a:
         age: 30
         employment_income: 5_000
-        rent: 5_000
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
         age: 30
         employment_income: 5_000
-        rent: 5_000
+        rent: 10_000
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:

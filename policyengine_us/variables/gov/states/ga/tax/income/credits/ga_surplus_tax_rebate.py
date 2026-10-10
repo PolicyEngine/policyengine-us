@@ -29,6 +29,9 @@ class ga_surplus_tax_rebate(Variable):
         # for 2021 is a qualified taxpayer only if that individual had 2021
         # earned income. The refund is credited to a qualified taxpayer, so a
         # joint return gets the joint amount while either spouse qualifies.
+        # The law excludes an individual actually claimed; the model's single
+        # flag (can be claimed) stands in for that, so a claimable filer whom
+        # nobody claimed and who had no earned income gets no refund here.
         person = tax_unit.members
         filer = person("is_tax_unit_head_or_spouse", period)
         claimed = person("claimed_as_dependent_on_another_return", period)

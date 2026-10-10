@@ -14,10 +14,12 @@ either, both or neither spouse claimed:
    labelling.
 2. Monotonicity: marking another filer as claimed never raises the outputs in
    MONOTONE (amounts not capped by a tax liability that the claim can raise).
-3. Identities: a return with a claimable filer has no DC child care or child
-   tax credit and its Idaho food tax credit is at most one filer's amount; a
-   return on which every filer can be claimed has no Georgia low income
-   credit.
+3. Identities: a return with a claimable filer has no DC keep child care
+   affordable credit or child tax credit and its Idaho food tax credit is at
+   most one filer's amount; a return on which every filer can be claimed has
+   no Georgia low income credit.
+
+Hypothesis batches check 1 and 3; the seeded population checks 1, 2 and 3.
 """
 
 import numpy as np
