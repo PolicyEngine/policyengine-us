@@ -35,23 +35,21 @@
     ok_refundable_credits: 475
     ok_income_tax: -175
 
-- name: Case 4, a joint return sums the spouses' decreases, not a dependent's.
+- name: Case 4, a joint return enters the decrease for the return.
   period: 2025
   input:
     people:
       person1:
         age: 45
-        ok_claim_of_right_prior_year_tax_decrease: 300
       person2:
         age: 44
-        ok_claim_of_right_prior_year_tax_decrease: 175
       person3:
         age: 20
         is_tax_unit_dependent: true
-        ok_claim_of_right_prior_year_tax_decrease: 1_000
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+        ok_claim_of_right_prior_year_tax_decrease: 475
         claim_of_right_credit_applies: true
     households:
       household:
@@ -79,11 +77,11 @@
         age: 40
         employment_income: 40_000
         claim_of_right_repayment: 10_000
-        claim_of_right_prior_year_tax_decrease: 2_200
-        ok_claim_of_right_prior_year_tax_decrease: 475
     tax_units:
       tax_unit:
         members: [person1]
+        claim_of_right_prior_year_tax_decrease: 2_200
+        ok_claim_of_right_prior_year_tax_decrease: 475
     households:
       household:
         members: [person1]
@@ -100,10 +98,10 @@
         age: 40
         employment_income: 100_000
         claim_of_right_repayment: 10_000
-        ok_claim_of_right_prior_year_tax_decrease: 475
     tax_units:
       tax_unit:
         members: [person1]
+        ok_claim_of_right_prior_year_tax_decrease: 475
         interest_deduction: 20_000
     households:
       household:

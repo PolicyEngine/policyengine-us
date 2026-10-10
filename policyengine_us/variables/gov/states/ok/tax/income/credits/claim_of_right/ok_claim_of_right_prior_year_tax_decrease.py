@@ -3,17 +3,16 @@ from policyengine_us.model_api import *
 
 class ok_claim_of_right_prior_year_tax_decrease(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = (
         "Oklahoma prior-year tax decrease from excluding repaid claim of right income"
     )
     unit = USD
     documentation = (
-        "Decrease in Oklahoma income tax for the year or years the income "
-        "repaid this year (claim_of_right_repayment) was received, from "
-        "excluding that income from federal adjusted gross income on amended "
-        "Oklahoma returns for those years. The tax unit uses the sum for its "
-        "head and spouse."
+        "Decrease in the filers' Oklahoma income tax for the year or years all "
+        "the income they repaid this year (claim_of_right_repayment) was "
+        "received, from excluding that income from federal adjusted gross "
+        "income on amended Oklahoma returns for those years."
     )
     definition_period = YEAR
     reference = (
