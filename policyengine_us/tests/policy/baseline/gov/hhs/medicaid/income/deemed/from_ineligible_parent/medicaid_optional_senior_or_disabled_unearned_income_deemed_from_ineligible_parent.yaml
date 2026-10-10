@@ -19,6 +19,50 @@
   output:
     medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [6_006, 0]
 
+- name: Optional Medicaid parental deeming inherits the SSI exclusion for qualified pretax premiums.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      recipient:
+        age: 12
+        is_ssi_disabled: true
+      sibling:
+        age: 14
+        employment_income: 2_400
+        pre_tax_health_insurance_premiums: 1_200
+      parent:
+        age: 40
+        is_parent: true
+        employment_income: 36_000
+        pre_tax_health_insurance_premiums: 3_600
+    tax_units:
+      tax_unit:
+        members: [recipient, sibling, parent]
+    # A parent and children are not a married couple. Explicit singleton
+    # units prevent default grouping from also applying spousal deeming.
+    marital_units:
+      recipient_unit:
+        members: [recipient]
+      sibling_unit:
+        members: [sibling]
+      parent_unit:
+        members: [parent]
+    households:
+      household:
+        members: [recipient, sibling, parent]
+        state_code: NC
+  output:
+    # 42 USC 1396a(m) uses SSI methodology for this optional pathway.
+    # POMS SI 00820.102C.2: parent wages 32,400; sibling wages 1,200.
+    # 20 CFR 416.1165(b), (d): sibling allocation = 4,596, so
+    # (32,400 - 4,596 - 20 * 12 - 65 * 12) / 2 - 967 * 12 = 1,788 deemed.
+    # Under (e)(1), apply child's general exclusion: 1,788 - 20 * 12 = 1,548.
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [1_788, 0, 0]
+    is_ssi_spousal_deeming_applies: [false, false, false]
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [0, 0, 0]
+    medicaid_optional_senior_or_disabled_countable_income: [1_548, 0, 0]
+
 # Missouri MHDC deems only a natural or adoptive parent's income, never a
 # stepparent's (DSS MHABD Manual § 0805.020.15), and divides the deemed
 # amount equally among the disabled children applying. Parent status

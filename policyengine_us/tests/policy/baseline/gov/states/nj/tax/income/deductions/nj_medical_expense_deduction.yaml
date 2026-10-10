@@ -55,3 +55,58 @@
     # child's 1,000 of self-employed health insurance is deducted too.
     nj_agi: 50_000
     nj_medical_expense_deduction: 1_000
+
+- name: New Jersey allows after-tax premiums above two percent of gross income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    employment_income: 40_000
+    health_insurance_premiums: 6_000
+    pre_tax_health_insurance_premiums: 0
+    state_code: NJ
+  output:
+    nj_agi: 40_000
+    nj_medical_expense_deduction: 5_200
+
+- name: New Jersey counts disjoint payroll and after-tax premiums once each
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    employment_income: 40_000
+    health_insurance_premiums: 3_000
+    pre_tax_health_insurance_premiums: 3_000
+    state_code: NJ
+  output:
+    nj_agi: 40_000
+    irs_employment_income: 37_000
+    nj_medical_expense_deduction: 5_200
+
+- name: New Jersey allows federally pretax payroll premiums included in state wages
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    employment_income: 40_000
+    health_insurance_premiums: 0
+    pre_tax_health_insurance_premiums: 6_000
+    state_code: NJ
+  output:
+    nj_agi: 40_000
+    irs_employment_income: 34_000
+    nj_medical_expense_deduction: 5_200
+
+- name: Employer-paid premiums are not employee medical expenses in New Jersey
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    employment_income: 40_000
+    health_insurance_premiums: 0
+    pre_tax_health_insurance_premiums: 0
+    employer_sponsored_insurance_premiums: 6_000
+    state_code: NJ
+  output:
+    nj_agi: 40_000
+    nj_medical_expense_deduction: 0
