@@ -13,7 +13,10 @@ class claim_of_right_deduction(Variable):
         "under section 1341(a)(4). It is not a miscellaneous itemized "
         "deduction, so neither the two percent floor nor section 67(g) "
         "applies. Under section 1341(a)(5) the repayment is not deducted "
-        "(section 1341(b)(3))."
+        "(section 1341(b)(3)). Not modeled: before 2018 a repayment of the "
+        "threshold amount or less was a miscellaneous itemized deduction "
+        "subject to the two percent floor; section 67(g) disallows it from "
+        "2018."
     )
     definition_period = YEAR
     reference = (
