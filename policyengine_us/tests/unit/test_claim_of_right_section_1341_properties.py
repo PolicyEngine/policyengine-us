@@ -36,8 +36,13 @@ otherwise.
 
 Last, one itemizing household per state: with the credit method fixed, the
 repayment leaves every state's income tax unchanged in the model (no state
-input is supplied), and with the deduction method fixed it leaves Arizona's,
-California's, Kansas's and Wisconsin's unchanged.
+input is supplied) unless the state chooses its own method, and with the
+deduction method fixed it leaves Arizona's, California's, Kansas's and
+Wisconsin's unchanged unless the state chooses its own method. In every state
+with its own claim of right relief, under either federal method, that relief
+never raises the state's tax and is worth at most the decrease in the earlier
+year's state tax. Both checks find a state's own rule by its variables' names,
+so a state joins them when its rule is added.
 """
 
 import itertools
@@ -46,6 +51,7 @@ import numpy as np
 import pytest
 
 from policyengine_us import Simulation
+from policyengine_us.system import system
 from policyengine_us.variables.household.demographic.geographic.state_code import (
     StateCode,
 )
@@ -76,6 +82,25 @@ STATES = [
 # deduction: A.R.S. 43-1021(9), the California Schedule CA (540) instructions
 # for Part II line 16, K.S.A. 79-32,120(a) and Wisconsin Form 1 Schedule 1.
 STATES_WITHOUT_THE_DEDUCTION = ["AZ", "CA", "KS", "WI"]
+
+
+def states_defining(suffix):
+    """Jurisdictions with a variable named <state>_claim_of_right_<suffix>."""
+    return [
+        state
+        for state in STATES
+        if f"{state.lower()}_claim_of_right_{suffix}" in system.variables
+    ]
+
+
+# A state with its own claim of right relief takes an input for the decrease
+# in the earlier year's state tax. A state that chooses between its own
+# deduction and credit, whichever method the federal return uses, also
+# derives its own method.
+STATES_WITH_THEIR_OWN_RELIEF = states_defining("prior_year_tax_decrease")
+STATES_WITH_THEIR_OWN_METHOD = states_defining("credit_applies")
+# An illustrative decrease in the earlier year's state tax.
+STATE_DECREASE = 150
 BRANCHES = [
     "income_tax_if_claiming_claim_of_right_deduction",
     "income_tax_if_claiming_claim_of_right_credit",
@@ -288,10 +313,10 @@ def test_north_carolina_follows_the_federal_method(results, year):
     )
 
 
-def state_income_tax(year, repayment, method=None):
+def state_income_tax(year, repayment, method=None, states=STATES, state_decrease=0):
     """State income tax of an itemizing single filer in each state."""
     situation = {"people": {}, "tax_units": {}, "households": {}}
-    for i, state in enumerate(STATES):
+    for i, state in enumerate(states):
         situation["people"][f"p{i}"] = {
             "age": {year: 40},
             "employment_income": {year: 60_000},
@@ -302,6 +327,9 @@ def state_income_tax(year, repayment, method=None):
             "members": [f"p{i}"],
             "claim_of_right_prior_year_tax_decrease": {year: 2_500},
         }
+        if state in STATES_WITH_THEIR_OWN_RELIEF:
+            state_input = f"{state.lower()}_claim_of_right_prior_year_tax_decrease"
+            situation["tax_units"][f"t{i}"][state_input] = {year: state_decrease}
         if method is not None:
             situation["tax_units"][f"t{i}"]["claim_of_right_credit_applies"] = {
                 year: method
@@ -319,12 +347,32 @@ def test_states_under_each_federal_method():
     year = YEARS[0]
     without_repayment = state_income_tax(year, 0)
     with_credit = state_income_tax(year, 10_000, method=True)
-    np.testing.assert_allclose(with_credit, without_repayment, atol=TOLERANCE)
+    # A state that chooses its own method may deduct the repayment when the
+    # federal return takes the credit.
+    follows_federal = ~np.isin(STATES, STATES_WITH_THEIR_OWN_METHOD)
+    np.testing.assert_allclose(
+        with_credit[follows_federal],
+        without_repayment[follows_federal],
+        atol=TOLERANCE,
+    )
     with_deduction = state_income_tax(year, 10_000, method=False)
     assert np.any(np.abs(with_deduction - without_repayment) > 1), (
         "the deduction should reach the states that follow federal itemized deductions"
     )
-    excluded = np.isin(STATES, STATES_WITHOUT_THE_DEDUCTION)
+    # A state that chooses its own method may give its own deduction here.
+    excluded = np.isin(STATES, STATES_WITHOUT_THE_DEDUCTION) & follows_federal
     np.testing.assert_allclose(
         with_deduction[excluded], without_repayment[excluded], atol=TOLERANCE
     )
+
+
+@pytest.mark.parametrize("method", [True, False])
+def test_state_relief_is_worth_at_most_the_prior_year_state_decrease(method):
+    assert STATES_WITH_THEIR_OWN_RELIEF, "some state has its own relief"
+    year = YEARS[0]
+    states = STATES_WITH_THEIR_OWN_RELIEF
+    without_decrease = state_income_tax(year, 10_000, method, states)
+    with_decrease = state_income_tax(year, 10_000, method, states, STATE_DECREASE)
+    saving = without_decrease - with_decrease
+    assert np.all(saving >= -TOLERANCE), "the relief never raises state tax"
+    assert np.all(saving <= STATE_DECREASE + TOLERANCE)
