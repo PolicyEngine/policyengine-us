@@ -2,6 +2,8 @@ description: Virginia refundable tax credits.
 values:
   2022-01-01:
     - va_refundable_eitc
+    # Reported on the line for Virginia income tax withheld (P.D. 16-183).
+    - va_claim_of_right_credit
 metadata:
   unit: list
   period: year
@@ -17,3 +19,7 @@ metadata:
     href: https://www.tax.virginia.gov/sites/default/files/vatax-pdf/2022-760-instructions.pdf#page=32 # EITC
   - title: Code of Virginia § 58.1-339.8.B.1
     href: https://law.lis.virginia.gov/vacodeupdates/title58.1/section58.1-339.8/ # EITC
+  - title: Virginia Tax Commissioner Ruling P.D. 16-183 (claim of right credit)
+    href: https://www.tax.virginia.gov/laws-rules-decisions/rulings-tax-commissioner/16-183
+  - title: Virginia Tax Commissioner Ruling P.D. 20-35 (claim of right credit)
+    href: https://www.tax.virginia.gov/laws-rules-decisions/rulings-tax-commissioner/20-35

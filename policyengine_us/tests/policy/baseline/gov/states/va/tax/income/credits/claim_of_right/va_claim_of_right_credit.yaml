@@ -1,0 +1,95 @@
+# Virginia Tax Commissioner rulings P.D. 16-183 and P.D. 20-35: the method
+# used federally under 26 U.S.C. 1341 determines the method for Virginia. A
+# filer who reduces federal tax by the prior-year tax attributable to the
+# repaid income reports the Virginia tax attributable to it on the line for
+# Virginia income tax withheld, and a refund is issued as warranted.
+- name: Case 1, the credit is the prior-year Virginia tax under the federal credit method.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    claim_of_right_repayment: 10_000
+    claim_of_right_credit_applies: true
+    va_claim_of_right_prior_year_tax_decrease: 575
+    va_income_tax_before_refundable_credits: 2_000
+    state_code: VA
+  output:
+    va_claim_of_right_credit: 575
+    va_refundable_credits: 575
+    va_income_tax: 1_425
+
+- name: Case 2, no credit under the federal deduction method.
+  period: 2025
+  input:
+    claim_of_right_repayment: 10_000
+    claim_of_right_credit_applies: false
+    va_claim_of_right_prior_year_tax_decrease: 575
+    state_code: VA
+  output:
+    va_claim_of_right_credit: 0
+
+- name: Case 3, a joint return sums the spouses' amounts, not a dependent's.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        va_claim_of_right_prior_year_tax_decrease: 200
+      person2:
+        age: 44
+        va_claim_of_right_prior_year_tax_decrease: 100
+      person3:
+        age: 30
+        is_tax_unit_dependent: true
+        va_claim_of_right_prior_year_tax_decrease: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VA
+  output:
+    va_claim_of_right_credit: 300
+
+- name: Case 4, no credit outside Virginia.
+  period: 2025
+  input:
+    claim_of_right_credit_applies: true
+    va_claim_of_right_prior_year_tax_decrease: 575
+    state_code: MD
+  output:
+    va_claim_of_right_credit: 0
+
+- name: Case 5, a credit above the year's tax is refunded.
+  # No income, so no federal or Virginia tax this year. Federal tax under
+  # section 1341(a)(5) is 0 - 2,200 and under (a)(4) is 0, so the credit
+  # method applies and Virginia refunds its whole 575 dollars.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    claim_of_right_repayment: 10_000
+    claim_of_right_prior_year_tax_decrease: 2_200
+    va_claim_of_right_prior_year_tax_decrease: 575
+    state_code: VA
+  output:
+    claim_of_right_credit_applies: true
+    income_tax: -2_200
+    va_claim_of_right_credit: 575
+    va_income_tax: -575
+
+- name: Case 6, a repayment of 3,000 dollars or less gives no credit.
+  # Section 1341 does not apply, so there is no federal credit method.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    claim_of_right_repayment: 3_000
+    claim_of_right_prior_year_tax_decrease: 2_200
+    va_claim_of_right_prior_year_tax_decrease: 575
+    state_code: VA
+  output:
+    claim_of_right_credit_applies: false
+    va_claim_of_right_credit: 0
+    va_income_tax: 0

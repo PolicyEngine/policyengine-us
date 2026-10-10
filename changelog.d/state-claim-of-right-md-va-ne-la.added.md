@@ -1,0 +1,1 @@
+Add Maryland's and Virginia's refundable claim of right credits and Nebraska's and Louisiana's claim of right repayment subtractions, each of which applies when federal tax is computed under 26 U.S.C. 1341(a)(5).

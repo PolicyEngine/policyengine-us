@@ -9,6 +9,12 @@ decrease in the earlier year's tax from excluding the income. Ties use (4)
 1341(a)(5) (G.S. 105-153.5(a)(2)d) and instead treats the increase in the
 earlier year's North Carolina tax as a payment (G.S. 105-266.2).
 
+Four more states tie their own rule to the federal method. Under 1341(a)(5)
+Maryland (Administrative Release 40) and Virginia (P.D. 16-183, P.D. 20-35)
+credit the state's own prior-year tax on the repaid income, and Nebraska
+(Neb. Rev. Stat. 77-2716(7)) and Louisiana (Revenue Ruling 04-002) subtract
+the amount repaid from income. Under 1341(a)(4) none of the four adjusts.
+
 YAML cases check single households from Publication 525. These tests check
 properties at every point of a grid, one vectorized simulation per year and
 scenario, and compare the model's branch computations with independent
@@ -25,7 +31,12 @@ simulations that fix the method as an input:
   (also across the $3,000 threshold) or with the prior-year decrease;
 - North Carolina's deduction is zero exactly when the credit method applies,
   and its payment is then the prior-year North Carolina tax increase;
-- under the credit method the repayment changes no state's income tax
+- Maryland's and Virginia's credits are the state's prior-year tax exactly
+  when the credit method applies, lower state tax by exactly that much, and
+  are refunded past zero; Nebraska's and Louisiana's subtractions are the
+  amount repaid exactly when the credit method applies and lower state
+  adjusted gross income by that much;
+- under the credit method the repayment changes no other state's income tax
   (section 1341(b)(3): the deduction is not taken into account for any other
   purpose), and under the deduction method it changes none in Arizona, Kansas
   or Wisconsin, whose laws leave the federal deduction out.
@@ -66,6 +77,28 @@ STATES = [
 # repayment deduction: A.R.S. 43-1021(9), K.S.A. 79-32,120(a) and Wis. Stat.
 # 71.07(5)(a)7.
 STATES_WITHOUT_THE_DEDUCTION = ["AZ", "KS", "WI"]
+# States that, under the federal credit method, credit their own prior-year
+# tax on the repaid income, with the input each uses: Maryland Administrative
+# Release 40, G.S. 105-266.2 and Virginia P.D. 16-183.
+STATE_PRIOR_YEAR_TAX_INPUTS = {
+    "MD": "md_claim_of_right_prior_year_tax_decrease",
+    "NC": "nc_claim_of_right_prior_year_tax_increase",
+    "VA": "va_claim_of_right_prior_year_tax_decrease",
+}
+STATE_CREDITS = {
+    "MD": "md_claim_of_right_credit",
+    "VA": "va_claim_of_right_credit",
+}
+# States that, under the federal credit method, subtract the amount repaid
+# from income, with the state's adjusted gross income: Louisiana Revenue
+# Ruling 04-002 and Neb. Rev. Stat. 77-2716(7).
+STATE_SUBTRACTIONS = {
+    "LA": ("la_claim_of_right_deduction", "la_agi"),
+    "NE": ("ne_claim_of_right_subtraction", "ne_agi"),
+}
+STATE_GRID_STATES = sorted([*STATE_CREDITS, *STATE_SUBTRACTIONS])
+# An illustrative state prior-year tax on the repaid income.
+STATE_PRIOR_YEAR_TAX = 0.04 * REPAYMENT
 VARIABLES = [
     "income_tax",
     "claim_of_right_section_1341_eligible",
@@ -255,7 +288,121 @@ def test_north_carolina_follows_the_federal_method(results, year):
     )
 
 
-def state_income_tax(year, repayment, credit_applies=None):
+def state_grid_simulation(year, repayment, decrease, state_prior_year_tax):
+    """One single-person tax unit per grid point in each state with a rule."""
+    situation = {"people": {}, "tax_units": {}, "households": {}}
+    for s, state in enumerate(STATE_GRID_STATES):
+        for i in range(len(GRID)):
+            person = f"p{s}_{i}"
+            situation["people"][person] = {
+                "age": {year: 40},
+                "employment_income": {year: WAGE[i]},
+                "charitable_cash_donations": {year: CHARITABLE[i]},
+                "claim_of_right_repayment": {year: float(repayment[i])},
+                "claim_of_right_prior_year_tax_decrease": {year: float(decrease[i])},
+                **{
+                    name: {year: float(state_prior_year_tax[i])}
+                    for name in STATE_PRIOR_YEAR_TAX_INPUTS.values()
+                },
+            }
+            situation["tax_units"][f"t{s}_{i}"] = {"members": [person]}
+            situation["households"][f"h{s}_{i}"] = {
+                "members": [person],
+                "state_code": {year: state},
+            }
+    return Simulation(situation=situation)
+
+
+@pytest.fixture(scope="module")
+def state_results():
+    # One year: these two simulations compute four states' taxes at every
+    # grid point.
+    year = 2025
+    zeros = np.zeros_like(REPAYMENT)
+    variables = [
+        "claim_of_right_credit_applies",
+        "state_income_tax",
+        *STATE_CREDITS.values(),
+        *(name for pair in STATE_SUBTRACTIONS.values() for name in pair),
+    ]
+    model = calculate(
+        state_grid_simulation(year, REPAYMENT, DECREASE, STATE_PRIOR_YEAR_TAX),
+        year,
+        variables,
+    )
+    # Independent reference: no repayment at all.
+    reference = calculate(
+        state_grid_simulation(year, zeros, zeros, zeros), year, variables
+    )
+    out = {}
+    for s, state in enumerate(STATE_GRID_STATES):
+        rows = slice(s * len(GRID), (s + 1) * len(GRID))
+        out[state] = {
+            **{name: values[rows] for name, values in model.items()},
+            **{
+                f"{name}_without_repayment": values[rows]
+                for name, values in reference.items()
+            },
+        }
+    return out
+
+
+@pytest.mark.parametrize("state", sorted(STATE_CREDITS))
+def test_state_credit_follows_the_federal_method(state_results, state):
+    r = state_results[state]
+    credit_applies = r["claim_of_right_credit_applies"]
+    assert credit_applies.any() and (eligible() & ~credit_applies).any()
+    assert not credit_applies[~eligible()].any()
+    credit = r[STATE_CREDITS[state]]
+    np.testing.assert_allclose(
+        credit, np.where(credit_applies, STATE_PRIOR_YEAR_TAX, 0)
+    )
+    # Section 1341(b)(3): under the credit method the repayment is not
+    # deducted, so the credit is the only change in the state's tax.
+    unchanged = credit_applies | ~eligible()
+    np.testing.assert_allclose(
+        r["state_income_tax"][unchanged],
+        (r["state_income_tax_without_repayment"] - credit)[unchanged],
+        atol=TOLERANCE,
+    )
+    refunded = credit_applies & (credit > r["state_income_tax_without_repayment"])
+    assert refunded.any(), "the grid should include refunds"
+    assert np.all(r["state_income_tax"][refunded] < 0)
+    # The other states' credits never reach this state.
+    for other in set(STATE_CREDITS) - {state}:
+        assert np.all(r[STATE_CREDITS[other]] == 0)
+
+
+@pytest.mark.parametrize("state", sorted(STATE_SUBTRACTIONS))
+def test_state_subtraction_follows_the_federal_method(state_results, state):
+    r = state_results[state]
+    credit_applies = r["claim_of_right_credit_applies"]
+    assert credit_applies.any() and (eligible() & ~credit_applies).any()
+    subtraction_name, agi_name = STATE_SUBTRACTIONS[state]
+    subtraction = r[subtraction_name]
+    np.testing.assert_allclose(subtraction, np.where(credit_applies, REPAYMENT, 0))
+    # Louisiana adjusted gross income cannot fall below zero.
+    floor = 0 if state == "LA" else -np.inf
+    np.testing.assert_allclose(
+        r[agi_name],
+        np.maximum(r[f"{agi_name}_without_repayment"] - subtraction, floor),
+        atol=TOLERANCE,
+    )
+    unchanged = ~credit_applies & ~eligible()
+    np.testing.assert_allclose(
+        r["state_income_tax"][unchanged],
+        r["state_income_tax_without_repayment"][unchanged],
+        atol=TOLERANCE,
+    )
+    lower = r["state_income_tax"] < r["state_income_tax_without_repayment"] - 1
+    assert (credit_applies & lower).any(), "the subtraction should lower some tax"
+    assert np.all(
+        r["state_income_tax"][credit_applies]
+        <= r["state_income_tax_without_repayment"][credit_applies] + TOLERANCE
+    )
+
+
+def state_income_tax(year, repayment, credit_applies=None, state_prior_year_tax=0):
     """State income tax of an itemizing single filer in each state."""
     situation = {"people": {}, "tax_units": {}, "households": {}}
     for i, state in enumerate(STATES):
@@ -265,6 +412,10 @@ def state_income_tax(year, repayment, credit_applies=None):
             "charitable_cash_donations": {year: 25_000},
             "claim_of_right_repayment": {year: repayment},
             "claim_of_right_prior_year_tax_decrease": {year: 2_500},
+            **{
+                name: {year: state_prior_year_tax}
+                for name in STATE_PRIOR_YEAR_TAX_INPUTS.values()
+            },
         }
         situation["tax_units"][f"t{i}"] = {"members": [f"p{i}"]}
         if credit_applies is not None:
@@ -283,9 +434,19 @@ def test_states_follow_section_1341_b_3():
     # One year: each of these three simulations computes every state's tax.
     year = 2025
     without_repayment = state_income_tax(year, 0)
-    with_credit = state_income_tax(year, 10_000, credit_applies=True)
-    np.testing.assert_allclose(with_credit, without_repayment, atol=TOLERANCE)
-    with_deduction = state_income_tax(year, 10_000, credit_applies=False)
+    prior_year_tax = 450
+    with_credit = state_income_tax(
+        year, 10_000, credit_applies=True, state_prior_year_tax=prior_year_tax
+    )
+    change = with_credit - without_repayment
+    crediting = np.isin(STATES, list(STATE_PRIOR_YEAR_TAX_INPUTS))
+    subtracting = np.isin(STATES, list(STATE_SUBTRACTIONS))
+    np.testing.assert_allclose(change[~crediting & ~subtracting], 0, atol=TOLERANCE)
+    np.testing.assert_allclose(change[crediting], -prior_year_tax, atol=TOLERANCE)
+    assert np.all(change[subtracting] < -1), "the subtraction should lower the tax"
+    with_deduction = state_income_tax(
+        year, 10_000, credit_applies=False, state_prior_year_tax=prior_year_tax
+    )
     assert np.any(np.abs(with_deduction - without_repayment) > 1), (
         "the deduction should reach the states that follow federal itemized deductions"
     )

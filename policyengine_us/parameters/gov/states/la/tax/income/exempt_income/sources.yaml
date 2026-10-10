@@ -29,6 +29,8 @@ values:
     # Pass–Through Entity Exclusion 24E
     # COVID-19 Relief Benefits 27E
     - la_disability_income_exemption_person # 49E
+    # Repayment under 26 U.S.C. 1341(a)(5), written in on Schedule E (Revenue Ruling 04-002)
+    - la_claim_of_right_deduction
 
 metadata:
   unit: list  
@@ -49,3 +51,5 @@ metadata:
       href: https://www.legis.la.gov/legis/Law.aspx?d=102133
     - title: R.S. 47:293(9)(e) 
       href: https://www.legis.la.gov/legis/Law.aspx?d=101760
+    - title: Louisiana Revenue Ruling No. 04-002, Taxpayer Claim of Rights for Repayments of Income in Excess of $3,000
+      href: https://dam.ldr.la.gov/lawspolicies/RR04002.pdf#page=1

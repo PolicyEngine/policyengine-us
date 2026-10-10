@@ -1,6 +1,17 @@
-description: Maryland list of refundable tax credits.
+description: Maryland provides these refundable income tax credits.
 values:
   2020-01-01:
     - md_refundable_cdcc
     - md_refundable_eitc
     - md_ctc
+    # Form 502CR, Part CC, line 4.
+    - md_claim_of_right_credit
+metadata:
+  unit: list
+  period: year
+  label: Maryland refundable income tax credits
+  reference:
+    - title: "2025 Maryland Form 502CR, Part CC, Refundable Income Tax Credits #page 4"
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/forms/2025/502cr.pdf#page=4
+    - title: "Maryland Administrative Release No. 40, Claim of Right, section IV.B #page 3"
+      href: https://www.marylandcomptroller.gov/content/dam/mdcomp/tax/legal-publications/administrative-releases/income-and-estate-tax/ar_it40.pdf#page=3

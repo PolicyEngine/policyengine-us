@@ -1,0 +1,101 @@
+# Maryland Administrative Release No. 40, section IV.B: when the federal
+# adjustment for a repayment over $3,000 must be made as a credit, the Maryland
+# adjustment is a credit too, equal to the total Maryland tax paid on the
+# repaid income in the year it was received. Any excess over the year's
+# Maryland state and local income tax is refunded.
+- name: Case 1, the release's example gives a credit of 367 dollars.
+  # Section IV.B example: the 2000 total Maryland tax liability was 4,110, and
+  # 3,743 without the 5,000 dollars later repaid, so the credit is 367. It
+  # lowers the total Maryland tax liability for the year of repayment from
+  # 4,038 to 3,671. The federal adjustment in the example is a credit, and
+  # the release's tax years predate the model's schedules, so the federal
+  # method and the tax before the credit are inputs here.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    claim_of_right_repayment: 5_000
+    claim_of_right_credit_applies: true
+    md_claim_of_right_prior_year_tax_decrease: 367
+    md_income_tax_before_refundable_credits: 4_038
+    state_code: MD
+  output:
+    md_claim_of_right_credit: 367
+    md_refundable_credits: 367
+    md_income_tax: 3_671
+
+- name: Case 2, no credit when the federal adjustment is a deduction.
+  period: 2025
+  input:
+    claim_of_right_repayment: 5_000
+    claim_of_right_credit_applies: false
+    md_claim_of_right_prior_year_tax_decrease: 367
+    state_code: MD
+  output:
+    md_claim_of_right_credit: 0
+
+- name: Case 3, a joint return sums the spouses' amounts, not a dependent's.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        md_claim_of_right_prior_year_tax_decrease: 200
+      person2:
+        age: 44
+        md_claim_of_right_prior_year_tax_decrease: 100
+      person3:
+        age: 30
+        is_tax_unit_dependent: true
+        md_claim_of_right_prior_year_tax_decrease: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MD
+  output:
+    md_claim_of_right_credit: 300
+
+- name: Case 4, no credit outside Maryland.
+  period: 2025
+  input:
+    claim_of_right_credit_applies: true
+    md_claim_of_right_prior_year_tax_decrease: 367
+    state_code: VA
+  output:
+    md_claim_of_right_credit: 0
+
+- name: Case 5, a credit above the year's tax is refunded.
+  # No income, so no federal or Maryland tax this year. Federal tax under
+  # section 1341(a)(5) is 0 - 1,400 and under (a)(4) is 0, so the credit
+  # method applies and Maryland refunds its whole 367 dollars.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    claim_of_right_repayment: 5_000
+    claim_of_right_prior_year_tax_decrease: 1_400
+    md_claim_of_right_prior_year_tax_decrease: 367
+    state_code: MD
+  output:
+    claim_of_right_credit_applies: true
+    income_tax: -1_400
+    md_claim_of_right_credit: 367
+    md_income_tax: -367
+
+- name: Case 6, a repayment of 3,000 dollars or less gives no credit.
+  # Section 1341 does not apply, so there is no federal credit method.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 40
+    claim_of_right_repayment: 3_000
+    claim_of_right_prior_year_tax_decrease: 1_400
+    md_claim_of_right_prior_year_tax_decrease: 367
+    state_code: MD
+  output:
+    claim_of_right_credit_applies: false
+    md_claim_of_right_credit: 0
+    md_income_tax: 0
