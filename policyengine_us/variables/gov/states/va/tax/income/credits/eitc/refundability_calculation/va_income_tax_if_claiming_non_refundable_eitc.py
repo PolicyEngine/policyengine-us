@@ -11,10 +11,18 @@ class va_income_tax_if_claiming_non_refundable_eitc(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
+        # Claiming a credit means forgoing the benefits that bar it (Va. Code
+        # 58.1-339.8(D)); fixing both choices keeps this branch from creating
+        # branches of its own.
         non_refundable_branch = get_override_branch(
             simulation,
             "va_non_refundable_eitc",
             period,
-            {"va_claims_refundable_eitc": np.zeros((tax_unit.count,), dtype=bool)},
+            {
+                "va_claims_refundable_eitc": np.zeros((tax_unit.count,), dtype=bool),
+                "va_claims_eitc_disqualifying_benefits": np.zeros(
+                    (tax_unit.count,), dtype=bool
+                ),
+            },
         )
         return non_refundable_branch.calculate("va_income_tax", period)

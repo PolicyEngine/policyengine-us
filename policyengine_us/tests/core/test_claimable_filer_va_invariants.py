@@ -5,7 +5,9 @@ EITC alternatives apply Va. Code 58.1-322.03 and 58.1-339.8(B)(1).
 
 For couples drawn by Hypothesis and a seeded population in VA, with
 either, both or neither spouse claimed, each output is the same under either
-head/spouse labelling, and marking another filer as claimed never raises it.
+head/spouse labelling, and marking another filer as claimed never raises it,
+except the aged/blind exemption, which a filer may forgo for a credit that
+being claimed bars.
 """
 
 import pytest
@@ -26,13 +28,17 @@ from policyengine_us.tests.core.test_dependent_elsewhere_head_spouse_swap_invari
 
 STATES = ["VA"]
 YEARS = [2023, 2025, 2026]
-OUTPUTS = [
+MONOTONE_OUTPUTS = [
     "va_standard_deduction",
     "va_personal_exemption",
-    "va_aged_blind_exemption",
     "va_refundable_eitc_if_claimed",
     "va_non_refundable_eitc_if_claimed",
 ]
+# A filer may forgo the aged or blind exemption to claim the low-income credit
+# or EITC (Va. Code 58.1-339.8(D)). Being claimed bars those credits, so it can
+# leave the filer claiming an exemption forgone before: the claimed exemption
+# is label-free but not monotone.
+OUTPUTS = MONOTONE_OUTPUTS + ["va_aged_blind_exemption"]
 
 
 @st.composite
@@ -60,4 +66,4 @@ def test_va_claimable_filer_rules_are_label_free(year, units):
 def test_va_claimable_filer_rules_seeded_population(year):
     units = _seeded_couples(STATES, per_state=3) + _crafted_cases(STATES)
     check_swap(units, year, OUTPUTS)
-    check_monotone(units, year, OUTPUTS)
+    check_monotone(units, year, MONOTONE_OUTPUTS)

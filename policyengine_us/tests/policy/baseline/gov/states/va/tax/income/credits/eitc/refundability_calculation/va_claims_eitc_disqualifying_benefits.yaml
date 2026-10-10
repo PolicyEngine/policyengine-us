@@ -1,0 +1,216 @@
+# Va. Code 58.1-339.8(D) bars the low-income credit and both Virginia EITCs
+# in a year in which the filers claim a listed benefit, so a filer entitled to
+# one claims whichever gives the greater benefit (2025 Form 760 instructions,
+# line 4: "Claim the deduction or subtraction that gives you the greatest tax
+# benefit").
+- name: Claims the benefits when they leave less tax
+  period: 2025
+  input:
+    state_code: VA
+    va_income_tax_if_claiming_eitc_disqualifying_benefits: 0
+    va_income_tax_if_claiming_refundable_eitc: 100
+    va_income_tax_if_claiming_non_refundable_eitc: 50
+  output:
+    va_claims_eitc_disqualifying_benefits: true
+
+- name: Forgoes the benefits when the refundable EITC leaves less tax
+  period: 2025
+  input:
+    state_code: VA
+    va_income_tax_if_claiming_eitc_disqualifying_benefits: 100
+    va_income_tax_if_claiming_refundable_eitc: -50
+    va_income_tax_if_claiming_non_refundable_eitc: 0
+  output:
+    va_claims_eitc_disqualifying_benefits: false
+
+- name: Forgoes the benefits when the nonrefundable credit leaves less tax
+  period: 2025
+  input:
+    state_code: VA
+    va_income_tax_if_claiming_eitc_disqualifying_benefits: 100
+    va_income_tax_if_claiming_refundable_eitc: 200
+    va_income_tax_if_claiming_non_refundable_eitc: 50
+  output:
+    va_claims_eitc_disqualifying_benefits: false
+
+- name: A tie keeps the benefits
+  period: 2025
+  input:
+    state_code: VA
+    va_income_tax_if_claiming_eitc_disqualifying_benefits: 50
+    va_income_tax_if_claiming_refundable_eitc: 50
+    va_income_tax_if_claiming_non_refundable_eitc: 60
+  output:
+    va_claims_eitc_disqualifying_benefits: true
+
+- name: 2025 grandparent aged 66 forgoes the age deduction and aged exemption for the refundable EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      grandparent:
+        age: 66
+        employment_income: 15_000
+      grandchild_1:
+        age: 8
+        is_tax_unit_dependent: true
+      grandchild_2:
+        age: 9
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, grandchild_1, grandchild_2]
+    households:
+      household:
+        members: [grandparent, grandchild_1, grandchild_2]
+        state_code: VA
+  output:
+    # Federal EITC, two children: 40% x $15,000 = $6,000.
+    eitc: 6_000
+    # Claiming the benefits: VAGI $15,000 - $12,000 age deduction = $3,000,
+    # below the $8,750 standard deduction and $3,590 of exemptions: no tax, and
+    # no credit (58.1-339.8(D)).
+    va_income_tax_if_claiming_eitc_disqualifying_benefits: 0
+    # Forgoing them: taxable income $15,000 - $8,750 - 3 x $930 = $3,460;
+    # tax 2% x $3,000 + 3% x $460 = $73.80; less the refundable 20% x $6,000.
+    va_income_tax_if_claiming_refundable_eitc: -1_126.20
+    va_claims_eitc_disqualifying_benefits: false
+    va_claims_refundable_eitc: true
+    va_age_deduction: 0
+    va_aged_blind_exemption: 0
+    va_eitc: 1_200
+    va_income_tax: -1_126.20
+
+- name: 2025 retiree aged 70 without an EITC keeps the age deduction and aged exemption
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      retiree:
+        age: 70
+        taxable_private_pension_income: 30_000
+    households:
+      household:
+        members: [retiree]
+        state_code: VA
+  output:
+    # Claiming the benefits: taxable income $30,000 - $12,000 - $8,750 - $930
+    # - $800 = $7,520; tax $60 + $60 + 5% x $2,520 = $246.
+    va_income_tax_if_claiming_eitc_disqualifying_benefits: 246
+    # Forgoing them: taxable income $20,320; tax $720 + 5.75% x $3,320 =
+    # $910.90. VAGI exceeds the $15,650 poverty guideline: no low-income credit.
+    va_income_tax_if_claiming_non_refundable_eitc: 910.90
+    va_claims_eitc_disqualifying_benefits: true
+    va_claims_refundable_eitc: false
+    va_age_deduction: 12_000
+    va_aged_blind_exemption: 800
+    va_eitc: 0
+    va_income_tax: 246
+
+- name: 2025 blind parent forgoes the blind exemption for the refundable EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        is_blind: true
+        employment_income: 20_000
+      child_1:
+        age: 8
+        is_tax_unit_dependent: true
+      child_2:
+        age: 9
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child_1, child_2]
+    households:
+      household:
+        members: [parent, child_1, child_2]
+        state_code: VA
+  output:
+    # Federal EITC, two children, on the plateau: $7,152.
+    eitc: 7_152
+    # Claiming the exemption: taxable income $20,000 - $8,750 - $2,790 - $800
+    # = $7,660; tax $60 + $60 + 5% x $2,660 = $253.
+    va_income_tax_if_claiming_eitc_disqualifying_benefits: 253
+    # Forgoing it: taxable income $8,460; tax $293, less 20% x $7,152.
+    va_income_tax_if_claiming_refundable_eitc: -1_137.40
+    va_claims_eitc_disqualifying_benefits: false
+    va_aged_blind_exemption: 0
+    va_eitc: 1_430.40
+    va_income_tax: -1_137.40
+
+- name: 2025 state employee parent forgoes the federal and state employee subtraction for the refundable EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 14_000
+        state_or_federal_salary: 14_000
+      child:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: VA
+  output:
+    # Federal EITC, one child, on the plateau: $4,328.
+    eitc: 4_328
+    # Claiming the subtraction (58.1-322.02(16)): VAGI $0, no tax.
+    va_income_tax_if_claiming_eitc_disqualifying_benefits: 0
+    # Forgoing it: taxable income $14,000 - $8,750 - $1,860 = $3,390; tax $60
+    # + 3% x $390 = $71.70, less 20% x $4,328 = $865.60.
+    va_income_tax_if_claiming_refundable_eitc: -793.90
+    va_claims_eitc_disqualifying_benefits: false
+    va_federal_state_employees_subtraction: 0
+    va_eitc: 865.60
+    va_income_tax: -793.90
+
+- name: 2025 couple aged 70 keep the age deduction over a smaller EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 40_000
+        is_tax_unit_head: true
+      spouse:
+        age: 70
+        is_tax_unit_spouse: true
+      grandchild:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, grandchild]
+        filing_status: JOINT
+        # Federal EITC, one child, joint: $4,328 - 15.98% x ($40,000 -
+        # $30,470), supplied to isolate the Virginia choice.
+        eitc: 2_805.11
+    households:
+      household:
+        members: [head, spouse, grandchild]
+        state_code: VA
+  output:
+    # Claiming the benefits: VAGI $40,000 - 2 x $12,000 = $16,000, below the
+    # $17,500 standard deduction: no tax.
+    va_income_tax_if_claiming_eitc_disqualifying_benefits: 0
+    # Forgoing them: taxable income $40,000 - $17,500 - $2,790 = $19,710; tax
+    # $720 + 5.75% x $2,710 = $875.83, less 20% x $2,805.11 = $561.02. VAGI
+    # exceeds the $26,650 poverty guideline: no low-income credit. The spouse
+    # has no income: no spouse tax adjustment.
+    va_income_tax_if_claiming_refundable_eitc: 314.80
+    va_claims_eitc_disqualifying_benefits: true
+    va_age_deduction: 24_000
+    va_aged_blind_exemption: 1_600
+    va_eitc: 0
+    va_income_tax: 0

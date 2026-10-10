@@ -18,4 +18,7 @@ class va_federal_state_employees_subtraction_person(Variable):
             0,
             person("state_or_federal_salary", period),
         )
-        return subtractable * person("is_tax_unit_head_or_spouse", period)
+        # A filer who forgoes the subtraction to claim the low-income credit
+        # or EITC gets none (Va. Code 58.1-339.8(D)(3)).
+        claimed = person.tax_unit("va_claims_eitc_disqualifying_benefits", period)
+        return claimed * subtractable * person("is_tax_unit_head_or_spouse", period)

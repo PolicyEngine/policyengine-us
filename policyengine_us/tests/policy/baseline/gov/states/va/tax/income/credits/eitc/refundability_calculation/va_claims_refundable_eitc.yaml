@@ -2,6 +2,7 @@
   period: 2022
   input:
     state_code: VA
+    va_claims_eitc_disqualifying_benefits: false
     va_income_tax_if_claiming_refundable_eitc: 1_000
     va_income_tax_if_claiming_non_refundable_eitc: 500
   output:
@@ -11,7 +12,19 @@
   period: 2022
   input:
     state_code: VA
+    va_claims_eitc_disqualifying_benefits: false
     va_income_tax_if_claiming_refundable_eitc: 500
     va_income_tax_if_claiming_non_refundable_eitc: 501
   output:
     va_claims_refundable_eitc: true
+
+- name: A filer claiming the benefits that bar the credits claims no refundable EITC
+  period: 2025
+  input:
+    state_code: VA
+    va_claims_eitc_disqualifying_benefits: true
+    va_income_tax_if_claiming_refundable_eitc: 500
+    va_income_tax_if_claiming_non_refundable_eitc: 501
+  output:
+    # Va. Code 58.1-339.8(D).
+    va_claims_refundable_eitc: false

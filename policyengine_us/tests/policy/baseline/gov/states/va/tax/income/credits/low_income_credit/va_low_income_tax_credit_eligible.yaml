@@ -5,7 +5,8 @@
     claimed_as_dependent_on_another_return: true
     va_aged_blind_exemption: 0
     va_age_deduction: 0
-    va_military_benefit_subtraction: 0
+    va_national_guard_subtraction: 0
+    va_military_basic_pay_subtraction: 0
     va_federal_state_employees_subtraction: 0
   output:
     va_low_income_tax_credit_eligible: false
@@ -17,7 +18,8 @@
     claimed_as_dependent_on_another_return: false
     va_aged_blind_exemption: 1_600
     va_age_deduction: 12_000
-    va_military_benefit_subtraction: 0
+    va_national_guard_subtraction: 0
+    va_military_basic_pay_subtraction: 0
     va_federal_state_employees_subtraction: 0
   output:
     va_low_income_tax_credit_eligible: false
@@ -29,7 +31,8 @@
     claimed_as_dependent_on_another_return: false
     va_aged_blind_exemption: 0
     va_age_deduction: 0
-    va_military_benefit_subtraction: 0
+    va_national_guard_subtraction: 0
+    va_military_basic_pay_subtraction: 0
     va_federal_state_employees_subtraction: 0
   output:
     va_low_income_tax_credit_eligible: true
@@ -83,3 +86,30 @@
         state_code: VA
   output:
     va_low_income_tax_credit_eligible: false
+
+- name: 2025 Virginia National Guard subtraction bars the low-income credit
+  period: 2025
+  input:
+    state_code: VA
+    va_national_guard_subtraction: 1_000
+  output:
+    # Va. Code 58.1-339.8(D)(1): the subtraction under 58.1-322.02(8).
+    va_low_income_tax_credit_eligible: false
+
+- name: 2025 military basic pay subtraction bars the low-income credit
+  period: 2025
+  input:
+    state_code: VA
+    va_military_basic_pay_subtraction: 1_000
+  output:
+    # 58.1-339.8(D)(2): the subtraction under 58.1-322.02(15).
+    va_low_income_tax_credit_eligible: false
+
+- name: 2025 military benefits subtraction alone leaves the low-income credit available
+  period: 2025
+  input:
+    state_code: VA
+    va_military_benefit_subtraction: 10_000
+  output:
+    # 58.1-322.02(18) is not among the subtractions 58.1-339.8(D) lists.
+    va_low_income_tax_credit_eligible: true

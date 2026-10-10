@@ -19,4 +19,7 @@ class va_aged_blind_exemption_person(Variable):
         # aged taxpayer" (the head or spouse), not to dependents, and has no
         # bar for a taxpayer whom another taxpayer can claim.
         filer = person("is_tax_unit_head_or_spouse", period)
-        return filer * aged_blind_count * p.aged_blind
+        # A filer who forgoes this exemption to claim the low-income credit or
+        # EITC gets none (Va. Code 58.1-339.8(D)(4)).
+        claimed = person.tax_unit("va_claims_eitc_disqualifying_benefits", period)
+        return claimed * filer * aged_blind_count * p.aged_blind

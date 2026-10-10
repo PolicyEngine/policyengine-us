@@ -56,4 +56,7 @@ class va_age_deduction(Variable):
 
         income_based_deduction = max_(income_based_maximum - excess, 0)
 
-        return fixed_deduction + income_based_deduction
+        # A filer who forgoes the deduction to claim the low-income credit or
+        # EITC gets none (Va. Code 58.1-339.8(D)(5)).
+        claimed = tax_unit("va_claims_eitc_disqualifying_benefits", period)
+        return claimed * (fixed_deduction + income_based_deduction)

@@ -19,4 +19,7 @@ class va_military_basic_pay_subtraction_person(Variable):
             military_pay,
             max_(0, (2 * p.threshold) - military_pay),
         )
-        return subtractable * person("is_tax_unit_head_or_spouse", period)
+        # A filer who forgoes the subtraction to claim the low-income credit
+        # or EITC gets none (Va. Code 58.1-339.8(D)(2)).
+        claimed = person.tax_unit("va_claims_eitc_disqualifying_benefits", period)
+        return claimed * subtractable * person("is_tax_unit_head_or_spouse", period)

@@ -2,9 +2,10 @@
 
 Several formulas compare a tax unit's liability under alternative choices by
 calculating it in a branch with one input overridden: itemizing or not
-(``tax_unit_itemizes``), Delaware and Virginia EITC refundability, the Idaho
-aged or disabled credit or deduction, Missouri TANF caretaker inclusion and
-Medicaid for SSI state supplements. A policyengine-core branch starts as a copy
+(``tax_unit_itemizes``), Delaware and Virginia EITC refundability, Virginia's
+credits or the benefits that bar them, the Idaho aged or disabled credit or
+deduction, Missouri TANF caretaker inclusion and Medicaid for SSI state
+supplements. A policyengine-core branch starts as a copy
 of every array its parent has cached, and setting an input on it clears none
 of them, so a value the parent calculated from the old input answers for the
 branch. ``get_override_branch`` drops the copied values when the parent has
@@ -288,54 +289,68 @@ def test_itemization_branches_match_fresh_simulations(households):
 
 
 @pytest.mark.parametrize(
-    "comparison,variable,override,value",
+    "comparison,variable,overrides",
     [
         (
             "de_income_tax_if_claiming_refundable_eitc",
             "de_income_tax",
-            "de_claims_refundable_eitc",
-            True,
+            {"de_claims_refundable_eitc": True},
         ),
         (
             "de_income_tax_if_claiming_non_refundable_eitc",
             "de_income_tax",
-            "de_claims_refundable_eitc",
-            False,
+            {"de_claims_refundable_eitc": False},
         ),
+        # Each Virginia branch fixes both Virginia choices.
         (
             "va_income_tax_if_claiming_refundable_eitc",
             "va_income_tax",
-            "va_claims_refundable_eitc",
-            True,
+            {
+                "va_claims_refundable_eitc": True,
+                "va_claims_eitc_disqualifying_benefits": False,
+            },
         ),
         (
             "va_income_tax_if_claiming_non_refundable_eitc",
             "va_income_tax",
-            "va_claims_refundable_eitc",
-            False,
+            {
+                "va_claims_refundable_eitc": False,
+                "va_claims_eitc_disqualifying_benefits": False,
+            },
+        ),
+        (
+            "va_income_tax_if_claiming_eitc_disqualifying_benefits",
+            "va_income_tax",
+            {
+                "va_claims_refundable_eitc": False,
+                "va_claims_eitc_disqualifying_benefits": True,
+            },
         ),
         (
             "id_income_tax_if_receiving_aged_or_disabled_credit",
             "id_income_tax",
-            "id_receives_aged_or_disabled_credit",
-            True,
+            {"id_receives_aged_or_disabled_credit": True},
         ),
         (
             "id_income_tax_if_receiving_aged_or_disabled_deduction",
             "id_income_tax",
-            "id_receives_aged_or_disabled_credit",
-            False,
+            {"id_receives_aged_or_disabled_credit": False},
         ),
     ],
 )
 def test_state_choice_branches_match_fresh_simulations(
-    households, comparison, variable, override, value
+    households, comparison, variable, overrides
 ):
     simulation = Simulation(situation=_situation(households))
     simulation.calculate("household_net_income", YEAR)
+    n = len(households)
     np.testing.assert_allclose(
         simulation.calculate(comparison, YEAR),
-        _fresh(households, variable, {override: [value] * len(households)}),
+        _fresh(
+            households,
+            variable,
+            {name: [value] * n for name, value in overrides.items()},
+        ),
         atol=0.01,
     )
 

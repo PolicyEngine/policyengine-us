@@ -1,0 +1,78 @@
+# Va. Code 58.1-339.8(D) and the 2025 Form 760 instructions (Eligibility
+# Requirements): none of the section's credits may be claimed if the filers,
+# or a dependent on their return, claim the age deduction, the exemption for
+# blind or aged taxpayers, the Virginia National Guard subtraction (code 28),
+# the basic military pay subtraction (code 38) or the federal and state
+# employee subtraction (code 39), or if a filer is claimed as a dependent.
+- name: 2025 return claiming no listed benefit is eligible
+  period: 2025
+  input:
+    state_code: VA
+  output:
+    va_eitc_eligible: true
+
+- name: 2025 Virginia National Guard subtraction makes the return ineligible
+  period: 2025
+  input:
+    state_code: VA
+    va_national_guard_subtraction: 1_000
+  output:
+    va_eitc_eligible: false
+
+- name: 2025 military basic pay subtraction makes the return ineligible
+  period: 2025
+  input:
+    state_code: VA
+    va_military_basic_pay_subtraction: 1_000
+  output:
+    va_eitc_eligible: false
+
+- name: 2025 federal and state employee subtraction makes the return ineligible
+  period: 2025
+  input:
+    state_code: VA
+    va_federal_state_employees_subtraction: 1_000
+  output:
+    va_eitc_eligible: false
+
+- name: 2025 aged or blind exemption makes the return ineligible
+  period: 2025
+  input:
+    state_code: VA
+    va_aged_blind_exemption: 800
+  output:
+    va_eitc_eligible: false
+
+- name: 2025 age deduction makes the return ineligible
+  period: 2025
+  input:
+    state_code: VA
+    va_age_deduction: 12_000
+  output:
+    va_eitc_eligible: false
+
+- name: 2025 military benefits subtraction alone leaves the return eligible
+  period: 2025
+  input:
+    state_code: VA
+    va_military_benefit_subtraction: 10_000
+  output:
+    # 58.1-322.02(18) is not among the subtractions 58.1-339.8(D) lists.
+    va_eitc_eligible: true
+
+- name: 2025 filer claimed as a dependent is ineligible
+  period: 2025
+  input:
+    state_code: VA
+    claimed_as_dependent_on_another_return: true
+  output:
+    # 58.1-339.8(B)(1).
+    va_eitc_eligible: false
+
+- name: 2022 listed subtraction makes the return ineligible
+  period: 2022
+  input:
+    state_code: VA
+    va_military_basic_pay_subtraction: 1_000
+  output:
+    va_eitc_eligible: false

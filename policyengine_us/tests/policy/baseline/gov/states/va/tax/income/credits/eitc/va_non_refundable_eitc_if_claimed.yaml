@@ -109,3 +109,93 @@
         state_code: VA
   output:
     va_non_refundable_eitc_if_claimed: 200
+
+# Va. Code 58.1-339.8(D) bars every credit in subsection B, the nonrefundable
+# EITC (B)(2) included, in a year in which the filers claim a listed benefit.
+- name: 2025 Virginia National Guard subtraction bars the nonrefundable EITC
+  period: 2025
+  input:
+    state_code: VA
+    eitc: 1_000
+    va_low_income_tax_credit: 0
+    va_national_guard_subtraction: 1_000
+  output:
+    # 58.1-339.8(D)(1): the subtraction under 58.1-322.02(8).
+    va_non_refundable_eitc_if_claimed: 0
+
+- name: 2025 military basic pay subtraction bars the nonrefundable EITC
+  period: 2025
+  input:
+    state_code: VA
+    eitc: 1_000
+    va_low_income_tax_credit: 0
+    va_military_basic_pay_subtraction: 1_000
+  output:
+    # 58.1-339.8(D)(2): the subtraction under 58.1-322.02(15).
+    va_non_refundable_eitc_if_claimed: 0
+
+- name: 2025 federal and state employee subtraction bars the nonrefundable EITC
+  period: 2025
+  input:
+    state_code: VA
+    eitc: 1_000
+    va_low_income_tax_credit: 0
+    va_federal_state_employees_subtraction: 1_000
+  output:
+    # 58.1-339.8(D)(3): the subtraction under 58.1-322.02(16).
+    va_non_refundable_eitc_if_claimed: 0
+
+- name: 2025 aged or blind exemption bars the nonrefundable EITC
+  period: 2025
+  input:
+    state_code: VA
+    eitc: 1_000
+    va_low_income_tax_credit: 0
+    va_aged_blind_exemption: 800
+  output:
+    # 58.1-339.8(D)(4).
+    va_non_refundable_eitc_if_claimed: 0
+
+- name: 2025 age deduction bars the nonrefundable EITC
+  period: 2025
+  input:
+    state_code: VA
+    eitc: 1_000
+    va_low_income_tax_credit: 0
+    va_age_deduction: 12_000
+  output:
+    # 58.1-339.8(D)(5).
+    va_non_refundable_eitc_if_claimed: 0
+
+- name: 2025 listed benefit bars the low-income alternative too
+  period: 2025
+  input:
+    state_code: VA
+    eitc: 1_000
+    va_low_income_tax_credit: 300
+    va_age_deduction: 12_000
+  output:
+    va_non_refundable_eitc_if_claimed: 0
+
+- name: 2025 military benefits subtraction alone does not bar the nonrefundable EITC
+  period: 2025
+  input:
+    state_code: VA
+    eitc: 1_000
+    va_low_income_tax_credit: 0
+    va_military_benefit_subtraction: 10_000
+  output:
+    # Military benefits are subtracted under 58.1-322.02(18), which
+    # 58.1-339.8(D) does not list. 20% x $1,000.
+    va_non_refundable_eitc_if_claimed: 200
+
+- name: 2025 nonrefundable EITC has no poverty test
+  period: 2025
+  input:
+    state_code: VA
+    eitc: 1_000
+    va_agi: 100_000
+  output:
+    # Family VAGI above the poverty guideline rules out only the low-income
+    # credit (B)(1). 20% x $1,000.
+    va_non_refundable_eitc_if_claimed: 200
