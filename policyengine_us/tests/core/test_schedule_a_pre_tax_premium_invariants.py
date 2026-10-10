@@ -10,14 +10,24 @@ pre_tax_health_insurance_premiums holds those premiums. The other premium
 inputs hold premiums not paid that way, and the two are disjoint: a premium is
 reported in one or the other, never both.
 
-Hypothesis draws batches of tax units (single or joint, with up to two
-dependents), each person with wages, pre-tax premiums, after-tax premiums and
-other medical expenses. The after-tax premiums are supplied either directly or
-as non-Medicare premiums. Each batch runs as one vectorized simulation, again
-with every pre-tax premium removed, and again with every pre-tax premium paid
-after tax instead. For every batch:
+Hypothesis draws batches of single and joint filers, each person with wages,
+pre-tax premiums, after-tax premiums and other medical expenses. The after-tax
+premiums are supplied either directly or as non-Medicare premiums. Each batch
+runs as one vectorized simulation, again with every pre-tax premium removed,
+and again with every pre-tax premium paid after tax instead.
 
-1. Exclusion: Schedule A medical expenses equal the tax unit's after-tax
+The invariants are stated for these filers only: wage earners under 65 who pay
+their own costs, with no self-employment (so no self-employed health insurance
+deduction), no Medicare premiums and no reimbursed expenses. Dependents are
+left out, because whether a dependent's own payments belong on the filer's
+Schedule A is a separate question.
+
+The YAML cases in itemized_medical_expenses.yaml pin hand-computed households. This
+file adds what YAML cannot express: relations between paired runs of the same
+generated households (invariant 5), and the same checks across a mixed batch
+in one vectorized simulation. For every batch:
+
+1. Exclusion: Schedule A medical expenses equal the filers' after-tax
    premiums plus other medical expenses, whatever the pre-tax premiums are.
 2. One tax benefit per dollar: each person's wage exclusion is their pre-tax
    premiums, up to their wages, and their Schedule A premiums are their
@@ -64,11 +74,7 @@ def people(draw):
 
 @st.composite
 def tax_units(draw):
-    return {
-        "head": draw(people()),
-        "spouse": draw(st.none() | people()),
-        "dependents": draw(st.lists(people(), max_size=2)),
-    }
+    return {"head": draw(people()), "spouse": draw(st.none() | people())}
 
 
 def _person(wages=0.0, pre_tax=0.0, after_tax=0.0, other=0.0, direct=False):
@@ -90,10 +96,9 @@ def _situation(units, year, treatment):
         if treatment == "paid_after_tax":
             after_tax += values["pre_tax"]
         people[name] = {
-            "age": {"head": 45, "spouse": 43, "dependent": 17}[role],
+            "age": {"head": 45, "spouse": 43}[role],
             "is_tax_unit_head": role == "head",
             "is_tax_unit_spouse": role == "spouse",
-            "is_tax_unit_dependent": role == "dependent",
             "employment_income": values["wages"],
             "pre_tax_health_insurance_premiums": pre_tax,
             "health_insurance_premiums": after_tax * values["direct"],
@@ -108,18 +113,12 @@ def _situation(units, year, treatment):
     for i, unit in enumerate(units):
         head = f"head_{i}"
         add(head, unit["head"], "head")
-        members, couple = [head], [head]
+        members = [head]
         if unit["spouse"] is not None:
             spouse = f"spouse_{i}"
             add(spouse, unit["spouse"], "spouse")
             members.append(spouse)
-            couple.append(spouse)
-        groups["marital_units"][f"couple_{i}"] = {"members": couple}
-        for j, dependent in enumerate(unit["dependents"]):
-            name = f"dependent_{i}_{j}"
-            add(name, dependent, "dependent")
-            members.append(name)
-            groups["marital_units"][f"single_{i}_{j}"] = {"members": [name]}
+        groups["marital_units"][f"couple_{i}"] = {"members": members}
         groups["tax_units"][f"tax_unit_{i}"] = {"members": members}
         groups["households"][f"household_{i}"] = {
             "members": members,
@@ -158,7 +157,7 @@ def _members(units):
     return [
         person
         for unit in units
-        for person in [unit["head"], unit["spouse"], *unit["dependents"]]
+        for person in [unit["head"], unit["spouse"]]
         if person is not None
     ]
 
@@ -224,10 +223,9 @@ def _check(units, year):
     assert (paid_after_tax["medical_expense_deduction"] >= deduction - TOLERANCE).all()
 
 
-# A batch's cost is mostly per-variable overhead, so each example is a large
-# batch and there are few examples.
+# Each example is a batch of filers run three ways, at about 0.1 seconds.
 SETTINGS = dict(
-    max_examples=4,
+    max_examples=20,
     deadline=None,
     derandomize=True,
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
@@ -235,24 +233,23 @@ SETTINGS = dict(
 
 EDGE_CASES = [
     # Nothing paid.
-    {"head": _person(wages=50_000), "spouse": None, "dependents": []},
+    {"head": _person(wages=50_000), "spouse": None},
     # Pre-tax premiums only.
-    {
-        "head": _person(wages=60_000, pre_tax=2_000, other=9_000),
-        "spouse": None,
-        "dependents": [],
-    },
+    {"head": _person(wages=60_000, pre_tax=2_000, other=9_000), "spouse": None},
     # Pre-tax premiums above wages: the wage exclusion stops at wages.
     {
         "head": _person(wages=1_000, pre_tax=2_500, after_tax=400, direct=True),
         "spouse": None,
-        "dependents": [],
     },
-    # Each spouse pays a different way, and a working dependent pays both.
+    # Each spouse pays a different way.
     {
         "head": _person(wages=50_000, pre_tax=2_400, other=6_000),
         "spouse": _person(wages=30_000, after_tax=1_800, other=1_000, direct=True),
-        "dependents": [_person(wages=8_000, pre_tax=600, after_tax=300, other=250)],
+    },
+    # One spouse pays both ways.
+    {
+        "head": _person(wages=40_000, pre_tax=600, after_tax=300, other=250),
+        "spouse": _person(),
     },
 ]
 
