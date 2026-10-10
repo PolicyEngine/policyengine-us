@@ -264,3 +264,7 @@
     # AGI $100,000 is below the $125,000 phase-out start, so the rate is 50%.
     # The 2021 credit is refundable: $7,000 x 50% = $3,500.
     cdcc: 3_500
+    # MFJ tax: $1,990 + 12% * ($74,900 - $19,900) = $8,590.
+    # Refundable CTC: $3,600 + $3,000 = $6,600.
+    # Federal income tax: $8,590 - $6,600 - $3,500 = -$1,510.
+    income_tax: -1_510
