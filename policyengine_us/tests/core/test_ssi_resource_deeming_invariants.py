@@ -348,51 +348,66 @@ def _limits(policy):
     return limits.individual, limits.couple
 
 
+OTHER_ROLES = ("head_of_own_unit", "dependent", "tax_spouse_role")
+
+
 @pytest.mark.parametrize("policy_name", list(POLICIES))
-def test_co_resident_head_without_marital_units_is_not_a_spouse(policy_name):
+def test_co_resident_adult_in_own_marital_unit_is_not_a_spouse(policy_name):
     """No deemor: equals the prechange own-resource test.
 
-    Omitting marital units puts both people in one default marital unit. A
-    co-resident head of another tax unit is not thereby a spouse, so the
-    claimant is tested alone against the individual limit, whatever the
-    other person owns.
+    Another adult in the household with their own marital unit is never a
+    spouse, whether they head another tax unit, are the claimant's
+    dependent, or hold a tax-spouse role, whatever they own.
     """
     policy = POLICIES[policy_name]
     individual, _ = _limits(policy)
-    for claimant, other in product(RESOURCES, (0, 20_001)):
-        situation = {
-            "people": {
-                "claimant": {
-                    "age": {YEAR: 70},
-                    "is_ssi_aged_blind_disabled": {YEAR: True},
-                    "is_tax_unit_head": {YEAR: True},
-                    "ssi_countable_resources": {YEAR: claimant},
-                },
-                "son": {
-                    "age": {YEAR: 40},
-                    "is_ssi_aged_blind_disabled": {YEAR: False},
-                    "is_tax_unit_head": {YEAR: True},
-                    "ssi_countable_resources": {YEAR: other},
-                },
-            },
-            "tax_units": {
-                "claimant_unit": {"members": ["claimant"]},
-                "son_unit": {"members": ["son"]},
-            },
-            "households": {"home": {"members": ["claimant", "son"]}},
+    situation = {
+        plural: {} for plural in ("people", "tax_units", "marital_units", "households")
+    }
+    expected = []
+    for index, (claimant, other, role) in enumerate(
+        product(RESOURCES, (0, 20_001), OTHER_ROLES)
+    ):
+        names = (f"claimant_{index}", f"other_{index}")
+        situation["people"][names[0]] = {
+            "age": {YEAR: 70},
+            "is_ssi_aged_blind_disabled": {YEAR: True},
+            "is_tax_unit_head": {YEAR: True},
+            "is_tax_unit_spouse": {YEAR: False},
+            "is_tax_unit_dependent": {YEAR: False},
+            "ssi_countable_resources": {YEAR: claimant},
         }
-        simulation = Simulation(tax_benefit_system=policy, situation=situation)
-        passes = simulation.calculate("meets_ssi_resource_test", PERIOD)[0]
-        assert passes == (claimant <= individual), (claimant, other)
+        situation["people"][names[1]] = {
+            "age": {YEAR: 40},
+            "is_ssi_aged_blind_disabled": {YEAR: False},
+            "is_tax_unit_head": {YEAR: role == "head_of_own_unit"},
+            "is_tax_unit_spouse": {YEAR: role == "tax_spouse_role"},
+            "is_tax_unit_dependent": {YEAR: role == "dependent"},
+            "ssi_countable_resources": {YEAR: other},
+        }
+        if role == "head_of_own_unit":
+            situation["tax_units"][f"claimant_unit_{index}"] = {"members": [names[0]]}
+            situation["tax_units"][f"other_unit_{index}"] = {"members": [names[1]]}
+        else:
+            situation["tax_units"][f"unit_{index}"] = {"members": list(names)}
+        for name in names:
+            situation["marital_units"][f"{name}_unit"] = {"members": [name]}
+        situation["households"][f"home_{index}"] = {"members": list(names)}
+        expected.append(claimant <= individual)
+    simulation = Simulation(tax_benefit_system=policy, situation=situation)
+    passes = np.asarray(simulation.calculate("meets_ssi_resource_test", PERIOD))
+    np.testing.assert_array_equal(passes[::2], np.array(expected))
 
 
 @pytest.mark.parametrize("policy_name", list(POLICIES))
 def test_parent_spouse_in_another_tax_unit_matches_oracle(policy_name):
-    """A parent's spouse filing separately counts only with marriage evidence.
+    """A parent's partner counts when they share a two-person marital unit.
 
-    With cohabitating_spouses on the parent's tax unit the deemors are the
-    parent and spouse, against the couple allowance; without it, the parent
-    alone against the individual allowance (416.1202(b)(1)).
+    The partner files separately; either the parent or the partner claims
+    the disabled child. Sharing the parent's marital unit makes the partner
+    the parent's spouse, so both are deemors against the couple allowance
+    wherever each files. In their own marital unit the partner is not a
+    deemor, and a child claimed by the partner then has none (416.1202(b)(1)).
     """
     policy = POLICIES[policy_name]
     individual, couple = _limits(policy)
@@ -401,8 +416,14 @@ def test_parent_spouse_in_another_tax_unit_matches_oracle(policy_name):
     }
     expected = []
     child_rows = []
-    grid = product((0, 225, 2_001), RESOURCES, (0, 1_000, 3_001, 20_001), (True, False))
-    for index, (child, parent, partner, cohabiting) in enumerate(grid):
+    grid = product(
+        (0, 225, 2_001),
+        RESOURCES,
+        (0, 1_000, 3_001, 20_001),
+        (True, False),
+        ("parent", "partner"),
+    )
+    for index, (child, parent, partner, married, claimant) in enumerate(grid):
         names = [f"{role}_{index}" for role in ("parent", "partner", "child")]
         amounts = (parent, partner, child)
         for role, name, amount in zip(("parent", "partner", "child"), names, amounts):
@@ -415,18 +436,26 @@ def test_parent_spouse_in_another_tax_unit_matches_oracle(policy_name):
                 "is_tax_unit_dependent": {YEAR: role == "child"},
                 "ssi_countable_resources": {YEAR: amount},
             }
-        situation["tax_units"][f"parent_unit_{index}"] = {
-            "members": [names[0], names[2]],
-            "cohabitating_spouses": {YEAR: cohabiting},
+        claimer = names[0] if claimant == "parent" else names[1]
+        other = names[1] if claimant == "parent" else names[0]
+        situation["tax_units"][f"claiming_unit_{index}"] = {
+            "members": [claimer, names[2]]
         }
-        situation["tax_units"][f"partner_unit_{index}"] = {"members": [names[1]]}
-        situation["marital_units"][f"parents_{index}"] = {"members": names[:2]}
+        situation["tax_units"][f"other_unit_{index}"] = {"members": [other]}
+        if married:
+            situation["marital_units"][f"parents_{index}"] = {"members": names[:2]}
+        else:
+            for name in names[:2]:
+                situation["marital_units"][f"{name}_unit"] = {"members": [name]}
         situation["marital_units"][f"child_{index}"] = {"members": [names[2]]}
         situation["households"][f"home_{index}"] = {"members": names}
         child_rows.append(3 * index + 2)
-        deemors, allowance = (
-            (parent + partner, couple) if cohabiting else (parent, individual)
-        )
+        if married:
+            deemors, allowance = parent + partner, couple
+        elif claimant == "parent":
+            deemors, allowance = parent, individual
+        else:
+            deemors, allowance = 0, individual
         expected.append(child + max(0, deemors - allowance) <= individual)
     simulation = Simulation(tax_benefit_system=policy, situation=situation)
     passes = np.asarray(simulation.calculate("meets_ssi_resource_test", PERIOD))

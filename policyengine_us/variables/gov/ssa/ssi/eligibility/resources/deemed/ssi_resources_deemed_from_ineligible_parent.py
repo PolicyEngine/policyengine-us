@@ -12,52 +12,45 @@ from policyengine_us.variables.household.demographic.person._parent_links import
 def _ssi_unlinked_parental_resource_pool(person, resources, parent, spouse):
     """Return tax-unit/household proxy resources, count and exact pool keys.
 
-    Only unlinked parents and their established spouses enter this proxy.
+    The deemors are the child's co-resident tax-unit members who are unlinked
+    parents or a parent's spouse, and the spouse of each of those, wherever
+    that spouse files (416.1202(b)(1): a parent and the parent's spouse).
     With no parent ids, is_parent cannot distinguish a grandparent or an
     unrelated parent from the child's parent: this is a data limitation.
-    The first four key columns hold deemor row indices. A proxy with more
-    than four deemors cannot equal a linked pool (two parents and at most
-    their two spouses), so its fifth column identifies its tax-unit and
-    household intersection. Thus keys are exact, with linear memory.
+    Keys hold every deemor's row, sorted, so children share a pool exactly
+    when they share a deemor set.
     """
-    named = parent
-    parent = parent | ((spouse >= 0) & parent[spouse])
+    parent = parent | ((spouse >= 0) & parent[np.maximum(spouse, 0)])
     group = person.tax_unit
     indices = np.arange(person.count)
     households = person.household.reference_entity.members_entity_id
     tax_units = group.reference_entity.members_entity_id
-    total = np.zeros(person.count)
-    count = np.zeros(person.count, dtype=int)
-    keys = np.full((person.count, 5), -1, dtype=int)
-
-    def add(rows, selected):
-        nonlocal total, count
-        store = selected & (count < 4)
-        keys[indices[store], count[store]] = rows[store]
-        total = total + np.where(selected, resources[np.maximum(rows, 0)], 0)
-        count = count + selected
-
-    for position in range(
+    positions = range(
         int(np.max(group.reference_entity.members_position, initial=-1)) + 1
-    ):
-        member = group.value_nth_person(position, indices, default=-1)
-        safe = np.maximum(member, 0)
-        selected = (member >= 0) & (households[safe] == households) & parent[safe]
-        add(member, selected)
-        # A parent's established spouse counts wherever they file
-        # (416.1202(b)(1)); members of this tax unit were counted above.
-        partner = np.where(selected & named[safe], spouse[safe], -1)
-        add(partner, (partner >= 0) & (tax_units[np.maximum(partner, 0)] != tax_units))
-    keys[:, :4].sort(axis=1)
-    large = count > 4
-    if np.any(large):
-        _, intersections = np.unique(
-            np.column_stack((group.reference_entity.members_entity_id, households)),
-            axis=0,
-            return_inverse=True,
-        )
-        keys[large, :4] = -1
-        keys[large, 4] = intersections[large]
+    )
+
+    def deemors():
+        for position in positions:
+            member = group.value_nth_person(position, indices, default=-1)
+            safe = np.maximum(member, 0)
+            selected = (member >= 0) & (households[safe] == households) & parent[safe]
+            yield member, selected
+            # Members of this tax unit are scanned above; add spouses who
+            # file elsewhere. Each person has at most one spouse.
+            partner = np.where(selected, spouse[safe], -1)
+            outside = (partner >= 0) & (tax_units[np.maximum(partner, 0)] != tax_units)
+            yield partner, outside
+
+    count = np.zeros(person.count, dtype=int)
+    for _, selected in deemors():
+        count += selected
+    keys = np.full((person.count, max(4, int(np.max(count, initial=0)))), -1)
+    total = np.zeros(person.count)
+    filled = np.zeros(person.count, dtype=int)
+    for rows, selected in deemors():
+        keys[indices[selected], filled[selected]] = rows[selected]
+        total += np.where(selected, resources[np.maximum(rows, 0)], 0)
+        filled += selected
     return total, count, keys
 
 
@@ -91,8 +84,10 @@ def _ssi_parental_resource_pool(person, period, resources):
         linked_count = np.sum(named >= 0, axis=1)
         total = np.where(linked, linked_total, total)
         count = np.where(linked, linked_count, count)
+        keys[linked] = -1
         keys[linked, :4] = named[linked]
-        keys[linked, 4] = -1
+    # Sorted rows make equal deemor sets equal keys, linked or not.
+    keys.sort(axis=1)
     _, pool = np.unique(keys, axis=0, return_inverse=True)
     return total, count, pool
 

@@ -1790,8 +1790,9 @@
     - false
     - true
     - true
-# Default or unconfirmed marital grouping alone does not establish a spouse.
-- name: Linked parent marital unit without marriage evidence does not infer a spouse
+# A two-person marital unit is a married, cohabiting couple, whatever their
+# tax filing: 2,500 + 2,501 less the 3,000 couple allowance leaves 2,001.
+- name: Linked parent's partner in a two-person marital unit counts across tax units
   period: 2026-01
   input:
     people:
@@ -1856,13 +1857,13 @@
     ssi_resources_deemed_from_ineligible_parent:
     - 0
     - 0
-    - 500
+    - 2001
 
 # 416.1202(b)(1) and POMS SI 01330.200 A deem 'the countable resources of the
-# parent(s) or spouse of a parent'. Without parent ids, a parent's
-# established spouse who files separately still counts: 2,500 + 5,000 less
-# the 3,000 couple allowance leaves 4,500.
-- name: Without parent links a parent's cohabiting spouse in another tax unit counts
+# parent(s) or spouse of a parent'. Without parent ids, a parent's spouse who
+# files separately still counts: 2,500 + 5,000 less the 3,000 couple
+# allowance leaves 4,500.
+- name: Without parent links a parent's spouse in another tax unit counts
   period: 2026-01
   input:
     people:
@@ -1902,3 +1903,172 @@
   output:
     ssi_resources_deemed_from_ineligible_parent: [0, 0, 4500]
     meets_ssi_resource_test: [false, false, false]
+
+# The same when the stepparent claims the child and the parent files alone:
+# 416.1202(b)(1) counts the parent and 'his or her ineligible stepparent'.
+# 5,001 + 0 less the 3,000 couple allowance leaves 2,001.
+- name: Without parent links a parent filing apart from the stepparent who claims the child counts
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 5001
+      stepfather:
+        age: 42
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: false
+        ssi_countable_resources:
+          '2026': 0
+      child:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      mother_unit:
+        members: [mother]
+      stepfather_unit:
+        members: [stepfather, child]
+    marital_units:
+      parents:
+        members: [mother, stepfather]
+      child_unit:
+        members: [child]
+    households:
+      home:
+        members: [mother, stepfather, child]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 0, 2001]
+    meets_ssi_resource_test: [false, true, false]
+
+# A situation that omits marital units puts the parent and the child they
+# claim in one default unit; that does not marry the child (416.1856), so
+# the parent's 5,000 less the 2,000 individual allowance is deemed.
+- name: Omitted marital units do not marry a child to the parent who claims them
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 5000
+      child:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members: [parent, child]
+    households:
+      home:
+        members: [parent, child]
+  output:
+    is_ssi_resource_deeming_child: [false, true]
+    ssi_resources_deemed_from_ineligible_parent: [0, 3000]
+    meets_ssi_resource_test: [false, false]
+
+# SI 01330.200 B divides the excess equally among the children sharing the
+# deemors. Three couples are split across two tax units, each claiming one
+# child; both children have the same six deemors (6,000 less the 3,000
+# couple allowance = 3,000), so each receives 1,500 and passes.
+- name: Children in two tax units with the same six deemors share one pool
+  period: 2026-01
+  input:
+    people:
+      a1:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 1000
+      b1:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 1000
+      a2:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 1000
+      b2:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 1000
+      a3:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 1000
+      b3:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 1000
+      child_a:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+      child_b:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      unit_a:
+        members: [a1, a2, a3, child_a]
+      unit_b:
+        members: [b1, b2, b3, child_b]
+    marital_units:
+      couple_1:
+        members: [a1, b1]
+      couple_2:
+        members: [a2, b2]
+      couple_3:
+        members: [a3, b3]
+      child_a_unit:
+        members: [child_a]
+      child_b_unit:
+        members: [child_b]
+    households:
+      home:
+        members: [a1, b1, a2, b2, a3, b3, child_a, child_b]
+  output:
+    ssi_resources_deemed_from_ineligible_parent: [0, 0, 0, 0, 0, 0, 1500, 1500]
+    meets_ssi_resource_test: [true, true, true, true, true, true, true, true]
+

@@ -242,9 +242,9 @@
     ssi_resources_deemed_from_ineligible_spouse: [0, 3001, 0]
     meets_ssi_resource_test: [true, false, false]
 
-# A situation that omits marital units puts everyone in one default unit; a
-# co-resident head of another tax unit is not thereby a spouse (416.1160).
-- name: Omitted marital units do not make a co-resident head of another tax unit a spouse
+# A co-resident head of another tax unit in their own marital unit is not a
+# spouse (416.1160), whatever they own.
+- name: A co-resident adult in their own marital unit is not a spouse
   period: 2026-01
   input:
     people:
@@ -265,6 +265,11 @@
         members: [claimant]
       son_unit:
         members: [son]
+    marital_units:
+      claimant_unit:
+        members: [claimant]
+      son_unit:
+        members: [son]
     households:
       home:
         members: [claimant, son]
@@ -273,11 +278,10 @@
     ssi_resources_deemed_from_ineligible_spouse: [0, 0]
     meets_ssi_resource_test: [false, true]
 
-# Spouses filing separately are spouses when the tax unit records that they
-# live together (cohabitating_spouses), as for Medicaid and Social Security
-# taxation; 416.1205(a) then applies the couple limit to their combined
+# A two-person marital unit is a married, cohabiting couple whether or not
+# they file together; 416.1205(a) applies the couple limit to their combined
 # resources.
-- name: Cohabiting spouses filing separately deem the ineligible spouse's resources
+- name: Spouses filing separately in one marital unit count each other's resources
   period: 2026-01
   input:
     people:
@@ -296,7 +300,6 @@
     tax_units:
       claimant_unit:
         members: [claimant]
-        cohabitating_spouses: true
       spouse_unit:
         members: [spouse]
     marital_units:
@@ -310,36 +313,48 @@
     ssi_resources_deemed_from_ineligible_spouse: [3001, 0]
     meets_ssi_resource_test: [false, false]
 
-# Without that record, separate filers in one marital unit are not shown to
-# be married, for the claimant's spouse as for a parent's spouse.
-- name: Separate filers without cohabitation evidence do not deem resources
+# Two aged, blind or disabled spouses who are both tax dependents do not
+# claim jointly in the model, but 416.1205(b) still tests a couple's
+# combined resources against the couple limit: 0 + 3,001 > 3,000.
+- name: Disabled married dependents count each other's resources
   period: 2026-01
   input:
     people:
-      claimant:
-        age: 70
-        is_ssi_aged_blind_disabled: true
-        is_tax_unit_head: true
-        ssi_countable_resources:
-          '2026': 0
-      partner:
-        age: 68
+      mother:
+        age: 55
         is_ssi_aged_blind_disabled: false
         is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        ssi_countable_resources:
+          '2026': 0
+      claimant:
+        age: 25
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 25
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
         ssi_countable_resources:
           '2026': 3001
     tax_units:
-      claimant_unit:
-        members: [claimant]
-      partner_unit:
-        members: [partner]
+      family:
+        members: [mother, claimant, spouse]
     marital_units:
+      mother_unit:
+        members: [mother]
       couple:
-        members: [claimant, partner]
+        members: [claimant, spouse]
     households:
       home:
-        members: [claimant, partner]
+        members: [mother, claimant, spouse]
   output:
-    is_ssi_spousal_resource_deeming_applies: [false, false]
-    ssi_resources_deemed_from_ineligible_spouse: [0, 0]
-    meets_ssi_resource_test: [true, false]
+    is_ssi_spousal_resource_deeming_applies: [false, true, true]
+    ssi_resources_deemed_from_ineligible_spouse: [0, 3001, 0]
+    meets_ssi_resource_test: [true, false, false]
