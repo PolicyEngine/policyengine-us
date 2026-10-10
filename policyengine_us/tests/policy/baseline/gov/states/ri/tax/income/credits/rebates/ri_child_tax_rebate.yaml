@@ -200,3 +200,141 @@
     ri_refundable_credits: 250
     # 1,000 before refundable credits - 250 refundable credits = 750.
     ri_income_tax: 750
+
+- name: 2021 single filer who can be claimed as a dependent: the 2021 child tax rebate needs a child validly claimed as a dependent
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 20
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: RI
+  output:
+    # R.I. Gen. Laws 44-30-103: $250 for each child the taxpayer validly
+    # claimed as a dependent; under IRC 152(b)(1) a filer who can be
+    # claimed has no dependents.
+    ri_child_tax_rebate: 0
+
+- name: 2021 joint return with one claimable spouse: the 2021 child tax rebate needs a child validly claimed as a dependent (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: RI
+  output:
+    # On a joint return either spouse being claimable leaves no
+    # dependents (Publication 501, Dependent Taxpayer Test).
+    ri_child_tax_rebate: 0
+
+- name: 2021 joint return with one claimable spouse: the 2021 child tax rebate needs a child validly claimed as a dependent (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 20
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: RI
+  output:
+    ri_child_tax_rebate: 0
+
+- name: 2021 joint return with both spouses claimable: the 2021 child tax rebate needs a child validly claimed as a dependent
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: RI
+  output:
+    ri_child_tax_rebate: 0
+
+- name: 2021 joint return with neither spouse claimable: the 2021 child tax rebate needs a child validly claimed as a dependent
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: RI
+  output:
+    # One child aged 4: min(1, 3) x $250.
+    ri_child_tax_rebate: 250
