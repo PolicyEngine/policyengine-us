@@ -64,7 +64,7 @@
   output:
     or_wfhdc_has_qualified_individual_eligible: true
 
-- name: Household with disabled head member is not eligible
+- name: Disabled spouse labelled head is a qualified individual, as under the other labelling
   period: 2021
   input:
     people:
@@ -84,8 +84,35 @@
         members: [person1, person2]
         state_code: OR
   output:
-    or_wfhdc_has_qualified_individual_eligible: false
+    # person2 is the spouse. A disabled spouse is the other spouse's
+    # qualifying individual (IRC 21(b)(1)(C)) whichever spouse is labelled
+    # head; Schedule OR-WFHDC: "the word 'you' also refers to your spouse".
+    # Before, this couple was eligible only with the labels exchanged (the
+    # case above).
+    or_wfhdc_has_qualified_individual_eligible: true
 
+- name: Single disabled head with no qualifying member is not eligible
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        is_tax_unit_head: true
+      person2:
+        age: 15
+        is_disabled: false
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # A filer is not their own qualifying individual.
+    or_wfhdc_has_qualified_individual_eligible: false
 
 - name: 2025 child of a joint return with one claimable spouse is not a qualified individual (the claimable spouse is the head)
   period: 2025
@@ -161,7 +188,7 @@
   output:
     or_wfhdc_has_qualified_individual_eligible: true
 
-- name: 2025 incapacitated spouse who can be claimed is still a qualified individual (the claimable spouse is the head)
+- name: 2025 disabled spouse who can be claimed is still a qualified individual (the claimable spouse is the head)
   period: 2025
   input:
     people:
@@ -187,7 +214,7 @@
     # IRC 21(b)(1)(C): a disabled spouse, whichever spouse is labelled head.
     or_wfhdc_has_qualified_individual_eligible: true
 
-- name: 2025 incapacitated spouse who can be claimed is still a qualified individual (the claimable spouse is the spouse)
+- name: 2025 disabled spouse who can be claimed is still a qualified individual (the claimable spouse is the spouse)
   period: 2025
   input:
     people:
@@ -208,6 +235,65 @@
     households:
       household:
         members: [person_b, person_a]
+        state_code: OR
+  output:
+    or_wfhdc_has_qualified_individual_eligible: true
+
+- name: 2025 disabled dependent of a joint return with one claimable spouse is still a qualified individual (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      relative:
+        age: 30
+        is_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, relative]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, relative]
+        state_code: OR
+  output:
+    # IRC 21(b)(1)(B) determines dependency without regard to 152(b)(1).
+    or_wfhdc_has_qualified_individual_eligible: true
+
+- name: 2025 disabled dependent of a joint return with one claimable spouse is still a qualified individual (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 40
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      relative:
+        age: 30
+        is_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, relative]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, relative]
         state_code: OR
   output:
     or_wfhdc_has_qualified_individual_eligible: true

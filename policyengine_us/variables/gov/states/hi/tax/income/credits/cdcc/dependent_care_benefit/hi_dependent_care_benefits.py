@@ -28,10 +28,16 @@ class hi_dependent_care_benefits(Variable):
         # line 6: qualified expenses cover care for any qualifying
         # individual under HRS 235-55.6(b)(1), including a dependent or
         # spouse incapable of self-care, so adult care expenses count.
-        childcare_expenses = tax_unit("tax_unit_childcare_expenses", period)
+        # A return on which a filer can be claimed as a dependent has no
+        # dependent qualifying individual (hi_cdcc_qualifying_individual), so
+        # its childcare expenses do not count.
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        childcare_expenses = where(
+            dependent_filer, 0, tax_unit("tax_unit_childcare_expenses", period)
+        )
         person = tax_unit.members
         care_expenses = person("care_expenses", period)
-        qualifying_person = person("is_cdcc_eligible", period)
+        qualifying_person = person("hi_cdcc_qualifying_individual", period)
         qualifying_care_expenses = tax_unit.sum(care_expenses * qualifying_person)
         qualified_expense_amount = childcare_expenses + qualifying_care_expenses
         # line 7 = min(line 5, line 6) = min(line 2, line 6):
@@ -60,7 +66,9 @@ class hi_dependent_care_benefits(Variable):
         # line 15 excluded_benefit = 0 since we ignore line 12
         # line 16 Taxable Benefit is ignored, since we never use it
         # line 17:
-        expenses_amount = p.expense_floor.calc(tax_unit("count_cdcc_eligible", period))
+        expenses_amount = p.expense_floor.calc(
+            tax_unit("hi_cdcc_qualifying_individuals", period)
+        )
         # line 18 = line 14 + line 15 = line 14
         # line 19 = line 17 - line 18 = line 17 - line 14
         net_expenses = max_(0, expenses_amount - deductible_benefit)

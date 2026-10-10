@@ -26,7 +26,9 @@ class or_ctc(Variable):
         # disregarding only 152(b)(3), so IRC 152(b)(1) applies: a return on
         # which the filer (or, if joint, either spouse) can be claimed as a
         # dependent has no dependents.
-        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependent_filer = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
         eligible = age_eligible & dependent & ~dependent_filer
         count_eligible = tax_unit.sum(eligible)
         # Cap the number of qualifying dependents.

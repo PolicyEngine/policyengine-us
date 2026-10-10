@@ -12,7 +12,7 @@ class me_personal_exemption_deduction(Variable):
         # Form 1040ME instructions, line 13: a filer who may be claimed as a
         # dependent has no exemption; on a joint return each spouse is
         # counted separately.
-        "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf#page=4",
+        "https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf#page=5",
     )
     defined_for = StateCode.ME
 

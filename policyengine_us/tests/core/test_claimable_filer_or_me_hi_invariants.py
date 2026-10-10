@@ -1,11 +1,19 @@
 """Oregon, Maine and Hawaii rules for a filer who can be claimed as a dependent.
 
-Exemptions and dependent-based credits leave out a claimable filer and, where
-the law needs a dependent, a return on which a filer can be claimed.
+Each state denies such a filer their own exemption, and several credits need
+dependents that a return with a claimable filer cannot have (IRC 152(b)(1)).
 
-For couples drawn by Hypothesis and a seeded population in OR, ME, HI, with
-either, both or neither spouse claimed, each output is the same under either
-head/spouse labelling, and marking another filer as claimed never raises it.
+For couples with either, both or neither spouse claimed:
+
+1. Swap invariance: each output is the same under either head/spouse
+   labelling (Hypothesis batches, the seeded population and the crafted
+   incapacity cases).
+2. Monotonicity: marking another filer as claimed never raises an output
+   (seeded population and crafted cases only).
+
+The crafted cases add adults and a dependent who are incapable of self-care,
+with care expenses, which the generated population never has. The contributed
+reforms and the Oregon credit's column are covered by YAML cases only.
 """
 
 import pytest
@@ -38,7 +46,47 @@ OUTPUTS = [
     "hi_regular_exemptions",
     "hi_disabled_exemptions",
     "hi_cdcc_eligible",
+    "hi_cdcc_qualifying_individuals",
+    "hi_cdcc",
 ]
+
+
+def _incapacity_cases():
+    # Both spouses and an adult dependent incapable of self-care, with care
+    # expenses, and a young child with childcare expenses.
+    earner = {
+        "age": 45,
+        "employment_income": 10_000.0,
+        "is_disabled": True,
+        "is_incapable_of_self_care": True,
+        "pre_subsidy_care_expenses": 2_000.0,
+    }
+    other = {
+        "age": 44,
+        "employment_income": 3_000.0,
+        "is_disabled": True,
+        "is_incapable_of_self_care": True,
+        "pre_subsidy_care_expenses": 1_000.0,
+    }
+    relative = {
+        "age": 30,
+        "is_disabled": True,
+        "is_incapable_of_self_care": True,
+        "pre_subsidy_care_expenses": 1_500.0,
+    }
+    child = {"age": 4, "pre_subsidy_childcare_expenses": 3_000.0}
+    return [
+        {
+            "state": state,
+            "adults": couple,
+            "dependents": others,
+            "claimed": claimed,
+        }
+        for state in ("OR", "HI")
+        for couple in ([earner, other], [earner, {"age": 44}])
+        for others in ([], [child], [child, relative])
+        for claimed in [(True, False), (False, True), (True, True)]
+    ]
 
 
 @st.composite
@@ -64,6 +112,10 @@ def test_or_me_hi_claimable_filer_rules_are_label_free(year, units):
 
 @pytest.mark.parametrize("year", YEARS)
 def test_or_me_hi_claimable_filer_rules_seeded_population(year):
-    units = _seeded_couples(STATES, per_state=3) + _crafted_cases(STATES)
+    units = (
+        _seeded_couples(STATES, per_state=3)
+        + _crafted_cases(STATES)
+        + _incapacity_cases()
+    )
     check_swap(units, year, OUTPUTS)
     check_monotone(units, year, OUTPUTS)
