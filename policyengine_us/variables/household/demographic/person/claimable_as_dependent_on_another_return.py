@@ -7,7 +7,8 @@ class claimable_as_dependent_on_another_return(Variable):
     definition_period = YEAR
     label = "Can be claimed as a dependent elsewhere"
     documentation = (
-        "Whether another taxpayer can claim the person as a dependent: a "
+        "Whether another taxpayer, in another tax unit, can claim the person "
+        "as a dependent: a "
         "deduction under IRC section 151 for the person is allowable to "
         "another taxpayer, whether or not claimed. Defaults to the actual "
         "or expected claim input for compatibility with existing callers. "
