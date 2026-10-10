@@ -30,64 +30,157 @@
 - name: Fully phases out at $175,000. 1000-20*(175000-125000)/1000 = 0
   period: 2023
   input:
-    state_code: VT
-    age: 5
-    adjusted_gross_income: 175_000
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 175_000
+    households:
+      household:
+        members: [parent, child1]
+        state_code: VT
   output:
     vt_ctc: 0
 
 - name: Check we're not creating a negative value.
   period: 2023
   input:
-    state_code: VT
-    age: 5
-    adjusted_gross_income: 200_000
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 200_000
+    households:
+      household:
+        members: [parent, child1]
+        state_code: VT
   output:
     vt_ctc: 0
 
 - name: Halfway phased out at $150,000. 1000-20*(150000-125000)/1000 = 500
   period: 2023
   input:
-    state_code: VT
-    age: 5
-    adjusted_gross_income: 150_000
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 150_000
+    households:
+      household:
+        members: [parent, child1]
+        state_code: VT
   output:
     vt_ctc: 500
+
+- name: Two children halfway phased out at $150,000: each child's $1,000 is reduced by $500
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 3
+      child2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        adjusted_gross_income: 150_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: VT
+  output:
+    # 32 V.S.A. 5830f(b): the credit per child is reduced by $20 per $1,000
+    # over $125,000: 2 x ($1,000 - 25 x $20) = $1,000.
+    vt_ctc: 1_000
 
 # S.51 (2025) tests for expanded age eligibility
 - name: S.51 - CTC includes 6-year-olds starting 2025
   period: 2025
   input:
-    state_code: VT
-    age: 6
-    adjusted_gross_income: 50_000
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [parent, child1]
+        state_code: VT
   output:
     vt_ctc: 1_000
 
 - name: S.51 - CTC still applies to 5-year-olds in 2025
   period: 2025
   input:
-    state_code: VT
-    age: 5
-    adjusted_gross_income: 50_000
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [parent, child1]
+        state_code: VT
   output:
     vt_ctc: 1_000
 
 - name: S.51 - CTC does not apply to 7-year-olds in 2025
   period: 2025
   input:
-    state_code: VT
-    age: 7
-    adjusted_gross_income: 50_000
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [parent, child1]
+        state_code: VT
   output:
     vt_ctc: 0
 
 - name: S.51 - CTC did not include 6-year-olds before 2025
   period: 2024
   input:
-    state_code: VT
-    age: 6
-    adjusted_gross_income: 50_000
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 50_000
+    households:
+      household:
+        members: [parent, child1]
+        state_code: VT
   output:
     vt_ctc: 0
 
@@ -200,7 +293,7 @@
   output:
     vt_ctc: 0
 
-- name: 2025 joint return with neither spouse claimable: no Vermont child tax credit
+- name: 2025 joint return with neither spouse claimable (control): Vermont child tax credit
   period: 2025
   input:
     people:
