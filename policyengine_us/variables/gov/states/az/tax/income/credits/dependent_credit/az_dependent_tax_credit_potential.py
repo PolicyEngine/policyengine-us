@@ -21,7 +21,9 @@ class az_dependent_tax_credit_potential(Variable):
         # IRC 152(b)(1) a return on which the filer (or, if joint, either
         # spouse) can be claimed as a dependent has no dependents.
         filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
-        dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
+        dependent = person("is_tax_unit_dependent", period) & ~tax_unit.project(
+            filer_is_dependent
+        )
         age = person("age", period)
         dependent_amount = p.amount.calc(age) * dependent
         amount = tax_unit.sum(dependent_amount)
