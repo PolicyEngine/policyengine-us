@@ -1,0 +1,24 @@
+- name: Spouses' shares of the mortgage deduction count second-residence amounts
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        home_mortgage_interest: 6_000
+      spouse:
+        age: 50
+        second_residence_mortgage_interest: 1_500
+        second_residence_mortgage_points: 500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    # 6,000 / 8,000 and (1,500 + 500) / 8,000.
+    home_mortgage_interest_share: [0.75, 0.25]
+    deductible_mortgage_interest: [6_000, 2_000]
+    mortgage_interest: [6_000, 2_000]

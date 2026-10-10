@@ -1,0 +1,28 @@
+- name: Interest on both residences is pooled
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    home_mortgage_interest: 10_000
+    second_residence_mortgage_interest: 4_000
+  output:
+    home_mortgage_interest_tax_unit: 14_000
+
+- name: Legacy structured interest stands in for principal-residence interest only
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    first_home_mortgage_interest: 8_000
+    second_residence_mortgage_interest: 4_000
+  output:
+    # No person-level principal-residence interest: 8,000 + 4,000.
+    home_mortgage_interest_tax_unit: 12_000
+
+- name: Person-level principal-residence interest replaces legacy structured interest
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    home_mortgage_interest: 5_000
+    first_home_mortgage_interest: 8_000
+    second_residence_mortgage_interest: 4_000
+  output:
+    home_mortgage_interest_tax_unit: 9_000

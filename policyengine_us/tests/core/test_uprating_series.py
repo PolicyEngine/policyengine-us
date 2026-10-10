@@ -94,6 +94,11 @@ EXPECTED = {
     "homeowners_association_fees": CPI_U,
     "pre_subsidy_transportation_expense": CPI_U,
     "home_mortgage_interest": CPI_U,
+    "home_mortgage_points": CPI_U,
+    "mortgage_insurance_premiums": CPI_U,
+    "second_residence_mortgage_interest": CPI_U,
+    "second_residence_mortgage_points": CPI_U,
+    "second_residence_mortgage_insurance_premiums": CPI_U,
     "student_loan_interest": CPI_U,
     "investment_interest_expense": CPI_U,
     # Still on the default.

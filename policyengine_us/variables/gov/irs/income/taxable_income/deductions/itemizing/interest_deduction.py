@@ -6,8 +6,11 @@ class interest_deduction(Variable):
     entity = TaxUnit
     label = "Interest deduction"
     unit = USD
-    documentation = "Interest expenses deducted from taxable income."
+    documentation = (
+        "Interest expenses deducted from taxable income, including deductible "
+        "mortgage insurance premiums (Schedule A line 8d)."
+    )
     definition_period = YEAR
     reference = "https://www.law.cornell.edu/uscode/text/26/163"
 
-    adds = ["deductible_interest_expense"]
+    adds = ["deductible_interest_expense", "deductible_mortgage_insurance_premiums"]
