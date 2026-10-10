@@ -165,3 +165,242 @@
     cdcc_treated_as_unmarried: false
     # min($7,000 benefits, $3,750 MFS cap, $38,000 earnings) = $3,750.
     dependent_care_assistance_exclusion: 3_750
+# Section 129(a)(2)(D) (ARPA section 9632): for taxable years beginning in
+# 2021 the cap is $10,500 ($5,250 for a separate return). 2021 Form 2441
+# line 21 prints "$10,500 ($5,250 if married filing separately)".
+- name: ARPA raises the joint cap to $10,500 for 2021
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 60_000
+        dependent_care_employer_benefits: 9_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    # min($9,000 benefits, $10,500 cap, $40,000 lesser earnings) = $9,000.
+    dependent_care_assistance_exclusion: 9_000
+
+- name: The 2021 cap binds at $10,500 for a head of household
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 60_000
+        dependent_care_employer_benefits: 12_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: HEAD_OF_HOUSEHOLD
+  output:
+    # min($12,000 benefits, $10,500 cap, $60,000 earnings) = $10,500.
+    dependent_care_assistance_exclusion: 10_500
+
+- name: Married filing separately uses the $5,250 cap for 2021
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 80_000
+        dependent_care_employer_benefits: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+  output:
+    # min($6,000 benefits, $5,250 cap, $80,000 earnings) = $5,250.
+    dependent_care_assistance_exclusion: 5_250
+
+- name: The cap returns to $5,000 for 2022
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 60_000
+        dependent_care_employer_benefits: 9_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    # Section 129(a)(2)(D) covers only taxable years beginning in 2021.
+    # min($9,000 benefits, $5,000 cap, $40,000 lesser earnings) = $5,000.
+    dependent_care_assistance_exclusion: 5_000
+
+# Adjacent-year and exact-boundary checks isolate the temporary ARPA cap.
+- name: The pre-ARPA joint cap is $5,000 for 2020
+  period: 2020
+  input:
+    filing_status: JOINT
+    dependent_care_employer_benefits: 10_500
+    min_head_spouse_earned: 50_000
+  output:
+    # min($10,500 benefits, $5,000 cap, $50,000 earnings) = $5,000.
+    dependent_care_assistance_exclusion: 5_000
+
+- name: The pre-ARPA separate cap is $2,500 for 2020
+  period: 2020
+  input:
+    filing_status: SEPARATE
+    cdcc_treated_as_unmarried: false
+    dependent_care_employer_benefits: 5_250
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 2_500
+
+- name: Benefits exactly at the joint 2021 cap are fully excluded
+  period: 2021
+  input:
+    filing_status: JOINT
+    dependent_care_employer_benefits: 10_500
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 10_500
+
+- name: Benefits exactly at the separate 2021 cap are fully excluded
+  period: 2021
+  input:
+    filing_status: SEPARATE
+    cdcc_treated_as_unmarried: false
+    dependent_care_employer_benefits: 5_250
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 5_250
+
+- name: The 2021 earned-income limit still binds below the raised cap
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        employment_income: 60_000
+        dependent_care_employer_benefits: 12_000
+      spouse:
+        is_tax_unit_spouse: true
+        employment_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+  output:
+    # min($12,000 benefits, $10,500 cap, $6,000 lesser earnings) = $6,000.
+    min_head_spouse_earned: 6_000
+    dependent_care_assistance_exclusion: 6_000
+
+- name: Separate filer treated as unmarried uses the full $10,500 cap in 2021
+  period: 2021
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 12_000
+        is_separated: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+  output:
+    cdcc_treated_as_unmarried: true
+    # Section 129(a)(2)(C) applies the unmarried $10,500 cap.
+    dependent_care_assistance_exclusion: 10_500
+
+- name: Living apart without a qualifying individual keeps the $5,250 cap in 2021
+  period: 2021
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 12_000
+        is_separated: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+  output:
+    cdcc_treated_as_unmarried: false
+    dependent_care_assistance_exclusion: 5_250
+
+- name: The separate cap returns to $2,500 for 2022
+  period: 2022
+  input:
+    filing_status: SEPARATE
+    cdcc_treated_as_unmarried: false
+    dependent_care_employer_benefits: 5_250
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 2_500
+
+- name: Benefits above the 2026 joint cap are limited to $7,500
+  period: 2026
+  input:
+    filing_status: JOINT
+    dependent_care_employer_benefits: 7_501
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 7_500
+
+- name: Benefits exactly at the 2026 separate cap are fully excluded
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    cdcc_treated_as_unmarried: false
+    dependent_care_employer_benefits: 3_750
+    min_head_spouse_earned: 50_000
+  output:
+    dependent_care_assistance_exclusion: 3_750
+
+- name: Separate filer treated as unmarried uses the full $5,000 cap in 2020
+  period: 2020
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 6_000
+        is_separated: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+  output:
+    cdcc_treated_as_unmarried: true
+    # min($6,000 benefits, $5,000 unmarried cap, $38,000 earnings) = $5,000.
+    dependent_care_assistance_exclusion: 5_000
+
+- name: Separate filer treated as unmarried uses the full $5,000 cap in 2022
+  period: 2022
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 6_000
+        is_separated: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+  output:
+    cdcc_treated_as_unmarried: true
+    # min($6,000 benefits, $5,000 unmarried cap, $38,000 earnings) = $5,000.
+    dependent_care_assistance_exclusion: 5_000

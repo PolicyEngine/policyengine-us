@@ -365,3 +365,83 @@
   output:
     # Line 14 = min(4_000, 2_500) = 2_500; line 19 = 10_000 - 2_500 = 7_500.
     hi_dependent_care_benefits: 7_500
+# 2021 Schedule X line 11 still reads $5,000 ($2,500 if married filing
+# separately): Act 89, SLH 2021 conformed 2021 to the IRC as amended as of
+# December 31, 2020, before ARPA section 9632 raised the federal cap to
+# $10,500 ($5,250) for 2021. The 2021 line 17 limit ($2,400 / $4,800) is below
+# $5,000, so only the separate-return cap changes a result.
+- name: 2021 separate filer keeps the pre-ARPA $2,500 line 11 cap
+  period: 2021
+  input:
+    people:
+      head:
+        dependent_care_employer_benefits: 4_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_cdcc_min_head_spouse_earned: 9_000
+        filing_status: SEPARATE
+        count_cdcc_eligible: 2
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    # Line 7 = min(4_000, 6_000) = 4_000; line 10 = min(4_000, 9_000) = 4_000.
+    # Line 11 = 2_500; line 14 = min(4_000, 2_500) = 2_500.
+    # Line 17 = 4_800 (two qualifying persons); line 19 = 4_800 - 2_500 = 2_300.
+    # Return min(2_300, 6_000) = 2_300. With the federal $5,250 it would be 800.
+    hi_dependent_care_benefits: 2_300
+
+- name: 2021 separate filer with benefits above the federal $5,250 cap still uses $2,500
+  period: 2021
+  input:
+    people:
+      head:
+        dependent_care_employer_benefits: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        hi_cdcc_min_head_spouse_earned: 9_000
+        filing_status: SEPARATE
+        count_cdcc_eligible: 2
+        tax_unit_childcare_expenses: 7_000
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    # Line 10 = 6_000; line 11 = 2_500; line 14 = 2_500;
+    # line 19 = 4_800 - 2_500 = 2_300; min(2_300, 7_000) = 2_300.
+    # With the federal $5,250 it would be max(4_800 - 5_250, 0) = 0.
+    hi_dependent_care_benefits: 2_300
+
+- name: 2021 separate filer living apart uses Hawaii's full $5,000 cap
+  period: 2021
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 9_000
+        dependent_care_employer_benefits: 4_000
+        is_separated: true
+      child1:
+        age: 5
+      child2:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: HI
+  output:
+    cdcc_treated_as_unmarried: true
+    dependent_care_assistance_exclusion: 4_000
+    # Hawaii: min(4_000 benefits, 6_000 expenses, 9_000 earnings, 5_000) = 4_000.
+    # Two-person limit 4_800 - 4_000 = 800, below the 6_000 expenses.
+    hi_dependent_care_benefits: 800

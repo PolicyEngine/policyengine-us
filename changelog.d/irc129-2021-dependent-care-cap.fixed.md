@@ -1,0 +1,1 @@
+Apply the 2021 $10,500 ($5,250 for a separate return) cap on excluded employer dependent care benefits under IRC 129(a)(2)(D). California, Hawaii and Alabama's 2021 recompute keep the $5,000 ($2,500) cap, and Virginia's and Idaho's 2021 dependent care deductions use the ARPA $8,000 ($16,000) limit.

@@ -231,3 +231,40 @@
     cdcc_relevant_expenses: 6_000
     # $6,000 x 20% = $1,200.
     cdcc: 1_200
+
+# 2021: the ARPA $10,500 section 129 cap (section 129(a)(2)(D)) reduces the
+# ARPA $16,000 two-child section 21(c) limit (section 21(g)).
+- name: The 2021 $10,500 section 129 cap reduces the ARPA dollar limit
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 60_000
+        dependent_care_employer_benefits: 9_000
+      parent2:
+        age: 38
+        employment_income: 40_000
+      child1:
+        age: 5
+      child2:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 20_000
+  output:
+    # Form 2441 Part III: min($9,000, $10,500 cap, $40,000) = $9,000.
+    dependent_care_assistance_exclusion: 9_000
+    # Section 21(c): $16,000 two-child limit less the $9,000 exclusion.
+    cdcc_limit: 7_000
+    cdcc_relevant_expenses: 7_000
+    # AGI $100,000 is below the $125,000 phase-out start, so the rate is 50%.
+    # The 2021 credit is refundable: $7,000 x 50% = $3,500.
+    cdcc: 3_500
+    # MFJ tax: $1,990 + 12% * ($74,900 - $19,900) = $8,590.
+    # Refundable CTC: $3,600 + $3,000 = $6,600.
+    # Federal income tax: $8,590 - $6,600 - $3,500 = -$1,510.
+    income_tax: -1_510

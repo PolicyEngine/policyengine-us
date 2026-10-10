@@ -136,3 +136,72 @@
   output:
     # 7% of min($3,000 spent, $3,000 one-person 2024 cap) = $210.
     sc_cdcc: 210
+
+# 2021 SC1040 line 11 instructions: 7% of the federal child and dependent care
+# expense from federal Form 2441, up to $210 for one child ($420 for two or
+# more). The 2021 Form 2441 computes that expense after excluding benefits
+# under the $10,500 IRC section 129 cap (line 21) from the $8,000 limit
+# (line 27).
+- name: 2021 SC CDCC base is the federal Form 2441 expense after the $10,500 exclusion
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 60_000
+        dependent_care_employer_benefits: 9_000
+      spouse:
+        age: 35
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 12_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: SC
+  output:
+    # min($9,000, $10,500, $40,000) = $9,000 excluded.
+    dependent_care_assistance_exclusion: 9_000
+    # max($8,000 - $9,000, 0) = $0.
+    cdcc_relevant_expenses: 0
+    sc_cdcc_potential: 0
+
+- name: 2021 SC CDCC with benefits between $5,000 and $10,500
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        employment_income: 60_000
+        dependent_care_employer_benefits: 6_000
+      spouse:
+        age: 35
+        is_tax_unit_spouse: true
+        employment_income: 40_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 12_000
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: SC
+  output:
+    dependent_care_assistance_exclusion: 6_000
+    # $8,000 - $6,000 = $2,000.
+    cdcc_relevant_expenses: 2_000
+    # 7% x min($2,000, $3,000) = $140.
+    sc_cdcc_potential: 140
