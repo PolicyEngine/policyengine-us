@@ -11,11 +11,19 @@ class vt_ctc(Variable):
     defined_for = StateCode.VT
 
     def formula(tax_unit, period, parameters):
-        # Get age status of all people in the tax unit.
+        # 32 V.S.A. 5830f: a taxpayer entitled to a child tax credit under the
+        # laws of the United States (or who would be but for the taxpayer
+        # identification number requirements of IRC 24(e) and (h)(7)) gets the
+        # credit for each qualifying child under IRC 152(c) at or under the
+        # age limit. The identification waiver does not reach IRC 152(b)(1):
+        # a return on which the filer (or, if joint, either spouse) can be
+        # claimed as a dependent has no dependents and no federal credit.
         person = tax_unit.members
         age = person("age", period)
         p = parameters(period).gov.states.vt.tax.income.credits.ctc
-        eligible = age <= p.age_limit
+        dependent = person("is_tax_unit_dependent", period)
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        eligible = (age <= p.age_limit) & dependent & ~filer_is_dependent
         count_eligible = tax_unit.sum(eligible)
         # Get maximum credit amount.
         max_credit = p.amount * count_eligible

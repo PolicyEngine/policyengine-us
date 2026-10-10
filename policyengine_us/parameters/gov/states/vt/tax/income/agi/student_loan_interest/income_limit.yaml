@@ -1,0 +1,26 @@
+description: Vermont allows the student loan interest subtraction only to filers with federal adjusted gross income at or below this amount, by filing status.
+metadata:
+  propagate_metadata_to_children: true
+  unit: currency-USD
+  period: year
+  label: Vermont student loan interest subtraction income limit
+  breakdown:
+    - filing_status
+  reference:
+    - title: 32 V.S.A. 5811(29)(B)
+      href: https://legislature.vermont.gov/statutes/section/32/151/05811
+    - title: 2022 Act 138, Sec. 4 (effective January 1, 2022)
+      href: https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT138/ACT138%20As%20Enacted.pdf#page=4
+    - title: 2025 Vermont income tax booklet, Schedule IN-112 line 16c
+      href: https://taxsim.nber.org/historical_state_tax_forms/VT/2025/Income-Booklet-2025.pdf#page=33
+SINGLE:
+  2022-01-01: 120_000
+HEAD_OF_HOUSEHOLD:
+  2022-01-01: 120_000
+SEPARATE:
+  2022-01-01: 120_000
+SURVIVING_SPOUSE:
+  # IN-112 line 16c: "All other filers, if AGI is greater than $120,000, enter -0-."
+  2022-01-01: 120_000
+JOINT:
+  2022-01-01: 200_000
