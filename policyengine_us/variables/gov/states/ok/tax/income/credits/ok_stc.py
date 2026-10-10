@@ -10,12 +10,15 @@ class ok_stc(Variable):
     reference = (
         # 2025 Form 538-S (Sales Tax Relief Credit form)
         "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/538-S.pdf",
+        # 68 O.S. 5011 as codified in 2021, quoted in HB 1013XX (2023).
+        "https://oklegislature.gov/cf_pdf/2023-24%20INT/hB/HB1013XX%20INT.PDF#page=5",
+        "https://www.law.cornell.edu/regulations/oklahoma/OAC-710-50-15-96",
     )
     defined_for = StateCode.OK
     documentation = """
     Oklahoma Sales Tax Relief Credit.
 
-    This refundable credit provides $40 per household member to help offset
+    This refundable credit provides $40 per allowable exemption to help offset
     sales taxes paid by low-income Oklahoma residents.
 
     Eligibility has TWO alternative pathways:
@@ -33,7 +36,11 @@ class ok_stc(Variable):
     - Not receiving TANF benefits
 
     Credit calculation:
-    - $40 per person in the tax unit (head, spouse, and dependents)
+    - $40 per allowable personal exemption (head, spouse, and dependents),
+      not counting the 65-or-older and blind exemptions. A filer who can be
+      claimed as a dependent on another return has no exemption, and a
+      return on which the filer (or, if joint, either spouse) can be claimed
+      has no dependents.
 
     Example 1 - Pathway 1 (low income):
     - Gross income: $18,000 (eligible under $20,000 limit)
@@ -73,8 +80,15 @@ class ok_stc(Variable):
         # Pathway 1: Low income (gross income <= $20,000)
         income_eligible1 = income <= p.income_limit1
         # Pathway 2: Moderate income with qualifying circumstances
-        # Must have dependents, or be elderly (65+), or be disabled
-        has_dependents = tax_unit("tax_unit_dependents", period) > 0
+        # Must have dependents, or be elderly (65+), or be disabled. The
+        # dependent must "qualify and be claimed as a dependent for federal
+        # income tax purposes" (Form 538-S instructions), and a return on
+        # which the filer (or, if joint, either spouse) can be claimed as a
+        # dependent has none (IRC 152(b)(1)).
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        has_dependents = (tax_unit("tax_unit_dependents", period) > 0) & ~(
+            filer_is_dependent
+        )
         elderly_head_or_spouse = (
             tax_unit("greater_age_head_spouse", period) >= p.age_minimum
         )
@@ -86,6 +100,10 @@ class ok_stc(Variable):
         income_eligible2 = unit_eligible & (income <= p.income_limit2)
         # Overall eligibility: not on TANF AND (Pathway 1 OR Pathway 2)
         eligible = ~tanf_ineligible & (income_eligible1 | income_eligible2)
-        # Credit = $40 per person in tax unit
-        qualified_exemptions = tax_unit("tax_unit_size", period)
+        # 68 O.S. 5011(D): $40 times "the number of allowable personal
+        # exemptions", those the Oklahoma Income Tax Act allows other than the
+        # 65-or-older and blind exemptions. Those are the federal personal
+        # exemptions (68 O.S. 2358(E)): one per filer who cannot be claimed as
+        # a dependent, plus the dependents when no filer can be claimed.
+        qualified_exemptions = tax_unit("exemptions_count", period)
         return eligible * qualified_exemptions * p.amount

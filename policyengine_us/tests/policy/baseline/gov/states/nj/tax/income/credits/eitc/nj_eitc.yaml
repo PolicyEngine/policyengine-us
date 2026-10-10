@@ -138,3 +138,345 @@
         state_code: NJ
   output:
     nj_eitc: 0
+
+
+- name: 2025 single filer who can be claimed as a dependent: New Jersey childless EITC below the federal age
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: NJ
+  output:
+    # P.L.2021 c.130 keeps every federal qualification except age, including
+    # IRC 32(c)(1)(A)(ii)(III): not a dependent of another taxpayer (either
+    # spouse on a joint return). The worksheet also requires that "You are not
+    # listed as a dependent on another tax return."
+    nj_childless_eitc_age_eligible: false
+    nj_eitc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent: New Jersey childless EITC below the federal age (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 20
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NJ
+  output:
+    nj_childless_eitc_age_eligible: false
+    nj_eitc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent: New Jersey childless EITC below the federal age (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 20
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      person_a:
+        age: 20
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NJ
+  output:
+    nj_childless_eitc_age_eligible: false
+    nj_eitc: 0
+
+- name: 2025 joint return on which both spouses can be claimed as dependents: New Jersey childless EITC below the federal age
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 20
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NJ
+  output:
+    nj_childless_eitc_age_eligible: false
+    nj_eitc: 0
+
+- name: 2025 joint return on which neither spouse can be claimed: New Jersey childless EITC below the federal age
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 20
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NJ
+  output:
+    # Federally ineligible at 20; NJ pays 40% of the $649 childless maximum.
+    nj_childless_eitc_age_eligible: true
+    nj_eitc: 259.6
+
+- name: 2025 single filer who cannot be claimed as a dependent: New Jersey childless EITC below the federal age
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: NJ
+  output:
+    nj_childless_eitc_age_eligible: true
+    nj_eitc: 259.6
+
+- name: 2025 single filer who can be claimed as a dependent: New Jersey childless EITC at federal ages
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 3000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: NJ
+  output:
+    # Neither the federal credit nor the NJ age fallback is available.
+    nj_eitc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent: New Jersey childless EITC at federal ages (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 1500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NJ
+  output:
+    nj_eitc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent: New Jersey childless EITC at federal ages (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 1500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      person_a:
+        age: 30
+        employment_income: 1500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NJ
+  output:
+    nj_eitc: 0
+
+- name: 2025 joint return on which both spouses can be claimed as dependents: New Jersey childless EITC at federal ages
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 1500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NJ
+  output:
+    nj_eitc: 0
+
+- name: 2025 joint return on which neither spouse can be claimed: New Jersey childless EITC at federal ages
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 30
+        employment_income: 1500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NJ
+  output:
+    # $3,000 x 7.65% = $229.50 federal EITC; 40% = $91.80.
+    nj_eitc: 91.8
+
+- name: 2025 single filer who cannot be claimed as a dependent: New Jersey childless EITC at federal ages
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 3000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: NJ
+  output:
+    nj_eitc: 91.8

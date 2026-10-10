@@ -12,6 +12,7 @@ class nj_ctc(Variable):
         "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=44",
         "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=44",
         "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=46",
+        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
     )
     defined_for = "nj_ctc_eligible"
 
@@ -22,10 +23,17 @@ class nj_ctc(Variable):
         taxable_income = tax_unit("nj_taxable_income", period)
         amount_per_qualifying_child = p.amount.calc(taxable_income)
 
-        # Get the number of eligible children dependents
+        # Get the number of eligible children dependents. N.J.S.A. 54A:4-17.1
+        # counts each child who qualifies for the dependent exemption under
+        # 54A:3-1, which follows federal dependency, and a return on which the
+        # filer (or, if joint, either spouse) can be claimed as a dependent
+        # has no dependents (IRC 152(b)(1)).
         person = tax_unit.members
         age_eligible = person("age", period) < p.age_limit
-        dependent = person("is_tax_unit_dependent", period)
+        filer_is_dependent = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
+        dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
         age_eligible_dependent = age_eligible & dependent
         count_eligible = tax_unit.sum(age_eligible_dependent)
 

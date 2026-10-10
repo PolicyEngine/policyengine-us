@@ -1,100 +1,405 @@
+# R.C. 5747.75 counts tuition paid for the taxpayer's dependents, so each
+# case records the tuition on a dependent child.
 - name: AGI Not eligible
   period: 2021
   input:
-    adjusted_gross_income: 100000
-    non_public_school_tuition: 1000
-    state_code: OH
-    oh_income_tax_before_non_refundable_credits: 1000000
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+        non_public_school_tuition: 1000
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 100000
+        oh_income_tax_before_non_refundable_credits: 1000000
+    households:
+      household:
+        members: [parent, child1]
+        state_code: OH
   output:
     oh_non_public_school_credits: 0
+
 - name: Non public tuition less than cap
   period: 2021
   input:
-    adjusted_gross_income: 49999
-    non_public_school_tuition: 400
-    state_code: OH
-    oh_income_tax_before_non_refundable_credits: 1000000
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+        non_public_school_tuition: 400
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 49999
+        oh_income_tax_before_non_refundable_credits: 1000000
+    households:
+      household:
+        members: [parent, child1]
+        state_code: OH
   output:
     oh_non_public_school_credits: 400
+
 - name: AGI less than $50,000
   period: 2021
   input:
-    adjusted_gross_income: 49999
-    non_public_school_tuition: 1000
-    state_code: OH
-    oh_income_tax_before_non_refundable_credits: 1000000
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+        non_public_school_tuition: 1000
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 49999
+        oh_income_tax_before_non_refundable_credits: 1000000
+    households:
+      household:
+        members: [parent, child1]
+        state_code: OH
   output:
     oh_non_public_school_credits: 500
+
 - name: AGI greater that $50,000 capped
   period: 2021
   input:
-    adjusted_gross_income: 50000
-    non_public_school_tuition: 1500
-    state_code: OH
-    oh_income_tax_before_non_refundable_credits: 1000000
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+        non_public_school_tuition: 1500
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 50000
+        oh_income_tax_before_non_refundable_credits: 1000000
+    households:
+      household:
+        members: [parent, child1]
+        state_code: OH
   output:
     oh_non_public_school_credits: 1000
+
 - name: AGI greater that $50,000 not capped
   period: 2021
   input:
-    adjusted_gross_income: 80000
-    non_public_school_tuition: 1000
-    state_code: OH
-    oh_income_tax_before_non_refundable_credits: 1000000
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+        non_public_school_tuition: 1000
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 80000
+        oh_income_tax_before_non_refundable_credits: 1000000
+    households:
+      household:
+        members: [parent, child1]
+        state_code: OH
   output:
     oh_non_public_school_credits: 1000
+
 - name: AGI greater that $50,000 case 3
   period: 2021
   input:
-    adjusted_gross_income: 99999
-    non_public_school_tuition: 250
-    state_code: OH
-    oh_income_tax_before_non_refundable_credits: 1000000
+    people:
+      parent:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+        non_public_school_tuition: 250
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        adjusted_gross_income: 99999
+        oh_income_tax_before_non_refundable_credits: 1000000
+    households:
+      household:
+        members: [parent, child1]
+        state_code: OH
   output:
     oh_non_public_school_credits: 250
+
 - name: Not capped at tuition expenses
   period: 2021
   input:
     people:
-      person1:
+      parent:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
         non_public_school_tuition: 200
-      person2:
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
         non_public_school_tuition: 400
-    households:
-      household:
-        members:
-        - person1
-        - person2
-        state_code: OH
     tax_units:
       tax_unit:
-        members:
-        - person1
-        - person2
+        members: [parent, child1, child2]
         adjusted_gross_income: 49999
         oh_income_tax_before_non_refundable_credits: 1000000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
   output:
     oh_non_public_school_credits: 500
+
 - name: Credit is capped at tuition expenses
   period: 2021
   input:
     people:
-      person1:
+      parent:
+        age: 40
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
         non_public_school_tuition: 200
-      person2:
+      child2:
+        age: 10
+        is_tax_unit_dependent: true
         non_public_school_tuition: 200
-    households:
-      household:
-        members:
-        - person1
-        - person2
-        state_code: OH
     tax_units:
       tax_unit:
-        members:
-        - person1
-        - person2
+        members: [parent, child1, child2]
         adjusted_gross_income: 49999
         oh_income_tax_before_non_refundable_credits: 1000000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: OH
   output:
     oh_non_public_school_credits: 400
+
+- name: 2024 single filer who can be claimed as a dependent: Ohio nonpublic school tuition credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      child_1:
+        age: 6
+        non_public_school_tuition: 400
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child_1]
+    households:
+      household:
+        members: [person_a, child_1]
+        state_code: OH
+  output:
+    # R.C. 5747.75 counts tuition paid for the taxpayer's dependents, and
+    # 5747.01(O) takes dependents from the IRC. IRC 152(b)(1): a return on which the filer (or, if joint, either spouse) can be claimed as a dependent has no dependents.
+    oh_non_public_school_credits_potential: 0
+
+- name: 2024 joint return with one spouse who can be claimed as a dependent: Ohio nonpublic school tuition credit (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      child_1:
+        age: 6
+        non_public_school_tuition: 400
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: OH
+  output:
+    oh_non_public_school_credits_potential: 0
+
+- name: 2024 joint return with one spouse who can be claimed as a dependent: Ohio nonpublic school tuition credit (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      person_a:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      child_1:
+        age: 6
+        non_public_school_tuition: 400
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: OH
+  output:
+    oh_non_public_school_credits_potential: 0
+
+- name: 2024 joint return on which both spouses can be claimed as dependents: Ohio nonpublic school tuition credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+      child_1:
+        age: 6
+        non_public_school_tuition: 400
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: OH
+  output:
+    oh_non_public_school_credits_potential: 0
+
+- name: 2024 joint return on which neither spouse can be claimed: Ohio nonpublic school tuition credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      child_1:
+        age: 6
+        non_public_school_tuition: 400
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: OH
+  output:
+    # $400 of tuition, under the $1,000 cap below $50,000 of AGI.
+    oh_non_public_school_credits_potential: 400
+
+- name: 2024 single filer who cannot be claimed as a dependent: Ohio nonpublic school tuition credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+      child_1:
+        age: 6
+        non_public_school_tuition: 400
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child_1]
+    households:
+      household:
+        members: [person_a, child_1]
+        state_code: OH
+  output:
+    oh_non_public_school_credits_potential: 400
+
+- name: 2024 tuition a filer pays for their own schooling does not count
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1000
+        non_public_school_tuition: 400
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: OH
+  output:
+    # The credit covers tuition paid for the taxpayer's dependents only.
+    oh_non_public_school_credits_potential: 0
