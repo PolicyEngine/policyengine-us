@@ -16,8 +16,9 @@ class itemized_medical_expenses_excluded_premiums(Variable):
         "paid by the head and spouse. Premium inputs use payer attribution, "
         "including family coverage paid by a filer. This preserves supplied "
         "tax-unit ALDs without allocating them to individual filers. States "
-        "that retain gross paid medical costs add this excluded amount back "
-        "to itemized_medical_expenses, including a caller-supplied subtotal."
+        "that retain gross paid medical costs use "
+        "itemized_medical_expenses_applied_exclusion to restore only premiums "
+        "actually excluded by the federal formula."
     )
 
     def formula(tax_unit, period, parameters):

@@ -100,3 +100,20 @@
     head_is_dependent_elsewhere: true
   output:
     nm_medical_expense_credit: 0
+
+- name: New Mexico supplied subtotal and SE premiums do not create senior credit eligibility
+  period: 2025
+  input:
+    state_code: NM
+    age: 65
+    medicare_enrolled: false
+    head_is_dependent_elsewhere: false
+    itemized_medical_expenses: 27_999
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 1_000
+  output:
+    itemized_medical_expenses: 27_999
+    itemized_medical_expenses_excluded_premiums: 1_000
+    itemized_medical_expenses_applied_exclusion: 0
+    nm_medical_expense_credit: 0
+    nm_medical_expense_exemption: 0

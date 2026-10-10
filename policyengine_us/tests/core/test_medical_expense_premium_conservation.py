@@ -12,9 +12,11 @@ The independent accounting invariant is that Schedule A's premium base plus
 the self-employed health insurance deduction never exceeds premiums paid.
 Non-premium medical expenses must remain available in full before the floor.
 
-Each example uses one small vectorized simulation and a shared read-only
-reference system. YAML covers the individual policy examples; these properties
-check conservation across generated combinations and filing-unit boundaries.
+Examples use small vectorized simulations and a shared read-only reference
+system. Supplied and computed subtotal scenarios use separate simulations to
+preserve their input provenance. YAML covers the individual policy examples;
+these properties check conservation across generated combinations and
+filing-unit boundaries.
 """
 
 import numpy as np
@@ -351,11 +353,18 @@ def _state_case(**values):
 
 def _state_simulation(cases, reference_system, with_se_deduction):
     people, tax_units, households, marital_units = {}, {}, {}, {}
-    subtotal_overrides = []
     expectations = {
         "nd_renters_refund_income": [],
         "nm_medical_expense_credit": [],
         "nm_medical_expense_exemption": [],
+    }
+    accounting = {
+        "main_base": [],
+        "gross": [],
+        "other": [],
+        "filer_premiums": [],
+        "excluded": [],
+        "applied_exclusion": [],
     }
     for case_index, case in enumerate(cases):
         joint = case["filing_status"] == "JOINT"
@@ -367,18 +376,11 @@ def _state_simulation(cases, reference_system, with_se_deduction):
         filer_premiums = premiums[0] + (premiums[1] if joint else 0)
         excluded = min(filer_premiums, max(0, deduction))
         gross = sum(premiums) + sum(other)
-        subtotal = None
-        if case["subtotal_mode"] != "derived":
-            # A supplied net subtotal with SE deduction is made consistent with
-            # its components, so restoring the exclusion recovers main's gross
-            # base. Without SE, an arbitrary caller subtotal must take precedence
-            # over the components, just as it did on main.
-            subtotal = (
-                gross - excluded
-                if with_se_deduction and not subtotal_only
-                else case["subtotal"]
-            )
-        main_base = gross if subtotal is None else subtotal + excluded
+        supplied = case["subtotal_mode"] != "derived"
+        # Caller subtotals are independent of their component inputs and SE
+        # deduction. The oracle preserves the supplied amount exactly as main
+        # does; only the computed path restores an applied federal exclusion.
+        main_base = case["subtotal"] if supplied else gross
         senior_eligible = case["age"] >= 65 and main_base >= 28_000
         denominator = 2 if case["filing_status"] == "SEPARATE" else 1
 
@@ -421,9 +423,16 @@ def _state_simulation(cases, reference_system, with_se_deduction):
                 "filing_status": {PERIOD: case["filing_status"]},
                 "head_is_dependent_elsewhere": {PERIOD: case["dependent_elsewhere"]},
             }
+            if supplied:
+                tax_unit["itemized_medical_expenses"] = {PERIOD: case["subtotal"]}
             tax_units[unit_name] = tax_unit
-            subtotal_overrides.append(subtotal)
             households[unit_name] = {"members": names, "state_code": {PERIOD: state}}
+            accounting["main_base"].append(main_base)
+            accounting["gross"].append(gross)
+            accounting["other"].append(sum(other))
+            accounting["filer_premiums"].append(filer_premiums)
+            accounting["excluded"].append(excluded)
+            accounting["applied_exclusion"].append(0 if supplied else excluded)
             # This independent accounting oracle reproduces main's state
             # outputs from its paid-cost base rather than reading this head's
             # medical subtotal or excluded-premium calculations as expectations.
@@ -447,24 +456,48 @@ def _state_simulation(cases, reference_system, with_se_deduction):
             "marital_units": marital_units,
         },
     )
-    if any(value is not None for value in subtotal_overrides):
-        # Core fills omitted entries in a partially supplied input vector with
-        # defaults. Preserve the actual derived values first, then splice in
-        # caller subtotals before any state result is calculated or cached.
-        medical_base = simulation.calculate("itemized_medical_expenses", PERIOD).copy()
-        for index, subtotal in enumerate(subtotal_overrides):
-            if subtotal is not None:
-                medical_base[index] = subtotal
-        simulation.set_input("itemized_medical_expenses", PERIOD, medical_base)
-    return simulation, expectations
+    return simulation, expectations, accounting
 
 
 def _assert_state_outputs(cases, reference_system, with_se_deduction):
-    simulation, expectations = _state_simulation(
-        cases, reference_system, with_se_deduction
-    )
-    for variable, expected in expectations.items():
-        np.testing.assert_array_equal(simulation.calculate(variable, PERIOD), expected)
+    # Core records input provenance for an entire tax-unit vector. Keep supplied
+    # and computed cases in separate simulations so computed rows are never
+    # turned into supplied inputs by filling an otherwise partial input vector.
+    for supplied in (False, True):
+        same_provenance = [
+            case for case in cases if (case["subtotal_mode"] != "derived") == supplied
+        ]
+        if not same_provenance:
+            continue
+        simulation, expectations, accounting = _state_simulation(
+            same_provenance, reference_system, with_se_deduction
+        )
+        medical_base = simulation.calculate("itemized_medical_expenses", PERIOD)
+        applied_exclusion = simulation.calculate(
+            "itemized_medical_expenses_applied_exclusion", PERIOD
+        )
+        np.testing.assert_array_equal(
+            applied_exclusion, accounting["applied_exclusion"]
+        )
+        np.testing.assert_array_equal(
+            medical_base + applied_exclusion, accounting["main_base"]
+        )
+        if not supplied:
+            excluded = simulation.calculate(
+                "itemized_medical_expenses_excluded_premiums", PERIOD
+            )
+            # Computed Schedule A costs conserve the full paid amount when the
+            # capped premium exclusion is restored. These bounds deliberately
+            # do not constrain an independent caller-supplied subtotal.
+            np.testing.assert_array_equal(excluded, accounting["excluded"])
+            np.testing.assert_array_equal(medical_base + excluded, accounting["gross"])
+            assert (excluded >= 0).all()
+            assert (excluded <= np.array(accounting["filer_premiums"])).all()
+            assert (medical_base >= np.array(accounting["other"])).all()
+        for variable, expected in expectations.items():
+            np.testing.assert_array_equal(
+                simulation.calculate(variable, PERIOD), expected
+            )
 
 
 @settings(max_examples=12, deadline=None, derandomize=True)
@@ -492,15 +525,26 @@ def test_state_paid_cost_bases_match_main_without_se_deduction(reference_system,
     cases=[
         _state_case(premiums=(6_000, 0, 0), other=(500, 0, 0)),
         _state_case(
-            premiums=(6_000, 0, 0), other=(22_000, 0, 0), subtotal_mode="supplied"
+            premiums=(6_000, 0, 0),
+            other=(500, 0, 0),
+            subtotal_mode="supplied",
+            subtotal=6_500,
         ),
+        _state_case(
+            premiums=(6_000, 0, 0),
+            other=(22_000, 0, 0),
+            subtotal_mode="supplied",
+            subtotal=27_999,
+        ),
+        _state_case(premiums=(1_000, 0, 0), subtotal_mode="supplied", subtotal=500),
+        _state_case(premiums=(1_000, 0, 0), subtotal_mode="supplied", subtotal=0),
         _state_case(premiums=(6_000, 0, 0), other=(21_999, 0, 0), deduction=75_000),
         _state_case(subtotal_mode="subtotal_only", subtotal=28_000, deduction=75_000),
         _state_case(premiums=(0, 0, 28_000), deduction=75_000),
     ]
 )
 @given(cases=state_units)
-def test_state_paid_cost_bases_restore_main_gross_costs_with_se_deduction(
+def test_state_paid_cost_bases_preserve_main_inputs_with_se_deduction(
     reference_system, cases
 ):
     _assert_state_outputs(cases, reference_system, with_se_deduction=True)

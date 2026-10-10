@@ -12,8 +12,8 @@ class nm_medical_expense_credit(Variable):
     documentation = (
         "Senior medical credit based on gross unreimbursed costs paid, preserving "
         "premiums deducted through the federal self-employed health insurance ALD. "
-        "The federal medical amount plus excluded premiums preserves both "
-        "caller-supplied subtotals and computed gross costs. "
+        "Only the exclusion applied to a computed federal medical amount is "
+        "restored; caller-supplied subtotals remain unchanged even with components. "
         "This assumes qualifying costs were funded from income included in AGI. "
         "Premium inputs use payer attribution: each person reports premiums that "
         "person paid, including family coverage regardless of whom it covers. "
@@ -24,13 +24,13 @@ class nm_medical_expense_credit(Variable):
         pcredits = parameters(period).gov.states.nm.tax.income.credits
         p = pcredits.unreimbursed_medical_care_expense
         age = person("age", period)
-        # Restore gross paid costs while retaining supplied federal subtotals.
+        # Restore only premiums excluded from a computed federal subtotal.
         medical_expense = add(
             tax_unit,
             period,
             [
                 "itemized_medical_expenses",
-                "itemized_medical_expenses_excluded_premiums",
+                "itemized_medical_expenses_applied_exclusion",
             ],
         )
         age_eligible = tax_unit.any(age >= p.age_eligibility)
