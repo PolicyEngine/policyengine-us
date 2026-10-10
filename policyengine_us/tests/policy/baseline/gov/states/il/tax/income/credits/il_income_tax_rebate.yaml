@@ -79,7 +79,7 @@
     il_income_tax_rebate: 300
 
 
-- name: 2021 single filer who can be claimed as a dependent, no 2022 Illinois income tax rebate
+- name: 2021 single filer who can be claimed as a dependent, 2022 Illinois income tax rebate only through a spouse who is not claimed, with no dependent amount
   period: 2021
   input:
     people:
@@ -99,11 +99,12 @@
         state_code: IL
   output:
     # Section 212.1(a): a taxpayer claimed as a dependent on another
-    # return is ineligible; spouses filing jointly are one taxpayer.
+    # return is ineligible, so the other spouse keeps the $100 joint
+    # amount; the return claims no dependent (IRC 152(b)(1)).
     il_income_tax_rebate_eligible: false
     il_income_tax_rebate: 0
 
-- name: 2021 joint return with one spouse who can be claimed as a dependent, no 2022 Illinois income tax rebate (the claimable spouse is the head)
+- name: 2021 joint return with one spouse who can be claimed as a dependent, 2022 Illinois income tax rebate only through a spouse who is not claimed, with no dependent amount (the claimable spouse is the head)
   period: 2021
   input:
     people:
@@ -127,10 +128,10 @@
         members: [person_a, person_b, child]
         state_code: IL
   output:
-    il_income_tax_rebate_eligible: false
-    il_income_tax_rebate: 0
+    il_income_tax_rebate_eligible: true
+    il_income_tax_rebate: 100
 
-- name: 2021 joint return with one spouse who can be claimed as a dependent, no 2022 Illinois income tax rebate (the claimable spouse is the spouse)
+- name: 2021 joint return with one spouse who can be claimed as a dependent, 2022 Illinois income tax rebate only through a spouse who is not claimed, with no dependent amount (the claimable spouse is the spouse)
   period: 2021
   input:
     people:
@@ -154,10 +155,10 @@
         members: [person_b, person_a, child]
         state_code: IL
   output:
-    il_income_tax_rebate_eligible: false
-    il_income_tax_rebate: 0
+    il_income_tax_rebate_eligible: true
+    il_income_tax_rebate: 100
 
-- name: 2021 joint return with both spouses claimable as dependents, no 2022 Illinois income tax rebate
+- name: 2021 joint return with both spouses claimable as dependents, 2022 Illinois income tax rebate only through a spouse who is not claimed, with no dependent amount
   period: 2021
   input:
     people:
@@ -185,7 +186,7 @@
     il_income_tax_rebate_eligible: false
     il_income_tax_rebate: 0
 
-- name: 2021 joint return with neither spouse claimable, no 2022 Illinois income tax rebate
+- name: 2021 joint return with neither spouse claimable, 2022 Illinois income tax rebate only through a spouse who is not claimed, with no dependent amount
   period: 2021
   input:
     people:
