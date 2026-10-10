@@ -1,8 +1,8 @@
 """Premium payment methods are disjoint inputs with consumer-specific treatment.
 
 Moving employee-paid premiums from non-pretax payments to pretax payroll
-deductions leaves total medical spending unchanged. SNAP, HUD, Medicaid
-spenddown, child-care deductions, Orange County General Relief and New Jersey
+deductions leaves total medical spending unchanged. SNAP, HUD,
+child-care deductions, Orange County General Relief and New Jersey
 medical expenses count both payment methods. The CRFB broad income base adds
 back the pretax premium excluded from federal wages. Michigan's wage exclusion
 and non-pretax premium deduction likewise leave household resources unchanged.
@@ -10,7 +10,9 @@ North Dakota excludes pretax premiums from income and deducts non-pretax
 premiums as medical expenses, also leaving renters' refund income unchanged.
 
 Federal taxable and FICA wages, ACA/Medicaid MAGI, and tax deductions that
-exclude pretax premiums distinguish the payment methods. Program premiums and
+exclude pretax premiums distinguish the payment methods. SSI also excludes
+qualified salary-reduction premiums from wages before its earned-income
+disregard. Program premiums and
 eligibility are held fixed here: changing MAGI can otherwise legitimately change
 Marketplace, CHIP or Medicaid premiums, obscuring the spending invariant.
 
@@ -57,6 +59,7 @@ def _situation(batch, moved):
             people[key] = {
                 "age": {YEAR: 40},
                 "is_tax_unit_head": {YEAR: True},
+                "is_ssi_aged_blind_disabled": {YEAR: True},
                 "employment_income": {YEAR: 250_000},
                 "pre_tax_health_insurance_premiums": {YEAR: pretax},
                 # These are alternative representations used by different
@@ -157,7 +160,6 @@ def test_premium_transfer_respects_each_consumers_tax_treatment(batch):
         ("spm_unit_medical_out_of_pocket_expenses", YEAR),
         ("snap_allowable_medical_expenses", YEAR),
         ("hud_medical_expenses", YEAR),
-        ("medicaid_medically_needy_medical_expenses", YEAR),
         ("mo_ccs_adjusted_income", MONTH),
         ("pa_ccw_medical_expenses", YEAR),
         ("pa_ccw_adjusted_income", YEAR),
@@ -179,11 +181,13 @@ def test_premium_transfer_respects_each_consumers_tax_treatment(batch):
     tax_status_sensitive_consumers = (
         "irs_employment_income",
         "payroll_tax_gross_wages",
+        "ssi_earned_income",
         "adjusted_gross_income",
         "aca_magi",
         "medicaid_magi",
         "medicaid_magi_person",
         "medical_expense_health_insurance_premiums",
+        "medicaid_medically_needy_medical_expenses",
     )
     for variable in tax_status_sensitive_consumers:
         np.testing.assert_allclose(
@@ -193,6 +197,16 @@ def test_premium_transfer_respects_each_consumers_tax_treatment(batch):
             atol=0.02,
             err_msg=variable,
         )
+
+    # These categorically eligible individuals remain above the earned-income
+    # exclusions. SSI's 50% earned-income disregard halves the wage change.
+    np.testing.assert_allclose(
+        baseline.calculate("ssi_countable_income", YEAR)
+        - moved.calculate("ssi_countable_income", YEAR),
+        transfer / 2,
+        rtol=0,
+        atol=0.02,
+    )
 
     for variable, state in (
         ("oh_insured_unreimbursed_medical_care_expense_amount", "OH"),
