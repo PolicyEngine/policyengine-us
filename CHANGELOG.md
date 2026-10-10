@@ -1,3 +1,10 @@
+## [2.38.10] - 2026-10-10
+
+### Fixed
+
+- Fix the subsampling policy-binding test to support policyengine-core 3.33.1's recorded-input rebuild contract while retaining compatibility with earlier core versions.
+
+
 ## [2.38.9] - 2026-10-10
 
 ### Fixed
