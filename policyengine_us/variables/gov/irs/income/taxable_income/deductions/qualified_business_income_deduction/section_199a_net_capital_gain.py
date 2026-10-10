@@ -39,6 +39,10 @@ class section_199a_net_capital_gain(Variable):
             title="2025 Instructions for Form 8995-A, line 34",
             href="https://www.irs.gov/pub/irs-prior/i8995a--2025.pdf#page=7",
         ),
+        dict(
+            title="TD 9847, Net Capital Gain, 84 FR 2954",
+            href="https://www.govinfo.gov/content/pkg/FR-2019-02-08/pdf/2019-01025.pdf#page=3",
+        ),
     ]
 
     def formula(tax_unit, period, parameters):
@@ -47,6 +51,8 @@ class section_199a_net_capital_gain(Variable):
         # 1(h)(11)(B))". Neither part is reduced by a Form 4952 line 4g
         # election: the form uses Form 1040 line 3a, which the Form 4952
         # instructions say not to reduce, and Schedule D lines 15 and 16.
+        # TD 9847's preamble explicitly confirms that elected gains and
+        # dividends remain net capital gain for the section 199A deduction.
         # Schedule D line 15: net long-term gain, including capital gain
         # distributions (long-term under 26 U.S.C. 852(b)(3)(B)). Without
         # Schedule D, net capital gain is Form 1040 line 7a.
