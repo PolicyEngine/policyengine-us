@@ -23,6 +23,8 @@ from hypothesis import HealthCheck, example, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
+from policyengine_us.reforms.crfb.agi_surtax import agi_surtax_reform_object
+from policyengine_us.system import system
 
 
 YEAR = 2026
@@ -121,8 +123,16 @@ def _situation(batch, moved):
 @example(batch=[(12_000, 12_000, 0), (1, 0, 1)])
 @given(batch=st.lists(premium_transfers(), min_size=1, max_size=3))
 def test_premium_transfer_respects_each_consumers_tax_treatment(batch):
-    baseline = Simulation(situation=_situation(batch, False), reform=SURTAX_ON)
-    moved = Simulation(situation=_situation(batch, True), reform=SURTAX_ON)
+    # Supplying the read-only reference system avoids rebuilding the country
+    # for every generated example. Simulation clones it before applying these
+    # reforms, giving each situation private policy state and result arrays.
+    reform = (SURTAX_ON, agi_surtax_reform_object)
+    baseline = Simulation(
+        situation=_situation(batch, False), tax_benefit_system=system, reform=reform
+    )
+    moved = Simulation(
+        situation=_situation(batch, True), tax_benefit_system=system, reform=reform
+    )
     transfer = np.repeat([row[2] for row in batch], len(STATES))
     total = np.repeat([row[0] for row in batch], len(STATES))
     states = np.tile(STATES, len(batch))
