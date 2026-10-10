@@ -1,3 +1,10 @@
+## [2.38.9] - 2026-10-10
+
+### Fixed
+
+- Regenerated the stale EITC documentation charts, whose two-adult childless curves still used the 2021 joint phase-out bonus, and added a check that every stored chart point matches the EITC parameters.
+
+
 ## [2.38.8] - 2026-10-10
 
 ### Fixed
