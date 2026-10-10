@@ -9,9 +9,12 @@ values:
   # false before 2026-01-01. The pre-2026 enhanced schedule is left unmodeled and
   # carried as a backdating backlog item.
   # No end date: the program is permanent law, so PY2027+ carries the PY2026 design
-  # forward as a current-law assumption. The DOBI FY2026 budget confirms NJHPS
-  # continues "up to 600% FPL" with expenditures projected to remain flat at
-  # $212.2M in FY2026.
+  # forward as a current-law assumption. The DOBI FY2026-2027 budget response
+  # (p.4) confirms NJHPS "continued ... up to 600% FPL" in 2026, puts PY2026
+  # spending at an estimated $238.1M (against $224.9M actual for PY2025), and
+  # projects $200.0M for FY2027 with the Health Insurance Affordability Fund's
+  # FY2027 closing balance at $0.0M — the 2027 allocation "has not [been]
+  # determined". Re-verify the schedule and the ceiling for PY2027.
   0000-01-01: false
   2026-01-01: true
 
@@ -24,5 +27,7 @@ metadata:
       href: https://pub.njleg.gov/bills/2020/AL20/61_.HTM
     - title: NJ DOBI FY2025-2026 Budget Discussion Points
       href: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2026/dobi_response_2026.pdf#page=8
+    - title: NJ DOBI FY2026-2027 Budget Discussion Points, p.4 (2026 outcome, PY2025 actual and PY2026 estimated NJHPS spending, FY2027 projection)
+      href: https://pub.njleg.state.nj.us/publications/budget/governors-budget/2027/dobi_response_2027.pdf#page=4
     - title: Get Covered NJ - New Jersey Health Plan Savings
       href: https://www.nj.gov/getcoverednj/financialhelp/premiums/
