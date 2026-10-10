@@ -221,3 +221,56 @@ def test_actual_medical_deduction_is_scoped_to_period_and_branch():
     # absent. Core retains its input key, so recalculating first is a separate
     # provenance defect documented in the PR's known limitation.
     assert deleted_claim.calculate(variable, 2025).tolist() == [750]
+
+
+@pytest.mark.xfail(
+    strict=True,
+    reason=(
+        "Core retains deleted input provenance and misclassifies a federal "
+        "medical deduction recalculated before the Idaho helper as supplied."
+    ),
+)
+def test_deleted_medical_input_recalculated_federal_first():
+    year = 2025
+    simulation = Simulation(
+        tax_benefit_system=SYSTEM,
+        situation={
+            "people": {
+                "head": {
+                    "age": {year: 40},
+                    "is_tax_unit_head": {year: True},
+                    "health_insurance_premiums": {year: 3_000},
+                },
+                "dependent": {
+                    "age": {year: 20},
+                    "is_tax_unit_dependent": {year: True},
+                    "health_insurance_premiums": {year: 500},
+                },
+            },
+            "tax_units": {
+                "tax_unit": {
+                    "members": ["head", "dependent"],
+                    "adjusted_gross_income": {year: 30_000},
+                    "standard_deduction": {year: 15_750},
+                    "id_itemized_deductions": {year: 20_000},
+                }
+            },
+            "households": {
+                "household": {
+                    "members": ["head", "dependent"],
+                    "state_code": {year: "ID"},
+                }
+            },
+        },
+    )
+    simulation.set_input("medical_expense_deduction", year, np.array([3_000]))
+    simulation.delete_arrays("medical_expense_deduction", year)
+
+    # Federal first: 3,000 + 500 - 30,000 * 7.5% = 1,250.
+    assert simulation.calculate("medical_expense_deduction", year).tolist() == [1_250]
+    # Idaho excludes the dependent's payment: medical overlap is
+    # 3,000 - 30,000 * 7.5% = 750, leaving 3,000 - 750 = 2,250.
+    # The known provenance defect instead uses 1,250 and returns 1,750.
+    assert simulation.calculate(
+        "id_health_insurance_premiums_subtraction", year
+    ).tolist() == [2_250]
