@@ -1,0 +1,141 @@
+description: The IRS has residents of these cities use Optional Local Sales Tax Table B.
+metadata:
+  unit: list
+  period: year
+  label: Places using Optional Local Sales Tax Table B
+  reference:
+    - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
+    - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=17
+    - title: 2024 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=16
+    - title: 2025 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18
+# Cities that the IRS selector names for this table, by 2020 Census place
+# GEOID (state FIPS code and place code). The 2025 selector names the same
+# localities with the same tables as the 2024 selector, so the 2024 value
+# applies to 2025. A place's row takes precedence over its county's row.
+values:
+  2022-01-01:
+    - "0412000"  # Chandler city, AZ
+    - "0427400"  # Gilbert town, AZ
+    - "0427820"  # Glendale city, AZ
+    - "0446000"  # Mesa city, AZ
+    - "0454050"  # Peoria city, AZ
+    - "0455000"  # Phoenix city, AZ
+    - "0465000"  # Scottsdale city, AZ
+    - "0477000"  # Tucson city, AZ
+    - "0485540"  # Yuma city, AZ
+    - "0803455"  # Arvada city, CO
+    - "0804000"  # Aurora city, CO
+    - "0807850"  # Boulder city, CO
+    - "0827425"  # Fort Collins city, CO
+    - "0832155"  # Greeley city, CO
+    - "0843000"  # Lakewood city, CO
+    - "0845970"  # Longmont city, CO
+    - "0877290"  # Thornton city, CO
+    - "0883835"  # Westminster city, CO
+    - "1703012"  # Aurora city, IL
+    - "1723074"  # Elgin city, IL
+    - "1738570"  # Joliet city, IL
+    - "1779293"  # Waukegan city, IL
+    - "3603078"  # Auburn city, NY
+    - "3629333"  # Glens Falls city, NY
+    - "3629443"  # Gloversville city, NY
+    - "3638077"  # Ithaca city, NY
+    - "3638781"  # Johnstown city, NY
+    - "3649121"  # Mount Vernon city, NY
+    - "3650617"  # New Rochelle city, NY
+    - "3654485"  # Ogdensburg city, NY
+    - "3654716"  # Olean city, NY
+    - "3654837"  # Oneida city, NY
+    - "3655574"  # Oswego city, NY
+    - "3663418"  # Rome city, NY
+    - "3664749"  # Salamanca city, NY
+    - "3665255"  # Saratoga Springs city, NY
+    - "3676540"  # Utica city, NY
+    - "3681677"  # White Plains city, NY
+    - "3684000"  # Yonkers city, NY
+  2023-01-01:
+    - "0412000"  # Chandler city, AZ
+    - "0427400"  # Gilbert town, AZ
+    - "0427820"  # Glendale city, AZ
+    - "0446000"  # Mesa city, AZ
+    - "0454050"  # Peoria city, AZ
+    - "0455000"  # Phoenix city, AZ
+    - "0465000"  # Scottsdale city, AZ
+    - "0477000"  # Tucson city, AZ
+    - "0485540"  # Yuma city, AZ
+    - "0803455"  # Arvada city, CO
+    - "0807850"  # Boulder city, CO
+    - "0827425"  # Fort Collins city, CO
+    - "0832155"  # Greeley city, CO
+    - "0843000"  # Lakewood city, CO
+    - "0845970"  # Longmont city, CO
+    - "0877290"  # Thornton city, CO
+    - "0883835"  # Westminster city, CO
+    - "1703012"  # Aurora city, IL
+    - "1723074"  # Elgin city, IL
+    - "1738570"  # Joliet city, IL
+    - "1779293"  # Waukegan city, IL
+    - "3603078"  # Auburn city, NY
+    - "3629333"  # Glens Falls city, NY
+    - "3629443"  # Gloversville city, NY
+    - "3638077"  # Ithaca city, NY
+    - "3638781"  # Johnstown city, NY
+    - "3649121"  # Mount Vernon city, NY
+    - "3650617"  # New Rochelle city, NY
+    - "3654485"  # Ogdensburg city, NY
+    - "3654716"  # Olean city, NY
+    - "3654837"  # Oneida city, NY
+    - "3655574"  # Oswego city, NY
+    - "3663418"  # Rome city, NY
+    - "3664749"  # Salamanca city, NY
+    - "3665255"  # Saratoga Springs city, NY
+    - "3676540"  # Utica city, NY
+    - "3681677"  # White Plains city, NY
+    - "3684000"  # Yonkers city, NY
+  2024-01-01:
+    - "0412000"  # Chandler city, AZ
+    - "0427400"  # Gilbert town, AZ
+    - "0427820"  # Glendale city, AZ
+    - "0446000"  # Mesa city, AZ
+    - "0454050"  # Peoria city, AZ
+    - "0455000"  # Phoenix city, AZ
+    - "0465000"  # Scottsdale city, AZ
+    - "0473000"  # Tempe city, AZ
+    - "0477000"  # Tucson city, AZ
+    - "0485540"  # Yuma city, AZ
+    - "0803455"  # Arvada city, CO
+    - "0804000"  # Aurora city, CO
+    - "0807850"  # Boulder city, CO
+    - "0827425"  # Fort Collins city, CO
+    - "0832155"  # Greeley city, CO
+    - "0843000"  # Lakewood city, CO
+    - "0845970"  # Longmont city, CO
+    - "0877290"  # Thornton city, CO
+    - "0883835"  # Westminster city, CO
+    - "1304000"  # Atlanta city, GA
+    - "1703012"  # Aurora city, IL
+    - "1723074"  # Elgin city, IL
+    - "1738570"  # Joliet city, IL
+    - "1779293"  # Waukegan city, IL
+    - "3603078"  # Auburn city, NY
+    - "3629333"  # Glens Falls city, NY
+    - "3629443"  # Gloversville city, NY
+    - "3638077"  # Ithaca city, NY
+    - "3638781"  # Johnstown city, NY
+    - "3649121"  # Mount Vernon city, NY
+    - "3650617"  # New Rochelle city, NY
+    - "3654485"  # Ogdensburg city, NY
+    - "3654716"  # Olean city, NY
+    - "3654837"  # Oneida city, NY
+    - "3655574"  # Oswego city, NY
+    - "3663418"  # Rome city, NY
+    - "3664749"  # Salamanca city, NY
+    - "3665255"  # Saratoga Springs city, NY
+    - "3676540"  # Utica city, NY
+    - "3681677"  # White Plains city, NY
+    - "3684000"  # Yonkers city, NY
+    - "4549075"  # Myrtle Beach city, SC

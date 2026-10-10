@@ -1,0 +1,83 @@
+# Worksheet line 3: the combined rate above the state table heading rate.
+
+- name: Nevada, only the part of the combined rate above 6.85%
+  # Line 3 instructions: "If you lived in Nevada, ... include on line 3 only
+  # the part of the combined rate that is more than 6.8500%." Clark County:
+  # 8.375% - 6.85% = 1.525%.
+  period: 2025
+  input:
+    state_code: NV
+    county_fips: "32003"
+  output:
+    local_sales_tax_rate: 0.01525
+
+- name: California with no rate input, the "No" box
+  # "If you lived in California, check the "No" box if your combined state
+  # and local general sales tax rate is 7.2500%."
+  period: 2025
+  input:
+    state_code: CA
+  output:
+    local_sales_tax_rate: 0
+
+- name: California with a user-supplied combined rate
+  # 9.5% - 7.25% = 2.25%.
+  period: 2025
+  input:
+    state_code: CA
+    combined_sales_tax_rate: 0.095
+  output:
+    local_sales_tax_rate: 0.0225
+
+- name: A combined rate below the heading rate enters nothing
+  period: 2025
+  input:
+    state_code: CA
+    combined_sales_tax_rate: 0.07
+  output:
+    local_sales_tax_rate: 0
+
+- name: New York City, 8.875% less the 4% New York heading
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "51000"
+  output:
+    local_sales_tax_rate: 0.04875
+
+- name: Sioux Falls, South Dakota, 2023, the local rate through a state rate cut
+  # SDR2026Q3JUN02: the state rate is 4.5% until June 30, 2023 and 4.2% from
+  # July 1, and Sioux Falls's 2% local rate is unchanged, so the combined rate
+  # is 6.5% then 6.2%. Line 3 is the 2% local rate: the combined rate less
+  # the state rate, each averaged over the days of 2023. (The 2023 heading,
+  # 4.35%, is "an average for the year" and is line 4, not used here.)
+  period: 2023
+  absolute_error_margin: 0.000001
+  input:
+    state_code: SD
+    county_fips: "46099"
+    place_fips: "59020"
+  output:
+    local_sales_tax_rate: 0.02
+
+- name: Minneapolis, 2024, the local rate above the 6.875% state rate
+  # MNR2026Q4AUG18: Minneapolis 9.025% from October 1, 2023, with the state
+  # rate 6.875%. Line 3 is 2.15. The 2024 heading prints the state rate
+  # rounded, 6.88%, which would understate line 3 by 0.005.
+  period: 2024
+  absolute_error_margin: 0.000001
+  input:
+    state_code: MN
+    county_fips: "27053"
+    place_fips: "43000"
+  output:
+    local_sales_tax_rate: 0.0215
+
+- name: A user-supplied local rate is used as entered
+  period: 2025
+  input:
+    state_code: TX
+    local_sales_tax_rate: 0.02
+  output:
+    local_sales_tax_rate: 0.02

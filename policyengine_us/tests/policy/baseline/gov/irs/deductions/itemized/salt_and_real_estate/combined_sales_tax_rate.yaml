@@ -1,0 +1,159 @@
+# Combined state and local general sales tax rates from the official state
+# rate files (policyengine_us/data/local_sales_tax/SOURCES.md). A rate that
+# changes during the year is averaged over the days it was in effect, as the
+# worksheet's line 3 instructions direct.
+
+- name: New York City, Publication 718
+  # "*New York City 8⅞ 8081" (Publication 718, effective March 1, 2025).
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "51000"
+  output:
+    combined_sales_tax_rate: 0.08875
+
+- name: Yonkers, a Westchester County city with its own rate
+  # "*Yonkers (city) 8⅞ 6511"; "*Westchester – except 8⅜ 5581".
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36119"
+    place_fips: "84000"
+  output:
+    combined_sales_tax_rate: 0.08875
+
+- name: Westchester County outside the cities with their own rate
+  # A known census block outside every place: "*Westchester – except 8⅜".
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36119"
+    block_geoid: "361190001001000"
+  output:
+    combined_sales_tax_rate: 0.08375
+
+- name: Suffolk County, New York, before its March 1, 2025 increase
+  # Publication 718-A: Suffolk County 4¼% (with the 4% state rate and the ⅜%
+  # MCTD rate, 8⅝%) until its 4⅜% rate took effect on 1 Mar. 2025.
+  period: 2024
+  input:
+    state_code: NY
+    county_fips: "36103"
+  output:
+    combined_sales_tax_rate: 0.08625
+
+- name: Suffolk County, New York, 2025, day-weighted
+  # 8⅝% for January 1-February 28 (59 days), 8¾% for March 1-December 31
+  # (306 days): (59 x 8.625 + 306 x 8.75) / 365 = 8.72979%.
+  period: 2025
+  absolute_error_margin: 0.000001
+  input:
+    state_code: NY
+    county_fips: "36103"
+  output:
+    combined_sales_tax_rate: 0.0872979
+
+- name: Danville, Virginia, 2022, additional 1% local tax from July 1
+  # Virginia Tax, Sales and Use Tax Rates by Locality by Date: Danville
+  # (51590) 5.3% for January 1-June 30, 2022 (181 days); "An additional 1%
+  # Local Tax for Danville City went into effect on July 1, 2022": 6.3% for
+  # the other 184 days. (181 x 5.3 + 184 x 6.3) / 365 = 5.80411%.
+  period: 2022
+  absolute_error_margin: 0.000001
+  input:
+    state_code: VA
+    county_fips: "51590"
+  output:
+    combined_sales_tax_rate: 0.0580411
+
+- name: Williamsburg, Virginia, Historic Triangle rate
+  # Virginia Tax: Williamsburg (51830) General Sales 7%.
+  period: 2025
+  input:
+    state_code: VA
+    county_fips: "51830"
+  output:
+    combined_sales_tax_rate: 0.07
+
+- name: Clark County, Nevada, SST rate file
+  # NVR2025Q4NOV05: county 003 0.08375 from January 1, 2020.
+  period: 2025
+  input:
+    state_code: NV
+    county_fips: "32003"
+    place_fips: "40000"
+  output:
+    combined_sales_tax_rate: 0.08375
+
+- name: Nashville, Tennessee, 2025, transit surcharge from February 1
+  # TNR2026Q4AUG21: Davidson County 9.25% until January 31, 2025, then the
+  # 0.5% surcharge (codes 9195x) from February 1: 9.75% for 334 days.
+  # (31 x 9.25 + 334 x 9.75) / 365 = 9.70753%.
+  period: 2025
+  absolute_error_margin: 0.000001
+  input:
+    state_code: TN
+    county_fips: "47037"
+    place_fips: "52006"
+  output:
+    combined_sales_tax_rate: 0.0970753
+
+- name: Atlanta in DeKalb County, Georgia
+  # GAR2026Q4OCT01 and GAB2026Q4AUG20 code the DeKalb County part of Atlanta
+  # 05000, not the Census place code 04000: 4% state + 3% DeKalb County +
+  # 1.9% Atlanta = 8.9%, as in the Fulton County part.
+  period: 2024
+  input:
+    state_code: GA
+    county_fips: "13089"
+    place_fips: "04000"
+  output:
+    combined_sales_tax_rate: 0.089
+
+- name: East Middlebury, Vermont, 2022, the town's 1% local option tax
+  # VTR2026Q4AUG20 and VTB2026Q4AUG20: Middlebury's 1% local option tax
+  # (state code 00508 in 2022) applies town-wide; its 2022 records carry the
+  # Middlebury CDP code 44275, and the town's code, 44350, from 2023.
+  # East Middlebury CDP (21700) lies in the town: 6% + 1% = 7%.
+  period: 2022
+  input:
+    state_code: VT
+    county_fips: "50001"
+    place_fips: "21700"
+  output:
+    combined_sales_tax_rate: 0.07
+
+- name: California has no official locality rate file, so the heading rate
+  # The California table heading, 7.25%, includes the uniform local rate.
+  period: 2025
+  input:
+    state_code: CA
+    county_fips: "06037"
+    place_fips: "44000"
+  output:
+    combined_sales_tax_rate: 0.0725
+
+- name: Texas has no official locality rate file, so the heading rate
+  period: 2025
+  input:
+    state_code: TX
+  output:
+    combined_sales_tax_rate: 0.0625
+
+- name: Alaska has no state sales tax or official locality rate file
+  period: 2025
+  input:
+    state_code: AK
+    county_fips: "02020"
+  output:
+    combined_sales_tax_rate: 0
+
+- name: A county code outside the household's state is ignored
+  # A Texas household with a Seattle county code gets the Texas default.
+  period: 2025
+  input:
+    state_code: TX
+    county_fips: "53033"
+  output:
+    combined_sales_tax_rate: 0.0625

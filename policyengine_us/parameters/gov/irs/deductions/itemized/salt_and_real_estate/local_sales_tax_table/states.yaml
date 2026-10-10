@@ -1,0 +1,59 @@
+description: The IRS has residents of these states enter base local general sales taxes from the Optional Local Sales Tax Tables on line 2 of the sales tax deduction worksheet.
+metadata:
+  unit: list
+  period: year
+  label: States that use the Optional Local Sales Tax Tables
+  reference:
+    - title: 2022 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 2
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=5
+    - title: 2023 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 2
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=5
+    - title: 2024 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 2
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=4
+    - title: 2025 Instructions for Schedule A (Form 1040), State and Local General Sales Tax Deduction Worksheet, line 2
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=4
+values:
+  # 2022 worksheet, line 2: "Did you live in Alaska, Arizona, Arkansas,
+  # Colorado, Georgia, Illinois, Louisiana, Mississippi, Missouri, New York,
+  # North Carolina, South Carolina, Tennessee, Utah, or Virginia in 2022?"
+  # These are the states whose tables carry footnote 2, "Follow the
+  # instructions on the next page to determine your local sales tax
+  # deduction", plus Alaska, which has no state table.
+  2022-01-01:
+    - AK
+    - AR
+    - AZ
+    - CO
+    - GA
+    - IL
+    - LA
+    - MO
+    - MS
+    - NC
+    - NY
+    - SC
+    - TN
+    - UT
+    - VA
+  # 2023 worksheet, line 2: "Did you live in Alabama, Alaska, Arizona,
+  # Arkansas, Colorado, Georgia, Illinois, Kansas, Louisiana, Mississippi,
+  # Missouri, New York, North Carolina, South Carolina, Tennessee, Utah, or
+  # Virginia in 2023?" The 2024 and 2025 worksheets list the same states.
+  2023-01-01:
+    - AK
+    - AL
+    - AR
+    - AZ
+    - CO
+    - GA
+    - IL
+    - KS
+    - LA
+    - MO
+    - MS
+    - NC
+    - NY
+    - SC
+    - TN
+    - UT
+    - VA

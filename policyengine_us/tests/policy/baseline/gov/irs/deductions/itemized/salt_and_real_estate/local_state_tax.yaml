@@ -1,9 +1,75 @@
-- name: 20% of state sales tax in a state with local sales taxes
-  period: 2023
+# State and Local General Sales Tax Deduction Worksheet, line 6 (Instructions
+# for Schedule A (Form 1040), 2022-2025). Optional Local Sales Tax Table
+# values are from the 2025 tables, row "$80,000-$90,000" (row 8), family
+# size 1: Table A 120, Table B 142.
+
+- name: Local table method, New York City, Table A
+  # Line 2: Table A, 120. Line 3: 8.875% - 4% = 4.875 (Publication 718).
+  # Line 6: 120 x 4.875 = 585.
+  period: 2025
   input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "51000"
+    state_sales_tax_income_bracket: 8
+  output:
+    local_sales_tax: 585
+
+- name: Local table method, Yonkers, Table B
+  # Line 2: Table B, 142. Line 3: 8.875% - 4% = 4.875. 142 x 4.875 = 692.25.
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36119"
+    place_fips: "84000"
+    state_sales_tax_income_bracket: 8
+  output:
+    local_sales_tax: 692.25
+
+- name: Ratio method, Tacoma, Washington
+  # Line 3: 10.3% (WAR2026Q4AUG27, all of 2025) - 6.5% = 3.8. Line 5:
+  # 3.8 / 6.5. Line 6: 1,000 x 3.8 / 6.5 = 584.62.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: WA
+    county_fips: "53053"
+    place_fips: "70000"
     state_sales_tax: 1_000
   output:
-    local_sales_tax: 200
+    local_sales_tax: 584.62
+
+- name: Nevada, only the combined rate above 6.85% counts
+  # Clark County 8.375%: line 3 is 1.525 and line 4 is the 6.85% heading.
+  # 1,000 x 1.525 / 6.85 = 222.63.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: NV
+    county_fips: "32003"
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 222.63
+
+- name: California with no rate input, no local amount
+  period: 2025
+  input:
+    state_code: CA
+    county_fips: "06037"
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 0
+
+- name: California with a user-supplied combined rate
+  # Line 3: 9.5% - 7.25% = 2.25. 1,000 x 2.25 / 7.25 = 310.34.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    combined_sales_tax_rate: 0.095
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 310.34
 
 - name: No state sales tax
   period: 2023
@@ -12,13 +78,49 @@
   output:
     local_sales_tax: 0
 
-- name: Texas has local sales taxes, so the 20% estimate applies
+- name: Texas has no official locality rates, so no local amount by default
   period: 2025
   input:
     state_code: TX
     state_sales_tax: 1_000
   output:
-    local_sales_tax: 200
+    local_sales_tax: 0
+
+- name: Texas with a user-supplied combined rate
+  # Line 3: 8.25% - 6.25% = 2. 1,000 x 2 / 6.25 = 320.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: TX
+    combined_sales_tax_rate: 0.0825
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 320
+
+- name: Texas with a user-supplied local rate
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: TX
+    local_sales_tax_rate: 0.02
+    state_sales_tax: 1_000
+  output:
+    local_sales_tax: 320
+
+- name: Chicago with a user-supplied combined rate, local table method
+  # Illinois has no official locality rate file. Line 3: 10.25% - 6.25% = 4.
+  # 2025 selector: "Arlington Heights, ..., Chicago, ..." -> Table A, 120.
+  # Line 6: 120 x 4 = 480.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: IL
+    county_fips: "17031"
+    place_fips: "14000"
+    combined_sales_tax_rate: 0.1025
+    state_sales_tax_income_bracket: 8
+  output:
+    local_sales_tax: 480
 
 # The worksheet enters -0- on line 6 for residents of these ten states, whose
 # table entries carry footnote 4: "This state does not have a local general
@@ -137,10 +239,10 @@
   output:
     local_sales_tax: 0
 
-- name: Texas has local sales taxes, so the 20% estimate applies, 2019
+- name: Texas, 2019, no local amount without a rate input
   period: 2019
   input:
     state_code: TX
     state_sales_tax: 1_000
   output:
-    local_sales_tax: 200
+    local_sales_tax: 0
