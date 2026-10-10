@@ -78,7 +78,6 @@
   output:
     eitc: 5_716
     mt_eitc: [0, 0, 0]
-    mt_refundable_credits_before_renter_credit: [0, 0, 0]
 
 - name: Case 7, 3% Montana EITC in tax year 2019, the first year it applies.
   # Federal EITC, Rev. Proc. 2018-57 sec. 3.07, two children: earnings of 15,000
@@ -182,3 +181,21 @@
     state_code: MT
   output:
     mt_eitc: 200
+
+# The next two cases give mt_eitc as an input to check which years' refundable
+# credit list includes it. Case 13's amount cannot arise; it isolates the list.
+- name: Case 13, the refundable credit list excludes the Montana EITC before 2019.
+  period: 2018
+  input:
+    mt_eitc: 50
+    state_code: MT
+  output:
+    mt_refundable_credits_before_renter_credit: 0
+
+- name: Case 14, the refundable credit list includes the Montana EITC from 2019.
+  period: 2019
+  input:
+    mt_eitc: 50
+    state_code: MT
+  output:
+    mt_refundable_credits_before_renter_credit: 50
