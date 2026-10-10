@@ -4,6 +4,8 @@ metadata:
   period: year
   label: Montana elderly homeowner or renter credit gross income sources
   reference:
+  - title: HB191 (2021), section 1(9), all nontaxable income
+    href: https://archive.legmt.gov/bills/2021/HB0199/HB0191_X.pdf#page=2
   - title: Montana 2022 Form2 Individual Income Tax Instructions, Page47, Gross Household Income
     href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
   - title: 2022 Montana Code Annotated, Title 15, Chapter 30, Part 23, 15-30-2337 (9)
@@ -61,11 +63,11 @@ values:
     - mt_refundable_credits_before_renter_credit
     - mt_elderly_homeowner_or_renter_credit_received
     - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
-  # 2024 Schedule 2EC line 8 adds "the 2023 Montana property tax rebate"
-  # (the 2025 schedule: "the 2024 Montana property tax rebate"), the rebate
-  # for the prior property tax year, claimed during this year. The 2023
-  # schedule (line 7) does not list the rebate for 2022 property taxes.
-  2024-01-01:
+  # Actual rebate receipts count under the statutory nontaxable-income
+  # definition and ARM 42.4.301(2)(c). The 2023 form's illustrative list
+  # establishes no exemption for 2022 rebates received in 2023. The
+  # 2024/2025 schedules explicitly name the prior property-year rebates.
+  2023-01-01:
     - adjusted_gross_income_person
     - tax_exempt_interest_income
     - tax_exempt_ira_distributions

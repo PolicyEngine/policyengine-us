@@ -1,4 +1,4 @@
-- name: Case 1, the 2023 rebate is received in 2024 and goes to the head.
+- name: Case 1, the head reports actual rebate cash received in 2024.
   period: 2024
   input:
     people:
@@ -7,6 +7,7 @@
         real_estate_taxes:
           2023: 2_000
           2024: 2_100
+        mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 675
       person2:
         age: 68
     tax_units:
@@ -23,7 +24,7 @@
     # min(675, 2_000) = 675.
     mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: [675, 0]
 
-- name: Case 2, the 2023 rebate is the 2023 property tax when that is less than 675.
+- name: Case 2, the person reports a smaller actual rebate receipt.
   period: 2024
   input:
     people:
@@ -32,6 +33,7 @@
         real_estate_taxes:
           2023: 500
           2024: 900
+        mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 500
     tax_units:
       tax_unit:
         members: [person1]
@@ -53,6 +55,7 @@
         real_estate_taxes:
           2024: 2_000
           2025: 2_000
+        mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 400
     tax_units:
       tax_unit:
         members: [person1]
@@ -67,7 +70,7 @@
     # Ch. 767, L. 2025, sec. 3(1): $400 or the property taxes paid, if less.
     mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 400
 
-- name: Case 4, there is no rebate for 2025 property taxes to receive in 2026.
+- name: Case 4, no actual cash receipt reported in 2026 defaults to zero.
   period: 2026
   input:
     people:
@@ -88,7 +91,7 @@
   output:
     mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 0
 
-- name: Case 5, zero when only this year's property tax is known.
+- name: Case 5, no reported actual receipt defaults to zero.
   period: 2024
   input:
     people:
@@ -103,6 +106,34 @@
         members: [person1]
         state_code: MT
   output:
-    # Inputs never carry backwards, so last year's property tax and rebate
-    # are 0.
+    # No actual cash receipt was reported; default zero.
     mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 0
+
+- name: Case 6, a prior tax bill does not establish rebate eligibility or receipt.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        real_estate_taxes:
+          2024: 1_000
+          2025: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2024: MT
+          2025: MT
+  output:
+    # Reviewer: six months owning/occupying in 2024 fails SB542 section1(3),
+    # PDFp2 (minimum seven months); section3(5), PDFp3 also requires a claim.
+    # No actual receipt: 1_000 - (20_000 - 12_600) * .035 = 741.
+    # Inferring 400 from the old tax bill incorrectly gave 727.
+    mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 0
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_000
+    mt_elderly_homeowner_or_renter_credit: 741

@@ -523,6 +523,7 @@
           2024: 1_000
           2025: 1_000
         mt_elderly_homeowner_or_renter_credit_received: 1_150
+        mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 400
     tax_units:
       tax_unit:
         members: [person1]
@@ -573,8 +574,8 @@
     # refundable credits received by the members of the household: the
     # son's federal EITC, Rev. Proc. 2022-38, no qualifying child,
     # 600 - 7.65% x (10_000 - 9_800) = 584.70, and Montana EITC 3%, 17.54;
-    # 602.24 in all. The 675 rebate for 2022 property taxes is not on the
-    # 2023 line 7 list. Line 10 = 30_602.24; line 12 = 18_002.24; line 13 =
+    # 602.24 in all. No actual property-rebate receipt is supplied, so
+    # none counts. Line 10 = 30_602.24; line 12 = 18_002.24; line 13 =
     # 0.05; line 14 = 900.11; line 19 = 2_000 - 900.11 = 1_099.89; line 20
     # = 1_099.89; line 21 = 100%; line 22 = 1_099.89.
     mt_elderly_homeowner_or_renter_credit_net_household_income: [900.11, 0]

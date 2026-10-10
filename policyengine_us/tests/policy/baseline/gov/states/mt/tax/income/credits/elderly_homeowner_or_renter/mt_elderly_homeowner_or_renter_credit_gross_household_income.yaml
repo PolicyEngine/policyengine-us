@@ -250,6 +250,7 @@
         real_estate_taxes:
           2023: 2_000
           2024: 2_000
+        mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 675
     tax_units:
       tax_unit:
         members: [person1]
@@ -264,7 +265,7 @@
     # min(675, 2_000) = 675. 20_000 + 675.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_675
 
-- name: The rebate for 2022 property taxes does not count on the 2023 schedule
+- name: Actual rebate cash received in 2023 counts under the broad income definition
   period: 2023
   input:
     people:
@@ -274,6 +275,7 @@
         real_estate_taxes:
           2022: 2_000
           2023: 2_000
+        mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 675
     tax_units:
       tax_unit:
         members: [person1]
@@ -284,12 +286,11 @@
           2022: MT
           2023: MT
   output:
-    # The 2023 instructions' line 7 list (federal and Montana EITC, federal
-    # child tax credits, unlocking public land credit, elderly
-    # homeowner/renter credit) has no property tax rebate, though the 675
-    # rebate for 2022 property taxes was claimed in August-October 2023.
+    # HB191 section1(9), PDFp2: all nontaxable income; ARM42.4.301(2)(c):
+    # state refundable credits received. The illustrative 2023 list does
+    # not exempt the rebate. Pension 20_000 + actual cash 675 = 20_675.
     mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received: 675
-    mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_000
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_675
 
 - name: Federal refundable credits count from 2017
   period: 2017
