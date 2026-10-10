@@ -18,22 +18,10 @@ class cdcc_relevant_expenses(Variable):
         # (tax_unit_childcare_expenses) plus care for a disabled qualifying
         # individual of any age — a disabled adult dependent or spouse
         # (care_expenses, a person-level yearly input).
-        childcare = tax_unit("tax_unit_childcare_expenses", period)
-        # IRC 21(b)(2)(A)(ii) counts only expenses "for the care of a
-        # qualifying individual". A return on which a filer can be claimed as
-        # a dependent has no qualifying child under 13 unless the child is
-        # incapable of self-care, so its childcare expenses do not count.
-        p = parameters(period).gov.irs.credits.cdcc.eligibility
-        person = tax_unit.members
-        qualifying_child = person("is_cdcc_eligible", period) & (
-            person("age", period) < p.child_age
-        )
-        dependent_filer = tax_unit(
-            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
-        )
-        childcare = where(
-            dependent_filer & ~tax_unit.any(qualifying_child), 0, childcare
-        )
+        # cdcc_qualifying_childcare_expenses leaves out childcare for a child
+        # who is not a qualifying individual because a filer can be claimed
+        # as a dependent.
+        childcare = tax_unit("cdcc_qualifying_childcare_expenses", period)
         adult_care = add(tax_unit, period, ["care_expenses"])
         expenses = childcare + adult_care
         cdcc_limit = tax_unit("cdcc_limit", period)

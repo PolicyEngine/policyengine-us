@@ -8,7 +8,7 @@ class ga_ctc_eligible_child(Variable):
     definition_period = YEAR
     defined_for = StateCode.GA
     reference = (
-        "https://legiscan.com/GA/text/HB136/id/3204611/Georgia-2025-HB136-Enrolled.pdf#page=2",
+        "https://legiscan.com/GA/text/HB136/id/3204611/Georgia-2025-HB136-Enrolled.pdf#page=3",
         "https://www.law.cornell.edu/uscode/text/26/24#c",
     )
 
