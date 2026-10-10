@@ -7,9 +7,11 @@ class pre_tax_health_insurance_premiums(Variable):
     label = "Pre-tax health insurance premiums"
     unit = USD
     documentation = (
-        "Health insurance premiums paid through pre-tax payroll deductions. "
-        "This excludes Medicare Part B premiums and other post-tax medical "
-        "out-of-pocket premiums."
+        "Annual employee-paid health insurance premiums paid through pretax "
+        "payroll deductions. Supply these only here: health_insurance_premiums "
+        "and the applicable decomposed premium inputs exclude these payments. The "
+        "pretax and non-pretax sets are disjoint; total employee-paid premiums "
+        "equal their sum. Excludes employer-paid premiums."
     )
     definition_period = YEAR
     uprating = "calibration.gov.hhs.cms.moop_per_capita"
