@@ -1,0 +1,93 @@
+# 106 CMR 704.270: "An employed applicant is entitled to a $200 monthly
+# work-related-expense deduction from gross wages." The deduction belongs to
+# the employed person and comes out of that person's own gross wages, so a
+# member with no earnings gets none and a member earning less than $200 a
+# month gets only what they earned.
+
+- name: A member with no earned income gets no work-related expense deduction
+  period: 2026
+  input:
+    age: 1
+    employment_income_before_lsr: 0
+    state_code: MA
+  output:
+    ma_tafdc_work_related_expense_deduction: 0
+
+- name: An earner above the monthly amount gets the full $200 a month
+  period: 2026
+  input:
+    age: 30
+    # $26,000 / 12 = $2,166.67 a month, above the $200 deduction.
+    employment_income_before_lsr: 26_000
+    state_code: MA
+  output:
+    # $200 x 12 months.
+    ma_tafdc_work_related_expense_deduction: 2_400
+
+- name: An earner below the monthly amount is capped at their own wages
+  period: 2026
+  input:
+    age: 30
+    # $1,800 / 12 = $150 a month, below the $200 deduction.
+    employment_income_before_lsr: 1_800
+    state_code: MA
+  output:
+    # min($150, $200) x 12 months.
+    ma_tafdc_work_related_expense_deduction: 1_800
+
+- name: Five-person unit with one earner deducts $200 a month once
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 26_000
+      parent2:
+        age: 30
+        employment_income_before_lsr: 0
+      child1:
+        age: 9
+      child2:
+        age: 4
+      child3:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2, child3]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2, child3]
+        state_code: MA
+  output:
+    # Only the earner is "an employed applicant": $2,400 for the unit, not
+    # $2,400 x 5 = $12,000.
+    ma_tafdc_work_related_expense_deduction: [2_400, 0, 0, 0, 0]
+    ma_tafdc_earned_income_after_deductions: 23_600
+
+- name: Two earners each get their own deduction, capped at their own wages
+  period: 2026
+  absolute_error_margin: 0.5
+  input:
+    people:
+      parent1:
+        age: 30
+        # $36,000 / 12 = $3,000 a month -> full $200 deduction.
+        employment_income_before_lsr: 36_000
+      parent2:
+        age: 30
+        # $1,200 / 12 = $100 a month -> capped at $100.
+        employment_income_before_lsr: 1_200
+      child1:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1]
+    households:
+      household:
+        members: [parent1, parent2, child1]
+        state_code: MA
+  output:
+    ma_tafdc_work_related_expense_deduction: [2_400, 1_200, 0]
+    # $37,200 gross - $3,600 of deductions.
+    ma_tafdc_earned_income_after_deductions: 33_600
