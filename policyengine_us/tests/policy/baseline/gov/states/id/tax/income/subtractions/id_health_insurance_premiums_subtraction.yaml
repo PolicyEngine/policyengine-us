@@ -67,6 +67,50 @@
   output:
     id_health_insurance_premiums_subtraction: 3_000
 
+- name: Medicare-enrolled joint filers qualify for modeled Part B premiums without premium inputs
+  # Idaho Code 63-3022P; 2025 Form 39R line 18 and worksheet:
+  # https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3022P/
+  # https://tax.idaho.gov/wp-content/uploads/forms/EFO00088/EFO00088_03-02-2026.pdf#page=11
+  # Each filer pays the modeled $185 monthly premium: 2 * $185 * 12 = $4,440.
+  # The $200,000 * 7.5% = $15,000 floor leaves no Schedule A medical overlap.
+  # Taxable income: $200,000 - $60,000 itemized - $6,000 senior - $4,440.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        taxable_interest_income: 100_000
+        medicare_enrolled: true
+        is_tax_unit_head: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+      spouse:
+        age: 70
+        taxable_interest_income: 100_000
+        medicare_enrolled: true
+        is_tax_unit_spouse: true
+        is_tax_unit_head_or_spouse: true
+        ssn_card_type: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        itemized_taxable_income_deductions: 60_000
+        id_salt_deduction: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ID
+  output:
+    medicare_part_b_premium: [2_220, 2_220]
+    medical_expense_health_insurance_premiums: [2_220, 2_220]
+    medical_expense_deduction: 0
+    id_qualified_health_insurance_premiums: 4_440
+    id_health_insurance_premiums_medical_deduction: 0
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 4_440
+    id_taxable_income: 129_560
+
 - name: Premium subtraction is included in the existing 2021 subtraction list
   period: 2021
   input:
