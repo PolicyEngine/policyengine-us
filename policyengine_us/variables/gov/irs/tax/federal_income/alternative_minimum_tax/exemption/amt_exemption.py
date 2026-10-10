@@ -13,6 +13,8 @@ class amt_exemption(Variable):
     )
     reference = [
         "https://www.law.cornell.edu/uscode/text/26/55#d",  # 26 U.S.C. § 55(d)
+        "https://www.law.cornell.edu/uscode/text/26/59#j",
+        "https://www.law.cornell.edu/uscode/text/26/911#d_2",
         "https://www.irs.gov/instructions/i6251",
     ]
 
@@ -35,7 +37,10 @@ class amt_exemption(Variable):
 
         # A reduced exemption amount is applied to kiddie tax filers
         kiddie_tax_applies = tax_unit("amt_kiddie_tax_applies", period)
-        adj_earnings = tax_unit("filer_adjusted_earnings", period)
+        # IRC 59(j) uses earned income under IRC 911(d)(2), rather than
+        # the EITC gross-income inclusion rule. Preserve the existing gross
+        # earnings cap independently of EITC payroll exclusions.
+        adj_earnings = tax_unit_non_dep_sum("adjusted_earnings", tax_unit, period)
         child_amount = p.exemption.child.amount
 
         exemption_cap = where(
