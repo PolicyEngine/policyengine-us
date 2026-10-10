@@ -341,3 +341,253 @@
     # Zero base amounts give each parent 5,100 of taxable benefits, not
     # below 4,400, so neither is a qualifying relative.
     head_of_household_eligible: false
+
+# A filer who can be claimed as a dependent on another return
+# (claimed_as_dependent_on_another_return) is treated as having no
+# dependents (IRC 152(b)(1)). IRC 2(b)(1)(A)(i) still counts a qualifying
+# child; IRC 2(b)(1)(A)(ii) and (B) and IRC 7703(b)(1) require a section 151
+# deduction the filer is not entitled to. Publication 501 (2025) Table 4,
+# p.10; considered unmarried test 5, p.8.
+
+- name: 2025 unmarried filer who can be claimed as a dependent still qualifies for HOH through a qualifying child
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 20
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    head_of_household_eligible: true
+    filing_status: HEAD_OF_HOUSEHOLD
+
+- name: 2025 unmarried filer who can be claimed as a dependent does not qualify for HOH through a qualifying relative
+  period: 2025
+  input:
+    people:
+      head:
+        age: 22
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+      sibling:
+        age: 25
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+        is_related_to_head_or_spouse: true
+        employment_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, sibling]
+    households:
+      household:
+        members: [head, sibling]
+  output:
+    # The sibling is a qualifying relative ($1,000 < $5,200), which counts
+    # only if the filer is entitled to a section 151 deduction for them.
+    head_of_household_eligible: false
+    filing_status: SINGLE
+
+- name: 2025 unmarried filer who cannot be claimed qualifies for HOH through the same qualifying relative
+  period: 2025
+  input:
+    people:
+      head:
+        age: 22
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: false
+      sibling:
+        age: 25
+        is_full_time_student: false
+        is_tax_unit_dependent: true
+        is_related_to_head_or_spouse: true
+        employment_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, sibling]
+    households:
+      household:
+        members: [head, sibling]
+  output:
+    head_of_household_eligible: true
+    filing_status: HEAD_OF_HOUSEHOLD
+
+- name: 2025 unmarried filer who can be claimed as a dependent does not qualify for HOH through a dependent parent
+  period: 2025
+  input:
+    people:
+      head:
+        age: 23
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+      parent:
+        age: 70
+        is_tax_unit_dependent: true
+        social_security_retirement: 12_000
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+  output:
+    # IRC 2(b)(1)(B): "if the taxpayer is entitled to a deduction for the
+    # taxable year for such father or mother under section 151".
+    head_of_household_eligible: false
+    filing_status: SINGLE
+
+- name: 2025 unmarried filer who can be claimed as a dependent qualifies for HOH through a permanently disabled dependent
+  period: 2025
+  input:
+    people:
+      head:
+        age: 23
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+      sibling:
+        age: 30
+        is_permanently_and_totally_disabled: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, sibling]
+    households:
+      household:
+        members: [head, sibling]
+  output:
+    # A permanently and totally disabled sibling meets the qualifying child
+    # age test at any age (IRC 152(c)(3)(B)).
+    head_of_household_eligible: true
+
+- name: 2025 separated filer who can be claimed as a dependent is not considered unmarried and files separately
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 21
+        is_tax_unit_head: true
+        is_separated: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    # IRC 7703(b)(1) requires a child "with respect to whom such individual
+    # is entitled to a deduction for the taxable year under section 151".
+    head_of_household_eligible: false
+    filing_status: SEPARATE
+
+- name: 2025 separated filer who cannot be claimed is considered unmarried and qualifies for HOH
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 21
+        is_tax_unit_head: true
+        is_separated: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 3
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    head_of_household_eligible: true
+    filing_status: HEAD_OF_HOUSEHOLD
+
+- name: 2025 married couple with one claimable spouse and a child files jointly, not as HOH (claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+  output:
+    head_of_household_eligible: false
+    filing_status: JOINT
+
+- name: 2025 married couple with one claimable spouse and a child files jointly, not as HOH (claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+    households:
+      household:
+        members: [person_b, person_a, child]
+  output:
+    head_of_household_eligible: false
+    filing_status: JOINT
+
+- name: 2025 married couple with both spouses claimable and a child files jointly, not as HOH
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 20
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+    households:
+      household:
+        members: [person_a, person_b, child]
+  output:
+    head_of_household_eligible: false
+    filing_status: JOINT

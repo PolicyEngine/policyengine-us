@@ -1,0 +1,393 @@
+# Unearned income test for a head or spouse who can be claimed as a
+# dependent: IRC 6012(a)(1)(C)(i)(I), 6012(f)(2)(D) and the Form 1040
+# instructions' Chart B. Parameters: dependent standard deduction floor
+# (gov.irs.deductions.standard.dependent.amount) $1,100 in 2021 and $1,350 in
+# 2025 and 2026; additional standard deduction per aged or blind filer
+# (gov.irs.deductions.standard.aged_or_blind.amount) $2,000 unmarried and
+# $1,600 married in 2025, $1,650 married in 2026. No other filing trigger
+# applies in these cases.
+
+- name: 2025 claimable single filer with unearned income below the $1,350 floor need not file
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        taxable_interest_income: 600
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    # Unearned $600 <= $1,350; gross $600 <= standard deduction $1,350.
+    tax_unit_is_required_to_file: false
+
+- name: 2025 claimable single filer with unearned income above the $1,350 floor must file
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        taxable_interest_income: 1_500
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    # Chart B: "Your unearned income was over $1,350"; $1,500 > $1,350.
+    tax_unit_is_required_to_file: true
+
+- name: 2025 single filer who cannot be claimed is not held to the dependent unearned income floor
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        taxable_interest_income: 1_500
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    # Gross $1,500 is below the $15,750 standard deduction (Chart A).
+    tax_unit_is_required_to_file: false
+
+- name: 2025 single filer who cannot be claimed with mostly dividend income is not required to file below Chart A
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 1_000
+        dividend_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    # Gross $6,000 < $15,750.
+    tax_unit_is_required_to_file: false
+
+- name: 2025 claimable filer's unearned income test applies even when the gross income test does not trigger
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        employment_income: 10_000
+        traditional_401k_contributions: 3_000
+        taxable_interest_income: 1_400
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    # Taxable wages $7,000, so unearned income is $8,400 - $7,000 = $1,400,
+    # over the $1,350 floor (Chart B).
+    tax_unit_is_required_to_file: true
+
+- name: 2025 claimable filer's self-employment loss does not count as unearned income
+  period: 2025
+  input:
+    people:
+      head:
+        age: 20
+        self_employment_income: -5_000
+        taxable_interest_income: 600
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    # Unearned income is the $600 of interest, under $1,350; gross income
+    # excludes the loss and is $600, under the $1,350 standard deduction.
+    tax_unit_is_required_to_file: false
+
+- name: 2025 claimable single filer age 65 has the floor raised by the additional standard deduction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 66
+        taxable_interest_income: 3_300
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    # Chart B, age 65 or older: "unearned income was over $3,350"
+    # ($1,350 + $2,000); $3,300 is not.
+    tax_unit_is_required_to_file: false
+
+- name: 2025 claimable single filer age 65 above the raised floor must file
+  period: 2025
+  input:
+    people:
+      head:
+        age: 66
+        taxable_interest_income: 3_400
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    # $3,400 > $1,350 + $2,000.
+    tax_unit_is_required_to_file: true
+
+- name: 2025 claimable blind single filer has the floor raised by the additional standard deduction
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        is_blind: true
+        taxable_interest_income: 3_300
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    # $3,300 <= $1,350 + $2,000.
+    tax_unit_is_required_to_file: false
+
+- name: 2025 joint return where the claimable spouse age 65 has unearned income above the floor must file (claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 65
+        taxable_interest_income: 1_400
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+  output:
+    # IRC 6012(f)(2)(D): $1,400 > $1,350, with no additional standard
+    # deduction added on a joint return. The gross income test alone would
+    # not apply: $1,400 <= $1,350 + $1,600 = $2,950.
+    tax_unit_is_required_to_file: true
+
+- name: 2025 joint return where the claimable spouse age 65 has unearned income above the floor must file (claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 65
+        taxable_interest_income: 1_400
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+  output:
+    tax_unit_is_required_to_file: true
+
+- name: 2026 joint return where the claimable spouse age 65 has $1,400 of unearned income need not file (claimable spouse is the head)
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 65
+        taxable_interest_income: 1_400
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+  output:
+    # IRC 6012(f) ended with 2025. IRC 6012(a)(1)(C)(i)(I) adds the
+    # additional standard deduction: $1,400 <= $1,350 + $1,650 = $3,000.
+    # Gross $1,400 <= $3,000.
+    tax_unit_is_required_to_file: false
+
+- name: 2026 joint return where the claimable spouse age 65 has $1,400 of unearned income need not file (claimable spouse is the spouse)
+  period: 2026
+  input:
+    people:
+      person_b:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 65
+        taxable_interest_income: 1_400
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2026 joint return where the claimable spouse age 65 has unearned income above the raised floor must file
+  period: 2026
+  input:
+    people:
+      person_a:
+        age: 65
+        taxable_interest_income: 3_100
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 70
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+  output:
+    # $3,100 > $1,350 + $1,650 = $3,000. The gross income test alone would
+    # not apply: $3,100 <= $1,350 + 2 x $1,650 = $4,650.
+    tax_unit_is_required_to_file: true
+
+- name: 2025 joint return tests the claimable spouse's own unearned income, not the other spouse's (claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 65
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 40
+        taxable_interest_income: 1_400
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+  output:
+    # The claimable spouse has no unearned income; gross $1,400 <= $2,950.
+    tax_unit_is_required_to_file: false
+
+- name: 2025 joint return tests the claimable spouse's own unearned income, not the other spouse's (claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 40
+        taxable_interest_income: 1_400
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 65
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+  output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025 joint return with both spouses claimable age 65 and $700 of unearned income each need not file
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 65
+        taxable_interest_income: 700
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 65
+        taxable_interest_income: 700
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+  output:
+    # Each $700 <= $1,350; gross $1,400 <= $1,350 + 2 x $1,600 = $4,550.
+    tax_unit_is_required_to_file: false
+
+- name: 2025 joint return with both spouses claimable and $300 of unearned income each need not file
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        taxable_interest_income: 300
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        taxable_interest_income: 300
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+  output:
+    # Each $300 <= $1,350; gross $600 <= $1,350.
+    tax_unit_is_required_to_file: false
+
+- name: 2025 joint return where neither spouse can be claimed is not held to the dependent unearned income floor
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        taxable_interest_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+  output:
+    # Gross $5,000 < $31,500 (Chart A).
+    tax_unit_is_required_to_file: false
+
+- name: 2021 single filer who cannot be claimed is not held to the dependent unearned income floor
+  period: 2021
+  input:
+    people:
+      head:
+        age: 30
+        taxable_interest_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    # Gross $2,000 < $12,550.
+    tax_unit_is_required_to_file: false
+
+- name: 2021 claimable single filer with unearned income above the $1,100 floor must file
+  period: 2021
+  input:
+    people:
+      head:
+        age: 20
+        taxable_interest_income: 1_200
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head]
+  output:
+    # 2021 Chart B: "Your unearned income was over $1,100".
+    tax_unit_is_required_to_file: true

@@ -1,0 +1,17 @@
+description: The Internal Revenue Service applies the special filing rule of section 6012(f) in place of section 6012(a)(1), if this is true.
+values:
+  0000-01-01: false
+  2018-01-01: true
+  # Section 6012(f) covers taxable years beginning "before January 1, 2026".
+  # Public Law 119-21 made the zero exemption amount permanent but did not
+  # amend section 6012, so section 6012(a)(1) applies again from 2026.
+  2026-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: IRS special filing rule in effect
+  reference:
+    - title: 26 U.S. Code § 6012(f) - Special rule for taxable years 2018 through 2025
+      href: https://www.law.cornell.edu/uscode/text/26/6012#f
+    - title: Public Law 119-21 (One Big Beautiful Bill Act)
+      href: https://www.govinfo.gov/content/pkg/PLAW-119publ21/html/PLAW-119publ21.htm

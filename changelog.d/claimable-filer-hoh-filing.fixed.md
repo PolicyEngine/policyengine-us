@@ -1,0 +1,1 @@
+Head of household status no longer counts a qualifying relative, a parent or the considered-unmarried route for a filer who can be claimed as a dependent on another return, and the federal filing requirement applies the indexed dependent unearned income floor to each such filer's own unearned income instead of a pooled $500 test applied to every tax unit.

@@ -25,3 +25,53 @@
         tax_unit_married: false
   output:
     surviving_spouse_eligible: true
+
+- name: 2025 surviving spouse who can be claimed as a dependent still qualifies through a child
+  period: 2025
+  input:
+    people:
+      head:
+        age: 24
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+  output:
+    # IRC 2(a)(1)(B)(i) determines the child's dependency "without regard to
+    # subsections (b)(1), (b)(2), and (d)(1)(B)" of section 152; Publication
+    # 501 (2025), p.11, rule 3c: "You could be claimed as a dependent on
+    # someone else's return."
+    surviving_spouse_eligible: true
+    head_of_household_eligible: false
+    filing_status: SURVIVING_SPOUSE
+
+- name: 2025 surviving spouse who cannot be claimed qualifies through the same child
+  period: 2025
+  input:
+    people:
+      head:
+        age: 24
+        is_tax_unit_head: true
+        is_surviving_spouse: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+  output:
+    surviving_spouse_eligible: true
+    head_of_household_eligible: false
+    filing_status: SURVIVING_SPOUSE
