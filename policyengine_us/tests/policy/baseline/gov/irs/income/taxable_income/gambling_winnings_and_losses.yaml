@@ -1,0 +1,131 @@
+# Gambling winnings are gross income (26 U.S.C. 61(a); Schedule 1 line 8b).
+# Gambling losses are an itemized deduction up to the winnings (26 U.S.C.
+# 165(d); Schedule A line 16), 90% of the losses from 2026 (P.L. 119-21
+# sec. 70114). The cases follow PolicyEngine/policyengine-us#9637: a single
+# filer aged 40 in Texas with 60,000 of wages. The state and local tax
+# deduction is set to zero so each figure can be computed by hand.
+
+- name: 2024, no gambling.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    age: 40
+    employment_income: 60_000
+    salt_deduction: 0
+    state_code: TX
+  output:
+    adjusted_gross_income: 60_000
+    # 60,000 - 14,600 standard deduction
+    taxable_income: 45_400
+    # 10% x 11,600 + 12% x 33,800
+    income_tax: 5_216
+
+- name: 2024, winnings are income and losses below the standard deduction do not help.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    age: 40
+    employment_income: 60_000
+    gambling_winnings: 10_000
+    gambling_losses: 8_000
+    salt_deduction: 0
+    state_code: TX
+  output:
+    irs_gross_income: 70_000
+    adjusted_gross_income: 70_000
+    wagering_losses_deduction: 8_000
+    itemized_taxable_income_deductions: 8_000
+    tax_unit_itemizes: false
+    # 70,000 - 14,600
+    taxable_income: 55_400
+    # 1,160 + 12% x 35,550 + 22% x 8,250
+    income_tax: 7_241
+
+- name: 2024, an itemizer deducts losses against the winnings in income.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    age: 40
+    employment_income: 60_000
+    gambling_winnings: 30_000
+    gambling_losses: 25_000
+    salt_deduction: 0
+    state_code: TX
+  output:
+    adjusted_gross_income: 90_000
+    wagering_losses_deduction: 25_000
+    itemized_taxable_income_deductions: 25_000
+    tax_unit_itemizes: true
+    # 90,000 - 25,000
+    taxable_income: 65_000
+    # 1,160 + 4,266 + 22% x 17,850
+    income_tax: 9_353
+
+- name: 2024, equal winnings and losses still raise tax by replacing the standard deduction.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    age: 40
+    employment_income: 60_000
+    gambling_winnings: 20_000
+    gambling_losses: 20_000
+    salt_deduction: 0
+    state_code: TX
+  output:
+    adjusted_gross_income: 80_000
+    wagering_losses_deduction: 20_000
+    tax_unit_itemizes: true
+    # 80,000 - 20,000, against 45,400 with no gambling
+    taxable_income: 60_000
+    # 1,160 + 4,266 + 22% x 12,850
+    income_tax: 8_253
+
+- name: 2026, the itemizer deducts 90% of losses.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 40
+    employment_income: 60_000
+    gambling_winnings: 30_000
+    gambling_losses: 25_000
+    salt_deduction: 0
+    state_code: TX
+  output:
+    adjusted_gross_income: 90_000
+    # 90% of 25,000
+    wagering_losses_deduction: 22_500
+    itemized_taxable_income_deductions: 22_500
+    tax_unit_itemizes: true
+    # 90,000 - 22,500
+    taxable_income: 67_500
+    # 10% x 12,400 + 12% x 38,000 + 22% x 17,100
+    income_tax: 9_562
+
+- name: A dependent's winnings and losses do not change the parent's return.
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        gambling_winnings: 30_000
+        gambling_losses: 25_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        salt_deduction: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    irs_gross_income: [60_000, 0]
+    adjusted_gross_income: 60_000
+    wagering_losses_deduction: 0
+    tax_unit_itemizes: false
+    # 60,000 - 21,900 head of household standard deduction
+    taxable_income: 38_100

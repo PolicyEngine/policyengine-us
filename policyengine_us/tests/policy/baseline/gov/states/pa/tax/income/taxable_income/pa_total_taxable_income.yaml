@@ -73,3 +73,55 @@
     pa_total_taxable_income: 30_000
     # 30,000 x 3.07%
     pa_income_tax_before_forgiveness: 921
+
+- name: Pennsylvania taxes gambling winnings net of each spouse's own wagering costs.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 30_000
+        gambling_winnings: 10_000
+        gambling_losses: 8_000
+        ssi: 0
+      spouse:
+        age: 65
+        gambling_winnings: 2_000
+        gambling_losses: 5_000
+        ssi: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: PA
+  output:
+    adjusted_gross_income: 42_000
+    pa_gambling_loss_offset: [8_000, 2_000]
+    # 30,000 + (10,000 - 8,000) + max(2,000 - 5,000, 0); the spouse's extra
+    # 3,000 of costs cannot reduce the head's winnings, and the federal 90%
+    # limit does not apply.
+    pa_total_taxable_income: 32_000
+    pa_eligibility_income: 32_000
+    # PA-1000 line 11b counts the same net winnings, once.
+    pa_property_tax_or_rent_rebate_income: 32_000
+    # 3.07% x 32,000
+    pa_income_tax_before_forgiveness: 982.40
+
+- name: Pennsylvania taxes gross winnings when there are no losses.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    employment_income: 30_000
+    gambling_winnings: 10_000
+    state_code: PA
+  output:
+    pa_gambling_loss_offset: 0
+    pa_total_taxable_income: 40_000

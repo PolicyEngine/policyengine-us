@@ -8,9 +8,13 @@ values:
     - taxable_social_security
     - us_govt_interest
     - salt_refund_income
+    # PA-40 Schedule T line 4: the cost of bets comes off the winnings.
+    - pa_gambling_loss_offset
 metadata:
   unit: currency-USD
   label: PA nontaxable income sources
   reference:
     - title: 2021 Pennsylvania PIT Return Instructions (PA-40 IN) 
       href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40in.pdf#page=8
+    - title: 2025 PA-40 Schedule T - Gambling and Lottery Winnings
+      href: https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2025/2025_pa-40t.pdf#page=1

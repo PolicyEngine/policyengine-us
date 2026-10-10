@@ -25,3 +25,17 @@
     state_code: WI
   output:
     wi_itemized_deduction_credit_potential: 0
+
+- name: Gambling losses do not count for the Wisconsin itemized deduction credit.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    gambling_winnings: 20_000
+    gambling_losses: 20_000
+    charitable_deduction: 15_000
+    wi_standard_deduction: 10_000
+    state_code: WI
+  output:
+    wagering_losses_deduction: 20_000
+    # 5% x (15,000 - 10,000); the 20,000 of gambling losses is left out.
+    wi_itemized_deduction_credit_potential: 250

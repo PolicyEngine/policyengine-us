@@ -28,19 +28,20 @@ class ny_itemized_deductions_phase_out(Variable):
     itemized deductions before the limitation. In PolicyEngine this is
     ny_itemized_deductions_max minus the NY-only college tuition addition
     (form line 48/43, which is added after line 40 and is not on this
-    worksheet). Form line 39 ("other itemized deductions": gambling losses,
-    estate tax on income in respect of a decedent, amortizable bond premium,
-    federal disaster loss, etc.) is not modeled in PolicyEngine and is therefore
-    treated as zero.
+    worksheet). Of form line 39 ("other itemized deductions"), gambling losses
+    (line 29) are ny_wagering_losses_deduction; the rest (estate tax on income
+    in respect of a decedent, amortizable bond premium, federal disaster loss,
+    etc.) is not modeled in PolicyEngine and is therefore treated as zero.
 
     Worksheet line 2 (L2) = form lines 4, 14, 16a, 20, 29, 30, 37, i.e. the
     deductions NOT subject to the limitation (26 U.S.C. 68(c)):
       - line 4  medical/dental        -> medical_expense_deduction
       - line 14 investment interest   -> investment_interest_expense
       - line 20 casualty/theft loss   -> ny_casualty_loss_deduction
-      - lines 16a/29/30/37 (qualified contributions, gambling losses,
-        income-producing-property casualty, federal disaster loss) are not
-        separately modeled in PolicyEngine and are treated as zero.
+      - line 29 gambling losses       -> ny_wagering_losses_deduction
+      - lines 16a/30/37 (qualified contributions, income-producing-property
+        casualty, federal disaster loss) are not separately modeled in
+        PolicyEngine and are treated as zero.
 
     L3 = L1 - L2 (worksheet line 3) is therefore the mortgage interest, real
     estate taxes, charitable gifts, and 2%-floor miscellaneous deductions -
@@ -61,11 +62,13 @@ class ny_itemized_deductions_phase_out(Variable):
         l1 = itemized_max - college_tuition
 
         # Worksheet line 2 (L2): deductions not subject to the limitation
-        # (26 U.S.C. 68(c)) - medical, investment interest, casualty/theft.
+        # (26 U.S.C. 68(c)) - medical, investment interest, casualty/theft,
+        # gambling losses.
         medical = tax_unit("medical_expense_deduction", period)
         investment_interest = add(tax_unit, period, ["investment_interest_expense"])
         casualty = tax_unit("ny_casualty_loss_deduction", period)
-        l2 = medical + investment_interest + casualty
+        wagering = tax_unit("ny_wagering_losses_deduction", period)
+        l2 = medical + investment_interest + casualty + wagering
 
         # Worksheet line 3 (L3): deductions subject to the limitation. Floored at
         # zero to implement the worksheet's line-3 stop ("If line 2 is not less

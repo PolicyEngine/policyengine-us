@@ -1,0 +1,54 @@
+- name: Montana allows the federal wagering losses deduction.
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    age: 40
+    employment_income: 50_000
+    gambling_winnings: 30_000
+    gambling_losses: 20_000
+    state_code: MT
+  output:
+    mt_wagering_losses_deduction: 20_000
+    mt_misc_deductions: 20_000
+
+- name: From 2026 Montana carries 90% of the losses.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 40
+    employment_income: 50_000
+    gambling_winnings: 30_000
+    gambling_losses: 20_000
+    state_code: MT
+  output:
+    mt_wagering_losses_deduction: 18_000
+    mt_misc_deductions: 18_000
+
+- name: The Montana spouse who reports the winnings claims the losses.
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      head:
+        age: 40
+        gambling_winnings: 10_000
+      spouse:
+        age: 40
+        gambling_losses: 8_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        gambling_winnings: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MT
+  output:
+    wagering_losses_deduction: 8_000
+    mt_wagering_losses_deduction: [8_000, 0, 0]
