@@ -115,3 +115,76 @@
     aca_magi_fraction: 6.0
   output:
     aca_required_contribution_percentage: 0.20
+
+- name: 2026 reform keeps a claimable spouse out of the tax family (the claimable spouse is the head)
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_simplified_bracket.aca_ptc_simplified_bracket
+  input:
+    gov.contrib.aca.ptc_simplified_bracket.in_effect: true
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 46_950
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 46,950 / 15,650 = 300% FPL for a family of one.
+    aca_tax_family_size: 1
+    is_aca_ptc_eligible: [false, true]
+
+- name: 2026 reform keeps a claimable spouse out of the tax family (the claimable spouse is the spouse)
+  period: 2026
+  reforms: policyengine_us.reforms.aca.aca_ptc_simplified_bracket.aca_ptc_simplified_bracket
+  input:
+    gov.contrib.aca.ptc_simplified_bracket.in_effect: true
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 46_950
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    aca_tax_family_size: 1
+    is_aca_ptc_eligible: [true, false]

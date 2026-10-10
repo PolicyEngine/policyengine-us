@@ -31,9 +31,10 @@ class ca_premium_subsidy(Variable):
         # Clamp income to zero so a negative ACA MAGI cannot inflate the top-up
         # above the benchmark - APTC residual via the -pct*income term.
         income = max_(tax_unit("aca_magi", period), 0)
-        # slcsp is a MONTH-period variable; core sums the 12 months when
-        # called from this YEAR formula.
-        slcsp = add(tax_unit, period, ["slcsp"])
+        # The benchmark for the coverage family (Program Design (d)(5) points
+        # to 26 CFR 1.36B-3(f)); a MONTH variable that core sums over the
+        # year here.
+        slcsp = add(tax_unit, period, ["aca_ptc_slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
         ca_pct = tax_unit("ca_premium_subsidy_applicable_percentage", period)
         # Eligibility is enforced by defined_for = ca_premium_subsidy_eligible.

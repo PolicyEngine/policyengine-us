@@ -495,3 +495,347 @@
     has_qualifying_non_marketplace_health_coverage_at_interview: [true]
     pays_aca_premium: [false]
     is_aca_ptc_eligible: [false]
+
+- name: "2025 joint return with one claimable spouse: only the other spouse is eligible (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # IRC 36B(c)(1)(D); 26 CFR 1.36B-2(b)(3): someone another taxpayer may
+    # claim is not an applicable taxpayer.
+    aca_magi_fraction: 1.5
+    is_aca_ptc_eligible: [false, true]
+
+- name: "2025 joint return with one claimable spouse: only the other spouse is eligible (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    aca_magi_fraction: 1.5
+    is_aca_ptc_eligible: [true, false]
+
+- name: 2025 single filer who can be claimed elsewhere is not eligible
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    is_aca_ptc_eligible: [false]
+
+- name: "2025 joint return with both spouses claimable: neither is eligible"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    is_aca_ptc_eligible: [false, false]
+
+- name: "2025 joint return with neither spouse claimable: both are eligible"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    is_aca_ptc_eligible: [true, true]
+
+- name: "2025 joint return with one claimable spouse: their child is not eligible either (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    # IRC 152(b)(1): the return claims no dependents.
+    is_aca_ptc_eligible: [false, true, false]
+
+- name: "2025 joint return with one claimable spouse: their child is not eligible either (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        aca_magi: 30_000
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+  output:
+    is_aca_ptc_eligible: [true, false, false]
+
+- name: "2025 couple below the two-person line but above the one-person line: the unclaimable spouse is eligible (the claimable spouse is the head)"
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 18_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # 18,000 / 15,060 = 1.195 for a tax family of one, so 100-400% FPL;
+    # the same couple with nobody claimable is at 0.88 and not eligible.
+    aca_magi_fraction: 1.19
+    is_aca_ptc_eligible: [false, true]
+
+- name: "2025 couple below the two-person line but above the one-person line: the unclaimable spouse is eligible (the claimable spouse is the spouse)"
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 18_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    aca_magi_fraction: 1.19
+    is_aca_ptc_eligible: [true, false]
+
+- name: 2025 couple below the two-person line with neither spouse claimable is not eligible
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 18_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    aca_magi_fraction: 0.88
+    is_aca_ptc_eligible: [false, false]

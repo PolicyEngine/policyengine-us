@@ -17,9 +17,11 @@ class ct_covered_connecticut(Variable):
         "Covered Connecticut pays the enrollee's residual benchmark silver-plan "
         "premium after the federal advance premium tax credit, driving the net "
         "premium to $0 for eligible enrollees at or below 175% of the federal "
-        "poverty line. The benchmark second-lowest-cost silver plan premium "
-        "(slcsp) proxies the benchmark plan and is annualized from its monthly "
-        "definition. The subsidy is additive on top of the federal APTC and is "
+        "poverty line. The premium tax credit's benchmark second-lowest-cost "
+        "silver plan premium for the coverage family (aca_ptc_slcsp) proxies "
+        "the benchmark plan and is annualized from its monthly definition; it "
+        "leaves out an enrollee who is not eligible for the federal subsidies "
+        "because they can be claimed on another return. The subsidy is additive on top of the federal APTC and is "
         "capped implicitly at the benchmark premium because the federal APTC "
         "never exceeds it, so the residual is never negative. The program also "
         "zeroes cost-sharing and adds dental and non-emergency medical "
@@ -30,9 +32,12 @@ class ct_covered_connecticut(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # slcsp is a MONTH-period variable; add() annualizes it to match the
-        # YEAR-period aca_ptc so both sides of the residual are annual.
-        slcsp_annual = add(tax_unit, period, ["slcsp"])
+        # The benchmark for the federal coverage family, a MONTH variable that
+        # add() annualizes to match the YEAR-period aca_ptc. Public Act 21-2,
+        # Section 16(b)(1), covers only people eligible for premium and
+        # cost-sharing subsidies, so an enrollee outside the federal tax
+        # family (one who can be claimed on another return) is left out.
+        slcsp_annual = add(tax_unit, period, ["aca_ptc_slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
         # Residual benchmark premium after the federal APTC. The max_(0, ...)
         # floor is defensive and redundant in the baseline, where aca_ptc never
