@@ -4,11 +4,14 @@ values:
   - mi_eitc
   - mi_home_heating_credit
   - mi_homestead_property_tax_credit
+  - mi_claim_of_right_credit
 metadata:
   unit: list
   period: year
   label: Michigan refundable tax credits
   reference:
+    - title: MCL 206.265(2), claim of right credit
+      href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-265
     - title: 2022 Michigan Individual Income Tax Return MI-1040 Form 
       href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/MI-1040.pdf#page=2
     - title: 2023 Michigan Individual Income Tax Return MI-1040 Form 

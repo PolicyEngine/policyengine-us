@@ -15,3 +15,26 @@
     az_deductions: 4_000
   output:
     az_taxable_income: 0
+
+- name: Arizona tax is computed without the claim of right repayment deduction
+  # A.R.S. 43-1029(B). Arizona adjusted gross income of $25,000 includes the
+  # $5,000 addition for the federal deduction (A.R.S. 43-1021(9)), which the
+  # same deduction on Arizona Schedule A offsets: 25,000 - 5,000 - 12,000.
+  period: 2025
+  input:
+    state_code: AZ
+    az_agi: 25_000
+    az_claim_of_right_addition: 5_000
+    az_deductions: 12_000
+  output:
+    az_taxable_income: 8_000
+
+- name: The claim of right addition cannot push taxable income below zero
+  period: 2025
+  input:
+    state_code: AZ
+    az_agi: 6_000
+    az_claim_of_right_addition: 5_000
+    az_deductions: 4_000
+  output:
+    az_taxable_income: 0

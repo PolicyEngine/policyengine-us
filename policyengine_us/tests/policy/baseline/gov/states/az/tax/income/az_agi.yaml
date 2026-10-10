@@ -19,3 +19,15 @@
     az_exemptions: 3_000
   output:
     az_agi: 0
+
+- name: The federal claim of right repayment deduction is added to Arizona gross income
+  # A.R.S. 43-1021(9): 10,000 + 5,000 - 2,500 - 3,000 = 9,500.
+  period: 2025
+  input:
+    state_code: AZ
+    adjusted_gross_income: 10_000
+    az_claim_of_right_addition: 5_000
+    az_subtractions: 2_500
+    az_exemptions: 3_000
+  output:
+    az_agi: 9_500

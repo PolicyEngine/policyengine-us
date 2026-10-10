@@ -1,0 +1,115 @@
+# MCL 206.265: a filer who repays income taxed in an earlier year, and who is
+# eligible for a deduction or credit under 26 U.S.C. 1341 for the repayment,
+# may credit the Michigan tax paid in the earlier year on that income. The
+# credit is refundable.
+- name: Case 1, Revenue Administrative Bulletin 1994-9, Sue Smith.
+  # A $5,000 repayment of income taxed at 4.6%: $5,000 x 4.6% = $230.
+  period: 2025
+  input:
+    claim_of_right_repayment: 5_000
+    mi_claim_of_right_prior_year_tax_decrease: 230
+    state_code: MI
+  output:
+    mi_claim_of_right_credit: 230
+
+- name: Case 2, a repayment of income taxed at the 2024 rate of 4.25%.
+  # 2025 MI-1040 book: "multiply the amount you repaid in 2025 by the tax
+  # rate which was in effect the year you paid the tax." $8,000 x 4.25% = $340.
+  period: 2025
+  input:
+    claim_of_right_repayment: 8_000
+    mi_claim_of_right_prior_year_tax_decrease: 340
+    mi_income_tax_before_refundable_credits: 2_000
+    mi_eitc: 0
+    mi_home_heating_credit: 0
+    mi_homestead_property_tax_credit: 0
+    state_code: MI
+  output:
+    mi_claim_of_right_credit: 340
+    mi_refundable_credits: 340
+    mi_income_tax: 1_660
+
+- name: Case 3, the credit applies when federal tax is computed under section 1341(a)(5).
+  # "If the amount of the repayment was deducted on U.S. Schedule A or a
+  # credit was claimed on U.S. Form 1040, a credit will be allowed on the
+  # Michigan return."
+  period: 2025
+  input:
+    claim_of_right_repayment: 5_000
+    claim_of_right_credit_applies: true
+    mi_claim_of_right_prior_year_tax_decrease: 212.5
+    state_code: MI
+  output:
+    mi_claim_of_right_credit: 212.5
+
+- name: Case 4, the credit applies when the federal return deducts the repayment.
+  period: 2025
+  input:
+    claim_of_right_repayment: 5_000
+    claim_of_right_credit_applies: false
+    mi_claim_of_right_prior_year_tax_decrease: 212.5
+    state_code: MI
+  output:
+    mi_claim_of_right_credit: 212.5
+
+- name: Case 5, no credit for a repayment that section 1341 does not cover.
+  # From 2018 a repayment of $3,000 or less is neither deductible nor
+  # creditable federally (26 U.S.C. 67(g)). RAB 1994-9: "A repayment that is
+  # not eligible for a deduction or credit on the taxpayer's federal return
+  # is not eligible for a credit on the taxpayer's Michigan income tax return."
+  period: 2025
+  input:
+    claim_of_right_repayment: 3_000
+    mi_claim_of_right_prior_year_tax_decrease: 127.5
+    state_code: MI
+  output:
+    mi_claim_of_right_credit: 0
+
+- name: Case 6, a credit above the year's tax is refunded.
+  # MCL 206.265(2).
+  period: 2025
+  input:
+    claim_of_right_repayment: 20_000
+    mi_claim_of_right_prior_year_tax_decrease: 850
+    mi_income_tax_before_refundable_credits: 500
+    mi_eitc: 0
+    mi_home_heating_credit: 0
+    mi_homestead_property_tax_credit: 0
+    state_code: MI
+  output:
+    mi_income_tax: -350
+
+- name: Case 7, a joint return sums the spouses' amounts, not a dependent's.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        claim_of_right_repayment: 5_000
+        mi_claim_of_right_prior_year_tax_decrease: 212.5
+      person2:
+        age: 44
+        claim_of_right_repayment: 1_000
+        mi_claim_of_right_prior_year_tax_decrease: 42.5
+      person3:
+        age: 20
+        is_tax_unit_dependent: true
+        mi_claim_of_right_prior_year_tax_decrease: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MI
+  output:
+    mi_claim_of_right_credit: 255
+
+- name: Case 8, no credit outside Michigan.
+  period: 2025
+  input:
+    claim_of_right_repayment: 5_000
+    mi_claim_of_right_prior_year_tax_decrease: 212.5
+    state_code: OH
+  output:
+    mi_claim_of_right_credit: 0

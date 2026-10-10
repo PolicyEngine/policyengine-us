@@ -3,18 +3,25 @@ values:
   2019-01-01:
     - az_increased_excise_tax_credit
     - az_property_tax_credit
+    - az_claim_of_right_credit
   2021-01-01:
     - az_increased_excise_tax_credit
     - az_property_tax_credit
     - az_families_tax_rebate
+    - az_claim_of_right_credit
   2022-01-01:
     - az_increased_excise_tax_credit
     - az_property_tax_credit
+    - az_claim_of_right_credit
 metadata:
   unit: list
   period: year
   label: Arizona refundable tax credits
   reference:
+  - title: A.R.S. 43-1029(C), claim of right credit
+    href: https://www.azleg.gov/ars/43/01029.htm
+  - title: 2025 Arizona Form 140 instructions, line 54
+    href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf#page=25
   - title: 2022 Arizona Tax Form Instructions 
     href: https://azdor.gov/sites/default/files/2023-03/FORMS_INDIVIDUAL_2022_140i-2D.pdf#page=24
   - title: 2021 Arizona Tax Form Instructions 

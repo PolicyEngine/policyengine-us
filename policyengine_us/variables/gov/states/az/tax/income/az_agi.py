@@ -13,7 +13,16 @@ class az_agi(Variable):
     def formula(tax_unit, period, parameters):
         adjusted_gross_income = tax_unit("adjusted_gross_income", period)
         additions = tax_unit("az_additions", period)
+        # A.R.S. 43-1021(9): the federal claim of right repayment deduction.
+        claim_of_right_addition = tax_unit("az_claim_of_right_addition", period)
         subtractions = tax_unit("az_subtractions", period)
         exemptions = tax_unit("az_exemptions", period)
 
-        return max_(0, adjusted_gross_income + additions - subtractions - exemptions)
+        return max_(
+            0,
+            adjusted_gross_income
+            + additions
+            + claim_of_right_addition
+            - subtractions
+            - exemptions,
+        )

@@ -1,0 +1,151 @@
+# Arizona claim of right repayments, end to end (A.R.S. 43-1021(9) and
+# 43-1029; Arizona procedure ITP 16-1). 2025 Arizona values: a 2.5% rate and a
+# $15,750 standard deduction for a single filer.
+- name: Case 1, ITP 16-1 Example 1 under 2025 rates, with the excess refunded.
+  # The example's filer has taxable income of $12,000 "without regard to the
+  # $10,000 repayment" and a prior-year decrease of $336. Wages of $27,750
+  # less the $15,750 standard deduction give that taxable income. 2025 tax is
+  # 2.5% of $12,000 = $300 (the example's 2016 tax was $317), so $36 of the
+  # $336 decrease is refunded (A.R.S. 43-1029(C)).
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 27_750
+        claim_of_right_repayment: 10_000
+        az_claim_of_right_prior_year_tax_decrease: 336
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_claim_of_right_addition: 0
+    az_agi: 27_750
+    az_taxable_income: 12_000
+    az_income_tax_before_refundable_credits: 300
+    az_claim_of_right_credit: 336
+    az_income_tax: -36
+
+- name: Case 2, a federal deduction is added back and gives no Arizona deduction.
+  # Federal itemized deductions are $20,000 of interest, $2,106.25 of state
+  # income tax (the model's Arizona withholding, 2.5% of 100,000 - 15,750)
+  # and the $10,000 repayment (section 1341(a)(4): with no prior-year federal
+  # decrease the deduction gives less federal tax). Arizona adds the $10,000
+  # back, so Arizona adjusted gross income is $110,000. Arizona tax is
+  # computed without the deduction: 100,000 - 22,106.25 = 77,893.75, taxed
+  # at 2.5% = 1,947.34, less the $250 decrease in prior-year Arizona tax.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        claim_of_right_repayment: 10_000
+        az_claim_of_right_prior_year_tax_decrease: 250
+    tax_units:
+      tax_unit:
+        members: [person1]
+        interest_deduction: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    claim_of_right_credit_applies: false
+    tax_unit_itemizes: true
+    claim_of_right_deduction: 10_000
+    az_claim_of_right_addition: 10_000
+    az_agi: 110_000
+    az_itemized_deductions: 22_106.25
+    az_taxable_income: 77_893.75
+    az_income_tax_before_refundable_credits: 1_947.34
+    az_claim_of_right_credit: 250
+    az_income_tax: 1_697.34
+
+- name: Case 3, the repayment cannot raise Arizona taxable income.
+  # The filer itemizes federally only because of the repayment: $10,000 of
+  # interest, $2,106.25 of state income tax and the $10,000 repayment exceed
+  # the $15,750 federal standard deduction. Arizona itemized deductions
+  # without the repayment ($12,106.25) are below the Arizona standard
+  # deduction, so Arizona taxable income is
+  # 100,000 - 15,750 = 84,250, the same as with no repayment (Case 4), and
+  # tax is 2.5% of that.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        interest_deduction: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    tax_unit_itemizes: true
+    az_claim_of_right_addition: 10_000
+    az_agi: 110_000
+    az_taxable_income: 84_250
+    az_income_tax: 2_106.25
+
+- name: Case 4, the same filer with no repayment.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        interest_deduction: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    az_agi: 100_000
+    az_taxable_income: 84_250
+    az_income_tax: 2_106.25
+
+- name: Case 5, the Arizona credit applies when federal tax uses the section 1341 credit.
+  # A prior-year federal decrease of $2,200 beats the deduction, which would
+  # lose to the standard deduction. No federal deduction, so no addition.
+  # Arizona: 40,000 - 15,750 = 24,250 at 2.5% = 606.25, less the $250
+  # prior-year Arizona decrease.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+        claim_of_right_prior_year_tax_decrease: 2_200
+        az_claim_of_right_prior_year_tax_decrease: 250
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AZ
+  output:
+    claim_of_right_credit_applies: true
+    az_claim_of_right_addition: 0
+    az_agi: 40_000
+    az_taxable_income: 24_250
+    az_claim_of_right_credit: 250
+    az_income_tax: 356.25

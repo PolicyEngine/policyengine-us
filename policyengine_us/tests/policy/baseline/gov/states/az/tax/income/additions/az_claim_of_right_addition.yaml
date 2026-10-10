@@ -1,0 +1,43 @@
+# A.R.S. 43-1021(9): Arizona adds the deduction under 26 U.S.C. 1341(a)(4) to
+# Arizona gross income. Form 140, line 18, item E: enter the amount deducted
+# on the federal return when the repayment was more than $3,000 and the
+# federal return took a deduction for it.
+- name: Case 1, the addition is the deduction taken on the federal return.
+  period: 2025
+  input:
+    claim_of_right_deduction: 5_000
+    tax_unit_itemizes: true
+    state_code: AZ
+  output:
+    az_claim_of_right_addition: 5_000
+
+- name: Case 2, no addition when the federal return takes the standard deduction.
+  period: 2025
+  input:
+    claim_of_right_deduction: 5_000
+    tax_unit_itemizes: false
+    state_code: AZ
+  output:
+    az_claim_of_right_addition: 0
+
+- name: Case 3, no addition when federal tax is computed under section 1341(a)(5).
+  # Under section 1341(a)(5) the repayment is not deducted (section
+  # 1341(b)(3)), so claim_of_right_deduction is zero.
+  period: 2025
+  input:
+    claim_of_right_repayment: 5_000
+    claim_of_right_credit_applies: true
+    tax_unit_itemizes: true
+    state_code: AZ
+  output:
+    claim_of_right_deduction: 0
+    az_claim_of_right_addition: 0
+
+- name: Case 4, no addition outside Arizona.
+  period: 2025
+  input:
+    claim_of_right_deduction: 5_000
+    tax_unit_itemizes: true
+    state_code: NM
+  output:
+    az_claim_of_right_addition: 0

@@ -1,0 +1,14 @@
+description: Arizona computes tax for the year of repayment without a deduction for the repayment, less the resulting decrease in prior-year Arizona tax, when the repayment of income held under a claim of right exceeds this amount.
+values:
+  2016-01-01: 3_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: Arizona claim of right repayment threshold
+  reference:
+    - title: A.R.S. 43-1029(A)(3)
+      href: https://www.azleg.gov/ars/43/01029.htm
+    - title: Arizona Individual Income Tax Procedure ITP 16-1, Requirements
+      href: https://azdor.gov/sites/default/files/2023-03/PROCEDURES_INDIV_2016_ITP16-1.pdf#page=2
+    - title: 2025 Arizona Claim of Right - Individual instructions, line 1
+      href: https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_CLAIMOFRIGHT-INDIVIDUALi.pdf#page=2

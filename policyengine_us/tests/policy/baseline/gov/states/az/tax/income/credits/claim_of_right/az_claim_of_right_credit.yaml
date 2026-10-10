@@ -1,0 +1,112 @@
+# A.R.S. 43-1029: when a filer repays more than $3,000 of income included in
+# an earlier year under a claim of right, Arizona tax is the tax computed
+# without a deduction for the repayment, minus the decrease in the earlier
+# year's Arizona tax. Arizona allows the credit under either federal method.
+- name: Case 1, the credit is the prior-year Arizona tax decrease (ITP 16-1, Example 1).
+  # A $10,000 repayment of 2013 commissions: tax paid on $35,000 was $1,028
+  # and tax payable on $25,000 is $692, a decrease of $336.
+  period: 2025
+  input:
+    claim_of_right_repayment: 10_000
+    az_claim_of_right_prior_year_tax_decrease: 336
+    state_code: AZ
+  output:
+    az_claim_of_right_credit: 336
+
+- name: Case 2, a repayment of exactly $3,000 does not qualify.
+  # Arizona Claim of Right form, line 1: "If the amount on line 1 is $3,000
+  # or less, STOP."
+  period: 2025
+  input:
+    claim_of_right_repayment: 3_000
+    az_claim_of_right_prior_year_tax_decrease: 75
+    state_code: AZ
+  output:
+    az_claim_of_right_credit: 0
+
+- name: Case 3, a repayment of $3,001 qualifies.
+  period: 2025
+  input:
+    claim_of_right_repayment: 3_001
+    az_claim_of_right_prior_year_tax_decrease: 75
+    state_code: AZ
+  output:
+    az_claim_of_right_credit: 75
+
+- name: Case 4, the credit applies when federal tax is computed under section 1341(a)(5).
+  period: 2025
+  input:
+    claim_of_right_repayment: 10_000
+    claim_of_right_credit_applies: true
+    az_claim_of_right_prior_year_tax_decrease: 336
+    state_code: AZ
+  output:
+    az_claim_of_right_credit: 336
+
+- name: Case 5, the credit applies when the federal return deducts the repayment.
+  period: 2025
+  input:
+    claim_of_right_repayment: 10_000
+    claim_of_right_credit_applies: false
+    az_claim_of_right_prior_year_tax_decrease: 336
+    state_code: AZ
+  output:
+    az_claim_of_right_credit: 336
+
+- name: Case 6, a joint return counts the spouses' repayments and decreases, not a dependent's.
+  # Each spouse repays $2,000: together $4,000, over the threshold.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        claim_of_right_repayment: 2_000
+        az_claim_of_right_prior_year_tax_decrease: 50
+      person2:
+        age: 44
+        claim_of_right_repayment: 2_000
+        az_claim_of_right_prior_year_tax_decrease: 50
+      person3:
+        age: 20
+        is_tax_unit_dependent: true
+        claim_of_right_repayment: 9_000
+        az_claim_of_right_prior_year_tax_decrease: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    az_claim_of_right_credit: 100
+
+- name: Case 7, a dependent's repayment alone does not qualify the return.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        az_claim_of_right_prior_year_tax_decrease: 50
+      person2:
+        age: 20
+        is_tax_unit_dependent: true
+        claim_of_right_repayment: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_claim_of_right_credit: 0
+
+- name: Case 8, no credit outside Arizona.
+  period: 2025
+  input:
+    claim_of_right_repayment: 10_000
+    az_claim_of_right_prior_year_tax_decrease: 336
+    state_code: NM
+  output:
+    az_claim_of_right_credit: 0

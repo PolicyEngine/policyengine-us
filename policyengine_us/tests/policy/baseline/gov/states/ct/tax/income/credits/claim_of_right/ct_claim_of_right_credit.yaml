@@ -1,0 +1,108 @@
+# Conn. Gen. Stat. 12-711a: when a filer repays income included in
+# Connecticut adjusted gross income in an earlier year under a claim of right
+# and determines federal tax under 26 U.S.C. 1341(a)(4) or (5), Connecticut
+# tax is reduced by the decrease in the earlier year's Connecticut tax.
+- name: Case 1, Form CT-1040 CRC Example 1, the credit is the prior-year Connecticut tax decrease.
+  # James repays $4,000 of 2024 commissions in 2025. 2024 tax on $45,000 was
+  # $1,596 and on $41,000 is $1,434: a credit of $162 (line 6).
+  period: 2025
+  input:
+    claim_of_right_repayment: 4_000
+    ct_claim_of_right_prior_year_tax_decrease: 162
+    state_code: CT
+  output:
+    ct_claim_of_right_credit: 162
+
+- name: Case 2, Example 1 concluded, 2025 liability of $1,879 less the $162 credit.
+  # The form computes the $1,879 from the 2025 tax table for a filer filing
+  # separately with Connecticut adjusted gross income of $50,000.
+  period: 2025
+  input:
+    claim_of_right_repayment: 4_000
+    ct_claim_of_right_prior_year_tax_decrease: 162
+    ct_income_tax_before_refundable_credits: 1_879
+    ct_eitc: 0
+    state_code: CT
+  output:
+    ct_claim_of_right_credit: 162
+    ct_income_tax: 1_717
+
+- name: Case 3, the credit applies when federal tax is computed under section 1341(a)(5).
+  # "If James is required to determine his federal income tax liability ...
+  # using the credit method ..., he will also compute his Connecticut income
+  # tax liability as shown above."
+  period: 2025
+  input:
+    claim_of_right_repayment: 4_000
+    claim_of_right_credit_applies: true
+    ct_claim_of_right_prior_year_tax_decrease: 162
+    state_code: CT
+  output:
+    ct_claim_of_right_credit: 162
+
+- name: Case 4, the credit applies when the federal return deducts the repayment.
+  period: 2025
+  input:
+    claim_of_right_repayment: 4_000
+    claim_of_right_credit_applies: false
+    ct_claim_of_right_prior_year_tax_decrease: 162
+    state_code: CT
+  output:
+    ct_claim_of_right_credit: 162
+
+- name: Case 5, a repayment of $3,000 or less does not qualify.
+  # Form CT-1040 CRC, line 1: "If the total amount repaid is $3,000 or less,
+  # stop here."
+  period: 2025
+  input:
+    claim_of_right_repayment: 3_000
+    ct_claim_of_right_prior_year_tax_decrease: 120
+    state_code: CT
+  output:
+    ct_claim_of_right_credit: 0
+
+- name: Case 6, a decrease above the year's tax is refunded.
+  # Conn. Gen. Stat. 12-711a(a)(3).
+  period: 2025
+  input:
+    claim_of_right_repayment: 8_000
+    ct_claim_of_right_prior_year_tax_decrease: 400
+    ct_income_tax_before_refundable_credits: 150
+    ct_eitc: 0
+    state_code: CT
+  output:
+    ct_income_tax: -250
+
+- name: Case 7, a joint return sums the spouses' decreases, not a dependent's.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        claim_of_right_repayment: 4_000
+        ct_claim_of_right_prior_year_tax_decrease: 100
+      person2:
+        age: 44
+        ct_claim_of_right_prior_year_tax_decrease: 62
+      person3:
+        age: 20
+        is_tax_unit_dependent: true
+        ct_claim_of_right_prior_year_tax_decrease: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CT
+  output:
+    ct_claim_of_right_credit: 162
+
+- name: Case 8, no credit outside Connecticut.
+  period: 2025
+  input:
+    claim_of_right_repayment: 4_000
+    ct_claim_of_right_prior_year_tax_decrease: 162
+    state_code: NY
+  output:
+    ct_claim_of_right_credit: 0

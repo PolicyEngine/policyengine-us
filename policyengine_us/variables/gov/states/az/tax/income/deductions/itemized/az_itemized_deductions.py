@@ -26,11 +26,12 @@ class az_itemized_deductions(Variable):
         # Medical and charitable are handled separately below; the state and
         # local tax deduction is also handled separately so Arizona can cap it.
         # Arizona adds the federal claim of right repayment deduction back to
-        # Arizona gross income (A.R.S. 43-1021(9)) and computes its tax
-        # without it (A.R.S. 43-1029), so it gives no net Arizona deduction.
-        # Leaving it out here gives the same taxable income for an Arizona
-        # itemizer, but Arizona AGI is not raised by the addition, and the
-        # Arizona claim of right credit is not modeled.
+        # Arizona gross income (A.R.S. 43-1021(9), az_claim_of_right_addition)
+        # and computes its tax without it (A.R.S. 43-1029), so it gives no
+        # net Arizona deduction. az_taxable_income removes the addition
+        # instead of deducting the repayment here, so the repayment cannot
+        # change whether Arizona itemized deductions exceed the standard
+        # deduction.
         deductions = [
             deduction
             for deduction in p.itemized_deductions
