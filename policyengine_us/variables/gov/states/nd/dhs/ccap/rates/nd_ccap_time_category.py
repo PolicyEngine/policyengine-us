@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.childcare import childcare_hours_for_weekly_schedule
 
 
 class NDCCAPTimeCategory(Enum):
@@ -20,7 +21,7 @@ class nd_ccap_time_category(Variable):
         p = parameters(period).gov.states.nd.dhs.ccap.time_category
         # Full-time level of care is 25 or more hours per week; part-time is
         # 1 to fewer than 25 hours per week (400-28-80-50).
-        hours = person("childcare_hours_per_week", period.this_year)
+        hours = childcare_hours_for_weekly_schedule(person, period)
         # Zero also represents unknown hours, so retain full-time pricing.
         return where(
             (hours == 0) | (hours >= p.full_time_min_hours),
