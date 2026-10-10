@@ -21,9 +21,9 @@ def has_input_for_period(simulation, variable, period):
     branches or other periods do not apply. Only finite definition periods
     are supported.
 
-    Core can retain an input key after deletion. If that value has already
-    been recalculated, this read-only check cannot distinguish it from a
-    supplied value.
+    Core versions before 3.32.27 can retain an input key after deletion. If
+    that value has already been recalculated, this read-only check cannot
+    distinguish it from a supplied value. Core 3.32.27 fixes this in #561.
     """
     period = to_period(period)
     holder = simulation.get_holder(variable)

@@ -1,7 +1,10 @@
 """Compare Idaho premium election with independently enumerated legal routes."""
 
+from importlib.metadata import version
+
 from hypothesis import example, given, settings, strategies as st
 import numpy as np
+from packaging.version import Version
 import pytest
 
 from policyengine_us import Simulation
@@ -218,16 +221,18 @@ def test_actual_medical_deduction_is_scoped_to_period_and_branch():
     assert actual_claim.calculate(variable, 2025).tolist() == [3_000]
     assert nested_claim.calculate(variable, 2025).tolist() == [3_000]
     # Check before federal recalculation, while the deleted input's array is
-    # absent. Core retains its input key, so recalculating first is a separate
-    # provenance defect documented in the PR's known limitation.
+    # absent. Core versions before 3.32.27 retain its input key, so recalculating
+    # first triggers the provenance defect documented in the PR's limitation.
     assert deleted_claim.calculate(variable, 2025).tolist() == [750]
 
 
 @pytest.mark.xfail(
+    condition=Version(version("policyengine-core")) < Version("3.32.27"),
     strict=True,
     reason=(
-        "Core retains deleted input provenance and misclassifies a federal "
-        "medical deduction recalculated before the Idaho helper as supplied."
+        "policyengine-core<3.32.27 retains deleted input provenance and "
+        "misclassifies a federal medical deduction recalculated before the "
+        "Idaho helper as supplied; fixed by policyengine-core#561."
     ),
 )
 def test_deleted_medical_input_recalculated_federal_first():
@@ -270,7 +275,7 @@ def test_deleted_medical_input_recalculated_federal_first():
     assert simulation.calculate("medical_expense_deduction", year).tolist() == [1_250]
     # Idaho excludes the dependent's payment: medical overlap is
     # 3,000 - 30,000 * 7.5% = 750, leaving 3,000 - 750 = 2,250.
-    # The known provenance defect instead uses 1,250 and returns 1,750.
+    # Core's provenance defect before 3.32.27 uses 1,250 and returns 1,750.
     assert simulation.calculate(
         "id_health_insurance_premiums_subtraction", year
     ).tolist() == [2_250]
