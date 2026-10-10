@@ -426,3 +426,110 @@
         state_code: NM
   output:
     nm_eitc_demographic_eligible: true
+
+# A child who is not a qualifying child (for example one who fails the residency
+# test) does not open the child route, so the dependent test still applies.
+- name: 2025 claimable single filer with a child who is not a qualifying child is barred
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 35
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 10
+        is_eitc_qualifying_child: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: false
+
+- name: 2025 joint return with a claimable spouse and a child who is not a qualifying child is barred (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 35
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_eitc_qualifying_child: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: false
+
+- name: 2025 joint return with a claimable spouse and a child who is not a qualifying child is barred (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 33
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 35
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_eitc_qualifying_child: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: false
+
+- name: 2025 childless joint return with a spouse under 18 and nobody claimable is eligible by the other spouse's age (the younger spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 21
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: true

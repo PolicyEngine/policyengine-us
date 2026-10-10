@@ -12,18 +12,19 @@ class nm_eitc_demographic_eligible(Variable):
         # New Mexico applies the same criteria as the federal EITC, but
         # changes the minimum age.
         person = tax_unit.members
-        # A child under 18 who is not a filer, or an older qualifying child
-        # under IRC 32(c)(3) before the identification requirement that New
-        # Mexico does not apply: a dependent aged 18, a student under 24, or
-        # permanently and totally disabled. A filer under 18 is not their own
-        # or their spouse's qualifying child.
+        # A qualifying child under IRC 32(c)(3), before the identification
+        # requirement that New Mexico does not apply: a dependent under 19, a
+        # student under 24, or permanently and totally disabled. A filer is
+        # not their own or their spouse's qualifying child. For a child under
+        # 18 the count of children must also be positive, so a supplied count
+        # of zero still means no children.
         filer = person("is_tax_unit_head_or_spouse", period)
+        qualifying_child = person("is_eitc_qualifying_child", period)
         minor = person("is_child", period)
         minor_child = (tax_unit("tax_unit_children", period) > 0) & tax_unit.any(
-            minor & ~filer
+            qualifying_child & minor
         )
-        older_qualifying_child = person("is_eitc_qualifying_child", period) & ~minor
-        has_child = minor_child | tax_unit.any(older_qualifying_child)
+        has_child = minor_child | tax_unit.any(qualifying_child & ~minor)
         age = person("age", period)
         # Relative parameter reference break branching in some states that
         # modify EITC age limits.
