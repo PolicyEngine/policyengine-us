@@ -17,6 +17,14 @@ class id_itemized_deductions(Variable):
     defined_for = StateCode.ID
 
     def formula(tax_unit, period, parameters):
+        # Supplied Schedule A totals already represent the claimant's
+        # actual deductions, even if component expenses are incomplete.
+        # Check their provenance before calculating either aggregate.
+        supplied_itemized = has_input_for_period(
+            tax_unit.simulation, "itemized_taxable_income_deductions", period
+        ) or has_input_for_period(
+            tax_unit.simulation, "total_itemized_taxable_income_deductions", period
+        )
         # Idaho reduces the federal itemized deductions by the SALT deduction.
         # When foreign tax is claimed as a federal itemized deduction, it is
         # already in itemized_taxable_income_deductions; when claimed as a
@@ -27,6 +35,8 @@ class id_itemized_deductions(Variable):
         # are consistent with no unconditional addback here.
         id_salt_ded = tax_unit("id_salt_deduction", period)
         itemized_ded = tax_unit("itemized_taxable_income_deductions", period)
+        if supplied_itemized:
+            return max_(0, itemized_ded - id_salt_ded)
         federal_medical = tax_unit("medical_expense_deduction", period)
         claimant_medical = tax_unit(
             "id_health_insurance_premiums_medical_deduction", period

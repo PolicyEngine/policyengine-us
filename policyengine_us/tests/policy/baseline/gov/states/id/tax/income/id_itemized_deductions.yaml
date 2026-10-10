@@ -100,3 +100,72 @@
     # the itemized deduction (already inside itemized_taxable_income_deductions),
     # not when it is claimed as a federal credit.
     id_itemized_deductions: 0
+
+- name: A supplied final federal itemized total already excludes dependent-paid medical costs
+  # The actual $20,000 Schedule A total includes claimant medical expenses;
+  # subtracting the derived federal medical overstatement again is incorrect.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 3_000
+        is_tax_unit_head: true
+      dependent:
+        age: 20
+        health_insurance_premiums: 500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        adjusted_gross_income: 30_000
+        itemized_taxable_income_deductions: 20_000
+        id_salt_deduction: 0
+        standard_deduction: 15_750
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ID
+  output:
+    medical_expense_deduction: 1_250
+    id_health_insurance_premiums_medical_deduction: 750
+    id_itemized_deductions: 20_000
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 2_250
+    id_taxable_income: 7_750
+
+- name: A supplied raw federal itemized total receives the 2026 limitation once
+  # The actual $70,000 already uses claimant medical expenses; applying the
+  # 2/37 limitation gives $66,216.21622 without a second medical adjustment.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 100_000
+        is_tax_unit_head: true
+      dependent:
+        age: 20
+        health_insurance_premiums: 500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        filing_status: SINGLE
+        adjusted_gross_income: 800_000
+        interest_deduction: 30_000
+        total_itemized_taxable_income_deductions: 70_000
+        salt_deduction: 0
+        id_salt_deduction: 0
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ID
+  output:
+    medical_expense_deduction: 40_500
+    id_health_insurance_premiums_medical_deduction: 40_000
+    itemized_taxable_income_deductions: 66_216.21622
+    id_itemized_deductions: 66_216.21622
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 60_000
