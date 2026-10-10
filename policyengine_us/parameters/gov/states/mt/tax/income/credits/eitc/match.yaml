@@ -1,23 +1,38 @@
 description: Montana matches this fraction of the federal earned income tax credit.
 values:
-  2021-01-01: 0.03
-  2024-01-01: 0.10
-  2026-01-01: 0.20
+  # Ch. 381, L. 2017 enacted the credit for income tax years beginning after
+  # December 31, 2018, so no credit applies before tax year 2019.
+  2000-01-01: 0
+  2019-01-01: 0.03
+  2024-01-01: 0.1
+  2026-01-01: 0.2
 metadata:
   unit: /1
   period: year
   label: Montana EITC match
   reference:
-    - title: Montana Code 2021, § 15-30-2318 (2), Earned income tax credit  
+    - title: "Laws of Montana 2017, Chapter 381 (HB 391), Sections 1(2) and 4 #page 1-2"
+      href: https://docs.legmt.gov/download-ticket?ticketId=c64da15b-15fd-4015-9901-7aa12b3f6855#page=1
+    - title: Montana Code 2019, § 15-30-2318 (2), Earned income tax credit
+      href: https://mca.legmt.gov/bills/2019/mca/title_0150/chapter_0300/part_0230/section_0180/0150-0300-0230-0180.html
+    - title: "2019 Montana Form 2 Instructions, What's new and line 20 #page 4,15"
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2019_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=4
+    - title: 2020 Montana Form 2 Instructions, line 23
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2020_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=13
+    - title: Montana Code 2021, § 15-30-2318 (2), Earned income tax credit
       href: https://law.justia.com/codes/montana/2021/title-15/chapter-30/part-23/section-15-30-2318/
-    - title: Montana Code 2022, § 15-30-2318 (2), Earned income tax credit  
+    - title: Montana Code 2022, § 15-30-2318 (2), Earned income tax credit
       href: https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-23/section-15-30-2318/
+    - title: "Laws of Montana 2023, Chapter 50 (SB 121), Sections 2 and 4 #page 2-3"
+      href: https://docs.legmt.gov/download-ticket?ticketId=390c9b3d-5bc7-4168-955f-777fd60fc898#page=2
     # The amendment applies in 2024
-    - title: Montana Code 2023, § 15-30-2318 (2), Earned income tax credit 
+    - title: Montana Code 2023, § 15-30-2318 (2), Earned income tax credit
       href: https://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0180/0150-0300-0230-0180.html
-    - title: 2023 Montana Form 2 Individual Income Tax Instructions, line 23b
+    - title: 2023 Montana Form 2, line 23b
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2023_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=1
     - title: 2024 Montana Form 2 Instructions
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=16
+    - title: "Laws of Montana 2025, Chapter 227 (HB 337), Sections 3, 5 and 6 #page 6-7"
+      href: https://archive.legmt.gov/content/Sessions/69th/Contractor_index/CH0227.pdf#page=6
     - title: 2025 Montana Form 2 Instructions
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=14
