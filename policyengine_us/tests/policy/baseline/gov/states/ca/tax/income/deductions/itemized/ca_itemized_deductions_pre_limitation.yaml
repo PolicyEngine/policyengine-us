@@ -15,3 +15,369 @@
     real_estate_taxes: 5_000
   output:
     ca_itemized_deductions_pre_limitation: 13_000
+
+- name: California deducts charitable gifts below the federal charitable floor.
+  period: 2026
+  input:
+    state_code: CA
+    age: 40
+    employment_income: 100_000
+    charitable_cash_donations: 100
+    real_estate_taxes: 10_000
+  output:
+    charitable_deduction: 0
+    ca_itemized_deductions_pre_limitation: 10_100
+
+- name: California retains employee expenses above two percent of federal AGI.
+  period: 2026
+  input:
+    state_code: CA
+    age: 40
+    employment_income: 100_000
+    unreimbursed_business_employee_expenses: 2_400
+    tax_preparation_fees: 100
+    real_estate_taxes: 10_000
+  output:
+    misc_deduction: 0
+    ca_itemized_deductions_pre_limitation: 10_500
+    ca_amti_adjustments: 10_500
+
+- name: California charitable gifts are capped at fifty percent of federal AGI.
+  period: 2026
+  input:
+    state_code: CA
+    age: 40
+    employment_income: 100_000
+    charitable_cash_donations: 60_000
+  output:
+    charitable_deduction: 59_500
+    ca_itemized_deductions_pre_limitation: 50_000
+
+- name: California already retains miscellaneous deductions before 2026.
+  period: 2025
+  input:
+    state_code: CA
+    age: 40
+    employment_income: 100_000
+    unreimbursed_business_employee_expenses: 2_500
+    real_estate_taxes: 10_000
+  output:
+    misc_deduction: 0
+    ca_itemized_deductions_pre_limitation: 10_500
+
+- name: California already caps charitable deductions before 2026.
+  period: 2025
+  input:
+    state_code: CA
+    age: 40
+    employment_income: 100_000
+    charitable_cash_donations: 60_000
+  output:
+    charitable_deduction: 60_000
+    ca_itemized_deductions_pre_limitation: 50_000
+
+- name: California nonconformity continues after 2026.
+  period: 2027
+  input:
+    state_code: CA
+    age: 40
+    employment_income: 100_000
+    charitable_cash_donations: 100
+    unreimbursed_business_employee_expenses: 2_500
+    real_estate_taxes: 10_000
+  output:
+    charitable_deduction: 0
+    misc_deduction: 0
+    ca_itemized_deductions_pre_limitation: 10_600
+
+# PolicyBench frozen 2026 scenarios. Inputs retain all source values and the
+# to_pe_household converter defaults, weekly-hours alias, and marital units.
+# Filing status is derived from person relationships, as in the converter.
+
+- name: 'PolicyBench scenario_005: California itemized conformity'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 180000.0
+        bank_account_assets: 559200.0
+        charitable_cash_donations: 1069.7646484375
+        charitable_non_cash_donations: 1503.7646484375
+        employer_sponsored_insurance_premiums: 6889.27587890625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 1500.0
+        hourly_wage: 69.19999694824219
+        hours_worked_last_week: 50.0
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        long_term_capital_gains: 51920.0
+        non_qualified_dividend_income: 9722.3525390625
+        other_health_insurance_premiums: 1500.0
+        other_medical_expenses: 800.0
+        over_the_counter_health_expenses: 200.0
+        qualified_dividend_income: 77920.0
+        real_estate_taxes: 17280.0
+        roth_401k_contributions_desired: 4086.0
+        roth_ira_contributions_desired: 1678.0799560546875
+        salt_refund_income: 4147.67626953125
+        short_term_capital_gains: -62830.58984375
+        stock_assets: 4000.0
+        tax_exempt_interest_income: 8961.3525390625
+        tax_exempt_private_pension_income: 70000.0
+        taxable_interest_income: 65351.0
+        traditional_401k_contributions_desired: 23154.0
+        traditional_ira_contributions_desired: 1081.9200439453125
+        unreimbursed_business_employee_expenses: 13847.8232421875
+        weekly_hours_worked_before_lsr: 50.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+      spouse:
+        age: 33
+        employment_income: 250000.0
+        employer_sponsored_insurance_premiums: 6479.69775390625
+        has_esi: true
+        hourly_wage: 108.0
+        hours_worked_last_week: 40.0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        other_medical_expenses: 500.0
+        over_the_counter_health_expenses: 50.0
+        roth_401k_contributions_desired: 4086.0
+        roth_ira_contributions_desired: 1678.0799560546875
+        taxable_interest_income: 585.0
+        traditional_401k_contributions_desired: 23154.0
+        traditional_ira_contributions_desired: 1081.9200439453125
+        weekly_hours_worked_before_lsr: 40.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    marital_units:
+      marital_unit_1:
+        members:
+        - head
+        - spouse
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        first_home_mortgage_balance: 2850000.0
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members:
+        - head
+        - spouse
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members:
+        - head
+        - spouse
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        state_code: CA
+        household_vehicles_value: 8932.3525390625
+  output:
+    state_income_tax_before_refundable_credits: 40465.78
+- name: 'PolicyBench scenario_022: California itemized conformity'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 77
+        employment_income: 52635.0
+        bank_account_assets: 3000.0
+        charitable_cash_donations: 14693.412109375
+        charitable_non_cash_donations: 700.0
+        health_insurance_premiums_without_medicare_part_b: 2416.0
+        is_surviving_spouse: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        miscellaneous_income: 3300.0
+        other_health_insurance_premiums: 2416.0
+        other_medical_expenses: 500.0
+        over_the_counter_health_expenses: 500.0
+        real_estate_taxes: 8829.0
+        rental_income: 4550.0
+        social_security_retirement: 20735.0
+        stock_assets: 263200.0
+        tax_exempt_private_pension_income: 370.5882263183594
+        taxable_interest_income: 50.0
+        taxable_private_pension_income: 30989.412109375
+        unadjusted_basis_qualified_property: 24786.0625
+        unreimbursed_business_employee_expenses: 8350.5439453125
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    marital_units:
+      marital_unit_1:
+        members:
+        - head
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        first_home_mortgage_balance: 212852.9375
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members:
+        - head
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members:
+        - head
+    households:
+      household:
+        members:
+        - head
+        state_code: CA
+        household_vehicles_value: 20782.353515625
+  output:
+    state_income_tax_before_refundable_credits: 1902.59
+- name: 'PolicyBench scenario_099: California itemized conformity'
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 42
+        employment_income: 85000.0
+        employer_sponsored_insurance_premiums: 18707.525390625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 2500.0
+        hourly_wage: 42.0
+        hours_worked_last_week: 40.0
+        is_paid_hourly: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        other_health_insurance_premiums: 2500.0
+        other_medical_expenses: 2000.0
+        over_the_counter_health_expenses: 500.0
+        roth_401k_contributions_desired: 272.3999938964844
+        roth_ira_contributions_desired: 111.87200164794922
+        taxable_interest_income: 500.0
+        traditional_401k_contributions_desired: 1543.5999755859375
+        traditional_ira_contributions_desired: 72.12799835205078
+        weekly_hours_worked_before_lsr: 40.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+      spouse:
+        age: 41
+        employment_income: 80000.0
+        bank_account_assets: 28035.294921875
+        charitable_cash_donations: 11932.94140625
+        charitable_non_cash_donations: 688.058837890625
+        educator_expense: 337.5
+        employer_sponsored_insurance_premiums: 5889.27587890625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 2500.0
+        hourly_wage: 30.799999237060547
+        hours_worked_last_week: 50.0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        long_term_capital_gains: -7018.0
+        non_qualified_dividend_income: 16.0
+        other_health_insurance_premiums: 2500.0
+        other_medical_expenses: 2000.0
+        over_the_counter_health_expenses: 500.0
+        pre_subsidy_rent: 26400.0
+        qualified_dividend_income: 128.0
+        real_estate_taxes: 8653.5
+        roth_401k_contributions_desired: 272.3999938964844
+        roth_ira_contributions_desired: 111.87200164794922
+        short_term_capital_gains: 540.0
+        stock_assets: 2230000.0
+        taxable_interest_income: 510.0
+        traditional_401k_contributions_desired: 1543.5999755859375
+        traditional_ira_contributions_desired: 72.12799835205078
+        unreimbursed_business_employee_expenses: 1262.6470947265625
+        weekly_hours_worked_before_lsr: 50.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+      child1:
+        age: 9
+        employment_income: 0.0
+        has_esi: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        other_medical_expenses: 500.0
+        over_the_counter_health_expenses: 200.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+      child2:
+        age: 4
+        employment_income: 0.0
+        has_esi: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        other_medical_expenses: 500.0
+        over_the_counter_health_expenses: 200.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    marital_units:
+      marital_unit_1:
+        members:
+        - head
+        - spouse
+      marital_unit_2:
+        members:
+        - child1
+      marital_unit_3:
+        members:
+        - child2
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        - child1
+        - child2
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members:
+        - head
+        - spouse
+        - child1
+        - child2
+        spm_unit_pre_subsidy_childcare_expenses: 12740.0
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members:
+        - head
+        - spouse
+        - child1
+        - child2
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        - child1
+        - child2
+        state_code: CA
+        auto_loan_balance: 42000.0
+        auto_loan_interest: 1575.0
+        household_vehicles_value: 21964.705078125
+  output:
+    state_income_tax_before_refundable_credits: 4429.91

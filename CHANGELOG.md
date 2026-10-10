@@ -1,3 +1,72 @@
+## [2.38.5] - 2026-10-10
+
+### Fixed
+
+- Correct California itemized deductions to retain its charitable contribution limits without the federal charitable floor, allow miscellaneous expenses above 2% of federal AGI, and add back the California miscellaneous deduction for alternative minimum tax. Preserve signed California taxable income before AMT add-backs so deductions exceeding income do not inflate alternative minimum taxable income.
+
+
+## [2.38.4] - 2026-10-09
+
+### Fixed
+
+- Include New Jersey employee unemployment insurance and workforce development contributions in employee payroll tax, using annual employee wage bases through 2027.
+
+
+## [2.38.3] - 2026-10-09
+
+### Changed
+
+- Name Ziming Hua as the approver for partner API contract test edits in the agent instructions.
+
+
+## [2.38.2] - 2026-10-09
+
+### Fixed
+
+- Exclude estate and trust income from qualified business income unless its qualification is explicitly supplied.
+
+
+## [2.38.1] - 2026-10-09
+
+### Fixed
+
+- Arizona property tax credit household income counts capital gains and qualified dividends once, includes dependents' income and losses, and limits each member's net capital loss (including capital gain distributions) to $1,500 instead of federal AGI's $3,000 per-return limit. Household income can be negative, with zero used only for the credit schedules. Short-term capital inputs must exclude prior-year carryovers.
+
+
+## [2.38.0] - 2026-10-09
+
+### Added
+
+- Add Oregon LIHEAP regular heating assistance for program years 2025 to 2027.
+
+
+## [2.37.2] - 2026-10-09
+
+### Fixed
+
+- Kentucky's separate-return income columns now assign allowed business and capital losses to their owners before calculating adjusted gross income and the family size tax credit. The credit treats negative separate income as zero, and each filing path uses its own credit rate when the model picks the cheaper path.
+
+
+## [2.37.1] - 2026-10-09
+
+### Fixed
+
+- Count Ohio health insurance premiums on the unreimbursed medical care worksheet: line 3 now takes premiums of anyone eligible for Medicare or an employer-paid plan (R.C. 5747.01(A)(10)), and line 1 reads the premium inputs the data fills, net of the federal self-employed health insurance deduction.
+
+
+## [2.37.0] - 2026-10-09
+
+### Added
+
+- Add TaxUnit leaf inputs for the section 911 earned-income and housing exclusions, allocable deductions, housing deduction, and federal tax worksheet adjustments.
+
+### Fixed
+
+- Add section 911 gross foreign earned income and housing exclusions to Massachusetts gross income, derived from Form 2555 leaf inputs while preserving legacy federal stacking inputs and explicit Massachusetts overrides.
+  Share section 911 election detection across refundable CTC, federal and state EITC, and filing tests so housing-only and leaf-only Form 2555 filers remain recognized when aggregate amounts are zero.
+- Derive the section 911 MAGI add-back from Form 2555 leaves before worksheet deductions, recognize Form 2555 filers with zero stacking amounts for CTC Worksheet B, and reject ambiguous mixed-input tax-unit batches.
+
+
 ## [2.36.0] - 2026-10-09
 
 ### Fixed
