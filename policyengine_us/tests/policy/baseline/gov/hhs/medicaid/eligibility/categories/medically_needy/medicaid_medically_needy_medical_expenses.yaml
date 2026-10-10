@@ -27,6 +27,8 @@
     is_in_medicaid_medically_needy_category: true
     is_adult_for_medicaid: false
     is_optional_senior_or_disabled_for_medicaid: false
+    # Isolate spenddown from the separate SSI-recipient Medicaid pathway.
+    is_ssi_recipient_for_medicaid: false
     ssi_countable_income: 11_000
     ssi_countable_resources: 1_000
     state_code: KS
@@ -35,4 +37,5 @@
     medicare_enrolled: false
   output:
     medicaid_medically_needy_medical_expenses: 2_000
+    is_ssi_recipient_for_medicaid: false
     is_medically_needy_for_medicaid: false
