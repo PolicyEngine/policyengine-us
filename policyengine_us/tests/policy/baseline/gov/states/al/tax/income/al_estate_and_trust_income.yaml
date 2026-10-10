@@ -1,0 +1,23 @@
+- name: A beneficiary's estate or trust income is in Alabama AGI
+  period: 2025
+  input:
+    state_code: AL
+    irs_employment_income: 30_000
+    estate_income: 5_000
+  output:
+    # Form 40, Part I, line 5 carries Schedule E estate and trust income:
+    # 30,000 + 5,000.
+    al_estate_and_trust_income: 5_000
+    al_agi: 35_000
+
+- name: An estate or trust loss does not reduce Alabama AGI
+  period: 2025
+  input:
+    state_code: AL
+    irs_employment_income: 30_000
+    estate_income: -5_000
+  output:
+    # Code of Ala. § 40-18-25(b)(4) switches off IRC § 642(h), so the loss
+    # stays with the estate or trust: max(-5,000, 0) = 0 and AGI is 30,000.
+    al_estate_and_trust_income: 0
+    al_agi: 30_000

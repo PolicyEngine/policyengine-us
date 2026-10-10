@@ -27,3 +27,33 @@
     state_code: OK
   output:
     ok_gross_income: 38_566
+
+- name: OK gross income includes estate and trust income, which can end the sales tax credit
+  period: 2025
+  input:
+    age: 40
+    irs_employment_income: 18_000
+    estate_income: 3_000
+    eitc: 0
+    state_code: OK
+  output:
+    # Form 538-S line 11: 18,000 + 3,000 = 21,000, over the 20,000 limit
+    # for a filer with no dependents who is under 65 and not disabled.
+    ok_gross_income: 21_000
+    ok_stc: 0
+
+- name: OK gross income leaves out an estate or trust loss
+  period: 2025
+  input:
+    age: 40
+    irs_employment_income: 18_000
+    estate_income: -3_000
+    # The loss lowers federal AGI into the childless EITC range, and line 9
+    # counts the EITC; set it to zero to isolate line 11.
+    eitc: 0
+    state_code: OK
+  output:
+    # Line 11 takes gross (positive) income only: 18,000 + max(-3,000, 0).
+    # 18,000 is within the 20,000 limit, so the credit is 40 for one person.
+    ok_gross_income: 18_000
+    ok_stc: 40
