@@ -97,3 +97,204 @@
     # same amount through the 22.515% and 12% segments that meet at $58,827,
     # within $0.05 of the schedule.
     wi_standard_deduction: 13_960 - 0.12 * (70_000 - 20_120)
+
+- name: 2025 single filer who can be claimed as a dependent: Wisconsin standard deduction limited for a filer who can be claimed
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 1000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: WI
+  output:
+    # Wis. Stat. 71.05(22)(f): the lesser of the ordinary deduction and
+    # max($1,350, earned income + $450) = max($1,350, $1,000 + $450).
+    wi_standard_deduction: 1450
+
+- name: 2025 joint return with one claimable spouse: Wisconsin standard deduction limited for a filer who can be claimed (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WI
+  output:
+    # Form 1 worksheet: applies if you or your spouse can be claimed; the
+    # couple's earned income is $1,000, so $1,450.
+    wi_standard_deduction: 1450
+
+- name: 2025 joint return with one claimable spouse: Wisconsin standard deduction limited for a filer who can be claimed (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 22
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: WI
+  output:
+    wi_standard_deduction: 1450
+
+- name: 2025 joint return with both spouses claimable: Wisconsin standard deduction limited for a filer who can be claimed
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WI
+  output:
+    wi_standard_deduction: 1450
+
+- name: 2025 joint return with neither spouse claimable: Wisconsin standard deduction limited for a filer who can be claimed
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WI
+  output:
+    # Joint maximum at WI income $1,000: $25,110 (2025).
+    wi_standard_deduction: 25110
+
+- name: 2025 single filer who cannot be claimed gets the full Wisconsin standard deduction
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 1000
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: WI
+  output:
+    wi_standard_deduction: 13560
+
+- name: 2025 single filer who can be claimed and has no earned income gets the Wisconsin dependent floor
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 20
+        taxable_interest_income: 2000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: WI
+  output:
+    # max($1,350, $0 + $450) = $1,350.
+    wi_standard_deduction: 1350
+
+- name: 2021 single filer who can be claimed: Wisconsin dependent standard deduction
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 20
+        employment_income: 600
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: WI
+  output:
+    # 2021 Form 1 worksheet: max($1,100, $600 + $350) = $1,100.
+    wi_standard_deduction: 1100
+
+- name: 2023 single filer who can be claimed: Wisconsin dependent standard deduction
+  period: 2023
+  input:
+    people:
+      filer:
+        age: 20
+        employment_income: 3000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: WI
+  output:
+    # 2023 Form 1 worksheet: max($1,250, $3,000 + $400) = $3,400.
+    wi_standard_deduction: 3400
