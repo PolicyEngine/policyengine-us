@@ -26,3 +26,93 @@
   output:
     tuition_and_fees_deduction_eligible: false
   # Can't claim this deduction if the household has taken the American Oppportunity or Lifetime Learning Credit.
+
+# IRC 222(c)(3): no deduction to an individual for whom a section 151 deduction
+# may be allowed to another taxpayer.
+- name: 2020 single filer who can be claimed as a dependent is not eligible
+  period: 2020
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: TX
+  output:
+    tuition_and_fees_deduction_eligible: false
+
+- name: 2020 joint return with one claimable spouse is not eligible (the claimable spouse is the head)
+  period: 2020
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    tuition_and_fees_deduction_eligible: false
+
+- name: 2020 joint return with one claimable spouse is not eligible (the claimable spouse is the spouse)
+  period: 2020
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    tuition_and_fees_deduction_eligible: false
+
+- name: 2020 joint return with neither spouse claimable is eligible
+  period: 2020
+  input:
+    people:
+      person_a:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    tuition_and_fees_deduction_eligible: true

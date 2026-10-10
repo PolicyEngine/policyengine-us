@@ -12,18 +12,24 @@ has no personal exemption (IRC 151(d)(2)). So:
 - a child under 13 is not a child and dependent care qualifying person on such
   a return (a disabled person still is, IRC 21(b)(1)(B));
 - recovery rebates leave out a claimable filer and, on such a return, the
-  dependents.
+  dependents;
+- the state amounts that read the exemption count follow it (Georgia's two
+  credits keep their own count).
 
-For couples drawn by Hypothesis and a seeded population, with either, both or
-neither spouse claimed, in 2021-2026:
+For couples with either, both or neither spouse claimed, in 2021-2026:
 
 1. Swap invariance: each output is the same under either head/spouse
-   labelling.
+   labelling (Hypothesis batches and the seeded population).
 2. Monotonicity: marking another filer as claimed never raises any of the
-   amounts or counts below.
+   amounts or counts below (seeded population only).
 3. Identities: `exemptions_count` equals the filers who cannot be claimed plus
    the dependents when no filer can be claimed, and a return with a claimable
-   filer has no CTC-qualifying child and no credit for other dependents.
+   filer has no CTC-qualifying child and no credit for other dependents
+   (both populations).
+
+The generated adults have no tuition or student loan interest, so the education
+credit, tuition deduction and student loan interest gates are covered by YAML
+cases only, as are the contributed reforms.
 """
 
 import numpy as np
@@ -48,22 +54,30 @@ from policyengine_us.tests.core.test_dependent_elsewhere_head_spouse_swap_invari
 
 # Texas has no income tax; the others read the federal exemption count.
 STATES = ["TX", "OR", "HI", "NM", "GA", "RI", "DE", "OH", "WI"]
-OUTPUTS = [
-    "income_tax",
-    "ctc_maximum",
-    "ctc_qualifying_children",
-    "capped_count_cdcc_eligible",
-    "exemptions_count",
-    "rrc_arpa",
+# State amounts that read the federal exemption count; each is zero outside
+# its state.
+STATE_OUTPUTS = [
+    "ri_exemptions",
+    "de_personal_credit_potential",
+    "oh_personal_exemptions",
+    "wi_base_exemption",
+    "or_regular_exemptions",
+    "hi_regular_exemptions",
+    "nm_low_and_middle_income_exemption",
+    "nm_low_income_comprehensive_tax_rebate",
+    "ga_ctc_potential",
+    "ga_low_income_credit_potential",
 ]
 # Amounts that marking another filer as claimed must never raise.
 MONOTONE = [
     "ctc_maximum",
     "ctc_qualifying_children",
     "capped_count_cdcc_eligible",
+    "cdcc_relevant_expenses",
     "exemptions_count",
     "rrc_arpa",
-]
+] + STATE_OUTPUTS
+OUTPUTS = ["income_tax"] + MONOTONE
 
 
 @st.composite
