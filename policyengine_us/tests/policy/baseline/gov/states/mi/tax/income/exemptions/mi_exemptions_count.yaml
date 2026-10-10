@@ -56,3 +56,204 @@
       state_code: MI
   output: # 6 + 0
     mi_exemptions_count: 6
+
+- name: 2025 single filer who can be claimed as a dependent, home heating exemptions
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: MI
+  output:
+    # MI-1040CR-7: one exemption for "Yourself, unless you are eligible
+    # to be claimed as a dependent on someone else's return".
+    mi_exemptions_count: 0
+
+- name: 2025 joint return with one spouse who can be claimed, home heating exemptions (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MI
+  output:
+    # Only the spouse who cannot be claimed counts.
+    mi_exemptions_count: 1
+
+- name: 2025 joint return with one spouse who can be claimed, home heating exemptions (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MI
+  output:
+    mi_exemptions_count: 1
+
+- name: 2025 joint return with both spouses claimable, home heating exemptions
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MI
+  output:
+    mi_exemptions_count: 0
+
+- name: 2025 joint return with neither spouse claimable, home heating exemptions
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MI
+  output:
+    mi_exemptions_count: 2
+
+- name: 2025 single filer who can be claimed as a dependent, home heating exemptions with a child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MI
+  output:
+    # Children who live with you count "even if their support comes
+    # from ... someone else"; MCL 206.527a(1)(c)(i) counts them "even
+    # if the exemptions may not be claimed for other income tax
+    # purposes".
+    mi_exemptions_count: 1
+
+- name: 2025 joint return with one spouse who can be claimed, home heating exemptions with a child (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MI
+  output:
+    mi_exemptions_count: 2
+
+- name: 2025 joint return with one spouse who can be claimed, home heating exemptions with a child (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MI
+  output:
+    mi_exemptions_count: 2

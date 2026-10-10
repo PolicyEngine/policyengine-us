@@ -247,3 +247,135 @@
         state_code: MT
   output:
     mt_income_tax_rebate: [0]
+
+- name: Single filer who can be claimed as a dependent gets no rebate
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 45
+        employment_income: 50_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: MT
+  output:
+    # MCA 15-30-2191: not an eligible individual if "claimed as a
+    # dependent by another taxpayer".
+    mt_income_tax_rebate: [0]
+
+- name: Joint return with one spouse who can be claimed keeps the other spouse's share (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 45
+        employment_income: 50_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 45
+        employment_income: 50_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MT
+  output:
+    # Eligibility is per individual; the other spouse keeps their
+    # $1,250 column share of the $2,500 joint amount.
+    mt_income_tax_rebate: [0, 1_250]
+
+- name: Joint return with one spouse who can be claimed keeps the other spouse's share (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 45
+        employment_income: 50_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 45
+        employment_income: 50_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MT
+  output:
+    mt_income_tax_rebate: [1_250, 0]
+
+- name: Joint return with both spouses claimable gets no rebate
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 45
+        employment_income: 50_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 45
+        employment_income: 50_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MT
+  output:
+    mt_income_tax_rebate: [0, 0]
+
+- name: Joint return with neither spouse claimable gets the joint rebate
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 45
+        employment_income: 50_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 45
+        employment_income: 50_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MT
+  output:
+    mt_income_tax_rebate: [1_250, 1_250]

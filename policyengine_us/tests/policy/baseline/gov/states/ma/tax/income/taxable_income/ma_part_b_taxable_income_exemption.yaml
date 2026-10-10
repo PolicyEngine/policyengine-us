@@ -43,3 +43,169 @@
     # Federal surviving spouse maps to MA head of household, so the personal
     # exemption is the head of household 6,800.
     ma_part_b_taxable_income_exemption: 6_800
+
+- name: 2025 single filer who can be claimed as a dependent, dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MA
+  output:
+    # Head of household personal exemption $6,800 survives (DOR: the
+    # personal exemption applies "regardless of whether you can claim a
+    # personal exemption on your federal return"); the $1,000 dependent
+    # exemption needs a dependent claimed on the federal return, which a
+    # claimable filer has none of (IRC 152(b)(1)).
+    ma_part_b_taxable_income_exemption: 6_800
+
+- name: 2025 single filer whom nobody can claim, dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MA
+  output:
+    ma_part_b_taxable_income_exemption: 7_800
+
+- name: 2025 joint return with one spouse who can be claimed, dependent exemption (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    ma_part_b_taxable_income_exemption: 8_800
+
+- name: 2025 joint return with one spouse who can be claimed, dependent exemption (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MA
+  output:
+    ma_part_b_taxable_income_exemption: 8_800
+
+- name: 2025 joint return with both spouses claimable, dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    ma_part_b_taxable_income_exemption: 8_800
+
+- name: 2025 joint return with neither spouse claimable, dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    # Joint $8,800 + one dependent x $1,000.
+    ma_part_b_taxable_income_exemption: 9_800

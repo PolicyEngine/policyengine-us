@@ -163,3 +163,144 @@
     # reduced: flat 8,000 + 0 x 6,800 + 0 x 2 x 1,000 = 8,000.
     # notes: Suggestion 7c - SINGLE with 2+ dependents, addition fully suppressed.
     ma_income_tax_exemption_threshold: 8_000
+
+- name: 2025 single filer who can be claimed as a dependent, No Tax Status dependent exemptions
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MA
+  output:
+    # c.62 s.5 adds the exemptions allowed under s.3(B)(b)(3): head of
+    # household $7,600 + $6,800 personal, and no dependent exemption.
+    ma_income_tax_exemption_threshold: 14_400
+
+- name: 2025 joint return with one spouse who can be claimed, No Tax Status dependent exemptions (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    ma_income_tax_exemption_threshold: 16_400
+
+- name: 2025 joint return with one spouse who can be claimed, No Tax Status dependent exemptions (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MA
+  output:
+    ma_income_tax_exemption_threshold: 16_400
+
+- name: 2025 joint return with both spouses claimable, No Tax Status dependent exemptions
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    ma_income_tax_exemption_threshold: 16_400
+
+- name: 2025 joint return with neither spouse claimable, No Tax Status dependent exemptions
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    # $7,600 + $8,800 + one dependent x $1,000.
+    ma_income_tax_exemption_threshold: 17_400

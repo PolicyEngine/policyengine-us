@@ -22,3 +22,139 @@
   output:
     # 2026 Form 1040N-ES, page 6: "Include $176 for each Nebraska personal exemption".
     ne_exemptions: 176 * 4
+
+- name: 2025 single filer who can be claimed as a dependent, personal exemption credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+    households:
+      household:
+        members: [person_a, child]
+        state_code: NE
+  output:
+    # Form 1040N line 4a: "If someone can claim you as a dependent,
+    # leave blank"; no child or dependent credits are taken on the
+    # federal return (Neb. Rev. Stat. 77-2716.01(1)(b)).
+    ne_exemptions: 0
+
+- name: 2025 joint return with one spouse who can be claimed, personal exemption credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NE
+  output:
+    # Line 4b: "if someone can claim your spouse as a dependent, leave
+    # blank"; the other spouse keeps one $171 credit, and the child
+    # counts for neither.
+    ne_exemptions: 171
+
+- name: 2025 joint return with one spouse who can be claimed, personal exemption credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: NE
+  output:
+    ne_exemptions: 171
+
+- name: 2025 joint return with both spouses claimable, personal exemption credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NE
+  output:
+    ne_exemptions: 0
+
+- name: 2025 joint return with neither spouse claimable, personal exemption credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NE
+  output:
+    # Two filers and one dependent: 3 x $171.
+    ne_exemptions: 513

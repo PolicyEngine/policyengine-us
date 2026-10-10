@@ -29,9 +29,14 @@ class ma_part_b_taxable_income_exemption(Variable):
         age = person("age", period)
         count_aged = tax_unit.sum(~dependent & (age >= tax.exemptions.aged.age))
         aged_exemption = tax.exemptions.aged.amount * count_aged
-        # (3): Dependent exemptions.
+        # (3): Dependent exemptions. Form 1 allows them for the dependents
+        # claimed on the federal return; under IRC 152(b)(1) a return on which
+        # the filer, or on a joint return either spouse, can be claimed as a
+        # dependent has none. The filers' own exemptions above still apply.
         count_dependents = tax_unit("tax_unit_dependents", period)
-        dependent_exemption = tax.exemptions.dependent * count_dependents
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        allowed_dependents = where(filer_is_dependent, 0, count_dependents)
+        dependent_exemption = tax.exemptions.dependent * allowed_dependents
         # (4): Medical expense deduction for itemizers.
         itemizes = tax_unit("tax_unit_itemizes", period)
         federal_medical_expense_deduction = tax_unit(

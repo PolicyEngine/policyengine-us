@@ -157,3 +157,138 @@
     # The child's 10,000 public pension, 4,000 tax-exempt pension and 3,000
     # Social Security are not the taxpayer's income and are not re-added.
     ma_scb_total_income: 52_600
+
+- name: 2025 single filer who can be claimed as a dependent, dependent exemption subtraction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        ma_gross_income: 10_000
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MA
+  output:
+    ma_scb_total_income: 10_000
+
+- name: 2025 joint return with one spouse who can be claimed, dependent exemption subtraction (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        ma_gross_income: 10_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    ma_scb_total_income: 10_000
+
+- name: 2025 joint return with one spouse who can be claimed, dependent exemption subtraction (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        ma_gross_income: 10_000
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MA
+  output:
+    ma_scb_total_income: 10_000
+
+- name: 2025 joint return with both spouses claimable, dependent exemption subtraction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        ma_gross_income: 10_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    ma_scb_total_income: 10_000
+
+- name: 2025 joint return with neither spouse claimable, dependent exemption subtraction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        ma_gross_income: 10_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    # $10,000 less one $1,000 dependent exemption.
+    ma_scb_total_income: 9_000

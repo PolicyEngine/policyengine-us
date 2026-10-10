@@ -343,3 +343,273 @@
     # income threshold: 48,300 * 0.10 = 4,830
     # credit: min(6,000 - 4,830, 2,820) = 1,170
     ma_senior_circuit_breaker: 1_170
+
+- name: 2025 joint return with one spouse who can be claimed, senior circuit breaker (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 70
+        rent: 6_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 70
+        rent: 6_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ma_scb_total_income: 10_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MA
+  output:
+    # c.62 s.6(k)(2): a claimant "65 years of age or older, who is not a
+    # dependent of another taxpayer". Rent $12,000 x 25% - $10,000 x 10% =
+    # $2,000, under the $2,820 maximum (senior_circuit_breaker parameters).
+    ma_senior_circuit_breaker: 2_000
+
+- name: 2025 joint return with one spouse who can be claimed, senior circuit breaker (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 70
+        rent: 6_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 70
+        rent: 6_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        ma_scb_total_income: 10_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MA
+  output:
+    ma_senior_circuit_breaker: 2_000
+
+- name: 2025 joint return with both spouses claimable, senior circuit breaker
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 70
+        rent: 6_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 70
+        rent: 6_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ma_scb_total_income: 10_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MA
+  output:
+    ma_senior_circuit_breaker: 0
+
+- name: 2025 joint return with neither spouse claimable, senior circuit breaker
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 70
+        rent: 6_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 70
+        rent: 6_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ma_scb_total_income: 10_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MA
+  output:
+    ma_senior_circuit_breaker: 2_000
+
+- name: 2025 single filer who can be claimed as a dependent, senior circuit breaker
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 70
+        rent: 12_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        ma_scb_total_income: 10_000
+    households:
+      household:
+        members: [person_a]
+        state_code: MA
+  output:
+    ma_senior_circuit_breaker: 0
+
+- name: 2025 single filer whom nobody can claim, senior circuit breaker
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 70
+        rent: 12_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        ma_scb_total_income: 10_000
+    households:
+      household:
+        members: [person_a]
+        state_code: MA
+  output:
+    ma_senior_circuit_breaker: 2_000
+
+- name: 2025 joint return where only the claimable spouse is 65 or older gets no senior circuit breaker (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 70
+        rent: 6_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 64
+        rent: 6_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ma_scb_total_income: 10_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MA
+  output:
+    # Neither spouse is both 65 or older and not a dependent.
+    ma_senior_circuit_breaker: 0
+
+- name: 2025 joint return where only the claimable spouse is 65 or older gets no senior circuit breaker (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 64
+        rent: 6_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 70
+        rent: 6_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        ma_scb_total_income: 10_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MA
+  output:
+    ma_senior_circuit_breaker: 0
+
+- name: 2025 joint return where the spouse who cannot be claimed is 65 or older gets the senior circuit breaker (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 64
+        rent: 6_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 70
+        rent: 6_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ma_scb_total_income: 10_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MA
+  output:
+    ma_senior_circuit_breaker: 2_000
+
+- name: 2025 joint return where the spouse who cannot be claimed is 65 or older gets the senior circuit breaker (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 70
+        rent: 6_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 64
+        rent: 6_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        ma_scb_total_income: 10_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MA
+  output:
+    ma_senior_circuit_breaker: 2_000

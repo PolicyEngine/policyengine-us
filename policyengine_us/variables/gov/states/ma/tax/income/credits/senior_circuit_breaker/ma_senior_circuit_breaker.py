@@ -17,12 +17,16 @@ class ma_senior_circuit_breaker(Variable):
     def formula(tax_unit, period, parameters):
         scb = parameters(period).gov.states.ma.tax.income.credits.senior_circuit_breaker
 
-        # Age-based eligibility.
+        # Age-based eligibility: c.62 s.6(k) requires a claimant who is 65 or
+        # older and "not a dependent of another taxpayer". On a joint return
+        # either spouse may be that claimant, so a spouse whom another
+        # taxpayer can claim does not bar the other spouse.
         person = tax_unit.members
         age = person("age", period)
         is_dependent = person("is_tax_unit_dependent", period)
+        dependent_elsewhere = person("claimed_as_dependent_on_another_return", period)
         aged = age >= scb.eligibility.min_age
-        meets_age_condition = tax_unit.any(~is_dependent & aged)
+        meets_age_condition = tax_unit.any(~is_dependent & ~dependent_elsewhere & aged)
 
         # Real-estate-based phase-in.
         real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])

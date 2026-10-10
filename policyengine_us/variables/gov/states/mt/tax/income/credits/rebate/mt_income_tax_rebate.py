@@ -40,4 +40,11 @@ class mt_income_tax_rebate(Variable):
             p.amount["SEPARATE"],
             p.amount[filing_status],
         )
-        return head_or_spouse * per_person_amount
+        # MCA 15-30-2191 leaves out an individual "who was claimed as a
+        # dependent by another taxpayer" for 2021. The statute defines
+        # eligibility per individual and is silent on a joint return where
+        # only one spouse was claimed, so the other spouse keeps their own
+        # column's share. The model reads its flag for whether another
+        # taxpayer can claim the person.
+        claimed = person("claimed_as_dependent_on_another_return", period)
+        return (head_or_spouse & ~claimed) * per_person_amount

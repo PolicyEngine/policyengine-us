@@ -1,0 +1,18 @@
+description: Massachusetts counts qualifying individuals under IRC Section 21 in its child and family tax credit if this is true; a dependent incapable of self-care is one even when the taxpayer can be claimed as a dependent, since Section 21(b)(1)(B) determines dependency without regard to Section 152(b)(1).
+values:
+  # The predecessor household credit for 2021 and 2022 covered only IRC
+  # Section 152 dependents; Chapter 50 of the Acts of 2023 added Section 21
+  # qualifying individuals from 2023.
+  2021-01-01: false
+  2023-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Massachusetts child and family tax credit counts Section 21 qualifying individuals
+  reference:
+    - title: Massachusetts General Laws Part I Title IX Chapter 62 Section 6 (x) (ii)
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section6
+    - title: Massachusetts Session Laws Chapter 50 of the Acts of 2023 Section 21
+      href: https://malegislature.gov/Laws/SessionLaws/Acts/2023/Chapter50
+    - title: IRC Section 21 (b) (1) (B)
+      href: https://www.law.cornell.edu/uscode/text/26/21#b_1_B

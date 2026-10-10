@@ -162,3 +162,309 @@
   output:
     # 30,600 + 2 * 1,600 = 33,800
     mn_standard_deduction: 33_800
+
+- name: 2025 joint return with one spouse who can be claimed, dependent standard deduction (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MN
+  output:
+    # Form M1 Worksheet for Line 4 - Dependent Standard Deduction, used
+    # "if someone can claim you, or your spouse if filing a joint
+    # return": greater of $1,250 or earned income $2,000 + $350,
+    # capped at $14,950.
+    mn_standard_deduction: 2_350
+
+- name: 2025 joint return with one spouse who can be claimed, dependent standard deduction (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MN
+  output:
+    mn_standard_deduction: 2_350
+
+- name: 2025 joint return with both spouses claimable, dependent standard deduction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MN
+  output:
+    mn_standard_deduction: 2_350
+
+- name: 2025 joint return with neither spouse claimable, dependent standard deduction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MN
+  output:
+    # Joint base amount (deductions/standard/base.yaml).
+    mn_standard_deduction: 29_900
+
+- name: 2025 single filer who can be claimed as a dependent, dependent standard deduction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: MN
+  output:
+    # max($1,250, $2,000 + $350) = $2,350
+    mn_standard_deduction: 2_350
+
+- name: 2025 single filer who can be claimed with no earnings gets the dependent floor
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 19
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: MN
+  output:
+    mn_standard_deduction: 1_250
+
+- name: 2024 single filer who can be claimed gets the 2024 floor
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 19
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: MN
+  output:
+    # max($1,300, $500 + $400) = $1,300 (2024 worksheet)
+    mn_standard_deduction: 1_300
+
+- name: 2021 single filer who can be claimed, dependent standard deduction
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 19
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: MN
+  output:
+    # max($1,100, $2,000 + $350) = $2,350 (2021 worksheet)
+    mn_standard_deduction: 2_350
+
+- name: 2025 joint return with one claimable spouse is capped at the single amount (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MN
+  output:
+    # Worksheet step 2 is the single amount for every filing status:
+    # min($20,000 + $350, $14,950) = $14,950.
+    mn_standard_deduction: 14_950
+
+- name: 2025 joint return with one claimable spouse is capped at the single amount (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MN
+  output:
+    mn_standard_deduction: 14_950
+
+- name: 2025 joint return with one claimable spouse adds the aged amount to the cap (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 70
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MN
+  output:
+    # Steps 3-5: one aged box x $1,550 (married) added to $14,950.
+    mn_standard_deduction: 16_500
+
+- name: 2025 joint return with one claimable spouse adds the aged amount to the cap (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 70
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MN
+  output:
+    mn_standard_deduction: 16_500

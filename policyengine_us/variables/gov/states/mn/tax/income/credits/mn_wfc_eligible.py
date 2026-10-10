@@ -9,6 +9,7 @@ class mn_wfc_eligible(Variable):
     reference = (
         "https://www.revisor.mn.gov/statutes/2021/cite/290.0671",
         "https://www.revisor.mn.gov/statutes/cite/290.0671",
+        "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii",
     )
     defined_for = StateCode.MN
 
@@ -22,7 +23,14 @@ class mn_wfc_eligible(Variable):
         max_age = p.wfc.eligible.childless_adult_age.maximum
         in_age_range = (age >= min_age) & (age <= max_age)
         age_eligible = in_age_range & ~person("is_tax_unit_dependent", period)
-        demographic_eligible = has_child | tax_unit.any(age_eligible)
+        # Minn. Stat. 290.0671 subd. 1 allows the credit to an individual
+        # eligible for the federal credit under IRC 32, whose childless route
+        # requires that the filer "is not a dependent for whom a deduction
+        # under section 151 is allowable to another taxpayer"; on a joint
+        # return, neither spouse may be (IRS Publication 596).
+        dependent_elsewhere = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        childless_eligible = tax_unit.any(age_eligible) & ~dependent_elsewhere
+        demographic_eligible = has_child | childless_eligible
         # determine investment income eligibility using federal EITC rules
         invinc_eligible = tax_unit("eitc_investment_income_eligible", period)
         # determine if tax unit has separate filing status

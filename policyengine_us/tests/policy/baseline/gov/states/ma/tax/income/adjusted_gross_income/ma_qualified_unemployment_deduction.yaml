@@ -108,3 +108,175 @@
         state_code: MA
   output:
     ma_qualified_unemployment_deduction: 0
+
+- name: 2021 joint return with one spouse who can be claimed, qualified unemployment deduction household size (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        unemployment_compensation: 10_200
+        employment_income: 14_900
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 14_900
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    # Worksheet: "Number of Dependents claimed" is none with a claimable
+    # spouse, so the limit is $25,520 + $8,960 = $34,480, under household
+    # income $40,000.
+    ma_qualified_unemployment_deduction: 0
+
+- name: 2021 joint return with one spouse who can be claimed, qualified unemployment deduction household size (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 14_900
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        unemployment_compensation: 10_200
+        employment_income: 14_900
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MA
+  output:
+    ma_qualified_unemployment_deduction: 0
+
+- name: 2021 joint return with both spouses claimable, qualified unemployment deduction household size
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        unemployment_compensation: 10_200
+        employment_income: 14_900
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 14_900
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    ma_qualified_unemployment_deduction: 0
+
+- name: 2021 joint return with neither spouse claimable, qualified unemployment deduction household size
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        unemployment_compensation: 10_200
+        employment_income: 14_900
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 14_900
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    # Limit $25,520 + 2 x $8,960 = $43,440; $10,200 deducted.
+    ma_qualified_unemployment_deduction: 10_200
+
+- name: 2021 single filer who can be claimed as a dependent, qualified unemployment deduction household size
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        unemployment_compensation: 10_200
+        employment_income: 19_800
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MA
+  output:
+    # Limit $25,520 for one person, under income $30,000.
+    ma_qualified_unemployment_deduction: 0
+
+- name: 2021 single filer whom nobody can claim, qualified unemployment deduction household size
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        unemployment_compensation: 10_200
+        employment_income: 19_800
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MA
+  output:
+    # Limit $25,520 + $8,960 = $34,480.
+    ma_qualified_unemployment_deduction: 10_200

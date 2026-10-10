@@ -45,3 +45,131 @@
     tax_unit_stillborn_children: 1
   output:
     ne_stillborn_credit: 0
+
+- name: 2025 single filer who can be claimed as a dependent, stillborn child credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        tax_unit_stillborn_children: 1
+    households:
+      household:
+        members: [person_a]
+        state_code: NE
+  output:
+    ne_stillborn_credit: 0
+
+- name: 2025 joint return with one spouse who can be claimed, stillborn child credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 25
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        tax_unit_stillborn_children: 1
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NE
+  output:
+    # Neb. Rev. Stat. 77-2715.07: the child must have been "a
+    # dependent of the individual claiming the credit"; a joint return
+    # with a claimable spouse has no dependents (IRC 152(b)(1)).
+    ne_stillborn_credit: 0
+
+- name: 2025 joint return with one spouse who can be claimed, stillborn child credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 25
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 25
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        tax_unit_stillborn_children: 1
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NE
+  output:
+    ne_stillborn_credit: 0
+
+- name: 2025 joint return with both spouses claimable, stillborn child credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 25
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        tax_unit_stillborn_children: 1
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NE
+  output:
+    ne_stillborn_credit: 0
+
+- name: 2025 joint return with neither spouse claimable, stillborn child credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 25
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 25
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        tax_unit_stillborn_children: 1
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NE
+  output:
+    # One stillborn child: $2,000 (credits/stillborn.yaml).
+    ne_stillborn_credit: 2_000

@@ -49,3 +49,265 @@
         state_code: MN
   output:
     mn_cdcc_dependent_count: 0
+
+- name: 2025 single filer who can be claimed as a dependent, child under 13
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MN
+  output:
+    # Schedule M1CD counts "your dependent child who is younger than
+    # 13" (IRC 21(b)(1)(A)); a return with a claimable filer has no
+    # dependents (IRC 152(b)(1)).
+    mn_cdcc_dependent_count: 0
+
+- name: 2025 joint return with one spouse who can be claimed, child under 13 (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MN
+  output:
+    mn_cdcc_dependent_count: 0
+
+- name: 2025 joint return with one spouse who can be claimed, child under 13 (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MN
+  output:
+    mn_cdcc_dependent_count: 0
+
+- name: 2025 joint return with both spouses claimable, child under 13
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MN
+  output:
+    mn_cdcc_dependent_count: 0
+
+- name: 2025 joint return with neither spouse claimable, child under 13
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MN
+  output:
+    mn_cdcc_dependent_count: 1
+
+- name: 2025 joint return with one claimable spouse still counts a dependent incapable of self-care (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 60
+        is_incapable_of_self_care: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, parent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, parent]
+        state_code: MN
+  output:
+    # IRC 21(b)(1)(B) determines dependency "without regard to
+    # subsections (b)(1), (b)(2), and (d)(1)(B)" of section 152.
+    mn_cdcc_dependent_count: 1
+
+- name: 2025 joint return with one claimable spouse still counts a dependent incapable of self-care (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 60
+        is_incapable_of_self_care: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, parent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, parent]
+        state_code: MN
+  output:
+    mn_cdcc_dependent_count: 1
+
+- name: 2025 joint return counts a spouse incapable of self-care (the incapable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_000
+        is_incapable_of_self_care: true
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MN
+  output:
+    # IRC 21(b)(1)(C), whichever spouse is labelled head.
+    mn_cdcc_dependent_count: 1
+
+- name: 2025 joint return counts a spouse incapable of self-care (the incapable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 2_000
+        is_incapable_of_self_care: true
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MN
+  output:
+    mn_cdcc_dependent_count: 1

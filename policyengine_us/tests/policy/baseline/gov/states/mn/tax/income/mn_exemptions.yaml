@@ -52,3 +52,145 @@
   output:
     # Tax Year 2026 Inflation-Adjusted Amounts, page 1: dependent exemption $5,300.
     mn_exemptions: 2 * 5_300
+
+- name: 2025 single filer who can be claimed as a dependent, dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MN
+  output:
+    # Minn. Stat. 290.0121: dependents "as defined in sections 151 and
+    # 152"; a return with a claimable filer has none, and Form M1 says
+    # to leave line 5 blank.
+    mn_exemptions: 0
+
+- name: 2025 joint return with one spouse who can be claimed, dependent exemption (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MN
+  output:
+    mn_exemptions: 0
+
+- name: 2025 joint return with one spouse who can be claimed, dependent exemption (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MN
+  output:
+    mn_exemptions: 0
+
+- name: 2025 joint return with both spouses claimable, dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MN
+  output:
+    mn_exemptions: 0
+
+- name: 2025 joint return with neither spouse claimable, dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MN
+  output:
+    # One dependent, low AGI: $5,200 (exemptions/amount.yaml).
+    mn_exemptions: 5_200

@@ -17,7 +17,14 @@ class ma_income_tax_exemption_threshold(Variable):
 
     def formula(tax_unit, period, parameters):
         filing_status = tax_unit("ma_filing_status", period)
-        dependents = tax_unit("tax_unit_dependents", period)
+        # Section 5 counts the dependent exemptions allowed under section
+        # 3(B)(b)(3), which a return with a filer whom another taxpayer can
+        # claim does not have (IRC 152(b)(1)).
+        dependents = where(
+            tax_unit("head_or_spouse_is_dependent_elsewhere", period),
+            0,
+            tax_unit("tax_unit_dependents", period),
+        )
         tax = parameters(period).gov.states.ma.tax.income
         exempt_status = tax.exempt_status.limit
         personal_exemptions_added = (

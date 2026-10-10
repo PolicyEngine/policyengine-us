@@ -95,3 +95,129 @@
     utilities_included_in_rent: false
   output: # 1_662 + (7 - 6) * 212 - 30_000 * 0.035
     mi_standard_home_heating_credit: 824
+
+- name: 2025 single filer who can be claimed as a dependent, home heating standard credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        mi_household_resources: 10_000
+    households:
+      household:
+        members: [person_a]
+        state_code: MI
+  output:
+    mi_standard_home_heating_credit: 254
+
+- name: 2025 joint return with one spouse who can be claimed, home heating standard credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        mi_household_resources: 10_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MI
+  output:
+    # Table A: $604 for 0 or 1 exemptions less 3.5% of $10,000 = $254.
+    mi_standard_home_heating_credit: 254
+
+- name: 2025 joint return with one spouse who can be claimed, home heating standard credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        mi_household_resources: 10_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MI
+  output:
+    mi_standard_home_heating_credit: 254
+
+- name: 2025 joint return with both spouses claimable, home heating standard credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        mi_household_resources: 10_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MI
+  output:
+    mi_standard_home_heating_credit: 254
+
+- name: 2025 joint return with neither spouse claimable, home heating standard credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        mi_household_resources: 10_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MI
+  output:
+    # Table A: $815 for 2 exemptions less $350 = $465.
+    mi_standard_home_heating_credit: 465

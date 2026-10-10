@@ -137,3 +137,151 @@
     # Age-2 child qualifies via § 77-7203(1)(a) child care pathway;
     # age-11 fails the § 77-7202 age ceiling regardless.
     ne_refundable_ctc: 2_000
+
+- name: 2025 single filer who can be claimed as a dependent, child care refundable credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, child]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 0
+
+- name: 2025 joint return with one spouse who can be claimed, child care refundable credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NE
+  output:
+    # Neb. Rev. Stat. 77-7202(5): a parent or guardian "claims a child
+    # as a dependent for federal income tax purposes", which a joint
+    # return with a claimable spouse cannot (IRC 152(b)(1)).
+    ne_refundable_ctc: 0
+
+- name: 2025 joint return with one spouse who can be claimed, child care refundable credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 0
+
+- name: 2025 joint return with both spouses claimable, child care refundable credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NE
+  output:
+    ne_refundable_ctc: 0
+
+- name: 2025 joint return with neither spouse claimable, child care refundable credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 5_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NE
+  output:
+    # One child aged 5 or under, household income $10,000: $2,000
+    # (ctc/refundable/amount.yaml).
+    ne_refundable_ctc: 2_000

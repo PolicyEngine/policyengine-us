@@ -63,3 +63,195 @@
         state_code: MN
   output:
     mn_wfc_eligible: false  # US EITC property income eligibility rules apply
+
+- name: 2025 joint return with one spouse who can be claimed, working family credit without a qualifying child (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MN
+  output:
+    # Minn. Stat. 290.0671 subd. 1 requires eligibility for the IRC 32
+    # credit, whose childless route requires that neither spouse can be
+    # claimed as a dependent (IRC 32(c)(1)(A)(ii)(III); Pub. 596).
+    mn_wfc_eligible: false
+
+- name: 2025 joint return with one spouse who can be claimed, working family credit without a qualifying child (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MN
+  output:
+    mn_wfc_eligible: false
+
+- name: 2025 joint return with both spouses claimable, working family credit without a qualifying child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MN
+  output:
+    mn_wfc_eligible: false
+
+- name: 2025 joint return with neither spouse claimable, working family credit without a qualifying child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MN
+  output:
+    mn_wfc_eligible: true
+
+- name: 2025 single filer who can be claimed as a dependent, working family credit without a qualifying child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: MN
+  output:
+    mn_wfc_eligible: false
+
+- name: 2025 joint return with one claimable spouse and a qualifying child stays eligible (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MN
+  output:
+    # IRC 32 bars a dependent filer only on the childless route;
+    # Schedule M1CWFC's blanket "You are not a dependent of another
+    # person" is the alternative reading queued for review.
+    mn_wfc_eligible: true
+
+- name: 2025 joint return with one claimable spouse and a qualifying child stays eligible (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MN
+  output:
+    mn_wfc_eligible: true

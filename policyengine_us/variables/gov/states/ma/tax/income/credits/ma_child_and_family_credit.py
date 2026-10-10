@@ -47,7 +47,20 @@ class ma_child_and_family_credit(Variable):
         # captured by the age or disability conditions. Household-level (web
         # app) calculations honor the user-supplied value and are unaffected.
         incapable = person("is_incapable_of_self_care", period)
-        eligible_dependent = dependent & (child | elderly | disabled | incapable)
+        # Section 6(x) counts a child under 13 "who qualifies for exemption as
+        # a dependent under section 151" and a person 65 or older or disabled
+        # who "qualifies as a dependent under section 152". Under IRC
+        # 152(b)(1) a return on which the filer, or on a joint return either
+        # spouse, can be claimed as a dependent has no such dependents. From
+        # 2023 a dependent incapable of self-care also counts as a Section 21
+        # qualifying individual, whose dependency ignores 152(b)(1); the
+        # 2021-2022 household credit covered only Section 152 dependents.
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependency_route = (
+            child | elderly | disabled | incapable
+        ) & ~filer_is_dependent
+        section_21_route = incapable & p.section_21_qualifying_individuals
+        eligible_dependent = dependent & (dependency_route | section_21_route)
         count_eligible_dependents = tax_unit.sum(eligible_dependent)
         # A spouse incapable of self-care is a qualifying individual under
         # IRC Section 21(b)(1)(C), incorporated by M.G.L. c. 62

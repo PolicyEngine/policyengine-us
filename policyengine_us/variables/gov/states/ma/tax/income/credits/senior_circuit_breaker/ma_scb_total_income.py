@@ -33,9 +33,13 @@ class ma_scb_total_income(Variable):
         age = person("age", period)
         count_aged = tax_unit.sum(~dependent & (age >= tax.exemptions.aged.age))
         aged_exemption = tax.exemptions.aged.amount * count_aged
-        # (3): Dependent exemptions.
+        # (3): Dependent exemptions, as allowed under section 3(B)(b)(3):
+        # none on a return with a filer whom another taxpayer can claim (IRC
+        # 152(b)(1)).
         count_dependents = tax_unit("tax_unit_dependents", period)
-        dependent_exemption = tax.exemptions.dependent * count_dependents
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        allowed_dependents = where(filer_is_dependent, 0, count_dependents)
+        dependent_exemption = tax.exemptions.dependent * allowed_dependents
         exemptions = blind_exemption + aged_exemption + dependent_exemption
 
         return max_(0, ma_gross_income + disallowed_deductions - exemptions)

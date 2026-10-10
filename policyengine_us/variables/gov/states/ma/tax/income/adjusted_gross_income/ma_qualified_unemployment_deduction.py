@@ -20,12 +20,15 @@ class ma_qualified_unemployment_deduction(Variable):
         if not p.in_effect:
             return 0
         # Worksheet lines 1-4: household size is 2 if married filing jointly,
-        # otherwise 1, plus dependents.
-        size = (
-            1
-            + tax_unit("tax_unit_is_joint", period)
-            + tax_unit("tax_unit_dependents", period)
+        # otherwise 1, plus the number of dependents claimed, which is none on
+        # a return with a filer whom another taxpayer can claim (IRC
+        # 152(b)(1)).
+        dependents = where(
+            tax_unit("head_or_spouse_is_dependent_elsewhere", period),
+            0,
+            tax_unit("tax_unit_dependents", period),
         )
+        size = 1 + tax_unit("tax_unit_is_joint", period) + dependents
         limit = p.income_limit.base + (size - 1) * p.income_limit.additional_person
         # Lines 5-9: federal AGI + tax-exempt interest + untaxed social security.
         untaxed_social_security = tax_unit(

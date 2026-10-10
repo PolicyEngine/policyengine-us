@@ -1,0 +1,36 @@
+description: Minnesota limits the standard deduction of a filer who can be claimed as a dependent, or of a joint return on which either spouse can be, to the greater of the dependent floor or earned income plus this amount.
+values:
+  2021-01-01: 350
+  2022-01-01: 350
+  2023-01-01: 350
+  2024-01-01: 400
+  2025-01-01: 350
+  2026-01-01: 350
+metadata:
+  unit: currency-USD
+  period: year
+  label: Minnesota dependent standard deduction earned income addition
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  reference:
+    - title: Minnesota Statutes 290.0123, Subd. 3 (dependents) and Subd. 6 (inflation adjustment)
+      href: https://www.revisor.mn.gov/statutes/cite/290.0123
+    - title: 2021 Form M1 instructions, Worksheet for Line 4 — Dependent Standard Deduction
+      href: https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_inst_21.pdf#page=12
+    - title: 2022 Form M1 instructions, Worksheet for Line 4 — Dependent Standard Deduction
+      href: https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-22.pdf#page=12
+    - title: 2023 Form M1 instructions, Worksheet for Line 4 — Dependent Standard Deduction
+      href: https://www.revenue.state.mn.us/sites/default/files/2025-06/m1-inst-23.pdf#page=13
+    - title: 2024 Form M1 instructions, Worksheet for Line 4 — Dependent Standard Deduction
+      href: https://www.revenue.state.mn.us/sites/default/files/2026-01/m1-inst-24.pdf#page=13
+    - title: Minnesota Department of Revenue, Inflation Adjusted Amounts, Tax Year 2024, 290.0123 Subd. 3
+      href: https://www.revenue.state.mn.us/sites/default/files/2023-12/inflation-adjusted-amounts-ty-2024.pdf#page=1
+    - title: 2025 Form M1 instructions, Worksheet for Line 4 — Dependent Standard Deduction (archived copy)
+      href: https://taxsim.nber.org/historical_state_tax_forms/MN/2025/m1-inst-25_0.pdf#page=13
+    - title: Minnesota Department of Revenue, Inflation Adjusted Amounts for 2025, 290.0123 Subd. 3
+      href: https://www.revenue.state.mn.us/sites/default/files/2024-12/inflation-adjusted-amounts-2025.pdf#page=1
+    - title: Minnesota Department of Revenue, Inflation Adjusted Amounts for 2026, 290.0123 Subd. 3
+      href: https://www.revenue.state.mn.us/sites/default/files/2025-12/inflation-adjusted-amounts-2026.pdf#page=1

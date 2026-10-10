@@ -686,3 +686,171 @@
     # CTC 1 x 1,750 + WFC 4% x 9,480 = 379.20; income 22,000 is under
     # the 31,950 phase-out threshold. Main gives 0.
     mn_child_and_working_families_credits: 2_129.20
+
+- name: 2025 joint return with one spouse who can be claimed, child and working families credits without a qualifying child (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MN
+  output:
+    mn_child_and_working_families_credits: 0
+
+- name: 2025 joint return with one spouse who can be claimed, child and working families credits without a qualifying child (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MN
+  output:
+    mn_child_and_working_families_credits: 0
+
+- name: 2025 joint return with both spouses claimable, child and working families credits without a qualifying child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MN
+  output:
+    mn_child_and_working_families_credits: 0
+
+- name: 2025 joint return with neither spouse claimable, child and working families credits without a qualifying child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MN
+  output:
+    # Earned income $2,000 x 4% (cwfc/wfc/phase_in.yaml) = $80.
+    mn_child_and_working_families_credits: 80
+
+- name: 2025 joint return with one claimable spouse and a qualifying child keeps the credits (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MN
+  output:
+    # $1,750 child credit (cwfc/ctc/amount.yaml) + $2,000 x 4%.
+    mn_child_and_working_families_credits: 1_830
+
+- name: 2025 joint return with one claimable spouse and a qualifying child keeps the credits (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MN
+  output:
+    mn_child_and_working_families_credits: 1_830

@@ -640,3 +640,499 @@
     # 1 x 440 (2024 amount) = 440. Pins no double-count across the OR-branches.
     # notes: Suggestion 7b - incapable dependent under 13, no double-count.
     ma_child_and_family_credit: 440
+
+- name: 2025 single filer who can be claimed as a dependent, child under 13
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MA
+  output:
+    # c.62 s.6(x)(i): a child under 13 "who qualifies for exemption as
+    # a dependent under section 151", which a claimable filer cannot
+    # have (IRC 152(b)(1)).
+    ma_child_and_family_credit: 0
+
+- name: 2025 joint return with one spouse who can be claimed, child under 13 (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    ma_child_and_family_credit: 0
+
+- name: 2025 joint return with one spouse who can be claimed, child under 13 (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MA
+  output:
+    ma_child_and_family_credit: 0
+
+- name: 2025 joint return with both spouses claimable, child under 13
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    ma_child_and_family_credit: 0
+
+- name: 2025 joint return with neither spouse claimable, child under 13
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    # One child: $440 (child_and_family/amount.yaml).
+    ma_child_and_family_credit: 440
+
+- name: 2025 single filer who can be claimed as a dependent, child incapable of self-care
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MA
+  output:
+    # c.62 s.6(x)(ii): an IRC 21 qualifying individual; 21(b)(1)(B)
+    # determines dependency "without regard to subsections (b)(1)".
+    ma_child_and_family_credit: 440
+
+- name: 2025 joint return with one spouse who can be claimed, child incapable of self-care (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    ma_child_and_family_credit: 440
+
+- name: 2025 joint return with one spouse who can be claimed, child incapable of self-care (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MA
+  output:
+    ma_child_and_family_credit: 440
+
+- name: 2025 joint return with both spouses claimable, child incapable of self-care
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    ma_child_and_family_credit: 440
+
+- name: 2025 joint return with one spouse who can be claimed, dependent parent aged 66 (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, parent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, parent]
+        state_code: MA
+  output:
+    # c.62 s.6(x)(iii): 65 or older and "qualifies as a dependent under
+    # section 152".
+    ma_child_and_family_credit: 0
+
+- name: 2025 joint return with one spouse who can be claimed, dependent parent aged 66 (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, parent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, parent]
+        state_code: MA
+  output:
+    ma_child_and_family_credit: 0
+
+- name: 2025 joint return with neither spouse claimable, dependent parent aged 66
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, parent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, parent]
+        state_code: MA
+  output:
+    ma_child_and_family_credit: 440
+
+- name: 2022 joint return with one spouse who can be claimed, household credit for a child under 12 (the claimable spouse is the head)
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    ma_child_and_family_credit: 0
+
+- name: 2022 joint return with one spouse who can be claimed, household credit for a child under 12 (the claimable spouse is the spouse)
+  period: 2022
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MA
+  output:
+    ma_child_and_family_credit: 0
+
+- name: 2022 joint return with neither spouse claimable, household credit for a child under 12
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    # One dependent: $180 (child_and_family/amount.yaml).
+    ma_child_and_family_credit: 180
+
+- name: 2022 joint return with one spouse who can be claimed, household credit for a child incapable of self-care (the claimable spouse is the head)
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MA
+  output:
+    # The 2021-2022 credit covered only IRC 152 dependents; IRC 21
+    # qualifying individuals were added for 2023.
+    ma_child_and_family_credit: 0
+
+- name: 2022 joint return with one spouse who can be claimed, household credit for a child incapable of self-care (the claimable spouse is the spouse)
+  period: 2022
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MA
+  output:
+    ma_child_and_family_credit: 0
