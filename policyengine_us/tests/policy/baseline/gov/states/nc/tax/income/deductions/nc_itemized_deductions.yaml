@@ -45,3 +45,40 @@
     state_code: NC
   output:
     nc_itemized_deductions: 14_000
+
+- name: Spouses filing separately share the $20,000 mortgage and property tax limitation
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+        employment_income: 90_000
+        home_mortgage_interest: 15_000
+      spouse2:
+        age: 45
+        employment_income: 90_000
+        home_mortgage_interest: 15_000
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        charitable_deduction: 5_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        charitable_deduction: 5_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # G.S. 105-153.5(a)(2)b: $20,000 for both spouses combined, prorated by
+    # the 50% each paid, so $10,000 each, plus $5,000 of charity.
+    nc_itemized_deductions: [15_000, 15_000]
+    # $15,000 exceeds the $12,750 standard deduction for a separate return.
+    nc_taxable_income: [75_000, 75_000]
+    # 4.5% in 2024.
+    nc_income_tax: [3_375, 3_375]

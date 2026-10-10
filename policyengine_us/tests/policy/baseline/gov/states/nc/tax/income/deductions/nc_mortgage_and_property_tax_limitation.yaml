@@ -1,0 +1,459 @@
+# N.C. Gen. Stat. 105-153.5(a)(2)b and the D-401 instructions for Form D-400
+# Schedule A line 4: "For spouses filing as married filing separately or
+# married filing jointly, the total mortgage interest and real estate taxes
+# claimed by both spouses combined may not exceed $20,000." Above $20,000 the
+# spouses' amounts "must be prorated based on the percentage paid by each
+# spouse", and "for joint obligations paid from joint accounts, the proration
+# is based on the income reported by each spouse".
+# Spouses filing separately are two tax units linked by an explicit marital
+# unit. Unless a case says otherwise, the amounts before limitation (line 3)
+# are inputs.
+
+- name: A single filer's limitation is $20,000
+  period: 2024
+  input:
+    filing_status: SINGLE
+    nc_mortgage_and_property_tax_before_limitation: 25_000
+    state_code: NC
+  output:
+    nc_mortgage_and_property_tax_limitation: 20_000
+
+- name: A joint return has one $20,000 limitation for both spouses
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+      spouse2:
+        age: 45
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+        filing_status: JOINT
+        nc_mortgage_and_property_tax_before_limitation: 30_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    nc_mortgage_and_property_tax_limitation: 20_000
+
+- name: Spouses filing separately who each paid $15,000 share the limitation equally
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+      spouse2:
+        age: 45
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # $30,000 combined exceeds $20,000: each paid 50%, so $20,000 x 50%.
+    nc_mortgage_and_property_tax_limitation: [10_000, 10_000]
+
+- name: Spouses filing separately with unequal payments prorate the limitation by the share each paid
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+      spouse2:
+        age: 45
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 18_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 6_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # $24,000 combined: $20,000 x 18/24 = $15,000 and $20,000 x 6/24 = $5,000.
+    nc_mortgage_and_property_tax_limitation: [15_000, 5_000]
+
+- name: Spouses filing separately keep the full limitation when their combined amounts are below $20,000
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+      spouse2:
+        age: 45
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 8_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 7_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # $15,000 combined does not exceed $20,000, so nothing is prorated.
+    nc_mortgage_and_property_tax_limitation: [20_000, 20_000]
+
+- name: Spouses filing separately whose combined amounts equal $20,000 are not prorated
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+      spouse2:
+        age: 45
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 12_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 8_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # Proration applies only when the combined amount "exceeds" $20,000.
+    nc_mortgage_and_property_tax_limitation: [20_000, 20_000]
+
+- name: Joint obligations paid from a joint account prorate the limitation by each spouse's income
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+      spouse2:
+        age: 45
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+        mortgage_and_real_estate_taxes_paid_from_joint_account: true
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+        adjusted_gross_income: 120_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # Income shares 120/160 = 75% and 40/160 = 25% of $20,000.
+    nc_mortgage_and_property_tax_limitation: [15_000, 5_000]
+
+- name: Joint-account proration gives no share to a spouse with negative income
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+      spouse2:
+        age: 45
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+        mortgage_and_real_estate_taxes_paid_from_joint_account: true
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+        adjusted_gross_income: -10_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+        adjusted_gross_income: 60_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # Income below zero counts as zero: shares 0/60,000 and 60,000/60,000.
+    nc_mortgage_and_property_tax_limitation: [0, 20_000]
+
+- name: Joint-account proration is equal when neither spouse has income
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+      spouse2:
+        age: 45
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+        mortgage_and_real_estate_taxes_paid_from_joint_account: true
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 18_000
+        adjusted_gross_income: 0
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 6_000
+        adjusted_gross_income: 0
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    nc_mortgage_and_property_tax_limitation: [10_000, 10_000]
+
+- name: A joint account changes nothing when the combined amounts are below $20,000
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+      spouse2:
+        age: 45
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+        mortgage_and_real_estate_taxes_paid_from_joint_account: true
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 8_000
+        adjusted_gross_income: 150_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 7_000
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    nc_mortgage_and_property_tax_limitation: [20_000, 20_000]
+
+- name: The proration uses each spouse's allowed property taxes, not taxes above the federal cap
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+        home_mortgage_interest: 10_000
+        # Only $5,000 is allowed under section 164 on a separate return.
+        real_estate_taxes: 9_000
+      spouse2:
+        age: 45
+        home_mortgage_interest: 10_000
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # Line 3 is $10,000 + $5,000 = $15,000 and $10,000; $25,000 combined.
+    # $20,000 x 15/25 = $12,000 and $20,000 x 10/25 = $8,000.
+    nc_mortgage_and_property_tax_before_limitation: [15_000, 10_000]
+    nc_mortgage_and_property_tax_limitation: [12_000, 8_000]
+
+- name: A spouse with a dependent on their separate return still shares the limitation
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+      spouse2:
+        age: 43
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+      child_unit:
+        members: [child]
+    tax_units:
+      tax_unit1:
+        members: [spouse1, child]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+    households:
+      household:
+        members: [spouse1, spouse2, child]
+        state_code: NC
+  output:
+    nc_mortgage_and_property_tax_limitation: [10_000, 10_000]
+
+- name: A separate filer whose spouse is not in the simulation keeps the $20,000 limitation
+  period: 2024
+  input:
+    filing_status: SEPARATE
+    nc_mortgage_and_property_tax_before_limitation: 25_000
+    state_code: NC
+  output:
+    # The spouse's amount is unknown, so none is counted against the cap.
+    nc_mortgage_and_property_tax_limitation: 20_000
+
+- name: Two separate filers alone in a simulation without marital units are read as spouses
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 45
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # Both share the default marital unit, and married people filing
+    # separately must both file separately, so the two are spouses.
+    nc_mortgage_and_property_tax_limitation: [10_000, 10_000]
+
+- name: A separate filer does not share the limitation with an unrelated single filer
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 45
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SINGLE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+    households:
+      household1:
+        members: [person1]
+        state_code: NC
+      household2:
+        members: [person2]
+        state_code: NC
+  output:
+    nc_mortgage_and_property_tax_limitation: [20_000, 20_000]
+
+- name: Separate filers in a default marital unit of three people do not share the limitation
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 45
+      person3:
+        age: 45
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+      tax_unit3:
+        members: [person3]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NC
+  output:
+    # A default unit of three cannot identify a spouse.
+    nc_mortgage_and_property_tax_limitation: [20_000, 20_000, 20_000]
+
+- name: Spouses filing separately share the limitation in 2026
+  period: 2026
+  input:
+    people:
+      spouse1:
+        age: 45
+      spouse2:
+        age: 45
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 30_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 10_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # $40,000 combined: $20,000 x 30/40 and $20,000 x 10/40.
+    nc_mortgage_and_property_tax_limitation: [15_000, 5_000]
