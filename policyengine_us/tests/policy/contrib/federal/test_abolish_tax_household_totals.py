@@ -64,8 +64,14 @@ REFORM_IDS = {
 }
 
 
+# Copied at import, before any test applies a reform, so a reform that edited
+# the default system's lists in place could not also move what they are
+# compared with.
+BASELINE_ADDS = {total: tuple(system.variables[total].adds) for total in TOTALS}
+
+
 def baseline_adds(total):
-    return list(system.variables[total].adds)
+    return list(BASELINE_ADDS[total])
 
 
 def reformed_adds(*reforms):
@@ -155,12 +161,12 @@ def test_parameter_switches_on_the_same_reform(factory, flag, reform):
     assert reformed_adds(switched_on) == expected_adds(reform)
 
 
-def test_reforms_leave_the_baseline_totals_unchanged():
-    before = {total: baseline_adds(total) for total in TOTALS}
+def test_reforms_leave_the_default_system_unchanged():
     variables = {total: system.variables[total] for total in TOTALS}
     reformed_adds(abolish_federal_income_tax, abolish_payroll_tax)
-    assert {total: baseline_adds(total) for total in TOTALS} == before
-    assert all(system.variables[total] is variables[total] for total in TOTALS)
+    for total in TOTALS:
+        assert system.variables[total] is variables[total]
+        assert system.variables[total].adds == baseline_adds(total)
 
 
 def test_exclude_from_total_rejects_a_total_without_an_adds_list():
