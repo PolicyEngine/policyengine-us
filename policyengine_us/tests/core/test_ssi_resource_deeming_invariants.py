@@ -311,3 +311,30 @@ def test_deemed_resources_are_nonnegative(resource_grids):
         for name, amounts in snapshot["deemed"].items():
             assert np.all(np.isfinite(amounts)), name
             assert np.all(amounts >= 0), name
+
+
+def test_resource_test_does_not_compute_filing_status():
+    """SSI eligibility must not depend on the tax-filing chain.
+
+    Deeming establishes a parent's spouse from tax-unit roles, not from
+    filing_status, whose formula reaches dependents' gross income and
+    retirement-contribution limits that do not exist in every year.
+    """
+    situation = {
+        "people": {
+            "parent": {"age": 40, "bank_account_assets": 5_000},
+            "stepparent": {"age": 41},
+            "child": {"age": 8, "is_blind": True},
+        },
+        "tax_units": {"tax_unit": {"members": ["parent", "stepparent", "child"]}},
+        "marital_units": {
+            "couple": {"members": ["parent", "stepparent"]},
+            "child_unit": {"members": ["child"]},
+        },
+        "families": {"family": {"members": ["parent", "stepparent", "child"]}},
+        "spm_units": {"spm_unit": {"members": ["parent", "stepparent", "child"]}},
+        "households": {"household": {"members": ["parent", "stepparent", "child"]}},
+    }
+    simulation = Simulation(situation=situation)
+    simulation.calculate("meets_ssi_resource_test", PERIOD)
+    assert simulation.get_holder("filing_status").get_known_periods() == []

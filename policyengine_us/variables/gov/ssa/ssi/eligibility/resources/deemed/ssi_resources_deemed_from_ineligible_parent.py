@@ -10,8 +10,10 @@ def _ssi_established_spouse_indices(person, period, first, second):
     """Rows of established co-resident spouses, with the Medicaid bound.
 
     As in _medicaid_parents, marriage is shown by the other head/spouse of
-    a joint return, or a two-person marital unit with cohabitating_spouses
-    on either tax unit. A marital unit alone is insufficient: situations
+    a married tax unit, or a two-person marital unit with cohabitating_spouses
+    on either tax unit. tax_unit_married is exactly when filing_status is
+    JOINT; reading filing_status would pull the tax-filing chain (dependents,
+    gross income, retirement-contribution limits) into SSI eligibility. A marital unit alone is insufficient: situations
     omitting marital units put everyone in one. Parent-child links exclude
     candidates even when tax roles suggest marriage; ambiguous candidates
     resolve to no spouse. Apply this test to each named parent, without
@@ -19,7 +21,7 @@ def _ssi_established_spouse_indices(person, period, first, second):
     """
     head_or_spouse = person("is_tax_unit_head_or_spouse", period)
     tax_unit = person.tax_unit.reference_entity.members_entity_id
-    joint = head_or_spouse & (person.tax_unit("head_spouse_count", period) == 2)
+    joint = head_or_spouse & person.tax_unit("tax_unit_married", period)
     married = person.marital_unit.nb_persons() == 2
     marital_unit = person.marital_unit.reference_entity.members_entity_id
     cohabiting = person.tax_unit("cohabitating_spouses", period)
