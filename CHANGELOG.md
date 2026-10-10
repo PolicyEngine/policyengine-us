@@ -1,3 +1,10 @@
+## [2.38.5] - 2026-10-10
+
+### Fixed
+
+- Correct California itemized deductions to retain its charitable contribution limits without the federal charitable floor, allow miscellaneous expenses above 2% of federal AGI, and add back the California miscellaneous deduction for alternative minimum tax. Preserve signed California taxable income before AMT add-backs so deductions exceeding income do not inflate alternative minimum taxable income.
+
+
 ## [2.38.4] - 2026-10-09
 
 ### Fixed
