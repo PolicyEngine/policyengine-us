@@ -29,9 +29,9 @@ one simulation per case. The tests check:
 7. With the OBBB structure switched off in 2026 (the prior-law counterfactual),
    the pre-2026 worksheet logic applies with the 2026 applicable amounts.
 
-Gambling losses are deducted outside total_itemized_taxable_income_deductions
-(wagering_losses_deduction), so they never enter the limited base; they are
-not generated here.
+Gambling losses (wagering_losses_deduction, Schedule A line 16) are part of
+total_itemized_taxable_income_deductions and are one of the section 68(c)
+exclusions, so they are generated here as an excluded deduction.
 """
 
 from functools import cache
@@ -59,7 +59,11 @@ SEPARATE_AMOUNTS = {2015: 154_950, 2016: 155_650, 2017: 156_900}
 # Components of total_itemized_taxable_income_deductions, split by whether
 # section 68(c) excludes them. Mortgage and investment interest are person
 # inputs that interest_deduction adds up.
-EXCLUDED = ("medical_expense_deduction", "casualty_loss_deduction")
+EXCLUDED = (
+    "medical_expense_deduction",
+    "casualty_loss_deduction",
+    "wagering_losses_deduction",
+)
 EXCLUDED_PERSON = ("investment_interest_expense",)
 OTHER = ("charitable_deduction", "salt_deduction", "misc_deduction")
 OTHER_PERSON = ("deductible_mortgage_interest",)

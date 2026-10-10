@@ -13,6 +13,7 @@ EXPENSE_SOURCES = {
     ],
     "interest_deduction": ["deductible_interest_expense"],
     "casualty_loss_deduction": ["casualty_loss"],
+    "wagering_losses_deduction": ["gambling_losses"],
 }
 
 

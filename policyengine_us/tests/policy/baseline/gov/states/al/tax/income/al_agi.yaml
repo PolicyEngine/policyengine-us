@@ -68,3 +68,14 @@
     # AGI leaves all of them on the child's return.
     adjusted_gross_income: 40_000
     al_agi: 48_500
+
+- name: Alabama taxes gambling winnings.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    irs_employment_income: 50_000
+    gambling_winnings: 20_000
+    gambling_losses: 12_000
+    state_code: AL
+  output:
+    al_agi: 70_000

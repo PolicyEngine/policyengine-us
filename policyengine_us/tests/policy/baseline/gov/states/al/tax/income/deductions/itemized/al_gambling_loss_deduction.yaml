@@ -1,0 +1,44 @@
+- name: Alabama deducts all gambling losses up to winnings in 2026.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    gambling_winnings: 20_000
+    gambling_losses: 12_000
+    state_code: AL
+  output:
+    # The federal deduction is 90% of the losses from 2026; Alabama's is not.
+    wagering_losses_deduction: 10_800
+    al_gambling_loss_deduction: 12_000
+
+- name: Alabama gambling losses are capped at winnings.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    gambling_winnings: 5_000
+    gambling_losses: 12_000
+    state_code: AL
+  output:
+    al_gambling_loss_deduction: 5_000
+
+- name: A dependent's gambling is not on the parent's Alabama return.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        gambling_winnings: 1_000
+        gambling_losses: 10_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        gambling_winnings: 20_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AL
+  output:
+    al_gambling_loss_deduction: 1_000

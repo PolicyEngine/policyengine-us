@@ -20,6 +20,7 @@ class ny_itemized_deductions_max(Variable):
     - State/local income taxes are NOT deductible (only sales + property)
     - Miscellaneous deductions still allowed with 2% AGI floor
     - Casualty losses not limited to federally declared disasters
+    - Gambling losses up to winnings, without the 90% limit from 2026
     - NY-specific college tuition deduction addition per § 615(d)
     """
     adds = [
@@ -31,6 +32,7 @@ class ny_itemized_deductions_max(Variable):
         "ny_salt_deduction",
         "ny_misc_deduction",
         "ny_casualty_loss_deduction",
+        "ny_wagering_losses_deduction",
         # NY-specific addition per Tax Law § 615(d)
         "ny_college_tuition_deduction",
     ]

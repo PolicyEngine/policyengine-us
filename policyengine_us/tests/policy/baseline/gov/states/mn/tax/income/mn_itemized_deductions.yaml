@@ -90,3 +90,19 @@
     state_code: MN
   output:
     mn_itemized_deductions: 10_000
+
+- name: Wagering losses are outside the Minnesota itemized deduction limitation.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 40
+    employment_income: 200_000
+    gambling_winnings: 100_000
+    gambling_losses: 50_000
+    state_code: MN
+  output:
+    adjusted_gross_income: 300_000
+    # 90% of 50,000
+    wagering_losses_deduction: 45_000
+    # Minn. Stat. 290.0122, subd. 2(d)(3): no reduction of the losses.
+    mn_itemized_deductions: 45_000

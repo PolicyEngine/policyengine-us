@@ -19,6 +19,9 @@ values:
     - partnership_s_corp_income
     - farm_operations_income
     - farm_rent_income
+    # Prizes and awards: contests, lotteries and gambling winnings (Form 40
+    # page 2, Part I, other income).
+    - gambling_winnings
 
 metadata:
   unit: list

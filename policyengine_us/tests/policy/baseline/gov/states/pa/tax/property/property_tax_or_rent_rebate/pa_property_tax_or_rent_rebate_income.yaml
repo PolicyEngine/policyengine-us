@@ -119,7 +119,6 @@
       person1:
         age: 65
         ssi: 0
-        gambling_winnings: 1_000
         alimony_income: 2_000
         workers_compensation: 3_000
         disability_benefits: 4_000
@@ -132,7 +131,31 @@
         members: [person1]
         state_code: PA
   output:
-    pa_property_tax_or_rent_rebate_income: 20_000
+    pa_property_tax_or_rent_rebate_income: 19_000
+
+- name: Case 7b, gambling winnings count once, net of losses up to the winnings.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        ssi: 0
+        employment_income: 10_000
+        gambling_winnings: 1_000
+        gambling_losses: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Federal AGI already holds the 1,000 of winnings (line 11b is not added
+    # again), and the 400 of losses come off.
+    adjusted_gross_income: 11_000
+    pa_property_tax_or_rent_rebate_income: 10_600
 
 - name: Case 8, CSRS exclusion is capped by each recipient's CSRS income.
   period: 2025

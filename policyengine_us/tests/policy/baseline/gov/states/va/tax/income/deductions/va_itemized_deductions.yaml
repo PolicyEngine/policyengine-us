@@ -66,3 +66,38 @@
     state_code: VA
   output:
     va_itemized_deductions: 40_000 #20,000+20,000
+
+- name: Gambling losses are Virginia itemized deductions below the limitation threshold.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    gambling_winnings: 20_000
+    gambling_losses: 30_000
+    charitable_deduction: 10_000
+    state_and_local_sales_or_income_tax: 0
+    real_estate_taxes: 0
+    state_code: VA
+  output:
+    wagering_losses_deduction: 20_000
+    va_itemized_deductions: 30_000
+
+- name: Above the threshold gambling losses stay in the total and are not reduced.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 400_000
+    gambling_winnings: 20_000
+    gambling_losses: 30_000
+    charitable_deduction: 10_000
+    state_and_local_sales_or_income_tax: 0
+    real_estate_taxes: 0
+    state_code: VA
+  output:
+    wagering_losses_deduction: 20_000
+    # Worksheet line 1: 30,000. Line 2 (gambling losses): 20,000. Line 3:
+    # 10,000, 80% of which is 8,000. Line 8: 3% x (400,000 - 332,700) =
+    # 2,019. Deduction: 30,000 - 2,019.
+    va_itemized_deductions: 27_981

@@ -51,3 +51,44 @@
     ca_itemized_deductions_pre_limitation: 10_000
   output:
     ca_itemized_deductions: 7_000  # charity subject to limitation
+
+- name: California allows all gambling losses up to winnings in 2026 and does not limit them.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 1_000_000
+    gambling_winnings: 10_000
+    gambling_losses: 10_000
+    state_code: CA
+  output:
+    # The federal deduction is 90% of the losses from 2026.
+    wagering_losses_deduction: 9_000
+    ca_wagering_losses_deduction: 10_000
+    ca_itemized_deductions_pre_limitation: 10_000
+    # Gambling losses are outside the high-income limitation.
+    ca_itemized_deductions: 10_000
+
+- name: California gambling losses are capped at winnings and exclude a dependent's.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        gambling_winnings: 5_000
+        gambling_losses: 8_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        gambling_winnings: 10_000
+        gambling_losses: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    ca_wagering_losses_deduction: 5_000

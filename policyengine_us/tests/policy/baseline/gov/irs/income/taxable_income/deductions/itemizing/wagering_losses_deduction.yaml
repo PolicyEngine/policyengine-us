@@ -69,3 +69,95 @@
         members: [person1, person2]
   output:
     wagering_losses_deduction: 5
+
+- name: Through 2025 all losses count, up to winnings.
+  absolute_error_margin: 0
+  period: 2025
+  input:
+    gambling_winnings: 10_000
+    gambling_losses: 8_000
+  output:
+    wagering_losses_deduction: 8_000
+
+- name: Through 2025 losses above winnings are not deductible.
+  absolute_error_margin: 0
+  period: 2025
+  input:
+    gambling_winnings: 10_000
+    gambling_losses: 12_000
+  output:
+    wagering_losses_deduction: 10_000
+
+- name: From 2026 only 90% of losses count.
+  absolute_error_margin: 0
+  period: 2026
+  input:
+    gambling_winnings: 10_000
+    gambling_losses: 8_000
+  output:
+    # 90% of 8,000
+    wagering_losses_deduction: 7_200
+
+- name: From 2026 the winnings cap applies after the 90% share.
+  absolute_error_margin: 0
+  period: 2026
+  input:
+    gambling_winnings: 10_000
+    gambling_losses: 12_000
+  output:
+    # min(90% of 12,000, 10,000)
+    wagering_losses_deduction: 10_000
+
+- name: From 2026 equal winnings and losses leave 10% of the winnings taxed.
+  absolute_error_margin: 0
+  period: 2026
+  input:
+    gambling_winnings: 30_000
+    gambling_losses: 30_000
+  output:
+    wagering_losses_deduction: 27_000
+
+- name: A dependent's gambling is not on the parent's return.
+  absolute_error_margin: 0
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 40
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        gambling_winnings: 10_000
+        gambling_losses: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    wagering_losses_deduction: 0
+
+- name: A dependent's losses cannot use up the parent's winnings.
+  absolute_error_margin: 0
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 40
+        gambling_winnings: 10_000
+        gambling_losses: 2_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        gambling_winnings: 5_000
+        gambling_losses: 9_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    # The parent's own 2,000, not min(11,000, 15,000).
+    wagering_losses_deduction: 2_000

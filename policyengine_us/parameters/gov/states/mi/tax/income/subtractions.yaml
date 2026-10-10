@@ -11,6 +11,20 @@ values:
     - mi_interest_dividends_capital_gains_deduction # Line 27
     - mi_529_deduction
     - salt_refund_income # Line 16
+  # 2021 PA 168 added a deduction for the wagering losses a casual gambler
+  # deducts on the federal return, for tax years beginning in 2021.
+  2021-01-01:
+    - us_govt_interest # Line 10
+    - military_retirement_pay # Line 11
+    - taxable_social_security # Line 14
+    - military_service_income # Line 14
+    - section_22_income # Line 22
+    - mi_standard_deduction  # Line 24 & 25
+    - mi_pension_benefit  # Line 26
+    - mi_interest_dividends_capital_gains_deduction # Line 27
+    - mi_529_deduction
+    - salt_refund_income # Line 16
+    - mi_wagering_losses_deduction # Line 23 (2025), miscellaneous subtractions
   2026-01-01:
     - us_govt_interest # Line 10
     - military_retirement_pay # Line 11
@@ -24,6 +38,7 @@ values:
     - mi_qualified_tips_deduction  # Qualified tips (PA 24 of 2025), TY2026-2028
     - mi_qualified_overtime_deduction  # Qualified overtime compensation (PA 24 of 2025), TY2026-2028
     - salt_refund_income # Line 16
+    - mi_wagering_losses_deduction # Line 23 (2025), miscellaneous subtractions
 metadata:
   unit: list  
   label: Michigan taxable income subtraction sources  
@@ -35,6 +50,10 @@ metadata:
       href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2023/BOOK_MI-1040.pdf#page=47
     - title: Michigan Legal Code Section 206.30 
       href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30
+    - title: Michigan Treasury notice - New Tax Treatment of Wagering Losses for Casual Gamblers (2021 PA 168)
+      href: https://www.michigan.gov/taxes/rep-legal/notices/notice-new-tax-treatment-of-wagering-losses-for-casual-gamblers-under-the-michigan-income-tax-act
+    - title: 2025 MI-1040 booklet, Schedule 1 line 23 - Miscellaneous subtractions (wagering losses)
+      href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=16
     - title: Michigan Standard Deduction
       href: https://web.archive.org/web/20250202140014/https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits/michigan-standard-deduction
     - title: Michigan 2022 MI-1040 Individual Income Tax FORMS AND INSTRUCTIONS

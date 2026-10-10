@@ -28,6 +28,7 @@ class ca_itemized_deductions_pre_limitation(Variable):
                 "charitable_deduction",
                 "charitable_deduction_for_non_itemizers",
                 "misc_deduction",
+                "wagering_losses_deduction",
             )
         ]
         deductions += [
@@ -35,6 +36,7 @@ class ca_itemized_deductions_pre_limitation(Variable):
             "real_estate_taxes",
             "ca_charitable_deduction",
             "ca_misc_deduction",
+            "ca_wagering_losses_deduction",
         ]
         # Federal investment interest is nested in interest_deduction.
         return add(tax_unit, period, deductions) - add(
