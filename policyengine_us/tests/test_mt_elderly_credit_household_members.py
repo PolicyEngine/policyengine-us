@@ -101,11 +101,13 @@ def build_situation(cases):
                 tax_units[f"tax_unit_{key}_member"] = {"members": [member]}
             else:
                 tax_units[f"tax_unit_{key}"] = {"members": [claimant, member]}
-            # Set for everyone: an input for some people gives the others
-            # its default (false), not its formula. Without it the model
-            # takes an adult in the claimant's tax unit to be the spouse.
-            people[claimant]["is_tax_unit_dependent"] = {YEAR: False}
-            people[member]["is_tax_unit_dependent"] = {YEAR: arrangement != "B"}
+            # Complete roles distinguish adult dependents from spouses
+            # and keep a minor's separate return headed by that minor;
+            # age-based inference only considers adults as filers.
+            people[claimant]["tax_unit_role_input"] = {YEAR: "HEAD"}
+            people[member]["tax_unit_role_input"] = {
+                YEAR: "HEAD" if arrangement == "B" else "DEPENDENT"
+            }
             marital_units[f"marital_unit_{key}"] = {"members": [claimant]}
             marital_units[f"marital_unit_{key}_member"] = {"members": [member]}
             spm_units[f"spm_unit_{key}"] = {"members": [claimant, member]}
@@ -352,6 +354,28 @@ if hypothesis is not None:
         max_examples=15, derandomize=True, deadline=None, suppress_health_check=SLOW
     )
     @hypothesis.example(negative_household_cases())
+    @hypothesis.example(
+        [
+            # A minor can head their own return. With no gross income,
+            # a deductible penalty of 1 gives AGI -1 in both arrangements.
+            {
+                "claimant_age": 62,
+                "pension": 0,
+                "claimant_ss": 0,
+                "property_tax": 0,
+                "rent": 0,
+                "member_age": 15,
+                "interest": 0,
+                "capital_gain": 0,
+                "member_ss": 0,
+                "self_employment_income": 0,
+                "early_withdrawal_penalty": 1,
+                "health_premiums": 0,
+                "pension_contributions": 0,
+                "extra_interest": 1,
+            }
+        ]
+    )
     @hypothesis.example(
         [
             # P2: 10,000 * .9235 * .153 / 2 = 706.4775;
