@@ -351,3 +351,78 @@
         state_code: NM
   output:
     nm_eitc_demographic_eligible: true
+
+# A spouse under 18 is not the return's qualifying child, so a childless joint
+# return with a spouse who can be claimed stays barred (Publication 596, Rule 12).
+- name: 2025 childless joint return with a claimable spouse and a spouse under 18 is ineligible (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 21
+        is_full_time_student: true
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: false
+
+- name: 2025 childless joint return with a claimable spouse and a spouse under 18 is ineligible (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 17
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 21
+        is_full_time_student: true
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: false
+
+- name: 2025 childless joint return with a spouse under 18 and nobody claimable is eligible by the other spouse's age
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 21
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    nm_eitc_demographic_eligible: true
