@@ -1,0 +1,141 @@
+- name: 2025 single filer who can be claimed as a dependent: no Utah dependents for the taxpayer credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: UT
+  output:
+    # Utah Code 59-10-1018 counts dependents for whom the claimant is
+    # entitled to an IRC 24 credit; under IRC 152(b)(1) a claimable filer
+    # has no dependents.
+    ut_total_dependents: 0
+    ut_personal_exemption: 0
+
+- name: 2025 joint return with one claimable spouse: no Utah dependents for the taxpayer credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: UT
+  output:
+    # Either spouse being claimable leaves the joint return no dependents.
+    ut_total_dependents: 0
+    ut_personal_exemption: 0
+
+- name: 2025 joint return with one claimable spouse: no Utah dependents for the taxpayer credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: UT
+  output:
+    ut_total_dependents: 0
+    ut_personal_exemption: 0
+
+- name: 2025 joint return with both spouses claimable: no Utah dependents for the taxpayer credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: UT
+  output:
+    ut_total_dependents: 0
+    ut_personal_exemption: 0
+
+- name: 2025 joint return with neither spouse claimable: no Utah dependents for the taxpayer credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 22
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: UT
+  output:
+    # One dependent x $2,111 (2025).
+    ut_total_dependents: 1
+    ut_personal_exemption: 2111

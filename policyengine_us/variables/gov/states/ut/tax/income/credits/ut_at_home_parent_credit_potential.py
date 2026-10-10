@@ -18,7 +18,12 @@ class ut_at_home_parent_credit_potential(Variable):
         age = person("age", period)
         is_dependent = person("is_tax_unit_dependent", period)
         p = parameters(period).gov.states.ut.tax.income.credits.at_home_parent
-        qualifying_child = (age < p.max_child_age) & is_dependent
+        # Utah Code 59-10-1005 requires that the parent claim the qualifying
+        # child as a dependent. Under IRC 152(b)(1) a return on which the filer
+        # (or, if joint, either spouse) can be claimed as a dependent has no
+        # dependents.
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        qualifying_child = (age < p.max_child_age) & is_dependent & ~filer_is_dependent
         count_qualifying_children = tax_unit.sum(qualifying_child)
 
         # Multiply by each qualifying parent; they can claim it separately.
