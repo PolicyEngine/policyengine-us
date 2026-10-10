@@ -1,0 +1,144 @@
+# SSI salary-reduction treatment: POMS SI 00820.102C.2.
+# MSA countable exclusions: Minn. Stat. 256D.435 subds. 4a, 5, and 6.
+# Gross income: Minn. Stat. 256D.35 subd. 10; Minn. R. 9500.1206 subp. 15a.
+# Guardian cap: Minn. Stat. 256D.44 subd. 5(d).
+# https://secure.ssa.gov/poms.nsf/lnx/0500820102
+# https://www.revisor.mn.gov/statutes/cite/256D.435
+# https://www.revisor.mn.gov/statutes/cite/256D.35
+# https://www.revisor.mn.gov/rules/9500.1206/
+# https://www.revisor.mn.gov/statutes/cite/256D.44
+
+- name: MSA excludes pretax premiums from countable income and restores them for guardian fees
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        employment_income: 20_400  # $1,700/month before salary reduction.
+        pre_tax_health_insurance_premiums: 1_200
+        social_security: 3_000
+        mn_msa_has_guardian: true
+    marital_units:
+      marital_unit:
+        members: [person]
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MN
+  output:
+    ssi_earned_income: 1_600  # $1,700 - $100.
+    # Countable = ($1,600 - $65)/2 + ($250 - $20) = $997.50/month.
+    ssi_countable_income: 997.50
+    ssi: 0  # Countable $997.50 exceeds the $994 FBR.
+    mn_msa_gross_income: 1_950  # $1,700 gross wages + $250 Social Security.
+    mn_msa_gross_income_eligible: true  # $1,950 <= 3 * $994.
+    mn_msa_guardian_fee: 97.50  # min(5% * $1,950, $100).
+    mn_msa_net_income_eligible: true
+    mn_msa_eligible_person: true
+    mn_msa_assistance_standard: 1_055
+    mn_msa_person: 155  # $1,055 + $97.50 - $997.50.
+    mn_msa: 155
+
+- name: MSA SSI track substitutes the FBR and keeps pretax premiums in guardian gross income
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        immigration_status: CITIZEN
+        ssi_countable_resources: 500
+        employment_income: 7_200
+        pre_tax_health_insurance_premiums: 1_200
+        mn_msa_has_guardian: true
+    marital_units:
+      marital_unit:
+        members: [person]
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: MN
+  output:
+    ssi_earned_income: 500  # $600 - $100.
+    ssi: 786.50  # $994 - ($500 - $20 - $65)/2.
+    # CM 0017 uses the full FBR: gross = $600 + $994, rather than the SSI check.
+    mn_msa_gross_income: 1_594
+    mn_msa_gross_income_eligible: true
+    mn_msa_guardian_fee: 79.70  # 5% * $1,594.
+    mn_msa_net_income_eligible: true
+    mn_msa_eligible_person: true
+    mn_msa_person: 160.70  # $1,055 + $79.70 - ($994 - $20).
+    mn_msa: 160.70
+
+- name: MSA gross test includes pretax premiums at the individual limit
+  period: 2026-01
+  input:
+    age: 70
+    state_code: MN
+    employment_income: 35_784
+    pre_tax_health_insurance_premiums: 1_200
+  output:
+    ssi_earned_income: 2_882  # $2,982 - $100.
+    ssi: 0
+    mn_msa_gross_income: 2_982
+    mn_msa_gross_income_eligible: true  # $2,982 = 3 * $994.
+
+- name: MSA gross test includes pretax premiums one dollar above the individual limit
+  period: 2026-01
+  input:
+    age: 70
+    state_code: MN
+    employment_income: 35_796
+    pre_tax_health_insurance_premiums: 1_200
+  output:
+    ssi_earned_income: 2_883  # $2,983 - $100.
+    ssi: 0
+    mn_msa_gross_income: 2_983
+    mn_msa_gross_income_eligible: false  # $2,983 > 3 * $994.
+
+- name: MSA gross couple limit includes both spouses salary reductions
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 35_796
+        pre_tax_health_insurance_premiums: 1_200
+      person2:
+        age: 68
+        employment_income: 35_784
+        pre_tax_health_insurance_premiums: 1_200
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MN
+  output:
+    ssi_earned_income: [2_883, 2_882]
+    ssi: [0, 0]
+    mn_msa_gross_income: [2_983, 2_982]
+    # Both are aged: $5,965 gross exceeds the couple limit 6 * $994 = $5,964.
+    mn_msa_gross_income_eligible: [false, false]
