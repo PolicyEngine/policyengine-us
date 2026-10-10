@@ -40,3 +40,172 @@
         min_head_spouse_earned: 10_000
   output:
     cdcc_relevant_expenses: 3_000  # 1_000 childcare + 2_000 adult care
+
+# IRC 21(b)(2)(A)(ii): only expenses for the care of a qualifying individual count.
+# The child of a return on which a filer can be claimed is not one (IRC 152(b)(1)),
+# while the incapacitated relative still is (IRC 21(b)(1)(B)).
+- name: 2025 childcare for the child of a claimable single filer does not count
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      relative:
+        age: 40
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, child, relative]
+        tax_unit_childcare_expenses: 3000
+    households:
+      household:
+        members: [person_a, child, relative]
+        state_code: TX
+  output:
+    count_cdcc_eligible: 1
+    cdcc_relevant_expenses: 0
+
+- name: 2025 childcare for the child of a joint return with one claimable spouse does not count (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      relative:
+        age: 40
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child, relative]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 3000
+    households:
+      household:
+        members: [person_a, person_b, child, relative]
+        state_code: TX
+  output:
+    count_cdcc_eligible: 1
+    cdcc_relevant_expenses: 0
+
+- name: 2025 childcare for the child of a joint return with one claimable spouse does not count (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 5000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      relative:
+        age: 40
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child, relative]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 3000
+    households:
+      household:
+        members: [person_b, person_a, child, relative]
+        state_code: TX
+  output:
+    count_cdcc_eligible: 1
+    cdcc_relevant_expenses: 0
+
+- name: 2025 care expenses for the incapacitated relative of a claimable filer still count
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      relative:
+        age: 40
+        is_incapable_of_self_care: true
+        pre_subsidy_care_expenses: 2000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, child, relative]
+        tax_unit_childcare_expenses: 3000
+    households:
+      household:
+        members: [person_a, child, relative]
+        state_code: TX
+  output:
+    cdcc_relevant_expenses: 2000
+
+- name: 2025 the same household with nobody claimable counts the childcare
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      relative:
+        age: 40
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, child, relative]
+        tax_unit_childcare_expenses: 3000
+    households:
+      household:
+        members: [person_a, child, relative]
+        state_code: TX
+  output:
+    count_cdcc_eligible: 2
+    cdcc_relevant_expenses: 3000
