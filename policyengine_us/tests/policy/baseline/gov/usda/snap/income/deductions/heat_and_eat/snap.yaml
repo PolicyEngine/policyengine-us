@@ -120,3 +120,107 @@
         household_vehicles_value: 1_980.88232421875
   output:
     snap: 7_002
+
+- name: California one-person MCE household keeps the minimum allotment without heat-and-eat SUA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 44
+        employment_income: 36_275.59
+        employment_income_before_lsr: 36_275.59
+        weekly_hours_worked_before_lsr: 40
+        child_support_expense: 5_200
+        pre_subsidy_rent: 10_560
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    # P.L. 119-21 section 10103(a): no elderly/disabled member or actual
+    # heating/cooling expense, so the SUAS payment cannot confer SUA.
+    # https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACLs/2025/25-68.pdf#page=6
+    has_snap_elderly_disabled_member: false
+    has_heating_cooling_expense: false
+    snap_utility_allowance_type: NONE
+    snap_utility_allowance: 0
+    # Gross ($36,275.59 - $5,200) / 12 = $2,589.63 < $2,610 MCE limit.
+    # Net $2,589.63 - $604.59 - $209 = $1,776.04; $880 rent is below
+    # half that amount ($888.02), so there is no excess shelter deduction.
+    snap_gross_income: 2_589.63
+    snap_excess_shelter_expense_deduction: 0
+    snap_net_income: 1_776
+    meets_snap_net_income_test: false
+    # CDSS ACWDL June 30, 2014, page 3: one/two-person MCE households
+    # retain the minimum even above the net limit. $298 - ceil(0.3 x
+    # $1,776) = -$235, so the $24 minimum applies independently of SUA.
+    # https://www.cdss.ca.gov/lettersnotices/entres/getinfo/coletters/calfreshmodifiedcategoricaleligibility.pdf#page=3
+    meets_tanf_non_cash_net_income_test: true
+    meets_snap_categorical_eligibility: true
+    is_snap_eligible: true
+    snap: 24
+
+- name: California two-person MCE household keeps the minimum allotment without heat-and-eat SUA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+        employment_income_before_lsr: 40_000
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    snap_unit_size: 2
+    snap_utility_allowance_type: NONE
+    snap_utility_allowance: 0
+    # $3,333.33 gross < $3,526 MCE limit. Net is $3,333.33 - $666.67
+    # - $209 = $2,457.67 -> $2,458, above the $1,763 net standard.
+    snap_net_income: 2_458
+    meets_snap_net_income_test: false
+    # $546 - ceil(0.3 x $2,458) = -$192, floored to $24 under the
+    # same one/two-person MCE rule as the preceding case.
+    # https://www.cdss.ca.gov/lettersnotices/entres/getinfo/coletters/calfreshmodifiedcategoricaleligibility.pdf#page=3
+    meets_snap_categorical_eligibility: true
+    is_snap_eligible: true
+    snap: 24
+
+- name: California small-household MCE net exemption still requires the gross income test.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 44
+        employment_income: 32_000
+        employment_income_before_lsr: 32_000
+        weekly_hours_worked_before_lsr: 40
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    # $32,000 / 12 = $2,666.67 > the $2,610 one-person MCE gross limit.
+    # CDSS ACWDL June 30, 2014, pages 1-3: the minimum allotment rule
+    # applies only after MCE has been conferred.
+    # https://www.cdss.ca.gov/lettersnotices/entres/getinfo/coletters/calfreshmodifiedcategoricaleligibility.pdf
+    meets_tanf_non_cash_net_income_test: true
+    meets_tanf_non_cash_gross_income_test: false
+    meets_snap_categorical_eligibility: false
+    is_snap_eligible: false
+    snap: 0

@@ -13,6 +13,7 @@ class meets_tanf_non_cash_net_income_test(Variable):
     reference = (
         "https://www.law.cornell.edu/cfr/text/7/273.2#j_2",
         "https://www.law.cornell.edu/cfr/text/7/273.9#a_3_ii",
+        "https://www.cdss.ca.gov/lettersnotices/entres/getinfo/coletters/calfreshmodifiedcategoricaleligibility.pdf#page=3",
     )
 
     def formula(spm_unit, period, parameters):
@@ -24,6 +25,14 @@ class meets_tanf_non_cash_net_income_test(Variable):
         net_limit_applies = where(
             hheod, applies.hheod[state], applies.non_hheod[state]
         ).astype(bool)
+        # CDSS ACWDL June 30, 2014: one- and two-person MCE households
+        # retain the minimum allotment even above the net income standard.
+        # Gross income and the other BBCE conditions still apply.
+        ca = parameters(period).gov.states.ca.cdss.snap.eligibility.bbce
+        ca_small_household = (state == "CA") & (
+            spm_unit("snap_unit_size", period) <= ca.net_income_exempt_household_size
+        )
+        net_limit_applies = net_limit_applies & ~ca_small_household
         net_income = spm_unit("snap_net_income", period)
         net_limit = parameters(period).gov.usda.snap.income.limit.net
         # The state's BBCE net test uses the federal SNAP net standard: the
