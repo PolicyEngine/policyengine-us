@@ -23,10 +23,10 @@ without gambling, and with the AGI PolicyEngine computes):
   a filer who itemizes either way;
 - the same holds with the AGI PolicyEngine computes.
 
-Until PolicyEngine/policyengine-us#9637 is fixed (federal gross income leaves
-out gambling winnings, and the federal deduction has no 90% share), the 2026
-section 165(d) check and the modeled-AGI check fail. They keep this deduction
-from landing before that fix.
+The 2026 section 165(d) check and the modeled-AGI check depend on the federal
+treatment fixed in PolicyEngine/policyengine-us#9637: gross income counts
+gambling winnings, and the federal deduction has the 90% share. Both failed
+before that fix.
 """
 
 import itertools
@@ -156,9 +156,9 @@ def test_gambling_never_lowers_taxable_income_when_winnings_are_in_agi(results, 
 
 @pytest.mark.parametrize("year", [2025, 2026])
 def test_gambling_never_lowers_taxable_income_with_modeled_agi(results, year):
-    # Fails until federal gross income counts gambling winnings
-    # (PolicyEngine/policyengine-us#9637): PolicyEngine's AGI leaves them out
-    # while this deduction subtracts the losses.
+    # Depends on federal gross income counting gambling winnings
+    # (PolicyEngine/policyengine-us#9637): without them in AGI, this
+    # deduction would subtract losses from income that never held the gains.
     change = (
         results[year]["modeled"]["nc_taxable_income"]
         - results[year]["without"]["nc_taxable_income"]

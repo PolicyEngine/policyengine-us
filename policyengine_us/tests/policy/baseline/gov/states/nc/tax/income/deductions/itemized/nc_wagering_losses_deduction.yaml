@@ -124,8 +124,8 @@
         state_code: NC
   output:
     # P.L. 119-21 section 70114, in North Carolina's July 5, 2025 Code:
-    # 0.9 * 8,000 = 7,200, below the 10,000 of winnings. Fails until the
-    # federal deduction applies the 90% (PolicyEngine/policyengine-us#9637).
+    # 0.9 * 8,000 = 7,200, below the 10,000 of winnings. Depends on the
+    # federal deduction applying the 90% (PolicyEngine/policyengine-us#9637).
     nc_wagering_losses_deduction: 7_200
 
 - name: A dependent's gambling is not on the parent's return.
@@ -147,8 +147,8 @@
         state_code: NC
   output:
     # Federal gross income leaves out dependents' income, so their wagering
-    # losses cannot be deducted on the parent's return. Fails until the
-    # federal deduction counts only the head and spouse.
+    # losses cannot be deducted on the parent's return. Depends on the
+    # federal deduction counting only the head and spouse.
     nc_wagering_losses_deduction: 0
 
 - name: No deduction outside North Carolina.
