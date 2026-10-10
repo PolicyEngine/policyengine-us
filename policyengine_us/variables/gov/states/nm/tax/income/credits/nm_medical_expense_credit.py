@@ -14,7 +14,13 @@ class nm_medical_expense_credit(Variable):
         pcredits = parameters(period).gov.states.nm.tax.income.credits
         p = pcredits.unreimbursed_medical_care_expense
         age = person("age", period)
-        medical_expense = tax_unit("itemized_medical_expenses", period)
+        # This independent senior benefit counts unreimbursed costs paid,
+        # including expenses also deducted on federal Schedule A.
+        medical_expense = add(
+            tax_unit,
+            period,
+            ["medical_expense_health_insurance_premiums", "other_medical_expenses"],
+        )
         age_eligible = tax_unit.any(age >= p.age_eligibility)
         expense_eligible = medical_expense >= p.min_expenses
         dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)

@@ -62,3 +62,16 @@
         state_code: ND
   output:
     nd_renters_refund_income: 12_000
+
+- name: North Dakota renter refund deducts medical expenses actually paid from gross income
+  period: 2025
+  input:
+    state_code: ND
+    employment_income: 30_000
+    health_insurance_premiums: 6_000
+    other_medical_expenses: 500
+    self_employed_health_insurance_ald: 1_000
+  output:
+    itemized_medical_expenses: 5_500
+    # The property tax program separately deducts the full 6,500 paid.
+    nd_renters_refund_income: 23_500

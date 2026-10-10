@@ -8,8 +8,9 @@ class itemized_medical_expenses(Variable):
     unit = USD
     definition_period = YEAR
     reference = [
-        "https://www.law.cornell.edu/uscode/text/26/213#a",
-        "https://www.law.cornell.edu/uscode/text/26/213#d_1",
+        "https://www.law.cornell.edu/uscode/text/26/213",
+        "https://www.law.cornell.edu/uscode/text/26/162#l_3",
+        "https://www.irs.gov/instructions/i1040sca",
     ]
     documentation = (
         "Medical expenses counted before applying the itemized medical "
@@ -19,10 +20,20 @@ class itemized_medical_expenses(Variable):
         "medical care; qualified long-term care services; and insurance "
         "premiums covering medical care. Current modeling uses health "
         "insurance premiums and other medical expenses, excluding general "
-        "over-the-counter health expenses."
+        "over-the-counter health expenses. Premiums deducted through the "
+        "filer's self-employed health insurance deduction are excluded under "
+        "IRC Section 162(l)(3) before the medical expense floor is applied."
     )
 
-    adds = [
-        "medical_expense_health_insurance_premiums",
-        "other_medical_expenses",
-    ]
+    def formula(tax_unit, period, parameters):
+        premiums = add(tax_unit, period, ["medical_expense_health_insurance_premiums"])
+        # The federal ALD covers the head and spouse; dependents take their
+        # own SE deductions on their own returns. Bound the exclusion to the
+        # corresponding filer premiums, leaving other medical costs intact.
+        filer_premiums = tax_unit_non_dep_sum(
+            "medical_expense_health_insurance_premiums", tax_unit, period
+        )
+        se_health_insurance_ald = tax_unit("self_employed_health_insurance_ald", period)
+        excluded_premiums = min_(filer_premiums, max_(0, se_health_insurance_ald))
+        other_expenses = add(tax_unit, period, ["other_medical_expenses"])
+        return premiums - excluded_premiums + other_expenses

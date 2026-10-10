@@ -20,6 +20,32 @@
   output:
     nj_medical_expense_deduction: 1_000
 
+- name: New Jersey preserves dependent premiums when the filer's deduction exceeds reported filer premiums
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        health_insurance_premiums: 300
+        other_medical_expenses: 100
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 500
+        other_medical_expenses: 200
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        self_employed_health_insurance_ald: 1_000
+        nj_agi: 0
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    itemized_medical_expenses: 800
+    nj_medical_expense_deduction: 1_800
+
 - name: Partial out of pocket expenses deductable
   period: 2022
   absolute_error_margin: 0
@@ -54,4 +80,42 @@
     # New Jersey AGI includes the child's 10,000 of Schedule C income, so the
     # child's 1,000 of self-employed health insurance is deducted too.
     nj_agi: 50_000
+    nj_medical_expense_deduction: 1_000
+
+- name: New Jersey counts self-employed premiums once across its medical deductions
+  period: 2025
+  input:
+    state_code: NJ
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 1_000
+    other_medical_expenses: 500
+    nj_agi: 30_000
+  output:
+    # Worksheet F adds the SE deduction after applying the 2% floor to the remainder.
+    nj_medical_expense_deduction: 5_900
+
+- name: New Jersey excludes a dependent's separately deducted premiums from its medical base
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 30_000
+      child:
+        age: 17
+        self_employment_income: 10_000
+        health_insurance_premiums: 1_000
+        is_self_employed: true
+        other_medical_expenses: 500
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NJ
+  output:
+    nj_agi: 40_000
+    dependents_self_employed_health_insurance_ald: 1_000
+    # Only the 500 of other expenses remains subject to the 800 floor.
     nj_medical_expense_deduction: 1_000

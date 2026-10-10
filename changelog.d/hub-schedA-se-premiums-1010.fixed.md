@@ -1,0 +1,1 @@
+Prevent self-employed health insurance premiums deducted above the line from also entering federal and conforming state medical deductions, while preserving independent state medical-expense benefits.

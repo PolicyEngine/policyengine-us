@@ -57,3 +57,34 @@
         state_code: MT
   output:
     mt_medical_expense_deduction_joint: [0, 0]
+
+- name: Montana joint medical deduction excludes spouses' self-employed premiums
+  period: 2023
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 6_000
+        self_employed_health_insurance_ald_person: 1_000
+        other_medical_expenses: 500
+        mt_agi_indiv: 30_000
+      spouse:
+        age: 40
+        health_insurance_premiums: 3_000
+        self_employed_health_insurance_ald_person: 2_000
+        other_medical_expenses: 500
+        mt_agi_indiv: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # (6,000 + 3,000 - 1,000 - 2,000 + 1,000) - 7.5% of 40,000.
+    mt_medical_expense_deduction_joint: [4_000, 0]

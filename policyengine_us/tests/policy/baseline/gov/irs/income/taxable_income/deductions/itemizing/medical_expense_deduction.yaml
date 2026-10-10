@@ -6,3 +6,138 @@
   output:
     itemized_medical_expenses: 10_000
     medical_expense_deduction: 2_500
+
+- name: Schedule A excludes premiums deducted on Schedule 1 before applying its floor.
+  # 2025 Schedule A instructions, medical insurance premiums and line 1.
+  period: 2025
+  input:
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 1_000
+    other_medical_expenses: 500
+    adjusted_gross_income: 30_000
+  output:
+    medical_expense_health_insurance_premiums: 6_000
+    itemized_medical_expenses: 5_500
+    medical_expense_deduction: 3_250
+
+- name: An earnings-limited derived SE deduction leaves unused premiums on Schedule A.
+  period: 2025
+  input:
+    is_self_employed: true
+    health_insurance_premiums: 6_000
+    self_employment_income: 1_000
+    other_medical_expenses: 500
+    adjusted_gross_income: 30_000
+  output:
+    self_employed_health_insurance_ald: 1_000
+    itemized_medical_expenses: 5_500
+    medical_expense_deduction: 3_250
+
+- name: Fully deducted premiums leave only non-premium medical expenses.
+  period: 2025
+  input:
+    is_self_employed: true
+    health_insurance_premiums: 6_000
+    self_employment_income: 10_000
+    other_medical_expenses: 500
+    adjusted_gross_income: 30_000
+  output:
+    self_employed_health_insurance_ald: 6_000
+    itemized_medical_expenses: 500
+    medical_expense_deduction: 0
+
+- name: Self-employment losses do not remove premiums from Schedule A.
+  period: 2025
+  input:
+    is_self_employed: true
+    health_insurance_premiums: 6_000
+    self_employment_income: -1_000
+    other_medical_expenses: 500
+    adjusted_gross_income: 30_000
+  output:
+    self_employed_health_insurance_ald: 0
+    itemized_medical_expenses: 6_500
+    medical_expense_deduction: 4_250
+
+- name: The SE deduction cannot reduce other medical expenses when premiums are exhausted.
+  period: 2025
+  input:
+    health_insurance_premiums: 300
+    self_employed_health_insurance_ald: 1_000
+    other_medical_expenses: 500
+    adjusted_gross_income: 0
+  output:
+    itemized_medical_expenses: 500
+    medical_expense_deduction: 500
+
+- name: The exclusion also applies to decomposed medical and Medicare premiums.
+  period: 2025
+  input:
+    age: 65
+    medicare_enrolled: true
+    health_insurance_premiums_without_medicare_part_b: 1_200
+    medicare_part_b_premium: 2_400
+    self_employed_health_insurance_ald: 1_000
+    other_medical_expenses: 500
+    adjusted_gross_income: 30_000
+  output:
+    medical_expense_health_insurance_premiums: 3_600
+    itemized_medical_expenses: 3_100
+    medical_expense_deduction: 850
+
+- name: Each filing unit excludes its own SE deduction independently of pretax premiums.
+  period: 2025
+  input:
+    people:
+      person1:
+        is_self_employed: true
+        health_insurance_premiums: 6_000
+        pre_tax_health_insurance_premiums: 0
+        self_employment_income: 1_000
+        other_medical_expenses: 500
+      person2:
+        is_self_employed: true
+        health_insurance_premiums: 6_000
+        pre_tax_health_insurance_premiums: 2_000
+        self_employment_income: 1_000
+        other_medical_expenses: 500
+      person3:
+        health_insurance_premiums: 6_000
+        self_employment_income: 0
+        other_medical_expenses: 500
+    tax_units:
+      first:
+        members: [person1]
+        adjusted_gross_income: 30_000
+      second:
+        members: [person2]
+        adjusted_gross_income: 30_000
+      third:
+        members: [person3]
+        adjusted_gross_income: 30_000
+  output:
+    self_employed_health_insurance_ald: [1_000, 1_000, 0]
+    itemized_medical_expenses: [5_500, 5_500, 6_500]
+    medical_expense_deduction: [3_250, 3_250, 4_250]
+
+- name: A filer SE deduction cannot consume premiums attributed to a dependent.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        health_insurance_premiums: 300
+        other_medical_expenses: 100
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 500
+        other_medical_expenses: 200
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        self_employed_health_insurance_ald: 1_000
+        adjusted_gross_income: 0
+  output:
+    itemized_medical_expenses: 800
+    medical_expense_deduction: 800

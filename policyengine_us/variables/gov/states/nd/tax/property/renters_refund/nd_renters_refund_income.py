@@ -17,6 +17,15 @@ class nd_renters_refund_income(Variable):
         p = parameters(period).gov.states.nd.tax.property.renters_refund
         return max_(
             add(tax_unit, period, p.income_sources)
-            - tax_unit("itemized_medical_expenses", period),
+            # The refund uses gross income and medical costs actually paid,
+            # rather than expenses net of federal above-the-line deductions.
+            - add(
+                tax_unit,
+                period,
+                [
+                    "medical_expense_health_insurance_premiums",
+                    "other_medical_expenses",
+                ],
+            ),
             0,
         )

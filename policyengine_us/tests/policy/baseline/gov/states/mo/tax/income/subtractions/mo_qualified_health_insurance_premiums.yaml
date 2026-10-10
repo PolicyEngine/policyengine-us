@@ -92,3 +92,20 @@
   output:
     # Half of their expenses were deducted from federal return.
     mo_qualified_health_insurance_premiums: [50, 150]
+
+- name: Missouri's medical overlap ratio follows federal Schedule A after the SE premium exclusion
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 1_000
+    other_medical_expenses: 500
+    adjusted_gross_income: 30_000
+    taxable_income: 30_000
+    tax_unit_itemizes: true
+  output:
+    # Form 5695 lines 10-11 use the corrected federal Schedule A amounts.
+    itemized_medical_expenses: 5_500
+    medical_expense_deduction: 3_250
+    mo_qualified_health_insurance_premiums: 2_454.54545
