@@ -180,3 +180,60 @@
     # 1 personal (930) + 2 eligible dependents (2_000 each = 4_000) = 4_930
     # No older dependents since age limit is not in effect
     va_personal_exemption: 4_930
+
+# As in the baseline, a filer who can be claimed as a dependent has no exemption of
+# their own (IRC 151(d)(2)) and, outside the claimant filing exception, no
+# dependents (IRC 152(b)(1)).
+- name: VA exemption reform - claimable single filer has no exemptions
+  period: 2025
+  reforms: policyengine_us.reforms.states.va.dependent_exemption.va_dependent_exemption_reform.va_dependent_exemption_reform
+  input:
+    gov.contrib.states.va.dependent_exemption.in_effect: true
+    gov.contrib.states.va.dependent_exemption.amount: 930
+    people:
+      parent: {age: 40, employment_income: 20_000, claimable_as_dependent_on_another_return: true}
+      child1: {age: 10, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: VA}}
+  output: {va_personal_exemption: 0}
+
+- name: VA exemption reform - the filing exception keeps the dependent's exemption only
+  period: 2025
+  reforms: policyengine_us.reforms.states.va.dependent_exemption.va_dependent_exemption_reform.va_dependent_exemption_reform
+  input:
+    gov.contrib.states.va.dependent_exemption.in_effect: true
+    gov.contrib.states.va.dependent_exemption.amount: 930
+    people:
+      parent: {age: 40, employment_income: 20_000, claimable_as_dependent_on_another_return: true, dependent_claimant_filing_exception: true}
+      child1: {age: 10, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: VA}}
+  output: {va_personal_exemption: 930}
+
+- name: VA exemption reform - joint return with one claimable spouse keeps the other spouse only (the claimable spouse is the head)
+  period: 2025
+  reforms: policyengine_us.reforms.states.va.dependent_exemption.va_dependent_exemption_reform.va_dependent_exemption_reform
+  input:
+    gov.contrib.states.va.dependent_exemption.in_effect: true
+    gov.contrib.states.va.dependent_exemption.amount: 930
+    people:
+      person_a: {age: 40, claimable_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 40, employment_income: 20_000, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child1: {age: 10, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_a, person_b, child1], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child1], state_name: VA}}
+  output: {va_personal_exemption: 930}
+
+- name: VA exemption reform - joint return with one claimable spouse keeps the other spouse only (the claimable spouse is the spouse)
+  period: 2025
+  reforms: policyengine_us.reforms.states.va.dependent_exemption.va_dependent_exemption_reform.va_dependent_exemption_reform
+  input:
+    gov.contrib.states.va.dependent_exemption.in_effect: true
+    gov.contrib.states.va.dependent_exemption.amount: 930
+    people:
+      person_b: {age: 40, employment_income: 20_000, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 40, claimable_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child1: {age: 10, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_b, person_a, child1], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a, child1], state_name: VA}}
+  output: {va_personal_exemption: 930}
