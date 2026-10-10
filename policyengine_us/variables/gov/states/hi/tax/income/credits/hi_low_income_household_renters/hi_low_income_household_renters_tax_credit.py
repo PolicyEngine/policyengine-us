@@ -32,18 +32,24 @@ class hi_tax_credit_for_low_income_household_renters(Variable):
         ) & ~tax_unit("spouse_is_dependent_elsewhere", period)
         aged_exemptions = aged_head.astype(int) + aged_spouse.astype(int)
 
+        # exemptions_count applies these rules to the filers and to the
+        # return's dependents. A dependent who can be claimed by another
+        # taxpayer is also left out; a return without dependents has none to
+        # take off.
         dependent_taxpayer = tax_unit(
             "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
-        independent_filers = tax_unit(
-            "head_spouse_count_not_dependent_elsewhere", period
+        person = tax_unit.members
+        externally_claimable_dependents = tax_unit.sum(
+            person("is_tax_unit_dependent", period)
+            & person("claimable_as_dependent_on_another_return", period)
         )
-        filers = add(tax_unit, period, ["is_tax_unit_head_or_spouse"])
-        dependent_filers = filers - independent_filers
-        ordinary_exemptions = max_(
-            tax_unit("exemptions_count", period) - dependent_filers, 0
+        exemptions_count = tax_unit("exemptions_count", period)
+        exemptions = where(
+            dependent_taxpayer,
+            exemptions_count,
+            max_(exemptions_count - externally_claimable_dependents, 0),
         )
-        exemptions = where(dependent_taxpayer, independent_filers, ordinary_exemptions)
 
         total_exemptions = exemptions + aged_exemptions
         return p.amount * total_exemptions
