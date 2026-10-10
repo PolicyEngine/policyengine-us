@@ -172,12 +172,18 @@ def test_worked_deductions_and_losses():
 
 @st.composite
 def case_strategy(draw):
+    # Keep health/pension limits nonbinding, including after half-SE-tax:
+    # at the minimum $5,000 profit, half-SE-tax = $353.23875. With pension
+    # $500, Form7206 lines7-10,14 allow health up to $4,146.76125; the
+    # SEP 20% ceiling is ($5,000 - $353.23875) * .2 = $929.35225.
+    # https://www.irs.gov/pub/irs-prior/f7206--2023.pdf#page=1
+    # https://www.irs.gov/pub/irs-prior/p560--2023.pdf#page=35 (PDFpp35-36)
     return {
         "pension": draw(st.integers(10_000, 35_000)),
         "parent_hsa": draw(st.integers(0, 3_000)),
         "parent_penalty": draw(st.integers(0, 500)),
         "wages": draw(st.integers(10_000, 20_000)),
-        "self_employment": draw(st.integers(1_000, 15_000)),
+        "self_employment": draw(st.integers(5_000, 15_000)),
         "interest": draw(st.integers(0, 10_000)),
         "ira": draw(st.integers(0, 10_000)),
         "educator": draw(st.integers(0, 1_000)),
