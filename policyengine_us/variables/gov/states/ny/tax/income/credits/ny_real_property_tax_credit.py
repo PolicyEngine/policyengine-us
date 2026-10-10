@@ -14,11 +14,18 @@ class ny_real_property_tax_credit(Variable):
         rptc = parameters(period).gov.states.ny.tax.income.credits.real_property_tax
 
         # Age-based eligibility. The elderly tier (IT-214 line 7) applies if the
-        # filer, spouse, or a claimed dependent is 65 or older.
+        # filer, spouse, or a claimed dependent is 65 or older. A return on
+        # which a filer can be claimed as a dependent (outside the claimant
+        # filing exception) has no dependents (IRC 152(b)(1)), so a
+        # dependent's age does not count there.
         person = tax_unit.members
         age = person("age", period)
         aged = age >= rptc.elderly_age
-        meets_age_condition = tax_unit.any(aged)
+        filer = person("is_tax_unit_head_or_spouse", period)
+        no_dependents = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
+        meets_age_condition = tax_unit.any(aged & (filer | ~no_dependents))
 
         # Real-estate-based phase-in.
         real_estate_tax = add(tax_unit, period, ["real_estate_taxes"])
