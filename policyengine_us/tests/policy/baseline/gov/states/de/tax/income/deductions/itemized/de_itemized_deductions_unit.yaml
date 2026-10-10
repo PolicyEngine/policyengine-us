@@ -1,0 +1,13 @@
+- name: Delaware carries the federal wagering losses deduction.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 40
+    employment_income: 50_000
+    gambling_winnings: 10_000
+    gambling_losses: 8_000
+    state_code: DE
+  output:
+    adjusted_gross_income: 60_000
+    # 90% of 8,000 from 2026
+    de_itemized_deductions_unit: 7_200

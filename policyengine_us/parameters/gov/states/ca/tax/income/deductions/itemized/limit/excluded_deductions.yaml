@@ -4,12 +4,17 @@ values:
     - medical_expense_deduction
     - casualty_loss_deduction
     - non_mortgage_interest
+    # Itemized Deductions Worksheet line 2: "plus any gambling losses
+    # included on line 16".
+    - ca_wagering_losses_deduction
 
 metadata:
   unit: list
   period: year
   label: itemized deductions excluded from CA high-AGI limitation
   reference:
+  - title: 2025 Form 540 booklet, Schedule CA (540) Itemized Deductions Worksheet, line 2
+    href: https://www.ftb.ca.gov/forms/2025/2025-540-booklet.pdf#page=68
   - title: 2021 Form 540 Schedule CA instructions
     href: https://www.ftb.ca.gov/forms/2021/2021-540-ca-instructions.html
   - title: 2022 Form 540 Schedule CA instructions

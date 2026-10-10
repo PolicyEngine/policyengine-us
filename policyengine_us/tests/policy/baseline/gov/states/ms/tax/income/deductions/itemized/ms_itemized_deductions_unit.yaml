@@ -1,0 +1,12 @@
+- name: Mississippi itemized deductions leave out the federal wagering losses deduction.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    gambling_winnings: 10_000
+    gambling_losses: 8_000
+    charitable_deduction: 3_000
+    state_code: MS
+  output:
+    wagering_losses_deduction: 8_000
+    # Mississippi income here has no gambling winnings to deduct them from.
+    ms_itemized_deductions_unit: 3_000

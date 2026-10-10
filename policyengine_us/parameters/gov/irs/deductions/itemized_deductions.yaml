@@ -7,6 +7,8 @@ values:
     - medical_expense_deduction
     - casualty_loss_deduction
     - misc_deduction
+    # Gambling losses, Schedule A line 16 (other itemized deductions).
+    - wagering_losses_deduction
   2020-01-01:
     - charitable_deduction  
     - charitable_deduction_for_non_itemizers
@@ -15,6 +17,8 @@ values:
     - medical_expense_deduction
     - casualty_loss_deduction
     - misc_deduction
+    # Gambling losses, Schedule A line 16 (other itemized deductions).
+    - wagering_losses_deduction
   2022-01-01:
     - charitable_deduction
     - interest_deduction
@@ -22,6 +26,13 @@ values:
     - medical_expense_deduction
     - casualty_loss_deduction
     - misc_deduction
+    # Gambling losses, Schedule A line 16 (other itemized deductions).
+    - wagering_losses_deduction
 metadata:
   unit: list
   label: itemized deductions
+  reference:
+    - title: 2024 Schedule A (Form 1040), lines 4-17
+      href: https://www.irs.gov/pub/irs-prior/f1040sa--2024.pdf#page=1
+    - title: 2024 Instructions for Schedule A (Form 1040), line 16 - Other itemized deductions
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=11

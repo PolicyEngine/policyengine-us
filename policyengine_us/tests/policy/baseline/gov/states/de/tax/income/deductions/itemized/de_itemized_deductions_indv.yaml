@@ -198,3 +198,31 @@
         state_code: DE
   output:
     de_itemized_deductions_indv: [0, 5_000, 0]
+
+- name: Wagering losses go to the spouse who had them.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        gambling_winnings: 10_000
+        gambling_losses: 6_000
+      spouse:
+        age: 40
+        employment_income: 50_000
+        gambling_losses: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_itemized_deductions_unit: 8_000
+    de_itemized_deductions_indv: [6_000, 2_000]

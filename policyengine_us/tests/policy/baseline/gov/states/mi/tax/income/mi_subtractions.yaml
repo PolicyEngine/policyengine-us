@@ -170,3 +170,47 @@
     mi_subtractions: 49_422.75
     # 110,000 - 49,422.75 - 11,600
     mi_taxable_income: 48_977.25
+
+- name: A Michigan filer who itemizes federally subtracts the wagering losses deducted.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    age: 40
+    employment_income: 50_000
+    gambling_winnings: 20_000
+    gambling_losses: 20_000
+    state_code: MI
+  output:
+    tax_unit_itemizes: true
+    # 90% of 20,000 from 2026
+    mi_wagering_losses_deduction: 18_000
+    mi_subtractions: 18_000
+
+- name: A Michigan filer who takes the federal standard deduction subtracts no wagering losses.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    employment_income: 50_000
+    gambling_winnings: 10_000
+    gambling_losses: 8_000
+    state_code: MI
+  output:
+    tax_unit_itemizes: false
+    wagering_losses_deduction: 8_000
+    mi_wagering_losses_deduction: 0
+    mi_subtractions: 0
+
+- name: Michigan allowed no wagering losses before 2021.
+  absolute_error_margin: 0.01
+  period: 2020
+  input:
+    age: 40
+    employment_income: 50_000
+    gambling_winnings: 20_000
+    gambling_losses: 20_000
+    tax_unit_itemizes: true
+    state_code: MI
+  output:
+    wagering_losses_deduction: 20_000
+    mi_subtractions: 0
