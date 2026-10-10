@@ -1,0 +1,25 @@
+description: The IRS limits the alternative minimum tax exemption of a child subject to the kiddie tax to the child's earned income plus the child amount, if this is true.
+values:
+  2013-01-01: true
+  # Section 55(d)(4)(A)(iii), added by the SECURE Act of 2019 for taxable years
+  # beginning after December 31, 2017, provides that section 59(j) shall not
+  # apply. The One Big Beautiful Bill Act removed the 2025 end date of section
+  # 55(d)(4), so the limitation stays off. The IRS still publishes the
+  # inflation-adjusted section 59(j) amount (child/amount.yaml), but Form 6251
+  # applies the normal exemption to every filer from 2018.
+  2018-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: AMT child exemption limitation in effect
+  reference:
+    - title: 26 U.S. Code § 59(j) - Treatment of unearned income of minor children
+      href: https://www.law.cornell.edu/uscode/text/26/59#j
+    - title: 26 U.S. Code § 55(d)(4)(A)(iii)
+      href: https://www.law.cornell.edu/uscode/text/26/55#d_4_A_iii
+    - title: 2017 Instructions for Form 6251, Exemption Worksheet - Line 29 (Certain Children Under Age 24)
+      href: https://www.irs.gov/pub/irs-prior/i6251--2017.pdf#page=10
+    - title: 2018 Instructions for Form 6251 (Rev. February 2020), Certain Children Under Age 24
+      href: https://www.irs.gov/pub/irs-prior/i6251--2018.pdf#page=10
+    - title: 2025 Instructions for Form 6251, Exemption Worksheet - Line 5
+      href: https://www.irs.gov/pub/irs-pdf/i6251.pdf#page=9

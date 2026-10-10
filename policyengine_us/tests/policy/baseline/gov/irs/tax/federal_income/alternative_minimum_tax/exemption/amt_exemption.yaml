@@ -11,7 +11,7 @@
     # No phase-out, full exemption of 75,900
     amt_exemption: 75_900
 
-- name: No phase-out, kiddie tax applies with low earnings
+- name: No phase-out, kiddie tax applies with low earnings, no child limitation after 2017
   period: 2022
   input:
     amt_income: 200_000
@@ -21,9 +21,9 @@
   output:
     # Base exemption for SINGLE in 2022 is 75,900
     # reduced_exemption = 75,900 (no phase-out)
-    # exemption_cap = 10,000 + 8,200 (child amount) = 18,200
-    # amt_exemption = min(75,900, 18,200) = 18,200
-    amt_exemption: 18_200
+    # IRC 55(d)(4)(A)(iii): IRC 59(j) does not apply after 2017, so the
+    # earnings-plus-8,200 child cap (18,200) is not applied.
+    amt_exemption: 75_900
 
 - name: Full phase-out at high income
   period: 2022
@@ -66,3 +66,113 @@
     # income_excess = max(0, 500,000 - 1,079,800) = 0
     # Full exemption of 118,100
     amt_exemption: 118_100
+
+- name: Child limitation applies before 2018
+  period: 2017
+  input:
+    amt_income: 200_000
+    amt_kiddie_tax_applies: true
+    employment_income: 10_000
+    filing_status: SINGLE
+  output:
+    # Base exemption for SINGLE in 2017 is 54,300
+    # income_excess = max(0, 200,000 - 120,700) = 79,300
+    # exemption_phase_out = 0.25 * 79,300 = 19,825
+    # reduced_exemption = 54,300 - 19,825 = 34,475
+    # exemption_cap = 10,000 + 7,500 (child amount) = 17,500
+    # amt_exemption = min(34,475, 17,500) = 17,500
+    amt_exemption: 17_500
+
+- name: 2025 single 18-year-old with no earnings gets the full exemption
+  period: 2025
+  input:
+    age_head: 18
+    amt_income: 0
+    employment_income: 0
+    filing_status: SINGLE
+  output:
+    amt_kiddie_tax_applies: true
+    # 2025 Form 6251 Exemption Worksheet line 1: 88,100 for single filers.
+    # The pre-2018 child cap would have been 0 + 9,550.
+    amt_exemption: 88_100
+
+- name: 2025 joint return, one spouse 18 with no earnings
+  period: 2025
+  input:
+    people:
+      head:
+        age: 18
+        employment_income: 0
+        is_tax_unit_head: true
+      spouse:
+        age: 30
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        amt_income: 0
+        filing_status: JOINT
+  output:
+    amt_kiddie_tax_applies: false
+    amt_exemption: 137_000
+
+- name: 2025 joint return, both spouses 18 with no earnings
+  period: 2025
+  input:
+    age_head: 18
+    age_spouse: 18
+    amt_income: 0
+    employment_income: 0
+    filing_status: JOINT
+  output:
+    amt_kiddie_tax_applies: true
+    # 2025 Form 6251 Exemption Worksheet line 1: 137,000 for joint filers.
+    amt_exemption: 137_000
+
+- name: 2025 joint return control, both spouses 40
+  period: 2025
+  input:
+    age_head: 40
+    age_spouse: 40
+    amt_income: 0
+    employment_income: 0
+    filing_status: JOINT
+  output:
+    amt_kiddie_tax_applies: false
+    amt_exemption: 137_000
+
+- name: 2026 single 18-year-old with no earnings gets the full exemption
+  period: 2026
+  input:
+    age_head: 18
+    amt_income: 0
+    employment_income: 0
+    filing_status: SINGLE
+  output:
+    amt_kiddie_tax_applies: true
+    amt_exemption: 90_100
+
+- name: 2026 joint return, both spouses 18 with no earnings
+  period: 2026
+  input:
+    age_head: 18
+    age_spouse: 18
+    amt_income: 0
+    employment_income: 0
+    filing_status: JOINT
+  output:
+    amt_kiddie_tax_applies: true
+    amt_exemption: 140_200
+
+- name: 2026 single 18-year-old in the phase-out range
+  period: 2026
+  input:
+    age_head: 18
+    amt_income: 600_000
+    employment_income: 0
+    filing_status: SINGLE
+  output:
+    # income_excess = max(0, 600,000 - 500,000) = 100,000
+    # exemption_phase_out = 0.5 * 100,000 = 50,000
+    # amt_exemption = max(0, 90,100 - 50,000) = 40,100
+    amt_exemption: 40_100
