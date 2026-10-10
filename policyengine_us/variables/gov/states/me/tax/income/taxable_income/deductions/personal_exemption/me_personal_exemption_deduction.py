@@ -37,7 +37,12 @@ class me_personal_exemption_deduction(Variable):
         # 13). A filer who may be claimed as a dependent on another person's
         # return gets no exemption: a joint return counts 1 when only one
         # spouse may be claimed and 0 when both may.
-        exemptions = tax_unit("head_spouse_count_not_dependent_elsewhere", period)
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        exemptions = where(
+            dependent_filer,
+            tax_unit("head_spouse_count_not_dependent_elsewhere", period),
+            tax_unit("head_spouse_count", period),
+        )
         max_amount = exemptions * p.amount
 
         # Calculate the phaseout amount (line 7).

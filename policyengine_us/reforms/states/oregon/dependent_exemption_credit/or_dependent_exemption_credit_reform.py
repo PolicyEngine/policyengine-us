@@ -97,8 +97,11 @@ def create_or_dependent_exemption_credit_reform() -> Reform:
 
             # Count the filers' own exemptions: none for a filer whom another
             # taxpayer can claim (ORS 316.085(1)(b)).
-            head_spouse_count = tax_unit(
-                "head_spouse_count_not_dependent_elsewhere", period
+            dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+            head_spouse_count = where(
+                dependent_filer,
+                tax_unit("head_spouse_count_not_dependent_elsewhere", period),
+                tax_unit("head_spouse_count", period),
             )
 
             # Add older dependents (those excluded from dependent credit by age limit)
