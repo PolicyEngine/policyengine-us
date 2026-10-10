@@ -73,3 +73,98 @@
     household_refundable_local_tax_credits: 200
     household_refundable_tax_credits: 300
     household_tax: -300
+
+# The reform's household totals are the baseline totals less the federal
+# member, so every other baseline component stays in them. Each case below
+# pins the other components and leaves one of them to its own formula or input.
+- name: Abolishing federal income tax keeps the Idaho permanent building fund tax
+  period: 2025
+  reforms: policyengine_us.reforms.federal.abolish_federal_income_tax.abolish_federal_income_tax
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    state_code: ID
+    employment_income: 60_000
+    employee_payroll_tax: 4_590
+    income_tax_before_refundable_credits: 5_000
+    income_tax_refundable_credits: 800
+    id_income_tax_before_refundable_credits: 2_000
+    id_refundable_credits: 100
+    household_market_income: 60_000
+    household_benefits: 0
+  output:
+    id_pbf: 10
+    household_state_tax_before_refundable_credits: 2_010
+    household_tax_before_refundable_credits: 6_600  # 4,590 + 2,000 + 10
+    household_refundable_tax_credits: 100
+    household_net_income: 53_500  # 60,000 + 100 - 6,600
+
+- name: Abolishing federal income tax keeps California use tax
+  period: 2025
+  reforms: policyengine_us.reforms.federal.abolish_federal_income_tax.abolish_federal_income_tax
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    state_code: CA
+    income_tax_before_refundable_credits: 1_200
+    ca_income_tax_before_refundable_credits: 1_000
+    ca_use_tax: 20
+  output:
+    state_use_tax: 20
+    household_state_tax_before_refundable_credits: 1_020
+    household_tax_before_refundable_credits: 1_020
+
+- name: Abolishing federal income tax keeps the Wilmington earned income tax
+  period: 2025
+  reforms: policyengine_us.reforms.federal.abolish_federal_income_tax.abolish_federal_income_tax
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    state_code: DE
+    in_wilmington: true
+    employment_income: 40_000
+    employee_payroll_tax: 3_060
+    income_tax_before_refundable_credits: 2_000
+    de_income_tax_before_refundable_credits: 1_500
+  output:
+    de_wilmington_earned_income_tax: 500  # 40,000 * 1.25%
+    local_income_tax_before_refundable_credits: 500
+    household_tax_before_refundable_credits: 5_060  # 3,060 + 1,500 + 500
+
+- name: Abolishing federal income tax counts Pennsylvania refundable credits once
+  period: 2025
+  reforms: policyengine_us.reforms.federal.abolish_federal_income_tax.abolish_federal_income_tax
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    state_code: PA
+    income_tax_before_refundable_credits: 1_200
+    income_tax_refundable_credits: 800
+    pa_income_tax_after_forgiveness: 100
+    pa_use_tax: 20
+    pa_refundable_tax_credits: 5
+    household_market_income: 1_000
+    household_benefits: 0
+  output:
+    pa_income_tax: 95
+    household_tax_before_refundable_credits: 120  # 100 + 20, before the credit
+    household_refundable_tax_credits: 5
+    household_tax: 115
+    household_net_income: 885  # 1,000 + 5 - 120
+
+- name: Abolishing federal income and payroll taxes together removes both
+  period: 2025
+  reforms:
+    - policyengine_us.reforms.federal.abolish_federal_income_tax.abolish_federal_income_tax
+    - policyengine_us.reforms.federal.abolish_payroll_tax.abolish_payroll_tax
+  input:
+    gov.contrib.ubi_center.flat_tax.abolish_federal_income_tax: true
+    gov.contrib.ubi_center.flat_tax.abolish_payroll_tax: true
+    state_code: CA
+    income_tax_before_refundable_credits: 1_200
+    income_tax_refundable_credits: 800
+    employee_payroll_tax: 600
+    self_employment_tax: 300
+    ca_income_tax_before_refundable_credits: 1_000
+    ca_use_tax: 20
+    ca_refundable_credits: 50
+  output:
+    household_tax_before_refundable_credits: 1_320  # 300 + 1,000 + 20
+    household_refundable_tax_credits: 50
+    household_tax: 1_270

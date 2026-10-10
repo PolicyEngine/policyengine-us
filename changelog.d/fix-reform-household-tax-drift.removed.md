@@ -1,0 +1,1 @@
+Removed the parameters `gov.household.household_tax_before_refundable_credits` and `gov.household.household_refundable_credits`. The first was read only by the abolish-federal-income-tax and abolish-payroll-tax reforms, which now use the baseline totals; nothing read the second.
