@@ -32,7 +32,10 @@ class msp_part_b_premium_coverage(Variable):
         for month in period.get_subperiods(MONTH):
             income_eligible = person("msp_income_eligible", month)
             asset_eligible = person("msp_asset_eligible", month)
-            eligible_for_coverage = enrolled & income_eligible & asset_eligible
+            participates = person("msp_participation", month)
+            eligible_for_coverage = (
+                enrolled & income_eligible & asset_eligible & participates
+            )
             monthly_coverage += where(
                 eligible_for_coverage,
                 monthly_standard_premium,
