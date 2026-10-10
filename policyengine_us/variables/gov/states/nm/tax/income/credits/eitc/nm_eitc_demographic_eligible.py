@@ -38,7 +38,9 @@ class nm_eitc_demographic_eligible(Variable):
         # joint return neither spouse may be claimable (Publication 596,
         # Rule 12).
         filer = person("is_tax_unit_head_or_spouse", period)
-        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependent_filer = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         childless_eligible = (
             tax_unit.any(meets_age_requirements & filer) & ~dependent_filer
         )
