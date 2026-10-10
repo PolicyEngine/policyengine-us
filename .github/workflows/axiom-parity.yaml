@@ -12,9 +12,10 @@ permissions:
 
 jobs:
   axiom-parity:
-    uses: PolicyEngine/.github/.github/workflows/axiom-parity.yml@main
+    uses: PolicyEngine/.github/.github/workflows/axiom-parity.yml@axiom-parity-check
     with:
       mode: warn
+      tooling-ref: axiom-parity-check
     permissions:
       contents: read
       pull-requests: write
