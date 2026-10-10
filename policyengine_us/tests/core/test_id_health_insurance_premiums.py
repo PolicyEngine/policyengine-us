@@ -124,10 +124,15 @@ def test_premium_subtraction_and_election_match_best_legal_route(rows):
         # the favorable election; a spouse's itemization overrides that choice.
         # Premium inputs identify the payer: only the head and spouse's
         # payments enter this return. The dependent's payments and deductions
-        # belong on the dependent's own return.
+        # belong on the dependent's own return. Pretax payroll premiums are
+        # a separate leaf input and never reduce these after-tax payments.
+        # The explicit pretax example has 1,000 + 400 - 150 = 1,250 available,
+        # irrespective of its separate 100 + 50 = 150 pretax premiums.
+        # Its standard route retains 1,250 and reduces income by
+        # 16,100 + 1,250 = 17,350, exceeding itemized 0 + 1,250 = 1,250.
         available = max(
             0,
-            sum(row["premiums"][:2]) - sum(row["pre_tax"][:2]) - row["above_line"],
+            sum(row["premiums"][:2]) - row["above_line"],
         )
         unclaimed_if_itemizing = max(0, available - row["medical"])
         standard_route = (row["standard"] + available, False, available)

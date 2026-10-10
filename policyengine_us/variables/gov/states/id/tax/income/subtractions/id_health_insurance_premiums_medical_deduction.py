@@ -18,7 +18,8 @@ class id_health_insurance_premiums_medical_deduction(Variable):
         "Medical deduction used to allocate the claimant's health premium "
         "overlap. Only costs paid by the head and spouse enter the medical "
         "floor calculation, including their payments covering dependents. "
-        "Premiums excluded or deducted elsewhere are removed first. The "
+        "Premium inputs already exclude pretax payroll premiums; premiums "
+        "deducted on Schedule 1 are removed first. The "
         "actual federal medical deduction limits the derived result. A "
         "federal medical deduction or expense subtotal supplied for this "
         "period represents the claimant's actual Schedule A amounts and is "
@@ -29,7 +30,8 @@ class id_health_insurance_premiums_medical_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         # Actual Schedule A deductions and expense subtotals are authoritative.
-        # Subtotals already exclude pretax and Schedule 1 premiums, so do not
+        # Pretax payroll premiums are separate from the premium inputs.
+        # Supplied subtotals already exclude Schedule 1 premiums, so do not
         # remove those amounts again. Check the source before calculation:
         # cached results and other periods or branches do not describe this claim.
         supplied_medical = any(

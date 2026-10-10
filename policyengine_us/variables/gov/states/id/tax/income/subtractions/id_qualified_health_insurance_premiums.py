@@ -16,8 +16,10 @@ class id_qualified_health_insurance_premiums(Variable):
     documentation = (
         "Premiums paid by the taxpayer and spouse for themselves and their "
         "dependents, before removing the portion used in Idaho itemized "
-        "deductions. Reported pretax "
-        "premiums are treated as a subset of total reported premiums. "
+        "deductions. The premium inputs exclude premiums paid through "
+        "pretax payroll deductions. Those premiums are reported separately "
+        "in pre_tax_health_insurance_premiums, which never enters this "
+        "subtraction. "
         "Self-employed premiums already deducted on the filers' federal "
         "return are excluded. Dependents' own payments are excluded "
         "regardless of their federal deduction."
@@ -27,10 +29,7 @@ class id_qualified_health_insurance_premiums(Variable):
         premiums = tax_unit_non_dep_add(
             tax_unit, period, ["medical_expense_health_insurance_premiums"]
         )
-        pretax = tax_unit_non_dep_add(
-            tax_unit, period, ["pre_tax_health_insurance_premiums"]
-        )
         # Dependents' federal deductions concern their excluded payments,
         # so they must not reduce the filers' qualifying premiums again.
         deducted_elsewhere = tax_unit("self_employed_health_insurance_ald", period)
-        return max_(0, premiums - pretax - deducted_elsewhere)
+        return max_(0, premiums - deducted_elsewhere)

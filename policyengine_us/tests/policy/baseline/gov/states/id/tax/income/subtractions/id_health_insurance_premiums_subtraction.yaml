@@ -9,7 +9,9 @@
   output:
     id_health_insurance_premiums_subtraction: 6_000
 
-- name: Pretax premiums and federal above-line deductions cannot be subtracted again
+- name: Pretax premiums are a separate input and never enter the subtraction
+  # Qualified premiums: $6,000 - $1,000 Schedule 1 deduction = $5,000.
+  # The separate $2,000 pretax input has no effect; standard retains $5,000.
   period: 2026
   input:
     state_code: ID
@@ -19,7 +21,7 @@
     standard_deduction: 16_100
     id_itemized_deductions: 0
   output:
-    id_health_insurance_premiums_subtraction: 3_000
+    id_health_insurance_premiums_subtraction: 5_000
 
 - name: Itemizers allocate medical deductions to health premiums first
   period: 2026
@@ -110,7 +112,10 @@
     id_qualified_health_insurance_premiums: 1_000
     id_health_insurance_premiums_subtraction: 1_000
 
-- name: Both filers' payments qualify while dependent pretax payments are excluded
+- name: Both filers' premiums qualify independently of separate pretax payments
+  # Qualified premiums: $1,000 head + $2,000 spouse = $3,000.
+  # The dependent's $500 payment is excluded; both pretax inputs are separate.
+  # Standard deduction retains the full $3,000 subtraction.
   period: 2025
   input:
     people:
@@ -139,8 +144,8 @@
         members: [head, spouse, dependent]
         state_code: ID
   output:
-    id_qualified_health_insurance_premiums: 2_500
-    id_health_insurance_premiums_subtraction: 2_500
+    id_qualified_health_insurance_premiums: 3_000
+    id_health_insurance_premiums_subtraction: 3_000
 
 - name: A dependent's federal deduction cannot reduce the filers' own premiums
   period: 2026
@@ -265,9 +270,13 @@
     id_itemizes: true
     id_health_insurance_premiums_subtraction: 4_000
 
-- name: Excluded premiums cannot enter derived claimant medical overlap
-  # Form 39R excludes pretax and Schedule 1 amounts before the worksheet.
-  # Eligible medical costs: $6,000 - $2,000 - $1,000 + $500 = $3,500.
+- name: Derived claimant medical overlap uses premiums excluding pretax payroll payments
+  # Pretax payroll premiums are separate; remove only the Schedule 1 amount.
+  # Qualified premiums: $6,000 - $1,000 = $5,000; floor: $30,000 * 7.5% = $2,250.
+  # Federal medical: $6,000 + $500 - $2,250 = $4,250 (unchanged).
+  # Claimant overlap: min($4,250, $5,000 + $500 - $2,250) = $3,250.
+  # Itemized route: $20,000 + ($5,000 - $3,250) = $21,750, exceeding
+  # standard route $15,750 + $5,000 = $20,750; subtraction remains $1,750.
   period: 2025
   input:
     state_code: ID
@@ -280,8 +289,8 @@
     id_itemized_deductions: 20_000
   output:
     medical_expense_deduction: 4_250
-    id_qualified_health_insurance_premiums: 3_000
-    id_health_insurance_premiums_medical_deduction: 1_250
+    id_qualified_health_insurance_premiums: 5_000
+    id_health_insurance_premiums_medical_deduction: 3_250
     id_itemizes: true
     id_health_insurance_premiums_subtraction: 1_750
 
@@ -395,9 +404,12 @@
     id_taxable_income: 10_000
 
 - name: A supplied Schedule A expense subtotal already excludes disallowed premiums
-  # Schedule A line 1 excludes pretax premiums and the Schedule 1 deduction.
-  # $6,000 premiums - $2,000 pretax - $1,000 above-line + $500 other bills
-  # = $3,500 supplied expenses; subtract only the $2,250 medical floor.
+  # The $6,000 premium input already excludes separate pretax payroll premiums.
+  # Qualified premiums: $6,000 - $1,000 Schedule 1 deduction = $5,000.
+  # Supplied expenses: $5,000 + $500 unreported other bills = $5,500.
+  # Federal and claimant medical: $5,500 - $30,000 * 7.5% = $3,250.
+  # Itemized route: $20,000 + ($5,000 - $3,250) = $21,750, exceeding
+  # standard route $15,750 + $5,000 = $20,750; subtraction remains $1,750.
   period: 2025
   input:
     state_code: ID
@@ -405,12 +417,37 @@
     pre_tax_health_insurance_premiums: 2_000
     self_employed_health_insurance_ald: 1_000
     adjusted_gross_income: 30_000
-    itemized_medical_expenses: 3_500
+    itemized_medical_expenses: 5_500
     standard_deduction: 15_750
     id_itemized_deductions: 20_000
   output:
-    medical_expense_deduction: 1_250
-    id_qualified_health_insurance_premiums: 3_000
-    id_health_insurance_premiums_medical_deduction: 1_250
+    medical_expense_deduction: 3_250
+    id_qualified_health_insurance_premiums: 5_000
+    id_health_insurance_premiums_medical_deduction: 3_250
     id_itemizes: true
     id_health_insurance_premiums_subtraction: 1_750
+
+- name: Identical households have identical Idaho outputs with or without pretax premiums
+  # Each household has $6,000 premiums excluding pretax payroll payments.
+  # Qualified premiums: $6,000 - $1,000 Schedule 1 deduction = $5,000.
+  # Claimant overlap: $5,000 + $500 - $30,000 * 7.5% = $3,250.
+  # Itemized route: $20,000 + ($5,000 - $3,250) = $21,750, exceeding
+  # standard route $15,750 + $5,000 = $20,750; subtraction is $1,750.
+  # Deductions: $20,000; taxable income: $30,000 - $20,000 - $1,750 = $8,250.
+  period: 2025
+  input:
+    state_code: [ID, ID]
+    health_insurance_premiums: [6_000, 6_000]
+    pre_tax_health_insurance_premiums: [0, 2_000]
+    self_employed_health_insurance_ald: [1_000, 1_000]
+    other_medical_expenses: [500, 500]
+    adjusted_gross_income: [30_000, 30_000]
+    standard_deduction: [15_750, 15_750]
+    id_itemized_deductions: [20_000, 20_000]
+  output:
+    id_qualified_health_insurance_premiums: [5_000, 5_000]
+    id_health_insurance_premiums_medical_deduction: [3_250, 3_250]
+    id_itemizes: [true, true]
+    id_health_insurance_premiums_subtraction: [1_750, 1_750]
+    id_deductions: [20_000, 20_000]
+    id_taxable_income: [8_250, 8_250]
