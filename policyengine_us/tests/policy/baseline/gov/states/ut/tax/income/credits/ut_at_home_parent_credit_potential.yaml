@@ -134,3 +134,30 @@
     # One child under 1 x $100 x one parent earning $3,000 or less
     # (the other parent earns $4,000); AGI $6,000 is under $50,000.
     ut_at_home_parent_credit_potential: 100
+
+- name: 2025 two at-home parents with one newborn: one Utah at-home parent credit per child on the return
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 2000
+      spouse:
+        age: 30
+        employment_income: 1000
+        is_tax_unit_spouse: true
+      newborn:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, newborn]
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse, newborn]
+        state_code: UT
+  output:
+    # Utah Code 59-10-1005(2): $100 for each qualifying child if the claimant
+    # or a joint-filing spouse is an at-home parent; both spouses earning
+    # $3,000 or less does not double it.
+    ut_at_home_parent_credit_potential: 100

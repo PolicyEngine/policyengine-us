@@ -55,7 +55,7 @@
         state_code: UT
   output:
     ut_at_home_parent_credit: 0
-- name: 2 eligible parents with 1 child
+- name: 1 eligible parent with 2 children
   period: 2022
   input:
     people:
@@ -123,4 +123,6 @@
         - person4
         state_code: UT
   output:
-    ut_at_home_parent_credit: 400
+    # Utah Code 59-10-1005(2): $100 for each qualifying child when the claimant
+    # or a joint-filing spouse is an at-home parent, once per return.
+    ut_at_home_parent_credit: 200
