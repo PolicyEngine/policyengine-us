@@ -22,18 +22,27 @@ them set to zero, and with no election:
    neither the gain nor the QBI deduction.
 4. Cap and floor: the deduction is never negative and never above 20% of
    taxable income less the gain, or the 199A(i) minimum when larger.
+5. Gain and deduction ordering: for the same component-derived inputs,
+   the 199A gain is nonnegative and at least adjusted net capital gain, so
+   its deduction never exceeds the deduction using the former adjusted-gain
+   cap, including when the 199A(i) minimum applies.
 """
 
 import numpy as np
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
+from policyengine_core.periods import period
 
 from policyengine_us import Simulation
+from policyengine_us.variables.gov.irs.income.taxable_income.deductions.qualified_business_income_deduction.qualified_business_income_deduction import (
+    qualified_business_income_deduction,
+)
 
 TOLERANCE = 0.01  # dollars
 GAIN_INPUTS = [
     "long_term_capital_gains",
     "short_term_capital_gains",
+    "schedule_d_capital_gain_distributions",
     "non_sch_d_capital_gains",
     "qualified_dividend_income",
     "long_term_capital_gains_on_collectibles",
@@ -59,10 +68,14 @@ positive = st.integers(1, 60_000).map(float)
 
 @st.composite
 def person_amounts(draw):
-    long_term = draw(_maybe(signed))
+    distributions = draw(_maybe(st.integers(1, 5_000).map(float)))
+    # Schedule D line 13 is already inside line 15. The separately stored
+    # distribution is a memo component, never an additional gain.
+    long_term = draw(_maybe(signed)) + distributions
     return {
         "long_term_capital_gains": long_term,
         "short_term_capital_gains": draw(_maybe(signed)),
+        "schedule_d_capital_gain_distributions": distributions,
         "non_sch_d_capital_gains": draw(_maybe(st.integers(1, 5_000).map(float))),
         "qualified_dividend_income": draw(_maybe(positive)),
         # Collectibles gain is part of the long-term gain.
@@ -127,7 +140,22 @@ def _situation(units, year, *, zero_dependents=False, zero_election=False):
     }
 
 
-def _run(units, year, **kwargs):
+class _AdjustedGainCap:
+    """Run the production deduction with only its former gain input restored."""
+
+    def __init__(self, tax_unit):
+        self.tax_unit = tax_unit
+
+    def __call__(self, variable, formula_period):
+        if variable == "section_199a_net_capital_gain":
+            variable = "adjusted_net_capital_gain"
+        return self.tax_unit(variable, formula_period)
+
+    def __getattr__(self, name):
+        return getattr(self.tax_unit, name)
+
+
+def _run(units, year, *, compare_legacy=False, **kwargs):
     sim = Simulation(situation=_situation(units, year, **kwargs))
     out = {
         name: np.asarray(sim.calculate(name, year), dtype=float)
@@ -141,6 +169,21 @@ def _run(units, year, **kwargs):
     out["filer"] = ~np.asarray(sim.calculate("is_tax_unit_dependent", year), bool)
     out["unit"] = sim.populations["tax_unit"].members_entity_id
     out["p"] = sim.tax_benefit_system.parameters(year).gov.irs.deductions.qbi
+    if compare_legacy:
+        out["adjusted_net_capital_gain"] = np.asarray(
+            sim.calculate("adjusted_net_capital_gain", year), dtype=float
+        )
+        # Reuse this simulation's population and parameters. This evaluates
+        # the actual deduction formula, including its floor and filer rules,
+        # without another model build or a duplicate implementation of QBID.
+        out["legacy_qualified_business_income_deduction"] = np.asarray(
+            qualified_business_income_deduction.formula(
+                _AdjustedGainCap(sim.populations["tax_unit"]),
+                period(year),
+                sim.tax_benefit_system.parameters,
+            ),
+            dtype=float,
+        )
     return out
 
 
@@ -150,7 +193,7 @@ def _filer_sum(run, name):
 
 
 def _check(units, year):
-    run = _run(units, year)
+    run = _run(units, year, compare_legacy=True)
     gain = run["section_199a_net_capital_gain"]
     deduction = run["qualified_business_income_deduction"]
 
@@ -192,6 +235,15 @@ def _check(units, year):
         ceiling = np.maximum(cap, p.deduction_floor.amount.calc(np.array([1e12]))[0])
     assert (deduction >= -TOLERANCE).all()
     assert (deduction <= ceiling + TOLERANCE).all()
+
+    # 5. Preferential-rate exclusions and elections can only reduce the
+    # former gain input. Replacing it cannot increase the deduction, even
+    # when the common statutory minimum exceeds either ordinary cap.
+    assert (gain >= -TOLERANCE).all()
+    assert (gain + TOLERANCE >= run["adjusted_net_capital_gain"]).all()
+    assert (
+        deduction <= run["legacy_qualified_business_income_deduction"] + TOLERANCE
+    ).all()
 
 
 # Each example is one vectorized batch of tax units.

@@ -140,3 +140,17 @@
   output:
     # 10,000 + max(0, 5,000 - 2,000).
     section_199a_net_capital_gain: 13_000
+
+- name: Schedule D distributions are included in long-term gain exactly once
+  period: 2025
+  input:
+    # The $8,000 Schedule D line 13 distribution is already in line 15.
+    long_term_capital_gains: 30_000
+    schedule_d_capital_gain_distributions: 8_000
+    short_term_capital_gains: -10_000
+    qualified_dividend_income: 5_000
+  output:
+    # 2025 Form 8995 instructions, page 4, line 12:
+    # line 15 = $30,000; line 16 = $20,000; line 3a = $5,000.
+    # Adding the memo distribution again would incorrectly produce $33,000.
+    section_199a_net_capital_gain: 25_000
