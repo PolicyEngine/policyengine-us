@@ -14,10 +14,9 @@ class co_eitc(Variable):
         "https://leg.colorado.gov/sites/default/files/te19_colorado_earned_income_tax_credit.pdf",
         # C.R.S. 39-22-123.5 pays a percentage of the federal IRC 32 credit.
         "https://leg.colorado.gov/sites/default/files/images/olls/crs2023-title-39.pdf",
-        # IRC 32(c)(3)(A) applies the IRC 152(c) qualifying-child definition.
-        "https://www.law.cornell.edu/uscode/text/26/32#c_3_A",
-        # IRC 32(c)(1)(A)(ii)(III): a filer without a qualifying child must not
-        # be a dependent of another taxpayer.
+        # IRC 32(c)(3)(A) applies the IRC 152(c) qualifying-child definition;
+        # under 32(c)(1)(A)(ii)(III) a filer without a qualifying child must
+        # not be a dependent of another taxpayer.
         "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii",
         # Publication 596: on a joint return, neither spouse may be claimable.
         "https://www.irs.gov/pub/irs-prior/p596--2025.pdf#page=18",

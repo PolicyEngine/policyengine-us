@@ -132,7 +132,7 @@
     il_ctc: 0
 
 
-- name: 2025 single filer who can be claimed as a dependent, no Illinois child tax credit although the filer's own EITC counts the child
+- name: 2025 single filer who can be claimed as a dependent, Illinois child tax credit kept for the filer's own qualifying child
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -156,13 +156,13 @@
         members: [filer, child]
         state_code: IL
   output:
-    # The filer keeps the EITC for a qualifying child (0.34 x 1,000
-    # x 20% = 68), but the credit's child must be the taxpayer's
-    # dependent and a return with a claimable filer has none.
+    # 35 ILCS 5/244(d) uses the IRC 152 qualifying child, not an
+    # allowable dependent; the filer keeps the EITC for that child
+    # (0.34 x 1,000 x 20% = 68), so the credit is 40% x 68 = 27.20.
     il_eitc: 68
-    il_ctc: 0
+    il_ctc: 27.2
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent, no Illinois child tax credit although the filer's own EITC counts the child (the claimable spouse is the head)
+- name: 2025 joint return with one spouse who can be claimed as a dependent, Illinois child tax credit kept for the filer's own qualifying child (the claimable spouse is the head)
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -193,9 +193,9 @@
         state_code: IL
   output:
     il_eitc: 68
-    il_ctc: 0
+    il_ctc: 27.2
 
-- name: 2025 joint return with one spouse who can be claimed as a dependent, no Illinois child tax credit although the filer's own EITC counts the child (the claimable spouse is the spouse)
+- name: 2025 joint return with one spouse who can be claimed as a dependent, Illinois child tax credit kept for the filer's own qualifying child (the claimable spouse is the spouse)
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -226,9 +226,9 @@
         state_code: IL
   output:
     il_eitc: 68
-    il_ctc: 0
+    il_ctc: 27.2
 
-- name: 2025 joint return with both spouses claimable as dependents, no Illinois child tax credit although the filer's own EITC counts the child
+- name: 2025 joint return with both spouses claimable as dependents, Illinois child tax credit kept for the filer's own qualifying child
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -260,9 +260,9 @@
         state_code: IL
   output:
     il_eitc: 68
-    il_ctc: 0
+    il_ctc: 27.2
 
-- name: 2025 joint return with neither spouse claimable, no Illinois child tax credit although the filer's own EITC counts the child
+- name: 2025 joint return with neither spouse claimable, Illinois child tax credit kept for the filer's own qualifying child
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -291,6 +291,5 @@
         members: [person_a, person_b, child]
         state_code: IL
   output:
-    # 40% x 68 = 27.20
     il_eitc: 68
     il_ctc: 27.2

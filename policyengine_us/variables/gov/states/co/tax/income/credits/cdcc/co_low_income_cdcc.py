@@ -13,7 +13,7 @@ class co_low_income_cdcc(Variable):
         # 2026): the taxpayer "would have been allowed to claim a federal child
         # care credit if they had a federal income tax liability".
         "https://tax.colorado.gov/sites/tax/files/documents/ITT_Low-Income_Child_Care_Expenses_Credit_Jan_2026.pdf#page=1",
-        "https://www.law.cornell.edu/uscode/text/26/152#b_1",
+        "https://www.law.cornell.edu/uscode/text/26/21#b_1",
     )
     definition_period = YEAR
     defined_for = "co_low_income_cdcc_eligible"
@@ -24,16 +24,16 @@ class co_low_income_cdcc(Variable):
         # estimate care expenses for just children
         care_expenses = tax_unit("tax_unit_childcare_expenses", period)
         age = tax_unit.members("age", period)
-        # C.R.S. 39-22-119.5(3)(a)(III) counts the taxpayer's dependents under
-        # 13. A return on which the filer (or, if joint, either spouse) can be
-        # claimed as a dependent has no dependents (IRC 152(b)(1)); only the
-        # federal tax-liability condition is waived.
-        filer_is_dependent = tax_unit.members.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
-        )
+        # C.R.S. 39-22-119.5(3)(a)(III)-(IV): care for the taxpayer's dependent
+        # under 13 for whom the federal IRC 21 credit would be allowed with
+        # enough tax liability. An ordinary child is not an IRC 21(b)(1)(A)
+        # qualifying individual when the filer (or, if joint, either spouse)
+        # can be claimed as a dependent (IRC 152(b)(1)); a child incapable of
+        # self-care still is under IRC 21(b)(1)(B).
+        qualifying_individual = tax_unit.members("is_cdcc_eligible", period)
         eligible_kid = (
             age < p.cdcc.low_income.child_age_threshold
-        ) & ~filer_is_dependent
+        ) & qualifying_individual
         eligible_kids = tax_unit.sum(eligible_kid)
         # tax_unit_childcare_expenses spreads the SPM unit's childcare
         # expenses evenly across children, so apportion the under-age share

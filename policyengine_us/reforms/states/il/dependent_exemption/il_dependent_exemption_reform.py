@@ -14,7 +14,13 @@ def create_il_dependent_exemption() -> Reform:
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.contrib.states.il.dependent_exemption
             person = tax_unit.members
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)), as in
+            # the baseline formula.
+            filer_is_dependent = person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
+            is_dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
             # Age gate: when in effect, restrict the exemption to dependents
             # under the chosen age; otherwise every dependent qualifies,
             # matching the baseline tax_unit_dependents count.

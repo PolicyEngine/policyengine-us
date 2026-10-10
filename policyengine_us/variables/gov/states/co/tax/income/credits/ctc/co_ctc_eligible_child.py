@@ -7,9 +7,10 @@ class co_ctc_eligible_child(Variable):
     label = "Colorado child tax credit eligible child"
     definition_period = YEAR
     reference = (
-        "https://leg.colorado.gov/sites/default/files/2023a_1112_signed.pdf#page=2",
-        # Income Tax Topics: Child Tax Credit (January 2026): each child must
-        # "meet the requirements for the federal child tax credit".
+        "https://leg.colorado.gov/sites/default/files/2023a_1112_signed.pdf#page=4",
+        # Income Tax Topics: Child Tax Credit (January 2026): "the child
+        # generally must meet the requirements for the federal child tax
+        # credit".
         "https://tax.colorado.gov/sites/tax/files/documents/ITT_Child_Tax_Credit_Jan_2026.pdf#page=2",
         "https://www.law.cornell.edu/uscode/text/26/152#b_1",
     )

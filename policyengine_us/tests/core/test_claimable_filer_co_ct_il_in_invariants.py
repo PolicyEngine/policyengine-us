@@ -3,9 +3,10 @@ claimed as a dependent.
 
 A return on which the filer, or on a joint return either spouse, can be claimed
 as a dependent has no dependents (IRC 152(b)(1)), so it gets no state
-dependent exemption, child credit or child-based deduction, and a childless
-filer who can be claimed gets no state EITC through the ITIN or age extensions
-(IRC 32(c)(1)(A)(ii)(III)). Indiana keeps each filer's own $1,000 exemption.
+dependent exemption or child-based deduction and no Colorado child credit, and
+a childless filer who can be claimed gets no state EITC through the ITIN or age
+extensions (IRC 32(c)(1)(A)(ii)(III)). Indiana keeps each filer's own $1,000
+exemption; Illinois' child tax credit follows the IRC 152 qualifying child.
 
 For couples drawn by Hypothesis and a seeded population in these states, with
 either, both or neither spouse claimed:
@@ -15,8 +16,10 @@ either, both or neither spouse claimed:
 2. Monotonicity: marking another filer as claimed never raises the outputs in
    MONOTONE (amounts not capped by a tax liability that the claim can raise).
 3. Identities: a return with a claimable filer has no Illinois dependent
-   exemption, Colorado or Illinois child tax credit or Indiana additional
-   exemption, and its Indiana base exemptions are $1,000 per filer.
+   exemption, Colorado child tax credit or Indiana additional exemption, and
+   its Indiana base exemptions are $1,000 per filer.
+
+Hypothesis batches check 1 and 3; the seeded population checks 1, 2 and 3.
 """
 
 import numpy as np
@@ -49,6 +52,7 @@ MONOTONE = [
     "il_eitc",
     "il_ctc",
     "il_income_tax_rebate",
+    "il_income_tax_rebate_eligible",
     "in_base_exemptions",
     "in_additional_exemptions",
     "in_adoption_exemption",
@@ -77,7 +81,6 @@ def _identities(units):
         for name in (
             "il_dependent_exemption",
             "co_ctc",
-            "il_ctc",
             "in_additional_exemptions",
         ):
             assert not _calc(sim, name, year)[claimed_filer].any(), (
