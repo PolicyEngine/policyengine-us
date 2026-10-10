@@ -10,8 +10,8 @@ class al_estate_and_trust_income(Variable):
     reference = (
         "https://alison.legislature.state.al.us/code-of-alabama?section=40-18-25",
         "https://admincode.legislature.state.al.us/administrative-code/810-3-25",
+        # PDF pages 15, 24
         "https://www.revenue.alabama.gov/wp-content/uploads/2026/01/25f40bk.pdf#page=15",
-        "https://www.revenue.alabama.gov/wp-content/uploads/2026/01/25f40bk.pdf#page=24",
     )
     defined_for = StateCode.AL
 
