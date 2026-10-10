@@ -47,11 +47,15 @@ class hi_food_excise_exemption_amount(Variable):
         # be claimed by another taxpayer, including children. In 2022,
         # lines 8-10 price ordinary persons and publicly supported minors
         # separately; 2025 lines 8-9 combine the two qualified counts.
-        externally_claimable = tax_unit.sum(
-            tax_unit.members("claimable_as_dependent_on_another_return", period)
+        # exemptions_count already leaves out a filer who can be claimed, so
+        # only the dependents who can be claimed elsewhere come off here.
+        person = tax_unit.members
+        externally_claimable_dependents = tax_unit.sum(
+            person("is_tax_unit_dependent", period)
+            & person("claimable_as_dependent_on_another_return", period)
         )
         exemptions = max_(
-            tax_unit("exemptions_count", period) - externally_claimable, 0
+            tax_unit("exemptions_count", period) - externally_claimable_dependents, 0
         )
         minor_children = tax_unit("hi_food_excise_credit_minor_child_count", period)
         if p.minor_child.in_effect:
