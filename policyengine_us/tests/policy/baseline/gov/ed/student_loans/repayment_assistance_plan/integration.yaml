@@ -1,0 +1,120 @@
+# External-source cases for the Repayment Assistance Plan. Expected values come
+# from worked examples published by the Department of Education, recomputed from
+# 20 U.S.C. 1087e(q)(4) and 34 CFR 685.209 without rounding (ED rounds to whole
+# dollars in prose; neither the statute nor the regulation specifies rounding).
+
+# RISE final rule preamble, 91 FR 23866 (FR Doc. 2026-08556, PDF page 99):
+# "consider a married couple where each individual has an adjusted gross income
+# of $27,500 (or $55,000 combined) and each individual has $20,000 in student
+# debt ... The couple in the example above with a $55,000 income would instead
+# owe $229 per month on their combined Federal student loans, not $458."
+- name: Case 1, RISE preamble married couple filing jointly splits 229 dollars.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 20_000
+      person2:
+        age: 35
+        federal_student_loan_balance: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 55_000
+  output:
+    # Combined AGI 55,000 is in the 5% bracket: 5% x 55,000 = 2,750.
+    repayment_assistance_plan_base_payment: 2_750
+    repayment_assistance_plan_eligible:
+      2027-01: [true, true]
+    # 2,750 / 12 = 229.1667 for the couple ("$229 per month").
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: 229.17
+    # Equal balances: each spouse pays 229.1667 x 20,000 / 40,000 = 114.5833.
+    repayment_assistance_plan_payment:
+      2027-01: [114.58, 114.58]
+
+# Same preamble passage: "While these borrowers could file separate Federal
+# income tax returns to address this issue, and each pay $46 per month ($92
+# combined), they could then face higher taxes as a result."
+- name: Case 2, RISE preamble married couple filing separately pays 46 dollars each.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 20_000
+      person2:
+        age: 35
+        federal_student_loan_balance: 20_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        filing_status: SEPARATE
+        adjusted_gross_income: 27_500
+      tax_unit2:
+        members: [person2]
+        filing_status: SEPARATE
+        adjusted_gross_income: 27_500
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    # Own AGI 27,500 is in the 2% bracket: 2% x 27,500 = 550 per return.
+    repayment_assistance_plan_base_payment: [550, 550]
+    # 550 / 12 = 45.8333 each ("$46 per month"); no spousal proration because
+    # the spouse's income is not included (685.209(e)(2)(i)).
+    repayment_assistance_plan_applicable_monthly_payment:
+      2027-01: [45.83, 45.83]
+    repayment_assistance_plan_payment:
+      2027-01: [45.83, 45.83]
+
+# ED fact sheet, "Trump Administration Simplifying Student Loan Repayment":
+# "An unmarried borrower with no dependents who has $35,000 in debt and who
+# earns $45,000 ... Under RAP, the borrower's monthly payment is reduced to
+# $150."
+- name: Case 3, ED fact sheet single borrower earning 45,000 pays 150 dollars.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 35_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 45_000
+  output:
+    # 4% x 45,000 = 1,800.
+    repayment_assistance_plan_base_payment: 1_800
+    # 1,800 / 12 = 150 each month; 12 x 150 = 1,800 for the year, well under the
+    # 35,000 balance.
+    repayment_assistance_plan_payment:
+      2027-01: 150
+      2027-12: 150
+      2027: 1_800
+
+- name: Case 4, ED fact sheet borrower pays from July 2026 only.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        federal_student_loan_balance: 35_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 45_000
+  output:
+    # Nothing before July 2026; 150 a month for July-December: 6 x 150 = 900.
+    repayment_assistance_plan_payment:
+      2026-06: 0
+      2026-07: 150
+      2026: 900

@@ -1167,6 +1167,18 @@ programs:
     verified_start_year: 2023
     notes: EFC params (head/dependent assessment rates, amount limits) from 2023; SAI formula from 2024
 
+  - id: repayment_assistance_plan
+    name: Repayment Assistance Plan
+    full_name: Federal student loan Repayment Assistance Plan
+    category: Education
+    agency: ED
+    status: partial
+    coverage: US
+    variable: repayment_assistance_plan_payment
+    parameter_prefix: gov.ed.student_loans.repayment_assistance_plan
+    verified_start_year: 2026
+    notes: Monthly payment from July 2026 (base payment, dependent reduction, $10 minimum, spousal proration, final-payment cap) from balance inputs; interest subsidy, principal match and forgiveness not modeled; not subtracted from household net income
+
   # --- Federal tax credits ---
   - id: education_tax_credits
     name: Education tax credits
