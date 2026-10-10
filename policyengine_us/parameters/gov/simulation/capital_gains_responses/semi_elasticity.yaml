@@ -1,0 +1,32 @@
+description: Semi-elasticity of long-term capital gains realizations with respect to the capital gains marginal tax rate, about the percent fall in realizations per percentage-point rise in the rate.
+documentation: >-
+  Selects the semi-elasticity form, under which realizations scale by
+  exp(-semi_elasticity * (reform rate - baseline rate)). Positive values
+  reduce realizations when the rate rises. Revenue peaks at a rate of 1 /
+  semi_elasticity, so 3.33 to 3.51 puts the peak at 30% to 28.5%. The Joint
+  Committee on Taxation staff's 1990 equation, ln(realizations) = a - 0.0351
+  * rate in percentage points, is this form with 3.51 and a 28.5% peak; the
+  Congressional Research Service reports that JCT has since used 3.1, a
+  32.3% peak. Because the response depends only on the change in the rate,
+  the form is defined when the baseline rate is 0%, and a state tax that
+  adds to the federal rate scales realizations by a constant, so federal
+  revenue still peaks at a federal rate of 1 / semi_elasticity. Both rates are
+  clipped to between 0 and 1 first, because the household marginal rate can
+  fall outside that range where an extra $1,000 of gains crosses a benefit
+  cliff; this bounds the response factor between exp(-semi_elasticity) and
+  exp(semi_elasticity). At most one of elasticity, semi_elasticity and
+  net_of_tax_elasticity can be nonzero.
+values:
+  2000-01-01: 0
+metadata:
+  unit: /1
+  label: capital gains semi-elasticity
+  reference:
+    - title: Joint Committee on Taxation, Explanation of Methodology Used to Estimate Proposals Affecting the Taxation of Income from Capital Gains (JCS-12-90), p. 54, equation [3]
+      href: https://www.jct.gov/getattachment/9cbc5fb2-3452-4e67-8edf-7b41fa12bdeb/jcs-12-90-3157.pdf#page=62
+    - title: Joint Committee on Taxation (JCS-12-90), p. 59, revenue-maximizing rate of 28.5 percent
+      href: https://www.jct.gov/getattachment/9cbc5fb2-3452-4e67-8edf-7b41fa12bdeb/jcs-12-90-3157.pdf#page=67
+    - title: Congressional Research Service, Capital Gains Tax Options, Behavioral Responses and Revenues (R41364, 2021), Table 1 and Appendix A
+      href: https://www.congress.gov/crs_external_products/R/PDF/R41364/R41364.13.pdf#page=10
+    - title: Congressional Research Service, Boundaries on the Long-Run Realization Response to Changes in Capital Gains Taxes (R48562, 2025), p. 8
+      href: https://www.congress.gov/crs_external_products/R/PDF/R48562/R48562.1.pdf#page=11

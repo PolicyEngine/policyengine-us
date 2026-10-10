@@ -1,0 +1,18 @@
+description: Elasticity of long-term capital gains realizations with respect to one minus the capital gains marginal tax rate.
+documentation: >-
+  Selects the net-of-tax form, under which realizations scale as (1 - rate)
+  raised to this power. Positive values reduce realizations when the rate
+  rises. Revenue peaks at a rate of 1 / (1 + net_of_tax_elasticity). Agersnap
+  and Zidar (2021) estimate realization responses in this form. Both rates are
+  clipped to between 0 and 0.999 before taking logs, so a baseline rate at or
+  above 99.9% (possible where an extra $1,000 of gains crosses a benefit
+  cliff) gives a large log change for any reform rate below it. At most one
+  of elasticity, semi_elasticity and net_of_tax_elasticity can be nonzero.
+values:
+  2000-01-01: 0
+metadata:
+  unit: /1
+  label: capital gains net-of-tax elasticity
+  reference:
+    - title: Agersnap and Zidar, The Tax Elasticity of Capital Gains and Revenue-Maximizing Rates, American Economic Review Insights 3(4), 2021
+      href: https://doi.org/10.1257/aeri.20200535

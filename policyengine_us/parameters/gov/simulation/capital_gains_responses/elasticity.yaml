@@ -1,6 +1,22 @@
-description: Elasticity of capital gains with respect to the capital gains marginal tax rate.
+description: Elasticity of long-term capital gains realizations with respect to the capital gains marginal tax rate, applied to the log change in the rate.
+documentation: >-
+  Selects the log-rate form, under which realizations scale as the rate
+  raised to this power. Negative values reduce realizations when the rate
+  rises. Revenue is then proportional to the rate raised to (1 +
+  elasticity), so for any value above -1 revenue rises all the way to a 100%
+  rate and the form has no revenue-maximizing rate, as the Joint Committee on
+  Taxation staff noted of this form in 1990; use semi_elasticity for a
+  revenue-maximizing rate. Both the baseline and reform rates are floored at
+  0.001 before taking logs, so a person whose baseline rate is 0% gets a log
+  change of ln(reform rate / 0.001). A move from 0% to 15% is a log change of
+  about 5.0, which at an elasticity of -0.7 removes about 97% of that
+  person's realizations. At most one of elasticity, semi_elasticity and
+  net_of_tax_elasticity can be nonzero.
 values:
   2000-01-01: 0
 metadata:
   unit: /1
   label: capital gains elasticity
+  reference:
+    - title: Joint Committee on Taxation, Explanation of Methodology Used to Estimate Proposals Affecting the Taxation of Income from Capital Gains (JCS-12-90), Appendix B, equation [5]
+      href: https://www.jct.gov/getattachment/9cbc5fb2-3452-4e67-8edf-7b41fa12bdeb/jcs-12-90-3157.pdf#page=66
