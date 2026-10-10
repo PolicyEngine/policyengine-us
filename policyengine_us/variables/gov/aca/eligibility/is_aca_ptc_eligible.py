@@ -24,9 +24,10 @@ class is_aca_ptc_eligible(Variable):
         )
         is_income_eligible = standard_income_eligible | below_fpl_exception
 
-        # Someone another taxpayer can claim is not an applicable taxpayer
-        # (26 U.S.C. 36B(c)(1)(D)) and is outside the tax family, along with
-        # the dependents of a return that has such a filer.
+        # No credit is allowed to someone another taxpayer can claim (26
+        # U.S.C. 36B(c)(1)(D)); they are not an applicable taxpayer (26 CFR
+        # 1.36B-2(b)(3)) and are outside the tax family, along with the
+        # dependents of a return that has such a filer (IRC 152(b)(1)).
         tax_family_member = person("is_aca_tax_family_member", period)
 
         return (
