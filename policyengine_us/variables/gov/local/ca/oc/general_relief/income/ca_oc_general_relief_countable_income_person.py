@@ -24,11 +24,15 @@ class ca_oc_general_relief_countable_income_person(Variable):
                 "ca_oc_general_relief_gross_unearned_income",
             ],
         )
+        # Section 70.2.o(4) and .p(1) allow medical insurance payments;
+        # 70.2.a(1) counts earnings diverted to a third party as gross income.
+        # Employee pretax premiums therefore remain deductible here.
         deductions = add(
             person,
             period,
             [
                 "health_insurance_premiums",
+                "pre_tax_health_insurance_premiums",
                 "child_support_expense",
                 "alimony_expense",
             ],

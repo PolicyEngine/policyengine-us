@@ -1,0 +1,38 @@
+- name: Medicaid spenddown expenses include disjoint non-pretax and payroll premiums.
+  period: 2026
+  input:
+    health_insurance_premiums: 1_800
+    pre_tax_health_insurance_premiums: 2_400
+    other_medical_expenses: 300
+    medicare_enrolled: false
+  output:
+    medicaid_medically_needy_medical_expenses: 4_500
+
+- name: Medicaid adds payroll premiums to decomposed non-pretax Medicare premiums.
+  period: 2026
+  input:
+    health_insurance_premiums_without_medicare_part_b: 600
+    medicare_part_b_premium: 1_200
+    medicare_enrolled: true
+    pre_tax_health_insurance_premiums: 2_400
+    other_medical_expenses: 300
+  output:
+    medicaid_medically_needy_medical_expenses: 4_500
+
+- name: Employee payroll premiums count toward Medicaid medically needy spenddown.
+  period: 2026
+  input:
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    is_in_medicaid_medically_needy_category: true
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    ssi_countable_income: 12_000
+    ssi_countable_resources: 1_000
+    state_code: MA
+    health_insurance_premiums: 2_000
+    pre_tax_health_insurance_premiums: 4_000
+    medicare_enrolled: false
+  output:
+    medicaid_medically_needy_medical_expenses: 6_000
+    is_medically_needy_for_medicaid: true

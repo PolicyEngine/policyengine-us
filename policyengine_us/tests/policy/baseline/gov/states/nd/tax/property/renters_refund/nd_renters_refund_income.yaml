@@ -62,3 +62,61 @@
         state_code: ND
   output:
     nd_renters_refund_income: 12_000
+
+- name: Case 4, after-tax premiums reduce renter refund income as medical expenses.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 40_000
+    health_insurance_premiums: 6_000
+    pre_tax_health_insurance_premiums: 0
+  output:
+    market_income: 40_000
+    itemized_medical_expenses: 6_000
+    nd_renters_refund_income: 34_000
+
+- name: Case 5, mixed premiums reduce renter refund income once through each disjoint route.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 40_000
+    health_insurance_premiums: 3_000
+    pre_tax_health_insurance_premiums: 3_000
+  output:
+    market_income: 40_000
+    irs_employment_income: 37_000
+    itemized_medical_expenses: 3_000
+    nd_renters_refund_income: 34_000
+
+- name: Case 6, pretax premiums reduce renter refund income as excluded wage income.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 40_000
+    health_insurance_premiums: 0
+    pre_tax_health_insurance_premiums: 6_000
+  output:
+    market_income: 40_000
+    irs_employment_income: 34_000
+    itemized_medical_expenses: 0
+    nd_renters_refund_income: 34_000
+
+- name: Case 7, employer-paid premiums do not reduce renter refund income.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 40
+    state_code: ND
+    employment_income: 40_000
+    health_insurance_premiums: 0
+    pre_tax_health_insurance_premiums: 0
+    employer_sponsored_insurance_premiums: 6_000
+  output:
+    market_income: 40_000
+    nd_renters_refund_income: 40_000
