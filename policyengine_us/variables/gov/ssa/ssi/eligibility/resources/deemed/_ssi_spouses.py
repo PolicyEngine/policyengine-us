@@ -13,11 +13,13 @@ def _ssi_established_spouse_indices(person, period, first, second):
     cohabiting couple, so the members of a two-person marital unit who live in
     the same household are spouses. So are the head and spouse of one tax
     unit who share a marital unit, which covers situations that omit marital
-    units (those put everyone in one unit). Two people are never spouses when
-    one claims the other as a tax dependent, since no one can claim a spouse,
-    or when parent links name one as the other's parent; this keeps a default
-    marital unit from pairing a parent with the child they claim. Ambiguous
-    candidates resolve to no spouse.
+    units (those put everyone in one unit). Parent links that name one as the
+    other's parent always rule a pair out. When the simulation has a single
+    marital unit, which may be that default group, a pair is also ruled out
+    when exactly one of them is a dependent of the tax unit they share (no
+    one can claim a spouse), so a default unit never pairs a parent with the
+    child they claim. Explicit marital units otherwise stand, whatever tax
+    roles the model infers. Ambiguous candidates resolve to no spouse.
     """
     head_or_spouse = person("is_tax_unit_head_or_spouse", period)
     dependent = person("is_tax_unit_dependent", period)
@@ -25,6 +27,7 @@ def _ssi_established_spouse_indices(person, period, first, second):
     tax_unit = person.tax_unit.reference_entity.members_entity_id
     couple = person.marital_unit.nb_persons() == 2
     marital_unit = person.marital_unit.reference_entity.members_entity_id
+    possible_default = person.marital_unit.count == 1
     own_index = np.arange(person.count)
     spouse = np.full(person.count, -1, dtype=int)
     candidates = np.zeros(person.count, dtype=int)
@@ -39,7 +42,7 @@ def _ssi_established_spouse_indices(person, period, first, second):
         same_tax_unit = tax_unit[safe] == tax_unit
         # One claims the other when exactly one of them is a dependent of
         # the tax unit they share; two dependents can be a married couple.
-        claims = same_tax_unit & (dependent != dependent[safe])
+        claims = possible_default & same_tax_unit & (dependent != dependent[safe])
         same_marital_unit = marital_unit[safe] == marital_unit
         shown = (
             (member >= 0)

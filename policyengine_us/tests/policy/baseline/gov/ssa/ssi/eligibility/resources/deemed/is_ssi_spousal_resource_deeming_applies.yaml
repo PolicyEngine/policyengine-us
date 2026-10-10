@@ -358,3 +358,89 @@
     is_ssi_spousal_resource_deeming_applies: [false, true, true]
     ssi_resources_deemed_from_ineligible_spouse: [0, 3001, 0]
     meets_ssi_resource_test: [true, false, false]
+
+# Explicit marital units stand whatever tax roles the model infers: with
+# roles omitted the model may treat one spouse as the mother's tax spouse and
+# the other as her dependent, but 416.1205(b) still combines the couple's
+# resources: 0 + 3,001 > 3,000.
+- name: Married adults in a parent's tax unit with roles omitted count each other's resources
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 55
+        is_ssi_aged_blind_disabled: false
+        ssi_countable_resources:
+          '2026': 0
+      claimant:
+        age: 25
+        is_ssi_aged_blind_disabled: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 25
+        is_ssi_aged_blind_disabled: true
+        ssi_countable_resources:
+          '2026': 3001
+    tax_units:
+      family:
+        members: [mother, claimant, spouse]
+    marital_units:
+      mother_unit:
+        members: [mother]
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [mother, claimant, spouse]
+  output:
+    ssi_resources_deemed_from_ineligible_spouse: [0, 3001, 0]
+    meets_ssi_resource_test: [true, false, false]
+
+# 416.1202(a)(2) excludes retroactive military payments of an ineligible
+# spouse; an aged, blind or disabled spouse is tested as part of a couple
+# (416.1205(b)) with the exclusions an eligible individual gets. Here each
+# spouse's 2,000 of countable resources stays countable: 4,000 > 3,000.
+- name: An eligible spouse's resources count without ineligible-spouse exclusions
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 55
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        ssi_countable_resources:
+          '2026': 0
+      claimant:
+        age: 30
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 2000
+        ssi_resource_deeming_excluded_military_resources: 2000
+      spouse:
+        age: 30
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 2000
+        ssi_resource_deeming_excluded_military_resources: 2000
+    tax_units:
+      family:
+        members: [mother, claimant, spouse]
+    marital_units:
+      mother_unit:
+        members: [mother]
+      couple:
+        members: [claimant, spouse]
+    households:
+      home:
+        members: [mother, claimant, spouse]
+  output:
+    ssi_resources_deemed_from_ineligible_spouse: [0, 2000, 2000]
+    meets_ssi_resource_test: [true, false, false]
+

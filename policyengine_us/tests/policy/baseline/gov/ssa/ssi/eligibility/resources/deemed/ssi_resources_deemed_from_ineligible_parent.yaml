@@ -1568,7 +1568,7 @@
     - false
     - false
     - false
-- name: Linked parent spouse across tax units needs cohabiting marriage evidence
+- name: Linked parent's spouse filing separately counts across tax units
   period: 2026-01
   input:
     people:
@@ -2071,4 +2071,87 @@
   output:
     ssi_resources_deemed_from_ineligible_parent: [0, 0, 0, 0, 0, 0, 1500, 1500]
     meets_ssi_resource_test: [true, true, true, true, true, true, true, true]
+
+# SI 01330.200 B divides the excess among SSI-eligible children. A sibling
+# whose own countable income already exceeds the payment is ineligible, so
+# the eligible child takes the whole 5,000 - 2,000 = 3,000 and fails.
+- name: An income-ineligible sibling does not share the parental excess
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 40
+        is_ssi_aged_blind_disabled: false
+        is_tax_unit_head: true
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 5000
+      child:
+        age: 10
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+      sibling:
+        age: 12
+        is_ssi_aged_blind_disabled: true
+        is_tax_unit_dependent: true
+        ssi_countable_resources:
+          '2026': 0
+        ssi_countable_income:
+          '2026': 120000
+    tax_units:
+      family:
+        members: [mother, child, sibling]
+    marital_units:
+      mother_unit:
+        members: [mother]
+      child_unit:
+        members: [child]
+      sibling_unit:
+        members: [sibling]
+    households:
+      home:
+        members: [mother, child, sibling]
+  output:
+    is_ssi_resource_deeming_child: [false, true, false]
+    ssi_resources_deemed_from_ineligible_parent: [0, 3000, 0]
+    meets_ssi_resource_test: [false, false, true]
+
+# 416.1856: a married 17-year-old is not a child, even when the model infers
+# tax roles that make the 19-year-old spouse a dependent.
+- name: A married minor in an explicit marital unit is not a child for deeming
+  period: 2026-01
+  input:
+    people:
+      mother:
+        age: 45
+        is_ssi_aged_blind_disabled: false
+        is_parent: true
+        ssi_countable_resources:
+          '2026': 6000
+      minor:
+        age: 17
+        is_ssi_aged_blind_disabled: true
+        ssi_countable_resources:
+          '2026': 0
+      spouse:
+        age: 19
+        is_ssi_aged_blind_disabled: false
+        ssi_countable_resources:
+          '2026': 0
+    tax_units:
+      family:
+        members: [mother, minor, spouse]
+    marital_units:
+      mother_unit:
+        members: [mother]
+      couple:
+        members: [minor, spouse]
+    households:
+      home:
+        members: [mother, minor, spouse]
+  output:
+    is_ssi_resource_deeming_child: [false, false, false]
+    ssi_resources_deemed_from_ineligible_parent: [0, 0, 0]
 
