@@ -50,26 +50,24 @@
     wi_claim_of_right_eligible: true
     wi_claim_of_right_credit: 159
 
-- name: Case 5, a joint return counts the spouses' repayments and decreases, not a dependent's.
+- name: Case 5, a joint return counts the spouses' repayments, not a dependent's, and enters the decrease for the return.
   period: 2025
   input:
     people:
       person1:
         age: 45
         claim_of_right_repayment: 2_000
-        wi_claim_of_right_prior_year_tax_decrease: 100
       person2:
         age: 44
         claim_of_right_repayment: 2_000
-        wi_claim_of_right_prior_year_tax_decrease: 100
       person3:
         age: 20
         is_tax_unit_dependent: true
         claim_of_right_repayment: 9_000
-        wi_claim_of_right_prior_year_tax_decrease: 1_000
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+        wi_claim_of_right_prior_year_tax_decrease: 200
         wi_claim_of_right_credit_applies: true
     households:
       household:

@@ -35,7 +35,6 @@ class wi_claim_of_right_credit_applies(Variable):
         tax_if_subtraction = tax_unit(
             "wi_income_tax_if_claiming_claim_of_right_subtraction", period
         )
-        # Ties go to the subtraction; the tolerance keeps floating-point
+        # Ties go to the subtraction. Comparing to the cent keeps floating-point
         # noise from deciding a tie.
-        TOLERANCE = 0.01
-        return eligible & (tax_if_credit < tax_if_subtraction - TOLERANCE)
+        return eligible & (np.round(tax_if_credit, 2) < np.round(tax_if_subtraction, 2))

@@ -5,7 +5,7 @@ year may either subtract the repayment from income (Wis. Stat.
 71.05(6)(b)29) or take a refundable credit for the decrease in the earlier
 year's Wisconsin tax (Wis. Stat. 71.07(1)), not both. The model takes the
 option with less Wisconsin income tax, and the subtraction when they are
-equal. The choice does not depend on the method 26 U.S.C. 1341 applies to
+equal to the cent. The choice does not depend on the method 26 U.S.C. 1341 applies to
 the federal return.
 
 YAML cases check single households by hand. These tests check properties at
@@ -68,11 +68,11 @@ def grid_simulation(year, repayment, decrease, tax_units=None):
             "age": {year: 40},
             "employment_income": {year: WAGE[i]},
             "claim_of_right_repayment": {year: float(repayment[i])},
-            "claim_of_right_prior_year_tax_decrease": {year: FEDERAL_DECREASE[i]},
-            "wi_claim_of_right_prior_year_tax_decrease": {year: float(decrease[i])},
         }
         situation["tax_units"][f"t{i}"] = {
             "members": [person],
+            "claim_of_right_prior_year_tax_decrease": {year: FEDERAL_DECREASE[i]},
+            "wi_claim_of_right_prior_year_tax_decrease": {year: float(decrease[i])},
             "interest_deduction": {year: INTEREST_PAID[i]},
             **{name: {year: value} for name, value in (tax_units or {}).items()},
         }
@@ -135,7 +135,9 @@ def test_tax_is_the_lesser_of_the_two_options(results, year):
     r = results[year]
     tax_with_subtraction = r["tax_with_subtraction"]
     tax_with_credit = r["tax_without_repayment"] - DECREASE
-    credit = eligible() & (tax_with_credit < tax_with_subtraction - TOLERANCE)
+    credit = eligible() & (
+        np.round(tax_with_credit, 2) < np.round(tax_with_subtraction, 2)
+    )
     assert credit.any() and (eligible() & ~credit).any(), "both options occur"
     np.testing.assert_array_equal(r["wi_claim_of_right_credit_applies"], credit)
     expected = np.where(
