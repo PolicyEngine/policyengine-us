@@ -18,6 +18,61 @@
   output:
     agi_surtax: 500
 
+- name: Expanded base restores employee pretax premiums and adds employer-paid premiums.
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    gov.contrib.crfb.surtax.increased_base.in_effect: true
+    employment_income: 150_000
+    health_insurance_premiums: 4_000
+    pre_tax_health_insurance_premiums: 6_000
+    employer_sponsored_insurance_premiums: 10_000
+    filing_status: SINGLE
+  output:
+    adjusted_gross_income: 144_000
+    # 144,000 AGI + 6,000 pretax + 10,000 employer premiums = 160,000.
+    agi_surtax: 600
+
+- name: Expanded base is unchanged when employee premiums are paid entirely after tax.
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    gov.contrib.crfb.surtax.increased_base.in_effect: true
+    employment_income: 150_000
+    health_insurance_premiums: 10_000
+    employer_sponsored_insurance_premiums: 10_000
+    filing_status: SINGLE
+  output:
+    adjusted_gross_income: 150_000
+    # 150,000 AGI + 10,000 employer premiums = the same 160,000 base.
+    agi_surtax: 600
+
+- name: Expanded base does not add after-tax employee premiums to supplied AGI.
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    gov.contrib.crfb.surtax.increased_base.in_effect: true
+    adjusted_gross_income: 110_000
+    health_insurance_premiums: 20_000
+    filing_status: SINGLE
+  output:
+    agi_surtax: 100
+
+- name: Expanded base restores pretax employee premiums excluded from supplied AGI.
+  period: 2026
+  reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
+  input:
+    gov.contrib.crfb.surtax.in_effect: true
+    gov.contrib.crfb.surtax.increased_base.in_effect: true
+    adjusted_gross_income: 110_000
+    pre_tax_health_insurance_premiums: 20_000
+    filing_status: SINGLE
+  output:
+    agi_surtax: 300
+
 - name: Joint couple below threshold
   period: 2026
   reforms: policyengine_us.reforms.crfb.agi_surtax.agi_surtax_reform_object
