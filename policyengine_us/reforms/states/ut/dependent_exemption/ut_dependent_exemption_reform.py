@@ -33,7 +33,12 @@ def create_ut_dependent_exemption_reform() -> Reform:
                 return p.personal_exemption * total_dependents
             person = tax_unit.members
             age = person("age", period)
-            dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)), as in
+            # the baseline ut_total_dependents.
+            dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
             # Dependents under the age threshold (all dependents when the
             # age limit is off) take the contrib amount; older dependents
             # keep the baseline (uprated) personal-exemption amount.
