@@ -3,29 +3,38 @@
 From 2021 to 2023 the Form 2 Itemized Deductions Schedule (line 1b) and the
 Standard Deduction Worksheet (line 1) both take Montana AGI from Form 2 page 1,
 line 14. Single, head of household and joint returns report that line in one
-column, so a joint return pools both spouses' income before Montana AGI is
-floored at zero. From 2024 Form 2 line 2 takes federal itemized deductions
-(Worksheet A), so the medical floor applies to federal AGI.
+column, so a joint return pools both spouses' income. The model retains its
+existing convention of flooring that pooled Montana AGI at zero. From 2024
+Form 2 line 2 takes federal itemized deductions (Worksheet A), so the medical
+floor applies to federal AGI.
 
-Each test evaluates every point of an input grid in one vectorized simulation,
-so the properties hold for all grid inputs rather than for a few examples:
+The deterministic tests evaluate every point of an input grid in one vectorized
+simulation; Hypothesis adds generated batches that check the same invariants:
 
 - 2021-2023: the medical deduction is max(0, expenses - 7.5% of the return's
   Montana AGI), and the standard deduction is 20% of that AGI held between the
   filing status minimum and maximum;
-- moving an income item from one spouse to the other leaves both deductions
-  unchanged, because they depend on the return's pooled Montana AGI only;
+- moving an income item between spouses preserves both deductions when the
+  return's applicable AGI and medical expenses are held fixed;
 - each deduction is held once, by the head;
 - the medical deduction lies between zero and the medical expenses;
 - for a single filer the joint and separate variants agree;
 - from 2024 the medical deduction is the federal medical expense deduction,
   including where Montana AGI differs from federal AGI.
+
+Hypothesis also generates arbitrary couples over 2021-2026 to check these
+invariants beyond the deterministic grid, with witnesses for losses, dependent
+expenses, the standard-deduction interior, and senior Montana subtractions.
+Sources: 2022 Form 2, PDF p. 7, and 2024 instructions, PDF p. 15:
+https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7
+https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15
 """
 
 import itertools
 
 import numpy as np
 import pytest
+from hypothesis import given, settings, strategies as st
 
 from policyengine_us import Simulation
 
@@ -228,3 +237,166 @@ def test_from_2024_the_federal_medical_deduction_carries_through(grid, year):
     montana_agi = sim.calculate("mt_agi_joint", year)
     federal_agi = np.maximum(sim.calculate("adjusted_gross_income", year), 0)
     assert np.any((montana_agi < federal_agi - 1) & (deduction > 0))
+
+
+GENERATED_YEARS = list(range(2021, 2027))
+# Keep wages plus positive self-employment below the 2021 Social Security
+# wage base. Moving SE earnings to the wage earner would otherwise change
+# the SE-tax deduction, changing federal AGI for a reason unrelated to MT.
+GENERATED_COUPLES = st.lists(
+    st.tuples(
+        st.integers(min_value=0, max_value=100_000),
+        st.integers(min_value=-40_000, max_value=40_000),
+        st.integers(min_value=0, max_value=50_000),
+        st.one_of(st.none(), st.integers(min_value=0, max_value=10_000)),
+        st.sampled_from([40, 70]),
+        st.sampled_from([40, 70]),
+    ),
+    min_size=1,
+    max_size=6,
+)
+
+
+def generated_couple_simulation(points):
+    """Batch arbitrary situations with both placements of each income item."""
+    people, tax_units, households = {}, {}, {}
+    unit_of_person = []
+
+    def all_years(value):
+        return {year: value for year in GENERATED_YEARS}
+
+    for point_index, (wages, se, medical, child, head_age, spouse_age) in enumerate(
+        points
+    ):
+        for split_index, split in enumerate(["spouse", "head"]):
+            unit = 2 * point_index + split_index
+            head, spouse = f"h{unit}", f"s{unit}"
+            people[head] = {
+                # Keep medical expenses fixed when moving income between seniors;
+                # modeled Medicare premiums/MSP would otherwise change the premise.
+                "medicare_enrolled": all_years(False),
+                "age": all_years(head_age),
+                "employment_income": all_years(wages),
+                "self_employment_income": all_years(se if split == "head" else 0),
+                "other_medical_expenses": all_years(medical),
+            }
+            people[spouse] = {
+                "medicare_enrolled": all_years(False),
+                "age": all_years(spouse_age),
+                "self_employment_income": all_years(se if split == "spouse" else 0),
+            }
+            members = [head, spouse]
+            if child is not None:
+                name = f"c{unit}"
+                people[name] = {
+                    "age": all_years(10),
+                    "is_tax_unit_dependent": all_years(True),
+                    "other_medical_expenses": all_years(child),
+                }
+                members.append(name)
+            unit_of_person.extend([unit] * len(members))
+            tax_units[f"t{unit}"] = {"members": members}
+            households[f"hh{unit}"] = {
+                "members": members,
+                "state_code": all_years("MT"),
+            }
+    simulation = Simulation(
+        situation={"people": people, "tax_units": tax_units, "households": households}
+    )
+    return simulation, np.array(unit_of_person)
+
+
+@settings(max_examples=8, deadline=None)
+@given(points=GENERATED_COUPLES)
+def test_generated_joint_deduction_invariants(points):
+    # Fixed witnesses in every randomized batch prevent vacuous passes and
+    # retain the inherited zero-clipping convention. Their pre-2024 medical
+    # arithmetic is (10,000 + 1,500) - 7.5% * (100,000 - 20,000) = 5,500;
+    # 10,000 - 7.5% * max(-20,000, 0) = 10,000. The standard witness is
+    # 20% * (50,000 - 10,000) = 8,000, inside the 2022 joint bounds.
+    witnesses = [
+        (100_000, -20_000, 10_000, 1_500, 70, 40),
+        (0, -20_000, 10_000, None, 40, 40),
+        (50_000, -10_000, 0, None, 40, 40),
+        # The older second adult is the model's head, despite input order.
+        (0, 0, 0, None, 40, 70),
+    ]
+    sim, unit = generated_couple_simulation(points + witnesses)
+    for year in GENERATED_YEARS:
+        federal_agi = sim.calculate("adjusted_gross_income", year)
+        np.testing.assert_allclose(federal_agi[::2], federal_agi[1::2], atol=0.02)
+        assert set(sim.calculate("filing_status", year).decode_to_str()) == {"JOINT"}
+        # Head selection follows the oldest eligible adult, not input order.
+        is_head = sim.calculate("is_tax_unit_head", year)
+        assert np.all(np.bincount(unit, weights=is_head) == 1)
+        # There is no Social Security income in these situations. The
+        # signed federal person amounts, state additions, and subtractions
+        # are therefore pooled before applying the existing zero floor.
+        pooled_agi = np.maximum(
+            per_unit(sim, "adjusted_gross_income_person", year, unit)
+            + per_unit(sim, "mt_additions", year, unit)
+            - per_unit(sim, "mt_subtractions", year, unit),
+            0,
+        )
+        montana_agi = sim.calculate("mt_agi_joint", year)
+        np.testing.assert_allclose(montana_agi, pooled_agi, atol=0.02)
+        np.testing.assert_allclose(montana_agi[::2], montana_agi[1::2], atol=0.02)
+
+        expenses = sim.calculate("itemized_medical_expenses", year)
+        # Dependent medical expenses are part of the return's expenses.
+        # Medicare premiums are disabled to hold expenses fixed across twins.
+        np.testing.assert_allclose(
+            expenses, per_unit(sim, "other_medical_expenses", year, unit), atol=0.02
+        )
+        np.testing.assert_allclose(expenses[::2], expenses[1::2], atol=0.02)
+        medical = per_unit(sim, "mt_medical_expense_deduction_joint", year, unit)
+        standard = per_unit(sim, "mt_standard_deduction_joint", year, unit)
+        for variable, values in [
+            ("mt_medical_expense_deduction_joint", medical),
+            ("mt_standard_deduction_joint", standard),
+        ]:
+            # Exactly the head carries the amount; no spouse or dependent
+            # can duplicate the return's deduction.
+            assert np.all(sim.calculate(variable, year)[~is_head] == 0)
+            np.testing.assert_allclose(values[::2], values[1::2], atol=0.02)
+        assert np.all(medical >= 0)
+        assert np.all(medical <= expenses + 0.02)
+
+        if year < 2024:
+            np.testing.assert_allclose(
+                montana_agi, np.maximum(federal_agi, 0), atol=0.02
+            )
+            np.testing.assert_allclose(
+                medical,
+                np.maximum(expenses - MEDICAL_FLOOR * montana_agi, 0),
+                atol=0.02,
+            )
+            p = sim.tax_benefit_system.parameters(
+                f"{year}-01-01"
+            ).gov.states.mt.tax.income.deductions.standard
+            filing_status = sim.calculate("filing_status", year).decode_to_str()
+            minimum, maximum = p.floor[filing_status], p.cap[filing_status]
+            np.testing.assert_allclose(
+                standard,
+                np.clip(STANDARD_RATE * montana_agi, minimum, maximum),
+                atol=0.02,
+            )
+            assert np.all(standard >= minimum - 0.02)
+            assert np.all(standard <= maximum + 0.02)
+            summed_individual = per_unit(sim, "mt_agi_indiv", year, unit)
+            assert np.any(summed_individual > montana_agi + 1)
+        else:
+            np.testing.assert_allclose(
+                medical, sim.calculate("medical_expense_deduction", year), atol=0.02
+            )
+            np.testing.assert_allclose(
+                medical,
+                np.maximum(expenses - MEDICAL_FLOOR * np.maximum(federal_agi, 0), 0),
+                atol=0.02,
+            )
+            np.testing.assert_allclose(
+                standard, sim.calculate("standard_deduction", year), atol=0.02
+            )
+            # Every batch includes a senior with positive expenses and
+            # enough income for the MT subtraction to change the AGI.
+            assert np.any((montana_agi < federal_agi - 1) & (medical > 0))
