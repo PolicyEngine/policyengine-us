@@ -101,3 +101,68 @@
     # Schedule X lines 8-10: the spouse who cannot be claimed, plus their age
     # 65 exemption. 2 x $50.
     hi_tax_credit_for_low_income_household_renters: 100
+
+# Schedule X lines 8-10; Pub. 501 filing exception restores only dependents.
+- name: Joint return filing exception restores own dependent without claimable head personal or aged exemption
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 66
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 66
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4000
+        hi_tax_credit_for_low_income_household_renters_eligible: true
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: HI
+  output:
+    hi_tax_credit_for_low_income_household_renters: 150
+
+- name: Joint return filing exception restores own dependent without claimable spouse personal or aged exemption
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 66
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 66
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4000
+        hi_tax_credit_for_low_income_household_renters_eligible: true
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: HI
+  output:
+    hi_tax_credit_for_low_income_household_renters: 150

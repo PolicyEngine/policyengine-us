@@ -24,5 +24,5 @@ class rrc_adult_count_with_valid_ssn(Variable):
         # whom a deduction under section 151 is allowable to another
         # taxpayer" (IRC 6428(d)(2), 6428A(d)(2)) or "who is a dependent of
         # another taxpayer" (IRC 6428B(c)(2)): a claimability test.
-        claimed = person("claimed_as_dependent_on_another_return", period)
-        return tax_unit.sum(head_or_spouse & has_valid_ssn & ~claimed)
+        claimable = person("claimable_as_dependent_on_another_return", period)
+        return tax_unit.sum(head_or_spouse & has_valid_ssn & ~claimable)

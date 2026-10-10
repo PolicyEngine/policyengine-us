@@ -10,7 +10,8 @@ class exemptions_count(Variable):
     documentation = (
         "Number of personal exemptions on the federal return: one for each "
         "filer who cannot be claimed as a dependent by another taxpayer, plus "
-        "one for each dependent unless a filer can be claimed."
+        "one for each dependent unless a filer can be claimed and the "
+        "would-be claimant does not meet the filing exception."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/151#d_2",
@@ -25,13 +26,16 @@ class exemptions_count(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        # IRC 151(d)(2) zeroes the exemption of a filer whom another taxpayer
-        # can claim, and IRC 152(b)(1) treats a return on which the filer (or,
-        # if joint, either spouse) can be claimed as having no dependents. So
-        # such a return counts only its filers who cannot be claimed.
         tax_unit_size = tax_unit("tax_unit_size", period)
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
-        independent_filers = tax_unit(
-            "head_spouse_count_not_dependent_elsewhere", period
+        # IRC 151(d)(2): no exemption for a filer whom another taxpayer can
+        # claim as a dependent.
+        claimable_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        own = tax_unit("head_spouse_count_not_dependent_elsewhere", period)
+        # IRC 152(b)(1): such a filer has no dependents, unless the would-be
+        # claimant is not required to file and files no return or only for a
+        # refund (Publication 501, Dependent Taxpayer Test).
+        no_dependents = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
-        return where(filer_is_dependent, independent_filers, tax_unit_size)
+        dependents = where(no_dependents, 0, tax_unit("tax_unit_dependents", period))
+        return where(claimable_filer, own + dependents, tax_unit_size)
