@@ -47,7 +47,14 @@ class az_families_tax_rebate(Variable):
         has_tax_liability = tax_liability >= p.min_tax_liability
 
         person = tax_unit.members
-        dependent = person("is_tax_unit_dependent", period)
+        # The rebate counts each dependent for whom the 2021 return claimed
+        # the dependent tax credit (sec. 3(A), (D)). That credit needs an IRC
+        # 152 dependent (A.R.S. 43-1001(3)), and a return on which the filer
+        # (or, if joint, either spouse) can be claimed as a dependent has none
+        # (IRC 152(b)(1)). The rebate is computed on the 2021 return, so this
+        # reads the 2021 inputs.
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
         age = person("age", period)
 
         # Get counts by age group for max dependent limit prioritization

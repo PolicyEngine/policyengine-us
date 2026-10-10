@@ -13,3 +13,205 @@
     filing_status: JOINT
   output:
     ca_standard_deduction: 9_606
+
+# RTC 17073.5 and the Form 540 "California Standard Deduction Worksheet for
+# Dependents", used "only if your parent, or someone else, can claim you (or
+# your spouse/RDP) as a dependent": the smaller of the California amount
+# ($5,706 single, $11,412 joint in 2025) and the larger of $1,350 or earned
+# income plus $450 (federal dependent amounts, gov.irs.deductions.standard
+# .dependent). The filers have $2,000 of wages in total.
+
+- name: 2025 single filer who can be claimed as a dependent uses the dependent worksheet
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    # max($1,350, $2,000 + $450) = $2,450 < $5,706.
+    ca_standard_deduction: 2_450
+
+- name: 2025 single filer who cannot be claimed gets the full standard deduction
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        employment_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    ca_standard_deduction: 5_706
+
+- name: 2025 joint return with one claimable spouse uses the dependent worksheet (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        employment_income: 1_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # max($1,350, $2,000 + $450) = $2,450 < $11,412.
+    ca_standard_deduction: 2_450
+
+- name: 2025 joint return with one claimable spouse uses the dependent worksheet (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        employment_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: CA
+  output:
+    # max($1,350, $2,000 + $450) = $2,450 < $11,412.
+    ca_standard_deduction: 2_450
+
+- name: 2025 joint return with both spouses claimable uses the dependent worksheet
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        employment_income: 1_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # max($1,350, $2,000 + $450) = $2,450 < $11,412.
+    ca_standard_deduction: 2_450
+
+- name: 2025 joint return with neither spouse claimable gets the full standard deduction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 1_000
+      person_b:
+        age: 22
+        employment_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    ca_standard_deduction: 11_412
+
+- name: 2025 single filer who can be claimed and has no earned income gets the $1,350 minimum
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    ca_standard_deduction: 1_350
+
+- name: 2025 single filer who can be claimed and has high earnings is capped at the California amount
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        employment_income: 10_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    # min($5,706, $10,000 + $450).
+    ca_standard_deduction: 5_706
+
+- name: 2021 single filer who can be claimed uses the 2021 dependent amounts
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 19
+        employment_income: 3_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    # min($4,803, max($1,100, $3,000 + $350)).
+    ca_standard_deduction: 3_350

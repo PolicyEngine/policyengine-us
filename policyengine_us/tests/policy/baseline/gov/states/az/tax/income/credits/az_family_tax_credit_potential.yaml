@@ -1,25 +1,12 @@
-- name: Person is a dependent
-  period: 2022
-  input:
-    is_tax_unit_dependent: true
-    state_code: AR
-  output: 
-    ar_personal_credit_dependent: 29
+# A.R.S. 43-1073(B): $40 "for each person who is a resident of this state and
+# who is either the taxpayer, the taxpayer's spouse who does not file a return
+# or a dependent", capped at $120 single and $240 joint
+# (family_tax_credits/amount). A filer who can be claimed as a dependent still
+# counts as the taxpayer, but "dependent" has the IRC 152 meaning (A.R.S.
+# 43-1001(3)), so a return on which either filer can be claimed counts no
+# dependents (IRC 152(b)(1)).
 
-- name: Person is not a dependent
-  period: 2022
-  input:
-    is_tax_unit_dependent: false
-    state_code: AR
-  output: 
-    ar_personal_credit_dependent: 0
-
-# Ark. Code 26-51-501 gives each dependent a $29 personal credit
-# (credits/personal/amount/base.yaml), with "dependent" in the IRC 152 sense.
-# A return on which the filer (or, if joint, either spouse) can be claimed as
-# a dependent has no dependents (IRC 152(b)(1)).
-
-- name: 2025 single filer who can be claimed as a dependent gets no dependent credit for a child
+- name: 2025 single filer who can be claimed as a dependent counts only the filer, not the child
   period: 2025
   input:
     people:
@@ -35,11 +22,12 @@
     households:
       household:
         members: [filer, child]
-        state_code: AR
+        state_code: AZ
   output:
-    ar_personal_credit_dependent: [0, 0]
+    # $40 x 1.
+    az_family_tax_credit_potential: 40
 
-- name: 2025 single filer who cannot be claimed gets the dependent credit for a child
+- name: 2025 single filer who cannot be claimed counts the filer and the child
   period: 2025
   input:
     people:
@@ -54,11 +42,12 @@
     households:
       household:
         members: [filer, child]
-        state_code: AR
+        state_code: AZ
   output:
-    ar_personal_credit_dependent: [0, 29]
+    # $40 x 2.
+    az_family_tax_credit_potential: 80
 
-- name: 2025 joint return with one claimable spouse gets no dependent credit for a child (the claimable spouse is the head)
+- name: 2025 joint return with one claimable spouse counts both spouses but not the child (the claimable spouse is the head)
   period: 2025
   input:
     people:
@@ -80,11 +69,12 @@
     households:
       household:
         members: [person_a, person_b, child]
-        state_code: AR
+        state_code: AZ
   output:
-    ar_personal_credit_dependent: [0, 0, 0]
+    # $40 x 2.
+    az_family_tax_credit_potential: 80
 
-- name: 2025 joint return with one claimable spouse gets no dependent credit for a child (the claimable spouse is the spouse)
+- name: 2025 joint return with one claimable spouse counts both spouses but not the child (the claimable spouse is the spouse)
   period: 2025
   input:
     people:
@@ -106,11 +96,12 @@
     households:
       household:
         members: [person_b, person_a, child]
-        state_code: AR
+        state_code: AZ
   output:
-    ar_personal_credit_dependent: [0, 0, 0]
+    # $40 x 2.
+    az_family_tax_credit_potential: 80
 
-- name: 2025 joint return with both spouses claimable gets no dependent credit for a child
+- name: 2025 joint return with both spouses claimable still counts both spouses
   period: 2025
   input:
     people:
@@ -129,11 +120,12 @@
     households:
       household:
         members: [person_a, person_b, child]
-        state_code: AR
+        state_code: AZ
   output:
-    ar_personal_credit_dependent: [0, 0, 0]
+    # $40 x 2.
+    az_family_tax_credit_potential: 80
 
-- name: 2025 joint return with neither spouse claimable gets the dependent credit for a child
+- name: 2025 joint return with neither spouse claimable counts both spouses and the child
   period: 2025
   input:
     people:
@@ -150,6 +142,7 @@
     households:
       household:
         members: [person_a, person_b, child]
-        state_code: AR
+        state_code: AZ
   output:
-    ar_personal_credit_dependent: [0, 0, 29]
+    # $40 x 3.
+    az_family_tax_credit_potential: 120
