@@ -187,7 +187,9 @@
         state_code: CA
         household_vehicles_value: 8932.3525390625
   output:
-    state_income_tax_before_refundable_credits: 40465.78
+    # Also includes #10032's IRA 219(g) phase-out, since this is a two-cause
+    # CA + IRA cell.
+    state_income_tax_before_refundable_credits: 40683.11
 - name: 'PolicyBench scenario_022: California itemized conformity'
   period: 2026
   absolute_error_margin: 0.01
@@ -380,4 +382,6 @@
         auto_loan_interest: 1575.0
         household_vehicles_value: 21964.705078125
   output:
-    state_income_tax_before_refundable_credits: 4429.91
+    # Also includes #10032's IRA 219(g) phase-out, since this is a two-cause
+    # CA + IRA cell.
+    state_income_tax_before_refundable_credits: 4441.45

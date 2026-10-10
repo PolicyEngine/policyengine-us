@@ -57,13 +57,19 @@ class mn_homestead_credit_refund_household_income(Variable):
                 "self_employed_pension_contributions",
             ],
         )
+        # M1PR line 3 adds back "your deductions for your qualified retirement
+        # plan contributions from lines 16 and 20 of federal Schedule 1", so
+        # the IRA term is the federal deduction (Schedule 1 line 20), not total
+        # traditional contributions: nondeductible contributions never left
+        # federal AGI. 2025 M1PR instructions, PDF page 7:
+        # https://www.taxformfinder.org/forms/2025/2025-minnesota-form-m1pr-instructions.pdf#page=7
         retirement_additions = tax_unit_non_dep_add(
             tax_unit,
             period,
             [
                 "traditional_401k_contributions",
                 "traditional_403b_contributions",
-                "traditional_ira_contributions",
+                "traditional_ira_deduction",
                 "self_employed_pension_contributions",
             ],
         )

@@ -80,7 +80,7 @@ SCHEDULE_1_ADJUSTMENTS = {
     "self_employed_health_insurance_ald": "17",
     "early_withdrawal_penalty": "18",
     "alimony_expense_ald": "19a",
-    "traditional_ira_contributions": "20",
+    "traditional_ira_deduction": "20",
     "student_loan_interest_ald": "21",
 }
 # Federal above-the-line deductions that are not Schedule 1 Part II
@@ -370,13 +370,13 @@ def test_line_30_follows_the_federal_list():
     households = grid_households()
     removed = {
         "early_withdrawal_penalty",
-        "traditional_ira_contributions",
+        "traditional_ira_deduction",
         "us_bonds_for_higher_ed",
         "puerto_rico_income",
     }
     model = calculate(households, reform=without_federal_deductions(removed))
     assert "early_withdrawal_penalty" not in model["adjustments"]
-    assert "traditional_ira_contributions" not in model["adjustments"]
+    assert "traditional_ira_deduction" not in model["adjustments"]
     for i, h in enumerate(households):
         line_30 = sum(float(values[i]) for values in model["adjustments"].values())
         assert model["mi_household_resources"][i] == pytest.approx(
