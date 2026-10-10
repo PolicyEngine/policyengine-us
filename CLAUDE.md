@@ -146,6 +146,14 @@ changelog.d/medicaid-ce-exclusions.md
 - Verify behavior at edge cases (income just below/above thresholds, exact boundary conditions)
 - Consider real-world examples to validate implementation, including official calculators
 
+## Parameter and variable references
+- One `reference` entry per source document; URLs that differ only by `#page=` are one source. Do not split a multi-page table into per-page entries.
+- PDF page numbers are file pages (1-indexed), not printed pages.
+- One cited page: `#page=57` in the href only, no page in the title.
+- Several cited pages: the href opens the first, and the title ends with `#page 72-75` (consecutive) or `#page 29,32-33,36,41` (nonconsecutive). Quote the title, since an unquoted ` #` starts a YAML comment.
+- Never put a page list in the href (`#page=1,3,5`).
+- Variable reference tuples have no title: put a `# PDF pages 61-62, 67` comment above a multi-page href.
+
 ## Axiom Parity (required for policy changes)
 - Any PR that adds, updates or fixes policy must also leave the same provision correct in rulespec-us. Put one line in the PR body: `axiom: <legal id> encoded-correct | <rulespec PR> encoded | <rulespec issue> queued | n/a: <reason>`.
 - Use `queued` only when the signed encoder is blocked; record the blocker in the issue. Each billed encoder run requires separate approval. A `queued` rulespec-us issue must be dispatch-ready and labelled `pe-parity`. It needs the module path and corpus citation, the verbatim law, the required outputs, and companion tests from the same external source as your YAML tests. See `CONTRIBUTING.md#axiom-parity`.
@@ -162,12 +170,14 @@ changelog.d/medicaid-ce-exclusions.md
   - Files under `policyengine_us/tests/policy/baseline/partners/**` are API partner contract tests
   - Do not rewrite these expected outputs merely to match changed model behavior or make CI pass
   - If a model change causes partner tests to fail, treat that as a possible partner-facing API change
-  - Before editing files in this folder, flag the partner-facing risk to the user and use the `AskUserQuestion` tool to ask these three questions in a single call:
+  - Ziming Hua (@hua7450) approves every edit to files in this folder (Max Ghenis, 2026-10-09). Before editing them, flag the partner-facing risk to the user and put these three questions to Ziming:
     1. Are you sure you want to edit this test file?
     2. Have you notified a team member about this change?
     3. Have you notified the API partner about this change?
-  - Subagents and team members must not edit partner test files. If a subagent or team member finds that an edit is needed, it must stop and report back; the top-level agent runs the three-question gate with the user before any edit is made.
-  - Before changing expected outputs in this folder, identify the underlying model change and explain the partner impact to the user
+  - Ask on the PR that causes the change. Request his review (`gh pr edit <number> --add-reviewer hua7450`) and post a comment (`gh pr comment <number> --body-file <file>`) that names each changed case, its old and new expected values, and the model change and law behind it. If Ziming is the person you are working with, show him the changed cases and ask him directly with the `AskUserQuestion` tool instead; record his answer in a PR comment, which counts as his approval of those edits.
+  - Do not edit partner test files until Ziming has answered yes to all three questions, and do not merge a PR that changes them until he has approved a head that contains the edits.
+  - Subagents and agent teammates must not edit partner test files. If a subagent or agent teammate finds that an edit is needed, it must stop and report back; the top-level agent takes the three-question gate to Ziming before any edit is made.
+  - Before changing expected outputs in this folder, identify the underlying model change and explain the partner impact to Ziming and the user
 
 - **ABSOLUTELY NEVER HARDCODE LOGIC JUST TO PASS SPECIFIC TEST CASES**
   - NEVER add conditional logic that returns fixed values for specific input combinations

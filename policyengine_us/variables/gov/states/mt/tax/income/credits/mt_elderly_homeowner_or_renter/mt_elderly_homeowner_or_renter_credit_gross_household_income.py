@@ -14,11 +14,9 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
     reference = (
         "https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-23/section-15-30-2337/",
         "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html",
-        # 2023 Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 9
-        # (renamed Schedule 2EC from 2024)
-        "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=52",
-        # 2023 instructions, lines 1 and 8: the returns of each member of
-        # the household, and the wages of members who do not file
+        # 2023 Form 2 instructions, Elderly Homeowner/Renter Credit Schedule:
+        # lines 1 and 8 count every member's income; line 9 adds back losses.
+        # PDF pages 51-52 (renamed Schedule 2EC from 2024).
         "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=51",
         # 2024 Schedule 2EC, line 17: income received by other members of
         # the household

@@ -20,6 +20,26 @@
   output:
     ctc_credit_limit_worksheet_b_applies: false
 
+- name: Form 2555 filer with a zero net stacking amount cannot use Worksheet B.
+  period: 2025
+  input:
+    ctc_qualifying_children: 2
+    foreign_earned_income_exclusion_amount: 1_000
+    foreign_earned_income_exclusion_allocable_deductions: 2_000
+  output:
+    foreign_earned_income_exclusion: 0
+    ctc_credit_limit_worksheet_b_applies: false
+
+- name: Housing deduction filer cannot use Worksheet B when worksheet deductions offset the stacking amount.
+  period: 2025
+  input:
+    ctc_qualifying_children: 2
+    foreign_housing_deduction: 500
+    foreign_earned_income_exclusion_disallowed_deductions: 500
+  output:
+    foreign_earned_income_exclusion: 0
+    ctc_credit_limit_worksheet_b_applies: false
+
 - name: Does not apply in 2021, when the CTC was fully refundable.
   period: 2021
   input:
@@ -41,3 +61,37 @@
     foreign_earned_income_exclusion: 10_000
   output:
     ctc_credit_limit_worksheet_b_applies: true
+
+# Worksheet B reads the section 24(d)(3) bar rather than repeating its test, so
+# a bar set as an input decides both the refund and the worksheet.
+- name: Does not apply when the section 24(d)(3) bar is set as an input, even without an exclusion.
+  period: 2025
+  input:
+    ctc_qualifying_children: 2
+    foreign_earned_income_exclusion: 0
+    refundable_ctc_barred_by_section_911_exclusion: true
+  output:
+    ctc_credit_limit_worksheet_b_applies: false
+
+- name: Applies to a Form 2555 filer when the section 24(d)(3) bar is set to false as an input.
+  period: 2025
+  input:
+    ctc_qualifying_children: 2
+    foreign_earned_income_exclusion: 10_000
+    refundable_ctc_barred_by_section_911_exclusion: false
+  output:
+    ctc_credit_limit_worksheet_b_applies: true
+
+- name: A housing-only leaf election with zero aggregates skips Worksheet B.
+  period: 2025
+  input:
+    ctc_qualifying_children: 2
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    refundable_ctc_barred_by_section_911_exclusion: true
+    ctc_credit_limit_worksheet_b_applies: false

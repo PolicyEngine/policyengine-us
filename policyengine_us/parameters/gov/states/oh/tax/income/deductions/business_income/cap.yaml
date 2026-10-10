@@ -1,0 +1,25 @@
+description: Ohio limits the business income deduction to this amount, by filing status.
+metadata:
+  propagate_metadata_to_children: true
+  label: Ohio business income deduction cap
+  period: year
+  unit: currency-USD
+  breakdown:
+    - filing_status
+  reference:
+    - title: R.C. 5747.01(A)(28)
+      href: https://codes.ohio.gov/ohio-revised-code/section-5747.01
+    - title: 2024 Ohio Schedule of Business Income, line 12
+      href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2024/1040-bundle-original-fi.pdf#page=5
+    - title: 2021 Ohio IT 1040 Instructions, Business Income
+      href: https://dam.assets.ohio.gov/image/upload/tax.ohio.gov/forms/ohio_individual/individual/2021/pit-it1040-booklet.pdf#page=10
+SINGLE:
+  2021-01-01: 250_000
+JOINT:
+  2021-01-01: 250_000
+SEPARATE:
+  2021-01-01: 125_000
+HEAD_OF_HOUSEHOLD:
+  2021-01-01: 250_000
+SURVIVING_SPOUSE:
+  2021-01-01: 250_000

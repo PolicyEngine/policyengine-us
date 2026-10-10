@@ -1,0 +1,10 @@
+description: The IRS phases out the traditional IRA deduction over this modified adjusted gross income range for a joint filer who is not an active participant in an employer retirement plan and whose spouse is an active participant.
+values:
+  2015-01-01: 10_000
+metadata:
+  unit: currency-USD
+  period: year
+  label: IRA deduction spouse active participant phase-out width
+  reference:
+    - title: 26 U.S. Code § 219(g)(7)(B)
+      href: https://www.law.cornell.edu/uscode/text/26/219#g_7_B

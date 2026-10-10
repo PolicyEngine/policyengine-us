@@ -1,0 +1,45 @@
+# Page numbers in the comments are those of the FY2026 Oregon Energy Assistance
+# Intake, Operations and Policy Manual (energy burden on page 61 and in the
+# table on pages 93-94, income limits on page 77):
+# https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=93
+# OAR 813-200-0020(1)(b) makes "a demonstrated energy burden" a condition of
+# eligibility:
+# https://www.law.cornell.edu/regulations/oregon/Or-Admin-Code-SS-813-200-0020
+- name: Case 1, energy burden with heat paid directly, heat included in rent, subsidized housing and public housing.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR]
+    age: [38, 38, 38, 38, 38, 38, 38]
+    # About 30 hours a week near the Portland-metro minimum wage ($16.80 an
+    # hour from July 2026).
+    employment_income: [26_000, 26_000, 26_000, 26_000, 26_000, 26_000, 26_000]
+    ssi: [0, 0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    # About $125 a month where the household pays its own electric bill.
+    pre_subsidy_electricity_expense: [0, 0, 0, 1_500, 1_500, 1_500, 0]
+    heat_expense_included_in_rent: [false, true, true, false, false, true, true]
+    receives_housing_assistance: [false, false, true, true, false, true, false]
+    is_in_public_housing: [false, false, false, false, false, false, true]
+  output:
+    # Wages of 26,000 are within the size 1 limit of $38,385 (page 77) for
+    # every household, so eligibility turns on the energy burden table
+    # (page 93) and OAR 813-200-0020(1)(b):
+    #   1. no heating bill and heat not in rent: no energy burden to
+    #      demonstrate ("All households must demonstrate an energy burden",
+    #      page 61), ineligible;
+    #   2. "Energy Costs included in rent (non-subsidized)": energy burden
+    #      "Yes", eligible;
+    #   3. "Applicant lives in Subsidized Housing and heat is included in
+    #      rent": energy burden "No", ineligible;
+    #   4. "Applicant lives in Subsidized Housing and pays a vendor directly
+    #      for utility costs": energy burden "Yes", eligible;
+    #   5. "Applicant pays a vendor directly for utilities": energy burden
+    #      "Yes", eligible;
+    #   6. subsidized housing with heat included in rent stays ineligible
+    #      (page 61 and row 3 of page 93) even though the household pays a
+    #      separate electric bill: the "pays a vendor directly" row is read
+    #      as the heating bill, so a non-heating bill creates no energy burden;
+    #   7. public housing is subsidized housing, so heat included in rent is
+    #      again "No", ineligible.
+    or_liheap_eligible: [false, true, false, true, true, false, false]

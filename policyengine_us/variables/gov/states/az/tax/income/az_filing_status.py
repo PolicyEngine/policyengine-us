@@ -14,9 +14,9 @@ class az_filing_status(Variable):
     possible_values = ArizonaFilingStatus
     default_value = ArizonaFilingStatus.SINGLE
     definition_period = YEAR
-    documentation = (
-        "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01001.htm\n"  # Section 43-1001(5)
-        "https://azdor.gov/forms/individual/form-140a-arizona-resident-personal-income-tax-booklet"  # Page 5 (page 9 of pdf), Box 5.
+    reference = (
+        "https://www.azleg.gov/viewdocument/?docName=https://www.azleg.gov/ars/43/01001.htm",  # Section 43-1001(5)
+        "https://azdor.gov/forms/individual/form-140a-arizona-resident-personal-income-tax-booklet",  # Page 5 (page 9 of pdf), Box 5.
     )
 
     label = "Arizona filing status"
