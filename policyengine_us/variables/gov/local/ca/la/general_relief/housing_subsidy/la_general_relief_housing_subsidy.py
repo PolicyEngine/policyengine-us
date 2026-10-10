@@ -4,7 +4,7 @@ from policyengine_us.model_api import *
 class la_general_relief_housing_subsidy(Variable):
     value_type = float
     entity = SPMUnit
-    label = "Los Angeles County General Relief Housing Subsidy"
+    label = "Los Angeles County General Relief housing payment"
     definition_period = MONTH
     # Person has to be a resident of LA County
     defined_for = "la_general_relief_housing_subsidy_eligible"
@@ -14,15 +14,11 @@ class la_general_relief_housing_subsidy(Variable):
     )
 
     def formula(spm_unit, period, parameters):
-        married = add(spm_unit, period, ["is_married"])
-        p = parameters(period).gov.local.ca.la.general_relief.housing_subsidy
-        subsidy_amount = where(married, p.amount.married, p.amount.single)
-        # DPSS 46-103 specifies the landlord payment as subsidy plus the
-        # scheduled GR contribution. Read the schedule independently of the
-        # grant deduction, which depends on receiving this housing payment.
-        rent_contributions = where(
-            married, p.rent_contribution.married, p.rent_contribution.single
-        )
+        subsidy_amount = spm_unit("la_general_relief_housing_subsidy_amount", period)
+        # Read the same contribution used by the cash grant deduction,
+        # including supplied inputs. Its subsidy dependency is independent
+        # of this total payment, so the calculation remains acyclic.
+        rent_contributions = spm_unit("la_general_relief_rent_contribution", period)
         # The amount can not exceed rent
         rent = add(spm_unit, period, ["rent"])
         return min_(rent, subsidy_amount + rent_contributions)

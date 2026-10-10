@@ -8,16 +8,19 @@ class la_general_relief_rent_contribution(Variable):
     label = "Los Angeles County General Relief rent contribution"
     definition_period = MONTH
     defined_for = "la_general_relief_eligible"
-    reference = "https://drive.google.com/file/d/1Oc7UuRFxJj-eDwTeox92PtmRVGnG9RjW/view?usp=sharing"
+    reference = (
+        "https://my.dpss.lacounty.gov/public/en/home/epolicy/program/gr/homelessness/housing-subsidy-management-program.html#custom-title-f75ca3f760",
+        "https://dpss.lacounty.gov/content/dam/dpss/documents/en/gr/gr-housing-subsidy/PA%206182%20%28English%29%20ADA%20APPROVED.pdf#page=1",
+    )
 
     def formula(spm_unit, period, parameters):
         married = add(spm_unit, period, ["is_married"])
         p = parameters(period).gov.local.ca.la.general_relief
-        # If filers are receiving the housing subsidy
-        # they are obligate to commit an amount of their GR towards rent
-        # which is deducted here and added to the housing subsidy amount
+        # PA 6182 deducts the participant's contribution from cash GR.
+        # Read the county subsidy rather than the total landlord payment,
+        # which includes this contribution.
         receive_housing_subsidy = (
-            spm_unit("la_general_relief_housing_subsidy", period) > 0
+            spm_unit("la_general_relief_housing_subsidy_amount", period) > 0
         )
         rent_contributions = where(
             married,

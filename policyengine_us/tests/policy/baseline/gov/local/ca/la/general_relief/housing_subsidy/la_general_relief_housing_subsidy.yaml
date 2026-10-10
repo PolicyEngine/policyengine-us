@@ -249,3 +249,41 @@
     la_general_relief_housing_subsidy: 575
     la_general_relief_rent_contribution: 100
     la_general_relief: 0.742243
+
+# DPSS 46-103, Policy: county subsidy up to $475 for a single participant.
+# PA 6182, page 1, items 2-3: pay subsidy and deduct the supplied rent
+# contribution from cash GR. Supplied contributions are a model input contract;
+# these overrides do not change the policy's $100 scheduled contribution.
+- name: Supplied zero contribution preserves main housing payment and cash deduction
+  period: 2024-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: true
+    la_general_relief_base_amount: 221
+    rent: 7_200
+    la_general_relief_rent_contribution: 0
+  output:
+    la_general_relief_housing_subsidy_amount: 475
+    # Payment = min(7,200 / 12, 475 + 0) = 475.
+    la_general_relief_housing_subsidy: 475
+    la_general_relief_rent_contribution: 0
+    # Cash GR = 221 - 0 = 221.
+    la_general_relief: 221
+
+- name: Supplied contribution above schedule affects payment and cash deduction
+  period: 2024-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: true
+    la_general_relief_base_amount: 221
+    rent: 7_200
+    la_general_relief_rent_contribution: 150
+  output:
+    la_general_relief_housing_subsidy_amount: 475
+    # Payment = min(7,200 / 12, 475 + 150) = 600.
+    la_general_relief_housing_subsidy: 600
+    la_general_relief_rent_contribution: 150
+    # Cash GR = 221 - 150 = 71; use the same supplied contribution.
+    la_general_relief: 71
