@@ -42,7 +42,15 @@ class rrc_caa(Variable):
         children_with_ssn = tax_unit(
             "rrc_cares_qualifying_children_with_valid_ssn", period
         )
-        count_children = where(adults_with_ssn > 0, children_with_ssn, 0)
+        # This prerequisite is a spouse with a valid SSN, whether or not that
+        # spouse is an eligible individual; the credit itself needs a filer
+        # who is not a dependent of another taxpayer.
+        filer_has_ssn = tax_unit.any(
+            person("is_tax_unit_head_or_spouse", period)
+            & person("meets_eitc_identification_requirements", period)
+        )
+        no_eligible_filer = tax_unit("every_filer_is_dependent_elsewhere", period)
+        count_children = where(filer_has_ssn & ~no_eligible_filer, children_with_ssn, 0)
         max_payment = (
             rrc.caa.max.adult * count_adults + rrc.caa.max.child * count_children
         )
