@@ -287,3 +287,186 @@
     capital_gains_tax: 1_500
     # The same filer income and HOH tax calculation as the child-dividends case.
     regular_tax_before_credits: 22_938
+
+
+- name: A dependent's very large gain cannot round a dollar off the filer's Schedule D
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        long_term_capital_gains: 977
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 16_776_240
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The float32 all-member aggregate rounds 16,777,217 to 16,777,216.
+    # Subtracting the child's 16,776,240 would give 976, rather than 977.
+    # Schedule D line 16 and Form 1040 line 7a use the filer's own gain.
+    filer_loss_limited_net_capital_gains: 977
+    net_capital_gain: 977
+    dwks09: 977
+    dwks10: 977
+    adjusted_gross_income: 20_977
+
+- name: Each spouse's distributions are floored before they enter the shared Schedule D
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        long_term_capital_gains: 6_000
+        non_sch_d_capital_gains: -2_000
+      spouse:
+        age: 34
+        is_tax_unit_spouse: true
+        short_term_capital_gains: -3_000
+        non_sch_d_capital_gains: 1_500
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 10_000
+        non_sch_d_capital_gains: 9_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # Line 13 is max(0, -2,000) + max(0, 1,500) = 1,500, with no child
+    # distributions. Line 15 is 7,500; line 7 is -3,000; line 16 is 4,500.
+    filing_status: JOINT
+    filer_loss_limited_net_capital_gains: 4_500
+    net_capital_gain: 4_500
+    dwks09: 4_500
+    dwks10: 4_500
+
+- name: A supplied aggregate still excludes the dependent in Form 1040 line 7a
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        long_term_capital_gains: 6_000
+        short_term_capital_gains: -1_000
+        non_sch_d_capital_gains: 1_500
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 10_000
+        short_term_capital_gains: -2_000
+        non_sch_d_capital_gains: 9_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        net_capital_gains: 15_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The supplied 15,000 covers all members. Remove the child's 8,000 and
+    # add the head's 1,500 distributions: Schedule D line 16 is 8,500.
+    filer_loss_limited_net_capital_gains: 8_500
+    # Preserve the documented aggregate/component split: line 15 is 7,500,
+    # so worksheet line 9 is min(7,500, 8,500), while the statutory amount
+    # uses component-derived lines 15 and 7: 7,500 - 1,000 = 6,500.
+    dwks09: 7_500
+    dwks10: 7_500
+    net_capital_gain: 6_500
+
+
+- name: A large supplied aggregate keeps the dollar in its component adjustment
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        long_term_capital_gains: -1
+    tax_units:
+      tax_unit:
+        members: [head]
+        net_capital_gains: 16_777_216
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # The aggregate is supplied, rather than the component-derived -1.
+    # Reconciling through a float32 difference from -1 rounds 16,777,217
+    # down by a dollar. Read the differing supplied aggregate directly.
+    filer_loss_limited_net_capital_gains: 16_777_216
+    # The component-derived line 15 remains a loss, so the preexisting
+    # aggregate/component split gives no statutory gain or worksheet gain.
+    net_capital_gain: 0
+    dwks09: 0
+    dwks10: 0
+
+- name: A supplied aggregate removes a large dependent gain without borrowing its rounding error
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        long_term_capital_gains: 977
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 16_776_240
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        net_capital_gains: 20_000_000
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The supplied all-member gain is 20,000,000. Removing the child's
+    # own 16,776,240 gives 3,223,760. A residual against the rounded
+    # computed aggregate (16,777,216) incorrectly adds a dollar to this.
+    filer_loss_limited_net_capital_gains: 3_223_760
+    # Component-derived line 15 remains 977, so the preexisting
+    # aggregate/component split gives that gain to the worksheet and
+    # statutory net-capital-gain calculation.
+    net_capital_gain: 977
+    dwks09: 977
+    dwks10: 977
+
+- name: A supplied capital gain survives a much larger filer component
+  period: 2025
+  input:
+    people:
+      head:
+        age: 35
+        long_term_capital_gains: 1_152_921_504_606_846_976
+    tax_units:
+      tax_unit:
+        members: [head]
+        net_capital_gains: 1
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # The component gain is 2**60, exactly representable in float32.
+    # Even a float64 residual of 1 - 2**60 loses the supplied dollar when
+    # added back to the component gain. No dependent gains need removal.
+    filer_loss_limited_net_capital_gains: 1
