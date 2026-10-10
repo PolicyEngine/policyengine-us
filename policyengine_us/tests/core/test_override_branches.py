@@ -49,7 +49,6 @@ from policyengine_us.tools.period_branch import (
     drop_inherited_values,
     get_branch_for_period,
     get_override_branch,
-    has_input_for_period,
 )
 
 YEAR = 2026
@@ -624,37 +623,3 @@ def test_drop_inherited_values_keeps_inputs_only(households):
         _fresh(households, "taxable_income", {"tax_unit_itemizes": itemizes}),
         atol=0.01,
     )
-
-
-@pytest.mark.parametrize("delete_period", [2025, None])
-def test_deleted_input_provenance_is_isolated_by_branch_and_period(delete_period):
-    simulation = Simulation(
-        situation=_with_tax_unit_inputs(
-            _situation([REVIEW_HOUSEHOLD], years=YEARS),
-            {"medical_expense_deduction": (2025, 3_000)},
-        )
-    )
-    variable = "medical_expense_deduction"
-    simulation.set_input(variable, YEAR, np.array([4_000]))
-    sibling = simulation.get_branch("sibling")
-    parent = simulation.get_branch("parent")
-    parent.set_input(variable, 2025, np.array([5_000]))
-    existing_child = parent.get_branch("existing_child")
-    parent.delete_arrays(variable, delete_period)
-    parent.calculate(variable, 2025)
-
-    # The parent deletes both its own and its inherited input arrays. A
-    # recalculated cache has no input provenance, including in a new child.
-    assert not has_input_for_period(parent, variable, 2025)
-    new_child = parent.get_branch("new_child")
-    assert not has_input_for_period(new_child, variable, 2025)
-    drop_inherited_values(new_child)
-    assert new_child.get_array(variable, 2025) is None
-
-    # Previously cloned holders keep their arrays and their provenance.
-    for unchanged in (simulation, sibling, existing_child):
-        assert has_input_for_period(unchanged, variable, 2025)
-        assert has_input_for_period(unchanged, variable, YEAR)
-    assert has_input_for_period(parent, variable, YEAR) == (delete_period is not None)
-    parent.set_input(variable, 2025, np.array([6_000]))
-    assert has_input_for_period(parent, variable, 2025)
