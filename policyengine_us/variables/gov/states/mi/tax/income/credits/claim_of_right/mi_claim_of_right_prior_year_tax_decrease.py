@@ -3,16 +3,15 @@ from policyengine_us.model_api import *
 
 class mi_claim_of_right_prior_year_tax_decrease(Variable):
     value_type = float
-    entity = Person
+    entity = TaxUnit
     label = "Michigan prior-year tax on repaid claim of right income"
     unit = USD
     documentation = (
-        "Michigan income tax paid in the earlier year or years that is "
-        "attributable to the income repaid this year "
-        "(claim_of_right_repayment). Michigan figures it as the amount "
-        "repaid times the Michigan income tax rate in effect for the year "
-        "the income was taxed. The tax unit uses the sum for its head and "
-        "spouse."
+        "The filers' Michigan income tax paid in the earlier year or years "
+        "that is attributable to all the income they repaid this year "
+        "(claim_of_right_repayment). Michigan figures it as the amount repaid "
+        "times the Michigan income tax rate in effect for the year the income "
+        "was taxed."
     )
     definition_period = YEAR
     reference = (

@@ -81,11 +81,11 @@ def grid_simulation(year, repayment, state_decrease, credit_applies=None):
             "age": {year: 40},
             "employment_income": {year: WAGE[i]},
             "claim_of_right_repayment": {year: float(repayment[i])},
-            "claim_of_right_prior_year_tax_decrease": {year: FEDERAL_DECREASE[i]},
-            state_input: {year: float(state_decrease[i])},
         }
         situation["tax_units"][f"t{i}"] = {
             "members": [person],
+            "claim_of_right_prior_year_tax_decrease": {year: FEDERAL_DECREASE[i]},
+            state_input: {year: float(state_decrease[i])},
             "interest_deduction": {year: INTEREST_PAID[i]},
         }
         if credit_applies is not None:

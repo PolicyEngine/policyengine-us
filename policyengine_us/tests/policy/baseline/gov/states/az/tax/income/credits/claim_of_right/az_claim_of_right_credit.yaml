@@ -53,7 +53,7 @@
   output:
     az_claim_of_right_credit: 336
 
-- name: Case 6, a joint return counts the spouses' repayments and decreases, not a dependent's.
+- name: Case 6, a joint return counts the spouses' repayments, not a dependent's, and enters the decrease for the return.
   # Each spouse repays $2,000: together $4,000, over the threshold.
   period: 2025
   input:
@@ -61,19 +61,17 @@
       person1:
         age: 45
         claim_of_right_repayment: 2_000
-        az_claim_of_right_prior_year_tax_decrease: 50
       person2:
         age: 44
         claim_of_right_repayment: 2_000
-        az_claim_of_right_prior_year_tax_decrease: 50
       person3:
         age: 20
         is_tax_unit_dependent: true
         claim_of_right_repayment: 9_000
-        az_claim_of_right_prior_year_tax_decrease: 1_000
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+        az_claim_of_right_prior_year_tax_decrease: 100
     households:
       household:
         members: [person1, person2, person3]
@@ -87,7 +85,6 @@
     people:
       person1:
         age: 45
-        az_claim_of_right_prior_year_tax_decrease: 50
       person2:
         age: 20
         is_tax_unit_dependent: true
@@ -95,6 +92,7 @@
     tax_units:
       tax_unit:
         members: [person1, person2]
+        az_claim_of_right_prior_year_tax_decrease: 50
     households:
       household:
         members: [person1, person2]

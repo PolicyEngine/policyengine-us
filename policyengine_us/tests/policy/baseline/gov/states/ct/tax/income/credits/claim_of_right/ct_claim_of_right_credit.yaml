@@ -73,24 +73,22 @@
   output:
     ct_income_tax: -250
 
-- name: Case 7, a joint return sums the spouses' decreases, not a dependent's.
+- name: Case 7, a joint return enters the decrease for the return.
   period: 2025
   input:
     people:
       person1:
         age: 45
         claim_of_right_repayment: 4_000
-        ct_claim_of_right_prior_year_tax_decrease: 100
       person2:
         age: 44
-        ct_claim_of_right_prior_year_tax_decrease: 62
       person3:
         age: 20
         is_tax_unit_dependent: true
-        ct_claim_of_right_prior_year_tax_decrease: 1_000
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+        ct_claim_of_right_prior_year_tax_decrease: 162
     households:
       household:
         members: [person1, person2, person3]

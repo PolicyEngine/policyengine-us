@@ -30,8 +30,7 @@ class ct_claim_of_right_credit(Variable):
         # Section 1341 governs federal tax, under paragraph (a)(4) or (a)(5),
         # when the repayment exceeds the federal threshold.
         eligible = tax_unit("claim_of_right_section_1341_eligible", period)
-        person = tax_unit.members
-        decrease = person("ct_claim_of_right_prior_year_tax_decrease", period)
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        prior_year_tax_decrease = tax_unit.sum(decrease * head_or_spouse)
+        prior_year_tax_decrease = tax_unit(
+            "ct_claim_of_right_prior_year_tax_decrease", period
+        )
         return where(eligible, prior_year_tax_decrease, 0)

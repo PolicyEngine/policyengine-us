@@ -79,25 +79,23 @@
   output:
     mi_income_tax: -350
 
-- name: Case 7, a joint return sums the spouses' amounts, not a dependent's.
+- name: Case 7, a joint return enters the amount for the return.
   period: 2025
   input:
     people:
       person1:
         age: 45
         claim_of_right_repayment: 5_000
-        mi_claim_of_right_prior_year_tax_decrease: 212.5
       person2:
         age: 44
         claim_of_right_repayment: 1_000
-        mi_claim_of_right_prior_year_tax_decrease: 42.5
       person3:
         age: 20
         is_tax_unit_dependent: true
-        mi_claim_of_right_prior_year_tax_decrease: 1_000
     tax_units:
       tax_unit:
         members: [person1, person2, person3]
+        mi_claim_of_right_prior_year_tax_decrease: 255
     households:
       household:
         members: [person1, person2, person3]

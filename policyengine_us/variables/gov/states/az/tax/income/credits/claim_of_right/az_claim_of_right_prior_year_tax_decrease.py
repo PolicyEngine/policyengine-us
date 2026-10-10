@@ -3,16 +3,18 @@ from policyengine_us.model_api import *
 
 class az_claim_of_right_prior_year_tax_decrease(Variable):
     value_type = float
-    entity = Person
-    label = "Arizona prior-year tax decrease from excluding repaid claim of right income"
+    entity = TaxUnit
+    label = (
+        "Arizona prior-year tax decrease from excluding repaid claim of right income"
+    )
     unit = USD
     documentation = (
-        "Decrease in Arizona income tax for the earlier year or years that "
-        "would result solely from excluding from gross income the amount "
-        "repaid this year (claim_of_right_repayment): the tax on the Arizona "
-        "return filed for the earlier year less that tax refigured without "
-        "the repaid income (Arizona Claim of Right form, lines 6 to 8). The "
-        "tax unit uses the sum for its head and spouse."
+        "Decrease in the filers' Arizona income tax for the earlier year or "
+        "years that would result solely from excluding from gross income all "
+        "the income they repaid this year (claim_of_right_repayment): the tax "
+        "on the Arizona return filed for the earlier year less that tax "
+        "refigured without that income (Arizona Claim of Right form, lines 6 "
+        "to 8)."
     )
     definition_period = YEAR
     reference = (
