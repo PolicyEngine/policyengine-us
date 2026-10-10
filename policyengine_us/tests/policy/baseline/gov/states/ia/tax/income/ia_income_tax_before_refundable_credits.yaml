@@ -41,3 +41,167 @@
     state_code: IA
   output:
     ia_income_tax_before_refundable_credits: 40
+
+
+- name: 2022 single filer who can be claimed as a dependent gets no tax reduction
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        ia_income_tax_before_credits: 700
+        ia_non_refundable_credits: 0
+        ia_is_tax_exempt: false
+        ia_modified_income: 9500
+    households:
+      household:
+        members: [person_a]
+        state_code: IA
+  output:
+    # The Tax Reduction Worksheet is for single filers "not claimed as a
+    # dependent on another person's Iowa return" (2022 instructions, p.60).
+    ia_income_tax_before_refundable_credits: 700
+
+- name: 2022 single filer who cannot be claimed has tax reduced to income above $9,000
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        ia_income_tax_before_credits: 700
+        ia_non_refundable_credits: 0
+        ia_is_tax_exempt: false
+        ia_modified_income: 9500
+    households:
+      household:
+        members: [person_a]
+        state_code: IA
+  output:
+    # min($700, $9,500 - $9,000) = $500.
+    ia_income_tax_before_refundable_credits: 500
+
+- name: 2022 joint return with one claimable spouse gets no tax reduction (the claimable spouse is the head)
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ia_income_tax_before_credits: 700
+        ia_non_refundable_credits: 0
+        ia_is_tax_exempt: false
+        ia_modified_income: 9500
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: IA
+  output:
+    # The worksheet is for single filers only.
+    ia_income_tax_before_refundable_credits: 700
+
+- name: 2022 joint return with one claimable spouse gets no tax reduction (the claimable spouse is the spouse)
+  period: 2022
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        ia_income_tax_before_credits: 700
+        ia_non_refundable_credits: 0
+        ia_is_tax_exempt: false
+        ia_modified_income: 9500
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: IA
+  output:
+    ia_income_tax_before_refundable_credits: 700
+
+- name: 2022 joint return with both spouses claimable gets no tax reduction
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ia_income_tax_before_credits: 700
+        ia_non_refundable_credits: 0
+        ia_is_tax_exempt: false
+        ia_modified_income: 9500
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: IA
+  output:
+    ia_income_tax_before_refundable_credits: 700
+
+- name: 2022 joint return with no claimable spouse gets no tax reduction
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ia_income_tax_before_credits: 700
+        ia_non_refundable_credits: 0
+        ia_is_tax_exempt: false
+        ia_modified_income: 9500
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: IA
+  output:
+    ia_income_tax_before_refundable_credits: 700

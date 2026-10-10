@@ -23,7 +23,9 @@ class md_local_poverty_line_credit(Variable):
         # eligible low income taxpayer's earned income, as defined under
         # § 32(c)(2) (floored at zero, as for the State credit).
         eligible = tax_unit("is_eligible_md_poverty_line_credit", period)
-        earnings = tax_unit("eitc_earned_income", period)
+        # A filer who can be claimed takes no credit (see
+        # md_poverty_line_credit_earned_income).
+        earnings = tax_unit("md_poverty_line_credit_earned_income", period)
         rate = tax_unit("md_applicable_local_tax_rate", period)
         earnings_portion = earnings * rate
         local_tax = tax_unit("md_local_income_tax_before_credits", period)

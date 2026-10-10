@@ -8,8 +8,9 @@ class ks_count_exemptions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.ksrevenue.gov/pdf/ip21.pdf",
-        "https://www.ksrevenue.gov/pdf/ip22.pdf",
+        "https://www.ksrevenue.gov/pdf/ip21.pdf#page=6",
+        "https://www.ksrevenue.gov/pdf/ip22.pdf#page=6",
+        "https://www.ksrevenue.gov/pdf/ip23.pdf#page=6",
     )
     defined_for = StateCode.KS
 
@@ -20,4 +21,8 @@ class ks_count_exemptions(Variable):
         hoh = filing_status == statuses.HEAD_OF_HOUSEHOLD
         adults = where(joint | hoh, 2, 1)
         dependents = tax_unit("tax_unit_dependents", period)
-        return adults + dependents
+        # K-40 instructions: "If you are claimed as a dependent by another
+        # taxpayer, enter '0' in the Total Kansas exemptions box." Applied when
+        # either spouse on a joint return can be claimed.
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        return where(filer_is_dependent, 0, adults + dependents)

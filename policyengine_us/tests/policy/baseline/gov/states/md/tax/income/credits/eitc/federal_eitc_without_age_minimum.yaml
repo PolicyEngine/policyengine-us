@@ -109,3 +109,162 @@
     # phase-out start (Rev. Proc. 2024-40).
     eitc: 649
     federal_eitc_without_age_minimum: 649
+
+
+- name: 2025 single filer who can be claimed as a dependent gets no pro forma federal EITC
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 21
+        employment_income: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: MD
+  output:
+    # Section 10-704 waives only "the minimum age requirement"; the filer must
+    # be "otherwise eligible" (2025 Resident Booklet, p.22), and IRC
+    # 32(c)(1)(A)(ii)(III) bars a childless filer who can be claimed.
+    federal_eitc_without_age_minimum: 0
+    md_unmarried_childless_refundable_eitc: 0
+
+- name: 2025 single filer who cannot be claimed gets the pro forma federal EITC despite the minimum age
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 21
+        employment_income: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: MD
+  output:
+    # Age 21 fails the federal minimum age, which Maryland waives:
+    # $1,000 x .0765 = $76.50; unmarried childless match 100%, no tax.
+    federal_eitc_without_age_minimum: 76.5
+    md_unmarried_childless_refundable_eitc: 76.5
+
+- name: 2025 joint return with one claimable spouse gets no pro forma federal EITC (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 21
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 21
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MD
+  output:
+    # Either spouse being claimable bars the childless federal EITC.
+    federal_eitc_without_age_minimum: 0
+    md_married_or_has_child_refundable_eitc: 0
+
+- name: 2025 joint return with one claimable spouse gets no pro forma federal EITC (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 21
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 21
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: MD
+  output:
+    federal_eitc_without_age_minimum: 0
+    md_married_or_has_child_refundable_eitc: 0
+
+- name: 2025 joint return with both spouses claimable gets no pro forma federal EITC
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 21
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 21
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MD
+  output:
+    federal_eitc_without_age_minimum: 0
+    md_married_or_has_child_refundable_eitc: 0
+
+- name: 2025 joint return with no claimable spouse gets the pro forma federal EITC despite the minimum age
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 21
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 21
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: MD
+  output:
+    # $76.50; married refundable match .45 x $76.50 - $0 tax = $34.425.
+    federal_eitc_without_age_minimum: 76.5
+    md_married_or_has_child_refundable_eitc: 34.425

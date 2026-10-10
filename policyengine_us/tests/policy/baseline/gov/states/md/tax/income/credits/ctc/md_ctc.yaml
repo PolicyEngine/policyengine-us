@@ -550,3 +550,178 @@
     md_ctc: 900
     md_refundable_credits: 900
     md_income_tax: -800
+
+
+- name: 2025 single filer who can be claimed as a dependent gets no child tax credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MD
+  output:
+    # Section 10-751(a)(2)(i): a qualified child is "a dependent for purposes
+    # of section 152"; IRC 152(b)(1) leaves the return none.
+    md_ctc_eligible: false
+    md_ctc: 0
+
+- name: 2025 single filer who cannot be claimed gets the child tax credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MD
+  output:
+    # One child under 6, AGI $1,000 <= $15,000: $500.
+    md_ctc_eligible: true
+    md_ctc: 500
+
+- name: 2025 joint return with one claimable spouse gets no child tax credit (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MD
+  output:
+    # Either spouse being claimable leaves the return no dependents.
+    md_ctc_eligible: false
+    md_ctc: 0
+
+- name: 2025 joint return with one claimable spouse gets no child tax credit (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MD
+  output:
+    md_ctc_eligible: false
+    md_ctc: 0
+
+- name: 2025 joint return with both spouses claimable gets no child tax credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MD
+  output:
+    md_ctc_eligible: false
+    md_ctc: 0
+
+- name: 2025 joint return with no claimable spouse gets the child tax credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MD
+  output:
+    # One child under 6, AGI $1,000 <= $15,000: $500.
+    md_ctc_eligible: true
+    md_ctc: 500

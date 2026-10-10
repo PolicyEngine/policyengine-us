@@ -20,3 +20,138 @@
         state_code: MD
   output:
     md_aged_dependent_exemption: 3_200
+
+
+- name: 2025 single filer who can be claimed as a dependent gets no aged dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      parent:
+        age: 66
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, parent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, parent]
+        state_code: MD
+  output:
+    # Section 10-211(b)(2) needs an IRC 152 dependent; IRC 152(b)(1) leaves none.
+    md_aged_dependent_exemption: 0
+
+- name: 2025 joint return with one claimable spouse gets no aged dependent exemption (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 66
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, parent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, parent]
+        state_code: MD
+  output:
+    # Either spouse being claimable leaves the return no dependents.
+    md_aged_dependent_exemption: 0
+
+- name: 2025 joint return with one claimable spouse gets no aged dependent exemption (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 66
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, parent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, parent]
+        state_code: MD
+  output:
+    md_aged_dependent_exemption: 0
+
+- name: 2025 joint return with both spouses claimable gets no aged dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 66
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, parent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, parent]
+        state_code: MD
+  output:
+    md_aged_dependent_exemption: 0
+
+- name: 2025 joint return with no claimable spouse gets the aged dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      parent:
+        age: 66
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, parent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, parent]
+        state_code: MD
+  output:
+    # One dependent aged 65 or older: $3,200.
+    md_aged_dependent_exemption: 3200

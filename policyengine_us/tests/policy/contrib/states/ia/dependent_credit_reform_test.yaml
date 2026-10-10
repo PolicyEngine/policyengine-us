@@ -86,3 +86,33 @@
     households: {household: {members: [parent, child1], state_name: IA}}
   # Dependent one year under the limit (12 < 13) is re-priced to the reform amount.
   output: {ia_exemption_credit: 140}  # 40 personal + 100 young
+
+
+- name: IA dependent credit reform - joint return with a claimable spouse has no dependent credit (the claimable spouse is the head)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ia.dependent_credit.ia_dependent_credit_reform.ia_dependent_credit_reform
+  input:
+    gov.contrib.states.ia.dependent_credit.in_effect: true
+    gov.contrib.states.ia.dependent_credit.amount: 100
+    people:
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_a, person_b, child], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child], state_name: IA}}
+  # IRC 152(b)(1): no dependents when either spouse can be claimed; 80 personal.
+  output: {ia_exemption_credit: 80}
+
+- name: IA dependent credit reform - joint return with a claimable spouse has no dependent credit (the claimable spouse is the spouse)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ia.dependent_credit.ia_dependent_credit_reform.ia_dependent_credit_reform
+  input:
+    gov.contrib.states.ia.dependent_credit.in_effect: true
+    gov.contrib.states.ia.dependent_credit.amount: 100
+    people:
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_b, person_a, child], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a, child], state_name: IA}}
+  output: {ia_exemption_credit: 80}

@@ -15,7 +15,11 @@ def create_ks_dependent_exemption() -> Reform:
 
             person = tax_unit.members
             age = person("age", period)
-            is_dependent = person("is_tax_unit_dependent", period)
+            # A return on which the filer (or, if joint, either spouse) can be
+            # claimed as a dependent has no dependents (IRC 152(b)(1)).
+            is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
+                "head_or_spouse_is_dependent_elsewhere", period
+            )
 
             # Apply age limit if in effect.
             if p.age_limit.in_effect:

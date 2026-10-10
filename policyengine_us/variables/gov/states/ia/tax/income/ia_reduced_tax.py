@@ -12,6 +12,8 @@ class ia_reduced_tax(Variable):
         "https://revenue.iowa.gov/media/2650/download?inline#page=60",
         "https://revenue.iowa.gov/sites/default/files/2023-01/2022IA1040%2841001%29.pdf",
         "https://revenue.iowa.gov/media/2721/download?inline#page=60",
+        "https://revenue.iowa.gov/media/4152/download?inline#page=18",
+        "https://revenue.iowa.gov/media/4435/download?inline#page=18",
     )
     defined_for = StateCode.IA
 
@@ -24,8 +26,10 @@ class ia_reduced_tax(Variable):
             is_elderly, p.threshold.elderly, p.threshold.nonelderly
         )
         amount = max_(0, modified_income - modified_income_threshold)  # Line 3
-        # reduced tax available only to single tax units
+        # reduced tax available only to single tax units "not claimed as a
+        # dependent on another person's Iowa return" (Tax Reduction Worksheet)
         filing_status = tax_unit("filing_status", period)
         is_single = filing_status == filing_status.possible_values.SINGLE
-        return where(is_single, amount, np.inf)
+        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        return where(is_single & ~filer_is_dependent, amount, np.inf)
         # see ia_income_tax_before_refundable_credits formula for variable use

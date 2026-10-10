@@ -151,3 +151,59 @@
   output:
     # Baseline keeps the dependent add: 7,600 + 1 x 1,000 + 6,800 = 15,400.
     ma_income_tax_exemption_threshold: 15_400
+
+
+- name: Joint filers with a claimable spouse in Maryland keep only the other spouse's exemption (the claimable spouse is the head)
+  period: 2024
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_a, person_b, child], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child], state_name: MD}}
+  # Filing status 6: no exemption for the claimable spouse; 1 x 3,200.
+  output: {md_total_personal_exemptions: 3_200}
+
+- name: Joint filers with a claimable spouse in Maryland keep only the other spouse's exemption (the claimable spouse is the spouse)
+  period: 2024
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_b, person_a, child], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a, child], state_name: MD}}
+  output: {md_total_personal_exemptions: 3_200}
+
+
+- name: Joint filers with a claimable spouse in Kansas have no exemptions in 2022 (the claimable spouse is the head)
+  period: 2022
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_a, person_b, child], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child], state_name: KS}}
+  # 2022 K-40: a claimed filer enters 0 in the Total Kansas exemptions box.
+  output: {ks_exemptions: 0}
+
+- name: Joint filers with a claimable spouse in Kansas have no exemptions in 2022 (the claimable spouse is the spouse)
+  period: 2022
+  reforms: policyengine_us.reforms.state_dependent_exemptions.repeal_state_dependent_exemptions.repeal_state_dependent_exemptions
+  input:
+    gov.contrib.repeal_state_dependent_exemptions.in_effect: true
+    people:
+      person_b: {age: 30, employment_income: 500, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 30, employment_income: 500, claimed_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [person_b, person_a, child], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a, child], state_name: KS}}
+  output: {ks_exemptions: 0}
