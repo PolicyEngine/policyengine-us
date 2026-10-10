@@ -77,3 +77,296 @@
     ca_federal_capped_cdcc: 0
   output:
     ca_cdcc: 500
+
+# Fixed by the federal base branch, pinned here: a child under 13 is a
+# qualifying person only as the filer's dependent (IRC 21(b)(1)(A)), and a
+# return on which either filer can be claimed has none (IRC 152(b)(1)); a
+# disabled dependent still qualifies. AGI $39,900, $1,000 of care: federal
+# rate 35% - ceil(24,900 / 2,000) x 1% = 22% gives $220; California 50%
+# (credits/child_dependent_care/rate.yaml) gives $110.
+
+- name: 2025 single filer who can be claimed as a dependent gets no care credit for a child under 13
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 39_900
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [filer, child]
+        state_code: CA
+  output:
+    ca_cdcc: 0
+
+- name: 2025 single filer who cannot be claimed gets the care credit for a child under 13
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 39_900
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [filer, child]
+        state_code: CA
+  output:
+    ca_cdcc: 110
+
+- name: 2025 joint return with one claimable spouse gets no care credit for a child under 13 (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 19_950
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 19_950
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CA
+  output:
+    ca_cdcc: 0
+
+- name: 2025 joint return with one claimable spouse gets no care credit for a child under 13 (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 19_950
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 19_950
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: CA
+  output:
+    ca_cdcc: 0
+
+- name: 2025 joint return with both spouses claimable gets no care credit for a child under 13
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 19_950
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 19_950
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CA
+  output:
+    ca_cdcc: 0
+
+- name: 2025 joint return with neither spouse claimable gets the care credit for a child under 13
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 19_950
+      person_b:
+        age: 30
+        employment_income: 19_950
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CA
+  output:
+    ca_cdcc: 110
+
+- name: 2025 single filer who can be claimed as a dependent keeps the care credit for a disabled child
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 39_900
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 14
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [filer, child]
+        state_code: CA
+  output:
+    ca_cdcc: 110
+
+- name: 2025 joint return with one claimable spouse keeps the care credit for a disabled child (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 19_950
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 19_950
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 14
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CA
+  output:
+    ca_cdcc: 110
+
+- name: 2025 joint return with one claimable spouse keeps the care credit for a disabled child (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 19_950
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 19_950
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 14
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: CA
+  output:
+    ca_cdcc: 110
+
+- name: 2025 joint return with both spouses claimable keeps the care credit for a disabled child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 19_950
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 19_950
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 14
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CA
+  output:
+    ca_cdcc: 110
+
+- name: 2025 joint return with neither spouse claimable gets the care credit for a disabled child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 19_950
+      person_b:
+        age: 30
+        employment_income: 19_950
+      child:
+        age: 14
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CA
+  output:
+    ca_cdcc: 110

@@ -17,7 +17,16 @@ class ar_low_income_tax_joint(Variable):
         p = parameters(period).gov.states.ar.tax.income.rates.low_income_tax_tables
         filing_status_separate = person.tax_unit("filing_status", period)
         status = filing_status_separate.possible_values
-        dependents = person.tax_unit("tax_unit_dependents", period)
+        # The tables count dependents in the IRC 152 sense, and a return on
+        # which the filer (or, if joint, either spouse) can be claimed as a
+        # dependent has none (IRC 152(b)(1)). This changes only which table
+        # applies, not the filing status.
+        filer_is_dependent = person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere", period
+        )
+        dependents = where(
+            filer_is_dependent, 0, person.tax_unit("tax_unit_dependents", period)
+        )
         return select(
             [
                 filing_status_separate == status.SINGLE,

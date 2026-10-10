@@ -1,30 +1,14 @@
-- name: Person is a dependent
-  period: 2022
-  input:
-    is_tax_unit_dependent: true
-    state_code: AR
-  output: 
-    ar_personal_credit_dependent: 29
+# Each taxpayer and spouse keeps their own $29 personal credit
+# ("Each taxpayer and spouse is entitled to one personal tax credit", AR1000F
+# instructions) when another taxpayer can claim them; only the dependents'
+# credits go (IRC 152(b)(1)). The filers are 30, so no aged credits apply.
 
-- name: Person is not a dependent
-  period: 2022
-  input:
-    is_tax_unit_dependent: false
-    state_code: AR
-  output: 
-    ar_personal_credit_dependent: 0
-
-# Ark. Code 26-51-501 gives each dependent a $29 personal credit
-# (credits/personal/amount/base.yaml), with "dependent" in the IRC 152 sense.
-# A return on which the filer (or, if joint, either spouse) can be claimed as
-# a dependent has no dependents (IRC 152(b)(1)).
-
-- name: 2025 single filer who can be claimed as a dependent gets no dependent credit for a child
+- name: 2025 single filer who can be claimed as a dependent keeps their own personal credit
   period: 2025
   input:
     people:
       filer:
-        age: 19
+        age: 30
         claimed_as_dependent_on_another_return: true
       child:
         age: 5
@@ -37,14 +21,15 @@
         members: [filer, child]
         state_code: AR
   output:
-    ar_personal_credit_dependent: [0, 0]
+    # $29 x 1.
+    ar_personal_credits_potential: 29
 
-- name: 2025 single filer who cannot be claimed gets the dependent credit for a child
+- name: 2025 single filer who cannot be claimed gets credits for the filer and the child
   period: 2025
   input:
     people:
       filer:
-        age: 19
+        age: 30
       child:
         age: 5
     tax_units:
@@ -56,19 +41,20 @@
         members: [filer, child]
         state_code: AR
   output:
-    ar_personal_credit_dependent: [0, 29]
+    # $29 x 2.
+    ar_personal_credits_potential: 58
 
-- name: 2025 joint return with one claimable spouse gets no dependent credit for a child (the claimable spouse is the head)
+- name: 2025 joint return with one claimable spouse keeps both spouses' personal credits (the claimable spouse is the head)
   period: 2025
   input:
     people:
       person_a:
-        age: 20
+        age: 30
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
-        age: 22
+        age: 30
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
@@ -82,18 +68,19 @@
         members: [person_a, person_b, child]
         state_code: AR
   output:
-    ar_personal_credit_dependent: [0, 0, 0]
+    # $29 x 2.
+    ar_personal_credits_potential: 58
 
-- name: 2025 joint return with one claimable spouse gets no dependent credit for a child (the claimable spouse is the spouse)
+- name: 2025 joint return with one claimable spouse keeps both spouses' personal credits (the claimable spouse is the spouse)
   period: 2025
   input:
     people:
       person_b:
-        age: 22
+        age: 30
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
-        age: 20
+        age: 30
         claimed_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
@@ -108,17 +95,18 @@
         members: [person_b, person_a, child]
         state_code: AR
   output:
-    ar_personal_credit_dependent: [0, 0, 0]
+    # $29 x 2.
+    ar_personal_credits_potential: 58
 
-- name: 2025 joint return with both spouses claimable gets no dependent credit for a child
+- name: 2025 joint return with both spouses claimable keeps both spouses' personal credits
   period: 2025
   input:
     people:
       person_a:
-        age: 20
+        age: 30
         claimed_as_dependent_on_another_return: true
       person_b:
-        age: 22
+        age: 30
         claimed_as_dependent_on_another_return: true
       child:
         age: 5
@@ -131,16 +119,17 @@
         members: [person_a, person_b, child]
         state_code: AR
   output:
-    ar_personal_credit_dependent: [0, 0, 0]
+    # $29 x 2.
+    ar_personal_credits_potential: 58
 
-- name: 2025 joint return with neither spouse claimable gets the dependent credit for a child
+- name: 2025 joint return with neither spouse claimable gets credits for both spouses and the child
   period: 2025
   input:
     people:
       person_a:
-        age: 20
+        age: 30
       person_b:
-        age: 22
+        age: 30
       child:
         age: 5
     tax_units:
@@ -152,4 +141,5 @@
         members: [person_a, person_b, child]
         state_code: AR
   output:
-    ar_personal_credit_dependent: [0, 0, 29]
+    # $29 x 3.
+    ar_personal_credits_potential: 87

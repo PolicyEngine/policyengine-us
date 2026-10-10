@@ -185,3 +185,44 @@
   # Dependent one year under the limit (12 < 13) receives the credit.
   # Head personal credit 29 + 1 dependent * 29 = 58.
   output: {ar_personal_credits: 58}
+
+# With default settings the reform keeps the baseline's rule for a filer who
+# can be claimed as a dependent: no dependent credits (IRC 152(b)(1)), while
+# each filer keeps their own $29 credit.
+- name: AR dependent credit reform - default keeps only the own credit for a single filer who can be claimed
+  period: 2025
+  reforms: policyengine_us.reforms.states.ar.dependent_credit.ar_dependent_credit_reform.ar_dependent_credit_reform
+  input:
+    gov.contrib.states.ar.dependent_credit.in_effect: true
+    people:
+      filer: {age: 30, claimed_as_dependent_on_another_return: true}
+      child: {age: 5}
+    tax_units: {tax_unit: {members: [filer, child], filing_status: SINGLE}}
+    households: {household: {members: [filer, child], state_name: AR}}
+  output: {ar_personal_credits_potential: 29}
+
+- name: AR dependent credit reform - default keeps both own credits but no dependent credit on a joint return with a claimable spouse (the claimable spouse is the head)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ar.dependent_credit.ar_dependent_credit_reform.ar_dependent_credit_reform
+  input:
+    gov.contrib.states.ar.dependent_credit.in_effect: true
+    people:
+      person_a: {age: 30, claimed_as_dependent_on_another_return: true, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_b: {age: 30, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5}
+    tax_units: {tax_unit: {members: [person_a, person_b, child], filing_status: JOINT}}
+    households: {household: {members: [person_a, person_b, child], state_name: AR}}
+  output: {ar_personal_credits_potential: 58}
+
+- name: AR dependent credit reform - default keeps both own credits but no dependent credit on a joint return with a claimable spouse (the claimable spouse is the spouse)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ar.dependent_credit.ar_dependent_credit_reform.ar_dependent_credit_reform
+  input:
+    gov.contrib.states.ar.dependent_credit.in_effect: true
+    people:
+      person_b: {age: 30, is_tax_unit_head: true, is_tax_unit_spouse: false}
+      person_a: {age: 30, claimed_as_dependent_on_another_return: true, is_tax_unit_head: false, is_tax_unit_spouse: true}
+      child: {age: 5}
+    tax_units: {tax_unit: {members: [person_b, person_a, child], filing_status: JOINT}}
+    households: {household: {members: [person_b, person_a, child], state_name: AR}}
+  output: {ar_personal_credits_potential: 58}

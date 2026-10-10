@@ -47,3 +47,220 @@
     rent: 0
   output:
     ca_renter_credit: 0
+
+# RTC 17053.5(d)(2): a qualified renter does not include "an individual whose
+# principal place of residence for more than 50 percent of the taxable year is
+# with another person who claimed that individual as a dependent". The 2025
+# qualification record asks "Can you be claimed as a dependent ..." and then
+# "did you live in the home of the person who can claim you as a dependent?"
+# Being claimable alone does not bar the credit. Spouses filing jointly get
+# one $120 credit when either is a qualified renter (17053.5(a)(1)(A)).
+# Single filers get $60. California AGI is $2,000 and rent $6,000.
+
+- name: 2025 single filer who can be claimed as a dependent who lived in the claimer's home gets no renter credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        employment_income: 2_000
+        rent: 6_000
+        lives_with_claiming_taxpayer: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    ca_renter_credit: 0
+
+- name: 2025 single filer who cannot be claimed who reports living with a claimer is still a qualified renter
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        employment_income: 2_000
+        rent: 6_000
+        lives_with_claiming_taxpayer: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    ca_renter_credit: 60
+
+- name: 2025 joint return with one claimable spouse who lived in the claimer's home keeps the joint renter credit through the other spouse (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 2_000
+        rent: 6_000
+        lives_with_claiming_taxpayer: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        lives_with_claiming_taxpayer: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    ca_renter_credit: 120
+
+- name: 2025 joint return with one claimable spouse who lived in the claimer's home keeps the joint renter credit through the other spouse (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        lives_with_claiming_taxpayer: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 2_000
+        rent: 6_000
+        lives_with_claiming_taxpayer: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: CA
+  output:
+    ca_renter_credit: 120
+
+- name: 2025 joint return with both spouses claimable who both lived in the claimers' homes get no renter credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 2_000
+        rent: 6_000
+        lives_with_claiming_taxpayer: true
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        lives_with_claiming_taxpayer: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    ca_renter_credit: 0
+
+- name: 2025 joint return with neither spouse claimable gets the joint renter credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 2_000
+        rent: 6_000
+        lives_with_claiming_taxpayer: true
+      person_b:
+        age: 22
+        lives_with_claiming_taxpayer: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    ca_renter_credit: 120
+
+- name: 2025 single filer who can be claimed as a dependent but lived elsewhere gets the renter credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        employment_income: 2_000
+        rent: 6_000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    ca_renter_credit: 60
+
+- name: 2025 joint return at the $107,988 income limit gets the renter credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        rent: 6_000
+      person_b:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ca_agi: 107_988
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    # 2025 qualification record, question 2: $107,988 or less if married/RDP filing jointly.
+    ca_renter_credit: 120
+
+- name: 2025 joint return above the $107,988 income limit gets no renter credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 40
+        rent: 6_000
+      person_b:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        ca_agi: 107_989
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: CA
+  output:
+    ca_renter_credit: 0

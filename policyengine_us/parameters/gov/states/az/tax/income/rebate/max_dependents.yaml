@@ -9,8 +9,8 @@ metadata:
   reference:
     - title: Arizona Families Tax Rebate
       href: https://azdor.gov/individuals/arizona-families-tax-rebate
-    - title: SB1734 - Arizona Families Tax Rebate
-      href: https://www.azleg.gov/legtext/56leg/1r/laws/0147.htm
+    - title: SB1734 - Arizona Families Tax Rebate (Laws 2023, ch. 147), sec. 3(C), (E)
+      href: https://www.azleg.gov/legtext/56leg/1R/laws/0147.pdf#page=4
 SINGLE:
   2021-01-01: 3
 HEAD_OF_HOUSEHOLD:
@@ -19,5 +19,8 @@ SEPARATE:
   2021-01-01: 3
 SURVIVING_SPOUSE:
   2021-01-01: 3
+# Sec. 3(E): "a maximum of three dependents for a qualifying taxpayer", with one
+# rebate for each 2021 return (sec. 3(C)). ADOR's $1,500 joint maximum
+# describes two 2021 families who married later, each with its own 2021 return.
 JOINT:
-  2021-01-01: 6
+  2021-01-01: 3

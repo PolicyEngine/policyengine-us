@@ -24,3 +24,468 @@
     state_code: AR
   output: 
     ar_personal_credit_disabled_dependent: 500
+
+# Act 417 of 1999 covers an individual who is "a child of the taxpayer's
+# blood, an adopted child, or a dependent" in the IRC 152 sense, $500 each
+# (credits/personal/amount/disabled_dependent.yaml). A return on which the
+# filer (or, if joint, either spouse) can be claimed has no IRC 152
+# dependents (IRC 152(b)(1)), so only the filers' own children qualify. Parent
+# ids say whose child the dependent is; id 99 is an absent parent.
+
+- name: 2025 single filer who can be claimed as a dependent gets no credit for a disabled dependent who is not their child
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        person_id: 1
+        claimed_as_dependent_on_another_return: true
+      dependent:
+        age: 15
+        person_id: 3
+        is_disabled: true
+        parent_1_id: 99
+    tax_units:
+      tax_unit:
+        members: [filer, dependent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 0]
+
+- name: 2025 single filer who cannot be claimed gets the credit for a disabled dependent who is not their child
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        person_id: 1
+      dependent:
+        age: 15
+        person_id: 3
+        is_disabled: true
+        parent_1_id: 99
+    tax_units:
+      tax_unit:
+        members: [filer, dependent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 500]
+
+- name: 2025 joint return with one claimable spouse gets no credit for a disabled dependent who is not their child (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        person_id: 1
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        person_id: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      dependent:
+        age: 15
+        person_id: 3
+        is_disabled: true
+        parent_1_id: 99
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 0, 0]
+
+- name: 2025 joint return with one claimable spouse gets no credit for a disabled dependent who is not their child (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        person_id: 2
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        person_id: 1
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      dependent:
+        age: 15
+        person_id: 3
+        is_disabled: true
+        parent_1_id: 99
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 0, 0]
+
+- name: 2025 joint return with both spouses claimable gets no credit for a disabled dependent who is not their child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        person_id: 1
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        person_id: 2
+        claimed_as_dependent_on_another_return: true
+      dependent:
+        age: 15
+        person_id: 3
+        is_disabled: true
+        parent_1_id: 99
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 0, 0]
+
+- name: 2025 joint return with neither spouse claimable gets the credit for a disabled dependent who is not their child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        person_id: 1
+      person_b:
+        age: 22
+        person_id: 2
+      dependent:
+        age: 15
+        person_id: 3
+        is_disabled: true
+        parent_1_id: 99
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 0, 500]
+
+- name: 2025 single filer who can be claimed as a dependent keeps the credit for their own disabled child
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        person_id: 1
+        claimed_as_dependent_on_another_return: true
+      dependent:
+        age: 8
+        person_id: 3
+        is_disabled: true
+        parent_1_id: 1
+    tax_units:
+      tax_unit:
+        members: [filer, dependent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 500]
+
+- name: 2025 joint return with one claimable spouse keeps the credit for a spouse's own disabled child (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        person_id: 1
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        person_id: 2
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      dependent:
+        age: 8
+        person_id: 3
+        is_disabled: true
+        parent_1_id: 1
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 0, 500]
+
+- name: 2025 joint return with one claimable spouse keeps the credit for a spouse's own disabled child (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        person_id: 2
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        person_id: 1
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      dependent:
+        age: 8
+        person_id: 3
+        is_disabled: true
+        parent_1_id: 1
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 0, 500]
+
+- name: 2025 joint return with both spouses claimable keeps the credit for a spouse's own disabled child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        person_id: 1
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        person_id: 2
+        claimed_as_dependent_on_another_return: true
+      dependent:
+        age: 8
+        person_id: 3
+        is_disabled: true
+        parent_1_id: 1
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 0, 500]
+
+- name: 2025 joint return with neither spouse claimable gets the credit for a spouse's own disabled child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        person_id: 1
+      person_b:
+        age: 22
+        person_id: 2
+      dependent:
+        age: 8
+        person_id: 3
+        is_disabled: true
+        parent_1_id: 1
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 0, 500]
+
+- name: 2025 single filer who can be claimed as a dependent keeps the credit when no parent ids say whose child the disabled dependent is
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        claimed_as_dependent_on_another_return: true
+      dependent:
+        age: 8
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [filer, dependent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 500]
+
+- name: 2025 joint return with one claimable spouse keeps the credit when no parent ids say whose child the disabled dependent is (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      dependent:
+        age: 8
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 0, 500]
+
+- name: 2025 joint return with one claimable spouse keeps the credit when no parent ids say whose child the disabled dependent is (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      dependent:
+        age: 8
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 0, 500]
+
+- name: 2025 joint return with both spouses claimable keeps the credit when no parent ids say whose child the disabled dependent is
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        claimed_as_dependent_on_another_return: true
+      dependent:
+        age: 8
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 0, 500]
+
+- name: 2025 joint return with neither spouse claimable gets the credit for a disabled dependent without parent ids
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 22
+      dependent:
+        age: 8
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, dependent]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, dependent]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_dependent: [0, 0, 500]
+
+- name: 2025 parent ids elsewhere in the household do not decide whose child an unlinked disabled dependent is
+  period: 2025
+  input:
+    people:
+      filer_a:
+        age: 19
+        person_id: 1
+        claimed_as_dependent_on_another_return: true
+      child_a:
+        age: 6
+        person_id: 2
+        is_disabled: true
+      adult_b:
+        age: 40
+        person_id: 3
+      child_b:
+        age: 10
+        person_id: 4
+        parent_1_id: 3
+    tax_units:
+      tax_unit_a:
+        members: [filer_a, child_a]
+        filing_status: SINGLE
+      tax_unit_b:
+        members: [adult_b, child_b]
+    households:
+      household:
+        members: [filer_a, child_a, adult_b, child_b]
+        state_code: AR
+  output:
+    # child_a has no parent ids of their own, so the relationship is unknown
+    # and the child route stays open; child_b is not disabled.
+    ar_personal_credit_disabled_dependent: [0, 500, 0, 0]

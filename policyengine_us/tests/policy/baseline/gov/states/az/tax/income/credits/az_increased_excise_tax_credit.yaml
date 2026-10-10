@@ -113,3 +113,293 @@
     tax_unit_size: 4
   output:
     az_increased_excise_tax_credit: 0
+
+# A.R.S. 43-1072.01 and, from 2021, 43-1072.02 allow $25 for each person
+# (43-1072.02(C): "either the taxpayer, the taxpayer's spouse who does not
+# file a return or a dependent"), up to $100, but only "for a taxpayer who is
+# not claimed as a dependent by any other taxpayer". The Form 140 line 56
+# worksheet counts the filers and the dependents "provided that person(s)
+# qualifies as a dependent for federal purposes", and the instructions let a
+# joint filer claim the credit but not for a spouse who is barred. So a filer
+# who can be claimed is not counted, and a return on which either filer can
+# be claimed counts no dependents (IRC 152(b)(1)). Income is zero.
+
+- name: 2025 single filer who can be claimed as a dependent gets no excise credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: AZ
+  output:
+    az_increased_excise_tax_credit: 0
+
+- name: 2025 single filer who cannot be claimed gets the excise credit for the filer
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: AZ
+  output:
+    # $25 x 1.
+    az_increased_excise_tax_credit: 25
+
+- name: 2025 joint return with one claimable spouse gets the excise credit only for the other spouse (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: AZ
+  output:
+    # $25 x 1.
+    az_increased_excise_tax_credit: 25
+
+- name: 2025 joint return with one claimable spouse gets the excise credit only for the other spouse (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: AZ
+  output:
+    # $25 x 1.
+    az_increased_excise_tax_credit: 25
+
+- name: 2025 joint return with both spouses claimable gets no excise credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: AZ
+  output:
+    az_increased_excise_tax_credit: 0
+
+- name: 2025 joint return with neither spouse claimable gets the excise credit for both spouses
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 22
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: AZ
+  output:
+    # $25 x 2.
+    az_increased_excise_tax_credit: 50
+
+- name: 2025 joint return with one claimable spouse with a child gets the excise credit only for the other spouse (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: AZ
+  output:
+    # $25 x 1; the child is not counted.
+    az_increased_excise_tax_credit: 25
+
+- name: 2025 joint return with one claimable spouse with a child gets the excise credit only for the other spouse (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: AZ
+  output:
+    # $25 x 1; the child is not counted.
+    az_increased_excise_tax_credit: 25
+
+- name: 2025 joint return with both spouses claimable with a child gets no excise credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 22
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: AZ
+  output:
+    az_increased_excise_tax_credit: 0
+
+- name: 2025 joint return with neither spouse claimable with a child gets the excise credit for both spouses and the child
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+      person_b:
+        age: 22
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: AZ
+  output:
+    # $25 x 3.
+    az_increased_excise_tax_credit: 75
+
+- name: 2025 joint return with one claimable spouse and a tax unit size input counts only the filers (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 22
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        tax_unit_size: 4
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: AZ
+  output:
+    # $25 for the spouse who cannot be claimed. A tax unit size of 4 does not say who the
+    # other two are; a return with a claimable filer counts no dependents.
+    az_increased_excise_tax_credit: 25
+
+- name: 2025 joint return with one claimable spouse and a tax unit size input counts only the filers (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        tax_unit_size: 4
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: AZ
+  output:
+    # $25 for the spouse who cannot be claimed. A tax unit size of 4 does not say who the
+    # other two are; a return with a claimable filer counts no dependents.
+    az_increased_excise_tax_credit: 25
