@@ -27,6 +27,13 @@ class is_eligible_for_american_opportunity_credit(Variable):
         filer = person("is_tax_unit_head_or_spouse", period)
         claimed = person("claimed_as_dependent_on_another_return", period)
         filer_claimed = tax_unit.any(filer & claimed)
+        # IRC 25A(f)(1)(A)(iii) counts the tuition of a dependent only if the
+        # taxpayer "is allowed a deduction under section 151" for them, and a
+        # return on which a filer can be claimed as a dependent (outside the
+        # claimant filing exception) has no dependents (IRC 152(b)(1)).
+        dependent_student_barred = person("is_tax_unit_dependent", period) & tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         requires_1098_t = aoc.eligibility.requires_1098_t_or_exception
         has_1098_t_or_exception = (
             person("has_american_opportunity_credit_1098_t_or_exception", period)
@@ -76,4 +83,5 @@ class is_eligible_for_american_opportunity_credit(Variable):
             )
             & filing_status_eligible
             & ~filer_claimed
+            & ~dependent_student_barred
         )
