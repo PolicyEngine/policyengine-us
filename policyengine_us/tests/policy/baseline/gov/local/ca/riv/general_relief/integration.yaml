@@ -50,7 +50,8 @@
         housing_cost: 300 * 12
   output:
     state_withheld_income_tax: 0.38
-    ca_riv_general_relief_earned_income_deductions: [38.63, 0.38]
+    # person2 has no wages or withholding of their own.
+    ca_riv_general_relief_earned_income_deductions: [38.63, 0]
     ca_riv_general_relief_countable_income: 461.37 # 500 - 38.63
     ca_riv_general_relief_needs_standards: 436
     ca_riv_general_relief_income_eligible: false 
@@ -183,3 +184,97 @@
     ca_riv_general_relief_income_eligible: false
     ca_riv_general_relief_eligible: false
     ca_riv_general_relief: 0
+
+- name: Case 8, cash held by one member of a two-person unit counts once.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        ssi: 0
+        bank_account_assets: 300
+      person2:
+        age: 65
+        employment_income: 0
+        ssi: 0
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf: 0
+        housing_cost: 300 * 12
+  output:
+    # Countable property is $300, below the $500 limit, so the unit gets
+    # the same grant as Case 1.
+    ca_riv_general_relief_countable_property_value: 300
+    ca_riv_general_relief_property_eligible: true
+    ca_riv_general_relief_eligible: true
+    ca_riv_general_relief: 438.5
+
+- name: Case 9, an earner does not deduct another member's withholding.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 30_000
+        ssi: 0
+      person2:
+        age: 30
+        employment_income: 4_800
+        ssi: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_tanf: 0
+        housing_cost: 300 * 12
+  output:
+    # person2's $400 monthly wages less their own payroll taxes of $30.60.
+    # The pension is not GR income, and person1's $31.80 CA withholding stays
+    # with person1.
+    ca_riv_general_relief_earned_income_deductions: [31.80, 30.60]
+    ca_riv_general_relief_countable_income: 369.40
+    ca_riv_general_relief_eligible: true
+    # 436 needs standard + 2.5 special needs - 369.40
+    ca_riv_general_relief: 69.10
+
+- name: Case 10, Additional Medicare Tax withholding is a wage deduction.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 300_000
+        self_employment_income: -280_800
+        ssi: 0
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_tanf: 0
+        housing_cost: 300 * 12
+  output:
+    # A business loss offsets most of the wages:
+    # (300,000 - 280,800) / 12 = 1,600 of monthly earned income.
+    ca_riv_general_relief_earned_income: 1_600
+    # 871.10 Social Security + 362.50 Medicare + 75 Additional Medicare
+    # + 13.80 CA withholding on AGI of 19,200.
+    ca_riv_general_relief_earned_income_deductions: 1_322.40
+    ca_riv_general_relief_countable_income: 277.60
+    # 326 needs standard for one person + 2.5 special needs - 277.60
+    ca_riv_general_relief_eligible: true
+    ca_riv_general_relief: 50.90
