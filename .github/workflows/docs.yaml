@@ -1,36 +1,22 @@
-name: Documentation
+name: Round 4 individual Python checks
+
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - "docs/**"
-      - "Makefile"
-      - "policyengine_us/tools/add_plotly_to_book.py"
-      - "policyengine_us/tools/render_plotly_outputs.py"
-      - ".github/workflows/docs.yaml"
-  push:
-    branches: [main]
-    paths:
-      - "docs/**"
-      - "Makefile"
-      - "policyengine_us/tools/add_plotly_to_book.py"
-      - "policyengine_us/tools/render_plotly_outputs.py"
-      - ".github/workflows/docs.yaml"
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  Build:
-    name: Build documentation
+  Round4Python:
+    name: Round 4 individual Python checks
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    concurrency:
-      group: docs-build-${{ github.ref }}
-      cancel-in-progress: true
+    timeout-minutes: 90
+    env:
+      PYTHONUNBUFFERED: "1"
+      PYTEST_ADDOPTS: "--durations=25"
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout assigned branch
+        uses: actions/checkout@v6
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -39,50 +25,24 @@ jobs:
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
-      # The book is Jupyter Book 1 (docs/_config.yml, docs/_toc.yml), but
-      # uv.lock resolves jupyter-book 2, so the docs toolchain is installed
-      # here rather than with `uv sync --extra dev`. docs/_config.yml loads
-      # sphinxarg.ext, which needs sphinx-argparse. The book renders stored
-      # outputs and never imports policyengine_us; plotly (pinned to the
-      # uv.lock version) is only needed to render the stored charts.
-      - name: Install the Jupyter Book 1 toolchain
+      - name: Install locked dependencies
+        id: dependencies
+        run: uv sync --locked --extra dev
+      - name: Record Python and dependency versions
         run: |
-          uv venv --python 3.13 .venv
-          uv pip install --python .venv/bin/python "jupyter-book>=1.0.4.post1,<2" "furo>=2024.8.6" sphinx-argparse "plotly==5.24.1"
-      - name: Render stored Plotly outputs
-        run: .venv/bin/python policyengine_us/tools/render_plotly_outputs.py docs
-      - name: Build the book
-        run: |
-          source .venv/bin/activate
-          make documentation
-      - uses: actions/upload-artifact@v4
-        with:
-          name: documentation
-          path: docs/_build/html
-          if-no-files-found: error
+          uv run --no-sync python - <<'PY'
+          import importlib.metadata
+          import json
+          import platform
 
-  Deploy:
-    name: Deploy documentation to GitHub Pages
-    needs: Build
-    timeout-minutes: 10
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && github.repository == 'PolicyEngine/policyengine-us'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    concurrency:
-      group: docs-deploy
-      cancel-in-progress: false
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/download-artifact@v4
-        with:
-          name: documentation
-          path: site
-      # GitHub Pages serves the gh-pages branch with Jekyll unless .nojekyll
-      # is present, and Jekyll drops Sphinx's _static/ and _sources/ folders.
-      - name: Disable Jekyll
-        run: touch site/.nojekyll
-      - uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          branch: gh-pages
-          folder: site
+          print(json.dumps({
+              "python": platform.python_version(),
+              "core": importlib.metadata.version("policyengine-core"),
+              "filelock": importlib.metadata.version("filelock"),
+          }))
+          PY
+      - name: Run medical premium conservation tests
+        run: uv run --no-sync python -m pytest -q policyengine_us/tests/core/test_medical_expense_premium_conservation.py
+      - name: Run Idaho health insurance premium tests
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: uv run --no-sync python -m pytest -q policyengine_us/tests/core/test_id_health_insurance_premiums.py
