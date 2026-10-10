@@ -185,6 +185,9 @@ def test_exclude_from_total_changes_nothing_but_adds():
     bare.add_variable(total)
     bare.neutralize_variable("total")
     before = dict(vars(bare.variables["total"]))
+    # Adding and neutralizing the variable set the flag; clear it so the
+    # assertion below sees the helper set it.
+    bare.data_modified = False
 
     exclude_from_total(bare, "total", "a")
     after = dict(vars(bare.variables["total"]))
