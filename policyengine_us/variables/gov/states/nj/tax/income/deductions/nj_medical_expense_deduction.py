@@ -10,8 +10,8 @@ class nj_medical_expense_deduction(Variable):
     defined_for = StateCode.NJ
     reference = (
         "https://www.nj.gov/treasury/taxation/njit13.shtml",
-        "https://www.nj.gov/treasury/taxation/pdf/pubs/tb/tb39r.pdf",
-        "https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=24",
+        "https://www.nj.gov/treasury/taxation/pdf/pubs/tb/tb39r.pdf#page=1",
+        "https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=25",
     )
 
     def formula(tax_unit, period, parameters):
