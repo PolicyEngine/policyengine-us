@@ -1,10 +1,11 @@
 from policyengine_us.model_api import *
+from policyengine_us.spm import BEHAVIORAL_RESPONSE_CACHE_ATTR, clone_spm_system
+from policyengine_us.tools.period_branch import drop_inherited_values
 
 BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH = "behavioral_response_measurement"
 BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH = (
     "baseline_behavioral_response_measurement"
 )
-BEHAVIORAL_RESPONSE_CACHE_ATTR = "_behavioral_response_measurements"
 NEUTRALIZED_BEHAVIORAL_RESPONSE_VARIABLES = (
     "employment_income_behavioral_response",
     "self_employment_income_behavioral_response",
@@ -30,11 +31,54 @@ def _copy_behavioral_response_inputs(branch, person, period):
 
 
 def _behavioral_response_cache(simulation):
-    cache = getattr(simulation, BEHAVIORAL_RESPONSE_CACHE_ATTR, None)
+    """This simulation's measurements, by period.
+
+    Each simulation has its own dictionary: ``SPMSimulationMixin`` gives a
+    clone an empty one and a branch a copy of its parent's, and drops it with
+    the rest of the cached formula output (``_invalidate_all_caches``).
+    """
+    cache = simulation.__dict__.get(BEHAVIORAL_RESPONSE_CACHE_ATTR)
     if cache is None:
         cache = {}
-        setattr(simulation, BEHAVIORAL_RESPONSE_CACHE_ATTR, cache)
+        simulation.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR] = cache
     return cache
+
+
+def _baseline_measurement_branch(simulation):
+    """Branch ``simulation`` under baseline policy, keeping only its inputs.
+
+    The baseline measurement applies baseline policy to the inputs of the
+    simulation being measured, as the reform measurement applies the
+    simulation's own policy to them. ``simulation.baseline`` has the baseline
+    policy, but its inputs need not be the simulation's:
+
+    - A branch shares its parent's baseline, and on policyengine-core before
+      #587 so does a clone, so their baseline holds the parent's inputs.
+    - A reform simulation's baseline is a branch taken while it was built,
+      before this package moved ``employment_income`` and the other
+      pre-response inputs to their ``_before_lsr`` variables, so a household
+      baseline keeps them as overrides; later inputs never reach it.
+
+    ``simulation.get_branch("baseline")``, used before, was worse: for a branch
+    or an early clone it made a new branch under the *reform* policy, so the
+    response was measured against the reform itself and came out zero.
+
+    So branch the simulation itself and give the branch a private copy of the
+    baseline policy, as core does for a reform simulation's own baseline. Then
+    drop every array the branch copied except inputs: the rest was calculated
+    under the reform. Like that baseline, the branch has no baseline of its own,
+    so its behavioural responses are zero.
+    """
+    branch = simulation.get_branch(BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH)
+    branch.tax_benefit_system = clone_spm_system(simulation.baseline.tax_benefit_system)
+    branch.baseline = None
+    branch._rebind_holders()
+    drop_inherited_values(branch)
+    branch._isolate_parameter_tracing()
+    # The policy copy's receipts list the counties the baseline read; record
+    # the ones this branch reads, which are the simulation's.
+    branch._record_own_county_input_types()
+    return branch
 
 
 def get_behavioral_response_measurements(person, period):  # pragma: no cover
@@ -46,18 +90,14 @@ def get_behavioral_response_measurements(person, period):  # pragma: no cover
     if period_key in cache:
         return cache[period_key]
 
-    measurement_branch = simulation.get_branch(
-        BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, clone_system=True
-    )
-    baseline_parent = simulation.get_branch("baseline")
-    baseline_branch = baseline_parent.get_branch(
-        BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, clone_system=True
-    )
-    baseline_branch.tax_benefit_system.parameters.simulation = (
-        measurement_branch.tax_benefit_system.parameters.simulation
-    )
-
     try:
+        measurement_branch = simulation.get_branch(
+            BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, clone_system=True
+        )
+        baseline_branch = _baseline_measurement_branch(simulation)
+        baseline_branch.tax_benefit_system.parameters.simulation = (
+            measurement_branch.tax_benefit_system.parameters.simulation
+        )
         for branch in (measurement_branch, baseline_branch):
             _neutralize_behavioral_responses(branch)
             _copy_behavioral_response_inputs(branch, person, period)
@@ -85,9 +125,7 @@ def get_behavioral_response_measurements(person, period):  # pragma: no cover
         simulation.macro_cache_write = False
         return measurements
     finally:
-        baseline_parent.branches.pop(
-            BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, None
-        )
+        simulation.branches.pop(BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, None)
         simulation.branches.pop(BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH, None)
 
 

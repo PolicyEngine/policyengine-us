@@ -83,6 +83,12 @@ DATASET_SOURCE_INPUTS = frozenset({"is_spm_independent_minor_role"})
 
 COUNTY_FIPS_PATTERN = re.compile(r"[0-9]{5}")
 
+# Where a simulation keeps its behavioural-response measurements, by period
+# (``variables/gov/simulation/behavioral_response_measurements.py``). They are
+# cached formula output kept outside the holders, so the simulation's clone,
+# branch and invalidation paths below handle them explicitly.
+BEHAVIORAL_RESPONSE_CACHE_ATTR = "_behavioral_response_measurements"
+
 COUNTY_INPUT_FIX = (
     'send county_fips as a five-digit string (for example "06037"), or select '
     'geography_kind="national" in the spm configuration'
@@ -711,7 +717,16 @@ class SPMSimulationMixin:
             branch._isolate_parameter_tracing()
 
     def get_branch(self, name="branch", clone_system=False):
+        creating = name != self.branch_name and name not in self.branches
         branch = super().get_branch(name, clone_system)
+        if creating:
+            # A branch starts from what this simulation has calculated, its
+            # behavioural-response measurements included, but keeps its own
+            # copy (``clone`` emptied it): what either measures afterwards, the
+            # other does not see.
+            measurements = self.__dict__.get(BEHAVIORAL_RESPONSE_CACHE_ATTR)
+            if measurements is not None:
+                branch.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR] = dict(measurements)
         # Core names the branch and hands it this simulation's tracer after
         # cloning, so re-prime the branch's root with what it ended up holding.
         branch._isolate_parameter_tracing()
@@ -908,7 +923,19 @@ class SPMSimulationMixin:
         cloned._rebind_holders()
         self._rebind_method_aliases(cloned)
         cloned._isolate_parameter_tracing()
+        # Core copies the instance dictionary by reference, which shared this
+        # simulation's measurements dictionary with the clone: a clone given
+        # other inputs reused them, and what it measured reached this
+        # simulation. A clone measures its own (``get_branch`` seeds a branch).
+        cloned.__dict__.pop(BEHAVIORAL_RESPONSE_CACHE_ATTR, None)
         return cloned
+
+    def _invalidate_all_caches(self):
+        # Core purges cached formula output here (``apply_reform``,
+        # ``subsample``); the measurements are formula output kept outside the
+        # holders.
+        self.__dict__.pop(BEHAVIORAL_RESPONSE_CACHE_ATTR, None)
+        super()._invalidate_all_caches()
 
     def _rebind_method_aliases(self, cloned):
         """Point copied bound-method aliases at the clone, not the original.
