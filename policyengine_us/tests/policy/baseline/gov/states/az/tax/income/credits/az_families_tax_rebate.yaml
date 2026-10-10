@@ -145,7 +145,7 @@
     # No dependents = no rebate
     az_families_tax_rebate: 0
 
-- name: 2021 - MFJ with six young dependents - max $1,500 rebate
+- name: 2021 - MFJ with six young dependents - capped at three, $750
   period: 2021
   input:
     people:
@@ -183,8 +183,9 @@
         members: [filer1, filer2, child1, child2, child3, child4, child5, child6]
         state_code: AZ
   output:
-    # MFJ can claim up to 6 dependents: 6 x $250 = $1,500
-    az_families_tax_rebate: 1_500
+    # Laws 2023, ch. 147, sec. 3(E): "a maximum of three dependents for a
+    # qualifying taxpayer", one rebate per 2021 return: 3 x $250 = $750.
+    az_families_tax_rebate: 750
 
 - name: 2021 - Single filer with four dependents - capped at $750
   period: 2021
