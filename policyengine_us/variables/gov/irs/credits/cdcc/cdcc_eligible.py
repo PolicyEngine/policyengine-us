@@ -27,7 +27,9 @@ class is_cdcc_eligible(Variable):
         # A child qualifies only as the filer's dependent ("Your qualifying
         # child who is your dependent", Publication 503), and under IRC
         # 152(b)(1) a return on which the filer (or, if joint, either spouse)
-        # can be claimed as a dependent has no dependents.
+        # can be claimed as a dependent has no dependents. The model has no
+        # input for an IRC 152(e) release, so the 21(e)(5) child of a
+        # custodial parent who can be claimed is not kept.
         filer_is_dependent = person.tax_unit(
             "head_or_spouse_is_dependent_elsewhere", period
         )

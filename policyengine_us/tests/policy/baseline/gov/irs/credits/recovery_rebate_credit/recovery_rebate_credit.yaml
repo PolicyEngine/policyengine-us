@@ -48,7 +48,6 @@
   output:
     recovery_rebate_credit: 3_920 # https://www.efile.com/stimulus-check-three/
 
-
 - name: 2021 single filer who can be claimed as a dependent gets no ARPA rebate
   period: 2021
   input:
@@ -159,3 +158,156 @@
   output:
     # 3 x $1,400.
     rrc_arpa: 4_200
+
+# The Armed Forces exception (IRC 6428B(e)(2)(E)) waives the identification rule
+# for the other spouse; it does not make a dependent of another taxpayer an
+# eligible individual (IRC 6428B(c)(2)).
+- name: 2021 military joint return with one claimable spouse gets one ARPA rebate (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        is_military: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    rrc_arpa: 1400
+
+- name: 2021 military joint return with one claimable spouse gets one ARPA rebate (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_military: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    rrc_arpa: 1400
+
+- name: 2021 military joint return whose other spouse is claimable gets one ARPA rebate (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_military: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    rrc_arpa: 1400
+
+- name: 2021 military joint return whose other spouse is claimable gets one ARPA rebate (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 30
+        is_military: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    rrc_arpa: 1400
+
+- name: 2021 military joint return with both spouses claimable gets no ARPA rebate
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        is_military: true
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    rrc_arpa: 0
+
+- name: 2021 military joint return with neither spouse claimable gets both ARPA rebates
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        is_military: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    rrc_arpa: 2800
