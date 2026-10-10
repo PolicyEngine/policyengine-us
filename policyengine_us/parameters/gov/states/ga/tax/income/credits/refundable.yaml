@@ -5,6 +5,10 @@ values:
   # refundable. Its amount parameter is nonzero only for tax year 2021.
   2021-01-01:
     - ga_surplus_tax_rebate
+  # Georgia's instructions state the claim of right credit from tax year 2024.
+  2024-01-01:
+    - ga_surplus_tax_rebate
+    - ga_claim_of_right_credit
 metadata:
   unit: list
   period: year
@@ -12,3 +16,7 @@ metadata:
   reference:
     - title: Official Code of Georgia Annotated | O.C.G.A. § 48-7-20.2(b), (d)
       href: https://www.legis.ga.gov/api/legislation/document/20232024/217823
+    - title: 2024 IT-511 Individual Income Tax Booklet, Form 500 line 25, Claim of right under IRC 1341
+      href: https://dor.georgia.gov/document/document/2024-it-511-individual-income-tax-booklet/download#page=18
+    - title: 2025 IT-511 Individual Income Tax Booklet, Form 500 line 25, Claim of right under IRC 1341
+      href: https://dor.georgia.gov/document/document/2025-it-511-individual-income-tax-booklet/download#page=18

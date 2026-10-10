@@ -3,15 +3,19 @@ values:
   2021-01-01:
     - ok_ptc # OK low-income property tax credit
     - ok_stc # OK sales tax relief credit
+    - ok_claim_of_right_refund # refund of prior-year tax, OAC 710:50-3-9
   2022-01-01:
     - ok_ptc
     - ok_stc
     - ok_eitc
+    - ok_claim_of_right_refund
 
 metadata:
   unit: list
   label: Oklahoma refundable credits
   reference:
+    - title: OAC 710:50-3-9, Amended Oklahoma return under federal claim of right adjustment
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/resources/rules-and-policies/agency-rules/2026/Chapter50-Income-2026.pdf#page=15
     - title: 2021 Form 511 instructions
       href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf
     - title: 2022 Form 511 instructions
