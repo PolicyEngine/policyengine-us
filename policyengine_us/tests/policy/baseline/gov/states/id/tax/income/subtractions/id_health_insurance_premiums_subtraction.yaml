@@ -168,3 +168,161 @@
   output:
     dependents_self_employed_health_insurance_ald: 500
     id_health_insurance_premiums_subtraction: 1_000
+
+- name: Dependent-paid premiums cannot reduce the parent's itemized subtraction
+  # Idaho Code 63-3022P; 2025 Form 39R worksheet, PDF page 49,
+  # lines 1-6 and 8: $3,000 claimant costs - $2,250 floor = $750 overlap.
+  # Leave medical_expense_deduction derived to reproduce review r2's P2.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 3_000
+        is_tax_unit_head: true
+      dependent:
+        age: 20
+        health_insurance_premiums: 500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        adjusted_gross_income: 30_000
+        standard_deduction: 15_750
+        id_itemized_deductions: 20_000
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ID
+  output:
+    medical_expense_deduction: 1_250
+    id_health_insurance_premiums_medical_deduction: 750
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 2_250
+    id_taxable_income: 7_750
+
+- name: Dependent payments cannot push claimant medical expenses above the floor
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 2_000
+        is_tax_unit_head: true
+      dependent:
+        age: 20
+        health_insurance_premiums: 500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        adjusted_gross_income: 30_000
+        standard_deduction: 15_750
+        id_itemized_deductions: 20_000
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ID
+  output:
+    medical_expense_deduction: 250
+    id_health_insurance_premiums_medical_deduction: 0
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 2_000
+
+- name: Claimant medical overlap includes spouse expenses and excludes dependent expenses
+  # Claimants paid $5,000 premiums + $2,000 other costs; the floor is $6,000.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 3_000
+        other_medical_expenses: 1_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        health_insurance_premiums: 2_000
+        other_medical_expenses: 1_000
+        is_tax_unit_spouse: true
+      dependent:
+        age: 20
+        health_insurance_premiums: 500
+        other_medical_expenses: 4_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, dependent]
+        adjusted_gross_income: 80_000
+        standard_deduction: 31_500
+        id_itemized_deductions: 40_000
+    households:
+      household:
+        members: [head, spouse, dependent]
+        state_code: ID
+  output:
+    medical_expense_deduction: 5_500
+    id_health_insurance_premiums_medical_deduction: 1_000
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 4_000
+
+- name: Excluded premiums cannot enter derived claimant medical overlap
+  # Form 39R excludes pretax and Schedule 1 amounts before the worksheet.
+  # Eligible medical costs: $6,000 - $2,000 - $1,000 + $500 = $3,500.
+  period: 2025
+  input:
+    state_code: ID
+    health_insurance_premiums: 6_000
+    pre_tax_health_insurance_premiums: 2_000
+    self_employed_health_insurance_ald: 1_000
+    other_medical_expenses: 500
+    adjusted_gross_income: 30_000
+    standard_deduction: 15_750
+    id_itemized_deductions: 20_000
+  output:
+    medical_expense_deduction: 4_250
+    id_qualified_health_insurance_premiums: 3_000
+    id_health_insurance_premiums_medical_deduction: 1_250
+    id_itemizes: true
+    id_health_insurance_premiums_subtraction: 1_750
+
+- name: A smaller actual federal medical deduction limits claimant overlap
+  period: 2025
+  input:
+    state_code: ID
+    health_insurance_premiums: 3_000
+    adjusted_gross_income: 30_000
+    medical_expense_deduction: 500
+    standard_deduction: 15_750
+    id_itemized_deductions: 20_000
+  output:
+    id_health_insurance_premiums_medical_deduction: 500
+    id_health_insurance_premiums_subtraction: 2_500
+
+- name: An actual claimant medical deduction can include otherwise unreported expenses
+  # Supply the Idaho claimant deduction when its underlying expense facts
+  # are not modeled; an aggregate federal amount alone cannot identify payers.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 3_000
+        is_tax_unit_head: true
+      dependent:
+        age: 20
+        health_insurance_premiums: 500
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+        adjusted_gross_income: 30_000
+        medical_expense_deduction: 3_000
+        id_health_insurance_premiums_medical_deduction: 3_000
+        standard_deduction: 15_750
+        id_itemized_deductions: 20_000
+    households:
+      household:
+        members: [head, dependent]
+        state_code: ID
+  output:
+    id_health_insurance_premiums_subtraction: 0

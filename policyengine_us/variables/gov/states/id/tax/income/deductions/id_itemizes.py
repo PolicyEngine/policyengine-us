@@ -22,7 +22,7 @@ class id_itemizes(Variable):
 
     def formula(tax_unit, period, parameters):
         premiums = tax_unit("id_qualified_health_insurance_premiums", period)
-        medical = tax_unit("medical_expense_deduction", period)
+        medical = tax_unit("id_health_insurance_premiums_medical_deduction", period)
         # Form 39R allocates itemized medical deductions to health premiums first.
         overlap = min_(premiums, medical)
         itemized = tax_unit("id_itemized_deductions", period)

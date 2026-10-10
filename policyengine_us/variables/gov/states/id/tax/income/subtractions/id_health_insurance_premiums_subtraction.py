@@ -16,7 +16,7 @@ class id_health_insurance_premiums_subtraction(Variable):
 
     def formula(tax_unit, period, parameters):
         premiums = tax_unit("id_qualified_health_insurance_premiums", period)
-        medical = tax_unit("medical_expense_deduction", period)
+        medical = tax_unit("id_health_insurance_premiums_medical_deduction", period)
         overlap = min_(premiums, medical)
         itemizes = tax_unit("id_itemizes", period)
         return premiums - where(itemizes, overlap, 0)
