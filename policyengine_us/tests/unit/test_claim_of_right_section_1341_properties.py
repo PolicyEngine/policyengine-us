@@ -20,7 +20,9 @@ and compare them:
   no repayment at all less the prior-year decrease;
 - results do not depend on which variable is calculated first, including
   when a tax liability under one itemizing choice is calculated before the
-  method is known;
+  method is known, under both settings of
+  ``gov.simulation.branch_to_determine_itemization``; the itemizing branches
+  keep the simulation's method;
 - a later year calculated on the same simulation equals a simulation of that
   year alone;
 - relations between cases over a grid: tax never rises with the repayment
@@ -40,12 +42,15 @@ input is supplied), and with the deduction method fixed it leaves Arizona's,
 California's, Kansas's and Wisconsin's unchanged.
 """
 
+import gc
 import itertools
 
 import numpy as np
 import pytest
+from policyengine_core.periods import instant
+from policyengine_core.reforms import Reform
 
-from policyengine_us import Simulation
+from policyengine_us import CountryTaxBenefitSystem, Simulation
 from policyengine_us.variables.household.demographic.geographic.state_code import (
     StateCode,
 )
@@ -328,3 +333,84 @@ def test_states_under_each_federal_method():
     np.testing.assert_allclose(
         with_deduction[excluded], without_repayment[excluded], atol=TOLERANCE
     )
+
+
+# The household from reviews r1 and r2 of PolicyEngine/policyengine-us#10038.
+# With the deduction, $20,000 of itemized deductions leave $40,000 of taxable
+# income: $1,192.50 + 12% x $28,075 = $4,561.50. Without it, the $15,750
+# standard deduction leaves $44,250: $5,071.50, less the $100 decrease is
+# $4,971.50. So the deduction applies, and tax without itemizing under that
+# method is $5,071.50.
+TEXAS_YEAR = 2025
+TEXAS_EXPECTED = {
+    "income_tax": 4_561.5,
+    "claim_of_right_credit_applies": False,
+    "tax_liability_if_itemizing": 4_561.5,
+    "tax_liability_if_not_itemizing": 5_071.5,
+    "income_tax_if_claiming_claim_of_right_deduction": 4_561.5,
+    "income_tax_if_claiming_claim_of_right_credit": 4_971.5,
+}
+
+
+class no_itemization_branching(Reform):
+    def apply(self):
+        def modify(parameters):
+            parameters.gov.simulation.branch_to_determine_itemization.update(
+                start=instant(f"{TEXAS_YEAR}-01-01"),
+                stop=instant(f"{TEXAS_YEAR}-12-31"),
+                value=False,
+            )
+            return parameters
+
+        self.modify_parameters(modify)
+
+
+@pytest.fixture(scope="module")
+def systems():
+    yield {
+        True: None,
+        False: CountryTaxBenefitSystem(reform=(no_itemization_branching,)),
+    }
+    gc.collect()
+
+
+def texas_simulation(system):
+    year = TEXAS_YEAR
+    situation = {
+        "people": {
+            "p": {
+                "age": {year: 40},
+                "employment_income": {year: 60_000},
+                "charitable_cash_donations": {year: 10_000},
+                "claim_of_right_repayment": {year: 10_000},
+            }
+        },
+        "tax_units": {
+            "t": {
+                "members": ["p"],
+                "claim_of_right_prior_year_tax_decrease": {year: 100},
+                "state_sales_tax": {year: 0},
+                "local_sales_tax": {year: 0},
+            }
+        },
+        "households": {"h": {"members": ["p"], "state_code": {year: "TX"}}},
+    }
+    if system is None:
+        return Simulation(situation=situation)
+    return Simulation(tax_benefit_system=system, situation=situation)
+
+
+@pytest.mark.parametrize("branching", [True, False])
+@pytest.mark.parametrize("first", list(TEXAS_EXPECTED))
+def test_texas_household_does_not_depend_on_calculation_order(
+    systems, branching, first
+):
+    simulation = texas_simulation(systems[branching])
+    simulation.calculate(first, TEXAS_YEAR)
+    for variable, expected in TEXAS_EXPECTED.items():
+        np.testing.assert_allclose(
+            np.asarray(simulation.calculate(variable, TEXAS_YEAR)),
+            [expected],
+            atol=TOLERANCE,
+            err_msg=f"{variable} when {first} is calculated first",
+        )

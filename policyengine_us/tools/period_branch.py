@@ -17,13 +17,13 @@ calculates:
   from the parent as the parent stands then, as a simulation calculating only
   that period would create it.
 - When the branch is created, it keeps the parent's cache only if the parent
-  has no value yet for any overridden variable and period. A cached value
-  cannot have been calculated from a value that did not exist, so the
-  parent's cache is then safe to share; this is the usual case, where a
-  formula branches while its parent is still calculating the variable the
-  branch overrides. Otherwise the branch drops every array it copied except
-  inputs, each for the periods it was set for, and calculates the rest
-  itself.
+  has no value yet for any overridden variable and period, or has exactly
+  the override value. A cached value cannot have been calculated from a
+  value that did not exist, or from a different one, so the parent's cache
+  is then safe to share; this is the usual case, where a formula branches
+  while its parent is still calculating the variable the branch overrides.
+  Otherwise the branch drops every array it copied except inputs, each for
+  the periods it was set for, and calculates the rest itself.
 - A branch reused within its period with different inputs is created again.
 - A caller can ask the branch never to keep the parent's calculated values
   (``inherit_calculated=False``). The parent can hold a value that depends on
@@ -56,20 +56,24 @@ def _overrides(period: Period, inputs: Dict[str, Override]):
             yield variable, period, np.asarray(value)
 
 
-def _is_known(simulation: Simulation, variable: str, period: Period) -> bool:
+def _known_otherwise(
+    simulation: Simulation, variable: str, period: Period, value: np.ndarray
+) -> bool:
+    """Whether ``simulation`` holds a value for ``variable`` other than ``value``."""
     holder = simulation.get_holder(variable)
     if holder.variable.is_neutralized:
         return False
-    return holder.get_array(period, simulation.branch_name) is not None
+    known = holder.get_array(period, simulation.branch_name)
+    return known is not None and not np.array_equal(known, value)
 
 
 def _input_keys(branch: Simulation) -> Set[Tuple[str, str, Period]]:
     """The (variable, branch name, period) keys ``branch`` reads as inputs.
 
     policyengine-core records each key that ``set_input`` stores, whether
-    from the dataset, the situation or a branch, in one set shared by a
-    simulation and all its branches. ``branch`` reads its own keys and its
-    ancestors'.
+    from the dataset, the situation or a branch. A branch starts with a copy
+    of its parent's keys (``Simulation.clone``) and adds its own. ``branch``
+    reads its own keys and its ancestors'.
     """
     visible_branches = set(branch._get_visible_branch_names())
     return {
@@ -142,8 +146,8 @@ def get_override_branch(
         branch = None
     if branch is None:
         parent_knows_override = any(
-            _is_known(simulation, variable, input_period)
-            for variable, input_period, _ in overrides
+            _known_otherwise(simulation, variable, input_period, value)
+            for variable, input_period, value in overrides
         )
         branch = simulation.get_branch(name)
         branch.branch_period = period
