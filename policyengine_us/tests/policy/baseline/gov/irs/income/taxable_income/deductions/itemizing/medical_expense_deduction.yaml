@@ -141,3 +141,51 @@
   output:
     itemized_medical_expenses: 800
     medical_expense_deduction: 800
+
+- name: Parent-paid family coverage is attributed entirely to the parent.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        # The parent paid the full family premium, including dependent coverage.
+        health_insurance_premiums: 800
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        self_employed_health_insurance_ald: 800
+        adjusted_gross_income: 0
+  output:
+    # Payer attribution: 800 paid - 800 already deducted = 0 on Schedule A.
+    itemized_medical_expenses: 0
+    medical_expense_deduction: 0
+
+- name: Beneficiary-attributed family inputs cannot transfer the parent's exclusion to a dependent.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        health_insurance_premiums: 300
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        health_insurance_premiums: 500
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        self_employed_health_insurance_ald: 800
+        adjusted_gross_income: 0
+  output:
+    # The exclusion is min(800 ALD, 300 filer-paid premiums) = 300, leaving
+    # the dependent's 500. Attributed premium uses are 300 + 500 = 800.
+    # Supplying an 800 parent ALD with only 300 parent-paid premiums violates
+    # the payer contract; adding the full supplied ALD to Schedule A gives
+    # 1,300 and is not a conservation guarantee for these inconsistent inputs.
+    # A parent who actually paid all 800 must use the preceding input pattern.
+    itemized_medical_expenses: 500
+    medical_expense_deduction: 500

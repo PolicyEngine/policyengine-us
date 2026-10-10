@@ -17,6 +17,14 @@ class mt_medical_expense_deduction_indiv(Variable):
     unit = USD
     defined_for = "mt_married_filing_separately_on_same_return_eligible"
 
+    documentation = (
+        "Medical deduction after excluding the same person's self-employed "
+        "health insurance premiums and applying the medical floor. Premium "
+        "inputs use payer attribution: report all premiums paid by a person "
+        "on that person, including family coverage regardless of the covered "
+        "beneficiary."
+    )
+
     def formula(person, period, parameters):
         premiums = person("medical_expense_health_insurance_premiums", period)
         se_health_insurance_ald = person(

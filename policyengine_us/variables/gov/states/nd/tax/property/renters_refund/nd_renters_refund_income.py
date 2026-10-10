@@ -13,6 +13,16 @@ class nd_renters_refund_income(Variable):
     )
     defined_for = StateCode.ND
 
+    documentation = (
+        "Renter refund income after unreimbursed medical costs actually paid. This "
+        "independent paid-cost base retains premiums deducted through the federal "
+        "self-employed health insurance ALD; interpreting the guidance's federal- "
+        "definition cross-reference as importing that exclusion is an alternative "
+        "methodology. Premium inputs use payer attribution: each person reports "
+        "premiums that person paid, including family coverage regardless of whom "
+        "it covers. "
+    )
+
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nd.tax.property.renters_refund
         return max_(

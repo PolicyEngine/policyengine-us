@@ -1,1 +1,1 @@
-Prevent self-employed health insurance premiums deducted above the line from also entering federal and conforming state medical deductions, while preserving independent state medical-expense benefits.
+Exclude self-employed health insurance premiums already deducted above the line from federal and applicable state itemized medical expenses, cap New Jersey dependent exclusions per payer, and exclude already-deducted premiums from Missouri's qualifying pool using its required whole-percent overlap ratio.

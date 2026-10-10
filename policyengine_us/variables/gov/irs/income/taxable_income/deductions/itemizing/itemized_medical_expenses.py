@@ -22,7 +22,13 @@ class itemized_medical_expenses(Variable):
         "insurance premiums and other medical expenses, excluding general "
         "over-the-counter health expenses. Premiums deducted through the "
         "filer's self-employed health insurance deduction are excluded under "
-        "IRC Section 162(l)(3) before the medical expense floor is applied."
+        "IRC Section 162(l)(3) before the medical expense floor is applied. "
+        "Premium inputs use payer attribution: each person reports premiums "
+        "that person paid, including the full cost of family coverage regardless "
+        "of whom it covers. A parent-paid dependent policy belongs on the parent. "
+        "The exclusion is bounded to filer-paid premiums; beneficiary-attributed "
+        "inputs with an ALD exceeding that pool are inconsistent with this contract "
+        "and cannot establish conservation of the supplied ALD."
     )
 
     def formula(tax_unit, period, parameters):
