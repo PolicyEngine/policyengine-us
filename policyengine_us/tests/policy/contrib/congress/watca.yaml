@@ -440,7 +440,7 @@
     gov.contrib.congress.watca.in_effect: true
     adjusted_gross_income: 30_000
     filing_status: SINGLE
-    head_is_dependent_elsewhere: true
+    claimed_as_dependent_on_another_return: true
   output:
     # Even though income is below limit, not eligible because claimed as dependent
     watca_alternative_tax_eligible: false
@@ -450,9 +450,18 @@
   reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
   input:
     gov.contrib.congress.watca.in_effect: true
-    adjusted_gross_income: 30_000
-    filing_status: JOINT
-    spouse_is_dependent_elsewhere: true
+    people:
+      head:
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: false
+      spouse:
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 30_000
+        filing_status: JOINT
   output:
     watca_alternative_tax_eligible: false
 
@@ -529,10 +538,18 @@
   reforms: policyengine_us.reforms.congress.watca.working_americans_tax_cut_act.watca_reform_object
   input:
     gov.contrib.congress.watca.in_effect: true
-    adjusted_gross_income: 30_000
-    filing_status: JOINT
-    head_is_dependent_elsewhere: true
-    spouse_is_dependent_elsewhere: true
+    people:
+      head:
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+      spouse:
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 30_000
+        filing_status: JOINT
   output:
     watca_alternative_tax_eligible: false
 

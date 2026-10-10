@@ -13,7 +13,8 @@ formula now applies its jurisdiction's rule for that case:
 - Either spouse limits the return (the IRC 63(c)(5) worksheet): the federal
   standard deduction, Oregon's and Hawaii's standard deductions, and
   Virginia's credit for low-income individuals. The federal EITC without a
-  qualifying child now also requires that neither spouse can be claimed.
+  qualifying child also requires that neither spouse is claimable outside the
+  nonrequired-claimant filing exception.
 - Only single filers: New York's dependent standard deduction.
 - Each spouse separately: Michigan's exemptions and Hawaii's food/excise,
   renters and Act 115 credits count only the filers who cannot be claimed.
@@ -26,7 +27,8 @@ formula now applies its jurisdiction's rule for that case:
 
 Hypothesis draws batches of married couples, with and without dependents, in
 the eight states with such a rule and one without, for 2021-2026, with either,
-both or neither spouse claimed elsewhere, and checks 1 and 3. A seeded
+both or neither spouse claimed or claimable elsewhere, independently of the
+nonrequired-claimant filing exception, and checks 1 and 3. A seeded
 population and crafted cases check 1, 2 and 3 in every year, and two seeded
 couples plus the review case in every state check 1 for federal and state
 income tax in 2026. Each batch is one vectorized simulation. For each couple:
@@ -41,8 +43,20 @@ income tax in 2026. Each batch is one vectorized simulation. For each couple:
 3. The helper identities: `head_or_spouse_is_dependent_elsewhere` equals
    `head_is_dependent_elsewhere | spouse_is_dependent_elsewhere`,
    `every_filer_is_dependent_elsewhere` equals their conjunction for a
-   couple, and `head_spouse_count_not_dependent_elsewhere` plus the claimed
+   couple, and `head_spouse_count_not_dependent_elsewhere` plus the claimable
    filers equals the number of filers.
+
+The 2025 seeded population also compares legacy input only with explicit
+claimability equal to that input, protecting the new input's fallback. A
+separate vectorized population holds actual claims and claimability fixed
+while toggling the exception: general claimability rules and Medicaid stay
+unchanged, childless EITC eligibility is restored, and Michigan/Hawaii may
+count the filer's own dependents. Benefits derived from the restored federal
+EITC may also change: Missouri's working family credit eligibility must track
+positive federal EITC for this population's joint returns with no investment
+income. Its separate claimability gate stays fixed. YAML examples establish
+the corresponding legal amounts, including the limited $2,450 federal
+standard deduction.
 """
 
 import numpy as np
@@ -62,10 +76,11 @@ TAX_UNIT_OUTPUTS = [
     "state_income_tax",
     "state_income_tax_before_refundable_credits",
 ]
-# The formulas that read whether a filer is claimed elsewhere.
+# The formulas that read a filer's claimability or dependent-taxpayer status.
 CONSUMERS = [
     "basic_standard_deduction",
     "eitc",
+    "eitc_demographic_eligible",
     "ny_standard_deduction",
     "mi_exemptions",
     "or_standard_deduction",
@@ -81,11 +96,32 @@ CONSUMERS = [
     "hi_deductions",
     "hi_act_115_rebate",
     "hi_food_excise_exemption_amount",
+    "hi_food_excise_credit_minor_child_count",
     "hi_food_excise_credit",
     "hi_tax_credit_for_low_income_household_renters_eligible",
     "hi_tax_credit_for_low_income_household_renters",
 ]
 CLAIM_PATTERNS = [(True, False), (False, True), (True, True), (False, False)]
+DEPENDENT_TAXPAYER_TEST_OUTPUTS = {
+    "mi_exemptions",
+    "hi_act_115_rebate",
+    "hi_food_excise_exemption_amount",
+    "hi_food_excise_credit",
+    "hi_tax_credit_for_low_income_household_renters",
+}
+# Federal EITC eligibility is restored directly. The federal amount and
+# Missouri eligibility can change as a consequence, without changing their
+# general claimability gates.
+EITC_RELATED_OUTPUTS = {
+    "eitc_demographic_eligible",
+    "eitc",
+    "mo_wftc_eligible",
+}
+EXCEPTION_SENSITIVE = DEPENDENT_TAXPAYER_TEST_OUTPUTS | EITC_RELATED_OUTPUTS
+ACTUAL_CLAIM_OUTPUTS = [
+    "medicaid_is_tax_dependent",
+    "medicaid_uses_missing_claimant_fallback",
+]
 
 
 def money(high):
@@ -123,11 +159,17 @@ def dependents(draw):
 
 @st.composite
 def couples(draw):
+    claimable = draw(st.sampled_from(CLAIM_PATTERNS))
+    claimed = tuple(can_claim and draw(st.booleans()) for can_claim in claimable)
     return {
         "state": draw(st.sampled_from(AFFECTED)),
         "adults": [draw(adults()), draw(adults())],
         "dependents": draw(st.lists(dependents(), max_size=2)),
-        "claimed": draw(st.sampled_from(CLAIM_PATTERNS)),
+        "claimed": claimed,
+        "claimable": claimable,
+        "exception": tuple(
+            not is_claimed and draw(st.booleans()) for is_claimed in claimed
+        ),
     }
 
 
@@ -214,7 +256,7 @@ def _crafted_cases(states, review_case_only=False):
     return cases
 
 
-def _situation(units, year, variants):
+def _situation(units, year, variants, explicit_claimability=False):
     # Each unit appears once per variant: (head is the first adult, first
     # adult claimed, second adult claimed). People keep their order and every
     # other input in every copy.
@@ -227,11 +269,20 @@ def _situation(units, year, variants):
         "households": {},
     }
     for i, unit in enumerate(units):
-        for copy, (first_is_head, claim_a, claim_b) in enumerate(variants(unit)):
+        for copy, variant in enumerate(variants(unit)):
+            first_is_head, claim_a, claim_b = variant[:3]
+            claimable = unit.get("claimable")
+            exception = unit.get("exception")
+            if len(variant) == 5:
+                claimable, exception = variant[3:]
+            if explicit_claimability:
+                claimable = (claim_a, claim_b)
             a, b = f"a_{i}_{copy}", f"b_{i}_{copy}"
-            for name, amounts, is_head, claimed in (
-                (a, unit["adults"][0], first_is_head, claim_a),
-                (b, unit["adults"][1], not first_is_head, claim_b),
+            for adult_index, (name, amounts, is_head, claimed) in enumerate(
+                (
+                    (a, unit["adults"][0], first_is_head, claim_a),
+                    (b, unit["adults"][1], not first_is_head, claim_b),
+                )
             ):
                 people[name] = {
                     **amounts,
@@ -240,6 +291,14 @@ def _situation(units, year, variants):
                     "is_tax_unit_dependent": False,
                     "claimed_as_dependent_on_another_return": claimed,
                 }
+                if claimable is not None:
+                    people[name]["claimable_as_dependent_on_another_return"] = (
+                        claimable[adult_index]
+                    )
+                if exception is not None:
+                    people[name]["dependent_claimant_filing_exception"] = exception[
+                        adult_index
+                    ]
             members = [a, b]
             groups["marital_units"][f"couple_{i}_{copy}"] = {"members": [a, b]}
             for j, amounts in enumerate(unit["dependents"]):
@@ -250,6 +309,10 @@ def _situation(units, year, variants):
                     "is_tax_unit_spouse": False,
                     "is_tax_unit_dependent": True,
                 }
+                if explicit_claimability:
+                    people[child]["claimable_as_dependent_on_another_return"] = (
+                        amounts.get("claimed_as_dependent_on_another_return", False)
+                    )
                 members.append(child)
                 groups["marital_units"][f"single_{i}_{copy}_{j}"] = {"members": [child]}
             for group, prefix in (
@@ -278,7 +341,7 @@ def _calc(sim, name, year):
     return np.asarray(sim.calculate(name, year), dtype=float)
 
 
-def _check_swap(units, year, outputs):
+def _check_swap(units, year, outputs, capture_fallback=False):
     sim = Simulation(situation=_situation(units, year, _swap_variants))
     states = np.array([u["state"] for u in units])
     for name in outputs:
@@ -304,6 +367,125 @@ def _check_swap(units, year, outputs):
     np.testing.assert_array_equal(independent + head + spouse, 2)
     every = _calc(sim, "every_filer_is_dependent_elsewhere", year)
     np.testing.assert_array_equal(every, np.minimum(head, spouse))
+    blocked = _calc(sim, "is_dependent_elsewhere_without_filing_exception", year)
+    filers = _calc(sim, "is_tax_unit_head", year) + _calc(
+        sim, "is_tax_unit_spouse", year
+    )
+    np.testing.assert_array_equal(
+        _calc(
+            sim, "head_or_spouse_is_dependent_elsewhere_without_filing_exception", year
+        ),
+        sim.populations["tax_unit"].any(blocked.astype(bool) & filers.astype(bool)),
+    )
+    if capture_fallback:
+        # Keep only arrays so the compatibility comparison can release this
+        # simulation before constructing the next full model.
+        return {
+            name: _calc(sim, name, year)
+            for name in TAX_UNIT_OUTPUTS + CONSUMERS + ACTUAL_CLAIM_OUTPUTS
+        }
+
+
+def _check_fallback(units, year, legacy_outputs):
+    # The absence of a new input is simulation-wide: compare separate
+    # simulations so Core does not fill omitted people with input defaults.
+    explicit_sim = Simulation(
+        situation=_situation(units, year, _swap_variants, explicit_claimability=True)
+    )
+    for name in TAX_UNIT_OUTPUTS + CONSUMERS + ACTUAL_CLAIM_OUTPUTS:
+        np.testing.assert_allclose(
+            legacy_outputs[name],
+            _calc(explicit_sim, name, year),
+            atol=TOLERANCE,
+            rtol=0,
+            err_msg=f"{name} changes when fallback claimability is made explicit",
+        )
+
+
+def _exception_variants(unit):
+    claimable = unit["claimed"]
+    return [
+        (True, False, False, claimable, (False, False)),
+        (False, False, False, claimable, (False, False)),
+        (True, False, False, claimable, (True, True)),
+        (False, False, False, claimable, (True, True)),
+    ]
+
+
+def _check_exception_scope():
+    year = 2025
+    units = [
+        {
+            "state": state,
+            "adults": [{"age": 26, "employment_income": 2_000}, {"age": 30}],
+            "dependents": children,
+            "claimed": claimed,
+        }
+        for state in AFFECTED
+        # Isolate ordinary dependents: publicly supported minors have a
+        # separate Hawaii qualification that does not use this exception.
+        for children in (
+            [],
+            [{"age": 5, "hi_food_excise_credit_child_receiving_public_support": False}],
+        )
+        for claimed in CLAIM_PATTERNS
+    ]
+    sim = Simulation(situation=_situation(units, year, _exception_variants))
+    for name in CONSUMERS + ACTUAL_CLAIM_OUTPUTS:
+        values = _calc(sim, name, year)
+        if name in ACTUAL_CLAIM_OUTPUTS:
+            # Person outputs have two filers and optionally one child per unit.
+            start = 0
+            for unit in units:
+                size = 2 + len(unit["dependents"])
+                copies = values[start : start + 4 * size].reshape(4, size)
+                np.testing.assert_array_equal(copies[0:2], copies[2:4])
+                start += 4 * size
+            continue
+        copies = values.reshape(-1, 4)
+        np.testing.assert_allclose(
+            copies[:, 0::2], copies[:, 1::2], atol=TOLERANCE, rtol=0
+        )
+        if name not in EXCEPTION_SENSITIVE:
+            np.testing.assert_allclose(
+                copies[:, :2],
+                copies[:, 2:],
+                atol=TOLERANCE,
+                rtol=0,
+                err_msg=f"The filing exception changes general claimability rule {name}",
+            )
+    eligibility = _calc(sim, "eitc_demographic_eligible", year).reshape(-1, 4)
+    childless = np.array([not unit["dependents"] for unit in units])
+    claimable = np.array([any(unit["claimed"]) for unit in units])
+    assert not eligibility[childless & claimable, :2].any()
+    assert eligibility[childless, 2:].all()
+    # RSMo 143.177.2 requires federal EITC. These units file jointly, so the
+    # separate dependent-filer stop does not apply, and their zero investment
+    # income meets Missouri's limit. The exception's Missouri effect must
+    # therefore follow positive federal EITC, rather than alter claimability.
+    missouri = np.array([unit["state"] == "MO" for unit in units])
+    federal_eitc = _calc(sim, "eitc", year).reshape(-1, 4)
+    missouri_eligible = _calc(sim, "mo_wftc_eligible", year).reshape(-1, 4)
+    np.testing.assert_array_equal(
+        missouri_eligible[missouri].astype(bool), federal_eitc[missouri] > 0
+    )
+    direct_claimability = _calc(
+        sim, "head_or_spouse_is_dependent_elsewhere", year
+    ).reshape(-1, 4)
+    np.testing.assert_array_equal(
+        direct_claimability, np.repeat(claimable[:, None], 4, axis=1)
+    )
+    for name, state in (("mi_exemptions", "MI"), ("hi_food_excise_credit", "HI")):
+        values = _calc(sim, name, year).reshape(-1, 4)
+        restores_child = np.array(
+            [
+                unit["state"] == state
+                and bool(unit["dependents"])
+                and sum(unit["claimed"]) == 1
+                for unit in units
+            ]
+        )
+        assert (values[restores_child, 2:] > values[restores_child, :2]).all()
 
 
 def _monotone_variants(unit):
@@ -355,7 +537,12 @@ def test_claimed_spouse_does_not_depend_on_head_label(year, units):
 @pytest.mark.parametrize("year", YEARS)
 def test_seeded_population(year):
     units = _seeded_couples(AFFECTED, per_state=2) + _crafted_cases(AFFECTED)
-    _check_swap(units, year, TAX_UNIT_OUTPUTS + CONSUMERS)
+    legacy_outputs = _check_swap(
+        units, year, TAX_UNIT_OUTPUTS + CONSUMERS, capture_fallback=year == 2025
+    )
+    if year == 2025:
+        _check_fallback(units, year, legacy_outputs)
+        _check_exception_scope()
     _check_monotone(units, year)
 
 
