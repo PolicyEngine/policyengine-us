@@ -1,0 +1,73 @@
+description: The Medicare Trustees report and project these Part D premiums from enrollees per Part D enrollee, excluding the income-related monthly adjustment amount.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicare Part D premiums per Part D enrollee
+  reference:
+  # Each value is (premium income - aggregate income-related premiums) /
+  # Part D enrollment, from the 2026 Medicare Trustees Report (transmitted
+  # 2026-06-09, retrieved 2026-10-11, sha256
+  # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8):
+  # - Premium income, Table III.D3 (file page 116), in billions. Footnote 1:
+  #   "Premiums include both amounts withheld from Social Security benefits or
+  #   other Federal payments, direct payments to the Federal government, and
+  #   those paid directly to Part D plans." The table is on a cash basis, and
+  #   footnote 6 (file page 117) credits one January's withheld premiums on
+  #   December 31 of the year before: about $0.2 billion in 2015, $0.1 billion
+  #   in 2020 and an estimated $0.2 billion in 2026. Those amounts are moved
+  #   back to 2016, 2021 and 2027.
+  # - Income-related premiums, Table V.E4 (file page 218), "Aggregate
+  #   premiums", the amount paid "in excess of the Part D plan premium". They
+  #   are part of premium income: they are withheld from benefits (42 U.S.C.
+  #   1395w-113(c)(4)) and deposited into the Part D account (footnote 73,
+  #   file page 151). medicare_cost subtracts each person's own adjustment
+  #   amount instead.
+  # - Part D enrollment, Table V.B3 (file page 196), in thousands. It equals
+  #   the total of Table IV.B7 (file page 153), which includes retiree drug
+  #   subsidy beneficiaries.
+  # Low-income subsidy enrollees pay reduced premiums or none (file page 219);
+  # Medicare's low-income subsidy payments are expenditures of the Part D
+  # account, not enrollee premiums (file page 114). So the average is below
+  # the base beneficiary premium.
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table III.D3
+    href: https://www.cms.gov/oact/tr/2026#page=116
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.E4
+    href: https://www.cms.gov/oact/tr/2026#page=218
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.B3
+    href: https://www.cms.gov/oact/tr/2026#page=196
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Part D revenue and expenditures
+    href: https://www.cms.gov/oact/tr/2026#page=109
+  - title: 42 U.S.C. § 1395w-113(c)(4) - Collection of monthly adjustment amount
+    href: https://www.law.cornell.edu/uscode/text/42/1395w-113#c_4
+values:
+  # Historical.
+  2015-01-01: 277.6
+  2016-01-01: 300.94
+  2017-01-01: 321.53
+  2018-01-01: 316.61
+  2019-01-01: 298.86
+  2020-01-01: 285.44
+  2021-01-01: 306.15
+  2022-01-01: 309.42
+  2023-01-01: 304.39
+  2024-01-01: 307.7
+  # 2025 premiums fell with the voluntary Part D premium demonstration for
+  # stand-alone prescription drug plans (file page 109).
+  2025-01-01: 220.25
+  # Trustees' intermediate estimates. The 2030 jump is the Inflation
+  # Reduction Act's reset of the base beneficiary premium percentage
+  # (file page 152).
+  2026-01-01: 289.79
+  2027-01-01: 373.53
+  2028-01-01: 403.59
+  2029-01-01: 411.27
+  2030-01-01: 637.06
+  2031-01-01: 659.27
+  2032-01-01: 662.52
+  2033-01-01: 684.61
+  2034-01-01: 699.07
+  2035-01-01: 722.05
+  # 2036 to 2100 grow at the 2034-2035 rate (722.05 / 699.07, 3.3% a year),
+  # near the Trustees' 3.1% growth in Part D cost per beneficiary in 2035
+  # (Table V.D1, file page 210); later years hold the 2100 value. See
+  # set_all_uprating_parameters in uprating_extensions.py.
