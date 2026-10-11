@@ -141,15 +141,15 @@ def test_2035_extension_follows_the_trustees_2035_growth():
     )
 
 
-@given(years, st.integers(1, END_YEAR - FIRST_YEAR))
-def test_series_is_positive_and_strictly_increasing(year, gap):
-    later = min(year + gap, END_YEAR)
-    if later == year:
-        return
-    assert 0 < _value(year) < _value(later)
+# The year domains below are finite and small, so they are checked
+# exhaustively rather than sampled.
+@pytest.mark.parametrize("year", range(FIRST_YEAR, END_YEAR))
+def test_series_is_positive_and_strictly_increasing(year):
+    """Adjacent years, so strict order holds for every pair of years."""
+    assert 0 < _value(year) < _value(year + 1)
 
 
-@given(st.integers(LAST_PROJECTED_YEAR + 1, END_YEAR))
+@pytest.mark.parametrize("year", range(LAST_PROJECTED_YEAR + 1, END_YEAR + 1))
 def test_extension_is_the_closed_form_of_the_2031_2032_growth(year):
     earlier, later = GROWTH_YEARS
     growth = (
@@ -163,11 +163,13 @@ def test_extension_is_the_closed_form_of_the_2031_2032_growth(year):
     assert _value(year) / _value(year - 1) == pytest.approx(growth, rel=1e-12)
 
 
-@given(st.integers(END_YEAR, END_YEAR + 100))
+@settings(deadline=None)
+@given(st.integers(END_YEAR, END_YEAR + 1_000))
 def test_series_holds_the_2100_value_afterwards(year):
     assert _value(year) == _value(END_YEAR)
 
 
+@settings(deadline=None)
 @given(years, st.integers(1, 12), st.integers(1, 28))
 def test_every_date_in_a_year_reads_the_january_value(year, month, day):
     assert _series(f"{year}-{month:02d}-{day:02d}") == _value(year)

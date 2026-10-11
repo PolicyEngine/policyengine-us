@@ -882,8 +882,8 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # CMS Medicare spending per enrollee (January values, last projection
     # year 2034), which Medicare cost variables read directly. Sequestration
-    # cuts Medicare benefit payments 2 percent through August 31, 2033 (2026
-    # Medicare Trustees Report, file page 62); its end lifts 2033 and 2034
+    # cuts Medicare expenditures 2 percent through August 31, 2033 (2026
+    # Medicare Trustees Report, file page 209); its end lifts 2033 and 2034
     # growth, and the Trustees' per-beneficiary growth falls from 6.6
     # percent in 2034 to 5.4 percent in 2035 (Table V.D1, file page 210).
     # So each year from 2035 to 2100 grows at the 2031-2032 rate, and later
