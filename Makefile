@@ -43,7 +43,12 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 #     multi_year_simulation (88 s), behavioral_response_measurements (84 s),
 #     dependent_losses_agi_invariants (49 s).
 #   core (142 s), policy (185 s), remaining (239 s).
-REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core policy remaining
+# SSI resource deeming retains a reformed system at import and builds another
+# in its grid fixture. Core reached 13.3 GB in CI run 38141803955 after this
+# and three smaller modules arrived; isolate SSI rather than filling heavy-a
+# (8.1 GB including the pending capital-gains MTR change). These groups remain
+# sequential subprocesses on the existing Rest runner.
+REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy core policy remaining
 REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py
 REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
 	$(TESTS)/core/test_ald_determinism.py \
@@ -53,7 +58,8 @@ REST_HEAVY_B_TESTS := $(TESTS)/core/test_marginal_tax_rate_coverage.py \
 	$(TESTS)/core/test_multi_year_simulation.py \
 	$(TESTS)/core/test_behavioral_response_measurements.py \
 	$(TESTS)/core/test_dependent_losses_agi_invariants.py
-REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS)
+REST_CORE_HEAVY_TESTS := $(TESTS)/core/test_ssi_resource_deeming_invariants.py
+REST_LISTED_TESTS := $(REST_CACHED_ARRAY_TESTS) $(REST_HEAVY_A_TESTS) $(REST_HEAVY_B_TESTS) $(REST_CORE_HEAVY_TESTS)
 REST_IGNORES := $(addprefix --ignore=,$(TESTS)/policy/contrib $(TESTS)/microsimulation $(REST_SPM_TESTS))
 # $(call rest_pytest,<group>,<paths>,<more paths to ignore>) is the pytest
 # command for one group. CI sets REST_REPORT_DIR, and each group then writes
@@ -271,6 +277,8 @@ test-other-python-rest-heavy-a:
 	$(call rest_pytest,heavy-a,$(REST_HEAVY_A_TESTS))
 test-other-python-rest-heavy-b:
 	$(call rest_pytest,heavy-b,$(REST_HEAVY_B_TESTS))
+test-other-python-rest-core-heavy:
+	$(call rest_pytest,core-heavy,$(REST_CORE_HEAVY_TESTS))
 test-other-python-rest-core:
 	$(call rest_pytest,core,$(TESTS)/core,$(REST_LISTED_TESTS))
 test-other-python-rest-policy:
