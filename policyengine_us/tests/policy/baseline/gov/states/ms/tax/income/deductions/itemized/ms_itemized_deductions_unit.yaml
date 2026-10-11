@@ -1,0 +1,20 @@
+# 2017 Form 80-108 lines 7a to 7d take miscellaneous expenses above 2% of
+# federal AGI once; itemized_deductions_less_salt already includes them.
+- name: 2017 miscellaneous deduction counted once
+  absolute_error_margin: 0.01
+  period: 2017
+  input:
+    charitable_deduction: 2_000
+    misc_deduction: 1_000
+    state_code: MS
+  output:
+    ms_itemized_deductions_unit: 3_000
+
+- name: 2025 no miscellaneous deduction subject to the 2% floor
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    charitable_deduction: 2_000
+    state_code: MS
+  output:
+    ms_itemized_deductions_unit: 2_000

@@ -1,8 +1,9 @@
 description: Missouri lets filers itemize the following deductions.
 values:
   1993-01-01:
-    - itemized_taxable_income_deductions # includes casualty_loss_deduction, charitable_deduction, interest_deduction, salt_deduction ,and medical_expense_deduction
-    - misc_deduction
+    # Form MO-A Part 2 line 1: total federal itemized deductions, which include
+    # the miscellaneous deduction above the 2% floor before 2018.
+    - itemized_taxable_income_deductions
     - employee_social_security_tax
     - employee_medicare_tax
     - additional_medicare_tax
@@ -22,3 +23,5 @@ metadata:
       href: https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=16
     - title: 2024 Form MO-A - Individual Income Tax Adjustments, Part 2 - Missouri Itemized Deductions
       href: https://dor.mo.gov/forms/MO-A_2024.pdf#page=2
+    - title: 2017 Form MO-1040 instructions, Form MO-A Part 2 line 1
+      href: https://dor.mo.gov/forms/MO-1040%20Instructions_2017.pdf#page=22
