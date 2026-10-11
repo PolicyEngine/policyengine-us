@@ -100,3 +100,55 @@
     health_insurance_premiums: 3_000
   output:
     self_employed_health_insurance_ald_person: 0
+
+- name: Case 7, a farmer whose plan is established under the farm deducts up to farm earned income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    farm_operations_income: 20_000
+    health_insurance_premiums: 25_000
+  output:
+    # Form 7206: line 3 is 25,000; line 13 is 20,000 - 1,412.955.
+    self_employed_health_insurance_ald_person: 18_587.045
+    # 20,000 - 1,412.955 - 18,587.045.
+    adjusted_gross_income: 0
+
+- name: Case 8, a partner deducts up to their K-1 box 14 code A earnings less half of self-employment tax.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    partnership_income: 30_000
+    partnership_self_employment_net_earnings: 30_000
+    health_insurance_premiums: 40_000
+  output:
+    # Form 7206 line 13: 30,000 - 2,119.4325.
+    self_employed_health_insurance_ald_person: 27_880.5675
+    adjusted_gross_income: 0
+
+- name: Case 9, an S corporation shareholder deducts up to their wages from the corporation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    employment_income: 10_000
+    s_corp_shareholder_medicare_wages: 10_000
+    health_insurance_premiums: 12_000
+  output:
+    # Form 7206: line 3 is 12,000; line 13 is line 11, 10,000.
+    self_employed_health_insurance_ald_person: 10_000
+    adjusted_gross_income: 0
+
+- name: Case 10, a plan named under the smaller farm is limited to the farm's earned income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    self_employment_income: 30_000
+    farm_operations_income: 10_000
+    self_employed_health_insurance_plan_business: SCHEDULE_F
+    health_insurance_premiums: 20_000
+  output:
+    # Form 7206 line 13: 10,000 - 0.25 x 2,825.91.
+    self_employed_health_insurance_ald_person: 9_293.5225
