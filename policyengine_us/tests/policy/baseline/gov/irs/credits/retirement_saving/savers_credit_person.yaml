@@ -1,14 +1,18 @@
+# IRA contributions cannot exceed compensation (26 U.S.C. 219(b)(1)(B)), so each
+# contributor is given compensation above their contributions.
 - name: joint with one eligible person
   period: 2023
   input:
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 3_000
         roth_ira_contributions_desired: 2_000
         retirement_distributions: 1_000
       person2:
         savers_credit_eligible_person: false
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 0
         roth_ira_contributions_desired: 0
     tax_units:
@@ -26,11 +30,13 @@
       person1:
         savers_credit_eligible_person: true
         adjusted_gross_income_person: 39_000
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 3_000
         roth_ira_contributions_desired: 2_000
       person2:
         savers_credit_eligible_person: true
         adjusted_gross_income_person: 50_000
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 3_000
         roth_ira_contributions_desired: 2_000
     tax_units:
@@ -47,10 +53,12 @@
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 3_000
         roth_ira_contributions_desired: 2_000
       person2:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 3_000
         roth_ira_contributions_desired: 2_000
     tax_units:
@@ -67,11 +75,13 @@
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 3_000
         roth_ira_contributions_desired: 2_000
         retirement_distributions: 4_000
       person2:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 3_000
         roth_ira_contributions_desired: 2_000
     tax_units:
@@ -88,6 +98,7 @@
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         roth_ira_contributions_desired: 500
         roth_401k_contributions_desired: 1_000
     tax_units:
@@ -104,6 +115,7 @@
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         roth_ira_contributions_desired: 500
         roth_401k_contributions_desired: 1_000
     tax_units:
@@ -120,10 +132,12 @@
     people:
       person1:
         savers_credit_eligible_person: false
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 3_000
         roth_ira_contributions_desired: 2_000
       person2:
         savers_credit_eligible_person: false
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 0
         roth_ira_contributions_desired: 0
     tax_units:
@@ -143,6 +157,7 @@
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 2_000
     tax_units:
       tax_unit:
@@ -161,6 +176,7 @@
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 2_000
     tax_units:
       tax_unit:
@@ -179,6 +195,7 @@
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 2_000
     tax_units:
       tax_unit:
@@ -197,6 +214,7 @@
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 2_000
     tax_units:
       tax_unit:
@@ -214,6 +232,7 @@
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 2_000
     tax_units:
       tax_unit:
@@ -232,6 +251,7 @@
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 2_000
     tax_units:
       tax_unit:
@@ -249,6 +269,7 @@
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 2_000
     tax_units:
       tax_unit:
@@ -267,6 +288,7 @@
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 2_000
     tax_units:
       tax_unit:
@@ -282,6 +304,7 @@
     people:
       person1:
         savers_credit_eligible_person: true
+        ira_compensation: 10_000
         traditional_ira_contributions_desired: 2_000
     tax_units:
       tax_unit:

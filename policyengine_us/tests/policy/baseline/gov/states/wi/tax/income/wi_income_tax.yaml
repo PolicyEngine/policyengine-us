@@ -26,3 +26,146 @@
     # Both variables must agree (#7805).
     wi_income_tax: 6_636.85
     state_income_tax: 6_636.85
+
+# Household inputs match the PolicyBench scenario conversion, including
+# takeup defaults. Filing status is inferred from the supplied person facts.
+- name: PolicyBench scenario 042 elects the retirement exclusion
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 79
+        employment_income: 0
+        bank_account_assets: 152100
+        farm_income: -1127.2940673828125
+        farm_operations_income: -1127.2940673828125
+        is_surviving_spouse: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        non_qualified_dividend_income: 5920
+        non_sch_d_capital_gains: 3753
+        other_medical_expenses: 250
+        over_the_counter_health_expenses: 100
+        qualified_bdc_income: 70.93914031982422
+        qualified_dividend_income: 928
+        real_estate_taxes: 5010.88232421875
+        social_security_dependents: 29580
+        stock_assets: 670000
+        tax_exempt_ira_distributions: 4700
+        taxable_interest_income: 175
+        taxable_ira_distributions: 19200
+        taxable_private_pension_income: 4886
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    marital_units:
+      marital_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        first_home_mortgage_balance: 1000
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: [head]
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WI
+        household_vehicles_value: 8370
+  output:
+    state_income_tax_before_refundable_credits: 0
+    wi_capital_gain_loss_subtraction: 1125.90
+    # The standard path isolates the capital gain correction: 708.70 - 300.
+    wi_income_tax_before_credits: 708.70
+    wi_non_refundable_credits: 300
+    state_refundable_credits: 0
+    state_income_tax: 0
+
+- name: PolicyBench scenario 091 subtracts directly reported capital gain distributions
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 22
+        employment_income: 27000
+        attends_eligible_educational_institution_for_american_opportunity_credit: true
+        bank_account_assets: 558700
+        employer_sponsored_insurance_premiums: 6589.27587890625
+        fsla_overtime_premium: 627.906982421875
+        has_american_opportunity_credit_1098_t_or_exception: true
+        has_american_opportunity_credit_institution_ein: true
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 1800
+        hourly_wage: 13
+        hours_worked_last_week: 42
+        weekly_hours_worked_before_lsr: 42
+        is_enrolled_at_least_half_time_for_american_opportunity_credit: true
+        is_paid_hourly: true
+        is_pursuing_credential_for_american_opportunity_credit: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        non_qualified_dividend_income: 208
+        non_sch_d_capital_gains: 1170
+        other_health_insurance_premiums: 1800
+        over_the_counter_health_expenses: 25
+        qualified_dividend_income: 3968
+        roth_401k_contributions_desired: 163.44000244140625
+        roth_ira_contributions_desired: 67.12319946289062
+        stock_assets: 718100
+        taxable_interest_income: 4806
+        traditional_401k_contributions_desired: 926.1599731445312
+        traditional_ira_contributions_desired: 43.276798248291016
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    marital_units:
+      marital_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members: [head]
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WI
+  output:
+    state_income_tax_before_refundable_credits: 878.52
+    wi_capital_gain_loss_subtraction: 351
+    state_refundable_credits: 0
+    state_income_tax: 878.52
+
+- name: Minimal retirement election is reflected before refundable credits
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    age: 68
+    taxable_private_pension_income: 30000
+    is_tax_unit_head: true
+    state_code: WI
+  output:
+    wi_retirement_income_exclusion_amount: 24000
+    state_income_tax_before_refundable_credits: 0
+    state_refundable_credits: 0
+    state_income_tax: 0
