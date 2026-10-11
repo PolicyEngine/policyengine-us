@@ -4,7 +4,10 @@
 # One Form 7206 per plan: the limit is the earned income of the business under
 # which the plan is established (self_employed_health_insurance_plan_business),
 # or of the person's business with the largest earned income when that input
-# is not supplied.
+# is not supplied. Line 9 is the part of the Schedule 1 line 16 retirement plan
+# deduction attributable to that business: the retirement plan's businesses
+# (self_employed_pension_plan_business, by default every profitable one) take
+# it in proportion to their line 8 amounts.
 
 - name: Case 1, one business, the limit is net profit less half of self-employment tax.
   period: 2022
@@ -167,12 +170,13 @@
     # Lines 5 to 8: 10,000 / 40,000 = 0.25; 10,000 - 0.25 x 2,825.91.
     self_employed_health_insurance_earned_income_limit: 9_293.5225
 
-- name: Case 15, the plan deduction is attributable to Schedule C, so the partnership earns more.
+- name: Case 15, a retirement plan under the Schedule C business leaves the partnership earning more.
   period: 2023
   absolute_error_margin: 0.01
   input:
     self_employment_income: 20_000
     self_employed_pension_contributions_desired: 15_000
+    self_employed_pension_plan_business: SCHEDULE_C
     partnership_self_employment_net_earnings: 10_000
   output:
     # Line 15: 30,000 x 0.9235 x 0.153 / 2 = 2,119.4325.
@@ -205,3 +209,63 @@
   output:
     self_employment_tax_ald_person: 706.4775
     self_employed_health_insurance_earned_income_limit: 9_293.5225
+
+- name: Case 18, retirement plans under both businesses split the plan deduction by earned income.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 20_000
+    self_employed_pension_contributions_desired: 15_000
+    partnership_self_employment_net_earnings: 10_000
+  output:
+    # Line 15: 30,000 x 0.9235 x 0.153 / 2 = 2,119.4325.
+    self_employment_tax_ald_person: 2_119.4325
+    # Line 8: Schedule C 18,587.045 and partnership 9,293.5225, together the
+    # retirement plan's earned income (Pub. 560 step 3), 27,880.5675.
+    self_employed_pension_earned_income: 27_880.5675
+    # Within the 2023 limit of min(66,000, 5,576.11 + 22,500,
+    # (27,880.57 + 22,500) / 2) = 25,190.28.
+    self_employed_pension_contribution_ald_person: 15_000
+    # Line 9: Schedule C 2 / 3 x 15,000 = 10,000; partnership 5,000.
+    # Line 10: Schedule C 8,587.045; partnership 4,293.5225.
+    self_employed_health_insurance_earned_income_limit: 8_587.045
+
+- name: Case 19, a retirement plan under the partnership leaves the Schedule C business's earned income whole.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 20_000
+    self_employed_pension_contributions_desired: 15_000
+    self_employed_pension_plan_business: PARTNERSHIP
+    partnership_self_employment_net_earnings: 10_000
+  output:
+    # The partnership's earned income, 9,293.5225, caps the plan deduction.
+    self_employed_pension_contribution_ald_person: 9_293.5225
+    # Line 10: Schedule C 18,587.045 (line 9 is 0); partnership 0.
+    self_employed_health_insurance_earned_income_limit: 18_587.045
+
+- name: Case 20, a farm's own retirement plan reduces the farm's limit.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    farm_operations_income: 20_000
+    self_employed_pension_contributions_desired: 3_000
+  output:
+    # Line 8: 20,000 - 1,412.955. Line 9: the farm's plan deduction, 3,000.
+    self_employed_pension_contribution_ald_person: 3_000
+    self_employed_health_insurance_earned_income_limit: 15_587.045
+
+- name: Case 21, a health plan under the farm subtracts only the farm's share of the retirement plan deduction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 30_000
+    farm_operations_income: 10_000
+    self_employed_pension_contributions_desired: 4_000
+    self_employed_health_insurance_plan_business: SCHEDULE_F
+  output:
+    # Line 15: 2,825.91. Line 8: Schedule C 27,880.5675 and farm 9,293.5225.
+    self_employed_pension_contribution_ald_person: 4_000
+    # Line 9 for the farm: 9,293.5225 / 37,174.09 x 4,000 = 1,000.
+    # Line 10: 9,293.5225 - 1,000.
+    self_employed_health_insurance_earned_income_limit: 8_293.5225
