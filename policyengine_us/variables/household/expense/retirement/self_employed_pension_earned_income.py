@@ -62,12 +62,14 @@ class self_employed_pension_earned_income(Variable):
         # line 15) attributable to the plan's businesses, by their share of
         # the net profits of every business whose earnings are subject to
         # self-employment tax.
-        self_employment_tax_deduction = person("self_employment_tax_ald_person", period)
-        self_employment_tax_deduction_rate = np.divide(
-            self_employment_tax_deduction,
+        plan_business_share = np.divide(
+            plan_business_profit,
             all_business_profits,
             out=np.zeros_like(all_business_profits),
             where=all_business_profits > 0,
         )
+        self_employment_tax_deduction = (
+            person("self_employment_tax_ald_person", period) * plan_business_share
+        )
         # Step 3.
-        return max_(0, plan_business_profit * (1 - self_employment_tax_deduction_rate))
+        return max_(0, plan_business_profit - self_employment_tax_deduction)

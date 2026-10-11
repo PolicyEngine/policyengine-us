@@ -53,3 +53,35 @@
     # example's step 3). Person 2: (27,880.57 + 23,500) / 2 = 25,690.28.
     self_employed_pension_contribution_ald_person: [60_780.73, 25_690.28]
     self_employed_pension_contribution_ald: 86_471.01
+
+- name: Case 4, a farm's own plan is deductible and cannot make AGI negative.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        farm_operations_income: 20_000
+        self_employed_pension_contributions_desired: 20_000
+  output:
+    # Pub. 560 step 1 is Schedule F line 34: 20,000. Step 3:
+    # 20,000 - 1,412.955 = 18,587.045, all of which deferrals can cover.
+    self_employed_pension_contribution_ald_person: [18_587.045]
+    adjusted_gross_income: 0
+
+- name: Case 5, a partner's plan is deductible from K-1 box 14 code A earnings.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        # The partnership's earnings enter gross income through
+        # partnership_income and self-employment tax through
+        # partnership_self_employment_net_earnings.
+        partnership_income: 20_000
+        partnership_self_employment_net_earnings: 20_000
+        self_employed_pension_contributions_desired: 20_000
+  output:
+    self_employed_pension_contribution_ald_person: [18_587.045]
+    adjusted_gross_income: 0
