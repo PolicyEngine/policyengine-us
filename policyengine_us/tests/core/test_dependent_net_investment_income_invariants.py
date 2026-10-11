@@ -20,14 +20,19 @@ vectorized simulation:
    head and spouse: their interest, dividends, rents (including Form 4835
    farm rent), passive pass-through, estate and trust income, plus their
    netted Schedule D gain or loss with capital gain distributions on line 13,
-   limited under 26 USC 1211(b).
+   limited under 26 USC 1211(b), plus the part of their section 461(l)
+   excess business loss that falls on those losses.
 3. -loss limit <= `filer_loss_limited_net_capital_gains`, and it equals
    `loss_limited_net_capital_gains` when the unit has no dependents.
 4. For tax units without dependents, `net_investment_income` equals the
    all-member formula (person-level sources plus
-   `loss_limited_net_capital_gains`), so leaving dependents out changes
-   nothing for filers without dependents.
+   `loss_limited_net_capital_gains` plus the section 461(l) add-back), so
+   leaving dependents out changes nothing for filers without dependents.
 5. 0 <= NIIT = 3.8% x min(max(0, NII), max(0, MAGI - threshold)).
+6. 0 <= `net_investment_income_excess_business_loss` <= min(the section
+   461(l) excess business loss, the net investment income losses), with
+   equality to the excess when those losses are the only business losses.
+   Section 1411(c)(1)(B) allows only deductions allowed by chapter 1.
 """
 
 import numpy as np
@@ -78,6 +83,8 @@ NII_PERSON_INPUTS = [
 ]
 OUTPUTS = [
     "net_investment_income",
+    "excess_business_loss",
+    "net_investment_income_excess_business_loss",
     "net_investment_income_tax",
     "filer_loss_limited_net_capital_gains",
     "loss_limited_net_capital_gains",
@@ -162,6 +169,24 @@ def _draw_units():
          "head": {**zero, "long_term_capital_gains": 10_000.0},
          "spouse": {**zero, "short_term_capital_gains": -4_000.0},
          "dependents": [{**zero, "rental_income": 25_000.0}]},
+        # Section 461(l) binds and the farm rental loss is the only loss.
+        {"kind": "single", "head_wages": 300_000.0,
+         "head": {**zero, "taxable_interest_income": 500_000.0,
+                  "farm_rent_income": -600_000.0},
+         "spouse": None, "dependents": []},
+        # Binds on a joint return with a nonpassive partnership loss too.
+        {"kind": "joint", "head_wages": 400_000.0,
+         "head": {**zero, "taxable_interest_income": 300_000.0,
+                  "rental_income": -500_000.0},
+         "spouse": {**zero, "partnership_s_corp_income": -400_000.0,
+                    "passive_partnership_s_corp_income": -200_000.0},
+         "dependents": []},
+        # A dependent's large loss would raise the filer's excess.
+        {"kind": "hoh", "head_wages": 300_000.0,
+         "head": {**zero, "taxable_interest_income": 400_000.0,
+                  "rental_income": -400_000.0},
+         "spouse": None,
+         "dependents": [{**zero, "farm_rent_income": -500_000.0}]},
     ]  # fmt: skip
     return units
 
@@ -259,6 +284,46 @@ def _loss_limit(runs):
     return runs["irs"].capital_gains.loss_limit[runs["with"]["filing_status"]]
 
 
+# The drawn inputs that section 461(l) aggregates as business items.
+SECTION_461L_INPUTS = [
+    "rental_income",
+    "farm_rent_income",
+    "estate_income",
+    "partnership_s_corp_income",
+]
+
+
+def _section_461l_reference(runs, units, include):
+    """Excess business loss and the part on NII losses, from leaf inputs.
+
+    ``include`` selects the members counted (the head and spouse, or all).
+    The NII share is proportional: NII losses (rental and farm rental losses,
+    estate losses and the passive part of partnership losses) over all
+    business losses.
+    """
+    amounts = {name: _by_person(units, name) for name in SECTION_461L_INPUTS}
+    income = _unit_sum(runs, include * sum(np.maximum(0, v) for v in amounts.values()))
+    loss = _unit_sum(runs, include * sum(np.maximum(0, -v) for v in amounts.values()))
+    passive_loss = np.minimum(
+        np.maximum(0, -_by_person(units, "passive_partnership_s_corp_income")),
+        np.maximum(0, -amounts["partnership_s_corp_income"]),
+    )
+    investment_loss = _unit_sum(
+        runs,
+        include
+        * (
+            np.maximum(0, -amounts["rental_income"])
+            + np.maximum(0, -amounts["farm_rent_income"])
+            + np.maximum(0, -amounts["estate_income"])
+            + passive_loss
+        ),
+    )
+    threshold = runs["irs"].ald.loss.max[runs["with"]["filing_status"]]
+    excess = np.maximum(0, loss - (income + threshold))
+    share = np.divide(investment_loss, loss, out=np.zeros_like(loss), where=loss > 0)
+    return excess, excess * share, investment_loss, loss
+
+
 def test_dependent_flags_match_the_draw(runs, units):
     assert np.array_equal(
         runs["with"]["is_tax_unit_dependent"], _by_person(units, "is_dependent")
@@ -294,11 +359,14 @@ def test_net_investment_income_matches_reference(runs, units):
     schedule_d = _unit_sum(
         runs, filer * sum(_by_person(units, name) for name in CAPITAL_INPUTS)
     )
-    expected = _unit_sum(runs, filer * person_nii) + np.maximum(
-        -_loss_limit(runs), schedule_d
+    _, addback, _, _ = _section_461l_reference(runs, units, filer)
+    expected = (
+        _unit_sum(runs, filer * person_nii)
+        + np.maximum(-_loss_limit(runs), schedule_d)
+        + addback
     )
     np.testing.assert_allclose(
-        runs["with"]["net_investment_income"], expected, atol=TOLERANCE
+        runs["with"]["net_investment_income"], expected, rtol=1e-6, atol=TOLERANCE
     )
 
 
@@ -317,7 +385,13 @@ def test_filer_capital_gains_within_loss_limit(runs, units):
 def test_units_without_dependents_match_all_member_formula(runs, units):
     """Differential check against the all-member formula."""
     person_nii = sum(_by_person(units, name) for name in NII_PERSON_INPUTS)
-    old = _unit_sum(runs, person_nii) + runs["with"]["loss_limited_net_capital_gains"]
+    everyone = np.ones_like(_by_person(units, "is_dependent"), dtype=bool)
+    _, addback, _, _ = _section_461l_reference(runs, units, everyone)
+    old = (
+        _unit_sum(runs, person_nii)
+        + runs["with"]["loss_limited_net_capital_gains"]
+        + addback
+    )
     no_dependents = np.array([not u["dependents"] for u in units])
     np.testing.assert_allclose(
         runs["with"]["net_investment_income"][no_dependents],
@@ -340,3 +414,29 @@ def test_niit_within_statutory_bounds(runs):
     # Both limbs of section 1411(a)(1) bind somewhere in the population.
     assert ((nii > 0) & (excess_magi > 0) & (nii < excess_magi)).sum() > 10
     assert ((nii > 0) & (excess_magi > 0) & (nii > excess_magi)).sum() > 10
+
+
+def test_section_461l_addback_bounds(runs, units):
+    """Property 6, plus a differential check of both new variables."""
+    filer = ~_by_person(units, "is_dependent")
+    excess, addback, investment_loss, loss = _section_461l_reference(runs, units, filer)
+    model_excess = runs["with"]["excess_business_loss"]
+    model_addback = runs["with"]["net_investment_income_excess_business_loss"]
+    np.testing.assert_allclose(model_excess, excess, rtol=1e-6, atol=TOLERANCE)
+    np.testing.assert_allclose(model_addback, addback, rtol=1e-6, atol=TOLERANCE)
+    assert np.all(model_addback >= -TOLERANCE)
+    assert np.all(
+        model_addback
+        <= np.minimum(model_excess, investment_loss) * (1 + 1e-6) + TOLERANCE
+    )
+    only_investment_losses = (loss > 0) & np.isclose(investment_loss, loss)
+    np.testing.assert_allclose(
+        model_addback[only_investment_losses],
+        model_excess[only_investment_losses],
+        rtol=1e-6,
+        atol=TOLERANCE,
+    )
+    # The edge rows make section 461(l) bind, including with a nonpassive
+    # partnership loss sharing the excess.
+    assert (model_excess > 0).sum() >= 3
+    assert ((model_addback > 0) & (model_addback < model_excess - 1)).sum() >= 1
