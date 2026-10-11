@@ -10,9 +10,10 @@
     base_part_a_premium: 0
     base_part_b_premium: 2_434.8
   output:
-    # CA regular FMAP is 50%; total MSP cost is $5,334.80.
-    msp_federal_cost: 2_667.4
-    msp_state_cost: 2_667.4
+    # CA regular FMAP is 50%; total MSP cost is $2,434.80 Part B premium
+    # plus $137.70 QMB cost sharing = $2,572.50.
+    msp_federal_cost: 1_286.25
+    msp_state_cost: 1_286.25
 
 - name: Case 2, QI cost is federally financed within allocation.
   period: 2026

@@ -13,23 +13,21 @@ class qmb_cost_sharing(Variable):
     reference = (
         "https://www.medicare.gov/basics/costs/help/medicare-savings-programs",
         "https://www.law.cornell.edu/uscode/text/42/1396d#p_3",
+        "https://www.law.cornell.edu/uscode/text/42/1396a#n_2",
     )
     documentation = (
-        "First-pass monthly value of QMB coverage for Medicare deductibles, "
-        "coinsurance, and copayments. The model lacks beneficiary-level "
-        "Medicare claims, so this approximates cost sharing as a parameterized "
-        "share of average Medicare per-capita spending."
+        "Monthly Medicaid spending on Medicare deductibles, coinsurance, and "
+        "copayments for a Qualified Medicare Beneficiary. The model lacks "
+        "Medicare claims, so this is national Medicaid spending on Medicare "
+        "cost sharing for Qualified Medicare Beneficiaries per enrollee, from "
+        "CMS-64 line 17D, a twelfth each month. States may pay no more than "
+        "their Medicaid rate under 42 U.S.C. 1396a(n)(2), so this spending is "
+        "far below the cost sharing Medicare charges."
     )
 
     def formula(person, period, parameters):
         category = person("msp_category", period)
-        p = parameters(period).gov.hhs.medicare.savings_programs
-        monthly_medicare_cost = (
-            parameters(period).calibration.gov.hhs.medicare.per_capita_cost
-            / MONTHS_IN_YEAR
-        )
-        return (
-            (category == MSPCategory.QMB)
-            * monthly_medicare_cost
-            * p.qmb.cost_sharing_rate
-        )
+        per_enrollee = parameters(
+            period
+        ).calibration.gov.hhs.medicare.savings_programs.qmb_cost_sharing_per_enrollee
+        return (category == MSPCategory.QMB) * per_enrollee / MONTHS_IN_YEAR

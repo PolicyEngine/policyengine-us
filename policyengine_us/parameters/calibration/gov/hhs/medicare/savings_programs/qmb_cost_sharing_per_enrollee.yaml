@@ -1,0 +1,33 @@
+description: Medicaid spending on Medicare deductibles and coinsurance for Qualified Medicare Beneficiaries, per Qualified Medicare Beneficiary enrollee per year.
+# Each value is a federal fiscal year (October through September): national
+# CMS-64 net expenditures on line 17D, "Coinsurance" (total computable), over
+# Qualified Medicare Beneficiary person-years (QMB only plus QMB plus) from CMS
+# Program Statistics. Fiscal year Y takes 0.25 times calendar year Y-1 and
+# 0.75 times calendar year Y person-years. The latest value holds afterwards.
+values:
+  2014-10-01: 145.14 # FY 2015: $964,276,592 / 6,643,568.5
+  2015-10-01: 160.07 # FY 2016: $1,088,990,259 / 6,803,362.5
+  2016-10-01: 149.87 # FY 2017: $1,044,519,254 / 6,969,459.1
+  2017-10-01: 143.55 # FY 2018: $1,023,074,055 / 7,126,922.3
+  2018-10-01: 142.54 # FY 2019: $1,036,646,026 / 7,272,591.8
+  2019-10-01: 138.65 # FY 2020: $1,040,603,350 / 7,505,377.9
+  2020-10-01: 133.70 # FY 2021: $1,046,566,216 / 7,827,817.8
+  2021-10-01: 128.05 # FY 2022: $1,037,693,614 / 8,103,524.3
+  2022-10-01: 132.92 # FY 2023: $1,118,400,599 / 8,413,952.4
+  2023-10-01: 137.70 # FY 2024: $1,153,227,651 / 8,374,811.6
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicaid spending on QMB Medicare cost sharing per enrollee
+  reference:
+    - title: CMS - Medicaid Financial Management Reports, FY 2015 to FY 2024 net expenditures, National Totals, line "Coinsurance"
+      href: https://www.medicaid.gov/medicaid/financial-management/state-expenditure-reporting-for-medicaid-chip/expenditure-reports-mbescbes
+    - title: CMS-64.9 Base category of service line definitions - line 17D, Coinsurance and Deductibles for QMBs under section 1905(p)(3)
+      href: https://www.medicaid.gov/medicaid/downloads/cms-649-base-category-of-services-definition.pdf#page=18
+    - title: CMS Program Statistics - Medicare-Medicaid Dual Enrollment, table MDCR ENROLL AB 40 (QMB only and QMB plus person-years)
+      href: https://data.cms.gov/summary-statistics-on-beneficiary-enrollment/medicare-and-medicaid-reports/cms-program-statistics-medicare-medicaid-dual-enrollment
+    - title: MACPAC - MACStats December 2024, Exhibit 17 (FY 2023 Medicare premiums and coinsurance, the sum of CMS-64 lines 17A to 17D)
+      href: https://www.macpac.gov/wp-content/uploads/2024/12/MACSTATS_Dec2024_WEB-508.pdf#page=61
+    - title: 42 U.S.C. 1396d(p)(3) - Medicare cost-sharing definition
+      href: https://www.law.cornell.edu/uscode/text/42/1396d#p_3

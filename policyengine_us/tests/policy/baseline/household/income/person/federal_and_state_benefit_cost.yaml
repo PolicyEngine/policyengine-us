@@ -84,5 +84,7 @@
     base_part_a_premium: 0
     base_part_b_premium: 2_434.8
   output:
-    federal_benefit_cost: 2_667.4
-    state_benefit_cost: 2_667.4
+    # MSP cost: $2,434.80 Part B premium + $137.70 QMB cost sharing =
+    # $2,572.50, split at CA's 50% FMAP.
+    federal_benefit_cost: 1_286.25
+    state_benefit_cost: 1_286.25
