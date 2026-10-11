@@ -113,7 +113,6 @@ ALLOWED = {
 KNOWN_VIOLATIONS = {
     # PolicyEngine/policyengine-us#9888.
     ("mt_misc_deductions", "adds", "casualty_loss_deduction"),
-    ("il_aabd_expense_exemption_person", "adds", "state_withheld_income_tax"),
     (
         "ca_riv_general_relief_countable_property_value",
         "adds",

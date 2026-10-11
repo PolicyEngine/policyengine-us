@@ -1,3 +1,10 @@
+## [2.39.0] - 2026-10-11
+
+### Added
+
+- Add taxsim_v17, TAXSIM-35's itemized deductions in taxable income (0 for filers who take the standard deduction).
+
+
 ## [2.38.24] - 2026-10-11
 
 ### Fixed
