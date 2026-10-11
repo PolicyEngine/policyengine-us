@@ -13,3 +13,143 @@
     alternative_minimum_tax: 0
   output:
    wv_low_income_family_tax_credit_eligible: true
+
+- name: "2025 single filer who can be claimed as a dependent: West Virginia low-income family tax credit uses the exemptions that may be claimed"
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 16000
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: WV
+  output:
+    # W. Va. Code 11-21-22A: family size is the number of exemptions that
+    # may be legally claimed; with zero exemptions there is no credit.
+    wv_low_income_family_tax_credit_eligible: false
+    wv_low_income_family_tax_credit_potential: 0
+
+- name: "2025 joint return with one claimable spouse: West Virginia low-income family tax credit uses the exemptions that may be claimed (the claimable spouse is the head)"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WV
+  output:
+    # Family size 1: 2025 FPG $15,650. Taxable income $16,000 - $2,000 =
+    # $14,000; tax $10,000 x 2.22% + $4,000 x 2.96% = $340.40. Income
+    # exceeds the FPG by $350, so the credit is 80%: $272.32.
+    wv_low_income_family_tax_credit_eligible: true
+    wv_low_income_family_tax_credit_fpg: 15650
+    wv_income_tax_before_non_refundable_credits: 340.4
+    wv_low_income_family_tax_credit_potential: 272.32
+
+- name: "2025 joint return with one claimable spouse: West Virginia low-income family tax credit uses the exemptions that may be claimed (the claimable spouse is the spouse)"
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: WV
+  output:
+    wv_low_income_family_tax_credit_eligible: true
+    wv_low_income_family_tax_credit_fpg: 15650
+    wv_income_tax_before_non_refundable_credits: 340.4
+    wv_low_income_family_tax_credit_potential: 272.32
+
+- name: "2025 joint return with both spouses claimable: West Virginia low-income family tax credit uses the exemptions that may be claimed"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 8000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WV
+  output:
+    wv_low_income_family_tax_credit_eligible: false
+    wv_low_income_family_tax_credit_potential: 0
+
+- name: "2025 joint return with neither spouse claimable: West Virginia low-income family tax credit uses the exemptions that may be claimed"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: WV
+  output:
+    # Family size 2: $15,650 + $5,500 = $21,150. Taxable income $12,000;
+    # tax $222 + $2,000 x 2.96% = $281.20; income below the FPG: 100%.
+    wv_low_income_family_tax_credit_eligible: true
+    wv_low_income_family_tax_credit_fpg: 21150
+    wv_income_tax_before_non_refundable_credits: 281.2
+    wv_low_income_family_tax_credit_potential: 281.2

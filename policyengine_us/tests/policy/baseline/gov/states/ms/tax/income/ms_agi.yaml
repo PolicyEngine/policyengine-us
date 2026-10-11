@@ -94,3 +94,25 @@
     # 2,119.43) plus health insurance 3,000. The spouse has no adjustment.
     ms_agi_adjustments: [5_119.43, 0]
     ms_agi: [24_880.57, 20_000]
+
+- name: Estate and trust income is included in Mississippi AGI
+  period: 2025
+  input:
+    irs_employment_income: 30_000
+    estate_income: 5_000
+    state_code: MS
+  output:
+    # Form 80-105 line 41 reports federal Schedule E income, which includes
+    # trusts: 30,000 + 5,000, with no adjustments.
+    ms_agi: 35_000
+
+- name: An estate or trust loss on federal Schedule E reduces Mississippi AGI
+  period: 2025
+  input:
+    irs_employment_income: 30_000
+    estate_income: -5_000
+    state_code: MS
+  output:
+    # Line 41 is "the income or loss from activities reported on Federal
+    # Schedule E": 30,000 - 5,000.
+    ms_agi: 25_000

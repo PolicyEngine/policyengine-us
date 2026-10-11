@@ -808,7 +808,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, TX
+    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OR, TX
     state_implementations:
       - state: DC
         status: complete
@@ -900,6 +900,14 @@ programs:
         parameter_prefix: gov.states.ny.otda.heap
         verified_years: "2024-2026"
         notes: FY2024-FY2026 regular heating only, with the fuel base amounts, the Tier I and vulnerable supplements and the heat-included levels. Crisis, cooling, HERR and clean-and-tune assistance are out of scope.
+      - state: OR
+        status: partial
+        name: Oregon LIHEAP
+        full_name: Oregon Low Income Home Energy Assistance Program
+        variable: or_liheap
+        parameter_prefix: gov.states.or.ohcs.liheap
+        verified_years: "2025-2027"
+        notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP

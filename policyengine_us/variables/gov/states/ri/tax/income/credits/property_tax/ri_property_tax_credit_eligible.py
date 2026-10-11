@@ -14,15 +14,19 @@ class ri_property_tax_credit_eligible(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ri.tax.income.credits.property_tax
-        # minimum age eligibility
-        greater_head_or_spouse_age = tax_unit("greater_age_head_spouse", period)
-        age_eligible = greater_head_or_spouse_age >= p.age_threshold
-        # disability eligibility
-        head_is_disabled = tax_unit("head_is_disabled", period)
-        spouse_is_disabled = tax_unit("spouse_is_disabled", period)
-        head_or_spouse_disabled = head_is_disabled | spouse_is_disabled
+        person = tax_unit.members
+        # R.I. Gen. Laws 44-33-3: the claimant is a homeowner or renter aged
+        # 65 or older or disabled, and "does not include any person claimed as
+        # a dependent by any taxpayer". Members of a household choose who
+        # claims, so either spouse may be the claimant, but the age or
+        # disability and the dependency test belong to the same person.
+        filer = person("is_tax_unit_head_or_spouse", period)
+        age_eligible = person("age", period) >= p.age_threshold
+        disabled = person("is_disabled", period)
+        claimed = person("claimed_as_dependent_on_another_return", period)
+        eligible_claimant = filer & (age_eligible | disabled) & ~claimed
         household_income = tax_unit("ri_property_tax_household_income", period)
         income_threshold = p.rate.one_person.thresholds[-1]
         # The tax form RI-1040H specifies the income of a household as a eligibility requirement
         household_income_eligible = household_income <= income_threshold
-        return (age_eligible | head_or_spouse_disabled) & household_income_eligible
+        return tax_unit.any(eligible_claimant) & household_income_eligible
