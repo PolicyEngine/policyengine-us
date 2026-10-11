@@ -1116,6 +1116,9 @@ programs:
       Includes Part A (hospital) and Part B (medical) premiums with IRMAA
       adjustments; gross Part B premium calibration should use the
       enrollment-gated gross_medicare_part_b_premium_if_enrolled variable.
+      After CMS's last announced year, premiums and IRMAA amounts follow the
+      Medicare Trustees' projections and IRMAA thresholds the statutory CPI-U
+      indexing.
 
   # --- HUD programs ---
   - id: section_8
