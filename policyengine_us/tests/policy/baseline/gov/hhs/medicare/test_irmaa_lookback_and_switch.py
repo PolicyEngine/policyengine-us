@@ -301,7 +301,7 @@ def first_threshold(part, filing_status, year):
 )
 @given(
     st.lists(
-        st.floats(min_value=-1e6, max_value=3e6, allow_nan=False),
+        st.floats(min_value=-1e6, max_value=3e6, width=32),
         min_size=2,
         max_size=15,
     ),
@@ -326,17 +326,23 @@ def test_surcharges_never_fall_as_magi_rises(magis, filing_status, year):
     st.sampled_from(BRACKET_YEARS),
 )
 def test_surcharges_are_zero_below_the_first_threshold(data, filing_status, year):
+    # MAGI is stored as float32, so draw values it can hold: 106,000.996 would
+    # be stored as the 106,001 threshold itself.
     threshold = first_threshold("part_b", filing_status, year)
     assert threshold == first_threshold("part_d", filing_status, year)
     below = data.draw(
         st.lists(
-            st.floats(min_value=-1e6, max_value=threshold, exclude_max=True),
+            st.floats(min_value=-1e6, max_value=threshold, exclude_max=True, width=32),
             min_size=1,
             max_size=10,
         )
     )
     above = data.draw(
-        st.lists(st.floats(min_value=threshold, max_value=5e6), min_size=1, max_size=10)
+        st.lists(
+            st.floats(min_value=threshold, max_value=5e6, width=32),
+            min_size=1,
+            max_size=10,
+        )
     )
     part_b, part_d = irmaa_by_magi(below + above, filing_status, year)
     n = len(below)
