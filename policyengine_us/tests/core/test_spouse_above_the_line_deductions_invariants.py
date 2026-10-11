@@ -47,9 +47,9 @@ tax unit is an input for every unit in its simulation. For every tax unit:
 3. Own deductions. The spouse's deductions never add to the head's: the
    head's above_the_line_deductions_person is never higher with the spouse's
    deduction inputs than without them. It is the same, and so is the head's
-   AGI, when the head has no loss or student loan interest that shares a
-   return-level limit with the spouse's, and no income (Social Security,
-   unemployment compensation) taxed by reference to the couple's AGI. The
+   AGI, when the head has no loss, IRA contribution or student loan interest
+   that shares a return-level limit with the spouse's, and no income (Social
+   Security, unemployment compensation) taxed by reference to the couple's AGI. The
    spouse's own AGI and the couple's AGI never fall when the spouse's
    deduction inputs are removed.
    This is checked for units with no deduction set directly.
@@ -144,6 +144,7 @@ PERSON_OUTPUTS = [
     "alimony_expense",
     "divorce_year",
     "student_loan_interest",
+    "traditional_ira_contributions",
     "social_security",
     "unemployment_compensation",
     "dc_separate_capital_loss_adjustment",
@@ -659,7 +660,10 @@ def _check(units, year):
         | (sum(np.maximum(0, -run[source]) for source in BUSINESS_SOURCES) > 0)
         | (_per_person(run, run["other_net_gain"]) < 0)
     )
-    own_only = checked & ~has_loss
+    # Section 219(c) lets a lower earner use compensation left after the
+    # higher earner's IRA contributions. Removing those contributions can
+    # therefore increase the head's own deduction without changing ownership.
+    own_only = checked & ~has_loss & (run["traditional_ira_contributions"] == 0)
     _close(run[deductions][own_only], zeroed[deductions][own_only])
     joint_taxed_income = (run["social_security"] > 0) | (
         run["unemployment_compensation"] > 0
@@ -751,12 +755,13 @@ def test_every_deduction_is_attributed_or_divided_equally_on_purpose():
     # A tax-unit deduction with no person amount falls back to an equal
     # division between the head and spouse. Only those listed, with their
     # reasons, in EQUALLY_DIVIDED_DEDUCTIONS may do so.
-    from policyengine_us import CountryTaxBenefitSystem
     from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.above_the_line_deductions_person import (
         EQUALLY_DIVIDED_DEDUCTIONS,
     )
 
-    system = CountryTaxBenefitSystem()
+    # This audit only reads the baseline registry and parameter histories.
+    # Reuse the already initialized system rather than uprating it again.
+    system = Simulation.default_tax_benefit_system_instance
     deductions = system.parameters.gov.irs.ald.deductions
     seen = set()
     for value in deductions.values_list:

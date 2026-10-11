@@ -344,3 +344,54 @@
     # The dependent's amount is what they deduct on their own return.
     above_the_line_deductions_person: [0, 6_000, 1_000]
     adjusted_gross_income_person: [60_000, 34_000, 0]
+
+- name: Spousal IRA compensation limits preserve each contributor's deduction ownership.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 1_000
+        traditional_ira_contributions: 3_000
+      spouse:
+        age: 45
+        employment_income: 3_000
+        traditional_ira_contributions: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    traditional_ira_deduction: [1_000, 3_000]
+    above_the_line_deductions_person: [1_000, 3_000]
+    adjusted_gross_income_person: [0, 0]
+    adjusted_gross_income: 0
+
+- name: Removing the higher earner's IRA contributions frees compensation for the lower earner.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 1_000
+        traditional_ira_contributions: 3_000
+      spouse:
+        age: 45
+        employment_income: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    traditional_ira_deduction: [3_000, 0]
+    above_the_line_deductions_person: [3_000, 0]
+    adjusted_gross_income_person: [-2_000, 3_000]
+    adjusted_gross_income: 1_000
