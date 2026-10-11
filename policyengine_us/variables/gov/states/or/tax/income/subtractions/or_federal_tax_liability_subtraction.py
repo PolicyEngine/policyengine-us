@@ -29,7 +29,9 @@ class or_federal_tax_liability_subtraction(Variable):
         # wages (lines 5 and 6; ORS 316.685(3)(a)).
         tax_before_refundable_credits = tax_unit(
             "income_tax_before_refundable_credits", period
-        ) - add(tax_unit, period, ["net_investment_income_tax", "unreported_payroll_tax"])
+        ) - add(
+            tax_unit, period, ["net_investment_income_tax", "unreported_payroll_tax"]
+        )
         # Only the refundable credits the worksheet lists reduce the liability.
         # The earned income credit never does (ORS 316.685(1)(b)).
         refundable_credits = add(tax_unit, period, p.refundable_credits)
