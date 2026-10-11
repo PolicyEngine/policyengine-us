@@ -1,8 +1,13 @@
 description: Total employment income.
 values:
-  # IRS SOI Publication 1304 Table 1.4, all returns: salaries and wages.
-  # Amounts are published in thousands of dollars. Each value is for the tax
-  # year of its date.
+  # IRS SOI Publication 1304 Table 1.4, all returns: salaries and wages, Form
+  # 1040 line 1. From tax year 2022 the form splits line 1 into lines 1a to
+  # 1z and the table labels the line 1z total "total wages, total". Line 1z
+  # leaves out three amounts that line 1 included and that moved to Schedule 1
+  # that year: scholarships not reported on Form W-2, pensions from
+  # nonqualified deferred compensation and section 457 plans, and wages earned
+  # while incarcerated. Amounts are published in thousands of dollars. Each
+  # value is for the tax year of its date.
   2015-01-01: 7_112_222_959_000
   2016-01-01: 7_217_425_529_000
   2017-01-01: 7_577_563_943_000
@@ -10,6 +15,8 @@ values:
   2019-01-01: 8_273_071_046_000
   2020-01-01: 8_416_495_535_000
   2021-01-01: 9_022_352_941_000
+  2022-01-01: 9_738_950_972_000
+  2023-01-01: 10_204_095_705_000
 metadata:
   unit: currency-USD
   label: SOI employment income
@@ -29,3 +36,9 @@ metadata:
       href: https://www.irs.gov/pub/irs-soi/20in14ar.xls
     - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2021, salaries and wages
       href: https://www.irs.gov/pub/irs-soi/21in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2022, total wages, total
+      href: https://www.irs.gov/pub/irs-soi/22in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2023, total wages, total
+      href: https://www.irs.gov/pub/irs-soi/23in14ar.xls
+    - title: 2022 Instructions for Form 1040, What's New (line 1 split into lines 1a to 1z)
+      href: https://www.irs.gov/pub/irs-prior/i1040gi--2022.pdf#page=6
