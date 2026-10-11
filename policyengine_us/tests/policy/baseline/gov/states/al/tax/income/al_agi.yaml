@@ -163,3 +163,27 @@
     # interest. The child's wages and interest, and the child's U.S.
     # obligation interest, are on the child's own return.
     al_agi: 5_000
+
+- name: A beneficiary's estate or trust income is in Alabama AGI
+  period: 2025
+  input:
+    state_code: AL
+    irs_employment_income: 30_000
+    estate_income: 5_000
+  output:
+    # Form 40, Part I, line 5 carries Schedule E estate and trust income:
+    # 30,000 + 5,000.
+    al_agi: 35_000
+
+- name: A beneficiary's estate or trust loss on Schedule E reduces Alabama AGI
+  period: 2025
+  input:
+    state_code: AL
+    irs_employment_income: 30_000
+    estate_income: -5_000
+  output:
+    # Code of Ala. § 40-18-25(b) follows federal Subchapter J for a
+    # beneficiary's income and deductions, so depreciation, depletion and
+    # amortization apportioned to the beneficiary can exceed the income:
+    # 30,000 - 5,000.
+    al_agi: 25_000
