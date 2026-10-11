@@ -1,0 +1,187 @@
+# Households computed from their inputs, through the Medicare Savings
+# Program and the subsidy's own income and resource tests. 2026 guidelines:
+# $15,960 for one person and $21,640 for two (contiguous states); the
+# subsidy limit is 150% of them: $23,940 and $32,460. Medicare Savings
+# Program QI limit: 135%, $21,546 for one person and $29,214 for two.
+
+- name: Single retiree deemed eligible through a Medicare Savings Program.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+        social_security: 20_000
+        bank_account_assets: 5_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # Medicare Savings Program countable income (20,000 / 12 - 20) x 12 =
+    # 19,760 is above the SLMB limit (120%, 19,152) and below the QI limit,
+    # with resources under the $9,950 limit.
+    msp_eligible: true
+    part_d_lis_deemed_eligible: true
+    part_d_lis_countable_income: 19_760
+    part_d_lis_income_eligible: true
+    part_d_lis_resource_eligible: true
+    part_d_lis_eligible: true
+    part_d_lis_enrolled: true
+    part_d_lis: 1_254
+
+- name: Interest is excluded for the subsidy but not for the Medicare Savings Program.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+        social_security: 20_000
+        interest_income: 5_000
+        bank_account_assets: 15_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # Medicare Savings Program countable income (25,000 / 12 - 20) x 12 =
+    # 24,760 is over the QI limit, and $15,000 is over its $9,950 resource
+    # limit. The subsidy excludes interest: 19,760 < 23,940, and $15,000 <=
+    # 16,590 + 1,500.
+    msp_eligible: false
+    part_d_lis_deemed_eligible: false
+    part_d_lis_countable_income: 19_760
+    part_d_lis_eligible: true
+    part_d_lis: 1_254
+
+- name: Single retiree with resources over the limit is not eligible.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 68
+        social_security: 22_000
+        bank_account_assets: 50_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # Countable income (22,000 / 12 - 20) x 12 = 21,760 is under 23,940, but
+    # $50,000 is over $18,090.
+    part_d_lis_income_eligible: true
+    part_d_lis_resource_eligible: false
+    part_d_lis_deemed_eligible: false
+    part_d_lis_eligible: false
+    part_d_lis: 0
+
+- name: Married couple eligible through the income and resource tests.
+  period: 2026
+  input:
+    people:
+      spouse1:
+        age: 70
+        social_security: 18_000
+        bank_account_assets: 20_000
+      spouse2:
+        age: 70
+        social_security: 12_000
+        bank_account_assets: 10_000
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit:
+        members: [spouse1, spouse2]
+    spm_units:
+      spm_unit:
+        members: [spouse1, spouse2]
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: TX
+  output:
+    # Combined countable income (30,000 / 12 - 20) x 12 = 29,760 is over the
+    # couple QI limit (29,214) but under 32,460; combined resources $30,000
+    # are under 33,100 + 3,000 = 36,100.
+    msp_eligible: [false, false]
+    part_d_lis_family_size: [2, 2]
+    part_d_lis_countable_income: [29_760, 29_760]
+    part_d_lis_income_eligible: [true, true]
+    part_d_lis_resource_eligible: [true, true]
+    part_d_lis_eligible: [true, true]
+    part_d_lis: [1_254, 1_254]
+
+- name: Not taking it up leaves an applicant-path eligible person without it.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+        social_security: 20_000
+        interest_income: 5_000
+        bank_account_assets: 15_000
+        takes_up_part_d_lis_if_eligible: false
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    part_d_lis_eligible: true
+    part_d_lis_enrolled: false
+    part_d_lis: 0
+
+- name: 2023, a person in the former partial-subsidy range gets the average.
+  period: 2023
+  input:
+    people:
+      person:
+        age: 70
+        social_security: 20_500
+        bank_account_assets: 12_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    # Countable income (20,500 / 12 - 20) x 12 = 20,260: above 135% (19,683)
+    # and below 150% (21,870) of the 2023 guideline ($14,580). Resources
+    # $12,000 are above the 2023 full-subsidy limit (9,090 + 1,500 = 10,590)
+    # and within the partial limit (15,160 + 1,500 = 16,660).
+    part_d_lis_countable_income: 20_260
+    part_d_lis_eligible: true
+    part_d_lis: 3_092
+
+- name: Under-65 Medicare enrollee with a disability on SSI.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 50
+        is_disabled: true
+        medicare_enrolled: true
+        ssi: 6_000
+        bank_account_assets: 1_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    part_d_lis_deemed_eligible: true
+    part_d_lis_enrolled: true
+    part_d_lis: 1_254
+
+- name: Person aged 70 not enrolled in Medicare gets nothing.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+        medicare_enrolled: false
+        social_security: 10_000
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    part_d_lis_eligible: false
+    part_d_lis: 0

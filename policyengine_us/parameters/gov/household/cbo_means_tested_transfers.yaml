@@ -11,6 +11,7 @@ values:
     - reduced_price_school_meals
     - spm_unit_energy_subsidy
     - general_assistance
+    - part_d_lis
 
 metadata:
   unit: list
@@ -19,3 +20,7 @@ metadata:
   reference:
     - title: Congressional Budget Office, Reconciling the Official Poverty Measure and CBO’s Distributional Analysis of Household Income, Including In-Kind Transfers
       href: https://www.cbo.gov/publication/61157
+    # CBO counts the Medicare Part D low-income subsidy as a means-tested
+    # transfer, not as Medicare (see cbo_medicare_benefit).
+    - title: Congressional Budget Office, Sensitivity of the Distribution of Household Income to the Treatment of Health Insurance From 1979 to 2021 (January 2026)
+      href: https://www.cbo.gov/publication/61910
