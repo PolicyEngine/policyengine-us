@@ -1,28 +1,37 @@
 """The premium tax credit for a filer who can be claimed as a dependent.
 
-Someone another taxpayer can claim is not an applicable taxpayer (IRC
-36B(c)(1)(D)) and is outside the tax family (26 CFR 1.36B-1(d)(2)); a return
-with such a filer claims no dependents (IRC 152(b)(1)). The credit therefore
-uses `aca_tax_family_size` for the poverty line and the coverage family's
-benchmark `aca_ptc_slcsp`, and the state premium programs that wrap it follow.
+No credit is allowed to someone another taxpayer can claim (IRC 36B(c)(1)(D));
+such a spouse is outside the tax family (26 CFR 1.36B-1(d)(2)), and a return
+with such a filer claims no dependents (IRC 152(b)(1)) unless the would-be
+claimant meets the refund-only filing exception. The credit therefore uses
+`aca_tax_family_size` for the poverty line, household income without
+out-of-family dependents (`aca_magi`), the coverage family's benchmark
+(`aca_ptc_slcsp`) and its share of the premium
+(`aca_ptc_coverage_family_premium`), and the state premium programs that wrap
+it follow.
 
-For couples drawn by Hypothesis and a seeded population, with either, both or
-neither spouse claimed:
+For couples drawn by Hypothesis in every year 2021-2026 (spouses claimable,
+actually claimed or neither, with or without the filing exception) and a
+seeded population in 2025 and 2026:
 
 1. Swap invariance: each output is the same under either head/spouse
    labelling.
 2. Identities: `aca_tax_family_size` equals the filers who cannot be claimed
-   plus the dependents when no filer can be claimed; nobody outside the tax
-   family is eligible; 0 <= `aca_ptc_slcsp` <= `slcsp`; a return where every
-   filer can be claimed has no credit; and a return where no filer can be
-   claimed keeps `slcsp`, the tax unit size and the tax unit's poverty line.
+   plus the dependents when one of them is an applicable taxpayer and no
+   filer is claimable outside the exception; nobody outside the tax family is
+   eligible; 0 <= `aca_ptc_slcsp` <= `slcsp`; `aca_magi` <= `medicaid_magi`;
+   used credit <= coverage-family premium <= selected premium; cost-sharing
+   reductions only when every enrollee is eligible for the credit; no family
+   member means no credit; and where no filer can be claimed, `aca_ptc_slcsp`
+   = `slcsp`, `aca_magi` = `medicaid_magi`, `aca_tax_family_size` =
+   `tax_unit_size` and `aca_fpg` = `tax_unit_fpg` for the prior year (these
+   simulations supply no prior-year size, so the two sizes agree).
 3. Monotonicity: marking another filer as claimed never raises the tax family
-   size, never raises the benchmark while the enrollees stay the same, and
-   never raises the credit of a return that had an eligible member. Both can
-   rise otherwise, as intended: a couple below 100% of the two-person line can
-   be above it for a tax family of one, so IRC 36B allows the credit and the
-   unclaimable spouse leaves the coverage gap that pays_aca_premium assumes
-   nobody buys into.
+   size, never raises the benchmark while the same people are enrolled, and
+   never raises the credit, except in two intended cases: income crosses the
+   100% floor (below it for two, above it for one, so IRC 36B allows a credit
+   that was not allowed), or out-of-family dependents' income leaves household
+   income.
 """
 
 import numpy as np
@@ -51,10 +60,13 @@ YEARS = [2021, 2022, 2023, 2024, 2025, 2026]
 FEDERAL = [
     "aca_tax_family_size",
     "aca_fpg",
+    "aca_magi",
     "aca_magi_fraction",
     "slcsp",
     "aca_ptc_slcsp",
     "aca_ptc",
+    "aca_ptc_coverage_family_premium",
+    "used_aca_ptc",
     "marketplace_csr_eligible",
 ]
 STATE_WRAPS = [
@@ -73,11 +85,16 @@ OUTPUTS = FEDERAL + STATE_WRAPS
 
 @st.composite
 def couples(draw):
+    claimed = draw(st.sampled_from(CLAIM_PATTERNS))
+    # Claimable whenever claimed, and sometimes claimable but not claimed.
+    extra = draw(st.sampled_from(CLAIM_PATTERNS))
     return {
         "state": draw(st.sampled_from(STATES)),
         "adults": [draw(adults()), draw(adults())],
         "dependents": draw(st.lists(dependents(), max_size=2)),
-        "claimed": draw(st.sampled_from(CLAIM_PATTERNS)),
+        "claimed": claimed,
+        "claimable": (claimed[0] or extra[0], claimed[1] or extra[1]),
+        "exception": draw(st.sampled_from(CLAIM_PATTERNS)),
     }
 
 
@@ -109,13 +126,37 @@ def _tax_unit_sum(sim, name, year):
     return np.asarray(sim.calculate(name, year, map_to="tax_unit"), dtype=float)
 
 
+def _tax_unit_sum_array(sim, values):
+    tax_units = sim.populations["tax_unit"]
+    return np.bincount(
+        np.asarray(tax_units.members_entity_id),
+        weights=np.asarray(values, dtype=float),
+        minlength=tax_units.count,
+    )
+
+
+def _enrollment_signature(sim, year):
+    # Which members are enrolled, as one number per tax unit, so variants
+    # can be compared person by person rather than by count.
+    position = np.asarray(sim.populations["tax_unit"].members_position)
+    enrolled = np.asarray(sim.calculate("pays_aca_premium", year), dtype=float)
+    return _tax_unit_sum_array(sim, enrolled * 2.0**position)
+
+
 def _identities(sim, year):
-    claimed_filer = _calc(sim, "head_or_spouse_is_dependent_elsewhere", year) > 0
+    claimable_filer = _calc(sim, "head_or_spouse_is_dependent_elsewhere", year) > 0
+    blocked = (
+        _calc(
+            sim, "head_or_spouse_is_dependent_elsewhere_without_filing_exception", year
+        )
+        > 0
+    )
     independent = _calc(sim, "head_spouse_count_not_dependent_elsewhere", year)
     dependents_count = _calc(sim, "tax_unit_count_dependents", year)
     size = _calc(sim, "aca_tax_family_size", year)
+    claims_dependents = (independent > 0) & ~blocked
     np.testing.assert_array_equal(
-        size, independent + np.where(claimed_filer, 0, dependents_count)
+        size, independent + np.where(claims_dependents, dependents_count, 0)
     )
     eligible = np.asarray(sim.calculate("is_aca_ptc_eligible", year))
     member = np.asarray(sim.calculate("is_aca_tax_family_member", year))
@@ -124,10 +165,24 @@ def _identities(sim, year):
     benchmark = _calc(sim, "aca_ptc_slcsp", year)
     assert (benchmark >= -TOLERANCE).all()
     assert (benchmark <= slcsp + TOLERANCE).all(), "benchmark above slcsp"
-    nobody_in_family = size == 0
-    assert not _calc(sim, "aca_ptc", year)[nobody_in_family].any()
-    unclaimed = ~claimed_filer
+    aca_magi = _calc(sim, "aca_magi", year)
+    medicaid_magi = _calc(sim, "medicaid_magi", year)
+    assert (aca_magi <= medicaid_magi + TOLERANCE).all()
+    premium = _calc(sim, "selected_marketplace_plan_premium_proxy", year)
+    family_premium = _calc(sim, "aca_ptc_coverage_family_premium", year)
+    used = _calc(sim, "used_aca_ptc", year)
+    assert (used <= family_premium + TOLERANCE).all()
+    assert (family_premium <= premium + TOLERANCE).all()
+    csr = _calc(sim, "marketplace_csr_eligible", year) > 0
+    enrolled = np.asarray(sim.calculate("pays_aca_premium", year))
+    ineligible_enrollees = _tax_unit_sum_array(sim, enrolled & ~eligible)
+    assert not (csr & (ineligible_enrollees > 0)).any()
+    assert not _calc(sim, "aca_ptc", year)[size == 0].any()
+    unclaimed = ~claimable_filer
     np.testing.assert_allclose(benchmark[unclaimed], slcsp[unclaimed], atol=TOLERANCE)
+    np.testing.assert_allclose(
+        aca_magi[unclaimed], medicaid_magi[unclaimed], atol=TOLERANCE
+    )
     np.testing.assert_array_equal(
         size[unclaimed], _calc(sim, "tax_unit_size", year)[unclaimed]
     )
@@ -143,13 +198,13 @@ def check_swap(units, year, outputs, require_coverage=False):
         # The batch must reach the rule: returns with exactly one claimable
         # filer that still get a credit and, from 2026 when the modeled state
         # programs start, a state wrap paid on one.
-        one_claimed = (
+        one_claimable = (
             _calc(sim, "head_or_spouse_is_dependent_elsewhere", year) > 0
         ) & (_calc(sim, "head_spouse_count_not_dependent_elsewhere", year) == 1)
-        assert (_calc(sim, "aca_ptc", year)[one_claimed] > 0).any()
+        assert (_calc(sim, "aca_ptc", year)[one_claimable] > 0).any()
         if year >= 2026:
             wraps = sum(_calc(sim, name, year) for name in STATE_WRAPS)
-            assert (wraps[one_claimed] > 0).any()
+            assert (wraps[one_claimable] > 0).any()
     values = {name: _calc(sim, name, year) for name in outputs}
     values["eligible members"] = _tax_unit_sum(sim, "is_aca_ptc_eligible", year)
     for name, value in values.items():
@@ -170,45 +225,44 @@ def check_swap(units, year, outputs, require_coverage=False):
 
 def check_monotone(units, year):
     sim = Simulation(situation=_situation(units, year, _monotone_variants))
-    had_eligible = (_tax_unit_sum(sim, "is_aca_ptc_eligible", year) > 0).reshape(-1, 4)
-    enrollees = _tax_unit_sum(sim, "pays_aca_premium", year).reshape(-1, 4)
-    for name, guard in (
-        ("aca_tax_family_size", None),
-        ("aca_ptc_slcsp", "same enrollees"),
-        ("aca_ptc", "had eligible"),
-    ):
+    fraction = _calc(sim, "aca_magi_fraction", year).reshape(-1, 4)
+    magi = _calc(sim, "aca_magi", year).reshape(-1, 4)
+    enrollees = _enrollment_signature(sim, year).reshape(-1, 4)
+    for name in ("aca_tax_family_size", "aca_ptc_slcsp", "aca_ptc"):
         values = _calc(sim, name, year).reshape(-1, 4)
-        nobody, first, second, both = values.T
-        for more, fewer, base, label in (
-            (first, nobody, 0, "first adult"),
-            (second, nobody, 0, "second adult"),
-            (both, first, 1, "both after first"),
-            (both, second, 2, "both after second"),
+        for more, fewer, label in (
+            (1, 0, "first adult"),
+            (2, 0, "second adult"),
+            (3, 1, "both after first"),
+            (3, 2, "both after second"),
         ):
-            rises = more > fewer + TOLERANCE
-            if guard == "had eligible":
-                rises &= had_eligible[:, base]
-            elif guard == "same enrollees":
-                more_index = {"first adult": 1, "second adult": 2}.get(label, 3)
-                rises &= enrollees[:, base] == enrollees[:, more_index]
+            rises = values[:, more] > values[:, fewer] + TOLERANCE
+            if name == "aca_ptc_slcsp":
+                rises &= enrollees[:, more] == enrollees[:, fewer]
+            if name == "aca_ptc":
+                crosses_floor = (fraction[:, fewer] < 1) & (fraction[:, more] >= 1)
+                income_left = magi[:, more] < magi[:, fewer] - TOLERANCE
+                rises &= ~crosses_floor & ~income_left
             assert not rises.any(), (
                 f"{name} in {year} rises when the {label} is claimed "
                 "elsewhere: "
                 + ", ".join(
-                    f"{units[i]['state']} {fewer[i]:.2f} -> {more[i]:.2f}"
+                    f"{units[i]['state']} {values[i, fewer]:.2f} -> "
+                    f"{values[i, more]:.2f}"
                     for i in np.flatnonzero(rises)[:10]
                 )
             )
     _identities(sim, year)
 
 
+@pytest.mark.parametrize("year", YEARS)
 @settings(
-    max_examples=4,
+    max_examples=2,
     deadline=None,
     derandomize=True,
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
 )
-@given(st.sampled_from(YEARS), st.lists(couples(), min_size=6, max_size=15))
+@given(st.lists(couples(), min_size=6, max_size=15))
 def test_claimable_filer_ptc_is_label_free(year, units):
     check_swap(units, year, OUTPUTS)
 

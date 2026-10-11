@@ -236,3 +236,45 @@
         state_code: TX
   output:
     aca_fpg: 15_650
+
+- name: 2025 the poverty line uses the tax year's family size, not a supplied prior-year size
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_size: {2024: 2, 2025: 3}
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    # Form 8962 line 1 is the tax year's family; line 4 takes the 2024
+    # guideline for it: 15,060 + 2 * 5,380. tax_unit_fpg for 2024 would
+    # have used the supplied 2024 size of 2 (20,440).
+    aca_tax_family_size: 3
+    aca_fpg: 25_820

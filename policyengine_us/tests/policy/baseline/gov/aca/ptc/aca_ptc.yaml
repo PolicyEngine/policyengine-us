@@ -726,3 +726,249 @@
         state_code: TX
   output:
     aca_ptc: 0
+
+- name: 2025 child's tax-exempt interest no longer cuts the credit of a return with a claimable spouse (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        employment_income: 10_000
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        employment_income: 10_000
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        tax_exempt_interest_income: 20_000
+        slcsp_age_curve_amount_person: 3000
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    # 20,000 / 15,060 = 132% FPL: 0% contribution; benchmark 6,000 (child out).
+    aca_magi: 20_000
+    aca_magi_fraction: 1.32
+    aca_ptc: 6000
+
+- name: 2025 child's tax-exempt interest no longer cuts the credit of a return with a claimable spouse (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        employment_income: 10_000
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        employment_income: 10_000
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        tax_exempt_interest_income: 20_000
+        slcsp_age_curve_amount_person: 3000
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+  output:
+    aca_magi: 20_000
+    aca_magi_fraction: 1.32
+    aca_ptc: 6000
+
+- name: "2025 refund-only exception: credit for the other spouse and the child (the claimable spouse is the head)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 3000
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        aca_magi: 30_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: TX
+  output:
+    # 30,000 / 20,440 = 146% FPL: 0% contribution; benchmark 6,000 + 3,000.
+    aca_tax_family_size: 2
+    aca_ptc_slcsp: 9000
+    aca_ptc: 9000
+
+- name: "2025 refund-only exception: credit for the other spouse and the child (the claimable spouse is the spouse)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 3000
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        aca_magi: 30_000
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: TX
+  output:
+    aca_tax_family_size: 2
+    aca_ptc_slcsp: 9000
+    aca_ptc: 9000
+
+- name: 2025 claimable 17-year-old filing alone gets no credit
+  period: 2025
+  input:
+    people:
+      minor:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [minor]
+        filing_status: SINGLE
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [minor]
+        state_code: TX
+  output:
+    is_aca_ptc_eligible: [false]
+    aca_ptc: 0
+
+- name: 2025 unclaimed 17-year-old filing alone keeps the credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      minor:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [minor]
+        filing_status: SINGLE
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+    households:
+      household:
+        members: [minor]
+        state_code: TX
+  output:
+    is_aca_ptc_eligible: [true]
+    aca_ptc: 6000
