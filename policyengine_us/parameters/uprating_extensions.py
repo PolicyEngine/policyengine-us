@@ -573,7 +573,9 @@ def long_range_growth_rate(
     if not knots or knots[0][0] <= last_projected_year:
         raise ValueError("Long-range growth knots must follow the last projected year.")
     if year <= last_projected_year:
-        raise ValueError("Long-range growth applies only after the last projected year.")
+        raise ValueError(
+            "Long-range growth applies only after the last projected year."
+        )
     previous_year, previous_rate = last_projected_year, short_range_growth
     for knot_year, knot_rate in knots:
         if year == knot_year:
