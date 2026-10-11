@@ -1,6 +1,8 @@
 description: Employee-side New York Paid Family Leave contribution rate.
 values:
   0000-01-01: 0
+  2024-01-01: 0.00373
+  2025-01-01: 0.00388
   2026-01-01: 0.00432
 
 metadata:
@@ -10,5 +12,11 @@ metadata:
   reference:
     - title: New York Workers' Compensation Law Section 209
       href: https://www.nysenate.gov/legislation/laws/WKC/209
+    - title: New York Workers' Compensation Board, NYS Paid Family Leave enhancements for 2024 (January 5, 2024)
+      href: https://www.wcb.ny.gov/content/main/PressRe/pfl-enhancements-2024.jsp
+    - title: New York Department of Financial Services, Decision on premium rate for Paid Family Leave benefits and maximum employee contribution for coverage beginning January 1, 2025
+      href: https://www.dfs.ny.gov/apps-and-licensing/health-insurers/pfl-rate-decision-2025-page
+    - title: New York Workers' Compensation Board 2025 Paid Family Leave payroll deduction notice
+      href: https://www.wcb.ny.gov/content/main/forms/PFLDocs/pfl-pay-deduction-notice-2025.pdf#page=1
     - title: New York Workers' Compensation Board 2026 Paid Family Leave payroll deduction notice
       href: https://www.wcb.ny.gov/content/main/forms/PFLDocs/pfl-pay-deduction-notice-2026.pdf#page=1

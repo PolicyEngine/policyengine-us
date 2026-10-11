@@ -11,8 +11,11 @@ class ma_part_c_gross_income(Variable):
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
-        # Long-term capital gains
-        ltcg = add(tax_unit, period, ["long_term_capital_gains"])
+        # Long-term capital gains, with capital gain distributions reported
+        # without a federal Schedule D (Massachusetts Schedule D, line 6)
+        ltcg = add(
+            tax_unit, period, ["long_term_capital_gains", "non_sch_d_capital_gains"]
+        )
         # Short-term capital gains (can be negative)
         stcg = add(tax_unit, period, ["short_term_capital_gains"])
         # Per MA Schedule B line 22, short-term losses offset long-term gains
