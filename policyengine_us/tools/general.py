@@ -52,8 +52,9 @@ def earliest_input_year(simulation):
     over or uprated only from a period it is known in, never back from a
     later one.
 
-    Inputs of a variable the tax-benefit system no longer has are skipped.
-    As with ``has_input_for_period``, core versions before 3.32.27 can keep
+    Inputs of a variable the tax-benefit system no longer has, or has
+    neutralized, are skipped: they are never read. As with
+    ``has_input_for_period``, core versions before 3.32.27 can keep
     an input key after the input is deleted, and a value recalculated for
     that period then still counts. Formulas that read this cache their
     result, so inputs set after they have run do not change it.
@@ -66,6 +67,7 @@ def earliest_input_year(simulation):
             branch_name in visible_branches
             and period.unit != ETERNITY
             and variable in variables
+            and not variables[variable].is_neutralized
         ):
             periods_by_variable.setdefault(variable, set()).add((branch_name, period))
     years = [

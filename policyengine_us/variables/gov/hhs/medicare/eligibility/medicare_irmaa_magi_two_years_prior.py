@@ -64,9 +64,10 @@ class medicare_irmaa_magi_two_years_prior(Variable):
         "from 2017 to 2019 and 39% from 2018 to 2020: a household entered "
         "for 2016, 2017 or 2018 alone gets slightly more than that year's "
         "income, and one entered for 2019 or 2020 alone gets that year's "
-        "income cut by those factors. "
-        "When the year two years prior precedes 2015, only income provided "
-        "for it counts, and the rest is zero."
+        "income times 0.765 or 0.721. "
+        "When inputs reach back to 2013 or 2014 and the year two years prior "
+        "is one of those years, its income cannot be computed: only income "
+        "provided for it counts, and the rest is zero."
     )
 
     def formula(tax_unit, period, parameters):

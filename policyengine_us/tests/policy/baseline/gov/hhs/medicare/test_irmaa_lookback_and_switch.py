@@ -2,7 +2,7 @@
 
 The law sets IRMAA on MAGI from two years before the benefit year. When a
 simulation holds no input for that year or any earlier one (a single-year
-dataset two years or less after its data year, or a household entered for one
+dataset in its data year and the year after, or a household entered for one
 year), the MAGI of the earliest year with inputs stands in, deflated to the
 lookback year. gov.simulation.medicare_irmaa_uses_current_year_income sets the
 charges from the benefit year's own MAGI instead.
@@ -295,6 +295,23 @@ def test_earliest_input_year_skips_variables_the_system_no_longer_has():
     # A reform that removes a variable leaves its recorded input keys behind.
     sim.tax_benefit_system.variables.pop("tax_exempt_interest_income")
     assert earliest_input_year(sim) == 2024
+
+
+def test_earliest_input_year_skips_neutralized_variables():
+    # A neutralized variable reads as its default, so its input is never used:
+    # its 2023 input must not turn the 2025 fallback off.
+    sim = senior(
+        {
+            "age": {2024: 66},
+            "employment_income": {2024: 200_000},
+            "tax_exempt_interest_income": {2023: 5},
+        }
+    )
+    sim.tax_benefit_system.neutralize_variable("tax_exempt_interest_income")
+    assert earliest_input_year(sim) == 2024
+    assert sim.calculate("medicare_irmaa_magi_two_years_prior", 2025)[
+        0
+    ] == pytest.approx(200_000 * deflator(2023, 2024), rel=1e-6)
 
 
 # Bracket properties
