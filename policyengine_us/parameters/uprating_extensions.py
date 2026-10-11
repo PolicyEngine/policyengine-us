@@ -241,30 +241,50 @@ HSA_CONTRIBUTION_LIMIT_STATUTORY_BASES = (
 HSA_CONTRIBUTION_LIMIT_BASE_YEAR = 1997
 
 
-def get_hsa_cola(parameters: ParameterNode, tax_year: int) -> float:
-    """The 26 U.S.C. 223(g)(1) cost-of-living adjustment for ``tax_year``.
+def get_hsa_cola_denominator(parameters: ParameterNode) -> float:
+    """Denominator of the 26 U.S.C. 223(g)(1) cost-of-living adjustment.
 
-    The 1(f)(3) adjustment with calendar year 1997 in place of 2016, and with
-    1(f)(4) applied by substituting March 31 for August 31: the C-CPI-U for
-    the calendar year before ``tax_year`` and the CPI for 1997 are averages
-    over the 12 months ending March 31. The 1(f)(3)(B) ratio of the C-CPI-U
-    to the CPI for calendar year 2016 keeps its 12 months ending August 31,
-    as for every other 1(f)(3) amount. These windows reproduce every self-only
-    and family limit the IRS published for 2019 through 2026 from the BLS
-    series in ``gov.bls.cpi`` (``tests/core/test_hsa_contribution_limits.py``);
-    applying March 31 to the 2016 ratio as well misses 3 of those 16 values.
+    The CPI for 1997, the base year 223(g)(1)(B)(i) substitutes for calendar
+    year 2016, averaged over the 12 months ending March 31 as 223(g)(1)
+    applies 1(f)(4), times the 1(f)(3)(B) ratio of the C-CPI-U to the CPI for
+    calendar year 2016. That ratio keeps its 12 months ending August 31, as
+    for every other 1(f)(3) amount; see ``get_hsa_cola``.
     """
     cpi = parameters.gov.bls.cpi
     ratio_2016 = get_average_for_12_months_ending_august(
         cpi.c_cpi_u, 2016
     ) / get_average_for_12_months_ending_august(cpi.cpi_u, 2016)
-    denominator = (
+    return (
         get_average_for_12_months_ending_march(
             cpi.cpi_u, HSA_CONTRIBUTION_LIMIT_BASE_YEAR
         )
         * ratio_2016
     )
-    chained = get_average_for_12_months_ending_march(cpi.c_cpi_u, tax_year - 1)
+
+
+def get_hsa_cola(
+    parameters: ParameterNode,
+    tax_year: int,
+    denominator: Optional[float] = None,
+) -> float:
+    """The 26 U.S.C. 223(g)(1) cost-of-living adjustment for ``tax_year``.
+
+    The 1(f)(3) adjustment with calendar year 1997 in place of 2016, and with
+    1(f)(4) applied by substituting March 31 for August 31: the percentage
+    (if any) by which the C-CPI-U for the calendar year before ``tax_year``,
+    averaged over the 12 months ending March 31, exceeds
+    ``get_hsa_cola_denominator``. These windows reproduce every self-only and
+    family limit the IRS published for 2019 through 2026 from the BLS series
+    in ``gov.bls.cpi`` (``tests/core/test_hsa_contribution_limits.py``);
+    taking the 2016 ratio over the 12 months ending March 31 as well misses
+    3 of those 16 values. ``denominator`` lets a caller computing many years
+    pass it once.
+    """
+    if denominator is None:
+        denominator = get_hsa_cola_denominator(parameters)
+    chained = get_average_for_12_months_ending_march(
+        parameters.gov.bls.cpi.c_cpi_u, tax_year - 1
+    )
     return max(chained / denominator - 1, 0)
 
 
@@ -280,16 +300,20 @@ def extend_hsa_contribution_limits(parameters: ParameterNode, end_year: int) -> 
     """
     ROUNDING_INTERVAL = 50
     limit = parameters.gov.irs.gross_income.health_savings_account_contributions.limit
+    denominator = get_hsa_cola_denominator(parameters)
+    colas = {}
     for name, base in HSA_CONTRIBUTION_LIMIT_STATUTORY_BASES:
         parameter = getattr(limit, name)
         first_projected_year = 1 + max(
             int(value.instant_str[:4]) for value in parameter.values_list
         )
         for year in range(first_projected_year, end_year + 1):
-            cola = get_hsa_cola(parameters, year)
+            if year not in colas:
+                colas[year] = get_hsa_cola(parameters, year, denominator)
             # Nearest multiple of $50; an exact half rounds up.
             increase = (
-                math.floor(base * cola / ROUNDING_INTERVAL + 0.5) * ROUNDING_INTERVAL
+                math.floor(base * colas[year] / ROUNDING_INTERVAL + 0.5)
+                * ROUNDING_INTERVAL
             )
             parameter.update(
                 period=f"year:{year}-01-01:1", value=float(base + increase)
