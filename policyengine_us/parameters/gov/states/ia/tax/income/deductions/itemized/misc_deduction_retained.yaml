@@ -1,0 +1,16 @@
+description: Iowa keeps the miscellaneous itemized deduction above 2% of adjusted gross income, which federal law suspends from 2018, if this is true.
+values:
+  2017-01-01: false
+  2018-01-01: true
+  2019-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Iowa retains the miscellaneous itemized deduction
+  reference:
+    - title: 2018 IA 1040 expanded instructions, Schedule A job expenses and miscellaneous deductions
+      href: https://revenue.iowa.gov/media/2228/download?inline=#page=54
+    - title: 2018 IA Schedule A, lines 19 to 24
+      href: https://revenue.iowa.gov/media/2298/download?inline=#page=1
+    - title: 2019 IA 1040 expanded instructions, Schedule A
+      href: https://revenue.iowa.gov/media/2492/download?inline=#page=49
