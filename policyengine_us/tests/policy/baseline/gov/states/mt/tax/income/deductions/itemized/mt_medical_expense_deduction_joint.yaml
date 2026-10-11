@@ -159,6 +159,38 @@
     # 10,000 - 7.5% x 100,000 = 2,500.
     mt_medical_expense_deduction_joint: 2_500
 
+- name: Montana joint medical deduction excludes spouses' self-employed premiums
+  period: 2023
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 6_000
+        self_employed_health_insurance_ald_person: 1_000
+        other_medical_expenses: 500
+      spouse:
+        age: 40
+        health_insurance_premiums: 3_000
+        self_employed_health_insurance_ald_person: 2_000
+        other_medical_expenses: 500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        mt_agi_joint: 40_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Line 1: max(0, (500 + 500) - 7.5% x 40,000) = 0.
+    # Line 2: (6,000 - 1,000) + (3,000 - 2,000) = 6,000, in full.
+    # The self-employed deductions are netted once, on line 2.
+    mt_medical_expense_deduction_joint: [6_000, 0]
+
 - name: Medical insurance premiums are deducted in full on line 2, not under the floor
   period: 2022
   absolute_error_margin: 0.01
@@ -237,7 +269,7 @@
     # Line 1: 10,000 - 7.5% x 40,000 = 7,000.
     mt_medical_expense_deduction_joint: 7_000
 
-- name: A dependent's premiums count on line 2 and other medical expenses on line 1
+- name: A dependent's premiums count on line 2 while line 1 is below the floor
   period: 2022
   absolute_error_margin: 0.01
   input:
@@ -247,7 +279,6 @@
         health_insurance_premiums: 3_000
       person2:
         is_tax_unit_spouse: true
-        other_medical_expenses: 4_000
       person3:
         is_tax_unit_dependent: true
         health_insurance_premiums: 1_200
@@ -261,9 +292,11 @@
         members: [person1, person2, person3]
         state_code: MT
   output:
-    # Line 1: (4,000 + 1,000) - 7.5% x 50,000 = 5,000 - 3,750 = 1,250.
+    # Line 1: max(0, 1,000 - 7.5% x 50,000) = 0.
     # Line 2: 3,000 + 1,200 = 4,200.
-    mt_medical_expense_deduction_joint: [5_450, 0, 0]
+    # Flooring the premiums with the other expenses would give
+    # 5,200 - 3,750 = 1,450.
+    mt_medical_expense_deduction_joint: [4_200, 0, 0]
 
 - name: Joint return computed from wages, with premiums and other medical expenses
   period: 2022
@@ -313,4 +346,30 @@
     adjusted_gross_income: 60_000
     # Federal Schedule A: (4,000 + 2,000) - 7.5% x 60,000 = 1,500.
     medical_expense_deduction: 1_500
+    mt_medical_expense_deduction_joint: 1_500
+
+- name: The self-employed deduction left after medical premiums reduces long-term care premiums
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        health_insurance_premiums: 2_000
+        long_term_health_insurance_premiums: 1_500
+        self_employed_health_insurance_ald_person: 3_000
+        other_medical_expenses: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mt_agi_joint: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # The 3,000 deduction in Montana AGI covers the 2,000 of medical premiums
+    # and 1,000 of the long-term care premiums.
+    # Line 1: 4,000 - 7.5% x 40,000 = 1,000.
+    # Line 2: 2,000 - 2,000 = 0. Line 3: 1,500 - 1,000 = 500.
     mt_medical_expense_deduction_joint: 1_500

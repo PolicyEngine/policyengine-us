@@ -8,6 +8,7 @@ class mt_medical_expense_deduction_joint(Variable):
     label = "Montana medical expense deduction when married couples are filing jointly"
     reference = (
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7",
+        # PDF pages 32-33
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=32",
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15",
         # MCA 2021 § 15-30-2131(1)(a) and (1)(g)
@@ -30,15 +31,14 @@ class mt_medical_expense_deduction_joint(Variable):
             # the return's pooled Montana AGI.
             montana_agi = tax_unit("mt_agi_joint", period)
             floored_expense = max_(0, expense - floor * montana_agi)
-            # Line 2: medical insurance premiums not deducted elsewhere.
-            # Line 3: long-term care insurance premiums, without the federal
-            # age-based limit.
+            # Lines 2 and 3: medical and long-term care insurance premiums not
+            # deducted elsewhere, in full.
             premiums = add(
                 tax_unit,
                 period,
                 [
                     "mt_eligible_medical_insurance_premiums",
-                    "long_term_health_insurance_premiums",
+                    "mt_eligible_long_term_care_insurance_premiums",
                 ],
             )
             deduction = floored_expense + premiums

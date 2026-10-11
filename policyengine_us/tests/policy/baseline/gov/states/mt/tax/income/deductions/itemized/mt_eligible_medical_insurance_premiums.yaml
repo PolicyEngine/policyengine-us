@@ -50,16 +50,27 @@
   period: 2022
   absolute_error_margin: 0.01
   input:
-    is_self_employed: true
-    self_employment_income: 2_000
     health_insurance_premiums: 6_000
+    # The deduction claimed on Schedule 1, line 17, after its earnings limit.
+    self_employed_health_insurance_ald_person: 2_000
     state_code: MT
   output:
-    # The self-employed health insurance deduction is limited to 2,000 of
-    # self-employment earnings, so 6,000 - 2,000 = 4,000 was not deducted in
-    # Montana AGI.
-    self_employed_health_insurance_ald_person: 2_000
+    # Only the 2,000 deducted in Montana AGI is excluded: 6,000 - 2,000.
     mt_eligible_medical_insurance_premiums: 4_000
+
+- name: A deduction above the medical premiums excludes no more than the premiums
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    health_insurance_premiums: 1_000
+    long_term_health_insurance_premiums: 2_000
+    self_employed_health_insurance_ald_person: 2_500
+    state_code: MT
+  output:
+    # The deduction covers all 1,000 of the medical premiums; the other 1,500
+    # covers long-term care premiums on line 3.
+    mt_eligible_medical_insurance_premiums: 0
+    mt_eligible_long_term_care_insurance_premiums: 500
 
 - name: Self-employed person with a loss deducts none of the premiums in AGI
   period: 2023

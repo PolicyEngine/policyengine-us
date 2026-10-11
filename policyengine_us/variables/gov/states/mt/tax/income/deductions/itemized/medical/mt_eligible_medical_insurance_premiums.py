@@ -7,13 +7,16 @@ class mt_eligible_medical_insurance_premiums(Variable):
     definition_period = YEAR
     label = "Montana medical insurance premiums deductible in full"
     documentation = (
-        "Each person's medical insurance premiums that Montana's Itemized "
-        "Deductions Schedule line 2 deducts in full, before the 2024 switch "
-        "to federal itemized deductions: the premiums counted as federal "
-        "medical expenses, including Medicare Part B, less the premiums "
-        "deducted as the self-employed health insurance deduction in "
-        "Montana AGI. Pre-tax premiums are excluded because they are not "
-        "counted as federal medical expenses."
+        "A person's medical insurance premiums that Montana's 2021-2023 "
+        "Itemized Deductions Schedule line 2 deducts in full: the premiums "
+        "counted as federal medical expenses, including Medicare Part B, "
+        "less the premiums that person deducted through the self-employed "
+        "health insurance deduction. For the head and spouse that deduction "
+        "is part of Montana AGI; a dependent takes it on the dependent's own "
+        "return, so those premiums were not paid by the filer. Pre-tax "
+        "premiums are a separate input that never enters "
+        "medical_expense_health_insurance_premiums. Premium inputs use payer "
+        "attribution: each person reports the premiums that person paid."
     )
     reference = (
         "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=7",
@@ -26,7 +29,7 @@ class mt_eligible_medical_insurance_premiums(Variable):
 
     def formula(person, period, parameters):
         premiums = person("medical_expense_health_insurance_premiums", period)
-        # Premiums deducted in determining Montana AGI do not qualify, such as
-        # the self-employed health insurance deduction (Schedule 1, line 17).
-        deducted_in_agi = person("self_employed_health_insurance_ald_person", period)
-        return max_(0, premiums - deducted_in_agi)
+        # Premiums deducted in determining Montana AGI do not qualify: the
+        # self-employed health insurance deduction (Schedule 1, line 17).
+        deducted = person("self_employed_health_insurance_ald_excluded_premiums", period)
+        return premiums - deducted
