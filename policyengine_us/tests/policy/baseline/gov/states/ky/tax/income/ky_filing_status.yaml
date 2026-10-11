@@ -128,3 +128,87 @@
     # Roles are inputs, so this case tests Kentucky filing status alone.
     ky_filing_status: JOINT
     ky_tuition_tax_credit_eligible: true
+
+- name: Spouses who file separate federal returns may file a combined Kentucky return.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 38
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    # Form 740 instructions: spouses may file separately on a combined return
+    # whether they filed jointly or separately for federal purposes. Both
+    # spouses in one tax unit is that combined return, not Filing Status 4.
+    ky_filing_status: JOINT
+    # KRS 141.069(4) allows the credit on a combined return.
+    ky_tuition_tax_credit_eligible: true
+
+- name: A married filer who files a separate federal return alone files Kentucky separate returns.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [head]
+        state_code: KY
+  output:
+    # The spouse is not in the tax unit, so this is Filing Status 4.
+    ky_filing_status: SEPARATE
+    # KRS 141.069(4) bars the credit on separate returns.
+    ky_tuition_tax_credit_eligible: false
+
+- name: A supplied federal head of household status uses Kentucky Filing Status 1.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        is_separated: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        members: [head]
+        state_code: KY
+  output:
+    ky_filing_status: SINGLE
+    ky_tuition_tax_credit_eligible: true
+
+- name: A supplied federal surviving spouse status uses Kentucky Filing Status 1.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        members: [head]
+        state_code: KY
+  output:
+    # Form 740 instructions: federal "Qualifying Widow(er)" filers use Single.
+    ky_filing_status: SINGLE
+    ky_tuition_tax_credit_eligible: true

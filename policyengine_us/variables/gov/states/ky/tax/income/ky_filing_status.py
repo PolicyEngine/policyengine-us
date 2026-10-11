@@ -28,9 +28,16 @@ class ky_filing_status(Variable):
         # Kentucky Filing Status 1 (Single).
         filing_status = tax_unit("filing_status", period)
         statuses = filing_status.possible_values
+        # Spouses on one return file jointly or separately on a combined
+        # return, which Kentucky allows after federal separate returns, so a
+        # spouse in the tax unit means a joint or combined return. Separate
+        # returns (Filing Status 4) leave the spouse out of the tax unit.
+        joint_or_combined = (filing_status == statuses.JOINT) | tax_unit(
+            "tax_unit_married", period
+        )
         return select(
             [
-                filing_status == statuses.JOINT,
+                joint_or_combined,
                 filing_status == statuses.SEPARATE,
             ],
             [
