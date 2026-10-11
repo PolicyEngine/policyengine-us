@@ -14,8 +14,9 @@ Invariants:
    one vectorized simulation per example).
 2. Move neutrality: splitting an employee's premium in any proportion between
    the pre-tax input and the reported premium inputs leaves the uprated total
-   unchanged in every later year (Hypothesis). This is what Microcosm's
-   pre-tax producer does when it routes a reported premium through payroll.
+   unchanged in every later year (Hypothesis). A producer that routes a
+   reported premium through payroll and removes it from the reported inputs,
+   as the disjoint input contract requires, makes such a split.
 3. Dataset extension: each person's amount follows the index ratio, and the
    weighted total grows by the index ratio times population growth, because
    weights follow population.

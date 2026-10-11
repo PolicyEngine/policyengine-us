@@ -8,7 +8,8 @@ class health_insurance_premiums(Variable):
     unit = USD
     definition_period = YEAR
     # Survey data put premiums here only for self-employed people under 65
-    # without employer-sponsored coverage, who buy plans directly.
+    # without employer-sponsored coverage. CMS's premium per enrollee for
+    # plans bought outside an employer is the closest series for them.
     uprating = "calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee"
     documentation = (
         "Person-level health insurance premiums supplied directly as an input. "

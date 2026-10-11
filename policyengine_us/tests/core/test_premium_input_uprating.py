@@ -9,21 +9,26 @@ it:
   premium the person reported (``PHIP_VAL``), and
   ``other_health_insurance_premiums`` is that premium less modeled CHIP,
   Medicaid and Marketplace premiums. People with employer-sponsored coverage
-  pay most of these dollars, and Microcosm's pre-tax producer moves employees'
-  payroll-deducted premiums from these inputs to
-  ``pre_tax_health_insurance_premiums``. All three follow CMS's
-  employer-sponsored insurance (ESI) premium per enrollee, so that move leaves
-  the dollars' growth unchanged.
+  pay most of these dollars. Microcosm's planned pre-tax producer routes
+  employees' payroll-deducted premiums to
+  ``pre_tax_health_insurance_premiums``, and under the disjoint input contract
+  those dollars must then leave these inputs. All three follow CMS's
+  employer-sponsored insurance (ESI) premium per enrollee, so such a move
+  leaves the dollars' growth unchanged.
 - ``health_insurance_premiums`` holds premiums of self-employed people under 65
-  without employer-sponsored coverage, who buy plans directly. It follows
-  CMS's direct purchase premium per enrollee.
-- ``long_term_health_insurance_premiums``: no dataset fills it and no CMS
-  series measures long-term care insurance premiums. 26 U.S.C. 213(d)(10)(B)
-  indexes the deductible limits on them by the medical care component of the
-  CPI, so it follows CPI-U medical care.
+  without employer-sponsored coverage. It follows the closest CMS series for
+  them, the direct purchase premium per enrollee (individually bought plans,
+  Marketplace plans and Medigap).
+- ``long_term_health_insurance_premiums``: no dataset fills it, and CMS's
+  health expenditure projections have no long-term care insurance premium
+  series. 26 U.S.C. 213(d)(10)(B) indexes the deductible limits on these
+  premiums by the chained CPI-U medical care component for August, which
+  nobody projects, so the input follows CBO's projection of the CPI-U medical
+  care component by calendar year as a proxy.
 - ``medicare_part_b_premiums_reported`` follows the Part B standard premium:
-  a premium with any income-related adjustment is a fixed multiple of it
-  (42 U.S.C. 1395r(i)(3)).
+  within an income tier, a premium with its income-related adjustment is a
+  fixed multiple of the standard premium before rounding (42 U.S.C.
+  1395r(i)(3)).
 
 These tests read only the parameter tree. Engine uprating of the inputs is
 covered in ``tests/microsimulation/test_premium_input_microsim_uprating.py``.
@@ -38,8 +43,10 @@ Invariants:
 2. Employee share: ESI spending less employer contributions, per ESI
    enrollee, grows with the ESI index, so one index serves employees'
    premiums whether paid pre-tax or post-tax.
-3. Move neutrality: every input that holds employees' shares of ESI premiums
-   names the same series.
+3. Move neutrality: every input that can hold employees' shares of ESI
+   premiums names the same series, so moving a premium between them does not
+   change its growth. (This tests the engine side; it does not test that a
+   producer removes moved dollars from the reported inputs.)
 4. Agreement: the Part B series equals the model's Part B premium parameter
    in every year that parameter holds.
 5. Bounds and order: each index is positive in every year, and strictly
@@ -112,9 +119,10 @@ def test_no_premium_input_follows_out_of_pocket_spending():
 
 
 def test_inputs_holding_employee_esi_shares_follow_one_series():
-    """Microcosm's pre-tax producer moves an employee's payroll-deducted
-    premium out of the reported premium inputs into the pre-tax input. One
-    series for all of them keeps that move from changing the dollars' growth."""
+    """A producer that moves an employee's payroll-deducted premium out of
+    the reported premium inputs into the pre-tax input, as the disjoint input
+    contract requires, leaves the dollars' growth unchanged only if all of
+    these inputs follow one series."""
     assert {system.variables[name].uprating for name in EMPLOYEE_ESI_INPUTS} == {ESI}
 
 
@@ -123,35 +131,70 @@ def test_inputs_holding_employee_esi_shares_follow_one_series():
 # 2026-09-03, sha256 264f8226...cd70), Table 17 ESI spending and enrollment,
 # and Table 16 employer contributions to private health insurance premiums by
 # private business, the federal government and state and local governments.
-ESI_SPENDING_BILLIONS = {2024: 1_429.1, 2026: 1_650.5, 2034: 2_343.1}
-ESI_ENROLLMENT_MILLIONS = {2024: 178.6, 2026: 179.8, 2034: 178.5}
-EMPLOYER_CONTRIBUTIONS_BILLIONS = {
-    2024: 753 + 47 + 247,
-    2026: 865 + 56 + 288,
-    2034: 1_207 + 82 + 429,
-}
+ESI_YEARS = range(2024, 2035)
+ESI_SPENDING_BILLIONS = dict(
+    zip(
+        ESI_YEARS,
+        (
+            *(1_429.1, 1_549.8, 1_650.5, 1_732.9, 1_820.4, 1_896.9, 1_978.0),
+            *(2_058.6, 2_148.4, 2_246.7, 2_343.1),
+        ),
+    )
+)
+ESI_ENROLLMENT_MILLIONS = dict(
+    zip(
+        ESI_YEARS,
+        (178.6, 179.9, 179.8, 180.0, 180.4, 180.1, 179.8, 179.5, 179.2, 178.9, 178.5),
+    )
+)
+# Private business, federal and state and local employer contributions.
+EMPLOYER_CONTRIBUTIONS_BILLIONS = dict(
+    zip(
+        ESI_YEARS,
+        (
+            753 + 47 + 247,
+            818 + 49 + 268,
+            865 + 56 + 288,
+            905 + 60 + 305,
+            947 + 63 + 323,
+            985 + 66 + 339,
+            1_024 + 69 + 356,
+            1_064 + 72 + 372,
+            1_109 + 75 + 390,
+            1_159 + 79 + 410,
+            1_207 + 82 + 429,
+        ),
+    )
+)
+
+
+def _employee_contributions_per_enrollee(year):
+    """ESI spending is premiums paid by employers and employees (NHEA
+    methodology paper, file page 29), so spending less employer contributions
+    is what employees, retirees and COBRA enrollees pay."""
+    employee = ESI_SPENDING_BILLIONS[year] - EMPLOYER_CONTRIBUTIONS_BILLIONS[year]
+    return employee / ESI_ENROLLMENT_MILLIONS[year]
 
 
 @pytest.mark.parametrize("start, end", [(2024, 2034), (2026, 2034)])
 def test_employee_contributions_per_enrollee_grow_with_the_esi_index(start, end):
-    """ESI spending is premiums paid by employers and employees (NHEA
-    methodology paper, file page 29), so spending less employer contributions
-    is what employees, retirees and COBRA enrollees pay."""
-
-    def employee_share(year):
-        return 1 - EMPLOYER_CONTRIBUTIONS_BILLIONS[year] / ESI_SPENDING_BILLIONS[year]
-
-    def per_enrollee(year):
-        employee = ESI_SPENDING_BILLIONS[year] - EMPLOYER_CONTRIBUTIONS_BILLIONS[year]
-        return employee / ESI_ENROLLMENT_MILLIONS[year]
-
     years = end - start
-    employee_growth = (per_enrollee(end) / per_enrollee(start)) ** (1 / years)
+    employee_growth = (
+        _employee_contributions_per_enrollee(end)
+        / _employee_contributions_per_enrollee(start)
+    ) ** (1 / years)
     index_growth = (_index(ESI, end) / _index(ESI, start)) ** (1 / years)
     assert employee_growth == pytest.approx(index_growth, abs=0.001)
-    # Employees pay 26.6% to 26.8% of ESI premiums in each year.
-    for year in (start, end):
-        assert 0.266 <= employee_share(year) <= 0.268
+
+
+@pytest.mark.parametrize("year", ESI_YEARS)
+def test_employees_pay_a_steady_share_of_esi_premiums(year):
+    """Employees pay 26.6% to 26.8% of ESI premiums in every year from 2024
+    to 2034, so their contributions grow with the premium."""
+    employee_share = (
+        1 - EMPLOYER_CONTRIBUTIONS_BILLIONS[year] / ESI_SPENDING_BILLIONS[year]
+    )
+    assert 0.266 <= employee_share <= 0.268
 
 
 # Direct purchase: the same tables, Table 17 "Direct Purchase" rows.
@@ -234,8 +277,17 @@ CBO_MEDICAL_CPI_PERCENT_CHANGE = dict(
         ),
     )
 )
-# BLS series CUUR0000SAM, mean of the 12 published monthly indexes.
-BLS_MEDICAL_CPI_ANNUAL_MEAN = {2022: 546.553, 2023: 549.084, 2024: 563.841}
+# BLS series CUUR0000SAM, mean of the 12 published monthly indexes, derived
+# from the monthly values the BLS API returned on 2026-10-11.
+BLS_MEDICAL_CPI_ANNUAL_MEAN = dict(
+    zip(
+        range(2015, 2025),
+        (
+            *(446.752, 463.675, 475.322, 484.707, 498.413, 518.875, 525.276),
+            *(546.553, 549.084, 563.841),
+        ),
+    )
+)
 
 
 @pytest.mark.parametrize("year", sorted(CBO_MEDICAL_CPI))
@@ -252,7 +304,7 @@ def test_medical_cpi_levels_match_cbo_percent_changes(year):
     assert change == pytest.approx(CBO_MEDICAL_CPI_PERCENT_CHANGE[year], abs=0.001)
 
 
-@pytest.mark.parametrize("year", [2022, 2023, 2024])
+@pytest.mark.parametrize("year", sorted(BLS_MEDICAL_CPI_ANNUAL_MEAN))
 def test_medical_cpi_matches_bls_where_bls_has_a_full_year(year):
     assert _index(MEDICAL_CPI, year) == pytest.approx(
         BLS_MEDICAL_CPI_ANNUAL_MEAN[year], abs=0.005
