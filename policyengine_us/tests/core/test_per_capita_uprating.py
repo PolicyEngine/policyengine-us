@@ -412,6 +412,26 @@ def test_per_person_rates_are_classified(path):
     assert not _is_unclassified_calibration_path(path)
 
 
+@pytest.mark.parametrize(
+    "path, national_total",
+    [
+        # A marker in an ancestor segment does not make a total a rate.
+        ("calibration.gov.cbo.per_enrollee_estimates.spending_total", True),
+        ("calibration.gov.irs.soi.per_capita_tables.wages", True),
+        ("calibration.gov.hhs.per_enrollee_estimates.spending_total", False),
+        # In the last segment it does, wherever it falls in the name.
+        ("calibration.gov.cbo.spending_per_enrollee", False),
+        ("calibration.gov.hhs.medicare.per_capita_cost", False),
+    ],
+)
+def test_only_the_last_segment_marks_a_per_person_rate(path, national_total):
+    assert is_national_total_path(path) is national_total
+    # Outside the national-total families, an ancestor marker leaves the path
+    # unclassified, so the build rejects it instead of guessing.
+    if path.startswith("calibration.gov.hhs.per_enrollee_estimates"):
+        assert _is_unclassified_calibration_path(path)
+
+
 def test_existing_per_capita_series_is_never_overwritten():
     """A series someone wrote by hand that happens to share the derived name
     must stop the build, not be replaced."""

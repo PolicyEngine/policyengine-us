@@ -33,16 +33,19 @@ NATIONAL_TOTAL_PREFIXES = (
     "calibration.gov.irs.soi.",
 )
 CALIBRATION_PREFIX = "calibration."
-# Path fragments that mark a per-person rate: spending per capita, or premiums
-# per enrollee. Such a series already divides by the people it covers, so it
-# is neither a national total nor divided again.
+# Fragments that mark a per-person rate when they appear in a path's last
+# segment: spending per capita, or premiums per enrollee. Such a series already
+# divides by the people it covers, so it is neither a national total nor
+# divided again. A marker in an ancestor segment (a folder of estimates) does
+# not make the series under it a rate.
 PER_PERSON_MARKERS = ("per_capita", "per_enrollee")
 PER_CAPITA_SUFFIX = "_per_capita"
 DERIVED_FROM = "derived_from"
 
 
 def _is_per_person_rate(path: str) -> bool:
-    return any(marker in path for marker in PER_PERSON_MARKERS)
+    name = path.rpartition(".")[2]
+    return any(marker in name for marker in PER_PERSON_MARKERS)
 
 
 def is_national_total_path(path: str | None) -> bool:
