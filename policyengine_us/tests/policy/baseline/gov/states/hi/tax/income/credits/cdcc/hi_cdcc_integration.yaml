@@ -146,3 +146,43 @@
   output:
     hi_cdcc_eligible: false
     hi_cdcc: 0
+
+- name: integration test 6, separate filer living apart with a disabled adult dependent, HRS 235-55.6(e)(4)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 4_000
+        is_separated: true
+      person2:
+        age: 30
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        care_expenses: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        hi_agi: 38_000
+        tax_unit_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Head of household status needs a qualifying child under IRC 7703(b), so
+    # the filer files separately, but HRS 235-55.6(e)(4) treats them as
+    # unmarried because the home is the abode of a qualifying individual.
+    filing_status: SEPARATE
+    cdcc_treated_as_unmarried: true
+    hi_cdcc_eligible: true
+    count_cdcc_eligible: 1
+    # Schedule X line 11 is the unmarried $5,000, so line 14 = 4_000.
+    dependent_care_assistance_exclusion: 4_000
+    hi_cdcc_min_head_spouse_earned: 38_000
+    # Line 22 = min(10_000 - 4_000, 12_000 adult care) = 6_000.
+    hi_dependent_care_benefits: 6_000
+    # 6_000 * 22% for AGI of 38_000.
+    hi_cdcc: 1_320

@@ -3,6 +3,7 @@ from policyengine_us.variables.gov.irs.tax.federal_income.foreign_earned_income_
     section_911_net_capital_gain_other_than_dividends,
 )
 from policyengine_us.variables.gov.irs.tax.federal_income.capital_gains.capital_gains_tax import (
+    limit_to_tax_at_main_rates,
     rate_gain_taxed_at_28_percent,
 )
 
@@ -134,7 +135,13 @@ def create_harris_capital_gains() -> Reform:
                 taxable_unrecaptured_gain,
             )
 
-            return main_cg_tax + unrecaptured_gain_tax + remaining_cg_tax
+            # As in the baseline formula, section 1(h)(1) keeps the regular
+            # tax within the tax on all taxable income at the main rates.
+            return limit_to_tax_at_main_rates(
+                tax_unit,
+                period,
+                main_cg_tax + unrecaptured_gain_tax + remaining_cg_tax,
+            )
 
     class reform(Reform):
         def apply(self):

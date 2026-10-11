@@ -38,6 +38,28 @@ def rate_gain_taxed_at_28_percent(
     )
 
 
+def limit_to_tax_at_main_rates(tax_unit, period, capital_gains_tax):
+    """The capital gains tax that 26 U.S.C. 1(h)(1) allows.
+
+    With a net capital gain, "the tax imposed by this section for such
+    taxable year shall not exceed the sum of" the amounts in subparagraphs
+    (A) to (F), so the regular tax is the smaller of that sum and the tax on
+    all taxable income at the main rates (Schedule D Tax Worksheet line 47,
+    "the smaller of line 45 or line 46"; Qualified Dividends and Capital Gain
+    Tax Worksheet line 25). income_tax_main_rates is subparagraph (A), so the
+    tax on the gains is at most the rest of the tax at the main rates. The
+    limit binds where gain taxed at 15 percent sits in the 12 percent bracket,
+    which happens when the 0 percent rate amount is below the top of that
+    bracket.
+    """
+    tax_at_main_rates_on_the_rest = max_(
+        0,
+        tax_unit("tax_on_taxable_income_at_main_rates", period)
+        - tax_unit("income_tax_main_rates", period),
+    )
+    return min_(capital_gains_tax, tax_at_main_rates_on_the_rest)
+
+
 class capital_gains_tax(Variable):
     value_type = float
     entity = TaxUnit
@@ -52,6 +74,10 @@ class capital_gains_tax(Variable):
         dict(
             title="26 U.S. Code § 911(f)",
             href="https://www.law.cornell.edu/uscode/text/26/911#f",
+        ),
+        dict(
+            title="2025 Instructions for Schedule D (Form 1040), Schedule D Tax Worksheet, line 47",
+            href="https://www.irs.gov/pub/irs-prior/i1040sd--2025.pdf#page=16",
         ),
     ]
 
@@ -138,4 +164,8 @@ class capital_gains_tax(Variable):
             taxable_unrecaptured_gain,
         )
 
-        return main_cg_tax + unrecaptured_gain_tax + remaining_cg_tax
+        return limit_to_tax_at_main_rates(
+            tax_unit,
+            period,
+            main_cg_tax + unrecaptured_gain_tax + remaining_cg_tax,
+        )
