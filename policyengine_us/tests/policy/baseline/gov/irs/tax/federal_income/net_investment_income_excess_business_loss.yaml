@@ -1,0 +1,143 @@
+# The part of the section 461(l) excess business loss (2025 single threshold
+# 313,000) that falls on losses net investment income counts. Net investment
+# income adds it back (26 USC 1411(c)(1)(B): deductions allowed by chapter 1).
+
+- name: All of the excess when net investment income losses are the only losses
+  # Form 4835 loss 600,000; excess 600,000 - 313,000 = 287,000, all of it on
+  # the farm rental loss.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        farm_rent_income: -600_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    excess_business_loss: 287_000
+    net_investment_income_excess_business_loss: 287_000
+
+- name: None of the excess when no loss is a net investment income loss
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        self_employment_income: -600_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    excess_business_loss: 287_000
+    net_investment_income_excess_business_loss: 0
+
+- name: A proportional share when both kinds of loss are present
+  # Schedule C loss 300,000 and Form 4835 loss 300,000; excess 287,000.
+  # Proportional share: 287,000 x 300,000 / 600,000 = 143,500. (The law does
+  # not say how to split it; see the variable documentation.)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        self_employment_income: -300_000
+        farm_rent_income: -300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    excess_business_loss: 287_000
+    net_investment_income_excess_business_loss: 143_500
+
+- name: Only the passive part of a partnership loss counts
+  # Partnership/S-corp loss 400,000, of which 100,000 is passive; excess
+  # 400,000 - 313,000 = 87,000; share 87,000 x 100,000 / 400,000 = 21,750.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        partnership_s_corp_income: -400_000
+        passive_partnership_s_corp_income: -100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    excess_business_loss: 87_000
+    net_investment_income_excess_business_loss: 21_750
+
+- name: An estate loss removed by a code H adjustment is not a net investment income loss
+  # Schedule E Part III loss 600,000 with a +600,000 Schedule K-1 (Form 1041)
+  # box 14 code H adjustment, so net investment income has no estate loss.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        estate_income: -600_000
+        estate_income_net_investment_income_adjustment: 600_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    excess_business_loss: 287_000
+    net_investment_income_excess_business_loss: 0
+
+- name: A joint return shares the excess across both spouses' losses
+  # Head Schedule E rental loss 500,000; spouse partnership loss 400,000, of
+  # which 200,000 is passive. Losses 900,000; excess 900,000 - 626,000 =
+  # 274,000; net investment income losses 500,000 + 200,000 = 700,000; share
+  # 274,000 x 700,000 / 900,000 = 213,111.11.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 60
+        is_tax_unit_head: true
+        rental_income: -500_000
+      spouse:
+        age: 58
+        is_tax_unit_spouse: true
+        partnership_s_corp_income: -400_000
+        passive_partnership_s_corp_income: -200_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    excess_business_loss: 274_000
+    net_investment_income_excess_business_loss: 213_111.11

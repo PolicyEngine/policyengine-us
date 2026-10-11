@@ -605,3 +605,82 @@
     adjusted_gross_income: 215_000
     net_investment_income: 5_000
     net_investment_income_tax: 190
+
+- name: A Form 4835 loss reduces net investment income only as far as section 461(l) allows
+  # Independent review counterexample. Wages 300,000, interest 500,000, Form
+  # 4835 loss 600,000 (allowed under the at-risk and passive activity rules).
+  # Section 461(l) allows 313,000 and disallows 287,000. AGI and MAGI
+  # 300,000 + 500,000 - 313,000 = 487,000. NII 500,000 - 313,000 = 187,000.
+  # NIIT 3.8% x min(187,000, 487,000 - 200,000) = 7,106. Counting the full
+  # loss would give NII -100,000 and no tax.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        employment_income: 300_000
+        taxable_interest_income: 500_000
+        farm_rent_income: -600_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 487_000
+    net_investment_income: 187_000
+    net_investment_income_tax: 7_106
+
+- name: A Schedule E rental loss is limited the same way
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        employment_income: 300_000
+        taxable_interest_income: 500_000
+        rental_income: -600_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 487_000
+    net_investment_income: 187_000
+    net_investment_income_tax: 7_106
+
+- name: A Schedule C loss takes a proportional share of the section 461(l) excess
+  # Wages 600,000, interest 200,000, Schedule C loss 300,000, Form 4835 loss
+  # 300,000. Section 461(l) allows 313,000 of the 600,000; AGI and MAGI
+  # 800,000 - 313,000 = 487,000. Proportional share of the 287,000 excess on
+  # the farm rental loss: 143,500, so NII 200,000 - 300,000 + 143,500 =
+  # 43,500. NIIT 3.8% x min(43,500, 287,000) = 1,653. (No rule says how to
+  # split the excess; see net_investment_income_excess_business_loss.)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        employment_income: 600_000
+        taxable_interest_income: 200_000
+        self_employment_income: -300_000
+        farm_rent_income: -300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 487_000
+    net_investment_income: 43_500
+    net_investment_income_tax: 1_653

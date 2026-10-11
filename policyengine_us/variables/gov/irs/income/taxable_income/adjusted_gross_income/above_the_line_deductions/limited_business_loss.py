@@ -1,5 +1,45 @@
 from policyengine_us.model_api import *
 
+# Person-level business items that section 461(l) aggregates, in the order
+# they are summed: Schedule C, Schedule F, Schedule E rental, Form 4835 farm
+# rent, Schedule E estate/trust and partnership/S-corp income. A positive
+# amount is business income and a negative amount a business loss.
+SECTION_461L_PERSON_ITEMS = [
+    "total_self_employment_income",
+    "farm_operations_income",
+    "rental_income",
+    "farm_rent_income",
+    "estate_income",
+    "partnership_s_corp_income",
+]
+
+
+def section_461l_business_income_and_loss(tax_unit, period):
+    """
+    The head and spouse's business income and business losses under 461(l).
+
+    Returns the two aggregates section 461(l)(3)(A) compares: gross business
+    income and gains, and business deductions, each summed over the items in
+    SECTION_461L_PERSON_ITEMS and Form 4797 other net gain. A tax-unit
+    dependent's business, rental and estate items belong on the dependent's
+    own return, as in irs_gross_income. They neither add to this return's
+    losses nor raise its section 461(l) limit.
+    """
+    person = tax_unit.members
+    not_dependent = ~person("is_tax_unit_dependent", period)
+    business_income = 0
+    business_loss = 0
+    for item in SECTION_461L_PERSON_ITEMS:
+        amount = person(item, period)
+        business_income = business_income + tax_unit.sum(
+            not_dependent * max_(0, amount)
+        )
+        business_loss = business_loss + tax_unit.sum(not_dependent * max_(0, -amount))
+    other_net_gain = tax_unit("other_net_gain", period)
+    business_income = business_income + max_(0, other_net_gain)
+    business_loss = business_loss + max_(0, -other_net_gain)
+    return business_income, business_loss
+
 
 class limited_business_loss(Variable):
     value_type = float
@@ -22,75 +62,12 @@ class limited_business_loss(Variable):
         filing_status = tax_unit("filing_status", period)
         # Section 461(l) excess business loss limitation
         threshold_amount = parameters(period).gov.irs.ald.loss.max[filing_status]
-        person = tax_unit.members
-        # A tax-unit dependent's business, rental and estate items belong on
-        # the dependent's own return, as in irs_gross_income. They neither
-        # add to this return's losses nor raise its Section 461(l) limit.
-        not_dependent = ~person("is_tax_unit_dependent", period)
-
         # Section 461(l) compares business deductions to business gross
         # income/gains plus the threshold amount. In this model, positive
         # business amounts flow into gross income and losses are deducted here,
         # so allowable business losses are capped at business income plus
         # the threshold.
-        indiv_se_income = max_(0, person("total_self_employment_income", period))
-        indiv_se_loss = max_(0, -person("total_self_employment_income", period))
-        self_employment_income = tax_unit.sum(not_dependent * indiv_se_income)
-        self_employment_loss = tax_unit.sum(not_dependent * indiv_se_loss)
-
-        # Schedule F farm business income/losses.
-        indiv_farm_operations_income = max_(0, person("farm_operations_income", period))
-        indiv_farm_loss = max_(0, -person("farm_operations_income", period))
-        farm_operations_income = tax_unit.sum(
-            not_dependent * indiv_farm_operations_income
+        business_income, business_loss = section_461l_business_income_and_loss(
+            tax_unit, period
         )
-        farm_loss = tax_unit.sum(not_dependent * indiv_farm_loss)
-
-        # Schedule E rental, farm-rent, and estate/trust items.
-        indiv_rental_income = max_(0, person("rental_income", period))
-        indiv_rental_loss = max_(0, -person("rental_income", period))
-        rental_income = tax_unit.sum(not_dependent * indiv_rental_income)
-        rental_loss = tax_unit.sum(not_dependent * indiv_rental_loss)
-
-        indiv_farm_rent_income = max_(0, person("farm_rent_income", period))
-        indiv_farm_rent_loss = max_(0, -person("farm_rent_income", period))
-        farm_rent_income = tax_unit.sum(not_dependent * indiv_farm_rent_income)
-        farm_rent_loss = tax_unit.sum(not_dependent * indiv_farm_rent_loss)
-
-        indiv_estate_income = max_(0, person("estate_income", period))
-        indiv_estate_loss = max_(0, -person("estate_income", period))
-        estate_income = tax_unit.sum(not_dependent * indiv_estate_income)
-        estate_loss = tax_unit.sum(not_dependent * indiv_estate_loss)
-
-        # Partnership/S-corp losses (Schedule E)
-        indiv_scorp_income = max_(0, person("partnership_s_corp_income", period))
-        indiv_scorp_loss = max_(0, -person("partnership_s_corp_income", period))
-        partnership_s_corp_income = tax_unit.sum(not_dependent * indiv_scorp_income)
-        partnership_s_corp_loss = tax_unit.sum(not_dependent * indiv_scorp_loss)
-
-        other_net_gain = tax_unit("other_net_gain", period)
-        other_business_gain = max_(0, other_net_gain)
-        other_business_loss = max_(0, -other_net_gain)
-
-        # Total business losses subject to Section 461(l) limitation
-        total_business_income = (
-            self_employment_income
-            + farm_operations_income
-            + rental_income
-            + farm_rent_income
-            + estate_income
-            + partnership_s_corp_income
-            + other_business_gain
-        )
-        total_business_loss = (
-            self_employment_loss
-            + farm_loss
-            + rental_loss
-            + farm_rent_loss
-            + estate_loss
-            + partnership_s_corp_loss
-            + other_business_loss
-        )
-        max_deductible_business_loss = total_business_income + threshold_amount
-        limited_business_loss = min_(total_business_loss, max_deductible_business_loss)
-        return limited_business_loss
+        return min_(business_loss, business_income + threshold_amount)
