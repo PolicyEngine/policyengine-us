@@ -10,7 +10,8 @@ class or_federal_tax_liability_subtraction(Variable):
     reference = (
         # ORS 316.680(1)(b), 316.685 and 316.695(3).
         "https://www.oregonlegislature.gov/bills_laws/ors/ors316.html",
-        # Federal tax worksheet, Part A.
+        # Publication OR-17, federal tax worksheet, Part A: PDF pages 71-72
+        # in 2025 and 72-73 in 2021.
         "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71",
         "https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2021.pdf#page=72",
     )
