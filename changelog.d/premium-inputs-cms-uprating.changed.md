@@ -1,0 +1,1 @@
+Uprate the reported premium inputs by CMS premium series instead of CMS out-of-pocket spending per capita, which excludes premiums: reported and other health insurance premiums follow employer-sponsored insurance premium per enrollee, and directly supplied premiums follow direct purchase insurance premium per enrollee (NHE projections Table 17).

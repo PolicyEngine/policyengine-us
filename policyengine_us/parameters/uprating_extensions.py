@@ -850,10 +850,21 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     )
 
     # CMS employer-sponsored insurance premium per enrollee (January values,
-    # last projection year 2034). Employer and pre-tax employee premium
-    # inputs use this as their uprater.
+    # last projection year 2034). Employer and employee premium inputs use
+    # this as their uprater.
     extend_parameter_values(
         parameters.calibration.gov.hhs.cms.esi_premium_per_enrollee,
+        last_projected_year=2034,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
+    # CMS direct purchase insurance premium per enrollee (January values, last
+    # projection year 2034). Premiums for plans bought directly use this as
+    # their uprater.
+    extend_parameter_values(
+        parameters.calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee,
         last_projected_year=2034,
         end_year=END_YEAR,
         period_month=1,
