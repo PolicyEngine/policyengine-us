@@ -80,6 +80,9 @@ def _baseline_measurement_branch(simulation):
     branch = simulation.get_branch(BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH)
     branch.tax_benefit_system = clone_spm_system(baseline.tax_benefit_system)
     branch.baseline = None
+    # The copied holders were built for reform policy; its entities or
+    # ETERNITY storage may differ from the baseline's, as after subsampling.
+    branch._drop_holders_built_for_another_policy()
     branch._rebind_holders()
     drop_inherited_values(branch)
     branch._isolate_parameter_tracing()

@@ -22,8 +22,8 @@ Invariants:
 2. No two simulations share a measurements dictionary, and a measurement made
    by one never reaches another.
 3. A branch made after its source measured starts from a copy of its source's
-   measurements. This is what marginal-tax-rate branches rely on today; it is
-   current behaviour, kept here unchanged, not a ruling on it.
+   measurements. Under d1021 (ruled 2026-10-08), marginal-tax-rate and
+   perturbation branches hold responses at the household's measured values.
 4. Invalidating a simulation's cached formula output drops its measurements.
 """
 
@@ -31,10 +31,14 @@ import numpy as np
 import pytest
 from hypothesis import example, given, settings
 from hypothesis import strategies as st
+from policyengine_core.periods import ETERNITY, YEAR as YEAR_PERIOD
 from policyengine_core.reforms import Reform
+from policyengine_core.variables import Variable
 
 from policyengine_us import Simulation
+from policyengine_us.entities import Household, Person
 from policyengine_us.spm import BEHAVIORAL_RESPONSE_CACHE_ATTR
+from policyengine_us.system import system
 from policyengine_us.tools.period_branch import drop_inherited_values
 from policyengine_us.variables.gov.simulation.behavioral_response_measurements import (
     BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH,
@@ -65,6 +69,12 @@ def household(wages):
     }
 
 
+def make_simulation(**kwargs):
+    """Reuse read-only policy; each reform gets a private model and inputs."""
+    kwargs.setdefault("tax_benefit_system", system)
+    return Simulation(**kwargs)
+
+
 def response(simulation, period=YEAR):
     return np.asarray(
         simulation.calculate("labor_supply_behavioral_response", period),
@@ -83,7 +93,7 @@ def fresh_response(wages, period=YEAR):
     key = (wages, period)
     if key not in _fresh:
         _fresh[key] = response(
-            Simulation(situation=household(wages), reform=LSR_REFORM), period
+            make_simulation(situation=household(wages), reform=LSR_REFORM), period
         )
     return _fresh[key]
 
@@ -122,7 +132,7 @@ def test_a_copy_reports_the_response_of_a_new_simulation_with_its_inputs(
     if kind == "branch" and after_source_measured and copy_wages != source_wages:
         # Invariant 3: such a branch keeps its source's measurements.
         copy_wages = source_wages
-    source = Simulation(situation=household(source_wages), reform=LSR_REFORM)
+    source = make_simulation(situation=household(source_wages), reform=LSR_REFORM)
     if after_source_measured:
         response(source)
     copy = source.clone() if kind == "clone" else source.get_branch("copy")
@@ -136,13 +146,13 @@ def test_a_copy_reports_the_response_of_a_new_simulation_with_its_inputs(
 
 
 def test_a_branch_measures_a_new_period_without_touching_its_parent():
-    parent = Simulation(situation=household(50_000), reform=LSR_REFORM)
+    parent = make_simulation(situation=household(50_000), reform=LSR_REFORM)
     response(parent)
     branch = parent.get_branch("next_year")
     set_wages(branch, 100_000, YEAR + 1)
     # The branch's inputs: this year's wages from the household, next year's
     # set exactly (a household's own next-year wages would be uprated).
-    fresh = Simulation(situation=household(50_000), reform=LSR_REFORM)
+    fresh = make_simulation(situation=household(50_000), reform=LSR_REFORM)
     fresh.set_input("employment_income_before_lsr", YEAR + 1, np.array([100_000]))
     np.testing.assert_allclose(
         response(branch, YEAR + 1), response(fresh, YEAR + 1), atol=1e-3
@@ -154,7 +164,7 @@ def test_a_branch_measures_a_new_period_without_touching_its_parent():
 
 
 def test_copies_own_their_measurements():
-    source = Simulation(situation=household(50_000), reform=LSR_REFORM)
+    source = make_simulation(situation=household(50_000), reform=LSR_REFORM)
     response(source)
     measurements = source.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR]
     assert str(YEAR) in measurements
@@ -179,7 +189,7 @@ class _no_change(Reform):
 
 
 def test_invalidating_cached_output_drops_the_measurements():
-    simulation = Simulation(situation=household(50_000), reform=RATE_CUT)
+    simulation = make_simulation(situation=household(50_000), reform=RATE_CUT)
     branch = simulation.get_branch("child")
     for member in (simulation, branch):
         member.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR] = {str(YEAR): "stale"}
@@ -191,7 +201,7 @@ def test_invalidating_cached_output_drops_the_measurements():
 
 
 def test_baseline_measurement_branch_is_baseline_policy_over_the_inputs():
-    simulation = Simulation(situation=household(50_000), reform=RATE_CUT)
+    simulation = make_simulation(situation=household(50_000), reform=RATE_CUT)
     reform_tax = simulation.calculate("income_tax", YEAR)
     expected_tax = simulation.baseline.calculate("income_tax", YEAR)
     assert not np.allclose(reform_tax, expected_tax)
@@ -224,11 +234,11 @@ def test_baseline_measurement_branch_reads_a_branchs_own_inputs():
     # A reform household's baseline keeps the situation's employment_income as
     # an override from construction, so a branch with other earnings cannot be
     # measured from it.
-    simulation = Simulation(situation=household(50_000), reform=RATE_CUT)
+    simulation = make_simulation(situation=household(50_000), reform=RATE_CUT)
     branch = simulation.get_branch("other_earnings")
     branch.set_input("employment_income_before_lsr", YEAR, np.array([100_000.0]))
     measurement = _baseline_measurement_branch(branch)
-    expected = Simulation(situation=household(100_000)).calculate(
+    expected = make_simulation(situation=household(100_000)).calculate(
         "household_net_income", YEAR
     )
     np.testing.assert_allclose(
@@ -236,12 +246,14 @@ def test_baseline_measurement_branch_reads_a_branchs_own_inputs():
     )
     np.testing.assert_allclose(
         simulation.baseline.calculate("household_net_income", YEAR),
-        Simulation(situation=household(50_000)).calculate("household_net_income", YEAR),
+        make_simulation(situation=household(50_000)).calculate(
+            "household_net_income", YEAR
+        ),
     )
 
 
 def test_baseline_measurement_branch_of_a_traced_simulation():
-    simulation = Simulation(situation=household(50_000), reform=RATE_CUT)
+    simulation = make_simulation(situation=household(50_000), reform=RATE_CUT)
     simulation.trace = True
     branch = _baseline_measurement_branch(simulation)
     assert branch.trace
@@ -262,7 +274,7 @@ def test_without_a_baseline_the_baseline_measurement_is_the_simulations_policy(
     # A simulation built without a reform, or a reform simulation's own
     # baseline, has no baseline: there is no reform, so it is measured against
     # its own policy, and every change is zero.
-    built = Simulation(situation=household(50_000), reform=reform)
+    built = make_simulation(situation=household(50_000), reform=reform)
     simulation = built if reform is None else built.baseline
     assert simulation.baseline is None
     branch = _baseline_measurement_branch(simulation)
@@ -276,10 +288,12 @@ def test_without_a_baseline_the_baseline_measurement_is_the_simulations_policy(
     )
 
 
-def test_response_variables_are_zero_without_a_reform():
+@pytest.mark.parametrize("reform", [None, RATE_CUT])
+def test_response_variables_are_zero_without_a_reform(reform):
     # policyengine.py reads these from its baseline simulation, which has no
     # reform; they measure without the labour-supply response's own check.
-    simulation = Simulation(situation=household(50_000))
+    built = make_simulation(situation=household(50_000), reform=reform)
+    simulation = built if reform is None else built.baseline
     assert response(simulation) == 0
     for variable in (
         "income_elasticity_lsr",
@@ -303,13 +317,62 @@ def test_capital_gains_marginal_tax_rate_does_not_depend_on_calculation_order():
     # reached: first, or after the household's net income.
     situation = household(60_000)
     situation["people"]["you"]["long_term_capital_gains"] = {YEAR: 200_000}
-    first = Simulation(situation=situation, reform=CG_REFORM)
+    first = make_simulation(situation=situation, reform=CG_REFORM)
     rate_first = first.calculate("marginal_tax_rate_on_capital_gains", YEAR)
-    after = Simulation(situation=situation, reform=CG_REFORM)
+    after = make_simulation(situation=situation, reform=CG_REFORM)
     after.calculate("household_net_income", YEAR)
     rate_after = after.calculate("marginal_tax_rate_on_capital_gains", YEAR)
     np.testing.assert_allclose(rate_first, rate_after, atol=1e-5)
     np.testing.assert_allclose(
         first.calculate("household_net_income", YEAR),
         after.calculate("household_net_income", YEAR),
+    )
+
+
+@pytest.mark.parametrize("change", ["period", "entity"])
+def test_baseline_measurement_drops_incompatible_holders(change):
+    # A policy swap must discard holders whose storage or population cannot
+    # serve the baseline definition, even when the variable name is the same.
+    class is_household_head(Variable):
+        definition_period = YEAR_PERIOD if change == "period" else ETERNITY
+        entity = Person if change == "period" else Household
+
+    class ChangeHead(Reform):
+        def apply(self):
+            self.update_variable(is_household_head)
+
+    simulation = make_simulation(
+        situation=household(50_000), tax_benefit_system=system, reform=ChangeHead
+    )
+    # Core creates holders before applying the reform. Recreate this one so
+    # its populated storage fits the reform, then becomes unsuitable for
+    # baseline policy; an eternal source holder would already fit baseline.
+    population = simulation.get_variable_population("is_household_head")
+    population._holders.pop("is_household_head", None)
+    assert simulation.get_holder("is_household_head")._memory_storage.is_eternal == (
+        change == "entity"
+    )
+    simulation.set_input("is_household_head", YEAR, np.array([True]))
+    simulation.calculate("is_household_head", YEAR)
+    original_holder = simulation.get_holder("is_household_head")
+    branch = _baseline_measurement_branch(simulation)
+
+    for population in branch.populations.values():
+        for holder in population._holders.values():
+            assert holder.variable.entity.key == population.entity.key
+            assert holder._memory_storage.is_eternal == (
+                holder.variable.definition_period == ETERNITY
+            )
+    np.testing.assert_array_equal(
+        branch.calculate("is_household_head", YEAR),
+        simulation.baseline.calculate("is_household_head", YEAR),
+    )
+    # Pruning a branch cannot remove the source's holder or change its policy.
+    assert simulation.get_holder("is_household_head") is original_holder
+    assert (
+        original_holder.variable.entity
+        is simulation.tax_benefit_system.variables["is_household_head"].entity
+    )
+    assert original_holder.variable.definition_period == (
+        YEAR_PERIOD if change == "period" else ETERNITY
     )
