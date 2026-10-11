@@ -22,8 +22,11 @@ class ut_at_home_parent_credit_potential(Variable):
         # Utah Code 59-10-1005 requires that the parent claim the qualifying
         # child as a dependent. Under IRC 152(b)(1) a return on which the filer
         # (or, if joint, either spouse) can be claimed as a dependent has no
-        # dependents.
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # dependents, unless the would-be claimant meets the filing exception
+        # (Publication 501).
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         qualifying_child = (age < p.max_child_age) & is_dependent & ~filer_is_dependent
         count_qualifying_children = tax_unit.sum(qualifying_child)
 

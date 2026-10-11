@@ -17,12 +17,15 @@ class vt_ctc(Variable):
         # credit for each qualifying child under IRC 152(c) at or under the
         # age limit. The identification waiver does not reach IRC 152(b)(1):
         # a return on which the filer (or, if joint, either spouse) can be
-        # claimed as a dependent has no dependents and no federal credit.
+        # claimed as a dependent has no dependents and no federal credit,
+        # unless the would-be claimant meets the filing exception.
         person = tax_unit.members
         age = person("age", period)
         p = parameters(period).gov.states.vt.tax.income.credits.ctc
         dependent = person("is_tax_unit_dependent", period)
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         eligible = (age <= p.age_limit) & dependent & ~filer_is_dependent
         count_eligible = tax_unit.sum(eligible)
         # Get adjusted gross income.

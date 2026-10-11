@@ -28,8 +28,8 @@ class wi_additional_exemption(Variable):
         # Form 1 instructions, line 10b: the $250 exemption is for "you and/or
         # your spouse only if you and/or your spouse are 65 years of age or
         # older and are allowed the $700 exemption on line 10a", which a
-        # filer who can be claimed as a dependent is not. Each spouse is
-        # tested separately.
-        claimed = person("claimed_as_dependent_on_another_return", period)
-        eligible_filers = tax_unit.sum(filer & elderly & ~claimed)
+        # filer who can be claimed as a dependent is not, whether or not
+        # anyone claims that filer. Each spouse is tested separately.
+        claimable = person("claimable_as_dependent_on_another_return", period)
+        eligible_filers = tax_unit.sum(filer & elderly & ~claimable)
         return eligible_filers * p.exemption.extra

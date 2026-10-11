@@ -22,8 +22,11 @@ class vt_personal_exemptions(Variable):
         # 32 V.S.A. 5811(21)(C): "no exemption may be claimed" for a dependent
         # individual, and under IRC 152(b)(1) a return on which the filer (or,
         # if joint, either spouse) can be claimed as a dependent has no
-        # dependents.
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # dependents, unless the would-be claimant meets the filing exception
+        # (Publication 501).
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         dependents = where(
             filer_is_dependent, 0, tax_unit("tax_unit_count_dependents", period)
         )

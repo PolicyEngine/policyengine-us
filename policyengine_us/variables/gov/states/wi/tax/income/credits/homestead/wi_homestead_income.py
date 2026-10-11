@@ -20,8 +20,11 @@ class wi_homestead_income(Variable):
         disqualified_losses = tax_unit("wi_homestead_disqualified_losses", period)
         # The $500 deduction is for each dependent under IRC 152; a return on
         # which the claimant (or, if joint, either spouse) can be claimed as a
-        # dependent has none (IRC 152(b)(1)).
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # dependent has none (IRC 152(b)(1)), unless the would-be claimant
+        # meets the filing exception (Publication 501).
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         dependents = where(
             filer_is_dependent, 0, tax_unit("tax_unit_dependents", period)
         )

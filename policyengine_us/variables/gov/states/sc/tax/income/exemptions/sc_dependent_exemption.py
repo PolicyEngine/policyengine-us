@@ -20,8 +20,11 @@ class sc_dependent_exemption(Variable):
         # Section 12-6-1140(13): "each dependent must meet the eligibility
         # requirements of Section 151 and 152", and under IRC 152(b)(1) a
         # return on which the filer (or, if joint, either spouse) can be
-        # claimed as a dependent has no dependents.
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # claimed as a dependent has no dependents, unless the would-be
+        # claimant meets the filing exception (Publication 501).
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         dependents = where(
             filer_is_dependent, 0, tax_unit("tax_unit_dependents", period)
         )

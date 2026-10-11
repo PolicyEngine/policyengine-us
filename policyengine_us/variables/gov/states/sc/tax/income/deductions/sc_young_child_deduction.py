@@ -23,9 +23,10 @@ class sc_young_child_deduction(Variable):
         # Section 12-6-1160 requires a "dependent eligible for the South
         # Carolina dependent exemption", which a return on which the filer (or,
         # if joint, either spouse) can be claimed as a dependent has none of
-        # (IRC 152(b)(1), incorporated by Section 12-6-1140(13)).
+        # (IRC 152(b)(1), incorporated by Section 12-6-1140(13)), unless the
+        # would-be claimant meets the filing exception (Publication 501).
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         eligible_dependent = (
             meets_age_limit

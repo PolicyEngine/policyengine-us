@@ -78,7 +78,11 @@ class vt_renter_credit(Variable):
         capped_credit = min_(credit_value, p.max_credit)
         unrounded = capped_credit * (1 - shared_residence_reduction)
         # 6066(c)(2): the claimant "may not be a person claimed as a dependent
-        # by any taxpayer". On a joint return either spouse may be the
-        # claimant, so only a return on which every filer is claimed loses it.
-        claimant_eligible = ~tax_unit("every_filer_is_dependent_elsewhere", period)
+        # by any taxpayer", an actual claim. On a joint return either spouse
+        # may be the claimant, so only a return on which every filer is
+        # claimed loses it.
+        person = tax_unit.members
+        filer = person("is_tax_unit_head_or_spouse", period)
+        claimed = person("claimed_as_dependent_on_another_return", period)
+        claimant_eligible = tax_unit.any(filer & ~claimed)
         return claimant_eligible * np.round(unrounded)

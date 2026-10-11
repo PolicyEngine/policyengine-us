@@ -21,8 +21,11 @@ class ri_child_tax_rebate(Variable):
         # R.I. Gen. Laws 44-30-103(b)(1) pays the rebate for each child "whom
         # the eligible taxpayer validly claims as a dependent" on the 2021
         # return. Under IRC 152(b)(1) a return on which the filer (or, if
-        # joint, either spouse) can be claimed as a dependent has none.
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # joint, either spouse) can be claimed as a dependent has none, unless
+        # the would-be claimant meets the filing exception (Publication 501).
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         eligible_child = age_eligibility & dependent & ~filer_is_dependent
         child_count = tax_unit.sum(eligible_child)
         capped_children = min_(child_count, p.limit.child)
