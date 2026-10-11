@@ -1,12 +1,64 @@
-description: Average Medicare spending per enrolled beneficiary (national average). Represents the annual value of Medicare coverage including Part A and Part B.
-values:
-  2021-01-01: 11_080  # Traditional Medicare (Part A and/or Part B) per KFF
-  2025-01-01: 14_500  # Estimated - update with official Centers for Medicare & Medicaid Services (CMS) data when available
+description: The Centers for Medicare and Medicaid Services (CMS) reports and projects this Medicare spending per enrollee, which is all Medicare spending, including payments to Medicare Advantage plans, Part D and program administration, divided by average enrollment in Part A, Part B or both.
 metadata:
-  label: Medicare per capita cost
   unit: currency-USD
   period: year
+  label: CMS Medicare spending per enrollee
   reference:
-    - title: KFF Medicare Spending Per Beneficiary (2021)
-      href: https://www.kff.org/medicare/state-indicator/per-beneficiary/
-    - title: Note - 2024 value is estimated and should be updated with official Centers for Medicare & Medicaid Services (CMS) data
+  # Table17 Health Insurance Enrollment and Enrollment Growth Rates,
+  # "Spending per Enrollee ($)", "Medicare" row: Medicare spending (the same
+  # row as Table03's Medicare source of funds) divided by Medicare
+  # enrollment. Historical for 2013-2024, projected for 2025-2034. ZIP
+  # Last-Modified 2026-09-03, sha256
+  # 264f822618a5e1829138aea57cc6c8bf45bbaf072a72898fef5547f7ece6cd70,
+  # retrieved 2026-10-11 from
+  # https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/projected
+  - title: CMS National Health Expenditure Projections 2025-2034, Table 17
+    href: https://www.cms.gov/files/zip/nhe-projections-tables.zip
+  # Medicare enrollment is Part A and/or B enrollment by "a person-year
+  # methodology, which sums the number of months each beneficiary is enrolled
+  # during the year and divides by 12", with U.S. territories removed.
+  - title: "CMS National Health Expenditure Accounts: Methodology Paper, 2024, Medicare enrollment"
+    href: https://www.cms.gov/files/document/definitions-sources-and-methods.pdf#page=34
+  # Medicare spending covers Parts A, B, C (Medicare Advantage) and D (file
+  # page 15) and, as program spending, federal administration and the
+  # non-medical expenditures of Part C and Part D private plans (file page
+  # 23). Premiums finance part of that spending rather than reduce it: the
+  # sponsor analysis counts SMI premiums as household spending on Medicare
+  # (file page 30).
+  - title: "CMS National Health Expenditure Accounts: Methodology Paper, 2024, Medicare spending"
+    href: https://www.cms.gov/files/document/definitions-sources-and-methods.pdf#page=23
+  # "Projections of Medicare spending and enrollment used in the NHE
+  # projections were generated for the most recent Trustees Report", here
+  # the 2026 report. Last Updated June 24, 2026, sha256
+  # ce62fe2c236cc96ce287027784b141584ddf39e62c5fd8ddc3e771a014944817.
+  - title: "Projections of National Health Expenditures and Enrollment: Methodology and Model Specification"
+    href: https://www.cms.gov/research-statistics-data-and-systems/statistics-trends-and-reports/nationalhealthexpenddata/downloads/projectionsmethodology.pdf#page=7
+values:
+  # Historical.
+  2013-01-01: 11_483
+  2014-01-01: 11_683
+  2015-01-01: 11_929
+  2016-01-01: 12_119
+  2017-01-01: 12_319
+  2018-01-01: 12_795
+  2019-01-01: 13_366
+  2020-01-01: 13_547
+  2021-01-01: 14_293
+  2022-01-01: 14_921
+  2023-01-01: 15_915
+  2024-01-01: 16_779
+  # Projections.
+  2025-01-01: 17_751
+  2026-01-01: 18_983
+  2027-01-01: 20_096
+  2028-01-01: 21_310
+  2029-01-01: 22_543
+  2030-01-01: 23_789
+  2031-01-01: 25_185
+  2032-01-01: 26_552
+  2033-01-01: 28_277
+  2034-01-01: 30_129
+  # 2035 to 2100 grow at the 2031-2032 rate (26_552 / 25_185, 5.4% a year),
+  # not the 2033-2034 rate, which carries the end of Medicare sequestration
+  # on August 31, 2033; later years hold the 2100 value. See
+  # set_all_uprating_parameters in uprating_extensions.py.
