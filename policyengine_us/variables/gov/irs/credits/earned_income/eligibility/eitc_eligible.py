@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.section_911 import elects_section_911_exclusion
 
 
 class eitc_eligible(Variable):
@@ -6,7 +7,11 @@ class eitc_eligible(Variable):
     entity = TaxUnit
     label = "Eligible for EITC"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/32#c_1_A"
+    reference = (
+        "https://www.law.cornell.edu/uscode/text/26/32#c_1_A",
+        # No EITC for an individual who claims the benefits of section 911.
+        "https://www.law.cornell.edu/uscode/text/26/32#c_1_C",
+    )
 
     def formula(tax_unit, period, parameters):
         eitc = parameters.gov.irs.credits.eitc(period)
@@ -16,8 +21,16 @@ class eitc_eligible(Variable):
         filers_has_ssn = tax_unit(
             "filer_meets_eitc_identification_requirements", period
         )
+        # Section 32(c)(1)(C): "eligible individual" does not include an
+        # individual who claims the benefits of section 911 (Form 2555).
+        claims_section_911 = elects_section_911_exclusion(tax_unit, period)
         # Define eligibility before considering separate filer limitation.
-        eligible = demographic_eligible & investment_income_eligible & filers_has_ssn
+        eligible = (
+            demographic_eligible
+            & investment_income_eligible
+            & filers_has_ssn
+            & ~claims_section_911
+        )
         # This parameter is true if separate filers are eligible.
         if eitc.eligibility.separate_filer:
             return eligible

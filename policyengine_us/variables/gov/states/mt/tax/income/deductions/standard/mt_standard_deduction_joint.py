@@ -17,9 +17,8 @@ class mt_standard_deduction_joint(Variable):
 
         if p.state_specific_deduction_applies:
             # ── Pre-2024 MT-specific calculation ───────────────────────────────
-            # The joint return's Montana AGI. Adding each spouse's
-            # mt_agi_indiv would lose a spouse's negative amount, such as an
-            # IRA deduction above their own income, to its zero floor.
+            # Standard Deduction Worksheet line 1 takes Montana AGI from
+            # page 1, line 14, which pools both spouses on a joint return.
             agi = person.tax_unit("mt_agi_joint", period)
             floor = p.floor[filing_status]
             cap = p.cap[filing_status]

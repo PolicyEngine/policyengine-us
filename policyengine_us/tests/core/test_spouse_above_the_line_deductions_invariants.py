@@ -5,8 +5,9 @@ less their own above-the-line deductions (above_the_line_deductions_person).
 On a joint return a deduction that belongs to one spouse, such as their IRA
 deduction, educator expenses, early withdrawal penalty, alimony paid, student
 loan interest or business and capital losses, lowers only that spouse's AGI.
-Only deductions recorded for the tax unit alone (here the HSA deduction and
-the tuition and fees deduction) are divided equally. States that tax spouses
+Only deductions recorded for the tax unit alone (here the tuition and fees
+deduction) are divided equally. HSA deductions follow the supplied account
+holders' amounts, with an equal division when none are supplied. States that tax spouses
 separately (Kentucky, Montana, Delaware, Virginia, Ohio's joint filing credit,
 the District of Columbia, West Virginia's senior deduction) read these
 amounts.
@@ -35,12 +36,14 @@ tax unit is an input for every unit in its simulation. For every tax unit:
    computations of the Section 461(l) and 1211(b) limits from the inputs and
    parameters. For units with no deduction set directly,
    above_the_line_deductions_person equals a numpy reference built from the
-   inputs: each person's own person-level deductions, their alimony under a
+   inputs: each person's own person-level deductions, their educator
+   expenses capped at the per-educator limit, their HSA share from the supplied
+   account-holder amounts and return total, their alimony under a
    pre-2019 instrument, their share of the numpy-limited business loss by
    their own business losses and of the capital loss deduction (losses up
    to the filers' capital gains and distributions, plus the net loss up to
    the 1211(b) limit) by their own capital losses, and an equal share of the
-   HSA and tuition and fees deductions.
+   tuition and fees deduction.
 3. Own deductions. The spouse's deductions never add to the head's: the
    head's above_the_line_deductions_person is never higher with the spouse's
    deduction inputs than without them. It is the same, and so is the head's
@@ -120,6 +123,7 @@ TAX_UNIT_OUTPUTS = [
     "limited_business_loss",
     "limited_capital_loss",
     "alimony_expense_ald",
+    "educator_expense_ald",
     "health_savings_account_ald",
     "other_net_gain",
 ]
@@ -130,6 +134,9 @@ PERSON_OUTPUTS = [
     "loss_ald_person",
     "limited_capital_loss_person",
     "alimony_expense_ald_person",
+    "educator_expense",
+    "educator_expense_ald_person",
+    "health_savings_account_ald_person",
     "irs_gross_income",
     "capital_losses",
     "capital_gains",
@@ -384,13 +391,18 @@ def _run_group(units, year, *, zero_spouse):
         for name in TAX_UNIT_OUTPUTS + PERSON_OUTPUTS
     }
     # The person-level deductions and the person amounts behind the tax-unit
-    # deductions other than losses and alimony, which the reference below
-    # builds from the inputs.
+    # deductions other than losses, alimony, educator expenses and HSA,
+    # which the reference below builds independently from inputs and limits.
     own_names, shared_names = [], []
     for deduction in sorted(set(deductions)):
         if tbs.variables[deduction].entity.is_person:
             own_names.append(deduction)
-        elif deduction in ("loss_ald", "alimony_expense_ald"):
+        elif deduction in (
+            "loss_ald",
+            "alimony_expense_ald",
+            "educator_expense_ald",
+            "health_savings_account_ald",
+        ):
             continue
         elif f"{deduction}_person" in tbs.variables:
             own_names.append(f"{deduction}_person")
@@ -426,6 +438,13 @@ def _run_group(units, year, *, zero_spouse):
     out["capital_loss_limit"] = np.asarray(loss.capital.max[filing_status], dtype=float)
     out["separate_capital_loss_limit"] = np.full(
         len(filing_status), float(loss.capital.max["SEPARATE"])
+    )
+    out["educator_cap"] = float(
+        tbs.parameters(f"{year}-01-01").gov.irs.ald.educator_expense.cap
+    )
+    # Keep every run output an array so grouped runs concatenate uniformly.
+    out["educator_cap"] = np.full(
+        len(out["adjusted_gross_income_person"]), out["educator_cap"]
     )
     out["joint"] = filing_status == "JOINT"
     out["state"] = np.array([u["state"] for u in units])
@@ -510,6 +529,24 @@ def _capital_part_of_loss_ald(run):
     )
 
 
+def _educator_deduction_person(run):
+    """26 USC 62(a)(2)(D): the cap applies separately to each educator."""
+    return np.minimum(np.maximum(0, run["educator_expense"]), run["educator_cap"])
+
+
+def _hsa_deduction_person(run):
+    """Attribute the supplied return total by the account holders' inputs."""
+    filer = ~run["is_dependent"]
+    own = run["health_savings_account_ald_person"]
+    filer_own = filer * own
+    total = _per_person(run, _unit_sum(run, filer_own))
+    share = _share(filer_own, total, _even(run))
+    return_total = _per_person(run, run["health_savings_account_ald"])
+    reconciled = filer_own + (return_total - total) * share
+    # A dependent's own input is preserved and never enters the filer's sum.
+    return np.where(filer, reconciled, own)
+
+
 def _reference(run):
     """above_the_line_deductions_person, built from the inputs with numpy."""
     filer = ~run["is_dependent"]
@@ -534,12 +571,14 @@ def _reference(run):
     dependent_filer_amounts = _per_person(
         run, _unit_sum(run, run["is_dependent"] * run["filer_amounts"])
     )
-    filer_part = run["own_direct"] + alimony + losses + shared
+    educator = _educator_deduction_person(run)
+    hsa = _hsa_deduction_person(run)
+    filer_part = run["own_direct"] + educator + hsa + alimony + losses + shared
     filer_part = filer_part + dependent_filer_amounts * even
     return np.where(
         filer,
         filer_part,
-        run["own_direct"] + alimony - run["filer_amounts"],
+        run["own_direct"] + educator + hsa + alimony - run["filer_amounts"],
     )
 
 
@@ -588,7 +627,10 @@ def _check(units, year):
         run["adjusted_gross_income"],
     )
 
-    # 2. Differential against numpy.
+    # 2. Differential against numpy, including each educator's separate cap.
+    educator = _educator_deduction_person(run)
+    _close(run["educator_expense_ald_person"], educator)
+    _close(run["educator_expense_ald"], _unit_sum(run, filer * educator))
     limited_business, limited_capital, _ = _limits(run)
     _close(run["limited_business_loss"], limited_business)
     _close(run["limited_capital_loss"], limited_capital)

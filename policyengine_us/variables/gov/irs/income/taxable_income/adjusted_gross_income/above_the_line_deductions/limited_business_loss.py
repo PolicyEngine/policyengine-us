@@ -4,13 +4,13 @@ from policyengine_us.model_api import *
 class limited_business_loss(Variable):
     value_type = float
     entity = TaxUnit
-    label = "Limited business loss deduction"
+    label = "Business loss deduction allowed under section 461(l)"
     unit = USD
     documentation = (
-        "The business, farm, rental, estate and partnership losses of the "
-        "head and spouse deductible from gross income, after the Section "
-        "461(l) excess business loss limit. loss_ald adds the capital loss "
-        "deduction."
+        "Business, farm, rental, estate and partnership/S corporation losses of "
+        "members who are not dependents, deducted above the line up to the "
+        "section 461(l) limit: business income plus the threshold amount. "
+        "loss_ald is this plus its two capital loss parts."
     )
     definition_period = YEAR
     reference = (
@@ -92,4 +92,5 @@ class limited_business_loss(Variable):
             + other_business_loss
         )
         max_deductible_business_loss = total_business_income + threshold_amount
-        return min_(total_business_loss, max_deductible_business_loss)
+        limited_business_loss = min_(total_business_loss, max_deductible_business_loss)
+        return limited_business_loss

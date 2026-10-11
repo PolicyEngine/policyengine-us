@@ -35,13 +35,13 @@ def _deductions(reverse, empty):
         if empty
         else [
             "loss_ald",
-            "educator_expense",
+            "educator_expense_ald",
             "alimony_expense_ald",
             "loss_ald",
             *PERSON_ALDS,
             "student_loan_interest_ald",
             "puerto_rico_income",
-            "educator_expense",
+            "educator_expense_ald",
         ]
     )
     if reverse:
@@ -60,7 +60,6 @@ def test_tax_unit_deductions_are_ordered_unique_and_exclude_person_alds(
     magi = SimpleNamespace(
         person_alds=PERSON_ALDS,
         excluded_alds=["student_loan_interest_ald", "puerto_rico_income"],
-        excluded_gross_income_sources=[],
     )
     parameters = SimpleNamespace(
         gov=SimpleNamespace(
@@ -107,12 +106,19 @@ def test_tax_unit_deductions_are_ordered_unique_and_exclude_person_alds(
     with pytest.raises(ReachedTaxUnitSum):
         getattr(module, variable_name).formula(person, 2026, lambda period: parameters)
 
-    expected = [] if empty else ["alimony_expense_ald", "educator_expense", "loss_ald"]
+    expected = (
+        [] if empty else ["alimony_expense_ald", "educator_expense_ald", "loss_ald"]
+    )
     assert captured == expected
 
 
-PERSON_LEVEL = {"educator_expense", "student_loan_interest_ald"}
-WITH_PERSON_AMOUNTS = {"loss_ald", "alimony_expense_ald", *PERSON_ALDS}
+PERSON_LEVEL = {"student_loan_interest_ald"}
+WITH_PERSON_AMOUNTS = {
+    "loss_ald",
+    "alimony_expense_ald",
+    "educator_expense_ald",
+    *PERSON_ALDS,
+}
 
 
 @pytest.mark.parametrize("reverse", [False, True])

@@ -4,10 +4,6 @@ from policyengine_us.model_api import *
 # amount to attribute them by. Their amount is divided equally between the head
 # and spouse.
 EQUALLY_DIVIDED_DEDUCTIONS = (
-    # An HSA belongs to one person, but the input is the return's total. On a
-    # joint return, 26 USC 223(b)(5) divides the family-coverage limit equally
-    # between spouses unless they agree on another division.
-    "health_savings_account_ald",
     # Tuition and fees (26 USC 222, through 2020) the taxpayer paid for
     # themself, their spouse or a dependent, under one limit for the return.
     "capped_qualified_tuition_expenses_ald",
@@ -32,8 +28,11 @@ class above_the_line_deductions_person(Variable):
         "Each has their own person-level deductions, such as their IRA "
         "deduction, educator expenses and early withdrawal penalty, and their "
         "own part of each tax-unit deduction that has a person-level amount "
-        "(<deduction>_person), such as self-employment tax, alimony paid and "
-        "business and capital losses. A deduction recorded only for the tax "
+        "(<deduction>_person), such as self-employment tax, alimony paid, "
+        "capped educator expenses, HSA deductions and business and capital "
+        "losses. Supplied person amounts attribute an HSA deduction to its "
+        "account holders; if they are all zero, the return's amount is "
+        "divided equally. A deduction recorded only for the tax "
         "unit is divided equally between them. A tax unit dependent's amount "
         "is their own person-level deductions, for their own return, other "
         "than amounts that are the filer's even when recorded on the "

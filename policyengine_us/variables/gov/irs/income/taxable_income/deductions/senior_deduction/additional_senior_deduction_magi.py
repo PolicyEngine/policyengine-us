@@ -8,19 +8,10 @@ class additional_senior_deduction_magi(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://www.law.cornell.edu/uscode/text/26/151#d_5_C",
         "https://www.congress.gov/119/bills/hr1/BILLS-119hr1enr.pdf#page=88",
         "https://www.irs.gov/pub/irs-pdf/f1040s1a.pdf#page=1",
     )
-
-    def formula(tax_unit, period, parameters):
-        agi = tax_unit("adjusted_gross_income", period)
-        excluded_income = add(
-            tax_unit,
-            period,
-            [
-                "foreign_earned_income_exclusion",
-                "specified_possession_income",
-                "puerto_rico_income",
-            ],
-        )
-        return agi + excluded_income
+    # 26 U.S.C. 151(d)(5)(C)(iii)(II): adjusted gross income increased by
+    # any amount excluded from gross income under section 911, 931, or 933.
+    adds = ["agi_plus_section_911_931_933_exclusions"]
