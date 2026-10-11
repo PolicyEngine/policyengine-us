@@ -253,3 +253,63 @@ def test_baseline_measurement_branch_of_a_traced_simulation():
     assert root.trace and root.tracer is simulation.tracer
     assert root.branch_name == BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH
     assert simulation.tax_benefit_system.parameters.branch_name == "default"
+
+
+@pytest.mark.parametrize("reform", [None, RATE_CUT])
+def test_without_a_baseline_the_baseline_measurement_is_the_simulations_policy(
+    reform,
+):
+    # A simulation built without a reform, or a reform simulation's own
+    # baseline, has no baseline: there is no reform, so it is measured against
+    # its own policy, and every change is zero.
+    built = Simulation(situation=household(50_000), reform=reform)
+    simulation = built if reform is None else built.baseline
+    assert simulation.baseline is None
+    branch = _baseline_measurement_branch(simulation)
+    assert branch.baseline is None
+    assert branch.tax_benefit_system is not simulation.tax_benefit_system
+    assert branch.tax_benefit_system.parameters(YEAR).gov.irs.income.bracket.rates[
+        "2"
+    ] == pytest.approx(0.12)
+    np.testing.assert_allclose(
+        branch.calculate("income_tax", YEAR), simulation.calculate("income_tax", YEAR)
+    )
+
+
+def test_response_variables_are_zero_without_a_reform():
+    # policyengine.py reads these from its baseline simulation, which has no
+    # reform; they measure without the labour-supply response's own check.
+    simulation = Simulation(situation=household(50_000))
+    assert response(simulation) == 0
+    for variable in (
+        "income_elasticity_lsr",
+        "substitution_elasticity_lsr",
+        "relative_income_change",
+        "relative_wage_change",
+        "relative_capital_gains_mtr_change",
+    ):
+        np.testing.assert_array_equal(simulation.calculate(variable, YEAR), [0])
+
+
+CG_REFORM = {
+    **LSR_REFORM,
+    "gov.irs.capital_gains.rates.2": {FOREVER: 0.25},
+    "gov.simulation.capital_gains_responses.elasticity": {FOREVER: -0.62},
+}
+
+
+def test_capital_gains_marginal_tax_rate_does_not_depend_on_calculation_order():
+    # Its branches start from the household's measurements however it is
+    # reached: first, or after the household's net income.
+    situation = household(60_000)
+    situation["people"]["you"]["long_term_capital_gains"] = {YEAR: 200_000}
+    first = Simulation(situation=situation, reform=CG_REFORM)
+    rate_first = first.calculate("marginal_tax_rate_on_capital_gains", YEAR)
+    after = Simulation(situation=situation, reform=CG_REFORM)
+    after.calculate("household_net_income", YEAR)
+    rate_after = after.calculate("marginal_tax_rate_on_capital_gains", YEAR)
+    np.testing.assert_allclose(rate_first, rate_after, atol=1e-5)
+    np.testing.assert_allclose(
+        first.calculate("household_net_income", YEAR),
+        after.calculate("household_net_income", YEAR),
+    )

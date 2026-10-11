@@ -68,9 +68,17 @@ def _baseline_measurement_branch(simulation):
     drop every array the branch copied except inputs: the rest was calculated
     under the reform. Like that baseline, the branch has no baseline of its own,
     so its behavioural responses are zero.
+
+    A simulation with no baseline (one built without a reform, or a reform
+    simulation's own baseline) has no reform to respond to: its own policy is
+    the baseline, so both measurements match and every change is zero, as
+    before. The labour-supply response returns zero before measuring, but
+    ``income_elasticity_lsr``, ``substitution_elasticity_lsr`` and the
+    ``relative_*_change`` variables measure without that check.
     """
+    baseline = simulation.baseline if simulation.baseline is not None else simulation
     branch = simulation.get_branch(BASELINE_BEHAVIORAL_RESPONSE_MEASUREMENT_BRANCH)
-    branch.tax_benefit_system = clone_spm_system(simulation.baseline.tax_benefit_system)
+    branch.tax_benefit_system = clone_spm_system(baseline.tax_benefit_system)
     branch.baseline = None
     branch._rebind_holders()
     drop_inherited_values(branch)

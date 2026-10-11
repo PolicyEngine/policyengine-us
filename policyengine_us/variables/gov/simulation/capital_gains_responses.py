@@ -101,6 +101,10 @@ class marginal_tax_rate_on_capital_gains(Variable):
         simulation = person.simulation
         DELTA = 1_000
         adult_index_values = person("adult_index_cg", period)
+        # Before branching, so a reform simulation has measured its behavioural
+        # responses and each branch starts from those measurements, as
+        # marginal_tax_rate's do; a branch made first measured its own.
+        household_net_income = person.household("household_net_income", period)
         for adult_index in [1, 2]:
             alt_simulation = simulation.get_branch(f"adult_{adult_index}_cg_rise")
             mask = adult_index_values == adult_index
@@ -117,7 +121,6 @@ class marginal_tax_rate_on_capital_gains(Variable):
                 person("capital_gains", period) + mask * DELTA,
             )
             alt_person = alt_simulation.person
-            household_net_income = person.household("household_net_income", period)
             household_net_income_higher_earnings = alt_person.household(
                 "household_net_income", period
             )
