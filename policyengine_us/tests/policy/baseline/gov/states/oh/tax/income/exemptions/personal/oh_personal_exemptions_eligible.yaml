@@ -28,6 +28,16 @@
   output:
     oh_personal_exemptions_eligible_person: true
 
+- name: Ohio personal exemption excludes a claimable but unclaimed filer
+  period: 2025
+  input:
+    state_code: OH
+    is_tax_unit_head_or_spouse: true
+    is_tax_unit_dependent: false
+    claimed_as_dependent_on_another_return: false
+    claimable_as_dependent_on_another_return: true
+  output:
+    oh_personal_exemptions_eligible_person: false
 
 - name: 2025 joint return with one claimable spouse makes neither that spouse nor the child eligible (the claimable spouse is the head)
   period: 2025

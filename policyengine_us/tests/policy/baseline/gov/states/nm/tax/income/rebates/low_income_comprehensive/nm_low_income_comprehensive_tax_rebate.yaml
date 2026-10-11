@@ -305,24 +305,53 @@
     # claimant (NMSA 7-2-14(A)).
     nm_low_income_comprehensive_tax_rebate: 0
 
-- name: 2025 joint return with one claimable spouse keeps the rebate with the couple's combined income
+- name: 2025 joint return with one claimable spouse keeps the rebate with the couple's combined income (the claimable spouse is the head)
   period: 2025
   input:
     people:
       person_a:
         age: 30
         claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
       person_b:
         age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
     tax_units:
       tax_unit:
         members: [person_a, person_b]
         filing_status: JOINT
-        nm_modified_gross_income: 8_500
+        nm_modified_gross_income: 8500
     households:
       household:
         members: [person_a, person_b]
         state_code: NM
   output:
     # One exemption; the $8,000-$9,000 row of the one-exemption table.
+    nm_low_income_comprehensive_tax_rebate: 212
+
+- name: 2025 joint return with one claimable spouse keeps the rebate with the couple's combined income (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        nm_modified_gross_income: 8500
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
     nm_low_income_comprehensive_tax_rebate: 212

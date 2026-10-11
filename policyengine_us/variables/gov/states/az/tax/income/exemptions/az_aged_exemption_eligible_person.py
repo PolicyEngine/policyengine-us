@@ -8,6 +8,7 @@ class az_aged_exemption_eligible_person(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.AZ
+    reference = "https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_140i.pdf#page=6"
 
     def formula(person, period, parameters):
         head = person("is_tax_unit_head", period)
@@ -17,9 +18,6 @@ class az_aged_exemption_eligible_person(Variable):
         filing_status = tax_unit("az_filing_status", period)
         separate = filing_status == filing_status.possible_values.SEPARATE
 
-        dependent_head = tax_unit("head_is_dependent_elsewhere", period)
-
-        dependent_spouse = tax_unit("spouse_is_dependent_elsewhere", period)
-        spouse_eligible_condition = ~dependent_spouse * ~separate
-
-        return (head & ~dependent_head) | (spouse & spouse_eligible_condition)
+        # Form 140, Box 8, excludes each spouse only when actually claimed.
+        claimed_elsewhere = person("claimed_as_dependent_on_another_return", period)
+        return ~claimed_elsewhere & (head | (spouse & ~separate))

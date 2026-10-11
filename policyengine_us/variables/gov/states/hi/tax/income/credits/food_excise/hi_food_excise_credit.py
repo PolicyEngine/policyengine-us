@@ -16,8 +16,9 @@ class hi_food_excise_credit(Variable):
     def formula(tax_unit, period, parameters):
         # HRS 235-55.85(a): only a taxpayer who cannot be claimed as a
         # dependent may claim the credit, for each qualified exemption; the
-        # exemption amount counts only filers who cannot be claimed when
-        # either can. Minor children receiving public support count for this
+        # exemption amount excludes own ordinary dependents when either
+        # filer can be claimed without the Dependent Taxpayer Test exception.
+        # Minor children receiving public support count for this
         # credit under 235-55.85(c), so they keep their amount unless every
         # filer can be claimed.
         every_filer_dependent = tax_unit("every_filer_is_dependent_elsewhere", period)
