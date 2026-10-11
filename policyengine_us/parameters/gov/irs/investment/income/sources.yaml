@@ -40,7 +40,8 @@ values:
     # losses beyond business income plus a threshold, and § 1411(c)(1)(B)
     # allows only deductions allowed by chapter 1. This adds back the part of
     # the excess business loss that falls on those losses (all of it when they
-    # are the only business losses; a proportional share otherwise).
+    # are the only business losses; provisionally a proportional share
+    # otherwise).
     - net_investment_income_excess_business_loss
 metadata:
   unit: currency-USD

@@ -280,10 +280,10 @@ def _section_461l_estate_addback(runs, units):
 
     Estate income is the only business item drawn, so the excess business loss
     is the head and spouse's estate losses beyond their estate income plus the
-    threshold. Its share on NII losses is the estate loss net investment income
-    keeps after the code H adjustment, over the whole estate loss.
+    threshold, and all of it falls on net investment income losses: a Part III
+    loss stays on Form 8960 line 4a whatever the code H adjustment (line 7).
     """
-    estate, adjustment, dependent = _person_inputs(units)
+    estate, _, dependent = _person_inputs(units)
     filer = ~dependent
     tax_unit = runs["with"]["person_tax_unit"]
 
@@ -292,13 +292,8 @@ def _section_461l_estate_addback(runs, units):
 
     income = by_unit(np.maximum(0, estate))
     loss = by_unit(np.maximum(0, -estate))
-    investment_loss = by_unit(
-        np.minimum(np.maximum(0, -(estate + adjustment)), np.maximum(0, -estate))
-    )
     threshold = runs["section_461l_threshold"][runs["with"]["filing_status"]]
-    excess = np.maximum(0, loss - (income + threshold))
-    share = np.divide(investment_loss, loss, out=np.zeros_like(loss), where=loss > 0)
-    return excess * share
+    return np.maximum(0, loss - (income + threshold))
 
 
 def test_net_investment_income_adds_estate_income_and_code_h(runs, units):

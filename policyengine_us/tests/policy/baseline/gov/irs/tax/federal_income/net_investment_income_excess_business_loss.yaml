@@ -44,8 +44,8 @@
 
 - name: A proportional share when both kinds of loss are present
   # Schedule C loss 300,000 and Form 4835 loss 300,000; excess 287,000.
-  # Proportional share: 287,000 x 300,000 / 600,000 = 143,500. (The law does
-  # not say how to split it; see the variable documentation.)
+  # Provisional proportional share: 287,000 x 300,000 / 600,000 = 143,500.
+  # (The law does not say how to split it; see the variable documentation.)
   period: 2025
   input:
     people:
@@ -87,9 +87,13 @@
     excess_business_loss: 87_000
     net_investment_income_excess_business_loss: 21_750
 
-- name: An estate loss removed by a code H adjustment is not a net investment income loss
-  # Schedule E Part III loss 600,000 with a +600,000 Schedule K-1 (Form 1041)
-  # box 14 code H adjustment, so net investment income has no estate loss.
+- name: A positive code H adjustment does not take an estate loss out of net investment income
+  # Schedule E Part III loss 600,000 (Form 8960 line 4a) and a +600,000
+  # Schedule K-1 (Form 1041) box 14 code H adjustment (line 7). Code H is
+  # positive only for section 1291 fund, CFC and QEF distributions that are
+  # NII but not taxable income (2025 Form 1041 instructions, Beneficiary
+  # reporting), so it is separate income and the whole estate loss is still
+  # a net investment income loss. Excess 600,000 - 313,000 = 287,000.
   period: 2025
   input:
     people:
@@ -107,7 +111,7 @@
         state_code: TX
   output:
     excess_business_loss: 287_000
-    net_investment_income_excess_business_loss: 0
+    net_investment_income_excess_business_loss: 287_000
 
 - name: A joint return shares the excess across both spouses' losses
   # Head Schedule E rental loss 500,000; spouse partnership loss 400,000, of

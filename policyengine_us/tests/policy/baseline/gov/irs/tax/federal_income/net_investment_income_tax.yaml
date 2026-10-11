@@ -659,10 +659,10 @@
 - name: A Schedule C loss takes a proportional share of the section 461(l) excess
   # Wages 600,000, interest 200,000, Schedule C loss 300,000, Form 4835 loss
   # 300,000. Section 461(l) allows 313,000 of the 600,000; AGI and MAGI
-  # 800,000 - 313,000 = 487,000. Proportional share of the 287,000 excess on
-  # the farm rental loss: 143,500, so NII 200,000 - 300,000 + 143,500 =
-  # 43,500. NIIT 3.8% x min(43,500, 287,000) = 1,653. (No rule says how to
-  # split the excess; see net_investment_income_excess_business_loss.)
+  # 800,000 - 313,000 = 487,000. Provisional proportional share of the
+  # 287,000 excess on the farm rental loss: 143,500, so NII 200,000 - 300,000
+  # + 143,500 = 43,500. NIIT 3.8% x min(43,500, 287,000) = 1,653. (No rule
+  # says how to split the excess; see net_investment_income_excess_business_loss.)
   period: 2025
   input:
     people:
@@ -684,3 +684,33 @@
     adjusted_gross_income: 487_000
     net_investment_income: 43_500
     net_investment_income_tax: 1_653
+
+- name: A positive code H adjustment leaves the estate loss limited by section 461(l)
+  # Independent review counterexample. Wages 300,000, interest 500,000,
+  # Schedule E Part III loss 600,000, and +600,000 code H from a trust's
+  # NII-only CFC distribution (positive code H can be nothing else). Section
+  # 461(l) allows 313,000 of the loss: AGI 300,000 + 500,000 - 313,000 =
+  # 487,000. MAGI adds the positive code H: 1,087,000. NII 500,000 - 313,000
+  # + 600,000 = 787,000. NIIT 3.8% x min(787,000, 887,000) = 29,906.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        employment_income: 300_000
+        taxable_interest_income: 500_000
+        estate_income: -600_000
+        estate_income_net_investment_income_adjustment: 600_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    adjusted_gross_income: 487_000
+    niit_magi: 1_087_000
+    net_investment_income: 787_000
+    net_investment_income_tax: 29_906
