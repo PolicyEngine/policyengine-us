@@ -53,6 +53,8 @@ def create_tx_rebate() -> Reform:
             BENEFITS = [
                 "social_security",
                 "ssi",
+                # Illinois benefits
+                "il_aabd",  # AABD cash grant, 89 Ill. Adm. Code Part 113.
                 "in_ssp",
                 "ct_ssp",
                 "ga_ssp",
