@@ -177,6 +177,9 @@
       person1:
         age: 40
         employment_income: 30_000
+        # Establish the worker exemption independently of the YAML runner's
+        # treatment of employment_income versus employment_income_before_lsr.
+        weekly_hours_worked_before_lsr: 30
     spm_units:
       unit:
         members: [person1]
