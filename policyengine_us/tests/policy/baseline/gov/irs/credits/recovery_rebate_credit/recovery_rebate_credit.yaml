@@ -375,7 +375,7 @@
         is_tax_unit_spouse: false
       person_b:
         age: 30
-        meets_eitc_identification_requirements: false
+        ssn_card_type: NONE
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
@@ -401,7 +401,7 @@
     people:
       person_b:
         age: 30
-        meets_eitc_identification_requirements: false
+        ssn_card_type: NONE
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_a:
