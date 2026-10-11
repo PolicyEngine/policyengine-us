@@ -37,11 +37,10 @@ the four businesses. For every filer and year:
 5. For a filer with no business losses whose income is wages and
    self-employment income, the deduction never takes adjusted gross income
    below the Schedule C line 10 amount before its floor at zero. That amount
-   is negative only when the plan deduction exceeds Schedule C earned income,
-   which the plan contribution limit (based on Schedule C profit, not
-   401(c) earned income) allows; otherwise adjusted gross income stays at or
-   above zero. Intended: a plan under the farm or partnership does not
-   subtract the Schedule C plan deduction.
+   is negative only when the Schedule 1 line 16 plan deduction exceeds the
+   Schedule C business's net profit less its share of line 15; otherwise
+   adjusted gross income stays at or above zero. Intended: a plan under the
+   farm or partnership does not subtract the Schedule C plan deduction.
 """
 
 import numpy as np
@@ -255,8 +254,8 @@ def test_reviewer_example_and_boundaries():
         filer(partnership=2_000, premiums=6_000),
         # S corporation wages.
         filer(s_corp=5_000, premiums=6_000),
-        # A plan deduction at the Schedule C profit; the farm is the plan
-        # business, so adjusted gross income falls below zero (property 5).
+        # A plan deduction as large as the Schedule C profit, with the farm as
+        # the plan business (property 5).
         filer(schedule_c=20_000, plan=20_000, farm=50_000, premiums=100_000),
     ]
     situation, n = build_situation(filers)
