@@ -183,3 +183,90 @@
   output:
     # $80 + $40 for the child = $120.
     ia_exemption_credit: 120
+
+
+- name: 2024 single filer whose claimant meets the filing exception gets the dependent credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: IA
+  output:
+    # The would-be claimant meets the filing exception (Publication 501,
+    # Dependent Taxpayer Test), so the return keeps its dependents.
+    # $40 personal + $40 dependent.
+    ia_exemption_credit: 80
+
+- name: 2024 joint return whose claimable spouse's claimant meets the filing exception gets the dependent credit (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: IA
+  output:
+    # The would-be claimant meets the filing exception (Publication 501,
+    # Dependent Taxpayer Test), so the return keeps its dependents.
+    # $80 + $40 = $120.
+    ia_exemption_credit: 120
+
+- name: 2024 joint return whose claimable spouse's claimant meets the filing exception gets the dependent credit (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: IA
+  output:
+    ia_exemption_credit: 120

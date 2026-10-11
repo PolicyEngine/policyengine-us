@@ -534,3 +534,32 @@
     md_poverty_line_credit_potential: 50
     md_local_poverty_line_credit: 32
     md_poverty_line_credit_income_level: 21150
+
+
+- name: 2025 single filer whose claimant meets the filing exception still gets no poverty line credit
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 1000
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        md_income_tax_before_credits: 200
+        md_married_or_has_child_non_refundable_eitc: 0
+    households:
+      household:
+        members: [person_a]
+        state_code: MD
+  output:
+    # Filing status 6 covers any person who "can be claimed"; the filing
+    # exception does not change that.
+    md_poverty_line_credit_earned_income: 0
+    is_eligible_md_poverty_line_credit: false
+    md_poverty_line_credit_potential: 0

@@ -288,3 +288,86 @@
   output:
     # $4,000 + $15,750 standard deduction added back = $19,750 > $9,000.
     ia_is_tax_exempt: false
+
+
+- name: 2022 single filer who can be claimed but is not claimed keeps the ordinary exemption
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        ia_net_income: 6000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: IA
+  output:
+    # The filer can be claimed but nobody claims them; this rule turns on
+    # being claimed.
+    # $6,000 <= $9,000 single limit.
+    ia_is_tax_exempt: true
+
+- name: 2022 joint return with one spouse who can be claimed but is not claimed is exempt (the claimable spouse is the head)
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        ia_net_income: 3000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        ia_net_income: 3000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: IA
+  output:
+    # The filer can be claimed but nobody claims them; this rule turns on
+    # being claimed.
+    # $3,000 + $3,000 = $6,000 <= $13,500.
+    ia_is_tax_exempt: true
+
+- name: 2022 joint return with one spouse who can be claimed but is not claimed is exempt (the claimable spouse is the spouse)
+  period: 2022
+  input:
+    people:
+      person_b:
+        age: 30
+        ia_net_income: 3000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        ia_net_income: 3000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: IA
+  output:
+    ia_is_tax_exempt: true

@@ -9,6 +9,7 @@ class la_dependents_exemption(Variable):
         "https://dam.ldr.la.gov/taxforms/6935(11_02)F.pdf#page=1",
         "https://dam.ldr.la.gov/taxforms/IT540iWEB(2022)D1.pdf#page=2",
         "https://dam.ldr.la.gov/taxforms/IT540i(2021)%20Instructions.pdf#page=3",
+        "https://dam.ldr.la.gov/taxforms/IT540i%20WEB(2023)%20INSTRUCTIONS.pdf#page=3",
         "https://dam.ldr.la.gov/taxforms/IT540i%20WEB%20(2024)D18%20INSTRUCTIONS.pdf#page=3",
     ]
     # Even though the tax computation worksheet refers "dependent exemption" as credits, the instructions for

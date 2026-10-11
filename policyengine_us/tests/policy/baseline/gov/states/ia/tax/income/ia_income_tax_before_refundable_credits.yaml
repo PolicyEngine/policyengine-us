@@ -205,3 +205,32 @@
         state_code: IA
   output:
     ia_income_tax_before_refundable_credits: 700
+
+
+- name: 2022 single filer who can be claimed but is not claimed has tax reduced to income above $9,000
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 30
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+        ia_income_tax_before_credits: 700
+        ia_non_refundable_credits: 0
+        ia_is_tax_exempt: false
+        ia_modified_income: 9500
+    households:
+      household:
+        members: [person_a]
+        state_code: IA
+  output:
+    # The filer can be claimed but nobody claims them; this rule turns on
+    # being claimed.
+    # min($700, $9,500 - $9,000) = $500.
+    ia_income_tax_before_refundable_credits: 500

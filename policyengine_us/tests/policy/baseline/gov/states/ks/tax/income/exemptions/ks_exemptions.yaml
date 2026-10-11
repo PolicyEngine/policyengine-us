@@ -188,3 +188,31 @@
   output:
     # $18,320 + $2,320 = $20,640.
     ks_exemptions: 20640
+
+
+- name: 2024 single filer whose claimant meets the filing exception gets the dependent exemption
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 20
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: KS
+  output:
+    # The would-be claimant meets the filing exception (Publication 501,
+    # Dependent Taxpayer Test), so the return keeps its dependents.
+    # $9,160 + $2,320 = $11,480.
+    ks_exemptions: 11480
