@@ -59,6 +59,8 @@
     reduced_price_school_meals: 1
     spm_unit_energy_subsidy: 9
     general_assistance: 6
+    part_d_lis: 11
+    msp: 100
     wic: 100
     head_start: 100
     early_head_start: 100
@@ -66,7 +68,9 @@
     household_state_benefits: 100
     household_health_benefits: 100
   output:
-    cbo_household_means_tested_transfers: 55
+    # The Medicare Part D low-income subsidy counts; Medicare Savings
+    # Programs do not.
+    cbo_household_means_tested_transfers: 66
 
 - name: CBO after-tax income uses federal taxes only and keeps negative income tax
   period: 2025
@@ -95,3 +99,30 @@
     cbo_household_means_tested_transfers: 11_000
     cbo_household_federal_taxes: 3_252
     cbo_household_income_after_transfers_and_taxes: 45_085
+
+- name: CBO income after transfers adds the Part D low-income subsidy
+  period: 2026
+  input:
+    age: 70
+    medicare_enrolled: true
+    social_security: 20_000
+    interest_income: 5_000
+    bank_account_assets: 15_000
+    state_code: TX
+    medicaid: 0
+    chip: 0
+    snap: 0
+    housing_assistance: 0
+    ssi: 0
+    tanf: 0
+    free_school_meals: 0
+    reduced_price_school_meals: 0
+    spm_unit_energy_subsidy: 0
+    general_assistance: 0
+  output:
+    # Eligible through the subsidy's own tests (countable income 19,760 <
+    # 23,940, resources 15,000 <= 18,090), valued at the 2026 Trustees
+    # average of $1,254 per subsidy enrollee, the only means-tested
+    # transfer here.
+    part_d_lis: 1_254
+    cbo_household_means_tested_transfers: 1_254
