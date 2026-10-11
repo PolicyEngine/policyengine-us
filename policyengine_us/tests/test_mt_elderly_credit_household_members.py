@@ -151,6 +151,13 @@ def calculate(cases):
             "mt_refundable_credits_before_renter_credit", YEAR, map_to="household"
         )
     )
+    federal_refundable_credits = np.asarray(
+        simulation.calculate(
+            "mt_elderly_homeowner_or_renter_credit_federal_refundable_credits",
+            YEAR,
+            map_to="household",
+        )
+    )
     # Households and people are in situation order: A0, B0, C0, D0, A1, ...;
     # the member follows the claimant.
     n, arrangements = len(cases), len(ARRANGEMENTS)
@@ -160,6 +167,9 @@ def calculate(cases):
         "member_credit": person_credit[1::2].reshape(n, arrangements).T,
         "member_is_dependent": dependent[1::2].reshape(n, arrangements).T,
         "other_refundable_credits": other_refundable_credits.reshape(n, arrangements).T,
+        "federal_refundable_credits": federal_refundable_credits.reshape(
+            n, arrangements
+        ).T,
     }
 
 
@@ -202,6 +212,7 @@ def assert_properties(cases):
     # Equivalence assumes these income definitions contain no refundable
     # credits whose eligibility changes when the member files separately.
     assert np.all(result["other_refundable_credits"] == 0), cases
+    assert np.all(result["federal_refundable_credits"] == 0), cases
     # The other member is a dependent in A, C and D and their own filer in B.
     assert result["member_is_dependent"].tolist() == [
         [True] * len(cases),
