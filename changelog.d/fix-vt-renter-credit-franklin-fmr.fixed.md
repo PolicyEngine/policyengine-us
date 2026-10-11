@@ -1,0 +1,1 @@
+Use the Vermont Department of Taxes' averages for Franklin and Grand Isle fair market rents in 2022, 2023 and 2025, and round the renter credit amount to whole dollars before the income phase-out, so the renter credit's base amounts match the department's published tables.

@@ -28,7 +28,10 @@ class vt_renter_credit(Variable):
             county
         ]
         fmr = p.fair_market_rent[tax_unit_size][county]
-        base_credit_amount = fmr * MONTHS_IN_YEAR * p.fmr_rate
+        # The department rounds the credit amount to whole dollars, half up,
+        # before applying the income phase-out: its 2021 calculator computes
+        # ROUND(FMR * 12 * 10%, 0), and its published tables are whole dollars.
+        base_credit_amount = np.floor(fmr * MONTHS_IN_YEAR * p.fmr_rate + 0.5)
 
         # Compute what the spreadsheet calls the "percent rebate claimable"
         vt_renter_credit_income = tax_unit("vt_renter_credit_income", period)
