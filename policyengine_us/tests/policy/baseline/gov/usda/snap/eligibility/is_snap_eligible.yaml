@@ -431,3 +431,340 @@
     is_snap_eligible: true
     # $994 - ceil(30% x $2,777 = $833.10) = $994 - $834 = $160.
     snap: 160
+    # SNAP automatically confers CARE categorical eligibility; CARE excludes FERA.
+    # Leave CARE categorical eligibility derived to exercise the complete chain.
+    ca_fera_eligible: false
+
+# ACL 14-56 p. 6 and ACL 14-63 p. 2: deny zero allotments for 3+;
+# retain the minimum for 1-2. FY2026 CDSS maximums: $785 (3), $994 (4).
+# Wages $42,330/12 x 80% minus $209 = $2,613;
+# maximum minus ceil(30% x net) = $1. A $1 ongoing allotment is issued.
+- name: California MCE household of 3 with net income 2613 has a 1 dollar allotment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      earner:
+        age: 35
+        employment_income: 42330
+        weekly_hours_worked_before_lsr: 40
+      member_1:
+        age: 8
+      member_2:
+        age: 8
+    spm_units:
+      unit:
+        members:
+        - earner
+        - member_1
+        - member_2
+        housing_cost: 0
+        snap_utility_allowance: 0
+    tax_units:
+      unit:
+        members:
+        - earner
+        - member_1
+        - member_2
+    households:
+      household:
+        members:
+        - earner
+        - member_1
+        - member_2
+        state_code: CA
+  output:
+    snap_net_income: 2613
+    meets_snap_net_income_test: false
+    is_tanf_non_cash_eligible: true
+    meets_snap_categorical_eligibility: true
+    snap_allotment_before_eligibility: 1
+    ca_snap_meets_allotment_requirement: true
+    is_snap_eligible: true
+    snap: 1
+
+# ACL 14-56 p. 6 and ACL 14-63 p. 2: deny zero allotments for 3+;
+# retain the minimum for 1-2. FY2026 CDSS maximums: $785 (3), $994 (4).
+# Wages $42,345/12 x 80% minus $209 = $2,614;
+# maximum minus ceil(30% x net) = $0. The application is denied or participation discontinued.
+- name: California MCE household of 3 with net income 2614 has a 0 dollar allotment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      earner:
+        age: 35
+        employment_income: 42345
+        weekly_hours_worked_before_lsr: 40
+      member_1:
+        age: 8
+      member_2:
+        age: 8
+    spm_units:
+      unit:
+        members:
+        - earner
+        - member_1
+        - member_2
+        housing_cost: 0
+        snap_utility_allowance: 0
+    tax_units:
+      unit:
+        members:
+        - earner
+        - member_1
+        - member_2
+    households:
+      household:
+        members:
+        - earner
+        - member_1
+        - member_2
+        state_code: CA
+  output:
+    snap_net_income: 2614
+    meets_snap_net_income_test: false
+    is_tanf_non_cash_eligible: true
+    meets_snap_categorical_eligibility: true
+    snap_allotment_before_eligibility: 0
+    ca_snap_meets_allotment_requirement: false
+    is_snap_eligible: false
+    snap: 0
+
+# ACL 14-56 p. 6 and ACL 14-63 p. 2: deny zero allotments for 3+;
+# retain the minimum for 1-2. FY2026 CDSS maximums: $785 (3), $994 (4).
+# Wages $52,995/12 x 80% minus $223 = $3,310;
+# maximum minus ceil(30% x net) = $1. A $1 ongoing allotment is issued.
+- name: California MCE household of 4 with net income 3310 has a 1 dollar allotment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      earner:
+        age: 35
+        employment_income: 52995
+        weekly_hours_worked_before_lsr: 40
+      member_1:
+        age: 8
+      member_2:
+        age: 8
+      member_3:
+        age: 8
+    spm_units:
+      unit:
+        members:
+        - earner
+        - member_1
+        - member_2
+        - member_3
+        housing_cost: 0
+        snap_utility_allowance: 0
+    tax_units:
+      unit:
+        members:
+        - earner
+        - member_1
+        - member_2
+        - member_3
+    households:
+      household:
+        members:
+        - earner
+        - member_1
+        - member_2
+        - member_3
+        state_code: CA
+  output:
+    snap_net_income: 3310
+    meets_snap_net_income_test: false
+    is_tanf_non_cash_eligible: true
+    meets_snap_categorical_eligibility: true
+    snap_allotment_before_eligibility: 1
+    ca_snap_meets_allotment_requirement: true
+    is_snap_eligible: true
+    snap: 1
+
+# ACL 14-56 p. 6 and ACL 14-63 p. 2: deny zero allotments for 3+;
+# retain the minimum for 1-2. FY2026 CDSS maximums: $785 (3), $994 (4).
+# Wages $53,010/12 x 80% minus $223 = $3,311;
+# maximum minus ceil(30% x net) = $0. The application is denied or participation discontinued.
+- name: California MCE household of 4 with net income 3311 has a 0 dollar allotment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      earner:
+        age: 35
+        employment_income: 53010
+        weekly_hours_worked_before_lsr: 40
+      member_1:
+        age: 8
+      member_2:
+        age: 8
+      member_3:
+        age: 8
+    spm_units:
+      unit:
+        members:
+        - earner
+        - member_1
+        - member_2
+        - member_3
+        housing_cost: 0
+        snap_utility_allowance: 0
+    tax_units:
+      unit:
+        members:
+        - earner
+        - member_1
+        - member_2
+        - member_3
+    households:
+      household:
+        members:
+        - earner
+        - member_1
+        - member_2
+        - member_3
+        state_code: CA
+  output:
+    snap_net_income: 3311
+    meets_snap_net_income_test: false
+    is_tanf_non_cash_eligible: true
+    meets_snap_categorical_eligibility: true
+    snap_allotment_before_eligibility: 0
+    ca_snap_meets_allotment_requirement: false
+    is_snap_eligible: false
+    snap: 0
+
+# ACL 14-56 p. 6 and ACL 14-63 p. 2: deny zero allotments for 3+;
+# retain the minimum for 1-2. FY2026 CDSS maximums: $785 (3), $994 (4).
+# Calculated benefit is below the $24 minimum; net exceeds the regular standard.
+- name: California MCE household of 1 with net income 1791 has a 24 dollar allotment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      earner:
+        age: 35
+        employment_income: 30000
+        weekly_hours_worked_before_lsr: 40
+    spm_units:
+      unit:
+        members:
+        - earner
+        housing_cost: 0
+        snap_utility_allowance: 0
+    tax_units:
+      unit:
+        members:
+        - earner
+    households:
+      household:
+        members:
+        - earner
+        state_code: CA
+  output:
+    snap_net_income: 1791
+    meets_snap_net_income_test: false
+    is_tanf_non_cash_eligible: true
+    meets_snap_categorical_eligibility: true
+    snap_allotment_before_eligibility: 24
+    ca_snap_meets_allotment_requirement: true
+    is_snap_eligible: true
+    snap: 24
+
+# ACL 14-56 p. 6 and ACL 14-63 p. 2: deny zero allotments for 3+;
+# retain the minimum for 1-2. FY2026 CDSS maximums: $785 (3), $994 (4).
+# Calculated benefit is below the $24 minimum; net exceeds the regular standard.
+- name: California MCE household of 2 with net income 1924 has a 24 dollar allotment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      earner:
+        age: 35
+        employment_income: 32000
+        weekly_hours_worked_before_lsr: 40
+      member_1:
+        age: 8
+    spm_units:
+      unit:
+        members:
+        - earner
+        - member_1
+        housing_cost: 0
+        snap_utility_allowance: 0
+    tax_units:
+      unit:
+        members:
+        - earner
+        - member_1
+    households:
+      household:
+        members:
+        - earner
+        - member_1
+        state_code: CA
+  output:
+    snap_net_income: 1924
+    meets_snap_net_income_test: false
+    is_tanf_non_cash_eligible: true
+    meets_snap_categorical_eligibility: true
+    snap_allotment_before_eligibility: 24
+    ca_snap_meets_allotment_requirement: true
+    is_snap_eligible: true
+    snap: 24
+
+# ACL 14-56 p. 6 and ACL 14-63 p. 2: deny zero allotments for 3+;
+# retain the minimum for 1-2. FY2026 CDSS maximums: $785 (3), $994 (4).
+# Review regression: $5,000 gross - $1,000 earned deduction - $223 = $3,777;
+# $994 - ceil($1,133.10) is negative, so the allotment and participation are zero.
+- name: California MCE household of 4 with net income 3777 has a 0 dollar allotment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      earner:
+        age: 35
+        employment_income: 60000
+        weekly_hours_worked_before_lsr: 40
+      member_1:
+        age: 8
+      member_2:
+        age: 8
+      member_3:
+        age: 8
+    spm_units:
+      unit:
+        members:
+        - earner
+        - member_1
+        - member_2
+        - member_3
+        housing_cost: 0
+        snap_utility_allowance: 0
+    tax_units:
+      unit:
+        members:
+        - earner
+        - member_1
+        - member_2
+        - member_3
+    households:
+      household:
+        members:
+        - earner
+        - member_1
+        - member_2
+        - member_3
+        state_code: CA
+  output:
+    snap_net_income: 3777
+    meets_snap_net_income_test: false
+    is_tanf_non_cash_eligible: true
+    meets_snap_categorical_eligibility: true
+    snap_allotment_before_eligibility: 0
+    ca_snap_meets_allotment_requirement: false
+    is_snap_eligible: false
+    snap: 0

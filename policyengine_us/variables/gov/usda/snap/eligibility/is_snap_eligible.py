@@ -31,4 +31,12 @@ class is_snap_eligible(Variable):
         eligible_member_present = spm_unit.any(
             ~person("is_snap_excluded_member", period)
         )
-        return (normal_eligibility | categorical_eligibility) & eligible_member_present
+        in_ca = spm_unit.household("state_code", period) == StateCode.CA
+        ca_allotment_requirement = spm_unit(
+            "ca_snap_meets_allotment_requirement", period
+        )
+        return (
+            (normal_eligibility | categorical_eligibility)
+            & eligible_member_present
+            & (~in_ca | ca_allotment_requirement)
+        )
