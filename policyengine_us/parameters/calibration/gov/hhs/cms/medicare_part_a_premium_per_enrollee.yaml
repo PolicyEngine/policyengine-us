@@ -1,0 +1,42 @@
+description: The Centers for Medicare and Medicaid Services (CMS) sets, and the Medicare Trustees project, this standard monthly Medicare Part A premium per enrollee who has fewer than 30 quarters of Medicare-covered employment.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Medicare Part A standard monthly premium per enrollee
+  reference:
+  # Table V.E1, "HI Cost-Sharing and Premium Amounts", "Monthly premium,
+  # Standard" column (file page 212): historical amounts through 2026 and
+  # intermediate estimates for 2027-2035. Report transmitted 2026-06-09,
+  # retrieved 2026-10-11, sha256
+  # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8.
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.E1
+    href: https://www.cms.gov/oact/tr/2026#page=212
+  - title: 2026 Medicare Parts A & B Premiums and Deductibles
+    href: https://www.cms.gov/newsroom/fact-sheets/2026-medicare-parts-b-premiums-deductibles
+values:
+  # Historical.
+  2015-01-01: 407
+  2016-01-01: 411
+  2017-01-01: 413
+  2018-01-01: 422
+  2019-01-01: 437
+  2020-01-01: 458
+  2021-01-01: 471
+  2022-01-01: 499
+  2023-01-01: 506
+  2024-01-01: 505
+  2025-01-01: 518
+  2026-01-01: 565
+  # Trustees' intermediate estimates.
+  2027-01-01: 600
+  2028-01-01: 629
+  2029-01-01: 660
+  2030-01-01: 694
+  2031-01-01: 730
+  2032-01-01: 767
+  2033-01-01: 812
+  2034-01-01: 862
+  2035-01-01: 900
+  # 2036 to 2100 grow at the 2034-2035 rate (900 / 862, 4.4% a year) and later
+  # years hold the 2100 value; see set_all_uprating_parameters in
+  # uprating_extensions.py.

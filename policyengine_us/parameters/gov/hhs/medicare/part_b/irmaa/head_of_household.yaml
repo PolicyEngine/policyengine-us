@@ -5,7 +5,15 @@ metadata:
   amount_unit: currency-USD
   period: month
   label: Medicare Part B income brackets for head of household filers
+  # After the last announced year, each income-related adjustment amount
+  # follows the Medicare Trustees' projected standard Part B premium: 42
+  # U.S.C. 1395r(i)(3)(A) makes each a fixed multiple of the same
+  # unsubsidized premium amount. The thresholds are indexed to CPI-U under
+  # 1395r(i)(5); see extend_medicare_irmaa_thresholds in
+  # uprating_extensions.py.
   reference:
+    - title: 42 U.S.C. § 1395r(i)
+      href: https://www.law.cornell.edu/uscode/text/42/1395r#i
     - title: 2024 Medicare Parts A & B Premiums and Deductibles
       href: https://www.cms.gov/newsroom/fact-sheets/2024-medicare-parts-b-premiums-and-deductibles
     - title: 2025 Medicare Parts A & B Premiums and Deductibles
@@ -26,38 +34,73 @@ brackets:
       2025-01-01: 106_001
       2026-01-01: 109_001
     amount:
-      2024-01-01: 69.90
-      2025-01-01: 74
-      2026-01-01: 81.20
+      values:
+        2024-01-01: 69.90
+        2025-01-01: 74
+        2026-01-01: 81.20
+      metadata:
+        uprating:
+          parameter: calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+          rounding:
+            type: nearest
+            interval: 0.1
   - threshold:
       2024-01-01: 129_001
       2025-01-01: 133_001
       2026-01-01: 137_001
     amount:
-      2024-01-01: 174.70
-      2025-01-01: 185
-      2026-01-01: 202.90
+      values:
+        2024-01-01: 174.70
+        2025-01-01: 185
+        2026-01-01: 202.90
+      metadata:
+        uprating:
+          parameter: calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+          rounding:
+            type: nearest
+            interval: 0.1
   - threshold:
       2024-01-01: 161_001
       2025-01-01: 167_001
       2026-01-01: 171_001
     amount:
-      2024-01-01: 279.50
-      2025-01-01: 295.9
-      2026-01-01: 324.60
+      values:
+        2024-01-01: 279.50
+        2025-01-01: 295.9
+        2026-01-01: 324.60
+      metadata:
+        uprating:
+          parameter: calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+          rounding:
+            type: nearest
+            interval: 0.1
   - threshold:
       2024-01-01: 193_001
       2025-01-01: 200_001
       2026-01-01: 205_001
     amount:
-      2024-01-01: 384.30
-      2025-01-01: 406.9
-      2026-01-01: 446.30
+      values:
+        2024-01-01: 384.30
+        2025-01-01: 406.9
+        2026-01-01: 446.30
+      metadata:
+        uprating:
+          parameter: calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+          rounding:
+            type: nearest
+            interval: 0.1
   - threshold:
       2024-01-01: 500_000
       2025-01-01: 500_000
       2026-01-01: 500_000
     amount:
-      2024-01-01: 419.30
-      2025-01-01: 443.9
-      2026-01-01: 487
+      values:
+        2024-01-01: 419.30
+        2025-01-01: 443.9
+        2026-01-01: 487
+      metadata:
+        uprating:
+          parameter: calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee
+          rounding:
+            type: nearest
+            interval: 0.1

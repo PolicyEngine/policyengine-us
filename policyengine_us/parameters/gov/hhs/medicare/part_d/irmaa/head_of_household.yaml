@@ -5,6 +5,11 @@ metadata:
   period: month
   type: single_amount
   label: Medicare Part D IRMAA brackets for head of household filers
+  # After the last announced year, the thresholds are indexed to CPI-U under
+  # 42 U.S.C. 1395r(i)(5) and each adjustment amount is computed from the
+  # Medicare Trustees' projected base beneficiary premium under 42 U.S.C.
+  # 1395w-113(a)(7)(B); see extend_medicare_irmaa_thresholds and
+  # extend_medicare_part_d_irmaa_amounts in uprating_extensions.py.
   reference:
     - title: 42 U.S.C. § 1395w-113(a)(7) - Part D income-related premium adjustment.
       href: https://www.law.cornell.edu/uscode/text/42/1395w-113#a_7

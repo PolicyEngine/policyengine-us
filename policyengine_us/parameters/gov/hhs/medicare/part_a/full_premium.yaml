@@ -3,7 +3,17 @@ metadata:
   unit: currency-USD
   period: month
   label: Medicare Part A full premium
+  # After the last announced year, the premium follows the Medicare Trustees'
+  # projected standard Part A premium, rounded to the nearest dollar as 42
+  # U.S.C. 1395i-2(d)(2) requires.
+  uprating:
+    parameter: calibration.gov.hhs.cms.medicare_part_a_premium_per_enrollee
+    rounding:
+      type: nearest
+      interval: 1
   reference:
+    - title: 42 U.S.C. § 1395i-2(d)
+      href: https://www.law.cornell.edu/uscode/text/42/1395i-2#d
     - title: 2021 Medicare Parts A & B Premiums and Deductibles
       href: https://www.cms.gov/newsroom/press-releases/2021-medicare-part-b-premiums-remain-steady
     - title: 2022 Medicare Parts A & B Premiums and Deductibles

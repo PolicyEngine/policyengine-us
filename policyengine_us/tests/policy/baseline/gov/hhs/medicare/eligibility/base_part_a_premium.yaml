@@ -69,3 +69,22 @@
     medicare_quarters_of_coverage: 20
   output:
     base_part_a_premium: 6_780  # $565 * 12 months
+
+# Projected years follow the Trustees' Table V.E1.
+- name: 2027 projected reduced Part A premium.
+  period: 2027
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 35
+  output:
+    base_part_a_premium: 3_960  # $330 * 12 months
+
+- name: 2027 projected full Part A premium.
+  period: 2027
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 20
+  output:
+    base_part_a_premium: 7_200  # $600 * 12 months
