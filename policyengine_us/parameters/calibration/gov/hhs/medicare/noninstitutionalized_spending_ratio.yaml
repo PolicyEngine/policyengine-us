@@ -26,16 +26,19 @@ metadata:
   # page 8), but relative spending is published for 2022 only, so the 2022
   # ratio applies to every year from 2013, the first year of per_capita_cost.
   #
-  # Nursing homes are the facilities the survey excludes. The Medicare
-  # Current Beneficiary Survey's long-term care facilities also include
-  # assisted living and other residential care, whose residents the survey
-  # samples; excluding all of them gives a larger gap (community residents'
+  # The Current Population Survey has never sampled institutional group
+  # quarters such as nursing homes. The Medicare Current Beneficiary Survey's
+  # long-term care facilities also include assisted living, retirement homes
+  # and personal care homes, which are not institutional group quarters;
+  # excluding all of their residents gives a larger gap (community residents'
   # benefit payments per capita were 0.91 to 0.93 of the average in
   # 2006-2013, Table 4.1 over Table 1.1).
   - title: Medicare Payment Advisory Commission, Report to the Congress, June 2025, Chapter 5, Medicare beneficiaries in nursing homes
     href: https://www.medpac.gov/wp-content/uploads/2025/06/Jun25_Ch5_MedPAC_Report_To_Congress_SEC.pdf#page=9
   - title: Medicare Payment Advisory Commission, Medicare beneficiaries in nursing homes, October 2024 public meeting
     href: https://www.medpac.gov/wp-content/uploads/2023/10/Beneficiaries-in-Nursing-Homes-MedPAC-Oct-2024-SEC.pdf#page=5
+  - title: U.S. Bureau of Labor Statistics, Handbook of Methods, Current Population Survey, Design
+    href: https://www.bls.gov/opub/hom/cps/design.htm
   - title: Centers for Medicare and Medicaid Services, Characteristics and Perceptions of the Medicare Population, 2013, Table 4.1
     href: https://www.cms.gov/research-statistics-data-and-systems/research/mcbs/downloads/2013_characteristics_and_perceptions.zip
   # CBO likewise removes institutionalized enrollees' benefits before
