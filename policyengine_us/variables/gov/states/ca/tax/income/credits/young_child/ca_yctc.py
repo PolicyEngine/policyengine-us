@@ -13,6 +13,7 @@ class ca_yctc(Variable):
         "https://www.ftb.ca.gov/forms/2021/2021-3514.pdf#page=3",
         "https://www.ftb.ca.gov/forms/2022/2022-3514-instructions.html",
         "https://www.ftb.ca.gov/forms/2022/2022-3514.pdf#page=3",
+        "https://www.ftb.ca.gov/forms/2025/2025-3514-booklet.html",  # Lines 13, 23 and 23a
     )
     defined_for = StateCode.CA
 
@@ -54,8 +55,9 @@ class ca_yctc(Variable):
         has_limited_losses = total_net_loss <= p.loss_threshold
         # ... ... (B)(iii): wages, salaries, tips, and other employee
         # compensation within the same threshold (FTB 3514 line 23a, which
-        # carries the filers' wages from line 13)
-        wages = tax_unit_non_dep_sum("employment_income", tax_unit, period)
+        # carries the filers' California taxable wages, W-2 box 16, from
+        # line 13 rather than gross pay before elective deferrals).
+        wages = tax_unit_non_dep_sum("ca_taxable_wages", tax_unit, period)
         has_limited_wages = wages <= p.loss_threshold
         # ... ... combine all the (b) elements where appropriate
         is_loss_eligible = where(

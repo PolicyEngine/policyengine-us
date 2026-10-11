@@ -4,12 +4,28 @@ metadata:
   period: year
   label: Montana elderly homeowner or renter credit gross income sources
   reference:
+  - title: HB191 (2021), section 1(9), all nontaxable income
+    href: https://archive.legmt.gov/bills/2021/HB0199/HB0191_X.pdf#page=2
   - title: Montana 2022 Form2 Individual Income Tax Instructions, Page47, Gross Household Income
     href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
   - title: 2022 Montana Code Annotated, Title 15, Chapter 30, Part 23, 15-30-2337 (9)
     href: https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-23/section-15-30-2337/
   - title: 2024 Montana Individual Income Tax Return
     href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=46
+  - title: ARM 42.4.301(2) as in effect 8/20/2004 to 11/9/2017 ("elderly homeowner/renter credit refunds received")
+    href: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/788508cc-8418-41c8-926d-3dfb11af3fd6
+  - title: ARM 42.4.301(2) as in effect 11/10/2017 to 9/6/2024 ("federal refundable credits received" and "any state refundable credits received")
+    href: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/297c7a8d-f6f4-4b70-a7b7-fe1cedee53e7
+  - title: ARM 42.4.301(2) as in effect from 9/7/2024 ("federal refundable tax credits received" and "any state refundable tax credits received")
+    href: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/768c8344-24ee-4950-9d5e-9d8fc97ec0f7
+  - title: 2017 Montana Form 2EC instructions, Gross Household Income Worksheet, item 4 ("Any federal or state refundable credits including the 2EC credit")
+    href: https://taxsim.nber.org/historical_state_tax_forms/MT/2017/Form%202%202017%20Booklet.pdf#page=65
+  - title: 2023 Montana Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 7, refundable credits received
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=51
+  - title: 2024 Montana Form 2 instructions, Schedule 2EC, line 8, refundable credits received
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
+  - title: 2025 Montana Form 2 instructions, Schedule 2EC, line 8, refundable credits received
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=45
 
 values:
   2009-01-01:
@@ -27,8 +43,45 @@ values:
     - child_support_received # § 15-30-2337(9)(a)(iv) – support money
     - strike_benefits # § 15-30-2337(9)(a)(v) – nontaxable strike benefits
     - general_assistance # § 15-30-2337(9)(a)(vi) – cash public assistance
-    - mt_refundable_credits_before_renter_credit # Line 7: Refundable credits
+    # Refundable credits received (2023 schedule line 7, Schedule 2EC line 8
+    # from 2024): Montana's refundable credits other than this credit,
+    # and this credit as received during the year (ARM 42.4.301(2)(c)).
+    - mt_refundable_credits_before_renter_credit
+    - mt_elderly_homeowner_or_renter_credit_received
+  # ARM 42.4.301(2)(b), amended effective 11/10/2017, counts "federal
+  # refundable credits received"; the 2017 Form 2EC worksheet counts "any
+  # federal or state refundable credits".
+  2017-01-01:
+    - adjusted_gross_income_person
+    - tax_exempt_interest_income
+    - tax_exempt_ira_distributions
+    - tax_exempt_pension_income
+    - veterans_benefits
+    - child_support_received
+    - strike_benefits
+    - general_assistance
+    - mt_refundable_credits_before_renter_credit
+    - mt_elderly_homeowner_or_renter_credit_received
+    - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
+  # Actual rebate receipts count under the statutory nontaxable-income
+  # definition and ARM 42.4.301(2)(c). The 2023 form's illustrative list
+  # establishes no exemption for 2022 rebates received in 2023. The
+  # 2024/2025 schedules explicitly name the prior property-year rebates.
+  2023-01-01:
+    - adjusted_gross_income_person
+    - tax_exempt_interest_income
+    - tax_exempt_ira_distributions
+    - tax_exempt_pension_income
+    - veterans_benefits
+    - child_support_received
+    - strike_benefits
+    - general_assistance
+    - mt_refundable_credits_before_renter_credit
+    - mt_elderly_homeowner_or_renter_credit_received
+    - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
+    - mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received
 # Social Security under § 15-30-2337(9)(a)(viii) is added separately in
 # mt_elderly_homeowner_or_renter_credit_gross_household_income.py because the
 # untaxed portion is computed as social_security - taxable_social_security.
-# The renter credit itself is excluded to avoid a circular reference.
+# This year's elderly homeowner/renter credit is excluded to avoid a circular
+# reference; the credit received during the year counts instead.
