@@ -31,8 +31,10 @@ class nj_dependents_attending_college_exemption(Variable):
         # dependent on line 10 or 11" (NJ-1040 line 12), and a return on which
         # the filer (or, if joint, either spouse) can be claimed as a
         # dependent has no dependents (IRC 152(b)(1)).
+        # Publication 501 excepts a return whose would-be claimant files only
+        # for a refund.
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         is_dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
 

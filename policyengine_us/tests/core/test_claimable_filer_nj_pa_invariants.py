@@ -10,10 +10,11 @@ claimable filer has no Oklahoma regular exemption, no childless NJ or
 Oklahoma EITC, and claims Pennsylvania Tax Forgiveness only on their own tax
 and only when the parent who claims them qualifies.
 
-For couples drawn by Hypothesis and a seeded population in these states,
-with either, both or neither spouse claimed, each output is the same under
-either head/spouse labelling, and marking another filer as claimed never
-raises the exemptions, credits, deductions and forgiveness changed here.
+For couples drawn by Hypothesis (with claimability, the actual claim and the
+refund-only claimant exception drawn per adult) and a seeded population in
+these states, each output is the same under either head/spouse labelling, and
+marking another filer as claimed never raises the exemptions, credits,
+deductions and forgiveness changed here.
 """
 
 import pytest
@@ -86,12 +87,30 @@ def children(draw):
 
 @st.composite
 def couples(draw):
+    # As in the swap-invariance test: who can be claimed, who of them is
+    # actually claimed, and, for the unclaimed, whether the would-be claimant
+    # files only for a refund (Publication 501's exception).
+    claimable = draw(st.sampled_from(CLAIM_PATTERNS))
+    claimed = tuple(can_claim and draw(st.booleans()) for can_claim in claimable)
     return {
         "state": draw(st.sampled_from(STATES)),
         "adults": [draw(filers()), draw(filers())],
         "dependents": draw(st.lists(children(), max_size=2)),
-        "claimed": draw(st.sampled_from(CLAIM_PATTERNS)),
+        "claimed": claimed,
+        "claimable": claimable,
+        "exception": tuple(
+            not is_claimed and draw(st.booleans()) for is_claimed in claimed
+        ),
     }
+
+
+def _claim_only(units):
+    # Monotonicity marks filers as claimed; without separate claimability or
+    # exception inputs, claimability follows the claim.
+    return [
+        {k: v for k, v in unit.items() if k not in ("claimable", "exception")}
+        for unit in units
+    ]
 
 
 @settings(
@@ -103,7 +122,7 @@ def couples(draw):
 @given(st.sampled_from(YEARS), st.lists(couples(), min_size=6, max_size=12))
 def test_nj_pa_claimable_filer_rules_are_label_free(year, units):
     check_swap(units, year, OUTPUTS)
-    check_monotone(units, year, MONOTONE)
+    check_monotone(_claim_only(units), year, MONOTONE)
 
 
 @pytest.mark.parametrize("year", YEARS)

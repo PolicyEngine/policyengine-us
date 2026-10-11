@@ -44,9 +44,17 @@ class nj_childless_eitc_age_eligible(Variable):
 
         # Section 32(c)(1)(A)(ii)(III): without a qualifying child, the filer
         # must not be a dependent of another taxpayer, and on a joint return
-        # neither spouse may be. The NJ-1040 line 58 worksheet also requires
-        # "You are not listed as a dependent on another tax return."
-        dependent_elsewhere = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # neither spouse may be, unless the would-be claimant files only for a
+        # refund (Publication 596), as for the federal credit.
+        dependent_elsewhere = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
+        # The NJ-1040 line 58 worksheet also requires "You are not listed as a
+        # dependent on another tax return", an actual claim.
+        filer = person("is_tax_unit_head_or_spouse", period)
+        listed_elsewhere = tax_unit.any(
+            filer & person("claimed_as_dependent_on_another_return", period)
+        )
 
         return (
             ~separate
@@ -55,4 +63,5 @@ class nj_childless_eitc_age_eligible(Variable):
             & tax_unit("nj_eitc_income_eligible", period)
             & ~claims_section_911
             & ~dependent_elsewhere
+            & ~listed_elsewhere
         )

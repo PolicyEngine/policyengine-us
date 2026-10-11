@@ -23,8 +23,12 @@ class nj_dependents_exemption(Variable):
         # for federal tax purposes" (NJ-1040 lines 10 and 11), and under IRC
         # 152(b)(1) a return on which the filer (or, if joint, either spouse)
         # can be claimed as a dependent has none.
+        # Publication 501 excepts a return whose would-be claimant files only
+        # for a refund.
         dependents = tax_unit("tax_unit_dependents", period)
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
 
         # Get their dependent exemption amount based on their filing status.
         return where(filer_is_dependent, 0, dependents) * p.amount

@@ -28,10 +28,12 @@ class nj_ctc(Variable):
         # 54A:3-1, which follows federal dependency, and a return on which the
         # filer (or, if joint, either spouse) can be claimed as a dependent
         # has no dependents (IRC 152(b)(1)).
+        # Publication 501 excepts a return whose would-be claimant files only
+        # for a refund.
         person = tax_unit.members
         age_eligible = person("age", period) < p.age_limit
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
         age_eligible_dependent = age_eligible & dependent

@@ -85,7 +85,11 @@ class ok_stc(Variable):
         # income tax purposes" (Form 538-S instructions), and a return on
         # which the filer (or, if joint, either spouse) can be claimed as a
         # dependent has none (IRC 152(b)(1)).
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # Publication 501 excepts a return whose would-be claimant files only
+        # for a refund.
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         has_dependents = (tax_unit("tax_unit_dependents", period) > 0) & ~(
             filer_is_dependent
         )

@@ -33,11 +33,13 @@ class ok_count_exemptions(Variable):
         # person's return" (Form 511 instructions, item F). The special (65 or
         # older) and blind exemptions are separate boxes with no such bar.
         # Each filer's own regular exemption follows that filer's own flag.
-        claimed = person("claimed_as_dependent_on_another_return", period)
-        head_claimed = tax_unit.any(person("is_tax_unit_head", period) & claimed)
-        spouse_claimed = tax_unit.any(person("is_tax_unit_spouse", period) & claimed)
-        head_regular = where(head_claimed, 0, 1)
-        spouse_regular = where(spouse_claimed, 0, 1)
+        claimable = person("claimable_as_dependent_on_another_return", period)
+        head_claimable = tax_unit.any(person("is_tax_unit_head", period) & claimable)
+        spouse_claimable = tax_unit.any(
+            person("is_tax_unit_spouse", period) & claimable
+        )
+        head_regular = where(head_claimable, 0, 1)
+        spouse_regular = where(spouse_claimable, 0, 1)
         # head exemptions
         age_eligible = tax_unit("age_head", period) >= p.special_age_minimum
         head_exemptions = (
@@ -59,8 +61,12 @@ class ok_count_exemptions(Variable):
         # dependent exemptions: each "dependent, as defined in IRC Sec. 152"
         # (item F), and a return on which the filer (or, if joint, either
         # spouse) can be claimed as a dependent has none (IRC 152(b)(1)).
+        # Publication 501 excepts a return whose would-be claimant files only
+        # for a refund.
         dependents = tax_unit("tax_unit_dependents", period)
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         # total number of exemptions
         return (
             head_exemptions

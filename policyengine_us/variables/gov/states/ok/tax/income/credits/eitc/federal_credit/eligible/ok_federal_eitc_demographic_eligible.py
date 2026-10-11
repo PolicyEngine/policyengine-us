@@ -53,8 +53,11 @@ class ok_federal_eitc_demographic_eligible(Variable):
         # IRC 32(c)(1)(A)(ii)(III), unchanged since 2020: without a
         # qualifying child, the filer must not be a dependent of another
         # taxpayer; on a joint return, "neither you nor your spouse can be
-        # claimed as a dependent by another person" (2020 Publication 596).
-        dependent_elsewhere = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # claimed as a dependent by another person" (2020 Publication 596),
+        # unless the would-be claimant files only for a refund.
+        dependent_elsewhere = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         childless_eligible = (
             tax_unit.any(meets_age_requirements & is_filer_or_spouse)
             & ~dependent_elsewhere

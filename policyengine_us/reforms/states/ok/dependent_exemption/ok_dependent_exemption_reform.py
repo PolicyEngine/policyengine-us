@@ -17,8 +17,10 @@ def create_ok_dependent_exemption() -> Reform:
             age = person("age", period)
             # A return on which the filer (or, if joint, either spouse) can be
             # claimed as a dependent has no dependents (IRC 152(b)(1)).
+            # Publication 501 excepts a return whose would-be claimant files only
+            # for a refund.
             is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
-                "head_or_spouse_is_dependent_elsewhere", period
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
             )
 
             # Apply age limit if in effect
@@ -56,7 +58,7 @@ def create_ok_dependent_exemption() -> Reform:
             # A return on which the filer (or, if joint, either spouse) can be
             # claimed as a dependent has no dependents (IRC 152(b)(1)).
             is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
-                "head_or_spouse_is_dependent_elsewhere", period
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
             )
             total_dependents = tax_unit.sum(is_dependent)
             eligible_dependent_exemptions = tax_unit(
@@ -80,7 +82,7 @@ def create_ok_dependent_exemption() -> Reform:
             # a dependent (IRC 152(b)(1)).
             total_exemptions_count = tax_unit("ok_count_exemptions", period)
             filer_is_dependent = tax_unit(
-                "head_or_spouse_is_dependent_elsewhere", period
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
             )
             dependents = where(
                 filer_is_dependent, 0, tax_unit("tax_unit_dependents", period)

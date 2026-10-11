@@ -20,8 +20,10 @@ def create_nj_dependent_exemption() -> Reform:
             person = tax_unit.members
             # A return on which the filer (or, if joint, either spouse) can be
             # claimed as a dependent has no dependents (IRC 152(b)(1)).
+            # Publication 501 excepts a return whose would-be claimant files only
+            # for a refund.
             is_dependent = person("is_tax_unit_dependent", period) & ~person.tax_unit(
-                "head_or_spouse_is_dependent_elsewhere", period
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
             )
             # Age gate: when in effect, only dependents under the chosen age
             # are re-priced to the reform amount; older dependents keep the

@@ -7,7 +7,7 @@ class pa_tax_forgiveness_eligible(Variable):
     label = "Eligible to claim Pennsylvania tax forgiveness"
     documentation = (
         "Whether this head or spouse can claim Pennsylvania Tax Forgiveness: "
-        "one who can be claimed as a dependent on another return can claim it "
+        "one who is claimed as a dependent on another federal return can claim it "
         "only when the parent, grandparent or foster parent who claims them "
         "qualifies for it."
     )
