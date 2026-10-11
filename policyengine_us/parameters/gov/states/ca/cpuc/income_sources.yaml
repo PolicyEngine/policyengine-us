@@ -11,11 +11,7 @@ description: >-
 # employment-related, non-cash income. The same footnote appears on the
 # CPUC-filed tariff sheet referenced below.
 #
-# SNAP benefits are excluded in both dated lists: 7 U.S.C. 2017(b) prohibits
-# treating their value as income or resources under any federal, state or
-# local law, including California's CARE and FERA programs.
-#
-# Separately, D.14-08-030, issued August 14,
+# Housing subsidies are the one exception. D.14-08-030, issued August 14,
 # 2014, holds in Section 6.2 that the income definition remains unchanged
 # except that housing subsidies will not be considered income, and Ordering
 # Paragraph 40(3) adopts "Housing subsidies are not counted as income". The
@@ -71,6 +67,7 @@ values:
   # Public assistance payments
   - tanf
   - ssi
+  - snap
   - wic
   # Social Security
   - social_security
@@ -113,6 +110,7 @@ values:
   # Public assistance payments
   - tanf
   - ssi
+  - snap
   - wic
   # Social Security
   - social_security
@@ -139,8 +137,6 @@ metadata:
   period: year
   label: CA CPUC CARE/FERA income sources
   reference:
-    - title: 7 U.S.C. 2017(b), exclusion of SNAP benefits from income and resources
-      href: https://www.govinfo.gov/content/pkg/USCODE-2024-title7/html/USCODE-2024-title7-chap51-sec2017.htm
     - title: PG&E Form 01-9077, CARE/FERA Program Application (Rev. 6.26)
       href: https://www.pge.com/assets/pge/localized/en/docs/account/billing-and-assistance/care-fera-application.pdf
     - title: >-

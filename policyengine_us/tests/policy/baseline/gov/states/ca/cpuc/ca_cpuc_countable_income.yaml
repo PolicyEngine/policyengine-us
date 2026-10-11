@@ -112,35 +112,3 @@
     spm_unit_capped_housing_subsidy: 25
   output:
     ca_cpuc_countable_income: 1_000
-
-- name: SNAP is excluded before the housing assistance exclusion.
-  period: 2013
-  input:
-    age: 40
-    state_code: CA
-    employment_income: 1_000
-    housing_assistance: 500
-    snap: 1_200
-    tanf: 0
-    ssi: 0
-    wic: 0
-  output:
-    # $1,000 wages + $500 housing; SNAP is excluded under 7 U.S.C. 2017(b).
-    # https://www.govinfo.gov/content/pkg/USCODE-2024-title7/html/USCODE-2024-title7-chap51-sec2017.htm
-    ca_cpuc_countable_income: 1_500
-
-- name: SNAP cannot push income at the CARE limit above income eligibility.
-  period: 2026
-  input:
-    age: 40
-    state_code: CA
-    employment_income: 43_280
-    snap: 1_200
-    ca_care_categorically_eligible: false
-  output:
-    # CARE uses the two-person poverty line for a one-person household:
-    # 200% * ($15,960 + $5,680) = $43,280. SNAP adds $0 to countable income
-    # under 7 U.S.C. 2017(b), so income remains exactly at the limit.
-    # https://www.govinfo.gov/content/pkg/USCODE-2024-title7/html/USCODE-2024-title7-chap51-sec2017.htm
-    ca_cpuc_countable_income: 43_280
-    ca_care_income_eligible: true
