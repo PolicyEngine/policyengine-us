@@ -16,6 +16,10 @@ class is_medicare_eligible(Variable):
         "(42 U.S.C. 426-1) are not, as the model has no inputs for those "
         "conditions."
     )
+    reference = dict(
+        title="CMS, Original Medicare (Part A and B) Eligibility and Enrollment",
+        href="https://www.cms.gov/medicare/enrollment-renewal/health-plans/original-part-a-b",
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicare.eligibility

@@ -1,0 +1,356 @@
+# A tax unit dependent's investment income is on the dependent's own return,
+# not the filer's. 26 USC 32(i)(1) denies the credit when the "disqualified
+# income of the taxpayer" exceeds the limit, and 32(i)(2)(A) counts interest
+# and dividends only "to the extent includible in gross income", which a
+# dependent's are not (irs_gross_income leaves them out of AGI). Publication
+# 596 Worksheet 1 reads the filer's own Form 1040 and picks up a child's income
+# only through a Form 8814 election (lines 2 and 4 directly, lines 3 and 5
+# through Form 1040 lines 3b and 7a), which is not modeled; from $13,500 the
+# child must file their own return (2025 Form 8814, line 4). The worksheet's
+# capital gain line (line 5) is the filer's own Form 1040 line 7a. So
+# eitc_relevant_investment_income counts the head and spouse only, in both
+# directions: a dependent's income cannot deny the credit, and a dependent's
+# loss cannot offset the filer's income.
+#
+# Unless noted, the filer is a 30-year-old head of household in TX for 2025
+# with $20,000 of wages and one qualifying child aged 8. 2025 amounts:
+#   investment income limit 11,950
+#   maximum credit with one child 4,328 (34% x 12,730)
+#   phase-out start with one child 23,350 (30,470 for joint filers)
+# Each "Before" figure is the pre-change formula, which summed every member.
+
+- name: Control, no investment income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_relevant_investment_income: 0
+    eitc_investment_income_eligible: true
+    adjusted_gross_income: 20_000
+    # Earned income 20,000 is past the 12,730 earned income amount and under
+    # the 23,350 phase-out start.
+    eitc: 4_328
+
+- name: A dependent's dividends stay off the filer's investment income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        qualified_dividend_income: 15_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Before: 15,000, so the credit was denied (eitc 0).
+    eitc_relevant_investment_income: 0
+    eitc_investment_income_eligible: true
+    adjusted_gross_income: 20_000
+    eitc: 4_328
+
+- name: A dependent's long-term capital gain stays off the filer's investment income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 15_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Before: 15,000, so the credit was denied (eitc 0).
+    eitc_relevant_investment_income: 0
+    eitc_investment_income_eligible: true
+    adjusted_gross_income: 20_000
+    eitc: 4_328
+
+- name: A dependent's taxable and tax-exempt interest stay off the filer's investment income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        taxable_interest_income: 12_500
+        tax_exempt_interest_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Before: 14,500, so the credit was denied (eitc 0).
+    eitc_relevant_investment_income: 0
+    eitc_investment_income_eligible: true
+    eitc: 4_328
+
+- name: A dependent's capital loss cannot offset the filer's capital gain
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 9_000
+        long_term_capital_gains: 4_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        short_term_capital_gains: -4_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Worksheet 1: line 1 9,000 + line 7 4,000 (the head's own line 7a).
+    # Before: 9,000 + max(0, 4,000 - 4,000) = 9,000, so the credit was allowed.
+    eitc_relevant_investment_income: 13_000
+    eitc_investment_income_eligible: false
+    adjusted_gross_income: 33_000
+    eitc: 0
+
+- name: A dependent's rental loss cannot offset the filer's rental income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 9_000
+        rental_income: 4_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        rental_income: -4_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Worksheet 1: line 1 9,000 + line 13 4,000.
+    # Before: 9,000 + max(0, 4,000 - 4,000) = 9,000.
+    eitc_relevant_investment_income: 13_000
+    eitc_investment_income_eligible: false
+    eitc: 0
+
+- name: A dependent's passive loss cannot offset the filer's passive income
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 9_000
+        partnership_s_corp_income: 4_000
+        passive_partnership_s_corp_income: 4_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        partnership_s_corp_income: -4_000
+        passive_partnership_s_corp_income: -4_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Worksheet 1: line 1 9,000 + line 13 4,000.
+    # Before: 9,000 + max(0, 4,000 - 4,000) = 9,000.
+    eitc_relevant_investment_income: 13_000
+    eitc_investment_income_eligible: false
+    eitc: 0
+
+- name: A negative capital gain distributions input does not offset capital gains
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 7_000
+        long_term_capital_gains: 5_000
+        non_sch_d_capital_gains: -2_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # Capital gain distributions (Form 1099-DIV box 2a) are not negative, so
+    # each filer's input is floored at zero, as irs_gross_income and
+    # filer_loss_limited_net_capital_gains floor it. Line 7a and AGI include
+    # the full 5,000 gain: 7,000 + 5,000 = 12,000 > 11,950.
+    # Before: 7,000 + max(0, 5,000 - 2,000) = 10,000, so the credit was allowed.
+    eitc_relevant_investment_income: 12_000
+    eitc_investment_income_eligible: false
+    adjusted_gross_income: 32_000
+    eitc: 0
+
+- name: Joint filers count both spouses' income and net their capital gains, not a dependent's
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 3_000
+        long_term_capital_gains: 6_000
+      spouse:
+        age: 30
+        qualified_dividend_income: 5_000
+        short_term_capital_gains: -3_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        taxable_interest_income: 10_000
+        long_term_capital_gains: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      couple:
+        members: [head, spouse]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    # Worksheet 1: lines 1 and 3, 3,000 + 5,000; line 7, the joint Schedule D
+    # gain 6,000 - 3,000 = 3,000. Total 11,000 <= 11,950.
+    # Before: 3,000 + 5,000 + 10,000 + max(0, 6,000 - 3,000 + 10,000) = 31,000,
+    # so the credit was denied.
+    eitc_relevant_investment_income: 11_000
+    eitc_investment_income_eligible: true
+    # 20,000 + 3,000 + 5,000 + 3,000
+    adjusted_gross_income: 31_000
+    # 4,328 - 15.98% x (31,000 - 30,470) = 4,328 - 84.694
+    eitc: 4_243.31
+
+- name: A dependent's very large gain does not move the filer across the limit from below
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 11_950
+        long_term_capital_gains: 1
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 20_000_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # 11,950 + 1 = 11,951 > 11,950. net_capital_gains is stored in float32,
+    # where 20,000,001 rounds to 20,000,000, so taking the child's gain out
+    # of it would give 11,950 and allow the credit.
+    eitc_relevant_investment_income: 11_951
+    eitc_investment_income_eligible: false
+
+- name: A dependent's very large gain does not move the filer across the limit from above
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 11_947
+        long_term_capital_gains: 3
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 20_000_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # 11,947 + 3 = 11,950 <= 11,950. In float32, 20,000,003 rounds to
+    # 20,000,004, so taking the child's gain out of it would give 11,951.
+    eitc_relevant_investment_income: 11_950
+    eitc_investment_income_eligible: true
+
+- name: A net capital gains amount supplied for the tax unit is not read
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    net_capital_gains: 12_000
+  output:
+    # Capital gains are the head's and spouse's own person-level gains, as in
+    # irs_gross_income and the NIIT base, so the supplied tax unit total is
+    # not read. Reading it and taking dependents' gains out of it would let a
+    # dependent's large gain move the filers' amount through float32 rounding.
+    # Before: 12,000.
+    eitc_relevant_investment_income: 0
+    adjusted_gross_income: 0
