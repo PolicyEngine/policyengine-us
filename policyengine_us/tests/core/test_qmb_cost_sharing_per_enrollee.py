@@ -22,9 +22,9 @@ Invariants:
 3. Level: every value is positive and under a fifth of the fee-for-service
    Part A and Part B cost sharing that QMBs incurred per QMB person-year in
    calendar 2022, $1,139 (MedPAC and MACPAC duals data book, December 2025,
-   Table 6, over the same person-years). The series is what Medicaid pays
-   after states limit payment to their Medicaid rate (42 U.S.C. 1396a(n)(2)),
-   not the cost sharing Medicare charges.
+   Table 6, over the same person-years). The series is what Medicaid pays,
+   not the cost sharing Medicare charges: 42 U.S.C. 1396a(n)(2) does not
+   require a state to pay once Medicare's payment reaches its Medicaid rate.
 4. Dating: each date reads the value of the fiscal year it falls in, and every
    date after September 2024 reads the FY 2024 value.
 5. Consumers: a QMB's monthly ``qmb_cost_sharing`` is the value in force that

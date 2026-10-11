@@ -20,9 +20,10 @@ class qmb_cost_sharing(Variable):
         "copayments for a Qualified Medicare Beneficiary. The model lacks "
         "Medicare claims, so this is national Medicaid spending on Medicare "
         "cost sharing for Qualified Medicare Beneficiaries per enrollee, from "
-        "CMS-64 line 17D, a twelfth each month. States may pay no more than "
-        "their Medicaid rate under 42 U.S.C. 1396a(n)(2), so this spending is "
-        "far below the cost sharing Medicare charges."
+        "CMS-64 line 17D, a twelfth each month. 42 U.S.C. 1396a(n)(2) does not "
+        "require a state to pay cost sharing once Medicare's payment reaches "
+        "the state's Medicaid rate, and most states limit payment this way, so "
+        "this spending is below the cost sharing Medicare charges."
     )
 
     def formula(person, period, parameters):
