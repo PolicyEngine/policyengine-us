@@ -25,7 +25,8 @@ Invariants, each checked through household simulations for 2026:
    $1 million still faces 40%.
 3. Differential. The rate measured in a branch equals the finite difference
    between new simulations of the same households, across states, filing
-   statuses, wages and gains.
+   statuses, wages and gains, including households that give a
+   ``capital_gains`` total as an input.
 4. Rise. The rise in gains is at least $1,000, is $1,000 for households under
    $1 million, and survives float32 rounding to within 1.2e-4 of itself.
 
@@ -146,8 +147,9 @@ def clear_of_rate_edges(gains):
 def simulate(households, reform=None):
     """A simulation of ``households``, each a state and its adults.
 
-    An adult is a pair of wages and long-term gains. Two adults are married
-    and file jointly.
+    An adult is their wages and long-term gains, optionally followed by a
+    ``capital_gains`` total given as an input. Two adults are married and file
+    jointly.
     """
     situation = {
         key: {}
@@ -162,7 +164,7 @@ def simulate(households, reform=None):
     }
     for index, (state, adults) in enumerate(households):
         members = []
-        for adult, (wages, gains) in enumerate(adults):
+        for adult, (wages, gains, *capital_gains) in enumerate(adults):
             name = f"adult_{index}_{adult}"
             members.append(name)
             situation["people"][name] = {
@@ -170,6 +172,8 @@ def simulate(households, reform=None):
                 "employment_income": {YEAR: wages},
                 "long_term_capital_gains": {YEAR: gains},
             }
+            if capital_gains:
+                situation["people"][name]["capital_gains"] = {YEAR: capital_gains[0]}
         for key in ("tax_units", "marital_units", "families", "spm_units"):
             situation[key][f"{key}_{index}"] = {"members": members}
         situation["households"][f"household_{index}"] = {
@@ -323,20 +327,36 @@ def test_measured_rate_change_is_the_statutory_change(top_rate):
 
 
 def fresh_simulation_rate(households):
-    """The rate as a difference between new simulations of ``households``."""
+    """The rate as a difference between new simulations of ``households``.
+
+    The new simulations have the raised long-term gains as an input, and
+    where a household gives a ``capital_gains`` total, that total raised by
+    the same amount.
+    """
     base = simulate(households)
     net_income = base.person.household("household_net_income", YEAR)
     gains = base.calculate("long_term_capital_gains", YEAR)
+    capital_gains = base.calculate("capital_gains", YEAR)
     adult_index = base.calculate("adult_index_cg", YEAR)
     rise = capital_gains_mtr_rise(net_income, gains)
     rates = np.zeros_like(net_income)
     for index in (1, 2):
         raised = adult_index == index
         raised_gains = (gains + raised * rise).astype(np.float32)
-        people = iter(raised_gains)
+        raised_capital_gains = (capital_gains + raised * rise).astype(np.float32)
+        people = zip(raised_gains.tolist(), raised_capital_gains.tolist())
         higher = simulate(
             [
-                (state, [(wages, float(next(people))) for wages, _ in adults])
+                (
+                    state,
+                    [
+                        (wages, person_gains, *[person_capital_gains] * len(given))
+                        for (wages, _, *given), (
+                            person_gains,
+                            person_capital_gains,
+                        ) in zip(adults, people)
+                    ],
+                )
                 for state, adults in households
             ]
         )
@@ -346,12 +366,13 @@ def fresh_simulation_rate(households):
     return base, rates
 
 
-ADULT = st.tuples(
-    st.sampled_from([0, 20_000, 60_000, 250_000, 2_000_000]),
-    st.one_of(
-        st.integers(-50_000, 700_000),
-        st.integers(700_000, 200_000_000),
-    ),
+WAGES = st.sampled_from([0, 20_000, 60_000, 250_000, 2_000_000])
+GAINS = st.one_of(st.integers(-50_000, 700_000), st.integers(700_000, 200_000_000))
+ADULT = st.one_of(
+    st.tuples(WAGES, GAINS),
+    # A capital_gains total given as an input, whether or not it is the sum
+    # of the person's short- and long-term gains.
+    st.tuples(WAGES, GAINS, st.integers(-50_000, 5_000_000)),
 )
 
 
@@ -370,6 +391,25 @@ def test_branch_rate_matches_new_simulations(households):
     base, expected = fresh_simulation_rate(households)
 
     np.testing.assert_allclose(measured_rate(base), expected, rtol=0, atol=1e-6)
+
+
+def test_rate_counts_a_capital_gains_total_given_as_an_input():
+    # capital_gains adds short- and long-term gains, and adjusted gross income
+    # reads it. A situation that gives the total keeps it as given, so the
+    # rise has to be added to it as well as to the long-term gains.
+    households = [
+        # $300,000 of long-term gains, with the total also given.
+        ("TX", [(0, 300_000, 300_000)]),
+        # The total given alone, so the model has no long-term gains to tax
+        # at the preferential rates until the rise adds some.
+        ("TX", [(0, 0, 300_000)]),
+    ]
+    base, expected = fresh_simulation_rate(households)
+
+    measured = measured_rate(base)
+
+    np.testing.assert_allclose(measured, expected, rtol=0, atol=1e-6)
+    assert measured[0] == pytest.approx(statutory_rate(300_000), abs=RATE_RESOLUTION)
 
 
 FLOAT32_AMOUNT = st.floats(-(2.0**36), 2.0**36, width=32)

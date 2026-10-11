@@ -149,6 +149,14 @@ class marginal_tax_rate_on_capital_gains(Variable):
                 period,
                 long_term_capital_gains + mask * rise,
             )
+            # A capital_gains amount given as an input is kept as given, not
+            # added up again from the raised long-term gains, so raise it too.
+            if "capital_gains" in inputs:
+                alt_simulation.set_input(
+                    "capital_gains",
+                    period,
+                    person("capital_gains", period) + mask * rise,
+                )
             alt_person = alt_simulation.person
             # Divide by the rise as stored, after rounding to float32.
             stored_rise = (
