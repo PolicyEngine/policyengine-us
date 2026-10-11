@@ -209,3 +209,81 @@ def test_direct_purchase_extension_holds_the_last_projected_growth_rate(year):
 @given(st.integers(END_YEAR, END_YEAR + 100))
 def test_direct_purchase_index_holds_its_2100_value_after_2100(year):
     assert _index(DIRECT_PURCHASE, year) == _index(DIRECT_PURCHASE, END_YEAR)
+
+
+# Long-term care insurance premiums: no dataset fills the input and no CMS
+# series measures these premiums. 26 U.S.C. 213(d)(10)(B) indexes the
+# deductible limits on them by the medical care component of the CPI, so the
+# input follows CPI-U medical care.
+MEDICAL_CPI = "gov.bls.cpi.cpi_u_medical_care"
+MEDICAL_CPI_FIRST_YEAR, MEDICAL_CPI_LAST_PROJECTED_YEAR = 2015, 2036
+# CBO, Economic Projections, February 2026, sheet "2. Calendar Year": row 59
+# (level, 1982-84=100) and row 60 (percentage change, annual rate).
+CBO_MEDICAL_CPI = dict(
+    zip(
+        range(2023, 2037),
+        (
+            *(549.081, 563.841, 581.279, 600.332, 617.675, 636.697, 656.371),
+            *(676.782, 697.848, 719.546, 741.904, 764.927, 788.642, 813.07),
+        ),
+    )
+)
+CBO_MEDICAL_CPI_PERCENT_CHANGE = dict(
+    zip(
+        range(2023, 2037),
+        (
+            *(0.463, 2.688, 3.092, 3.277, 2.888, 3.079, 3.09, 3.109, 3.112),
+            *(3.109, 3.107, 3.103, 3.1, 3.097),
+        ),
+    )
+)
+# BLS series CUUR0000SAM, mean of the 12 published monthly indexes.
+BLS_MEDICAL_CPI_ANNUAL_MEAN = {2022: 546.553, 2023: 549.084, 2024: 563.841}
+
+
+def test_long_term_care_premiums_follow_medical_care_prices():
+    assert system.variables["long_term_health_insurance_premiums"].uprating == (
+        MEDICAL_CPI
+    )
+
+
+@pytest.mark.parametrize("year", sorted(CBO_MEDICAL_CPI))
+def test_medical_cpi_is_cbo_calendar_year_series(year):
+    assert _index(MEDICAL_CPI, year) == CBO_MEDICAL_CPI[year]
+
+
+@pytest.mark.parametrize("year", sorted(CBO_MEDICAL_CPI_PERCENT_CHANGE))
+def test_medical_cpi_levels_match_cbo_percent_changes(year):
+    """CBO publishes levels to three decimals and changes to three decimals
+    of a percentage point, so each change agrees with the levels to within
+    rounding. The 2023 change checks the BLS 2022 value that precedes CBO's
+    series."""
+    change = 100 * (_index(MEDICAL_CPI, year) / _index(MEDICAL_CPI, year - 1) - 1)
+    assert change == pytest.approx(CBO_MEDICAL_CPI_PERCENT_CHANGE[year], abs=0.001)
+
+
+@pytest.mark.parametrize("year", [2023, 2024])
+def test_cbo_actual_medical_cpi_matches_bls(year):
+    assert CBO_MEDICAL_CPI[year] == pytest.approx(
+        BLS_MEDICAL_CPI_ANNUAL_MEAN[year], abs=0.005
+    )
+
+
+@given(
+    st.integers(MEDICAL_CPI_FIRST_YEAR, END_YEAR - 1),
+    st.integers(1, END_YEAR - MEDICAL_CPI_FIRST_YEAR),
+)
+def test_medical_cpi_is_positive_and_strictly_increasing(year, gap):
+    later = min(year + gap, END_YEAR)
+    assert 0 < _index(MEDICAL_CPI, year) < _index(MEDICAL_CPI, later)
+
+
+@given(st.integers(MEDICAL_CPI_LAST_PROJECTED_YEAR + 1, END_YEAR))
+def test_medical_cpi_extension_holds_the_last_projected_growth_rate(year):
+    growth = _index(MEDICAL_CPI, year) / _index(MEDICAL_CPI, year - 1)
+    assert growth == pytest.approx(813.07 / 788.642, rel=1e-12)
+
+
+@given(st.integers(END_YEAR, END_YEAR + 100))
+def test_medical_cpi_holds_its_2100_value_after_2100(year):
+    assert _index(MEDICAL_CPI, year) == _index(MEDICAL_CPI, END_YEAR)
