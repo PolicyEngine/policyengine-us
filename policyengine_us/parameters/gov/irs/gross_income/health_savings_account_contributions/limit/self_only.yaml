@@ -1,0 +1,49 @@
+description: The IRS limits annual contributions to a health savings account for an individual with self-only high deductible health plan coverage to this amount.
+values:
+  # 26 U.S.C. 223(b)(2)(A): $2,250, indexed under 223(g) from a 1997 base.
+  # Through 2006 the limit was the lesser of this amount and the plan's annual
+  # deductible; Pub. L. 109-432 § 303 removed the deductible test from 2007.
+  2004-01-01: 2_600
+  2005-01-01: 2_650
+  2006-01-01: 2_700
+  2007-01-01: 2_850
+  2008-01-01: 2_900
+  2009-01-01: 3_000
+  2010-01-01: 3_050
+  2011-01-01: 3_050
+  2012-01-01: 3_100
+  2013-01-01: 3_250
+  2014-01-01: 3_300
+  2015-01-01: 3_350
+  2016-01-01: 3_350
+  2017-01-01: 3_400
+  2018-01-01: 3_450
+  2019-01-01: 3_500
+  2020-01-01: 3_550
+  2021-01-01: 3_600
+  2022-01-01: 3_650
+  2023-01-01: 3_850
+  2024-01-01: 4_150
+  2025-01-01: 4_300
+  2026-01-01: 4_400
+metadata:
+  unit: currency-USD
+  period: year
+  label: HSA contribution limit, self-only coverage
+  # Values after the last IRS publication are computed in
+  # parameters/uprating_extensions.py per 26 U.S.C. 223(g): the statutory
+  # $2,250 increased by the chained CPI-U cost-of-living adjustment with 1997
+  # as the base year and the 12 months ending March 31 as the averaging
+  # window, each increase rounded to the nearest multiple of $50. Those values
+  # supersede this uprating rule, which names the index family and rounding
+  # (and lets reforms that re-index gov.irs.uprating parameters find it).
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 50
+  reference:
+    - title: 26 U.S. Code § 223(b)(2)(A) - Monthly limitation, self-only coverage
+      href: https://www.law.cornell.edu/uscode/text/26/223#b_2_A
+    - title: 26 U.S. Code § 223(g) - Cost-of-living adjustment
+      href: https://www.law.cornell.edu/uscode/text/26/223#g

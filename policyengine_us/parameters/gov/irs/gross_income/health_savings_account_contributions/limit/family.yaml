@@ -1,0 +1,49 @@
+description: The IRS limits annual contributions to a health savings account for an individual with family high deductible health plan coverage to this amount.
+values:
+  # 26 U.S.C. 223(b)(2)(B): $4,500, indexed under 223(g) from a 1997 base.
+  # Through 2006 the limit was the lesser of this amount and the plan's annual
+  # deductible; Pub. L. 109-432 § 303 removed the deductible test from 2007.
+  2004-01-01: 5_150
+  2005-01-01: 5_250
+  2006-01-01: 5_450
+  2007-01-01: 5_650
+  2008-01-01: 5_800
+  2009-01-01: 5_950
+  2010-01-01: 6_150
+  2011-01-01: 6_150
+  2012-01-01: 6_250
+  2013-01-01: 6_450
+  2014-01-01: 6_550
+  2015-01-01: 6_650
+  2016-01-01: 6_750
+  2017-01-01: 6_750
+  2018-01-01: 6_900
+  2019-01-01: 7_000
+  2020-01-01: 7_100
+  2021-01-01: 7_200
+  2022-01-01: 7_300
+  2023-01-01: 7_750
+  2024-01-01: 8_300
+  2025-01-01: 8_550
+  2026-01-01: 8_750
+metadata:
+  unit: currency-USD
+  period: year
+  label: HSA contribution limit, family coverage
+  # Values after the last IRS publication are computed in
+  # parameters/uprating_extensions.py per 26 U.S.C. 223(g): the statutory
+  # $4,500 increased by the chained CPI-U cost-of-living adjustment with 1997
+  # as the base year and the 12 months ending March 31 as the averaging
+  # window, each increase rounded to the nearest multiple of $50. Those values
+  # supersede this uprating rule, which names the index family and rounding
+  # (and lets reforms that re-index gov.irs.uprating parameters find it).
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 50
+  reference:
+    - title: 26 U.S. Code § 223(b)(2)(B) - Monthly limitation, family coverage
+      href: https://www.law.cornell.edu/uscode/text/26/223#b_2_B
+    - title: 26 U.S. Code § 223(g) - Cost-of-living adjustment
+      href: https://www.law.cornell.edu/uscode/text/26/223#g
