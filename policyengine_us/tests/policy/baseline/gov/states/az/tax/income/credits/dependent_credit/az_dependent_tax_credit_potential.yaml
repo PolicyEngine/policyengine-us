@@ -221,3 +221,27 @@
         state_code: AZ
   output:
     az_dependent_tax_credit_potential: 125
+
+- name: 2025 single filer who can be claimed by a claimant who files only for a refund gets $100 for a child
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 10_000
+    households:
+      household:
+        members: [filer, child]
+        state_code: AZ
+  output:
+    # Publication 501, Dependent Taxpayer Test: the exception restores the
+    # filer's own dependents.
+    az_dependent_tax_credit_potential: 100

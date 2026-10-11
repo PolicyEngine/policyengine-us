@@ -264,3 +264,27 @@
         state_code: CA
   output:
     ca_renter_credit: 0
+
+- name: 2025 single filer who can be claimed but is not claimed is a qualified renter even living with that person
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        employment_income: 2_000
+        rent: 6_000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        lives_with_claiming_taxpayer: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer]
+        state_code: CA
+  output:
+    # 17053.5(d)(2) excludes an individual living with "another person who
+    # claimed that individual as a dependent".
+    ca_renter_credit: 60

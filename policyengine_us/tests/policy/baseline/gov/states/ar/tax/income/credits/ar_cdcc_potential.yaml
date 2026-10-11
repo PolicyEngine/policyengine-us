@@ -421,3 +421,31 @@
         state_code: AR
   output:
     ar_cdcc_potential: 40
+
+- name: 2025 single filer who can be claimed counts no childcare for a child who is not a qualifying person
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 50_000
+        claimed_as_dependent_on_another_return: true
+      disabled_adult:
+        age: 30
+        is_incapable_of_self_care: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [filer, disabled_adult, child]
+        filing_status: SINGLE
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [filer, disabled_adult, child]
+        state_code: AR
+  output:
+    # The disabled adult is a qualifying person (IRC 21(b)(1)(B)), but the
+    # child's care is not for a qualifying individual (21(b)(2)(A)), and the
+    # adult has no care expenses: $0.
+    ar_cdcc_potential: 0

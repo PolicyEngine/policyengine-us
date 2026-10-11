@@ -18,7 +18,9 @@ unknown relationship), with either, both or neither spouse claimed:
    deduction or eligibility below.
 3. Identities: a return with a claimable filer gets no Arizona dependent
    credit or families rebate and no Arkansas dependent credit, and a return
-   on which every filer can be claimed gets no Arizona excise credit.
+   on which every filer is claimed gets no Arizona excise credit (the cases
+   set the claim input, so claimability follows it and the filing exception
+   is off).
 """
 
 import numpy as np
