@@ -44,14 +44,14 @@ tax unit is an input for every unit in its simulation. For every tax unit:
    to the filers' capital gains and distributions, plus the net loss up to
    the 1211(b) limit) by their own capital losses, and an equal share of the
    tuition and fees deduction.
-3. Own deductions. The spouse's deductions never add to the head's: the
-   head's above_the_line_deductions_person is never higher with the spouse's
-   deduction inputs than without them. It is the same, and so is the head's
+3. Own deductions. Except for IRA and student-loan shared limits and MAGI
+   interactions, the head's above_the_line_deductions_person is never higher
+   with the spouse's deduction inputs than without them. It is the same, and so is the head's
    AGI, when the head has no loss, IRA contribution or student loan interest
    that shares a return-level limit with the spouse's, and no income (Social
    Security, unemployment compensation) taxed by reference to the couple's AGI. The
    spouse's own AGI and the couple's AGI never fall when the spouse's
-   deduction inputs are removed.
+   deduction inputs are removed and the head has no IRA contribution.
    This is checked for units with no deduction set directly.
 4. Dependents. A dependent's adjusted_gross_income_person, loss_ald_person
    and limited_capital_loss_person are zero, and their
@@ -637,10 +637,10 @@ def _check(units, year):
     _close(run["limited_capital_loss"], limited_capital)
     _close(run["above_the_line_deductions_person"][~direct], _reference(run)[~direct])
 
-    # 3. The spouse's deductions never add to the head's. A head with student
-    # loan interest is left out of the first check: the spouse's IRA
-    # deduction, for example, lowers the couple's MAGI and with it the
-    # phase-out of the head's student loan interest deduction.
+    # 3. Shared deduction limits and MAGI interactions can change the head's
+    # own deduction. Spouse deductions can lower joint MAGI and increase the
+    # head's IRA or student-loan deduction; removing the spouse's IRA
+    # contributions can also free compensation under Section 219(c).
     head = run["is_head"]
     spouse = run["is_spouse"]
     has_spouse = _per_person(run, _unit_sum(run, spouse.astype(float))) > 0
@@ -651,7 +651,8 @@ def _check(units, year):
         r[deductions] = r["irs_gross_income"] - r["adjusted_gross_income_person"]
     agi = "adjusted_gross_income_person"
     no_student_loan = run["student_loan_interest"] == 0
-    checked = paired_head & no_student_loan
+    no_ira = run["traditional_ira_contributions"] == 0
+    checked = paired_head & no_student_loan & no_ira
     assert _at_most(run[deductions][checked], zeroed[deductions][checked])
     # A Form 4797 loss, recorded for the tax unit, is a business loss of both
     # the head and spouse.
@@ -660,20 +661,23 @@ def _check(units, year):
         | (sum(np.maximum(0, -run[source]) for source in BUSINESS_SOURCES) > 0)
         | (_per_person(run, run["other_net_gain"]) < 0)
     )
-    # Section 219(c) lets a lower earner use compensation left after the
-    # higher earner's IRA contributions. Removing those contributions can
-    # therefore increase the head's own deduction without changing ownership.
-    own_only = checked & ~has_loss & (run["traditional_ira_contributions"] == 0)
+    own_only = checked & ~has_loss
     _close(run[deductions][own_only], zeroed[deductions][own_only])
     joint_taxed_income = (run["social_security"] > 0) | (
         run["unemployment_compensation"] > 0
     )
     unaffected = own_only & ~joint_taxed_income
     _close(run[agi][unaffected], zeroed[agi][unaffected])
-    assert _at_most(run[agi][spouse & ~direct], zeroed[agi][spouse & ~direct])
+    # Removing a spouse's pension contributions can also change retirement
+    # plan coverage and release the head's IRA phase-out. That discontinuity
+    # can increase the head's deduction by more than the amount removed.
+    head_has_ira = _unit_sum(run, head & ~no_ira) > 0
+    independent_units = ~direct_unit & ~head_has_ira
+    checked_spouse = spouse & _per_person(run, independent_units)
+    assert _at_most(run[agi][checked_spouse], zeroed[agi][checked_spouse])
     assert _at_most(
-        run["adjusted_gross_income"][~direct_unit],
-        zeroed["adjusted_gross_income"][~direct_unit],
+        run["adjusted_gross_income"][independent_units],
+        zeroed["adjusted_gross_income"][independent_units],
     )
 
     # 4. Dependents.
