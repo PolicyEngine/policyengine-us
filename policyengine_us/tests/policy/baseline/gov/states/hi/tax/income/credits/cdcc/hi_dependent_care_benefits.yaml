@@ -445,3 +445,6 @@
     # Hawaii: min(4_000 benefits, 6_000 expenses, 9_000 earnings, 5_000) = 4_000.
     # Two-person limit 4_800 - 4_000 = 800, below the 6_000 expenses.
     hi_dependent_care_benefits: 800
+    # Schedule X lines 25-28: 800 * 25% for Hawaii AGI below 25_001 = 200.
+    # https://files.hawaii.gov/tax/forms/2021/schx_i.pdf#page=2
+    hi_cdcc: 200

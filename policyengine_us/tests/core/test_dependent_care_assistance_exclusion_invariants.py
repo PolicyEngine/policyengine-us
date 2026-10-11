@@ -1,11 +1,19 @@
-"""Invariants for the IRC section 129 dependent care assistance exclusion.
+"""Cap-arithmetic invariants for the section 129 assistance exclusion.
 
-The exclusion is the lesser of the employer-provided benefits, the section
-129(a)(2)(A) dollar cap for the year and filing status, and the section 129(b)
-earned-income limit. Section 129(a)(2)(D) raised the cap to $10,500 ($5,250 on
-a separate return) for 2021 only. California keeps $5,000 ($2,500) in every
-year (FTB 3506 Part IV line 22). Section 21(c) reduces the CDCC dollar limit
-by the exclusion.
+Restricted domain: these properties exercise the model's existing cap-only
+calculation, not statutory eligibility for an exclusion. Fixtures omit
+qualifying care expenses and may contain no qualifying persons. Form 2441
+lines 16-25 also limit excluded benefits to qualified expenses for qualifying
+persons; with no such expenses, the statutory exclusion would be zero.
+Positive exclusions here establish cap arithmetic only and do not verify
+those qualification requirements.
+
+Within this domain, the modeled exclusion is the lesser of employer-provided
+benefits, the section 129(a)(2)(A) dollar cap for the year and filing status,
+and the section 129(b) earned-income limit. Section 129(a)(2)(D) raised the
+cap to $10,500 ($5,250 on a separate return) for 2021 only. California keeps
+$5,000 ($2,500) in every year (FTB 3506 Part IV line 22). Section 21(c) reduces
+the CDCC dollar limit by the exclusion.
 
 Hypothesis draws batches of tax units with all five filing statuses and
 zero to three children under 13, and a seeded population of 200 units adds
@@ -125,6 +133,8 @@ def _seeded_units(n=200):
 
 
 def _situation(units, year):
+    # Deliberately omit qualifying expenses to isolate the existing cap-only
+    # calculation described in the module's restricted property domain.
     people, groups = {}, {"tax_units": {}, "households": {}, "marital_units": {}}
 
     def add_filer(name, values, role):
@@ -214,6 +224,8 @@ def _treated_as_unmarried(unit):
 
 
 def _expected(units, year, caps, *, raised=False):
+    # Independent cap-arithmetic oracle; qualified-expense/person eligibility
+    # under Form 2441 lines 16-25 is outside this property's domain.
     benefits, cap, earned = [], [], []
     for unit in units:
         filers = [unit["head"]] + ([unit["spouse"]] if unit["spouse"] else [])
