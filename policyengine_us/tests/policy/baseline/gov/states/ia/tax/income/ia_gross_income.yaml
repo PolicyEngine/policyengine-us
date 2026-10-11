@@ -5,3 +5,28 @@
     state_code: IA
   output:
     ia_gross_income: 100_000
+
+- name: Gambling winnings are Iowa gross income on the 2021 return (IA 1040 line 13).
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 40
+        irs_employment_income: 60_000
+        gambling_winnings: 10_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        gambling_winnings: 5_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    ia_gambling_winnings: [10_000, 0]
+    # The child's winnings are on the child's own return.
+    ia_gross_income: [70_000, 0]

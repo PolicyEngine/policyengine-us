@@ -6,10 +6,10 @@
 for taxable years beginning after 2025. A dependent's gambling belongs on the
 dependent's own return.
 
-YAML cases check single households. These tests check relations between
-households, which a YAML case cannot state, at every point of a winnings x
-losses x other itemized deductions grid. Each year uses one vectorized
-simulation; the grid point with no gambling is the baseline for the others.
+YAML cases check specific households. These tests reuse a generated grid to
+check relations between households at every point of winnings x losses x
+other itemized deductions. Each year uses one vectorized simulation; the grid
+point with no gambling is the baseline for the others.
 
 - The deduction equals min(share x losses, winnings), with the share restated
   here from the statute (1 through 2025, 0.9 from 2026).

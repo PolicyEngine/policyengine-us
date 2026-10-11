@@ -17,3 +17,37 @@
     medical_expense_deduction: 2
   output:
     ky_itemized_deductions_unit: 8
+
+- name: Kentucky allowed no wagering losses for 2018.
+  absolute_error_margin: 0.01
+  period: 2018
+  input:
+    gambling_winnings: 30_000
+    gambling_losses: 30_000
+    charitable_deduction: 4_000
+    state_code: KY
+  output:
+    wagering_losses_deduction: 30_000
+    ky_itemized_deductions_unit: 4_000
+
+- name: Kentucky allows wagering losses from 2019.
+  absolute_error_margin: 0.01
+  period: 2019
+  input:
+    gambling_winnings: 30_000
+    gambling_losses: 30_000
+    charitable_deduction: 4_000
+    state_code: KY
+  output:
+    ky_itemized_deductions_unit: 34_000
+
+- name: Kentucky follows the 90% share from 2026.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    gambling_winnings: 30_000
+    gambling_losses: 30_000
+    charitable_deduction: 4_000
+    state_code: KY
+  output:
+    ky_itemized_deductions_unit: 31_000

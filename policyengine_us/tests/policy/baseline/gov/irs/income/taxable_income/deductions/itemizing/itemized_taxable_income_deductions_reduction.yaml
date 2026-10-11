@@ -164,3 +164,50 @@
     # Excess over the 37 percent bracket: 900_000 - 640_600 = 259_400
     # Lesser: 200_000; reduction: 200_000 * 2 / 37 = 10_810.81
     itemized_taxable_income_deductions_reduction: 10_810.81
+
+# Wagering losses (section 165(d)) are itemized deductions. Before 2018
+# section 68(c) kept them out of the 80 percent base; from 2026 the reduction
+# counts them like any other itemized deduction.
+- name: 2017 single filer - wagering losses are outside the 80 percent base
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 400_000
+    filing_status: SINGLE
+    gambling_winnings: 20_000
+    gambling_losses: 20_000
+    charitable_deduction: 10_000
+    interest_deduction: 0
+    salt_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+    medical_expense_deduction: 0
+  output:
+    wagering_losses_deduction: 20_000
+    # Line 1: 30_000. Line 2: 20_000. Line 3: 10_000. Line 4: 8_000.
+    # Line 7: 400_000 - 261_500 = 138_500. Line 8: 4_155.
+    # Line 9: smaller of 8_000 or 4_155.
+    itemized_taxable_income_deductions_reduction: 4_155
+    itemized_taxable_income_deductions: 25_845
+
+- name: 2026 single filer - the reduction counts wagering losses
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 1_000_000
+    filing_status: SINGLE
+    gambling_winnings: 30_000
+    gambling_losses: 30_000
+    charitable_deduction: 0
+    interest_deduction: 0
+    salt_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+    medical_expense_deduction: 0
+  output:
+    # 90% of 30_000
+    wagering_losses_deduction: 27_000
+    # Excess over the 37 percent bracket: 1_000_000 - 640_600 = 359_400
+    # Lesser: 27_000; reduction: 27_000 * 2 / 37 = 1_459.46
+    itemized_taxable_income_deductions_reduction: 1_459.46
+    itemized_taxable_income_deductions: 25_540.54
