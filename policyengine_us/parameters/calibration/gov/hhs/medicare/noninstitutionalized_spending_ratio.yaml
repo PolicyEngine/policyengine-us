@@ -1,0 +1,48 @@
+description: PolicyEngine multiplies Medicare spending per enrollee by this ratio of Medicare spending per enrollee who is not a long-stay nursing home resident to Medicare spending per enrollee, because the household survey data exclude people living in nursing homes.
+metadata:
+  unit: /1
+  period: year
+  label: Medicare noninstitutionalized spending ratio
+  reference:
+  # Medicare spending per enrollee (per_capita_cost) averages over every
+  # enrollee, including nursing home residents, whom the Current Population
+  # Survey does not sample. In 2022, among beneficiaries in fee-for-service
+  # Medicare, annual Part A and Part B program spending averaged $31,200 for
+  # long-stay nursing home residents and about $11,300 for other
+  # beneficiaries (June 2025, file page 9), and long-stay residents were 1.7
+  # percent of beneficiaries (October 2024, file page 5; 1.7 percent again in
+  # 2023, June 2025, file page 8). A long-stay resident had been in a nursing
+  # home for more than 90 days in at least one month of the year. So spending
+  # per other beneficiary relative to spending per beneficiary is
+  # 1 / (1 + 0.017 * (31_200 / 11_300 - 1)) = 0.971.
+  #
+  # The ratio is measured for fee-for-service Parts A and B and applied to
+  # all Medicare spending per enrollee, including Medicare Advantage, Part D
+  # and administration. With fee-for-service enrollment shares instead (62
+  # percent of long-stay residents, 53 percent of others, July 2023, file
+  # page 13) it is 0.966; pricing Medicare Advantage at the long-stay
+  # residents' risk score ratio (2.12 / 1.01, October 2024, file page 5) gives
+  # about 0.975. The long-stay share was 2.6 percent in 2013 (June 2025, file
+  # page 8), but relative spending is published for 2022 only, so the 2022
+  # ratio applies to every year from 2013, the first year of per_capita_cost.
+  #
+  # Nursing homes are the facilities the survey excludes. The Medicare
+  # Current Beneficiary Survey's long-term care facilities also include
+  # assisted living and other residential care, whose residents the survey
+  # samples; excluding all of them gives a larger gap (community residents'
+  # benefit payments per capita were 0.91 to 0.93 of the average in
+  # 2006-2013, Table 4.1 over Table 1.1).
+  - title: Medicare Payment Advisory Commission, Report to the Congress, June 2025, Chapter 5, Medicare beneficiaries in nursing homes
+    href: https://www.medpac.gov/wp-content/uploads/2025/06/Jun25_Ch5_MedPAC_Report_To_Congress_SEC.pdf#page=9
+  - title: Medicare Payment Advisory Commission, Medicare beneficiaries in nursing homes, October 2024 public meeting
+    href: https://www.medpac.gov/wp-content/uploads/2023/10/Beneficiaries-in-Nursing-Homes-MedPAC-Oct-2024-SEC.pdf#page=5
+  - title: Centers for Medicare and Medicaid Services, Characteristics and Perceptions of the Medicare Population, 2013, Table 4.1
+    href: https://www.cms.gov/research-statistics-data-and-systems/research/mcbs/downloads/2013_characteristics_and_perceptions.zip
+  # CBO likewise removes institutionalized enrollees' benefits before
+  # assigning Medicare's average cost to survey respondents (file page 46),
+  # with the institutional share held at its 2012 level from 2013 (file page
+  # 52).
+  - title: Congressional Budget Office, Working Paper 2018-07, How CBO Adjusts for Survey Underreporting of Transfer Income in Its Distributional Analyses
+    href: https://www.cbo.gov/system/files/2018-07/54234-workingpaper.pdf#page=46
+values:
+  2013-01-01: 0.971

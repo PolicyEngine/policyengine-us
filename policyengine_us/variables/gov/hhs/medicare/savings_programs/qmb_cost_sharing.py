@@ -18,14 +18,17 @@ class qmb_cost_sharing(Variable):
         "First-pass monthly value of QMB coverage for Medicare deductibles, "
         "coinsurance, and copayments. The model lacks beneficiary-level "
         "Medicare claims, so this approximates cost sharing as a parameterized "
-        "share of average Medicare per-capita spending."
+        "share of average Medicare spending per enrollee who does not live "
+        "in a nursing home."
     )
 
     def formula(person, period, parameters):
         category = person("msp_category", period)
         p = parameters(period).gov.hhs.medicare.savings_programs
+        medicare = parameters(period).calibration.gov.hhs.medicare
         monthly_medicare_cost = (
-            parameters(period).calibration.gov.hhs.medicare.per_capita_cost
+            medicare.per_capita_cost
+            * medicare.noninstitutionalized_spending_ratio
             / MONTHS_IN_YEAR
         )
         return (
