@@ -1,3 +1,10 @@
+## [2.38.24] - 2026-10-11
+
+### Fixed
+
+- Count a beneficiary's estate and trust income in Alabama AGI, Iowa gross income (which Iowa's tax uses through tax year 2022), Mississippi AGI, New Jersey gross income, New Mexico modified gross income, and Oklahoma gross household income for the sales tax and property tax credits.
+
+
 ## [2.38.23] - 2026-10-11
 
 ### Fixed
