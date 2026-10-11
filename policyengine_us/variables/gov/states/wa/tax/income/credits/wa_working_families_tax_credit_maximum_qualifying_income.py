@@ -38,14 +38,10 @@ class wa_working_families_tax_credit_maximum_qualifying_income(Variable):
         eitc = parameters(period).gov.irs.credits.eitc
         person = tax_unit.members
         federal_child_count = tax_unit("eitc_child_count", period)
-        # Apply the IRC 152(c)(3)(B) age waiver to ITIN children too, using
-        # the same qualifying-child count as the WFTC amount formula.
-        is_disabled_dependent = person("is_tax_unit_dependent", period) & person(
-            "is_permanently_and_totally_disabled", period
-        )
+        # Count ITIN children too, using the same qualifying-child test as the
+        # WFTC amount formula.
         washington_child_count = tax_unit.sum(
-            (person("is_qualifying_child_dependent", period) | is_disabled_dependent)
-            & person("has_tin", period)
+            person("is_eitc_qualifying_child", period) & person("has_tin", period)
         )
         child_count = max_(federal_child_count, washington_child_count)
         federal_max_agi = calculate_eitc_max_agi_limit(

@@ -12,7 +12,9 @@ class non_sch_d_capital_gains(Variable):
         "or other capital gains enters them on Schedule D line 13, so the "
         "model nets them with those gains and losses before the capital loss "
         "limit (loss_limited_net_capital_gains, "
-        "capital_losses_allowed_against_gains and limited_capital_loss)."
+        "capital_losses_allowed_against_gains and limited_capital_loss). "
+        "Form 1099-DIV box 2a is never negative, so adjusted gross income and "
+        "the tax on net capital gain treat a negative entry as zero."
     )
     reference = dict(
         title="2025 Instructions for Schedule D (Form 1040), Capital Gain Distributions",
