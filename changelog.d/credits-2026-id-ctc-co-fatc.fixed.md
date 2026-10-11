@@ -1,1 +1,1 @@
-Remove Idaho's expired child tax credit from state child tax credit totals after 2025 and pause Colorado's family affordability tax credit for 2026.
+Remove Idaho's expired child tax credit from state child tax credit totals after 2025, preserve those totals under Idaho revival reforms, and pause Colorado's family affordability tax credit for 2026.
