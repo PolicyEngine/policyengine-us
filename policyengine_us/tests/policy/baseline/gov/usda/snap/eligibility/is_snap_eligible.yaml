@@ -448,8 +448,9 @@
 # With this waiver, SNAP alone confers CARE, which excludes FERA. No rent
 # also keeps main's default utility allowance from lowering the annual net
 # income enough to confer CARE through SNAP in another month.
+# Use calendar-year inputs for wages and CARE, and assert June SNAP explicitly.
 - name: California MCE SNAP receipt alone confers CARE above its income limit and excludes FERA.
-  period: 2026-06
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
@@ -503,14 +504,22 @@
         state_code: CA
         is_on_tribal_land: false
   output:
-    snap_gross_income: 3_333.33
-    meets_snap_gross_income_test: false
-    is_tanf_non_cash_eligible: true
-    snap_net_income: 2_458
-    meets_snap_net_income_test: false
-    meets_snap_categorical_eligibility: true
-    is_snap_eligible: true
-    snap: 47
+    snap_gross_income:
+      2026-06: 3_333.33
+    meets_snap_gross_income_test:
+      2026-06: false
+    is_tanf_non_cash_eligible:
+      2026-06: true
+    snap_net_income:
+      2026-06: 2_458
+    meets_snap_net_income_test:
+      2026-06: false
+    meets_snap_categorical_eligibility:
+      2026-06: true
+    is_snap_eligible:
+      2026-06: true
+    snap:
+      2026-06: 47
     ca_cpuc_countable_income: 60_000
     ca_care_income_eligible: false
     ca_care_categorically_eligible: true
