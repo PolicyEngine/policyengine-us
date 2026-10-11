@@ -151,6 +151,19 @@ def test_cms_esi_premium_per_enrollee_holds_last_projected_growth_rate():
     assert parameter("2150-01-01") == parameter("2100-01-01")
 
 
+def test_cms_direct_purchase_premium_per_enrollee_holds_last_projected_growth_rate():
+    """Directly bought premium inputs keep growing after CMS's 2034
+    projection, at the 2033-2034 growth rate."""
+    parameter = PARAMETERS.calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee
+    last_growth = parameter("2034-01-01") / parameter("2033-01-01")
+
+    assert parameter("2034-01-01") == 9_589
+    for year in [2035, 2036, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
+
+
 def test_soi_income_upraters_extend_without_trustees_reform():
     """SOI income upraters should inherit baseline long-run CBO extensions."""
     soi = PARAMETERS.calibration.gov.irs.soi
