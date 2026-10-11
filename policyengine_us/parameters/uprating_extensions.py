@@ -840,10 +840,12 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     )
 
     # CMS per-capita out-of-pocket medical spending (January values, last
-    # projection year 2035). Health expense inputs use this as their uprater.
+    # projection year 2034). Health expense inputs use this as their uprater.
+    # Each year from 2035 to 2100 grows at CMS's 2033-2034 rate, and later
+    # years hold the 2100 value.
     extend_parameter_values(
         parameters.calibration.gov.hhs.cms.moop_per_capita,
-        last_projected_year=2035,
+        last_projected_year=2034,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
