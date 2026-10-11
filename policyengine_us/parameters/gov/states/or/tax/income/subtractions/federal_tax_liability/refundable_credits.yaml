@@ -1,0 +1,50 @@
+description: Oregon reduces the federal income tax liability it subtracts by these federal refundable credits.
+values:
+  # Federal tax worksheet, Part A, of each year's Publication OR-17. The earned
+  # income credit is never listed (ORS 316.685(1)(b)), and outside 2021 neither
+  # is the additional child tax credit.
+  2017-01-01:
+    - refundable_american_opportunity_credit # Line 6
+    - assigned_aca_ptc # Line 7 (Form 8962, line 24)
+  2020-01-01:
+    - refundable_american_opportunity_credit # Line 6
+    - assigned_aca_ptc # Line 7 (Form 8962, line 24)
+    - recovery_rebate_credit # Line 8, with the stimulus payments received
+  2021-01-01:
+    # Line 8 is the child tax credit on Schedule 8812, line 14e. Line 2 adds
+    # back the nonrefundable part that line 1 already nets out.
+    - refundable_ctc
+    - refundable_american_opportunity_credit # Line 9
+    - recovery_rebate_credit # Line 10, with the stimulus payments received
+    - assigned_aca_ptc # Line 11 (Form 8962, line 24)
+    - cdcc # Line 12 (Schedule 3, line 13g)
+  2022-01-01:
+    - refundable_american_opportunity_credit # Line 6
+    - assigned_aca_ptc # Line 7 (Form 8962, line 24)
+    # From 2025, line 7 is the refundable adoption credit (Form 1040, line 30),
+    # which is not modeled, and the premium tax credit moves to line 8.
+metadata:
+  unit: list
+  period: year
+  label: Oregon federal tax liability subtraction refundable credits
+  reference:
+    - title: ORS 316.685(1)(b)
+      href: https://www.oregonlegislature.gov/bills_laws/ors/ors316.html
+    - title: 2017 Publication OR-17, Federal tax worksheet, Part A, lines 6 to 8
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2017.pdf#page=63
+    - title: 2018 Publication OR-17, Federal tax worksheet, Part A, lines 6 to 8
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2018.pdf#page=68
+    - title: 2019 Publication OR-17, Federal tax worksheet, Part A, lines 6 to 8
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2019.pdf#page=63
+    - title: 2020 Publication OR-17, Federal tax worksheet, Part A, lines 6 to 9
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2020.pdf#page=66
+    - title: 2021 Publication OR-17, Federal tax worksheet, Part A, lines 8 to 13
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2021.pdf#page=72
+    - title: 2022 Publication OR-17, Federal tax worksheet, Part A, lines 6 to 8
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2022.pdf#page=73
+    - title: 2023 Publication OR-17, Federal tax worksheet, Part A, lines 6 to 8
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2023.pdf#page=73
+    - title: 2024 Publication OR-17, Federal tax worksheet, Part A, lines 6 to 8
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2024.pdf#page=71
+    - title: 2025 Publication OR-17, Federal tax worksheet, Part A, lines 6 to 9
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2025.pdf#page=71
