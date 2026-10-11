@@ -29,10 +29,11 @@ class mn_ccap_provider_rate(Variable):
         # defined_for filters output but does not short-circuit vectorized
         # execution, so mask on Minnesota before indexing county_str; non-MN
         # county strings are absent from the rate tables and would crash the
-        # lookup.
+        # lookup. The rate tables have no UNKNOWN key either, so a Minnesota
+        # household with an unknown county also falls back to Hennepin.
         county = person.household("county_str", period.this_year)
         in_mn = person.household("state_code_str", period.this_year) == "MN"
-        county_key = where(in_mn, county, "HENNEPIN_COUNTY_MN")
+        county_key = where(in_mn & (county != "UNKNOWN"), county, "HENNEPIN_COUNTY_MN")
 
         # Centers and license-exempt programs (paid at the center rate per
         # section 9.9) use the child care center column; family child care

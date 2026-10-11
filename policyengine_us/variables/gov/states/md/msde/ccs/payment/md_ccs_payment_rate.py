@@ -27,9 +27,14 @@ class md_ccs_payment_rate(Variable):
         center_rate = p.formal.licensed_center[region][age_group] * unit_share
         family_rate = p.formal.licensed_family[region][age_group] * unit_share
 
+        # defined_for does not short-circuit vectorized execution, so
+        # non-Maryland counties are masked before indexing the county-keyed
+        # informal rate table. The table has no UNKNOWN key either, so a
+        # Maryland household with an unknown county also falls back to
+        # Allegany.
         county = person.household("county_str", period)
         in_md = person.household("state_code_str", period) == "MD"
-        safe_county = where(in_md, county, "ALLEGANY_COUNTY_MD")
+        safe_county = where(in_md & (county != "UNKNOWN"), county, "ALLEGANY_COUNTY_MD")
         informal_rate = p.informal.rates[safe_county][age_group] * unit_share
 
         return select(
