@@ -209,6 +209,8 @@
     #   27,900 and 60,390, fair market rent 1,410.
     #   (60,390 - 44,145) / (60,390 - 27,900) = 0.5;
     #   0.5 * 1,410 * 12 * 0.1 = 846. (Chittenden would give 1,496.)
+    # The Department of Taxes 2025 Renter Credit Website Calculator gives
+    # 1,162 (Chittenden) and 846 (Addison) for these inputs.
     vt_renter_credit: [1_162, 0, 846]
 
 - name: test 12, tax units of nine or more use the eight-person income limits and fair market rent.
@@ -271,4 +273,6 @@
     # (111,410 - 82,780) / (111,410 - 54,150) = 0.5;
     # 0.5 * 2,083 * 12 * 0.1 = 1,249.8 -> 1,250 for all three tax units.
     # (The 7-person limits, 48,650 and 104,650, would give 976.)
+    # The Department of Taxes 2025 Renter Credit Website Calculator gives
+    # 1,250 for family sizes 8, 9 and 10 (its maximum input) and 976 for 7.
     vt_renter_credit: [1_250, 1_250, 1_250]
