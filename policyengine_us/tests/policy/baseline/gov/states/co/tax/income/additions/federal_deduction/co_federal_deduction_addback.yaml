@@ -370,3 +370,58 @@
     standard_deduction: 2_000
   output:
     co_federal_deduction_addback: 1_000
+
+# Rule 39-22-104(3)(p)(3)(a)(i) and the DR 0104 line 4 instructions (2023 to
+# 2025): the addback is reduced by the Schedule A state income tax already
+# added back on DR 0104 line 2.
+- name: Case 36, 2025 single itemizer, addback reduced by the state income tax addback.
+  period: 2025
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 20_000
+    co_state_addback: 5_000
+  output:
+    # 20,000 - 12,000 - 5,000
+    co_federal_deduction_addback: 3_000
+
+- name: Case 37, 2025 joint itemizer, state income tax addback above the excess leaves no addback.
+  period: 2025
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: JOINT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 30_000
+    co_state_addback: 20_000
+  output:
+    # max(0, 30,000 - 16,000 - 20,000)
+    co_federal_deduction_addback: 0
+
+- name: Case 38, 2022 single itemizer, addback reduced by the state income tax addback.
+  period: 2022
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 40_000
+    co_state_addback: 4_000
+  output:
+    # 40,000 - 30,000 - 4,000
+    co_federal_deduction_addback: 6_000
+
+- name: Case 39, 2026 single itemizer, addback reduced by the state income tax addback.
+  period: 2026
+  input:
+    state_code: CO
+    co_federal_deduction_addback_required: true
+    filing_status: SINGLE
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 20_000
+    co_state_addback: 5_000
+  output:
+    # 20,000 - 1,000 - 5,000
+    co_federal_deduction_addback: 14_000
