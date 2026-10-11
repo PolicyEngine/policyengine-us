@@ -511,3 +511,159 @@
     # The child raises the base to $16,000: 100% of $8,000 x 3.07%.
     pa_tax_forgiveness_rate: 1
     pa_tax_forgiveness_amount: 245.6
+
+
+- name: 2025 single filer who can be claimed as a dependent but is not claimed: Pennsylvania tax forgiveness
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 3000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: PA
+  output:
+    # Schedule SP bars "a dependent on another person's federal tax
+    # return", an actual claim; this filer is not claimed.
+    pa_tax_forgiveness_eligible_share: 1
+    pa_tax_forgiveness_amount: 92.1
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent but is not claimed: Pennsylvania tax forgiveness (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 3000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 3000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: PA
+  output:
+    # No spouse is claimed, so the couple claims Tax Forgiveness jointly.
+    pa_tax_forgiveness_eligible_share: 1
+    pa_tax_forgiveness_amount: 184.2
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent but is not claimed: Pennsylvania tax forgiveness (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 3000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: false
+      person_a:
+        age: 30
+        employment_income: 3000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: PA
+  output:
+    pa_tax_forgiveness_eligible_share: 1
+    pa_tax_forgiveness_amount: 184.2
+
+- name: 2025 single filer who can be claimed as a dependent but is not claimed: Pennsylvania tax forgiveness
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child_1]
+    households:
+      household:
+        members: [person_a, child_1]
+        state_code: PA
+  output:
+    # Eligible (not claimed), but a filer who can be claimed has no
+    # dependent child (IRC 152(b)(1)): 40% of $245.60.
+    pa_tax_forgiveness_rate: 0.4
+    pa_tax_forgiveness_amount: 98.24
+
+- name: 2025 single filer who can be claimed as a dependent by someone who files only for a refund: Pennsylvania tax forgiveness
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 8000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child_1]
+    households:
+      household:
+        members: [person_a, child_1]
+        state_code: PA
+  output:
+    # Publication 501's exception restores the child: base $16,000.
+    pa_tax_forgiveness_rate: 1
+    pa_tax_forgiveness_amount: 245.6

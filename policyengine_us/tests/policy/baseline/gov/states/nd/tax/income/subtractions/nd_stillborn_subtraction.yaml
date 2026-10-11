@@ -229,3 +229,53 @@
         state_code: ND
   output:
     nd_stillborn_subtraction: 5241
+
+
+- name: 2025 single filer who can be claimed as a dependent by someone who files only for a refund: North Dakota stillborn child subtraction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        tax_unit_stillborn_children: 1
+    households:
+      household:
+        members: [person_a]
+        state_code: ND
+  output:
+    # Publication 501's exception leaves the filer able to claim a dependent.
+    nd_stillborn_subtraction: 5241
+
+- name: 2025 single filer who can be claimed as a dependent but is not claimed: North Dakota stillborn child subtraction
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        tax_unit_stillborn_children: 1
+    households:
+      household:
+        members: [person_a]
+        state_code: ND
+  output:
+    # The filer can be claimed, so could not have claimed the child.
+    nd_stillborn_subtraction: 0

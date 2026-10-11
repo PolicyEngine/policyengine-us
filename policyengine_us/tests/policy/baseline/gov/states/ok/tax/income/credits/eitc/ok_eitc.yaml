@@ -319,3 +319,56 @@
   output:
     ok_federal_eitc_demographic_eligible: true
     ok_eitc: 19.125
+
+
+- name: 2025 single filer who can be claimed as a dependent by someone who files only for a refund: Oklahoma childless EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: OK
+  output:
+    # The 2020 federal test lets the filer qualify under Publication 596's
+    # exception: 5% of $382.50.
+    ok_federal_eitc_demographic_eligible: true
+    ok_eitc: 19.125
+
+- name: 2025 single filer who can be claimed as a dependent but is not claimed: Oklahoma childless EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: OK
+  output:
+    # The 2020 federal test bars a filer who can be claimed, claimed or not.
+    ok_federal_eitc_demographic_eligible: false
+    ok_eitc: 0

@@ -480,3 +480,153 @@
         state_code: NJ
   output:
     nj_eitc: 91.8
+
+
+- name: 2025 single filer who can be claimed as a dependent but is not claimed: New Jersey childless EITC below the federal age
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: NJ
+  output:
+    # The federal childless test (kept by P.L.2021 c.130) bars a filer who can
+    # be claimed, claimed or not.
+    nj_childless_eitc_age_eligible: false
+    nj_eitc: 0
+
+- name: 2025 single filer who can be claimed as a dependent by someone who files only for a refund: New Jersey childless EITC below the federal age
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: NJ
+  output:
+    # Publication 596's exception lets the filer meet the federal test, and
+    # the filer is not listed as a dependent on another return: 40% of $649.
+    nj_childless_eitc_age_eligible: true
+    nj_eitc: 259.6
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: New Jersey childless EITC below the federal age (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      person_b:
+        age: 20
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NJ
+  output:
+    # Neither spouse is barred or listed as a dependent: 40% of $649.
+    nj_childless_eitc_age_eligible: true
+    nj_eitc: 259.6
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: New Jersey childless EITC below the federal age (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 20
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: false
+      person_a:
+        age: 20
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NJ
+  output:
+    nj_childless_eitc_age_eligible: true
+    nj_eitc: 259.6
+
+- name: 2025 single filer listed as a dependent by someone who files only for a refund: New Jersey childless EITC below the federal age
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: true
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+    tax_units:
+      tax_unit:
+        members: [person_a]
+    households:
+      household:
+        members: [person_a]
+        state_code: NJ
+  output:
+    # The NJ-1040 line 58 worksheet requires "You are not listed as a
+    # dependent on another tax return", whatever the federal exception.
+    nj_childless_eitc_age_eligible: false
+    nj_eitc: 0

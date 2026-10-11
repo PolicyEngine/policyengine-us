@@ -403,3 +403,81 @@
   output:
     # The credit covers tuition paid for the taxpayer's dependents only.
     oh_non_public_school_credits_potential: 0
+
+
+- name: 2024 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: Ohio nonpublic school tuition credit (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: false
+      child_1:
+        age: 6
+        non_public_school_tuition: 400
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: OH
+  output:
+    # Publication 501's exception restores the dependent: $400 of tuition.
+    oh_non_public_school_credits_potential: 400
+
+- name: 2024 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: Ohio nonpublic school tuition credit (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: false
+      person_a:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child_1:
+        age: 6
+        non_public_school_tuition: 400
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: OH
+  output:
+    oh_non_public_school_credits_potential: 400

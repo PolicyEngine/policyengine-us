@@ -221,3 +221,137 @@
         state_code: NJ
   output:
     nj_dependents_exemption: 1500
+
+
+- name: 2025 single filer who can be claimed as a dependent but is not claimed: New Jersey dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child_1]
+    households:
+      household:
+        members: [person_a, child_1]
+        state_code: NJ
+  output:
+    # The federal Dependent Taxpayer Test turns on whether the filer can be
+    # claimed, not on an actual claim.
+    nj_dependents_exemption: 0
+
+- name: 2025 single filer who can be claimed as a dependent by someone who files only for a refund: New Jersey dependent exemption
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child_1]
+    households:
+      household:
+        members: [person_a, child_1]
+        state_code: NJ
+  output:
+    # Publication 501: such a filer can still claim their own dependents.
+    nj_dependents_exemption: 1500
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: New Jersey dependent exemption (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      person_b:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: false
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: NJ
+  output:
+    # Publication 501's exception restores the dependent.
+    nj_dependents_exemption: 1500
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent by someone who files only for a refund: New Jersey dependent exemption (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: false
+      person_a:
+        age: 30
+        employment_income: 2500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: NJ
+  output:
+    nj_dependents_exemption: 1500
