@@ -30,6 +30,10 @@ class ia_reduced_tax(Variable):
         # dependent on another person's Iowa return" (Tax Reduction Worksheet)
         filing_status = tax_unit("filing_status", period)
         is_single = filing_status == filing_status.possible_values.SINGLE
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
-        return where(is_single & ~filer_is_dependent, amount, np.inf)
+        # The worksheet turns on being claimed, not on being claimable.
+        person = tax_unit.members
+        filer = person("is_tax_unit_head_or_spouse", period)
+        claimed = person("claimed_as_dependent_on_another_return", period)
+        filer_claimed = tax_unit.any(filer & claimed)
+        return where(is_single & ~filer_claimed, amount, np.inf)
         # see ia_income_tax_before_refundable_credits formula for variable use

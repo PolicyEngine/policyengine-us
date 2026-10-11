@@ -24,8 +24,11 @@ class md_aged_dependent_exemption(Variable):
         elderly = age >= p.age
         # § 10-211(b)(2) counts dependents "as defined in § 152 of the Internal
         # Revenue Code"; under IRC 152(b)(1) a return on which the filer (or,
-        # if joint, either spouse) can be claimed has none.
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # if joint, either spouse) can be claimed has none, unless the would-be
+        # claimant meets the filing exception (Publication 501).
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         aged_dependents = where(
             filer_is_dependent, 0, tax_unit.sum(dependent & elderly)
         )

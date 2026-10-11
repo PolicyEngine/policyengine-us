@@ -19,9 +19,10 @@ class md_poverty_line_credit_income_level(Variable):
         # number of exemptions which the individual is allowed and claims
         # under § 10-211(b)(1)". That is the tax unit's size unless a filer
         # can be claimed as a dependent, in which case only the filers who
-        # cannot be claimed count and there are no dependents (IRC 152(b)(1)).
+        # cannot be claimed count, with dependents only under the claimant
+        # filing exception (IRC 152(b)(1)).
         filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
-        exemptions = tax_unit("exemptions_count", period)
+        exemptions = tax_unit("md_personal_exemptions_count", period)
         state_group = tax_unit.household("state_group_str", period)
         return where(
             filer_is_dependent,

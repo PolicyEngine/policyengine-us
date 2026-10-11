@@ -31,11 +31,13 @@ class ks_exemptions(Variable):
             # "for which such taxpayer is entitled to a deduction" federally;
             # under IRC 152(b)(1) a return on which the filer (or, if joint,
             # either spouse) can be claimed has none ("enter '0' in the number
-            # of dependents box"). The filing-status amount stays: a claimable
-            # taxpayer "will qualify for the personal exemption allowance"
-            # (Kansas Department of Revenue FAQ).
+            # of dependents box"), unless the would-be claimant meets the
+            # filing exception (Publication 501, Dependent Taxpayer Test). The
+            # filing-status amount stays: a claimable taxpayer "will qualify
+            # for the personal exemption allowance" (Kansas Department of
+            # Revenue FAQ).
             filer_is_dependent = tax_unit(
-                "head_or_spouse_is_dependent_elsewhere", period
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
             )
             dependents = where(
                 filer_is_dependent, 0, tax_unit("tax_unit_dependents", period)

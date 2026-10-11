@@ -20,9 +20,11 @@ class md_ctc_eligible(Variable):
         person = tax_unit.members
         # § 10-751(a)(2)(i): a qualified child is "a dependent for purposes of
         # § 152 of the Internal Revenue Code"; under IRC 152(b)(1) a return on
-        # which the filer (or, if joint, either spouse) can be claimed has none.
+        # which the filer (or, if joint, either spouse) can be claimed has
+        # none, unless the would-be claimant meets the filing exception
+        # (Publication 501, Dependent Taxpayer Test).
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
         disabled = person("is_disabled", period)

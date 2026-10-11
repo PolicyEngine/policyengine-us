@@ -20,9 +20,13 @@ class la_dependents_exemption(Variable):
     def formula(tax_unit, period, parameters):
         # Line 6C counts "the dependents claimed on your federal return". Under
         # IRC 152(b)(1) a federal return on which the filer (or, if joint,
-        # either spouse) can be claimed has none. The filer's own exemption
-        # (Line 6A) stays "even if someone else claimed you".
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # either spouse) can be claimed has none, unless the would-be claimant
+        # meets the filing exception (Publication 501, Dependent Taxpayer
+        # Test). The filer's own exemption (Line 6A) stays "even if someone
+        # else claimed you".
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         dependents = where(
             filer_is_dependent, 0, tax_unit("tax_unit_dependents", period)
         )

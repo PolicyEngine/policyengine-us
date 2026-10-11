@@ -31,6 +31,7 @@ class md_poverty_line_credit_earned_income(Variable):
         # the credit, on that spouse's own earned income.
         person = tax_unit.members
         filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # The same sources as eitc_earned_income, per person.
         sources = [
             "employment_income",
             "self_employment_income",
@@ -42,7 +43,7 @@ class md_poverty_line_credit_earned_income(Variable):
         self_employment_tax_ald = person("self_employment_tax_ald_person", period)
         own_earned_income = max_(0, gross - self_employment_tax_ald)
         can_claim = person("is_tax_unit_head_or_spouse", period) & ~person(
-            "claimed_as_dependent_on_another_return", period
+            "claimable_as_dependent_on_another_return", period
         )
         return where(
             filer_is_dependent,

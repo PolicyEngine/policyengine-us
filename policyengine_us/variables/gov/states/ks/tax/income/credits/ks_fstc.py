@@ -18,9 +18,13 @@ class ks_fstc(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.ks.tax.income.credits
         # A return on which the filer (or, if joint, either spouse) can be
-        # claimed has no dependents (IRC 152(b)(1)): the K-40 dependent count is
-        # "0" and no child is claimed "as a personal exemption".
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # claimed has no dependents (IRC 152(b)(1)), unless the would-be
+        # claimant meets the filing exception (Publication 501, Dependent
+        # Taxpayer Test): the K-40 dependent count is "0" and no child is
+        # claimed "as a personal exemption".
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         # determine if tax unit is eligible for credit
         person = tax_unit.members
         # ... any child dependents?
@@ -54,17 +58,23 @@ class ks_fstc(Variable):
         # compute credit amount
         eligible = eligible_unit & eligible_income
         # Line E is the "total number of exemptions" from the front of the
-        # K-40. Through 2023 a claimed filer enters "0" there; from 2024 the
-        # filing-status exemptions remain and only the dependent count is "0".
+        # K-40: the filers and the dependents counted above. Through 2023 a
+        # filer who is claimed enters "0" there; from 2024 the filing-status
+        # exemptions remain.
         exemption_regime = parameters(period).gov.states.ks.tax.income.exemptions
-        filers = tax_unit("head_spouse_count", period)
-        claimed_filer_exemptions = where(
-            exemption_regime.by_filing_status.in_effect, filers, 0
-        )
+        person = tax_unit.members
+        filer = person("is_tax_unit_head_or_spouse", period)
+        claimed = person("claimed_as_dependent_on_another_return", period)
+        filer_claimed = tax_unit.any(filer & claimed)
         exemptions = where(
             filer_is_dependent,
-            claimed_filer_exemptions,
+            tax_unit("head_spouse_count", period),
             tax_unit("tax_unit_size", period),
+        )
+        exemptions = where(
+            filer_claimed & ~exemption_regime.by_filing_status.in_effect,
+            0,
+            exemptions,
         )
         old_dependents = count_all_dependents - count_child_dependents
         fstc_exemptions = max_(0, exemptions - old_dependents)

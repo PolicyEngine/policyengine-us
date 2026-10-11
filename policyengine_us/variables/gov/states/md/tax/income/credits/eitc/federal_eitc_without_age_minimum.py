@@ -31,8 +31,12 @@ class federal_eitc_without_age_minimum(Variable):
         # § 10-704 waives only the minimum age: a childless filer must still be
         # "otherwise eligible for the federal credit", and § 32(c)(1)(A)(ii)(III)
         # bars a childless return on which the filer (or, if joint, either
-        # spouse) can be claimed as a dependent.
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # spouse) can be claimed as a dependent, unless the would-be claimant
+        # meets the filing exception (Publication 596), as in
+        # eitc_demographic_eligible.
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         childless_eligible = (
             tax_unit.any(below_max_age & is_filer_or_spouse) & ~filer_is_dependent
         )

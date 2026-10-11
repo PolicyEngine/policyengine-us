@@ -26,9 +26,13 @@ class ia_exemption_credit(Variable):
         # meaning, and the instructions count the dependents "you are
         # claiming for federal income tax purposes". Under IRC 152(b)(1) a
         # return on which the filer (or, if joint, either spouse) can be
-        # claimed has none. Each filer keeps the personal credit, which
-        # Iowa allows "even if you are claimed as a dependent".
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # claimed has none, unless the would-be claimant meets the filing
+        # exception (Publication 501, Dependent Taxpayer Test). Each filer
+        # keeps the personal credit, which Iowa allows "even if you are
+        # claimed as a dependent".
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         dependent_count = where(
             filer_is_dependent, 0, tax_unit("tax_unit_dependents", period)
         )

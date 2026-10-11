@@ -40,8 +40,12 @@ class ia_is_tax_exempt(Variable):
         # or surviving spouse return is not exempt if either spouse is
         # claimed. Iowa Code 422.5(2)-(3) denies the exemption only when the
         # claimer's own net income exceeds the limit; the model has no input
-        # for the claimer's income, so it follows the instructions.
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # for the claimer's income, so it follows the instructions. Both turn
+        # on being claimed, not on being claimable, so this reads the claim.
+        person = tax_unit.members
+        filer = person("is_tax_unit_head_or_spouse", period)
+        claimed = person("claimed_as_dependent_on_another_return", period)
+        filer_is_dependent = tax_unit.any(filer & claimed)
         dependent_income = add(tax_unit, period, p.dependent.income_sources)
         dependent_exempt = is_single & (dependent_income < p.dependent.income_limit)
         return where(filer_is_dependent, dependent_exempt, exempt)
