@@ -461,3 +461,203 @@
         state_code: CO
   output:
     co_sales_tax_refund: 153
+
+# C.R.S. 39-22-2003(2) allows the refund for a tax year only "if there were
+# excess state revenues for the fiscal year ending in that tax year". FY 2025-26
+# ended on 2026-06-30 below the Referendum C cap: the LCS June 2026 forecast
+# (Table 9) showed $0 in every tax year 2026 tier, and on 2026-09-08 the State
+# Controller certified a $175.9 million shortfall (LCS September 2026 forecast,
+# p. 9). PolicyBench reference audit 2026-10-05, scenario_043.
+- name: 2026 Single - no refund without FY 2025-26 excess state revenues
+  period: 2026
+  input:
+    state_code: CO
+    age: 66
+    co_modified_agi: 4_625
+    co_sales_tax_refund_eligible: true
+    filing_status: SINGLE
+  output:
+    co_sales_tax_refund: 0
+
+- name: 2026 Joint - no refund for either eligible spouse
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        co_modified_agi: 400_000
+        co_income_tax_before_non_refundable_credits: 0
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_sales_tax_refund_eligible: true
+    co_sales_tax_refund: 0
+
+# scenario_043: a childless single filer aged 66 with $4,088 of wages and $553
+# of taxable pension. The federal EITC requires a childless filer to be under
+# 65 (26 U.S.C. 32(c)(1)(A)(ii)(II)), and no other Colorado refundable credit
+# applies, so with no tax year 2026 sales tax refund the total is $0.
+- name: 2026 scenario_043 - no Colorado refundable credits for a childless 66-year-old
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 66
+        employment_income: 4_088
+        taxable_private_pension_income: 553
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_sales_tax_refund_eligible: true
+    co_eitc: 0
+    co_sales_tax_refund: 0
+    co_refundable_credits: 0
+
+# Every 2025 tier boundary in tax year 2026: each single filer is eligible
+# (age 18 or older) and gets $0. In 2025 these units would get $19, $19, $25,
+# $29, $35, $37 and $59 (LCS March 2026 forecast, Table 8).
+- name: 2026 - no refund at any tier for eligible single filers
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 30
+      person3:
+        age: 30
+      person4:
+        age: 30
+      person5:
+        age: 30
+      person6:
+        age: 30
+      person7:
+        age: 30
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        co_modified_agi: -10000
+        co_income_tax_before_non_refundable_credits: 0
+      tax_unit2:
+        members: [person2]
+        co_modified_agi: 52000
+        co_income_tax_before_non_refundable_credits: 0
+      tax_unit3:
+        members: [person3]
+        co_modified_agi: 52001
+        co_income_tax_before_non_refundable_credits: 0
+      tax_unit4:
+        members: [person4]
+        co_modified_agi: 105001
+        co_income_tax_before_non_refundable_credits: 0
+      tax_unit5:
+        members: [person5]
+        co_modified_agi: 168001
+        co_income_tax_before_non_refundable_credits: 0
+      tax_unit6:
+        members: [person6]
+        co_modified_agi: 233001
+        co_income_tax_before_non_refundable_credits: 0
+      tax_unit7:
+        members: [person7]
+        co_modified_agi: 299001
+        co_income_tax_before_non_refundable_credits: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: CO
+      household2:
+        members: [person2]
+        state_code: CO
+      household3:
+        members: [person3]
+        state_code: CO
+      household4:
+        members: [person4]
+        state_code: CO
+      household5:
+        members: [person5]
+        state_code: CO
+      household6:
+        members: [person6]
+        state_code: CO
+      household7:
+        members: [person7]
+        state_code: CO
+  output:
+    co_sales_tax_refund_eligible: [true, true, true, true, true, true, true]
+    co_sales_tax_refund: [0, 0, 0, 0, 0, 0, 0]
+
+# Positive controls for 2025 to 2027, with zero, one and two eligible
+# filers. 2027: the gate is on again and the tax year 2025 amounts stand in
+# until CDOR publishes the tax year 2027 table (an intended placeholder).
+- name: 2025 to 2027 - refunds for zero, one and two eligible filers
+  period: 2027
+  input:
+    people:
+      person1:
+        age: {2025: 40, 2026: 40, 2027: 40}
+      person2:
+        age: {2025: 40, 2026: 40, 2027: 40}
+      person3:
+        age: {2025: 40, 2026: 40, 2027: 40}
+      person4:
+        age: {2025: 17, 2026: 17, 2027: 17}
+      person5:
+        age: {2025: 16, 2026: 16, 2027: 16}
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+        co_modified_agi: {2025: 60_000, 2026: 60_000, 2027: 60_000}
+        co_income_tax_before_non_refundable_credits: {2025: 0, 2026: 0, 2027: 0}
+        filing_status: {2025: JOINT, 2026: JOINT, 2027: JOINT}
+      tax_unit2:
+        members: [person3]
+        co_modified_agi: {2025: 4_625, 2026: 4_625, 2027: 4_625}
+        co_income_tax_before_non_refundable_credits: {2025: 0, 2026: 0, 2027: 0}
+      tax_unit3:
+        members: [person4]
+        co_modified_agi: {2025: 0, 2026: 0, 2027: 0}
+        co_income_tax_before_non_refundable_credits: {2025: 0, 2026: 0, 2027: 0}
+      tax_unit4:
+        members: [person5]
+        co_modified_agi: {2025: 0, 2026: 0, 2027: 0}
+        co_income_tax_before_non_refundable_credits: {2025: 0, 2026: 0, 2027: 0}
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: {2025: CO, 2026: CO, 2027: CO}
+      household2:
+        members: [person3]
+        state_code: {2025: CO, 2026: CO, 2027: CO}
+      household3:
+        members: [person4]
+        state_code: {2025: CO, 2026: CO, 2027: CO}
+      household4:
+        members: [person5]
+        state_code: {2025: CO, 2026: CO, 2027: CO}
+  output:
+    co_sales_tax_refund_person_eligible:
+      2027: [true, true, true, false, false]
+    # Joint, both eligible, second tier: 2 x $25. Single, first tier: $19.
+    # Under-18 filers with no wages or tax are not qualified individuals.
+    co_sales_tax_refund:
+      2025: [50, 19, 0, 0]
+      2026: [0, 0, 0, 0]
+      2027: [50, 19, 0, 0]

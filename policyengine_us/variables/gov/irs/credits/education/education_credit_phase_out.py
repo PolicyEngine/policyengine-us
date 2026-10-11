@@ -11,7 +11,9 @@ class education_credit_phase_out(Variable):
 
     def formula(tax_unit, period, parameters):
         education = parameters(period).gov.irs.credits.education
-        agi = tax_unit("adjusted_gross_income", period)
+        # 26 U.S.C. 25A(d)(2): modified adjusted gross income adds back
+        # income excluded under sections 911, 931 and 933.
+        magi = tax_unit("agi_plus_section_911_931_933_exclusions", period)
         is_joint = tax_unit("tax_unit_is_joint", period)
         phase_out_start = where(
             is_joint,
@@ -23,5 +25,5 @@ class education_credit_phase_out(Variable):
             education.phase_out.length.joint,
             education.phase_out.length.single,
         )
-        excess_agi = max_(0, agi - phase_out_start)
-        return min_(1, excess_agi / phase_out_length)
+        excess_magi = max_(0, magi - phase_out_start)
+        return min_(1, excess_magi / phase_out_length)
