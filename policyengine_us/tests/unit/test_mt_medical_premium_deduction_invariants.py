@@ -409,7 +409,8 @@ def test_seeded_population(year):
     agi_floor = FORM_FLOOR * run["mt_agi_joint"]
     total = _unit_sum(
         run,
-        run["other_medical_expenses"] + run["medical_expense_health_insurance_premiums"],
+        run["other_medical_expenses"]
+        + run["medical_expense_health_insurance_premiums"],
     )
     assert np.any((full > 0) & (total < agi_floor))
     assert np.any((full > 0) & (floored > 0))

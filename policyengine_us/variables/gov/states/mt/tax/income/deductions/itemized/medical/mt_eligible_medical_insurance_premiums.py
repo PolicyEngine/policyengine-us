@@ -31,5 +31,7 @@ class mt_eligible_medical_insurance_premiums(Variable):
         premiums = person("medical_expense_health_insurance_premiums", period)
         # Premiums deducted in determining Montana AGI do not qualify: the
         # self-employed health insurance deduction (Schedule 1, line 17).
-        deducted = person("self_employed_health_insurance_ald_excluded_premiums", period)
+        deducted = person(
+            "self_employed_health_insurance_ald_excluded_premiums", period
+        )
         return premiums - deducted

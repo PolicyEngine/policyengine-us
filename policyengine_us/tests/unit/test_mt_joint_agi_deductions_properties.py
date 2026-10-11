@@ -187,9 +187,7 @@ def test_medical_floor_uses_the_return_montana_agi(grid, year):
     # Adding each spouse's Montana AGI after flooring it at zero would change
     # the deduction somewhere on the grid.
     summed_individual = per_unit(sim, "mt_agi_indiv", year, unit)
-    unpooled = (
-        np.maximum(expenses - MEDICAL_FLOOR * summed_individual, 0) + premiums
-    )
+    unpooled = np.maximum(expenses - MEDICAL_FLOOR * summed_individual, 0) + premiums
     assert np.any(np.abs(unpooled - expected) > 1)
 
 
