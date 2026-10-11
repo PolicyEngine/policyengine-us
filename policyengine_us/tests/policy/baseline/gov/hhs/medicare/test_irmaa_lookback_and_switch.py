@@ -263,6 +263,40 @@ def test_counterfactual_earnings_move_irmaa_only_with_the_switch(same_year):
         assert after == pytest.approx(before)
 
 
+def test_one_year_household_irmaa_moves_with_that_years_income():
+    # Intended: with inputs only for the benefit year, the income two years
+    # prior is imputed from that year's income, so a counterfactual earnings
+    # change moves the charges even with the switch off. 2026 earnings of
+    # 120,500 deflate to 108,653, under the 109,001 threshold; 121,500 deflate
+    # to 109,555, over it.
+    sim = senior(
+        {"age": {2026: 66}, "employment_income": {2026: 120_500}},
+    )
+    factor = deflator(2024, 2026)
+    assert sim.calculate("medicare_irmaa_magi", 2026)[0] == pytest.approx(
+        120_500 * factor, rel=1e-6
+    )
+    before = sim.calculate("gross_medicare_part_b_premium", 2026)[0]
+    branch = bump_earnings(sim, 2026, 1_000)
+    after = branch.calculate("gross_medicare_part_b_premium", 2026)[0]
+    # 2026 single, 109,001 up to 137,001: $81.20 a month.
+    assert after - before == pytest.approx(12 * 81.2)
+
+
+def test_earliest_input_year_skips_variables_the_system_no_longer_has():
+    sim = senior(
+        {
+            "age": {2024: 66},
+            "employment_income": {2024: 200_000},
+            "tax_exempt_interest_income": {2023: 5},
+        }
+    )
+    assert earliest_input_year(sim) == 2023
+    # A reform that removes a variable leaves its recorded input keys behind.
+    sim.tax_benefit_system.variables.pop("tax_exempt_interest_income")
+    assert earliest_input_year(sim) == 2024
+
+
 # Bracket properties
 
 

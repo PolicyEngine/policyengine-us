@@ -2,7 +2,11 @@ description: PolicyEngine sets Medicare income-related monthly adjustment amount
 # The law sets IRMAA on income from two years before the benefit year, so a
 # change in this year's earnings meets the surcharge two years later. Marginal
 # tax rate and behavioral response analyses that treat a lasting earnings
-# change as meeting the surcharge in the same year turn this on.
+# change as meeting the surcharge in the same year turn this on. Even when it
+# is off, a simulation whose earliest input year is the benefit year (a
+# household entered for one year) imputes the income two years prior from the
+# benefit year's income, deflated, so its charges already move with that
+# income; see medicare_irmaa_magi_two_years_prior.
 values:
   0000-01-01: false
 metadata:
