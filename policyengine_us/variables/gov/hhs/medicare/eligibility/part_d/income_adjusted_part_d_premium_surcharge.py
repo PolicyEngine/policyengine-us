@@ -7,7 +7,7 @@ class income_adjusted_part_d_premium_surcharge(Variable):
     label = "Medicare Part D premium surcharge (income-adjusted)"
     unit = USD
     definition_period = YEAR
-    defined_for = "medicare_enrolled"
+    defined_for = "medicare_part_d_enrolled"
     reference = "https://www.law.cornell.edu/cfr/text/42/423.286"
     documentation = "Annualized Medicare Part D IRMAA surcharge under 42 U.S.C. 1395w-113(a)(7). This is the federally set income-related premium adjustment amount, paid in addition to the beneficiary's underlying Part D plan premium. Annual bracket values come from CMS fact sheets."
 

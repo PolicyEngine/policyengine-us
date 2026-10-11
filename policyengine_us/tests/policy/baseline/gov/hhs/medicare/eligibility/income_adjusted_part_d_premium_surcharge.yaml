@@ -129,3 +129,41 @@
     medicare_irmaa_magi_two_years_prior: 500_000
   output:
     income_adjusted_part_d_premium_surcharge: 1_029.6
+
+- name: Case 11, 2026 Medicare enrollee above the IRMAA threshold without Part D.
+  period: 2026
+  input:
+    age: 66
+    filing_status: SINGLE
+    adjusted_gross_income:
+      2024: 109_001
+    tax_exempt_interest_income:
+      2024: 0
+    takes_up_medicare_part_d_if_eligible: false
+  output:
+    income_adjusted_part_d_premium_surcharge: 0
+
+- name: Case 12, 2026 joint couple in the third tier where only one spouse has Part D.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 67
+      spouse:
+        age: 67
+        takes_up_medicare_part_d_if_eligible: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        adjusted_gross_income:
+          2024: 342_001
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    medicare_part_d_enrolled: [true, false]
+    # $60.40 a month for the enrolled spouse; none for the other.
+    income_adjusted_part_d_premium_surcharge: [724.8, 0]
+    # Part B premium and IRMAA ($202.90 + $324.60 a month) are unaffected.
+    gross_medicare_part_b_premium: [6_330, 6_330]
