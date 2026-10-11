@@ -1,0 +1,54 @@
+description: The Medicare Trustees report and project these Part D low-income subsidy payments per Medicare enrollee.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicare Part D low-income subsidy per enrollee
+  # From 2036, each value is the 2035 value times the growth in Medicare
+  # spending per enrollee, so the subsidy keeps its 2035 share of spending.
+  uprating: calibration.gov.hhs.medicare.per_capita_cost
+  reference:
+  # Each value is Table IV.B10's "Low-income subsidy" payments ($ billions,
+  # incurred basis) over Table V.B3's total enrollment (file page 196,
+  # thousands), people with Part A and/or Part B coverage, so it is per
+  # Medicare enrollee, not per subsidy recipient. 2016 to 2035 come from the
+  # 2026 report's Table IV.B10 (file page 159); 2015, which that table no
+  # longer shows, from the 2025 report's (file page 159). The two reports
+  # agree on 2016 to 2023. 2026 Medicare Trustees Report, transmitted
+  # 2026-06-09, retrieved 2026-10-11, sha256
+  # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8; 2025
+  # report sha256
+  # 1b3de7a4faeee5ad42059e10740603182b716a5fa7b53b30d360b45b9e474d95.
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table IV.B10
+    href: https://www.cms.gov/oact/tr/2026#page=159
+  - title: 2025 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table IV.B10
+    href: https://www.cms.gov/oact/tr/2025#page=159
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.B3
+    href: https://www.cms.gov/oact/tr/2026#page=196
+values:
+  # Historical.
+  2015-01-01: 460.52
+  2016-01-01: 462.57
+  2017-01-01: 465.21
+  2018-01-01: 474.84
+  2019-01-01: 482.65
+  2020-01-01: 524.75
+  2021-01-01: 547.05
+  2022-01-01: 604.61
+  2023-01-01: 663.6
+  2024-01-01: 605.29
+  # 2025 is the first year of the full Inflation Reduction Act benefit
+  # redesign (file page 119). The subsidy per low-income enrollee fell from
+  # $2,833 to $1,226 while the direct subsidy per enrollee rose from $383 to
+  # $1,869 (Table IV.B9, file page 158).
+  2025-01-01: 251.12
+  # Trustees' intermediate estimates.
+  2026-01-01: 255.86
+  2027-01-01: 283.45
+  2028-01-01: 298.54
+  2029-01-01: 324.78
+  2030-01-01: 377.29
+  2031-01-01: 396.02
+  2032-01-01: 404.71
+  2033-01-01: 409.83
+  2034-01-01: 417.15
+  2035-01-01: 431.59

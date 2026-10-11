@@ -1,0 +1,1 @@
+The default CBO household income now counts Medicare as CBO does, at the average cost per enrollee net of premiums and excluding the Part D low-income subsidy, through a new `cbo_medicare_benefit` variable instead of gross Medicare spending.
