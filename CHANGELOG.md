@@ -1,3 +1,10 @@
+## [2.38.12] - 2026-10-11
+
+### Changed
+
+- Add tests confirming that Schedule A medical expenses exclude health insurance premiums paid through pre-tax payroll deductions.
+
+
 ## [2.38.11] - 2026-10-10
 
 ### Changed
