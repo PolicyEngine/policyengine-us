@@ -17,13 +17,14 @@ calculates:
   from the parent as the parent stands then, as a simulation calculating only
   that period would create it.
 - When the branch is created, it keeps the parent's cache only if the parent
-  has no value yet for any overridden variable and period, or has exactly
-  the override value. A cached value cannot have been calculated from a
-  value that did not exist, or from a different one, so the parent's cache
-  is then safe to share; this is the usual case, where a formula branches
-  while its parent is still calculating the variable the branch overrides.
-  Otherwise the branch drops every array it copied except inputs, each for
-  the periods it was set for, and calculates the rest itself.
+  has no value yet for any overridden variable and period. A cached value
+  cannot have been calculated from a value that did not exist, so the
+  parent's cache is then safe to share; this is the usual case, where a
+  formula branches while its parent is still calculating the variable the
+  branch overrides. Otherwise the branch drops every array it copied except
+  inputs, each for the periods it was set for, and calculates the rest
+  itself. A parent value equal to the override is not enough: the parent's
+  cache can predate a later change to another input.
 - A branch reused within its period with different inputs is created again.
 - A caller can ask the branch never to keep the parent's calculated values
   (``inherit_calculated=False``). The parent can hold a value that depends on
@@ -56,15 +57,11 @@ def _overrides(period: Period, inputs: Dict[str, Override]):
             yield variable, period, np.asarray(value)
 
 
-def _known_otherwise(
-    simulation: Simulation, variable: str, period: Period, value: np.ndarray
-) -> bool:
-    """Whether ``simulation`` holds a value for ``variable`` other than ``value``."""
+def _is_known(simulation: Simulation, variable: str, period: Period) -> bool:
     holder = simulation.get_holder(variable)
     if holder.variable.is_neutralized:
         return False
-    known = holder.get_array(period, simulation.branch_name)
-    return known is not None and not np.array_equal(known, value)
+    return holder.get_array(period, simulation.branch_name) is not None
 
 
 def _input_keys(branch: Simulation) -> Set[Tuple[str, str, Period]]:
@@ -146,8 +143,8 @@ def get_override_branch(
         branch = None
     if branch is None:
         parent_knows_override = any(
-            _known_otherwise(simulation, variable, input_period, value)
-            for variable, input_period, value in overrides
+            _is_known(simulation, variable, input_period)
+            for variable, input_period, _ in overrides
         )
         branch = simulation.get_branch(name)
         branch.branch_period = period

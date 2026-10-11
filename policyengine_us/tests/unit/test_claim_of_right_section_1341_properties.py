@@ -24,7 +24,8 @@ and compare them:
   ``gov.simulation.branch_to_determine_itemization``; the itemizing branches
   keep the simulation's method;
 - a later year calculated on the same simulation equals a simulation of that
-  year alone;
+  year alone, and an itemizing branch of a simulation whose itemizing input
+  changed after its tax was calculated does not reuse that tax;
 - relations between cases over a grid: tax never rises with the repayment
   (also across the $3,000 threshold) or with the prior-year decrease, and a
   repayment of $3,000 or less changes nothing (section 67(h), formerly 67(g)).
@@ -367,10 +368,13 @@ class no_itemization_branching(Reform):
 
 @pytest.fixture(scope="module")
 def systems():
-    yield {
+    systems = {
         True: None,
         False: CountryTaxBenefitSystem(reform=(no_itemization_branching,)),
     }
+    yield systems
+    # Release the reformed system before the rest of the test process runs.
+    systems.clear()
     gc.collect()
 
 
@@ -414,3 +418,40 @@ def test_texas_household_does_not_depend_on_calculation_order(
             atol=TOLERANCE,
             err_msg=f"{variable} when {first} is calculated first",
         )
+
+
+def test_a_branch_does_not_reuse_tax_calculated_before_an_input_changed():
+    # Review r3 of PolicyEngine/policyengine-us#10038. No repayment, $20,000 of
+    # charitable gifts: $5,071.50 with the $15,750 standard deduction (taxable
+    # income $44,250), $4,561.50 itemizing (taxable income $40,000).
+    year = TEXAS_YEAR
+    simulation = Simulation(
+        situation={
+            "people": {
+                "p": {
+                    "age": {year: 40},
+                    "employment_income": {year: 60_000},
+                    "charitable_cash_donations": {year: 20_000},
+                }
+            },
+            "tax_units": {
+                "t": {
+                    "members": ["p"],
+                    "tax_unit_itemizes": {year: False},
+                    "state_sales_tax": {year: 0},
+                    "local_sales_tax": {year: 0},
+                }
+            },
+            "households": {"h": {"members": ["p"], "state_code": {year: "TX"}}},
+        }
+    )
+    np.testing.assert_allclose(
+        simulation.calculate("income_tax", year), [5_071.5], atol=TOLERANCE
+    )
+    # A plain branch whose itemizing input now equals the itemizing branch's
+    # override still holds the tax calculated without itemizing.
+    branch = simulation.get_branch("itemizes_after_the_fact")
+    branch.set_input("tax_unit_itemizes", year, np.array([True]))
+    np.testing.assert_allclose(
+        branch.calculate("tax_liability_if_itemizing", year), [4_561.5], atol=TOLERANCE
+    )

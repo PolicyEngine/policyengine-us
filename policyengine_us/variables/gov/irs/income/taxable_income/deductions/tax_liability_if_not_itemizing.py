@@ -11,16 +11,19 @@ class tax_liability_if_not_itemizing(Variable):
 
     def formula(tax_unit, period, parameters):
         simulation = tax_unit.simulation
-        # The branch keeps this simulation's claim of right method (26 U.S.C.
-        # 1341) rather than choosing its own, whatever is calculated first.
-        claim_of_right_method = tax_unit("claim_of_right_credit_applies", period)
+        overrides = {"tax_unit_itemizes": np.zeros((tax_unit.count,), dtype=bool)}
+        if tax_unit("claim_of_right_section_1341_eligible", period).any():
+            # Keep this simulation's claim of right method (26 U.S.C. 1341)
+            # rather than letting the branch choose its own. With no
+            # qualifying repayment the method is false everywhere, and
+            # leaving it out keeps the branch sharing this simulation's cache.
+            overrides["claim_of_right_credit_applies"] = tax_unit(
+                "claim_of_right_credit_applies", period
+            )
         non_itemized_branch = get_override_branch(
             simulation,
             "not_itemizing",
             period,
-            {
-                "tax_unit_itemizes": np.zeros((tax_unit.count,), dtype=bool),
-                "claim_of_right_credit_applies": claim_of_right_method,
-            },
+            overrides,
         )
         return non_itemized_branch.calculate("income_tax", period)
