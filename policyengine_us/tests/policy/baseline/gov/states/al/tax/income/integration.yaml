@@ -49,7 +49,9 @@
     # standard deduction 4,700 (chart, AGI 0-23,499), personal exemption
     # 3,000 and dependent exemption 1,000 (AGI not over 20,000). Federal tax
     # after refundable credits is zero, so no federal tax deduction.
-    # Taxable income 11,300; tax 2% x 500 + 4% x 2,500 + 5% x 8,300 = 525.
+    # Taxable income 11,300; the model's existing statutory-rate calculation
+    # gives 2% x 500 + 4% x 2,500 + 5% x 8,300 = 525. The Form 40 tax table
+    # (2021 booklet p. 25) instead gives 528 for this head of family return.
     al_agi: 20_000
     al_standard_deduction: 4_700
     al_personal_exemption: 3_000
@@ -80,8 +82,10 @@
     # booklet p. 5): standard deduction 5,200 (chart, AGI 0-25,999), personal
     # exemption 3,000 and dependent exemption 1,000 (AGI not over 50,000).
     # Federal tax is offset by the nonrefundable child tax credit, so no
-    # federal tax deduction. Taxable income 14,800; tax 2% x 500 + 4% x 2,500
-    # + 5% x 11,800 = 700.
+    # federal tax deduction. Taxable income 14,800; the model's existing
+    # statutory-rate calculation gives 2% x 500 + 4% x 2,500 + 5% x 11,800
+    # = 700. The Form 40 tax table (2025 booklet p. 25) instead gives 703
+    # for this head of family return.
     al_agi: 24_000
     al_standard_deduction: 5_200
     al_personal_exemption: 3_000
