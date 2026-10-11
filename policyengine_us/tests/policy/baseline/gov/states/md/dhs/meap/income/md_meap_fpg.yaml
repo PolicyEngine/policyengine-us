@@ -1,0 +1,28 @@
+# Source for the expected values in this file: FY2026 OHEP Income Guidelines (one
+# page), whose annual 200% FPG limits are twice the prior calendar year's HHS poverty
+# guideline:
+# https://dhs.maryland.gov/documents/OHEP/Advisory%20Board/Income-Guidelines-FY2026-Updated-7.9.2025.pdf
+
+- name: Case 1, the prior-year guideline follows the requested year when parameters backfill.
+  period: 2022
+  input:
+    state_code: MD
+    heating_type: NATURAL_GAS
+    md_meap_household_size: 2
+  output:
+    # One-year lag from the FY2026 guidelines applied to 2022: the 2021 HHS poverty
+    # guideline for two people, $12,880 + $4,540 = $17,420. Years before FY25 are
+    # unverified backfilled estimates.
+    md_meap_fpg: 17_420
+
+- name: Case 2, the 2026 guideline is the 2025 HHS poverty guideline behind the FY2026 limits.
+  period: 2026
+  input:
+    state_code: [MD, MD, MD]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    md_meap_household_size: [1, 4, 8]
+  output:
+    # Income Guidelines, annual 200% FPG table: size 1 $31,300, size 4 $64,300,
+    # size 8 $108,300; half of each is the 2025 HHS poverty guideline ($15,650 plus
+    # $5,500 per additional person): $15,650, $32,150, $54,150.
+    md_meap_fpg: [15_650, 32_150, 54_150]

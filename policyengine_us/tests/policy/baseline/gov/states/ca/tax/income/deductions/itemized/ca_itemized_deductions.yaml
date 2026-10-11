@@ -26,7 +26,7 @@
     state_code: CA
     filing_status: SINGLE
     adjusted_gross_income: 100_000
-    charitable_deduction: 10_000
+    charitable_cash_donations: 10_000
     ca_investment_interest_expense_deduction: 5_000
   output:
     ca_itemized_deductions: 15_000
@@ -37,7 +37,7 @@
     state_code: CA
     filing_status: SINGLE
     adjusted_gross_income: 212_288 + 50_000
-    charitable_deduction: 10_000
+    charitable_cash_donations: 10_000
     ca_investment_interest_expense_deduction: 5_000
   output:
     ca_itemized_deductions: 12_000  # charity subject to limitation

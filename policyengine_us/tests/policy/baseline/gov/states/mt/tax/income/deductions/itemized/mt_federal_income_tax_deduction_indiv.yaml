@@ -1,39 +1,150 @@
-- name: Deductions split evenly 
-  period: 2021
-  input:
-    people:
-      person1:
-        mt_agi_indiv: 500
-      person2:
-        mt_agi_indiv: 500
-    tax_units:
-      tax_unit:
-        members: [person1, person2]
-        mt_federal_income_tax_deduction_unit: 3_000
-        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MT
-  output:
-    mt_federal_income_tax_deduction_indiv: [1_500, 1_500]
+# 2022 Form 2 instructions, Itemized Deductions Schedule, line 4 (PDF p. 33):
+# "If you are married filing separately with your spouse, the federal income
+# tax withheld should be reported by the spouse who earned the income." and
+# "If your filing status is Married Filing Separately, you are each limited to
+# the $5,000 federal tax deduction and you cannot arbitrarily allocate this
+# deduction between spouses."
 
-- name: Deductions capped at max amount individually
+- name: Federal income tax is attributed by each spouse's share of federal AGI
   period: 2021
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
-        mt_agi_indiv: 100
+        adjusted_gross_income_person: 60_000
       person2:
-        mt_agi_indiv: 900
+        adjusted_gross_income_person: 40_000
     tax_units:
       tax_unit:
         members: [person1, person2]
-        mt_federal_income_tax_deduction_unit: 10_000
+        income_tax_before_refundable_credits: 3_000
         state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
     households:
       household:
         members: [person1, person2]
         state_code: MT
   output:
-    mt_federal_income_tax_deduction_indiv: [1_000, 5_000]
+    mt_federal_income_tax_deduction_share: [0.6, 0.4]
+    mt_federal_income_tax_deduction_indiv: [1_800, 1_200]
+
+- name: Each spouse's own federal tax is capped at 5,000, not a share of the joint cap
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 80_000
+      person2:
+        adjusted_gross_income_person: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        income_tax_before_refundable_credits: 30_000
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Federal tax attributed 24_000 / 6_000; each spouse is limited to 5_000.
+    # Capping the couple at 10_000 first and then splitting 80% / 20% would
+    # give 5_000 / 2_000.
+    mt_federal_income_tax_deduction_indiv: [5_000, 5_000]
+
+- name: Montana-only subtractions do not shift federal tax between spouses
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 50_000
+      person2:
+        adjusted_gross_income_person: 50_000
+        mt_subtractions: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        income_tax_before_refundable_credits: 6_000
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # The federal tax was paid on 50_000 of federal income each. Prorating by
+    # Montana AGI (50_000 / 30_000) would give 3_750 / 2_250.
+    mt_federal_income_tax_deduction_indiv: [3_000, 3_000]
+
+- name: A dependent's income does not draw a share of the parents' federal tax
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 40_000
+      person2:
+        adjusted_gross_income_person: 0
+      person3:
+        is_tax_unit_dependent: true
+        adjusted_gross_income_person: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        income_tax_before_refundable_credits: 2_000
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Only the parents' 40_000 + 0 AGI allocates their federal tax:
+    # 2_000 * 40_000 / 40_000 = 2_000 for the head. Including the
+    # dependent's 10_000 would incorrectly give 1_600 / 0 / 400.
+    mt_federal_income_tax_deduction_share: [1, 0, 0]
+    mt_federal_income_tax_deduction_indiv: [2_000, 0, 0]
+
+- name: No positive filer income retains main's zero federal tax allocation
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 0
+      person2:
+        adjusted_gross_income_person: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        income_tax_before_refundable_credits: 6_000
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Form 2 line 4a (source cited above) does not specify how to allocate
+    # federal tax when neither spouse has income. Preserve main's zero
+    # allocation: 6_000 * 0 = 0 for each spouse. Assigning all tax to the head
+    # would invent a new fallback and produce min(6_000, 5_000) = 5_000.
+    mt_federal_income_tax_deduction_share: [0, 0]
+    mt_federal_income_tax_deduction_indiv: [0, 0]
+
+- name: The deduction is repealed from 2024
+  period: 2024
+  input:
+    people:
+      person1:
+        adjusted_gross_income_person: 60_000
+      person2:
+        adjusted_gross_income_person: 40_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        income_tax_before_refundable_credits: 3_000
+        state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_federal_income_tax_deduction_indiv: [0, 0]

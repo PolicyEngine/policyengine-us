@@ -531,3 +531,92 @@
   output:
     ctc: 3_500  # 3000 for 10-year-old + 500 for 18-year-old (ODC)
     ctc_adult_individual_maximum: [0, 0, 500]  # ODC for 18-year-old under ARPA
+
+# Both cases below have zero taxable income and $0 of tax before credits. For
+# the Form 2555 filer, the Foreign Earned Income Tax Worksheet (Form 1040 line
+# 16), which applies section 911(f), is skipped when taxable income is zero;
+# the first case in this file has a Form 2555 filer with positive taxable
+# income.
+# non_refundable_ctc is the credit before the section 26(a) limit; the limited
+# amount is income_tax_capped_non_refundable_credits, which equals Schedule
+# 8812 line 14 here because the CTC is the only non-refundable credit ($0).
+- name: Head of household with two children and a section 911 exclusion gets no additional child tax credit in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        # Wages included in gross income; the excluded foreign wages are
+        # reported separately below.
+        employment_income: 8_000
+        # Over the $11,950 investment income limit, so no EITC either way.
+        taxable_interest_income: 12_500
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        # Form 2555 exclusion.
+        foreign_earned_income_exclusion: 40_000
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: TX
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    adjusted_gross_income: 20_500
+    # $20,500 is below the $23,625 head of household standard deduction.
+    taxable_income: 0
+    income_tax_before_credits: 0
+    eitc: 0
+    # Schedule 8812 line 12: 2 x $2,200.
+    ctc: 4_400
+    # Line 13 (Credit Limit Worksheet A): no tax to offset.
+    ctc_limiting_tax_liability: 0
+    refundable_ctc_barred_by_section_911_exclusion: true
+    # Part II-A: "If you file Form 2555, you cannot claim the additional
+    # child tax credit." A household with the same included income and no
+    # foreign earnings gets $825 (next case).
+    refundable_ctc: 0
+    non_refundable_ctc: 4_400
+    income_tax_capped_non_refundable_credits: 0
+    income_tax_before_refundable_credits: 0
+    income_tax: 0
+
+- name: A household with the same included income and no foreign earnings gets an $825 additional child tax credit in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 8_000
+        taxable_interest_income: 12_500
+      child1:
+        age: 5
+      child2:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        foreign_earned_income_exclusion: 0
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: TX
+  output:
+    income_tax_before_credits: 0
+    eitc: 0
+    ctc: 4_400
+    refundable_ctc_barred_by_section_911_exclusion: false
+    # Part II-A: line 16a = $4,400 - $0 = $4,400; line 16b = 2 x $1,700
+    # = $3,400; line 17 = $3,400; line 20 = 15% x ($8,000 - $2,500) = $825;
+    # line 27 = smaller of lines 17 and 20 = $825.
+    refundable_ctc: 825
+    non_refundable_ctc: 3_575
+    income_tax_capped_non_refundable_credits: 0
+    income_tax_before_refundable_credits: 0
+    income_tax: -825

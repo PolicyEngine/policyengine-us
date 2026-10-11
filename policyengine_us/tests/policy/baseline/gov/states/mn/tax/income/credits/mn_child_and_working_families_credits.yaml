@@ -16,7 +16,7 @@
         members: [person1, person2, person3]
         ctc_qualifying_children: 1
         mn_wfc_eligible: true
-        filer_adjusted_earnings: 10_000
+        eitc_earned_income: 10_000
         adjusted_gross_income: 10_000
         filing_status: JOINT
     households:
@@ -51,7 +51,7 @@
         members: [person1, person2, person3, person4]
         ctc_qualifying_children: 1
         mn_wfc_eligible: true
-        filer_adjusted_earnings: 6_000
+        eitc_earned_income: 6_000
         adjusted_gross_income: 10_000
         filing_status: JOINT
     households:
@@ -86,7 +86,7 @@
         members: [person1, person2, person3, person4]
         ctc_qualifying_children: 1
         mn_wfc_eligible: true
-        filer_adjusted_earnings: 100_000
+        eitc_earned_income: 100_000
         adjusted_gross_income: 10_000
         filing_status: JOINT
     households:
@@ -121,7 +121,7 @@
         members: [person1, person2, person3, person4]
         ctc_qualifying_children: 1
         mn_wfc_eligible: true
-        filer_adjusted_earnings: 10_000
+        eitc_earned_income: 10_000
         adjusted_gross_income: 45_000
         filing_status: JOINT
     households:
@@ -156,7 +156,7 @@
         members: [person1, person2, person3, person4]
         ctc_qualifying_children: 1
         mn_wfc_eligible: true
-        filer_adjusted_earnings: 10_000
+        eitc_earned_income: 10_000
         adjusted_gross_income: 45_000
         filing_status: SEPARATE
     households:
@@ -183,7 +183,7 @@
         members: [person1, person2]
         ctc_qualifying_children: 0
         mn_wfc_eligible: true
-        filer_adjusted_earnings: 10_000
+        eitc_earned_income: 10_000
         adjusted_gross_income: 12_000
         filing_status: JOINT
     households:
@@ -210,7 +210,7 @@
         members: [person1, person2]
         ctc_qualifying_children: 0
         mn_wfc_eligible: false
-        filer_adjusted_earnings: 10_000
+        eitc_earned_income: 10_000
         adjusted_gross_income: 12_000
         filing_status: JOINT
     households:
@@ -310,7 +310,7 @@
         members: [person1, person2, person3]
         ctc_qualifying_children: 1
         mn_wfc_eligible: true
-        filer_adjusted_earnings: 10_000
+        eitc_earned_income: 10_000
         adjusted_gross_income: 10_000
         filing_status: JOINT
     households:
@@ -352,7 +352,7 @@
         members: [person1, person2, person3, person4]
         ctc_qualifying_children: 1
         mn_wfc_eligible: true
-        filer_adjusted_earnings: 10_000
+        eitc_earned_income: 10_000
         adjusted_gross_income: 10_000
         filing_status: JOINT
     households:
@@ -414,7 +414,7 @@
         members: [person1, person2]
         ctc_qualifying_children: 1
         mn_wfc_eligible: true
-        filer_adjusted_earnings: 40_000
+        eitc_earned_income: 40_000
         adjusted_gross_income: 40_000
         filing_status: SINGLE
     households:
@@ -445,7 +445,7 @@
         members: [person1, disabled_adult]
         ctc_qualifying_children: 0
         mn_wfc_eligible: true
-        filer_adjusted_earnings: 10_000
+        eitc_earned_income: 10_000
         adjusted_gross_income: 10_000
         filing_status: JOINT
     households:
@@ -479,7 +479,7 @@
         members: [person1, adult]
         ctc_qualifying_children: 0
         mn_wfc_eligible: true
-        filer_adjusted_earnings: 10_000
+        eitc_earned_income: 10_000
         adjusted_gross_income: 10_000
         filing_status: JOINT
     households:
@@ -517,7 +517,7 @@
         members: [person1, person2, person3]
         ctc_qualifying_children: 1
         mn_wfc_eligible: true
-        filer_adjusted_earnings: 10_000
+        eitc_earned_income: 10_000
         adjusted_gross_income: 10_000
         filing_status: JOINT
     households:
@@ -557,7 +557,7 @@
         members: [person1, person2, person3]
         ctc_qualifying_children: 1
         mn_wfc_eligible: true
-        filer_adjusted_earnings: 10_000
+        eitc_earned_income: 10_000
         adjusted_gross_income: 10_000
         filing_status: JOINT
     households:
@@ -566,3 +566,123 @@
         state_code: MN
   output:
     mn_child_and_working_families_credits: 2_129.2
+
+- name: MN qualifying older child bonus excludes a disabled parent dependent (IRC 152(c)(2))
+  # A parent fails the IRC 152(c)(2) relationship test, so the disabled parent
+  # is not an IRC 32(c) qualifying child and not a qualifying older child.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_full_time_student: false
+      disabled_parent:
+        age: 75
+        is_tax_unit_dependent: true
+        is_full_time_student: false
+        is_permanently_and_totally_disabled: true
+        is_parent_of_filer_or_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1, disabled_parent]
+        ctc_qualifying_children: 0
+        mn_wfc_eligible: true
+        eitc_earned_income: 10_000
+        adjusted_gross_income: 10_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, disabled_parent]
+        state_code: MN
+  output:
+    # WFC base only: min($10,000, $9,480) * 0.04 = $379.20.
+    mn_child_and_working_families_credits: 379.2
+
+# Schedule M1CWFC, line 2 takes earned income from federal EIC Worksheet B:
+# both spouses combined, a net self-employment loss subtracted, not less than
+# zero. Line 10 is the greater of AGI (line 1) and line 2.
+- name: 2024 joint, one spouse's self-employment loss exceeds the other's wages
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 37
+        self_employment_income: -200_000
+      spouse:
+        age: 37
+        employment_income: 117_548
+      child1:
+        age: 8
+      child2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: MN
+  output:
+    # Line 2 is 0 and line 1 is negative, so there is no phaseout:
+    # 2 x $1,750 CTC + 4% x 0 WFC. NBER TAXSIM-35 also gives $3,500.
+    eitc_earned_income: 0
+    mn_child_and_working_families_credits: 3_500
+
+- name: 2024 joint, a self-employment loss reduces the earned income used for the phaseout
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 37
+        self_employment_income: -20_000
+      spouse:
+        age: 37
+        employment_income: 60_000
+      child1:
+        age: 8
+      child2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+    households:
+      household:
+        members: [head, spouse, child1, child2]
+        state_code: MN
+  output:
+    eitc_earned_income: 40_000
+    # 4% x $9,220 + 2 x $1,750 = $3,868.80; less 12% x ($40,000 - $36,880) = $374.40
+    mn_child_and_working_families_credits: 3_494.40
+
+- name: A dependent's interest does not remove Minnesota's child and working family credits
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 22_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        taxable_interest_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MN
+  output:
+    # The child's interest is on the child's own return; the head's
+    # Worksheet 1 amount is 0, under the 2025 limit of 11,950.
+    eitc_investment_income_eligible: true
+    mn_wfc_eligible: true
+    # CTC 1 x 1,750 + WFC 4% x 9,480 = 379.20; income 22,000 is under
+    # the 31,950 phase-out threshold. Main gives 0.
+    mn_child_and_working_families_credits: 2_129.20

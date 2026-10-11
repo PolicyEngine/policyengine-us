@@ -71,3 +71,27 @@
         state_code: MO
   output:
     mo_business_income_deduction: 18_587.04
+
+- name: A dependent's business income is on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        qualified_business_income: 30_000
+      spouse:
+        age: 45
+        qualified_business_income: 20_000
+      child:
+        age: 17
+        qualified_business_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MO
+  output:
+    # 20% of the spouses' 50,000.
+    mo_business_income_deduction: 10_000
