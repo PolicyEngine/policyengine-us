@@ -145,3 +145,44 @@
   output:
     # defined_for wi_shares_eligible_child zeroes the rate.
     wi_shares_hourly_max_rate: 0
+
+- name: Case 9, unknown-county and out-of-state households in one simulation with a Milwaukee County household.
+  # defined_for masks the output but the formula still runs over every
+  # household in the simulation. Before the UNKNOWN guard, the Wisconsin
+  # household with an UNKNOWN county reached the county-keyed rate tables and
+  # raised ParameterNotFoundError.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 20
+        wi_shares_provider_type: LICENSED_GROUP
+      person2:
+        age: 3
+        childcare_hours_per_week: 20
+        wi_shares_provider_type: LICENSED_GROUP
+      person3:
+        age: 3
+        childcare_hours_per_week: 20
+        wi_shares_provider_type: LICENSED_GROUP
+    households:
+      household1:
+        members: [person1]
+        state_code: WI
+        county: MILWAUKEE_COUNTY_WI
+      household2:
+        members: [person2]
+        state_code: WI
+        county: UNKNOWN
+      household3:
+        members: [person3]
+        state_code: MN
+        county: HENNEPIN_COUNTY_MN
+  output:
+    # person1: Milwaukee licensed group, ages 2-3: 9.72.
+    # person2: UNKNOWN county falls back to Adams licensed group, ages 2-3:
+    #   8.75.
+    # person3: Minnesota; defined_for zeroes the result.
+    wi_shares_hourly_max_rate: [9.72, 8.75, 0]

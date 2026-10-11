@@ -247,3 +247,77 @@
     # Negative hours -> 0 units from the bracket -> select default UNIT_1.
     # Region X, Center, REGULAR (age 5), UNIT_3 base $381/week x 1/3 = $127/week
     md_ccs_payment_rate: [0, 127]
+
+- name: Informal provider, unknown-county and out-of-state households in one simulation with a Montgomery County household.
+  # defined_for masks the output but the formula still runs over every
+  # household in the simulation. Before the UNKNOWN guard, the Maryland
+  # household with an UNKNOWN county reached the county-keyed informal rate
+  # table and raised ParameterNotFoundError.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 2
+        md_ccs_provider_type: INFORMAL
+      person3:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_head_or_spouse: true
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 2
+        md_ccs_provider_type: INFORMAL
+      person5:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_head_or_spouse: true
+      person6:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 2
+        md_ccs_provider_type: INFORMAL
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+      tax_unit3:
+        members: [person5, person6]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+      spm_unit3:
+        members: [person5, person6]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MD
+        county: MONTGOMERY_COUNTY_MD
+      household2:
+        members: [person3, person4]
+        state_code: MD
+        county: UNKNOWN
+      household3:
+        members: [person5, person6]
+        state_code: VA
+        county: FAIRFAX_COUNTY_VA
+  output:
+    # person2: informal, Montgomery, REGULAR (age 3), UNIT_1 (2 hours):
+    #   $177 / 3 = $59/week.
+    # person4: UNKNOWN county falls back to Allegany, informal REGULAR
+    #   UNIT_1: $83 / 3 = $27.67/week.
+    # person6: Virginia; defined_for zeroes the result.
+    md_ccs_payment_rate: [0, 59, 0, 27.67, 0, 0]
