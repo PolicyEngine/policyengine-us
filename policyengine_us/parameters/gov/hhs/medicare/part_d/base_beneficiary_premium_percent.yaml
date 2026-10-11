@@ -1,0 +1,23 @@
+description: The Centers for Medicare & Medicaid Services (CMS) uses this percent to set the Medicare Part D base beneficiary premium and to scale the Part D income-related monthly adjustment amount.
+metadata:
+  unit: /1
+  period: year
+  label: Medicare Part D base beneficiary premium percent
+  reference:
+    # (a)(3)(A) and (a)(7)(B)(i): 25.5 percent, or from 2030 the percent
+    # specified under (a)(9). (a)(9) sets that percent so the 2030 base
+    # beneficiary premium equals the lesser of the 2029 premium increased by 6
+    # percent or the premium without (a)(9), but not below 20 percent.
+    - title: 42 U.S.C. § 1395w-113(a)(3), (a)(7)(B) and (a)(9)
+      href: https://www.law.cornell.edu/uscode/text/42/1395w-113#a
+    # Footnote 63: "Currently, we expect the percentage in 2030 will be set at
+    # 20 percent, causing a substantial premium increase."
+    - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, footnote 63
+      href: https://www.cms.gov/oact/tr/2026#page=113
+    - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Part D premiums
+      href: https://www.cms.gov/oact/tr/2026#page=154
+values:
+  2006-01-01: 0.255
+  # The Trustees' expectation of the (a)(9) percent, which is also its floor;
+  # CMS determines it for 2030.
+  2030-01-01: 0.2

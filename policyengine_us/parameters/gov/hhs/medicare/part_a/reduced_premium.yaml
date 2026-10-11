@@ -3,7 +3,18 @@ metadata:
   unit: currency-USD
   period: month
   label: Medicare Part A reduced premium
+  # After the last announced year, the premium follows the Medicare Trustees'
+  # projected standard Part A premium, rounded to the nearest dollar as CMS
+  # publishes it. 42 U.S.C. 1395i-2(d)(4) sets it 45 percent below the
+  # standard premium, so the two grow together.
+  uprating:
+    parameter: calibration.gov.hhs.cms.medicare_part_a_premium_per_enrollee
+    rounding:
+      type: nearest
+      interval: 1
   reference:
+    - title: 42 U.S.C. § 1395i-2(d)
+      href: https://www.law.cornell.edu/uscode/text/42/1395i-2#d
     - title: 2022 Medicare Parts A & B Premiums and Deductibles
       href: https://www.cms.gov/newsroom/fact-sheets/2022-medicare-parts-b-premiums-deductibles-2022-medicare-part-d-income-related-monthly-adjustment
     - title: 2023 Medicare Parts A & B Premiums and Deductibles

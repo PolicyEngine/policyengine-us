@@ -1,0 +1,44 @@
+description: The Centers for Medicare and Medicaid Services (CMS) sets, and the Medicare Trustees project, this Medicare Part D base beneficiary premium per enrollee.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Medicare Part D base beneficiary premium per enrollee
+  reference:
+  # Table V.E2, "SMI Cost-Sharing and Premium Amounts", "Part D, Base
+  # beneficiary premium" column (file page 213): historical amounts through
+  # 2026 and intermediate estimates for 2027-2035. The 2030 jump is the
+  # Inflation Reduction Act's reset of the base beneficiary premium percent
+  # to 20 percent (file page 154). Report transmitted 2026-06-09, retrieved
+  # 2026-10-11, sha256
+  # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8.
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.E2
+    href: https://www.cms.gov/oact/tr/2026#page=213
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Part D premiums
+    href: https://www.cms.gov/oact/tr/2026#page=154
+values:
+  # Historical.
+  2015-01-01: 33.13
+  2016-01-01: 34.10
+  2017-01-01: 35.63
+  2018-01-01: 35.02
+  2019-01-01: 33.19
+  2020-01-01: 32.74
+  2021-01-01: 33.06
+  2022-01-01: 33.37
+  2023-01-01: 32.74
+  2024-01-01: 34.70
+  2025-01-01: 36.78
+  2026-01-01: 38.99
+  # Trustees' intermediate estimates.
+  2027-01-01: 41.33
+  2028-01-01: 43.81
+  2029-01-01: 46.44
+  2030-01-01: 68.93
+  2031-01-01: 71.27
+  2032-01-01: 71.59
+  2033-01-01: 74.01
+  2034-01-01: 75.48
+  2035-01-01: 77.81
+  # 2036 to 2100 grow at the 2034-2035 rate (77.81 / 75.48, 3.1% a year) and
+  # later years hold the 2100 value; see set_all_uprating_parameters in
+  # uprating_extensions.py.
