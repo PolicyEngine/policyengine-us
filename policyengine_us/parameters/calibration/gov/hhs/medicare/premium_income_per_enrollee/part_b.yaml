@@ -1,0 +1,61 @@
+description: The Medicare Trustees report and project this Part B premium income per Medicare enrollee, which counts premiums paid by or on behalf of enrollees, including income-related premiums and premiums that state Medicaid programs pay.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicare Part B premium income per enrollee
+  # From 2036, each value is the 2035 value times the growth in Medicare
+  # spending per enrollee, so premiums keep their 2035 share of spending.
+  uprating: calibration.gov.hhs.medicare.per_capita_cost
+  reference:
+  # Each value is premium income over Table V.B3's total enrollment (file
+  # page 196, thousands), people with Part A and/or Part B coverage.
+  # - 2015 to 2026: Table III.C7 (file page 102), "Premium income", $
+  #   millions, incurred basis.
+  # - 2027 to 2035: Table III.C4 (file page 96), "Premium income", $
+  #   billions, cash basis. Footnote 7 credits premiums withheld from the
+  #   benefits due January 3, 2027 on December 31, 2026; their amount is
+  #   III.C4's 2026 cash value less III.C7's 2026 incurred value (174.8 -
+  #   173.228 = 1.572), which is added back to 2027. Cash and incurred
+  #   premium income agree in every year from 2017 to 2025 except 2020 and
+  #   2021, the other footnote 7 years.
+  # Premium income is "premium payments by (or on behalf of) enrollees"
+  # (file page 88). It includes income-related premiums: in 2019 the
+  # standard premium, $135.50 a month (Table III.C2, file page 89), times
+  # 56.019 million Part B enrollees plus Table V.E3's $8.4 billion of
+  # income-related premiums (file page 215) is $99.5 billion, against $99.4
+  # billion of premium income.
+  # 2026 Medicare Trustees Report, transmitted 2026-06-09, retrieved
+  # 2026-10-11, sha256
+  # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8.
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table III.C7
+    href: https://www.cms.gov/oact/tr/2026#page=102
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table III.C4
+    href: https://www.cms.gov/oact/tr/2026#page=96
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.B3
+    href: https://www.cms.gov/oact/tr/2026#page=196
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Part B premium income
+    href: https://www.cms.gov/oact/tr/2026#page=88
+values:
+  # Historical.
+  2015-01-01: 1_214.54
+  2016-01-01: 1_296.34
+  2017-01-01: 1_389.19
+  2018-01-01: 1_554.68
+  2019-01-01: 1_615.55
+  2020-01-01: 1_729.23
+  2021-01-01: 1_772.6
+  2022-01-01: 2_009.35
+  2023-01-01: 1_969.28
+  2024-01-01: 2_054.43
+  2025-01-01: 2_169.44
+  # Trustees' intermediate estimates.
+  2026-01-01: 2_448.69
+  2027-01-01: 2_549.32
+  2028-01-01: 2_755.79
+  2029-01-01: 2_946.87
+  2030-01-01: 3_178.93
+  2031-01-01: 3_409.4
+  2032-01-01: 3_662.85
+  2033-01-01: 3_985.68
+  2034-01-01: 4_334.37
+  2035-01-01: 4_652

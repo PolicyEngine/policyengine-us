@@ -1,0 +1,57 @@
+description: The Medicare Trustees report and project this Part D premium income per Medicare enrollee, which counts premiums withheld from benefits, paid to the federal government or paid directly to plans, including income-related premiums.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicare Part D premium income per enrollee
+  # From 2036, each value is the 2035 value times the growth in Medicare
+  # spending per enrollee, so premiums keep their 2035 share of spending.
+  uprating: calibration.gov.hhs.medicare.per_capita_cost
+  reference:
+  # Each value is Table III.D3's "Premium income" (file page 116, $
+  # billions, cash basis) over Table V.B3's total enrollment (file page 196,
+  # thousands), people with Part A and/or Part B coverage. Footnote 1:
+  # "Premiums include both amounts withheld from Social Security benefits or
+  # other Federal payments, direct payments to the Federal government, and
+  # those paid directly to Part D plans." Footnote 6 (file page 117) credits
+  # one January's withheld premiums on December 31 of the year before: about
+  # $0.2 billion in 2015, $0.1 billion in 2020 and an estimated $0.2 billion
+  # in 2026, which are moved to 2016, 2021 and 2027. Premium income includes
+  # income-related premiums, which are deposited into the Part D account
+  # (footnote 73, file page 151). So each value equals the Part D enrollment
+  # share times calibration.gov.hhs.medicare.part_d.premiums_per_enrollee,
+  # plus Table V.E4's aggregate income-related premiums (file page 218) per
+  # Medicare enrollee. 2026 Medicare Trustees Report, transmitted
+  # 2026-06-09, retrieved 2026-10-11, sha256
+  # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8.
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table III.D3
+    href: https://www.cms.gov/oact/tr/2026#page=116
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.B3
+    href: https://www.cms.gov/oact/tr/2026#page=196
+values:
+  # Historical.
+  2015-01-01: 224.86
+  2016-01-01: 245.3
+  2017-01-01: 264.13
+  2018-01-01: 264.91
+  2019-01-01: 255.14
+  2020-01-01: 249.65
+  2021-01-01: 267.27
+  2022-01-01: 270.08
+  2023-01-01: 274.75
+  2024-01-01: 282.08
+  # 2025 premiums fell with the voluntary Part D premium demonstration for
+  # stand-alone prescription drug plans (file page 109).
+  2025-01-01: 215.04
+  # Trustees' intermediate estimates. The 2030 jump is the Inflation
+  # Reduction Act's reset of the base beneficiary premium percentage
+  # (file page 154).
+  2026-01-01: 281.3
+  2027-01-01: 356.74
+  2028-01-01: 389.05
+  2029-01-01: 404.32
+  2030-01-01: 674.95
+  2031-01-01: 708.2
+  2032-01-01: 720.06
+  2033-01-01: 752.61
+  2034-01-01: 776.68
+  2035-01-01: 809.85

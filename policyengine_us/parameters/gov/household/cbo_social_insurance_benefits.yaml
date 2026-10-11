@@ -2,7 +2,7 @@ description: Social insurance benefits included in CBO household income.
 values:
   0000-01-01:
     - social_security
-    - medicare_gross_cost
+    - cbo_medicare_benefit
     - unemployment_compensation
     - workers_compensation
 
@@ -10,3 +10,16 @@ metadata:
   unit: list
   period: year
   label: CBO social insurance benefits
+  reference:
+    # "Social insurance benefits consist of benefits provided through Social
+    # Security (Old Age, Survivors, and Disability Insurance); Medicare
+    # (measured as the average cost to the government of providing those
+    # benefits, net of offsetting receipts); regular unemployment insurance
+    # ...; and workers' compensation." (Appendix A, note 3.)
+    - title: Congressional Budget Office, The Distribution of Household Income in 2021, Appendix A
+      href: https://www.cbo.gov/system/files/2024-09/60341-income.pdf#page=27
+    # "The measure of Medicare benefits in The Distribution of Household
+    # Income includes the federal government's average cost per enrollee of
+    # providing Medicare, net of premiums paid by enrollees."
+    - title: Congressional Budget Office, Sensitivity of the Distribution of Household Income to the Treatment of Health Insurance From 1979 to 2021
+      href: https://www.cbo.gov/publication/61910

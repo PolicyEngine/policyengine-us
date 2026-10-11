@@ -14,6 +14,7 @@
 
 - name: CBO before-tax income adds social insurance and alias matches
   period: 2025
+  absolute_error_margin: 0.01
   input:
     employment_income: 40_000
     employer_sponsored_insurance_premiums: 6_000
@@ -35,10 +36,14 @@
     cbo_household_market_income: 49_102
     # CMS Medicare spending per enrollee, 2025.
     medicare_gross_cost: 17_751
-    # $12,000 + $17,751 + $2,000 + $1,000.
-    cbo_household_social_insurance_benefits: 32_751
-    cbo_household_income_before_transfers_and_taxes: 81_853
-    cbo_household_income: 81_853
+    # $17,751 less 2025 premium income per Medicare enrollee ($82.26 Part A,
+    # $2,169.44 Part B, $215.04 Part D) and the $251.12 Part D low-income
+    # subsidy per Medicare enrollee.
+    cbo_medicare_benefit: 15_033.14
+    # $12,000 + $15,033.14 + $2,000 + $1,000.
+    cbo_household_social_insurance_benefits: 30_033.14
+    cbo_household_income_before_transfers_and_taxes: 79_135.14
+    cbo_household_income: 79_135.14
 
 - name: CBO means-tested transfers include only the listed programs
   period: 2026

@@ -1,0 +1,47 @@
+description: The Medicare Trustees report and project this Part A premium income per Medicare enrollee, which counts premiums paid by or on behalf of people without premium-free Part A who enroll voluntarily.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Medicare Part A premium income per enrollee
+  # From 2036, each value is the 2035 value times the growth in Medicare
+  # spending per enrollee, so premiums keep their 2035 share of spending.
+  uprating: calibration.gov.hhs.medicare.per_capita_cost
+  reference:
+  # Each value is Table III.B4's "Premiums from voluntary enrollees" (file
+  # page 64, $ billions, cash basis) over Table V.B3's total enrollment
+  # (file page 196, thousands), which footnote 2 defines as the "Number of
+  # beneficiaries with HI and/or SMI coverage". The Part A premium is paid
+  # "by or on behalf of" these enrollees (glossary, file page 257), so state
+  # Medicaid buy-in payments are included. 2026 Medicare Trustees Report,
+  # transmitted 2026-06-09, retrieved 2026-10-11, sha256
+  # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8.
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table III.B4
+    href: https://www.cms.gov/oact/tr/2026#page=64
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.B3
+    href: https://www.cms.gov/oact/tr/2026#page=196
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, glossary, Part A premium
+    href: https://www.cms.gov/oact/tr/2026#page=257
+values:
+  # Historical.
+  2015-01-01: 57.57
+  2016-01-01: 57.82
+  2017-01-01: 59.64
+  2018-01-01: 59.98
+  2019-01-01: 63.38
+  2020-01-01: 63.61
+  2021-01-01: 65.65
+  2022-01-01: 69.05
+  2023-01-01: 70.56
+  2024-01-01: 70.52
+  2025-01-01: 82.26
+  # Trustees' intermediate estimates.
+  2026-01-01: 97.54
+  2027-01-01: 102.32
+  2028-01-01: 106.72
+  2029-01-01: 112.68
+  2030-01-01: 117.5
+  2031-01-01: 125.13
+  2032-01-01: 131.5
+  2033-01-01: 140.4
+  2034-01-01: 149.07
+  2035-01-01: 156.27

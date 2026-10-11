@@ -1,0 +1,111 @@
+# cbo_medicare_benefit = Medicare spending per enrollee - premium income per
+# Medicare enrollee (Parts A, B and D) - Part D low-income subsidy per
+# Medicare enrollee, the same for every enrollee.
+# 2025: $17,751 - $82.26 - $2,169.44 - $215.04 - $251.12 = $15,033.14.
+
+- name: Case 1, enrolled person gets the average net of premiums and the low-income subsidy.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    is_medicare_eligible: true
+    medicare_enrolled: true
+  output:
+    medicare_gross_cost: 17_751
+    cbo_medicare_benefit: 15_033.14
+
+# CBO assigns the average to every enrollee, so the person with 20 quarters
+# of coverage (a $6,216 Part A premium in 2025) and the person paying the
+# income-related premiums get the same value as the others, though each one's
+# medicare_cost differs.
+- name: Case 2, every enrollee gets the same value whatever premiums they pay.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      premium_free_part_a:
+        age: 70
+        is_medicare_eligible: true
+        medicare_enrolled: true
+        medicare_quarters_of_coverage: 40
+      pays_part_a_premium:
+        age: 70
+        is_medicare_eligible: true
+        medicare_enrolled: true
+        medicare_quarters_of_coverage: 20
+      pays_irmaa:
+        age: 70
+        is_medicare_eligible: true
+        medicare_enrolled: true
+        medicare_quarters_of_coverage: 40
+      disabled_under_65:
+        age: 50
+        is_medicare_eligible: true
+        medicare_enrolled: true
+        medicare_quarters_of_coverage: 40
+      not_enrolled:
+        age: 70
+        is_medicare_eligible: true
+        medicare_enrolled: false
+    tax_units:
+      tax_unit:
+        members: [premium_free_part_a]
+        adjusted_gross_income:
+          2023: 30_000
+      tax_unit_2:
+        members: [pays_part_a_premium]
+        adjusted_gross_income:
+          2023: 30_000
+      tax_unit_3:
+        members: [pays_irmaa]
+        # IRMAA uses income from two years before.
+        adjusted_gross_income:
+          2023: 1_000_000
+      tax_unit_4:
+        members: [disabled_under_65]
+      tax_unit_5:
+        members: [not_enrolled]
+    households:
+      household:
+        members:
+          [
+            premium_free_part_a,
+            pays_part_a_premium,
+            pays_irmaa,
+            disabled_under_65,
+            not_enrolled,
+          ]
+  output:
+    cbo_medicare_benefit: [15_033.14, 15_033.14, 15_033.14, 15_033.14, 0]
+
+- name: Case 3, first year of the series.
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    is_medicare_eligible: true
+    medicare_enrolled: true
+  output:
+    # $11,929 - $57.57 - $1,214.54 - $224.86 - $460.52.
+    cbo_medicare_benefit: 9_971.51
+
+- name: Case 4, last Trustees projection year.
+  period: 2035
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    is_medicare_eligible: true
+    medicare_enrolled: true
+  output:
+    # $31,764.35 (the 2034 CMS value grown at the 2031-2032 rate) - $156.27
+    # - $4,652 - $809.85 - $431.59.
+    cbo_medicare_benefit: 25_714.64
+
+- name: Case 5, not enrolled.
+  period: 2025
+  input:
+    age: 70
+    is_medicare_eligible: true
+    medicare_enrolled: false
+  output:
+    cbo_medicare_benefit: 0

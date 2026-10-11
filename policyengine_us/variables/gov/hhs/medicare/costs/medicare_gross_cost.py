@@ -7,12 +7,19 @@ class medicare_gross_cost(Variable):
     label = "Gross Medicare cost"
     documentation = (
         "Annual Medicare spending on behalf of the beneficiary before "
-        "subtracting beneficiary premiums. This matches the gross Medicare "
-        "benefit concept used in the CBO household-income framework."
+        "subtracting beneficiary premiums: CMS Medicare spending per "
+        "enrollee, which covers Parts A through D, including the Part D "
+        "low-income subsidy. CBO's standard household income counts "
+        "Medicare net of premiums instead (cbo_medicare_benefit); CBO adds "
+        "the premiums back only in an expanded sensitivity measure, which "
+        "it calls gross Medicare spending."
     )
     unit = USD
     definition_period = YEAR
-    reference = "https://www.cms.gov/about-cms/what-we-do/medicare"
+    reference = (
+        "https://www.cms.gov/about-cms/what-we-do/medicare",
+        "https://www.cbo.gov/publication/61910",
+    )
     defined_for = "medicare_enrolled"
 
     def formula(person, period, parameters):
