@@ -66,7 +66,7 @@ HEALTH_INPUTS = {
     "er_visit_expense",
     "health_insurance_premiums",
     "health_insurance_premiums_without_medicare_part_b",
-    "health_savings_account_contributions",
+    "health_savings_account_payroll_contributions",
     "imaging_expense",
     "inpatient_expense",
     "lab_expense",
@@ -192,13 +192,15 @@ def test_historical_accounts_share_the_projections_historical_years(year):
 def test_values_through_2024_follow_the_historical_rule(year):
     computed = _historical_rule(year)
     assert _index(year) == _round_half_up(computed)
-    # Per-capita NHE is rounded to the dollar; rounding the result is
-    # unambiguous anywhere in that range.
-    low = _historical_rule(year, NHE_PER_CAPITA[year] - 0.5)
-    high = _historical_rule(year, NHE_PER_CAPITA[year] + 0.5)
-    assert _round_half_up(low) == _round_half_up(high)
     if year >= FIRST_TABLE_YEAR:
         assert _round_half_up(computed) == OOP_PER_CAPITA[year]
+    else:
+        # For the derived years, per-capita NHE is rounded to the dollar and
+        # the result rounds to the same dollar anywhere in that range. (Not
+        # so for 2024, whose range straddles 1,631.5; Table 3 settles it.)
+        low = _historical_rule(year, NHE_PER_CAPITA[year] - 0.5)
+        high = _historical_rule(year, NHE_PER_CAPITA[year] + 0.5)
+        assert _round_half_up(low) == _round_half_up(high)
 
 
 def test_yaml_marks_historical_and_projected_years_as_table_3_does():
