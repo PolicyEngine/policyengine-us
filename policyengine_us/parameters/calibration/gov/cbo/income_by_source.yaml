@@ -1,4 +1,4 @@
-description: Historical data and projections of detailed adjusted gross income (AGI) by source (2019-2036)
+description: Historical data and projections of detailed adjusted gross income (AGI) by source (2019-2036), with IRS Statistics of Income actuals for total AGI in 2015-2018
 metadata:
   propagate_metadata_to_children: true
   unit: currency-USD
@@ -19,12 +19,33 @@ adjusted_gross_income:
   metadata:
     label: Total AGI
   values:
+    # IRS Statistics of Income actuals, all returns: adjusted gross income
+    # less deficit.
     2015-01-01:
-      value: 9_033_840_000_000
+      value: 10_210_310_102_000
       metadata:
         reference:
-        - title: Tax Foundation
-          href: https://taxfoundation.org/data/all/federal/summary-latest-federal-income-tax-data-2015-update/
+        - title: IRS SOI Tax Stats - Publication 1304 Table 1.1, tax year 2015, adjusted gross income less deficit
+          href: https://www.irs.gov/pub/irs-soi/15in11si.xls
+    2016-01-01:
+      value: 10_225_938_479_000
+      metadata:
+        reference:
+        - title: IRS SOI Tax Stats - Publication 1304 Table 1.1, tax year 2016, adjusted gross income less deficit
+          href: https://www.irs.gov/pub/irs-soi/16in11si.xls
+    2017-01-01:
+      value: 11_009_900_155_000
+      metadata:
+        reference:
+        - title: IRS SOI Tax Stats - Publication 1304 Table 1.1, tax year 2017, adjusted gross income less deficit
+          href: https://www.irs.gov/pub/irs-soi/17in11si.xls
+    2018-01-01:
+      value: 11_643_439_106_000
+      metadata:
+        reference:
+        - title: IRS SOI Tax Stats - Publication 1304 Table 1.1, tax year 2018, adjusted gross income less deficit
+          href: https://www.irs.gov/pub/irs-soi/18in11si.xls
+    # CBO from 2019.
     2019-01-01: 11_962_000_000_000
     2020-01-01: 12_650_000_000_000
     2021-01-01: 14_791_339_000_000
