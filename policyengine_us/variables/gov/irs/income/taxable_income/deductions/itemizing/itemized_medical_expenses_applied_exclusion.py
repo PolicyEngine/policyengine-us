@@ -16,7 +16,11 @@ class itemized_medical_expenses_applied_exclusion(Variable):
         "A caller-supplied subtotal bypasses that formula, so no exclusion "
         "was applied. States retaining gross paid medical costs restore this "
         "amount only for computed subtotals. Premium inputs use payer "
-        "attribution, including family coverage paid by a filer."
+        "attribution, including family coverage paid by a filer. Correct "
+        "provenance after deleting and recalculating a supplied subtotal "
+        "requires policyengine-core>=3.32.27. Earlier cores retain the deleted "
+        "input marker, so North Dakota's renter refund and New Mexico's senior "
+        "medical credit and exemption can omit the computed exclusion add-back."
     )
 
     def formula(tax_unit, period, parameters):
