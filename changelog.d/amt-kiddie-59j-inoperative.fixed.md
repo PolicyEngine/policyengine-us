@@ -1,1 +1,1 @@
-The alternative minimum tax no longer limits the exemption of filers subject to the kiddie tax, or substitutes their regular taxable income for alternative minimum taxable income, for 2018 onward; IRC 55(d)(4)(A)(iii) turns off the IRC 59(j) child limitation from 2018.
+The alternative minimum tax no longer applies the IRC 59(j) child exemption limitation from 2018, as required by IRC 55(d)(4)(A)(iii). From 2018, taxable excess also uses alternative minimum taxable income instead of the legacy substitution of regular taxable income for young filers.

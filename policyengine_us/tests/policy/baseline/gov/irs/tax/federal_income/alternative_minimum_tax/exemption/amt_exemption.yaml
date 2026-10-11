@@ -83,6 +83,21 @@
     # amt_exemption = min(34,475, 17,500) = 17,500
     amt_exemption: 17_500
 
+- name: 2018 single 18-year-old receives the ordinary exemption at the transition
+  period: 2018
+  input:
+    age_head: 18
+    amt_income: 0
+    employment_income: 0
+    filing_status: SINGLE
+  output:
+    amt_kiddie_tax_applies: true
+    # 2018 Form 6251 instructions (Rev. February 2020), page 10:
+    # https://www.irs.gov/pub/irs-prior/i6251--2018.pdf#page=10
+    # The exemption for children is computed the same as for other taxpayers.
+    # 70,300 - 0.25 * max(0, 0 - 500,000) = 70,300.
+    amt_exemption: 70_300
+
 - name: 2025 single 18-year-old with no earnings gets the full exemption
   period: 2025
   input:

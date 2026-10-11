@@ -7,6 +7,8 @@ values:
   # 55(d)(4), so the limitation stays off. The IRS still publishes the
   # inflation-adjusted section 59(j) amount (child/amount.yaml), but Form 6251
   # applies the normal exemption to every filer from 2018.
+  # ca_amt_exemption.py still reads child/amount.yaml; this federal switch
+  # does not change California's use of that amount.
   2018-01-01: false
 metadata:
   unit: bool
