@@ -1,3 +1,150 @@
+## [2.38.23] - 2026-10-11
+
+### Fixed
+
+- Allow non-disaster personal casualty and theft losses in California and Minnesota itemized deductions (and Minnesota alternative minimum taxable income), which do not follow the federal limit to declared disasters (Cal. Rev. & Tax. Code 17204(b); Minn. Stat. 290.0122, subd. 8): add `ca_casualty_loss_deduction` and `mn_casualty_loss_deduction`, each the loss less $100 and 10% of federal adjusted gross income, in place of the federal deduction.
+
+
+## [2.38.22] - 2026-10-11
+
+### Fixed
+
+- New York itemized deductions now allow medical and dental expenses only above 10% of federal AGI, the pre-TCJA 26 U.S.C. 213(a) floor that NY Tax Law § 615(a) keeps and Form IT-196 line 3 applies, through a new ny_medical_expense_deduction used by ny_itemized_deductions_max and the Line 40 limitation. They previously used the federal 7.5% floor, which overstated the deduction by up to 2.5% of federal AGI.
+
+
+## [2.38.21] - 2026-10-11
+
+### Changed
+
+- Uprate employer-sponsored insurance premiums and pre-tax health insurance premiums by CMS's employer-sponsored insurance premium per enrollee (NHE projections Table 17, 2025-2034 release, extended at its 2033-2034 growth rate), replacing CBO employment income per capita and CMS out-of-pocket spending per capita.
+
+
+## [2.38.20] - 2026-10-11
+
+### Fixed
+
+- Count only a person's own Illinois withholding as an Illinois AABD employment expense, instead of giving every tax unit member the whole unit's withholding (89 Ill. Adm. Code 113.125(a)). This also corrects HBWD countable income and premiums and HBIS countable income.
+
+
+## [2.38.19] - 2026-10-11
+
+### Fixed
+
+- New York Drive Clean rebate amounts and the MSRP cap for the flat rebate now change on July 1, 2021, for vehicles purchased after June 30, 2021, replacing the impossible date 2021-06-31 and a June 30 date one day early; a test now rejects any parameter date that is not a calendar day, other than the 0000-01-01 sentinel.
+
+
+## [2.38.18] - 2026-10-11
+
+### Fixed
+
+- Exclude SNAP benefits from California CARE and FERA countable income in all modeled years.
+
+
+## [2.38.17] - 2026-10-11
+
+### Fixed
+
+- Montana elderly homeowner/renter credit household income includes dependents' own allowable non-loss adjustments to federal gross income.
+- Count household members' income in the Montana elderly homeowner/renter credit: a tax unit dependent's gross income, and the income of household members who file their own returns.
+- Count federal refundable credits, the elderly homeowner/renter credit received during the year, and actual property tax rebate receipts (including in 2023) in Montana's elderly homeowner/renter credit gross household income; date the Montana property tax rebate ($400 for tax year 2024, none after).
+- Preserve zero Montana federal income tax deduction allocation when neither filer has positive federal adjusted gross income.
+- Montana's federal income tax deduction for spouses filing separately on the same form now attributes federal tax to the spouse who earned the income and caps each spouse at 5,000; the child and dependent care expense deduction phases out on the couple's combined Montana AGI and is halved only for spouses filing separately on the same form; and the elderly homeowner/renter credit counts income without regard to losses.
+
+
+## [2.38.16] - 2026-10-11
+
+### Changed
+
+- Strengthen qualified business income deduction income-limit coverage for net short-term losses, capital gain distributions, and comparison with the former adjusted-capital-gain cap. Cite Treasury's explicit treatment of elected investment income under Section 199A.
+
+
+## [2.38.15] - 2026-10-11
+
+### Fixed
+
+- Correct West Virginia's senior citizen or disability modification to exclude each person's own Schedule M income subtractions and 529 contribution deduction before applying the $8,000 cap.
+
+
+## [2.38.14] - 2026-10-11
+
+### Fixed
+
+- Deem SSI resources from co-resident spouses and parents. A spouse is the other member of a two-person marital unit, or the other head or spouse of one's tax unit within a shared marital unit; when a simulation has a single marital unit (as when marital units are omitted), a tax dependent is never the spouse of the person claiming them, so a simulation holding only a married couple in which one spouse is the other's tax dependent does not treat them as married. The same test decides whether a child is married. Parents are named by optional parent links, or else found by a tax-unit proxy over is_parent that cannot tell a grandparent from a parent (as in microsimulation data without parent links), and each parent's spouse counts wherever they file. The excess over the reformable allowance is deemed to each child and divided equally among the children who share those parents and are not already ineligible on citizenship or on countable income (including income deemed from parents), with redistribution. A spouse's resources count against the couple limit whenever the claim is not already joint, with ineligible-spouse exclusions for a spouse who could not be eligible (not aged, blind or disabled, or failing the citizenship condition); some applicants with a low-resource spouse newly pass while others fail. These eligibility changes also affect SSI-linked state benefits and Medicaid pathways.
+
+
+## [2.38.13] - 2026-10-11
+
+### Fixed
+
+- Fix Idaho's subtraction for health insurance premiums paid by the tax unit's head and spouse, including modeled Medicare premiums for enrolled filers, exclude premiums already deducted or excluded from income, and coordinate the subtraction, deduction election, and derived Idaho itemized deductions using claimant-paid medical expenses while preserving supplied actual medical and itemized deductions.
+
+
+## [2.38.12] - 2026-10-11
+
+### Changed
+
+- Add tests confirming that Schedule A medical expenses exclude health insurance premiums paid through pre-tax payroll deductions.
+
+
+## [2.38.11] - 2026-10-10
+
+### Changed
+
+- Add a code-health test that fails when a person-level variable's adds or subtracts list names a tax unit, SPM unit or other group variable, which gives every member the whole group amount. It records seven known bug pairs in five variables and exempts only the 11 reviewed positive receipt edges in three boolean flags. New group sources and subtraction edges on those flags fail the guard. Regression and property tests cover exact registry membership, stale entries, parameter histories, and Core projection.
+
+### Fixed
+
+- Floor Montana's 2021-2023 medical expense deduction and standard deduction on a joint return's own Montana AGI (Form 2, page 1, line 14), so one spouse's loss offsets the other's income, instead of on the sum of each spouse's AGI floored at zero. From 2024, take the federal medical expense deduction (7.5% of federal AGI), because Form 2 line 2 uses federal itemized deductions; the Montana floor had fallen to zero from 2024, so the full medical expense was deducted.
+
+
+## [2.38.10] - 2026-10-10
+
+### Fixed
+
+- Fix the subsampling policy-binding test to support policyengine-core 3.33.1's recorded-input rebuild contract while retaining compatibility with earlier core versions.
+
+
+## [2.38.9] - 2026-10-10
+
+### Fixed
+
+- Regenerated the stale EITC documentation charts, whose two-adult childless curves still used the 2021 joint phase-out bonus, and added a check that every stored chart point matches the EITC parameters.
+
+
+## [2.38.8] - 2026-10-10
+
+### Fixed
+
+- Excluded qualifying pre-tax payroll deductions from earned income used by the federal EITC, refundable CTC, and federal-style state credits; retain California-taxable payroll HSA contributions in CalEITC earnings and preserve the AMT kiddie-tax gross earnings cap. Use California taxable wages for the YCTC zero-earned-income wage ceiling.
+
+
+## [2.38.7] - 2026-10-10
+
+### Changed
+
+- Recognize the intended Michigan dependent-retirement SSI interaction in state tax invariants and add a regression for the resulting heating credit increase.
+
+### Fixed
+
+- Michigan household resources count only the claimant's and spouse's own income, capital gains and Schedule 1 adjustments (MCL 206.508(3)), keeping the Social Security, SSI, railroad retirement, child support and public assistance received for dependents (MI-1040CR lines 21, 22 and 27) and premiums paid for the family (line 31). The filer's Form 1040 line 7a amount, read by Michigan and by federal net investment income, now keeps a net capital gains amount supplied for the tax unit, less only the dependents' own gains and losses.
+- Use the filers' shared Schedule D lines for Form 1040 capital gains, preserving supplied aggregate inputs without letting dependents' large gains introduce rounding errors.
+- Correct Wisconsin retirement exclusion election reporting, prevent overlapping retirement subtractions, and include directly reported capital gain distributions in the capital gain subtraction.
+
+
+## [2.38.6] - 2026-10-10
+
+### Fixed
+
+- Fix traditional IRA deductions by applying employer-plan phase-outs using each person's own coverage, inferred from positive 401(k), 403(b), or self-employed pension contributions unless explicitly overridden. Defined-benefit coverage requires an explicit input. Limit deductions and combined IRA contributions to compensation with the joint spousal rule, and keep dependent contributions off the filers' return. Add IRS phase-out ranges for 2015–2026 and the 2026 IRA and catch-up dollar limits.
+
+
+## [2.38.5] - 2026-10-10
+
+### Fixed
+
+- Correct California itemized deductions to retain its charitable contribution limits without the federal charitable floor, allow miscellaneous expenses above 2% of federal AGI, and add back the California miscellaneous deduction for alternative minimum tax. Preserve signed California taxable income before AMT add-backs so deductions exceeding income do not inflate alternative minimum taxable income.
+
+
 ## [2.38.4] - 2026-10-09
 
 ### Fixed
