@@ -13,7 +13,7 @@ and only when the parent who claims them qualifies.
 For couples drawn by Hypothesis and a seeded population in these states,
 with either, both or neither spouse claimed, each output is the same under
 either head/spouse labelling, and marking another filer as claimed never
-raises the benefit amounts.
+raises the exemptions, credits, deductions and forgiveness changed here.
 """
 
 import pytest
@@ -46,11 +46,15 @@ MONOTONE = [
     "ok_count_exemptions",
     "ok_stc",
     "ok_eitc",
-    "ok_child_care_child_tax_credit",
     "pa_tax_forgiveness_eligible_share",
     "pa_tax_forgiveness_amount",
 ]
+# The Oklahoma child care / child tax credit takes the larger of a care and a
+# child tax credit branch; the care branch follows the federal credit, whose
+# tax-liability limit can rise when a filer is claimable, so it is checked for
+# swap invariance only. Taxes can rise too.
 OUTPUTS = MONOTONE + [
+    "ok_child_care_child_tax_credit",
     "nj_income_tax",
     "nc_income_tax",
     "nd_income_tax",
