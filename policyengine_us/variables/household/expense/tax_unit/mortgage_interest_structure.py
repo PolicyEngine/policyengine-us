@@ -111,20 +111,35 @@ class home_mortgage_interest_tax_unit(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Total home mortgage interest. The person-level home_mortgage_interest "
-        "input is canonical; the deprecated structured first/second interest "
-        "inputs are used only when no person-level interest is reported "
-        "(existing datasets still supply them — see issue #9275)."
+        "Total home mortgage interest on the principal and second residences. "
+        "The person-level home_mortgage_interest and "
+        "second_residence_mortgage_interest inputs are canonical. The "
+        "deprecated structured first/second interest inputs stand in for "
+        "principal-residence interest when no person-level "
+        "home_mortgage_interest is reported (existing datasets still supply "
+        "them — see issue #9275)."
     )
 
     def formula(tax_unit, period, parameters):
-        reported_interest = add(tax_unit, period, ["home_mortgage_interest"])
+        principal_residence_interest = add(tax_unit, period, ["home_mortgage_interest"])
         structured_interest = add(
             tax_unit,
             period,
             ["first_home_mortgage_interest", "second_home_mortgage_interest"],
         )
-        return where(reported_interest > 0, reported_interest, structured_interest)
+        second_residence_interest = add(
+            tax_unit, period, ["second_residence_mortgage_interest"]
+        )
+        # The structured inputs record loans, not residences, so they stand in
+        # for principal-residence interest only.
+        return (
+            where(
+                principal_residence_interest > 0,
+                principal_residence_interest,
+                structured_interest,
+            )
+            + second_residence_interest
+        )
 
 
 class deductible_mortgage_interest_tax_unit(Variable):
@@ -134,10 +149,15 @@ class deductible_mortgage_interest_tax_unit(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Federal deductible mortgage interest after applying the statutory "
-        "acquisition-debt caps to up to two mortgages."
+        "Federal deductible home mortgage interest and points (Schedule A "
+        "lines 8a through 8c) after applying the statutory acquisition-debt "
+        "caps to up to two mortgages. Points take the same deductible share "
+        "as interest (Publication 936, Table 1, line 13 instructions)."
     )
-    reference = "https://www.law.cornell.edu/uscode/text/26/163"
+    reference = [
+        "https://www.law.cornell.edu/uscode/text/26/163",
+        "https://www.irs.gov/pub/irs-pdf/p936.pdf#page=16",
+    ]
 
     def formula(tax_unit, period, parameters):
         first_balance = tax_unit("first_home_mortgage_balance", period)
@@ -148,6 +168,11 @@ class deductible_mortgage_interest_tax_unit(Variable):
         # Falls back to reported person-level interest when the structured
         # first/second inputs are absent.
         total_interest = tax_unit("home_mortgage_interest_tax_unit", period)
+        points = add(
+            tax_unit,
+            period,
+            ["home_mortgage_points", "second_residence_mortgage_points"],
+        )
 
         filing_status = tax_unit("filing_status", period)
         p = parameters(period).gov.irs.deductions.itemized.interest.mortgage
@@ -179,7 +204,9 @@ class deductible_mortgage_interest_tax_unit(Variable):
         deductible_share[mask] = np.minimum(
             1, limited_balance[mask] / total_balance[mask]
         )
-        return total_interest * deductible_share
+        # Publication 936, Table 1, line 13: deductible points are multiplied
+        # by the same line 14 fraction as the interest on line 13.
+        return (total_interest + points) * deductible_share
 
 
 class non_deductible_mortgage_interest_tax_unit(Variable):
@@ -189,11 +216,16 @@ class non_deductible_mortgage_interest_tax_unit(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Home mortgage interest that is not deductible federally because it "
-        "exceeds the acquisition-debt caps."
+        "Home mortgage interest and points that are not deductible federally "
+        "because they exceed the acquisition-debt caps."
     )
 
     def formula(tax_unit, period, parameters):
         total_interest = tax_unit("home_mortgage_interest_tax_unit", period)
+        points = add(
+            tax_unit,
+            period,
+            ["home_mortgage_points", "second_residence_mortgage_points"],
+        )
         deductible_interest = tax_unit("deductible_mortgage_interest_tax_unit", period)
-        return max_(0, total_interest - deductible_interest)
+        return max_(0, total_interest + points - deductible_interest)

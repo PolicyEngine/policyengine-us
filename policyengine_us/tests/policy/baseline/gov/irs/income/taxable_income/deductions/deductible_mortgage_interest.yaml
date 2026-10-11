@@ -144,3 +144,139 @@
   output:
     # Post-TCJA cap: 45,000 x 750,000 / 900,000 = 37,500
     deductible_mortgage_interest_tax_unit: 37_500
+
+- name: Points take the same deductible share as post-TCJA mortgage interest
+  period: 2026
+  input:
+    filing_status: SINGLE
+    home_mortgage_interest: 40_000
+    home_mortgage_points: 4_000
+    first_home_mortgage_balance: 1_000_000
+    first_home_mortgage_origination_year: 2020
+  output:
+    # Pub. 936 (2025), Table 1: lines 11/12 give 750,000/1,000,000
+    # = 0.750 on line 14. Line 15 interest = 40,000 x 0.750 = 30,000;
+    # line 13 instructions give points = 4,000 x 0.750 = 3,000.
+    # Combined deduction = 33,000; remainder = 44,000 - 33,000 = 11,000.
+    # Mortgage interest before the cap = 40,000 + 4,000 = 44,000.
+    deductible_mortgage_interest_tax_unit: 33_000
+    non_deductible_mortgage_interest_tax_unit: 11_000
+    deductible_mortgage_interest: 33_000
+    non_deductible_mortgage_interest: 11_000
+    mortgage_interest: 44_000
+
+- name: Points are fully deductible when no mortgage balance is supplied
+  period: 2026
+  input:
+    filing_status: SINGLE
+    home_mortgage_interest: 12_000
+    home_mortgage_points: 2_000
+  output:
+    # No balance is reported, so assume debt within the Pub. 936 limits:
+    # Table 1's line 12 stop rule makes the deductible fraction 1.
+    # Interest = 12,000 x 1; points = 2,000 x 1; total = 14,000;
+    # non-deductible amount = 14,000 - 14,000 = 0.
+    deductible_mortgage_interest_tax_unit: 14_000
+    non_deductible_mortgage_interest_tax_unit: 0
+    deductible_mortgage_interest: 14_000
+    mortgage_interest: 14_000
+
+- name: Points on acquisition debt grandfathered under the pre-TCJA cap are fully deductible
+  period: 2026
+  input:
+    filing_status: SINGLE
+    home_mortgage_interest: 36_000
+    home_mortgage_points: 4_000
+    first_home_mortgage_balance: 900_000
+    first_home_mortgage_origination_year: 2016
+  output:
+    # Pub. 936 Table 1: line 2 = 900,000; line 3 = 1,000,000;
+    # line 6 = min(1,000,000, 900,000) = 900,000. With no post-2017
+    # debt, line 11 = 900,000 = line 12, so the deductible fraction is 1.
+    # Interest = 36,000; points = 4,000 x 1 = 4,000; total = 40,000.
+    # Non-deductible amount = 40,000 - 40,000 = 0.
+    deductible_mortgage_interest_tax_unit: 40_000
+    non_deductible_mortgage_interest_tax_unit: 0
+    deductible_mortgage_interest: 40_000
+    mortgage_interest: 40_000
+
+- name: Joint return allocates spouse-reported points with head-reported interest
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+        home_mortgage_interest: 30_000
+      spouse:
+        age: 44
+        home_mortgage_points: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        first_home_mortgage_balance: 1_000_000
+        first_home_mortgage_origination_year: 2020
+  output:
+    # Pub. 936 Table 1 line 14 = 750,000/1,000,000 = 0.750.
+    # Interest = 30,000 x 0.750 = 22,500; deductible points =
+    # 10,000 x 0.750 = 7,500. Deduction = 30,000; remainder = 10,000.
+    # Reported interest + points = 40,000, allocated 30,000/40,000 =
+    # 0.75 to head and 10,000/40,000 = 0.25 to spouse. Deductible
+    # amounts 22,500 + 7,500 = 30,000; remainders 7,500 + 2,500 = 10,000.
+    # Gross mortgage amounts = 22,500 + 7,500 = 30,000 for head and
+    # 7,500 + 2,500 = 10,000 for spouse, summing to 40,000.
+    people:
+      head:
+        home_mortgage_interest_share: 0.75
+        deductible_mortgage_interest: 22_500
+        non_deductible_mortgage_interest: 7_500
+        mortgage_interest: 30_000
+      spouse:
+        home_mortgage_interest_share: 0.25
+        deductible_mortgage_interest: 7_500
+        non_deductible_mortgage_interest: 2_500
+        mortgage_interest: 10_000
+    tax_units:
+      tax_unit:
+        deductible_mortgage_interest_tax_unit: 30_000
+        non_deductible_mortgage_interest_tax_unit: 10_000
+
+- name: Points-only joint return allocates to the reporting spouse when interest is zero
+  period: 2026
+  input:
+    people:
+      head:
+        age: 45
+      spouse:
+        age: 44
+        home_mortgage_points: 8_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        first_home_mortgage_balance: 1_000_000
+        first_home_mortgage_origination_year: 2020
+  output:
+    # Pub. 936 Table 1 line 14 = 750,000/1,000,000 = 0.750.
+    # Interest = 0; points = 8,000 x 0.750 = 6,000 deductible;
+    # non-deductible amount = 8,000 - 6,000 = 2,000.
+    # The spouse reported all 8,000, so shares are 0/8,000 = 0 for
+    # head and 8,000/8,000 = 1 for spouse, even with no reported interest.
+    # Head receives 0; spouse receives deduction 6,000, remainder 2,000,
+    # and gross mortgage amount 6,000 + 2,000 = 8,000.
+    people:
+      head:
+        home_mortgage_interest_share: 0
+        deductible_mortgage_interest: 0
+        non_deductible_mortgage_interest: 0
+        mortgage_interest: 0
+      spouse:
+        home_mortgage_interest_share: 1
+        deductible_mortgage_interest: 6_000
+        non_deductible_mortgage_interest: 2_000
+        mortgage_interest: 8_000
+    tax_units:
+      tax_unit:
+        home_mortgage_interest_tax_unit: 0
+        deductible_mortgage_interest_tax_unit: 6_000
+        non_deductible_mortgage_interest_tax_unit: 2_000
