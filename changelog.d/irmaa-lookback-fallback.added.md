@@ -1,0 +1,1 @@
+Added gov.simulation.medicare_irmaa_uses_current_year_income, which sets Medicare Part B and Part D IRMAA from the benefit year's own MAGI (medicare_irmaa_magi, medicare_irmaa_tax_year_magi) for marginal tax rate and behavioral response analysis.

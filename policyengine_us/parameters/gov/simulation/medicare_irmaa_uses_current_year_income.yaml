@@ -1,0 +1,14 @@
+description: PolicyEngine sets Medicare income-related monthly adjustment amounts from the benefit year's own modified adjusted gross income, rather than the income from two years earlier that the law uses, if this is true.
+# The law sets IRMAA on income from two years before the benefit year, so a
+# change in this year's earnings meets the surcharge two years later. Marginal
+# tax rate and behavioral response analyses that treat a lasting earnings
+# change as meeting the surcharge in the same year turn this on.
+values:
+  0000-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Set Medicare IRMAA from current-year income
+  reference:
+    - title: 42 U.S.C. 1395r(i)(4)(B)
+      href: https://www.law.cornell.edu/uscode/text/42/1395r#i_4_B
