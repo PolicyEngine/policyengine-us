@@ -1,12 +1,13 @@
 """Above-the-line deductions must have stable float32 accumulation order."""
 
 import importlib
+import importlib.machinery
 import json
 import os
 from pathlib import Path
 import subprocess
 import sys
-from types import SimpleNamespace
+from types import ModuleType, SimpleNamespace
 
 import numpy as np
 import pytest
@@ -27,6 +28,31 @@ PERSON_ALDS = [
     "self_employed_health_insurance_ald",
     "self_employed_pension_contribution_ald",
 ]
+
+
+ROUNDING_PERIOD = 2026
+ROUNDING_INPUTS = {
+    "irs_employment_income": 2**25,
+    "irs_gross_income": 2**25,
+    "loss_ald": 2**24,
+    "alimony_expense_ald": 1,
+    "health_savings_account_ald": 1,
+    "student_loan_interest_ald_eligible": True,
+    "is_tax_unit_dependent": False,
+    "is_tax_unit_head": True,
+    "is_tax_unit_spouse": False,
+    "filing_status": "SINGLE",
+}
+PROBE_FORMULAS = {
+    "above_the_line_deductions": (
+        f"{AGI_MODULE}.above_the_line_deductions.above_the_line_deductions"
+    ),
+    "above_the_line_deductions_person": (
+        f"{AGI_MODULE}.above_the_line_deductions.above_the_line_deductions_person"
+    ),
+    "loss_ald_person": f"{AGI_MODULE}.above_the_line_deductions.loss_ald_person",
+    **FORMULAS,
+}
 
 
 def _deductions(reverse, empty):
@@ -176,47 +202,22 @@ def test_person_deductions_are_summed_in_sorted_unique_order(reverse, empty):
     assert order == expected
 
 
-def _household_results():
-    """Run real formulas at a float32 rounding boundary, with no dataset."""
-    from policyengine_us import Simulation
-
-    simulation = Simulation(
-        situation={
-            "people": {"person": {"age": {2026: 40}}},
-            "households": {
-                "household": {
-                    "members": ["person"],
-                    "state_code": {2026: "MT"},
-                    "county_fips": {2026: "30031"},
-                }
-            },
-        }
-    )
-    irs = simulation.tax_benefit_system.parameters("2026-01-01").gov.irs
-    # Explicit inputs isolate summation from deduction eligibility and phaseouts.
+def _set_rounding_inputs(simulation, irs):
+    # Share the explicit boundary inputs between the full and small systems.
     for name in irs.gross_income.sources:
-        simulation.set_input(name, 2026, [0])
+        simulation.set_input(name, ROUNDING_PERIOD, [0])
     for name in irs.ald.deductions:
-        simulation.set_input(name, 2026, [0])
+        simulation.set_input(name, ROUNDING_PERIOD, [0])
     for name in PERSON_ALDS:
-        simulation.set_input(f"{name}_person", 2026, [0])
-    inputs = {
-        "irs_employment_income": 2**25,
-        "irs_gross_income": 2**25,
-        "loss_ald": 2**24,
-        "alimony_expense_ald": 1,
-        "health_savings_account_ald": 1,
-        "student_loan_interest_ald_eligible": True,
-        "is_tax_unit_dependent": False,
-        "is_tax_unit_head": True,
-        "is_tax_unit_spouse": False,
-        "filing_status": "SINGLE",
-    }
-    for name, value in inputs.items():
-        simulation.set_input(name, 2026, [value])
+        simulation.set_input(f"{name}_person", ROUNDING_PERIOD, [0])
+    for name, value in ROUNDING_INPUTS.items():
+        simulation.set_input(name, ROUNDING_PERIOD, [value])
+
+
+def _serialized_results(simulation):
     results = {}
     for name in FORMULAS:
-        values = simulation.calculate(name, 2026)
+        values = simulation.calculate(name, ROUNDING_PERIOD)
         results[name] = {
             "values": values.tolist(),
             "dtype": str(values.dtype),
@@ -225,11 +226,230 @@ def _household_results():
     return results
 
 
-def test_household_float32_deductions_are_identical_across_hash_seeds():
+def _probe_fixture(simulation):
+    """Capture the real parameter lists and explicit dependency inputs."""
+    from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.loss_ald_person import (
+        BUSINESS_INCOME_SOURCES,
+    )
+
+    system = simulation.tax_benefit_system
+    parameters = system.parameters(f"{ROUNDING_PERIOD}-01-01")
+    irs = parameters.gov.irs
+    magi = irs.ald.student_loan_interest.magi
+    lists = {
+        "deductions": list(irs.ald.deductions),
+        "gross_income_sources": list(irs.gross_income.sources),
+        "filer_amounts_recorded_on_dependents": list(
+            irs.ald.filer_amounts_recorded_on_dependents
+        ),
+        "person_alds": list(magi.person_alds),
+        "excluded_alds": list(magi.excluded_alds),
+    }
+    names = set(lists["deductions"]) | set(lists["gross_income_sources"])
+    for deduction in lists["deductions"]:
+        candidate = f"{deduction}_person"
+        if candidate in system.variables:
+            names.add(candidate)
+    names.update(f"{name}_person" for name in lists["person_alds"])
+    names.update(BUSINESS_INCOME_SOURCES)
+    names.update(ROUNDING_INPUTS)
+    names.update(
+        (
+            "section_911_excluded_income",
+            "other_net_gain",
+            "limited_business_loss",
+            "capital_losses",
+            # MAGI reads all unemployment compensation, even when only its
+            # taxable portion is in the gross-income parameter list.
+            "unemployment_compensation",
+            "basic_income",
+        )
+    )
+    # These classes remain real production formulas in every child.
+    names.difference_update(PROBE_FORMULAS)
+    variables = {}
+    for name in sorted(names):
+        variable = system.variables[name]
+        values = simulation.calculate(name, ROUNDING_PERIOD)
+        if name == "filing_status":
+            value_type = "filing_status"
+            default_value = variable.default_value.name
+            input_values = values.decode_to_str().tolist()
+        elif variable.value_type in (float, bool, int):
+            value_type = variable.value_type.__name__
+            default_value = variable.value_type(variable.default_value)
+            input_values = values.tolist()
+        else:
+            raise TypeError(f"Unsupported probe input {name}: {variable.value_type}")
+        variables[name] = {
+            "entity": variable.entity.key,
+            "value_type": value_type,
+            "default_value": default_value,
+            "definition_period": variable.definition_period,
+            "input_values": input_values,
+        }
+    return {
+        "parameters": lists,
+        "basic_income_taxable": bool(
+            parameters.gov.contrib.ubi_center.basic_income.taxable
+        ),
+        "variables": variables,
+    }
+
+
+def _household_results(fixture_path=None):
+    """Run real formulas at a float32 rounding boundary, with no dataset."""
+    from policyengine_us import Simulation
+
+    simulation = Simulation(
+        situation={
+            "people": {"person": {"age": {ROUNDING_PERIOD: 40}}},
+            "households": {
+                "household": {
+                    "members": ["person"],
+                    "state_code": {ROUNDING_PERIOD: "MT"},
+                    "county_fips": {ROUNDING_PERIOD: "30031"},
+                }
+            },
+        }
+    )
+    irs = simulation.tax_benefit_system.parameters(f"{ROUNDING_PERIOD}-01-01").gov.irs
+    # Explicit inputs isolate summation from deduction eligibility and phaseouts.
+    _set_rounding_inputs(simulation, irs)
+    results = _serialized_results(simulation)
+    if fixture_path is not None:
+        fixture_path.write_text(json.dumps(_probe_fixture(simulation)))
+    return results
+
+
+def _install_probe_package():
+    """Avoid country startup only in a fresh hash-seed child process."""
+    if "policyengine_us" in sys.modules:
+        raise RuntimeError("The hash-seed probe must precede country imports")
+    package_dir = Path(__file__).resolve().parents[2]
+    package = ModuleType("policyengine_us")
+    package.__path__ = [str(package_dir)]
+    package.__package__ = "policyengine_us"
+    package.__file__ = str(package_dir / "__init__.py")
+    package.__spec__ = importlib.machinery.ModuleSpec(
+        "policyengine_us", loader=None, is_package=True
+    )
+    package.__spec__.submodule_search_locations = package.__path__
+    sys.modules["policyengine_us"] = package
+
+
+def _hash_seed_results(fixture_path):
+    """Run production formulas and actual core float32 holders under a seed."""
+    _install_probe_package()
+    from policyengine_core.model_api import Enum, Variable
+    from policyengine_core.parameters import ParameterNode
+    from policyengine_core.simulations import Simulation as CoreSimulation
+    from policyengine_core.taxbenefitsystems import TaxBenefitSystem
+    from policyengine_us.entities import entities
+    from policyengine_us.variables.household.demographic.tax_unit.filing_status import (
+        FilingStatus,
+    )
+
+    fixture = json.loads(fixture_path.read_text())
+    system = TaxBenefitSystem(entities)
+    entity_by_key = {entity.key: entity for entity in system.entities}
+    for name, attributes in fixture["variables"].items():
+        assert name not in PROBE_FORMULAS
+        if attributes["value_type"] == "filing_status":
+            value_type = Enum
+            default_value = FilingStatus[attributes["default_value"]]
+            extra = {"possible_values": FilingStatus}
+        else:
+            value_type = {"float": float, "bool": bool, "int": int}[
+                attributes["value_type"]
+            ]
+            default_value = attributes["default_value"]
+            extra = {}
+        system.add_variable(
+            type(
+                name,
+                (Variable,),
+                {
+                    "entity": entity_by_key[attributes["entity"]],
+                    "value_type": value_type,
+                    "default_value": default_value,
+                    "definition_period": attributes["definition_period"],
+                    "label": f"Explicit rounding-boundary fixture input: {name}",
+                    **extra,
+                },
+            )
+        )
+    for name, module_path in PROBE_FORMULAS.items():
+        system.add_variable(getattr(importlib.import_module(module_path), name))
+
+    p = fixture["parameters"]
+
+    def leaf(value):
+        return {"values": {f"{ROUNDING_PERIOD}-01-01": value}}
+
+    system.parameters = ParameterNode(
+        "",
+        data={
+            "gov": {
+                "irs": {
+                    "gross_income": {"sources": leaf(p["gross_income_sources"])},
+                    "ald": {
+                        "deductions": leaf(p["deductions"]),
+                        "filer_amounts_recorded_on_dependents": leaf(
+                            p["filer_amounts_recorded_on_dependents"]
+                        ),
+                        "student_loan_interest": {
+                            "magi": {
+                                "person_alds": leaf(p["person_alds"]),
+                                "excluded_alds": leaf(p["excluded_alds"]),
+                            }
+                        },
+                    },
+                },
+                "contrib": {
+                    "ubi_center": {
+                        "basic_income": {
+                            "taxable": leaf(fixture["basic_income_taxable"])
+                        }
+                    }
+                },
+            }
+        },
+    )
+    simulation = CoreSimulation(
+        tax_benefit_system=system,
+        situation={
+            "people": {"person": {}},
+            "tax_units": {"unit": {"members": ["person"]}},
+        },
+        default_input_period=ROUNDING_PERIOD,
+        default_calculation_period=ROUNDING_PERIOD,
+    )
+    for name, attributes in fixture["variables"].items():
+        simulation.set_input(name, ROUNDING_PERIOD, attributes["input_values"])
+    _set_rounding_inputs(
+        simulation, system.parameters(f"{ROUNDING_PERIOD}-01-01").gov.irs
+    )
+    results = _serialized_results(simulation)
+    if "policyengine_us.system" in sys.modules:
+        raise RuntimeError("The hash-seed probe imported the full country system")
+    return results
+
+
+def test_household_float32_deductions_are_identical_across_hash_seeds(tmp_path):
+    fixture_path = tmp_path / "rounding-boundary.json"
+    # Keep one complete US integration as the oracle. Only the child processes
+    # replace unrelated formula dependencies with its captured boundary inputs.
+    reference = _household_results(fixture_path=fixture_path)
     results = {}
     for seed in (0, 20, 32, 34, 42, 123):
         completed = subprocess.run(
-            [sys.executable, str(Path(__file__).resolve()), "--household-probe"],
+            [
+                sys.executable,
+                str(Path(__file__).resolve()),
+                "--hash-seed-probe",
+                str(fixture_path),
+            ],
             env={**os.environ, "PYTHONHASHSEED": str(seed)},
             check=True,
             capture_output=True,
@@ -238,12 +458,18 @@ def test_household_float32_deductions_are_identical_across_hash_seeds():
         )
         results[seed] = json.loads(completed.stdout)
     assert all(result == results[0] for result in results.values()), json.dumps(results)
-    # Both $1 deductions precede the large deduction in the canonical order;
-    # their sum and the resulting income are exactly representable in float32.
-    for result in results[0].values():
+    assert results[0] == reference, json.dumps(
+        {"full_household": reference, "hash_seeds": results}
+    )
+    # The boundary combines 2**25 of income with 2**24 and two $1 deductions.
+    # Keep its expected float32 result alongside the exact byte comparisons.
+    for result in reference.values():
         assert result["dtype"] == "float32"
         assert result["values"] == [16_777_214.0]
 
 
-if __name__ == "__main__" and sys.argv[1:] == ["--household-probe"]:
-    print(json.dumps(_household_results()))
+if __name__ == "__main__":
+    if sys.argv[1:] == ["--household-probe"]:
+        print(json.dumps(_household_results()))
+    elif len(sys.argv) == 3 and sys.argv[1] == "--hash-seed-probe":
+        print(json.dumps(_hash_seed_results(Path(sys.argv[2]))))
