@@ -8,6 +8,11 @@ class mt_elderly_homeowner_or_renter_credit_net_household_income(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = "mt_elderly_homeowner_or_renter_credit_eligible"
+    reference = (
+        "https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html",
+        # 2024 Form 2, Schedule 2EC
+        "https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2/2024_Montana_Individual_Income_Tax_Return_Form_2.pdf#page=10",
+    )
 
     def formula(person, period, parameters):
         p = parameters(
@@ -16,10 +21,12 @@ class mt_elderly_homeowner_or_renter_credit_net_household_income(Variable):
         # Only one claim is allowed per household
         # married taxpayer who are living apart may qualify for only one credit per year
         standard_exclusion = p.net_household_income.standard_exclusion
-        # Allocate the income to the head
+        # Gross household income counts every member of the household,
+        # including those outside the claimant's return (§ 15-30-2337(4);
+        # 2024 Schedule 2EC line 17). Allocate it to the head.
         head = person("is_tax_unit_head", period)
         gross_household_income = add(
-            person.tax_unit,
+            person.household,
             period,
             ["mt_elderly_homeowner_or_renter_credit_gross_household_income"],
         )
