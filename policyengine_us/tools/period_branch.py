@@ -31,7 +31,7 @@ change the tax-benefit system rather than inputs: the caller swaps the system
 and deletes the variables it recalculates.
 """
 
-from typing import Dict, Set, Tuple, Union
+from typing import Dict, Iterable, Optional, Set, Tuple, Union
 
 import numpy as np
 from policyengine_core.periods import ETERNITY, Period
@@ -73,19 +73,41 @@ def _input_keys(branch: Simulation) -> Set[Tuple[str, str, Period]]:
     }
 
 
-def drop_inherited_values(branch: Simulation) -> None:
+def has_input(simulation: Simulation, variable: str, period: Period) -> bool:
+    """Whether ``set_input`` stored ``variable`` for ``period``.
+
+    That is, on ``simulation`` or a branch it reads, whether from the dataset,
+    the situation or a later call. An eternal variable matches any period.
+    """
+    period = to_period(period)
+    eternal = (
+        simulation.tax_benefit_system.variables[variable].definition_period == ETERNITY
+    )
+    return any(
+        name == variable and (eternal or input_period == period)
+        for name, _, input_period in _input_keys(simulation)
+    )
+
+
+def drop_inherited_values(
+    branch: Simulation, variables: Optional[Iterable[str]] = None
+) -> None:
     """Delete every array ``branch`` holds except inputs.
 
     An array is kept only if ``set_input`` stored it, on this branch or one it
     reads, for that variable and period. A value calculated for one period is
     dropped even when the same variable is an input for another period.
+    ``variables``, if given, limits this to those variables.
     """
     input_keys = _input_keys(branch)
+    only = None if variables is None else set(variables)
     # An eternal variable stores every period under one key, while the input
     # key records the period it was set for, so match it by branch only.
     eternal_inputs = {(name, branch_name) for name, branch_name, _ in input_keys}
     for population in branch.populations.values():
         for name, holder in population._holders.items():
+            if only is not None and name not in only:
+                continue
             eternal = holder.variable.definition_period == ETERNITY
             for branch_name, known_period in holder.get_known_branch_periods():
                 if (

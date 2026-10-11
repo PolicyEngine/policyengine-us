@@ -4,18 +4,19 @@ The capital gains realization response scales a person's long-term gains with
 the change in this rate between baseline and reform policy
 (``capital_gains_responses.py``), so it has to be the rate on long-term gains.
 It used to raise ``capital_gains``, the sum of short- and long-term gains.
-That reaches adjusted gross income but not net capital gain, so the rise was
-taxed as ordinary income, and raising the top capital gains rate from 20% to
-28% left a top-bracket filer's measured rate unchanged.
+That reaches adjusted gross income but not net capital gain, so outside the
+cases where taxable income was below net capital gain the rise was taxed as
+ordinary income, and raising the top capital gains rate from 20% to 28% left
+a top-bracket filer's measured rate unchanged.
 
-Invariants, each checked through household simulations for 2026:
+Invariants, for 2026:
 
 1. Statutory rate. A Texas single filer whose only income is long-term gains
    in the 15% or 20% bracket faces that bracket's rate (26 U.S.C. 1(h)(1)),
    plus the 3.8% net investment income tax once modified adjusted gross
    income passes its threshold (26 U.S.C. 1411), plus half that rate where
    each dollar of gains also removes 50 cents of alternative minimum tax
-   exemption (26 U.S.C. 55(d)). Texas has no income tax.
+   exemption (26 U.S.C. 55(d)(2) and (d)(4)). Texas has no income tax.
 2. Reform. With the top capital gains rate set to r, a top-bracket filer's
    rate moves by r less the baseline rate, both measured directly and through
    the behavioral response measurement branches. That holds until the tax at
@@ -26,15 +27,22 @@ Invariants, each checked through household simulations for 2026:
 3. Differential. The rate measured in a branch equals the finite difference
    between new simulations of the same households, across states, filing
    statuses, wages and gains, including households that give a
-   ``capital_gains`` total as an input.
-4. Rise. The rise in gains is at least $1,000, is $1,000 for households under
-   $1 million, and survives float32 rounding to within 1.2e-4 of itself.
+   ``capital_gains`` total as an input, at construction or later. The new
+   simulations use the same rise, so this checks the branch, not the size of
+   the rise.
+4. Order. Requesting the capital gains response before the labor supply
+   response gives both the values they have when requested the other way.
+5. Rise. The rise in gains is at least $1,000, is $1,000 for households under
+   $1 million, and survives float32 rounding to within 1.2e-4 of itself. This
+   one is checked on the function alone.
 
 The filers in 1 and 2 have 0.1% of their gains, or $1,000 if more, added to
 them, so a rate is exact only where that rise stays inside one bracket; the
-examples keep clear of the bracket edges. Fixed household examples of each
-bracket, wages, joint filers and given ``capital_gains`` totals are YAML
-tests in ``tests/policy/baseline/household/
+examples keep clear of the bracket edges. The expectations for 2 also leave
+out two narrow ranges of the top rate that ``top_bracket_rate`` does not
+model (see ``TOP_RATES``). Fixed household examples of each
+bracket, wages, joint filers, given ``capital_gains`` totals, an input given
+for another year and a state cliff are YAML tests in ``tests/policy/baseline/household/
 marginal_tax_rate_on_capital_gains.yaml``. These tests cover what YAML
 cannot: properties over generated households, reforms read through the
 behavioral response measurement branches, and the differential against new
@@ -237,8 +245,8 @@ def test_rate_on_long_term_gains_is_the_statutory_rate(gains):
     np.testing.assert_allclose(measured, expected, rtol=0, atol=RATE_RESOLUTION)
 
 
-# Two ranges of the top rate are left out, where a filer's rate is not the
-# smaller of the top rate and the top ordinary rate for every filer here:
+# Two ranges of the top rate are left out, where top_bracket_rate, which
+# models only the 1(h)(1) limit, does not give every filer here their rate:
 # - 28% to 29%. Once the tax at the capital gains rates passes the alternative
 #   minimum tax's flat 26% and 28% computation, that computation is the
 #   tentative minimum tax, and for a sliver of rates the filer still owes
@@ -362,6 +370,27 @@ def test_branch_rate_matches_new_simulations(households):
     base, expected = fresh_simulation_rate(households)
 
     np.testing.assert_allclose(measured_rate(base), expected, rtol=0, atol=1e-6)
+
+
+def test_rate_keeps_a_capital_gains_total_set_after_construction():
+    # A total set through set_input after the simulation is built is not
+    # among the construction inputs a branch keeps by name, so the branch
+    # used to drop it and rebuild the total from long-term gains alone.
+    gains, totals = [300_000, 0], [400_000, 300_000]
+    late = simulate(texas_single_filers(gains))
+    late.set_input("capital_gains", YEAR, np.array(totals, dtype=np.float32))
+    given = simulate(
+        [("TX", [(0, amount, total)]) for amount, total in zip(gains, totals)]
+    )
+
+    measured = measured_rate(late)
+
+    np.testing.assert_allclose(measured, measured_rate(given), rtol=0, atol=1e-6)
+    # Each total puts the rise in the 15% bracket, over the net investment
+    # income tax threshold.
+    np.testing.assert_allclose(
+        measured, statutory_rate(300_000), rtol=0, atol=RATE_RESOLUTION
+    )
 
 
 FLOAT32_AMOUNT = st.floats(-(2.0**36), 2.0**36, width=32)
