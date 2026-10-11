@@ -171,8 +171,9 @@ def test_index_is_table_3_out_of_pocket_per_capita(year):
 
 @pytest.mark.parametrize("year", TABLE_YEARS)
 def test_published_values_match_aggregates_and_per_capita_nhe(year):
-    """Checks the transcribed rows against each other, so one mistyped
-    per-capita, aggregate or per-capita NHE figure fails."""
+    """Checks three independently transcribed rows for consistency within
+    publication rounding. A mistyped figure fails unless it stays inside that
+    tolerance (883.3 for 2034's 883.2 would pass)."""
     # The aggregates are rounded to $0.1 billion, per-capita NHE to the
     # dollar, and the published value to the dollar.
     low = (NHE_PER_CAPITA[year] - 0.5) * (OOP_BILLIONS[year] - 0.05)
