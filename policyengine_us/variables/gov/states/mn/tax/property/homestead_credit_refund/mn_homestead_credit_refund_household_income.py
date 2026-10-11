@@ -33,7 +33,7 @@ class mn_homestead_credit_refund_household_income(Variable):
 
         people = tax_unit.members
         is_dependent = people("is_tax_unit_dependent", period) | people(
-            "claimed_as_dependent_on_another_return", period
+            "claimable_as_dependent_on_another_return", period
         )
         social_security = people("social_security", period)
         taxable_social_security = people("taxable_social_security", period)
