@@ -12,9 +12,12 @@ documentation: >-
   Congressional Research Service reported in 2021 that JCT used 3.1 (a 32.3%
   peak) and in 2025 that JCT has used 3.1. Because the response depends only
   on the change in the rate, the form is defined when the baseline rate is
-  0%, and a fixed state rate that adds to the federal rate scales realizations
-  by a constant, so in a single-rate model federal revenue still peaks at a
-  federal rate of 1 / semi_elasticity. Both rates are clipped to between 0 and
+  0%. Without clipping, a fixed state rate that adds to the federal rate
+  scales realizations by a constant, so the analytical peak of single-rate
+  federal revenue stays at a federal rate of 1 / semi_elasticity; once the
+  combined rate reaches 100% the clip stops realizations falling, and that
+  peak is the maximum only for a state rate below about 31% to 36% at
+  semi-elasticities of 3.1 to 3.51. Both rates are clipped to between 0 and
   1 first, because the household marginal rate can fall outside that range
   where the extra gain crosses a benefit cliff; this keeps the realization
   multiplier between exp(-semi_elasticity) and exp(semi_elasticity). At most

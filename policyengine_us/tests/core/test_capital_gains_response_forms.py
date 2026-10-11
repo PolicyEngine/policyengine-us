@@ -650,7 +650,10 @@ def test_log_rate_revenue_has_no_interior_peak_above_minus_one(
     )
 
 
-@settings(max_examples=300)
+# No deadline: a wall-clock limit is not part of this compatibility property,
+# and generating float32 arrays can exceed Hypothesis's 200 ms default on a
+# loaded runner (it did once in review, 253 ms, then 86 ms on replay).
+@settings(max_examples=300, deadline=None)
 @given(
     dtype=st.sampled_from([np.float32, np.float64]),
     data=st.data(),
@@ -689,6 +692,7 @@ FLOAT32_RATES = st.floats(min_value=-5, max_value=20, width=32)
 FLOAT32_GAINS = st.floats(min_value=-(2.0**53), max_value=2.0**53, width=32)
 
 
+@settings(deadline=None)
 @given(
     form=st.sampled_from([SEMI_ELASTICITY, NET_OF_TAX_ELASTICITY]),
     data=st.data(),
