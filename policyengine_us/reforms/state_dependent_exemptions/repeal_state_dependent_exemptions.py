@@ -93,7 +93,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             # if they are not claimed as a dependent elsewhere
             head_or_spouse = person("is_tax_unit_head_or_spouse", period)
             dependent_on_another_return = person(
-                "claimed_as_dependent_on_another_return", period
+                "claimable_as_dependent_on_another_return", period
             )
             # The personal exemption is also provided to dependents
             return ~dependent_on_another_return & head_or_spouse
