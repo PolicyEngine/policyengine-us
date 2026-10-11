@@ -10,7 +10,7 @@ Invariants:
    published for each year.
 2. Differential: an independent implementation of 223(g), written here from
    the monthly BLS values in ``gov.bls.cpi``, reproduces every published limit
-   for 2019 to 2026. It also reproduces the 2018 limits of Rev. Proc. 2018-18;
+   for 2019 to 2027. It also reproduces the 2018 limits of Rev. Proc. 2018-18;
    the family parameter instead holds the $6,900 that Rev. Proc. 2018-27 let
    taxpayers use (an intended difference). The model's ``get_hsa_cola``
    agrees with the independent implementation in every year whose window is
@@ -42,7 +42,9 @@ LIMIT = "gov.irs.gross_income.health_savings_account_contributions.limit"
 END_YEAR = 2100
 BASES = dict(HSA_CONTRIBUTION_LIMIT_STATUTORY_BASES)
 
-# (self-only, family) limits from the IRS publication for each year.
+# (self-only, family) limits from the IRS publication for each year: Notice
+# 2004-2 (2004), then the Rev. Proc. for each year cited in the parameter files
+# (Rev. Proc. 2004-71 for 2005 through Rev. Proc. 2026-24 for 2027).
 PUBLISHED = {
     2004: (2_600, 5_150),
     2005: (2_650, 5_250),
@@ -69,6 +71,7 @@ PUBLISHED = {
     2024: (4_150, 8_300),
     2025: (4_300, 8_550),
     2026: (4_400, 8_750),
+    2027: (4_500, 9_000),
 }
 LAST_PUBLISHED_YEAR = max(PUBLISHED)
 # Years the C-CPI-U-based 223(g) (after Pub. L. 115-97) governs.

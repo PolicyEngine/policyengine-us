@@ -274,11 +274,12 @@ def get_hsa_cola(
     (if any) by which the C-CPI-U for the calendar year before ``tax_year``,
     averaged over the 12 months ending March 31, exceeds
     ``get_hsa_cola_denominator``. These windows reproduce every self-only and
-    family limit the IRS published for 2019 through 2026 from the BLS series
-    in ``gov.bls.cpi`` (``tests/core/test_hsa_contribution_limits.py``);
-    taking the 2016 ratio over the 12 months ending March 31 as well misses
-    3 of those 16 values. ``denominator`` lets a caller computing many years
-    pass it once.
+    family limit the IRS published for 2019 through 2027, and Rev. Proc.
+    2018-18's limits for 2018, from the BLS series in ``gov.bls.cpi``
+    (``tests/core/test_hsa_contribution_limits.py``). Taking the 2016 ratio
+    over the 12 months ending March 31 as well misses 3 of the 18 values for
+    2019 to 2027. ``denominator`` lets a caller computing many years pass it
+    once.
     """
     if denominator is None:
         denominator = get_hsa_cola_denominator(parameters)
