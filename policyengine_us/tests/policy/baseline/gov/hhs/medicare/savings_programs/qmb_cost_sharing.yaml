@@ -1,11 +1,12 @@
-- name: Case 1, QMB cost sharing uses the monthly Medicare cost approximation.
+- name: Case 1, QMB cost sharing is a twelfth of Medicaid's annual spending per QMB.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.001
   input:
     msp_category: QMB
   output:
-    # $14,500 annual Medicare per-capita cost / 12 * 20%.
-    qmb_cost_sharing: 241.67
+    # FY 2024 CMS-64 line 17D, $1,153,227,651, over 8,374,811.6 QMB
+    # person-years is $137.70 a year, held after FY 2024; / 12 = $11.475.
+    qmb_cost_sharing: 11.475
 
 - name: Case 2, non-QMB MSP categories do not receive QMB cost sharing.
   period: 2026-01
@@ -14,3 +15,21 @@
     msp_category: SLMB
   output:
     qmb_cost_sharing: 0
+
+- name: Case 3, September 2023 uses the fiscal year 2023 value.
+  period: 2023-09
+  absolute_error_margin: 0.001
+  input:
+    msp_category: QMB
+  output:
+    # FY 2023: $1,118,400,599 / 8,413,952.4 = $132.92 a year; / 12.
+    qmb_cost_sharing: 11.076667
+
+- name: Case 4, October 2023 starts the fiscal year 2024 value.
+  period: 2023-10
+  absolute_error_margin: 0.001
+  input:
+    msp_category: QMB
+  output:
+    # FY 2024: $137.70 a year; / 12.
+    qmb_cost_sharing: 11.475

@@ -1,0 +1,1 @@
+Value QMB cost sharing at Medicaid's spending per Qualified Medicare Beneficiary from CMS-64 line 17D ($137.70 a year in FY 2024), replacing 20 percent of all Medicare spending per enrollee, and remove the unused `gov.hhs.medicare.savings_programs.qmb.cost_sharing_rate` parameter.

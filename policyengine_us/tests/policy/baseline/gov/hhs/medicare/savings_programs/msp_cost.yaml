@@ -11,8 +11,8 @@
     base_part_b_premium: 2_434.8
   output:
     # Part B premium: $202.90 * 12 = $2,434.80.
-    # QMB cost sharing: $14,500 * 20% = $2,900.
-    msp_cost: 5_334.8
+    # QMB cost sharing: Medicaid's $137.70 a year per QMB (FY 2024, held).
+    msp_cost: 2_572.5
 
 - name: Case 2, SLMB MSP-only beneficiary receives Part B premium value.
   period: 2026
@@ -55,3 +55,20 @@
     base_part_b_premium: 2_434.8
   output:
     msp_cost: 0
+
+- name: Case 5, QMB cost sharing switches fiscal year in October.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    age: 67
+    is_medicare_eligible: true
+    medicaid_enrolled: false
+    msp_category: QMB
+    base_part_a_premium: 0
+    base_part_b_premium: 1_978.8
+  output:
+    # Part B premium: $164.90 * 12 = $1,978.80. QMB cost sharing: nine
+    # months of FY 2023 ($132.92 / 12) and three of FY 2024 ($137.70 / 12)
+    # = $99.69 + $34.425 = $134.115.
+    msp_cost: 2_112.915
