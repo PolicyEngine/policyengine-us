@@ -1,6 +1,16 @@
 description: The US indexes Social Security benefits (OASDI and SSI) according to this schedule, annually updating based on CPI-W in the third quarter of the prior year.
 values:
   # Actuals.
+  2015-01-01: 234.242 # 2014Q3: (234.525 + 234.030 + 234.170) / 3
+  # 2015Q3 averaged 233.278, below 2014Q3, so no COLA was payable for 2016
+  # and benefits stayed at the 2014Q3 level. The 2017 COLA (0.3%) compared
+  # 2016Q3 with 2014Q3.
+  2016-01-01: 234.242
+  2017-01-01: 235.057 # 2016Q3: (234.771 + 234.904 + 235.495) / 3
+  2018-01-01: 239.668 # 2017Q3: (238.617 + 239.448 + 240.939) / 3
+  2019-01-01: 246.352 # 2018Q3: (246.155 + 246.336 + 246.565) / 3
+  2020-01-01: 250.2 # 2019Q3: (250.236 + 250.112 + 250.251) / 3
+  2021-01-01: 253.412 # 2020Q3: (252.636 + 253.597 + 254.004) / 3
   2022-01-01: 268.421 # 2021Q3: (267.789 + 268.387 + 269.086) / 3
   2023-01-01: 291.901 # 2022Q3: (292.219 + 291.629 + 291.854) / 3
   2024-01-01: 301.236 # 2023Q3: (299.899 + 301.551 + 302.257) / 3
@@ -24,5 +34,9 @@ metadata:
   reference:
     - title: Historical values
       href: https://www.ssa.gov/oact/cola/colaseries.html
+    - title: SSA, Consumer Price Index (CPI-W), monthly values
+      href: https://www.ssa.gov/oact/STATS/cpiw.html
+    - title: 42 U.S. Code § 415(i), cost-of-living increases in benefits
+      href: https://www.law.cornell.edu/uscode/text/42/415#i
     - title: CBO Economic Projections, February 2024.
       href: https://www.cbo.gov/publication/59710
