@@ -1,3 +1,10 @@
+## [2.38.18] - 2026-10-11
+
+### Fixed
+
+- Exclude SNAP benefits from California CARE and FERA countable income in all modeled years.
+
+
 ## [2.38.17] - 2026-10-11
 
 ### Fixed
