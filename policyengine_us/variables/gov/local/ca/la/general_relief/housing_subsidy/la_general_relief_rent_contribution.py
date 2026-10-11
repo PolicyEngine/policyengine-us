@@ -16,9 +16,9 @@ class la_general_relief_rent_contribution(Variable):
     def formula(spm_unit, period, parameters):
         married = add(spm_unit, period, ["is_married"])
         p = parameters(period).gov.local.ca.la.general_relief
-        # PA 6182 deducts the participant's contribution from cash GR.
-        # Read the county subsidy rather than the total landlord payment,
-        # which includes this contribution.
+        # PA 6182, page 1, item 2 deducts the contribution from cash GR.
+        # Read the independent county allowance before the final payment
+        # cap, so the landlord payment can depend on this contribution.
         receive_housing_subsidy = (
             spm_unit("la_general_relief_housing_subsidy_amount", period) > 0
         )

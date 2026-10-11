@@ -16,9 +16,10 @@ class la_general_relief_housing_subsidy(Variable):
     def formula(spm_unit, period, parameters):
         subsidy_amount = spm_unit("la_general_relief_housing_subsidy_amount", period)
         # Read the same contribution used by the cash grant deduction,
-        # including supplied inputs. Its subsidy dependency is independent
+        # including supplied inputs. Its allowance dependency is independent
         # of this total payment, so the calculation remains acyclic.
         rent_contributions = spm_unit("la_general_relief_rent_contribution", period)
-        # The amount can not exceed rent
+        # Apply the final rent cap after adding the direct-rent contribution.
+        # The county allowance can exceed the additional subsidy paid.
         rent = add(spm_unit, period, ["rent"])
         return min_(rent, subsidy_amount + rent_contributions)

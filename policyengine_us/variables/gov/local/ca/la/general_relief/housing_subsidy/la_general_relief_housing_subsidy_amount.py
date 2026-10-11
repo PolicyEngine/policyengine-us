@@ -5,7 +5,7 @@ class la_general_relief_housing_subsidy_amount(Variable):
     value_type = float
     entity = SPMUnit
     unit = USD
-    label = "Los Angeles County General Relief county housing subsidy amount"
+    label = "Los Angeles County General Relief county housing allowance"
     definition_period = MONTH
     defined_for = "la_general_relief_housing_subsidy_eligible"
     reference = (
@@ -18,6 +18,7 @@ class la_general_relief_housing_subsidy_amount(Variable):
         p = parameters(period).gov.local.ca.la.general_relief.housing_subsidy
         subsidy_amount = where(married, p.amount.married, p.amount.single)
         rent = add(spm_unit, period, ["rent"])
-        # County assistance excludes the participant's GR contribution.
-        # Capping at rent makes the subsidy zero when there is no rent.
+        # This county allowance excludes the GR contribution and is zero
+        # without rent. The landlord payment adds the contribution before
+        # its final rent cap; housing_subsidy_paid reports actual county aid.
         return min_(rent, subsidy_amount)
