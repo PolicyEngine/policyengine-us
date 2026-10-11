@@ -2,24 +2,24 @@
 rules for a filer who can be claimed as a dependent.
 
 A return on which the filer (or, if joint, either spouse) can be claimed has
-no dependents (IRC 152(b)(1)), so the dependent-based amounts below are zero
-on it. Claimant rules (RI property tax relief, VT renter credit, WI homestead
-credit) and per-filer exemptions (WV, WI $250) test each spouse separately.
+no dependents (IRC 152(b)(1)) unless the would-be claimant meets the filing
+exception, so the dependent-based amounts below are zero on it. Claimant
+rules that turn on an actual claim (RI property tax relief, VT renter credit)
+and per-filer exemptions (WV, WI $250) test each spouse separately.
 
-For couples drawn by Hypothesis and a seeded population in these states,
-with either, both or neither spouse claimed:
+For couples drawn by Hypothesis (claimable, actually claimed and filing
+exception drawn per spouse) and a seeded population in these states:
 
 1. Swap invariance: each output is the same under either head/spouse
    labelling.
 2. Monotonicity: marking another filer as claimed never raises the amounts
-   in MONOTONE. The Vermont student loan subtraction, Wisconsin homestead
-   income and the West Virginia family credit are left out by design: the
-   first replaces the federal deduction a claimed filer loses, and the other
-   two rise when a dependent deduction or exemption goes away.
-3. Identities: the dependent-based amounts are zero on a return with a
-   claimable filer, and a return whose every filer is claimed gets no RI
-   property tax relief or VT renter credit and the single $500 West Virginia
-   exemption.
+   in MONOTONE. Wisconsin homestead income and the West Virginia family
+   credit are left out by design: they rise when a dependent deduction or
+   exemption goes away.
+3. Identities: the dependent-based amounts are zero on a return where the
+   Dependent Taxpayer Test applies; a return whose every filer is actually
+   claimed gets no RI relief or VT renter credit; and a West Virginia return
+   with no exemptions gets the single $500.
 """
 
 import numpy as np
@@ -62,9 +62,10 @@ MONOTONE = DEPENDENT_BASED + [
     "wi_standard_deduction",
     "wi_additional_exemption",
     "wi_homestead_credit",
+    "wi_childcare_expense_subtraction",
+    "wi_childcare_expense_credit_potential",
 ]
 OUTPUTS = MONOTONE + [
-    "vt_student_loan_interest_subtraction",
     "wv_low_income_family_tax_credit",
     "wi_homestead_income",
     "wi_retirement_income_exclusion_tax",
@@ -74,30 +75,46 @@ OUTPUTS = MONOTONE + [
 
 @st.composite
 def couples(draw):
+    claimable = draw(st.sampled_from(CLAIM_PATTERNS))
+    claimed = tuple(can and draw(st.booleans()) for can in claimable)
     return {
         "state": draw(st.sampled_from(STATES)),
         "adults": [draw(adults()), draw(adults())],
         "dependents": draw(st.lists(dependents(), max_size=2)),
-        "claimed": draw(st.sampled_from(CLAIM_PATTERNS)),
+        "claimed": claimed,
+        "claimable": claimable,
+        "exception": tuple(not c and draw(st.booleans()) for c in claimed),
     }
 
 
 def _identities(sim, year):
-    either = _calc(sim, "head_or_spouse_is_dependent_elsewhere", year) > 0
-    every = _calc(sim, "every_filer_is_dependent_elsewhere", year) > 0
+    no_dependents = (
+        _calc(
+            sim, "head_or_spouse_is_dependent_elsewhere_without_filing_exception", year
+        )
+        > 0
+    )
     for name in DEPENDENT_BASED:
         values = _calc(sim, name, year)
-        assert not values[either].any(), (
-            f"{name} in {year} is positive on a return with a claimable filer"
+        assert not values[no_dependents].any(), (
+            f"{name} in {year} is positive on a return where the Dependent "
+            "Taxpayer Test applies"
         )
+    person_claimed = np.asarray(
+        sim.calculate("claimed_as_dependent_on_another_return", year, map_to="tax_unit")
+    )
+    filers = np.asarray(
+        sim.calculate("is_tax_unit_head_or_spouse", year, map_to="tax_unit")
+    )
+    every_filer_claimed = (person_claimed >= filers) & (filers > 0)
     for name in ["ri_property_tax_credit", "vt_renter_credit"]:
-        assert not _calc(sim, name, year)[every].any(), (
+        assert not _calc(sim, name, year)[every_filer_claimed].any(), (
             f"{name} in {year} is positive when every filer is claimed"
         )
     state = np.asarray(sim.calculate("state_code_str", year, map_to="tax_unit"))
-    wv_every = every & (state == "WV")
+    wv_none = (state == "WV") & (_calc(sim, "exemptions_count", year) == 0)
     np.testing.assert_array_equal(
-        _calc(sim, "wv_personal_exemption", year)[wv_every], 500
+        _calc(sim, "wv_personal_exemption", year)[wv_none], 500
     )
 
 

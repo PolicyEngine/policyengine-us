@@ -287,3 +287,28 @@
   output:
     # Two exemptions: round($1,936 x 12 x 10%) = $2,323.
     vt_renter_credit: 2323
+
+- name: 2025 single renter who can be claimed but is not claimed keeps the Vermont renter credit
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 1000
+        rent: 12000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+  output:
+    # 6066(c)(2) bars a claimant "claimed as a dependent", an actual claim.
+    # A filer who can be claimed has no personal exemption; the fair market
+    # rent table starts at one exemption, so the model uses it:
+    # round($1,476 x 12 x 10%) = $1,771.
+    vt_renter_credit: 1771

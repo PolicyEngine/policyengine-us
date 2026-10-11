@@ -240,3 +240,26 @@
         state_code: WV
   output:
     wv_personal_exemption: 6000
+
+- name: 2025 single filer who can be claimed but whose would-be claimant meets the filing exception gets a West Virginia dependent exemption
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 16000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: WV
+  output:
+    # No own exemption; one dependent exemption x $2,000, so no $500.
+    wv_personal_exemption: 2000

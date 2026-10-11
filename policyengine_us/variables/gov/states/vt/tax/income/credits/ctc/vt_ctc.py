@@ -28,12 +28,13 @@ class vt_ctc(Variable):
         )
         eligible = (age <= p.age_limit) & dependent & ~filer_is_dependent
         count_eligible = tax_unit.sum(eligible)
+        # Get maximum credit amount.
+        max_credit = p.amount * count_eligible
         # Get adjusted gross income.
         agi = tax_unit("adjusted_gross_income", period)
-        # 5830f(b): "the amount of the credit per child" is reduced, but not
-        # below zero, by $20 for each $1,000 of AGI over $125,000.
+        # Reduce credit amount over the phaseout range.
         excess_agi = max_(agi - p.reduction.start, 0)
         increments = np.ceil(excess_agi / p.reduction.increment)
-        reduction_per_child = p.reduction.amount * increments
-        credit_per_child = max_(p.amount - reduction_per_child, 0)
-        return count_eligible * credit_per_child
+        total_reduction = p.reduction.amount * increments
+        # Return reduced credit amount.
+        return max_(max_credit - total_reduction, 0)

@@ -139,3 +139,28 @@
     # One dependent x $2,111 (2025).
     ut_total_dependents: 1
     ut_personal_exemption: 2111
+
+- name: 2025 single filer whose would-be claimant meets the filing exception keeps Utah dependents
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 22
+        employment_income: 8000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+        dependent_claimant_filing_exception: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: UT
+  output:
+    # The federal credit for the child is allowed (Dependent Taxpayer Test
+    # exception), so the child is a qualifying dependent: 1 x $2,111.
+    ut_total_dependents: 1
+    ut_personal_exemption: 2111

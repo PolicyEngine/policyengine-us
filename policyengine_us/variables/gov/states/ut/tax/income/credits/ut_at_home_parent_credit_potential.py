@@ -10,7 +10,6 @@ class ut_at_home_parent_credit_potential(Variable):
     defined_for = "ut_at_home_parent_credit_agi_eligible"
     reference = (
         "https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1005.html",
-        "https://le.utah.gov/xcode/Title59/Chapter10/C59-10-S1005_2026050620260506.pdf#page=1",
         "https://www.taxformfinder.org/forms/2021/2021-utah-tc-40-full-packet.pdf#page=23",
     )
 
@@ -30,17 +29,11 @@ class ut_at_home_parent_credit_potential(Variable):
         qualifying_child = (age < p.max_child_age) & is_dependent & ~filer_is_dependent
         count_qualifying_children = tax_unit.sum(qualifying_child)
 
-        # 59-10-1005(2): $100 "for each qualifying child if ... the claimant or
-        # another claimant filing a joint individual income tax return with
-        # the claimant is an at-home parent", so one credit per child on the
-        # return however many spouses qualify.
-        has_at_home_parent = (
-            add(
-                tax_unit,
-                period,
-                ["ut_at_home_parent_credit_earned_income_eligible_person"],
-            )
-            > 0
+        # Multiply by each qualifying parent; they can claim it separately.
+        income_eligible_person = add(
+            tax_unit,
+            period,
+            ["ut_at_home_parent_credit_earned_income_eligible_person"],
         )
 
-        return p.amount * count_qualifying_children * has_at_home_parent
+        return p.amount * count_qualifying_children * income_eligible_person

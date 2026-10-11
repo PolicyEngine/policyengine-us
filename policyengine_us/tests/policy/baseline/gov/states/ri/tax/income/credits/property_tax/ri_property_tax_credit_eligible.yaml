@@ -355,3 +355,25 @@
   output:
     ri_property_tax_credit_eligible: true
     ri_property_tax_credit: 700
+
+- name: 2025 single filer aged 65 who can be claimed but is not claimed is a Rhode Island property tax relief claimant
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 65
+        real_estate_taxes: 1000
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: RI
+  output:
+    # 44-33-3 excludes a person "claimed as a dependent by any taxpayer":
+    # an actual claim. min($1,000 - $0, $700) = $700.
+    ri_property_tax_credit_eligible: true
+    ri_property_tax_credit: 700
