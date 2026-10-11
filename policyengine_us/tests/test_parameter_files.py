@@ -38,9 +38,12 @@ SOI_TABLE_1_4_FILE = re.compile(
     r"https://www\.irs\.gov/pub/irs-soi/(\d{2})in14(?:ar|acg)\.xls"
 )
 # Values SOI did not publish. The 2018 Form 1040 combined IRA distributions
-# with pensions and annuities, so tax-exempt pensions for 2018 are estimated
-# from 2017 and 2019 (the file says how).
-SOI_ESTIMATED_VALUES = {("tax_exempt_pension_income.yaml", 2018)}
+# with pensions and annuities, so 2018 pensions are estimated from 2017 and
+# 2019 (each file says how). The taxable estimate also uses the 2018 table.
+SOI_ESTIMATED_VALUES = {
+    ("taxable_pension_income.yaml", 2018),
+    ("tax_exempt_pension_income.yaml", 2018),
+}
 # Values that were once keyed to the wrong tax year or misread from the table.
 # IRS SOI Publication 1304 Table 1.4, all returns, thousands of dollars:
 # partnership and S corporation net income less net loss (from tax year 2021
