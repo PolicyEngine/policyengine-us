@@ -64,3 +64,37 @@
         members: [filer]
   output:
     dependent_standard_deduction_earned_income: 0
+
+- name: 2025 wages count after elective 401(k) deferrals
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 19
+        employment_income: 2_000
+        traditional_401k_contributions: 1_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+  output:
+    # Form 1040 line 1z (W-2 box 1) leaves out elective deferrals.
+    dependent_standard_deduction_earned_income: 1_000
+
+- name: 2025 joint return counts each spouse's taxable wages
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 2_000
+        traditional_401k_contributions: 1_000
+      person_b:
+        age: 22
+        employment_income: 500
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+  output:
+    # $1,000 + $500.
+    dependent_standard_deduction_earned_income: 1_500

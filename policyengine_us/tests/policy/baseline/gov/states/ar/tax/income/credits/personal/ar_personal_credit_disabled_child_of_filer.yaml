@@ -1,0 +1,51 @@
+# Defaults: a parent id that names a head or spouse of the tax unit, or no
+# parent ids at all (the relationship is unknown). Parent ids also name
+# step-parents, so a stepchild needs the input set to false.
+
+- name: 2025 a parent id naming the filer makes the dependent the filer's child
+  period: 2025
+  input:
+    people:
+      filer: {age: 30, person_id: 1}
+      child: {age: 8, person_id: 2, parent_1_id: 1}
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_child_of_filer: [false, true]
+
+- name: 2025 a parent id naming someone outside the tax unit does not
+  period: 2025
+  input:
+    people:
+      filer: {age: 30, person_id: 1}
+      niece: {age: 8, person_id: 2, parent_1_id: 99}
+    tax_units:
+      tax_unit:
+        members: [filer, niece]
+    households:
+      household:
+        members: [filer, niece]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_child_of_filer: [false, false]
+
+- name: 2025 a dependent without parent ids is treated as the filer's child
+  period: 2025
+  input:
+    people:
+      filer: {age: 30}
+      child: {age: 8}
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: AR
+  output:
+    ar_personal_credit_disabled_child_of_filer: [true, true]

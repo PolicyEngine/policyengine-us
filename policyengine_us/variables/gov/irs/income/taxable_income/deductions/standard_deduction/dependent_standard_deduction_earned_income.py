@@ -8,9 +8,9 @@ class dependent_standard_deduction_earned_income(Variable):
     unit = USD
     documentation = (
         "The filers' earned income as the Standard Deduction Worksheet for "
-        "Dependents defines it: wages, self-employment income and farm "
-        "income, less the deductible part of self-employment tax, and not "
-        "below zero."
+        "Dependents defines it: taxable wages (after pre-tax payroll "
+        "deductions), self-employment income and farm income, less the "
+        "deductible part of self-employment tax, and not below zero."
     )
     definition_period = YEAR
     reference = (
@@ -24,10 +24,18 @@ class dependent_standard_deduction_earned_income(Variable):
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         filer = person("is_tax_unit_head_or_spouse", period)
-        # earned_income leaves out Schedule F farm income, which the
-        # worksheet counts (Schedule 1 line 6).
-        earned = person("earned_income", period) + person(
-            "farm_operations_income", period
+        # Form 1040 line 1z carries taxable wages (W-2 box 1, after elective
+        # deferrals); Schedule 1 lines 3 and 6 carry business and farm
+        # income. earned_income has gross wages and leaves out farm income.
+        earned = add(
+            person,
+            period,
+            [
+                "irs_employment_income",
+                "self_employment_income",
+                "sstb_self_employment_income",
+                "farm_operations_income",
+            ],
         )
         return max_(
             tax_unit.sum(filer * earned) - tax_unit("self_employment_tax_ald", period),
