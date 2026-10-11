@@ -19,6 +19,8 @@ class il_dependent_exemption(Variable):
         amount = parameters(period).gov.states.il.tax.income.exemption.dependent
         # A return on which the filer (or, if joint, either spouse) can be
         # claimed as a dependent has no dependents (IRC 152(b)(1)).
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         dependents = tax_unit("tax_unit_dependents", period)
         return amount * where(filer_is_dependent, 0, dependents)

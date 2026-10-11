@@ -24,5 +24,7 @@ class in_nonpublic_school_deduction(Variable):
         # return on which the filer (or, if joint, either spouse) can be
         # claimed as a dependent has no dependents (IRC 152(b)(1)).
         children = add(tax_unit, period, ["is_in_k12_nonpublic_school"])
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         return where(filer_is_dependent, 0, children) * p.amount

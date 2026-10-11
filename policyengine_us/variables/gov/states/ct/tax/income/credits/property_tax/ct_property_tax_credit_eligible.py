@@ -21,7 +21,9 @@ class ct_property_tax_credit_eligible(Variable):
         # filer (or, if joint, either spouse) can be claimed as a dependent
         # has no dependents (IRC 152(b)(1)). From 2022 the age threshold is 0,
         # so every filer is age eligible.
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         dependents_present = (tax_unit("tax_unit_dependents", period) > 0) & ~(
             filer_is_dependent
         )

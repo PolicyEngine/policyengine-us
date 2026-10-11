@@ -25,6 +25,8 @@ class in_base_exemptions(Variable):
         # claim them, but a return on which the filer (or, if joint, either
         # spouse) can be claimed as a dependent has no dependents (IRC
         # 152(b)(1)).
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         exemptions = where(filer_is_dependent, size - dependents, size)
         return exemptions * p.base.amount

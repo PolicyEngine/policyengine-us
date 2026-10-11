@@ -24,7 +24,7 @@ class co_family_affordability_credit(Variable):
         # spouse) can be claimed as a dependent has no dependents (IRC
         # 152(b)(1)).
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         dependent = (
             person("is_qualifying_child_dependent", period) & ~filer_is_dependent

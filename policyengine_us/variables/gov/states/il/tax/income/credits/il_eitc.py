@@ -38,7 +38,9 @@ class il_eitc(Variable):
         # filer without a qualifying child still must not be a dependent of
         # another taxpayer (IRC 32(c)(1)(A)(ii)(III)); on a joint return
         # neither spouse may be (Publication 596).
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         demographic_eligible = (child_count > 0) | (
             tax_unit.any(is_head_or_spouse & (age >= p.childless_min_age))
             & ~filer_is_dependent

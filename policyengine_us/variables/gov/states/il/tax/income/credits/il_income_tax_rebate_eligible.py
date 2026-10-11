@@ -21,9 +21,10 @@ class il_income_tax_rebate_eligible(Variable):
         )
         # Section 212.1(a): a taxpayer "who is claimed as a dependent on
         # another individual's return for that year, is ineligible". The
-        # exclusion is per taxpayer, so a joint return qualifies while either
-        # spouse is not claimed.
-        has_eligible_filer = (
-            tax_unit("head_spouse_count_not_dependent_elsewhere", period) > 0
-        )
+        # exclusion turns on an actual claim and is per taxpayer, so a joint
+        # return qualifies while either spouse is not claimed.
+        person = tax_unit.members
+        filer = person("is_tax_unit_head_or_spouse", period)
+        claimed = person("claimed_as_dependent_on_another_return", period)
+        has_eligible_filer = tax_unit.any(filer & ~claimed)
         return (federal_agi < income_threshold) & has_eligible_filer

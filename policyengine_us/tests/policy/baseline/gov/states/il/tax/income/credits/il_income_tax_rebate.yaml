@@ -212,3 +212,28 @@
     # 100 joint + 100 for the child
     il_income_tax_rebate_eligible: true
     il_income_tax_rebate: 200
+
+
+- name: 2021 single filer who can be claimed as a dependent but is not claimed keeps the 2022 rebate, with no dependent amount
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 30
+        is_tax_unit_head: true
+        claimable_as_dependent_on_another_return: true
+        claimed_as_dependent_on_another_return: false
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  output:
+    # Section 212.1(a) bars a taxpayer actually claimed; the
+    # return still claims no dependent (IRC 152(b)(1)).
+    il_income_tax_rebate_eligible: true
+    il_income_tax_rebate: 50

@@ -158,3 +158,27 @@
         state_code: IL
   output:
     il_dependent_exemption: 2_850
+
+
+- name: 2025 single filer who can be claimed keeps the dependent exemption when the would-be claimant meets the filing exception
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 10_000
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  output:
+    # Publication 501, Dependent Taxpayer Test exception.
+    il_dependent_exemption: 2_850

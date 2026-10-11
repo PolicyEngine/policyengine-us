@@ -40,7 +40,7 @@ class ct_child_tax_rebate(Variable):
         # claimed as a dependent has no dependents (IRC 152(b)(1)), so it
         # validly claims no child.
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         eligible_child = (age <= p.age_limit) & dependent & ~filer_is_dependent
         count_children = tax_unit.sum(eligible_child)

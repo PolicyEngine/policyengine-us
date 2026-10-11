@@ -22,6 +22,6 @@ class co_ctc_qualifying_child(Variable):
         # which the filer (or, if joint, either spouse) can be claimed as a
         # dependent has no dependents (IRC 152(b)(1)).
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         return is_dependent & (age < p.age_threshold) & ~filer_is_dependent

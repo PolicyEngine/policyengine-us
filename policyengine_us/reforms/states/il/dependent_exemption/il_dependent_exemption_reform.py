@@ -18,7 +18,7 @@ def create_il_dependent_exemption() -> Reform:
             # claimed as a dependent has no dependents (IRC 152(b)(1)), as in
             # the baseline formula.
             filer_is_dependent = person.tax_unit(
-                "head_or_spouse_is_dependent_elsewhere", period
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
             )
             is_dependent = person("is_tax_unit_dependent", period) & ~filer_is_dependent
             # Age gate: when in effect, restrict the exemption to dependents

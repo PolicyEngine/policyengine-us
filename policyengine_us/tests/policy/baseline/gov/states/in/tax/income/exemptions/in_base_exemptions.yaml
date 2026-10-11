@@ -151,3 +151,26 @@
         state_code: IN
   output:
     in_base_exemptions: 3_000
+
+
+- name: 2025 single filer who can be claimed keeps the dependent's exemption when the would-be claimant meets the filing exception
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        is_tax_unit_head: true
+        employment_income: 10_000
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: IN
+  output:
+    in_base_exemptions: 2_000

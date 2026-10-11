@@ -715,3 +715,26 @@
     # The 2023 credit is a share of the federal credit:
     # 2,000 for a child under 6.
     co_federal_ctc_maximum: 2_000
+
+
+- name: 2025 single filer who can be claimed keeps the Colorado child tax credit when the would-be claimant meets the filing exception
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 25
+        is_tax_unit_head: true
+        employment_income: 10_000
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: CO
+  output:
+    co_ctc: 1_200

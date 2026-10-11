@@ -25,7 +25,9 @@ class il_income_tax_rebate(Variable):
         # $100 for each person claimed as a dependent on the 2021 federal
         # return, which has none when a filer (or, if joint, either spouse)
         # can be claimed (IRC 152(b)(1)).
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         dependent_count = where(
             filer_is_dependent, 0, tax_unit("tax_unit_dependents", period)
         )
