@@ -11,10 +11,13 @@ projections prepared for the 2026 Medicare Trustees Report. 2035 to 2100 grow
 at the 2031-2032 rate, because the end of sequestration on August 31, 2033
 lifts 2033 and 2034 growth.
 
-``medicare_gross_cost`` returns the series for each enrolled person,
-``medicare_cost`` subtracts the person's Part A, gross Part B and expected
-Part D premiums (tested in test_medicare_cost_part_d_premium.py), and
-``qmb_cost_sharing`` pays QMB enrollees a share of it each month.
+``medicare_gross_cost`` returns the series times
+``noninstitutionalized_spending_ratio`` (enrollees outside nursing homes,
+tested in test_medicare_noninstitutionalized_spending_ratio.py) for each
+enrolled person, ``medicare_cost`` subtracts the person's Part A, gross Part
+B and expected Part D premiums from that (tested in
+test_medicare_cost_part_d_premium.py), and ``qmb_cost_sharing`` pays QMB
+enrollees a share of it each month.
 
 Invariants:
 
@@ -33,11 +36,11 @@ Invariants:
    Trustees' 2034-2035 per beneficiary growth.
 5. Calendar years: every date within a year reads the January 1 value.
 6. Consumers: for an enrolled person, ``medicare_gross_cost`` equals the
-   series; ``medicare_cost`` equals the series less the Part A premium, the
-   gross Part B premium and the expected Part D premium, floored at zero, so
-   never exceeds ``medicare_gross_cost``; a QMB enrollee's monthly
-   ``qmb_cost_sharing`` is the series over 12 times the QMB rate. A person
-   not enrolled gets zero.
+   series times the noninstitutionalized ratio; ``medicare_cost`` equals that
+   less the Part A premium, the gross Part B premium and the expected Part D
+   premium, floored at zero, so never exceeds ``medicare_gross_cost``; a QMB
+   enrollee's monthly ``qmb_cost_sharing`` is the scaled series over 12
+   times the QMB rate. A person not enrolled gets zero.
 """
 
 import pytest
@@ -49,6 +52,7 @@ from policyengine_us import Simulation
 from policyengine_us.system import system
 
 SERIES = "calibration.gov.hhs.medicare.per_capita_cost"
+RATIO = "calibration.gov.hhs.medicare.noninstitutionalized_spending_ratio"
 FIRST_YEAR, LAST_PROJECTED_YEAR, END_YEAR = 2013, 2034, 2100
 YEARS = range(FIRST_YEAR, LAST_PROJECTED_YEAR + 1)
 GROWTH_YEARS = (2031, 2032)
@@ -108,6 +112,10 @@ def _series(date):
 
 def _value(year):
     return _series(f"{year}-01-01")
+
+
+def _scaled(year):
+    return _value(year) * get_parameter(system.parameters, RATIO)(f"{year}-01-01")
 
 
 @pytest.mark.parametrize("year", YEARS)
@@ -214,10 +222,10 @@ def test_medicare_cost_nets_premiums_from_the_series(
     gross = simulation.calculate("medicare_gross_cost", year)[0]
     net = simulation.calculate("medicare_cost", year)[0]
     # Variables are float32, so compare to single precision.
-    assert gross == pytest.approx(_value(year), rel=1e-6)
+    assert gross == pytest.approx(_scaled(year), rel=1e-6)
     part_d = system.parameters(f"{year}-01-01").calibration.gov.hhs.medicare.part_d
     part_d_premium = part_d.enrollment_share * part_d.premiums_per_enrollee
-    expected = max(_value(year) - part_a_premium - part_b_premium - part_d_premium, 0)
+    expected = max(_scaled(year) - part_a_premium - part_b_premium - part_d_premium, 0)
     assert net == pytest.approx(expected, rel=1e-6, abs=0.01)
     assert net <= gross
 
@@ -246,5 +254,5 @@ def test_qmb_cost_sharing_is_the_qmb_rate_of_monthly_spending(year, month):
     ).gov.hhs.medicare.savings_programs.qmb.cost_sharing_rate
     simulation = _person_simulation(year, {"msp_category": {period: "QMB"}})
     assert simulation.calculate("qmb_cost_sharing", period)[0] == pytest.approx(
-        _value(year) / 12 * rate, rel=1e-6
+        _scaled(year) / 12 * rate, rel=1e-6
     )

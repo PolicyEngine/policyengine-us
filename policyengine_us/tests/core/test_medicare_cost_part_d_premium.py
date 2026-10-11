@@ -1,9 +1,10 @@
 """The expected Part D premium that ``medicare_cost`` subtracts.
 
 CMS Medicare spending per enrollee (``calibration.gov.hhs.medicare.
-per_capita_cost``) covers Parts A through D, gross of the premiums that
-finance it. No variable records Part D enrollment, so ``medicare_cost``
-subtracts an expected Part D premium:
+per_capita_cost``, scaled by ``noninstitutionalized_spending_ratio`` to
+enrollees outside nursing homes) covers Parts A through D, gross of the
+premiums that finance it. No variable records Part D enrollment, so
+``medicare_cost`` subtracts an expected Part D premium:
 
     enrollment_share x (premiums_per_enrollee + Part D IRMAA)
 
@@ -35,7 +36,7 @@ Invariants:
    the Trustees' five-year enrollment points the share holds the earlier one.
 6. Consumer (Hypothesis, differential): ``medicare_cost`` equals a reference
    implementation, max(gross - Part A - Part B - share x (premium + IRMAA),
-   0), for any year and premiums; it lies in [0, ``medicare_gross_cost``],
+   0) with gross = per_capita_cost x the ratio, for any year and premiums; it lies in [0, ``medicare_gross_cost``],
    which does not change with the Part D premium; and it does not rise with
    the person's Part D IRMAA.
 """
@@ -226,7 +227,10 @@ def _enrollee(year, part_a, part_b, irmaa):
 
 
 def _reference_medicare_cost(year, part_a, part_b, irmaa):
-    gross = _read("calibration.gov.hhs.medicare.per_capita_cost", f"{year}-01-01")
+    date = f"{year}-01-01"
+    gross = _read("calibration.gov.hhs.medicare.per_capita_cost", date) * _read(
+        "calibration.gov.hhs.medicare.noninstitutionalized_spending_ratio", date
+    )
     part_d = _share(year) * (_premium(year) + irmaa)
     return max(gross - part_a - part_b - part_d, 0)
 

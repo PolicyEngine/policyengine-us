@@ -1,0 +1,1 @@
+Scale Medicare spending per enrollee to enrollees who do not live in nursing homes in medicare_gross_cost, medicare_cost, cbo_medicare_benefit and qmb_cost_sharing, since the survey data exclude nursing home residents.

@@ -4,8 +4,9 @@
   input:
     msp_category: QMB
   output:
-    # $18,983 annual Medicare spending per enrollee (2026) / 12 * 20%.
-    qmb_cost_sharing: 316.38
+    # $18,983 annual Medicare spending per enrollee (2026) x 0.971 (enrollees
+    # outside nursing homes) / 12 * 20%.
+    qmb_cost_sharing: 307.21
 
 - name: Case 2, non-QMB MSP categories do not receive QMB cost sharing.
   period: 2026-01
