@@ -431,8 +431,90 @@
     is_snap_eligible: true
     # $994 - ceil(30% x $2,777 = $833.10) = $994 - $834 = $160.
     snap: 160
-    # SNAP automatically confers CARE categorical eligibility; CARE excludes FERA.
-    # Leave CARE categorical eligibility derived to exercise the complete chain.
+
+# CPUC June 2026-May 2027 income tables: CARE $54,640 and FERA $68,300
+# for three people. https://www.cpuc.ca.gov/industries-and-topics/electrical-energy/electric-costs/care-fera-program
+# CARE counts both earners: $40,000 + $20,000 = $60,000 > $54,640.
+# SNAP excludes the under-18 K-12 student's wages (7 USC 2014(d)(7)):
+# https://www.law.cornell.edu/uscode/text/7/2014#d_7
+# CDSS FY2026 table, attachment I: MCE gross $4,442, net standard $2,221,
+# standard deduction $209, maximum allotment $785.
+# https://www.cdss.ca.gov/Portals/9/Additional-Resources/Letters-and-Notices/ACINs/2025/I-46_25.pdf#page=7
+# SNAP gross $40,000 / 12 = $3,333.33 < $4,442; net rounds from
+# $3,333.33 - $666.67 earned deduction - $209 = $2,457.67 to $2,458.
+# $2,458 > $2,221, but MCE waives the net test; $785 - ceil($737.40) = $47.
+# On main (static comparison), the required net test denies SNAP throughout
+# 2026, so CARE categorical/overall eligibility are false and FERA is true.
+# With this waiver, SNAP alone confers CARE, which excludes FERA. No rent
+# also keeps main's default utility allowance from lowering the annual net
+# income enough to confer CARE through SNAP in another month.
+- name: California MCE SNAP receipt alone confers CARE above its income limit and excludes FERA.
+  period: 2026-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 40_000
+        weekly_hours_worked_before_lsr: 40
+        medicaid_enrolled: false
+        wic:
+          2026: 0
+        receives_wic: false
+        ssi:
+          2026: 0
+        receives_ssi: false
+      student:
+        age: 16
+        is_in_k12_school: true
+        employment_income: 20_000
+        medicaid_enrolled: false
+        wic:
+          2026: 0
+        receives_wic: false
+        ssi:
+          2026: 0
+        receives_ssi: false
+      sibling:
+        age: 14
+        medicaid_enrolled: false
+        wic:
+          2026: 0
+        receives_wic: false
+        ssi:
+          2026: 0
+        receives_ssi: false
+    spm_units:
+      spm_unit:
+        members: [parent, student, sibling]
+        housing_cost: 0
+        snap_utility_allowance: 0
+        receives_snap:
+          2026: false
+        tanf:
+          2026: 0
+        receives_tanf: false
+    tax_units:
+      tax_unit:
+        members: [parent, student, sibling]
+    households:
+      household:
+        members: [parent, student, sibling]
+        state_code: CA
+        is_on_tribal_land: false
+  output:
+    snap_gross_income: 3_333.33
+    meets_snap_gross_income_test: false
+    is_tanf_non_cash_eligible: true
+    snap_net_income: 2_458
+    meets_snap_net_income_test: false
+    meets_snap_categorical_eligibility: true
+    is_snap_eligible: true
+    snap: 47
+    ca_cpuc_countable_income: 60_000
+    ca_care_income_eligible: false
+    ca_care_categorically_eligible: true
+    ca_care_eligible: true
     ca_fera_eligible: false
 
 # ACL 14-56 p. 6 and ACL 14-63 p. 2: deny zero allotments for 3+;
