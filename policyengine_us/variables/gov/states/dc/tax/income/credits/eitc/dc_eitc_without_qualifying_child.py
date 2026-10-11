@@ -44,7 +44,9 @@ class dc_eitc_without_qualifying_child(Variable):
         # (f) keeps the IRC 32 framework: a filer without a qualifying child
         # must not be a dependent of another taxpayer, and on a joint return
         # neither spouse may be (Publication 596).
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         us_eligible = (
             filer_meets_identification
             & no_qualifying_child

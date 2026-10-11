@@ -40,10 +40,10 @@ class id_grocery_credit(Variable):
         # A return on which the filer (or, if joint, either spouse) can be
         # claimed has no dependents (IRC 152(b)(1)).
         filer = person("is_tax_unit_head_or_spouse", period)
-        claimed = person("claimed_as_dependent_on_another_return", period)
+        claimable = person("claimable_as_dependent_on_another_return", period)
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
-        eligible = where(filer, ~claimed, ~filer_is_dependent)
+        eligible = where(filer, ~claimable, ~filer_is_dependent)
         credit_value = full_amount * (qualified_months / MONTHS_IN_YEAR) * eligible
         return tax_unit.sum(credit_value)

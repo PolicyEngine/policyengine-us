@@ -24,7 +24,9 @@ class ga_exemptions(Variable):
         # spouse) can be claimed as a dependent has none (IRC 152(b)(1)). The
         # 2021-2023 personal exemption has no such rule.
         dependents = tax_unit("tax_unit_dependents", period)
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         dependent_exemptions = where(filer_is_dependent, 0, dependents) * p.dependent
 
         # total exemptions

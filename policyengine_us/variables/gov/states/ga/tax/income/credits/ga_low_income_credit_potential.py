@@ -36,9 +36,16 @@ class ga_low_income_credit_potential(Variable):
         # follows the federal rules, IRC 152(b)(1)).
         size = tax_unit("tax_unit_size", period)
         dependents = tax_unit("tax_unit_dependents", period)
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         exemptions = where(filer_is_dependent, size - dependents, size)
-        eligible = tax_unit("head_spouse_count_not_dependent_elsewhere", period) > 0
+        person = tax_unit.members
+        filer = person("is_tax_unit_head_or_spouse", period)
+        excluded = person("claimed_as_dependent_on_another_return", period) | person(
+            "claimable_as_dependent_on_another_return", period
+        )
+        eligible = tax_unit.any(filer & ~excluded)
         p = parameters(period).gov.states.ga.tax.income.credits.low_income
         # age threshold
         age_threshold = p.supplement_age_eligibility

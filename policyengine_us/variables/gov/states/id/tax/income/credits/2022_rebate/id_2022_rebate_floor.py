@@ -21,6 +21,6 @@ class id_2022_rebate_floor(Variable):
         # claimed has no dependents (IRC 152(b)(1)).
         filer = person("is_tax_unit_head_or_spouse", period)
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         return p.floor * (filer | ~filer_is_dependent)
