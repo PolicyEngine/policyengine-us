@@ -25,11 +25,10 @@ class ca_renter_credit(Variable):
         # RTC 17053.5(d)(2): a qualified renter does not include "an
         # individual whose principal place of residence for more than 50
         # percent of the taxable year is with another person who claimed that
-        # individual as a dependent" (the qualification record asks whether
-        # someone can claim you and, if so, whether you lived in that
-        # person's home for more than half the year). Being claimable alone
-        # does not bar the credit, and on a joint return a spouse who is a
-        # qualified renter still gets the joint amount (17053.5(a)(1)(A)).
+        # individual as a dependent", read as actually claimed (the
+        # qualification record words it as "can claim you"). Being claimable
+        # alone does not bar the credit, and on a joint return a spouse who is
+        # a qualified renter still gets the joint amount (17053.5(a)(1)(A)).
         person = tax_unit.members
         filer = person("is_tax_unit_head_or_spouse", period)
         excluded = person("claimed_as_dependent_on_another_return", period) & person(

@@ -21,9 +21,10 @@ class az_increased_excise_tax_credit_eligible(Variable):
         max_income = p.income_threshold[filing_status]
         # A.R.S. 43-1072.01(A) and, from 2021, 43-1072.02(A) allow the credit
         # only "for a taxpayer who is not claimed as a dependent by any other
-        # taxpayer". On a joint return a spouse who is not claimed can still
-        # claim it.
-        every_filer_is_dependent = tax_unit(
-            "every_filer_is_dependent_elsewhere", period
-        )
-        return (agi <= max_income) & ~every_filer_is_dependent
+        # taxpayer" (actually claimed). On a joint return a spouse who is not
+        # claimed can still claim it.
+        person = tax_unit.members
+        filer = person("is_tax_unit_head_or_spouse", period)
+        claimed = person("claimed_as_dependent_on_another_return", period)
+        has_unclaimed_filer = tax_unit.any(filer & ~claimed)
+        return (agi <= max_income) & has_unclaimed_filer

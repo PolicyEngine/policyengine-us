@@ -28,8 +28,10 @@ class ar_personal_credit_disabled_dependent(Variable):
         # Code 26-51-503, Act 417 of 1999). A return on which the filer (or, if joint, either
         # spouse) can be claimed as a dependent has no IRC 152 dependents
         # (IRC 152(b)(1)), so only the filers' own children still qualify.
+        # The would-be claimant's filing exception (not required to file and
+        # filing only for a refund, Publication 501) restores the dependents.
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         # A filer's child: a parent id that names a head or spouse of the
         # tax unit. Parent ids name natural, adoptive and step-parents alike,

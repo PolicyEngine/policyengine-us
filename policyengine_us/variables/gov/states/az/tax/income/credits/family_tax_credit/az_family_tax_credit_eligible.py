@@ -25,7 +25,11 @@ class az_family_tax_credit_eligible(Variable):
         # The thresholds count dependents in the IRC 152 sense (A.R.S.
         # 43-1001(3)); a return on which the filer (or, if joint, either
         # spouse) can be claimed as a dependent has none (IRC 152(b)(1)).
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # The would-be claimant's filing exception (not required to file and
+        # filing only for a refund, Publication 501) restores the dependents.
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         dependents = where(
             filer_is_dependent, 0, tax_unit("tax_unit_dependents", period)
         )

@@ -13,18 +13,18 @@ def ca_personal_aged_blind_exemption_count(tax_unit, period, p, filing_status):
     """
     person = tax_unit.members
     filer = person("is_tax_unit_head_or_spouse", period)
-    claimed = person("claimed_as_dependent_on_another_return", period)
+    claimable = person("claimable_as_dependent_on_another_return", period)
     dependent_elsewhere = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
     personal_exemption_count = where(
         dependent_elsewhere,
         tax_unit("head_spouse_count_not_dependent_elsewhere", period),
         p.personal_scale[filing_status],
     )
-    claimed_aged_blind_count = tax_unit.sum(
-        (filer & claimed)
+    claimable_aged_blind_count = tax_unit.sum(
+        (filer & claimable)
         * (person("is_irs_aged", period).astype(int) + person("is_blind", period))
     )
-    aged_blind_count = tax_unit("aged_blind_count", period) - claimed_aged_blind_count
+    aged_blind_count = tax_unit("aged_blind_count", period) - claimable_aged_blind_count
     return personal_exemption_count + aged_blind_count
 
 
@@ -63,8 +63,11 @@ class ca_exemptions(Variable):
 
         # Dependent exemptions: the dependents must be those claimed on the
         # federal return, and a return on which the filer (or, if joint,
-        # either spouse) can be claimed has none (IRC 152(b)(1)).
-        dependent_elsewhere = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # either spouse) can be claimed has none (IRC 152(b)(1)), unless the
+        # would-be claimant files only for a refund (Publication 501).
+        dependent_elsewhere = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         dependents = where(
             dependent_elsewhere, 0, tax_unit("tax_unit_dependents", period)
         )

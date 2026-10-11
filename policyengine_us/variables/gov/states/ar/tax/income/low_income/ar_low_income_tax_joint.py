@@ -21,8 +21,10 @@ class ar_low_income_tax_joint(Variable):
         # which the filer (or, if joint, either spouse) can be claimed as a
         # dependent has none (IRC 152(b)(1)). This changes only which table
         # applies, not the filing status.
+        # The would-be claimant's filing exception (not required to file and
+        # filing only for a refund, Publication 501) restores the dependents.
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         dependents = where(
             filer_is_dependent, 0, person.tax_unit("tax_unit_dependents", period)

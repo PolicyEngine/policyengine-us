@@ -47,8 +47,10 @@ def create_ca_dependent_credit_reform() -> Reform:
             age = person("age", period)
             # As in the baseline, a return on which the filer (or, if joint,
             # either spouse) can be claimed has no dependents (IRC 152(b)(1)).
+            # The would-be claimant's filing exception (not required to file and
+            # filing only for a refund, Publication 501) restores the dependents.
             filer_is_dependent = tax_unit(
-                "head_or_spouse_is_dependent_elsewhere", period
+                "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
             )
             is_dependent = person("is_tax_unit_dependent", period) & ~tax_unit.project(
                 filer_is_dependent

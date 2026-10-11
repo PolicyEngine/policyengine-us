@@ -53,7 +53,11 @@ class az_families_tax_rebate(Variable):
         # (or, if joint, either spouse) can be claimed as a dependent has none
         # (IRC 152(b)(1)). The rebate is computed on the 2021 return, so this
         # reads the 2021 inputs.
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # The would-be claimant's filing exception (not required to file and
+        # filing only for a refund, Publication 501) restores the dependents.
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         dependent = person("is_tax_unit_dependent", period) & ~tax_unit.project(
             filer_is_dependent
         )

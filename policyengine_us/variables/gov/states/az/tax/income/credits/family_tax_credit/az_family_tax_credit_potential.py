@@ -25,7 +25,11 @@ class az_family_tax_credit_potential(Variable):
         # the taxpayer, but "dependent" has the IRC 152 meaning (A.R.S.
         # 43-1001(3)), so under IRC 152(b)(1) a return on which the filer (or,
         # if joint, either spouse) can be claimed counts no dependents.
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # The would-be claimant's filing exception (not required to file and
+        # filing only for a refund, Publication 501) restores the dependents.
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         person = tax_unit.members
         filers = tax_unit.sum(person("is_tax_unit_head_or_spouse", period))
         persons = where(filer_is_dependent, filers, tax_unit("tax_unit_size", period))

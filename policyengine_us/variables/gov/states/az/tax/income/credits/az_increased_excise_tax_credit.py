@@ -21,18 +21,27 @@ class az_increased_excise_tax_credit(Variable):
         # personal or dependent exemption can be claimed for
         # (A.R.S. 43-1072.01(C)); from 2021, 43-1072.02(C) allows $25 for each
         # person "who is either the taxpayer, the taxpayer's spouse who does
-        # not file a return or a dependent". The Form 140 worksheet counts the
-        # filers and the dependents "provided that person(s) qualifies as a
-        # dependent for federal purposes", and the instructions let a joint
-        # filer claim the credit but not for a spouse who is barred. So a
-        # filer whom another taxpayer can claim is not counted, and a return
-        # on which the filer (or, if joint, either spouse) can be claimed
-        # counts no dependents (IRC 152(b)(1)).
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # not file a return or a dependent". Both sections allow it only "for
+        # a taxpayer who is not claimed as a dependent by any other
+        # taxpayer", and the Form 140 instructions let a joint filer claim the
+        # credit but not for a spouse who is barred, so a filer whom another
+        # taxpayer claims is not counted. The worksheet counts dependents
+        # "provided that person(s) qualifies as a dependent for federal
+        # purposes": none on a return on which the filer (or, if joint,
+        # either spouse) can be claimed (IRC 152(b)(1)), unless the would-be
+        # claimant files only for a refund (Publication 501).
+        person = tax_unit.members
+        filer = person("is_tax_unit_head_or_spouse", period)
+        claimed = person("claimed_as_dependent_on_another_return", period)
+        claimed_filers = tax_unit.sum(filer & claimed)
+        unclaimed_filers = tax_unit.sum(filer & ~claimed)
+        no_dependents = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         persons = where(
-            filer_is_dependent,
-            tax_unit("head_spouse_count_not_dependent_elsewhere", period),
-            tax_unit("tax_unit_size", period),
+            no_dependents,
+            unclaimed_filers,
+            tax_unit("tax_unit_size", period) - claimed_filers,
         )
         uncapped_credit = persons * p.amount
         return min_(uncapped_credit, p.max_amount)

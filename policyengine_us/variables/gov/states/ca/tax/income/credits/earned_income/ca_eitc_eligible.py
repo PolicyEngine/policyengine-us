@@ -49,7 +49,11 @@ class ca_eitc_eligible(Variable):
         has_qualifying_child = tax_unit.any(
             person("ca_is_qualifying_child_for_caleitc", period)
         )
-        dependent_elsewhere = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # The would-be claimant's filing exception (not required to file and
+        # filing only for a refund, Publication 596) restores the credit.
+        dependent_elsewhere = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         meets_dependency_requirements = has_qualifying_child | ~dependent_elsewhere
 
         return (

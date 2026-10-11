@@ -20,7 +20,11 @@ class az_dependent_tax_credit_potential(Variable):
         # A.R.S. 43-1001(3) gives "dependent" the IRC 152 meaning, and under
         # IRC 152(b)(1) a return on which the filer (or, if joint, either
         # spouse) can be claimed as a dependent has no dependents.
-        filer_is_dependent = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # The would-be claimant's filing exception (not required to file and
+        # filing only for a refund, Publication 501) restores the dependents.
+        filer_is_dependent = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         dependent = person("is_tax_unit_dependent", period) & ~tax_unit.project(
             filer_is_dependent
         )
