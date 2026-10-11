@@ -9,11 +9,13 @@ class self_employed_health_insurance_premiums(Variable):
     documentation = (
         "Health insurance premiums that count toward the self-employed health "
         "insurance deduction (Form 7206 line 1). Premiums are left out when "
-        "the person or their spouse is eligible for a subsidized employer "
-        "plan (26 U.S.C. 162(l)(2)(B)). Premiums are taken as supplied: for a "
-        "Marketplace plan, 26 U.S.C. 280C(g) allows no deduction for the part "
-        "the premium tax credit pays, and the model does not net the credit "
-        "it calculates out of these premiums."
+        "the person, or their spouse on a joint return, is eligible for a "
+        "subsidized employer plan (26 U.S.C. 162(l)(2)(B)). Premiums are "
+        "taken as supplied: for a Marketplace plan, 26 U.S.C. 280C(g) allows "
+        "no deduction for the part the premium tax credit pays, and the model "
+        "does not net the credit it calculates out of these premiums: the "
+        "credit depends on AGI, and so on this deduction (policyengine-us "
+        "#10124)."
     )
     definition_period = YEAR
     defined_for = "is_self_employed"
