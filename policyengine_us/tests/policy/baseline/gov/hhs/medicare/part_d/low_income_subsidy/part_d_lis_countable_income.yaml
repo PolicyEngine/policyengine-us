@@ -1,0 +1,79 @@
+# Countable income: SSI income of the person and a spouse living with them,
+# without interest and dividends; the $20 general exclusion and the $65 and
+# one-half earned income exclusions apply once to the couple's income
+# (20 CFR 418.3310, 418.3325, 418.3350).
+
+- name: Single person, Social Security and interest; interest excluded.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+        social_security: 18_000
+        interest_income: 1_000
+        dividend_income: 600
+  output:
+    # Unearned 18,000 + 1,000 + 600 - 1,600 excluded = 18,000 a year,
+    # 1,500 a month; less the $20 general exclusion = 1,480 a month.
+    # 1,480 x 12 = 17,760.
+    part_d_lis_countable_income: 17_760
+
+- name: Married couple, exclusions applied once to combined income.
+  period: 2026
+  input:
+    people:
+      spouse1:
+        age: 70
+        employment_income: 12_000
+      spouse2:
+        age: 67
+        social_security: 6_000
+        dividend_income: 500
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+  output:
+    # Combined unearned 6,000 a year = 500 a month, less $20 = 480.
+    # Combined earned 12,000 a year = 1,000 a month, less $65 = 935, half
+    # excluded = 467.50. Monthly 947.50 x 12 = 11,370 for each spouse.
+    part_d_lis_countable_income: [11_370, 11_370]
+
+- name: Spouse's income counts even when only one spouse is a Medicare enrollee.
+  period: 2026
+  input:
+    people:
+      spouse1:
+        age: 70
+        medicare_enrolled: true
+        social_security: 12_000
+      spouse2:
+        age: 60
+        medicare_enrolled: false
+        employment_income: 30_000
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+  output:
+    # Unearned 1,000 a month less $20 = 980. Earned 2,500 a month less $65 =
+    # 2,435, half = 1,217.50. Monthly 2,197.50 x 12 = 26,370.
+    part_d_lis_countable_income: [26_370, 26_370]
+
+- name: Earned income only; the unused $20 general exclusion applies to earnings.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 66
+        employment_income: 6_000
+  output:
+    # 500 a month less $20 less $65 = 415, half = 207.50; x 12 = 2,490.
+    part_d_lis_countable_income: 2_490
+
+- name: No income.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 66
+  output:
+    part_d_lis_countable_income: 0

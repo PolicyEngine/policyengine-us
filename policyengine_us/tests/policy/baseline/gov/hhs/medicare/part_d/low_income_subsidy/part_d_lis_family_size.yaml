@@ -1,0 +1,57 @@
+# Family size: the person, a spouse living with them, and relatives who
+# depend on them for at least half of their support (42 CFR 423.772).
+
+- name: Single person living alone.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+  output:
+    part_d_lis_family_size: 1
+
+- name: Married couple supporting a grandchild.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+      spouse:
+        age: 68
+      grandchild:
+        age: 12
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [head, spouse]
+      grandchild_unit:
+        members: [grandchild]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, grandchild]
+  output:
+    # The couple's family is 3. The grandchild is not a head or spouse, so
+    # its own family size is 1.
+    part_d_lis_family_size: [3, 3, 1]
+
+- name: Parent who is a dependent of an adult child.
+  period: 2026
+  input:
+    people:
+      child:
+        age: 45
+      parent:
+        age: 80
+        is_tax_unit_dependent: true
+    marital_units:
+      child_unit:
+        members: [child]
+      parent_unit:
+        members: [parent]
+    tax_units:
+      tax_unit:
+        members: [child, parent]
+  output:
+    # The parent depends on the child, so the parent's family is just the
+    # parent; the child's family includes the dependent parent.
+    part_d_lis_family_size: [2, 1]

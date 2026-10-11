@@ -1,0 +1,63 @@
+# Countable resources of the person and a spouse living with them must not
+# exceed the limit plus $1,500 per person for burial funds (POMS HI
+# 03030.025, 20 CFR 418.3425(j)).
+
+- name: Single person at the 2026 limit with the burial exclusion.
+  period: 2026
+  input:
+    people:
+      person:
+        bank_account_assets: 18_090
+  output:
+    # 16,590 + 1,500 = 18,090.
+    part_d_lis_resource_eligible: true
+
+- name: Single person one dollar over the 2026 limit.
+  period: 2026
+  input:
+    people:
+      person:
+        bank_account_assets: 18_091
+  output:
+    part_d_lis_resource_eligible: false
+
+- name: Married couple at the 2026 couple limit, resources combined.
+  period: 2026
+  input:
+    people:
+      spouse1:
+        bank_account_assets: 20_000
+      spouse2:
+        stock_assets: 10_100
+        bond_assets: 6_000
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+  output:
+    # 20,000 + 10,100 + 6,000 = 36,100 = 33,100 + 2 x 1,500.
+    part_d_lis_resource_eligible: [true, true]
+
+- name: Married couple one dollar over the 2026 couple limit.
+  period: 2026
+  input:
+    people:
+      spouse1:
+        bank_account_assets: 20_001
+      spouse2:
+        stock_assets: 16_100
+    marital_units:
+      marital_unit:
+        members: [spouse1, spouse2]
+  output:
+    part_d_lis_resource_eligible: [false, false]
+
+- name: 2023 uses the higher (partial subsidy) limit.
+  period: 2023
+  input:
+    people:
+      person:
+        bank_account_assets: 16_660
+  output:
+    # 15,160 + 1,500 = 16,660, CMS's published 2023 partial subsidy limit.
+    # The 2023 full subsidy limit was 9,090 + 1,500 = 10,590.
+    part_d_lis_resource_eligible: true

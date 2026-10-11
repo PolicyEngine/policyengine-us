@@ -1117,6 +1117,23 @@ programs:
       adjustments; gross Part B premium calibration should use the
       enrollment-gated gross_medicare_part_b_premium_if_enrolled variable.
 
+  - id: medicare_part_d_lis
+    name: Medicare Part D Extra Help
+    full_name: Medicare Part D Low-Income Subsidy (Extra Help)
+    category: Healthcare
+    agency: HHS
+    status: partial
+    coverage: US
+    variable: part_d_lis
+    parameter_prefix: gov.hhs.medicare.part_d.low_income_subsidy
+    verified_start_year: 2015
+    notes: >-
+      Models eligibility (countable income below 150% of the poverty guideline,
+      resource limits, and deemed eligibility for Medicaid and SSI recipients
+      and Medicare Savings Program enrollees) and values the subsidy at the
+      Medicare Trustees' average payment per subsidy enrollee, as CBO does;
+      the premium and cost-sharing subsidies are not computed per person.
+
   # --- HUD programs ---
   - id: section_8
     name: Section 8
