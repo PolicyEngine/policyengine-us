@@ -13,6 +13,12 @@ class tax_unit_is_required_to_file(Variable):
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/6012",
+        # A filer who can be claimed as a dependent: section 6012(a)(1)(C)(i)
+        # and (f)(2)(D), the section 63(c)(5) limited standard deduction, and
+        # Publication 501, Table 2 (Chart B of the Form 1040 instructions).
+        "https://www.law.cornell.edu/uscode/text/26/6012#a_1_C",
+        "https://www.law.cornell.edu/uscode/text/26/63#c_5",
+        "https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=4",
         # Gross income counts amounts excluded under section 911.
         "https://www.law.cornell.edu/uscode/text/26/6012#c",
     )
@@ -39,16 +45,54 @@ class tax_unit_is_required_to_file(Variable):
 
         income_over_exemption_amount = gross_income > threshold
 
-        # (a)(1)(C) - unearned income threshold for dependents
-        unearned_income_threshold = 500 + tax_unit(
-            "additional_standard_deduction", period
+        # A filer who can be claimed as a dependent on another return (an
+        # individual described in section 63(c)(5)) must also file when their
+        # income other than earned income is over the section 63(c)(5)(A)
+        # amount plus their own additional standard deduction for age or
+        # blindness: section 6012(a)(1)(C)(i)(I) and Publication 501, Table 2.
+        # On a joint return the test applies to each spouse who can be claimed
+        # (section 6012(f)(2)(D)). Nobody else has an unearned income test.
+        #
+        # Table 2's other two tests need no code here. The standard deduction
+        # in the threshold above is already the limited one for these filers
+        # (basic_standard_deduction): the greater of the section 63(c)(5)(A)
+        # amount or earned income plus the section 63(c)(5)(B) amount, capped
+        # at the regular amount, plus the additional standard deduction. That
+        # is Table 2's gross income test, and earned income over the regular
+        # amount plus the additional standard deduction always meets it.
+        person = tax_unit.members
+        head_can_be_claimed = tax_unit("head_is_dependent_elsewhere", period)
+        spouse_can_be_claimed = tax_unit("spouse_is_dependent_elsewhere", period)
+        can_be_claimed = (
+            person("is_tax_unit_head", period) & tax_unit.project(head_can_be_claimed)
+        ) | (
+            person("is_tax_unit_spouse", period)
+            & tax_unit.project(spouse_can_be_claimed)
         )
-        # The section 911 exclusion covers earned income only.
-        unearned_income = (
-            gross_income
-            - add(tax_unit, period, ["earned_income"])
-            - section_911_exclusion
+        # Income other than earned income: every gross income source except
+        # wages and self-employment income, the items in earned_income. As in
+        # irs_gross_income, a loss in one source does not reduce the total.
+        earned_income_sources = [
+            "irs_employment_income",
+            "self_employment_income",
+            "sstb_self_employment_income",
+        ]
+        unearned_income = 0
+        for source in parameters(period).gov.irs.gross_income.sources:
+            if source not in earned_income_sources:
+                unearned_income += max_(0, add(person, period, [source]))
+        p_standard = parameters(period).gov.irs.deductions.standard
+        aged_or_blind_count = person("is_irs_aged", period).astype(int) + person(
+            "is_blind", period
+        ).astype(int)
+        additional_standard_deduction = aged_or_blind_count * tax_unit.project(
+            p_standard.aged_or_blind.amount[tax_unit("filing_status", period)]
         )
-        unearned_income_over_threshold = unearned_income > unearned_income_threshold
+        unearned_income_threshold = (
+            p_standard.dependent.amount + additional_standard_deduction
+        )
+        unearned_income_over_threshold = tax_unit.any(
+            can_be_claimed & (unearned_income > unearned_income_threshold)
+        )
 
         return income_over_exemption_amount | unearned_income_over_threshold
