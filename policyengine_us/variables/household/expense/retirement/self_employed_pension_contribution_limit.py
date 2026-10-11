@@ -20,7 +20,15 @@ class self_employed_pension_contribution_limit(Variable):
         "deferral room that deferrals to other employers' plans leave. With "
         "no room left, it is the SEP and profit-sharing limit. Catch-up "
         "contributions sit outside the dollar limit, and the total never "
-        "exceeds earned income. Defined benefit plans are not modeled."
+        "exceeds earned income. Earned income comes from every business "
+        "under which a plan is established (self_employed_pension_earned_"
+        "income), under one dollar limit and one elective deferral limit. A "
+        "sole proprietor is the employer for all of their own businesses, so "
+        "their plans share one dollar limit. A partnership is a separate "
+        "employer, and unless it is under common control with the person's "
+        "own business, its plan has a dollar limit of its own. The model "
+        "applies one, which understates the limit only when that dollar limit "
+        "binds. Defined benefit plans are not modeled."
     )
     definition_period = YEAR
     reference = (
@@ -30,6 +38,11 @@ class self_employed_pension_contribution_limit(Variable):
         "https://www.law.cornell.edu/uscode/text/26/415#c_1",
         "https://www.law.cornell.edu/uscode/text/26/415#c_3_B",
         "https://www.law.cornell.edu/uscode/text/26/414#v_3_A",
+        # Employers under common control are one employer, and section 415
+        # aggregates the plans of one employer.
+        "https://www.law.cornell.edu/uscode/text/26/414#c",
+        "https://www.law.cornell.edu/uscode/text/26/415#f",
+        "https://www.law.cornell.edu/uscode/text/26/415#h",
         "https://www.irs.gov/pub/irs-pdf/p560.pdf#page=39",
         "https://www.irs.gov/pub/irs-prior/p560--2022.pdf#page=34",
     )
