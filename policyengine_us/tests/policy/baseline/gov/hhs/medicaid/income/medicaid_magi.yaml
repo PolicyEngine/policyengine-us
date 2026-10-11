@@ -1,0 +1,266 @@
+# Household income counts a dependent's modified AGI only when the dependent
+# is required to file a return (26 CFR 1.36B-1(e)(1)(ii); 42 CFR
+# 435.603(d)(2)). In 2025 a single dependent under 65 and not blind must file
+# if unearned income is more than $1,350, earned income is more than $15,750,
+# or gross income is more than the larger of $1,350 or earned income plus
+# $450 (IRS Pub. 501 (2025), Table 2). Social Security counts toward these
+# tests only to the extent it is taxable (Pub. 501, Table 2: "taxable social
+# security benefits"), figured on the dependent's own return (Pub. 915
+# (2025), "Who is taxed").
+
+- name: Case 1, a child's survivor benefits below the filing threshold stay out of household income.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 12
+        social_security_survivors: 12_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    medicaid_person_is_required_to_file: [true, false]
+    adjusted_gross_income: 40_000
+    # Before the fix: 40,000 + 12,000.
+    medicaid_magi: 40_000
+
+- name: Case 2, a child's survivor benefits above the $15,750 standard deduction still stay out, since none is taxable.
+  # Combined income is half of $20,000, less than the $25,000 base amount, so
+  # no benefits are taxable and the child's gross income is zero.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 12
+        social_security_survivors: 20_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    dependent_taxable_social_security: [0, 0]
+    medicaid_irs_gross_income: [40_000, 0]
+    medicaid_person_is_required_to_file: [true, false]
+    medicaid_magi: 40_000
+
+- name: Case 3, a child with survivor benefits and $2,000 of interest must file, so all their benefits count.
+  # Unearned income of $2,000 is more than $1,350. The child's modified AGI is
+  # their $2,000 AGI plus $12,000 of benefits, none of them taxable (combined
+  # income $2,000 + $6,000 is below $25,000).
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 12
+        social_security_survivors: 12_000
+        taxable_interest_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    medicaid_person_is_required_to_file: [true, true]
+    adjusted_gross_income: 40_000
+    # Before the fix: 52,000, with the benefits but not the interest.
+    medicaid_magi: 54_000
+
+- name: Case 4, a child's tax-exempt interest stays out when the child need not file.
+  # Tax-exempt interest is not gross income, so the child's gross income is
+  # zero.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 12
+        tax_exempt_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    medicaid_person_is_required_to_file: [true, false]
+    # Before the fix: 60,000.
+    medicaid_magi: 40_000
+
+- name: Case 5, a child with tax-exempt interest and $2,000 of taxable interest must file, so both count.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 12
+        tax_exempt_interest_income: 20_000
+        taxable_interest_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    medicaid_person_is_required_to_file: [true, true]
+    # Form 8962 Worksheet 1-2: AGI 2,000 (line 1) plus tax-exempt interest
+    # 20,000 (line 2). Before the fix: 60,000.
+    medicaid_magi: 62_000
+
+- name: Case 6, a teen whose wages are more than $15,750 must file, so their AGI counts.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      teen:
+        age: 17
+        employment_income: 16_000
+    tax_units:
+      tax_unit:
+        members: [parent, teen]
+    households:
+      household:
+        members: [parent, teen]
+        state_code: TX
+  output:
+    medicaid_person_is_required_to_file: [true, true]
+    # Before the fix: 40,000, without the teen's wages.
+    medicaid_magi: 56_000
+
+- name: Case 7, a teen whose wages are $15,750 need not file, so their AGI stays out.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      teen:
+        age: 17
+        employment_income: 15_750
+    tax_units:
+      tax_unit:
+        members: [parent, teen]
+    households:
+      household:
+        members: [parent, teen]
+        state_code: TX
+  output:
+    medicaid_person_is_required_to_file: [true, false]
+    medicaid_magi: 40_000
+
+- name: Case 8, taxable benefits put a disabled adult child over the filing threshold, so all their income counts.
+  # The dependent's $15,000 of wages alone is below the gross income limit of
+  # $15,000 + $450. Combined income is $15,000 + $18,000 = $33,000, between
+  # the $25,000 base and $34,000 adjusted base amounts, so the lesser of half
+  # the benefits ($18,000) or half the $8,000 excess, $4,000, is taxable (IRC
+  # 86(a)(1)). Gross income of $19,000 is more than $15,450, and unearned
+  # income of $4,000 is more than $1,350. Modified AGI is $15,000 of wages plus
+  # all $36,000 of benefits.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 60
+        employment_income: 40_000
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_disabled: true
+        employment_income: 15_000
+        social_security_dependents: 36_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: TX
+  output:
+    dependent_taxable_social_security: [0, 4_000]
+    medicaid_irs_gross_income: [40_000, 19_000]
+    medicaid_person_is_required_to_file: [true, true]
+    # Before the fix: 76,000, with the benefits but not the wages.
+    medicaid_magi: 91_000
+
+- name: Case 9, only the dependent who must file adds to household income.
+  period: 2025
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 30_000
+      parent2:
+        age: 40
+        employment_income: 10_000
+        tax_exempt_interest_income: 1_000
+      child1:
+        age: 16
+        employment_income: 20_000
+      child2:
+        age: 10
+        social_security_survivors: 9_000
+        tax_exempt_interest_income: 500
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: TX
+  output:
+    # child1's wages are more than $15,750; child2's gross income is zero.
+    # (The filers' values apply the dependents' test and are unused.)
+    medicaid_person_is_required_to_file: [true, false, true, false]
+    adjusted_gross_income: 40_000
+    # The couple's AGI and parent2's tax-exempt interest, plus child1's
+    # $20,000 of wages. Before the fix: 50,500.
+    medicaid_magi: 61_000
+
+- name: Case 10, a dependent's tax-exempt interest is in tax_unit_medicaid_income_level only when they must file.
+  period: 2025
+  absolute_error_margin: 0.001
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 12
+        tax_exempt_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # 40,000 / 21,150, the 2025 poverty guideline for two.
+    tax_unit_medicaid_income_level: 1.891

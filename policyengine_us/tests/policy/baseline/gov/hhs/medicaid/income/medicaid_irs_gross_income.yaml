@@ -1,0 +1,54 @@
+- name: Case 1, a single filer's gross income counts only their taxable benefits.
+  # Combined income is $20,000 of pension plus half of $40,000, $40,000. The
+  # taxable amount is the lesser of 85% of $40,000 or 85% of the $6,000
+  # excess over $34,000 plus the lesser of half the $15,000 excess over
+  # $25,000 ($7,500) or $4,500: $9,600 (IRC 86(a)(2)).
+  period: 2025
+  input:
+    social_security_retirement: 40_000
+    taxable_pension_income: 20_000
+  output:
+    taxable_social_security: 9_600
+    medicaid_irs_gross_income: 29_600
+
+- name: Case 2, a dependent's untaxed benefits are not gross income.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 12
+        social_security_survivors: 20_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+  output:
+    medicaid_irs_gross_income: [40_000, 0]
+    medicaid_person_is_required_to_file: [true, false]
+
+- name: Case 3, a dependent's taxable benefits, figured on their own return, are gross income.
+  # IRS Pub. 915 (2025), "Who is taxed": half of a child's benefits is added
+  # to the child's own income. $15,000 + $18,000 = $33,000 of combined income
+  # makes $4,000 taxable, so gross income is $19,000, more than the $15,450
+  # limit for a dependent with $15,000 of earned income.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 60
+        employment_income: 40_000
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_disabled: true
+        employment_income: 15_000
+        social_security_dependents: 36_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+  output:
+    medicaid_irs_gross_income: [40_000, 19_000]
+    medicaid_person_is_required_to_file: [true, true]

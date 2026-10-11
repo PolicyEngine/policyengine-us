@@ -1,14 +1,19 @@
 from policyengine_us.model_api import *
 
 
-PERSON_LEVEL_MEDICAID_MAGI_ADDITIONS = ["tax_exempt_interest_income"]
-
-
 class medicaid_magi_person(Variable):
     value_type = float
     entity = Person
     label = "Person-level Medicaid MAGI"
     unit = USD
+    documentation = (
+        "Each person's MAGI-based income: their Medicaid AGI plus the MAGI "
+        "additions. A person-level addition, such as tax-exempt interest or "
+        "tax_exempt_social_security_person, is the person's own, so a tax "
+        "unit dependent's Social Security stays in the dependent's amount; "
+        "an addition recorded only for the tax unit is divided between the "
+        "head and spouse."
+    )
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#e_14_G",
@@ -21,7 +26,9 @@ class medicaid_magi_person(Variable):
         person_level_additions = [
             addition
             for addition in additions
-            if addition in PERSON_LEVEL_MEDICAID_MAGI_ADDITIONS
+            if person.entity.get_variable(
+                addition, check_existence=True
+            ).entity.is_person
         ]
         tax_unit_level_additions = [
             addition for addition in additions if addition not in person_level_additions

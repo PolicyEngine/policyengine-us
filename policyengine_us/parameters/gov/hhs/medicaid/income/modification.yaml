@@ -4,7 +4,8 @@ values:
     # Form 2555 lines 45 and 50 (Form 8962 Worksheet 1-1 line 3).
     - section_911_excluded_income
     - tax_exempt_interest_income
-    - tax_exempt_social_security
+    # Each person's own benefits, so a dependent's stay with the dependent.
+    - tax_exempt_social_security_person
 metadata:
   unit: list
   label: Medicaid/CHIP/ACA-related MAGI additions over AGI

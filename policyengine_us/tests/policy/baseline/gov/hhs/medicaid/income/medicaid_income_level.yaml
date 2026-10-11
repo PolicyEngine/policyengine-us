@@ -435,3 +435,82 @@
     medicaid_household_income: 148_224.12
   output:
     is_older_child_for_medicaid_fc: false
+
+- name: Case 26, a child's survivor benefits stay with the child, so they leave the parent's Medicaid MAGI and household income.
+  # The child need not file (none of the benefits is taxable, so the child's
+  # gross income is zero), and 42 CFR 435.603(d)(2)(i) excludes their
+  # MAGI-based income. Before the fix, the tax unit's tax-exempt Social
+  # Security, the child's benefits included, was the parent's.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        own_children_in_household: 1
+      person2:
+        age: 12
+        social_security_survivors: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_person_is_required_to_file: [true, false]
+    tax_exempt_social_security_person: [0, 12_000]
+    medicaid_magi_person: [40_000, 12_000]
+    medicaid_household_income_member: [40_000, 0]
+    medicaid_household_income: [40_000, 40_000]
+    # 40,000 / 21,150, the 2025 poverty guideline for two.
+    medicaid_income_level: [1.891253, 1.891253]
+    tax_unit_medicaid_income_level: 1.891253
+  absolute_error_margin: 0.001
+
+- name: Case 27, a child with survivor benefits who must file adds all their benefits to Medicaid household income.
+  # $2,000 of interest is more than the $1,350 unearned income limit. The
+  # child's MAGI-based income is $2,000 of AGI plus $12,000 of benefits.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        own_children_in_household: 1
+      person2:
+        age: 12
+        social_security_survivors: 12_000
+        taxable_interest_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+  output:
+    medicaid_person_is_required_to_file: [true, true]
+    medicaid_magi_person: [40_000, 14_000]
+    medicaid_household_income: [54_000, 54_000]
+    # 54,000 / 21,150.
+    medicaid_income_level: [2.553191, 2.553191]
+    tax_unit_medicaid_income_level: 2.553191
+  absolute_error_margin: 0.001
