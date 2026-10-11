@@ -1,11 +1,11 @@
-"""The engine ages premium inputs by their CMS premium series, in a simulation
-and in dataset extension.
+"""The engine ages premium inputs by their premium series, in a simulation and
+in dataset extension.
 
 ``tests/core/test_premium_input_uprating.py`` checks the series and that each
 input names its series. This file checks what a parameter read cannot: that
 holder uprating in a ``Simulation`` and ``extend_single_year_dataset`` resolve
-the per-enrollee paths undivided by population and apply them to these
-inputs.
+the per-enrollee paths and the price index undivided by population and apply
+them to these inputs.
 
 Invariants:
 
@@ -37,11 +37,22 @@ from policyengine_us.tools.per_capita_uprating import POPULATION_PATH
 
 ESI = "calibration.gov.hhs.cms.esi_premium_per_enrollee"
 DIRECT_PURCHASE = "calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee"
+MEDICAL_CPI = "gov.bls.cpi.cpi_u_medical_care"
+PART_B = "calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee"
 PRE_TAX = "pre_tax_health_insurance_premiums"
 REPORTED = "health_insurance_premiums_without_medicare_part_b"
 OTHER = "other_health_insurance_premiums"
 DIRECT = "health_insurance_premiums"
-SERIES = {PRE_TAX: ESI, REPORTED: ESI, OTHER: ESI, DIRECT: DIRECT_PURCHASE}
+LONG_TERM_CARE = "long_term_health_insurance_premiums"
+PART_B_REPORTED = "medicare_part_b_premiums_reported"
+SERIES = {
+    PRE_TAX: ESI,
+    REPORTED: ESI,
+    OTHER: ESI,
+    DIRECT: DIRECT_PURCHASE,
+    LONG_TERM_CARE: MEDICAL_CPI,
+    PART_B_REPORTED: PART_B,
+}
 BASE_YEAR, END_YEAR = 2024, 2100
 
 amounts = st.integers(0, 3_000_000).map(lambda cents: cents / 100)
@@ -136,6 +147,8 @@ def _extended():
             REPORTED: [1_400.0, 0.0, 6_300.0, 2_250.0],
             OTHER: [1_400.0, 0.0, 5_100.0, 2_250.0],
             DIRECT: [0.0, 0.0, 6_300.0, 0.0],
+            LONG_TERM_CARE: [0.0, 0.0, 0.0, 3_100.0],
+            PART_B_REPORTED: [0.0, 0.0, 0.0, 2_096.4],
             "age": [40.0, 8.0, 55.0, 70.0],
         }
     )

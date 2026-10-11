@@ -39,6 +39,7 @@ CBO_AGI = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
 CMS_MOOP = "calibration.gov.hhs.cms.moop_per_capita"
 CMS_ESI = "calibration.gov.hhs.cms.esi_premium_per_enrollee"
 CMS_DIRECT_PURCHASE = "calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee"
+CMS_PART_B = "calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee"
 CPI_U = "gov.bls.cpi.cpi_u"
 YEARS = (2025, 2030, 2035)
 BASE_YEAR = 2024
@@ -62,6 +63,7 @@ def _growth(path, year, parameters=None):
         (CMS_MOOP, False),
         (CMS_ESI, False),
         (CMS_DIRECT_PURCHASE, False),
+        (CMS_PART_B, False),
         (CPI_U, False),
         (POPULATION_PATH, False),
         (per_capita_path(SOI_EMPLOYMENT), False),
@@ -95,6 +97,7 @@ def test_no_variable_uprates_by_a_national_total():
         ("other_medical_expenses", CMS_MOOP),
         ("employer_sponsored_insurance_premiums", CMS_ESI),
         ("health_insurance_premiums", CMS_DIRECT_PURCHASE),
+        ("medicare_part_b_premiums_reported", CMS_PART_B),
         ("child_support_expense", CPI_U),
         ("household_weight", POPULATION_PATH),
     ],
@@ -407,7 +410,7 @@ def test_unclassified_calibration_path_is_rejected():
         add_per_capita_uprating(_StubSystem("calibration.gov.aca.spending.state.AL"))
 
 
-@pytest.mark.parametrize("path", [CMS_MOOP, CMS_ESI, CMS_DIRECT_PURCHASE])
+@pytest.mark.parametrize("path", [CMS_MOOP, CMS_ESI, CMS_DIRECT_PURCHASE, CMS_PART_B])
 def test_per_person_rates_are_classified(path):
     """CMS per-capita and per-enrollee series are per-person rates: neither
     national totals to divide nor unclassified paths to reject."""

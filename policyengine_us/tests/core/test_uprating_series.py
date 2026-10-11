@@ -1,7 +1,8 @@
 """Each dollar input follows the series closest to what it measures: its own
 national series, the income source it is part of, prices for consumption
 expenses and debts, CMS per-capita out-of-pocket spending for health costs and
-CMS premiums per enrollee for health insurance premiums."""
+premiums per enrollee, or the prices that index them, for health insurance
+premiums."""
 
 from pathlib import Path
 
@@ -22,6 +23,8 @@ CMS = "calibration.gov.hhs.cms.moop_per_capita"
 ESI = "calibration.gov.hhs.cms.esi_premium_per_enrollee"
 DIRECT_PURCHASE = "calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee"
 CPI_U = "gov.bls.cpi.cpi_u"
+MEDICAL_CPI = "gov.bls.cpi.cpi_u_medical_care"
+PART_B = "calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee"
 COLA = "gov.ssa.uprating"
 
 EXPECTED = {
@@ -73,6 +76,11 @@ EXPECTED = {
     "other_health_insurance_premiums": ESI,
     # Premiums for plans bought directly.
     "health_insurance_premiums": DIRECT_PURCHASE,
+    # Long-term care insurance premiums, whose deductible limits follow
+    # medical care prices.
+    "long_term_health_insurance_premiums": MEDICAL_CPI,
+    # Medicare Part B premiums.
+    "medicare_part_b_premiums_reported": PART_B,
     # Benefits adjusted by the Social Security cost-of-living index.
     "veterans_benefits": COLA,
     # Consumption expenses, and the interest on debts, follow prices. The
