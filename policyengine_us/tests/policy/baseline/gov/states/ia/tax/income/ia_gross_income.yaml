@@ -5,3 +5,24 @@
     state_code: IA
   output:
     ia_gross_income: 100_000
+
+- name: Estate and trust income is included in Iowa gross income
+  period: 2022
+  input:
+    irs_employment_income: 30_000
+    estate_income: 5_000
+    state_code: IA
+  output:
+    # 2022 IA 1040 line 10 reports federal Schedule E income, which includes
+    # estates and trusts: 30,000 + 5,000.
+    ia_gross_income: 35_000
+
+- name: An estate or trust loss on federal Schedule E reduces Iowa gross income
+  period: 2022
+  input:
+    irs_employment_income: 30_000
+    estate_income: -5_000
+    state_code: IA
+  output:
+    # Line 10 is "the income or loss from federal Schedule E": 30,000 - 5,000.
+    ia_gross_income: 25_000

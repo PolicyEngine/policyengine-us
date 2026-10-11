@@ -104,3 +104,56 @@
     # 25_000 gross + 2_000 SSI + 500 state supplement + 1_000 TANF - 700 aged
     # exemption, with no add-back for the 4_200 of in-kind SNAP and WIC.
     ma_scb_total_income: 27_800
+
+- name: Only the head's and spouse's pensions are re-added to total income, not a dependent's. # M.G.L. c.62 s.6(k)(1) starts from the taxpayer's AGI.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+        taxable_public_pension_income: 20_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        ssi: 0
+        ma_state_supplement: 0
+      spouse:
+        age: 66
+        tax_exempt_private_pension_income: 5_000
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        ssi: 0
+        ma_state_supplement: 0
+      child:
+        age: 16
+        taxable_public_pension_income: 10_000
+        tax_exempt_private_pension_income: 4_000
+        social_security_survivors: 3_000
+        is_tax_unit_dependent: true
+        ssi: 0
+        ma_state_supplement: 0
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        tanf: 0
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MA
+  output:
+    # 30,000 wages + 20,000 head pension - 20,000 head public pension exclusion.
+    ma_gross_income: 30_000
+    # 30,000 + 20,000 head public pension + 5,000 spouse tax-exempt pension
+    # - 1,400 aged exemptions (2 x 700) - 1,000 dependent exemption.
+    # The child's 10,000 public pension, 4,000 tax-exempt pension and 3,000
+    # Social Security are not the taxpayer's income and are not re-added.
+    ma_scb_total_income: 52_600

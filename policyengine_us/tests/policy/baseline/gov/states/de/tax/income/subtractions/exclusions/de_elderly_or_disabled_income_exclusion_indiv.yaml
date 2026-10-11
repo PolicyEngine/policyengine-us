@@ -1,6 +1,7 @@
 - name: Eligible individual exclusion
   period: 2023
   input:
+    state_code: DE
     state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
     de_elderly_or_disabled_income_exclusion_eligible_person: true
   output:
@@ -9,12 +10,13 @@
 - name: Ineligible individual exclusion
   period: 2023
   input:
+    state_code: DE
     state_filing_status_if_married_filing_separately_on_same_return: SEPARATE
     de_elderly_or_disabled_income_exclusion_eligible_person: false
   output:
-    de_elderly_or_disabled_income_exclusion_joint: 0
+    de_elderly_or_disabled_income_exclusion_indiv: 0
 
-- name: Joint filing status with two eligible people
+- name: Combined separate return with two eligible spouses
   period: 2023
   input:
     people:
@@ -33,9 +35,9 @@
         members: [person1, person2]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion_joint: [2_000, 2_000]
+    de_elderly_or_disabled_income_exclusion_indiv: [2_000, 2_000]
 
-- name: When filing sepaartely, both spouse are considered separately
+- name: Separate return with only one eligible spouse
   period: 2023
   input:
     people:
@@ -54,4 +56,4 @@
         members: [person1, person2]
         state_code: DE
   output:
-    de_elderly_or_disabled_income_exclusion_joint: [2_000, 0]
+    de_elderly_or_disabled_income_exclusion_indiv: [2_000, 0]
