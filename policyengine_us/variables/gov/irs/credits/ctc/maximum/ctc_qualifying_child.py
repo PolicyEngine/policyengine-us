@@ -9,7 +9,7 @@ class ctc_qualifying_child(Variable):
     definition_period = YEAR
     defined_for = "is_tax_unit_dependent"
     reference = (
-        "https://www.law.cornell.edu/uscode/text/26/24#a",
+        # Subsections (a) and (c).
         "https://www.law.cornell.edu/uscode/text/26/24#c",
         "https://www.law.cornell.edu/uscode/text/26/152#b_1",
         # Publication 501, Dependent Taxpayer Test.
@@ -30,6 +30,6 @@ class ctc_qualifying_child(Variable):
         # having no dependents, and on a joint return neither spouse may be
         # claimable (Publication 501, Dependent Taxpayer Test).
         filer_is_dependent = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         return age_eligible & meets_identification_requirements & ~filer_is_dependent

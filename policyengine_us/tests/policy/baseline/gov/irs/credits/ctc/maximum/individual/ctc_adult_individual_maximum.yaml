@@ -61,7 +61,7 @@
         members: [filer, sibling]
         state_code: TX
   output:
-    # IRC 24(h)(4) "any dependent of the taxpayer"; IRC 152(b)(1).
+    # IRC 24(h)(4)(A) "each dependent of the taxpayer"; IRC 152(b)(1).
     ctc_adult_individual_maximum: [0, 0]
 
 - name: 2025 joint return with one claimable spouse gets no credit for other dependents (the claimable spouse is the head)

@@ -26,7 +26,7 @@ class nm_medical_expense_credit(Variable):
         # dependent claim it when the other spouse is. So when a filer is a
         # dependent elsewhere, a filer who is not must be 65 or older.
         filer = person("is_tax_unit_head_or_spouse", period)
-        claimed = person("claimed_as_dependent_on_another_return", period)
+        claimed = person("claimable_as_dependent_on_another_return", period)
         independent_aged_filer = tax_unit.any(filer & ~claimed & aged)
         dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
         age_eligible = where(
