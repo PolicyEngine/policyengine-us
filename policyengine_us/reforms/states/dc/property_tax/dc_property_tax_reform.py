@@ -22,12 +22,15 @@ def create_dc_property_tax_credit() -> Reform:
             # Income based eligibility criteria does not apply when the credit
             # is phased out.
             eligible = tax_unit("dc_ptc_eligible", period)
+            # The reform keeps D.C. Code 47-1806.06(k): no credit through a
+            # claimant who was a dependent, unless 65 or older.
+            has_claimant = tax_unit("dc_ptc_has_eligible_claimant", period)
             if p.phase_out.applies:
                 income_limit = tax_unit("dc_ptc_income_limit", period)
                 income = tax_unit("adjusted_gross_income", period)
                 income_excess = max_(0, income - income_limit)
-                return max_(0, amount - p.phase_out.rate * income_excess)
-            return amount * eligible
+                return max_(0, amount - p.phase_out.rate * income_excess) * has_claimant
+            return amount * eligible * has_claimant
 
     class dc_ptc_eligible(Variable):
         value_type = bool

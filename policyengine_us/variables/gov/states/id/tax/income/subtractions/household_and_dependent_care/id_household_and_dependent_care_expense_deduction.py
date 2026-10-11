@@ -8,6 +8,12 @@ class id_household_and_dependent_care_expense_deduction(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.ID
+    reference = (
+        # Idaho Code 63-3022D: for an individual who maintains a household that
+        # includes one or more qualifying individuals under IRC 21(b)(1).
+        "https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3022D/",
+        "https://www.law.cornell.edu/uscode/text/26/21#b_1",
+    )
 
     def formula(tax_unit, period, parameters):
         p = parameters(
@@ -28,8 +34,13 @@ class id_household_and_dependent_care_expense_deduction(Variable):
         exclusion = tax_unit("dependent_care_assistance_exclusion", period)
         limit = max_(limit - exclusion, 0)
         eligible_capped_expenses = min_(expenses, limit)
+        # The deduction needs a household member who is an IRC 21(b)(1)
+        # qualifying individual. A child under 13 is not one when the filer
+        # (or, if joint, either spouse) can be claimed as a dependent; a
+        # disabled dependent or spouse still is.
+        has_qualifying_individual = tax_unit("count_cdcc_eligible", period) > 0
         # cap further to the lowest earnings between the taxpayer and spouse
-        return min_(
+        return has_qualifying_individual * min_(
             eligible_capped_expenses,
             tax_unit("min_head_spouse_earned", period),
         )

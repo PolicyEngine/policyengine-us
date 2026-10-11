@@ -43,3 +43,146 @@
   output:
     dc_cdcc_potential: 320
     dc_cdcc: 200
+
+
+- name: 2025 single filer who can be claimed as a dependent, no DC child care credit for a child under 13
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [filer, child]
+        state_code: DC
+  output:
+    # Already zero through the federal child care credit, which no
+    # longer counts a child under 13 on such a return.
+    dc_cdcc_potential: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, no DC child care credit for a child under 13 (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 25_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 25_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: DC
+  output:
+    dc_cdcc_potential: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, no DC child care credit for a child under 13 (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 25_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 25_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: DC
+  output:
+    dc_cdcc_potential: 0
+
+- name: 2025 joint return with both spouses claimable as dependents, no DC child care credit for a child under 13
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 25_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 25_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: DC
+  output:
+    dc_cdcc_potential: 0
+
+- name: 2025 joint return with neither spouse claimable, no DC child care credit for a child under 13
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 25_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 25_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 2
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 1_000
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: DC
+  output:
+    # Federal 20% x 1,000 = 200; DC 32% match = 64.
+    dc_cdcc_potential: 64
