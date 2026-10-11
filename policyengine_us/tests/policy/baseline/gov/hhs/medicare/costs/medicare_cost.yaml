@@ -1,5 +1,10 @@
+# The expected Part D premium is the Part D enrollment share times (Part D
+# premiums per Part D enrollee + the person's Part D IRMAA). 2025: 0.8191 x
+# $220.25 = $180.41 without IRMAA.
+
 - name: unit test 1 - enrolled, premium-free Part A
   period: 2025
+  absolute_error_margin: 0.01
   input:
     age: 65
     is_medicare_eligible: true
@@ -9,10 +14,12 @@
     tax_exempt_interest_income:
       2023: 0
   output:
-    medicare_cost: 15_531  # $17,751 spending - $2,220 Part B premium (2025)
+    # $17,751 spending - $2,220 Part B premium - $180.41 Part D (2025)
+    medicare_cost: 15_350.59
 
 - name: unit test 2 - enrolled, pays full Part A premium
   period: 2025
+  absolute_error_margin: 0.01
   input:
     age: 65
     is_medicare_eligible: true
@@ -22,10 +29,12 @@
     tax_exempt_interest_income:
       2023: 0
   output:
-    medicare_cost: 9_315  # $17,751 - $6,216 Part A - $2,220 Part B (2025)
+    # $17,751 - $6,216 Part A - $2,220 Part B - $180.41 Part D (2025)
+    medicare_cost: 9_134.59
 
 - name: unit test 3 - enrolled with IRMAA
   period: 2025
+  absolute_error_margin: 0.01
   input:
     age: 65
     is_medicare_eligible: true
@@ -36,7 +45,9 @@
       2023: 0
     filing_status: SINGLE
   output:
-    medicare_cost: 10_204.2  # $17,751 - $7,546.80 Part B with IRMAA (2025)
+    # $17,751 - $7,546.80 Part B with IRMAA - 0.8191 x ($220.25 + $85.80 x 12
+    # Part D IRMAA) = $1,023.75 Part D (2025)
+    medicare_cost: 9_180.45
 
 - name: unit test 4 - eligible but not enrolled
   period: 2025
@@ -49,6 +60,7 @@
 
 - name: unit test 5 - 2021 data, premium-free
   period: 2021
+  absolute_error_margin: 0.01
   input:
     age: 70
     is_medicare_eligible: true
@@ -58,14 +70,82 @@
     tax_exempt_interest_income:
       2019: 0
   output:
-    medicare_cost: 12_511  # $14,293 - $1,782 Part B (2021: $148.50*12)
+    # $14,293 - $1,782 Part B (2021: $148.50*12) - 0.7811 x $306.15 Part D
+    medicare_cost: 12_271.87
 
 - name: unit test 6 - direct Part B premium input
   period: 2025
+  absolute_error_margin: 0.01
   input:
     age: 65
     is_medicare_eligible: true
     medicare_quarters_of_coverage: 40
     gross_medicare_part_b_premium: 3_000
   output:
-    medicare_cost: 14_751  # $17,751 spending - $3,000 Part B premium
+    # $17,751 spending - $3,000 Part B premium - $180.41 Part D
+    medicare_cost: 14_570.59
+
+- name: unit test 7 - Part D IRMAA in the 50 percent tier
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 40
+    filing_status: SINGLE
+    adjusted_gross_income:
+      2023: 150_000  # Single, $133,001 to $167,000: $35.30 a month in 2025
+    tax_exempt_interest_income:
+      2023: 0
+    gross_medicare_part_b_premium: 2_220
+  output:
+    income_adjusted_part_d_premium_surcharge: 423.6
+    # $17,751 - $2,220 Part B - 0.8191 x ($220.25 + $423.60) = $527.38 Part D
+    medicare_cost: 15_003.62
+
+- name: unit test 8 - projected year
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    age: 67
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 40
+    gross_medicare_part_b_premium: 2_500
+    income_adjusted_part_d_premium_surcharge: 0
+  output:
+    # $20,096 - $2,500 Part B - 0.8255 x $373.53 = $308.35 Part D (2027)
+    medicare_cost: 17_287.65
+
+- name: unit test 9 - Inflation Reduction Act premium reset year, with IRMAA
+  period: 2030
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 40
+    gross_medicare_part_b_premium: 3_000
+    income_adjusted_part_d_premium_surcharge: 1_000
+  output:
+    # $23,789 - $3,000 Part B - 0.8382 x ($637.06 + $1,000) = $1,372.18 Part D
+    medicare_cost: 19_416.82
+
+- name: unit test 10 - premiums above spending floor the value at zero
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 40
+    gross_medicare_part_b_premium: 30_000
+  output:
+    medicare_cost: 0
+
+- name: unit test 11 - gross cost does not subtract the Part D premium
+  period: 2025
+  input:
+    age: 65
+    is_medicare_eligible: true
+    medicare_quarters_of_coverage: 40
+    gross_medicare_part_b_premium: 2_220
+    income_adjusted_part_d_premium_surcharge: 1_029.6
+  output:
+    medicare_gross_cost: 17_751

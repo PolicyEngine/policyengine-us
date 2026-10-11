@@ -1,0 +1,1 @@
+Subtract the expected Medicare Part D premium, the Part D enrollment share times Part D premiums per Part D enrollee plus the person's Part D IRMAA, from `medicare_cost`, whose CMS spending per enrollee includes Part D.

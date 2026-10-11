@@ -1,0 +1,53 @@
+description: The Medicare Trustees report and project this share of Medicare enrollees, people with Part A or Part B coverage, who are enrolled in Part D.
+metadata:
+  unit: /1
+  period: year
+  label: Medicare Part D enrollment share
+  reference:
+  # Table V.B3, "Medicare Enrollment": Part D enrollment over total
+  # enrollment, which footnote 2 defines as the "Number of beneficiaries with
+  # HI and/or SMI coverage". Part D enrollment includes retiree drug subsidy
+  # beneficiaries (it equals the total of Table IV.B7, file page 153).
+  # Annual through 2035, then every fifth year through 2100; each value holds
+  # until the next. 2026 Medicare Trustees Report, transmitted 2026-06-09,
+  # retrieved 2026-10-11, sha256
+  # ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8.
+  - title: 2026 Annual Report of the Boards of Trustees of the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds, Table V.B3
+    href: https://www.cms.gov/oact/tr/2026#page=196
+values:
+  # Historical.
+  2015-01-01: 0.7517
+  2016-01-01: 0.7569
+  2017-01-01: 0.7579
+  2018-01-01: 0.763
+  2019-01-01: 0.7667
+  2020-01-01: 0.7743
+  2021-01-01: 0.7811
+  2022-01-01: 0.7885
+  2023-01-01: 0.7941
+  2024-01-01: 0.8117
+  2025-01-01: 0.8191
+  # Trustees' intermediate estimates.
+  2026-01-01: 0.8195
+  2027-01-01: 0.8255
+  2028-01-01: 0.8301
+  2029-01-01: 0.8348
+  2030-01-01: 0.8382
+  2031-01-01: 0.8414
+  2032-01-01: 0.844
+  2033-01-01: 0.8462
+  2034-01-01: 0.8476
+  2035-01-01: 0.8485
+  2040-01-01: 0.8531
+  2045-01-01: 0.8551
+  2050-01-01: 0.8543
+  2055-01-01: 0.8534
+  2060-01-01: 0.8537
+  2065-01-01: 0.8555
+  2070-01-01: 0.8566
+  2075-01-01: 0.8575
+  2080-01-01: 0.8593
+  2085-01-01: 0.8609
+  2090-01-01: 0.863
+  2095-01-01: 0.8638
+  2100-01-01: 0.8639
