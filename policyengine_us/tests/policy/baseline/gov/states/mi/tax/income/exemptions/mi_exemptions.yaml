@@ -445,3 +445,92 @@
     # A joint return on which a spouse can be claimed claims no dependents
     # (IRS Publication 501), so the child adds no exemption.
     mi_exemptions: 7_300
+
+# Pub. 501 (2025), Dependent Taxpayer Test, PDF p.11; MCL 206.30(4).
+- name: 2025 joint return filing exception restores own dependent while claimable head keeps the dependent allowance
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 26
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4000
+    households:
+      household:
+        members: [person_a, person_b, child_1]
+        state_code: MI
+  output:
+    mi_exemptions: 13100
+
+- name: 2025 joint return filing exception restores own dependent while claimable spouse keeps the dependent allowance
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 26
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child_1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child_1]
+        filing_status: JOINT
+        adjusted_gross_income: 4000
+    households:
+      household:
+        members: [person_b, person_a, child_1]
+        state_code: MI
+  output:
+    mi_exemptions: 13100
+
+- name: 2025 single filer with a nonrequired claimant who files no return may claim their own dependent
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 26
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [filer, child]
+        state_code: MI
+  output:
+    # $1,500 claimable-filer allowance + $5,800 for their child.
+    mi_exemptions: 7_300

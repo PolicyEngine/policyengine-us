@@ -117,3 +117,64 @@
     dependent_care_assistance_exclusion: 4_000
     # min(10_000 expenses, $6,000 two-child cap - $4,000 exclusion, 38_000) = 2_000.
     ca_cdcc_relevant_expenses: 2_000
+
+# FTB 3506 counts expenses for qualifying persons. The child of a filer who can be
+# claimed as a dependent is not one (IRC 152(b)(1)); the incapacitated relative is.
+- name: 2025 childcare for the child of a claimable filer does not count
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 5000
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      relative:
+        age: 40
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child, relative]
+        tax_unit_childcare_expenses: 3000
+    households:
+      household:
+        members: [parent, child, relative]
+        state_code: CA
+  output:
+    ca_cdcc_relevant_expenses: 0
+
+- name: 2025 the same household with a filer who cannot be claimed counts the childcare
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 5000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      relative:
+        age: 40
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [parent, child, relative]
+        tax_unit_childcare_expenses: 3000
+    households:
+      household:
+        members: [parent, child, relative]
+        state_code: CA
+  output:
+    ca_cdcc_relevant_expenses: 3000
