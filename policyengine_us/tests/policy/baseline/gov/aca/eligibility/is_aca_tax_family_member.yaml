@@ -8,7 +8,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        claimed_as_dependent_on_another_return: true
+        claimable_as_dependent_on_another_return: true
       child:
         age: 10
         is_medicaid_eligible: false
@@ -39,7 +39,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        claimed_as_dependent_on_another_return: true
+        claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
@@ -88,7 +88,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        claimed_as_dependent_on_another_return: true
+        claimable_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
@@ -118,7 +118,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        claimed_as_dependent_on_another_return: true
+        claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
@@ -127,7 +127,7 @@
         is_chip_eligible: false
         is_aca_eshi_eligible: false
         is_medicare_eligible: false
-        claimed_as_dependent_on_another_return: true
+        claimable_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
       child:
@@ -184,7 +184,7 @@
   output:
     is_aca_tax_family_member: [true, true, true]
 
-- name: 2025 dependent flagged as claimed elsewhere stays in the family of the return that claims them
+- name: 2025 dependent another taxpayer could also claim stays in the family of the return that claims them
   period: 2025
   input:
     people:
@@ -196,7 +196,7 @@
         is_medicare_eligible: false
       child:
         age: 10
-        claimed_as_dependent_on_another_return: true
+        claimable_as_dependent_on_another_return: true
     tax_units:
       tax_unit:
         members: [person_a, child]

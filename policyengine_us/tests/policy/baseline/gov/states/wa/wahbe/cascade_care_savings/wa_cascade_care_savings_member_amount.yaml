@@ -167,7 +167,7 @@
         is_medicare_eligible: false
         is_basic_health_program_eligible: false
         slcsp_age_curve_amount_person: 6000
-        claimed_as_dependent_on_another_return: true
+        claimable_as_dependent_on_another_return: true
         is_tax_unit_head: true
         is_tax_unit_spouse: false
       person_b:
@@ -216,7 +216,7 @@
         is_medicare_eligible: false
         is_basic_health_program_eligible: false
         slcsp_age_curve_amount_person: 6000
-        claimed_as_dependent_on_another_return: true
+        claimable_as_dependent_on_another_return: true
         is_tax_unit_head: false
         is_tax_unit_spouse: true
     tax_units:

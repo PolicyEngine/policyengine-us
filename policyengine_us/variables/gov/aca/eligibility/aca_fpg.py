@@ -15,11 +15,15 @@ class aca_fpg(Variable):
     )
     documentation = (
         "Form 8962 line 4: the prior year's poverty guideline for the tax "
-        "family size on line 1 (aca_tax_family_size). A return on which "
-        "every head and spouse can be claimed elsewhere has no tax family and "
-        "no applicable taxpayer; it keeps the guideline for the whole tax "
-        "unit, so readers that are not about the credit see the same value "
-        "as before."
+        "year's tax family size on line 1 (aca_tax_family_size). The former "
+        "lookup, tax_unit_fpg for the prior year, also took the household "
+        "size from the prior year; the size now comes from the tax year, as "
+        "line 1 requires, which differs only when a prior-year size is "
+        "supplied. A return on which every head and spouse can be claimed "
+        "elsewhere has no tax family and no applicable taxpayer; as a "
+        "numerical convention, not a legal rule, it keeps the guideline for "
+        "the whole tax unit, so readers that are not about the credit see "
+        "the same value as before."
     )
 
     def formula(tax_unit, period, parameters):

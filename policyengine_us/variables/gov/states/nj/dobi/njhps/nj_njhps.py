@@ -50,7 +50,8 @@ class nj_njhps(Variable):
         # premium below zero, so it is capped at the post-APTC residual. In the
         # 400-600% band aca_ptc is 0, so the residual equals slcsp_annual.
         # The benchmark is the federal coverage family's: NJHPS members must
-        # be in a tax household otherwise eligible for APTC.
+        # be in a tax household otherwise eligible for APTC (an
+        # interpretation; see nj_njhps_member_eligible).
         slcsp_annual = add(tax_unit, period, ["aca_ptc_slcsp"])
         aca_ptc = tax_unit("aca_ptc", period)
         residual = max_(0, slcsp_annual - aca_ptc)

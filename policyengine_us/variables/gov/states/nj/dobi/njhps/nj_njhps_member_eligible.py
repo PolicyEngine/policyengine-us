@@ -14,8 +14,10 @@ class nj_njhps_member_eligible(Variable):
     documentation = (
         "A person is a New Jersey Health Plan Savings enrollee when they pay an "
         "ACA marketplace premium, are in the federal premium tax credit tax "
-        "family (NJHPS goes to enrollees otherwise eligible for APTC, so not "
-        "someone another taxpayer can claim), do not file a separate return, "
+        "family (an interpretation: Treasury's 1332 addendum describes NJHPS "
+        "as for enrollees 'otherwise eligible for the Advanced Premium Tax "
+        "Credit', and no current New Jersey rule found addresses someone "
+        "another taxpayer can claim), do not file a separate return, "
         "and household "
         "income (ACA MAGI per 26 U.S.C. 36B(d)(2)) falls within the 138-600% "
         "FPL NJHPS band. This deliberately does NOT reuse is_aca_ptc_eligible: "
@@ -48,10 +50,11 @@ class nj_njhps_member_eligible(Variable):
         # income under the federal PTC floor of 100% FPL, and within_band
         # already starts at the 138% FPL NJHPS floor.
         pays_premium = person("pays_aca_premium", period)
-        # NJHPS goes to enrollees otherwise eligible for APTC, so a person
-        # outside the federal tax family (one who can be claimed on another
-        # return, or a dependent of a return with such a filer) is not a
-        # member (26 U.S.C. 36B(c)(1)(D) is not an income test).
+        # Interpretation: NJHPS goes to enrollees otherwise eligible for APTC
+        # (Treasury 1332 addendum), so a person outside the federal tax family
+        # (one who can be claimed on another return, or a dependent of a
+        # return with such a filer) is not a member; 26 U.S.C. 36B(c)(1)(D)
+        # is not one of the income tests NJHPS replaces.
         tax_family_member = person("is_aca_tax_family_member", period)
         fstatus = person.tax_unit("filing_status", period)
         not_separate = fstatus != fstatus.possible_values.SEPARATE

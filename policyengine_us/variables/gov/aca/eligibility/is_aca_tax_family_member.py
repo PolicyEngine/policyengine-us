@@ -12,26 +12,37 @@ class is_aca_tax_family_member(Variable):
         "https://www.law.cornell.edu/cfr/text/26/1.36B-1#d_2",
         "https://www.law.cornell.edu/cfr/text/26/1.36B-2#b_3",
         "https://www.irs.gov/pub/irs-prior/i8962--2025.pdf#page=8",
+        "https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=11",
     )
     documentation = (
-        "Whether the person is in the taxpayer's family for the premium tax "
-        "credit (Form 8962 line 1, tax family size). 26 CFR 1.36B-1(d)(2) "
-        "defines the family as the taxpayer, both spouses on a joint return, "
-        "'except for individuals who qualify as a dependent of another "
-        "taxpayer', plus the dependents the taxpayer claims. A head or spouse "
-        "who can be claimed on another return is therefore not a member "
-        "(IRC 36B(c)(1)(D), 26 CFR 1.36B-2(b)(3)), and on a joint return the "
-        "other spouse still is. A return with a filer who can be claimed "
-        "elsewhere claims no dependents (IRC 152(b)(1)), so its dependents "
-        "are members only when no head or spouse can be claimed elsewhere. "
-        "The claimed flag of a dependent on this return does not matter: this "
-        "return claims them."
+        "Whether the person is in an applicable taxpayer's family for the "
+        "premium tax credit (Form 8962 line 1, tax family size). 26 CFR "
+        "1.36B-1(d)(2) defines the family as the taxpayer, both spouses on a "
+        "joint return, 'except for individuals who qualify as a dependent of "
+        "another taxpayer', plus the dependents the taxpayer claims. A head or "
+        "spouse who can be claimed on another return "
+        "(claimable_as_dependent_on_another_return, whether or not claimed) "
+        "is not a member; on a joint return the other spouse still is. Such a "
+        "return claims no dependents (IRC 152(b)(1)) unless the would-be "
+        "claimant meets the refund-only filing exception (Publication 501, "
+        "Dependent Taxpayer Test). No credit is allowed to someone another "
+        "taxpayer can claim (IRC 36B(c)(1)(D)), so a return whose every head "
+        "and spouse can be claimed has no applicable taxpayer and no family "
+        "for the credit. A tax unit with neither a head nor a spouse has no "
+        "modeled filer, so each member's own claimability decides. A "
+        "dependent on a return with an applicable taxpayer is a member even if "
+        "another taxpayer could also claim them: this return claims them."
     )
 
     def formula(person, period, parameters):
         filer = person("is_tax_unit_head_or_spouse", period)
-        claimed_elsewhere = person("claimed_as_dependent_on_another_return", period)
-        return_has_claimed_filer = person.tax_unit(
-            "head_or_spouse_is_dependent_elsewhere", period
+        claimable = person("claimable_as_dependent_on_another_return", period)
+        has_filer = person.tax_unit.any(filer)
+        applicable_taxpayer = (
+            person.tax_unit("head_spouse_count_not_dependent_elsewhere", period) > 0
         )
-        return where(filer, ~claimed_elsewhere, ~return_has_claimed_filer)
+        claims_dependents = ~person.tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
+        dependent_member = applicable_taxpayer & claims_dependents
+        return where(has_filer, where(filer, ~claimable, dependent_member), ~claimable)

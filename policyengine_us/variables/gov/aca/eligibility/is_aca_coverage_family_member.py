@@ -6,10 +6,7 @@ class is_aca_coverage_family_member(Variable):
     entity = Person
     label = "Member of the premium tax credit coverage family"
     definition_period = YEAR
-    reference = (
-        "https://www.law.cornell.edu/cfr/text/26/1.36B-3#b_2",
-        "https://www.law.cornell.edu/cfr/text/26/1.36B-3#f_1",
-    )
+    reference = "https://www.law.cornell.edu/cfr/text/26/1.36B-3#b_2"
     documentation = (
         "A Marketplace enrollee (pays_aca_premium) who is in the premium tax "
         "credit tax family. 26 CFR 1.36B-3(b)(2) defines the coverage family "
