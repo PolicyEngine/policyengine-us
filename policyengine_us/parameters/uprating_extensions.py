@@ -849,6 +849,17 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
+    # CMS employer-sponsored insurance premium per enrollee (January values,
+    # last projection year 2034). Employer and pre-tax employee premium
+    # inputs use this as their uprater.
+    extend_parameter_values(
+        parameters.calibration.gov.hhs.cms.esi_premium_per_enrollee,
+        last_projected_year=2034,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
     # Gross Social Security benefit inputs should age with gross Social
     # Security benefits, not taxable Social Security income.
     extend_parameter_values(

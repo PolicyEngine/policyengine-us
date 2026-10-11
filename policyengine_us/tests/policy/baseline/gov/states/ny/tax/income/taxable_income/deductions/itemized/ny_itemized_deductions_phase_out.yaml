@@ -10,7 +10,7 @@
   input:
     ny_itemized_deductions_max: 100_000
     ny_college_tuition_deduction: 0
-    medical_expense_deduction: 0
+    ny_medical_expense_deduction: 0
     investment_interest_expense: 0
     ny_casualty_loss_deduction: 0
     adjusted_gross_income: 340_000
@@ -26,7 +26,7 @@
   input:
     ny_itemized_deductions_max: 100_000
     ny_college_tuition_deduction: 0
-    medical_expense_deduction: 0
+    ny_medical_expense_deduction: 0
     investment_interest_expense: 0
     ny_casualty_loss_deduction: 0
     adjusted_gross_income: 350_000
@@ -45,7 +45,7 @@
   input:
     ny_itemized_deductions_max: 100_000
     ny_college_tuition_deduction: 0
-    medical_expense_deduction: 0
+    ny_medical_expense_deduction: 0
     investment_interest_expense: 0
     ny_casualty_loss_deduction: 0
     adjusted_gross_income: 408_000
@@ -61,7 +61,7 @@
   input:
     ny_itemized_deductions_max: 100_000
     ny_college_tuition_deduction: 0
-    medical_expense_deduction: 0
+    ny_medical_expense_deduction: 0
     investment_interest_expense: 0
     ny_casualty_loss_deduction: 0
     adjusted_gross_income: 500_000
@@ -80,7 +80,7 @@
   input:
     ny_itemized_deductions_max: 20_000
     ny_college_tuition_deduction: 0
-    medical_expense_deduction: 0
+    ny_medical_expense_deduction: 0
     investment_interest_expense: 0
     ny_casualty_loss_deduction: 0
     adjusted_gross_income: 5_000_000
@@ -102,7 +102,7 @@
     # remaining 60,000 is subject to the limitation.
     ny_itemized_deductions_max: 100_000
     ny_college_tuition_deduction: 0
-    medical_expense_deduction: 25_000
+    ny_medical_expense_deduction: 25_000
     investment_interest_expense: 10_000
     ny_casualty_loss_deduction: 5_000
     adjusted_gross_income: 5_000_000
@@ -123,7 +123,7 @@
     # the federal Line 40 worksheet; the Pease base should ignore it.
     ny_itemized_deductions_max: 130_000
     ny_college_tuition_deduction: 30_000
-    medical_expense_deduction: 0
+    ny_medical_expense_deduction: 0
     investment_interest_expense: 0
     ny_casualty_loss_deduction: 0
     adjusted_gross_income: 500_000
