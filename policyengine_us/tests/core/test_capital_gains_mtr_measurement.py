@@ -393,6 +393,47 @@ def test_rate_keeps_a_capital_gains_total_set_after_construction():
     )
 
 
+def test_responses_do_not_depend_on_which_is_requested_first():
+    # Requested first, the capital gains response measures in branches made
+    # outside the labor supply response's re-entry guard, so a program there
+    # that reads hours (Texas child care does) used to calculate the
+    # labor supply response, and its measurements, again: a CycleError.
+    # Taxable income of $93,900, so the last gains are taxed at 15%.
+    situation = [("TX", [(60_000, 50_000)])]
+    reform = {
+        # Raises the rate on these gains, and so the response to it, and
+        # lowers net income, and so labor supply through the income effect.
+        "gov.irs.capital_gains.rates.2": {REFORM_PERIOD: 0.2},
+        "gov.simulation.capital_gains_responses.elasticity": {REFORM_PERIOD: -0.7},
+        "gov.simulation.labor_supply_responses.elasticities.income": {
+            REFORM_PERIOD: -0.05
+        },
+        "gov.simulation.labor_supply_responses.elasticities.substitution.all": {
+            REFORM_PERIOD: 0.25
+        },
+    }
+    responses = [
+        "capital_gains_behavioral_response",
+        "labor_supply_behavioral_response",
+    ]
+    values = {}
+    for order in (responses, responses[::-1]):
+        simulation = simulate(situation, reform=reform)
+        values[order[0]] = {
+            response: simulation.calculate(response, YEAR) for response in order
+        }
+
+    capital_gains_first, labor_supply_first = values.values()
+    for response in responses:
+        assert capital_gains_first[response][0] != 0, response
+        np.testing.assert_allclose(
+            capital_gains_first[response],
+            labor_supply_first[response],
+            rtol=1e-6,
+            err_msg=response,
+        )
+
+
 FLOAT32_AMOUNT = st.floats(-(2.0**36), 2.0**36, width=32)
 
 
