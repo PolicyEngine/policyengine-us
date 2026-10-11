@@ -1,6 +1,8 @@
-# The expected Part D premium is the Part D enrollment share times (Part D
-# premiums per Part D enrollee + the person's Part D IRMAA). 2025: 0.8191 x
-# $220.25 = $180.41 without IRMAA.
+# Spending is CMS Medicare spending per enrollee times the ratio of spending
+# per enrollee outside nursing homes to spending per enrollee (0.971); 2025:
+# $17,751 x 0.971 = $17,236.22. The expected Part D premium is the Part D
+# enrollment share times (Part D premiums per Part D enrollee + the person's
+# Part D IRMAA). 2025: 0.8191 x $220.25 = $180.41 without IRMAA.
 
 - name: unit test 1 - enrolled, premium-free Part A
   period: 2025
@@ -14,8 +16,8 @@
     tax_exempt_interest_income:
       2023: 0
   output:
-    # $17,751 spending - $2,220 Part B premium - $180.41 Part D (2025)
-    medicare_cost: 15_350.59
+    # $17,236.22 spending - $2,220 Part B premium - $180.41 Part D (2025)
+    medicare_cost: 14_835.81
 
 - name: unit test 2 - enrolled, pays full Part A premium
   period: 2025
@@ -29,8 +31,8 @@
     tax_exempt_interest_income:
       2023: 0
   output:
-    # $17,751 - $6,216 Part A - $2,220 Part B - $180.41 Part D (2025)
-    medicare_cost: 9_134.59
+    # $17,236.22 - $6,216 Part A - $2,220 Part B - $180.41 Part D (2025)
+    medicare_cost: 8_619.81
 
 - name: unit test 3 - enrolled with IRMAA
   period: 2025
@@ -45,9 +47,9 @@
       2023: 0
     filing_status: SINGLE
   output:
-    # $17,751 - $7,546.80 Part B with IRMAA - 0.8191 x ($220.25 + $85.80 x 12
-    # Part D IRMAA) = $1,023.75 Part D (2025)
-    medicare_cost: 9_180.45
+    # $17,236.22 - $7,546.80 Part B with IRMAA - 0.8191 x ($220.25 + $85.80 x
+    # 12 Part D IRMAA) = $1,023.75 Part D (2025)
+    medicare_cost: 8_665.67
 
 - name: unit test 4 - eligible but not enrolled
   period: 2025
@@ -70,8 +72,9 @@
     tax_exempt_interest_income:
       2019: 0
   output:
-    # $14,293 - $1,782 Part B (2021: $148.50*12) - 0.7811 x $306.15 Part D
-    medicare_cost: 12_271.87
+    # $14,293 x 0.971 = $13,878.50 - $1,782 Part B (2021: $148.50*12)
+    # - 0.7811 x $306.15 Part D
+    medicare_cost: 11_857.37
 
 - name: unit test 6 - direct Part B premium input
   period: 2025
@@ -82,8 +85,8 @@
     medicare_quarters_of_coverage: 40
     gross_medicare_part_b_premium: 3_000
   output:
-    # $17,751 spending - $3,000 Part B premium - $180.41 Part D
-    medicare_cost: 14_570.59
+    # $17,236.22 spending - $3,000 Part B premium - $180.41 Part D
+    medicare_cost: 14_055.81
 
 - name: unit test 7 - Part D IRMAA in the 50 percent tier
   period: 2025
@@ -100,8 +103,9 @@
     gross_medicare_part_b_premium: 2_220
   output:
     income_adjusted_part_d_premium_surcharge: 423.6
-    # $17,751 - $2,220 Part B - 0.8191 x ($220.25 + $423.60) = $527.38 Part D
-    medicare_cost: 15_003.62
+    # $17,236.22 - $2,220 Part B - 0.8191 x ($220.25 + $423.60) = $527.38
+    # Part D
+    medicare_cost: 14_488.84
 
 - name: unit test 8 - projected year
   period: 2027
@@ -113,8 +117,9 @@
     gross_medicare_part_b_premium: 2_500
     income_adjusted_part_d_premium_surcharge: 0
   output:
-    # $20,096 - $2,500 Part B - 0.8255 x $373.53 = $308.35 Part D (2027)
-    medicare_cost: 17_287.65
+    # $20,096 x 0.971 = $19,513.22 - $2,500 Part B - 0.8255 x $373.53 =
+    # $308.35 Part D (2027)
+    medicare_cost: 16_704.87
 
 - name: unit test 9 - Inflation Reduction Act premium reset year, with IRMAA
   period: 2030
@@ -126,8 +131,9 @@
     gross_medicare_part_b_premium: 3_000
     income_adjusted_part_d_premium_surcharge: 1_000
   output:
-    # $23,789 - $3,000 Part B - 0.8382 x ($637.06 + $1,000) = $1,372.18 Part D
-    medicare_cost: 19_416.82
+    # $23,789 x 0.971 = $23,099.12 - $3,000 Part B - 0.8382 x ($637.06 +
+    # $1,000) = $1,372.18 Part D
+    medicare_cost: 18_726.94
 
 - name: unit test 10 - premiums above spending floor the value at zero
   period: 2025
@@ -141,6 +147,7 @@
 
 - name: unit test 11 - gross cost does not subtract the Part D premium
   period: 2025
+  absolute_error_margin: 0.01
   input:
     age: 65
     is_medicare_eligible: true
@@ -148,4 +155,4 @@
     gross_medicare_part_b_premium: 2_220
     income_adjusted_part_d_premium_surcharge: 1_029.6
   output:
-    medicare_gross_cost: 17_751
+    medicare_gross_cost: 17_236.22

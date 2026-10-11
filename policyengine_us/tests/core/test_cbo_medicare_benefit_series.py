@@ -3,10 +3,12 @@
 CBO counts Medicare in household income at the government's average cost
 per enrollee, net of premiums paid by enrollees, and counts the Part D
 low-income subsidy separately. ``cbo_medicare_benefit`` takes CMS Medicare
-spending per enrollee (``calibration.gov.hhs.medicare.per_capita_cost``) and
-subtracts four series under ``calibration.gov.hhs.medicare``, each an
-aggregate from the 2026 Medicare Trustees Report over Table V.B3's total
-enrollment (people with Part A and/or Part B):
+spending per enrollee (``calibration.gov.hhs.medicare.per_capita_cost``) less
+the low-income subsidy, scales it to enrollees outside nursing homes
+(``noninstitutionalized_spending_ratio``), and subtracts the premium series.
+All four series under ``calibration.gov.hhs.medicare`` are aggregates from
+the 2026 Medicare Trustees Report over Table V.B3's total enrollment (people
+with Part A and/or Part B):
 
 - ``premium_income_per_enrollee.part_a``: Table III.B4 premiums from
   voluntary enrollees.
@@ -34,8 +36,10 @@ Invariants:
    standard premium times Part B enrollment plus Table V.E3's aggregate
    income-related premiums reproduces it within 0.5 percent, while the
    standard premium alone falls more than 5 percent short.
-5. Bounds: every series is positive, and net Medicare spending per enrollee
-   stays between 0 and gross spending, in every year from 2015 to 2200.
+5. Bounds: every series is positive, and net Medicare spending per enrollee,
+   (spending - low-income subsidy) x the noninstitutionalized ratio -
+   premiums, stays between 0 and scaled gross spending, in every year from
+   2015 to 2200.
 6. Extension: from 2036 to 2100 each series grows with Medicare spending
    per enrollee, so each keeps its 2035 share of spending; later years hold
    the 2100 value.
@@ -57,6 +61,7 @@ SERIES = {
     "lis": f"{MEDICARE}.part_d_low_income_subsidy_per_enrollee",
 }
 SPENDING = f"{MEDICARE}.per_capita_cost"
+RATIO = f"{MEDICARE}.noninstitutionalized_spending_ratio"
 FIRST_YEAR, LAST_PROJECTED_YEAR, END_YEAR = 2015, 2035, 2100
 YEARS = range(FIRST_YEAR, LAST_PROJECTED_YEAR + 1)
 
@@ -193,9 +198,11 @@ def test_part_b_premium_income_includes_income_related_premiums():
 
 @given(st.integers(FIRST_YEAR, END_YEAR + 100))
 def test_series_are_positive_and_net_spending_is_between_zero_and_gross(year):
-    deductions = sum(_value(series, year) for series in SERIES)
+    ratio = _read(RATIO, f"{year}-01-01")
+    premiums = sum(_value(series, year) for series in SERIES if series != "lis")
+    net = (_spending(year) - _value("lis", year)) * ratio - premiums
     assert all(_value(series, year) > 0 for series in SERIES)
-    assert 0 < _spending(year) - deductions < _spending(year)
+    assert 0 < net < _spending(year) * ratio
 
 
 @pytest.mark.parametrize("series", SERIES)

@@ -1,7 +1,9 @@
-# cbo_medicare_benefit = Medicare spending per enrollee - premium income per
-# Medicare enrollee (Parts A, B and D) - Part D low-income subsidy per
-# Medicare enrollee, the same for every enrollee.
-# 2025: $17,751 - $82.26 - $2,169.44 - $215.04 - $251.12 = $15,033.14.
+# cbo_medicare_benefit = (Medicare spending per enrollee - Part D low-income
+# subsidy per Medicare enrollee) x the ratio of spending per enrollee outside
+# nursing homes to spending per enrollee (0.971) - premium income per Medicare
+# enrollee (Parts A, B and D), the same for every enrollee.
+# 2025: ($17,751 - $251.12) x 0.971 - $82.26 - $2,169.44 - $215.04
+# = $16,992.38 - $2,466.74 = $14,525.64.
 
 - name: Case 1, enrolled person gets the average net of premiums and the low-income subsidy.
   period: 2025
@@ -11,8 +13,8 @@
     is_medicare_eligible: true
     medicare_enrolled: true
   output:
-    medicare_gross_cost: 17_751
-    cbo_medicare_benefit: 15_033.14
+    medicare_gross_cost: 17_236.22
+    cbo_medicare_benefit: 14_525.64
 
 # CBO assigns the average to every enrollee, so the person with 20 quarters
 # of coverage (a $6,216 Part A premium in 2025) and the person paying the
@@ -76,7 +78,7 @@
             not_enrolled,
           ]
   output:
-    cbo_medicare_benefit: [15_033.14, 15_033.14, 15_033.14, 15_033.14, 0]
+    cbo_medicare_benefit: [14_525.64, 14_525.64, 14_525.64, 14_525.64, 0]
 
 - name: Case 3, first year of the series.
   period: 2015
@@ -86,8 +88,8 @@
     is_medicare_eligible: true
     medicare_enrolled: true
   output:
-    # $11,929 - $57.57 - $1,214.54 - $224.86 - $460.52.
-    cbo_medicare_benefit: 9_971.51
+    # ($11,929 - $460.52) x 0.971 - $57.57 - $1,214.54 - $224.86.
+    cbo_medicare_benefit: 9_638.92
 
 - name: Case 4, last Trustees projection year.
   period: 2035
@@ -97,9 +99,9 @@
     is_medicare_eligible: true
     medicare_enrolled: true
   output:
-    # $31,764.35 (the 2034 CMS value grown at the 2031-2032 rate) - $156.27
-    # - $4,652 - $809.85 - $431.59.
-    cbo_medicare_benefit: 25_714.64
+    # ($31,764.35, the 2034 CMS value grown at the 2031-2032 rate, - $431.59)
+    # x 0.971 - $156.27 - $4,652 - $809.85.
+    cbo_medicare_benefit: 24_805.99
 
 - name: Case 5, not enrolled.
   period: 2025
