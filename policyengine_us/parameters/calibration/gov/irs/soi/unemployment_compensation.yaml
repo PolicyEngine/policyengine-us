@@ -11,11 +11,12 @@ values:
   2020-01-01: 405_283_667_000
   2021-01-01: 208_872_354_000
   2022-01-01: 30_247_572_000
+  2023-01-01: 30_939_046_000
 metadata:
   unit: currency-USD
   label: SOI unemployment compensation
-  # CBO's unemployment compensation outlays begin in 2022, the year of the
-  # last SOI total, so later years grow with them.
+  # Years after the last SOI total grow with CBO's unemployment compensation
+  # outlays, which begin in 2022.
   uprating: calibration.gov.cbo.unemployment_compensation
   reference:
     - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2015, unemployment compensation
@@ -34,3 +35,5 @@ metadata:
       href: https://www.irs.gov/pub/irs-soi/21in14ar.xls
     - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2022, unemployment compensation
       href: https://www.irs.gov/pub/irs-soi/22in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2023, unemployment compensation
+      href: https://www.irs.gov/pub/irs-soi/23in14ar.xls
