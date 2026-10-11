@@ -266,5 +266,8 @@
     cdcc: 3_500
     # MFJ tax: $1,990 + 12% * ($74,900 - $19,900) = $8,590.
     # Refundable CTC: $3,600 + $3,000 = $6,600.
-    # Federal income tax: $8,590 - $6,600 - $3,500 = -$1,510.
-    income_tax: -1_510
+    # 2021 Form 1040 Recovery Rebate Credit Worksheet, lines 6-9:
+    # $2,800 joint + 2 * $1,400 dependents = $5,600; AGI is below $150,000.
+    recovery_rebate_credit: 5_600
+    # Federal income tax: $8,590 - $6,600 - $3,500 - $5,600 = -$7,110.
+    income_tax: -7_110
