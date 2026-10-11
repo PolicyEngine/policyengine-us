@@ -16,6 +16,11 @@ These tests read the parameter tree, plus one small parameter tree built for
 the precedence tests. Household calculations are in the YAML tests under
 ``tests/policy/baseline/gov/hhs/medicare``.
 
+When CMS announces a year, add its amounts to the YAML and move
+``LAST_ANNOUNCED_YEAR`` forward. Later years then grow from the announced
+amounts, so the Trustees rows pinned below for those years no longer apply
+exactly; update them from the next Trustees Report.
+
 Invariants:
 
 1. Source agreement (differential, model against published figures): for
