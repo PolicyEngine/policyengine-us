@@ -44,11 +44,20 @@ def make_commands(target: str) -> frozenset:
     )
 
 
+def workflow_jobs(path):
+    """Include suites in local reusable workflows as well as direct jobs."""
+    for job in yaml.safe_load(path.read_text())["jobs"].values():
+        if "uses" in job:
+            assert job["uses"].startswith("./.github/workflows/"), job["uses"]
+            yield from workflow_jobs(REPO_ROOT / job["uses"])
+        else:
+            yield job
+
+
 def ci_suites():
     """Every Make target and batch-runner command the PR workflow runs."""
     targets, commands = set(), set()
-    workflow = yaml.safe_load(WORKFLOW.read_text())
-    for job in workflow["jobs"].values():
+    for job in workflow_jobs(WORKFLOW):
         matrix = (job.get("strategy") or {}).get("matrix") or {}
         for entry in matrix.get("include") or []:
             if "target" in entry:

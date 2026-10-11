@@ -1,0 +1,106 @@
+# IRC 32(c)(3)(A) applies the IRC 152(c) qualifying-child definition: the
+# 152(c)(2) relationship test and the 152(c)(3) age test, which 152(c)(3)(B)
+# waives for a permanently and totally disabled individual. The identification
+# requirement of IRC 32(c)(3)(D) is applied by each credit.
+
+- name: A dependent child under the age limit is an EITC qualifying child.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+  output:
+    is_eitc_qualifying_child: [false, true]
+
+- name: A permanently and totally disabled adult child is an EITC qualifying child.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 55
+        is_tax_unit_head: true
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+  output:
+    is_eitc_qualifying_child: [false, true]
+
+- name: A non-disabled adult dependent is not an EITC qualifying child.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 55
+        is_tax_unit_head: true
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: false
+  output:
+    is_eitc_qualifying_child: [false, false]
+
+- name: A permanently and totally disabled parent fails the relationship test.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+      parent:
+        age: 75
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        is_parent_of_filer_or_spouse: true
+  output:
+    # A parent can be a qualifying relative under IRC 152(d)(2)(C) but never
+    # a qualifying child under IRC 152(c)(2).
+    is_eitc_qualifying_child: [false, false]
+
+- name: A permanently and totally disabled grandparent fails the relationship test.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+      grandparent:
+        age: 85
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_permanently_and_totally_disabled: true
+        is_grandparent_of_filer_or_spouse: true
+  output:
+    is_eitc_qualifying_child: [false, false]
+
+- name: A disabled non-dependent is not an EITC qualifying child.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        is_permanently_and_totally_disabled: true
+  output:
+    is_eitc_qualifying_child: false
+
+- name: The identification requirement is not part of this test.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        ssn_card_type: NONE
+  output:
+    is_eitc_qualifying_child: [false, true]

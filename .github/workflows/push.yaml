@@ -10,6 +10,8 @@ jobs:
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     runs-on: ubuntu-latest
+    # Oct 6-8: 29 runs, max 0.4 min.
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python
@@ -25,6 +27,8 @@ jobs:
   ReleaseLockTests:
     name: Release lock guard tests
     runs-on: ubuntu-latest
+    # Oct 6-8: 104 successful runs, max 1.4 min; one hung run failed at 45 min.
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
       - name: Set up Python
@@ -42,6 +46,8 @@ jobs:
   Lint:
     needs: ReleaseLock
     runs-on: ubuntu-latest
+    # Oct 6-8: 28 runs, max 0.7 min.
+    timeout-minutes: 10
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -62,30 +68,63 @@ jobs:
       (github.repository == 'PolicyEngine/policyengine-us')
       && !(github.event.head_commit.message == 'Update PolicyEngine US')
     runs-on: ubuntu-latest
+    # Oct 6-8: successful runs max 4.5 min, any run max 12 min.
+    timeout-minutes: 20
     steps:
+      # When several PRs merge before this job gets a runner, only the newest
+      # merge can push a version bump: the others would commit on a stale
+      # parent and fail on push. The newest merge's job consumes every pending
+      # changelog fragment (towncrier builds all of changelog.d), so an older
+      # job has nothing left to do. It skips only when GitHub's compare API
+      # says main is strictly ahead of this commit (status "ahead": this
+      # commit is an ancestor of main and main has more). Any other answer
+      # (identical, behind, diverged) or a failed lookup runs versioning as
+      # before, so a stale read can never suppress the newest merge's bump.
+      - name: Skip if main already contains this commit and more
+        id: head
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! status=$(gh api "repos/${GITHUB_REPOSITORY}/compare/${GITHUB_SHA}...main" --jq .status); then
+            echo "::warning::Could not compare this commit with main; running versioning anyway."
+            status=unknown
+          fi
+          if [ "$status" = "ahead" ]; then
+            echo "current=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Versioning superseded::main already contains ${GITHUB_SHA} and newer commits. The versioning job for main's newest merge bumps the version once with every pending changelog fragment, including this commit's. If that job fails, re-run it."
+          else
+            echo "current=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Generate GitHub App token
+        if: steps.head.outputs.current == 'true'
         id: app-token
         uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - uses: actions/checkout@v6
+        if: steps.head.outputs.current == 'true'
         with:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
       - name: Install uv
+        if: steps.head.outputs.current == 'true'
         uses: astral-sh/setup-uv@v8.1.0
         with:
           version: "0.12.13"
       - name: Set up Python
+        if: steps.head.outputs.current == 'true'
         uses: actions/setup-python@v6
         with:
           python-version: 3.14
       - name: Check committed registry lock before bump
+        if: steps.head.outputs.current == 'true'
         run: python .github/release_lock.py --committed
       - name: Bump version once
+        if: steps.head.outputs.current == 'true'
         run: python .github/bump_version.py
       - name: Build changelog with isolated registry tooling
+        if: steps.head.outputs.current == 'true'
         run: |
           python - <<'PYTHON'
           import os
@@ -113,8 +152,10 @@ jobs:
           )
           PYTHON
       - name: Refresh and check release version in registry lock
+        if: steps.head.outputs.current == 'true'
         run: python .github/release_lock.py --refresh
       - name: Update changelog
+        if: steps.head.outputs.current == 'true'
         uses: EndBug/add-and-commit@v10
         with:
           add: "pyproject.toml uv.lock CHANGELOG.md changelog.d"
@@ -273,7 +314,10 @@ jobs:
     needs: ReleaseLock
     name: Full Suite - Rest (Python + variables)
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Matches the PR Rest job (python-tests.yaml, raised to 90 in #9785).
+    # Oct 6-8 on push: p50 51 min, max success 58.8 min, and one run hit the
+    # old 60-minute limit (37719726248), which skipped that version's Publish.
+    timeout-minutes: 90
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -374,6 +418,8 @@ jobs:
             simulation-*-resources.txt
   Publish:
     runs-on: ubuntu-24.04
+    # Oct 6-8: 25 runs, max 1.3 min.
+    timeout-minutes: 20
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
