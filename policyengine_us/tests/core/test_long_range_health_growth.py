@@ -267,7 +267,9 @@ def test_medicare_knots_compound_cost_growth_with_the_demographic_mix():
     assert MEDICARE_PER_ENROLLEE_LONG_RANGE_GROWTH == pytest.approx(
         {2050: 1.038 * 0.999 - 1, 2100: 1.037 * 0.999 - 1}, abs=1e-15
     )
-    assert with_medicare_demographic_mix({2050: 0.0}) == {2050: -0.001}
+    assert with_medicare_demographic_mix({2050: 0.0}) == pytest.approx(
+        {2050: -0.001}, abs=1e-15
+    )
     # The mix lowers growth by about a tenth of a point in every Part.
     for knots in (
         MEDICARE_PER_ENROLLEE_LONG_RANGE_GROWTH,
