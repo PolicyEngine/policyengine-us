@@ -37,3 +37,21 @@
     is_medicare_eligible: true
   output:
     base_part_b_premium: 2_434.80  # $202.90 * 12 months
+
+# After CMS's last announced year (2026) the premium follows the 2026 Medicare
+# Trustees Report's projected standard premium (Table V.E2).
+- name: 2027 projected Part B premium.
+  period: 2027
+  input:
+    age: 65
+    is_medicare_eligible: true
+  output:
+    base_part_b_premium: 2_514  # $209.50 * 12 months
+
+- name: 2034 projected Part B premium.
+  period: 2034
+  input:
+    age: 65
+    is_medicare_eligible: true
+  output:
+    base_part_b_premium: 4_062  # $338.50 * 12 months
