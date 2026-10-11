@@ -3,7 +3,7 @@
   input:
     amt_income: 200_000
     amt_kiddie_tax_applies: false
-    filer_adjusted_earnings: 400_000
+    employment_income: 400_000
     filing_status: SINGLE
   output:
     # Base exemption for SINGLE in 2022 is 75,900
@@ -16,7 +16,7 @@
   input:
     amt_income: 200_000
     amt_kiddie_tax_applies: true
-    filer_adjusted_earnings: 10_000
+    employment_income: 10_000
     filing_status: SINGLE
   output:
     # Base exemption for SINGLE in 2022 is 75,900
@@ -30,7 +30,7 @@
   input:
     amt_income: 1_000_000
     amt_kiddie_tax_applies: false
-    filer_adjusted_earnings: 400_000
+    employment_income: 400_000
     filing_status: SINGLE
   output:
     # Base exemption for SINGLE in 2022 is 75,900
@@ -44,7 +44,7 @@
   input:
     amt_income: 600_000
     amt_kiddie_tax_applies: false
-    filer_adjusted_earnings: 400_000
+    employment_income: 400_000
     filing_status: SINGLE
   output:
     # Base exemption for SINGLE in 2022 is 75,900
@@ -58,7 +58,7 @@
   input:
     amt_income: 500_000
     amt_kiddie_tax_applies: false
-    filer_adjusted_earnings: 400_000
+    employment_income: 400_000
     filing_status: JOINT
   output:
     # Base exemption for JOINT in 2022 is 118,100
