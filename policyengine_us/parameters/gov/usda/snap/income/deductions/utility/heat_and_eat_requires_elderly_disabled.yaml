@@ -1,0 +1,19 @@
+description: The Department of Agriculture requires an elderly or disabled SNAP household member for heating and cooling standard utility allowance eligibility based on energy assistance under the Supplemental Nutrition Assistance Program.
+
+# Section 10103 took effect upon enactment on July 4, 2025. Monthly SNAP
+# formulas evaluate policy at month start, so August 2025 is the first full
+# affected model month. Individual certification/recertification dates and
+# state administrative implementation dates are not modeled here.
+values:
+  0000-01-01: false
+  2025-07-04: true
+
+metadata:
+  unit: bool
+  period: month
+  label: SNAP heat-and-eat SUA elderly or disabled requirement
+  reference:
+    - title: 7 U.S.C. 2014(e)(6)(C)(iv)(I) - Availability of allowance to recipients of energy assistance
+      href: https://www.law.cornell.edu/uscode/text/7/2014#e_6_C_iv_I
+    - title: Public Law 119-21, Section 10103(a) - Standard Utility Allowance
+      href: https://www.govinfo.gov/content/pkg/PLAW-119publ21/html/PLAW-119publ21.htm
