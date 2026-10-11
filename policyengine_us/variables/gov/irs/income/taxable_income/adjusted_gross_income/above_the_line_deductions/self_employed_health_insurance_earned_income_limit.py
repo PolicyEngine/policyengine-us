@@ -23,9 +23,9 @@ class self_employed_health_insurance_earned_income_limit(Variable):
         "subtracts it. For an S corporation it is the shareholder's wages "
         "from the corporation (line 11). self_employed_health_insurance_plan_"
         "business names the business; when it is not supplied, the limit uses "
-        "the business with the largest earned income, as one plan established "
-        "under the person's most profitable business would. Self-employment "
-        "income inputs are already net of any section 911 exclusion (line 12)."
+        "the business with the largest earned income, the most that one plan "
+        "can deduct. Self-employment income inputs are already net of any "
+        "section 911 exclusion (line 12)."
     )
     definition_period = YEAR
     reference = (

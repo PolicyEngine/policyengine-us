@@ -14,7 +14,8 @@ class s_corp_shareholder_medicare_wages(Variable):
         "Like the other income inputs, enter the amount left after any "
         "section 911 foreign earned income exclusion attributable to these "
         "wages (line 12). They are part of employment_income, not in addition "
-        "to it."
+        "to it. As for other self-employed people, the deduction counts "
+        "health_insurance_premiums only when is_self_employed is true."
     )
     definition_period = YEAR
     reference = (
