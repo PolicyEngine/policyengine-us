@@ -28,6 +28,7 @@ from policyengine_us.tools.per_capita_uprating import (
     PER_CAPITA_SUFFIX,
     POPULATION_PATH,
     _add_per_capita_parameter,
+    _is_unclassified_calibration_path,
     add_per_capita_uprating,
     is_national_total_path,
     per_capita_path,
@@ -36,6 +37,7 @@ from policyengine_us.tools.per_capita_uprating import (
 SOI_EMPLOYMENT = "calibration.gov.irs.soi.employment_income"
 CBO_AGI = "calibration.gov.cbo.income_by_source.adjusted_gross_income"
 CMS_MOOP = "calibration.gov.hhs.cms.moop_per_capita"
+CMS_ESI = "calibration.gov.hhs.cms.esi_premium_per_enrollee"
 CPI_U = "gov.bls.cpi.cpi_u"
 YEARS = (2025, 2030, 2035)
 BASE_YEAR = 2024
@@ -57,6 +59,7 @@ def _growth(path, year, parameters=None):
         (CBO_AGI, True),
         ("calibration.gov.cbo.unemployment_compensation", True),
         (CMS_MOOP, False),
+        (CMS_ESI, False),
         (CPI_U, False),
         (POPULATION_PATH, False),
         (per_capita_path(SOI_EMPLOYMENT), False),
@@ -88,6 +91,7 @@ def test_no_variable_uprates_by_a_national_total():
         ("charitable_cash_donations", per_capita_path(CBO_AGI)),
         ("miscellaneous_income", per_capita_path(CBO_AGI)),
         ("other_medical_expenses", CMS_MOOP),
+        ("employer_sponsored_insurance_premiums", CMS_ESI),
         ("child_support_expense", CPI_U),
         ("household_weight", POPULATION_PATH),
     ],
@@ -398,6 +402,14 @@ class _StubSystem:
 def test_unclassified_calibration_path_is_rejected():
     with pytest.raises(ValueError, match="national-total family"):
         add_per_capita_uprating(_StubSystem("calibration.gov.aca.spending.state.AL"))
+
+
+@pytest.mark.parametrize("path", [CMS_MOOP, CMS_ESI])
+def test_per_person_rates_are_classified(path):
+    """CMS per-capita and per-enrollee series are per-person rates: neither
+    national totals to divide nor unclassified paths to reject."""
+    assert not is_national_total_path(path)
+    assert not _is_unclassified_calibration_path(path)
 
 
 def test_existing_per_capita_series_is_never_overwritten():

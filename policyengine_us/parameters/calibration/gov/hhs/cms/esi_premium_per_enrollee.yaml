@@ -1,0 +1,46 @@
+description: The Centers for Medicare and Medicaid Services (CMS) reports and projects this employer-sponsored insurance spending per enrollee, which is the premium per covered person, employer and employee shares together.
+metadata:
+  unit: currency-USD
+  label: CMS employer-sponsored insurance premium per enrollee
+  reference:
+  # Data underlying figures:
+  # https://www.cms.gov/files/zip/nhe-projections-tables.zip
+  # Last-Modified 2026-09-03; sha256
+  # 264f822618a5e1829138aea57cc6c8bf45bbaf072a72898fef5547f7ece6cd70.
+  # Table17 Health Insurance Enrollment and Enrollment Growth Rates,
+  # "Spending per Enrollee ($)", "Employer-sponsored Insurance" row: ESI
+  # spending divided by ESI enrollment. Retrieved 2026-10-11.
+  - title: CMS National Health Expenditure Projections 2025-2034, Table 17
+    href: https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/projected
+  # Page 28: ESI "includes premiums paid by employers and/or employees for
+  # health insurance plans offered by the employer", for active employees,
+  # COBRA enrollees and retirees.
+  - title: "CMS National Health Expenditure Accounts: Methodology Paper, 2024, p. 28"
+    href: https://www.cms.gov/files/document/definitions-sources-and-methods.pdf
+values:
+  # Historical.
+  2013-01-01: 4_901
+  2014-01-01: 4_980
+  2015-01-01: 5_113
+  2016-01-01: 5_354
+  2017-01-01: 5_500
+  2018-01-01: 5_783
+  2019-01-01: 5_955
+  2020-01-01: 6_049
+  2021-01-01: 6_456
+  2022-01-01: 6_877
+  2023-01-01: 7_595
+  2024-01-01: 8_000
+  # Projections.
+  2025-01-01: 8_616
+  2026-01-01: 9_181
+  2027-01-01: 9_627
+  2028-01-01: 10_093
+  2029-01-01: 10_533
+  2030-01-01: 11_001
+  2031-01-01: 11_469
+  2032-01-01: 11_986
+  2033-01-01: 12_559
+  2034-01-01: 13_124
+  # Later years hold the 2033-2034 growth rate (13_124 / 12_559, 4.5% a
+  # year); see set_all_uprating_parameters in uprating_extensions.py.

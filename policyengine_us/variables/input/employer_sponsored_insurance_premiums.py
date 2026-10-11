@@ -7,8 +7,11 @@ class employer_sponsored_insurance_premiums(Variable):
     label = "Employer-sponsored insurance premiums"
     documentation = (
         "Annual employer-paid health insurance premiums. CBO treats this "
-        "as part of household market income."
+        "as part of household market income. Uprated by CMS's "
+        "employer-sponsored insurance premium per enrollee, so each "
+        "policyholder's premium grows with premiums rather than wages; the "
+        "number of policyholders follows the weights."
     )
     definition_period = YEAR
     unit = USD
-    uprating = "calibration.gov.cbo.income_by_source.employment_income"
+    uprating = "calibration.gov.hhs.cms.esi_premium_per_enrollee"

@@ -9,7 +9,9 @@ class pre_tax_health_insurance_premiums(Variable):
     documentation = (
         "Health insurance premiums paid through pre-tax payroll deductions. "
         "This excludes Medicare Part B premiums and other post-tax medical "
-        "out-of-pocket premiums."
+        "out-of-pocket premiums. These are employees' shares of "
+        "employer-sponsored insurance premiums, so they are uprated by CMS's "
+        "employer-sponsored insurance premium per enrollee."
     )
     definition_period = YEAR
-    uprating = "calibration.gov.hhs.cms.moop_per_capita"
+    uprating = "calibration.gov.hhs.cms.esi_premium_per_enrollee"
