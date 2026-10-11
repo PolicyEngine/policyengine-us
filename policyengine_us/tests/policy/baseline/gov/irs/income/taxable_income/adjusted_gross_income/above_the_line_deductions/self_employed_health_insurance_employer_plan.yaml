@@ -1,0 +1,197 @@
+# 26 U.S.C. 162(l)(2)(B) and Form 7206 line 1: premiums for any month the
+# taxpayer is eligible for a subsidized plan of their own or their spouse's
+# employer don't count toward the self-employed health insurance deduction.
+# Profit of $50,000 keeps the earned income limit (Form 7206 line 13) above the
+# $6,000 of premiums, so the deduction equals the premiums that count.
+
+- name: No employer plan, so all premiums count.
+  period: 2025
+  input:
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 6_000
+  output:
+    self_employed_health_insurance_employer_plan_eligible: false
+    self_employed_health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald_person: 6_000
+
+- name: Enrolled in employer coverage, so no premiums count.
+  period: 2025
+  input:
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 6_000
+    has_esi: true
+  output:
+    self_employed_health_insurance_employer_plan_eligible: true
+    self_employed_health_insurance_premiums: 0
+    self_employed_health_insurance_ald_person: 0
+
+- name: Offered employer coverage without enrolling, so no premiums count.
+  period: 2025
+  input:
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 6_000
+    offered_aca_disqualifying_esi: true
+  output:
+    self_employed_health_insurance_employer_plan_eligible: true
+    self_employed_health_insurance_premiums: 0
+    self_employed_health_insurance_ald_person: 0
+
+- name: An employer pays part of the premiums, so no premiums count.
+  period: 2025
+  input:
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 6_000
+    employer_contribution_to_health_insurance_premiums_category: SOME
+  output:
+    self_employed_health_insurance_employer_plan_eligible: true
+    self_employed_health_insurance_premiums: 0
+    self_employed_health_insurance_ald_person: 0
+
+- name: The spouse's employer plan bars a joint filer's deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_self_employed: true
+        self_employment_income: 50_000
+        health_insurance_premiums: 6_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    self_employed_health_insurance_employer_plan_eligible: [true, true]
+    self_employed_health_insurance_premiums: [0, 0]
+    self_employed_health_insurance_ald: 0
+    # Half of SE tax: 50,000 x 0.9235 x 0.153 / 2 = 3,532.3875.
+    # AGI: 50,000 + 40,000 - 3,532.3875 = 86,467.6125.
+    adjusted_gross_income: 86_467.61
+
+- name: The spouse's employer plan also bars the deduction on a joint return without explicit marital units.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_self_employed: true
+        self_employment_income: 50_000
+        health_insurance_premiums: 6_000
+      spouse:
+        age: 45
+        employment_income: 40_000
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    self_employed_health_insurance_premiums: [0, 0]
+    self_employed_health_insurance_ald: 0
+
+- name: A housemate's employer plan does not bar a single filer's deduction.
+  period: 2025
+  input:
+    people:
+      filer:
+        age: 45
+        is_self_employed: true
+        self_employment_income: 50_000
+        health_insurance_premiums: 6_000
+      housemate:
+        age: 45
+        employment_income: 40_000
+        has_esi: true
+    tax_units:
+      filer_unit:
+        members: [filer]
+      housemate_unit:
+        members: [housemate]
+    households:
+      household:
+        members: [filer, housemate]
+        state_code: TX
+  output:
+    self_employed_health_insurance_employer_plan_eligible: [false, true]
+    self_employed_health_insurance_premiums: [6_000, 0]
+    self_employed_health_insurance_ald: [6_000, 0]
+
+- name: A dependent child's own employer plan does not bar the parent's deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        is_self_employed: true
+        self_employment_income: 50_000
+        health_insurance_premiums: 6_000
+      spouse:
+        age: 50
+      child:
+        age: 20
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        employment_income: 5_000
+        has_esi: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    self_employed_health_insurance_employer_plan_eligible: [false, false, true]
+    self_employed_health_insurance_premiums: [6_000, 0, 0]
+    self_employed_health_insurance_ald: 6_000
+
+- name: A parent's employer plan does not bar a self-employed dependent's own deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 80_000
+        has_esi: true
+      child:
+        age: 22
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_self_employed: true
+        self_employment_income: 3_000
+        health_insurance_premiums: 1_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    self_employed_health_insurance_employer_plan_eligible: [true, false]
+    self_employed_health_insurance_premiums: [0, 1_000]
+    # The child's limit is 3,000 of profit (less half its SE tax after
+    # 401(c)), above the 1,000 of premiums either way.
+    self_employed_health_insurance_ald_person: [0, 1_000]
