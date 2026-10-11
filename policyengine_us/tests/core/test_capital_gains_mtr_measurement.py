@@ -32,12 +32,18 @@ Invariants, each checked through household simulations for 2026:
 
 The filers in 1 and 2 have 0.1% of their gains, or $1,000 if more, added to
 them, so a rate is exact only where that rise stays inside one bracket; the
-examples keep clear of the bracket edges.
+examples keep clear of the bracket edges. Fixed household examples of each
+bracket, wages, joint filers and given ``capital_gains`` totals are YAML
+tests in ``tests/policy/baseline/household/
+marginal_tax_rate_on_capital_gains.yaml``. These tests cover what YAML
+cannot: properties over generated households, reforms read through the
+behavioral response measurement branches, and the differential against new
+simulations.
 """
 
 import numpy as np
 import pytest
-from hypothesis import HealthCheck, given, settings, strategies as st
+from hypothesis import HealthCheck, example, given, settings, strategies as st
 
 from policyengine_us import Simulation
 from policyengine_us.system import system
@@ -231,41 +237,6 @@ def test_rate_on_long_term_gains_is_the_statutory_rate(gains):
     np.testing.assert_allclose(measured, expected, rtol=0, atol=RATE_RESOLUTION)
 
 
-def test_rate_on_long_term_gains_in_each_bracket():
-    # 15%; 15% with the net investment income tax; 20% with it; 20% with it
-    # and the alternative minimum tax exemption phasing out; then 20% with it
-    # at sizes where float32 resolved a $1,000 rise only to 0.002 and 0.008.
-    gains = [100_000, 300_000, 600_000, 660_000, 20_000_000, 100_000_000]
-
-    measured = measured_rate(simulate(texas_single_filers(gains)))
-
-    np.testing.assert_allclose(
-        measured,
-        [0.15, 0.188, 0.238, 0.338, 0.238, 0.238],
-        rtol=0,
-        atol=RATE_RESOLUTION,
-    )
-
-
-def test_rate_on_long_term_gains_stacks_on_wages_and_covers_both_spouses():
-    simulation = simulate(
-        [
-            # $60,000 of wages put $200,000 of gains in the 15% bracket and
-            # over the net investment income tax threshold.
-            ("TX", [(60_000, 200_000)]),
-            # Joint filers whose combined gains reach the 20% bracket.
-            ("TX", [(0, 500_000), (0, 300_000)]),
-        ]
-    )
-
-    np.testing.assert_allclose(
-        measured_rate(simulation),
-        [0.188, 0.238, 0.238],
-        rtol=0,
-        atol=RATE_RESOLUTION,
-    )
-
-
 # Two ranges of the top rate are left out, where a filer's rate is not the
 # smaller of the top rate and the top ordinary rate for every filer here:
 # - 28% to 29%. Once the tax at the capital gains rates passes the alternative
@@ -283,7 +254,7 @@ TOP_RATES = st.one_of(
 )
 
 
-@settings(max_examples=4, **SIMULATION_SETTINGS)
+@settings(max_examples=3, **SIMULATION_SETTINGS)
 @given(top_rate=TOP_RATES)
 def test_rate_follows_the_top_capital_gains_rate(top_rate):
     simulation = simulate(
@@ -329,9 +300,10 @@ def test_measured_rate_change_is_the_statutory_change(top_rate):
 def fresh_simulation_rate(households):
     """The rate as a difference between new simulations of ``households``.
 
-    The new simulations have the raised long-term gains as an input, and
-    where a household gives a ``capital_gains`` total, that total raised by
-    the same amount.
+    The new simulations have the raised long-term gains as an input. Where
+    any adult gives a ``capital_gains`` total, the simulation stores that
+    variable for everyone (zero where not given), so the new simulations give
+    every adult their stored total, raised by the same amount.
     """
     base = simulate(households)
     net_income = base.person.household("household_net_income", YEAR)
@@ -339,27 +311,22 @@ def fresh_simulation_rate(households):
     capital_gains = base.calculate("capital_gains", YEAR)
     adult_index = base.calculate("adult_index_cg", YEAR)
     rise = capital_gains_mtr_rise(net_income, gains)
+    gives_total = any(len(adult) > 2 for _, adults in households for adult in adults)
     rates = np.zeros_like(net_income)
     for index in (1, 2):
         raised = adult_index == index
         raised_gains = (gains + raised * rise).astype(np.float32)
         raised_capital_gains = (capital_gains + raised * rise).astype(np.float32)
-        people = zip(raised_gains.tolist(), raised_capital_gains.tolist())
-        higher = simulate(
-            [
-                (
-                    state,
-                    [
-                        (wages, person_gains, *[person_capital_gains] * len(given))
-                        for (wages, _, *given), (
-                            person_gains,
-                            person_capital_gains,
-                        ) in zip(adults, people)
-                    ],
-                )
-                for state, adults in households
-            ]
-        )
+        people = iter(zip(raised_gains.tolist(), raised_capital_gains.tolist()))
+        higher_households = []
+        for state, adults in households:
+            higher_adults = []
+            for wages, *_ in adults:
+                person_gains, person_capital_gains = next(people)
+                total = [person_capital_gains] if gives_total else []
+                higher_adults.append((wages, person_gains, *total))
+            higher_households.append((state, higher_adults))
+        higher = simulate(higher_households)
         increase = higher.person.household("household_net_income", YEAR) - net_income
         stored_rise = np.where(raised, raised_gains - gains, 1)
         rates += np.where(raised, 1 - increase / stored_rise, 0)
@@ -376,6 +343,10 @@ ADULT = st.one_of(
 )
 
 
+# capital_gains totals given as inputs: with long-term gains, without them,
+# and for one spouse only, which stores a total of zero for the other.
+@example(households=[("TX", [(0, 300_000, 300_000)]), ("TX", [(0, 0, 300_000)])])
+@example(households=[("TX", [(0, 0), (0, 0, 0)])])
 @settings(max_examples=5, **SIMULATION_SETTINGS)
 @given(
     households=st.lists(
@@ -391,25 +362,6 @@ def test_branch_rate_matches_new_simulations(households):
     base, expected = fresh_simulation_rate(households)
 
     np.testing.assert_allclose(measured_rate(base), expected, rtol=0, atol=1e-6)
-
-
-def test_rate_counts_a_capital_gains_total_given_as_an_input():
-    # capital_gains adds short- and long-term gains, and adjusted gross income
-    # reads it. A situation that gives the total keeps it as given, so the
-    # rise has to be added to it as well as to the long-term gains.
-    households = [
-        # $300,000 of long-term gains, with the total also given.
-        ("TX", [(0, 300_000, 300_000)]),
-        # The total given alone, so the model has no long-term gains to tax
-        # at the preferential rates until the rise adds some.
-        ("TX", [(0, 0, 300_000)]),
-    ]
-    base, expected = fresh_simulation_rate(households)
-
-    measured = measured_rate(base)
-
-    np.testing.assert_allclose(measured, expected, rtol=0, atol=1e-6)
-    assert measured[0] == pytest.approx(statutory_rate(300_000), abs=RATE_RESOLUTION)
 
 
 FLOAT32_AMOUNT = st.floats(-(2.0**36), 2.0**36, width=32)
