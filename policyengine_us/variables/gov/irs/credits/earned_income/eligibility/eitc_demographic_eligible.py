@@ -33,8 +33,12 @@ class eitc_demographic_eligible(Variable):
         # IRC § 32(c)(1)(A)(ii)(III): without a qualifying child, the filer
         # must not be a dependent of another taxpayer; on a joint return,
         # "neither you nor your spouse can be claimed as a dependent by another
-        # person" (IRS Publication 596).
-        dependent_elsewhere = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        # person" (IRS Publication 596). A nonrequired claimant who files
+        # no return or only for a withholding/estimated-payment refund is
+        # excepted, without changing the standard-deduction limitation.
+        dependent_elsewhere = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
         childless_eligible = (
             tax_unit.any(meets_age_requirements & is_filer_or_spouse)
             & ~dependent_elsewhere

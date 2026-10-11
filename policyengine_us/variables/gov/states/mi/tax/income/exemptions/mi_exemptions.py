@@ -40,8 +40,9 @@ class mi_exemptions(Variable):
         # individual, we apply it to each spouse, so the other keeps their own
         # personal exemption (and any stillbirth exemption). A joint return on
         # which either spouse can be claimed generally claims no dependents
-        # (IRS Publication 501, "Dependent Taxpayer Test"; its exception for a
-        # claimer who files only for a refund is not modeled).
+        # (IRS Publication 501, "Dependent Taxpayer Test"). The filing
+        # exception restores the return's own dependents, while each
+        # claimable filer keeps the $1,500 allowance.
         filers = add(tax_unit, period, ["is_tax_unit_head_or_spouse"])
         independent_filers = tax_unit(
             "head_spouse_count_not_dependent_elsewhere", period
@@ -53,11 +54,19 @@ class mi_exemptions(Variable):
         ) * p.personal
         dependent_filer_exemptions = dependent_filers * p.dependent_on_other_return
 
+        dependent_taxpayer = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
+        own_dependents = max_(tax_unit("tax_unit_size", period) - filers, 0)
+        dependent_exemptions = where(dependent_taxpayer, 0, own_dependents) * p.personal
+
         # Total exemptions
         return (
             where(
                 dependent_filers > 0,
-                independent_filer_exemptions + dependent_filer_exemptions,
+                independent_filer_exemptions
+                + dependent_filer_exemptions
+                + dependent_exemptions,
                 personal_exemption,
             )
             + disabled_exemption
