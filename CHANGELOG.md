@@ -1,3 +1,24 @@
+## [2.38.23] - 2026-10-11
+
+### Fixed
+
+- Allow non-disaster personal casualty and theft losses in California and Minnesota itemized deductions (and Minnesota alternative minimum taxable income), which do not follow the federal limit to declared disasters (Cal. Rev. & Tax. Code 17204(b); Minn. Stat. 290.0122, subd. 8): add `ca_casualty_loss_deduction` and `mn_casualty_loss_deduction`, each the loss less $100 and 10% of federal adjusted gross income, in place of the federal deduction.
+
+
+## [2.38.22] - 2026-10-11
+
+### Fixed
+
+- New York itemized deductions now allow medical and dental expenses only above 10% of federal AGI, the pre-TCJA 26 U.S.C. 213(a) floor that NY Tax Law § 615(a) keeps and Form IT-196 line 3 applies, through a new ny_medical_expense_deduction used by ny_itemized_deductions_max and the Line 40 limitation. They previously used the federal 7.5% floor, which overstated the deduction by up to 2.5% of federal AGI.
+
+
+## [2.38.21] - 2026-10-11
+
+### Changed
+
+- Uprate employer-sponsored insurance premiums and pre-tax health insurance premiums by CMS's employer-sponsored insurance premium per enrollee (NHE projections Table 17, 2025-2034 release, extended at its 2033-2034 growth rate), replacing CBO employment income per capita and CMS out-of-pocket spending per capita.
+
+
 ## [2.38.20] - 2026-10-11
 
 ### Fixed
