@@ -1,29 +1,47 @@
+# Expected values follow the Pub. 560 Deduction Worksheet for Self-Employed
+# (2025: https://www.irs.gov/pub/irs-pdf/p560.pdf#page=39; 2022:
+# https://www.irs.gov/pub/irs-prior/p560--2022.pdf#page=34), with the 25% plan
+# rate (step 4 rate 0.2) and, unless the case says otherwise, elective
+# deferrals (step 9) and catch-up contributions (step 17) equal to the
+# person's remaining section 402(g) room. Step 3 is Schedule C net profit less
+# half of self-employment tax: 92.35% of profit at 15.3% (12.4% up to the
+# Social Security wage base), halved.
+
 - name: Self-employed pension contributions are limited by the 2026 annual additions dollar limit.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
-        self_employment_income: 100_000
+        self_employment_income: 500_000
         self_employed_pension_contributions_desired: 100_000
   output:
+    # Step 3: 500,000 - (184,500 x 12.4% + 461,750 x 2.9%) / 2 = 481,865.63.
+    # Step 7: 20% x 481,865.63 = 96,373.13; steps 13 + 15 stop at the $72,000
+    # dollar limit.
     self_employed_pension_contribution_limit: 72_000
     self_employed_pension_contributions: 72_000
     self_employed_pension_contribution_ald_person: 72_000
 
 - name: Self-employed pension contributions are also limited by self-employment compensation.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         self_employment_income: 50_000
         self_employed_pension_contributions_desired: 100_000
   output:
-    self_employed_pension_contribution_limit: 50_000
-    self_employed_pension_contributions: 50_000
-    self_employed_pension_contribution_ald_person: 50_000
+    # Step 3: 50,000 - 46,175 x 15.3% / 2 = 46,467.61. Step 7: 9,293.52.
+    # Step 9: 24,500. Step 12: (46,467.61 - 24,500) / 2 = 10,983.81.
+    # Steps 13 + 15: 9,293.52 + 24,500 = 33,793.52.
+    self_employed_pension_contribution_limit: 33_793.52
+    self_employed_pension_contributions: 33_793.52
+    self_employed_pension_contribution_ald_person: 33_793.52
 
-- name: Unrelated employee elective deferrals do not reduce the self-employed pension limit.
+- name: Elective deferrals to an employer's 401(k) use up the deferral room, leaving the 20% SEP and profit-sharing rate.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -35,11 +53,16 @@
   output:
     elective_deferral_limit: 35_750
     traditional_401k_contributions: 35_750
-    self_employed_pension_contribution_limit: 72_000
-    self_employed_pension_contributions: 72_000
+    # Wages of 100,000 leave 84,500 of the 184,500 wage base. Step 3:
+    # 100,000 - (84,500 x 12.4% + 92,350 x 2.9%) / 2 = 93,421.93.
+    # No deferral room is left, so the limit is step 7: 20% x 93,421.93.
+    self_employed_pension_earned_income: 93_421.93
+    self_employed_pension_contribution_limit: 18_684.39
+    self_employed_pension_contributions: 18_684.39
 
 - name: Annual additions cap does not apply to IRA contributions.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -50,16 +73,224 @@
   output:
     ira_contribution_limit: 8_600
     traditional_ira_contributions: 8_600
-    self_employed_pension_contribution_limit: 72_000
-    self_employed_pension_contributions: 72_000
+    # Step 3: 100,000 - 92,350 x 15.3% / 2 = 92,935.23. Steps 13 + 15:
+    # 18,587.05 + 24,500 = 43,087.05. Step 18: the 8,000 catch-up.
+    self_employed_pension_contribution_limit: 51_087.05
+    self_employed_pension_contributions: 51_087.05
 
 - name: Self-employed pension contributions use desired input.
   period: 2026
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         self_employment_income: 100_000
         self_employed_pension_contributions_desired: 100_000
   output:
-    self_employed_pension_contribution_limit: 72_000
-    self_employed_pension_contributions: 72_000
+    self_employed_pension_contribution_limit: 43_087.05
+    self_employed_pension_contributions: 43_087.05
+
+- name: Pub. 560 2025 example net profit, with elective deferrals at the 402(g) limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 200_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
+    # Steps 1 to 3 as in the Pub. 560 example: 200,000 - 13,596.35 = 186,403.65.
+    self_employment_tax_ald_person: 13_596.35
+    self_employed_pension_earned_income: 186_403.65
+    # Step 7: 20% x 186,403.65 = 37,280.73. Step 9: 23,500. Step 10: 46,500.
+    # Step 12: (186,403.65 - 23,500) / 2 = 81,451.83. Step 13: 37,280.73.
+    # Step 15: 23,500. Step 19: 60,780.73.
+    self_employed_pension_contribution_limit: 60_780.73
+    self_employed_pension_contribution_ald_person: 60_780.73
+
+- name: Pub. 560 2025 example net profit, with no elective deferral room left (SEP and profit-sharing path).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 23_500
+        traditional_401k_contributions_desired: 23_500
+        self_employment_income: 200_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
+    # Wages of 23,500 leave 152,600 of the 176,100 wage base. Step 2:
+    # (152,600 x 12.4% + 184,700 x 2.9%) / 2 = 12,139.35.
+    self_employed_pension_earned_income: 187_860.65
+    # Steps 9 to 20 do not apply: steps 7 and 8 give 20% x 187,860.65.
+    self_employed_pension_contribution_limit: 37_572.13
+
+- name: Catch-up contributions at age 55 sit outside the dollar limit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        self_employment_income: 200_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
+    # Steps 13 and 15 as in the age 40 case (60,780.73). Step 16:
+    # 186,403.65 - 37,280.73 - 23,500 = 125,622.92. Step 18: 7,500.
+    self_employed_pension_contribution_limit: 68_280.73
+
+- name: The age 60 to 63 catch-up amount applies from 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 61
+        self_employment_income: 200_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 72_030.73
+
+- name: Catch-up contributions add to the dollar limit when it binds.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 55
+        self_employment_income: 500_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
+    self_employed_pension_contribution_limit: 80_000
+
+- name: With low profit, deferrals can reach all of earned income but no more.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 20_000
+        self_employed_pension_contributions_desired: 20_000
+  output:
+    # Step 3: 20,000 - 18,470 x 15.3% / 2 = 18,587.05. Step 9 at 18,587.05
+    # leaves steps 11 to 13 at zero, so step 19 equals step 3.
+    self_employed_pension_earned_income: 18_587.05
+    self_employed_pension_contribution_limit: 18_587.05
+    self_employed_pension_contributions: 18_587.05
+
+- name: The 100%-of-compensation limit binds when deferrals are large relative to profit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 30_000
+        self_employed_pension_contributions_desired: 30_000
+  output:
+    # Step 3: 30,000 - 27,705 x 15.3% / 2 = 27,880.57. Step 7: 5,576.11.
+    # Step 12: (27,880.57 - 23,500) / 2 = 2,190.28, the smallest, so step 13
+    # is 2,190.28. Step 14: 25,690.28. Step 15: 23,500. Step 19: 25,690.28.
+    self_employed_pension_earned_income: 27_880.57
+    self_employed_pension_contribution_limit: 25_690.28
+
+- name: Deferrals to an employer's plan use the regular limit first and leave the catch-up room.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+        employment_income: 50_000
+        traditional_401k_contributions_desired: 20_000
+        self_employment_income: 100_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
+    # 402(g) limit 24,500 + 8,000 catch-up = 32,500, less 20,000 of deferrals:
+    # 4,500 of regular room and the 8,000 catch-up. Step 3: 92,935.23.
+    # Steps 13 + 15: 18,587.05 + 4,500. Step 18: 8,000.
+    self_employed_pension_earned_income: 92_935.23
+    self_employed_pension_contribution_limit: 31_087.05
+
+- name: Farm earnings take part of the self-employment tax deduction, which is split by net profit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 60_000
+        farm_operations_income: 40_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
+    # Self-employment tax deduction: 92,350 x 15.3% / 2 = 7,064.78, of which
+    # 60% (4,238.87) is attributable to the Schedule C business.
+    self_employment_tax_ald_person: 7_064.78
+    self_employed_pension_earned_income: 55_761.14
+    # Steps 13 + 15: 20% x 55,761.14 + 23,500 = 34,652.23.
+    self_employed_pension_contribution_limit: 34_652.23
+
+- name: Partnership self-employment earnings alone do not support a contribution, since the model bases the plan on the Schedule C business.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        partnership_self_employment_net_earnings: 100_000
+        self_employed_pension_contributions_desired: 10_000
+  output:
+    self_employed_pension_earned_income: 0
+    self_employed_pension_contribution_limit: 0
+    self_employed_pension_contributions: 0
+
+- name: Net profit under the self-employment tax threshold is all earned income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 400
+        self_employed_pension_contributions_desired: 1_000
+  output:
+    # 92.35% of 400 is under $400, so there is no self-employment tax.
+    self_employment_tax_ald_person: 0
+    self_employed_pension_earned_income: 400
+    self_employed_pension_contribution_limit: 400
+
+- name: Pub. 560 2022 example net profit, with elective deferrals at the 402(g) limit.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 200_000
+        self_employed_pension_contributions_desired: 100_000
+  output:
+    # Step 2: (147,000 x 12.4% + 184,700 x 2.9%) / 2 = 11,792.15. The Pub.
+    # 560 (2022) example's step 21, 0.078 x step 3, is 14,680.
+    self_employment_tax_ald_person: 11_792.15
+    self_employed_pension_earned_income: 188_207.85
+    # Step 7: 37,641.57. Step 9: 20,500. Steps 13 + 15: 58,141.57, under the
+    # $61,000 dollar limit.
+    self_employed_pension_contribution_limit: 58_141.57
+
+- name: A Schedule C loss allows no contribution.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: -5_000
+        self_employed_pension_contributions_desired: 5_000
+  output:
+    self_employed_pension_earned_income: 0
+    self_employed_pension_contribution_limit: 0
+    self_employed_pension_contributions: 0
+    self_employed_pension_contribution_ald_person: 0
