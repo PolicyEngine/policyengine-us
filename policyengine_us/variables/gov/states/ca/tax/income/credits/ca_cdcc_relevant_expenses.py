@@ -11,6 +11,7 @@ class ca_cdcc_relevant_expenses(Variable):
         "https://www.ftb.ca.gov/about-ftb/data-reports-plans/Summary-of-Federal-Income-Tax-Changes/index.html#PL-117-2-9631",
         "https://www.ftb.ca.gov/forms/2021/2021-3506.pdf#page=2",
         "https://www.ftb.ca.gov/forms/2025/2025-3506.pdf#page=2",
+        "https://www.irs.gov/pub/irs-prior/f2441--2021.pdf#page=2",
     )
     defined_for = StateCode.CA
 
@@ -38,12 +39,15 @@ class ca_cdcc_relevant_expenses(Variable):
         dollar_limit = cdcc.max * count_eligible
         exclusion = tax_unit("ca_dependent_care_assistance_exclusion", period)
         dollar_limit_after_exclusion = max_(dollar_limit - exclusion, 0)
-        # Lines 32-33 also cap the California base at federal Form 2441,
-        # Part III, line 31. A larger federal exclusion can exhaust the
-        # federal limit while California's own remaining limit is positive.
+        # FTB 3506 lines 32-33 require federal Form 2441 Part III line 31:
+        # the smaller of line 29 (the dollar limit after excluded benefits)
+        # and line 30 (qualified expenses without those benefits).
         federal_limit = tax_unit("cdcc_limit", period)
+        federal_exclusion = tax_unit("dependent_care_assistance_exclusion", period)
+        federal_net_expenses = max_(expenses - federal_exclusion, 0)
+        federal_line_31 = min_(federal_limit, federal_net_expenses)
         eligible_capped_expenses = min_(
-            expenses, min_(dollar_limit_after_exclusion, federal_limit)
+            expenses, min_(dollar_limit_after_exclusion, federal_line_31)
         )
         # Then, cap further to the lowest earnings between the taxpayer and spouse
         return min_(
