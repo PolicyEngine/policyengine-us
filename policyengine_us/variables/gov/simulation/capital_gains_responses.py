@@ -9,6 +9,8 @@ from policyengine_us.variables.gov.simulation.behavioral_response_measurements i
 from policyengine_us.variables.gov.simulation.capital_gains_response_forms import (
     CAPITAL_GAINS_RESPONSE_FORM_VARIABLES,
     capital_gains_response_factor,
+    check_capital_gains_response_is_finite,
+    check_capital_gains_response_parameter,
     selected_capital_gains_response_form,
 )
 
@@ -87,13 +89,17 @@ class capital_gains_behavioral_response(Variable):
 
         capital_gains = person("long_term_capital_gains_before_response", period)
         measurements = get_behavioral_response_measurements(person, period)
+        parameter = person(CAPITAL_GAINS_RESPONSE_FORM_VARIABLES[form], period)
+        check_capital_gains_response_parameter(form, parameter)
         response_factor = capital_gains_response_factor(
             form,
             measurements["baseline_capital_gains_mtr"],
             measurements["reform_capital_gains_mtr"],
-            person(CAPITAL_GAINS_RESPONSE_FORM_VARIABLES[form], period),
+            parameter,
         )
-        return capital_gains * response_factor
+        response = capital_gains * response_factor
+        check_capital_gains_response_is_finite(form, response)
+        return response
 
 
 class long_term_capital_gains_before_response(Variable):

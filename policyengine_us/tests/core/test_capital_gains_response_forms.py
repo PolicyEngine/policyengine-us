@@ -1,33 +1,46 @@
 """Functional forms for the capital gains realization response.
 
 ``f(tau0, tau1)`` is the response factor: realizations after the response are
-the pre-response gains times ``1 + f``. The properties below hold for every
-input Hypothesis draws:
+the pre-response gains times the multiplier ``1 + f``. The properties below
+hold for every input Hypothesis draws, within the stated domains:
 
 1. No rate change, no response: ``f(tau, tau) == 0`` for every form, parameter
    and rate, including rates outside [0, 1].
-2. Monotonicity: with the parameter at its usual sign (elasticity <= 0,
-   semi-elasticity >= 0, net-of-tax elasticity >= 0), realizations are
-   non-increasing in the reform rate, and strictly decreasing inside each
-   form's unclipped range when the parameter is nonzero.
+2. Monotonicity: with a log-rate elasticity <= 0 and the new forms' parameters
+   >= 0, the multiplier is non-increasing in the reform rate, and strictly
+   decreasing inside each form's unclipped range when the parameter is nonzero
+   and the multiplier resolves the step.
 3. Sign preservation: ``1 + f >= 0``, so the response never flips the sign of
-   a person's gains.
-4. Path independence: ``(1 + f(t0, t1)) * (1 + f(t1, t2)) == 1 + f(t0, t2)``.
-5. Revenue: ``tau * (1 + f(tau0, tau))`` peaks at ``1 / beta`` under the
-   semi-elasticity form and at ``1 / (1 + e)`` under the net-of-tax form,
-   whatever the baseline rate. Under the log-rate form with an elasticity
-   above -1 it rises all the way to a 100% rate.
+   a person's gains, and in the model's float32 arithmetic the new forms'
+   dollar responses stay finite and sign-preserving across their supported
+   parameter domains for any gains below $10 quadrillion.
+4. Path independence: ``(1 + f(t0, t1)) * (1 + f(t1, t2)) == 1 + f(t0, t2)``
+   to 1e-9 in float64 where each multiplier is at least 1e-6.
+5. Single-rate revenue: ``tau * (1 + f(tau0, tau))`` peaks at ``1 / beta`` under
+   the semi-elasticity form for beta > 1 and at ``1 / (1 + e)`` under the
+   net-of-tax form for e >= 0.003, whatever the baseline rate, up to the
+   rounding of a multiplier near 0. Under the log-rate form with an
+   elasticity between -1 and 0 it rises all the way to a 100% rate.
 6. Bounds: the semi-elasticity factor lies in
    ``[exp(-beta) - 1, exp(beta) - 1]`` for any measured rates.
-7. Differential: the log-rate form, which stays the default, equals bit for bit
-   the formula on main before the other forms were added.
+7. Differential: the log-rate form, which stays the default, equals the
+   formula on main before the other forms were added, bit pattern for bit
+   pattern.
+
+Two documented behaviors are tested as intended rather than as violations:
+below a net-of-tax elasticity of about 0.0027 the 99.9% cap makes revenue at
+100% exceed the analytical peak, and a float32 round trip at a large
+semi-elasticity loses the multiplier entirely.
+
+Household simulations of these forms are in test_behavioral_response_measurements.py,
+which CI runs in the heavy-b group.
 """
 
 from types import SimpleNamespace
 
 import numpy as np
 import pytest
-from hypothesis import assume, given, settings
+from hypothesis import assume, example, given, settings
 from hypothesis import strategies as st
 from hypothesis.extra import numpy as hnp
 
@@ -35,6 +48,7 @@ import policyengine_us.variables.gov.simulation.capital_gains_responses as capit
 from policyengine_us.variables.gov.simulation.capital_gains_response_forms import (
     CAPITAL_GAINS_RESPONSE_FORM_VARIABLES,
     CAPITAL_GAINS_RESPONSE_FORMS,
+    CAPITAL_GAINS_RESPONSE_MAXIMUM,
     LOG_RATE_ELASTICITY,
     NET_OF_TAX_ELASTICITY,
     NET_OF_TAX_SHARE_FLOOR,
@@ -58,8 +72,13 @@ CALIBRATED_SEMI_ELASTICITIES = (1 / 0.285, 1 / 0.29, 1 / 0.30)
 RATES = st.floats(min_value=0, max_value=1, allow_nan=False)
 WIDE_RATES = st.floats(min_value=-5, max_value=20, allow_nan=False)
 LOG_RATE_ELASTICITIES = st.floats(min_value=-3, max_value=0, allow_nan=False)
-SEMI_ELASTICITIES = st.floats(min_value=0, max_value=50, allow_nan=False)
-NET_OF_TAX_ELASTICITIES = st.floats(min_value=0, max_value=10, allow_nan=False)
+# The new forms' supported domains.
+SEMI_ELASTICITIES = st.floats(
+    min_value=0, max_value=CAPITAL_GAINS_RESPONSE_MAXIMUM[SEMI_ELASTICITY]
+)
+NET_OF_TAX_ELASTICITIES = st.floats(
+    min_value=0, max_value=CAPITAL_GAINS_RESPONSE_MAXIMUM[NET_OF_TAX_ELASTICITY]
+)
 PARAMETERS_BY_FORM = {
     LOG_RATE_ELASTICITY: LOG_RATE_ELASTICITIES,
     SEMI_ELASTICITY: SEMI_ELASTICITIES,
@@ -74,8 +93,18 @@ UNCLIPPED_RATE_RANGE = {
     SEMI_ELASTICITY: (0.0, 1.0),
     NET_OF_TAX_ELASTICITY: (0.0, 1 - NET_OF_TAX_SHARE_FLOOR),
 }
-# Allowance for floating-point rounding in revenue comparisons.
+# Allowance for floating-point rounding in revenue comparisons. The multiplier
+# 1 + f is computed as 1 + expm1(x), accurate to about 2.2e-16 in absolute
+# terms, so where it is near 0 (realizations a trillionth of their baseline or
+# less) neighboring rates can round to the same or reversed values. Revenue,
+# a rate of at most 1 times the multiplier, is compared to within a relative
+# 1e-12 plus an absolute 1e-15.
 REVENUE_RTOL = 1e-12
+REVENUE_ATOL = 1e-15
+
+
+def at_most(smaller, larger):
+    return smaller <= larger * (1 + REVENUE_RTOL) + REVENUE_ATOL
 
 
 def main_log_rate_response_factor(baseline_mtr, reform_mtr, elasticity):
@@ -91,6 +120,12 @@ def main_log_rate_response_factor(baseline_mtr, reform_mtr, elasticity):
     reform = np.maximum(reform_mtr, min_rate)
     tax_rate_change = np.log(reform) - np.log(baseline)
     return np.exp(elasticity * tax_rate_change) - 1
+
+
+def bits(array):
+    """An array's bit patterns, so signed zeros and NaN payloads compare too."""
+    array = np.asarray(array)
+    return array.view(np.uint32 if array.dtype == np.float32 else np.uint64)
 
 
 def factor(form, baseline_rate, reform_rate, parameter):
@@ -251,10 +286,45 @@ def test_more_than_one_nonzero_parameter_is_an_error(values):
         selected_capital_gains_response_form(capital_gains_responses(**values))
 
 
-def test_defaults_select_no_response_in_every_year():
-    from policyengine_us import CountryTaxBenefitSystem
+@pytest.mark.parametrize(
+    "form, value",
+    [
+        # A semi-elasticity entered with the log-rate elasticity's sign.
+        (SEMI_ELASTICITY, -3.4),
+        (SEMI_ELASTICITY, 50.5),
+        (NET_OF_TAX_ELASTICITY, -0.7),
+        (NET_OF_TAX_ELASTICITY, 5.5),
+    ],
+)
+def test_new_forms_reject_parameters_outside_their_domain(form, value):
+    with pytest.raises(ValueError, match="must be between 0 and"):
+        selected_capital_gains_response_form(capital_gains_responses(**{form: value}))
 
-    parameters = CountryTaxBenefitSystem().parameters
+
+@pytest.mark.parametrize("form", CAPITAL_GAINS_RESPONSE_FORMS)
+@pytest.mark.parametrize("value", [np.nan, np.inf, -np.inf])
+def test_every_form_rejects_a_parameter_that_is_not_finite(form, value):
+    with pytest.raises(ValueError, match="must be finite"):
+        selected_capital_gains_response_form(capital_gains_responses(**{form: value}))
+
+
+@pytest.mark.parametrize("value", [-5.0, -0.7, 0.5])
+def test_log_rate_form_accepts_any_finite_elasticity(value):
+    responses = capital_gains_responses(elasticity=value)
+    assert selected_capital_gains_response_form(responses) == LOG_RATE_ELASTICITY
+
+
+@pytest.mark.parametrize("form", [SEMI_ELASTICITY, NET_OF_TAX_ELASTICITY])
+def test_new_forms_accept_their_maximum(form):
+    maximum = CAPITAL_GAINS_RESPONSE_MAXIMUM[form]
+    responses = capital_gains_responses(**{form: maximum})
+    assert selected_capital_gains_response_form(responses) == form
+
+
+def test_defaults_select_no_response_in_every_year():
+    from policyengine_us.system import system
+
+    parameters = system.parameters
     for year in range(2000, 2101, 5):
         responses = parameters(f"{year}-01-01").gov.simulation.capital_gains_responses
         assert responses.elasticity == 0
@@ -325,7 +395,49 @@ def test_default_log_rate_response_matches_main_bit_for_bit(monkeypatch):
         elasticity,
     )
     assert response.dtype == expected.dtype
-    assert np.array_equal(response, expected)
+    assert np.array_equal(bits(response), bits(expected))
+
+
+def test_response_rejects_person_level_parameters_outside_the_domain(monkeypatch):
+    monkeypatch.setattr(
+        capital_gains_module,
+        "get_behavioral_response_measurements",
+        lambda person, period: MEASUREMENTS,
+    )
+    person = FakePerson(
+        {
+            "long_term_capital_gains_before_response": GAINS,
+            "capital_gains_semi_elasticity": np.array(
+                [3.4, -3.4, 3.4], dtype=np.float32
+            ),
+        }
+    )
+    with pytest.raises(ValueError, match="must be between 0 and 50"):
+        capital_gains_behavioral_response.formula(
+            person, 2026, make_parameters(semi_elasticity=3.4)
+        )
+
+
+@pytest.mark.parametrize(
+    "values", [{"semi_elasticity": 3.4}, {"net_of_tax_elasticity": 0.7}]
+)
+def test_new_forms_raise_on_a_rate_that_is_not_finite(monkeypatch, values):
+    measurements = {
+        "baseline_capital_gains_mtr": np.array([0.2, np.nan, 0.2], dtype=np.float32),
+        "reform_capital_gains_mtr": np.array([0.3, 0.3, 0.3], dtype=np.float32),
+    }
+    with pytest.raises(ValueError, match="not finite for 1 people"):
+        response_with(monkeypatch, measurements, **values)
+
+
+def test_log_rate_form_still_passes_a_rate_that_is_not_finite_through(monkeypatch):
+    """The default path is unchanged, including its silence on a NaN rate."""
+    measurements = {
+        "baseline_capital_gains_mtr": np.array([0.2, np.nan, 0.2], dtype=np.float32),
+        "reform_capital_gains_mtr": np.array([0.3, 0.3, 0.3], dtype=np.float32),
+    }
+    response = response_with(monkeypatch, measurements, elasticity=-0.7)
+    assert np.isnan(response[1]) and np.isfinite(response[[0, 2]]).all()
 
 
 def test_response_is_zero_without_measuring_when_no_form_is_selected(monkeypatch):
@@ -460,46 +572,65 @@ def test_semi_elasticity_factor_is_bounded(semi_elasticity, baseline, reform):
     rate=RATES,
     other_rate=RATES,
 )
+# Multipliers near 0 that rounding leaves flat or reversed (review of #10054).
+@example(semi_elasticity=50, baseline=0, rate=0.6305, other_rate=0.6306)
 def test_semi_elasticity_revenue_peaks_at_the_inverse_semi_elasticity(
     semi_elasticity, baseline, rate, other_rate
 ):
     peak = 1 / semi_elasticity
     peak_revenue = revenue(SEMI_ELASTICITY, baseline, peak, semi_elasticity)
     assert peak_revenue > 0
-    assert revenue(SEMI_ELASTICITY, baseline, rate, semi_elasticity) <= peak_revenue * (
-        1 + REVENUE_RTOL
+    assert at_most(
+        revenue(SEMI_ELASTICITY, baseline, rate, semi_elasticity), peak_revenue
     )
     # Unimodal: rising below the peak and falling above it.
     low, high = sorted((rate, other_rate))
     low_revenue = revenue(SEMI_ELASTICITY, baseline, low, semi_elasticity)
     high_revenue = revenue(SEMI_ELASTICITY, baseline, high, semi_elasticity)
     if high <= peak:
-        assert low_revenue <= high_revenue * (1 + REVENUE_RTOL)
+        assert at_most(low_revenue, high_revenue)
     if low >= peak:
-        assert low_revenue >= high_revenue * (1 - REVENUE_RTOL)
+        assert at_most(high_revenue, low_revenue)
 
 
 @given(
-    net_of_tax_elasticity=st.floats(min_value=0.05, max_value=20),
+    net_of_tax_elasticity=st.floats(min_value=0.003, max_value=20),
     baseline=st.floats(min_value=0, max_value=0.99),
     rate=RATES,
     other_rate=RATES,
 )
+@example(net_of_tax_elasticity=20, baseline=0, rate=0.8, other_rate=0.8001)
 def test_net_of_tax_revenue_peaks_at_one_over_one_plus_the_elasticity(
     net_of_tax_elasticity, baseline, rate, other_rate
 ):
     peak = 1 / (1 + net_of_tax_elasticity)
     peak_revenue = revenue(NET_OF_TAX_ELASTICITY, baseline, peak, net_of_tax_elasticity)
-    assert revenue(
-        NET_OF_TAX_ELASTICITY, baseline, rate, net_of_tax_elasticity
-    ) <= peak_revenue * (1 + REVENUE_RTOL)
+    assert at_most(
+        revenue(NET_OF_TAX_ELASTICITY, baseline, rate, net_of_tax_elasticity),
+        peak_revenue,
+    )
     low, high = sorted((rate, other_rate))
     low_revenue = revenue(NET_OF_TAX_ELASTICITY, baseline, low, net_of_tax_elasticity)
     high_revenue = revenue(NET_OF_TAX_ELASTICITY, baseline, high, net_of_tax_elasticity)
     if high <= peak:
-        assert low_revenue <= high_revenue * (1 + REVENUE_RTOL)
+        assert at_most(low_revenue, high_revenue)
+    # Above the 99.9% cap realizations stop falling and revenue rises again.
     if peak <= low and high <= 1 - NET_OF_TAX_SHARE_FLOOR:
-        assert low_revenue >= high_revenue * (1 - REVENUE_RTOL)
+        assert at_most(high_revenue, low_revenue)
+
+
+def test_net_of_tax_cap_puts_revenue_at_100_percent_above_a_tiny_elasticitys_peak():
+    """Intended: below an elasticity of about 0.0027 the cap moves the maximum.
+
+    At 0.002 the analytical peak is a 99.8% rate, and revenue at 100%, where
+    the cap holds realizations at their 99.9% level, is higher. At 0.003 the
+    analytical peak is higher.
+    """
+    for elasticity, cap_wins in ((0.002, True), (0.003, False)):
+        peak = 1 / (1 + elasticity)
+        at_peak = revenue(NET_OF_TAX_ELASTICITY, 0.0, peak, elasticity)
+        at_100 = revenue(NET_OF_TAX_ELASTICITY, 0.0, 1.0, elasticity)
+        assert (at_100 > at_peak) is cap_wins
 
 
 @given(
@@ -513,9 +644,10 @@ def test_log_rate_revenue_has_no_interior_peak_above_minus_one(
 ):
     """The problem the semi-elasticity form solves: revenue keeps rising."""
     low, high = sorted((rate, other_rate))
-    assert revenue(LOG_RATE_ELASTICITY, baseline, low, elasticity) <= revenue(
-        LOG_RATE_ELASTICITY, baseline, high, elasticity
-    ) * (1 + REVENUE_RTOL)
+    assert at_most(
+        revenue(LOG_RATE_ELASTICITY, baseline, low, elasticity),
+        revenue(LOG_RATE_ELASTICITY, baseline, high, elasticity),
+    )
 
 
 @settings(max_examples=300)
@@ -548,129 +680,57 @@ def test_log_rate_form_matches_main_bit_for_bit(dtype, data):
     new = log_rate_elasticity_response_factor(baseline, reform, elasticity)
     old = main_log_rate_response_factor(baseline, reform, elasticity)
     assert new.dtype == old.dtype
-    assert np.array_equal(new, old)
+    assert np.array_equal(bits(new), bits(old))
 
 
-# End to end through the model.
+FLOAT32_RATES = st.floats(min_value=-5, max_value=20, width=32)
+# 2 ** 53, about $9 quadrillion, is exact in float32 and inside the documented
+# $10 quadrillion limit.
+FLOAT32_GAINS = st.floats(min_value=-(2.0**53), max_value=2.0**53, width=32)
 
 
-YEAR = "2026"
-PERIOD = "2026-01-01.2026-12-31"
-
-
-def one_person_per_household(people):
-    situation = {
-        "people": {},
-        "tax_units": {},
-        "families": {},
-        "spm_units": {},
-        "households": {},
-    }
-    for i, (state, employment_income, gains) in enumerate(people):
-        person = f"p{i}"
-        situation["people"][person] = {
-            "age": {YEAR: 50},
-            "employment_income": {YEAR: employment_income},
-            "long_term_capital_gains": {YEAR: gains},
-        }
-        for group, key in (("tax_units", "tu"), ("families", "f"), ("spm_units", "s")):
-            situation[group][f"{key}{i}"] = {"members": [person]}
-        situation["households"][f"h{i}"] = {
-            "members": [person],
-            "state_name": {YEAR: state},
-        }
-    return situation
-
-
-def test_default_log_rate_response_matches_main_end_to_end():
-    """With only the elasticity set, the model's response equals main's formula.
-
-    The households span the 0%, 15% and 20% brackets, the NIIT and state
-    taxes, and include one (California) whose measured rate does not move.
-    """
-    from policyengine_us import Simulation
-
-    situation = one_person_per_household(
-        [
-            ("TX", 0, 30_000),
-            ("TX", 15_000, 3_000),
-            ("CA", 0, 2_000_000),
-            ("FL", 0, 10_000_000),
-            ("OR", 250_000, 750_000),
-        ]
+@given(
+    form=st.sampled_from([SEMI_ELASTICITY, NET_OF_TAX_ELASTICITY]),
+    data=st.data(),
+)
+def test_new_forms_give_finite_sign_preserving_float32_responses(form, data):
+    """Across each new form's domain, as the model computes it in float32."""
+    size = data.draw(st.integers(min_value=1, max_value=20))
+    parameter = data.draw(
+        hnp.arrays(
+            np.float32,
+            size,
+            elements=st.floats(
+                min_value=0,
+                max_value=CAPITAL_GAINS_RESPONSE_MAXIMUM[form],
+                width=32,
+            ),
+        )
     )
-    reform = {
-        "gov.irs.capital_gains.rates.1": {PERIOD: 0.05},
-        "gov.irs.capital_gains.rates.2": {PERIOD: 0.20},
-        "gov.irs.capital_gains.rates.3": {PERIOD: 0.30},
-        "gov.simulation.capital_gains_responses.elasticity": {PERIOD: -0.7},
-    }
-    simulation = Simulation(
-        situation=situation, reform=reform, spm={"geography_kind": "national"}
-    )
-    response = simulation.calculate("capital_gains_behavioral_response", YEAR)
-    measurements = simulation._behavioral_response_measurements[YEAR]
-    expected = simulation.calculate(
-        "long_term_capital_gains_before_response", YEAR
-    ) * main_log_rate_response_factor(
-        measurements["baseline_capital_gains_mtr"],
-        measurements["reform_capital_gains_mtr"],
-        simulation.calculate("capital_gains_elasticity", YEAR),
-    )
-    assert np.array_equal(response, expected.astype(response.dtype))
-    # Every rate rises, so no one realizes more, and most respond.
-    assert (response <= 0).all()
-    assert (response < 0).sum() >= 3
+    baseline = data.draw(hnp.arrays(np.float32, size, elements=FLOAT32_RATES))
+    reform = data.draw(hnp.arrays(np.float32, size, elements=FLOAT32_RATES))
+    gains = data.draw(hnp.arrays(np.float32, size, elements=FLOAT32_GAINS))
+    response = gains * capital_gains_response_factor(form, baseline, reform, parameter)
+    assert response.dtype == np.float32
+    assert np.isfinite(response).all()
+    after = gains + response
+    assert (after * np.sign(gains) >= 0).all()
 
 
-def test_semi_elasticity_response_end_to_end_from_a_zero_baseline_rate():
-    """A person in the 0% bracket responds to a new 10% rate by about 29%.
-
-    The log-rate form, given the same measured rates, removes about 96%.
-    """
-    from policyengine_us import Simulation
-
-    gains = 30_000
-    reform = {
-        "gov.irs.capital_gains.rates.1": {PERIOD: 0.10},
-        "gov.simulation.capital_gains_responses.semi_elasticity": {PERIOD: 3.4},
-    }
-    simulation = Simulation(
-        situation=one_person_per_household([("TX", 0, gains)]),
-        reform=reform,
-        spm={"geography_kind": "national"},
-    )
-    response = simulation.calculate("capital_gains_behavioral_response", YEAR)[0]
-    measurements = simulation._behavioral_response_measurements[YEAR]
-    baseline_rate = float(measurements["baseline_capital_gains_mtr"][0])
-    reform_rate = float(measurements["reform_capital_gains_mtr"][0])
-
-    assert baseline_rate == 0
-    assert reform_rate == pytest.approx(0.10, abs=1e-6)
-    assert response == pytest.approx(
-        gains * np.expm1(-3.4 * (reform_rate - baseline_rate)), rel=1e-5
-    )
-    assert response / gains == pytest.approx(-0.288, abs=0.001)
-    assert simulation.calculate("long_term_capital_gains", YEAR)[0] == pytest.approx(
-        gains + response, rel=1e-6
-    )
-    assert factor(
-        LOG_RATE_ELASTICITY, baseline_rate, reform_rate, -0.7
-    ) == pytest.approx(-0.96, abs=0.001)
-
-
-def test_two_nonzero_response_parameters_raise_end_to_end():
-    from policyengine_us import Simulation
-
-    reform = {
-        "gov.irs.capital_gains.rates.3": {PERIOD: 0.30},
-        "gov.simulation.capital_gains_responses.elasticity": {PERIOD: -0.7},
-        "gov.simulation.capital_gains_responses.semi_elasticity": {PERIOD: 3.4},
-    }
-    simulation = Simulation(
-        situation=one_person_per_household([("TX", 0, 1_000_000)]),
-        reform=reform,
-        spm={"geography_kind": "national"},
-    )
-    with pytest.raises(ValueError, match="at most one"):
-        simulation.calculate("capital_gains_behavioral_response", YEAR)
+@pytest.mark.parametrize(
+    "dtype, semi_elasticity, round_trip",
+    [
+        (np.float32, 3.4, 1.000001),
+        # Intended: exp(-20) is stored as a multiplier with no significant
+        # digits left once 1 is added back, so the return leg cannot undo it.
+        (np.float32, 20, 0.0),
+        (np.float64, 20, 1.0),
+    ],
+)
+def test_round_trip_precision_matches_the_documentation(
+    dtype, semi_elasticity, round_trip
+):
+    zero, one, beta = dtype(0), dtype(1), dtype(semi_elasticity)
+    out = 1 + semi_elasticity_response_factor(zero, one, beta)
+    back = 1 + semi_elasticity_response_factor(one, zero, beta)
+    assert out * back == pytest.approx(round_trip, rel=1e-6, abs=1e-12)
