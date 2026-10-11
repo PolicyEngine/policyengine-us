@@ -1,0 +1,35 @@
+# California's operative date is a proxy: 2025-11-01, the end of the federal
+# 120-day Quality Control variance exclusion named in ACL 25-68. Only
+# California is modelled; other states return false.
+
+- name: Case 1, CA before the proxy date.
+  period: 2025-10
+  input:
+    state_code:
+      2025: CA
+  output:
+    is_snap_sua_hr1_in_effect: false
+
+- name: Case 2, CA from the proxy date.
+  period: 2025-11
+  input:
+    state_code:
+      2025: CA
+  output:
+    is_snap_sua_hr1_in_effect: true
+
+- name: Case 3, CA before the federal enactment.
+  period: 2025-06
+  input:
+    state_code:
+      2025: CA
+  output:
+    is_snap_sua_hr1_in_effect: false
+
+- name: Case 4, a state that is not modelled stays false.
+  period: 2026-01
+  input:
+    state_code:
+      2026: NY
+  output:
+    is_snap_sua_hr1_in_effect: false
