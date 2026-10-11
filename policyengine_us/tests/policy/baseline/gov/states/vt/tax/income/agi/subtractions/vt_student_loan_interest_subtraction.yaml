@@ -130,5 +130,28 @@
     # 2022 Act 138 added 5811(21)(B)(vi) from 2022; the 2021 Schedule IN-112
     # has no such line.
     student_loan_interest_ald: 1_000
+    vt_student_loan_interest_subtraction: 0
     vt_subtractions: 0
     vt_agi: 9_000
+
+- name: 2021 interest above the federal cap is still not subtracted in Vermont
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 50_000
+        student_loan_interest: 4_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: VT
+  output:
+    # The subtraction took effect on January 1, 2022 (2022 Act 138, Sec. 13), so
+    # the $1,500 the federal cap leaves is not subtracted for 2021.
+    student_loan_interest_ald: 2_500
+    vt_student_loan_interest_subtraction: 0
+    vt_subtractions: 0

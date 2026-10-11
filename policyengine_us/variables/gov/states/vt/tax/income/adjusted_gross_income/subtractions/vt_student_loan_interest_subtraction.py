@@ -9,6 +9,8 @@ class vt_student_loan_interest_subtraction(Variable):
     definition_period = YEAR
     reference = (
         "https://legislature.vermont.gov/statutes/section/32/151/05811",
+        # 2022 Act 138, Sec. 5 (the subtraction) and Sec. 13 (effective date)
+        # PDF pages 4-5, 15
         "https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT138/ACT138%20As%20Enacted.pdf#page=4",
         # Schedule IN-112 lines 16a-16c, form and instructions
         # PDF pages 23, 33
@@ -35,4 +37,6 @@ class vt_student_loan_interest_subtraction(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         filing_status = tax_unit("filing_status", period)
         income_eligible = agi <= p.income_limit[filing_status]
-        return income_eligible * remaining_interest
+        # 2022 Act 138 took effect on January 1, 2022; Vermont had no such
+        # subtraction before.
+        return p.in_effect * income_eligible * remaining_interest
