@@ -1,1 +1,1 @@
-Deduct Montana's 2021–2023 medical insurance premiums (other than those taken as the self-employed health insurance deduction) and long-term care insurance premiums in full on the Itemized Deductions Schedule, applying the 7.5% floor only to other medical and dental expenses.
+Deduct Montana's 2021–2023 medical and long-term care insurance premiums in full on the Itemized Deductions Schedule (lines 2 and 3), net of premiums taken as the self-employed health insurance deduction, and apply the 7.5% floor only to other medical and dental expenses.
