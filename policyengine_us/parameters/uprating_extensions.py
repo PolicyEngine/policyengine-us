@@ -2,7 +2,7 @@
 
 import math
 from decimal import ROUND_HALF_UP, Decimal
-from typing import Optional, Tuple
+from typing import Dict, Optional, Tuple
 
 from policyengine_us.model_api import *
 from policyengine_core.periods import Instant, instant
@@ -19,6 +19,62 @@ LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS = (
     "taxable_social_security",
     "irs_other_income",
     "above_the_line_deductions",
+)
+
+# Long-range annual growth rates from the 2026 Medicare Trustees Report
+# (transmitted 2026-06-09, sha256
+# ffa56b9137006872300b0346149eae1613d09a172b6ba118aad48e66dfc48fa8), as
+# {year: rate} knots for extend_parameter_values(long_range_growth=...). The
+# Trustees set the growth rates for years 11 through 25 of their projection
+# (2036-2050) by interpolating between the rate at the end of the short-range
+# period and the rate at the start of the last 50 years (file pages 24 and
+# 180), and the long-range rates then decline gradually from 2050 to 2100
+# (file pages 23 and 173). They publish only the 2050 and 2100 rates, so the
+# path between those two knots is linear here.
+#
+# Per capita overall health spending grows at GDP plus 0.7 percent (4.3
+# percent) in 2050, declining gradually to GDP plus 0.4 percent (4.1 percent)
+# by 2100 (file page 173). The Trustees publish no long-range rate for
+# out-of-pocket spending or private insurance (Table V.B5, file page 200,
+# stops private health insurance in 2035), so this rate serves those series:
+# the factors model behind it holds insurance coverage unchanged (file page
+# 175), and the Trustees see only a small likelihood that one part of the
+# health sector grows indefinitely at significantly faster rates than the
+# others (file page 177).
+HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH = {2050: 0.043, 2100: 0.041}
+
+# The Trustees' Medicare cost growth rates exclude the effects of the aging of
+# the population and of changes in the sex and time-to-death mix of
+# enrollees (file page 172, footnote 81). Spending per enrollee includes
+# them: Table II.D1 (file page 29) puts the beneficiary demographic mix at
+# -0.1 percent a year in 2051-2100 for each of Parts A, B and D.
+MEDICARE_LONG_RANGE_DEMOGRAPHIC_MIX = -0.001
+
+
+def with_medicare_demographic_mix(cost_growth: Dict[int, float]) -> Dict[int, float]:
+    """Medicare spending per enrollee growth: the Trustees' cost growth rate
+    (excluding demographic impacts) compounded with the long-range
+    demographic mix."""
+    return {
+        year: (1 + rate) * (1 + MEDICARE_LONG_RANGE_DEMOGRAPHIC_MIX) - 1
+        for year, rate in cost_growth.items()
+    }
+
+
+# Parts A, B and D combined: 3.8 percent in 2050, declining to 3.7 percent by
+# 2100 (file pages 23 and 180).
+MEDICARE_PER_ENROLLEE_LONG_RANGE_GROWTH = with_medicare_demographic_mix(
+    {2050: 0.038, 2100: 0.037}
+)
+# Part B: 3.8 percent in 2050, remaining at 3.8 percent by 2100 (file pages 23
+# and 180).
+MEDICARE_PART_B_PER_ENROLLEE_LONG_RANGE_GROWTH = with_medicare_demographic_mix(
+    {2050: 0.038, 2100: 0.038}
+)
+# Part D: 4.1 percent in 2050, declining to 3.9 percent by 2100 (file pages 23
+# and 179).
+MEDICARE_PART_D_PER_ENROLLEE_LONG_RANGE_GROWTH = with_medicare_demographic_mix(
+    {2050: 0.041, 2100: 0.039}
 )
 
 
@@ -498,6 +554,37 @@ def extend_wa_millionaires_standard_deduction(
     )
 
 
+def long_range_growth_rate(
+    year: int,
+    last_projected_year: int,
+    short_range_growth: float,
+    long_range_growth: Dict[int, float],
+) -> float:
+    """Annual growth rate for a year after the last projected year, on a path
+    that glides from the short-range rate to long-range rates.
+
+    The knots are (last_projected_year, short_range_growth) and each
+    (year, rate) in long_range_growth. The rate moves linearly between
+    adjacent knots, as the Medicare Trustees interpolate between their
+    short-range and long-range rates, and holds the last knot's rate after
+    it.
+    """
+    knots = sorted(long_range_growth.items())
+    if not knots or knots[0][0] <= last_projected_year:
+        raise ValueError("Long-range growth knots must follow the last projected year.")
+    if year <= last_projected_year:
+        raise ValueError("Long-range growth applies only after the last projected year.")
+    previous_year, previous_rate = last_projected_year, short_range_growth
+    for knot_year, knot_rate in knots:
+        if year == knot_year:
+            return knot_rate
+        if year < knot_year:
+            share = (year - previous_year) / (knot_year - previous_year)
+            return previous_rate + share * (knot_rate - previous_rate)
+        previous_year, previous_rate = knot_year, knot_rate
+    return previous_rate
+
+
 def extend_parameter_values(
     parameter: Parameter,
     last_projected_year: int,
@@ -505,6 +592,7 @@ def extend_parameter_values(
     period_month: int = 1,
     period_day: int = 1,
     growth_years: Optional[Tuple[int, int]] = None,
+    long_range_growth: Optional[Dict[int, float]] = None,
 ) -> None:
     """
     Extend a parameter's values from last_projected_year to end_year using
@@ -520,6 +608,11 @@ def extend_parameter_values(
             rate between, instead of the last two projected years — used
             when the final actual embeds a one-off level shift that should
             not compound in the long-run extension.
+        long_range_growth: Optional {year: annual growth rate} knots. When
+            given, growth moves from the measured short-range rate, placed
+            at last_projected_year, through the knots (see
+            long_range_growth_rate) instead of repeating the short-range
+            rate in every year.
     """
     # Calculate the growth rate from the last two years of projections
     date_format = f"-{period_month:02d}-{period_day:02d}"
@@ -533,7 +626,15 @@ def extend_parameter_values(
     # Apply growth rate for years beyond projections
     for year in range(last_projected_year + 1, end_year + 1):
         previous_value = parameter(f"{year - 1}{date_format}")
-        new_value = previous_value * growth_rate
+        if long_range_growth is None:
+            new_value = previous_value * growth_rate
+        else:
+            new_value = previous_value * (
+                1
+                + long_range_growth_rate(
+                    year, last_projected_year, growth_rate - 1, long_range_growth
+                )
+            )
         parameter.update(period=f"year:{year}{date_format}:1", value=new_value)
 
     # Set the final value for periods after the last year
@@ -841,23 +942,28 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # CMS per-capita out-of-pocket medical spending (January values, last
     # projection year 2035). Health expense inputs use this as their uprater.
+    # Growth glides from the 2034-2035 rate to the Medicare Trustees'
+    # long-range per capita health spending rates.
     extend_parameter_values(
         parameters.calibration.gov.hhs.cms.moop_per_capita,
         last_projected_year=2035,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
+        long_range_growth=HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH,
     )
 
     # CMS employer-sponsored insurance premium per enrollee (January values,
     # last projection year 2034). Employer and pre-tax employee premium
-    # inputs use this as their uprater.
+    # inputs use this as their uprater. Growth glides from the 2033-2034 rate
+    # to the Medicare Trustees' long-range per capita health spending rates.
     extend_parameter_values(
         parameters.calibration.gov.hhs.cms.esi_premium_per_enrollee,
         last_projected_year=2034,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
+        long_range_growth=HEALTH_SPENDING_PER_CAPITA_LONG_RANGE_GROWTH,
     )
 
     # Gross Social Security benefit inputs should age with gross Social
