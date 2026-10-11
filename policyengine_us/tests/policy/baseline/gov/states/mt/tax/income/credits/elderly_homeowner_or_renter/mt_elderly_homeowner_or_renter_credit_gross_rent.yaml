@@ -213,8 +213,8 @@
     mt_elderly_homeowner_or_renter_credit_property_tax_billed: [1_800, 2_000]
     mt_elderly_homeowner_or_renter_credit_gross_rent: [0, 0]
 
-- name: Case 9, in 2010 only property billed to a trust counted as rent.
-  period: 2010
+- name: Case 9, in 2009 ARM 42.4.302(5) already counted property in another's name as rent.
+  period: 2009
   absolute_error_margin: 0.01
   input:
     people:
@@ -235,33 +235,13 @@
         members: [person1, person2]
         state_code: MT
   output:
-    mt_elderly_homeowner_or_renter_credit_gross_rent: [0, 0]
-
-- name: Case 10, from 2011 property in another person's name counts as rent.
-  period: 2011
-  absolute_error_margin: 0.01
-  input:
-    people:
-      person1:
-        age: 80
-        rent: 0
-      person2:
-        age: 45
-        rent: 0
-        real_estate_taxes: 3_000
-    tax_units:
-      tax_unit1:
-        members: [person1]
-      tax_unit2:
-        members: [person2]
-    households:
-      household:
-        members: [person1, person2]
-        state_code: MT
-  output:
+    # ARM 42.4.302(5), effective 8/20/2004 to 11/10/2017: "Property taxes
+    # billed are allowable as rent if the property occupied by an eligible
+    # claimant is in a name other than the claimant." It became (2)(b) in
+    # 2017.
     mt_elderly_homeowner_or_renter_credit_gross_rent: [3_000, 0]
 
-- name: Case 11, outside Montana.
+- name: Case 10, outside Montana.
   period: 2024
   absolute_error_margin: 0.01
   input:
@@ -284,3 +264,60 @@
         state_code: ID
   output:
     mt_elderly_homeowner_or_renter_credit_gross_rent: [0, 0]
+
+- name: Case 11, a joint couple billed nothing counts the other member's bill once.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        rent: 0
+      person2:
+        age: 66
+        rent: 0
+      person3:
+        age: 45
+        rent: 0
+        real_estate_taxes: 3_000
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # One claim for the joint return: line 24 = 3_000, not 6_000.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: [0, 3_000]
+    mt_elderly_homeowner_or_renter_credit_gross_rent: [3_000, 0]
+
+- name: Case 12, a home co-owned with a dependent stays on line 23.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        rent: 0
+        is_tax_unit_dependent: false
+        real_estate_taxes: 500
+      person2:
+        age: 50
+        rent: 0
+        is_tax_unit_dependent: true
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # The home is in the claimant's name too, so ARM 42.4.302(2)(b) does not
+    # apply: the tax unit's bills, 500 + 2_000, are line 23, and line 24 is 0.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_500
+    mt_elderly_homeowner_or_renter_credit_gross_rent: 0

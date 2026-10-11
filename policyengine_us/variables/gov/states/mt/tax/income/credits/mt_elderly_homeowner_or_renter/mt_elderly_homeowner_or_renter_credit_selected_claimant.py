@@ -36,13 +36,13 @@ class mt_elderly_homeowner_or_renter_credit_selected_claimant(Variable):
         # says which member claims. Every eligible tax unit in a household has
         # the same gross and net household income, so their credits differ
         # only by Schedule 2EC line 26: property tax billed plus 15% of rent,
-        # before the $1,150 cap. The model counts the property tax billed to
-        # each tax unit's head and spouse and the rent the tax unit paid,
-        # following Schedule 2EC's line labels ("the property tax you were
-        # billed", "the rent that you paid"). A tax unit billed no property
-        # tax lives in a home in another member's name, whose property tax
-        # "can qualify as rent only" (2025 instructions; ARM 42.4.302(2)(b)):
-        # it counts the household's property tax as rent, if that is larger
+        # before the $1,150 cap. The model counts each tax unit's own
+        # property tax and rent, following Schedule 2EC's line labels ("the
+        # property tax you were billed", "the rent that you paid"). A tax
+        # unit whose head and spouse are billed no property tax is treated as
+        # living in a home in another member's name, whose property tax "can
+        # qualify as rent only" (2025 instructions; ARM 42.4.302(2)(b)): it
+        # counts the household's property tax as rent, if that is larger
         # (see mt_elderly_homeowner_or_renter_credit_gross_rent). The statute
         # instead defines both for the homestead (§ 15-30-2337(5), (10)),
         # which would give the one claimant the household's whole property

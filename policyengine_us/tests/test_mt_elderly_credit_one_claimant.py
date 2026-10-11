@@ -9,15 +9,18 @@ everyone in the household, so every tax unit in a household with a member
 aged 62 or older computes its credit on the same net household income (line
 22) and multiplier (line 29); the credits differ only by each tax unit's
 property tax billed (line 23) and rent (line 24). A tax unit billed no
-property tax lives in a home in another member's name, whose property tax
-"can qualify as rent only" (ARM 42.4.302(2)(b)): its line 24 is the larger
-of the rent it paid and the property tax billed to the household's other
-tax units. The model pays the tax unit whose credit is largest.
+property tax is treated as living in a home in another member's name, whose
+property tax "can qualify as rent only" (ARM 42.4.302(2)(b)): its line 24 is
+the larger of the rent it paid and the property tax billed to the
+household's other members. The model pays the tax unit whose credit is
+largest.
 
 A reference written here from the schedule's lines is compared with the
 model for random Montana households of one to three tax units (single or
 joint, any mix of ages, pension, interest, Social Security, property tax and
-rent; no earned income, so no refundable credit enters line 8):
+rent; no earned income, so no refundable credit enters line 8). The
+generator has no dependents, so the household's other members are its other
+tax units; the YAML tests cover a home in a dependent's name:
 
 1. Each tax unit's credit before the limit matches the reference.
 2. The household's credit is the largest of its tax units' credits, so it
@@ -127,10 +130,10 @@ def reference(units):
     for unit in units:
         eligible = max(adult["age"] for adult in unit["adults"]) >= P.age_threshold
         # Line 24: a tax unit billed no property tax may use the property tax
-        # billed to the household's other tax units as rent, in place of the
+        # billed to the household's other members as rent, in place of the
         # rent it paid if that is larger (ARM 42.4.302(2)(b)).
         rent = unit["rent"]
-        if unit["property_tax"] == 0 and P.property_tax_in_another_name_as_rent:
+        if unit["property_tax"] == 0:
             rent = max(rent, household_property_tax)
         # Lines 23-28.
         housing = unit["property_tax"] + rent * P.rent_equivalent_tax_rate

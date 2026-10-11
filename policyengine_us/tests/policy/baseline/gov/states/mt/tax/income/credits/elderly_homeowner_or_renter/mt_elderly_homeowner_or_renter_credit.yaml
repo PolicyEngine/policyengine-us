@@ -1010,3 +1010,36 @@
     mt_elderly_homeowner_or_renter_credit_property_tax_billed: 0
     mt_elderly_homeowner_or_renter_credit_gross_rent: 4_000
     mt_elderly_homeowner_or_renter_credit: [600, 0]
+
+- name: 2024 Schedule 2EC, a home co-owned with a dependent keeps both bills on line 23
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 80
+        taxable_pension_income: 14_000
+        rent: 0
+        is_tax_unit_dependent: false
+        real_estate_taxes: 500
+      person2:
+        age: 50
+        rent: 0
+        is_tax_unit_dependent: true
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The claimant is billed too, so the home is in the claimant's name and
+    # ARM 42.4.302(2)(b) does not apply. Line 18 = 14_000; line 20 = 1_400;
+    # line 21 = 0; line 22 = 0. Line 23 = 500 + 2_000 = 2_500; line 24 = 0;
+    # line 27 = 2_500; line 28 = 1_150 cap; line 30 = 1_150, as before
+    # ARM 42.4.302(2)(b) was modeled.
+    mt_elderly_homeowner_or_renter_credit_property_tax_billed: 2_500
+    mt_elderly_homeowner_or_renter_credit_gross_rent: 0
+    mt_elderly_homeowner_or_renter_credit: [1_150, 0]
