@@ -29,13 +29,12 @@ class mo_capital_gains_subtraction_person(Variable):
         )
         person_positive_cg = not_dependent * max_(0, own_gains)
         tax_unit_positive_cg = tax_unit.sum(person_positive_cg)
-        # If no head or spouse has a positive gain of their own (only possible
-        # when the tax unit amount is supplied as an input), the head takes it.
-        default_share = where(person("is_tax_unit_head", period), 1.0, 0.0)
+        # Without a filer's positive gain included in federal AGI, there is
+        # no amount to allocate, even if a tax-unit subtraction is supplied.
         person_share = np.divide(
             person_positive_cg,
             tax_unit_positive_cg,
-            out=default_share,
+            out=np.zeros_like(tax_unit_positive_cg),
             where=tax_unit_positive_cg > 0,
         )
         return person_share * tax_unit_subtraction

@@ -8,27 +8,30 @@ distributions alone. It goes in the Form MO-A column of the spouse with the
 gain. A tax unit dependent's gains and losses are on the dependent's own
 return, so they never reach the filers' line 7a.
 
-Hypothesis draws batches of tax units (single, head of household with
-dependents, joint with and without dependents) whose members have signed
-short- and long-term gains and capital gain distributions, and a seeded
-population of 200 units adds breadth. Each batch runs as one vectorized
-simulation, and again with every dependent's capital inputs set to zero.
+Hypothesis draws batches of tax units (single, married filing separately,
+head of household with dependents, joint with and without dependents) whose
+members have signed short- and long-term gains and capital gain
+distributions. A seeded population of 200 units adds breadth. Each batch
+runs as one vectorized simulation, and again with every dependent's capital
+inputs set to zero.
 For every tax unit:
 
 1. Dependents' gains, losses and distributions never change
    mo_capital_gains_subtraction, the head's and spouse's
    mo_capital_gains_subtraction_person, mo_agi_subtractions or
-   mo_adjusted_gross_income. (mo_income_tax is left out: it deducts federal
-   income tax, which a dependent's gains still move through the Schedule D
-   tax worksheet until that is fixed separately.)
+   mo_adjusted_gross_income.
 2. Differential: mo_capital_gains_subtraction equals an independent numpy
-   computation, rate x max(0, max(-loss limit, the head's and spouse's
-   short- and long-term gains + their distributions floored at zero)), with
-   the rate and loss limit taken from the statute rather than the model.
-3. Accounting: the person amounts add up to the tax unit amount; dependents
+   computation, rate x max(0, the head's and spouse's short- and long-term
+   gains + their distributions floored at zero), with the rate taken from
+   the statute rather than the model.
+3. Federal AGI equals wages plus the filers' net capital amount, with a net
+   loss limited to $3,000 ($1,500 when filing separately). This checks the
+   loss limit before Missouri's zero floor, where it has an effect, and
+   confirms the subtraction is capital gain included in federal AGI.
+4. Accounting: the person amounts add up to the tax unit amount; dependents
    get zero; each filer gets between zero and their own positive gain, and
    a filer without a positive gain of their own gets zero.
-4. For tax units without dependents and without distributions, the amount
+5. For tax units without dependents and without distributions, the amount
    equals the previous all-member formula, rate x max(0, net_capital_gains).
 """
 
@@ -39,14 +42,22 @@ from hypothesis import strategies as st
 
 from policyengine_us import Simulation
 
-TOLERANCE = 0.01  # dollars
+# The largest generated federal AGI is $400,000, where float32 spacing is
+# $0.03125; allow one rounding step plus person-allocation rounding.
+TOLERANCE = 0.05  # dollars
 
 # RSMo 143.121.3(14)(a): 100% from tax year 2025, nothing before.
 RATE = {2024: 0.0, 2025: 1.0, 2026: 1.0}
 YEARS = sorted(RATE)
-# 26 USC 1211(b)(1): $3,000, or $1,500 for a married individual filing
-# separately. The draws below never file separately.
-LOSS_LIMIT = 3_000.0
+# 26 USC 1211(b)(1): $3,000, or $1,500 when married filing separately.
+LOSS_LIMIT = {"SEPARATE": 1_500.0, "OTHER": 3_000.0}
+FILING_STATUS = {
+    "single": "SINGLE",
+    "separate": "SEPARATE",
+    "hoh": "HEAD_OF_HOUSEHOLD",
+    "joint": "JOINT",
+    "joint_dependents": "JOINT",
+}
 
 CAPITAL_INPUTS = [
     "short_term_capital_gains",
@@ -58,6 +69,7 @@ OUTPUTS = [
     "mo_capital_gains_subtraction_person",
     "mo_agi_subtractions",
     "mo_adjusted_gross_income",
+    "adjusted_gross_income",
     "net_capital_gains",
     "is_tax_unit_dependent",
 ]
@@ -87,9 +99,10 @@ def capital(draw):
 
 @st.composite
 def tax_units(draw):
-    kind = draw(st.sampled_from(["single", "hoh", "joint", "joint_dependents"]))
+    kind = draw(st.sampled_from(list(FILING_STATUS)))
     n_dependents = draw(st.integers(1, 2)) if kind in ("hoh", "joint_dependents") else 0
     return {
+        "filing_status": FILING_STATUS[kind],
         "head_wages": float(draw(st.integers(0, 120_000))),
         "head": draw(capital()),
         "spouse": draw(capital()) if kind.startswith("joint") else None,
@@ -118,16 +131,33 @@ def _seeded_units(n=200, seed=20261006):
 
     units = []
     for _ in range(n):
-        kind = rng.choice(["single", "hoh", "joint", "joint_dependents"])
+        kind = rng.choice(list(FILING_STATUS))
         n_dependents = (
             int(rng.integers(1, 3)) if kind in ("hoh", "joint_dependents") else 0
         )
         units.append(
             {
+                "filing_status": FILING_STATUS[kind],
                 "head_wages": float(round(rng.uniform(0, 120_000))),
                 "head": amounts(),
                 "spouse": amounts() if kind.startswith("joint") else None,
                 "dependents": [amounts() for _ in range(n_dependents)],
+            }
+        )
+    # Exercise both federal loss limits in the existing batch, independently
+    # of which signed amounts the random population happens to draw.
+    for unit, filing_status in zip(units, ["SINGLE", "SEPARATE"]):
+        unit.update(
+            {
+                "filing_status": filing_status,
+                "head_wages": 50_000.0,
+                "head": {
+                    "short_term_capital_gains": -6_000.0,
+                    "long_term_capital_gains": 0.0,
+                    "non_sch_d_capital_gains": 0.0,
+                },
+                "spouse": None,
+                "dependents": [],
             }
         )
     return units
@@ -161,7 +191,10 @@ def _situation(units, year, zero_dependents):
                 "is_tax_unit_dependent": {year: True},
                 **{name: {year: factor * value} for name, value in amounts.items()},
             }
-        tax_units_[f"tu_{i}"] = {"members": members}
+        tax_units_[f"tu_{i}"] = {
+            "members": members,
+            "filing_status": {year: u["filing_status"]},
+        }
         households[f"hh_{i}"] = {"members": members, "state_code": {year: "MO"}}
     return {"people": people, "tax_units": tax_units_, "households": households}
 
@@ -205,7 +238,7 @@ def _check(units, year):
     no_dependents = _run(units, year, zero_dependents=True)
     for name in ["mo_capital_gains_subtraction"]:
         np.testing.assert_allclose(
-            base[name], no_dependents[name], atol=TOLERANCE, err_msg=name
+            base[name], no_dependents[name], rtol=0, atol=TOLERANCE, err_msg=name
         )
     for name in [
         "mo_capital_gains_subtraction_person",
@@ -215,6 +248,7 @@ def _check(units, year):
         np.testing.assert_allclose(
             base[name][filer],
             no_dependents[name][filer],
+            rtol=0,
             atol=TOLERANCE,
             err_msg=name,
         )
@@ -224,27 +258,45 @@ def _check(units, year):
         units, "long_term_capital_gains"
     )
     own = gains + np.maximum(0, _by_person(units, "non_sch_d_capital_gains"))
-    line_7a = np.maximum(-LOSS_LIMIT, _unit_sum(base, filer * own))
-    expected = rate * np.maximum(0, line_7a)
+    filer_net_gains = _unit_sum(base, filer * own)
+    expected = rate * np.maximum(0, filer_net_gains)
     subtraction = base["mo_capital_gains_subtraction"]
-    np.testing.assert_allclose(subtraction, expected, atol=TOLERANCE)
+    np.testing.assert_allclose(subtraction, expected, rtol=0, atol=TOLERANCE)
 
-    # 3. Accounting.
+    # 3. The federal loss limit matters for negative net gains before the
+    # Missouri zero floor. With wages and capital amounts as the only inputs,
+    # federal AGI independently establishes the gain included in AGI.
+    loss_limits = np.array(
+        [LOSS_LIMIT.get(u["filing_status"], LOSS_LIMIT["OTHER"]) for u in units]
+    )
+    line_7a = np.maximum(-loss_limits, filer_net_gains)
+    wages = np.array([u["head_wages"] for u in units])
+    federal_agi = base["adjusted_gross_income"]
+    np.testing.assert_allclose(federal_agi, wages + line_7a, rtol=0, atol=TOLERANCE)
+    np.testing.assert_allclose(
+        subtraction, rate * np.maximum(0, federal_agi - wages), rtol=0, atol=TOLERANCE
+    )
+
+    # 4. Accounting.
     person = base["mo_capital_gains_subtraction_person"]
-    np.testing.assert_allclose(_unit_sum(base, person), subtraction, atol=TOLERANCE)
+    np.testing.assert_allclose(
+        _unit_sum(base, person), subtraction, rtol=0, atol=TOLERANCE
+    )
     assert np.all(person[dependent] == 0)
     assert np.all(person >= -TOLERANCE)
     assert np.all(person <= rate * np.maximum(0, own) + TOLERANCE)
     assert np.all(person[filer & (own <= 0)] == 0)
 
-    # 4. Unchanged for units without dependents and distributions.
+    # 5. Unchanged for units without dependents and distributions.
     unit_has_dependent = _unit_sum(base, dependent.astype(float)) > 0
     unit_has_distributions = (
         _unit_sum(base, np.abs(_by_person(units, "non_sch_d_capital_gains"))) > 0
     )
     unchanged = ~unit_has_dependent & ~unit_has_distributions
     old = rate * np.maximum(0, base["net_capital_gains"])
-    np.testing.assert_allclose(subtraction[unchanged], old[unchanged], atol=TOLERANCE)
+    np.testing.assert_allclose(
+        subtraction[unchanged], old[unchanged], rtol=0, atol=TOLERANCE
+    )
     return base, unit_has_dependent
 
 

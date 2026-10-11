@@ -27,8 +27,19 @@ class mo_capital_gains_subtraction(Variable):
         # for federal income tax purposes, to the extent included in federal
         # AGI. The Department of Revenue reads that as Form 1040 line 7a, and
         # says capital losses do not qualify.
+        # Sum filers directly: a supplied tax-unit net_capital_gains does
+        # not enter federal AGI, and removing dependents from a rounded
+        # aggregate can lose a filer's smaller gain. The person-level
+        # source also respects capital_gains supplied directly to AGI.
+        person = tax_unit.members
+        not_dependent = ~person("is_tax_unit_dependent", period)
+        own_gains = person("capital_gains", period) + max_(
+            0, person("non_sch_d_capital_gains", period)
+        )
+        # A federal net capital loss stays negative after the loss limit,
+        # so that limit cannot affect Missouri's positive-gain subtraction.
         federally_reported_capital_gains = max_(
-            0, tax_unit("filer_loss_limited_net_capital_gains", period)
+            0, tax_unit.sum(not_dependent * own_gains)
         )
         p = parameters(period).gov.states.mo.tax.income.subtractions.net_capital_gain
         return federally_reported_capital_gains * p.rate

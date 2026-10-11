@@ -298,3 +298,124 @@
   output:
     mo_capital_gains_subtraction: 0
     mo_capital_gains_subtraction_person: [0, 0]
+
+- name: A supplied aggregate gain outside federal AGI gives no subtraction
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        net_capital_gains: 20_000
+    households:
+      household:
+        members: [head]
+        state_code: MO
+  output:
+    # A tax-unit aggregate input does not enter federal AGI. RSMo 143.121.3
+    # allows subtraction only to the extent included in federal AGI.
+    adjusted_gross_income: 50_000
+    mo_capital_gains_subtraction: 0
+    mo_capital_gains_subtraction_person: [0]
+    mo_adjusted_gross_income: [50_000]
+
+- name: A supplied aggregate does not replace the filer's federally included gain
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        long_term_capital_gains: 1_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        net_capital_gains: 20_000
+    households:
+      household:
+        members: [head]
+        state_code: MO
+  output:
+    # Only the person's $1,000 gain reaches federal AGI, not the $20,000
+    # supplied aggregate. MO subtracts the federally included $1,000.
+    adjusted_gross_income: 51_000
+    mo_capital_gains_subtraction: 1_000
+    mo_capital_gains_subtraction_person: [1_000]
+    mo_adjusted_gross_income: [50_000]
+
+- name: A directly supplied person gain included in federal AGI is subtracted
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        capital_gains: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MO
+  output:
+    # Federal gross income reads person-level capital_gains, including an
+    # explicit input. Missouri uses the same source and subtracts $2,000.
+    adjusted_gross_income: 52_000
+    mo_capital_gains_subtraction: 2_000
+    mo_capital_gains_subtraction_person: [2_000]
+    mo_adjusted_gross_income: [50_000]
+
+- name: A large dependent gain does not round away the filer's small gain
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        short_term_capital_gains: 1
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 67_108_864
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    # At 2**26 float32 spacing is $8. Pooling then removing the dependent
+    # can lose the filer's $1; summing filers directly preserves it.
+    mo_capital_gains_subtraction: 1
+    mo_capital_gains_subtraction_person: [1, 0]
+
+- name: A large dependent gain does not create a subtraction for a filer with a loss
+  period: 2025
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        short_term_capital_gains: -1
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 67_108_864
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    mo_capital_gains_subtraction: 0
+    mo_capital_gains_subtraction_person: [0, 0]

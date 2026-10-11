@@ -1,1 +1,1 @@
-Base Missouri's capital gains subtraction on the filers' federal Form 1040 line 7a: leave a tax unit dependent's gains and losses out, count capital gain distributions, and give dependents no share.
+Base Missouri's capital gains subtraction on the filers' gains included in federal AGI: exclude dependents and supplied tax-unit aggregates, include capital gain distributions and directly supplied person gains, and allocate only to filers with positive gains.
