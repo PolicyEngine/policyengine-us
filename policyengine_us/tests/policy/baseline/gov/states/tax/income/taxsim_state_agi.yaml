@@ -3,7 +3,8 @@
 # return, a column per spouse under status 2a. From 2024 Form 2 starts from
 # federal adjusted gross income (line 1) and has no Montana AGI line, so the
 # state AGI is federal AGI. Where noted, the expected value is what TAXSIM
-# (taxsimtest build 2025Aug23) reports as state AGI (v32) for the same inputs.
+# (taxsimtest build 2025Aug23) reports as state AGI (v32) for the same inputs,
+# rounded to whole dollars (the raw probe values include a one-cent offset).
 
 - name: Montana 2022 joint return pools a spouse's loss with the other spouse's wages
   # TAXSIM v32: 80,000.

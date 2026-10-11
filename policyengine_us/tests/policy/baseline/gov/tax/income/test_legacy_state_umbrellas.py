@@ -82,8 +82,7 @@ def make_tax_unit_situation(
     }
 
 
-def calculate_sum(situation: dict, year: int, variables: list[str]) -> float:
-    simulation = Simulation(situation=situation)
+def calculate_sum(simulation: Simulation, year: int, variables: list[str]) -> float:
     total = 0.0
 
     for variable in variables:
@@ -146,8 +145,9 @@ LEGACY_UMBRELLA_CASES = [
 def test_legacy_state_umbrellas_match_state_specific_components(
     legacy_var, state_specific_vars, situation
 ):
-    expected = calculate_sum(situation, 2023, state_specific_vars)
-    actual = calculate_sum(situation, 2023, [legacy_var])
+    simulation = Simulation(situation=situation)
+    expected = calculate_sum(simulation, 2023, state_specific_vars)
+    actual = calculate_sum(simulation, 2023, [legacy_var])
     assert actual == pytest.approx(expected, abs=0.01)
 
 
@@ -159,19 +159,23 @@ def test_mt_state_agi_is_montana_agi_then_federal_agi(year):
     # subtraction from 2024, so the two measures differ.
     federal_agi_states = configured_component_vars("states_using_federal_agi", year)
     assert ("MT" in federal_agi_states) == (year >= 2024)
+    state_agis = configured_component_vars("state_agis", year)
+    assert "mt_agi" in state_agis
+    assert "mt_agi_indiv" not in state_agis
     situation = make_tax_unit_situation(
         year=year, state="MT", primary_age=70, wages=40_000.0
     )
+    simulation = Simulation(situation=situation)
     if year >= 2024:
         expected_vars = ["adjusted_gross_income"]
-        assert calculate_sum(situation, year, ["mt_agi"]) < calculate_sum(
-            situation, year, expected_vars
+        assert calculate_sum(simulation, year, ["mt_agi"]) < calculate_sum(
+            simulation, year, expected_vars
         )
     else:
-        expected_vars = configured_component_vars("state_agis", year)
-    expected = calculate_sum(situation, year, expected_vars)
+        expected_vars = ["mt_agi"]
+    expected = calculate_sum(simulation, year, expected_vars)
     assert expected > 0
-    actual = calculate_sum(situation, year, ["taxsim_state_agi"])
+    actual = calculate_sum(simulation, year, ["taxsim_state_agi"])
     assert actual == pytest.approx(expected, abs=0.01)
 
 
@@ -183,10 +187,11 @@ def test_state_ctc_matches_configured_component_sum():
         wages=20_050.0,
         dependent_ages=(9, 7),
     )
+    simulation = Simulation(situation=situation)
     expected = calculate_sum(
-        situation, 2023, configured_component_vars("state_ctcs", 2023)
+        simulation, 2023, configured_component_vars("state_ctcs", 2023)
     )
-    actual = calculate_sum(situation, 2023, ["taxsim_state_ctc"])
+    actual = calculate_sum(simulation, 2023, ["taxsim_state_ctc"])
     assert expected > 0
     assert actual == pytest.approx(expected, abs=0.01)
 
@@ -202,12 +207,15 @@ def test_mn_combined_credit_is_state_eitc_not_state_ctc(year):
         wages=20_050.0,
         dependent_ages=(9, 7),
     )
-    combined = calculate_sum(situation, year, ["mn_child_and_working_families_credits"])
+    simulation = Simulation(situation=situation)
+    combined = calculate_sum(
+        simulation, year, ["mn_child_and_working_families_credits"]
+    )
     assert combined > 0
-    assert calculate_sum(situation, year, ["taxsim_state_eitc"]) == pytest.approx(
+    assert calculate_sum(simulation, year, ["taxsim_state_eitc"]) == pytest.approx(
         combined, abs=0.01
     )
-    assert calculate_sum(situation, year, ["taxsim_state_ctc"]) == 0
+    assert calculate_sum(simulation, year, ["taxsim_state_ctc"]) == 0
 
 
 def test_state_property_tax_credit_matches_configured_component_sum():
@@ -218,12 +226,13 @@ def test_state_property_tax_credit_matches_configured_component_sum():
         wages=10_000.0,
         rent=12_000.0,
     )
+    simulation = Simulation(situation=situation)
     expected = calculate_sum(
-        situation,
+        simulation,
         2023,
         configured_component_vars("state_property_tax_credits", 2023),
     )
-    actual = calculate_sum(situation, 2023, ["taxsim_state_property_tax_credit"])
+    actual = calculate_sum(simulation, 2023, ["taxsim_state_property_tax_credit"])
     assert actual == pytest.approx(expected, abs=0.01)
 
 
@@ -249,6 +258,7 @@ def test_state_property_tax_credit_matches_configured_component_sum():
 def test_decomposed_credit_components_preserve_combined_credit_total(
     component_vars, combined_var, situation
 ):
-    combined_total = calculate_sum(situation, 2023, [combined_var])
-    decomposed_total = calculate_sum(situation, 2023, component_vars)
+    simulation = Simulation(situation=situation)
+    combined_total = calculate_sum(simulation, 2023, [combined_var])
+    decomposed_total = calculate_sum(simulation, 2023, component_vars)
     assert decomposed_total == pytest.approx(combined_total, abs=0.01)

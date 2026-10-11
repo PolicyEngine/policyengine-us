@@ -9,7 +9,8 @@ class taxsim_state_agi(Variable):
         "State adjusted gross income as TAXSIM reports it in its state AGI "
         "output. States listed in gov.states.household.states_using_federal_agi "
         "report federal adjusted gross income; other states report the state "
-        "AGI variables in gov.states.household.state_agis."
+        "AGI variables in gov.states.household.state_agis, except Arkansas "
+        "and Delaware, which report the larger of their separate and joint AGIs."
     )
     unit = USD
     definition_period = YEAR

@@ -8,8 +8,9 @@ the same form) each spouse fills their own column. From 2024 Form 2 starts
 from federal adjusted gross income (line 1) and federal taxable income, and
 has no Montana adjusted gross income line, so the state AGI that TAXSIM
 reports is federal adjusted gross income. TAXSIM (taxsimtest build 2025Aug23)
-reports exactly this: 80,000 for a 2022 couple with 100,000 of wages and a
-20,000 Schedule C loss, 121,200 (Montana AGI) for a 2023 filer aged 70, and
+reports these values rounded to whole dollars: 80,000 for a 2022 couple
+with 100,000 of wages and a 20,000 Schedule C loss, 121,200 (Montana AGI)
+for a 2023 filer aged 70, and
 100,000 (federal AGI) for a 2024 filer aged 70 whose Montana taxable income
 nets a 5,500 subtraction.
 
@@ -22,11 +23,18 @@ further batches. For every tax unit:
    couple files separately on the same form, and `mt_agi_joint` otherwise.
 2. Reporting: `taxsim_state_agi`, and its alias `state_agi`, equal `mt_agi`
    through 2023 and federal adjusted gross income from 2024.
-3. Pooling: through 2023, a unit on the joint path with no Montana additions
-   or subtractions and no Social Security reports max(0, federal AGI), so one
-   spouse's loss offsets the other spouse's income.
+3. Pooling: through 2023, a unit on the joint path with non-negative federal
+   AGI, no Montana additions or subtractions and no Social Security reports
+   federal AGI, so one spouse's loss offsets the other spouse's income.
 4. Bounds: `mt_agi` is never negative, and a unit outside Montana has no
    `mt_agi`.
+
+The non-negative bound is inherited from PE's existing `mt_agi_joint` and
+`mt_agi_indiv`, not a TAXSIM requirement. An independent review probe for a
+2023 single filer aged 40 with a 20,000 Schedule C loss and no other income
+returned federal AGI -20,000 and TAXSIM v32 -19,999.99; PE's Montana AGI is
+zero. Property 3 excludes negative federal AGI rather than endorsing that
+existing discrepancy. Properties 1, 2 and 4 still exercise those units.
 
 Guards check that the grid reaches both filing paths, a joint-path couple
 whose pooled AGI differs from the sum of the spouses' floored AGIs, and, from
@@ -190,15 +198,15 @@ def _check(units, year):
         & (run["mt_subtractions"] == 0)
         & (run["social_security"] == 0)
     )
-    pooled = in_mt & ~separate & unadjusted
+    pooled = in_mt & ~separate & unadjusted & (run["adjusted_gross_income"] >= 0)
     if year < FIRST_FEDERAL_AGI_YEAR:
         np.testing.assert_allclose(
             reported[pooled],
-            np.maximum(run["adjusted_gross_income"][pooled], 0),
+            run["adjusted_gross_income"][pooled],
             atol=TOLERANCE,
         )
 
-    # 4. Bounds.
+    # 4. Inherited PE bounds, including negative federal AGI.
     assert (mt_agi >= 0).all()
     assert (mt_agi[~in_mt] == 0).all()
     return run
@@ -209,6 +217,7 @@ def test_seeded_grid(year):
     run = _check(_seeded_units(), year)
     in_mt = run["in_mt"]
     separate = run["mt_files_separately"]
+    assert (in_mt & (run["adjusted_gross_income"] < 0)).any()
     if year < FIRST_FEDERAL_AGI_YEAR:
         # Both filing paths are reached.
         assert (in_mt & separate).any()
@@ -216,7 +225,14 @@ def test_seeded_grid(year):
         # Pooling matters for some joint-path couple: summing each spouse's
         # floored Montana AGI, as taxsim_state_agi used to, overstates it.
         floored_sum = run["mt_agi_indiv"]
-        joint_path = in_mt & ~separate
+        joint_path = (
+            in_mt
+            & ~separate
+            & (run["adjusted_gross_income"] >= 0)
+            & (run["mt_additions"] == 0)
+            & (run["mt_subtractions"] == 0)
+            & (run["social_security"] == 0)
+        )
         assert (floored_sum[joint_path] > run["mt_agi"][joint_path] + 1).any()
     else:
         # Federal AGI is not just the Montana base under another name.

@@ -11,6 +11,9 @@ metadata:
     - title: 2024 Montana Form 2 Instructions, page 7 - Line 1, federal adjusted gross income
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15
 values:
+  # Carry forward the seven states from taxsim_state_agi's former
+  # FEDERAL_AGI_STATES constant, based on the comments in state_agis.yaml.
+  # The references above support Montana's addition from 2024.
   0000-01-01:
     - CO
     - MI
