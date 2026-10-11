@@ -258,7 +258,7 @@
     # qualifying child.
     eitc_demographic_eligible: true
 
-- name: 2025 childless single filer whose parent files only to claim a refund is not a dependent
+- name: 2025 claimable childless filer qualifies when nonrequired parent files only for a withholding refund
   period: 2025
   input:
     people:
@@ -266,6 +266,8 @@
         age: 26
         employment_income: 2_000
         claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
     tax_units:
       tax_unit:
         members: [head]
@@ -274,7 +276,75 @@
         members: [head]
         state_code: CA
   output:
-    # Publication 596 (2025, p.18): the credit is allowed when the person who can claim
-    # you files only to claim a refund; such a person is not a dependent, so the
-    # input is false.
+    # Pub. 596 PDF p.18: nonrequired parent files only for a refund of income tax
+    # withheld. Pub. 501 PDF p.24: claimability still limits the standard deduction.
     eitc_demographic_eligible: true
+    basic_standard_deduction: 2_450
+
+- name: 2025 claimable childless filer qualifies when nonrequired parent files no return
+  period: 2025
+  input:
+    people:
+      head:
+        age: 26
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    # Pub. 596 PDF p.18 also covers a nonrequired claimant who files no return.
+    # The exception changes EITC, while Pub. 501 PDF p.24 still limits deductions.
+    eitc_demographic_eligible: true
+    basic_standard_deduction: 2_450
+
+- name: 2025 unclaimed childless filer remains ineligible when claimable by a parent required to file
+  period: 2025
+  input:
+    people:
+      head:
+        age: 26
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    # Pub. 596 PDF p.18 Example 2: choosing not to claim the filer is insufficient.
+    eitc_demographic_eligible: false
+    basic_standard_deduction: 2_450
+
+- name: 2025 unclaimed childless filer remains ineligible when parent files for refundable credits
+  period: 2025
+  input:
+    people:
+      head:
+        age: 26
+        employment_income: 2_000
+        claimed_as_dependent_on_another_return: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: false
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: CA
+  output:
+    # Pub. 596 PDF pp.18-19: filing for a credit is not filing solely for a refund
+    # of withholding or estimated payments, even if no return was required.
+    eitc_demographic_eligible: false
+    basic_standard_deduction: 2_450
