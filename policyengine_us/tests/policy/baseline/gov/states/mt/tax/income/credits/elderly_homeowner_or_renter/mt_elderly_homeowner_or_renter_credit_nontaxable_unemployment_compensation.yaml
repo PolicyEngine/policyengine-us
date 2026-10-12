@@ -46,14 +46,14 @@
     taxable_unemployment_compensation: 4_800
     mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: 10_200
 
-- name: Case 3, 2020 income at the 150,000 cutoff gets no exclusion.
+- name: Case 3, 2020 income above the 150,000 cutoff gets no exclusion.
   period: 2020
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 66
-        taxable_pension_income: 150_000
+        taxable_pension_income: 160_000
         unemployment_compensation: 8_000
     tax_units:
       tax_unit:
@@ -63,7 +63,7 @@
         members: [person1]
         state_name: MT
   output:
-    # AGI without the compensation is 150_000, not less than 150_000, so all
+    # AGI without the compensation is 160_000, not less than 150_000, so all
     # of it is in federal AGI.
     taxable_unemployment_compensation: 8_000
     mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: 0
