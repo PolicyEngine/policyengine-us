@@ -169,3 +169,129 @@
     # Total pension: 10,000 + 10,000 = 20,000. min(20,000, 15,000 cap) = 15,000.
     mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 15_000
 
+
+- name: A dependent's military retirement pay does not trigger the military retirement comparison for the filer.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        taxable_pension_income: 40_000
+        military_retirement_pay: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 10
+        military_retirement_pay: 10_000
+        is_tax_unit_head_or_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_three_eligible: true
+        mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 1
+        mi_retirement_benefits_deduction_tier_one_amount: 10_000
+        mi_expanded_retirement_benefits_deduction: 0
+        members: [person1, person2]
+        filing_status: SINGLE
+    household:
+      members: [person1, person2]
+      state_code: MI
+  output:
+    # Worksheet 3.2 line 2 takes only military retirement pay on the filer's
+    # Schedule 1, line 11, which excludes the dependent's pay, so the cap is
+    # not limited to the tier 1 amount: min(15,000, 40,000) = 15,000.
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 15_000
+
+- name: Only the head's and spouse's pensions count toward the non-retired tier three deduction, not a dependent's.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        taxable_pension_income: 10_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        taxable_pension_income: 3_000
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 12
+        taxable_pension_income: 30_000
+        military_retirement_pay: 10_000
+        is_tax_unit_head_or_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_three_eligible: true
+        mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 2
+        mi_retirement_benefits_deduction_tier_one_amount: 25_000
+        mi_expanded_retirement_benefits_deduction: 0
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    household:
+      members: [person1, person2, person3]
+      state_code: MI
+  output:
+    # min(10,000 + 3,000, 2 x 15,000 cap) = 13,000
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 13_000
+
+- name: A filer aged 64 with a pension from SS-exempt employment gets the full non-retired tier three cap despite a dependent's military retirement pay.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 64
+        taxable_public_pension_income: 20_000
+        retirement_benefits_from_ss_exempt_employment: 20_000
+      child:
+        age: 10
+        military_retirement_pay: 10_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        mi_retirement_benefits_deduction_tier_one_amount: 10_000
+        mi_expanded_retirement_benefits_deduction: 0
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MI
+  output:
+    # Aged 62 through 66: eligible for tier three.
+    mi_retirement_benefits_deduction_tier_three_eligible: true
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired_eligible_people: 1
+    # min(20,000, 15,000 cap) = 15,000
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 15_000
+
+- name: A filer aged 67 is past the tier three age range, whatever a dependent receives.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        taxable_public_pension_income: 20_000
+        retirement_benefits_from_ss_exempt_employment: 20_000
+      child:
+        age: 10
+        military_retirement_pay: 10_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MI
+  output:
+    mi_retirement_benefits_deduction_tier_three_eligible: false
+    mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired: 0

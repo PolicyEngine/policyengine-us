@@ -9,12 +9,12 @@ class income_adjusted_part_d_premium_surcharge(Variable):
     definition_period = YEAR
     defined_for = "medicare_enrolled"
     reference = "https://www.law.cornell.edu/cfr/text/42/423.286"
-    documentation = "Annualized Medicare Part D IRMAA surcharge under 42 U.S.C. 1395w-113(a)(7). This is the federally set income-related premium adjustment amount, paid in addition to the beneficiary's underlying Part D plan premium. Annual bracket values come from CMS fact sheets."
+    documentation = "Annualized Medicare Part D IRMAA surcharge under 42 U.S.C. 1395w-113(a)(7). This is the federally set income-related premium adjustment amount, paid in addition to the beneficiary's underlying Part D plan premium. Annual bracket values come from CMS fact sheets. The brackets apply to medicare_irmaa_magi: income from two years prior, or from the benefit year when gov.simulation.medicare_irmaa_uses_current_year_income is true."
 
     def formula(person, period, parameters):
         tax_unit = person.tax_unit
         filing_status = tax_unit("filing_status", period)
-        magi = tax_unit("medicare_irmaa_magi_two_years_prior", period)
+        magi = tax_unit("medicare_irmaa_magi", period)
 
         status = filing_status.possible_values
         statuses = [

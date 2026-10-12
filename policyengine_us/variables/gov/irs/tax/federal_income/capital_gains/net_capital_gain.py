@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.irs.tax.federal_income.capital_gains.filer_schedule_d_lines import (
+    filer_schedule_d_lines,
+)
 
 
 class net_capital_gain(Variable):
@@ -31,18 +34,25 @@ class net_capital_gain(Variable):
             title="2025 Form 4952, line 4g instructions",
             href="https://www.irs.gov/pub/irs-prior/f4952--2025.pdf#page=4",
         ),
+        dict(
+            title="2025 Schedule D (Form 1040), lines 7, 13 and 15",
+            href="https://www.irs.gov/pub/irs-prior/f1040sd--2025.pdf#page=1",
+        ),
+        dict(
+            title="2025 Form 8814, line 4 (a child's income is on the child's own return)",
+            href="https://www.irs.gov/pub/irs-prior/f8814--2025.pdf#page=1",
+        ),
     ]
 
     def formula(tax_unit, period, parameters):
-        # Capital gain distributions, including those reported without
-        # Schedule D (Form 1040 line 7 with the box checked), are long-term
-        # capital gains under IRC 852(b)(3)(B).
-        long_term_gain = add(
-            tax_unit,
-            period,
-            ["long_term_capital_gains", "non_sch_d_capital_gains"],
-        )
-        short_term_loss = max_(0, -add(tax_unit, period, ["short_term_capital_gains"]))
+        # The head and spouse's Schedule D. Capital gain distributions,
+        # including those reported without Schedule D (Form 1040 line 7a), are
+        # long-term capital gains under IRC 852(b)(3)(B), on line 15. A tax
+        # unit dependent's gains, losses and dividends are on the dependent's
+        # own return.
+        lines = filer_schedule_d_lines(tax_unit, period)
+        long_term_gain = lines.line_15
+        short_term_loss = max_(0, -lines.line_7)
         # 26 U.S.C. 1222(11), determined without regard to section 1(h)(11).
         gain = max_(0, long_term_gain - short_term_loss)
         # Form 4952 line 4g: the net capital gain and qualified dividends
@@ -53,12 +63,16 @@ class net_capital_gain(Variable):
         # taken into account under 163(d)(4)(B)(iii); section 1(h)(11)(D)(i)
         # removes the rest from qualified dividend income.
         election = max_(
-            0, add(tax_unit, period, ["investment_income_elected_form_4952"])
+            0,
+            tax_unit_non_dep_add(
+                tax_unit, period, ["investment_income_elected_form_4952"]
+            ),
         )
         gain_elected = min_(election, gain)
         dividends_elected = election - gain_elected
         qualified_dividends = max_(
             0,
-            add(tax_unit, period, ["qualified_dividend_income"]) - dividends_elected,
+            tax_unit_non_dep_add(tax_unit, period, ["qualified_dividend_income"])
+            - dividends_elected,
         )
         return gain - gain_elected + qualified_dividends
