@@ -14,7 +14,11 @@ Security under § 86, which is correct and outside what is drawn here.
    income is excluded from the filer's gross income throughout the model).
 2. Tax unit net investment income rises by exactly the sum of estate_income
    plus the Schedule K-1 (Form 1041) box 14 code H adjustment over non-dependent
-   members (Form 8960 lines 4a and 7).
+   members (Form 8960 lines 4a and 7), less the part of an estate loss that
+   section 461(l) disallows: § 1411(c)(1)(B) allows only deductions allowed by
+   chapter 1. Estate income is the only business item drawn here, so the whole
+   excess business loss falls on estate losses that net investment income
+   counts.
 3. When every member's estate income is nonnegative and nothing else produces
    a loss, AGI rises by exactly the non-dependents' estate income.
 4. A dependent's estate income and adjustment, of either sign, leave the
@@ -238,9 +242,11 @@ def runs(request, units):
         )
         out[name]["filing_status"] = sim.calculate("filing_status", year)
         out[name]["person_tax_unit"] = sim.populations["tax_unit"].members_entity_id
-    out["niit_parameters"] = sim.tax_benefit_system.parameters(
-        f"{year}-01-01"
-    ).gov.irs.investment.net_investment_income_tax
+    year_parameters = sim.tax_benefit_system.parameters(f"{year}-01-01")
+    out["niit_parameters"] = (
+        year_parameters.gov.irs.investment.net_investment_income_tax
+    )
+    out["section_461l_threshold"] = year_parameters.gov.irs.ald.loss.max
     return out
 
 
@@ -269,12 +275,35 @@ def test_gross_income_includes_positive_estate_income_of_non_dependents(runs, un
     np.testing.assert_allclose(delta, expected, atol=TOLERANCE)
 
 
+def _section_461l_estate_addback(runs, units):
+    """The estate losses section 461(l) disallows that NII would otherwise take.
+
+    Estate income is the only business item drawn, so the excess business loss
+    is the head and spouse's estate losses beyond their estate income plus the
+    threshold, and all of it falls on net investment income losses: a Part III
+    loss stays on Form 8960 line 4a whatever the code H adjustment (line 7).
+    """
+    estate, _, dependent = _person_inputs(units)
+    filer = ~dependent
+    tax_unit = runs["with"]["person_tax_unit"]
+
+    def by_unit(values):
+        return np.bincount(tax_unit, weights=filer * values, minlength=len(units))
+
+    income = by_unit(np.maximum(0, estate))
+    loss = by_unit(np.maximum(0, -estate))
+    threshold = runs["section_461l_threshold"][runs["with"]["filing_status"]]
+    return np.maximum(0, loss - (income + threshold))
+
+
 def test_net_investment_income_adds_estate_income_and_code_h(runs, units):
     estate, adjustment, dependent = _person_inputs(units)
     per_person = np.where(dependent, 0, estate + adjustment)
     expected = np.bincount(
         runs["with"]["person_tax_unit"], weights=per_person, minlength=len(units)
-    )
+    ) + _section_461l_estate_addback(runs, units)
+    # The two edge rows with a 400,000 estate loss make section 461(l) bind.
+    assert (_section_461l_estate_addback(runs, units) > 0).sum() >= 2
     delta = (
         runs["with"]["net_investment_income"] - runs["zero"]["net_investment_income"]
     )

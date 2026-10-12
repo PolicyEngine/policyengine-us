@@ -15,3 +15,27 @@
     state_code: MN
   output:
     mn_niit: 1_000 # (1_100_000 - 1_000_000) * 0.01
+
+- name: Minnesota net investment income includes farm rental income
+  # Minn. Stat. 290.033(a) uses the section 1411(c) definition, less gain on
+  # class 2a property, so Form 4835 rent counts. NII 800,000 of interest +
+  # 300,000 of farm rent = 1,100,000; 1% x (1,100,000 - 1,000,000) = 1,000.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        taxable_interest_income: 800_000
+        farm_rent_income: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    net_investment_income: 1_100_000
+    mn_niit: 1_000

@@ -1,0 +1,115 @@
+# Section 461(l): business losses beyond business income plus the threshold
+# are disallowed this year (Form 461 line 16). 2025 thresholds: 313,000, or
+# 626,000 on a joint return.
+
+- name: A loss within the threshold leaves no excess
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        is_tax_unit_head: true
+        self_employment_income: -100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    limited_business_loss: 100_000
+    excess_business_loss: 0
+
+- name: A Form 4835 loss beyond the threshold
+  # Allowed 313,000 of the 600,000 loss; 287,000 disallowed.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        farm_rent_income: -600_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    limited_business_loss: 313_000
+    excess_business_loss: 287_000
+
+- name: Business income raises the limit
+  # Limit 100,000 + 313,000 = 413,000; 600,000 - 413,000 = 187,000.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 60
+        is_tax_unit_head: true
+        rental_income: 100_000
+        farm_rent_income: -600_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    limited_business_loss: 413_000
+    excess_business_loss: 187_000
+
+- name: A joint return combines both spouses' losses
+  # 400,000 + 400,000 = 800,000; 800,000 - 626,000 = 174,000.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 60
+        is_tax_unit_head: true
+        self_employment_income: -400_000
+      spouse:
+        age: 58
+        is_tax_unit_spouse: true
+        farm_rent_income: -400_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    limited_business_loss: 626_000
+    excess_business_loss: 174_000
+
+- name: A dependent's loss stays off the filer's Form 461
+  # Only the parent's 400,000; 400,000 - 313,000 = 87,000.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        self_employment_income: -400_000
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+        farm_rent_income: -400_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    limited_business_loss: 313_000
+    excess_business_loss: 87_000
