@@ -722,19 +722,37 @@ def test_new_forms_give_finite_sign_preserving_float32_responses(form, data):
 
 
 @pytest.mark.parametrize(
-    "dtype, semi_elasticity, round_trip",
+    "dtype, semi_elasticity, round_trip, absolute_error",
     [
-        (np.float32, 3.4, 1.000001),
-        # Intended: exp(-20) is stored as a multiplier with no significant
-        # digits left once 1 is added back, so the return leg cannot undo it.
-        (np.float32, 20, 0.0),
-        (np.float64, 20, 1.0),
+        # At beta = 3.4 the exponents and +1 additions are exact. Allowing
+        # two ulps per expm1 gives errors of eps and 32*eps in the outbound
+        # and return factors. The leading product error is bounded by
+        # (exp(beta) + 32*exp(-beta) + 0.5)*eps, including final rounding.
+        # With second-order terms this is < 32*eps, across library builds.
+        (np.float32, 3.4, 1.0, 32 * np.finfo(np.float32).eps),
+        # Intended: expm1(-20) rounds to -1 in float32, so adding 1 gives
+        # exact zero and the return leg cannot undo it.
+        (np.float32, 20, 0.0, 0.0),
+        # In float64, two outbound ulps amplified by exp(20) contribute
+        # exp(20)*eps64 ~= 1.08e-7; the other rounding terms are negligible.
+        (np.float64, 20, 1.0, 2e-7),
     ],
 )
 def test_round_trip_precision_matches_the_documentation(
-    dtype, semi_elasticity, round_trip
+    dtype, semi_elasticity, round_trip, absolute_error
 ):
     zero, one, beta = dtype(0), dtype(1), dtype(semi_elasticity)
     out = 1 + semi_elasticity_response_factor(zero, one, beta)
     back = 1 + semi_elasticity_response_factor(one, zero, beta)
-    assert out * back == pytest.approx(round_trip, rel=1e-6, abs=1e-12)
+    assert float(out * back) == pytest.approx(round_trip, rel=0, abs=absolute_error)
+
+
+def test_documented_float32_round_trip_bound_rejects_degraded_precision():
+    """Rounding the outbound response to float16 must fail the float32 bound."""
+    zero, one, beta = np.float32(0), np.float32(1), np.float32(3.4)
+    response = semi_elasticity_response_factor(zero, one, beta)
+    out = 1 + np.float32(np.float16(response))
+    back = 1 + semi_elasticity_response_factor(one, zero, beta)
+    assert float(out * back) != pytest.approx(
+        1.0, rel=0, abs=32 * np.finfo(np.float32).eps
+    )
