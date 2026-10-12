@@ -374,12 +374,12 @@
   input:
     people:
       head:
-        age: 40
-        taxable_interest_income: 5_000
+        age: 70
+        taxable_interest_income: 1_500
       spouse:
         age: 40
         claimed_as_dependent_on_another_return: true
-        taxable_interest_income: 1_350
+        taxable_interest_income: 1_000
     tax_units:
       tax_unit:
         members: [head, spouse]
@@ -388,7 +388,11 @@
         members: [head, spouse]
         state_code: TX
   output:
-    # Gross income of $6,350 is under the $31,500 joint standard deduction.
+    # The claimed spouse's unearned income is $1,000, not over $1,350. The
+    # couple's $2,500 would be. Gross income of $2,500 is also under the
+    # joint standard deduction, whether that is the regular $31,500 plus
+    # $1,600 or the limited $1,350 plus $1,600 that the Standard Deduction
+    # Worksheet for Dependents gives when a spouse can be claimed.
     tax_unit_is_required_to_file: false
 
 - name: 2025, joint return whose spouse aged 65 can be claimed, unearned income of $2,950
