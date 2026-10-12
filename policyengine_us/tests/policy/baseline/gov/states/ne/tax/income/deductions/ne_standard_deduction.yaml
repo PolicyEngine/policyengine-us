@@ -62,3 +62,34 @@
     state_code: NE
   output:
     ne_standard_deduction: 10_600  # 8_600 + 2_000 * 1
+
+# 2026 Form 1040N-ES: worksheet line 5 (page 4) gives $8,850 single and
+# separate, $17,700 joint, $12,950 head of household; page 5 gives the
+# additional amount of $2,050 (unmarried) and $1,700 (married or qualifying
+# surviving spouse) for each 65-or-older or blind condition.
+- name: 2026 single filer
+  period: 2026
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 0
+    state_code: NE
+  output:
+    ne_standard_deduction: 8_850
+
+- name: 2026 head of household, aged
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    aged_blind_count: 1
+    state_code: NE
+  output:
+    ne_standard_deduction: 15_000  # 12_950 + 2_050 * 1
+
+- name: 2026 joint filers, both aged
+  period: 2026
+  input:
+    filing_status: JOINT
+    aged_blind_count: 2
+    state_code: NE
+  output:
+    ne_standard_deduction: 21_100  # 17_700 + 1_700 * 2

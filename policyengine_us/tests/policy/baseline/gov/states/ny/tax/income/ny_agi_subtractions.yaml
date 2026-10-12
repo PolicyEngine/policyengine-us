@@ -1,0 +1,69 @@
+- name: A dependent child's state income tax refund is not subtracted from the filer's NY AGI
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        salt_refund_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: NY
+  output:
+    # Tax Law 612(c)(7) subtracts refunds only to the extent included in
+    # federal gross income; the child's refund is on the child's own return.
+    ny_agi_subtractions: 0
+    ny_agi: 50_000
+
+- name: The head's refund and tax-unit U.S. government interest are subtracted, a dependent's refund is not
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        salt_refund_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        salt_refund_income: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        us_govt_interest: 500
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: NY
+  output:
+    # 1,000 (head's refund) + 500 (tax-unit U.S. government interest).
+    ny_agi_subtractions: 1_500

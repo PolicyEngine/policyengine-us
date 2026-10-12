@@ -1,0 +1,45 @@
+# 2026 thresholds from the Minnesota DOR Tax Year 2026 Inflation-Adjusted
+# Amounts, 290.06 Subd. 2c (pages 2-3), and the DOR's December 16, 2025 release.
+- name: MN basic tax 2026 single filer in the 7.85% bracket
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SINGLE
+    mn_taxable_income: 110_000
+    state_code: MN
+  output:
+    # Single: 5.35% to 33,310; 6.80% to 109,430; 7.85% to 203,150.
+    mn_basic_tax: 0.0535 * 33_310 + 0.068 * (109_430 - 33_310) + 0.0785 * (110_000 - 109_430)
+
+- name: MN basic tax 2026 joint filer in the 7.85% bracket
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: JOINT
+    mn_taxable_income: 200_000
+    state_code: MN
+  output:
+    # Married joint: 5.35% to 48,700; 6.80% to 193,480; 7.85% to 337,930.
+    mn_basic_tax: 0.0535 * 48_700 + 0.068 * (193_480 - 48_700) + 0.0785 * (200_000 - 193_480)
+
+- name: MN basic tax 2026 head of household in the 9.85% bracket
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    mn_taxable_income: 271_000
+    state_code: MN
+  output:
+    # Head of household: 5.35% to 41,010; 6.80% to 164,800; 7.85% to 270,060.
+    mn_basic_tax: 0.0535 * 41_010 + 0.068 * (164_800 - 41_010) + 0.0785 * (270_060 - 164_800) + 0.0985 * (271_000 - 270_060)
+
+- name: MN basic tax 2026 married filing separately in the 9.85% bracket
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    mn_taxable_income: 169_000
+    state_code: MN
+  output:
+    # Married separate: 5.35% to 24,350; 6.80% to 96,740; 7.85% to 168,965.
+    mn_basic_tax: 0.0535 * 24_350 + 0.068 * (96_740 - 24_350) + 0.0785 * (168_965 - 96_740) + 0.0985 * (169_000 - 168_965)

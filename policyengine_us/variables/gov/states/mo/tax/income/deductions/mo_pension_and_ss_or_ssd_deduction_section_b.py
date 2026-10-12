@@ -11,6 +11,8 @@ class mo_pension_and_ss_or_ssd_deduction_section_b(Variable):
         "https://dor.mo.gov/forms/MO-A_2021.pdf#page=3",
         "https://dor.mo.gov/forms/MO-1040%20Fillable%20Calculating_2021.pdf#page=2",
         "https://revisor.mo.gov/main/OneSection.aspx?section=143.124",
+        "https://dor.mo.gov/forms/MO-A_2025.pdf#page=3",
+        "https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=17",
     )
     defined_for = StateCode.MO
 
@@ -30,7 +32,13 @@ class mo_pension_and_ss_or_ssd_deduction_section_b(Variable):
                 - p.mo_private_pension_deduction_allowance[filing_status]
             ),
         )
-        ind_pvt_pen_amt = add(person, period, p.mo_private_pension_sources)
+        # Form MO-A Line 6 takes the private pension of the filer and spouse
+        # from their federal return. Dependents' income is not in federal
+        # AGI; they report it on their own return.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        ind_pvt_pen_amt = (
+            add(person, period, p.mo_private_pension_sources) * head_or_spouse
+        )
         ind_pvt_pen_val = min_(ind_pvt_pen_amt, p.mo_max_private_pension)
         unit_pvt_pen_val = tax_unit.sum(ind_pvt_pen_val)  # line8
         unit_deduction = max_(0, unit_pvt_pen_val - excess_agi)  # line9
