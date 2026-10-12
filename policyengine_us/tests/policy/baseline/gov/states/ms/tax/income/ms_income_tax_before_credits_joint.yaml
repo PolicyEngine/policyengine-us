@@ -69,3 +69,69 @@
     ms_taxable_income_joint: 4_000
   output:
     ms_income_tax_before_credits_joint: 0 
+
+# Form 80-100 instructions, line 17: on a joint or combined return, a positive
+# column and a negative column are combined, and the tax on a net positive
+# amount is computed in Column A. 2022 rates: 0% on the first $5,000, 4% on
+# the next $5,000, 5% above $10,000.
+- name: A negative column offsets the other column
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        ms_taxable_income_joint: -5_000
+      spouse:
+        is_tax_unit_spouse: true
+        ms_taxable_income_joint: 15_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MS
+  output:
+    # Combined 10,000: 5,000 * 0% + 5,000 * 4% = 200, in Column A
+    ms_income_tax_before_credits_joint: [200, 0]
+
+- name: A combined negative amount gives no tax
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        ms_taxable_income_joint: -20_000
+      spouse:
+        is_tax_unit_spouse: true
+        ms_taxable_income_joint: 15_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MS
+  output:
+    ms_income_tax_before_credits_joint: [0, 0]
+
+- name: Two positive columns are taxed separately
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        ms_taxable_income_joint: 6_000
+      spouse:
+        is_tax_unit_spouse: true
+        ms_taxable_income_joint: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MS
+  output:
+    # Each column: 5,000 * 0% + 1,000 * 4% = 40
+    ms_income_tax_before_credits_joint: [40, 40]

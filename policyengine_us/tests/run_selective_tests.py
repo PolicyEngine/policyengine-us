@@ -380,6 +380,22 @@ class SelectiveTestRunner:
             if file.endswith(".py") and "/tests/" not in file
         ]
 
+    def get_untested_sources(
+        self, source_files: List[str], test_paths: Set[str]
+    ) -> List[str]:
+        """Source files that map to tests, none of which are in this run.
+
+        limit_test_paths defers slow directories and narrows broad changes
+        to their directly changed tests, so some files' tests run only in
+        the full suite. Coverage of those files here would count their
+        untouched lines as uncovered.
+        """
+        return [
+            file
+            for file in source_files
+            if (mapped := self.map_files_to_tests({file})) and not mapped & test_paths
+        ]
+
     def limit_test_paths(
         self, test_paths: Set[str], changed_files: Set[str]
     ) -> Set[str]:
@@ -456,8 +472,25 @@ class SelectiveTestRunner:
                 changed_py_files = self.get_changed_python_coverage_patterns(
                     changed_files
                 )
-                if changed_py_files:
-                    include_patterns = changed_py_files
+                untested = self.get_untested_sources(changed_py_files, test_paths)
+                if untested:
+                    print(
+                        f"Leaving {len(untested)} changed source file(s) out of "
+                        "coverage; their tests run only in the full suite:"
+                    )
+                    for file in sorted(untested):
+                        print(f"  - {file}")
+                tested_py_files = [
+                    file for file in changed_py_files if file not in untested
+                ]
+                if tested_py_files:
+                    include_patterns = tested_py_files
+                elif untested:
+                    print(
+                        "No changed source file is tested in this run; running "
+                        "tests without coverage."
+                    )
+                    with_coverage = False
                 else:
                     print(
                         "No changed Python source files; running tests without "

@@ -11,3 +11,163 @@
         members: [person1, person2]
   output:
     itemized_medical_expenses: 1_500
+
+# Premiums paid through pre-tax payroll deductions.
+#
+# IRC 213(a) allows "the expenses paid during the taxable year, not
+# compensated for by insurance or otherwise, for medical care". A premium paid
+# by salary reduction under a section 125 cafeteria plan is paid by the
+# employer, not the employee, and is excluded from wages under IRC 106(a)
+# (Rev. Rul. 2002-3). It is therefore not an expense the taxpayer paid.
+# IRS Publication 502 (2025), "Employer-Sponsored Health Insurance Plan":
+# "Don't include in your medical and dental expenses any insurance premiums
+# paid by an employer-sponsored health insurance plan unless the premiums are
+# included on your Form W-2, Wage and Tax Statement."
+#
+# pre_tax_health_insurance_premiums and the other premium inputs are disjoint:
+# a premium is reported in one or the other, never both. Schedule A therefore
+# counts the other premium inputs in full and never the pre-tax input.
+
+- name: Pre-tax payroll premiums reduce wages and are not Schedule A medical expenses.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 60_000
+    pre_tax_health_insurance_premiums: 2_000
+    other_medical_expenses: 9_000
+  output:
+    # 60,000 - 2,000, for income tax and for FICA.
+    irs_employment_income: 58_000
+    payroll_tax_gross_wages: 58_000
+    adjusted_gross_income: 58_000
+    medical_expense_health_insurance_premiums: 0
+    # Counting the premium again would give 11,000.
+    itemized_medical_expenses: 9_000
+    # 9,000 - 7.5% of 58,000.
+    medical_expense_deduction: 4_650
+
+- name: A worker who pays premiums both ways counts only the after-tax premiums.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 60_000
+    pre_tax_health_insurance_premiums: 2_000
+    health_insurance_premiums_without_medicare_part_b: 3_000
+    other_medical_expenses: 9_000
+  output:
+    irs_employment_income: 58_000
+    adjusted_gross_income: 58_000
+    # The 3,000 is not reduced by the 2,000: the inputs do not overlap.
+    medical_expense_health_insurance_premiums: 3_000
+    itemized_medical_expenses: 12_000
+    # 12,000 - 7.5% of 58,000.
+    medical_expense_deduction: 7_650
+
+- name: The directly supplied premium input likewise excludes pre-tax premiums.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 60_000
+    pre_tax_health_insurance_premiums: 2_000
+    health_insurance_premiums: 3_000
+    other_medical_expenses: 9_000
+  output:
+    medical_expense_health_insurance_premiums: 3_000
+    itemized_medical_expenses: 12_000
+    medical_expense_deduction: 7_650
+
+- name: The same premiums paid after tax are medical expenses and do not reduce wages.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 60_000
+    health_insurance_premiums_without_medicare_part_b: 5_000
+    other_medical_expenses: 9_000
+  output:
+    irs_employment_income: 60_000
+    payroll_tax_gross_wages: 60_000
+    adjusted_gross_income: 60_000
+    medical_expense_health_insurance_premiums: 5_000
+    itemized_medical_expenses: 14_000
+    # 14,000 - 7.5% of 60,000.
+    medical_expense_deduction: 9_500
+
+- name: A working Medicare enrollee counts Part B premiums but not pre-tax payroll premiums.
+  period: 2025
+  input:
+    age: 67
+    employment_income: 60_000
+    pre_tax_health_insurance_premiums: 2_000
+    medicare_enrolled: true
+    medicare_part_b_premium: 2_220
+    other_medical_expenses: 9_000
+  output:
+    irs_employment_income: 58_000
+    medical_expense_health_insurance_premiums: 2_220
+    itemized_medical_expenses: 11_220
+    # 11,220 - 7.5% of 58,000.
+    medical_expense_deduction: 6_870
+
+- name: Joint filers count one spouse's after-tax premiums and not the other's pre-tax premiums.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 50_000
+        pre_tax_health_insurance_premiums: 2_400
+        other_medical_expenses: 6_000
+      person2:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 30_000
+        health_insurance_premiums_without_medicare_part_b: 1_800
+        other_medical_expenses: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+  output:
+    irs_employment_income: [47_600, 30_000]
+    adjusted_gross_income: 77_600
+    medical_expense_health_insurance_premiums: [0, 1_800]
+    # 6,000 + 1,000 + 1,800.
+    itemized_medical_expenses: 8_800
+    # 8,800 - 7.5% of 77,600.
+    medical_expense_deduction: 2_980
+
+- name: An itemizer with pre-tax premiums deducts only the other medical expenses.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 60_000
+    pre_tax_health_insurance_premiums: 2_000
+    other_medical_expenses: 30_000
+    # Isolate the medical deduction from modeled state and local taxes.
+    salt_deduction: 0
+  output:
+    adjusted_gross_income: 58_000
+    itemized_medical_expenses: 30_000
+    # 30,000 - 7.5% of 58,000.
+    medical_expense_deduction: 25_650
+    tax_unit_itemizes: true
+    # 58,000 - 25,650. Counting the premium again would give 30,350.
+    taxable_income: 32_350
+
+- name: A non-itemizer with pre-tax premiums gets the wage exclusion and the standard deduction.
+  period: 2025
+  input:
+    age: 40
+    employment_income: 60_000
+    pre_tax_health_insurance_premiums: 2_000
+  output:
+    adjusted_gross_income: 58_000
+    itemized_medical_expenses: 0
+    medical_expense_deduction: 0
+    tax_unit_itemizes: false
+    standard_deduction: 15_750
+    # 58,000 - 15,750.
+    taxable_income: 42_250

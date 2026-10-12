@@ -1,0 +1,1 @@
+Base Missouri's capital gains subtraction on the filers' gains included in federal AGI: exclude dependents and supplied tax-unit aggregates, include capital gain distributions and directly supplied person gains, and allocate only to filers with positive gains.

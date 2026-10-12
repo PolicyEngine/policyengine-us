@@ -1307,7 +1307,10 @@
         taxsim_childcare: 0
         taxsim_scorp: 0
   output:
-    taxsim_v10: 252_466.67
+    # Joint wages 92,500 + 160,002. The 500 of Schedule C income is
+    # dependent person_3's (TAXSIM's psemp and ssemp are 0), so half of
+    # its self-employment tax is deducted on person_3's own return.
+    taxsim_v10: 252_502
 
 
 - name: Tax unit 17 (CPS ID 1325801) matches TAXSIM35 outputs

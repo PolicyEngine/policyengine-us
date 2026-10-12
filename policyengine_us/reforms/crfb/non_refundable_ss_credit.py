@@ -88,44 +88,35 @@ def non_refundable_ss_credit_reform() -> Reform:
             return highest_rate
 
     def modify_parameters(parameters):
-        parameters.gov.irs.credits.non_refundable.update(
-            start=instant("2026-01-01"),
-            value=[
-                "foreign_tax_credit",
-                "cdcc",
-                "non_refundable_american_opportunity_credit",
-                "lifetime_learning_credit",
-                "savers_credit",
-                "residential_clean_energy_credit",
-                "energy_efficient_home_improvement_credit",
-                "elderly_disabled_credit",
-                "new_clean_vehicle_credit",
-                "used_clean_vehicle_credit",
-                "non_refundable_ctc",
-                "ss_credit",
-            ],
-        )
-        # The credit precedes the Child Tax Credit and, like every credit,
-        # the residential clean energy credit (26 U.S.C. 25D(c)).
+        # The baseline order of gov.irs.credits.non_refundable, with the
+        # Social Security credit after the other credits that precede the
+        # Child Tax Credit. It precedes the CTC and, like every credit, the
+        # residential clean energy credit (26 U.S.C. 25D(c)).
+        credits_before_ctc = [
+            "foreign_tax_credit",
+            "cdcc",
+            "elderly_disabled_credit",
+            "non_refundable_american_opportunity_credit",
+            "lifetime_learning_credit",
+            "savers_credit",
+            "energy_efficient_home_improvement_credit",
+            "used_clean_vehicle_credit",
+            "new_clean_vehicle_credit",
+            "ss_credit",
+        ]
         credits = parameters.gov.irs.credits
+        credits.non_refundable.update(
+            start=instant("2026-01-01"),
+            value=credits_before_ctc
+            + ["non_refundable_ctc", "residential_clean_energy_credit"],
+        )
         for preceding_credits in (
             credits.ctc_tax_liability_limit.preceding_credits,
             credits.residential_clean_energy.preceding_credits,
         ):
             preceding_credits.update(
                 start=instant("2026-01-01"),
-                value=[
-                    "foreign_tax_credit",
-                    "cdcc",
-                    "non_refundable_american_opportunity_credit",
-                    "lifetime_learning_credit",
-                    "savers_credit",
-                    "energy_efficient_home_improvement_credit",
-                    "elderly_disabled_credit",
-                    "new_clean_vehicle_credit",
-                    "used_clean_vehicle_credit",
-                    "ss_credit",
-                ],
+                value=credits_before_ctc,
             )
         return parameters
 

@@ -39,7 +39,9 @@
     adjusted_gross_income: 1_206_050
     interest_deduction: 10_000
     medical_expense_deduction: 400
-    casualty_loss_deduction: 200
+    # Minnesota's own casualty loss (Schedule M1SA line 19) is exempt from the
+    # reduction, as medical expenses are.
+    mn_casualty_loss_deduction: 200
     state_code: MN
   output:
     mn_itemized_deductions: (10_000 + 400 + 200) - 0.80 * 10_000
@@ -90,3 +92,60 @@
     state_code: MN
   output:
     mn_itemized_deductions: 10_000
+
+# Schedule M1SA line 19 takes the casualty and theft loss from Schedule M1CAT:
+# each casualty less $100, then less 10% of Form M1 line 1 (federal AGI). Minn.
+# Stat. 290.0122, subd. 8, disregards the federal limit to declared disasters.
+- name: 2024 MN itemized deductions include a non-disaster casualty loss
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    interest_deduction: 10_000
+    casualty_loss: 15_000
+    state_code: MN
+  output:
+    # The federal deduction is suspended.
+    casualty_loss_deduction: 0
+    # M1CAT: (15,000 - 100) - 10% x 100,000 = 4,900
+    mn_casualty_loss_deduction: 4_900
+    # M1SA line 25: 10,000 interest + 4,900 casualty; AGI is under the
+    # $232,500 reduction threshold.
+    mn_itemized_deductions: 14_900
+
+# M1SA line 26 Worksheet B, step 2, takes lines 4, 13 and 19 out before the
+# 80% reduction (Minn. Stat. 290.0122, subd. 2(d)(3)).
+- name: 2024 MN casualty loss is exempt from the high-income reduction
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 2_000_000
+    interest_deduction: 10_000
+    casualty_loss: 250_000
+    state_code: MN
+  output:
+    # M1CAT: (250,000 - 100) - 10% x 2,000,000 = 49,900
+    mn_casualty_loss_deduction: 49_900
+    # AGI is over $1,053,750, so the reduction is 80% of the deductions
+    # other than the casualty loss: 0.8 x 10,000 = 8,000.
+    # 10,000 + 49,900 - 8,000. Were the loss reduced too, the result would be
+    # 59,900 - 0.8 x 59,900 = 11,980.
+    mn_itemized_deductions: 51_900
+
+- name: 2024 MN counts the casualty loss once when the federal suspension is lifted
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    gov.irs.deductions.itemized.casualty.active: true
+    filing_status: SINGLE
+    adjusted_gross_income: 100_000
+    interest_deduction: 10_000
+    casualty_loss: 15_000
+    state_code: MN
+  output:
+    mn_casualty_loss_deduction: 4_900
+    # The federal deduction, now positive inside itemized_deductions_less_salt,
+    # is replaced by Minnesota's 4,900, not added to it.
+    mn_itemized_deductions: 14_900

@@ -36,3 +36,32 @@
     # Excess 15,750. Worksheet: line 1 = 134,250, line 3 = 34,250, line 5 =
     # 100,000, so the whole excluded amount stays in the main-rates base.
     capital_gains_excluded_from_taxable_income: 34_250
+
+# Section 1(h)(1)(A)(ii)(I) is "the amount of taxable income taxed at a rate
+# below 25 percent": taxable income up to the top of the 24 percent bracket
+# ($197,300 single in 2025), not the 0 percent capital gains threshold.
+- name: Unrecaptured section 1250 gain in the 24 percent bracket
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 584_250
+    net_capital_gain: 400_000
+    adjusted_net_capital_gain: 300_000
+    foreign_earned_income_exclusion: 0
+  output:
+    # The amount taxed at the regular rates is the greater of 184,250
+    # (taxable income less net capital gain) or the lesser of 197,300 and
+    # 284,250 (taxable income less adjusted net capital gain): 197,300.
+    capital_gains_excluded_from_taxable_income: 386_950
+
+- name: Gains above the 24 percent bracket leave taxable income less net capital gain
+  period: 2025
+  input:
+    filing_status: SINGLE
+    taxable_income: 700_000
+    net_capital_gain: 400_000
+    adjusted_net_capital_gain: 300_000
+    foreign_earned_income_exclusion: 0
+  output:
+    # The greater of 300,000 or the lesser of 197,300 and 400,000: 300,000.
+    capital_gains_excluded_from_taxable_income: 400_000
