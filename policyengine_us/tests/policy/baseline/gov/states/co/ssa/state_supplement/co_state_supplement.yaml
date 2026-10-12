@@ -263,11 +263,12 @@
 - name: Case 18, a disabled SSI couple where only the head has earnings.
   # The head earns $500/month and the spouse has no income. Federal SSI pools
   # earnings: (500 - 20 - 65) / 2 = 207.50 countable, so the couple payment is
-  # 1,491 - 207.50 = 1,283.50, or 641.75 each. 3.549(A): the head's $10 share
-  # of the disregard goes to earned income (3.549(A)(2)(f)), then $65, then
-  # half: (500 - 10 - 65) / 2 = 212.50. Head grant 994 - 641.75 - 212.50 =
-  # 139.75/month (1,677/year); spouse 994 - 641.75 = 352.25/month
-  # (4,227/year).
+  # 1,491 - 207.50 = 1,283.50, or 641.75 each. 3.549(A): the head's only
+  # unearned income is SSI, so no unearned disregard applies (3.549(A)(2)(c)),
+  # and their gross unearned income is not under $20, so none reaches earned
+  # income (3.549(A)(2)(f)); 3.549(A)(1) gives (500 - 65) / 2 = 217.50. Head
+  # grant 994 - 641.75 - 217.50 = 134.75/month (1,617/year); spouse
+  # 994 - 641.75 = 352.25/month (4,227/year).
   absolute_error_margin: 0.1
   period: 2026
   input:
@@ -295,5 +296,5 @@
         state_code: CO
   output:
     ssi: [7_701, 7_701]
-    co_state_supplement_countable_income: [2_550, 0]
-    co_state_supplement: [1_677, 4_227]
+    co_state_supplement_countable_income: [2_610, 0]
+    co_state_supplement: [1_617, 4_227]

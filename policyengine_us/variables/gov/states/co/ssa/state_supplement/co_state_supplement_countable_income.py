@@ -1,15 +1,12 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
-    _apply_ssi_exclusions,
-)
 
 
 class co_state_supplement_countable_income(Variable):
     value_type = float
     entity = Person
-    label = "Colorado State Supplement countable income"
+    label = "Colorado State Supplement countable income other than SSI"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     # PDF pages 93-94
     reference = "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=93"
 
@@ -18,11 +15,9 @@ class co_state_supplement_countable_income(Variable):
         # SSI's couple computation applies, ssi_countable_income instead gives
         # each spouse half of the couple's pooled countable income. Both
         # spouses then receive SSI, so 3.549(F) deems neither spouse's income
-        # to the other, and 3.549(A)(2)(c)(1) splits the $20 unearned income
-        # disregard "between the client and the spouse"; it is split equally
-        # here. Any part a spouse cannot use against unearned income goes to
-        # their earned income (3.549(A)(2)(f)), as _apply_ssi_exclusions does.
+        # to the other, and the client's own income is counted as follows.
         couple_computation = person("ssi_couple_computation_applies", period)
+        p = parameters(period).gov.ssa.ssi.income.exclusions
         earned = max_(
             person("ssi_earned_income", period)
             - person("ssi_blind_or_disabled_working_student_exclusion", period),
@@ -31,14 +26,19 @@ class co_state_supplement_countable_income(Variable):
         unearned = person("ssi_unearned_income", period) + person(
             "ssi_in_kind_support_and_maintenance", period
         )
-        p = parameters(period).gov.ssa.ssi.income.exclusions
-        own_countable = _apply_ssi_exclusions(
-            earned,
-            unearned,
-            parameters,
-            period,
-            general_exclusion=p.general / 2,
+        ssi = person("ssi", period)
+        # 3.549(A)(2)(c): $20 is deducted from unearned income other than SSI,
+        # split between married spouses; a client whose only unearned income
+        # is SSI gets no unearned income disregard.
+        unearned_disregard = min_(p.general / 2, unearned)
+        # 3.549(A)(2)(f): only when the client's gross unearned income, SSI
+        # included, is under $20 does the difference reduce earned income.
+        earned_disregard = where(unearned > 0, max_(0, p.general - unearned - ssi), 0)
+        # 3.549(A)(1): deduct $65 from gross earned income and halve the rest.
+        countable_earned = max_(0, earned - p.earned - earned_disregard) * (
+            1 - p.earned_share
         )
+        own_countable = unearned - unearned_disregard + countable_earned
         return where(
             couple_computation,
             own_countable,

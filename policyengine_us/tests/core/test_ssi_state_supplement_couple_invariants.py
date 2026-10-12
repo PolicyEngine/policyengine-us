@@ -22,10 +22,12 @@ Checked for every person in the grid:
 4. Citizenship: a spouse who fails the SSI citizenship condition is never
    eligible.
 5. Colorado couple total: when both spouses of a joint SSI claim receive
-   AND-CS, the two grants sum to twice the grant standard less the couple's
-   federal SSI and pooled countable income, as in SSA's Colorado couple
-   payment level (1,398 = 2 x 699 in January 2011), however 3.549(A) divides
-   their own income between them.
+   AND-CS and have only unearned income, the two grants sum to twice the
+   grant standard less the couple's federal SSI and pooled countable income,
+   as in SSA's Colorado couple payment level (1,398 = 2 x 699 in January
+   2011), however 3.549(A) divides their own income between them. (Earnings
+   break the identity: 3.549(A)(1) deducts $65 for each client, where SSI
+   deducts $65 once for the couple.)
 
 YAML covers the source examples and their amounts. Python is needed here to
 compare each person across role assignments and spouses in one simulation.
