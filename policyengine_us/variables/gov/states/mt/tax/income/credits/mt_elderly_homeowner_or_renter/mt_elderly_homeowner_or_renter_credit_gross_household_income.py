@@ -53,16 +53,20 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
             person("dependent_gross_income", period) - own_deductions
         )
         # The income above counts only the taxable portion of Social
-        # Security: a filer's in federal AGI, a dependent's in their own
-        # gross income. Add the untaxed portion so all SS is counted per
-        # § 15-30-2337(9)(a)(viii).
+        # Security: a filer's in federal AGI (irs_gross_income counts people
+        # who are not dependents), a dependent's in their own gross income
+        # (dependent_gross_income counts people who are not the head or
+        # spouse). Subtract only the part one of them counted, then add the
+        # rest, so all SS is counted once per § 15-30-2337(9)(a)(viii) even
+        # when a person is input as both a dependent and the head.
         social_security = person("social_security", period)
-        taxable_social_security = add(
-            person,
-            period,
-            ["taxable_social_security", "dependent_taxable_social_security"],
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        counted_social_security = where(
+            is_dependent,
+            ~head_or_spouse * person("dependent_taxable_social_security", period),
+            person("taxable_social_security", period),
         )
-        untaxed_social_security = max_(social_security - taxable_social_security, 0)
+        untaxed_social_security = max_(social_security - counted_social_security, 0)
         # Income is federal AGI "without regard to loss" (§ 15-30-2337(9)(a)),
         # so the business and capital losses deducted in computing federal
         # AGI are added back (2023 Elderly Homeowner/Renter Credit Schedule,
@@ -70,4 +74,24 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         # losses."). The return's losses are added once, to the head.
         head = person("is_tax_unit_head", period)
         losses = head * person.tax_unit("loss_ald", period)
-        return sources + dependent_income + untaxed_social_security + losses
+        # loss_ald holds only the capital loss deducted in AGI. A filer's
+        # short-term loss netted against their own long-term gain (or the
+        # reverse) never reaches it, so restore that loss here: count each
+        # gain without its losses, as the dependent path does and as 2024
+        # Schedule 2EC line 7 requires ("do not include any capital
+        # losses"). Taking the larger of the floored parts and the net keeps
+        # a capital_gains value supplied directly as an input.
+        long_term_gains = max_(0, person("long_term_capital_gains", period))
+        short_term_gains = max_(0, person("short_term_capital_gains", period))
+        capital_gains = person("capital_gains", period)
+        gains_without_losses = max_(long_term_gains + short_term_gains, capital_gains)
+        netted_capital_loss = ~is_dependent * (
+            gains_without_losses - max_(0, capital_gains)
+        )
+        return (
+            sources
+            + dependent_income
+            + untaxed_social_security
+            + losses
+            + netted_capital_loss
+        )

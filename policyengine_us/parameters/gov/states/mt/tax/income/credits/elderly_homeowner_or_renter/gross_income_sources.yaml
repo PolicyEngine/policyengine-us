@@ -80,8 +80,11 @@ values:
     - mt_elderly_homeowner_or_renter_credit_received
     - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
     - mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received
-# Social Security under § 15-30-2337(9)(a)(viii) is added separately in
-# mt_elderly_homeowner_or_renter_credit_gross_household_income.py because the
-# untaxed portion is computed as social_security - taxable_social_security.
+# mt_elderly_homeowner_or_renter_credit_gross_household_income.py adds three
+# items separately: a tax unit dependent's own gross income (their income is
+# on their own return, not in adjusted_gross_income_person); the untaxed
+# portion of Social Security under § 15-30-2337(9)(a)(viii), computed as
+# social_security less the taxable part already counted; and the losses
+# deducted in federal AGI.
 # This year's elderly homeowner/renter credit is excluded to avoid a circular
 # reference; the credit received during the year counts instead.

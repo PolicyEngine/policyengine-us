@@ -1,0 +1,1 @@
+Montana's elderly homeowner/renter credit now counts a filer's capital gains without the losses netted against them on the same return, and counts Social Security once when a person is input as both a tax unit dependent and the head.
