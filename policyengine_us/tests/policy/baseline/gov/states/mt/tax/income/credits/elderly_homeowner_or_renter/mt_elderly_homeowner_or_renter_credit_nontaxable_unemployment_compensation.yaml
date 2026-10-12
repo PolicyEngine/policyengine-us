@@ -1,0 +1,190 @@
+# Unemployment compensation that neither federal AGI nor a dependent's own
+# gross income counts. § 15-30-2337(9)(a) adds "all nontaxable income" to
+# federal AGI. In 2020, IRC 85(c) excluded up to 10_200 of unemployment
+# compensation from gross income when AGI without it was under 150_000.
+
+- name: Case 1, 2020 compensation under the exclusion limit is all nontaxable.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 20_000
+        unemployment_compensation: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # AGI without the compensation is 20_000, under 150_000, and 8_000 is
+    # under 10_200, so none of it is in federal AGI.
+    taxable_unemployment_compensation: 0
+    mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: 8_000
+
+- name: Case 2, 2020 compensation above the exclusion limit.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 20_000
+        unemployment_compensation: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # 15_000 - 10_200 = 4_800 is in federal AGI; the excluded 10_200 is not.
+    taxable_unemployment_compensation: 4_800
+    mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: 10_200
+
+- name: Case 3, 2020 income at the 150,000 cutoff gets no exclusion.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 150_000
+        unemployment_compensation: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # AGI without the compensation is 150_000, not less than 150_000, so all
+    # of it is in federal AGI.
+    taxable_unemployment_compensation: 8_000
+    mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: 0
+
+- name: Case 4, 2021 compensation is all taxable.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 20_000
+        unemployment_compensation: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    taxable_unemployment_compensation: 8_000
+    mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: 0
+
+- name: Case 5, 2024 compensation is all taxable.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 20_000
+        unemployment_compensation: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    taxable_unemployment_compensation: 8_000
+    mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: 0
+
+- name: Case 6, 2020 joint return, the spouse who received the compensation.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_pension_income: 20_000
+      person2:
+        age: 64
+        unemployment_compensation: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # 12_000 - 10_200 = 1_800 is in the spouse's share of federal AGI.
+    taxable_unemployment_compensation: [0, 1_800]
+    mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: [0, 10_200]
+
+- name: Case 7, 2020 a dependent's compensation is already in their own gross income.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        taxable_pension_income: 20_000
+      person2:
+        age: 64
+        unemployment_compensation: 8_000
+      person3:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        unemployment_compensation: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: MT
+  output:
+    # The model applies the tax unit's 10_200 exclusion to the 12_000 its
+    # members received, including the dependent's, and allocates the taxable
+    # 1_800 by share: 1_200 to the spouse and 600 to the dependent.
+    taxable_unemployment_compensation: [0, 1_200, 600]
+    # The dependent's 4_000 counts in full in their own gross income
+    # (dependent_gross_income), so none of it is added here. The spouse's
+    # 8_000 counts as 1_200 in federal AGI plus 6_800 here.
+    dependent_gross_income: [0, 0, 4_000]
+    mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: [0, 6_800, 0]
+
+- name: Case 8, a person recorded as both a dependent and the head.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_dependent: true
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Federal AGI counts people who are not dependents and
+    # dependent_gross_income people who are not the head or spouse, so
+    # neither counts this person's compensation; all of it is added here.
+    adjusted_gross_income_person: 0
+    dependent_gross_income: 0
+    mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: 5_000
