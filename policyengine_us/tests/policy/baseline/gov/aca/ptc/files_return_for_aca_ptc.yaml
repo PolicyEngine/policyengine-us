@@ -10,13 +10,33 @@
   output:
     files_return_for_aca_ptc: true
 
-- name: A non-filer that takes up the credit
+- name: A non-filer that takes up a positive credit
   period: 2025
   input:
+    is_aca_ptc_eligible: true
+    slcsp: 1_200
+    aca_magi: 25_000
+    aca_required_contribution_percentage: 0.04
     tax_unit_is_filer: false
     takes_up_aca_if_eligible: true
   output:
+    aca_ptc_before_filing_gate: 200  # 1200 - 0.04 * 25000
     files_return_for_aca_ptc: true
+
+- name: A non-filer that takes up coverage when the credit is zero does not file for it
+  # $5,500 benchmark less 9.96% of $60,000 ($5,976) is below zero: there is
+  # no credit to claim and no advance payment to reconcile.
+  period: 2026
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 5_500
+    aca_magi: 60_000
+    aca_required_contribution_percentage: 0.0996
+    tax_unit_is_filer: false
+    takes_up_aca_if_eligible: true
+  output:
+    aca_ptc_before_filing_gate: 0
+    files_return_for_aca_ptc: false
 
 - name: A non-filer that does not take up the credit
   period: 2025

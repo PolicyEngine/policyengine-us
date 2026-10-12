@@ -8,12 +8,13 @@ class files_return_for_aca_ptc(Variable):
     documentation = """
     Whether the tax unit files a federal income tax return on which it can
     claim the premium tax credit. A tax unit that files for any reason
-    (tax_unit_is_filer) can, and so does one that takes up the credit: it
-    either receives advance payments, after which it "must file an income tax
-    return for that taxable year ... and reconcile the advance credit
-    payments" (26 CFR 1.6011-8(a)), or claims the credit on Form 8962 with its
-    return. A tax unit that neither files nor takes up the credit gets none,
-    which keeps aca_ptc to filers as IRS filing data count it.
+    (tax_unit_is_filer) can, and so does one that takes up a credit it is
+    due: it either receives advance payments, after which it "must file an
+    income tax return for that taxable year ... and reconcile the advance
+    credit payments" (26 CFR 1.6011-8(a)), or claims the credit on Form 8962
+    with its return. Taking up coverage when the credit is $0 gives no such
+    reason to file. A tax unit that neither files nor takes up a credit gets
+    none, which keeps aca_ptc to filers as IRS filing data count it.
     """
     definition_period = YEAR
     reference = (
@@ -27,4 +28,5 @@ class files_return_for_aca_ptc(Variable):
     def formula(tax_unit, period, parameters):
         files = tax_unit("tax_unit_is_filer", period)
         takes_up = tax_unit("takes_up_aca_if_eligible", period)
-        return files | takes_up
+        credit = tax_unit("aca_ptc_before_filing_gate", period)
+        return files | (takes_up & (credit > 0))

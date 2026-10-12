@@ -29,7 +29,8 @@ class md_premium_assistance(Variable):
     # A non-filer has aca_ptc = 0, which would inflate the post-APTC premium
     # balance and over-grant the state subsidy. COMAR 14.35.21.03A(1)
     # conditions the subsidy on APTC eligibility, which requires filing, so
-    # the subsidy is gated on tax_unit_is_filer below.
+    # the subsidy is gated below on filing a return that claims the federal
+    # credit (files_return_for_aca_ptc).
     #
     # The display name "Premium Assistance" follows the MHBE consumer-facing
     # site ("Maryland Premium Assistance"); the statute and COMAR title the

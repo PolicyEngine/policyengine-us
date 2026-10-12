@@ -6,7 +6,8 @@ claim it (`files_return_for_aca_ptc`): one that files for any reason
 receives advance payments must file and reconcile them (26 CFR 1.6011-8(a)).
 Hypothesis draws tax units with any benchmark premium, household income and
 required contribution, and runs each in all four combinations of filing and
-take-up, as one simulation per year. For every tax unit:
+take-up. Each drawn example is one simulation, calculated for both years.
+For every tax unit:
 
 1. Taking up the credit never lowers `aca_ptc`.
 2. For a tax unit that takes up the credit, `aca_ptc` and `assigned_aca_ptc`
@@ -15,14 +16,18 @@ take-up, as one simulation per year. For every tax unit:
    (the filing gate added for IRS filer data).
 4. A tax unit that files gets the same `aca_ptc` whether or not it takes up
    the credit.
+5. Taking up coverage when the credit is $0 is no reason to file: a non-filer
+   that takes up but whose credit before the filing gate is $0 does not file
+   for it (`files_return_for_aca_ptc` is false), so state programs that read
+   it stay closed.
 
 Why Python: the YAML cases pin one combination each with fixed amounts; this
 checks every combination of filing and take-up against drawn benchmark
 premiums, incomes and contribution rates in one vectorized simulation, so a
 gate that drops the take-up leg, or that makes the credit depend on filing for
 a unit that takes it up, fails whatever the amounts. Cost, measured locally
-(macOS, shared host): 4.4 s of test calls, 7.5 s in pytest and 26 s wall time
-including the model import, peak memory footprint 1.5 GB. It runs in the
+(macOS, shared host): about 4.5 s of test calls, under 10 s in pytest and 26
+to 39 s wall time including the model import, peak memory footprint 1.6 GB. It runs in the
 `core` group of the rest Python tests.
 """
 
@@ -87,8 +92,9 @@ def simulate(rows):
 )
 @given(
     st.lists(units, min_size=4, max_size=24).map(
-        # A unit whose credit is positive, so properties 1-4 compare something.
-        lambda rows: [(12_000, 30_000, 0.04), *rows]
+        # A unit whose credit is positive, so properties 1-4 compare something, and
+        # one whose credit is zero, so property 5 does.
+        lambda rows: [(12_000, 30_000, 0.04), (5_500, 60_000, 0.0996), *rows]
     )
 )
 def test_aca_ptc_filing_gate(rows):
@@ -110,3 +116,12 @@ def test_aca_ptc_filing_gate(rows):
         assert (neither == 0).all()
         # Property 4.
         np.testing.assert_allclose(files_only, both)
+        # Property 5.
+        before = np.asarray(
+            simulation.calculate("aca_ptc_before_filing_gate", year)
+        ).reshape(-1, 4)[:, 1]
+        files = np.asarray(
+            simulation.calculate("files_return_for_aca_ptc", year)
+        ).reshape(-1, 4)[:, 1]
+        np.testing.assert_array_equal(files, before > 0)
+        assert (before == 0).any() and (before > 0).any()
