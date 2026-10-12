@@ -33,8 +33,9 @@ class nm_premium_assistance_mih_eligible(Variable):
         filing_status = tax_unit("filing_status", period)
         not_separate = filing_status != filing_status.possible_values.SEPARATE
         # is_aca_ptc_eligible does not embed the federal PTC filing requirement
-        # (IRC 36B(a); aca_ptc does), so gate it explicitly here.
-        is_filer = tax_unit("tax_unit_is_filer", period)
+        # (IRC 36B(a); aca_ptc does), so gate it explicitly here, as aca_ptc
+        # does.
+        is_filer = tax_unit("files_return_for_aca_ptc", period)
         magi_frac = tax_unit("aca_magi_fraction", period)
         income_eligible = magi_frac > p.fpl_limit
         return in_effect & pays_premium & not_separate & is_filer & income_eligible

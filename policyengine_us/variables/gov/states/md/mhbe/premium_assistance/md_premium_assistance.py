@@ -53,6 +53,7 @@ class md_premium_assistance(Variable):
         # Premium balance remaining after the federal APTC (COMAR .04B).
         premium_after_aptc = max_(0, slcsp - aca_ptc)
         subsidy = max_(0, premium_after_aptc - md_percentage * income)
-        # Gate on filing: non-filers are not APTC-eligible (COMAR .03A(1)).
-        is_filer = tax_unit("tax_unit_is_filer", period)
+        # Gate on filing: non-filers are not APTC-eligible (COMAR .03A(1)). A
+        # tax unit that takes up the federal credit files to claim it.
+        is_filer = tax_unit("files_return_for_aca_ptc", period)
         return where(is_filer, subsidy, 0)

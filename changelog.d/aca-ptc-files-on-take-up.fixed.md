@@ -1,0 +1,1 @@
+Count a tax unit that takes up the ACA premium tax credit as filing a return to claim it (26 CFR 1.6011-8(a)), so the filing gate on aca_ptc and on the California, Maryland and New Mexico premium programs no longer zeroes the credit of a tax unit that takes it up but would not otherwise file; a tax unit that neither files nor takes up the credit still gets none.

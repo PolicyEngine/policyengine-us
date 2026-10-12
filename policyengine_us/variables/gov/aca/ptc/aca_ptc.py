@@ -22,7 +22,8 @@ class aca_ptc(Variable):
         plan_cost = tax_unit("slcsp", period)
         income = tax_unit("aca_magi", period)
         applicable_figure = tax_unit("aca_required_contribution_percentage", period)
-        # IRC § 36B(a) conditions the PTC on filing a return (Form 8962).
-        # Gate on tax_unit_is_filer so non-filers receive $0.
-        is_filer = tax_unit("tax_unit_is_filer", period)
-        return max_(0, plan_cost - income * applicable_figure) * is_filer
+        # IRC § 36B(a) conditions the PTC on filing a return (Form 8962), so
+        # a tax unit that neither files nor takes up the credit receives $0.
+        # Taking up the credit means filing to claim or reconcile it.
+        files = tax_unit("files_return_for_aca_ptc", period)
+        return max_(0, plan_cost - income * applicable_figure) * files

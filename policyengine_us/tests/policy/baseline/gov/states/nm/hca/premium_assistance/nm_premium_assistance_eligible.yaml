@@ -260,6 +260,8 @@
       tax_unit:
         members: [person1]
         tax_unit_is_filer: false
+        # A tax unit that takes up the credit files to claim it.
+        takes_up_aca_if_eligible: false
         aca_magi_fraction: 2.50
     households:
       household:

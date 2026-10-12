@@ -132,7 +132,7 @@
   output:
     aca_ptc: 200
 
-- name: ACA PTC is zero for non-filers (IRC 36B(a) requires filing Form 8962)
+- name: ACA PTC is zero for non-filers who do not take it up (IRC 36B(a) requires filing Form 8962)
   absolute_error_margin: 0.01
   period: 2025
   input:
@@ -141,8 +141,28 @@
     aca_magi: 25_000
     aca_required_contribution_percentage: 0.04
     tax_unit_is_filer: false
+    # A tax unit that takes up the credit files to claim it.
+    takes_up_aca_if_eligible: false
   output:
     aca_ptc: 0
+
+- name: A tax unit that takes up the PTC files to claim it, even if it would not file otherwise
+  # 26 CFR 1.6011-8(a): a taxpayer who receives advance payments "must file
+  # an income tax return for that taxable year ... and reconcile the advance
+  # credit payments"; a credit not paid in advance is claimed on Form 8962.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    is_aca_ptc_eligible: true
+    slcsp: 1_200
+    aca_magi: 25_000
+    aca_required_contribution_percentage: 0.04
+    tax_unit_is_filer: false
+    takes_up_aca_if_eligible: true
+  output:
+    files_return_for_aca_ptc: true
+    aca_ptc: 200  # 1200 - 0.04 * 25000 = 200
+    assigned_aca_ptc: 200
 
 - name: ACA PTC is paid to eligible filers (regression of filer gate)
   absolute_error_margin: 0.01

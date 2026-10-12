@@ -1,0 +1,54 @@
+# A tax unit files a return that can claim the premium tax credit if it files
+# for any reason, or if it takes up the credit (26 CFR 1.6011-8(a); Form 1040
+# instructions, Chart C, item 5).
+
+- name: A filer that does not take up the credit
+  period: 2025
+  input:
+    tax_unit_is_filer: true
+    takes_up_aca_if_eligible: false
+  output:
+    files_return_for_aca_ptc: true
+
+- name: A non-filer that takes up the credit
+  period: 2025
+  input:
+    tax_unit_is_filer: false
+    takes_up_aca_if_eligible: true
+  output:
+    files_return_for_aca_ptc: true
+
+- name: A non-filer that does not take up the credit
+  period: 2025
+  input:
+    tax_unit_is_filer: false
+    takes_up_aca_if_eligible: false
+  output:
+    files_return_for_aca_ptc: false
+
+- name: Retired couple with only Social Security is not required to file but files to claim the credit
+  # Social Security of $30,000 and nothing else: none of it is taxable (the
+  # provisional income of $15,000 is under the $32,000 joint base amount), so
+  # gross income is zero and no return is required, and there is no earned
+  # income for an EITC. Taking up the credit makes it a filer for the credit.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 62
+        social_security_retirement: 15_000
+      spouse:
+        age: 62
+        social_security_retirement: 15_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    taxable_social_security: [0, 0]
+    tax_unit_is_required_to_file: false
+    tax_unit_is_filer: false
+    files_return_for_aca_ptc: true
