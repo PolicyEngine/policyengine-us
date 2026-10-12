@@ -1,3 +1,16 @@
+## [2.40.1] - 2026-10-12
+
+### Changed
+
+- Share one HHS state median income helper for the LIHEAP income limits in Mississippi, Maryland and New Jersey, and reuse the SMI household-size factor in Colorado CCAP.
+
+### Fixed
+
+- Stop paying the Montana earned income tax credit before tax year 2019, its first year, and count it in the state EITC aggregate for 2019 and 2020.
+- Virginia's Commonwealth Savers (529) deduction now goes to the account owner of record, including the full deduction for owners age 70 or older, and is taken from Virginia adjusted gross income on Form 760 line 13 rather than subtracted in computing it.
+- Restrict SNAP heat-and-eat standard utility allowances to households with an elderly or disabled SNAP member under P.L. 119-21, while preserving eligibility based on actual heating or cooling expenses.
+
+
 ## [2.40.0] - 2026-10-12
 
 ### Added
