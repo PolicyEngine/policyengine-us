@@ -1,0 +1,261 @@
+# Worked from the 2020 Form 1040 (lines 9, 10a-10c, 11, 12 and 15) and its
+# instructions: line 10b (file page 30), the 2020 Tax Rate Schedules (file
+# page 111), the Standard Deduction Chart for People Born Before January 2,
+# 1956 (file page 33), the Social Security Benefits Worksheet (file page 31,
+# line 6 subtracts line 10b) and the Unemployment Compensation Exclusion
+# Worksheet (file page 88, line 5 subtracts line 10c).
+# https://www.irs.gov/pub/irs-prior/i1040gi--2020.pdf
+# New Hampshire taxes no wages and has no sales tax, so there is no state and
+# local tax deduction.
+
+- name: Case 1, 2020 single non-itemizer deducts $300 of $500 in cash gifts above the line.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # Line 9: total income.
+    irs_gross_income: 40_000
+    # Line 10b: min(500, 300); line 10c = 10a + 10b.
+    charitable_contributions_ald: 300
+    above_the_line_deductions: 300
+    # Line 11: 40,000 - 300.
+    adjusted_gross_income: 39_700
+    tax_unit_itemizes: false
+    # Line 12: 2020 single standard deduction; nothing below the line for
+    # the charitable gifts.
+    standard_deduction: 12_400
+    charitable_deduction_for_non_itemizers: 0
+    taxable_income_deductions: 12_400
+    # Line 15: 39,700 - 12,400.
+    taxable_income: 27_300
+    # Schedule X: 987.50 + 12% x (27,300 - 9,875).
+    income_tax_main_rates: 3_078.5
+
+- name: Case 2, 2020 joint return deducts $300, not $600.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 80_000
+        charitable_cash_donations: 1_000
+      person2:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    charitable_contributions_ald: 300
+    # Line 11: 80,000 - 300.
+    adjusted_gross_income: 79_700
+    standard_deduction: 24_800
+    # Line 15: 79,700 - 24,800.
+    taxable_income: 54_900
+    # Schedule Y-1: 1,975 + 12% x (54,900 - 19,750).
+    income_tax_main_rates: 6_193
+
+- name: Case 3, 2020 married filing separately deducts $150.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+        charitable_cash_donations: 400
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    charitable_contributions_ald: 150
+    # Line 11: 50,000 - 150.
+    adjusted_gross_income: 49_850
+    standard_deduction: 12_400
+    # Line 15: 49,850 - 12,400.
+    taxable_income: 37_450
+    # Schedule Y-2: 987.50 + 12% x (37,450 - 9,875).
+    income_tax_main_rates: 4_296.5
+
+- name: Case 4, 2020 itemizer deducts the gifts on Schedule A only, once.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        deductible_mortgage_interest: 20_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    tax_unit_itemizes: true
+    # Line 10b is for those who take the standard deduction.
+    charitable_contributions_ald: 0
+    adjusted_gross_income: 100_000
+    charitable_deduction: 500
+    # Schedule A: 20,000 interest + 500 gifts.
+    total_itemized_taxable_income_deductions: 20_500
+    # Line 15: 100,000 - 20,500.
+    taxable_income: 79_500
+
+- name: Case 5, 2020 line 10b makes the standard deduction the better choice.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        deductible_mortgage_interest: 12_300
+        charitable_cash_donations: 300
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    # Itemizing: line 11 = 60,000, Schedule A = 12,300 + 300 = 12,600, line
+    # 15 = 47,400. Standard deduction: line 11 = 60,000 - 300 = 59,700, line
+    # 15 = 59,700 - 12,400 = 47,300, so taking the standard deduction leaves
+    # $100 less taxable income although Schedule A exceeds $12,400.
+    tax_unit_itemizes: false
+    charitable_contributions_ald: 300
+    adjusted_gross_income: 59_700
+    taxable_income: 47_300
+    # Schedule X: 4,617.50 + 22% x (47,300 - 40,125).
+    income_tax_main_rates: 6_196
+
+- name: Case 6, 2020 line 10b lowers the income that makes Social Security benefits taxable.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 20_000
+        taxable_pension_income: 20_000
+        charitable_cash_donations: 300
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    charitable_contributions_ald: 300
+    # Social Security Benefits Worksheet: line 3 = 20,000 (line 5b), line 6
+    # = 300 (line 10b), line 7 = 10,000 + 20,000 - 300 = 29,700.
+    taxable_ss_magi: 19_700
+    tax_unit_combined_income_for_social_security_taxability: 29_700
+    # Line 9 = 29,700 - 25,000 = 4,700; line 12 = min(4,700, 9,000); line 13
+    # = 2,350; line 14 = min(10,000, 2,350); line 15 = 0; line 18 =
+    # min(2,350, 17,000).
+    tax_unit_taxable_social_security: 2_350
+    # Line 11: 20,000 + 2,350 - 300.
+    adjusted_gross_income: 22_050
+    # Single, born before January 2, 1956: $14,050.
+    standard_deduction: 14_050
+    # Line 15: 22,050 - 14,050.
+    taxable_income: 8_000
+    income_tax_main_rates: 800
+
+- name: Case 7, 2020 line 10c brings income under the unemployment compensation exclusion limit.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 150_200
+        unemployment_compensation: 5_000
+        charitable_cash_donations: 300
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    charitable_contributions_ald: 300
+    # Unemployment Compensation Exclusion Worksheet: line 4 = 150,200, line
+    # 5 = 300 (line 10c), line 6 = 149,900, under $150,000, so line 10
+    # excludes all 5,000.
+    taxable_uc_agi: 149_900
+    tax_unit_taxable_unemployment_compensation: 0
+    # Line 11: 150,200 + 0 - 300.
+    adjusted_gross_income: 149_900
+
+- name: Case 8, 2021 itemizer deducts the gifts on Schedule A only, once.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        deductible_mortgage_interest: 20_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    tax_unit_itemizes: true
+    adjusted_gross_income: 100_000
+    # Schedule A: 20,000 interest + 500 gifts; the 170(p) amount is for
+    # those who take the standard deduction.
+    total_itemized_taxable_income_deductions: 20_500
+    taxable_income: 79_500
+
+- name: Case 9, 2021 non-itemizer deducts the gifts after AGI, on line 12b.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        charitable_cash_donations: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NH
+  output:
+    charitable_contributions_ald: 0
+    # 2021 line 11.
+    adjusted_gross_income: 40_000
+    tax_unit_itemizes: false
+    # Line 12b: min(500, 300); line 12c = 12,550 + 300.
+    charitable_deduction_for_non_itemizers: 300
+    taxable_income_deductions: 12_850
+    # Line 15: 40,000 - 12,850.
+    taxable_income: 27_150
