@@ -21,9 +21,9 @@ class wy_lieap_countable_income(Variable):
         "when those adjustments are known. Medicare deductions remain unmodeled."
     )
     reference = (
-        # Section 1.9, physical page 6; minor-earnings/lump-sum conflicts documented.
+        # Section 1.9; minor-earnings/lump-sum conflicts documented.
         "https://dfs.wyo.gov/wp-content/uploads/2025/10/FFY2026-LIEAP-State-Model-Plan.pdf#page=6",
-        # Current chapter 1, section 8(a), physical pages 11-13.
+        # Current chapter 1, section 8(a), PDF pages 11-13.
         "https://rules.wyo.gov/Search.aspx?mode=7",
     )
     defined_for = StateCode.WY

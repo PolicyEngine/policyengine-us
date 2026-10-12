@@ -9,7 +9,7 @@ class wy_lieap_income_limit(Variable):
     unit = USD
     label = "Wyoming LIEAP income limit"
     reference = (
-        "https://dfs.wyo.gov/wp-content/uploads/2025/08/2025-0729-LIEAP-About-handout.pdf#page=1",
+        "https://liheapch.acf.gov/profiles/povertytables/FY2026/wysmi.htm",
         "https://dfs.wyo.gov/wp-content/uploads/2026/09/2026-0924-LIEAP-About-handout.pdf#page=1",
     )
     defined_for = StateCode.WY

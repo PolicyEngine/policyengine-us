@@ -27,10 +27,17 @@ class wy_lieap(Variable):
         p = parameters(period).gov.states.wy.dfs.lieap.payment
         income = max_(spm_unit("wy_lieap_countable_income", period), 0)
         limit = spm_unit("wy_lieap_income_limit", period)
-        # Promote before division so float32 representations of exact decimal
-        # boundaries do not push a household into the next band.
-        ratio = income.astype(np.float64) / max_(limit, 1)
-        fraction = p.entitlement_fraction.calc(ratio, right=True)
+        # Express each inclusive ceiling at the stored income precision.
+        scale = p.entitlement_fraction
+        ceilings = [
+            (max_(limit, 1).astype(np.float64) * threshold).astype(income.dtype)
+            for threshold in scale.thresholds[1:]
+        ]
+        fraction = select(
+            [income <= ceiling for ceiling in ceilings],
+            scale.amounts[:-1],
+            default=scale.amounts[-1],
+        )
         heating_type = spm_unit("heating_type", period)
         base = p.fuel_cost[heating_type] * fraction
         # The workbook rounds only the withheld amount, half-up to dollars.

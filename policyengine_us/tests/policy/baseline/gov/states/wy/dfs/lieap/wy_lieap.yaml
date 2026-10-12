@@ -2084,3 +2084,222 @@
     wy_lieap_countable_income: [38_850, 0, 0, 0]
     wy_lieap_income_limit: [46_853, 0, 35_829, 0]
     wy_lieap: [209.6275, 0, 0, 0]
+
+- name: Case 148, real FY2026 incomes a cent below every band ceiling preserve inclusive selection.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, employment_income: 7524.08}
+      person2: {age: 40, immigration_status: CITIZEN, employment_income: 9315.53}
+      person3: {age: 40, immigration_status: CITIZEN, employment_income: 11106.98}
+      person4: {age: 40, immigration_status: CITIZEN, employment_income: 12898.43}
+      person5: {age: 40, immigration_status: CITIZEN, employment_income: 14689.88}
+      person6: {age: 40, immigration_status: CITIZEN, employment_income: 16481.33}
+      person7: {age: 40, immigration_status: CITIZEN, employment_income: 18272.78}
+      person8: {age: 40, immigration_status: CITIZEN, employment_income: 20064.23}
+      person9: {age: 40, immigration_status: CITIZEN, employment_income: 21855.68}
+      person10: {age: 40, immigration_status: CITIZEN, employment_income: 23647.13}
+      person11: {age: 40, immigration_status: CITIZEN, employment_income: 25438.58}
+      person12: {age: 40, immigration_status: CITIZEN, employment_income: 27230.03}
+      person13: {age: 40, immigration_status: CITIZEN, employment_income: 29021.48}
+      person14: {age: 40, immigration_status: CITIZEN, employment_income: 30812.93}
+      person15: {age: 40, immigration_status: CITIZEN, employment_income: 35828.99}
+    spm_units:
+      spm_unit1: {members: [person1], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit2: {members: [person2], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit3: {members: [person3], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit4: {members: [person4], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit5: {members: [person5], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit6: {members: [person6], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit7: {members: [person7], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit8: {members: [person8], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit9: {members: [person9], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit10: {members: [person10], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit11: {members: [person11], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit12: {members: [person12], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit13: {members: [person13], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit14: {members: [person14], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit15: {members: [person15], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+      tax_unit3: {members: [person3]}
+      tax_unit4: {members: [person4]}
+      tax_unit5: {members: [person5]}
+      tax_unit6: {members: [person6]}
+      tax_unit7: {members: [person7]}
+      tax_unit8: {members: [person8]}
+      tax_unit9: {members: [person9]}
+      tax_unit10: {members: [person10]}
+      tax_unit11: {members: [person11]}
+      tax_unit12: {members: [person12]}
+      tax_unit13: {members: [person13]}
+      tax_unit14: {members: [person14]}
+      tax_unit15: {members: [person15]}
+    households:
+      household1: {members: [person1], state_code: WY}
+      household2: {members: [person2], state_code: WY}
+      household3: {members: [person3], state_code: WY}
+      household4: {members: [person4], state_code: WY}
+      household5: {members: [person5], state_code: WY}
+      household6: {members: [person6], state_code: WY}
+      household7: {members: [person7], state_code: WY}
+      household8: {members: [person8], state_code: WY}
+      household9: {members: [person9], state_code: WY}
+      household10: {members: [person10], state_code: WY}
+      household11: {members: [person11], state_code: WY}
+      household12: {members: [person12], state_code: WY}
+      household13: {members: [person13], state_code: WY}
+      household14: {members: [person14], state_code: WY}
+      household15: {members: [person15], state_code: WY}
+  output:
+    # Each one-person limit is $35,829. Apply the approved .21, .26, ...,
+    # .86, 1.00 ceilings to actual wages, then the $2,640 oil standard
+    # and the workbook's rounded 10 percent holdback.
+    wy_lieap: [1901, 1782, 1663, 1544, 1426, 1307, 1188, 1069, 950, 832, 713, 594, 475, 356, 238]
+
+- name: Case 149, real FY2026 incomes exactly at every band ceiling preserve inclusive selection.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, employment_income: 7524.09}
+      person2: {age: 40, immigration_status: CITIZEN, employment_income: 9315.54}
+      person3: {age: 40, immigration_status: CITIZEN, employment_income: 11106.99}
+      person4: {age: 40, immigration_status: CITIZEN, employment_income: 12898.44}
+      person5: {age: 40, immigration_status: CITIZEN, employment_income: 14689.89}
+      person6: {age: 40, immigration_status: CITIZEN, employment_income: 16481.34}
+      person7: {age: 40, immigration_status: CITIZEN, employment_income: 18272.79}
+      person8: {age: 40, immigration_status: CITIZEN, employment_income: 20064.24}
+      person9: {age: 40, immigration_status: CITIZEN, employment_income: 21855.69}
+      person10: {age: 40, immigration_status: CITIZEN, employment_income: 23647.14}
+      person11: {age: 40, immigration_status: CITIZEN, employment_income: 25438.59}
+      person12: {age: 40, immigration_status: CITIZEN, employment_income: 27230.04}
+      person13: {age: 40, immigration_status: CITIZEN, employment_income: 29021.49}
+      person14: {age: 40, immigration_status: CITIZEN, employment_income: 30812.94}
+      person15: {age: 40, immigration_status: CITIZEN, employment_income: 35829.00}
+    spm_units:
+      spm_unit1: {members: [person1], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit2: {members: [person2], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit3: {members: [person3], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit4: {members: [person4], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit5: {members: [person5], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit6: {members: [person6], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit7: {members: [person7], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit8: {members: [person8], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit9: {members: [person9], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit10: {members: [person10], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit11: {members: [person11], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit12: {members: [person12], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit13: {members: [person13], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit14: {members: [person14], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit15: {members: [person15], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+      tax_unit3: {members: [person3]}
+      tax_unit4: {members: [person4]}
+      tax_unit5: {members: [person5]}
+      tax_unit6: {members: [person6]}
+      tax_unit7: {members: [person7]}
+      tax_unit8: {members: [person8]}
+      tax_unit9: {members: [person9]}
+      tax_unit10: {members: [person10]}
+      tax_unit11: {members: [person11]}
+      tax_unit12: {members: [person12]}
+      tax_unit13: {members: [person13]}
+      tax_unit14: {members: [person14]}
+      tax_unit15: {members: [person15]}
+    households:
+      household1: {members: [person1], state_code: WY}
+      household2: {members: [person2], state_code: WY}
+      household3: {members: [person3], state_code: WY}
+      household4: {members: [person4], state_code: WY}
+      household5: {members: [person5], state_code: WY}
+      household6: {members: [person6], state_code: WY}
+      household7: {members: [person7], state_code: WY}
+      household8: {members: [person8], state_code: WY}
+      household9: {members: [person9], state_code: WY}
+      household10: {members: [person10], state_code: WY}
+      household11: {members: [person11], state_code: WY}
+      household12: {members: [person12], state_code: WY}
+      household13: {members: [person13], state_code: WY}
+      household14: {members: [person14], state_code: WY}
+      household15: {members: [person15], state_code: WY}
+  output:
+    # Each one-person limit is $35,829. Apply the approved .21, .26, ...,
+    # .86, 1.00 ceilings to actual wages, then the $2,640 oil standard
+    # and the workbook's rounded 10 percent holdback.
+    wy_lieap: [1901, 1782, 1663, 1544, 1426, 1307, 1188, 1069, 950, 832, 713, 594, 475, 356, 238]
+
+- name: Case 150, real FY2026 incomes a cent above every band ceiling preserve inclusive selection.
+  period: 2026
+  input:
+    people:
+      person1: {age: 40, immigration_status: CITIZEN, employment_income: 7524.10}
+      person2: {age: 40, immigration_status: CITIZEN, employment_income: 9315.55}
+      person3: {age: 40, immigration_status: CITIZEN, employment_income: 11107.00}
+      person4: {age: 40, immigration_status: CITIZEN, employment_income: 12898.45}
+      person5: {age: 40, immigration_status: CITIZEN, employment_income: 14689.90}
+      person6: {age: 40, immigration_status: CITIZEN, employment_income: 16481.35}
+      person7: {age: 40, immigration_status: CITIZEN, employment_income: 18272.80}
+      person8: {age: 40, immigration_status: CITIZEN, employment_income: 20064.25}
+      person9: {age: 40, immigration_status: CITIZEN, employment_income: 21855.70}
+      person10: {age: 40, immigration_status: CITIZEN, employment_income: 23647.15}
+      person11: {age: 40, immigration_status: CITIZEN, employment_income: 25438.60}
+      person12: {age: 40, immigration_status: CITIZEN, employment_income: 27230.05}
+      person13: {age: 40, immigration_status: CITIZEN, employment_income: 29021.50}
+      person14: {age: 40, immigration_status: CITIZEN, employment_income: 30812.95}
+      person15: {age: 40, immigration_status: CITIZEN, employment_income: 35829.01}
+    spm_units:
+      spm_unit1: {members: [person1], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit2: {members: [person2], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit3: {members: [person3], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit4: {members: [person4], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit5: {members: [person5], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit6: {members: [person6], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit7: {members: [person7], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit8: {members: [person8], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit9: {members: [person9], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit10: {members: [person10], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit11: {members: [person11], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit12: {members: [person12], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit13: {members: [person13], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit14: {members: [person14], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+      spm_unit15: {members: [person15], heating_type: FUEL_OIL, fuel_oil_expense: 3_000}
+    tax_units:
+      tax_unit1: {members: [person1]}
+      tax_unit2: {members: [person2]}
+      tax_unit3: {members: [person3]}
+      tax_unit4: {members: [person4]}
+      tax_unit5: {members: [person5]}
+      tax_unit6: {members: [person6]}
+      tax_unit7: {members: [person7]}
+      tax_unit8: {members: [person8]}
+      tax_unit9: {members: [person9]}
+      tax_unit10: {members: [person10]}
+      tax_unit11: {members: [person11]}
+      tax_unit12: {members: [person12]}
+      tax_unit13: {members: [person13]}
+      tax_unit14: {members: [person14]}
+      tax_unit15: {members: [person15]}
+    households:
+      household1: {members: [person1], state_code: WY}
+      household2: {members: [person2], state_code: WY}
+      household3: {members: [person3], state_code: WY}
+      household4: {members: [person4], state_code: WY}
+      household5: {members: [person5], state_code: WY}
+      household6: {members: [person6], state_code: WY}
+      household7: {members: [person7], state_code: WY}
+      household8: {members: [person8], state_code: WY}
+      household9: {members: [person9], state_code: WY}
+      household10: {members: [person10], state_code: WY}
+      household11: {members: [person11], state_code: WY}
+      household12: {members: [person12], state_code: WY}
+      household13: {members: [person13], state_code: WY}
+      household14: {members: [person14], state_code: WY}
+      household15: {members: [person15], state_code: WY}
+  output:
+    # Each one-person limit is $35,829. Apply the approved .21, .26, ...,
+    # .86, 1.00 ceilings to actual wages, then the $2,640 oil standard
+    # and the workbook's rounded 10 percent holdback.
+    wy_lieap: [1782, 1663, 1544, 1426, 1307, 1188, 1069, 950, 832, 713, 594, 475, 356, 238, 0]

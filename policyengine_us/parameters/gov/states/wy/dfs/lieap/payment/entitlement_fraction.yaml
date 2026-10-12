@@ -1,6 +1,7 @@
 description: Wyoming applies these modeled entitlement fractions by household income relative to the income limit under the Low Income Energy Assistance Program.
 # Approved convention: compare the unrounded ratio with inclusive upper
-# bounds .21, .26, .31, ... .86, then 1.00, using calc(..., right=True).
+# bounds .21, .26, .31, ... .86, then 1.00. The formula compares equivalent
+# income ceilings at the precision of stored monetary inputs.
 # These assumptions bridge gaps in the printed matrix; they are not recovered
 # agency rounding instructions. The positive band at exactly 1.00 is the
 # stated extension of the user's pattern and differs from the printed zero.
