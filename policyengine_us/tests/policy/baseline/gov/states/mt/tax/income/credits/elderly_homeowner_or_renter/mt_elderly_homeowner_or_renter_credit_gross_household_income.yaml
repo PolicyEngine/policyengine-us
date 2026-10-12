@@ -336,3 +336,176 @@
     # extent that the amount recovered reduced the claimant's Montana income
     # tax in a prior year".
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 10_000
+
+- name: A filer's short-term loss netted against their own long-term gain does not reduce gross household income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+      person2:
+        age: 30
+        long_term_capital_gains: 10_000
+        short_term_capital_gains: -4_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # § 15-30-2337(9)(a): federal AGI "without regard to loss"; 2024
+    # Schedule 2EC line 7: "do not include any capital losses". The member's
+    # own return nets the 4_000 loss into a 6_000 gain, so no loss reaches
+    # loss_ald; line 17 still carries the 10_000 gain.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 10_000]
+
+- name: A claimant's short-term loss netted against their own long-term gain does not reduce gross household income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        long_term_capital_gains: 10_000
+        short_term_capital_gains: -4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Line 5 pensions 20_000 plus line 7 capital gain 10_000, without the
+    # 4_000 loss: 30_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 30_000
+
+- name: A minor alone in a tax unit and not input as a dependent counts once
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 16
+        employment_income: 10_000
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The minor is neither head (no adult in the unit), spouse nor
+    # dependent. irs_gross_income counts people who are not dependents and
+    # dependent_gross_income people who are not the head or spouse, so only
+    # the dependent gate keeps the 10_000 wages from counting twice.
+    is_tax_unit_head: [true, false]
+    is_tax_unit_dependent: [false, false]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 10_000]
+
+- name: Social Security counts in full for a person input as a dependent who is also the head
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 40
+        social_security_retirement: 60_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Every adult in tax_unit2 is input as a dependent, so person2 is also
+    # its head. Neither irs_gross_income (dependents) nor
+    # dependent_gross_income (heads) counts their taxable benefits, so none
+    # may be subtracted: § 15-30-2337(9)(a)(viii) counts all 60_000.
+    is_tax_unit_head: [true, true]
+    is_tax_unit_dependent: [false, true]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 60_000]
+
+- name: A business loss on another household member's return does not reduce gross household income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+      person2:
+        age: 40
+        taxable_interest_income: 10_000
+        self_employment_income: -5_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # The member's federal AGI is 10_000 - 5_000 = 5_000; the 5_000 loss is
+    # added back on their own return's head. 2024 Schedule 2EC line 10:
+    # "Do not include any losses generated from the business."
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 10_000]
+
+- name: A dependent in another household member's tax unit counts
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 15_000
+      person2:
+        age: 35
+        employment_income: 25_000
+      person3:
+        age: 5
+      person4:
+        age: 8
+        employment_income: 3_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_name: MT
+  output:
+    # Three generations. The daughter's line 8 credits: federal EITC with
+    # two children 6_960 - 21.06% x (25_000 - 22_720) = 6_479.83; refundable
+    # child tax credit min(2 x 1_700, 15% x (25_000 - 2_500)) = 3_375;
+    # Montana EITC 10% = 647.98. Her total: 25_000 + 6_479.83 + 3_375 +
+    # 647.98 = 35_502.81. The grandchild is her dependent; their 3_000 of
+    # wages count through the dependent path.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [15_000, 35_502.81, 0, 3_000]
