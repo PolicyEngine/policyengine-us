@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.hhs_smi import smi
+from policyengine_us.variables.gov.hhs.hhs_smi import liheap_smi_limit
 
 
 class ri_liheap_income_limit(Variable):
@@ -20,10 +20,6 @@ class ri_liheap_income_limit(Variable):
         p = parameters(period).gov.states.ri.dhs.liheap.eligibility
         size = spm_unit("ri_liheap_household_size", period)
         state = spm_unit.household("state_code_str", period)
-        four_person_smi = parameters(period).gov.hhs.smi.amount[state]
-        size_share = smi(size, state, period, parameters) / four_person_smi
-        # The FY2026/FY2027 tables floor 60% of the four-person amount before
-        # adjusting for size, then floor again. This matches all 14 rows;
-        # the ordering is a numerical reconciliation, not explicit legal text.
-        four_person_limit = np.floor(four_person_smi * p.smi_rate)
-        return where(size > 0, np.floor(four_person_limit * size_share), 0)
+        # The HHS floor order reproduces all 14 FY2026 and FY2027 rows.
+        limit = liheap_smi_limit(size, state, p.smi_rate, period, parameters)
+        return where(size > 0, limit, 0)
