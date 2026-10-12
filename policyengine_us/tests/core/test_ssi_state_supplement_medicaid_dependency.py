@@ -23,6 +23,8 @@ def situation(year, state="IN"):
             "is_snap_workfare_participant": {year: True},
         },
     }
+    if state == "OH":
+        people["recipient"]["oh_rss_certified"] = {year: True}
     return {
         "people": people,
         **{
@@ -35,11 +37,14 @@ def situation(year, state="IN"):
     }
 
 
-@pytest.mark.parametrize("year", [2027, 2030, 2035])
-@pytest.mark.parametrize("state,benefit", [("IN", "in_ssp"), ("KS", "ks_sspp")])
+@pytest.mark.parametrize("year", [2026, 2027, 2030, 2035])
+@pytest.mark.parametrize(
+    "state,benefit",
+    [("IN", "in_ssp"), ("KS", "ks_sspp"), ("OH", "oh_rss")],
+)
 def test_ssp_snap_medicaid_calculation_order(year, state, benefit):
     """YAML cannot express repeated calculations in different orders."""
-    variables = (benefit, "snap", "medicaid_enrolled")
+    variables = (benefit, "snap", "medicaid_enrolled", "hud_unearned_income")
     results = []
     for order in (variables, variables[::-1]):
         simulation = Simulation(situation=situation(year, state))
@@ -54,7 +59,10 @@ def test_ssp_snap_medicaid_calculation_order(year, state, benefit):
     assert results[0]["snap"][1] > 0
     # Kansas does not cover this childless adult through Medicaid expansion;
     # SNAP pass-through does not replace Medicaid's category requirement.
-    assert results[0]["medicaid_enrolled"].tolist() == [True, state == "IN"]
+    assert results[0]["medicaid_enrolled"].tolist() == [
+        True,
+        state in {"IN", "OH", "UT"},
+    ]
 
 
 @pytest.mark.parametrize(
@@ -62,7 +70,12 @@ def test_ssp_snap_medicaid_calculation_order(year, state, benefit):
     ["medicaid_enrolled", "is_medicaid_eligible", "takes_up_medicaid_if_eligible"],
 )
 @pytest.mark.parametrize(
-    "state,eligibility", [("IN", "in_ssp_sapn_eligible"), ("KS", "ks_sspp_eligible")]
+    "state,eligibility",
+    [
+        ("IN", "in_ssp_sapn_eligible"),
+        ("KS", "ks_sspp_eligible"),
+        ("OH", "oh_rss_eligible"),
+    ],
 )
 def test_ssp_preserves_medicaid_inputs_set_after_initialization(
     variable, state, eligibility
