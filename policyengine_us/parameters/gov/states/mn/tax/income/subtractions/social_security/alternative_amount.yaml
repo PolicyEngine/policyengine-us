@@ -3,11 +3,6 @@ metadata:
   label: Minnesota social security subtraction alternative subtraction amount
   period: year
   unit: currency-USD
-  uprating:
-    parameter: gov.irs.uprating
-    rounding:
-      type: nearest
-      interval: 10
   propagate_metadata_to_children: true 
   breakdown:
   - filing_status
@@ -26,7 +21,11 @@ metadata:
     href: https://www.revenue.state.mn.us/sites/default/files/2025-11/m1m-24.pdf#page=4
   - title: 2025 Minnesota Schedule M1M, Income Additions and Subtractions, Line 12 worksheet
     href: https://www.revenue.state.mn.us/sites/default/files/2026-07/m1m-25.pdf#page=4
-# No uprating for 2024 or 2025 (according to M1M) even if the legal code describes uprating.
+  - title: Minnesota Department of Revenue, Tax Year 2026 Inflation-Adjusted Amounts, 290.0132 Subd. 26 Social Security Subtraction, Alternate Subtraction Maximum Subtraction (Not Indexed)
+    href: https://www.revenue.state.mn.us/sites/default/files/2025-12/inflation-adjusted-amounts-2026.pdf#page=2
+# Not indexed: Minn. Stat. 290.0132, subd. 26(j) adjusts only the simplified
+# subtraction phaseout thresholds in paragraph (c), clauses (1) and (2), and the
+# Department of Revenue lists these amounts as "Not Indexed" for 2026.
 
 JOINT:
   values:

@@ -1,0 +1,36 @@
+description: New Jersey uses these sources as unearned income under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+  - unemployment_compensation
+  # The FY2027 plan (1.9, page 6) leaves Strike Pay and General Assistance
+  # unchecked where the FY2026 plan checks them; handbook 2.2 (page 6) counts GA
+  # grants toward the standard and 2.2.3 makes striker households ineligible,
+  # so the handbook controls and both stay listed.
+  - strike_benefits
+  - ssi
+  - pension_income
+  # Handbook 2.3.D counts pensions and annuities; 2.3.E.10 excludes veterans'
+  # benefits, but VA survivor payments cannot be separated and count here.
+  - survivor_benefits
+  - general_assistance
+  - rental_income
+  - farm_rent_income
+  - alimony_income
+  - child_support_received
+  - interest_income
+  - ordinary_dividend_income
+  - workers_compensation
+  - disability_benefits
+metadata:
+  unit: list
+  period: year
+  label: New Jersey LIHEAP unearned sources
+  reference:
+  - title: FY2026 LIHEAP Handbook, sections 2.3.D and 2.3.E, PDF pages 8, 9
+    href: https://www.nj.gov/dca/dhcr/offices/docs/FY2026%20LIHEAP%20Handbook%20.pdf#page=8
+  - title: FY2027 LIHEAP Handbook, sections 2.3.D and 2.3.E, PDF pages 8, 9
+    href: https://www.nj.gov/dca/dhcr/offices/docs/FY2027%20LIHEAP%20Handbook.pdf#page=8
+  - title: FY2026 LIHEAP State Plan, section 1.9, PDF pages 6, 7
+    href: https://liheapch.acf.gov/docs/2026/state-plans/NJ_Plan_2026.pdf#page=6
+  - title: FY2027 LIHEAP State Plan, section 1.9, PDF pages 6, 7
+    href: https://www.nj.gov/dca/dhcr/offices/docs/LIHEAP_Detailed_Model_Plan.pdf#page=6

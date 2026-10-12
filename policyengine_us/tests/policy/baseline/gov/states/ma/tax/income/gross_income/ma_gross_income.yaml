@@ -1,0 +1,159 @@
+# M.G.L. c.62 s.2(a)(2) deducts exempt items from the filer's federal gross
+# income. A dependent's income is not in that income (irs_gross_income
+# excludes it; the dependent files their own return under c.62C s.6(a)), so
+# a dependent's amounts must not be deducted from the filer's MA gross income.
+
+- name: A dependent child's public pension does not reduce the filer's MA gross income.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        taxable_public_pension_income: 10_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MA
+  output:
+    # The child's pension is not in federal gross income or AGI.
+    irs_gross_income: [50_000, 0]
+    adjusted_gross_income: 50_000
+    # 50,000 wages, with nothing deducted for the child's pension.
+    ma_gross_income: 50_000
+    ma_agi: 50_000
+    # 50,000 - 2,000 FICA deduction cap (3,825 of FICA paid)
+    # - 6,800 head of household exemption - 1,000 dependent exemption.
+    ma_part_b_taxable_income: 40_200
+
+- name: Only the head's state tax refund is deducted, not a dependent child's.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        salt_refund_income: 3_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        salt_refund_income: 2_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MA
+  output:
+    # Federal gross income: 50,000 wages + 3,000 head refund.
+    adjusted_gross_income: 53_000
+    # 53,000 - 3,000 head refund; the child's 2,000 refund was never added.
+    ma_gross_income: 50_000
+    ma_agi: 50_000
+
+- name: Only the head's and spouse's public pensions are deducted, not a dependent's.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 40_000
+        taxable_public_pension_income: 20_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+      spouse:
+        age: 67
+        taxable_public_pension_income: 15_000
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      child:
+        age: 16
+        taxable_public_pension_income: 10_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MA
+  output:
+    # Federal gross income: 40,000 wages + 20,000 + 15,000 pensions.
+    adjusted_gross_income: 75_000
+    # 75,000 - 20,000 head pension - 15,000 spouse pension.
+    ma_gross_income: 40_000
+    ma_agi: 40_000
+
+- name: A dependent parent aged 70 with a public pension does not reduce the filer's MA gross income.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+      parent:
+        age: 70
+        taxable_public_pension_income: 4_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parent_marital_unit:
+        members: [parent]
+    spm_units:
+      spm_unit:
+        members: [head, parent]
+    households:
+      household:
+        members: [head, parent]
+        state_code: MA
+  output:
+    adjusted_gross_income: 50_000
+    ma_gross_income: 50_000
+    ma_agi: 50_000

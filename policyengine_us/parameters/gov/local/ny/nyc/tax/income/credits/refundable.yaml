@@ -4,9 +4,16 @@ values:
     - nyc_cdcc
     - nyc_eitc
     - nyc_school_tax_credit
+  2025-01-01:
+    - nyc_cdcc
+    - nyc_eitc
+    - nyc_school_tax_credit
+    - nyc_income_tax_elimination_credit
 metadata:
   unit: list
   label: NYC refundable tax credits
   reference:
     - title: 2025 Form IT-201-I Instructions
       href: https://www.tax.ny.gov/pdf/current_forms/it/it201i.pdf#page=26
+    - title: 2025 Form IT-201-I, line 70a (NYC income tax elimination credit)
+      href: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=21
