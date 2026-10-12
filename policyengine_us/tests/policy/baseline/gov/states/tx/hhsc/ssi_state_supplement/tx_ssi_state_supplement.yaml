@@ -138,8 +138,8 @@
 - name: Case 14, facility resident with a pension gets the full supplement.
   # A $40/month pension less the $20 general exclusion is $20 of countable
   # income, so SSI pays $30 - $20 = $10/month. The supplement is still $45:
-  # it is added to the reduced standard, and the pension is counted in the
-  # facility co-payment instead (H-6000).
+  # H-6000 states it as a fixed amount on the reduced standard, and no Texas
+  # source reduces it by the recipient's income.
   period: 2024
   input:
     people:
@@ -219,3 +219,91 @@
     ssi: 360
     tx_ssi_state_supplement_eligible: true
     tx_ssi_state_supplement: 360
+
+- name: Case 17, 1988-07.
+  period: 1988-07
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # First modeled month: PNA $30 equals the reduced federal benefit.
+    tx_ssi_state_supplement: 0
+
+- name: Case 18, 1999-08.
+  period: 1999-08
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # Last month before the supplement began.
+    tx_ssi_state_supplement: 0
+
+- name: Case 19, 1999-09.
+  period: 1999-09
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # 25 TexReg 558: $15 supplement retroactive to Sept. 1, 1999.
+    tx_ssi_state_supplement: 15
+
+- name: Case 20, 2001-08.
+  period: 2001-08
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # Last month of the $45 PNA.
+    tx_ssi_state_supplement: 15
+
+- name: Case 21, 2001-09.
+  period: 2001-09
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # DHS Revision Notice 02-1: $30 effective Sept. 1, 2001.
+    tx_ssi_state_supplement: 30
+
+- name: Case 22, 2003-08.
+  period: 2003-08
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # Last month of the $60 PNA.
+    tx_ssi_state_supplement: 30
+
+- name: Case 23, 2003-09.
+  period: 2003-09
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # H.B. 2292 Section 2.207: $45 PNA from Sept. 1, 2003.
+    tx_ssi_state_supplement: 15
+
+- name: Case 24, 2005-12.
+  period: 2005-12
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # Last month of the $45 PNA.
+    tx_ssi_state_supplement: 15
+
+- name: Case 25, 2006-01.
+  period: 2006-01
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # PNA restored to $60 on Jan. 1, 2006.
+    tx_ssi_state_supplement: 30
+
+- name: Case 26, 2023-12.
+  period: 2023-12
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # Last month of the $60 PNA.
+    tx_ssi_state_supplement: 30
+
+- name: Case 27, 2024-01.
+  period: 2024-01
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # IL 2023-45: $45 from January 2024.
+    tx_ssi_state_supplement: 45

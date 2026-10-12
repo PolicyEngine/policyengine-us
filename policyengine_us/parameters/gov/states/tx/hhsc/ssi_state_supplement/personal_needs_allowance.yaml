@@ -2,7 +2,9 @@ description: Texas provides this amount as the personal needs allowance for Supp
 
 values:
   # H-1500 and the 2002 DHS handbook give $30 before September 1999 without a
-  # start date. 42 USC 1396a(q)(2) set the $30 federal minimum from July 1, 1988.
+  # start date. The modeled backfill starts July 1, 1988, when the $30 federal
+  # minimum in 42 USC 1396a(q)(2) took effect; Texas's own adoption date is
+  # not in these sources.
   1988-07-01: 30
   1999-09-01: 45
   2001-09-01: 60

@@ -23,11 +23,12 @@ class tx_ssi_state_supplement(Variable):
         # by $45 per month to ensure SSI recipients also have a $75 personal
         # needs allowance", i.e. the allowance (Texas HR Code 32.024(w)) less
         # the $30 reduced federal benefit (42 USC 1382(e)(1)(B)).
-        # The supplement sits on top of the reduced standard: a recipient's
-        # other income does not reduce it but is counted in the facility
-        # co-payment (H-6000, H-1200). For an individual on the reduced
-        # standard, federal SSI plus countable income equals the $30
-        # standard, so the allowance less both is the same amount.
+        # H-6000 states the supplement as a fixed amount on the reduced
+        # standard and, separately, has workers check SSI recipients for other
+        # income and calculate a co-payment; no Texas source subtracts the
+        # recipient's income from the supplement. For an individual paid SSI
+        # on the reduced standard, federal SSI plus countable income equals
+        # the $30 standard, so the allowance less both is the same amount.
         p = parameters(period).gov.states.tx.hhsc.ssi_state_supplement
         pna = p.personal_needs_allowance
         federal_reduced = parameters(period).gov.ssa.ssi.amount.institutional.individual
