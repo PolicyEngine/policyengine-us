@@ -1,6 +1,54 @@
+
 - name: Child with no income, full allocation
   period: 2022
   input:
     age: 14
   output:
     ssi_ineligible_child_allocation: 5_040 # (1,261 - 841) * 12
+
+- name: No allocation for a child receiving public income-maintenance payments
+  # 416.1163(b): 'We do not allocate for ineligible children who are
+  # receiving public income-maintenance payments (see § 416.1142(a)).'
+  period: 2026
+  input:
+    age: 14
+    ssi_receives_public_income_maintenance: true
+  output:
+    ssi_ineligible_child_allocation: 0
+
+- name: The child's unearned income reduces the allocation
+  # 416.1163(b)(2). ($1,491 - $994 - $200) * 12.
+  period: 2026
+  input:
+    age: 10
+    ssi_unearned_income: 200 * 12
+  output:
+    ssi_ineligible_child_allocation: 3_564
+
+- name: A student child's wages up to the student exclusion do not reduce it
+  # 416.1161(c) excludes a student child's earned income up to the
+  # 416.1112(c)(3) amounts: $2,410 a month and $9,730 a year in 2026.
+  period: 2026
+  input:
+    age: 16
+    employment_income: 500 * 12
+  output:
+    ssi_ineligible_child_allocation: 5_964 # $497 * 12
+
+- name: A student child's wages above the annual student exclusion reduce it
+  # $12,000 of wages less the $9,730 annual cap leaves $2,270.
+  period: 2026
+  input:
+    age: 16
+    employment_income: 1_000 * 12
+  output:
+    ssi_ineligible_child_allocation: 3_694 # 5,964 - 2,270
+
+- name: A child who is not a student has no wage exclusion
+  period: 2026
+  input:
+    age: 17
+    is_in_k12_school: false
+    employment_income: 300 * 12
+  output:
+    ssi_ineligible_child_allocation: 2_364 # 5,964 - 3,600

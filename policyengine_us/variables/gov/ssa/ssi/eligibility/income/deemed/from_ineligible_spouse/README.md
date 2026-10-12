@@ -19,6 +19,9 @@ The implementation follows these steps according to the regulations:
 
    - Deduct allocations for ineligible children from the ineligible spouse's income
    - Deductions are made from unearned income first, then earned income
+   - An ineligible child is the claimant's or the spouse's child who lives in the claimant's household and is not eligible for SSI (§416.1160(d)), and who is a child under §416.1856: under 18, or under 22 and a student; not married; not the head of a household
+   - `ssi_spousal_deeming_child_allocations` sums the allocations. Parent ids (`parent_1_id`, `parent_2_id`) decide whose child someone is. Without ids, the co-resident members of the claimant's or the spouse's tax unit stand in, as the parent-link contract in `household/demographic/person/_parent_links.py` allows; that proxy cannot tell a grandchild from a child
+   - No allocation is made for a child receiving public income-maintenance payments (`ssi_receives_public_income_maintenance`)
 
 3. **Compare remaining income to FBR differential** (§416.1163(d))
 
