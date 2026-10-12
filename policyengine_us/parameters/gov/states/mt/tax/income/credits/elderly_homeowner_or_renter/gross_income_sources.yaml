@@ -26,6 +26,22 @@ metadata:
     href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
   - title: 2025 Montana Form 2 instructions, Schedule 2EC, line 8, refundable credits received
     href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=45
+  - title: MCA 15-30-2337(9)(a)(vi), cash public assistance and relief
+    href: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html
+  - title: MCA 15-30-2337(9)(a)(vi) as in effect in 2016 (archived)
+    href: https://web.archive.org/web/20161231130526/http://leg.mt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html
+  - title: 2016 Montana Form 2EC instructions, Part II, disability benefits including SSI payments and workers' compensation, and cash public assistance and relief
+    href: https://taxsim.nber.org/historical_state_tax_forms/MT/2016/Form_2_booklet_2016.pdf#page=74
+  - title: 2017 Montana Form 2EC instructions, Part II, disability benefits including SSI payments and workers' compensation, and cash public assistance and relief
+    href: https://taxsim.nber.org/historical_state_tax_forms/MT/2017/Form%202%202017%20Booklet.pdf#page=64
+  - title: 2022 Montana Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 8, disability benefits including SSI payments and workers' compensation
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=48
+  - title: 2023 Montana Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 8, disability benefits including SSI payments and workers' compensation
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=52
+  - title: 2024 Montana Form 2 instructions, Schedule 2EC, line 16, government assistance
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=48
+  - title: 2025 Montana Form 2 instructions, Schedule 2EC, line 16, government assistance
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=46
 
 values:
   2009-01-01:
@@ -43,6 +59,15 @@ values:
     - child_support_received # § 15-30-2337(9)(a)(iv) – support money
     - strike_benefits # § 15-30-2337(9)(a)(v) – nontaxable strike benefits
     - general_assistance # § 15-30-2337(9)(a)(vi) – cash public assistance
+    # Government assistance (Schedule 2EC line 16 from 2024; "disability
+    # benefits including ... SSI payments and workers' compensation" and
+    # "cash public assistance and relief" in earlier instructions). TANF is
+    # held for the SPM unit; tanf_person is each member's per capita share,
+    # so the household sum counts the unit's TANF once. LIEAP and SNAP are
+    # not cash public assistance (2014-2017 Form 2EC instructions).
+    - ssi
+    - tanf_person
+    - workers_compensation
     # Refundable credits received (2023 schedule line 7, Schedule 2EC line 8
     # from 2024): Montana's refundable credits other than this credit,
     # and this credit as received during the year (ARM 42.4.301(2)(c)).
@@ -60,6 +85,9 @@ values:
     - child_support_received
     - strike_benefits
     - general_assistance
+    - ssi
+    - tanf_person
+    - workers_compensation
     - mt_refundable_credits_before_renter_credit
     - mt_elderly_homeowner_or_renter_credit_received
     - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
@@ -76,6 +104,9 @@ values:
     - child_support_received
     - strike_benefits
     - general_assistance
+    - ssi
+    - tanf_person
+    - workers_compensation
     - mt_refundable_credits_before_renter_credit
     - mt_elderly_homeowner_or_renter_credit_received
     - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
