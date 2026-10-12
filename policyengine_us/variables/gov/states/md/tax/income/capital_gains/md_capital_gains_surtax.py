@@ -17,7 +17,9 @@ class md_capital_gains_surtax(Variable):
 
         # Get net capital gains (sum of long-term and short-term)
         # NOTE: This is the basic implementation using readily available variables
-        total_capital_gains = add(
+        # A tax unit dependent's gains are on the dependent's own return, so
+        # only the head's and spouse's gains count.
+        total_capital_gains = tax_unit_non_dep_add(
             tax_unit,
             period,
             ["short_term_capital_gains", "long_term_capital_gains"],

@@ -13,7 +13,12 @@ class nh_taxable_income(Variable):
     )
     defined_for = StateCode.NH
 
-    # New Hampshire allows for negative taxable income.
-    # It limits tax to nonnegative values in the tax computation instead.
-    adds = ["dividend_income", "interest_income"]
-    subtracts = ["nh_total_exemptions"]
+    def formula(tax_unit, period, parameters):
+        # The head's and spouse's interest and dividends: a tax unit dependent
+        # is a separate individual who reports their own on their own return.
+        income = tax_unit_non_dep_add(
+            tax_unit, period, ["dividend_income", "interest_income"]
+        )
+        # New Hampshire allows for negative taxable income.
+        # It limits tax to nonnegative values in the tax computation instead.
+        return income - tax_unit("nh_total_exemptions", period)

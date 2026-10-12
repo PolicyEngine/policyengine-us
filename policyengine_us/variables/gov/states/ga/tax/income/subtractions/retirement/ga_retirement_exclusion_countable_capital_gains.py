@@ -14,4 +14,7 @@ class ga_retirement_exclusion_countable_capital_gains(Variable):
     defined_for = StateCode.GA
 
     def formula(person, period, parameters):
-        return person("loss_limited_net_capital_gains_person", period)
+        # "Income or losses should be allocated to the person who owns the
+        # item" (IT-511 instructions); a tax unit dependent's losses are on the
+        # dependent's own return and do not reduce a filer's gains.
+        return person("filer_loss_limited_net_capital_gains_person", period)

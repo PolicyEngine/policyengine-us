@@ -1,0 +1,34 @@
+- name: A dependent's tax-exempt interest is on the dependent's own return
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 82
+        social_security_retirement: 18_000
+        taxable_pension_income: 8_000
+        tax_exempt_interest_income: 500
+      child:
+        age: 10
+        tax_exempt_interest_income: 50_000
+    household:
+      state_code: ME
+  output:
+    me_sales_and_property_tax_fairness_credit_income: 26_500
+
+- name: Same household without the dependent's interest
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 82
+        social_security_retirement: 18_000
+        taxable_pension_income: 8_000
+        tax_exempt_interest_income: 500
+      child:
+        age: 10
+    household:
+      state_code: ME
+  output:
+    me_sales_and_property_tax_fairness_credit_income: 26_500

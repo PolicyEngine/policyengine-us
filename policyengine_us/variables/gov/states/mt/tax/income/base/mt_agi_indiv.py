@@ -28,9 +28,8 @@ class mt_agi_indiv(Variable):
             # 2024 and after: no longer apply the social security adjustment
             tax_unit_mt_agi = reduced_agi
 
-        # in all years
-        # allocate any dependent net_income to tax unit head
+        # A tax unit dependent's income, and the Montana-taxable benefits the
+        # worksheet finds from it, are on the dependent's own return (Form 2
+        # uses the taxpayer's and spouse's income), as in mt_agi_joint.
         is_dependent = person("is_tax_unit_dependent", period)
-        sum_dep_net_income = person.tax_unit.sum(is_dependent * tax_unit_mt_agi)
-        is_head = person("is_tax_unit_head", period)
-        return ~is_dependent * tax_unit_mt_agi + is_head * sum_dep_net_income
+        return ~is_dependent * tax_unit_mt_agi

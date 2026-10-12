@@ -118,3 +118,21 @@
       state_code: MI
   output: # 2025 MI-1040 booklet, Schedule 1 line 28: $14,688 single limit < 50,000
     mi_interest_dividends_capital_gains_deduction: 14_688
+
+- name: A dependent's interest is not in the senior filer's AGI
+  # MCL 206.30(1)(p): interest, dividends and capital gains "included in
+  # adjusted gross income"; the dependent reports theirs on their own return.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 85
+        employment_income: 100_000
+      child:
+        age: 10
+        taxable_interest_income: 5_000
+    household:
+      state_code: MI
+  output:
+    mi_interest_dividends_capital_gains_deduction: 0

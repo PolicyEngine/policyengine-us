@@ -19,8 +19,10 @@ class mt_capital_gains_tax_joint(Variable):
             # Line 1 — aggregate across persons for joint filing
             taxable_income = add(tax_unit, period, ["mt_taxable_income_joint"])
             # Line 2 — lesser of net LTCG and total net capital gain
-            ltcg = add(tax_unit, period, ["long_term_capital_gains"])
-            stcg = add(tax_unit, period, ["short_term_capital_gains"])
+            # The head's and spouse's gains: a tax unit dependent's are on the
+            # dependent's own return, as federal taxable income leaves them out.
+            ltcg = tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_gains"])
+            stcg = tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"])
             net_cg = ltcg + stcg
             capital_gains = max_(min_(ltcg, net_cg), 0)
             # Line 3

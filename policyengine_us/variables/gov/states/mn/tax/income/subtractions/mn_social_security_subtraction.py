@@ -41,12 +41,19 @@ class mn_social_security_subtraction(Variable):
         # ... alternative benefit subtraction amount
         us_gross_income = add(tax_unit, period, ["irs_gross_income"])
         adj_income = us_gross_income - us_taxable_oasdi
-        total_oasdi = add(tax_unit, period, ["social_security"])
+        # The worksheet uses the head's and spouse's amounts from their federal
+        # return; a tax unit dependent's benefits, interest and student loan
+        # interest are on the dependent's own return.
+        total_oasdi = tax_unit_non_dep_add(tax_unit, period, ["social_security"])
         oasdi_amount = total_oasdi * total_benefit_fraction
-        tax_exempt_int = add(tax_unit, period, ["tax_exempt_interest_income"])
+        tax_exempt_int = tax_unit_non_dep_add(
+            tax_unit, period, ["tax_exempt_interest_income"]
+        )
         sum_income = adj_income + oasdi_amount + tax_exempt_int
         us_ald = tax_unit("above_the_line_deductions", period)
-        student_loan_int = add(tax_unit, period, ["student_loan_interest"])
+        student_loan_int = tax_unit_non_dep_add(
+            tax_unit, period, ["student_loan_interest"]
+        )
         mn_ald = max_(0, us_ald - student_loan_int)
         income = max_(0, sum_income - mn_ald)
         net_income = max_(0, income - income_amount)

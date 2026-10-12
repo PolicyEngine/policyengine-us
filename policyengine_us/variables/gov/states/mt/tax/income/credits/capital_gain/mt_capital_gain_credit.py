@@ -14,5 +14,8 @@ class mt_capital_gain_credit(Variable):
         p = parameters(period).gov.states.mt.tax.income.credits.capital_gain
 
         net_capital_gain = person("capital_gains", period)
+        # A tax unit dependent's gains are on the dependent's own return, so
+        # the dependent has no credit on this one.
+        head_or_spouse = ~person("is_tax_unit_dependent", period)
         # The net capital gain variable is capped at 0
-        return p.percentage * net_capital_gain
+        return p.percentage * net_capital_gain * head_or_spouse

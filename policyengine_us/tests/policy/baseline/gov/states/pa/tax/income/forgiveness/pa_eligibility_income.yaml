@@ -1,0 +1,34 @@
+- name: A dependent's tax-exempt interest is not the claimant's eligibility income
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 82
+        social_security_retirement: 18_000
+        taxable_pension_income: 8_000
+        tax_exempt_interest_income: 500
+      child:
+        age: 10
+        tax_exempt_interest_income: 50_000
+    household:
+      state_code: PA
+  output:
+    pa_eligibility_income: 500
+
+- name: Same household without the dependent's interest
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 82
+        social_security_retirement: 18_000
+        taxable_pension_income: 8_000
+        tax_exempt_interest_income: 500
+      child:
+        age: 10
+    household:
+      state_code: PA
+  output:
+    pa_eligibility_income: 500

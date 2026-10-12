@@ -23,7 +23,9 @@
   output:
     adjusted_gross_income: 57_600
     taxable_social_security: [11_760, 7_840]
-    ia_reportable_social_security: 4_000  # one-half of (income - deduction)
+    # Worksheet: line 2 (half of 40,000) + line 3 (38,000) + line 6 (2,000)
+    # = 60,000; less 32,000 = 28,000; half = 14,000; smaller of 20,000.
+    ia_reportable_social_security: 14_000
 
 - name: IA reportable social security unit test 2
   absolute_error_margin: 0.01
@@ -49,3 +51,41 @@
         state_code: IA
   output:
     ia_reportable_social_security: 1_500  # one-half of gross social security
+
+- name: A dependent's tax-exempt interest and benefits are on the dependent's own return
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 30_000
+        taxable_pension_income: 20_000
+      child:
+        age: 10
+        tax_exempt_interest_income: 50_000
+        social_security_survivors: 10_000
+    household:
+      state_code: IA
+  output:
+    # Line 2 (15,000) + line 3 (20,000) = 35,000; less 25,000 = 10,000;
+    # half = 5,000, smaller than 15,000.
+    ia_reportable_social_security: 5_000
+
+- name: Same household without the dependent's income
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 70
+        social_security_retirement: 30_000
+        taxable_pension_income: 20_000
+      child:
+        age: 10
+    household:
+      state_code: IA
+  output:
+    # Line 2 (15,000) + line 3 (20,000) = 35,000; less 25,000 = 10,000;
+    # half = 5,000, smaller than 15,000.
+    ia_reportable_social_security: 5_000

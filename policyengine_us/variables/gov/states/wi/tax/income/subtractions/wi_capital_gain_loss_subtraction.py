@@ -18,11 +18,14 @@ class wi_capital_gain_loss_subtraction(Variable):
 
     def formula(tax_unit, period, parameters):
         # calculate Schedule WD, Line 8
-        stcg_net = add(tax_unit, period, ["short_term_capital_gains"])
+        # Schedule WD starts from the filer's federal Schedule D. A tax unit
+        # dependent's gains are on the dependent's own return, so only the
+        # head's and spouse's gains count.
+        stcg_net = tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"])
         # calculate Schedule WD, Line 17
         # Capital gain distributions retain their long-term character when
         # reported directly on Form 1040, without a federal Schedule D.
-        ltcg_net = add(
+        ltcg_net = tax_unit_non_dep_add(
             tax_unit, period, ["long_term_capital_gains", "non_sch_d_capital_gains"]
         )
         # calculate Schedule WD, Line 18

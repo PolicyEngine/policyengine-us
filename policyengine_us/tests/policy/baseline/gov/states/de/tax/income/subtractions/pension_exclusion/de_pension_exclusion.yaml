@@ -133,3 +133,20 @@
   output:
     de_pension_exclusion: 10_000
 
+
+- name: A dependent's capital loss does not reduce the filer's eligible retirement income
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 63
+        taxable_pension_income: 10_000
+        long_term_capital_gains: 5_000
+      child:
+        age: 15
+        short_term_capital_gains: -10_000
+    household:
+      state_code: DE
+  output:
+    de_pension_exclusion_income: [15_000, 0]
