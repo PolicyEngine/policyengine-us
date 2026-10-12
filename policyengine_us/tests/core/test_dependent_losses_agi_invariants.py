@@ -20,9 +20,12 @@ vectorized simulation:
 2. 0 <= limited_capital_loss <= the filing-status cap, and it never exceeds
    the non-dependents' own capital losses (26 USC 1211(b)).
 3. loss_ald >= limited_capital_loss >= 0.
-4. For tax units without dependents, both variables equal the pre-change
-   all-member formula (a reference implementation below), so filers without
-   dependents see no change.
+4. For tax units without dependents, both variables equal the all-member
+   formula (a reference implementation below), so leaving dependents out
+   changes nothing for filers without dependents. The capital part follows
+   26 USC 1211(b): losses are allowed up to the gains
+   (`capital_losses_allowed_against_gains`), plus the excess up to the cap
+   (`limited_capital_loss`).
 """
 
 import numpy as np
@@ -173,10 +176,20 @@ def units():
     return _draw_units()
 
 
+@pytest.fixture(scope="module")
+def reference_parameters():
+    # The reference calculations only read policy. Build an independent model
+    # once per module instead of rebuilding it for each assertion and year.
+    return CountryTaxBenefitSystem().parameters
+
+
 @pytest.fixture(scope="module", params=YEARS)
-def runs(request, units):
+def runs(request, units, reference_parameters):
     year = request.param
-    out = {"year": year}
+    out = {
+        "year": year,
+        "irs": reference_parameters(f"{year}-01-01").gov.irs,
+    }
     for name, kwargs in {"with": {}, "no_dependent": {"zero_dependents": True}}.items():
         sim = Simulation(situation=_situation(units, year, **kwargs))
         out[name] = {
@@ -238,7 +251,7 @@ def test_dependents_losses_stay_off_filer_agi(runs, units):
 
 
 def _capital_loss_cap(runs):
-    p = CountryTaxBenefitSystem().parameters(f"{runs['year']}-01-01").gov.irs
+    p = runs["irs"]
     return p.ald.loss.capital.max[runs["with"]["filing_status"]]
 
 
@@ -258,9 +271,9 @@ def test_loss_ald_at_least_limited_capital_loss(runs):
     )
 
 
-def test_units_without_dependents_match_pre_change_formula(runs, units):
-    """Differential check against the all-member formula used before."""
-    p = CountryTaxBenefitSystem().parameters(f"{runs['year']}-01-01").gov.irs
+def test_units_without_dependents_match_all_member_formula(runs, units):
+    """Differential check against the all-member formula."""
+    p = runs["irs"]
     filing_status = runs["with"]["filing_status"]
     se = _by_person(units, "self_employment_income") + _by_person(
         units, "sstb_self_employment_income"
@@ -269,12 +282,13 @@ def test_units_without_dependents_match_pre_change_formula(runs, units):
     income = sum(_unit_sum(runs, np.maximum(x, 0)) for x in person_business)
     loss = sum(_unit_sum(runs, np.maximum(-x, 0)) for x in person_business)
     limited_business_loss = np.minimum(loss, income + p.ald.loss.max[filing_status])
-    capital_losses = _unit_sum(
-        runs,
-        np.maximum(0, -sum(_by_person(units, name) for name in CAPITAL_INPUTS)),
-    )
+    person_capital = sum(_by_person(units, name) for name in CAPITAL_INPUTS)
+    capital_losses = _unit_sum(runs, np.maximum(0, -person_capital))
+    capital_gains = _unit_sum(runs, np.maximum(0, person_capital))
+    allowed_against_gains = np.minimum(capital_losses, capital_gains)
     limited_capital_loss = np.minimum(
-        p.ald.loss.capital.max[filing_status], capital_losses
+        p.ald.loss.capital.max[filing_status],
+        capital_losses - allowed_against_gains,
     )
     no_dependents = np.array([not u["dependents"] for u in units])
     assert no_dependents.sum() > 100
@@ -285,6 +299,8 @@ def test_units_without_dependents_match_pre_change_formula(runs, units):
     )
     np.testing.assert_allclose(
         runs["with"]["loss_ald"][no_dependents],
-        (limited_business_loss + limited_capital_loss)[no_dependents],
+        (limited_business_loss + allowed_against_gains + limited_capital_loss)[
+            no_dependents
+        ],
         atol=TOLERANCE,
     )

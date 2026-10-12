@@ -339,3 +339,152 @@
     niit_magi: 255_000
     net_investment_income: 15_000
     net_investment_income_tax: 190
+
+- name: Section 911 exclusion lifts a single filer's MAGI over the threshold
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 150_000
+        qualified_dividend_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # MAGI 200,000 + 100,000 = 300,000; excess over 200,000 is 100,000.
+    # 3.8% x min(50,000, 100,000) = 1,900.
+    niit_magi: 300_000
+    net_investment_income: 50_000
+    net_investment_income_tax: 1_900
+
+- name: Section 911 exclusion that leaves MAGI below the threshold
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 50_000
+        qualified_dividend_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 90_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # MAGI 100,000 + 90,000 = 190,000, below the 200,000 threshold.
+    niit_magi: 190_000
+    net_investment_income_tax: 0
+
+- name: Section 911 exclusion where the MAGI excess limits the tax base
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 120_000
+        qualified_dividend_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        foreign_earned_income_exclusion: 60_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # MAGI 170,000 + 60,000 = 230,000; 3.8% x min(50,000, 30,000) = 1,140.
+    niit_magi: 230_000
+    net_investment_income_tax: 1_140
+
+- name: Section 911 exclusion lifts a joint return's MAGI over the threshold
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 150_000
+        qualified_dividend_income: 40_000
+      spouse:
+        age: 45
+        is_tax_unit_spouse: true
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        foreign_earned_income_exclusion: 60_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # AGI 240,000 is below the 250,000 joint threshold; MAGI 300,000 is
+    # 50,000 above it. 3.8% x min(40,000, 50,000) = 1,520.
+    filing_status: JOINT
+    adjusted_gross_income: 240_000
+    niit_magi: 300_000
+    net_investment_income_tax: 1_520
+
+- name: Section 911 exclusion on a separate return uses the 125,000 threshold
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 100_000
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SEPARATE
+        foreign_earned_income_exclusion: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # MAGI 120,000 + 30,000 = 150,000; 3.8% x min(20,000, 25,000) = 760.
+    niit_magi: 150_000
+    net_investment_income_tax: 760
+
+- name: An entered section 911 addition without housing amounts sets the tax
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 100_000
+        qualified_dividend_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Form 2555 line 45 is 100,000, of which 30,000 is the housing
+        # exclusion. Section 1411(d) adds back the other 70,000.
+        foreign_earned_income_exclusion: 100_000
+        niit_magi_section_911_addition: 70_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # MAGI 150,000 + 70,000 = 220,000; 3.8% x min(50,000, 20,000) = 760.
+    # The default (the full 100,000) would give 1,900.
+    niit_magi: 220_000
+    net_investment_income_tax: 760

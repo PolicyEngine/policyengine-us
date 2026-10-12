@@ -7,10 +7,15 @@ class nyc_school_tax_credit_fixed_amount_eligible(Variable):
     label = "Eligible for NYC School Tax Credit Fixed Amount"
     definition_period = YEAR
     defined_for = "in_nyc"
+    reference = (
+        # NY Tax Law § 606(ggg)(2), (4-a)
+        "https://www.nysenate.gov/legislation/laws/TAX/606",
+        "https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=20",
+    )
 
     def formula(tax_unit, period, parameters):
-        # Eligibility is based on having a federal AGI below $30k
-        # and being an NYC full-time resident.
+        # § 606(ggg)(4-a) denies the fixed amount to any taxpayer with income,
+        # as defined in § 606(ggg)(2), over the limit.
 
         # Get the NYC School Tax Credit Fixed Amount part of the parameter tree.
         p = parameters(period).gov.local.ny.nyc.tax.income.credits.school.fixed

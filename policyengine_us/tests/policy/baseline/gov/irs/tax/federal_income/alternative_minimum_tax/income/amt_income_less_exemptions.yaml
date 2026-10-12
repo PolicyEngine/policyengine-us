@@ -4,7 +4,7 @@
     amt_income: 200_000
     taxable_income: 1_000_000
     amt_kiddie_tax_applies: false
-    filer_adjusted_earnings: 400_000
+    employment_income: 400_000
     filing_status: SINGLE
   output:
     amt_income_less_exemptions: 124_100
@@ -15,7 +15,7 @@
     amt_income: 200_000
     taxable_income: 200_000
     amt_kiddie_tax_applies: true
-    filer_adjusted_earnings: 10_000
+    employment_income: 10_000
     filing_status: SINGLE
   output:
     amt_income_less_exemptions: 181_800
@@ -26,7 +26,7 @@
     amt_income: 10_000
     taxable_income: 1_000_000
     amt_kiddie_tax_applies: false
-    filer_adjusted_earnings: 400_000
+    employment_income: 400_000
     filing_status: SINGLE
   output:
     amt_income_less_exemptions: 0
@@ -37,7 +37,7 @@
     amt_income: 1_000_000
     taxable_income: 1_000_000
     amt_kiddie_tax_applies: false
-    filer_adjusted_earnings: 400_000
+    employment_income: 400_000
     filing_status: SINGLE
   output:
     amt_income_less_exemptions: 1_000_000

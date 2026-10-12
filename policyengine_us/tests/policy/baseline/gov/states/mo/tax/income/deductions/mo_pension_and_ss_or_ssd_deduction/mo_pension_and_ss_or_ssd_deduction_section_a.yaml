@@ -257,3 +257,110 @@
     state_code: MO
   output:
     mo_pension_and_ss_or_ssd_deduction_section_a: 0
+
+# Form MO-A Part 3 Section A, Line 1 takes the taxable public pension of the
+# filer and spouse from their federal return (Form 1040, Line 5b). A tax-unit
+# dependent's pension is not in the filer's federal AGI (RSMo 143.124.13); the
+# dependent reports it on their own return.
+
+- name: A dependent child's public pension is not deducted on the parent's return
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        taxable_public_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_a: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction: 0
+
+- name: Only the head's and spouse's public pensions count, not a dependent's
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        taxable_public_pension_income: 20_000
+      spouse:
+        age: 68
+        is_tax_unit_spouse: true
+        taxable_public_pension_income: 15_000
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+        taxable_public_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MO
+  output:
+    # Line 4: each spouse's pension (below the Line 2 cap) less Line 3 of $0.
+    mo_pension_and_ss_or_ssd_deduction_section_a: [20_000, 15_000, 0]
+    # Line 5: 20,000 + 15,000; no private pension or social security.
+    mo_pension_and_ss_or_ssd_deduction: 35_000
+
+- name: The head's public pension is reduced by their own age-gated Social Security deduction, and a dependent's pension still does not count
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+        taxable_public_pension_income: 20_000
+        taxable_social_security: 5_000
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+        taxable_public_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    # Section C: the head is 62 or older, so all 5,000 of taxable Social
+    # Security is deductible.
+    mo_pension_and_ss_or_ssd_deduction_section_c: [5_000, 0]
+    # Section A Line 4: 20,000 - 5,000 (Line 3) for the head; 0 for the child.
+    mo_pension_and_ss_or_ssd_deduction_section_a: [15_000, 0]
+    # Section D: 15,000 (A) + 0 (B) + 5,000 (C).
+    mo_pension_and_ss_or_ssd_deduction: 20_000

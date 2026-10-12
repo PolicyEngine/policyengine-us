@@ -678,6 +678,9 @@ class SPMSimulationMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Core switches the baseline system after cloning its populations.
+        baseline = self.branches.get("baseline")
+        if baseline is not None:
+            baseline._drop_holders_built_for_another_policy()
         self._rebind_holders()
         # Core sets ``trace`` before this simulation owns its policy state.
         self._isolate_parameter_tracing()
@@ -737,6 +740,40 @@ class SPMSimulationMixin:
         ]
         for branch in self.branches.values():
             branch._rebind_holders()
+
+    def _drop_holders_built_for_another_policy(self):
+        """Drop holders whose storage this simulation's policy cannot use.
+
+        A reform's baseline arm is a branch of the reform, so its holders were
+        built for the reform's variables. Rebinding a holder to the baseline's
+        variable keeps the holder's population and storage. A holder in
+        another entity's population, or with storage for (or not for) an
+        ``ETERNITY`` variable, therefore cannot hold the baseline's
+        definition. Drop it with its recorded inputs, as core 3.32.21 and
+        later do in ``_bind_to_tax_benefit_system``; core 3.32.8 keeps it.
+
+        Only a baseline arm does this. ``apply_reform`` keeps a simulation's
+        own inputs, as core's does.
+        """
+        variables = self.tax_benefit_system.variables
+        dropped = set()
+        for population in self.populations.values():
+            for name, holder in list(population._holders.items()):
+                variable = variables.get(name)
+                if variable is not None and (
+                    variable.entity.key != population.entity.key
+                    or (variable.definition_period == periods_.ETERNITY)
+                    != holder._memory_storage.is_eternal
+                ):
+                    del population._holders[name]
+                    dropped.add(name)
+        if dropped:
+            self._user_input_keys = {
+                key for key in self._user_input_keys if key[0] not in dropped
+            }
+            self.input_variables = [
+                name for name in self.input_variables if name not in dropped
+            ]
 
     def apply_reform(self, reform):
         policy = self.tax_benefit_system
@@ -899,31 +936,79 @@ class SPMSimulationMixin:
         on this simulation's own provider and on its branches', because a
         reform simulation's baseline arm is handed a separate provider that
         never sees an input of its own.
+
+        Each simulation records the county it reads itself, not the one this
+        simulation was handed. A branch stores its inputs under its own name,
+        and its holders start as a copy of what its parent held when it was
+        created, so an input set on a branch never reaches its parent, and one
+        set on the parent afterwards never reaches the branch. Recording one
+        array across the family let a branch's mistyped county escape (a read
+        without the branch name saw the parent's text), kept rejecting a branch
+        that corrected its own county, and let a later parent input overwrite
+        a branch's record of a county the branch still reads.
         """
-        holder = self.get_holder("county_fips")
-        periods = (
-            holder.get_known_periods() if period is None else [periods_.period(period)]
+        for simulation in self._simulation_family():
+            simulation._record_own_county_input_types(period)
+
+    def _record_own_county_input_types(self, period=None):
+        """Record which counties this simulation itself reads as non-text."""
+        record = getattr(
+            self.tax_benefit_system.spm_forecast_provider,
+            "record_county_input_types",
+            None,
         )
+        if record is None:
+            return
+        holder = self.get_holder("county_fips")
+        if period is None:
+            # A branch's holder lists a period once per branch that stored it.
+            periods = dict.fromkeys(holder.get_known_periods())
+        else:
+            periods = [periods_.period(period)]
         for known_period in periods:
-            array = holder.get_array(known_period)
-            if array is None or array.dtype.kind in "SU":
-                # A real text dtype cannot be hiding an integer.
+            # The array this simulation's formulas read: its own input, else
+            # its nearest ancestor's, else the default branch's.
+            array = holder.get_array(known_period, self.branch_name)
+            if array is None:
                 continue
-            year = int(known_period.start.year)
-            for simulation in self._simulation_family():
-                record = getattr(
-                    simulation.tax_benefit_system.spm_forecast_provider,
-                    "record_county_input_types",
-                    None,
-                )
-                if record is not None:
-                    record(year, array)
+            # A real text dtype cannot be hiding an integer, but it still
+            # replaces whatever this year's record held before.
+            record(
+                int(known_period.start.year),
+                () if array.dtype.kind in "SU" else array,
+            )
 
     def _simulation_family(self):
-        """This simulation and every branch that reads the same inputs."""
+        """This simulation and every branch descended from it."""
         yield self
         for branch in getattr(self, "branches", {}).values():
             yield from branch._simulation_family()
+
+    def subsample(self, *args, **kwargs):
+        result = super().subsample(*args, **kwargs)
+        baseline = self.branches.get("baseline")
+        if baseline is not None:
+            # Core rebuilds the baseline arm by branching this simulation, so
+            # the new arm starts out as a copy of this one: its holders hold
+            # this simulation's variables, a reform's neutralized or replaced
+            # ones included, and its own ``baseline`` is the arm it replaces,
+            # on the population from before subsampling. Core then hands it
+            # the replaced arm's policy; before 3.32.21 it does not rebind the
+            # holders to that policy, and it never claims the policy for the
+            # new arm or primes the policy's private parameter-tracing root,
+            # which are this package's state. Give it what construction gives
+            # a baseline arm: no baseline of its own, so it computes no
+            # behavioural responses, holders bound to its own policy, and that
+            # policy's tracing primed for this arm.
+            baseline.baseline = None
+            baseline._drop_holders_built_for_another_policy()
+            baseline._rebind_holders()
+            baseline._isolate_parameter_tracing()
+        # Core hands the rebuilt baseline arm the previous arm's policy and so
+        # its provider, which recorded the counties the previous arm read.
+        # Record what every simulation in the family reads now.
+        self._record_county_input_types()
+        return result
 
     def set_input(self, variable_name, period, value):
         # Core's loader calls set_input for every dataset format. Reject saved

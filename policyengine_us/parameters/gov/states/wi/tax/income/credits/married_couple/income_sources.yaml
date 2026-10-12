@@ -14,11 +14,17 @@ metadata:
       href: https://www.revenue.wi.gov/TaxForms2024/2024-Form1.pdf#page=4
     - title: 2025 Wisconsin Form 1, Schedule 2
       href: https://www.revenue.wi.gov/TaxForms2025/2025-Form1.pdf#page=4
+    - title: Wis. Stat. § 71.07(6)(am)1 (earned income excludes corporate distributions of earnings or profits)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/i/07/6/am/1
+    - title: 2025 Wisconsin Form 1 instructions, line 18 (earned income includes net earnings from self-employment)
+      href: https://www.revenue.wi.gov/TaxForms2025/2025-Form1-inst.pdf#page=21
 
 values:
   2021-01-01:
     - irs_employment_income
     - self_employment_income
     - sstb_self_employment_income
-    - partnership_s_corp_income
+    # Schedule K-1 (Form 1065) self-employment earnings only; S-corporation
+    # income is a distribution of earnings, not earned income.
+    - partnership_self_employment_net_earnings
     - farm_operations_income

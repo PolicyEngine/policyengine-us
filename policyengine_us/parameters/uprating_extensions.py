@@ -1,10 +1,11 @@
 """Unified script to extend all uprating factors through 2100."""
 
 import math
+from decimal import ROUND_HALF_UP, Decimal
 from typing import Optional, Tuple
 
 from policyengine_us.model_api import *
-from policyengine_core.periods import instant
+from policyengine_core.periods import Instant, instant
 
 
 LONG_RUN_CBO_INCOME_BY_SOURCE_PARAMETERS = (
@@ -72,6 +73,13 @@ def get_average_for_12_months_ending_august(cpi: Parameter, year: int) -> float:
     return (
         sum(cpi(month) for month in observed) + cpi(observed[-1]) * unobserved_tail
     ) / MONTHS_IN_YEAR
+
+
+def get_cpi_u_average_for_12_months_ending_august(
+    parameters: ParameterNode, year: int
+) -> float:
+    """Average the CPI-U series over the 12 months ending August 31."""
+    return get_average_for_12_months_ending_august(parameters.gov.bls.cpi.cpi_u, year)
 
 
 def get_or_ctc_cola(parameters: ParameterNode, tax_year: int) -> float:
@@ -170,6 +178,153 @@ def extend_dependent_standard_deduction_parameters(
         )
 
 
+# 26 U.S.C. 62(d)(3) indexing of the 62(a)(2)(D) educator expense cap:
+# statutory dollar amount and 1(f)(3) base year.
+EDUCATOR_EXPENSE_CAP_STATUTORY_BASE = (250, 2014)
+
+
+def extend_educator_expense_cap(parameters: ParameterNode, end_year: int) -> None:
+    """Project the per-educator cap on the educator expense deduction.
+
+    26 U.S.C. 62(d)(3) increases the $250 amount in 62(a)(2)(D) by the
+    1(f)(3) cost-of-living adjustment, substituting calendar year 2014 for
+    2016, and rounds the increase to the nearest multiple of $50. Each year
+    is computed from the statutory base rather than chained from the last
+    rounded value, which can put a $50 step a year or more early or late;
+    IRS values encoded in the YAML take precedence for their own years.
+    """
+    ROUNDING_INTERVAL = 50
+    base, base_year = EDUCATOR_EXPENSE_CAP_STATUTORY_BASE
+    cap = parameters.gov.irs.ald.educator_expense.cap
+    first_projected_year = 1 + max(
+        int(value.instant_str[:4]) for value in cap.values_list
+    )
+    for year in range(first_projected_year, end_year + 1):
+        cola = get_irs_cola(parameters, year, base_year)
+        # Nearest multiple of $50; an exact half rounds up.
+        increase = math.floor(base * cola / ROUNDING_INTERVAL + 0.5) * ROUNDING_INTERVAL
+        cap.update(period=f"year:{year}-01-01:1", value=float(base + increase))
+    cap.update(
+        start=instant(f"{end_year}-01-01"),
+        value=cap(f"{end_year}-01-01"),
+    )
+
+
+def get_average_for_12_months_ending_march(cpi: Parameter, year: int) -> float:
+    """Average a monthly price index over the 12 months ending March 31.
+
+    Covers April of ``year - 1`` through March of ``year``: the calendar-year
+    index for the HSA amounts, which 26 U.S.C. 223(g)(1) obtains by applying
+    1(f)(4) "by substituting 'March 31' for 'August 31'". Observed months
+    are read as published; unobserved months are interpolated toward the
+    index's calendar-year projection points by
+    ``get_projected_cpi_u_for_month``, so a window that straddles the last
+    observation is neither held flat nor read from a point centred months
+    away from it.
+    """
+    end = instant(f"{year}-03-01")
+    return (
+        sum(
+            get_projected_cpi_u_for_month(cpi, end.offset(-month, MONTH))
+            for month in range(MONTHS_IN_YEAR)
+        )
+        / MONTHS_IN_YEAR
+    )
+
+
+# 26 U.S.C. 223(b)(2) dollar amounts by coverage (parameter name, amount) and
+# the base year 223(g)(1)(B)(i) substitutes for calendar year 2016.
+HSA_CONTRIBUTION_LIMIT_STATUTORY_BASES = (
+    ("self_only", 2_250),  # 223(b)(2)(A)
+    ("family", 4_500),  # 223(b)(2)(B)
+)
+HSA_CONTRIBUTION_LIMIT_BASE_YEAR = 1997
+
+
+def get_hsa_cola_denominator(parameters: ParameterNode) -> float:
+    """Denominator of the 26 U.S.C. 223(g)(1) cost-of-living adjustment.
+
+    The CPI for 1997, the base year 223(g)(1)(B)(i) substitutes for calendar
+    year 2016, averaged over the 12 months ending March 31 as 223(g)(1)
+    applies 1(f)(4), times the 1(f)(3)(B) ratio of the C-CPI-U to the CPI for
+    calendar year 2016. That ratio keeps its 12 months ending August 31, as
+    for every other 1(f)(3) amount; see ``get_hsa_cola``.
+    """
+    cpi = parameters.gov.bls.cpi
+    ratio_2016 = get_average_for_12_months_ending_august(
+        cpi.c_cpi_u, 2016
+    ) / get_average_for_12_months_ending_august(cpi.cpi_u, 2016)
+    return (
+        get_average_for_12_months_ending_march(
+            cpi.cpi_u, HSA_CONTRIBUTION_LIMIT_BASE_YEAR
+        )
+        * ratio_2016
+    )
+
+
+def get_hsa_cola(
+    parameters: ParameterNode,
+    tax_year: int,
+    denominator: Optional[float] = None,
+) -> float:
+    """The 26 U.S.C. 223(g)(1) cost-of-living adjustment for ``tax_year``.
+
+    The 1(f)(3) adjustment with calendar year 1997 in place of 2016, and with
+    1(f)(4) applied by substituting March 31 for August 31: the percentage
+    (if any) by which the C-CPI-U for the calendar year before ``tax_year``,
+    averaged over the 12 months ending March 31, exceeds
+    ``get_hsa_cola_denominator``. These windows reproduce every self-only and
+    family limit the IRS published for 2019 through 2027, and Rev. Proc.
+    2018-18's limits for 2018, from the BLS series in ``gov.bls.cpi``
+    (``tests/core/test_hsa_contribution_limits.py``). Taking the 2016 ratio
+    over the 12 months ending March 31 as well misses 3 of the 18 values for
+    2019 to 2027. ``denominator`` lets a caller computing many years pass it
+    once.
+    """
+    if denominator is None:
+        denominator = get_hsa_cola_denominator(parameters)
+    chained = get_average_for_12_months_ending_march(
+        parameters.gov.bls.cpi.c_cpi_u, tax_year - 1
+    )
+    return max(chained / denominator - 1, 0)
+
+
+def extend_hsa_contribution_limits(parameters: ParameterNode, end_year: int) -> None:
+    """Project the HSA contribution limits for self-only and family coverage.
+
+    26 U.S.C. 223(g) increases the 223(b)(2) amounts ($2,250 self-only and
+    $4,500 family) by the cost-of-living adjustment in ``get_hsa_cola`` and
+    rounds each increase to the nearest multiple of $50. Each year is
+    computed from the statutory base rather than chained from the last
+    rounded value; IRS values encoded in the YAML take precedence for their
+    own years.
+    """
+    ROUNDING_INTERVAL = 50
+    limit = parameters.gov.irs.gross_income.health_savings_account_contributions.limit
+    denominator = get_hsa_cola_denominator(parameters)
+    colas = {}
+    for name, base in HSA_CONTRIBUTION_LIMIT_STATUTORY_BASES:
+        parameter = getattr(limit, name)
+        first_projected_year = 1 + max(
+            int(value.instant_str[:4]) for value in parameter.values_list
+        )
+        for year in range(first_projected_year, end_year + 1):
+            if year not in colas:
+                colas[year] = get_hsa_cola(parameters, year, denominator)
+            # Nearest multiple of $50; an exact half rounds up.
+            increase = (
+                math.floor(base * colas[year] / ROUNDING_INTERVAL + 0.5)
+                * ROUNDING_INTERVAL
+            )
+            parameter.update(
+                period=f"year:{year}-01-01:1", value=float(base + increase)
+            )
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
+
+
 def extend_or_ctc_parameters(parameters: ParameterNode, end_year: int) -> None:
     """Project the Oregon Kids' Credit amount and phase-out start.
 
@@ -195,6 +350,220 @@ def extend_or_ctc_parameters(parameters: ParameterNode, end_year: int) -> None:
             increase = math.floor(base * cola / ROUNDING_INTERVAL) * ROUNDING_INTERVAL
             parameter.update(
                 period=f"year:{year}-01-01:1", value=float(base + increase)
+            )
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
+
+
+def get_nyc_income_tax_elimination_credit_cola(
+    parameters: ParameterNode, tax_year: int
+) -> float:
+    """Calculate the NYC income tax elimination credit cost-of-living adjustment.
+
+    Tax Law § 1310(h)(1)(B)(iii): the percentage by which the consumer price
+    index for the calendar year preceding the tax year exceeds the consumer
+    price index for calendar year 2024. Section 1310(h)(3)(A) defines a
+    calendar year's index as the average CPI-U for all urban consumers for
+    the 12 months ending August 31 of that year.
+    """
+    CPI_BASE_YEAR = 2024
+    base = get_cpi_u_average_for_12_months_ending_august(parameters, CPI_BASE_YEAR)
+    window = get_cpi_u_average_for_12_months_ending_august(parameters, tax_year - 1)
+    return max(window / base - 1, 0)
+
+
+def extend_nyc_income_tax_elimination_credit_thresholds(
+    parameters: ParameterNode, end_year: int
+) -> None:
+    """Project the NYC income tax elimination credit income thresholds.
+
+    Tax Law § 1310(h)(1)(B)(iii) multiplies the statutory amounts, which
+    apply to tax year 2025, by one plus the cost-of-living adjustment for
+    each tax year from 2026. Each year is computed from the statutory
+    amounts rather than chained from the prior year. The statute specifies
+    no rounding, so none is applied. Department of Taxation and Finance
+    published values encoded in the YAML take precedence for their own
+    years.
+    """
+    STATUTORY_YEAR = 2025
+    thresholds = parameters.gov.local.ny.nyc.tax.income.credits.income_tax_elimination.income_threshold
+    for scale in thresholds.children.values():
+        for bracket in scale.brackets:
+            amount = bracket.amount
+            base = amount(f"{STATUTORY_YEAR}-01-01")
+            first_projected_year = 1 + max(
+                int(value.instant_str[:4]) for value in amount.values_list
+            )
+            for year in range(first_projected_year, end_year + 1):
+                cola = get_nyc_income_tax_elimination_credit_cola(parameters, year)
+                amount.update(
+                    period=f"year:{year}-01-01:1", value=float(base * (1 + cola))
+                )
+            amount.update(
+                start=instant(f"{end_year}-01-01"),
+                value=amount(f"{end_year}-01-01"),
+            )
+
+
+def get_projected_cpi_u_for_month(cpi: Parameter, month: Instant) -> float:
+    """CPI-U for a month, interpolated toward CBO's projections if unobserved.
+
+    The model's CPI-U series holds BLS monthly observations, then CBO's
+    calendar-year averages as projection points at February instants (see
+    ``get_average_for_12_months_ending_august`` and #9608; the "# YYYY
+    value" comments in cpi_u.yaml label the tax year a point feeds, not its
+    calendar year). A calendar-year average sits halfway between June and
+    July of its year. So an unobserved month is interpolated geometrically,
+    by month, between the last observation and the next projection point
+    placed there, or between two such points; past the last point the index
+    holds flat.
+
+    As in ``get_average_for_12_months_ending_august``, only non-February
+    instants identify the end of the observed series, and no branch reads
+    an instant a refresh could have turned from projection into
+    observation: a February in the last observation's year is never an
+    anchor. That only matters when observations end in January (any later
+    month already follows that February): the February may then hold that
+    year's projection or an observation, so it is skipped, and the months
+    after January interpolate toward the next year's point.
+    """
+    last_observation = max(
+        instant(value.instant_str)
+        for value in cpi.values_list
+        if not value.instant_str.endswith("-02-01")
+    )
+    if month <= last_observation:
+        return cpi(month)
+
+    def month_index(date: Instant) -> float:
+        return 12 * date.year + date.month - 1
+
+    anchors = [(month_index(last_observation), cpi(last_observation))] + sorted(
+        (12 * int(value.instant_str[:4]) + 5.5, value.value)
+        for value in cpi.values_list
+        if value.instant_str.endswith("-02-01")
+        and int(value.instant_str[:4]) > last_observation.year
+    )
+    target = month_index(month)
+    for (start, start_level), (end, end_level) in zip(anchors, anchors[1:]):
+        if target <= end:
+            share = (target - start) / (end - start)
+            return start_level * (end_level / start_level) ** share
+    return anchors[-1][1]
+
+
+def get_la_cpi_u_percentage_increase(cpi: ParameterNode, year: int) -> float:
+    """The CPI-U percentage increase for calendar ``year``, as BLS reports it.
+
+    La. R.S. 47:294(B) and 47:44.1(A) multiply the prior year's amount by
+    "the percentage increase in the Consumer Price Index ... (CPI-U), as
+    reported by the United States Department of Labor, Bureau of Labor
+    Statistics ... for the previous calendar year". For tax year 2026, LDR
+    Revenue Information Bulletin 26-019 applied 2.7%. The bulletin names no
+    comparison months, but 2.7% is the December 2024 to December 2025 change
+    as BLS reported it (324.054 / 315.605, not seasonally adjusted: 2.677%).
+    The 2025 annual-average change (321.943 / 313.689) was 2.6%, and the
+    unrounded 2.677% would give $12,835 rather than the bulletin's $12,838.
+    So the percentage is the December-over-December change rounded to one
+    decimal place, as BLS reports it. A fall in the index is not an
+    increase, so the percentage is never negative.
+
+    ``cpi`` is the ``gov.bls.cpi`` node. BLS reports the change from the not
+    seasonally adjusted index, so the published Decembers in
+    ``cpi_u_nsa_december`` are used when both years have one. Otherwise
+    both Decembers come from the model's CPI-U series (seasonally adjusted
+    from January 2024), through ``get_projected_cpi_u_for_month``; mixing
+    the two would add December's seasonal factor (about 0.6% in 2025) to
+    the change.
+    """
+    december = cpi.cpi_u_nsa_december
+    published = {int(value.instant_str[:4]) for value in december.values_list}
+    if {year - 1, year} <= published:
+        current = december(f"{year}-12-01")
+        prior = december(f"{year - 1}-12-01")
+    else:
+        current = get_projected_cpi_u_for_month(cpi.cpi_u, instant(f"{year}-12-01"))
+        prior = get_projected_cpi_u_for_month(cpi.cpi_u, instant(f"{year - 1}-12-01"))
+    change = 100 * (Decimal(repr(current)) / Decimal(repr(prior)) - 1)
+    percentage = change.quantize(Decimal("0.1"), rounding=ROUND_HALF_UP)
+    return float(max(percentage, 0))
+
+
+def adjust_la_amount_for_inflation(prior_amount: float, percentage: float) -> float:
+    """Apply a La. R.S. 47:294(B) / 47:44.1(A) adjustment to a prior amount.
+
+    RIB 26-019's amounts are the adjusted amounts rounded to the nearest
+    dollar, with half dollars rounding up: $12,500 x 1.027 = $12,837.50
+    became $12,838. The arithmetic is decimal because in binary floating
+    point 12,500 x 1.027 is just below 12,837.5 and would round down.
+    """
+    adjusted = Decimal(str(prior_amount)) * (100 + Decimal(str(percentage))) / 100
+    return float(adjusted.quantize(Decimal(1), rounding=ROUND_HALF_UP))
+
+
+def extend_la_cpi_u_indexed_amounts(parameters: ParameterNode, end_year: int) -> None:
+    """Project Louisiana's CPI-U-indexed standard deduction and retirement cap.
+
+    Each year after the last LDR-published amount, the single and
+    married-separate standard deduction (R.S. 47:294(A)(1)) and the age-65
+    retirement income exemption (R.S. 47:44.1(A)) become the prior year's
+    amount adjusted by the prior calendar year's CPI-U percentage increase
+    (see ``get_la_cpi_u_percentage_increase``), rounded to the nearest
+    dollar. The joint, head of household and surviving spouse deduction is
+    200% of the single amount (R.S. 47:294(A)(2)), so it doubles the rounded
+    single amount rather than being adjusted on its own. Amounts encoded in
+    the YAML take precedence for their own years.
+
+    Like the other projections in this module, the values are fixed when
+    the parameter tree is built. A reform that changes the single amount
+    does not carry through to the other filing statuses or later years.
+    """
+    la = parameters.gov.states.la.tax.income
+    cpi = parameters.gov.bls.cpi
+    standard = la.deductions.standard.amount
+    retirement_caps = [
+        bracket.amount
+        for bracket in la.exempt_income.retirement.cap.brackets
+        if bracket.threshold(f"{end_year}-01-01") == 65
+    ]
+    if len(retirement_caps) != 1:
+        raise ValueError(
+            "Expected one age-65 bracket in the Louisiana retirement income "
+            f"exemption cap; found {len(retirement_caps)}."
+        )
+    percentages = {}
+    for parameter in (standard.SINGLE, retirement_caps[0]):
+        first_projected_year = 1 + max(
+            int(value.instant_str[:4]) for value in parameter.values_list
+        )
+        for year in range(first_projected_year, end_year + 1):
+            if year - 1 not in percentages:
+                percentages[year - 1] = get_la_cpi_u_percentage_increase(cpi, year - 1)
+            parameter.update(
+                period=f"year:{year}-01-01:1",
+                value=adjust_la_amount_for_inflation(
+                    parameter(f"{year - 1}-01-01"), percentages[year - 1]
+                ),
+            )
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
+    for parameter, share_of_single in (
+        (standard.SEPARATE, 1),
+        (standard.JOINT, 2),
+        (standard.HEAD_OF_HOUSEHOLD, 2),
+        (standard.SURVIVING_SPOUSE, 2),
+    ):
+        first_projected_year = 1 + max(
+            int(value.instant_str[:4]) for value in parameter.values_list
+        )
+        for year in range(first_projected_year, end_year + 1):
+            parameter.update(
+                period=f"year:{year}-01-01:1",
+                value=share_of_single * standard.SINGLE(f"{year}-01-01"),
             )
         parameter.update(
             start=instant(f"{end_year}-01-01"),
@@ -595,6 +964,17 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
+    # CMS employer-sponsored insurance premium per enrollee (January values,
+    # last projection year 2034). Employer and pre-tax employee premium
+    # inputs use this as their uprater.
+    extend_parameter_values(
+        parameters.calibration.gov.hhs.cms.esi_premium_per_enrollee,
+        last_projected_year=2034,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
     # Gross Social Security benefit inputs should age with gross Social
     # Security benefits, not taxable Social Security income.
     extend_parameter_values(
@@ -615,6 +995,23 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
+    # CMS Medicare spending per enrollee (January values, last projection
+    # year 2034), which Medicare cost variables read directly. Sequestration
+    # cuts Medicare expenditures 2 percent through August 31, 2033 (2026
+    # Medicare Trustees Report, file page 209); its end lifts 2033 and 2034
+    # growth, and the Trustees' per-beneficiary growth falls from 6.6
+    # percent in 2034 to 5.4 percent in 2035 (Table V.D1, file page 210).
+    # So each year from 2035 to 2100 grows at the 2031-2032 rate, and later
+    # years hold the 2100 value.
+    extend_parameter_values(
+        parameters.calibration.gov.hhs.medicare.per_capita_cost,
+        last_projected_year=2034,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+        growth_years=(2031, 2032),
+    )
+
     # CBO income-by-source aggregates are used directly and as anchors for
     # SOI-based income upraters. Extending them in the baseline path keeps
     # long-run nominal data aging independent of scenario-specific reforms.
@@ -633,10 +1030,33 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     # above so projected windows are available.
     extend_or_ctc_parameters(parameters, end_year=END_YEAR)
 
+    # Louisiana's standard deduction and age-65 retirement income exemption
+    # follow R.S. 47:294(B) and 47:44.1(A): the prior year's amount times the
+    # prior calendar year's CPI-U increase. Must run after the CPI-U extension
+    # above so projected Decembers are available.
+    extend_la_cpi_u_indexed_amounts(parameters, end_year=END_YEAR)
+
     # The limits on a dependent's standard deduction follow 26 U.S.C.
     # 63(c)(4)'s chained CPI-U schedule, computed from the statutory 1987 and
     # 1997 bases. Must run after the Chained CPI-U extension above so
     # projected windows are available.
     extend_dependent_standard_deduction_parameters(parameters, end_year=END_YEAR)
+
+    # The educator expense cap follows 26 U.S.C. 62(d)(3)'s chained CPI-U
+    # schedule, computed from the statutory $250 and 2014 base year. Must run
+    # after the Chained CPI-U extension above.
+    extend_educator_expense_cap(parameters, end_year=END_YEAR)
+
+    # The HSA contribution limits follow 26 U.S.C. 223(g)'s chained CPI-U
+    # schedule (12 months ending March 31), computed from the statutory
+    # $2,250 and $4,500 and the 1997 base year. Must run after the Chained
+    # CPI-U and CPI-U extensions above so projected windows are available.
+    extend_hsa_contribution_limits(parameters, end_year=END_YEAR)
+
+    # NYC income tax elimination credit thresholds follow the Tax Law
+    # § 1310(h)(1)(B)(iii) schedule (CPI-U for the 12 months ending August 31
+    # over the 2024 index), computed from the statutory 2025 amounts. Must run
+    # after the CPI-U extension above so projected windows are available.
+    extend_nyc_income_tax_elimination_credit_thresholds(parameters, end_year=END_YEAR)
 
     return parameters

@@ -1,0 +1,28 @@
+description: Wisconsin adds back the losses from these person-level income sources to household income for the homestead credit.
+values:
+  2021-01-01:
+    # Schedule 4, line 2: net business loss from a sole proprietorship
+    # (Schedule C). SSTB and non-SSTB income are combined, as loss_ald
+    # deducts the loss of their total.
+    - total_self_employment_income
+    - rental_income # line 4: net rental real estate and royalty loss
+    # Form 4835 farm rental loss: rental real estate (71.52(1e)(d)) or net
+    # farm loss (71.52(1e)(e)).
+    - farm_rent_income
+    - estate_income # line 7: net loss from a trust or estate
+    - farm_operations_income # line 10: net farm loss (Schedule F)
+metadata:
+  unit: list
+  period: year
+  label: Wisconsin homestead credit disqualified loss sources
+  reference:
+    - title: Wis. Stat. § 71.52(1e), disqualified loss
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/71/viii/52/1e
+    - title: 2021 Wisconsin Schedule H, Schedule 4 (page 4)
+      href: https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleH.pdf#page=4
+    - title: 2023 Wisconsin Schedule H, Schedule 4 (page 4)
+      href: https://www.revenue.wi.gov/TaxForms2023/2023-ScheduleH.pdf#page=4
+    - title: 2025 Wisconsin Schedule H, Schedule 4 (page 4)
+      href: https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleH.pdf#page=4
+    - title: 2023 Wisconsin Schedule H instructions, definition F.3 (page 7) and line 11j (page 16)
+      href: https://www.revenue.wi.gov/TaxForms2023/2023-ScheduleH-inst.pdf#page=16

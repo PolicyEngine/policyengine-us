@@ -1,9 +1,29 @@
 description: Non-refundable tax credits which precede the Energy Efficient Home Improvement Credit.
 values:
-  # Section 25D(c) orders the residential clean energy credit after these.
+  # Form 5695's Energy Efficient Home Improvement Credit Limit Worksheet (the
+  # Nonbusiness Energy Property Credit Limit Worksheet before 2022) subtracts
+  # the foreign tax, child and dependent care, elderly or disabled, education
+  # and retirement savings credits, and Schedule 3 line 6l (Form 8978, not
+  # modeled). Section 25D(c) orders the residential clean energy credit after
+  # this credit.
   2013-01-01:
     - foreign_tax_credit
     - cdcc
+    - elderly_disabled_credit
+    - non_refundable_american_opportunity_credit
+    - lifetime_learning_credit
+    - savers_credit
+  # The Child and Dependent Care Credit was refundable for 2021 only.
+  2021-01-01:
+    - foreign_tax_credit
+    - elderly_disabled_credit
+    - non_refundable_american_opportunity_credit
+    - lifetime_learning_credit
+    - savers_credit
+  2022-01-01:
+    - foreign_tax_credit
+    - cdcc
+    - elderly_disabled_credit
     - non_refundable_american_opportunity_credit
     - lifetime_learning_credit
     - savers_credit
@@ -13,9 +33,13 @@ metadata:
   period: year
   label: Non-refundable tax credits preceding the Energy Efficient Home Improvement Credit
   reference:
-    - title: IRS Schedule 3, Additional Credits and Payments
-      href: https://www.irs.gov/pub/irs-pdf/f1040s3.pdf
+    - title: 2025 Instructions for Form 5695, Energy Efficient Home Improvement Credit Limit Worksheet—Line 31, line 2
+      href: https://www.irs.gov/pub/irs-pdf/i5695.pdf#page=7
+    - title: 2022 Instructions for Form 5695, Energy Efficient Home Improvement Credit Limit Worksheet—Line 29, line 2
+      href: https://www.irs.gov/pub/irs-prior/i5695--2022.pdf#page=7
+    - title: 2013 Form 5695, Nonbusiness Energy Property Credit Limit Worksheet—Line 29, line 2
+      href: https://www.irs.gov/pub/irs-prior/f5695--2013.pdf#page=6
     - title: 26 U.S. Code § 25D(c) - Carryforward of unused credit
       href: https://www.law.cornell.edu/uscode/text/26/25D#c
-    - title: 2025 Instructions for Form 5695, Energy Efficient Home Improvement Credit Limit Worksheet, line 2
-      href: https://www.irs.gov/pub/irs-pdf/i5695.pdf#page=7
+    - title: 26 U.S. Code § 21(g) - Special rules for 2021
+      href: https://www.law.cornell.edu/uscode/text/26/21#g
