@@ -1,0 +1,98 @@
+# Source: Nebraska FY2026 LIHEAP Guidance, income guidelines and heating payment table (pages 1-2).
+# https://dhhs.ne.gov/Documents/Low%20Income%20Home%20Energy%20Assistance%20Program%20%28LIHEAP%29%20Guidance%20Document%202026.pdf#page=1
+
+- name: Case 1, FY2026 guideline for 1 member uses 2025 federal amounts.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 1
+  output:
+    ne_liheap_fpg: 15_650
+- name: Case 2, FY2026 guideline for 2 members uses 2025 federal amounts.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 2
+  output:
+    ne_liheap_fpg: 21_150
+- name: Case 3, FY2026 guideline for 3 members uses 2025 federal amounts.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 3
+  output:
+    ne_liheap_fpg: 26_650
+- name: Case 4, FY2026 guideline for 4 members uses 2025 federal amounts.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 4
+  output:
+    ne_liheap_fpg: 32_150
+- name: Case 5, FY2026 guideline for 5 members uses 2025 federal amounts.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 5
+  output:
+    ne_liheap_fpg: 37_650
+- name: Case 6, FY2026 guideline for 6 members uses 2025 federal amounts.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 6
+  output:
+    ne_liheap_fpg: 43_150
+- name: Case 7, FY2026 guideline for 7 members uses 2025 federal amounts.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 7
+  output:
+    ne_liheap_fpg: 48_650
+- name: Case 8, FY2026 guideline for 8 members uses 2025 federal amounts.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 8
+  output:
+    ne_liheap_fpg: 54_150
+- name: Case 9, FY2026 guideline for 9 members uses 2025 federal amounts.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 9
+  output:
+    ne_liheap_fpg: 59_650
+- name: Case 10, FY2026 guideline for 10 members uses 2025 federal amounts.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 10
+  output:
+    ne_liheap_fpg: 65_150
+- name: Case 11, no eligible members yields no guideline.
+  period: 2026
+  input:
+    state_code: NE
+    ne_liheap_household_size: 0
+  output:
+    ne_liheap_fpg: 0
+    ne_liheap_income_eligible: false
+# Backfilling checks the model convention, not verified historical Nebraska policy.
+# The state schedule is backfilled, but the guideline uses the requested year - 1.
+- name: Case 12, parameter backfill uses the 2021 guideline for a 2022 estimate.
+  period: 2022
+  input:
+    state_code: NE
+    age: 40
+    employment_income: 0
+    ssi: 0
+    social_security: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    ne_liheap: 700
+    ne_liheap_household_size: 1
+    ne_liheap_fpg: 12_880
+    ne_liheap_income_eligible: true

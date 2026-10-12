@@ -128,6 +128,27 @@
     # DFA 2025 bracket "$97,801 and over": 100_000 * 0.039 - 89.30 = 3_810.70
     ar_income_tax_before_non_refundable_credits_indiv: 3_810.70
 
+- name: Case 14, 2025 taxable income over $100,000.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 117_530
+    state_code: AR
+  output:
+    # DFA 2025 Indexed Tax Brackets: "For $100,001 and over, $3,809 + 3.9% of the excess over $100,000."
+    # 3_809 + 0.039 * 17_530 = 4_492.67
+    ar_income_tax_before_non_refundable_credits_indiv: 4_492.67
+
+- name: Case 15, 2025 taxable income of $150,000.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    ar_taxable_income_indiv: 150_000
+    state_code: AR
+  output:
+    # 3_809 + 0.039 * 50_000 = 5_759
+    ar_income_tax_before_non_refundable_credits_indiv: 5_759
+
 # 2026 tests follow A.C.A. § 26-51-201(a)(4) as amended by HB1001 (2026 1st Extraordinary Session).
 # Bill schedules: (a)(4)(A) for net income <= $94,700, (a)(4)(B) for > $94,700, plus
 # the (a)(4)(C) bracket adjustment for $94,701 - $97,600.

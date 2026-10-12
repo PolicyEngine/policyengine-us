@@ -20,11 +20,11 @@ values:
     # code H input says otherwise, and a dependent's amounts stay out of the
     # filer's net investment income.
     - estate_net_investment_income
-    # Schedule D gain or loss of the head and spouse, limited under § 1211(b)
-    # (the Schedule D part of Form 8960 line 5a).
+    # Form 8960 line 5a: the head and spouse's Form 1040 line 7a capital gain
+    # or loss, Schedule D gains and losses with capital gain distributions
+    # (line 13), limited under § 1211(b). Distributions reported without
+    # Schedule D are the same amount.
     - filer_loss_limited_net_capital_gains
-    - non_sch_d_capital_gains
-    # Capital gain distributions received without filing Schedule D (Form 1040 line 7).
 metadata:
   unit: currency-USD
   label: net investment income sources

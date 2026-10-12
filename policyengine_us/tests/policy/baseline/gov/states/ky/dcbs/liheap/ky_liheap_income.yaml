@@ -1,0 +1,206 @@
+# Sources: Kentucky FY2025 and FY2026 state plans (Sections 1.8, 1.9 and
+# 17.4) and 921 KAR 4:116 Section 1(8).
+- name: Case 1, an adult business loss does not offset wages and child earnings are excluded.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000
+        self_employment_income: -3_000
+        sstb_self_employment_income: -1_000
+        unemployment_compensation: 1_200
+        strike_benefits: 600
+        ssi: 0
+        social_security: 0
+      person2:
+        age: 17
+        employment_income: 4_000
+        self_employment_income: 2_000
+        sstb_self_employment_income: 2_000
+        child_support_received: 2_400
+        ssi: 0
+        social_security: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    ky_liheap_income: 16_200
+- name: Case 2, net business income is counted once without an additional expense deduction.
+  period: 2026
+  input:
+    state_code: KY
+    age: 18
+    employment_income: 12_000
+    self_employment_income: 6_000
+    sstb_self_employment_income: 3_000
+    ssi: 0
+    social_security: 0
+    tanf: 0
+  output:
+    # 12,000 wages + 6,000 ordinary business + 3,000 specified service business.
+    ky_liheap_income: 21_000
+- name: Case 3, Social Security is counted net of the Medicare Part B premium the person pays from FY2026.
+  # FY2026 plan Section 1.9 (page 6) checks "Excluding MediCare deduction".
+  # The 2026 standard Part B premium is 202.90 a month (2_434.80 a year).
+  # Household 1: 1_000 a month of Social Security. A Medicare Savings Program
+  # covers the premium (1_000 - 20 of countable income is under 135% of the
+  # poverty guideline), so nothing is withheld and 12_000 is counted.
+  # Household 2: 23_600 a year (1_966.67 a month) is above the Medicare
+  # Savings Program limit, so the premium is paid:
+  # 23_600 - 2_434.80 = 21_165.20.
+  # Household 3: 2_000 of Social Security and a 24_000 private pension. The
+  # premium exceeds the benefit, which is floored at zero: 0 + 24_000.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [KY, KY, KY]
+    age: [70, 70, 70]
+    social_security_retirement: [12_000, 23_600, 2_000]
+    taxable_private_pension_income: [0, 0, 24_000]
+    ssi: [0, 0, 0]
+    tanf: [0, 0, 0]
+  output:
+    medicare_part_b_premium: [0, 2_434.8, 2_434.8]
+    ky_liheap_income: [12_000, 21_165.2, 24_000]
+- name: Case 4, a rental loss or a farm loss does not offset other income.
+  period: 2026
+  input:
+    state_code: [KY, KY]
+    age: [60, 45]
+    # Household 1: a 1_000 a month pension and a net loss on a rented house.
+    taxable_private_pension_income: [12_000, 0]
+    rental_income: [-3_000, 0]
+    # Household 2: $13.00 an hour, 40 hours a week (13 * 2_080 = 27_040) and
+    # a net loss from a small farm.
+    employment_income: [0, 27_040]
+    farm_operations_income: [0, -5_000]
+    ssi: [0, 0]
+    tanf: [0, 0]
+  output:
+    # Each source is floored at zero before the sources are added.
+    # Household 1: max(12_000, 0) + max(-3_000, 0) = 12_000.
+    # Household 2: max(27_040, 0) + max(-5_000, 0) = 27_040.
+    ky_liheap_income: [12_000, 27_040]
+- name: Case 5, SSI, State Supplementation and K-TAP are counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 61
+        # 2026 SSI federal benefit rate: 994 a month.
+        ssi: 11_928
+        # State Supplementation for caretaker services at home: the 1_056
+        # standard less 994 of SSI is 62 a month.
+        ky_ssp: 744
+      person2:
+        age: 35
+      person3:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # K-TAP maximum payment for two eligible persons: 293 a month.
+        tanf: 3_516
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # 11_928 (SSI) + 744 (State Supplementation) + 3_516 (K-TAP) = 16_188.
+    ky_liheap_income: 16_188
+- name: Case 6, farm operations income, farm rent and dividends are counted.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        farm_operations_income: 14_400
+        farm_rent_income: 3_600
+        qualified_dividend_income: 240
+        non_qualified_dividend_income: 60
+        ssi: 0
+      person2:
+        age: 55
+      person3:
+        age: 16
+        # Farm earnings of a member under 18 are not counted.
+        farm_operations_income: 1_500
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KY
+  output:
+    # Adult farm earnings: 14_400.
+    # Unearned: 3_600 (farm rent) + 240 + 60 (ordinary dividends) = 3_900.
+    # 14_400 + 3_900 = 18_300.
+    ky_liheap_income: 18_300
+- name: Case 7, service business profits and wage replacement income can exceed the income limit.
+  # 921 KAR 4:116 Section 1(8) counts earned and unearned income. Plan
+  # Section 1.9 includes insurance payments made directly to the insured.
+  period: 2026
+  input:
+    state_code: [KY, KY, KY]
+    age: [40, 40, 40]
+    sstb_self_employment_income: [60_000, 0, 0]
+    workers_compensation: [0, 30_000, 0]
+    disability_benefits: [0, 0, 30_000]
+    ssi: [0, 0, 0]
+    social_security: [0, 0, 0]
+    tanf: [0, 0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_000, 1_000, 1_000]
+  output:
+    ky_liheap_income: [60_000, 30_000, 30_000]
+    # Each exceeds the one-person monthly ceiling of 1,957, annualized.
+    ky_liheap_eligible: [false, false, false]
+    ky_liheap: [0, 0, 0]
+- name: Case 8, public pensions, railroad benefits and pass-through business income are counted.
+  # Plan Section 1.9 counts retirement and pension benefits and
+  # self-employment income; Section 17.4 lists Railroad Retirement records.
+  period: 2026
+  input:
+    state_code: [KY, KY, KY]
+    age: [62, 45, 45]
+    # Household 1: $1_500 a month in military retirement pay, reported in
+    # military_retirement_pay, and $500 a month in railroad retirement
+    # benefits.
+    military_retirement_pay: [18_000, 0, 0]
+    railroad_benefits: [6_000, 0, 0]
+    # Households 2-3: $10.00 an hour, 40 hours a week (10 * 2_080 = 20_800)
+    # and a partnership share, a profit for one and a loss for the other.
+    employment_income: [0, 20_800, 20_800]
+    partnership_s_corp_income: [0, 15_000, -4_000]
+    ssi: [0, 0, 0]
+    social_security: [0, 0, 0]
+    tanf: [0, 0, 0]
+  output:
+    # Household 1: 18_000 + 6_000 = 24_000.
+    # Household 2: 20_800 + 15_000 = 35_800.
+    # Household 3: 20_800 + max(-4_000, 0) = 20_800.
+    ky_liheap_income: [24_000, 35_800, 20_800]
+
+- name: Case 9, FY2025 counts Social Security before the Medicare premium is withheld.
+  # FY2025 plan Section 1.9 (page 6) checks "Including MediCare deduction".
+  # 22_700 a year (1_891.67 a month) is above the Medicare Savings Program
+  # limit, so the 2025 premium of 185 a month (2_220 a year) is paid, but
+  # FY2025 does not deduct it.
+  period: 2025
+  input:
+    state_code: KY
+    age: 70
+    social_security_retirement: 22_700
+    ssi: 0
+    tanf: 0
+  output:
+    medicare_part_b_premium: 2_220
+    ky_liheap_income: 22_700

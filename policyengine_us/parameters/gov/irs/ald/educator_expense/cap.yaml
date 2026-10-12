@@ -1,0 +1,61 @@
+description: The IRS caps the educator expense deduction at this amount for each eligible educator.
+values:
+  # 26 USC 62(a)(2)(D), added for 2002 by Pub. L. 107-147 and extended
+  # retroactively through 2015, when Pub. L. 114-113 made it permanent and
+  # indexed it from 2016 (26 USC 62(d)(3)).
+  2002-01-01: 250
+  2016-01-01: 250
+  2017-01-01: 250
+  2018-01-01: 250
+  2019-01-01: 250
+  2020-01-01: 250
+  2021-01-01: 250
+  2022-01-01: 300
+  2023-01-01: 300
+  2024-01-01: 300
+  2025-01-01: 300
+  2026-01-01: 350
+metadata:
+  unit: currency-USD
+  period: year
+  label: Educator expense deduction cap
+  # Values after the last IRS publication are computed in
+  # parameters/uprating_extensions.py per 26 U.S.C. 62(d)(3): the statutory
+  # $250 increased by the 1(f)(3) cost-of-living adjustment with calendar
+  # year 2014 as the base year, each increase rounded to the nearest multiple
+  # of $50. Computing from the $250 base rather than chaining from the
+  # rounded $350 puts each projected $50 step in the year the statute does on
+  # the model's CPI projection; those values supersede this uprating rule,
+  # which describes the index and rounding.
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 50
+  reference:
+    - title: 26 U.S. Code § 62(a)(2)(D) - Educator expenses
+      href: https://www.law.cornell.edu/uscode/text/26/62#a_2_D
+    - title: 26 U.S. Code § 62(d)(3) - Inflation adjustment
+      href: https://www.law.cornell.edu/uscode/text/26/62#d_3
+    - title: 2016 Form 1040 instructions, line 23, educator expenses (2016)
+      href: https://www.irs.gov/pub/irs-prior/i1040gi--2016.pdf#page=31
+    - title: Rev. Proc. 2016-55, section 3.12 (2017)
+      href: https://www.irs.gov/pub/irs-drop/rp-16-55.pdf#page=14
+    - title: Rev. Proc. 2017-58, section 3.12 (2018)
+      href: https://www.irs.gov/pub/irs-drop/rp-17-58.pdf#page=12
+    - title: Rev. Proc. 2018-57, section 3.14 (2019)
+      href: https://www.irs.gov/pub/irs-drop/rp-18-57.pdf#page=15
+    - title: Rev. Proc. 2019-44, section 3.14 (2020)
+      href: https://www.irs.gov/pub/irs-drop/rp-19-44.pdf#page=12
+    - title: Rev. Proc. 2020-45, section 3.14 (2021)
+      href: https://www.irs.gov/pub/irs-drop/rp-20-45.pdf#page=12
+    - title: Rev. Proc. 2021-45, section 3.13 (2022)
+      href: https://www.irs.gov/pub/irs-drop/rp-21-45.pdf#page=13
+    - title: Rev. Proc. 2022-38, section 3.13 (2023)
+      href: https://www.irs.gov/pub/irs-drop/rp-22-38.pdf#page=12
+    - title: Rev. Proc. 2023-34, section 3.13 (2024)
+      href: https://www.irs.gov/pub/irs-drop/rp-23-34.pdf#page=11
+    - title: Rev. Proc. 2024-40, section 2.13 (2025)
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=11
+    - title: Rev. Proc. 2025-32, section 4.12 (2026)
+      href: https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=17

@@ -3,6 +3,14 @@ from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import
     medicaid_claiming_tax_unit_value,
     medicaid_external_claimed_sum,
 )
+from policyengine_us.variables.gov.hhs.medicaid.income._non_filer_household import (
+    medicaid_filer_spouse_sum,
+    medicaid_non_filer_member_sum,
+    medicaid_tax_dependent_spouse_sum,
+)
+from policyengine_us.variables.household.demographic.person._parent_links import (
+    household_has_parent_ids,
+)
 
 
 class medicaid_household_income(Variable):
@@ -53,8 +61,29 @@ class medicaid_household_income(Variable):
             spouse_income + family_parent_income + family_child_income,
             member_income + spouse_income + family_child_income,
         )
-        tax_household_income = (
-            person.tax_unit.sum(tax_member_income) + separate_spouse_income
+        # With parent links in the household, sum over the same members that
+        # medicaid_household_size counts.
+        non_filer_household_income = where(
+            household_has_parent_ids(person, period),
+            medicaid_non_filer_member_sum(person, period, member_income),
+            non_filer_household_income,
+        )
+        tax_member_income_sum = person.tax_unit.sum(tax_member_income)
+        tax_household_income = tax_member_income_sum + separate_spouse_income
+        # With parent links, every dependent shares the taxpayer's
+        # household, including that taxpayer's flagged separately filing
+        # spouse. Propagate the head's spouse income once across the unit,
+        # keeping the original expression in households without links.
+        tax_household_income = where(
+            household_has_parent_ids(person, period),
+            tax_member_income_sum
+            + person.tax_unit.sum(head_or_spouse * separate_spouse_income),
+            tax_household_income,
+        )
+        # With parent links, add the co-resident spouse outside the unit whom
+        # medicaid_household_size adds to the unit's tax household.
+        tax_household_income = tax_household_income + person.tax_unit.sum(
+            medicaid_filer_spouse_sum(person, period, member_income)
         )
         tax_household_income = tax_household_income + medicaid_external_claimed_sum(
             person,
@@ -66,13 +95,18 @@ class medicaid_household_income(Variable):
         claimant_tax_household_income = medicaid_claiming_tax_unit_value(
             person, period, tax_household_income
         )
-
-        return where(
-            non_filer_rules,
-            non_filer_household_income,
-            where(
-                known_claiming_tax_unit,
-                claimant_tax_household_income,
-                tax_household_income,
-            ),
+        tax_route_income = where(
+            known_claiming_tax_unit,
+            claimant_tax_household_income,
+            tax_household_income,
         )
+        # With parent links in the household, add a tax dependent's
+        # co-resident spouse, whom medicaid_household_size adds.
+        tax_route_income = where(
+            household_has_parent_ids(person, period),
+            tax_route_income
+            + medicaid_tax_dependent_spouse_sum(person, period, member_income),
+            tax_route_income,
+        )
+
+        return where(non_filer_rules, non_filer_household_income, tax_route_income)

@@ -24,3 +24,12 @@
     state_code: NC
   output:
     nc_military_retirement_deduction_eligible: false
+
+- name: The beneficiary of a qualifying retired member is eligible without service of their own
+  period: 2025
+  input:
+    years_in_military: 0
+    nc_military_retirement_survivor_eligible: true
+    state_code: NC
+  output:
+    nc_military_retirement_deduction_eligible: true

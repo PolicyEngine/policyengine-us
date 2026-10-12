@@ -1,0 +1,16 @@
+description: North Carolina counts these wage, business and farm income sources as earned income under the Low Income Energy Assistance Program.
+values:
+  2025-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+metadata:
+  unit: list
+  period: year
+  label: North Carolina LIEAP earned income sources
+  reference:
+    - title: North Carolina Energy Programs Manual, Section 300.09 A (page 10) and Section 300.09 B.3 (page 12)
+      href: https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=10
+    - title: North Carolina Food and Nutrition Services Manual, FNS 300.02 sources of income chart, pages 5, 21 and 26
+      href: https://policies.ncdhhs.gov/wp-content/uploads/fns-300-sources-of-income.pdf#page=5

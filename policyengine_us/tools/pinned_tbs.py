@@ -50,18 +50,37 @@ def _get_pinned_tbs(base_tbs, pin_name, pin_fn):
 
 
 def _pin_pre_arpa_eitc(tbs):
-    # NY decoupled from post-March 2020 IRC amendments for TY 2021:
-    # pin the federal EITC parameters to their 2020 (pre-ARPA) values.
+    # NY decoupled from IRC changes made after March 1, 2020 (ARPA) for
+    # TY 2021, but not from the 2021 inflation adjustments, which Rev. Proc.
+    # 2020-45 published before ARPA. Pin the federal EITC rules to their 2020
+    # (pre-ARPA) values, then restore the inflation-indexed 2021 amounts, with
+    # the pre-ARPA childless amounts in place of ARPA's.
     pin_date = instant("2020-01-01")
     start = instant("2021-01-01")
     stop = instant("2021-12-31")
-    for param in tbs.parameters.gov.irs.credits.eitc.get_descendants():
+    eitc = tbs.parameters.gov.irs.credits.eitc
+    indexed_scales = (eitc.max, eitc.phase_out.start, eitc.phase_out.joint_bonus)
+    indexed_2021 = [
+        [bracket.amount(start) for bracket in scale.brackets]
+        for scale in indexed_scales
+    ]
+    for param in eitc.get_descendants():
         if isinstance(param, Parameter):
             try:
                 value = param(pin_date)
                 param.update(start=start, stop=stop, value=value)
             except Exception:
                 pass
+    for scale, amounts in zip(indexed_scales, indexed_2021):
+        for bracket, amount in zip(scale.brackets, amounts):
+            bracket.amount.update(start=start, stop=stop, value=amount)
+    pre_arpa = tbs.parameters.gov.states.ny.tax.income.credits.eitc.pre_arpa
+    eitc.max.brackets[0].amount.update(
+        start=start, stop=stop, value=pre_arpa.childless_max(start)
+    )
+    eitc.phase_out.start.brackets[0].amount.update(
+        start=start, stop=stop, value=pre_arpa.childless_phase_out_start(start)
+    )
 
 
 def _pin_pre_tcja_ctc(tbs):
@@ -103,30 +122,35 @@ def _pin_2020_irc(tbs):
         )
     except Exception:
         pass
-    # The 2020 CTC & ODC Worksheet (Pub. 972, p.7) uses the CDCC before the CTC
-    # when computing the CTC's tax-liability limit, so the recomputed CDCC must
-    # reduce that limit (`ctc_tax_liability_after_preceding_credits`) and the
-    # residential clean energy credit's limit, and count among the
-    # non-refundable credits. The 2021 lists omit `cdcc` (it was refundable
-    # under ARPA). Add `cdcc` to each current 2021 membership rather than
-    # pinning the whole 2020 lists, which would drop `new_clean_vehicle_credit`
-    # (2021+).
-    for credit_list in (
-        credits.non_refundable,
-        credits.ctc_tax_liability_limit.preceding_credits,
-        credits.residential_clean_energy.preceding_credits,
-    ):
+    # The 2020 credit limit worksheets (e.g. the CTC & ODC Worksheet, Pub. 972,
+    # p.7) subtract the CDCC from tax before every credit but the foreign tax
+    # credit, so the recomputed CDCC must reduce each later credit's limit and
+    # count among the non-refundable credits. The 2021 lists omit `cdcc` (it
+    # was refundable under ARPA). Add `cdcc` after the foreign tax credit in
+    # each current 2021 list whose 2020 version had it, rather than pinning
+    # the whole 2020 lists, which would drop `new_clean_vehicle_credit` (2021+).
+    credit_lists = [credits.non_refundable] + [
+        param
+        for param in credits.get_descendants()
+        if isinstance(param, Parameter) and param.name.endswith(".preceding_credits")
+    ]
+    for credit_list in credit_lists:
         try:
             members_2021 = list(credit_list(start))
-            if "cdcc" not in members_2021:
-                members_2021 = ["cdcc"] + members_2021
+            if "cdcc" in credit_list(pin_date) and "cdcc" not in members_2021:
+                position = (
+                    members_2021.index("foreign_tax_credit") + 1
+                    if "foreign_tax_credit" in members_2021
+                    else 0
+                )
+                members_2021.insert(position, "cdcc")
             credit_list.update(start=start, stop=stop, value=members_2021)
         except Exception:
             pass
 
 
 def get_pre_arpa_eitc_tbs(base_tbs):
-    """Pre-ARPA (2020-pinned) EITC system for NY's TY2021 decoupling."""
+    """Pre-ARPA EITC system (2021 inflation amounts) for NY's TY2021 decoupling."""
     return _get_pinned_tbs(base_tbs, "ny_pre_arpa_eitc", _pin_pre_arpa_eitc)
 
 

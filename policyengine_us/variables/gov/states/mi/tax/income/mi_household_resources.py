@@ -12,40 +12,124 @@ class mi_household_resources(Variable):
         "https://law.justia.com/codes/michigan/2022/chapter-206/"
         "statute-act-281-of-1967/division-281-1967-1/division-281-1967-1-9/"
         "section-206-508/",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-508",
+        # MCL 206.510(1): "Income", including premiums paid for the family.
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-510",
         "https://web.archive.org/web/20250202150154/https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/BOOK_MI-1040CR-7.pdf",
+        # 2025 MI-1040CR-7 book (archived; michigan.gov removed it):
+        # "Total Household Resources" (page 4) and lines 17 to 23 (page 8)
+        # and 24 to 33 (page 9). They match MI-1040CR lines 14 to 31 on whose
+        # income counts: CR-7 lines 24, 25 and 30 are MI-1040CR lines 21, 22
+        # and 27.
+        "https://web.archive.org/web/20260218211009/https://www.michigan.gov/"
+        "taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/"
+        "MI-1040CR-7-Book.pdf?rev=e4ba4fedc63942e48442037517312d4a"
+        "&hash=AF396E577B1932DF55BFD7F22D7EF06A#page=8",
+        # 2025 MI-1040 book: "Total Household Resources" (page 26) and
+        # MI-1040CR lines 14 to 17 (page 31) and 18 to 31 (pages 32 and 33).
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
+        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=26",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
+        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=31",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
+        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=32",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
+        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=33",
     )
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.mi.tax.income
-        # Per form instructions, only certain income sources must be
-        # floored at 0 if negative. Capital gains have special loss limitation.
-        income_sources = p.household_resources
-
-        # Sources that must be floored at 0 per form instructions:
-        # "Net business income (including net farm income). If negative, enter 0"
-        # "Net royalty or rent income. If negative, enter 0"
-        floored_sources = {
-            "farm_operations_income",
+        # MCL 206.508(4) increases income by "(a) Any net business loss after
+        # netting all business income and loss" and "(b) Any net rental or
+        # royalty loss". The MI-1040CR nets each group and floors the total
+        # at zero, so a loss offsets income only within its own line.
+        # Line 16: U.S. Schedule C, Form 4797 Part II, Schedule E Parts II
+        # and III, and Schedule F. "If the total is negative enter 0."
+        business_sources = {
             "total_self_employment_income",
+            "other_net_gain",
             "partnership_s_corp_income",
+            "estate_income",
+            "farm_operations_income",
+        }
+        # Line 17: U.S. Schedule E Parts I, IV and V (rents, royalties, REMIC
+        # income, which has no input here, and farm rental income). "If the
+        # total is negative enter 0."
+        rental_sources = {
             "rental_income",
             "farm_rent_income",
         }
 
-        # Iterate through each source, applying flooring only to
-        # sources that require it per form instructions
-        total = 0
-        for source in income_sources:
-            if source in floored_sources:
-                # Per MI-1040CR instructions: "If negative, enter 0"
-                total += max_(add(tax_unit, period, [source]), 0)
-            else:
-                # Other sources are added as-is without flooring
-                total += add(tax_unit, period, [source])
+        # MCL 206.508(3): "'Household' means a claimant and spouse", and
+        # (4) counts "all income received by all persons of a household".
+        # The MI-1040CR says "Include all taxable and nontaxable income you
+        # and your spouse received" (2025 MI-1040 book, page 31). A
+        # dependent's own income belongs on the dependent's return, so a
+        # source is summed over the head and spouse only, as in
+        # irs_gross_income. A tax-unit-level source (other_net_gain,
+        # filer_loss_limited_net_capital_gains) already describes the
+        # filer's return.
+        # The sources in household_resources_all_members are amounts the
+        # claimant receives for others in the household (lines 21, 22 and
+        # 27), so they are summed over every member. So is a source defined
+        # for a larger group than the tax unit, such as tanf for the SPM
+        # unit: add gives the tax unit its members' shares.
+        all_members = p.household_resources_all_members
 
-        health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
-        above_the_line_deductions = tax_unit("above_the_line_deductions", period)
-        return max_(
-            0,
-            total - health_insurance_premiums - above_the_line_deductions,
+        business_income = 0
+        rental_income = 0
+        other_income = 0
+        for source in p.household_resources:
+            entity = tax_unit.entity.get_variable(source).entity
+            own_return = entity.is_person or entity.key == tax_unit.entity.key
+            if source in all_members or not own_return:
+                amount = add(tax_unit, period, [source])
+            else:
+                amount = tax_unit_non_dep_add(tax_unit, period, [source])
+            if source in business_sources:
+                business_income += amount
+            elif source in rental_sources:
+                rental_income += amount
+            else:
+                other_income += amount
+        total = other_income + max_(business_income, 0) + max_(rental_income, 0)
+
+        # Line 30: "Enter total adjustments from your U.S. Form 1040,
+        # Schedule 1." These are the Schedule 1 Part II adjustments, counted
+        # while the federal above-the-line list deducts them, so a reform that
+        # drops one federally drops it here too. The rest of the federal list
+        # is not on line 30:
+        # - loss_ald holds business, rental and capital losses, which are
+        #   income items netted and floored on lines 16, 17 and 19 above;
+        # - us_bonds_for_higher_ed, qualified_adoption_assistance_expense,
+        #   specified_possession_income and puerto_rico_income are income
+        #   that IRC 135, 137, 931 and 933 exclude from gross income. Total
+        #   household resources include "all income exempt or excluded from
+        #   AGI" (book page 26). Since the federal list subtracts each from
+        #   gross income, the excluded amount is entered in the income it
+        #   comes from: savings bond interest in interest income (line 15,
+        #   "including nontaxable interest"), adoption benefits, reported on
+        #   Form W-2, in wages (line 14), and possession or Puerto Rico income
+        #   in the source that earned it. Line 30 leaves it there.
+        # The Schedule 1 is the claimant's own (MCL 206.508(3)): a person-level
+        # adjustment, such as a dependent's IRA contribution or early withdrawal
+        # penalty, is summed over the head and spouse, as above_the_line_deductions
+        # does. A tax-unit-level adjustment already describes the filer's return,
+        # including educator_expense_ald, capped per eligible educator.
+        ald = parameters(period).gov.irs.ald
+        adjustments = tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            [
+                deduction
+                for deduction in p.household_resources_adjustments
+                if deduction in ald.deductions
+            ],
         )
+        # Line 31: "insurance premiums you paid for yourself and your
+        # family". MCL 206.510(1) lets a person deduct "the amount that
+        # person paid in premiums ... for that insurance plan for the
+        # person's family". A premium on any member's record is read as one
+        # the claimant or spouse paid for the family's coverage.
+        health_insurance_premiums = add(tax_unit, period, ["health_insurance_premiums"])
+        return max_(0, total - adjustments - health_insurance_premiums)

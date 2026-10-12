@@ -38,3 +38,17 @@
     section_911_capital_gain_excess: 0
   output:
     section_911_qualified_dividend_income: 10_000
+
+- name: Dividends elected on Form 4952 are not qualified dividend income
+  period: 2025
+  input:
+    qualified_dividend_income: 30_000
+    # A 35,000 election against 20,000 of gain leaves 15,000 of dividends.
+    net_capital_gain: 15_000
+    section_911_capital_gain_excess: 5_000
+  output:
+    # 26 U.S.C. 1(h)(11)(D)(i): the dividends are 15,000, with no gain other
+    # than dividends; the whole excess comes off them: 15,000 - 5,000.
+    section_911_qualified_dividend_income: 10_000
+    section_911_net_capital_gain: 10_000
+    section_911_adjusted_net_capital_gain: 10_000

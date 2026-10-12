@@ -1,0 +1,121 @@
+- name: Hawaii does not subtract a dependent child's public pension from the filer's income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+      child:
+        age: 10
+        taxable_public_pension_income: 10_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: HI
+  output:
+    # The child's pension is not in federal AGI (the child reports it on
+    # their own return), so N-11 line 13 has nothing to exclude for it.
+    adjusted_gross_income: 50_000
+    hi_subtractions: 0
+    hi_agi: 50_000
+    # $50,000 - $12,000 head of household standard deduction
+    # - 2 exemptions x $1,144 = $35,712.
+    hi_taxable_income: 35_712
+
+- name: Hawaii does not subtract a dependent teenager's private pension from an older filer's income
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 50_000
+        is_tax_unit_head: true
+      child:
+        age: 16
+        taxable_private_pension_income: 10_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: HI
+  output:
+    adjusted_gross_income: 50_000
+    hi_subtractions: 0
+    hi_agi: 50_000
+    # $50,000 - $12,000 standard deduction - 3 exemptions x $1,144
+    # (head, child, and the head's extra exemption at age 65+) = $34,568.
+    hi_taxable_income: 34_568
+
+- name: Hawaii subtracts the head's and spouse's pensions but not their dependent's
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 40_000
+        taxable_public_pension_income: 20_000
+        is_tax_unit_head: true
+      spouse:
+        age: 67
+        taxable_private_pension_income: 15_000
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        taxable_public_pension_income: 10_000
+        taxable_private_pension_income: 5_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: HI
+  output:
+    # Federal AGI: $40,000 wages + $20,000 + $15,000 pensions = $75,000.
+    adjusted_gross_income: 75_000
+    # Line 13: $20,000 (head) + $15,000 (spouse); the child's $15,000 is
+    # not in federal AGI and is not subtracted.
+    hi_subtractions: 35_000
+    hi_agi: 40_000
+    # $40,000 - $16,000 joint standard deduction - 5 exemptions x $1,144
+    # (3 people plus 2 aged exemptions) = $18,280.
+    hi_taxable_income: 18_280

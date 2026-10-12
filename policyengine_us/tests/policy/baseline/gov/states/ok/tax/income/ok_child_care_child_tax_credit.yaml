@@ -167,7 +167,10 @@
         members: [head, child1, child2]
         state_code: OK
   output:
-    ctc_value: 4_400
+    # Non-refundable CTC is limited by actual tax liability (26 U.S.C. 26(a)):
+    # income_tax_before_credits is $2,799.38 after $33,284 of SALT among the
+    # itemized deductions. The earlier no-SALT limit ($6,793.40) allowed $4,400.
+    ctc_value: 2_799
     ok_federal_ctc: 2_799
     ok_child_care_child_tax_credit: 140
     taxsim_ok_child_tax_credit_component: 140
