@@ -28,12 +28,15 @@ eligibility and a civilian qualifying survivor in both test years.
 1. `tax_unit_non_dep_add` equals a numpy reference: the head's and spouse's
    amounts of person-level variables plus tax-unit-level variables. For tax
    units without dependents it equals `add`.
-2. In every state with an income tax, giving the dependents retirement income
-   never lowers the filer's state income tax. Outside
+2. Outside STATES_WITH_INTENDED_RETIREMENT_TAX_DECREASES, giving the
+   dependents retirement income never lowers the filer's state income tax.
+   Michigan is an intended exception: a dependent adult's pension can lower
+   their SSI and increase the claimant's refundable credit. Outside
    STATES_COUNTING_DEPENDENT_INCOME it changes neither the state AGI nor the
    state taxable income. (State income tax itself may still rise: credits
    keyed to household income, such as Oklahoma's sales tax relief credit,
-   count every household member's income.)
+   count every household member's income.) Michigan's pension benefits,
+   subtractions and tax before refundable credits must remain unchanged.
 3. A unit whose dependents have no income has the same inputs in both
    populations, so its state income tax, AGI and taxable income are the same
    in both: no unit's results depend on another unit's inputs.
@@ -368,6 +371,14 @@ INCOME_TAX_STATES = [
 # subtracting income that never entered AGI; property 2 checks only that it
 # never lowers tax there.
 STATES_COUNTING_DEPENDENT_INCOME = {"AL", "AR", "IA", "MS", "NJ"}
+# Intended exception per ruling d1143 (2026-10-09): follow MI-1040CR lines
+# 18 and 21 (2025 MI-1040 booklet, PDF page 28 / printed page 32):
+# https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=28
+# Line 18 counts pensions only for the claimant and spouse; line 21 counts
+# SSI received for dependent adults who live with them. A dependent adult's
+# pension can reduce SSI, lower household resources and raise refundable
+# credits, while the claimant's pension subtractions and tax base stay fixed.
+STATES_WITH_INTENDED_RETIREMENT_TAX_DECREASES = {"MI"}
 YEARS = [2025, 2026]
 
 
@@ -402,11 +413,32 @@ def test_dependents_retirement_income_never_reduces_state_income_tax(year):
     assert not leaked.any(), sorted(set(states[leaked]))
 
     lowered = tax_with < tax_without - TOLERANCE
-    assert not lowered.any(), sorted(set(states[lowered]))
+    intended_exception = np.isin(
+        states, list(STATES_WITH_INTENDED_RETIREMENT_TAX_DECREASES)
+    )
+    unexpectedly_lowered = lowered & ~intended_exception
+    assert not unexpectedly_lowered.any(), sorted(set(states[unexpectedly_lowered]))
 
     counts_dependents = np.isin(states, list(STATES_COUNTING_DEPENDENT_INCOME))
     changed &= ~counts_dependents
     assert not changed.any(), sorted(set(states[changed]))
+
+    # Michigan's intended exception concerns refundable credits only; a
+    # dependent's pension must never enter the claimant's pension subtraction.
+    mi = states == "MI"
+    for variable in [
+        "mi_pension_benefit",
+        "mi_subtractions",
+        "mi_income_tax_before_refundable_credits",
+    ]:
+        np.testing.assert_allclose(
+            with_income.calculate(variable, year)[mi],
+            without_income.calculate(variable, year)[mi],
+            rtol=0,
+            atol=TOLERANCE,
+            err_msg=f"Michigan {variable} changed with dependent retirement income",
+        )
+
     # The population must exercise the property, including the paths gated on
     # the filers' Social Security and on ages of 73 or more.
     assert has_dependent_income.sum() >= len(INCOME_TAX_STATES)
