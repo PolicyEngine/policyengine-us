@@ -1,0 +1,2 @@
+Count household members' income in the Montana elderly homeowner/renter credit, preserving dependents' permitted person-level federal AGI adjustments and excluding losses, as well as including the income of members who file their own returns.
+Apply the full credit multiplier when permitted adjustments make household income negative.
