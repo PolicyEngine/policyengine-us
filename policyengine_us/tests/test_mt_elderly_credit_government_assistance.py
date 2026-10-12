@@ -8,11 +8,12 @@ line 16 names "supplemental security income (SSI) payments, worker's
 compensation, and any other government assistance"; line 17 carries the same
 items for the other members of the household.
 
-The model holds SSI and workers' compensation per person and TANF per SPM
-unit, which it spreads over the unit's members (tanf_person). For a claimant
-aged 62 or older (taxable pension, SSI, workers' compensation, property tax,
-rent) living with another adult (SSI, workers' compensation) and a child,
-whose SPM unit receives TANF, in four arrangements:
+The model holds SSI, workers' compensation and guaranteed income payments
+per person and TANF per SPM unit, which it spreads over the unit's members
+(tanf_person). For a claimant aged 62 or older (taxable pension, SSI,
+workers' compensation, property tax, rent) living with another adult (SSI,
+workers' compensation, guaranteed income payments) and a child, whose SPM
+unit receives TANF, in four arrangements:
 
   A. one return, the other adult and the child the claimant's dependents, and
      one SPM unit;
@@ -22,7 +23,8 @@ whose SPM unit receives TANF, in four arrangements:
   D. as C, with more of one kind of assistance;
 
 1. The household's gross household income is the pension plus every
-   member's SSI and workers' compensation plus the TANF, once, in A, B and C.
+   member's SSI, workers' compensation and guaranteed income payments plus
+   the TANF, once, in A, B and C.
 2. So the claimant's credit is the same in A, B and C, and nobody else
    claims.
 3. The credit equals an independent reading of Schedule 2EC lines 18 to 30,
@@ -32,6 +34,12 @@ whose SPM unit receives TANF, in four arrangements:
 No one has earned income, so no refundable credit enters line 8. The model
 computes in single precision, so comparisons allow one cent or eight float32
 spacings at the household's total income, whichever is larger.
+
+YAML cases (mt_elderly_homeowner_or_renter_credit.yaml) pin fixed worked
+examples. This file adds what they cannot: randomized amounts across
+arrangements that must agree, an independent Schedule 2EC reference for the
+credit, and monotonicity. Each example is one small Simulation on the shared
+tax-benefit system.
 """
 
 import numpy as np
@@ -70,7 +78,12 @@ MULTIPLIER_TABLE = [
     (42_501, 0.1),
     (45_000, 0),
 ]
-EXTRA_KINDS = ["claimant_ssi", "member_workers_compensation", "tanf"]
+EXTRA_KINDS = [
+    "claimant_ssi",
+    "member_workers_compensation",
+    "member_gi_cash_assistance",
+    "tanf",
+]
 
 
 def amounts(c, arrangement):
@@ -80,6 +93,7 @@ def amounts(c, arrangement):
         "claimant_workers_compensation": c["claimant_workers_compensation"],
         "member_ssi": c["member_ssi"],
         "member_workers_compensation": c["member_workers_compensation"],
+        "member_gi_cash_assistance": c["member_gi_cash_assistance"],
         "tanf": c["tanf"],
     }
     if arrangement == "D":
@@ -118,6 +132,7 @@ def build_situation(cases):
                 "age": {YEAR: c["member_age"]},
                 "ssi": {YEAR: a["member_ssi"]},
                 "workers_compensation": {YEAR: a["member_workers_compensation"]},
+                "gi_cash_assistance": {YEAR: a["member_gi_cash_assistance"]},
                 "is_tax_unit_dependent": {YEAR: arrangement == "A"},
             }
             people[child] = {
@@ -185,7 +200,8 @@ def calculate(cases):
 
 def expected_gross_household_income(c, arrangement):
     """2024 Schedule 2EC line 18: line 5 pension and line 16 assistance for
-    the claimant, line 17 the other members' assistance, the TANF once."""
+    the claimant, line 17 the other members' assistance and guaranteed income
+    payments, the TANF once."""
     return c["pension"] + sum(amounts(c, arrangement).values())
 
 
@@ -254,6 +270,7 @@ def test_worked_example():
         "member_age": 35,
         "member_ssi": 2_000,
         "member_workers_compensation": 1_000,
+        "member_gi_cash_assistance": 0,
         "child_age": 6,
         "tanf": 1_800,
         "extra_kind": "tanf",
@@ -293,6 +310,7 @@ if hypothesis is not None:
             "member_age": draw(st.integers(min_value=18, max_value=61)),
             "member_ssi": draw(amount(12_000)),
             "member_workers_compensation": draw(amount(15_000)),
+            "member_gi_cash_assistance": draw(amount(12_000)),
             "child_age": draw(st.integers(min_value=0, max_value=17)),
             "tanf": draw(amount(10_000)),
             "extra_kind": draw(st.sampled_from(EXTRA_KINDS)),

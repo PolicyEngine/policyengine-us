@@ -89,6 +89,29 @@
     # income: (20_000 - 12_600) * 0.035 = 259, allocated to the head.
     mt_elderly_homeowner_or_renter_credit_net_household_income: [259, 0]
 
+- name: SNAP is not cash public assistance and does not count
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 1_800
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # 2017 Form 2EC instructions: "Cash, public assistance and relief - Do
+    # not include LIEAP (Low Income Energy Assistance Program) or SNAP".
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 15_000
+
 - name: A dependent's wages count in gross household income
   period: 2024
   input:
