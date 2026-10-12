@@ -124,3 +124,32 @@
   output:
     # min(10_000 expenses, max(6_000, 12_000) - 5_000 = 7_000, 60_000) = 7_000.
     id_household_and_dependent_care_expense_deduction: 7_000
+
+# The Form 2441 Part III excluded benefits follow IRC § 129(a)(2)(C): a
+# separate filer living apart from their spouse is unmarried under § 21(e)(4)
+# and excludes the full $4,000 rather than the $2,500 MFS cap.
+- name: Separate filer treated as unmarried has the cap reduced by the full exclusion
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 38_000
+        dependent_care_employer_benefits: 4_000
+        is_separated: true
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 10_000
+        id_cdcc_limit: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+  output:
+    dependent_care_assistance_exclusion: 4_000
+    # min(10_000 expenses, max(3_000, 12_000) - 4_000 = 8_000, 38_000) = 8_000.
+    id_household_and_dependent_care_expense_deduction: 8_000

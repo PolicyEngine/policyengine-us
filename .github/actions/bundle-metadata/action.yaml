@@ -1,0 +1,30 @@
+name: Validate bundle metadata
+description: Check the runtime metadata contract in a separate checkout and environment.
+runs:
+  using: composite
+  steps:
+    - name: Checkout tested merge commit
+      uses: actions/checkout@v6
+      with:
+        path: bundle-metadata
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.14"
+    - name: Resolve latest compatible PolicyEngine Core
+      shell: bash
+      working-directory: bundle-metadata
+      run: uv lock --upgrade-package policyengine-core
+    - name: Install package
+      shell: bash
+      working-directory: bundle-metadata
+      run: uv sync --locked --extra dev
+    - name: Install bundle validation tooling
+      # Preserve the independently pinned contract dependency.
+      shell: bash
+      working-directory: bundle-metadata
+      run: uv pip install --python .venv/bin/python "policyengine-bundles @ git+https://github.com/PolicyEngine/policyengine-bundles@8ae9f56fefcf89f69b8a7e3bc49928509c6207be"
+    - name: Validate runtime metadata contract
+      shell: bash
+      working-directory: bundle-metadata
+      run: uv run --no-sync python -m pytest policyengine_us/tests/test_build_metadata.py

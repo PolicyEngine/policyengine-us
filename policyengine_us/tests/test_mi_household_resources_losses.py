@@ -38,8 +38,8 @@ So for every combination of business, rental and capital gains and losses:
    out on purpose: when line 16 is floored at zero, more Schedule C income
    still raises the deduction for self-employment tax on line 30, so
    household resources fall. The form gives that result.
-6. A dependent's business and rental losses and S corporation, estate and
-   rental income leave household resources unchanged.
+6. A dependent's business and rental income and losses, including Schedule C,
+   Schedule F, S corporation and estate income, leave household resources unchanged.
 
 Amounts are whole dollars of at most $500,000, and the self-employment tax
 deduction is read from the model. The model computes in single precision, so a
@@ -158,13 +158,14 @@ OUTPUTS = [
 def calculate(households, reform=None):
     simulation = Simulation(situation=build_situation(households), reform=reform)
     results = {v: np.asarray(simulation.calculate(v, YEAR)) for v in OUTPUTS}
-    # Line 30 summed directly, as the formula does: subtracting a large
-    # loss_ald from above_the_line_deductions would lose cents in float32.
-    deductions = simulation.tax_benefit_system.parameters.gov.irs.ald.deductions
+    # Line 30 summed directly, as the formula does: the Schedule 1
+    # adjustments the federal list deducts. Subtracting a large loss_ald from
+    # above_the_line_deductions would lose cents in float32.
+    gov = simulation.tax_benefit_system.parameters(f"{YEAR}-01-01").gov
     results["schedule_1_adjustments"] = sum(
         np.asarray(simulation.calculate(d, YEAR, map_to="tax_unit"))
-        for d in deductions(f"{YEAR}-01-01")
-        if d != "loss_ald"
+        for d in gov.states.mi.tax.income.household_resources_adjustments
+        if d in gov.irs.ald.deductions
     )
     return results
 
@@ -311,10 +312,11 @@ def test_worked_example():
 
 
 DEPENDENT_VALUES = {
-    # Losses only for Schedule C and F: a dependent's self-employment tax
-    # deduction is a separate question (it is not on this return either).
-    "self_employment_income": [-20_000, 0],
-    "farm_operations_income": [-10_000, 0],
+    # Schedule C and F income and losses: a dependent's self-employment tax
+    # deduction is on the dependent's own return, so line 30 leaves it out
+    # (#9801).
+    "self_employment_income": [-20_000, 0, 20_000],
+    "farm_operations_income": [-10_000, 0, 10_000],
     "s_corp_income": [-20_000, 0, 15_000],
     "estate_income": [-5_000, 0, 5_000],
     "rental_income": [-20_000, 0, 15_000],

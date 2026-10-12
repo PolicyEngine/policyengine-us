@@ -23,7 +23,9 @@ class vt_retirement_income_exemption_eligible(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         p = parameters(period).gov.states.vt.tax.income.agi.retirement_income_exemption
         # One of the retirement income should be greater than 0
-        retirement_income = add(
+        # Dependents' income is not in federal AGI; they report it on their
+        # own return, so only the head's and spouse's pay counts.
+        retirement_income = tax_unit_non_dep_add(
             tax_unit,
             period,
             [

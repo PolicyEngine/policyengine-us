@@ -133,14 +133,23 @@ class qbid_amount(Variable):
 
         # Section 1.199A-1(d)(2) orders SSTB exclusion before loss netting,
         # then applies wage/property limits to each positive component.
-        # Allocate all eligible tax-unit losses proportionately to positive
-        # QBI; a losing business supplies no wages/property to another one.
+        # Allocate all eligible losses on the return proportionately to
+        # positive QBI; a losing business supplies no wages/property to
+        # another one. The head's and spouse's businesses are netted together;
+        # a tax unit dependent's businesses are on the dependent's own return,
+        # so they are netted alone and never offset the filer's.
         eligible_sstb_qbi = sstb_qbi * applicable_rate
         positive_non_sstb = max_(0, non_sstb_qbi_final)
         positive_sstb = max_(0, eligible_sstb_qbi)
-        total_positive = person.tax_unit.sum(positive_non_sstb + positive_sstb)
-        total_losses = person.tax_unit.sum(
-            max_(0, -non_sstb_qbi_final) + max_(0, -eligible_sstb_qbi)
+        own_positive = positive_non_sstb + positive_sstb
+        own_losses = max_(0, -non_sstb_qbi_final) + max_(0, -eligible_sstb_qbi)
+        is_dependent = person("is_tax_unit_dependent", period)
+        filer = ~is_dependent
+        total_positive = where(
+            is_dependent, own_positive, person.tax_unit.sum(own_positive * filer)
+        )
+        total_losses = where(
+            is_dependent, own_losses, person.tax_unit.sum(own_losses * filer)
         )
         retained_share = np.divide(
             max_(0, total_positive - total_losses),

@@ -1,0 +1,66 @@
+name: Build an unpublished release wheel
+description: Build one release candidate from a clean reviewed-head checkout and retain its receipt.
+inputs:
+  kind:
+    description: Candidate version kind (rc1 or final).
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Checkout reviewed PR head
+      uses: actions/checkout@v6
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        path: candidate-${{ inputs.kind }}
+    - name: Detect the release tooling on the PR head
+      id: tooling
+      # Older PR heads may predate the tooling present on the merge commit.
+      shell: bash
+      working-directory: candidate-${{ inputs.kind }}
+      run: |
+        if [ -f .github/release_lock.py ] && [ -f .github/release_build.py ]; then
+          echo "present=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "present=false" >> "$GITHUB_OUTPUT"
+          echo "::notice title=Candidate wheel skipped::The PR head predates the release tooling (.github/release_lock.py and .github/release_build.py). Merge main into the branch to build its candidate wheel."
+        fi
+    - name: Check committed registry lock
+      if: steps.tooling.outputs.present == 'true'
+      shell: bash
+      working-directory: candidate-${{ inputs.kind }}
+      run: python .github/release_lock.py --committed
+    - name: Predict release version with the release helper
+      if: steps.tooling.outputs.present == 'true'
+      shell: bash
+      working-directory: candidate-${{ inputs.kind }}
+      run: python .github/release_build.py --prepare "${{ inputs.kind }}"
+    - name: Refresh only the release version in the registry lock
+      if: steps.tooling.outputs.present == 'true'
+      shell: bash
+      working-directory: candidate-${{ inputs.kind }}
+      run: python .github/release_lock.py --refresh
+    - name: Install package
+      if: steps.tooling.outputs.present == 'true'
+      shell: bash
+      working-directory: candidate-${{ inputs.kind }}
+      run: uv sync --locked --extra dev
+    - name: Build package from unchanged policy source
+      if: steps.tooling.outputs.present == 'true'
+      shell: bash
+      working-directory: candidate-${{ inputs.kind }}
+      run: uv run --no-sync make
+    - name: Record and verify release build
+      if: steps.tooling.outputs.present == 'true'
+      shell: bash
+      working-directory: candidate-${{ inputs.kind }}
+      run: uv run --no-sync python .github/release_build.py
+    - name: Retain unpublished wheel and build receipt
+      if: steps.tooling.outputs.present == 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: release-wheel-${{ inputs.kind }}-${{ github.event.pull_request.head.sha }}
+        path: |
+          candidate-${{ inputs.kind }}/dist/*.whl
+          candidate-${{ inputs.kind }}/release-build/receipt.json
+        if-no-files-found: error
+        retention-days: 14

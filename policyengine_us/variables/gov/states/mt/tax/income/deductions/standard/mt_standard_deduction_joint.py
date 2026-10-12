@@ -17,7 +17,9 @@ class mt_standard_deduction_joint(Variable):
 
         if p.state_specific_deduction_applies:
             # ── Pre-2024 MT-specific calculation ───────────────────────────────
-            agi = add(person.tax_unit, period, ["mt_agi_indiv"])
+            # Standard Deduction Worksheet line 1 takes Montana AGI from
+            # page 1, line 14, which pools both spouses on a joint return.
+            agi = person.tax_unit("mt_agi_joint", period)
             floor = p.floor[filing_status]
             cap = p.cap[filing_status]
             uncapped = p.rate * agi

@@ -50,18 +50,37 @@ def _get_pinned_tbs(base_tbs, pin_name, pin_fn):
 
 
 def _pin_pre_arpa_eitc(tbs):
-    # NY decoupled from post-March 2020 IRC amendments for TY 2021:
-    # pin the federal EITC parameters to their 2020 (pre-ARPA) values.
+    # NY decoupled from IRC changes made after March 1, 2020 (ARPA) for
+    # TY 2021, but not from the 2021 inflation adjustments, which Rev. Proc.
+    # 2020-45 published before ARPA. Pin the federal EITC rules to their 2020
+    # (pre-ARPA) values, then restore the inflation-indexed 2021 amounts, with
+    # the pre-ARPA childless amounts in place of ARPA's.
     pin_date = instant("2020-01-01")
     start = instant("2021-01-01")
     stop = instant("2021-12-31")
-    for param in tbs.parameters.gov.irs.credits.eitc.get_descendants():
+    eitc = tbs.parameters.gov.irs.credits.eitc
+    indexed_scales = (eitc.max, eitc.phase_out.start, eitc.phase_out.joint_bonus)
+    indexed_2021 = [
+        [bracket.amount(start) for bracket in scale.brackets]
+        for scale in indexed_scales
+    ]
+    for param in eitc.get_descendants():
         if isinstance(param, Parameter):
             try:
                 value = param(pin_date)
                 param.update(start=start, stop=stop, value=value)
             except Exception:
                 pass
+    for scale, amounts in zip(indexed_scales, indexed_2021):
+        for bracket, amount in zip(scale.brackets, amounts):
+            bracket.amount.update(start=start, stop=stop, value=amount)
+    pre_arpa = tbs.parameters.gov.states.ny.tax.income.credits.eitc.pre_arpa
+    eitc.max.brackets[0].amount.update(
+        start=start, stop=stop, value=pre_arpa.childless_max(start)
+    )
+    eitc.phase_out.start.brackets[0].amount.update(
+        start=start, stop=stop, value=pre_arpa.childless_phase_out_start(start)
+    )
 
 
 def _pin_pre_tcja_ctc(tbs):
@@ -131,7 +150,7 @@ def _pin_2020_irc(tbs):
 
 
 def get_pre_arpa_eitc_tbs(base_tbs):
-    """Pre-ARPA (2020-pinned) EITC system for NY's TY2021 decoupling."""
+    """Pre-ARPA EITC system (2021 inflation amounts) for NY's TY2021 decoupling."""
     return _get_pinned_tbs(base_tbs, "ny_pre_arpa_eitc", _pin_pre_arpa_eitc)
 
 
