@@ -50,8 +50,11 @@ class tax_unit_is_required_to_file(Variable):
         # income other than earned income is over the section 63(c)(5)(A)
         # amount plus their own additional standard deduction for age or
         # blindness: section 6012(a)(1)(C)(i)(I) and Publication 501, Table 2.
-        # On a joint return the test applies to each spouse who can be claimed
-        # (section 6012(f)(2)(D)). Nobody else has an unearned income test.
+        # On a joint return the test applies to each spouse who can be claimed.
+        # Section 6012(f)(2)(D), which governs joint returns for 2018 to 2025,
+        # names the section 63(c)(5)(A) amount alone; Table 2 adds the
+        # additional standard deduction, and this follows Table 2. Nobody else
+        # has an unearned income test.
         #
         # Table 2's other two tests need no code here. The standard deduction
         # in the threshold above is already the limited one for these filers

@@ -3,6 +3,8 @@
 #
 # 26 U.S.C. 6012(a)(1)(C)(i) and (f), 26 U.S.C. 63(c)(5), and Chart A and
 # Chart B of the Form 1040 instructions (Tables 1 and 2 of Publication 501).
+# Section 6012(f) governs 2018 to 2025 and section 6012(a)(1) governs 2026.
+# For an unmarried filer who can be claimed, both give Chart B's result.
 # 2025 amounts (Chart B, page 10 of
 # https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf):
 #   Single dependents, under 65 and not blind, must file if
@@ -15,7 +17,10 @@
 #     $19,750, and the larger of $5,350 or earned income plus $4,450.
 #   Married dependents, 65 or older or blind: unearned income over $2,950.
 
-# Filers nobody can claim: Chart A, gross income only.
+# Filers nobody can claim: gross income only. The cases stay a dollar away
+# from the threshold itself, where Chart A ("at least") and section 6012(f)(1)
+# ("does not exceed the standard deduction") differ; this change does not
+# touch that comparison.
 
 - name: 2025, a single filer nobody can claim with $600 of interest need not file
   period: 2025
@@ -26,12 +31,12 @@
   output:
     tax_unit_is_required_to_file: false
 
-- name: 2025, unearned income up to the standard deduction does not require a return
+- name: 2025, unearned income under the standard deduction does not require a return
   period: 2025
   input:
     filing_status: SINGLE
     age: 40
-    taxable_interest_income: 15_750
+    taxable_interest_income: 15_749
   output:
     # Chart A: single, under 65, $15,750.
     tax_unit_is_required_to_file: false
@@ -176,6 +181,19 @@
     employment_income: 3_000
     taxable_interest_income: 1_351
   output:
+    tax_unit_is_required_to_file: false
+
+- name: 2025, a self-employment loss does not add to a single dependent's unearned income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age: 19
+    claimed_as_dependent_on_another_return: true
+    self_employment_income: -10_000
+    taxable_interest_income: 1_000
+  output:
+    # Unearned income is the $1,000 of interest, not gross income less the
+    # negative earned income ($11,000).
     tax_unit_is_required_to_file: false
 
 # Single dependents, 65 or older or blind.
@@ -520,6 +538,11 @@
 
 # 2026 (Rev. Proc. 2025-32, sec. 4.14: $1,350, $450, $16,100 and $2,050):
 # https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
+# Section 6012(f) ends with 2025, so section 6012(a)(1) applies. Its unearned
+# income and gross income tests for these filers say "in excess of", as Chart
+# B does. Its earned income threshold comes from (a)(1)(A)(i), which says
+# "less than", and the 2026 instructions are not yet published, so the earned
+# income cases stay a dollar away from $16,100.
 
 - name: 2026, single dependent with unearned income of $1,350 need not file
   period: 2026
@@ -541,13 +564,13 @@
   output:
     tax_unit_is_required_to_file: true
 
-- name: 2026, single dependent with earned income of $16,100 need not file
+- name: 2026, single dependent with earned income under $16,100 need not file
   period: 2026
   input:
     filing_status: SINGLE
     age: 19
     claimed_as_dependent_on_another_return: true
-    employment_income: 16_100
+    employment_income: 16_099
   output:
     tax_unit_is_required_to_file: false
 
