@@ -115,7 +115,7 @@
       person1:
         age: 35
         employment_income_before_lsr: 0
-        taxable_social_security: 3_600
+        social_security_disability: 3_600
       person2:
         age: 8
         is_child_dependent: true
@@ -129,6 +129,7 @@
         state_code: SC
   output:
     sc_tanf: 223.20
+    # SSA benefits count at the gross amount (Section 7.7, page 116)
     # monthly unearned = 3,600/12 = 300
     # tanf_fpg for size 2 = 1703.33
     # need_standard = 1703.33 * 0.5 = 851.67
@@ -222,3 +223,40 @@
     sc_tanf: 0
     # Both members are undocumented, so no one qualifies as
     # citizen or legal immigrant -> ineligible
+
+- name: Case 9, child support, a child's Social Security and interest above the exclusion.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        child_support_received: 3_600
+        taxable_interest_income: 1_000
+      person2:
+        age: 9
+        is_child_dependent: true
+        social_security_survivors: 4_800
+      person3:
+        age: 6
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_tanf_gross_income: 750
+    sc_tanf: 131.83
+    # SC DSS TANF Policy Manual (Volume 67), Section 7.7:
+    # child support paid directly = 3,600/12 = 300 (page 108)
+    # child's SSA benefits, gross = 4,800/12 = 400 (page 116)
+    # interest = (1,000 - 400 exclusion)/12 = 50 (page 113)
+    # gross income = 300 + 400 + 50 = 750
+    # tanf_fpg for size 3 = 2151.67; need standard = 1075.83
+    # gross income limit = 1075.83 * 1.85 = 1990.29; 750 passes
+    # benefit = (1075.83 - 750) * 0.4046 = 131.83

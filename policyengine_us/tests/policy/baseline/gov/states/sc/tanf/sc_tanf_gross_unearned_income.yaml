@@ -1,0 +1,166 @@
+# SC DSS TANF Policy Manual (Volume 67), Section 7.1 (page 102) defines income
+# as money received from any source; the Section 7.7 chart (pages 107-120)
+# lists how each source is counted.
+
+- name: Case 1, Social Security counts at the gross amount, not the taxable part.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    social_security_retirement: 6_000
+  output:
+    # SSA benefits: "Count gross amount" (page 116).
+    # 6,000 / 12 = 500. The federally taxable part is 0 at this income.
+    taxable_social_security: 0
+    sc_tanf_gross_unearned_income: 500
+
+- name: Case 2, 2020 unemployment compensation counts in full despite the IRC 85(c) exclusion.
+  period: 2020-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    unemployment_compensation: 12_000
+  output:
+    # Unemployment compensation benefits are counted (page 118).
+    # 12,000 / 12 = 1,000. Federal law excluded $10,200 for 2020, so the
+    # taxable part was 1,800 a year (150 a month); TANF counts all 1,000.
+    sc_tanf_gross_unearned_income: 1_000
+
+- name: Case 3, taxable and tax-exempt pension income both count.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    taxable_private_pension_income: 2_400
+    tax_exempt_private_pension_income: 1_200
+  output:
+    # Pension and retirement pay are counted (pages 115-116).
+    # (2,400 + 1,200) / 12 = 300.
+    sc_tanf_gross_unearned_income: 300
+
+- name: Case 4, non-taxable cash income the chart counts.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    child_support_received: 1_200
+    alimony_income: 1_200
+    veterans_benefits: 1_200
+    workers_compensation: 1_200
+    disability_benefits: 1_200
+    survivor_benefits: 1_200
+    railroad_benefits: 1_200
+    financial_assistance: 1_200
+  output:
+    # Child support/direct, alimony, cash contributions (page 108), income
+    # maintenance insurance including disability insurance (page 113),
+    # retirement pay including railroad retirement (page 116), VA benefits
+    # (page 119) and workers' compensation (page 120) are counted.
+    # 8 sources x 1,200 / 12 = 800.
+    sc_tanf_gross_unearned_income: 800
+
+- name: Case 5, retirement account distributions and discharged debt are not income.
+  period: 2025-01
+  input:
+    state_code: SC
+    taxable_ira_distributions: 12_000
+    taxable_401k_distributions: 6_000
+    debt_relief: 6_000
+  output:
+    # Section 6.6 counts IRA, SEP and Keogh balances as resources and excludes
+    # deferred compensation funds until withdrawn (pages 92-93), so a
+    # withdrawal draws down a resource rather than adding income. A discharged
+    # debt is not money received (Section 7.1).
+    sc_tanf_gross_unearned_income: 0
+
+- name: Case 6, farm operations income is earned, not unearned.
+  period: 2025-01
+  input:
+    state_code: SC
+    farm_operations_income: 6_000
+  output:
+    # Farm income is self-employment income (page 112).
+    sc_tanf_gross_unearned_income: 0
+    sc_tanf_gross_earned_income: 500
+
+- name: Case 7, interest within the 400 dollar annual exclusion is not counted.
+  period: 2025-01
+  input:
+    state_code: SC
+    taxable_interest_income: 300
+  output:
+    # Up to $400 per benefit group annually is excluded (page 113).
+    # 300 / 12 = 25 a month, below the 400 / 12 = 33.33 monthly exclusion.
+    sc_tanf_gross_unearned_income: 0
+
+- name: Case 8, interest above the exclusion is averaged over 12 months, including tax-exempt interest.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    taxable_interest_income: 600
+    tax_exempt_interest_income: 1_000
+  output:
+    # Interest is money received whether or not it is taxable.
+    # (600 + 1,000 - 400) / 12 = 100.
+    sc_tanf_gross_unearned_income: 100
+
+- name: Case 9, the exclusion is shared across the benefit group in proportion to each member's interest and dividends.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        taxable_interest_income: 600
+      person2:
+        age: 10
+        qualified_dividend_income: 600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Each member has 600 / 12 = 50 a month; the group has 100.
+    # Group exclusion = min(100, 400 / 12 = 33.33) = 33.33, half to each.
+    # Each member: 50 - 16.67 = 33.33. Group total = (1,200 - 400) / 12 = 66.67.
+    sc_tanf_gross_unearned_income: [33.33, 33.33]
+
+- name: Case 10, an SSI recipient's income is excluded.
+  period: 2025-01
+  input:
+    state_code: SC
+    receives_ssi: true
+    social_security_disability: 4_800
+    taxable_interest_income: 1_200
+  output:
+    # SSI benefit: exclude the SSI recipient and his or her income (page 117).
+    sc_tanf_ssi_recipient: true
+    sc_tanf_gross_unearned_income: 0
+
+- name: Case 11, an SSI recipient's interest does not use up the group's exclusion.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        taxable_interest_income: 600
+      person2:
+        age: 60
+        receives_ssi: true
+        taxable_interest_income: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # Only person1's income counts: 600 / 12 = 50, less the full 33.33
+    # exclusion = 16.67. Person2's income is excluded.
+    sc_tanf_gross_unearned_income: [16.67, 0]
