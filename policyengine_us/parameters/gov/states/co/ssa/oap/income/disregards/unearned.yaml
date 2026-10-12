@@ -1,0 +1,15 @@
+description: Colorado deducts this amount from monthly unearned income other than SSI when counting income for the Old Age Pension, splitting it equally between spouses.
+
+values:
+  # OAP rules moved from 9 CCR 2503-3 to 9 CCR 2503-5 on March 2, 2014.
+  2014-03-02: 20
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Colorado OAP unearned income disregard
+  reference:
+    - title: "9 CCR 2503-5, Section 3.533(A)(2)(c), (f) #page 77"
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=77
+    - title: 9 CCR 2503-5, Section 3.533(A)(2)(c) (effective March 2, 2014)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=5597#page=47

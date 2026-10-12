@@ -1,0 +1,14 @@
+description: Colorado deducts this share of the SSI benefit standard for an individual, less the child's own income, for each dependent child in the household when deeming a spouse's unearned income to an Old Age Pension client.
+
+values:
+  # OAP rules moved from 9 CCR 2503-3 to 9 CCR 2503-5 on March 2, 2014.
+  2014-03-02: 0.5
+
+metadata:
+  unit: /1
+  label: Colorado OAP deeming allocation per dependent child as a share of the SSI benefit standard
+  reference:
+    - title: "9 CCR 2503-5, Section 3.534(B)(3) #page 78"
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=78
+    - title: 9 CCR 2503-5, Section 3.534(B)(3) (effective March 2, 2014)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=5597#page=48
