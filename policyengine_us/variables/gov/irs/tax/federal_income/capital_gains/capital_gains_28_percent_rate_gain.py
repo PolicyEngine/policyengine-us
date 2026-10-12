@@ -12,6 +12,9 @@ def rate_gains_less_losses(tax_unit, period):
     The same amount is lines 14 to 16 of the Unrecaptured Section 1250 Gain
     Worksheet combined. Amounts entered already netted, as Schedule D lines
     18 and 19 report them, are not part of it.
+
+    The worksheets are the head and spouse's: a tax unit dependent's gains
+    and losses are on the dependent's own return.
     """
     # These taxpayer-specific worksheets include only the head and spouse's
     # gains and losses, as on their Schedule D and Form 4952.
@@ -23,10 +26,12 @@ def rate_gains_less_losses(tax_unit, period):
     # 26 U.S.C. 1222(6), the same net short-term capital loss net_capital_gain
     # subtracts: Schedule D line 7, if a loss.
     net_short_term_capital_loss = max_(
-        0, -tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"])
+        0,
+        -tax_unit_non_dep_add(tax_unit, period, ["short_term_capital_gains"]),
     )
     carryover = max_(
-        0, tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_loss_carryover"])
+        0,
+        tax_unit_non_dep_add(tax_unit, period, ["long_term_capital_loss_carryover"]),
     )
     return collectibles + section_1202_gain - net_short_term_capital_loss - carryover
 
