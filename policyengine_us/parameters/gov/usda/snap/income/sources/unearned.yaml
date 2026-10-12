@@ -16,9 +16,9 @@ values:
     # exempts public assistance vendor payments only for medical assistance,
     # child care, energy assistance, migrant emergency assistance, housing
     # authority housing assistance, and emergency or special assistance that
-    # is not the normal grant. None of the supplements below fall in those
-    # categories, so each counts, whether paid to the recipient or to a
-    # facility on the recipient's behalf.
+    # is not the normal grant. Countable components below exclude medical
+    # reimbursements and state-specific exempt payments; ordinary cash and
+    # room-and-board supplements count even when paid to a provider.
     - ak_ssp
     - al_ssp
     # co_oap has an annual definition period; policyengine-core's
@@ -36,6 +36,7 @@ values:
     - hi_oss
     - id_aabd
     - in_ssp
+    - or_ssp_countable_for_snap
     - ks_sspp
     - ky_ssp
     - la_oss
@@ -95,9 +96,7 @@ values:
 
 metadata:
   reference:
-    - title: 7 CFR 273.9(b)(2)
-      href: https://www.law.cornell.edu/cfr/text/7/273.9#b_2
-    - title: 7 CFR 273.9(c)(1)
-      href: https://www.law.cornell.edu/cfr/text/7/273.9#c_1
+    - title: 7 CFR 273.9(b)(2) and (c)(1), (5)
+      href: https://www.law.cornell.edu/cfr/text/7/273.9
     - title: POMS SI 01401.001 General Information about State Supplementation
       href: https://secure.ssa.gov/poms.nsf/lnx/0501401001

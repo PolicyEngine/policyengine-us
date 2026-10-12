@@ -1090,6 +1090,18 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: OR
+        status: partial
+        name: Oregon SSP
+        full_name: Oregon State Supplemental Payment
+        variable: or_ssp
+        parameter_prefix: gov.states.or.odhs.ssp
+        verified_years: '2026'
+        notes: OSIPM in-home, SSI couple community care, transitional personal incidentals/room
+          and board, and approved spousal diversion and special room-and-board payments. Eligibility
+          and procedural authorization require a certified category; specialized income exclusions,
+          liability and diversion need explicit inputs. Other medical reimbursements and historical
+          mandatory supplements are excluded.
 
   - id: social_security
     name: Social Security
