@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.hhs_smi import liheap_smi_limit
 from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
@@ -43,20 +44,10 @@ class oh_liheap_income_limit(Variable):
         # 2024-25 and 2025-26 and the prior year's for 2026-27 (smi_year_lag),
         # inferred from the federal cap and the Consumers' Counsel limits.
         smi_date = period.start.offset(-int(p.smi_year_lag), "year")
-        federal = parameters(smi_date).gov.hhs.smi
-        # HHS truncates 60% of the four-person median, then the size-adjusted
-        # amount, in its footnote's order. This reproduces every HHS FFY2025
-        # and FFY2026 amount and the Consumers' Counsel 2026-27 sizes 8, 11 and
-        # 12. Its sizes 9 and 10 ($96,946, $99,010) exceed even unrounded 60%
-        # of SMI ($96,945.68, $99,008.35); the HHS $96,944 and $99,007 apply.
-        four_person_limit = np.floor(federal.amount[state] * p.smi_rate)
-        adjustment = federal.household_size_adjustment
-        threshold = federal.additional_person_threshold
-        size_share = (
-            adjustment.first_person
-            + adjustment.second_to_sixth_person * clip(size - 1, 0, threshold - 1)
-            + adjustment.additional_person * max_(size - threshold, 0)
-        )
-        smi_limit = np.floor(four_person_limit * size_share)
+        # The HHS floor order reproduces every HHS FFY2025 and FFY2026 amount
+        # and the Consumers' Counsel 2026-27 sizes 8, 11 and 12. Its sizes 9
+        # and 10 ($96,946, $99,010) exceed even unrounded 60% of SMI
+        # ($96,945.68, $99,008.35); the HHS $96,944 and $99,007 apply.
+        smi_limit = liheap_smi_limit(size, state, p.smi_rate, smi_date, parameters)
         limit = where(size <= p.maximum_fpg_household_size, fpg_limit, smi_limit)
         return where(size > 0, limit, 0)
