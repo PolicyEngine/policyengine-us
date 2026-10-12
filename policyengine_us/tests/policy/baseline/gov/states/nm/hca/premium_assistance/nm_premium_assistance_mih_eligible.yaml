@@ -230,8 +230,31 @@
         members: [person1]
         filing_status: SINGLE
         tax_unit_is_filer: false
-        # A tax unit that takes up the credit files to claim it.
-        takes_up_aca_if_eligible: false
+        aca_magi_fraction: 4.20
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_mih_eligible: false
+
+- name: Case 10b, taking up ACA does not make an MIH unit above 400% FPL a filer.
+  # Above 400% FPL there is no federal premium tax credit to take up, so the
+  # federal take-up input says nothing about filing; only tax_unit_is_filer
+  # counts (the Addendum also says the state payment is not reconciled like
+  # APTC). Same inputs as Case 10 with take-up true: still MIH-ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        tax_unit_is_filer: false
+        takes_up_aca_if_eligible: true
         aca_magi_fraction: 4.20
     households:
       household:

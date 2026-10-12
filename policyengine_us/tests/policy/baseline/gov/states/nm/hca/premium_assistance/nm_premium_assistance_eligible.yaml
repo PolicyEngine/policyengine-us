@@ -260,7 +260,7 @@
       tax_unit:
         members: [person1]
         tax_unit_is_filer: false
-        # A tax unit that takes up the credit files to claim it.
+        # Nor does it take up the federal credit, so it files no return to claim it.
         takes_up_aca_if_eligible: false
         aca_magi_fraction: 2.50
     households:
@@ -269,3 +269,24 @@
         state_code: NM
   output:
     nm_premium_assistance_eligible: false
+
+- name: Case 13b, an NM unit at 250% FPL that takes up the federal credit files and is base-eligible.
+  # Same inputs as Case 13 with take-up true (26 CFR 1.6011-8(a)).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        tax_unit_is_filer: false
+        takes_up_aca_if_eligible: true
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_premium_assistance_eligible: true

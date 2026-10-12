@@ -15,6 +15,15 @@ take-up, as one simulation per year. For every tax unit:
    (the filing gate added for IRS filer data).
 4. A tax unit that files gets the same `aca_ptc` whether or not it takes up
    the credit.
+
+Why Python: the YAML cases pin one combination each with fixed amounts; this
+checks every combination of filing and take-up against drawn benchmark
+premiums, incomes and contribution rates in one vectorized simulation, so a
+gate that drops the take-up leg, or that makes the credit depend on filing for
+a unit that takes it up, fails whatever the amounts. Cost, measured locally
+(macOS, shared host): 4.4 s of test calls, 7.5 s in pytest and 26 s wall time
+including the model import, peak memory footprint 1.5 GB. It runs in the
+`core` group of the rest Python tests.
 """
 
 import numpy as np

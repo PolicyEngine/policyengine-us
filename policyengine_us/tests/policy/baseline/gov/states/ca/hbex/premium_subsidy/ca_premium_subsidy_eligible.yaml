@@ -276,7 +276,7 @@
         members: [person1]
         aca_magi_fraction: 1.40
         tax_unit_is_filer: false
-        # A tax unit that takes up the credit files to claim it.
+        # Nor does it take up the federal credit, so it files no return to claim it.
         takes_up_aca_if_eligible: false
     households:
       household:
@@ -403,3 +403,26 @@
         state_code: CA
   output:
     ca_premium_subsidy_eligible: false
+
+- name: Case 13b, an in-band CA unit that takes up the federal credit files and is eligible.
+  # Same inputs as Case 13 with take-up true: a tax unit that takes up the
+  # federal premium tax credit files a return to claim or reconcile it
+  # (26 CFR 1.6011-8(a)), so the filing gate passes.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.40
+        tax_unit_is_filer: false
+        takes_up_aca_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_premium_subsidy_eligible: true
