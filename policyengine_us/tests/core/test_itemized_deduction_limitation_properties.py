@@ -466,10 +466,12 @@ def test_2026_reduction_responds_to_each_deduction_and_income():
         assert np.any(reduction < base_reduction - 1), name
 
     # The 2026 reduction depends on the itemized deductions only through
-    # their total (test 6), so one component stands for all of them.
+    # their total (tests 6 and 8), so one component stands for all of them.
+    # It rises by at most 2/37 of the increase, so allowed deductions rise by
+    # at least 35/37 of it.
     raised = dict(units, charitable_deduction=units["charitable_deduction"] + step)
     allowed = _simulate_2026(raised)["itemized_taxable_income_deductions"]
-    assert np.all(allowed >= base_allowed - _slack(scale))
+    assert np.all(allowed >= base_allowed + step * 35 / 37 - _slack(scale))
     assert np.all(allowed <= base_allowed + step + _slack(scale))
 
     richer = dict(units, adjusted_gross_income=units["adjusted_gross_income"] + 10_000)

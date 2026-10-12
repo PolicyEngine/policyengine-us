@@ -119,6 +119,7 @@
   output:
     # As in the case above: leg (2) is 700_000 - 60_000 = 640_000, so the
     # 16_500 of itemized deductions is not reduced and exceeds 16_100.
+    qualified_business_income_deduction: 60_000
     itemized_taxable_income_deductions: 16_500
     tax_unit_itemizes: true
 
