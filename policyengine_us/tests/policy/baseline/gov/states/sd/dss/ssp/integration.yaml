@@ -1,0 +1,59 @@
+- name: Case 1, eligible SSI couple receives eight and seven dollars.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+      second:
+        age: 65
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: SD
+  output:
+    sd_ssp:
+    - 8
+    - 7
+- name: Case 2, annual independent supplement and SNAP income.
+  period: '2026'
+  absolute_error_margin: 0.01
+  input:
+    age: 65
+    state_code: SD
+  output:
+    sd_ssp: 180
+    snap_unearned_income: 12108
+    hud_unearned_income: 12108
+- absolute_error_margin: 0.01
+  input:
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: SD
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    people:
+      first:
+        age: 65
+      second:
+        age: 65
+        social_security_retirement: 120
+  name: Case 3, other cash income of either eligible spouse excludes the couple.
+  output:
+    sd_ssp:
+    - 0
+    - 0
+  period: 2026-01
