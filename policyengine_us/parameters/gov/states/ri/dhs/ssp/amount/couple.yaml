@@ -1,0 +1,23 @@
+# Institutional per-person rates are doubled solely for joint computation.
+description: Rhode Island provides these monthly state supplementary payment rates for an eligible couple.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Rhode Island SSP couple amount
+  breakdown:
+  - ri_ssp_living_arrangement
+  reference:
+  - title: Rhode Island SSP eligibility and state-administered payment schedule
+    href: https://rules.sos.ri.gov/regulations/Part/218-20-00-5
+  - title: POMS SI 01415.058 L, Federally administered January 2026 payment levels
+    href: https://secure.ssa.gov/poms.nsf/lnx/0501415058#l
+INDEPENDENT:
+  2026-01-01: 79.38
+HOUSEHOLD_OF_ANOTHER:
+  2026-01-01: 97.3
+RESIDENTIAL_CARE:
+  2026-01-01: 664
+MEDICAID_INSTITUTION:
+  2026-01-01: 90
+NONE:
+  2026-01-01: 0

@@ -1,0 +1,111 @@
+# RI: 218-RICR-20-00-5. PA: 55 Pa. Code 299; POMS SI 01415.058.
+- name: Case 1, independent living.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+  output:
+    ri_ssp: 39.92
+- name: Case 2, living in household of another.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    ri_ssp: 51.92
+- name: Case 3, certified residential care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    ri_ssp_living_arrangement: RESIDENTIAL_CARE
+  output:
+    ri_ssp: 332
+- name: Case 4, medical institution.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ri_ssp: 45
+- name: Case 5, SSI exhausted but state payment remains.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    social_security_retirement: 12360
+  output:
+    ri_ssp: 23.92
+- name: Case 6, state administered payment below a dollar.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    social_security_retirement: 12646.92
+  output:
+    ri_ssp: 0.01
+- name: Case 7, combined income cutoff.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    social_security_retirement: 12647.04
+  output:
+    ri_ssp: 0
+- name: Case 8, excess resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    ssi_countable_resources: 2001
+  output:
+    ri_ssp: 0
+- name: Case 9, not aged blind or disabled.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 30
+  output:
+    ri_ssp: 0
+- name: Case 10, nonresident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    age: 65
+  output:
+    ri_ssp: 0
+- name: Case 11, declines required SSI application.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    takes_up_ssi_if_eligible: false
+  output:
+    ri_ssp: 0
+- name: Case 12, institutional state only payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    social_security_retirement: 720
+  output:
+    ri_ssp: 35

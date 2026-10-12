@@ -1090,6 +1090,18 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: RI
+        status: partial
+        name: Rhode Island SSP
+        full_name: Rhode Island State Supplementary Payment
+        variable: ri_ssp
+        parameter_prefix: gov.states.ri.dhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models optional living-arrangement supplements and institutional
+          personal-needs payments. Care certification and separate individual
+          SSI claims require explicit inputs. Mandatory grandfathered payments
+          and ancillary facility subsidies are outside this component.
 
   - id: social_security
     name: Social Security
