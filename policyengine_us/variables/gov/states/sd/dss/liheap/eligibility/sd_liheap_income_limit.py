@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.hhs_smi import smi
+from policyengine_us.variables.gov.hhs.hhs_smi import liheap_smi_limit
 from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
@@ -26,9 +26,7 @@ class sd_liheap_income_limit(Variable):
             max_(size, 1), state_group, period, parameters, year_lag=p.fpg_year_lag
         )
         state = spm_unit.household("state_code_str", period)
-        four_person_smi = parameters(period).gov.hhs.smi.amount[state]
-        size_share = smi(size, state, period, parameters) / four_person_smi
-        smi_limit = np.floor(four_person_smi * p.limits.smi_rate) * size_share
+        smi_limit = liheap_smi_limit(size, state, p.limits.smi_rate, period, parameters)
         annual_limit = min_(
             guideline * p.limits.fpg_upper_rate,
             max_(guideline * p.limits.fpg_lower_rate, smi_limit),
