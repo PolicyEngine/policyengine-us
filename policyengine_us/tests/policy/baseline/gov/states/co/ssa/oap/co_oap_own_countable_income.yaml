@@ -194,3 +194,15 @@
         state_code: CO
   output:
     co_oap_own_countable_income: 0
+
+- name: Case 11, an SSI-only client with SSI under $20 still passes nothing to earnings.
+  # SSI of $10/month is the only unearned income, so 3.533(A)(2)(c)(2) gives
+  # no disregard to pass on, though gross unearned income is under $20:
+  # (500 - 65) / 2 = 217.50/month, or 2,610/year.
+  period: 2026
+  input:
+    state_code: CO
+    ssi: 120
+    employment_income: 6_000
+  output:
+    co_oap_own_countable_income: 2_610

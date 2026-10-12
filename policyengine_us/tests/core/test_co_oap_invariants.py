@@ -30,6 +30,10 @@ Medicaid, (B) the spouse is not, (C) as B with extra spousal earnings, and
    earnings lower it under SSI's couple computation or spousal deeming
    (e.g. an SSI couple aged 65 with no income: $85/month of spousal
    earnings cut each spouse's SSI by $0.02, and OAP rises by as much).
+   Countable income is checked only while the client's SSI receipt is
+   unchanged or the client has no shelter support: Colorado's own ISM for
+   a client not on SSI (3.520.79(C)) is not modeled, so a client whom more
+   spousal earnings take off SSI also loses SSA's matching ISM.
 5. Role invariance: the client's countable income and OAP do not depend on
    which spouse is the tax-unit head.
 
@@ -172,7 +176,8 @@ def assert_properties(cases):
         assert oap[a] >= oap[b] - TOLERANCE, c
         # 4. More spousal earnings never lower countable income, and raise
         # OAP only through the client's SSI.
-        assert countable[c_] >= countable[b] - TOLERANCE, c
+        if (ssi[c_] > 0) == (ssi[b] > 0) or not c["shelter_support"]:
+            assert countable[c_] >= countable[b] - TOLERANCE, c
         if ssi[c_] == pytest.approx(ssi[b], abs=TOLERANCE):
             assert oap[c_] <= oap[b] + TOLERANCE, c
         # 5. Roles.
