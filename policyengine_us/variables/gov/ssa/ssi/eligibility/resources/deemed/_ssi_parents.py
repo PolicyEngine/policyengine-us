@@ -15,11 +15,13 @@ def _ssi_unlinked_parental_deemors(person, period, spouse, with_spouses):
     The deemors are the person's co-resident tax-unit members who are unlinked
     parents or a parent's spouse, and the spouse of each of those, wherever
     that spouse files (416.1160(d), 416.1202(b)(1): a parent and the parent's
-    spouse). Without with_spouses only the unlinked parents count. A person
-    is never their own deemor, nor is their own spouse, who is a parent of
-    their children rather than of them. With no parent ids, is_parent cannot
-    distinguish a grandparent or an unrelated parent from the child's
-    parent: this is a data limitation.
+    spouse). Without with_spouses only the unlinked parents count. With no
+    parent ids, is_parent cannot distinguish a grandparent or an unrelated
+    parent from the child's parent: this is a data limitation. A person who
+    is an unlinked parent is in their own set, as in the proxy sets of the
+    siblings they share a tax unit with, so a teen parent and their brothers
+    and sisters keep one pool. Income deeming drops the person, whose SSI
+    eligibility makes them no ineligible parent.
     """
     unlinked = unlinked_parent(person, period)
     has_spouse = spouse >= 0
@@ -38,8 +40,6 @@ def _ssi_unlinked_parental_deemors(person, period, spouse, with_spouses):
             safe = np.maximum(member, 0)
             selected = (
                 (member >= 0)
-                & (member != indices)
-                & (member != spouse)
                 & (households[safe] == households)
                 & where(with_spouses, parent_or_spouse[safe], unlinked[safe])
             )
@@ -47,12 +47,7 @@ def _ssi_unlinked_parental_deemors(person, period, spouse, with_spouses):
             # Members of this tax unit are scanned above; add spouses who
             # file elsewhere. Each person has at most one spouse.
             partner = np.where(selected & with_spouses, spouse[safe], -1)
-            outside = (
-                (partner >= 0)
-                & (partner != indices)
-                & (partner != spouse)
-                & (tax_units[np.maximum(partner, 0)] != tax_units)
-            )
+            outside = (partner >= 0) & (tax_units[np.maximum(partner, 0)] != tax_units)
             yield partner, outside
 
     count = np.zeros(person.count, dtype=int)

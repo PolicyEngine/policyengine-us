@@ -429,23 +429,19 @@ def _oracle(facts, missouri_rules=False):
             if with_spouses:
                 parents |= {spouse(p) for p in parents if spouse(p)}
             return parents
-        # The tax-unit proxy.
+        # The tax-unit proxy: every co-resident unlinked parent in the
+        # person's tax unit, the person included, and each one's spouse.
         unit = facts[person]["tax_unit_key"]
         found = set()
         for member in names:
-            if (
-                member == person
-                or member == spouse(person)
-                or facts[member]["tax_unit_key"] != unit
-                or not co_resident(member, person)
-            ):
+            if facts[member]["tax_unit_key"] != unit or not co_resident(member, person):
                 continue
             partner = spouse(member)
             if unlinked(member) or (
                 with_spouses and partner is not None and unlinked(partner)
             ):
                 found.add(member)
-                if with_spouses and partner is not None and partner != person:
+                if with_spouses and partner is not None:
                     found.add(partner)
         return found
 
