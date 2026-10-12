@@ -25,11 +25,9 @@ class ri_liheap_eligible(Variable):
             spm_unit("heating_expense", period) > 0
         )
         separate_electric_bill = spm_unit("pre_subsidy_electricity_expense", period) > 0
-        # Reported obligations and rental terms are assumed verified. A utility
-        # burden permits subsidized heat-in-rent eligibility, but does not select
-        # the direct versus secondary-electric payment route.
-        energy_burden = primary_obligation | (
-            heat_in_rent & (~subsidized | separate_electric_bill)
+        # Reported obligations and rental terms are assumed verified.
+        energy_burden = where(
+            heat_in_rent, ~subsidized | separate_electric_bill, primary_obligation
         )
         heating_type = spm_unit("heating_type", period)
         return (

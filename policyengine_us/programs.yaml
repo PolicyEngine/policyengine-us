@@ -817,7 +817,7 @@ programs:
         variable: ri_liheap
         parameter_prefix: gov.states.ri.dhs.liheap
         verified_years: "2026"
-        notes: FY2026 regular heating only, with payments starting October 2025 and no modeled award for heat-in-rent households. Crisis, cooling and weatherization assistance are out of scope.
+        notes: FY2026 regular heating including heat-in-rent grants. Separate electric bills select secondary-electric grants; qualifying utility provider and grant receipt are assumed. Unpriced primary fuels and earlier backfilled years remain unverified. Crisis, cooling and weatherization assistance are out of scope.
       - state: DC
         status: complete
         name: DC LIHEAP

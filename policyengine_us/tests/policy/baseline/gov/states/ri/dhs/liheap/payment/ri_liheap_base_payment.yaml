@@ -141,10 +141,8 @@
   output:
     ri_liheap_base_payment: [509, 618, 657, 582]
 
-# Payment in_effect is false before October 1, 2025 because the FY2025 grant matrix was
-# not located, so the FY2026 band-1 amounts (oil 861, gas 582, electric 743) are not
-# backfilled into 2025.
-- name: Case 9, no primary payment is modeled before the FY2026 schedule.
+# Earlier backfilled amounts are unverified historical estimates.
+- name: Case 9, earlier years backfill the researched payment schedule as an estimate.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -156,4 +154,4 @@
     ri_liheap_household_size: [1, 1, 1]
     ri_liheap_income_band: [1, 1, 1]
   output:
-    ri_liheap_base_payment: [0, 0, 0]
+    ri_liheap_base_payment: [861, 582, 743]

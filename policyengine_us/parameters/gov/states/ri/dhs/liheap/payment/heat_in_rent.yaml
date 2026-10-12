@@ -1,0 +1,17 @@
+description: Rhode Island provides these regular heating grants for heat-in-rent households under the Low Income Home Energy Assistance Program.
+
+direct:
+  2025-10-01: 400
+secondary_electric:
+  2025-10-01: 80
+subsidized_secondary_electric:
+  2025-10-01: 50
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Rhode Island LIHEAP heat-in-rent grant
+  propagate_metadata_to_children: true
+  reference:
+    - title: Rhode Island FY2026 Grant Amounts, heat-in-rent rows G-I
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf#page=1
