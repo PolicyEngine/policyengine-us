@@ -67,3 +67,20 @@ def _ssi_spouse_index(person, period):
     """The row of each person's co-resident spouse, or -1."""
     first, second = co_resident_parent_indices(person, period)
     return _ssi_established_spouse_indices(person, period, first, second)
+
+
+def _ssi_eligible_apart_from_means(person, period):
+    """Aged, blind or disabled and meeting SSI's citizenship condition.
+
+    416.1801(c) makes an eligible spouse someone 'who is eligible for SSI',
+    and 416.1160(d) makes an ineligible spouse one who 'is not eligible for
+    SSI benefits'. Couples are classified before the income and resource
+    tests, which depend on the classification, so this tests the conditions
+    that do not: aged, blind or disabled status, and citizenship or
+    qualified-noncitizen status (as is_ssi_eligible requires).
+    """
+    immigration_status = person("immigration_status", period)
+    is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
+    return person("is_ssi_aged_blind_disabled", period) & (
+        is_citizen | person("is_ssi_qualified_noncitizen", period)
+    )

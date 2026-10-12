@@ -10,6 +10,8 @@ class is_ssi_eligible_spouse(Variable):
     reference = "https://www.law.cornell.edu/uscode/text/42/1382c#b"
 
     def formula(person, period, parameters):
-        both_aged_blind_disabled = person("ssi_marital_both_eligible", period)
+        # Both members of a joint claim are eligible spouses. The member in
+        # the tax-unit spouse role carries this label and the other remains
+        # the eligible individual, so each couple keeps one of each.
         spouse = person("is_tax_unit_spouse", period)
-        return spouse & both_aged_blind_disabled
+        return spouse & person("ssi_claim_is_joint", period)
