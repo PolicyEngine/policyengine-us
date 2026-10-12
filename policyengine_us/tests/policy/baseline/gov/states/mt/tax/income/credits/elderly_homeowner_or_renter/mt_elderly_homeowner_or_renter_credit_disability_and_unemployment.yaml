@@ -273,7 +273,7 @@
     # is excluded from federal AGI, and his own gross income counts it in
     # full, so nothing more is added for it. Line 1 federal AGI 15_000; line
     # 7 the recovery rebate credit 1_800; line 8 his 4_000; line 10 = 20_800.
-    mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: [0, 0]
+    mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback: [0, 0]
     mt_elderly_homeowner_or_renter_credit_gross_household_income: [16_800, 4_000]
     # Line 12 = 14_500; line 13 = 0.05; line 14 = 725.
     mt_elderly_homeowner_or_renter_credit_net_household_income: [725, 0]
@@ -301,7 +301,7 @@
   output:
     # No exclusion in 2021. Line 1 federal AGI 25_000; line 7 the 2021
     # recovery rebate credit 1_400; line 10 = 26_400.
-    mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: 0
+    mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback: 0
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 26_400
     # Line 12 = 20_100; line 13 = 0.05; line 14 = 1_005.
     mt_elderly_homeowner_or_renter_credit_net_household_income: 1_005

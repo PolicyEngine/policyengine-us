@@ -1,12 +1,10 @@
 from policyengine_us.model_api import *
 
 
-class mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation(
-    Variable
-):
+class mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback(Variable):
     value_type = float
     entity = Person
-    label = "Montana elderly homeowner/renter credit unemployment compensation outside federal AGI"
+    label = "Montana elderly homeowner/renter credit unemployment compensation add-back"
     documentation = (
         "Unemployment compensation a household member received that neither "
         "federal adjusted gross income nor a dependent's own gross income "

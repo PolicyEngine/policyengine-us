@@ -75,12 +75,12 @@ values:
     # leaves them out of federal AGI (irs_gross_income) and
     # dependent_gross_income, so all of them count here, once.
     - disability_benefits
-    # Unemployment compensation outside federal AGI, such as the 2020 IRC
-    # 85(c) exclusion (2020 line 8, "all items of income ... not reported on
-    # lines 1 through 7"; 2014-2017 worksheets, "Alimony, cash public
-    # assistance, unemployment"; Schedule 2EC line 14 from 2024, the total
-    # received).
-    - mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation
+    # Unemployment compensation that neither federal AGI nor a dependent's
+    # own gross income counts, such as the 2020 IRC 85(c) exclusion (2020
+    # line 8, "all items of income ... not reported on lines 1 through 7";
+    # 2014-2017 worksheets, "Alimony, cash public assistance,
+    # unemployment"; Schedule 2EC line 14 from 2024, the total received).
+    - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
     # Refundable credits received (2023 schedule line 7, Schedule 2EC line 8
     # from 2024): Montana's refundable credits other than this credit,
     # and this credit as received during the year (ARM 42.4.301(2)(c)).
@@ -103,7 +103,7 @@ values:
     - workers_compensation
     - gi_cash_assistance
     - disability_benefits
-    - mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation
+    - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
     - mt_refundable_credits_before_renter_credit
     - mt_elderly_homeowner_or_renter_credit_received
     - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
@@ -125,7 +125,7 @@ values:
     - workers_compensation
     - gi_cash_assistance
     - disability_benefits
-    - mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation
+    - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
     - mt_refundable_credits_before_renter_credit
     - mt_elderly_homeowner_or_renter_credit_received
     - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
