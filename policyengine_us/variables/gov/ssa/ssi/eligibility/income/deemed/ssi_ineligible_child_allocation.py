@@ -40,8 +40,12 @@ class ssi_ineligible_child_allocation(Variable):
         # exclusion applies month by month until its yearly limit is used
         # up (POMS SI 00820.510), and each month's allocation is floored at
         # zero, so income left over in one month never reduces another's.
-        monthly_earned = person("ssi_earned_income", period) / MONTHS_IN_YEAR
-        monthly_unearned = person("ssi_unearned_income", period) / MONTHS_IN_YEAR
+        # The child's income only reduces the allocation: a net loss is no
+        # income, so it never raises the allocation above (b)(1).
+        monthly_earned = max_(0, person("ssi_earned_income", period)) / MONTHS_IN_YEAR
+        monthly_unearned = (
+            max_(0, person("ssi_unearned_income", period)) / MONTHS_IN_YEAR
+        )
         exclusion_left = where(is_student, student.cap, 0)
         total = np.zeros(person.count)
         for _ in range(MONTHS_IN_YEAR):

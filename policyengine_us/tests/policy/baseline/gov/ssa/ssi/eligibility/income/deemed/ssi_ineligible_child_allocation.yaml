@@ -67,3 +67,25 @@
     employment_income: 300 * 12
   output:
     ssi_ineligible_child_allocation: 2_364 # 5,964 - 3,600
+
+- name: A child's net business loss does not raise the allocation
+  # 416.1163(b)(1)-(2): the allocation is the couple rate less the
+  # individual rate, reduced by the child's income. A loss is no income.
+  period: 2026
+  input:
+    age: 17
+    is_in_k12_school: false
+    ssi_earned_income: -20_000
+  output:
+    ssi_ineligible_child_allocation: 5_964 # $497 * 12
+
+- name: Negative unearned income neither raises the allocation nor offsets wages
+  # $300 a month of wages reduce it; the -$250 a month does not.
+  period: 2026
+  input:
+    age: 17
+    is_in_k12_school: false
+    ssi_earned_income: 300 * 12
+    ssi_unearned_income: -3_000
+  output:
+    ssi_ineligible_child_allocation: 2_364 # 5,964 - 3,600

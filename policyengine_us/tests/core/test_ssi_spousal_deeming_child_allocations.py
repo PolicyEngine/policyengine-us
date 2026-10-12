@@ -26,8 +26,8 @@ on everyone, no one or some people) and checks:
 
 A second test checks each child's own allocation against a month-by-month
 oracle of 416.1163(b)(1)-(2) and 416.1161(c): the student earned income
-exclusion runs month by month until its yearly limit is used up, and each
-month's allocation is floored at zero. It also checks the bounds and that
+exclusion runs month by month until its yearly limit is used up, each
+month's allocation is floored at zero, and a loss counts as no income. It also checks the bounds and that
 more income never raises an allocation.
 
 YAML covers the worked cases. This file routes to the Rest/core group.
@@ -372,8 +372,10 @@ CHILD = st.fixed_dictionaries(
         "age": st.integers(0, 23),
         "in_school": st.booleans(),
         "in_college": st.booleans(),
-        "monthly_earned": st.sampled_from((0, 300, 497, 800, 1_000, 2_410, 2_600)),
-        "monthly_unearned": st.sampled_from((0, 100, 497, 600)),
+        "monthly_earned": st.sampled_from(
+            (-1_500, 0, 300, 497, 800, 1_000, 2_410, 2_600)
+        ),
+        "monthly_unearned": st.sampled_from((-250, 0, 100, 497, 600)),
         "public_income_maintenance": st.sampled_from((False, False, False, True)),
     }
 )
@@ -414,11 +416,15 @@ def _monthly_allocation_oracle(child):
     if not is_child or child["public_income_maintenance"]:
         return 0
     left = STUDENT_YEARLY_EXCLUSION if student and child["age"] < STUDENT_AGE else 0
+    # A loss is no income: it neither raises the allocation nor offsets other
+    # income.
+    earned = max(0, child["monthly_earned"])
+    unearned = max(0, child["monthly_unearned"])
     total = 0
     for _ in range(12):
-        exclusion = min(STUDENT_MONTHLY_EXCLUSION, child["monthly_earned"], left)
+        exclusion = min(STUDENT_MONTHLY_EXCLUSION, earned, left)
         left -= exclusion
-        income = child["monthly_earned"] - exclusion + child["monthly_unearned"]
+        income = earned - exclusion + unearned
         total += max(0, MONTHLY_ALLOCATION - income)
     return total
 
