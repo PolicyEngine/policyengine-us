@@ -53,16 +53,41 @@ def ssi_ineligible_parents(person, period, with_spouses=True):
     return rows, ineligible, pool
 
 
+def _spouse_elsewhere(person):
+    """Each person's spouse who lives in another household, or -1.
+
+    A two-person marital unit whose members live in different households
+    marks a spouse who lives elsewhere (416.1806 recognizes a marriage
+    wherever the spouses live). When the simulation has a single marital
+    unit, which may be the default group of a situation that omits marital
+    units, no one is treated as such a spouse.
+    """
+    own_index = np.arange(person.count)
+    couple = (person.marital_unit.nb_persons() == 2) & (person.marital_unit.count > 1)
+    partner = np.full(person.count, -1, dtype=int)
+    for member in group_member_indices(person.marital_unit):
+        partner = np.where(
+            couple & (member >= 0) & (member != own_index), member, partner
+        )
+    households = person.household.reference_entity.members_entity_id
+    return np.where(
+        (partner >= 0) & (households[np.maximum(partner, 0)] != households),
+        partner,
+        -1,
+    )
+
+
 def ssi_parental_deeming_child(person, period, ineligible, ssi_status=True):
     """Whether parental deeming applies to each person as an eligible child.
 
     POMS SI 01310.115 A.2: 'a natural or adopted child under age 18 who lives
     in a household with one or both parents, is not married, and is eligible
-    for SSI'. 416.1856 also excludes the head of a household. Marriage uses
-    the spouse test of SSI resource deeming. Eligibility is the SSI status
-    condition: aged, blind or disabled and a citizen or qualified noncitizen.
-    Without ssi_status, as for Medicaid, which applies its own immigration
-    rules, being aged, blind or disabled suffices.
+    for SSI'. 416.1856 also excludes the head of a household. A child is
+    married when the spouse test of SSI resource deeming finds a co-resident
+    spouse or when their spouse lives elsewhere. Eligibility is the SSI
+    status condition: aged, blind or disabled and a citizen or qualified
+    noncitizen. Without ssi_status, as for Medicaid, which applies its own
+    immigration rules, being aged, blind or disabled suffices.
     """
     status = (
         ssi_meets_eligibility_status(person, period)
@@ -73,32 +98,15 @@ def ssi_parental_deeming_child(person, period, ineligible, ssi_status=True):
         person("is_child", period)
         & status
         & (_ssi_spouse_index(person, period) < 0)
+        & (_spouse_elsewhere(person) < 0)
         & ~person("is_household_head", period)
         & np.any(ineligible, axis=1)
     )
 
 
-def _absent_spouses(person, period, rows):
-    """The spouse, living elsewhere, of each of a person's parents (rows).
-
-    A two-person marital unit whose members live in different households
-    marks a spouse who lives elsewhere. When the simulation has a single
-    marital unit, which may be the default group of a situation that omits
-    marital units, no one is treated as such a spouse.
-    """
-    own_index = np.arange(person.count)
-    couple = (person.marital_unit.nb_persons() == 2) & (person.marital_unit.count > 1)
-    partner = np.full(person.count, -1, dtype=int)
-    for member in group_member_indices(person.marital_unit):
-        partner = np.where(
-            couple & (member >= 0) & (member != own_index), member, partner
-        )
-    households = person.household.reference_entity.members_entity_id
-    absent = np.where(
-        (partner >= 0) & (households[np.maximum(partner, 0)] != households),
-        partner,
-        -1,
-    )
+def _absent_spouses(person, rows):
+    """The spouse, living elsewhere, of each of a person's parents (rows)."""
+    absent = _spouse_elsewhere(person)
     return np.where(rows >= 0, absent[np.maximum(rows, 0)], -1)
 
 
@@ -122,10 +130,12 @@ def ssi_parental_deeming_child_allocation_total(
     counts. A child with parent ids counts when an id names one of those
     people (an id that names no co-resident may name that absent spouse). A
     child without ids counts when they are in the tax unit of the person or
-    of one of those people; in a household with links, only when the
-    person, a parent or a parent's absent spouse is a parent some of whose
-    children no id names (the parent-link contract in _parent_links.py). The parents themselves
-    never count. every_minor (a bool or a per-person array) instead counts
+    of one of their co-resident parents or parents' spouses (in a household
+    with links, only when one of those is a parent some of whose children no
+    id names), or in the tax unit of such an absent spouse (in a household
+    with links, only when that spouse is a parent some of whose children no
+    id names), as the parent-link contract in _parent_links.py allows. The
+    parents themselves never count. every_minor (a bool or a per-person array) instead counts
     every co-resident child under 18 other than the person and their
     parents, as Missouri's MHDC budget does (DSS Manual 0805.020.15). People
     flagged in exclude never count.
@@ -150,14 +160,14 @@ def ssi_parental_deeming_child_allocation_total(
     relative_tax_units = np.where(present, tax_unit[safe_relatives], -1)
     # Spouses of the parents who live elsewhere, by person_id for children
     # whose ids name no co-resident, and by tax unit for the proxy.
-    absent = _absent_spouses(person, period, rows)
+    absent = _absent_spouses(person, rows)
     away = absent >= 0
     safe_absent = np.maximum(absent, 0)
-    may_presume = (
-        ~household_has_parent_ids(person, period)
-        | np.any(present & unlinked[safe_relatives], axis=1)
-        | np.any(away & unlinked[safe_absent], axis=1)
-    )
+    no_links = ~household_has_parent_ids(person, period)
+    may_presume = no_links | np.any(present & unlinked[safe_relatives], axis=1)
+    # An absent spouse lends only his own tax unit to the proxy, and in a
+    # household with links only when he is an unlinked parent.
+    absent_may_presume = away & (no_links[:, None] | unlinked[safe_absent])
     absent_ids = np.where(away, person("person_id", period)[safe_absent], 0)
     absent_tax_units = np.where(away, tax_unit[safe_absent], -1)
     parent_1 = person("parent_1_id", period)
@@ -187,9 +197,11 @@ def ssi_parental_deeming_child_allocation_total(
             ),
             axis=1,
         )
-        presumed = may_presume & (
-            np.any(present & (relative_tax_units == tax_unit[safe][:, None]), axis=1)
-            | np.any(away & (absent_tax_units == tax_unit[safe][:, None]), axis=1)
+        presumed = (
+            may_presume
+            & np.any(present & (relative_tax_units == tax_unit[safe][:, None]), axis=1)
+        ) | np.any(
+            absent_may_presume & (absent_tax_units == tax_unit[safe][:, None]), axis=1
         )
         is_parent = np.any(present & (relatives == child[:, None]), axis=1)
         counts = (

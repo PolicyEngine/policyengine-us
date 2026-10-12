@@ -1151,3 +1151,113 @@
   output:
     ssi_parental_deeming_child_allocations: [0, 5_796, 0, 0]
     ssi_unearned_income_deemed_from_ineligible_parent: [0, 8_988, 0, 0] # $749 x 12
+
+- name: An absent stepfather lends the proxy only his own tax unit
+  # As above, with an aunt and her son, who has no ids, at home; the mother
+  # claims the cousin. The stepfather being a parent lets the proxy presume
+  # his tax unit's child is his, not the cousin in the mother's tax unit
+  # (416.1160(d) does not reach cousins). $4,000 - $483 = $3,517; - $85 =
+  # $3,432; half = $1,716; less $967 = $749 deemed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 38
+        person_id: 1
+        own_children_in_household: 1
+        ssi_earned_income: 4_000 * 12
+      daughter:
+        age: 10
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+      stepson:
+        age: 12
+        person_id: 3
+      aunt:
+        age: 35
+        person_id: 5
+      cousin:
+        age: 8
+        person_id: 6
+      stepfather:
+        age: 40
+        person_id: 4
+        is_parent: true
+    tax_units:
+      mother:
+        members: [mother, daughter, cousin]
+      aunt:
+        members: [aunt]
+      stepfather:
+        members: [stepfather, stepson]
+    marital_units:
+      couple:
+        members: [mother, stepfather]
+      daughter_alone:
+        members: [daughter]
+      stepson_alone:
+        members: [stepson]
+      aunt_alone:
+        members: [aunt]
+      cousin_alone:
+        members: [cousin]
+    households:
+      home:
+        members: [mother, daughter, stepson, aunt, cousin]
+        state_code: TX
+      elsewhere:
+        members: [stepfather]
+        state_code: TX
+  output:
+    ssi_parental_deeming_child_allocations: [0, 5_796, 0, 0, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 8_988, 0, 0, 0, 0] # $749 x 12
+
+- name: A 17-year-old married to a husband who lives elsewhere is not a child for parental deeming
+  # 416.1856(b): a child is 'not married'; 416.1806 recognizes the marriage
+  # wherever the spouses live. Her brother is the only eligible child.
+  # $4,000 - $85 = $3,915; half = $1,957.50; less $967 = $990.50 deemed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 42
+        person_id: 1
+        ssi_earned_income: 4_000 * 12
+      daughter:
+        age: 17
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+      son:
+        age: 9
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+      husband:
+        age: 19
+        person_id: 4
+    tax_units:
+      mother:
+        members: [mother, daughter, son]
+      husband:
+        members: [husband]
+    marital_units:
+      mother_alone:
+        members: [mother]
+      couple:
+        members: [daughter, husband]
+      son_alone:
+        members: [son]
+    households:
+      home:
+        members: [mother, daughter, son]
+        state_code: TX
+      elsewhere:
+        members: [husband]
+        state_code: TX
+  output:
+    is_ssi_income_deeming_child: [false, false, true, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 11_886, 0] # $990.50 x 12

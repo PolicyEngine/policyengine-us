@@ -535,8 +535,15 @@ def _oracle(facts, medicaid=False):
             for p in parents
             if facts[p]["spouse"] and not co_resident(p, facts[p]["spouse"])
         }
-        presume = not household_linked(person) or any(map(unlinked, relatives | absent))
-        units = {facts[r]["tax_unit_key"] for r in relatives | absent}
+        presume = not household_linked(person) or any(map(unlinked, relatives))
+        units = {facts[r]["tax_unit_key"] for r in relatives}
+        # An absent spouse lends only his own tax unit, and in a household
+        # with links only when he is an unlinked parent.
+        absent_units = {
+            facts[a]["tax_unit_key"]
+            for a in absent
+            if not household_linked(person) or unlinked(a)
+        }
         found = set()
         for other in names:
             if other == person or other in parents or not co_resident(other, person):
@@ -548,7 +555,8 @@ def _oracle(facts, medicaid=False):
                     set(facts[other]["parents"]) & absent
                 )
             else:
-                counts = presume and facts[other]["tax_unit_key"] in units
+                unit = facts[other]["tax_unit_key"]
+                counts = (presume and unit in units) or unit in absent_units
             if counts:
                 found.add(other)
         return found
