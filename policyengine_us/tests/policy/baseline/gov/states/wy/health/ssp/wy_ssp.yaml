@@ -1,0 +1,84 @@
+# Wyoming EOM M1804: $20 monthly, with SSI as the sole income source.
+- name: Case 1, aged recipient with only SSI.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+  output:
+    ssi: 994
+    wy_ssp: 20
+
+- name: Case 2, income excluded from federal SSI still defeats the sole income rule.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+    social_security_retirement: 120
+  output:
+    ssi: 994
+    wy_ssp: 0
+
+- name: Case 3, excluded earnings still defeat the sole income rule.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+    employment_income: 120
+  output:
+    ssi: 994
+    wy_ssp: 0
+
+- name: Case 4, no SSI receipt.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+    takes_up_ssi_if_eligible: false
+  output:
+    wy_ssp: 0
+
+- name: Case 5, outside Wyoming.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+  output:
+    wy_ssp: 0
+
+- name: Case 6, institutional SSI also qualifies.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ssi: 30
+    wy_ssp: 20
+
+- name: Case 7, losses cannot offset other income for sole source eligibility.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+    self_employment_income: -12_000
+    social_security_retirement: 120
+  output:
+    wy_ssp: 0
+
+- name: Case 8, a disabled child may qualify.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 12
+    meets_ssi_disability_criteria: true
+  output:
+    wy_ssp: 20
+
+- name: Case 9, annual total includes twelve payments.
+  period: 2026
+  input:
+    state_code: WY
+    age: 65
+  output:
+    wy_ssp: 240

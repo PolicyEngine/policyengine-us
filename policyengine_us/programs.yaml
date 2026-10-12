@@ -1090,6 +1090,17 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: WY
+        status: partial
+        name: Wyoming SSP
+        full_name: Wyoming State Supplemental Payment
+        variable: wy_ssp
+        parameter_prefix: gov.states.wy.health.ssp
+        verified_years: "2026"
+        notes: >-
+          Models the flat payment and sole-income test using the model's SSI
+          cash-income sources. Noncash support and income sources absent from
+          the federal SSI income model are not separately evaluated.
 
   - id: social_security
     name: Social Security
