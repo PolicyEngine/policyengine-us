@@ -40,7 +40,7 @@ any mix of age, blindness, claimability, wages, self-employment income or
 loss, interest and dividends) and runs each batch, with four variants of every
 unit, as one simulation for 2025 and 2026. Every batch starts with two fixed
 units, one that must file and one that need not, so that each property below
-has rows to check and both answers occur; the test asserts that it does.
+has rows to check and the batch holds both answers; the test asserts both.
 
 5. Split invariance: moving a filer's wages into interest, or interest into
    wages, never changes the result for a tax unit whose head and spouse cannot
@@ -48,8 +48,8 @@ has rows to check and both answers occur; the test asserts that it does.
 6. Monotonicity: more wages, interest or self-employment profit never turns
    "required" into "not required", for any tax unit.
 7. Claimability never removes the requirement: marking the head as claimable
-   never turns "required" into "not required" (filers who are not blind; see
-   below).
+   never turns "required" into "not required" (filers who are not blind and
+   do not file separately; see below).
 8. A tax unit dependent's wages and interest never change the result: that
    income belongs on the dependent's own return.
 9. Table 2 and the Medicaid implementation, as in 1 and 2, on the drawn
@@ -78,7 +78,10 @@ Intended exceptions, each from the law rather than the code:
   not (only age), while Table 2 does, so on the charts a blind filer under 65
   with wages between the two amounts must file only if nobody can claim them.
   The property holds in the model today, and leaving blind filers out keeps it
-  true under either reading.
+  true under either reading. It also leaves out separate filers: Table 2 lets
+  a claimable married dependent filing separately skip a return unless the
+  spouse itemizes, while sections 6012(f) and (a)(1) require one with any
+  gross income (decision d1395).
 - Properties 1, 2 and 9 use wages as the only earned income. Earned income for
   the limited deduction is net of the deductible part of self-employment tax
   on the IRS worksheet, which Table 2 does not spell out.
@@ -448,6 +451,9 @@ def test_filing_requirement_properties(anchors, drawn):
             for unit in units
         ]
     ).reshape(-1, len(VARIANTS))
+    separate = np.array(
+        [unit["filing_status"] == "SEPARATE" for unit in units]
+    ).reshape(-1, len(VARIANTS))
     anyone_blind = np.array(
         [any(adult["is_blind"] for adult in unit["adults"]) for unit in units]
     ).reshape(-1, len(VARIANTS))
@@ -478,7 +484,7 @@ def test_filing_requirement_properties(anchors, drawn):
         )
         assert required["base"].any() and not required["base"].all()
         # Property 7.
-        sighted = ~anyone_blind[:, 0]
+        sighted = ~anyone_blind[:, 0] & ~separate[:, 0]
         assert not (required["base"] & ~required["claimed"])[sighted].any(), (
             f"{year}: being claimable ended the requirement"
         )
