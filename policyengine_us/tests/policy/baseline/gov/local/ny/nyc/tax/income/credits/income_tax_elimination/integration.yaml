@@ -1,0 +1,417 @@
+# NYC income tax elimination credit (Tax Law § 1310(h); 2025 Form IT-270;
+# Form IT-201 line 70a): full-household integration tests from raw inputs.
+#
+# Every expected value was derived by hand from the 2025 forms before the model
+# was run:
+# - Form IT-201 / IT-201-I (2025): line 34 NY standard deduction (head of
+#   household $11,200, married filing jointly $16,050); line 36 dependent
+#   exemption $1,000 per dependent; line 47 NYC taxable income = line 38;
+#   line 47a NYC resident tax; line 48 NYC household credit (table 5); line 54
+#   = line 52 - line 53; line 69 / 69a NYC school tax credit (fixed and rate
+#   reduction amounts, Tax Law § 606(ggg)); line 70 NYC EIC; line 70a this credit.
+# - Form IT-215-I (2025) NYC EIC rate table: NYAGI $17,500-$20,000 = .20,
+#   $22,500-$40,000 = .15, over $42,500 = .10 (all cases sit in flat bands).
+# - Federal EITC 2025 (Rev. Proc. 2024-40): max $4,328 / $7,152 / $8,046 for
+#   1 / 2 / 3+ children; phase-in 34% / 40% / 45%; phase-out 15.98% / 21.06% /
+#   21.06% from $23,350 ($30,470 joint); investment income limit $11,950.
+# - Form IT-270 (2025) Part 1 lines A-E and Part 2 lines 1-11.
+#
+# Conventions (PolicyEngine, not the paper forms):
+# - Federal EITC is computed by formula, not from the IRS EIC table's $50
+#   income brackets, so it can differ from the table by a few dollars.
+# - NYC tax (line 47a) is computed from the NYC rate schedule with exact
+#   bracket bases (e.g. 3.078% x $14,400 = $443.232 for head of household),
+#   not from the NYC tax table that IT-201-I directs filers to use below
+#   $65,000 of NYC taxable income. All cases stay below $65,000, so the
+#   schedule's rounded bases for $65,000 and over (e.g. "$443 plus") never
+#   apply.
+# - No case claims the NYC child and dependent care credit (no childcare
+#   expenses), so IT-270 line 7 is 0 throughout.
+# - nyc_income_tax = line 54 - (NYC CDCC + NYC EIC + NYC school tax credit
+#   + this credit), the model's NYC refundable credit list for 2025.
+#
+# Set-aside assertions (pre-existing model component, not this credit):
+# Tax Law § 606(ggg)(4-b) and the IT-201-I line 69a worksheets give the NYC
+# school tax credit rate reduction amount as "$25 plus 0.228% of the excess
+# over $14,400" (head of household), "$37 plus ... over $21,600" (joint) and
+# "$21 plus ... over $12,000" (single/separate). The model's
+# school/rate_reduction/amount parameters are plain marginal schedules, so the
+# base is 0.171% x 14,400 = 24.624 (joint 36.936, single 20.52). Once city
+# taxable income passes the first bracket, the model's school tax credit, and
+# so nyc_income_tax, differ from the forms by 0.376 (head of household) or
+# 0.064 (joint). In Cases 1, 2, 3, 5 and 6 the nyc_school_tax_credit and
+# nyc_income_tax assertions are commented out with their form values. The
+# elimination credit does not use the school tax credit (IT-270 lines 6-10),
+# so every credit assertion stays active. Case 4 (city taxable income below
+# $14,400) asserts both.
+
+- name: Case 1, head of household with two children below the threshold gets the full credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000
+      person2:
+        age: 10
+      person3:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+        in_nyc: true
+  output:
+    # IT-201 line 19: federal AGI = wages = 36,000.
+    adjusted_gross_income: 36_000
+    # Line 33 NYAGI = 36,000; line 34 HOH standard deduction 11,200;
+    # line 35 = 24,800; line 36 = 2 x 1,000 = 2,000;
+    # line 37 = 38 = 47 = 22,800.
+    nyc_taxable_income: 22_800
+    # Line 47a, HOH schedule: 3.078% x 14,400 = 443.232
+    # + 3.762% x (22,800 - 14,400 = 8,400) = 316.008 -> 759.24.
+    nyc_income_tax_before_credits: 759.24
+    # Line 48: FAGI 36,000 is over 22,500 -> no household credit.
+    nyc_household_credit: 0
+    # Lines 49-54: 759.24 - 0 = 759.24 (no other NYC taxes or nonrefundable
+    # credits).
+    nyc_income_tax_before_refundable_credits: 759.24
+    # Federal EITC, 2 children: 40% x 17,880 = 7,152 (maximum);
+    # 7,152 - 21.06% x (36,000 - 23,350 = 12,650) = 7,152 - 2,664.09
+    # = 4,487.91 (formula, not the IRS EIC table).
+    eitc: 4_487.91
+    # IT-215: NYAGI 36,000 in $22,500-$40,000 -> .15;
+    # 0.15 x 4,487.91 = 673.1865.
+    nyc_eitc: 673.1865
+    nyc_cdcc: 0
+    # IT-270 line 2: HOH, 2 dependents -> 36,824.
+    nyc_income_tax_elimination_credit_income_threshold: 36_824
+    # Part 1: A yes (2 dependents); B no (line 54 = 759.24); C no
+    # (36,000 <= 36,824 + 5,000); D no (no investment income); E no.
+    nyc_income_tax_elimination_credit_eligible: true
+    # Part 2: line 1 = 36,000; line 2 = 36,824; line 3 = 0 (line 1 <= line 2);
+    # line 4 = 5,000; line 5 = 1.0000; line 6 = 759.24; line 7 = 0;
+    # line 8 = 673.1865; line 9 = 673.1865; line 10 = 86.0535;
+    # line 11 = 86.0535 x 1.0000 = 86.0535.
+    nyc_income_tax_elimination_credit: 86.0535
+    # IT-201 line 69: fixed $63 (HOH, income <= 250,000).
+    # Line 69a: HOH, city taxable income 22,800 over 14,400:
+    # $25 + 0.228% x 8,400 = 25 + 19.152 = 44.152 (Tax Law § 606(ggg)(4-b)(B)).
+    # Total = 63 + 44.152 = 107.152.
+    # Set aside (see header; the model's base is 24.624, not $25):
+    # nyc_school_tax_credit: 107.152
+    # 759.24 - (0 + 673.1865 + 107.152 + 86.0535) = 759.24 - 866.392
+    # = -107.152: the credit zeroes the NYC tax, leaving only the school
+    # tax credit refund. Set aside with the school tax credit:
+    # nyc_income_tax: -107.152
+
+- name: Case 2, head of household with two children inside the $5,000 band gets a partial credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 39_000
+      person2:
+        age: 10
+      person3:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+        in_nyc: true
+  output:
+    # IT-201 line 19 = 39,000.
+    adjusted_gross_income: 39_000
+    # Line 47 = 39,000 - 11,200 - 2 x 1,000 = 25,800.
+    nyc_taxable_income: 25_800
+    # Line 47a, HOH: 443.232 + 3.762% x (25,800 - 14,400 = 11,400) = 428.868
+    # -> 872.10.
+    nyc_income_tax_before_credits: 872.10
+    # Line 48: FAGI over 22,500 -> 0.
+    nyc_household_credit: 0
+    # Line 54 = 872.10.
+    nyc_income_tax_before_refundable_credits: 872.10
+    # Federal EITC, 2 children: 7,152 - 21.06% x (39,000 - 23,350 = 15,650)
+    # = 7,152 - 3,295.89 = 3,856.11.
+    eitc: 3_856.11
+    # IT-215: NYAGI 39,000 in $22,500-$40,000 -> .15; 0.15 x 3,856.11
+    # = 578.4165.
+    nyc_eitc: 578.4165
+    nyc_cdcc: 0
+    # IT-270 line 2: HOH, 2 dependents -> 36,824.
+    nyc_income_tax_elimination_credit_income_threshold: 36_824
+    # Line C: 39,000 - 36,824 = 2,176, not more than 5,000 -> eligible.
+    nyc_income_tax_elimination_credit_eligible: true
+    # Part 2: line 3 = 39,000 - 36,824 = 2,176; line 4 = 5,000 - 2,176
+    # = 2,824; line 5 = 2,824 / 5,000 = 0.5648; line 6 = 872.10;
+    # line 8 = 578.4165; line 10 = 872.10 - 578.4165 = 293.6835;
+    # line 11 = 293.6835 x 0.5648 = 165.8724408.
+    nyc_income_tax_elimination_credit: 165.8724408
+    # Line 69 fixed $63; line 69a HOH: 25 + 0.228% x 11,400 = 25 + 25.992
+    # = 50.992; total 113.992.
+    # Set aside (see header; the model's base is 24.624, not $25):
+    # nyc_school_tax_credit: 113.992
+    # 872.10 - (0 + 578.4165 + 113.992 + 165.8724408) = 872.10 - 858.2809408
+    # = 13.8190592. Set aside with the school tax credit:
+    # nyc_income_tax: 13.8190592
+
+- name: Case 3, married couple with three children one dollar above the threshold plus $5,000 gets no credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 59_546
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 9
+      person5:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: NY
+        in_nyc: true
+  output:
+    # IT-201 line 19 = 59,546.
+    adjusted_gross_income: 59_546
+    # Line 34 MFJ standard deduction 16,050; line 36 = 3 x 1,000 = 3,000;
+    # line 47 = 59,546 - 16,050 - 3,000 = 40,496.
+    nyc_taxable_income: 40_496
+    # Line 47a, MFJ schedule: 3.078% x 21,600 = 664.848
+    # + 3.762% x (40,496 - 21,600 = 18,896) = 710.86752 -> 1,375.71552.
+    nyc_income_tax_before_credits: 1_375.71552
+    # Line 48: FAGI over 22,500 -> 0.
+    nyc_household_credit: 0
+    # Line 54 = 1,375.71552.
+    nyc_income_tax_before_refundable_credits: 1_375.71552
+    # Federal EITC, 3 children, joint: 45% x 17,880 = 8,046 (maximum);
+    # phase-out from 23,350 + 7,120 = 30,470:
+    # 8,046 - 21.06% x (59,546 - 30,470 = 29,076) = 8,046 - 6,123.4056
+    # = 1,922.5944.
+    eitc: 1_922.5944
+    # IT-215: NYAGI 59,546 over 42,500 -> .10; 0.10 x 1,922.5944 = 192.25944.
+    nyc_eitc: 192.25944
+    nyc_cdcc: 0
+    # IT-270 line 2: MFJ, 3 dependents -> 54,545.
+    nyc_income_tax_elimination_credit_income_threshold: 54_545
+    # Line C / Part 2 line 3: 59,546 - 54,545 = 5,001, more than 5,000
+    # -> does not qualify.
+    nyc_income_tax_elimination_credit_eligible: false
+    nyc_income_tax_elimination_credit: 0
+    # Line 69 fixed $125 (MFJ); line 69a MFJ: $37 + 0.228% x 18,896
+    # = 37 + 43.08288 = 80.08288 (Tax Law § 606(ggg)(4-b)(A));
+    # total 205.08288.
+    # Set aside (see header; the model's base is 36.936, not $37):
+    # nyc_school_tax_credit: 205.08288
+    # 1,375.71552 - (0 + 192.25944 + 205.08288 + 0) = 978.3732.
+    # Set aside with the school tax credit:
+    # nyc_income_tax: 978.3732
+
+- name: Case 4, head of household with one child whose NYC EIC exceeds line 54 gets no credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 19_000
+      person2:
+        age: 6
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+        in_nyc: true
+  output:
+    # IT-201 line 19 = 19,000.
+    adjusted_gross_income: 19_000
+    # Line 47 = 19,000 - 11,200 - 1 x 1,000 = 6,800.
+    nyc_taxable_income: 6_800
+    # Line 47a, HOH: 3.078% x 6,800 = 209.304.
+    nyc_income_tax_before_credits: 209.304
+    # Line 48, table 5 (HOH): FAGI over 17,500 but not over 20,000;
+    # 1 dependent + 1 for you = 2 -> $30.
+    nyc_household_credit: 30
+    # Line 49 = 209.304 - 30 = 179.304 = line 54.
+    nyc_income_tax_before_refundable_credits: 179.304
+    # Federal EITC, 1 child: 34% x 12,730 = 4,328 (maximum; earnings 19,000
+    # exceed 12,730); AGI 19,000 is below the 23,350 phase-out start -> 4,328.
+    eitc: 4_328
+    # IT-215: NYAGI 19,000 in $17,500-$20,000 -> .20; 0.20 x 4,328 = 865.60.
+    nyc_eitc: 865.60
+    nyc_cdcc: 0
+    # IT-270 line 2: HOH, 1 dependent -> 31,503.
+    nyc_income_tax_elimination_credit_income_threshold: 31_503
+    # Part 1 lines A-E pass (19,000 <= 31,503 + 5,000).
+    nyc_income_tax_elimination_credit_eligible: true
+    # Part 2: line 5 = 1.0000; line 10 = 179.304 - (0 + 865.60) = -686.296,
+    # 0 or less -> no credit (IT-270-I, line 10).
+    nyc_income_tax_elimination_credit: 0
+    # Line 69 fixed $63; line 69a HOH, city taxable income 6,800 not over
+    # 14,400: 0.171% x 6,800 = 11.628; total 74.628.
+    nyc_school_tax_credit: 74.628
+    # 179.304 - (0 + 865.60 + 74.628 + 0) = -760.924.
+    nyc_income_tax: -760.924
+
+- name: Case 5, head of household with nine children uses the 8-or-more threshold and gets the full credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 85_000
+      person2:
+        age: 16
+      person3:
+        age: 15
+      person4:
+        age: 14
+      person5:
+        age: 13
+      person6:
+        age: 12
+      person7:
+        age: 11
+      person8:
+        age: 10
+      person9:
+        age: 9
+      person10:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: NY
+        in_nyc: true
+  output:
+    # IT-201 line 19 = 85,000.
+    adjusted_gross_income: 85_000
+    # Line 47 = 85,000 - 11,200 - 9 x 1,000 = 64,800 (below 65,000).
+    nyc_taxable_income: 64_800
+    # Line 47a, HOH: 443.232 + 3.762% x 15,600 = 586.872
+    # + 3.819% x 30,000 = 1,145.70 + 3.876% x (64,800 - 60,000 = 4,800)
+    # = 186.048 -> 2,361.852.
+    nyc_income_tax_before_credits: 2_361.852
+    nyc_household_credit: 0
+    # Line 54 = 2,361.852.
+    nyc_income_tax_before_refundable_credits: 2_361.852
+    # Federal EITC, 3+ children: fully phased out at
+    # 23,350 + 8,046 / 21.06% = about 61,555 < 85,000 -> 0.
+    eitc: 0
+    nyc_eitc: 0
+    nyc_cdcc: 0
+    # IT-270 line 2: HOH, 9 dependents -> "8 or more" row, 88,361.
+    # (The 7-dependent row, 74,565, would leave AGI 10,435 over the threshold
+    # and ineligible.)
+    nyc_income_tax_elimination_credit_income_threshold: 88_361
+    nyc_income_tax_elimination_credit_eligible: true
+    # Part 2: line 3 = 0 (85,000 <= 88,361); line 5 = 1.0000;
+    # line 10 = 2,361.852 - 0 = 2,361.852; line 11 = 2,361.852.
+    nyc_income_tax_elimination_credit: 2_361.852
+    # Line 69 fixed $63; line 69a HOH: 25 + 0.228% x (64,800 - 14,400
+    # = 50,400) = 25 + 114.912 = 139.912; total 202.912.
+    # Set aside (see header; the model's base is 24.624, not $25):
+    # nyc_school_tax_credit: 202.912
+    # 2,361.852 - (0 + 0 + 202.912 + 2,361.852) = -202.912.
+    # Set aside with the school tax credit:
+    # nyc_income_tax: -202.912
+
+- name: Case 6, head of household with $10,001 of interest income is ineligible despite positive line 10.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 25_000
+        taxable_interest_income: 10_001
+      person2:
+        age: 10
+      person3:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+        in_nyc: true
+  output:
+    # IT-201 line 19 = 25,000 wages + 10,001 taxable interest = 35,001.
+    adjusted_gross_income: 35_001
+    # Line 47 = 35,001 - 11,200 - 2 x 1,000 = 21,801.
+    nyc_taxable_income: 21_801
+    # Line 47a, HOH: 443.232 + 3.762% x (21,801 - 14,400 = 7,401) = 278.42562
+    # -> 721.65762.
+    nyc_income_tax_before_credits: 721.65762
+    nyc_household_credit: 0
+    # Line 54 = 721.65762.
+    nyc_income_tax_before_refundable_credits: 721.65762
+    # Federal EITC, 2 children: investment income 10,001 <= 11,950, so
+    # allowed. Earned income 25,000 >= 17,880 -> 7,152; phase-out on the
+    # greater of AGI (35,001) and earned income (25,000):
+    # 7,152 - 21.06% x (35,001 - 23,350 = 11,651) = 7,152 - 2,453.7006
+    # = 4,698.2994.
+    eitc: 4_698.2994
+    # IT-215: NYAGI 35,001 in $22,500-$40,000 -> .15; 0.15 x 4,698.2994
+    # = 704.74491.
+    nyc_eitc: 704.74491
+    nyc_cdcc: 0
+    # IT-270 line 2: HOH, 2 dependents -> 36,824 (AGI is below it).
+    nyc_income_tax_elimination_credit_income_threshold: 36_824
+    # Line D: investment income 10,001 is greater than 10,000 -> stop;
+    # does not qualify. (Line 10 would have been 721.65762 - 704.74491
+    # = 16.91271, so the investment test alone removes the credit.)
+    nyc_income_tax_elimination_credit_eligible: false
+    nyc_income_tax_elimination_credit: 0
+    # Line 69 fixed $63; line 69a HOH: 25 + 0.228% x 7,401 = 25 + 16.87428
+    # = 41.87428; total 104.87428.
+    # Set aside (see header; the model's base is 24.624, not $25):
+    # nyc_school_tax_credit: 104.87428
+    # 721.65762 - (0 + 704.74491 + 104.87428 + 0) = -87.96157.
+    # Set aside with the school tax credit:
+    # nyc_income_tax: -87.96157
