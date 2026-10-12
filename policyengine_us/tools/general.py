@@ -39,6 +39,46 @@ def has_input_for_period(simulation, variable, period):
     return False
 
 
+def earliest_input_year(simulation):
+    """The earliest year for which the simulation holds a supplied input.
+
+    Supplied inputs are the values ``set_input`` stored, from a dataset, a
+    situation, or a branch this simulation reads, and still stores. Core
+    records them apart from the values formulas calculate, so the answer does
+    not depend on what has been calculated. Inputs for an eternal variable
+    have no year and are skipped. Returns None when there are none.
+
+    Before this year every input reads as its default: a variable is carried
+    over or uprated only from a period it is known in, never back from a
+    later one.
+
+    Inputs of a variable the tax-benefit system no longer has, or has
+    neutralized, are skipped: they are never read. As with
+    ``has_input_for_period``, core versions before 3.32.27 can keep
+    an input key after the input is deleted, and a value recalculated for
+    that period then still counts. Formulas that read this cache their
+    result, so inputs set after they have run do not change it.
+    """
+    visible_branches = set(simulation._get_visible_branch_names())
+    variables = simulation.tax_benefit_system.variables
+    periods_by_variable = {}
+    for variable, branch_name, period in getattr(simulation, "_user_input_keys", ()):
+        if (
+            branch_name in visible_branches
+            and period.unit != ETERNITY
+            and variable in variables
+            and not variables[variable].is_neutralized
+        ):
+            periods_by_variable.setdefault(variable, set()).add((branch_name, period))
+    years = [
+        period.start.year
+        for variable, input_keys in periods_by_variable.items()
+        for branch_name, period in input_keys
+        & set(simulation.get_holder(variable).get_known_branch_periods())
+    ]
+    return min(years, default=None)
+
+
 def tax_unit_non_dep_sum(var, tax_unit, period):
     return tax_unit.sum(
         tax_unit.members(var, period)
