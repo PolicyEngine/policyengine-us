@@ -24,10 +24,13 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
     documentation = (
         "Parental income deemed to a disabled child under the SSI rules of "
         "20 CFR 416.1165, with the state's income disregards. The parents "
-        "and the ineligible children are those of SSI parental deeming. "
-        "Missouri deems only a natural or adoptive parent's income, never a "
-        "stepparent's, and allocates for every other child under 18 in the "
-        "home (DSS Manual 0805.020.15)."
+        "and the ineligible children are those of SSI parental deeming, "
+        "except that a disabled child need not meet the SSI citizenship or "
+        "qualified-noncitizen condition (Medicaid applies its own immigration "
+        "rules) and a disabled child who shares the deemed income takes no "
+        "allocation. Missouri deems only a natural or adoptive parent's "
+        "income, never a stepparent's, and allocates for every other child "
+        "under 18 in the home who is not applying (DSS Manual 0805.020.15)."
     )
     unit = USD
     definition_period = YEAR

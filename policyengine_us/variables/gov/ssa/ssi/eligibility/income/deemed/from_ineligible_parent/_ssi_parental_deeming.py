@@ -39,11 +39,17 @@ def ssi_ineligible_parents(person, period, with_spouses=True):
 
     Returns rows (the person's parents and parents' spouses, -1 padded), the
     mask of rows that are ineligible parents, and the pool of children who
-    share the same parents.
+    share the same parents. The tax-unit proxy keeps a person who is an
+    unlinked parent in their own set, so that siblings keep one pool, but a
+    person is never their own ineligible parent: deeming counts another
+    person's income (416.1160(a)).
     """
     rows, pool = ssi_parental_deemors(person, period, with_spouses)
     eligible = ssi_meets_eligibility_status(person, period)
-    ineligible = (rows >= 0) & ~eligible[np.maximum(rows, 0)]
+    own_index = np.arange(person.count)
+    ineligible = (
+        (rows >= 0) & (rows != own_index[:, None]) & ~eligible[np.maximum(rows, 0)]
+    )
     return rows, ineligible, pool
 
 
@@ -116,9 +122,9 @@ def ssi_parental_deeming_child_allocation_total(
     counts. A child with parent ids counts when an id names one of those
     people (an id that names no co-resident may name that absent spouse). A
     child without ids counts when they are in the tax unit of the person or
-    of one of those people; in a household with links, only when the person
-    or a co-resident parent is a parent some of whose children no id names
-    (the parent-link contract in _parent_links.py). The parents themselves
+    of one of those people; in a household with links, only when the
+    person, a parent or a parent's absent spouse is a parent some of whose
+    children no id names (the parent-link contract in _parent_links.py). The parents themselves
     never count. every_minor (a bool or a per-person array) instead counts
     every co-resident child under 18 other than the person and their
     parents, as Missouri's MHDC budget does (DSS Manual 0805.020.15). People
@@ -141,15 +147,17 @@ def ssi_parental_deeming_child_allocation_total(
     relatives = np.column_stack((own_index, rows))
     present = relatives >= 0
     safe_relatives = np.maximum(relatives, 0)
-    may_presume = ~household_has_parent_ids(person, period) | np.any(
-        present & unlinked[safe_relatives], axis=1
-    )
     relative_tax_units = np.where(present, tax_unit[safe_relatives], -1)
     # Spouses of the parents who live elsewhere, by person_id for children
     # whose ids name no co-resident, and by tax unit for the proxy.
     absent = _absent_spouses(person, period, rows)
     away = absent >= 0
     safe_absent = np.maximum(absent, 0)
+    may_presume = (
+        ~household_has_parent_ids(person, period)
+        | np.any(present & unlinked[safe_relatives], axis=1)
+        | np.any(away & unlinked[safe_absent], axis=1)
+    )
     absent_ids = np.where(away, person("person_id", period)[safe_absent], 0)
     absent_tax_units = np.where(away, tax_unit[safe_absent], -1)
     parent_1 = person("parent_1_id", period)
@@ -157,8 +165,13 @@ def ssi_parental_deeming_child_allocation_total(
     total = np.zeros(person.count)
     for child in household_member_indices(person):
         safe = np.maximum(child, 0)
+        # A second id that repeats the first is no second parent.
         unresolved_1 = np.where(first[safe] < 0, parent_1[safe], 0)
-        unresolved_2 = np.where(second[safe] < 0, parent_2[safe], 0)
+        unresolved_2 = np.where(
+            (second[safe] < 0) & (parent_2[safe] != parent_1[safe]),
+            parent_2[safe],
+            0,
+        )
         named = np.any(
             present
             & (

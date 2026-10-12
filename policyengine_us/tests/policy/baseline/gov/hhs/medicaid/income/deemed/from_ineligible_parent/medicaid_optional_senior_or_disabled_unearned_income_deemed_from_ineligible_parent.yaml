@@ -335,3 +335,43 @@
     # ($4,000 - $20 - $65) / 2 = $1,957.50, less $994 = $963.50 a month.
     medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 11_562]
     ssi_unearned_income_deemed_from_ineligible_parent: [0, 0]
+
+# Deeming counts another person's income (20 CFR 416.1160(a)). Without parent
+# ids, the tax-unit proxy keeps a teen mother in her own parent set; she
+# must still never deem her own income to herself.
+- name: Case 10, a disabled immigrant teen mother does not deem her own income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      father:
+        age: 45
+        own_children_in_household: 1
+        ssi_earned_income: 48_000
+      kay:
+        age: 16
+        is_ssi_disabled: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 0
+        own_children_in_household: 1
+        ssi_unearned_income: 3_600
+      baby:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [father, kay, baby]
+    marital_units:
+      father_alone:
+        members: [father]
+      kay_alone:
+        members: [kay]
+      baby_alone:
+        members: [baby]
+    households:
+      household:
+        members: [father, kay, baby]
+        state_code: DC
+  output:
+    # $4,000 - $497 for the baby = $3,503; - $85 = $3,418; half = $1,709;
+    # less $994 for one parent = $715 a month.
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 8_580, 0]

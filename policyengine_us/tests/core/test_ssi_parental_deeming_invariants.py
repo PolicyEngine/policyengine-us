@@ -24,10 +24,13 @@ the households are in Missouri, half in the District of Columbia. It checks:
    household/demographic/person/_parent_links.py, without the model. With
    ids the oracle is the regulation itself; without ids it is the documented
    tax-unit proxy.
-2. Medicaid: the Medicaid copy equals the same oracle, with Missouri's
-   natural-parent-only deemors and every-minor allocation (DSS Manual
-   0805.020.15) in Missouri, and the SSI rules in the District, whose $20
-   disregard and SSI-order exclusions make it equal the SSI variable.
+2. Medicaid: the Medicaid copy equals the oracle's Medicaid variant: a
+   disabled child need not meet the SSI immigration condition and takes no
+   allocation when they share the deemed income, and Missouri deems natural
+   or adoptive parents only and allocates for every minor (DSS Manual
+   0805.020.15). In the District, whose $20 disregard and SSI-order
+   exclusions match SSI's, it equals the SSI variable wherever everyone at
+   home is a citizen.
 3. Conservation: the shares deemed to the eligible children of one set of
    parents add up to the parents' net deemable income.
 4. Order: listing each household's people in reverse gives the same values.
@@ -525,7 +528,6 @@ def _oracle(facts, medicaid=False):
 
     def siblings(person, parents, every_minor):
         relatives = parents | {person}
-        presume = not household_linked(person) or any(map(unlinked, relatives))
         # The parents' spouses who live elsewhere: their children at home
         # are still allocated (POMS SI 00501.010 B.2.d).
         absent = {
@@ -533,6 +535,7 @@ def _oracle(facts, medicaid=False):
             for p in parents
             if facts[p]["spouse"] and not co_resident(p, facts[p]["spouse"])
         }
+        presume = not household_linked(person) or any(map(unlinked, relatives | absent))
         units = {facts[r]["tax_unit_key"] for r in relatives | absent}
         found = set()
         for other in names:
@@ -554,7 +557,7 @@ def _oracle(facts, medicaid=False):
     for person in names:
         missouri = medicaid and facts[person]["state"] == "MO"
         parents = deemors(person, with_spouses=not missouri)
-        ineligible = {p for p in parents if not eligible(p)}
+        ineligible = {p for p in parents if p != person and not eligible(p)}
         status = facts[person]["disabled"] if medicaid else eligible(person)
         applies = facts[person]["age"] < CHILD_AGE and status and bool(ineligible)
         rows[person] = dict(

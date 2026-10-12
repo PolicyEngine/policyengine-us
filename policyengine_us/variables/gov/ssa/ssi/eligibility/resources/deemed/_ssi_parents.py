@@ -20,8 +20,8 @@ def _ssi_unlinked_parental_deemors(person, period, spouse, with_spouses):
     parent from the child's parent: this is a data limitation. A person who
     is an unlinked parent is in their own set, as in the proxy sets of the
     siblings they share a tax unit with, so a teen parent and their brothers
-    and sisters keep one pool. Income deeming drops the person, whose SSI
-    eligibility makes them no ineligible parent.
+    and sisters keep one pool. Income deeming never counts the person as
+    their own ineligible parent.
     """
     unlinked = unlinked_parent(person, period)
     has_spouse = spouse >= 0
