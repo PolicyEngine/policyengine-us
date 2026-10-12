@@ -18,7 +18,7 @@ class lcbp_family_tier_multiplier(Variable):
         state_code = tax_unit.household("state_code", period)
         in_ny = state_code == state_code.possible_values.NY
 
-        return select(
+        base_multiplier = select(
             [
                 family_category == FamilyTierCategory.ONE_ADULT,
                 family_category == FamilyTierCategory.TWO_ADULTS,
@@ -53,3 +53,17 @@ class lcbp_family_tier_multiplier(Variable):
             ],
             default=0,
         )
+
+        person = tax_unit.members
+        pays_premium = person("pays_aca_premium", period)
+        dependent_child = person("is_aca_family_tier_dependent_child", period)
+        adult_count = tax_unit.sum(pays_premium & ~dependent_child)
+        extra_adults = max_(adult_count - 2, 0)
+        one_adult = where(in_ny, p.ny.ONE_ADULT, p.vt.ONE_ADULT)
+        age_29_child = person("is_aca_ny_age_29_dependent_child", period)
+        age_29_multiplier = where(
+            tax_unit.any(age_29_child),
+            parameters(period).gov.aca.ny_age_29_dependent_child_tier_multiplier,
+            1,
+        )
+        return base_multiplier * age_29_multiplier + extra_adults * one_adult

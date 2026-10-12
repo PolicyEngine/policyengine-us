@@ -2,11 +2,14 @@ description: Dallas Area Rapid Transit (DART) provides the Discount GoPass Progr
 values:
   2024-01-01:
     - chip
-    - medicaid
+    - medicaid_enrolled
     - is_medicare_eligible # medicare
     - wic
+    - receives_wic # Reported WIC receipt, for people the model gives a $0 benefit.
     - snap
+    - receives_snap # Reported SNAP receipt, for households the model gives a $0 allotment.
     - tanf
+    - receives_tanf # Reported TANF receipt, for households the model gives a $0 benefit.
     # Comprehensive Energy Assistance Program (CEAP)
     # Housing Choice Voucher Program (Section 8)
     

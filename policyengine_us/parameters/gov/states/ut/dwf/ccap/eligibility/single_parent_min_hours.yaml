@@ -1,0 +1,18 @@
+description: Utah requires a single parent to be employed at least this many hours per week under the Child Care Assistance program.
+
+# R986-700-709(2)(a)(i): in a single-parent household, the single parent
+# must be "employed an average of at least 15 hours per week." The 2020
+# entry is placed at PolicyEngine's backdating floor; the provision was in
+# effect well before this date.
+values:
+  2020-01-01: 15
+
+metadata:
+  unit: hour
+  period: week
+  label: Utah CCAP single parent minimum weekly work hours
+  reference:
+    - title: Utah Admin. Code R986-700-709(2)(a)(i)
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-700-709
+    - title: Utah DWS Office of Child Care subsidy fact sheet (OCC_2_09/24/25)
+      href: https://jobs.utah.gov/customereducation/services/childcare/occsubsidyfact.pdf#page=1

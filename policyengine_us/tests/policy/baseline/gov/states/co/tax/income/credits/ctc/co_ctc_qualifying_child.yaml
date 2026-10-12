@@ -1,0 +1,53 @@
+# Colorado allows ITIN children for the 2022-2023 CTC (C.R.S. 39-22-129(2)(a) /
+# (3.5)(a)). co_ctc_qualifying_child is a dependent under age 6 with no SSN gate, so
+# an ITIN child (ssn_card_type OTHER_NON_CITIZEN, no SSN valid for employment)
+# still qualifies. These cases FAIL if a federal child-SSN gate is added.
+- name: ITIN dependent under age 6 is a CO CTC qualifying child (2022)
+  period: 2022
+  input:
+    state_code: CO
+    age: 3
+    is_tax_unit_dependent: true
+    ssn_card_type: OTHER_NON_CITIZEN
+  output:
+    co_ctc_qualifying_child: true
+
+- name: ITIN dependent under age 6 is a CO CTC qualifying child (2023)
+  period: 2023
+  input:
+    state_code: CO
+    age: 3
+    is_tax_unit_dependent: true
+    ssn_card_type: OTHER_NON_CITIZEN
+  output:
+    co_ctc_qualifying_child: true
+
+- name: ITIN dependent aged 5 (upper edge of age < 6) is a CO CTC qualifying child (2022)
+  period: 2022
+  input:
+    state_code: CO
+    age: 5
+    is_tax_unit_dependent: true
+    ssn_card_type: OTHER_NON_CITIZEN
+  output:
+    co_ctc_qualifying_child: true
+
+- name: Dependent aged 6 or older is not a CO CTC qualifying child
+  period: 2022
+  input:
+    state_code: CO
+    age: 6
+    is_tax_unit_dependent: true
+    ssn_card_type: OTHER_NON_CITIZEN
+  output:
+    co_ctc_qualifying_child: false
+
+- name: Non-dependent under age 6 is not a CO CTC qualifying child
+  period: 2022
+  input:
+    state_code: CO
+    age: 3
+    is_tax_unit_dependent: false
+    ssn_card_type: OTHER_NON_CITIZEN
+  output:
+    co_ctc_qualifying_child: false

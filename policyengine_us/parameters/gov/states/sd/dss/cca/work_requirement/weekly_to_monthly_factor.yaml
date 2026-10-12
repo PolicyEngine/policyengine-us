@@ -1,0 +1,14 @@
+description: South Dakota multiplies weekly work hours by this factor when determining monthly work hours under the Child Care Assistance program.
+
+# BEES Section 10.1.1 requires weekly hours to be multiplied by 4.3 and the
+# result to be rounded up to the next whole hour.
+values:
+  2026-08-01: 4.3
+
+metadata:
+  unit: /1
+  period: year
+  label: South Dakota CCA weekly-to-monthly work hours factor
+  reference:
+    - title: South Dakota BEES Child Care Assistance Policy Manual, Section 10.1.1 Converting Work Hours
+      href: https://dss.sd.gov/docs/childcare/assistance/BEES_CCA_Policy_Manual.pdf#page=44

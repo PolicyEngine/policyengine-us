@@ -1,0 +1,36 @@
+- name: Local tax less local credits (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: BALTIMORE_CITY_MD
+    md_local_income_tax_before_credits: 1_600
+    md_local_eitc: 300
+    md_local_poverty_line_credit: 100
+  output:
+    md_local_income_tax_before_refundable_credits: 1_200
+
+- name: Baltimore City single filer without credits (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: BALTIMORE_CITY_MD
+    md_taxable_income: 50_000
+    eitc: 0
+  output:
+    # 50,000 * 0.032 = 1,600, no local credits
+    md_local_income_tax_before_refundable_credits: 1_600
+
+- name: Local EITC zeroes out local tax for a low-income family (2025)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    state_code_str: MD
+    county_str: BALTIMORE_CITY_MD
+    md_taxable_income: 14_000
+    eitc: 5_000
+  output:
+    # Local tax: 14,000 * 0.032 = 448
+    # Local EITC: min(5,000 * 10 * 0.032 = 1,600, 448) = 448
+    md_local_income_tax_before_refundable_credits: 0

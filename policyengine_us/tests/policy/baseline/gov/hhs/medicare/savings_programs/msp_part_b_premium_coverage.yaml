@@ -1,0 +1,29 @@
+- name: MSP part B coverage pays the standard premium for income- and asset-eligible enrollees
+  period: 2025
+  input:
+    medicare_enrolled: true
+    msp_income_eligible: true
+    msp_asset_eligible: true
+    base_part_b_premium: 2_220
+  output:
+    msp_part_b_premium_coverage: 2_220
+
+- name: MSP part B coverage is zero for ineligible enrollees
+  period: 2025
+  input:
+    medicare_enrolled: true
+    msp_income_eligible: false
+    msp_asset_eligible: true
+    base_part_b_premium: 2_220
+  output:
+    msp_part_b_premium_coverage: 0
+
+- name: MSP part B coverage is zero when not enrolled
+  period: 2025
+  input:
+    medicare_enrolled: false
+    msp_income_eligible: true
+    msp_asset_eligible: true
+    base_part_b_premium: 2_220
+  output:
+    msp_part_b_premium_coverage: 0

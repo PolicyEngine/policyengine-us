@@ -70,7 +70,18 @@ class sc_ccap_maximum_weekly_benefit(Variable):
         # all children use the same provider as a simplification.
         # Only children actually in care count for the youngest determination.
         discount_rate = person("sc_ccap_second_child_discount_rate", period)
-        in_care = person("childcare_hours_per_week", period) > 0
+        # Reported care days or hours establish participation independently
+        # of the missing-hours pricing fallback.
+        weekly_hours = person("childcare_hours_per_week", period.this_year)
+        daily_hours = person("childcare_hours_per_day", period.this_year)
+        monthly_days = person("childcare_attending_days_per_month", period.this_year)
+        weekly_days = person("childcare_days_per_week", period.this_year)
+        in_care = (
+            (weekly_hours > 0)
+            | (daily_hours > 0)
+            | (monthly_days > 0)
+            | (weekly_days > 0)
+        )
         child_index = person("child_index", period.this_year)
         in_care_index = where(in_care, child_index, -1)
         max_in_care_index = person.spm_unit.max(in_care_index)
@@ -101,6 +112,5 @@ class sc_ccap_maximum_weekly_benefit(Variable):
             income_eligible & asset_eligible & (activity_eligible | protective)
         )
         child_covered = is_head_start | standard_or_protective
-        in_care = person("childcare_hours_per_week", period) > 0
 
         return where(child_covered & in_care, rate, 0)

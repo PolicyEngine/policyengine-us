@@ -30,8 +30,8 @@ class mi_ssp_eligible(Variable):
         is_strict_category = (category == MISSPLivingArrangement.INDEPENDENT_LIVING) | (
             category == MISSPLivingArrangement.HOUSEHOLD_OF_ANOTHER
         )
-        receives_ssi = person("ssi", period) > 0
-        is_ssi_eligible = person("is_ssi_eligible", period.this_year)
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
+        is_ssi_eligible = person("is_ssi_eligible", period)
         arrangement_gate = where(
             is_strict_category,
             receives_ssi,

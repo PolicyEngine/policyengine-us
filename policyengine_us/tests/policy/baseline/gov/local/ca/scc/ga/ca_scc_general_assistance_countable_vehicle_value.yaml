@@ -1,0 +1,58 @@
+# One vehicle is exempt only if its value is at or below the $4,650 limit
+# (handbook Motor Vehicle chapter); a vehicle over the limit counts in full,
+# as do additional vehicles (household-average value per vehicle).
+- name: Case 1, no vehicles.
+  period: 2024
+  input:
+    household_vehicles_owned: 0
+    household_vehicles_value: 0
+    in_scc: true
+  output:
+    ca_scc_general_assistance_countable_vehicle_value: 0
+
+- name: Case 2, one vehicle at the $4,650 limit is exempt.
+  period: 2024
+  input:
+    household_vehicles_owned: 1
+    household_vehicles_value: 4_650
+    in_scc: true
+  output:
+    ca_scc_general_assistance_countable_vehicle_value: 0
+
+- name: Case 3, one vehicle above the limit counts in full.
+  period: 2024
+  input:
+    household_vehicles_owned: 1
+    household_vehicles_value: 6_000
+    in_scc: true
+  output:
+    ca_scc_general_assistance_countable_vehicle_value: 6_000
+
+- name: Case 4, one high-value vehicle counts in full.
+  period: 2024
+  input:
+    household_vehicles_owned: 1
+    household_vehicles_value: 36_000
+    in_scc: true
+  output:
+    ca_scc_general_assistance_countable_vehicle_value: 36_000
+
+- name: Case 5, two vehicles with average within the limit, one exempt.
+  period: 2024
+  input:
+    household_vehicles_owned: 2
+    household_vehicles_value: 8_000
+    in_scc: true
+  output:
+    # Average value 4,000 <= 4,650, so one vehicle is exempt: 8,000 - 4,000.
+    ca_scc_general_assistance_countable_vehicle_value: 4_000
+
+- name: Case 6, two vehicles with average above the limit, none exempt.
+  period: 2024
+  input:
+    household_vehicles_owned: 2
+    household_vehicles_value: 12_000
+    in_scc: true
+  output:
+    # Average value 6,000 > 4,650, so no vehicle is exempt.
+    ca_scc_general_assistance_countable_vehicle_value: 12_000

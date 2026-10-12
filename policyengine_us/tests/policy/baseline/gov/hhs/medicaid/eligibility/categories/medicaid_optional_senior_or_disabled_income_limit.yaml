@@ -1,0 +1,411 @@
+# Missouri MHABD tests blindness-based eligibility against 100% of the
+# poverty guideline but old-age and disability-based eligibility against
+# 85% (DSS Manual § 0805.015.45; current dollars in MHABD Appendix J).
+# Missouri publishes the standards as monthly dollar amounts, rounding
+# the percentage of the monthly guideline up to the next whole dollar.
+# In every state the guideline is the one-person or couple figure (2025:
+# $15,650 and $21,150), following the applicant's marital unit rather
+# than the tax unit (42 CFR 435.602).
+- name: Missouri blind single person gets the 100% FPL blind standard
+  period: 2025
+  input:
+    people:
+      person1:
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # ceil(1.00 x 15,650 / 12) = 1,305 monthly
+    medicaid_optional_senior_or_disabled_income_limit: [15_660]
+
+- name: Missouri non-blind single person gets the 85% FPL standard
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # ceil(0.85 x 15,650 / 12) = 1,109 monthly
+    medicaid_optional_senior_or_disabled_income_limit: [13_308]
+
+# The blind override is per person, so within one joint unit the blind
+# spouse gets the 100% standard while the other keeps the couple limit.
+- name: Missouri blind spouse gets the blind standard over the couple limit
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 68
+        is_blind: true
+      person2:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # ceil([1.00, 0.85] x 21,150 / 12) = [1,763, 1,499] monthly
+    medicaid_optional_senior_or_disabled_income_limit: [21_156, 17_988]
+
+# Appendix J standards effective 04-01-2026: $1,131 and $1,533 monthly
+# for aged or disabled, $1,330 and $1,804 for blind. These derive from
+# the 2026 poverty guidelines ($15,960 for one person plus $5,680 per
+# additional person), so no tax_unit_fpg override is set here. Missouri
+# adopts each year's guideline on April 1; the model applies it from
+# January because gov.hhs.fpg is dated 2026-01-01, so a 2026 period
+# already resolves to these amounts.
+- name: Missouri aged single person gets the published 2026 dollar standard
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # ceil(0.85 x 15,960 / 12) = 1,131 monthly
+    medicaid_optional_senior_or_disabled_income_limit: [13_572]
+
+- name: Missouri blind single person gets the published 2026 dollar standard
+  period: 2026
+  input:
+    people:
+      person1:
+        is_blind: true
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # ceil(1.00 x 15,960 / 12) = 1,330 monthly
+    medicaid_optional_senior_or_disabled_income_limit: [15_960]
+
+- name: Missouri aged couple gets the published 2026 couple standard
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # ceil(0.85 x 21,640 / 12) = 1,533 monthly
+    medicaid_optional_senior_or_disabled_income_limit: [18_396, 18_396]
+
+- name: Missouri blind couple gets the published 2026 couple standard
+  period: 2026
+  input:
+    people:
+      person1:
+        is_blind: true
+      person2:
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # ceil(1.00 x 21,640 / 12) = 1,804 monthly
+    medicaid_optional_senior_or_disabled_income_limit: [21_648, 21_648]
+
+- name: Blindness does not change the limit outside Missouri
+  period: 2025
+  input:
+    people:
+      person1:
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Florida's ordinary individual percentage, 0.88 x 15,650
+    medicaid_optional_senior_or_disabled_income_limit: [13_772]
+
+# The standard follows the applicant's marital status, not the tax unit's
+# size: a disabled child in a family of four is tested against the
+# individual standard while the married parents get the couple standard.
+- name: Missouri disabled child in a family of four gets the individual standard
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 10
+        is_ssi_disabled: true
+      person2:
+        age: 40
+      person3:
+        age: 39
+      person4:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_is_joint: true
+    marital_units:
+      parents:
+        members: [person2, person3]
+      child1:
+        members: [person1]
+      child2:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MO
+  output:
+    # child: ceil(0.85 x 15,960 / 12) = 1,131 monthly
+    # parents: ceil(0.85 x 21,640 / 12) = 1,533 monthly
+    medicaid_optional_senior_or_disabled_income_limit: [13_572, 18_396, 18_396, 13_572]
+
+# The couple standard follows marriage (§ 0805.015.45: "single individuals
+# and married couples"), not the couple's filing status.
+- name: Missouri married couple filing separately still gets the couple standard
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: false
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_optional_senior_or_disabled_income_limit: [18_396, 18_396]
+
+- name: Missouri unmarried adults sharing a tax unit get the individual standard
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    medicaid_optional_senior_or_disabled_income_limit: [13_572, 13_572]
+
+# Outside Missouri the unit is the same: a married couple gets the couple
+# percentage on the two-person guideline whatever their filing status,
+# and a disabled child in a family of four gets the individual standard.
+- name: Florida married couple filing separately gets the couple standard
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 68
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+  output:
+    # 0.88 x 21,150
+    medicaid_optional_senior_or_disabled_income_limit: [18_612, 18_612]
+
+- name: Florida disabled child in a family of four gets the individual standard
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 10
+        is_ssi_disabled: true
+      person2:
+        age: 40
+      person3:
+        age: 39
+      person4:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        tax_unit_is_joint: true
+    marital_units:
+      parents:
+        members: [person2, person3]
+      child1:
+        members: [person1]
+      child2:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: FL
+  output:
+    # child: 0.88 x 15,650; parents: 0.88 x 21,150
+    medicaid_optional_senior_or_disabled_income_limit: [13_772, 18_612, 18_612, 13_772]
+
+# Montana has not elected the poverty-level group of 42 U.S.C. 1396a(m). Its
+# categorically needy income standards for aged, blind, and disabled
+# Medicaid are the SSI payment amounts: $994 a month for an individual and
+# $1,491 for a couple living in the community from January 2026 (DPHHS
+# Medicaid manual ABD 008). They are not a share of the poverty guideline:
+# 75% of the 2026 one-person guideline would be $11,970 a year and 75% of
+# the two-person guideline $16,230.
+- name: Montana single person gets the 2026 SSI individual rate
+  period: 2026
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # 994 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [11_928]
+
+- name: Montana married couple gets the 2026 SSI couple rate
+  period: 2026
+  input:
+    people:
+      person1: {}
+      person2: {}
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # 1,491 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [17_892, 17_892]
+
+# The standard moves with the SSI rate each January, not with the poverty
+# guideline: $943 a month in 2024, when 75% of the one-person guideline
+# was $11,295 a year.
+- name: Montana single person gets the 2024 SSI individual rate
+  period: 2024
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # 943 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [11_316]
+
+# Colorado, Iowa, Louisiana, Ohio, Oregon, and Washington set the same
+# standard in their own rules (cited in uses_ssi_federal_benefit_rate.yaml).
+# Ohio defines the "couple income standard" as "the current supplemental
+# security income (SSI) benefit rate for a couple" (OAC 5160:1-3-03.5), and
+# Washington's standards "are the same as the SSI payment standards for
+# single persons and couples" (WAC 182-512-0010).
+- name: Ohio married couple gets the 2026 SSI couple rate
+  period: 2026
+  input:
+    people:
+      person1: {}
+      person2: {}
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # 1,491 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [17_892, 17_892]
+
+- name: Washington single person gets the 2025 SSI individual rate
+  period: 2025
+  input:
+    people:
+      person1: {}
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 967 x 12
+    medicaid_optional_senior_or_disabled_income_limit: [11_604]

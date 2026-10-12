@@ -10,16 +10,14 @@ class snap_self_employment_expense_deduction(Variable):
     )
     label = "SNAP self-employment expense deduction"
     unit = USD
-    reference = "https://www.snapscreener.com/blog/self-employment"
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/7/273.9#c_9",
+        "https://www.law.cornell.edu/cfr/text/7/273.11#b",
+    )
 
     def formula(spm_unit, period, parameters):
         self_employment_income = add(
-            spm_unit,
-            period,
-            [
-                "self_employment_income_before_lsr",
-                "sstb_self_employment_income_before_lsr",
-            ],
+            spm_unit, period, ["snap_gross_self_employment_income_person"]
         )
         expenses = spm_unit("snap_self_employment_income_expense", period)
         p = parameters(period).gov.usda.snap.income.deductions.self_employment

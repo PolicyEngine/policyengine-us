@@ -7,12 +7,13 @@ class free_school_meals(Variable):
     definition_period = YEAR
     label = "free school meals"
     unit = USD
-    documentation = "Value of free school meals."
+    documentation = (
+        "Modeled value of meals with no family charge, including state-paid "
+        "reduced-price copays. This is not a count of federally certified "
+        "free-meal students or an estimate of state spending."
+    )
 
     def formula(spm_unit, period, parameters):
-        disabled_programs = parameters(period).simulation.disabled_programs
-        if "free_school_meals" in disabled_programs:
-            return spm_unit("free_school_meals_reported", period)
         tier = spm_unit("school_meal_tier", period)
         is_free = tier == tier.possible_values.FREE
         return is_free * spm_unit("school_meal_net_subsidy", period)

@@ -113,8 +113,9 @@ class TestStateParameterLookupWithPandas3:
         This exercises the VectorialParameterNodeAtInstant.__getitem__ fix
         that converts pandas StringArray to numpy array.
         """
-        # Create a simulation with households in different states
+        # Keep state parameter lookups distinct while holding SPM geography fixed.
         sim = Simulation(
+            spm={"geography_kind": "national"},
             situation={
                 "people": {
                     "person1": {"age": {"2024": 30}},
@@ -130,7 +131,7 @@ class TestStateParameterLookupWithPandas3:
                         "state_code": {"2024": "NY"},
                     },
                 },
-            }
+            },
         )
 
         # This calculation involves state-based parameter lookups

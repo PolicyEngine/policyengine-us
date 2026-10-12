@@ -14,7 +14,9 @@ class id_pbf_liable(Variable):
         owes_income_tax_before_credits = tax_unit("id_income_tax_liable", period)
 
         # Not required to pay if receiving public assistance, tanf
-        receives_tanf = tax_unit.spm_unit("tanf", period) > 0
+        receives_tanf = (tax_unit.spm_unit("tanf", period) > 0) | (
+            add(tax_unit.spm_unit, period, ["receives_tanf"]) > 0
+        )
 
         # Not required to pay the PBF if head or spouse is blind
         blind_head = tax_unit("blind_head", period)

@@ -231,3 +231,53 @@
     # Monthly expenses = $0
     # Disregard = min($0, $175) = $0
     ak_atap_childcare_deduction: 0
+
+- name: Case 11, incapacitated parent care expenses count toward the disregard.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 32
+        is_tax_unit_head_or_spouse: true
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # Per 7 AAC 45.485(a)(2)(C): $175/month cap for an incapacitated parent.
+    # Expenses = 1,200 / 12 = 100/month, below the 175 cap.
+    ak_atap_childcare_deduction: 100
+
+- name: Case 12, incapacitated non-parent adult does not count toward the disregard.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 70
+        is_tax_unit_head_or_spouse: false
+        is_tax_unit_dependent: false
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AK
+  output:
+    # 7 AAC 45.485(a)(2)(C) covers only an incapacitated PARENT; an
+    # incapacitated non-parent, non-dependent adult adds nothing to the
+    # cap: min(100, 0) = 0.
+    ak_atap_childcare_deduction: 0

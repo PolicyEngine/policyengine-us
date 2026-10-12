@@ -1,18 +1,34 @@
 - name: Head earns less
   period: 2018
   input:
-    head_earned: 1
-    spouse_earned: 2
-    tax_unit_is_joint: true
+    people:
+      person1:
+        is_tax_unit_head: true
+        adjusted_earnings: 1
+      person2:
+        is_tax_unit_spouse: true
+        adjusted_earnings: 2
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
   output:
     min_head_spouse_earned: 1
 
 - name: Spouse earns less
   period: 2018
   input:
-    head_earned: 2
-    spouse_earned: 1
-    tax_unit_is_joint: true
+    people:
+      person1:
+        is_tax_unit_head: true
+        adjusted_earnings: 2
+      person2:
+        is_tax_unit_spouse: true
+        adjusted_earnings: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
   output:
     min_head_spouse_earned: 1
 
@@ -22,3 +38,149 @@
     head_earned: 1
   output:
     min_head_spouse_earned: 1
+
+- name: Disabled spouse assigned as tax unit head receives one-person income floor
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        is_incapable_of_self_care: true
+      person2:
+        age: 50
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    is_tax_unit_head: [true, false]
+    is_tax_unit_spouse: [false, true]
+    count_cdcc_eligible: 1
+    min_head_spouse_earned: 3_000
+
+- name: Disabled spouse assigned as tax unit head receives two-person income floor
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        is_incapable_of_self_care: true
+      person2:
+        age: 50
+        employment_income: 50_000
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+  output:
+    count_cdcc_eligible: 2
+    min_head_spouse_earned: 6_000
+
+- name: Both spouses floor-eligible only one spouse receives the income floor
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        is_incapable_of_self_care: true
+      person2:
+        age: 50
+        is_full_time_student: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+  output:
+    count_cdcc_eligible: 2
+    min_head_spouse_earned: 0
+
+- name: Both spouses floor-eligible with asymmetric earnings deems only the lower earner
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        is_full_time_student: true
+        adjusted_earnings: 5_000
+      person2:
+        age: 38
+        is_full_time_student: true
+        adjusted_earnings: 1_000
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+  output:
+    count_cdcc_eligible: 1
+    # Deem the lower earner ($1,000 -> $3,000 floor), keep the higher actual
+    # ($5,000); the lesser is $3,000. Only one spouse may be deemed.
+    min_head_spouse_earned: 3_000
+
+- name: Deemed floor capped by the working spouse's earnings below the floor
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        adjusted_earnings: 2_000
+      person2:
+        is_tax_unit_spouse: true
+        is_full_time_student: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+  output:
+    count_cdcc_eligible: 1
+    # The student spouse is deemed the $3,000 floor, but the lesser of
+    # earnings is the head's actual $2,000.
+    min_head_spouse_earned: 2_000
+
+- name: Deemed floor binds when the working spouse earns above the floor
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        adjusted_earnings: 4_000
+      person2:
+        is_tax_unit_spouse: true
+        is_full_time_student: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+  output:
+    count_cdcc_eligible: 1
+    min_head_spouse_earned: 3_000
+
+# IRC 21(d)(2) deems income only when the 21(c) dollar limits apply, i.e.,
+# with at least one qualifying individual.
+- name: No deemed income floor without a qualifying individual
+  period: 2024
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        adjusted_earnings: 10_000
+      person2:
+        is_tax_unit_spouse: true
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    count_cdcc_eligible: 0
+    min_head_spouse_earned: 0

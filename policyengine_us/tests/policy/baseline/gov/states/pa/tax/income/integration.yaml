@@ -52,3 +52,44 @@
         state_fips: 42
   output:
     pa_income_tax: 0
+
+- name: Retired couple past retirement age owes no PA tax on pensions, IRA, and Social Security (issue #8589)
+  # 61 Pa. Code Sec. 101.6: qualified retirement distributions received after
+  # reaching the plan's retirement age are not taxable, and PA does not tax
+  # Social Security. Both spouses are past retirement age (67 and 65), so the
+  # pension, IRA, and Social Security income are all exempt. Fixed by #8922
+  # (employer-plan and IRA distributions) plus the pre-existing pension and
+  # Social Security exemptions. Reproducer from the issue.
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      person1:
+        age: 67
+        taxable_pension_income: 40_000
+        taxable_ira_distributions: 30_000
+        social_security: 30_000
+      person2:
+        age: 65
+        taxable_pension_income: 20_000
+        social_security: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        premium_tax_credit: 0
+        local_income_tax: 0
+        state_sales_tax: 0
+        pa_use_tax: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_fips: 42
+  output:
+    pa_total_taxable_income: 0
+    state_income_tax: 0

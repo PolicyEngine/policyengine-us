@@ -1,0 +1,81 @@
+# ms_ccpp_categorically_eligible is SPMUnit, MONTH.
+# Modeled categorical pathways that bypass the income test: TANF enrollment,
+# homelessness, and protective services. TCC, Healthy Families Mississippi, and
+# teen parents are not tracked at the moment.
+
+- name: Case 1, TANF-enrolled family is categorically eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_categorically_eligible: true
+
+- name: Case 2, homeless family is categorically eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        is_homeless: true
+  output:
+    ms_ccpp_categorically_eligible: true
+
+- name: Case 3, protective-services child is categorically eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_categorically_eligible: true
+
+- name: Case 4, no categorical pathway.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+        is_homeless: false
+  output:
+    ms_ccpp_categorically_eligible: false

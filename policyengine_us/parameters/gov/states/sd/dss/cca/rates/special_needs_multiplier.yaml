@@ -1,0 +1,14 @@
+description: South Dakota multiplies the base reimbursement rate by this factor for children with special needs under the Child Care Assistance program.
+
+# A provider caring for a child with special needs may receive the base rate
+# plus an additional 75% of that rate (base rate x 1.75).
+values:
+  2026-08-01: 1.75
+
+metadata:
+  unit: /1
+  period: year
+  label: South Dakota CCA special needs rate multiplier
+  reference:
+    - title: South Dakota Child Care Assistance Rates, effective 8/3/2026 (Special Needs)
+      href: https://dss.sd.gov/docs/childcare/assistance/CCA_Weekly_Reimbursement_Rates.pdf

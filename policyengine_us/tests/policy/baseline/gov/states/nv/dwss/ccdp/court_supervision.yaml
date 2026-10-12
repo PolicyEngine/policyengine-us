@@ -1,0 +1,240 @@
+# Authority: https://www.dss.nv.gov/siteassets/dwss.nv.gov/content/care/ACF-118_CCDF_FFY_2025-2027_For_Nevada__3.pdf#page=18
+# The FFY 2016-2018 and FFY 2025-2027 plans elect the court-supervision option
+# through 18; the FFY 2014-2015, 2019-2021 and 2022-2024 plans decline it.
+
+- name: Case 1, court-supervised child at age 12.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 12
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: true
+
+- name: Case 2, court-supervised child at age 13.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: true
+
+- name: Case 3, court-supervised child at age 17.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 17
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: true
+
+- name: Case 4, court-supervised child at age 18.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: true
+
+- name: Case 5, court-supervised child at age 19.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: false
+
+- name: Case 6, court-supervised child at age 40.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 40
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: false
+
+- name: Case 7, older child without court supervision.
+  period: 2026-01
+  input:
+    state_code: NV
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: false
+  output:
+    nv_ccdp_eligible_child: false
+
+- name: Case 8, previous CCDF plan did not elect a court-age exception.
+  period: 2024-01
+  input:
+    state_code: NV
+    age:
+      2024: 13
+    is_tax_unit_dependent:
+      2024: true
+    immigration_status:
+      2024: CITIZEN
+    is_disabled:
+      2024: false
+    is_under_court_supervision:
+      2024: true
+  output:
+    nv_ccdp_eligible_child: false
+
+- name: Case 9, court supervision combines with disability and applies below 13.
+  period: 2026-01
+  input:
+    state_code: [NV, NV, NV, NV]
+    age: [12, 17, 18, 19]
+    is_tax_unit_dependent: [true, true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, true, true, true]
+    is_under_court_supervision: [true, true, true, true]
+  output:
+    nv_ccdp_eligible_child: [true, true, true, false]
+
+- name: Case 10, a court-supervised 15-year-old receives a benefit through the full pipeline.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 25_000
+      person2:
+        age: 15
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_under_court_supervision: true
+        is_tax_unit_dependent: true
+        nv_ccdp_provider_type: CENTER
+        nv_ccdp_provider_star_rating: STAR_1
+        pre_subsidy_childcare_expenses: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # person2: age 15, not disabled, under court supervision; the extension is
+    # true from 2024-10-01, so the special-needs limit of 19 applies (15 < 19).
+    # person1: age 40, no special need or court route, 40 >= 13.
+    nv_ccdp_eligible_child: [false, true]
+    # FY2026 SMI table (2025-10-01): NV base 100_681 * (0.52 + 0.16) = 68_463.08;
+    # 68_463.08 / 12 = 5_705.26 per month for a family of 2.
+    nv_ccdp_smi: 5_705.26
+    # Intake limit 0.41 * 5_705.26 = 2_339.16; income 25_000 / 12 = 2_083.33.
+    nv_ccdp_income_eligible: true
+    nv_ccdp_eligible: true
+    # Ratio 2_083.33 / 5_705.26 = 0.3652, in [0.33, 0.4201) -> $90 copay.
+    nv_ccdp_copay: 90
+    # Clark County -> MOST_POPULOUS; 15 * 12 = 180 months >= 72 -> SCHOOL_AGE.
+    nv_ccdp_region: [MOST_POPULOUS, MOST_POPULOUS]
+    nv_ccdp_age_group: [SCHOOL_AGE, SCHOOL_AGE]
+    # Clark center school-age STAR_1 rate = $48/day; person1 is not an
+    # eligible child, so the defined_for gate returns 0.
+    nv_ccdp_provider_rate: [0, 48]
+    # Max rate 48 * 21.67 = 1_040.16; expense 15_000 / 12 = 1_250 does not bind.
+    # Benefit = min(1_250, 1_040.16) - 90 = 950.16.
+    nv_ccdp: 950.16
+
+- name: Case 11, without court supervision the same teenager receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 25_000
+      person2:
+        age: 15
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_under_court_supervision: false
+        is_tax_unit_dependent: true
+        nv_ccdp_provider_type: CENTER
+        nv_ccdp_provider_star_rating: STAR_1
+        pre_subsidy_childcare_expenses: 15_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+        county: CLARK_COUNTY_NV
+  output:
+    # person2: age 15, no special need or court route, so the general
+    # limit of 13 applies (15 >= 13). No eligible child -> no benefit.
+    nv_ccdp_eligible_child: [false, false]
+    nv_ccdp_eligible: false
+    nv_ccdp: 0
+
+- name: Case 12, the court route applies under the FFY 2016-2018 plan.
+  period: 2017-01
+  input:
+    state_code: NV
+    age: 15
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: true
+
+- name: Case 13, the court route does not apply under the FFY 2019-2021 plan.
+  period: 2019-01
+  input:
+    state_code: NV
+    age: 15
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    nv_ccdp_eligible_child: false
+
+- name: Case 14, the court route starts with the FFY 2016-2018 plan in June 2016.
+  period: 2016
+  input:
+    state_code: NV
+    age: 15
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    # The FFY 2014-2015 plan declined the option; the FFY 2016-2018 plan
+    # elects it from June 1, 2016.
+    nv_ccdp_eligible_child:
+      2016-05: false
+      2016-06: true

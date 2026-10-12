@@ -1,0 +1,215 @@
+# Unit tests for New Jersey Health Plan Savings (NJHPS) tax-unit eligibility.
+#
+# nj_njhps_eligible (TaxUnit, bool, YEAR) returns:
+#   in_effect
+#   & (fpl_floor <= aca_magi_fraction <= fpl_limit)   [1.38 <= frac <= 6.0]
+#   & (count of nj_njhps_member_eligible > 0)
+#
+# in_effect is false before 2026-01-01 and true (open-ended) from 2026-01-01.
+# pays_aca_premium is supplied per person to control which members qualify.
+
+# --- Positive baseline ---
+
+- name: Case 1, in effect, within band, one eligible member -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_eligible: true
+
+# --- Income floor boundary (138%) ---
+
+- name: Case 2, just below the 138% floor -> ineligible.
+  # frac 1.37 < 1.38 -> below floor -> not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.37
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_eligible: false
+
+- name: Case 3, exactly at the 138% floor -> eligible.
+  # frac 1.38 == fpl_floor -> inclusive floor -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.38
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_eligible: true
+
+# --- Income ceiling boundary (600%) ---
+
+- name: Case 4, exactly at the 600% ceiling -> eligible.
+  # frac 6.0 == fpl_limit -> inclusive ceiling -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 6.0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_eligible: true
+
+- name: Case 5, just above the 600% ceiling -> ineligible.
+  # frac 6.01 > 6.0 -> above ceiling -> not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 6.01
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_eligible: false
+
+# --- No eligible member ---
+
+- name: Case 6, within band but no member pays a premium -> ineligible.
+  # count of nj_njhps_member_eligible is 0 (nobody pays an ACA premium), so even
+  # though the fraction is within band the tax unit is not eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_eligible: false
+
+# --- 500% FPL above the APTC cliff still eligible ---
+
+- name: Case 7, 500% FPL member above the APTC cliff keeps the tax unit eligible.
+  # frac 5.0 is within the 1.38-6.0 band and one member pays an ACA premium, so the
+  # tax unit is eligible even though the federal is_aca_ptc_eligible is False here.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 5.0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_eligible: true
+
+# --- Non-NJ ---
+
+- name: Case 8, non-NJ resident is not eligible.
+  # defined_for StateCode.NJ -> a NY household returns the default False.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    nj_njhps_eligible: false
+
+# --- Temporal: off-year 2025 (not in effect) and open-ended 2027 ---
+
+- name: Case 9, 2025 off-year is not in effect -> ineligible.
+  # in_effect is false before 2026-01-01, so an otherwise-qualifying tax unit is not
+  # eligible in 2025.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_eligible: false
+
+- name: Case 10, 2027 open-ended in_effect keeps the tax unit eligible.
+  # in_effect has no end date (2026-01-01 true, open-ended), so 2027 mirrors 2026.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        pays_aca_premium: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_njhps_eligible: true

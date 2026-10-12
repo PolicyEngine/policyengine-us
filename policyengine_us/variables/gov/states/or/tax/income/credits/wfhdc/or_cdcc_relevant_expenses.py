@@ -14,8 +14,13 @@ class or_cdcc_relevant_expenses(Variable):
         p_cdcc = parameters(period).gov.irs.credits.cdcc
         p_or = parameters(period).gov.states["or"].tax.income.credits.wfhdc
 
+        # ORS 315.264(1)(a) covers expenses of a type allowable under IRC
+        # §21: childcare plus care for a disabled adult qualifying
+        # individual (care_expenses).
+        childcare = tax_unit("tax_unit_childcare_expenses", period)
+        adult_care = add(tax_unit, period, ["care_expenses"])
+        expenses = childcare + adult_care
         # First, cap based on the number of eligible care receivers
-        expenses = tax_unit("tax_unit_childcare_expenses", period)
         capped_eligible_people = tax_unit("capped_count_cdcc_eligible", period)
 
         total_max_amount = p_or.cap * capped_eligible_people

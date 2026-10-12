@@ -1,0 +1,13 @@
+description: The IRS requires a qualifying Social Security number, rather than any taxpayer identification number, for American Opportunity Credit identification if this is true.
+values:
+  0000-01-01: false
+  2026-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: American Opportunity Credit qualifying SSN requirement applies
+  reference:
+    - title: 26 U.S. Code § 25A(g)(1)
+      href: https://www.law.cornell.edu/uscode/text/26/25A#g_1
+    - title: 26 U.S. Code § 24(h)(7)
+      href: https://www.law.cornell.edu/uscode/text/26/24#h_7

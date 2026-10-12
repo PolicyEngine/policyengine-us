@@ -3,7 +3,6 @@
   input:
     age: 18
     is_tax_unit_dependent: true
-    meets_eitc_identification_requirements: true
     state_code: MN
   output:
     mn_child_and_working_families_credits_ctc_eligible_child: false
@@ -13,12 +12,25 @@
   input:
     age: 17
     is_tax_unit_dependent: true
-    meets_eitc_identification_requirements: true
     state_code: MN
   output:
     mn_child_and_working_families_credits_ctc_eligible_child: true
 
-- name: Child does not meet EITC identification requirements
+- name: Non-dependent minor is not eligible
+  period: 2024
+  input:
+    age: 16
+    is_tax_unit_dependent: false
+    state_code: MN
+  output:
+    mn_child_and_working_families_credits_ctc_eligible_child: false
+
+# Minn. Stat. 290.0661 subd. 1 / 290.0671 provide that IRC 32(m) (the
+# SSN-valid-for-employment gate) "does not apply", so eligibility does NOT
+# depend on meets_eitc_identification_requirements: a 17-year-old dependent
+# who fails the federal EITC identification requirement is still an eligible
+# CTC child in Minnesota.
+- name: Child does not meet EITC identification requirements is still eligible
   period: 2024
   input:
     age: 17
@@ -26,14 +38,18 @@
     meets_eitc_identification_requirements: false
     state_code: MN
   output:
-    mn_child_and_working_families_credits_ctc_eligible_child: false
+    mn_child_and_working_families_credits_ctc_eligible_child: true
 
-- name: Non-dependent minor is not eligible
+# Minn. Stat. 290.0661 subd. 1 / 290.0671 provide that IRC 32(m) (the
+# SSN-valid-for-employment gate) "does not apply", so an ITIN child (no SSN
+# valid for employment, modeled as ssn_card_type OTHER_NON_CITIZEN) still
+# qualifies. This case FAILS if the 32(m) gate is restored to the formula.
+- name: ITIN child (no SSN valid for employment) is still an eligible CTC child
   period: 2024
   input:
-    age: 16
-    is_tax_unit_dependent: false
-    meets_eitc_identification_requirements: true
+    age: 5
+    is_tax_unit_dependent: true
+    ssn_card_type: OTHER_NON_CITIZEN
     state_code: MN
   output:
-    mn_child_and_working_families_credits_ctc_eligible_child: false
+    mn_child_and_working_families_credits_ctc_eligible_child: true

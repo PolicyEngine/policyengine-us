@@ -6,7 +6,7 @@ class ak_ssp(Variable):
     entity = Person
     label = "Alaska Adult Public Assistance"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.AK
     exhaustive_parameter_dependencies = "gov.states.ak.dpa.ssp"
     reference = (

@@ -7,9 +7,7 @@ class md_pension_subtraction_amount(Variable):
     label = "MD pension subtraction from AGI"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.marylandtaxes.gov/forms/21_forms/Resident_Booklet.pdf#page=13"
-    )
+    reference = "https://interactive.marylandtaxes.gov/Individuals/iFile_ChooseForm/PriorYearForms/Resident_Booklet_2021.pdf#page=13"
     defined_for = StateCode.MD
 
     def formula(person, period, parameters):
@@ -22,7 +20,7 @@ class md_pension_subtraction_amount(Variable):
         partner_is_disabled = person("has_disabled_spouse", period)
         eligible = ~dependent & (elderly | disabled | partner_is_disabled)
         # calculate pension subtraction amount for each person
-        peninc = person("taxable_pension_income", period)
+        peninc = add(person, period, p.pension.sources)
         socsec = person("social_security", period)
         amount = min_(peninc, max_(0, p.pension.max_amount - socsec))
         # return pension subtraction amount for each eligible person

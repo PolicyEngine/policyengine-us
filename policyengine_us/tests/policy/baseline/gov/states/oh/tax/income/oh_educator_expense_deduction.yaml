@@ -1,0 +1,23 @@
+- name: Ohio educator deduction uses the Ohio-specific deduction amount, not the raw federal expense
+  period: 2025
+  input:
+    people:
+      person:
+        educator_expense: 300
+        oh_educator_expense_deduction_person: 50
+        taxable_social_security: 0
+        oh_uniformed_services_retirement_income_deduction: 0
+        oh_529_plan_deduction_person: 0
+        pell_grant: 0
+        disability_benefits: 0
+        oh_unreimbursed_medical_care_expense_deduction_person: 0
+        us_govt_interest_person: 0
+    households:
+      household:
+        members: [person]
+        state_code: OH
+    tax_units:
+      tax_unit:
+        members: [person]
+  output:
+    oh_deductions: 50

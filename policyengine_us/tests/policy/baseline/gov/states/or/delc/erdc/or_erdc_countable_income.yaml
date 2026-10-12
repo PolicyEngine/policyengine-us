@@ -1,0 +1,84 @@
+# OAR 414-175-0035 counts caretakers' earned income and unearned income such
+# as Social Security benefits, unemployment compensation, child support,
+# pensions, rental income, and workers compensation under the Employment
+# Related Day Care program.
+
+- name: Case 1, a caretaker's Social Security benefits count as unearned income.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        social_security: 12_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # Social Security 12,000/year = 1,000/month countable.
+    or_erdc_countable_income: 1_000
+
+- name: Case 2, earned and unearned sources combine in countable income.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        unemployment_compensation: 6_000
+        child_support_received: 3_600
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # Employment 24,000/year = 2,000/month earned.
+    or_erdc_countable_earned_income: [2_000, 0]
+    # Plus unemployment 6,000/year = 500/month and child support
+    # 3,600/year = 300/month unearned: 2,000 + 500 + 300 = 2,800.
+    or_erdc_countable_income: 2_800
+
+- name: Case 3, pension, rental, and workers compensation count as unearned income.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 62
+        pension_income: 12_000
+        rental_income: 6_000
+        workers_compensation: 4_800
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # Pension 12,000/year = 1,000/month, rental 6,000/year = 500/month, and
+    # workers compensation 4,800/year = 400/month: 1,000 + 500 + 400 = 1,900.
+    or_erdc_countable_income: 1_900

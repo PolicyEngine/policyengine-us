@@ -1,0 +1,231 @@
+# ia_cca_eligible_child: Person, bool, MONTH.
+# IAC 441-170.2(2): child up to age 13 (basic), up to age 19 for a child with
+# special needs; child status is age-based (not tax-dependency-based, since
+# 170.2(1)"e"(3) includes children living with a non-legally-responsible
+# caretaker); must be a U.S. citizen or qualified alien
+# (is_ccdf_immigration_eligible_child). Protective-services and foster children
+# are categorically eligible regardless of immigration status.
+
+- name: Infant dependent citizen is an eligible child.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        immigration_status: CITIZEN
+      child:
+        age: 1
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Parent is not a child; child age 1 < 13, dependent, citizen -> eligible
+    ia_cca_eligible_child: [false, true]
+
+- name: Child just under the basic age limit is eligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # 12 < 13 -> eligible
+    ia_cca_eligible_child: true
+
+- name: Child at exactly age 13 is not eligible unless special needs.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # 13 is not < 13 and not disabled -> ineligible
+    ia_cca_eligible_child: false
+
+- name: Disabled child at age 13 is eligible under the special-needs limit.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 13
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # Disabled -> special-needs limit 19; 13 < 19 -> eligible
+    ia_cca_eligible_child: true
+
+- name: Disabled child just under the special-needs age limit is eligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 18
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # 18 < 19 -> eligible
+    ia_cca_eligible_child: true
+
+- name: Disabled child at exactly age 19 is not eligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 19
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # 19 is not < 19 -> ineligible even with special needs
+    ia_cca_eligible_child: false
+
+- name: Non-dependent child within the age limit is still an eligible child.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 5
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # Child status is age-based, not dependency-based. Iowa's family-size
+    # definition (170.2(1)"e"(3)) includes a child living with a person not
+    # legally responsible for support, so an age-eligible citizen child who is
+    # not a tax dependent is still eligible.
+    ia_cca_eligible_child: true
+
+- name: Child without immigration eligibility is not a standard eligible child.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # Age-eligible dependent but not immigration-eligible -> ineligible
+    ia_cca_eligible_child: false
+
+- name: Protective-services child is categorically eligible regardless of dependency.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 5
+        is_tax_unit_dependent: false
+        immigration_status: UNDOCUMENTED
+        receives_or_needs_protective_services: true
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # Age-eligible and protective -> eligible despite non-dependent/non-citizen
+    ia_cca_eligible_child: true
+
+- name: Foster child is categorically eligible regardless of dependency.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 5
+        is_tax_unit_dependent: false
+        immigration_status: UNDOCUMENTED
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # Age-eligible and foster -> eligible despite non-dependent/non-citizen
+    ia_cca_eligible_child: true
+
+# === Edge cases ===
+
+- name: Disabled child past the special-needs age limit is not eligible.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 20
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    # 20 is well over the special-needs limit of 19 -> ineligible (upper boundary,
+    # confirms the age gate does not silently re-admit older disabled children)
+    ia_cca_eligible_child: false

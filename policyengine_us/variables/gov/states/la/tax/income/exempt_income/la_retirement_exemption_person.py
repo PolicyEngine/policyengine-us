@@ -11,7 +11,12 @@ class la_retirement_exemption_person(Variable):
     defined_for = StateCode.LA
 
     def formula(person, period, parameters):
-        pension_income = person("taxable_pension_income", period)
+        # Under La. R.S. 47:44.1, persons 65 or older may exempt annual retirement income
+        # up to a cap (Schedule E code 06E): $6,000 through 2024, $12,000 in 2025, then
+        # adjusted annually for CPI-U. Public retirement benefits (LASERS, TRSLA,
+        # federal civil service) are fully exempt under Schedule E codes 02E/03E/05E via
+        # sources.yaml and do not consume this exemption cap.
+        pension_income = person("taxable_private_pension_income", period)
         age = person("age", period)
         p = parameters(period).gov.states.la.tax.income.exempt_income.retirement
         cap = p.cap.calc(age)

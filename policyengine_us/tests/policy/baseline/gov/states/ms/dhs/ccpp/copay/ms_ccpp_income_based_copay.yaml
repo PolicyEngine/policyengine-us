@@ -1,0 +1,61 @@
+- name: Case 1, family of two in the very-low-income band.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # YEAR -> 2,000/mo
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # Family of 2, income <= 50% SMI, rate = 5.5%.
+    ms_ccpp_income_based_copay: 110
+
+- name: Case 2, family of two in the low-income band.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_600  # YEAR -> 2,300/mo
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # Family of 2, income > 50% SMI, rate = 6.5%.
+    ms_ccpp_income_based_copay: 149.5
+
+- name: Case 3, negative countable income is floored at zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -12_000  # YEAR -> -1,000/mo, floored
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_ccpp_income_based_copay: 0

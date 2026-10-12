@@ -10,7 +10,7 @@ class de_poc(Variable):
     defined_for = "de_poc_eligible"
     reference = (
         "https://regulations.delaware.gov/AdminCode/title16/Department%20of%20Health%20and%20Social%20Services/Division%20of%20Social%20Services/11004.shtml",
-        "https://dhss.delaware.gov/dss/childcr/",
+        "https://web.archive.org/web/20260614012446/https://dhss.delaware.gov/dss/childcr/",
     )
 
     def formula(spm_unit, period, parameters):
@@ -24,5 +24,5 @@ class de_poc(Variable):
         pre_subsidy_childcare_expenses = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period
         )
-        uncapped = max_(pre_subsidy_childcare_expenses - copay, 0)
-        return min_(uncapped, maximum_monthly_benefit)
+        capped_expenses = min_(pre_subsidy_childcare_expenses, maximum_monthly_benefit)
+        return max_(capped_expenses - copay, 0)

@@ -2,45 +2,54 @@ from policyengine_us.model_api import *
 
 
 class mo_ptc_taxunit_eligible(Variable):
-    value_type = float
+    value_type = bool
     entity = TaxUnit
     label = "Missouri property tax credit taxunit eligible"
-    unit = USD
     definition_period = YEAR
     reference = (
-        "https://dor.mo.gov/forms/MO-PTS_2021.pdf",
         "https://revisor.mo.gov/main/OneSection.aspx?section=135.010&bid=6435",
+        "https://revisor.mo.gov/main/OneSection.aspx?section=135.030&bid=57542",
+        "https://dor.mo.gov/forms/MO-PTC%20Instructions_2025.pdf#page=2",
     )
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
-        # check age
+        p = parameters(period).gov.states.mo.tax.income.credits.property_tax
+        # RSMo 135.010(1) claimant pathways; the first three are satisfied by
+        # the claimant or spouse.
         age_head = tax_unit("age_head", period)
         age_spouse = tax_unit("age_spouse", period)
-        p = parameters(period).gov.states.mo.tax.income.credits.property_tax
-        elderly_head = age_head >= p.age_threshold
-        elderly_spouse = age_spouse >= p.age_threshold
-        elderly_head_or_spouse = elderly_head | elderly_spouse
-        # check disability
-        disabled_head = tax_unit("disabled_head", period)
-        disabled_spouse = tax_unit("disabled_spouse", period)
-        disabled_head_or_spouse = disabled_head | disabled_spouse
-        # check for military disability
-        military_disabled_head = tax_unit("military_disabled_head", period)
-        military_disabled_spouse = tax_unit("military_disabled_spouse", period)
-        military_disabled_head_or_spouse = (
-            military_disabled_head | military_disabled_spouse
+        elderly = (age_head >= p.age_threshold) | (age_spouse >= p.age_threshold)
+        # 135.010(2) defines "disabled" by inability to engage in substantial
+        # gainful activity, without requiring SSI participation.
+        disabled = tax_unit("head_is_disabled", period) | tax_unit(
+            "spouse_is_disabled", period
         )
-        # check aged social security survivor benefits eligibility
-        survivor_ben = add(tax_unit, period, ["social_security_survivors"]) > 0
-        aged_survivor_min_age = p.aged_survivor_min_age
-        aged_head = age_head >= aged_survivor_min_age
-        aged_spouse = age_spouse >= aged_survivor_min_age
-        aged_head_or_spouse = aged_head | aged_spouse
-        survivor_benefits_eligible = survivor_ben & aged_head_or_spouse
-        return (
-            elderly_head_or_spouse
-            | disabled_head_or_spouse
-            | military_disabled_head_or_spouse
-            | survivor_benefits_eligible
+        military_disabled = tax_unit("military_disabled_head", period) | tax_unit(
+            "military_disabled_spouse", period
         )
+        # The surviving-spouse pathway applies to the claimant only: the
+        # claimant must be 60 or older and have received surviving spouse
+        # Social Security benefits themselves. The model treats the tax
+        # unit head as the filer/claimant, so the same-person test runs on
+        # the head; the other three pathways are claimant-or-spouse.
+        person = tax_unit.members
+        head_survivor_benefits = tax_unit.sum(
+            person("social_security_survivors", period)
+            * person("is_tax_unit_head", period)
+        )
+        aged_survivor = (age_head >= p.aged_survivor_min_age) & (
+            head_survivor_benefits > 0
+        )
+        categorical = elderly | disabled | military_disabled | aged_survivor
+        # RSMo 135.025 bases the credit on property taxes accrued and rent
+        # constituting property taxes accrued; DOR routes claimants who paid
+        # neither to not eligible.
+        rent = add(tax_unit, period, ["rent"])
+        property_tax = add(tax_unit, period, ["real_estate_taxes"])
+        paid_rent_or_property_tax = (rent + property_tax) > 0
+        # RSMo 135.030(1) caps net income at the maximum upper limit.
+        # DOR forms round entries half-up to whole dollars.
+        net_income = np.floor(tax_unit("mo_ptc_net_income", period) + 0.5)
+        income_eligible = net_income <= tax_unit("mo_ptc_income_limit", period)
+        return categorical & paid_rent_or_property_tax & income_eligible

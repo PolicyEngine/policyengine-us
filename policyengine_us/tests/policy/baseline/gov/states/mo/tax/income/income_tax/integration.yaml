@@ -150,6 +150,7 @@
     people:
       person1:
         age: 78
+        medicare_enrolled: false
         taxable_interest_income: 21_896.16
         short_term_capital_gains: 6_010.3447
         long_term_capital_gains: 44_087.02
@@ -169,3 +170,69 @@
     mo_adjusted_gross_income: [66_215.1053]
     mo_taxable_income: [27_570.8053]
     mo_income_tax: 1_119.8859
+- name: WFTC liability cap nets out the property tax credit
+  period: 2025
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        employment_income: 18_000
+        rent: 9_600
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Form MO-WFTC 2025: Line 6 = 20% x $84.43 EITC = $16.89; Line 7 =
+    # $17.76 tax before credits: federal tax 10% x (18,000 - 15,750) = 225,
+    # federal tax deduction 35% x (225 - 84.43 EITC) = 49.20, taxable income
+    # 18,000 - 15,750 - 49.20 = 2,200.80, tax 2% x (2,200.80 - 1,313) = 17.76.
+    # Line 8 includes the $591 property tax
+    # credit from the 2025 DOR chart: rent 20% x 9,600 = 1,920 capped at
+    # 750 (payment midpoint 738), net income 18,000 in the 17,901-18,200
+    # row, phase-out = ceil(13 x 0.0625% x 18,050) = 147, 738 - 147 = 591;
+    # Line 9 = max(17.76 - 591, 0) = 0; Line 10 = min(16.89, 0).
+    eitc: 84.43
+    mo_wftc_potential: 16.89
+    mo_income_tax_before_credits: 17.76
+    mo_property_tax_credit: 591
+    mo_wftc_liability_cap: 0
+    mo_wftc: 0
+    mo_income_tax: -573.24
+
+- name: MO head's AGI keeps the full capital gains subtraction when a dependent has a capital loss
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        long_term_capital_gains: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        short_term_capital_gains: -4_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    # Federal AGI = 40,000 wages + 10,000 line 7a; the child's loss is on the
+    # child's own return. MO AGI = 50,000 - 10,000 subtraction = 40,000.
+    # Pooling the child's loss gave a 6,000 subtraction and MO AGI 44,000.
+    adjusted_gross_income: 50_000
+    mo_capital_gains_subtraction: 10_000
+    mo_adjusted_gross_income: [40_000, 0]

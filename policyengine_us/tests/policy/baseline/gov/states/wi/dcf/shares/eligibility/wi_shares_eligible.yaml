@@ -1,0 +1,157 @@
+# Wisconsin Shares overall eligibility combines: an eligible child in the
+# assistance group, the two-tier income test, the $25,000 liquid asset test,
+# and the parental activity test. Wisconsin Shares Handbook (July 2026)
+# Chapters 4-6; Wis. Stat. s. 49.155(1m).
+# FPG and SMI are set explicitly (FPG 24,000/year = 2,000/month; SMI
+# 96,000/year) so income ratios are exact.
+- name: Case 1, working family with a young child passes every test.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/month = 150% FPL.
+      person2:
+        age: 4
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_eligible: true
+
+- name: Case 2, single adult without children is not eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_eligible: false
+
+- name: Case 3, family whose only child is fourteen and not disabled is not eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 14
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_eligible: false
+
+- name: Case 4, family above the liquid asset limit is not eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 30_000
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_eligible: false
+
+- name: Case 5, applicant family above 200% of the poverty guideline is not eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_800  # 4,400/month > 4,000 (200% FPL).
+      person2:
+        age: 4
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_eligible: false
+
+- name: Case 6, family whose only parent has no approved activity is not eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_eligible: false
+
+- name: Case 7, family whose only child is undocumented is not eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+      person2:
+        age: 4
+        childcare_hours_per_week: 20
+        immigration_status: UNDOCUMENTED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_eligible: false

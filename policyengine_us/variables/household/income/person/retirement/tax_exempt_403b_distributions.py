@@ -8,3 +8,4 @@ class tax_exempt_403b_distributions(Variable):
     unit = USD
     documentation = "Tax-exempt distributions from 403(b) accounts (typically Roth)."
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.tax_exempt_pension_income"

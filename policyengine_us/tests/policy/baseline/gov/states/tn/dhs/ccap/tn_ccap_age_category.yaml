@@ -1,0 +1,160 @@
+# tn_ccap_age_category: Person, Enum, MONTH
+# age_months = age * 12. INFANT if < 13 months; TODDLER if < 31 months;
+# PRESCHOOL if not in K-12 school; otherwise SCHOOL_IN. SCHOOL_OUT is never
+# returned (no monthly school-calendar input; scope defaults school-age to
+# School In). Enum output is exact, so no error margin.
+
+- name: Case 1, newborn is an infant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_age_category: INFANT
+
+- name: Case 2, one-year-old (12 months) is still an infant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_age_category: INFANT
+
+- name: Case 3, two-year-old (24 months) is a toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_age_category: TODDLER
+
+- name: Case 4, thirty-month-old is a toddler (just under 31 months).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2.5
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_age_category: TODDLER
+
+- name: Case 5, three-year-old not in school is preschool.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        is_in_k12_school: false
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_age_category: PRESCHOOL
+
+- name: Case 6, school-age child in school gets the School In category.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 8
+        is_in_k12_school: true
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_age_category: SCHOOL_IN
+
+- name: Case 7, older child not yet in school falls back to preschool.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 8
+        is_in_k12_school: false
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    tn_ccap_age_category: PRESCHOOL
+
+# ---- Edge cases: infant/toddler (13 months) and toddler/preschool (31 months)
+#      boundaries. Age granularity is sub-year, so these bracket the cutoff
+#      tightly rather than landing exactly on it (age * 12 float drift). ----
+
+- name: Case 8, child just under 13 months is still an infant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.08
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 1.08 * 12 = 12.96 months < 13 -> infant
+    tn_ccap_age_category: INFANT
+
+- name: Case 9, child just over 13 months is a toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.09
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 1.09 * 12 = 13.08 months; not < 13 but < 31 -> toddler
+    tn_ccap_age_category: TODDLER
+
+- name: Case 10, child just under 31 months is still a toddler.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2.58
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 2.58 * 12 = 30.96 months < 31 -> toddler
+    tn_ccap_age_category: TODDLER
+
+- name: Case 11, child just over 31 months not in school is preschool.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2.59
+        is_in_k12_school: false
+    households:
+      household:
+        members: [person1]
+        state_code: TN
+  output:
+    # 2.59 * 12 = 31.08 months; not < 13, not < 31, not in school -> preschool
+    tn_ccap_age_category: PRESCHOOL

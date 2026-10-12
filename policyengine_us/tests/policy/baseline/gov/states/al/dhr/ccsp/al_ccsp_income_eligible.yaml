@@ -1,0 +1,258 @@
+# AL CCSP income eligibility tests (SPMUnit, MONTH)
+# Initial path: monthly income <= 180% FPL AND <= 85% SMI.
+# Continuing path (al_ccsp_enrolled=True): monthly income <= 200% FPL AND <= 85% SMI.
+#
+# AL CCSP uses the prior year's HHS FPG (Fact Sheet 2024 -> 2023 FPG).
+# 2023 FPG (Contiguous US): first_person $14,580, additional $5,140.
+#   Family of 2: $19,720/yr ($1,643.33/mo)
+#   Family of 3: $24,860/yr ($2,071.67/mo)
+#   Family of 4: $30,000/yr ($2,500/mo)
+# 180% FPL (FS 3): $44,748/yr ($3,729/mo)
+# 180% FPL (FS 4): $54,000/yr ($4,500/mo)
+# 200% FPL (FS 4): $60,000/yr ($5,000/mo)
+# AL SMI FS 4 (2023-10-01 -> applies 2024): $88,407. 85% SMI FS 4: $75,145.95/yr ($6,262.16/mo).
+
+- name: Family at 150 percent FPL initial path is income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 45_000  # 150% FPL fam of 4 = 45,000/yr = 3,750/mo
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # 3,750/mo <= 4,500/mo (180% FPL) -> initial-eligible
+    # 3,750/mo <= 6,262/mo (85% SMI) -> SMI-eligible
+    al_ccsp_income_eligible: true
+
+- name: Family at 190 percent FPL initial path is income ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 57_000  # 190% FPL fam of 4 = 57,000/yr = 4,750/mo
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # 4,750/mo > 4,500/mo (180% FPL) -> initial path fails
+    al_ccsp_income_eligible: false
+
+- name: Family at 190 percent FPL continuing path is income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 57_000  # 190% FPL fam of 4
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # 4,750/mo <= 5,000/mo (200% FPL) -> continuing-eligible
+    # 4,750/mo <= 6,262/mo (85% SMI) -> SMI-eligible
+    al_ccsp_income_eligible: true
+
+- name: Family above 200 percent FPL continuing path is income ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 63_000  # 210% FPL fam of 4 = 5,250/mo
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # 5,250/mo > 5,000/mo (200% FPL) -> continuing path fails
+    al_ccsp_income_eligible: false
+
+- name: Family above 85 percent SMI is income ineligible even at continuing tier.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 80_000  # 6,667/mo > 85% SMI fam of 4 (6,262/mo)
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # 6,667/mo > 6,262/mo (85% SMI) -> SMI cap fails even though < 200% FPL? actually 80,000 = 256% FPL.
+    # Either way, SMI cap fails.
+    al_ccsp_income_eligible: false
+
+- name: Family at exactly 180 percent FPL initial path is income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_000  # 180% FPL fam of 4 = 30,000 * 1.8
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # 54,000 == 180% FPL exactly -> formula uses <=, so still eligible at the boundary.
+    al_ccsp_income_eligible: true
+
+- name: Family at exactly 200 percent FPL continuing path is income eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 200% FPL fam of 4 = 30,000 * 2.0
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # 60,000 == 200% FPL exactly -> formula uses <=, so still eligible at the boundary.
+    # 60,000/yr < 75,146/yr (85% SMI) -> SMI cap passes.
+    al_ccsp_income_eligible: true
+
+- name: Family just over 85 percent SMI is income ineligible at continuing tier.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 85% SMI fam of 4 = 88,407 * 0.85 = 75,145.95; use +$0.01 above cap.
+        employment_income: 75_145.96
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # 75,145.96 > 75,145.95 (85% SMI cap) -> SMI cap fails.
+    al_ccsp_income_eligible: false

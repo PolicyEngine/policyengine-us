@@ -1,0 +1,27 @@
+- name: Case 1, no Marketplace enrollment has no selected plan actuarial value.
+  absolute_error_margin: 0.001
+  period: 2026
+  input: {}
+  output:
+    selected_marketplace_plan_actuarial_value: 0
+    marketplace_effective_actuarial_value: 0
+
+- name: Case 2, bronze Marketplace enrollment uses bronze actuarial value.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    pays_aca_premium: true
+    selected_marketplace_plan_category: BRONZE
+  output:
+    selected_marketplace_plan_actuarial_value: 0.6
+    marketplace_effective_actuarial_value: 0.6
+
+- name: Case 3, silver Marketplace enrollment uses silver actuarial value.
+  absolute_error_margin: 0.001
+  period: 2026
+  input:
+    pays_aca_premium: true
+    selected_marketplace_plan_category: SILVER
+  output:
+    selected_marketplace_plan_actuarial_value: 0.7
+    marketplace_effective_actuarial_value: 0.7

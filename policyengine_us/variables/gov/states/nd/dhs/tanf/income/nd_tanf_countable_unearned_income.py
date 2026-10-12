@@ -12,6 +12,6 @@ class nd_tanf_countable_unearned_income(Variable):
 
     # Child support received assigned to Child Support Division is excluded.
     # Result cannot be negative since child_support_received is a component
-    # of tanf_gross_unearned_income.
-    adds = ["tanf_gross_unearned_income"]
+    # of nd_tanf_gross_unearned_income.
+    adds = ["nd_tanf_gross_unearned_income"]
     subtracts = ["child_support_received"]

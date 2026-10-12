@@ -1,0 +1,172 @@
+- name: Case 1, electric heating payment goes only to an income-eligible Mississippi household.
+  period: 2026
+  input:
+    state_code: [MS, MS, AL]
+    age: [40, 40, 40]
+    employment_income: [0, 26_741, 0]
+    ssi: [0, 0, 0]
+    social_security: [0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [2_000, 2_000, 2_000]
+  output:
+    # Manual PDF page 58: the one-person 60% state median income limit is 26,740.
+    # Household 1 has no income. Matrix page 1, household size 1, first band,
+    # Total Electric 1,500: min(1,500, 2,000) = 1,500.
+    # Household 2 earns 26,741, one dollar over the limit: 0.
+    # Household 3 lives in Alabama: 0.
+    ms_liheap: [1_500, 0, 0]
+- name: Case 2, a household with no documented member receives no payment.
+  period: 2026
+  input:
+    state_code: MS
+    age: 40
+    immigration_status: UNDOCUMENTED
+    employment_income: 0
+    ssi: 0
+    social_security: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_000
+  output:
+    # Rule 6.3 A (manual PDF page 23): an undocumented head of household who is
+    # the only member is denied. No documented member is counted.
+    ms_liheap_household_size: 0
+    # No income limit applies to a household of size 0.
+    ms_liheap_income_limit: 0
+    ms_liheap_eligible: false
+    ms_liheap: 0
+# Backfilling checks the model convention, not verified historical Mississippi
+# policy. 2022 uses the federal fiscal year 2022 state median income with the
+# FY2026 benefit matrix values backfilled.
+- name: Case 3, parameter backfill uses the 2022 state median income.
+  period: 2022
+  input:
+    state_code: MS
+    age: 40
+    employment_income: 0
+    ssi: 0
+    social_security: 0
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_000
+  output:
+    # FY2026 matrix page 1, household size 1, first band, Total Electric 1,500:
+    # min(1,500, 1,000) = 1,000.
+    ms_liheap: 1_000
+    ms_liheap_household_size: 1
+    # Federal fiscal year 2022 Mississippi state median income for four people:
+    # 68,871. floor(0.6 * 68,871) = floor(41,322.6) = 41,322; one-person share
+    # 0.52; floor(0.52 * 41,322) = floor(21,487.44) = 21,487.
+    ms_liheap_income_limit: 21_487
+    ms_liheap_eligible: true
+- name: Case 4, single parent with two children and full-time wages heats with electricity.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 34
+        employment_income: 28_080
+      person2:
+        age: 9
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_860
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MS
+  output:
+    # Three citizens are counted.
+    ms_liheap_household_size: 3
+    # Wages: 13.50 an hour * 2,080 hours = 28,080; no unearned income.
+    ms_liheap_income: 28_080
+    # floor(0.6 * 85,708) = 51,424; size-3 share 0.52 + 2 * 0.16 = 0.84;
+    # floor(0.84 * 51,424) = floor(43,196.16) = 43,196.
+    ms_liheap_income_limit: 43_196
+    # 28,080 <= 43,196, an adult is present and the household pays its heating bill.
+    ms_liheap_eligible: true
+    # Electricity bill: 155 a month * 12 = 1,860.
+    heating_expense: 1_860
+    # Size-3 band 5 is 26,651-31,313 (matrix page 1).
+    # Total-electric cap: 1,500 - 100 * (5 - 1) = 1,100. Payment: min(1,100, 1,860) = 1,100.
+    ms_liheap: 1_100
+- name: Case 5, mixed-status two-earner family receives its full natural gas bill.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 24_960
+      person2:
+        age: 36
+        immigration_status: UNDOCUMENTED
+        employment_income: 16_640
+      person3:
+        age: 10
+      person4:
+        age: 7
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        heating_type: NATURAL_GAS
+        gas_expense: 420
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MS
+  output:
+    # Rule 6.3 B-C: the undocumented adult is left out of household size, 4 - 1 = 3.
+    ms_liheap_household_size: 3
+    # Both adults' wages count in full: 12 an hour * 2,080 hours = 24,960, plus
+    # 16 an hour * 1,040 hours = 16,640. 24,960 + 16,640 = 41,600.
+    ms_liheap_income: 41_600
+    # Size 3, not 4: floor(0.84 * 51,424) = 43,196.
+    ms_liheap_income_limit: 43_196
+    # 41,600 <= 43,196.
+    ms_liheap_eligible: true
+    # Natural gas bill: 35 a month * 12 = 420.
+    heating_expense: 420
+    # Size-3 band 6 is 31,314-43,196 (matrix page 1).
+    # Natural gas cap: 700 - 50 * (6 - 1) = 450. Payment: min(450, 420) = 420.
+    ms_liheap: 420
+- name: Case 6, retired couple heating with propane receives the propane and electric columns.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        # 1,100 a month in Social Security retirement benefits.
+        social_security_retirement: 13_200
+        ssi: 0
+      person2:
+        age: 68
+        # 900 a month in Social Security retirement benefits.
+        social_security_retirement: 10_800
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_000
+        pre_subsidy_electricity_expense: 1_300
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_liheap_household_size: 2
+    # 13,200 + 10,800 = 24,000.
+    ms_liheap_income: 24_000
+    # floor(0.6 * 85,708) = 51,424; size-2 share 0.52 + 0.16 = 0.68;
+    # floor(0.68 * 51,424) = 34,968.
+    ms_liheap_income_limit: 34_968
+    ms_liheap_eligible: true
+    # Propane bill for the year.
+    heating_expense: 1_000
+    # Size-2 band 5 is 21,151-26,438 (matrix page 1): Propane 600, Electric 500,
+    # Maximum Benefit 1,100.
+    # Propane: min(600, 1,000) = 600. Electric: min(500, 1,300) = 500.
+    # Rule 7.8 D: 600 + 500 = 1,100.
+    ms_liheap: 1_100

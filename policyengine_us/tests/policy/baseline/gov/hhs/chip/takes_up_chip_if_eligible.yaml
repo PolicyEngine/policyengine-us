@@ -1,13 +1,12 @@
-- name: Seed above takeup rate does not enroll
+- name: CHIP take-up defaults to true.
   period: 2026
-  input:
-    chip_take_up_seed: 0.95
-  output:
-    takes_up_chip_if_eligible: false
-
-- name: Seed below takeup rate enrolls
-  period: 2026
-  input:
-    chip_take_up_seed: 0.90
+  input: {}
   output:
     takes_up_chip_if_eligible: true
+
+- name: Explicit false CHIP take-up is honored.
+  period: 2026
+  input:
+    takes_up_chip_if_eligible: false
+  output:
+    takes_up_chip_if_eligible: false

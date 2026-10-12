@@ -1,7 +1,7 @@
 description: Kentucky subtracts these sources from adjusted gross income.
 values:
   2021-01-01:
-  # - Kentucky income tax refund
+    - salt_refund_income
     - us_govt_interest_person
     - ky_pension_income_exclusion  
     - taxable_social_security
@@ -20,7 +20,7 @@ metadata:
     - title: 2021 KENTUCKY FEDERAL ADJUSTED GROSS INCOME MODIFICATIONS PART 2
       href: https://revenue.ky.gov/Forms/Schedule%20M-2021.pdf#page=1
     - title: 2024 Kentucky Individual Income Tax Forms
-      href: https://revenue.ky.gov/Forms/740%20instructions%20packet%20(2025).pdf#page=27
+      href: https://revenue.ky.gov/Forms/740%20instructions%20packet%20(2024).pdf#page=27
     - title: 2023 Kentucky Individual Income Tax Forms
       href: https://revenue.ky.gov/Forms/740%20Packet%20Instructions%202023.pdf#page=27
     - title: 2022 Kentucky Individual Income Tax Forms

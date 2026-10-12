@@ -19,5 +19,10 @@ class il_pi_is_deep_poverty(Variable):
         income = spm_unit("il_isbe_countable_income", period)
         threshold = fpg * p.deep_poverty_rate
         is_below_50_fpl = income <= threshold
-        receives_tanf = spm_unit("il_tanf", period) > 0
+        # Read the take-up-gated federal aggregator rather than il_tanf
+        # directly, so reported non-receipt and reported amounts propagate;
+        # for an Illinois household, tanf equals the IL TANF benefit.
+        receives_tanf = (add(spm_unit, period, ["tanf"]) > 0) | (
+            add(spm_unit, period, ["receives_tanf"]) > 0
+        )
         return is_below_50_fpl | receives_tanf

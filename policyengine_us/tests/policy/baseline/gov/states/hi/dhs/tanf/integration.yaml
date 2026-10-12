@@ -50,10 +50,10 @@
     hi_tanf_gross_income_eligible: true
     hi_tanf_countable_earned_income: 0
     hi_tanf_countable_income: 0
-    # 1265 × 0.48 = 607.2
-    hi_tanf_maximum_benefit: 607.2
+    # SOA = 1265 × 0.48 × 0.80 = 485.76 (mandatory-work steady-state)
+    hi_tanf_maximum_benefit: 485.76
     hi_tanf_eligible: true
-    hi_tanf: 607.2
+    hi_tanf: 485.76
 
 - name: Case 2, single parent with child, moderate earned income.
   period: 2024-01
@@ -89,11 +89,11 @@
     # Step 3: 55% = 1_000 * 0.55 = 550, After: 1_000 - 550 = 450
     hi_tanf_countable_earned_income: 450
     hi_tanf_countable_income: 450
-    # 1265 × 0.48 = 607.2
-    hi_tanf_maximum_benefit: 607.2
+    # SOA = 1265 × 0.48 × 0.80 = 485.76 (mandatory-work steady-state)
+    hi_tanf_maximum_benefit: 485.76
     hi_tanf_eligible: true
-    # Benefit = 607.2 - 450 = 157.2
-    hi_tanf: 157.2
+    # Benefit = 485.76 - 450 = 35.76
+    hi_tanf: 35.76
 
 - name: Case 3, family of 3 with income exceeding SOA.
   period: 2024-01
@@ -132,10 +132,10 @@
     # Step 3: 55% = 990, After: 810
     hi_tanf_countable_earned_income: 810
     hi_tanf_countable_income: 810
-    # 1590 × 0.48 = 763.2
-    hi_tanf_maximum_benefit: 763.2
+    # SOA = 1590 × 0.48 × 0.80 = 610.56 (mandatory-work steady-state)
+    hi_tanf_maximum_benefit: 610.56
     hi_tanf_eligible: true
-    # Benefit = max(763.2 - 810, 0) = 0 (countable income exceeds SOA)
+    # Benefit = max(610.56 - 810, 0) = 0 (countable income exceeds SOA)
     hi_tanf: 0
 
 - name: Case 4, family of 3 over gross income limit.
@@ -200,11 +200,11 @@
     hi_tanf_gross_income_eligible: true
     hi_tanf_countable_earned_income: 0
     hi_tanf_countable_income: 400
-    # 1265 × 0.48 = 607.2
-    hi_tanf_maximum_benefit: 607.2
+    # SOA = 1265 × 0.48 × 0.80 = 485.76 (mandatory-work steady-state)
+    hi_tanf_maximum_benefit: 485.76
     hi_tanf_eligible: true
-    # Benefit = 607.2 - 400 = 207.2
-    hi_tanf: 207.2
+    # Benefit = 485.76 - 400 = 85.76
+    hi_tanf: 85.76
 
 - name: Case 6, family with both earned and unearned income.
   period: 2024-01
@@ -245,11 +245,11 @@
     hi_tanf_countable_earned_income: 270
     # Total countable = 270 + 300 = 570
     hi_tanf_countable_income: 570
-    # 1590 × 0.48 = 763.2
-    hi_tanf_maximum_benefit: 763.2
+    # SOA = 1590 × 0.48 × 0.80 = 610.56 (mandatory-work steady-state)
+    hi_tanf_maximum_benefit: 610.56
     hi_tanf_eligible: true
-    # Benefit = 763.2 - 570 = 193.2
-    hi_tanf: 193.2
+    # Benefit = 610.56 - 570 = 40.56
+    hi_tanf: 40.56
 
 - name: Case 7, family with dependent care deduction in full pipeline.
   period: 2024-01
@@ -289,11 +289,11 @@
     # After dependent care: max(450 - 150, 0) = 300
     hi_tanf_countable_earned_income: 300
     hi_tanf_countable_income: 300
-    # 1265 × 0.48 = 607.2
-    hi_tanf_maximum_benefit: 607.2
+    # SOA = 1265 × 0.48 × 0.80 = 485.76 (mandatory-work steady-state)
+    hi_tanf_maximum_benefit: 485.76
     hi_tanf_eligible: true
-    # Benefit = 607.2 - 300 = 307.2
-    hi_tanf: 307.2
+    # Benefit = 485.76 - 300 = 185.76
+    hi_tanf: 185.76
 
 - name: Case 8, single person with no income.
   period: 2024-01
@@ -318,8 +318,8 @@
     hi_tanf_gross_income_eligible: true
     hi_tanf_countable_earned_income: 0
     hi_tanf_countable_income: 0
-    # 939 × 0.48 = 450.72
-    hi_tanf_maximum_benefit: 450.72
+    # SOA = 939 × 0.48 × 0.80 = 360.576 (mandatory-work steady-state)
+    hi_tanf_maximum_benefit: 360.576
     # Note: Demographic eligibility requires a minor child
     hi_tanf_eligible: false
     hi_tanf: 0
@@ -373,8 +373,8 @@
     hi_tanf_countable_earned_income: 630
     # Total countable = 630 + 200 = 830
     hi_tanf_countable_income: 830
-    # 2242 × 0.48 = 1076.16
-    hi_tanf_maximum_benefit: 1_076.16
+    # SOA = 2242 × 0.48 × 0.80 = 860.928 (mandatory-work steady-state)
+    hi_tanf_maximum_benefit: 860.928
     hi_tanf_eligible: true
-    # Benefit = 1076.16 - 830 = 246.16
-    hi_tanf: 246.16
+    # Benefit = 860.928 - 830 = 30.928
+    hi_tanf: 30.928

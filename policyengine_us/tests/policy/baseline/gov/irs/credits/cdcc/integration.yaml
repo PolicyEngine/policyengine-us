@@ -95,3 +95,164 @@
   output:  # expected results from patched TAXSIM35 2023-01-13 version
     taxsim_tfica: 11_130.24
     income_tax: 24_507.2
+
+- name: Disabled adult dependent's care expenses reach the CDCC via care_expenses
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 40_000
+        is_tax_unit_head: true
+      person2:  # earning spouse: the earned-income test passes without deemed income
+        age: 38
+        employment_income: 30_000
+        is_tax_unit_spouse: true
+      person3:  # disabled adult dependent: care billed as adult care, not childcare
+        age: 18
+        is_incapable_of_self_care: true
+        is_tax_unit_dependent: true
+        pre_subsidy_care_expenses: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # The childcare pipeline is untouched (no children under 13); the adult-care
+    # expense enters the CDCC base via care_expenses.
+    tax_unit_childcare_expenses: 0
+    care_expenses: [0, 0, 6_000]
+    cdcc_relevant_expenses: 3_000  # min(6_000, $3,000 cap for one individual, earnings)
+    cdcc: 600  # 20% x 3_000 at $70,000 joint AGI
+
+# Treas. Reg. 1.21-2(c), Example 3: V is a full-time student, W (V's spouse)
+# is incapable of self-care, neither earns, and they pay $5,000 for W's care.
+# Earned income may be attributed to only one spouse (1.21-2(b)(4)(iii)), so
+# the lesser of their earned incomes is zero and no credit is allowed.
+- name: Both spouses without earnings get no credit despite the deemed income floor
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_full_time_student: true
+        is_tax_unit_head: true
+      person2:
+        age: 43
+        is_incapable_of_self_care: true
+        is_tax_unit_spouse: true
+        pre_subsidy_care_expenses: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    count_cdcc_eligible: 1
+    min_head_spouse_earned: 0
+    cdcc: 0
+
+- name: Both spouses incapable of self-care are one qualifying individual
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+        is_incapable_of_self_care: true
+      person2:  # incapacitated spouse: care billed as adult care via care_expenses
+        age: 43
+        is_incapable_of_self_care: true
+        pre_subsidy_care_expenses: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Two incapacitated spouses count as one qualifying individual (the taxpayer
+    # is never their own), so the cap and the deemed floor are $3,000, not
+    # $6,000. cdcc = 20% x $3,000 = $600 (was $1,200 before the count fix).
+    count_cdcc_eligible: 1
+    cdcc_limit: 3_000
+    cdcc: 600
+
+- name: Disabled spouse and a qualifying child are two separate qualifying individuals
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+        is_tax_unit_head: true
+      person2:  # incapacitated non-earning spouse: deemed income covers the earned-income test
+        age: 43
+        is_incapable_of_self_care: true
+        is_tax_unit_spouse: true
+        pre_subsidy_care_expenses: 6_000
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # The child (21(b)(1)(A)) and the disabled spouse (21(b)(1)(C)) are two
+    # distinct qualifying individuals, unlike the two-incapacitated-spouses
+    # case above, so this family gets the full 2-person $6,000 cap.
+    count_cdcc_eligible: 2
+    cdcc_limit: 6_000
+    # min(8_000 childcare + 6_000 adult care, $6,000 cap, $6,000 deemed floor)
+    cdcc_relevant_expenses: 6_000
+    cdcc: 1_200  # 20% x 6_000
+
+- name: Combined care expenses are capped the same regardless of the split between childcare and adult care
+  absolute_error_margin: 0.01
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+        is_tax_unit_head: true
+      person2:
+        age: 43
+        is_incapable_of_self_care: true
+        is_tax_unit_spouse: true
+        pre_subsidy_care_expenses: 8_000  # more adult care than childcare, same $14,000 total
+      person3:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Same $14,000 combined total as the test above with the split reversed;
+    # cdcc_relevant_expenses sums childcare + adult care before capping, so
+    # the result is identical regardless of which category is larger.
+    count_cdcc_eligible: 2
+    cdcc_relevant_expenses: 6_000
+    cdcc: 1_200

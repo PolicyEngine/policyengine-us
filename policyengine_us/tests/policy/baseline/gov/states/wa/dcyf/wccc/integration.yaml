@@ -1,0 +1,311 @@
+- name: Case 1, single parent at 65% SMI recipient track, copay $65 tier, Region 1 center.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: true
+        employment_income: 24_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        wa_wccc_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+        spm_unit_assets: 5_000
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county_str: ADAMS_COUNTY_WA
+        is_homeless: false
+  output:
+    wa_wccc_eligible_child: [false, true]
+    # SMI rate 0.65 (recipient track since is_wccc_enrolled).
+    wa_wccc_smi_rate: 0.65
+    # Size 2 SMI 2024-10-01: 131,054 * 0.68 / 12 = $7,426.39/mo.
+    # Limit = 7,426.39 * 0.65 = $4,827.16/mo. Income $2,000/mo <= limit.
+    wa_wccc_income_eligible: true
+    is_ccdf_asset_eligible: true
+    wa_wccc_activity_eligible: true
+    wa_wccc_eligible: true
+    # SMI fraction: 2,000 / 7,426.39 = 0.2693 (above 20%, <= 36% -> $65 tier).
+    wa_wccc_copay: 65
+    # Person2 is age 4 -> PRESCHOOL. Region 1 PRESCHOOL FULL_DAY = $53.18.
+    wa_wccc_center_age_group: [SCHOOL_AGE, PRESCHOOL]
+    wa_wccc_center_region: REGION_1
+    # Max reimbursement: 53.18 * 23 = $1,223.14 (only person2 contributes).
+    wa_wccc_max_monthly_reimbursement: [0, 1_223.14]
+    # Actual expenses 20,000/12 = 1,666.67/mo. Uncapped = max(1666.67 - 65, 0) = 1,601.67.
+    # Benefit = min(1,601.67, 1,223.14) = $1,223.14.
+    wa_wccc: 1_223.14
+
+- name: Case 2, two-parent family above 60% SMI applicant limit, ineligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+        employment_income: 60_000
+      person2:
+        age: 33
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+        employment_income: 40_000
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        wa_wccc_provider_type: CENTER
+      person4:
+        age: 7
+        is_tax_unit_dependent: true
+        wa_wccc_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 25_000
+        spm_unit_assets: 50_000
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WA
+        county_str: KING_COUNTY_WA
+        is_homeless: false
+  output:
+    wa_wccc_eligible_child: [false, false, true, true]
+    # Size 4 SMI 2024-10-01: 131,054/12 = $10,921.17/mo.
+    # Applicant 60% limit = $6,552.70/mo.
+    # Combined income $100,000/yr = $8,333.33/mo > $6,552.70 limit.
+    wa_wccc_smi_rate: 0.6
+    wa_wccc_income_eligible: false
+    wa_wccc_eligible: false
+    wa_wccc: 0
+
+- name: Case 3, homeless family HGP path bypasses asset and activity tests, copay waived.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+        employment_income: 30_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        wa_wccc_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+        spm_unit_assets: 5_000
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county_str: KING_COUNTY_WA
+        is_homeless: true
+  output:
+    wa_wccc_eligible_child: [false, true]
+    # Homeless triggers 85% SMI rate.
+    wa_wccc_smi_rate: 0.85
+    # Homeless triggers categorical eligibility (HGP); income test bypassed.
+    wa_wccc_income_eligible: true
+    wa_wccc_hgp_eligible: true
+    wa_wccc_eligible: true
+    # Homeless triggers copay waiver.
+    wa_wccc_copay: 0
+    wa_wccc_center_age_group: [SCHOOL_AGE, PRESCHOOL]
+    # Region 4 (King) PRESCHOOL FULL_DAY = $85.68.
+    wa_wccc_center_region: REGION_4
+    # Max reimbursement: 85.68 * 23 = $1,970.64.
+    wa_wccc_max_monthly_reimbursement: [0, 1_970.64]
+    # Expenses 20,000/12 = 1,666.67/mo. Copay 0. Uncapped = 1,666.67.
+    # Benefit = min(1,666.67, 1,970.64) = $1,666.67.
+    wa_wccc: 1_666.67
+
+- name: Case 4, teen parent age 19 in K-12 at 85% SMI, copay waived.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 19
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: true
+        is_wccc_enrolled: false
+        employment_income: 12_000
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        wa_wccc_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+        spm_unit_assets: 1_000
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county_str: SPOKANE_COUNTY_WA
+        is_homeless: false
+  output:
+    wa_wccc_eligible_child: [false, true]
+    # Teen parent (age 19, in K-12) sets 85% SMI rate.
+    wa_wccc_smi_rate: 0.85
+    # Income $1,000/mo well below 85% of size 2 SMI ($6,312.43/mo).
+    wa_wccc_income_eligible: true
+    # Activity passes via is_in_k12_school.
+    wa_wccc_activity_eligible: true
+    wa_wccc_eligible: true
+    # Teen-parent copay waiver applies.
+    wa_wccc_copay: 0
+    wa_wccc_center_region: SPOKANE
+    # Person2 is age 1 -> 12 months not less than 12 -> TODDLER.
+    wa_wccc_center_age_group: [SCHOOL_AGE, TODDLER]
+    # Spokane TODDLER FULL_DAY = $56.59. Max reimbursement = 56.59 * 23 = $1,301.57.
+    wa_wccc_max_monthly_reimbursement: [0, 1_301.57]
+    # Expenses 18,000/12 = $1,500/mo. Copay 0. Uncapped = 1,500.
+    # Benefit = min(1,500, 1,301.57) = $1,301.57.
+    wa_wccc: 1_301.57
+
+- name: Case 5, assets above $1M, ineligible regardless of income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+        employment_income: 24_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        wa_wccc_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+        spm_unit_assets: 1_500_000
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county_str: ADAMS_COUNTY_WA
+        is_homeless: false
+  output:
+    is_ccdf_asset_eligible: false
+    wa_wccc_eligible: false
+    wa_wccc: 0
+
+- name: Case 6, income just under 65% SMI threshold, recipient eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: true
+        # Annual income just below 65% SMI for size 2:
+        # 131,054 * 0.68 * 0.65 = $57,925.87/yr. Test 1 dollar below.
+        employment_income: 57_924
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        wa_wccc_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+        spm_unit_assets: 5_000
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county_str: ADAMS_COUNTY_WA
+        is_homeless: false
+  output:
+    # Income exactly at limit -> eligible (<=).
+    wa_wccc_smi_rate: 0.65
+    wa_wccc_income_eligible: true
+    wa_wccc_eligible: true
+
+- name: Case 7, negative self-employment income does not inflate benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+        is_full_time_student: true
+        employment_income: 6_000
+        self_employment_income: -60_000_000
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        wa_wccc_provider_type: CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+        spm_unit_assets: 5_000
+        snap: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county_str: ADAMS_COUNTY_WA
+        is_homeless: false
+  output:
+    wa_wccc_eligible: true
+    # Region 1 PRESCHOOL FULL_DAY = $53.18. Max reimbursement = $1,223.14.
+    # Expenses 20,000/12 = $1,666.67/mo. Benefit capped at max_reimbursement.
+    # Critical: benefit is min(uncapped, max_reimbursement) -- never max_reimb minus countable_income.
+    wa_wccc: 1_223.14

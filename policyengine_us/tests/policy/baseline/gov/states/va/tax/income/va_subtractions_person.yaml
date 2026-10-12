@@ -1,0 +1,60 @@
+- name: Unemployment compensation is attributed to the recipient spouse
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+      person2:
+        age: 45
+        unemployment_compensation: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_subtractions_person: [0, 15_000]
+
+- name: Disability income subtraction is attributed to the recipient spouse
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+      person2:
+        age: 45
+        disability_benefits: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_subtractions_person: [0, 15_000]
+
+- name: Military basic pay subtraction is attributed to the service member
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        military_basic_pay: 15_000
+        employment_income: 15_000
+      person2:
+        age: 45
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    va_subtractions_person: [15_000, 0]

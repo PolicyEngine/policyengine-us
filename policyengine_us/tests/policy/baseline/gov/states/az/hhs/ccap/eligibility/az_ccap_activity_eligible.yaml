@@ -1,0 +1,196 @@
+- name: Case 1, single working parent is activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_ccap_activity_eligible: true
+
+- name: Case 2, single non-working parent is not activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_ccap_activity_eligible: false
+
+- name: Case 3, adult full-time student with no work is not activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # R6-5-4912(A)(3): adult education requires an average of >=20 hours/week of
+    # work; education alone does not qualify an adult.
+    az_ccap_activity_eligible: false
+
+- name: Case 4, disabled parent unable to provide care is activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_disabled: true
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    az_ccap_activity_eligible: true
+
+- name: Case 5, two-parent family with one non-active parent is not activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # person2 is a head/spouse with no qualifying activity, so the
+    # head_or_spouse & ~eligible_person sum is nonzero and the unit fails.
+    az_ccap_activity_eligible: false
+
+- name: Case 6, teen parent under 20 in secondary school without work is activity eligible.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 18
+        weekly_hours_worked_before_lsr: 0
+        is_in_secondary_school: true
+        own_children_in_household: 1
+      child:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: AZ
+  output:
+    # R6-5-4912(A)(4): teen parents under age 20 in secondary school qualify via
+    # education without a work requirement.
+    az_ccap_activity_eligible: true
+
+- name: Case 7, adult college student without work is not activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 22
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      person2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # College is not secondary school, and the adult does not work, so the
+    # education exception does not apply (R6-5-4912(A)(3)-(4)).
+    az_ccap_activity_eligible: false
+
+- name: Case 8, non-working caretaker of a foster child is activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        weekly_hours_worked_before_lsr: 0
+      child:
+        age: 4
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, child]
+    households:
+      household:
+        members: [person1, child]
+        state_code: AZ
+  output:
+    # R6-5-4912(A)(9): a CPS/DDD foster case plan is itself an eligible need, so
+    # the family qualifies without an employment activity.
+    az_ccap_activity_eligible: true
+
+- name: Case 9, non-working caretaker of a protective-services child is activity eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        weekly_hours_worked_before_lsr: 0
+      child:
+        age: 4
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, child]
+    households:
+      household:
+        members: [person1, child]
+        state_code: AZ
+  output:
+    # R6-5-4912(A)(9): a CPS-referred case plan is itself an eligible need.
+    az_ccap_activity_eligible: true

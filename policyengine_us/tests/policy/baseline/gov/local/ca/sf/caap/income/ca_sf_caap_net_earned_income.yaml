@@ -1,0 +1,39 @@
+# Net earned income = max(earned - disregard, 0). Recipients get the 5-tier
+# disregard; applicants get none.
+- name: Case 1, recipient with $800/month earnings nets earnings after the cap.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 9_600  # 800/month
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sf_caap_is_recipient: true
+  output:
+    # 800 - 455 (capped disregard) = 345.
+    ca_sf_caap_net_earned_income: 345
+
+- name: Case 2, applicant with $800/month earnings keeps full earnings.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        employment_income: 9_600  # 800/month
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sf_caap_is_recipient: false
+  output:
+    # No disregard for applicants: 800 - 0 = 800.
+    ca_sf_caap_net_earned_income: 800

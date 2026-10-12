@@ -1,0 +1,305 @@
+# Wisconsin Shares countable income: gross earned and unearned income of the
+# assistance group, with these handbook disregards: court-ordered child or
+# family support is fully disregarded when the monthly total is at or below
+# $1,250 and fully counted when it exceeds $1,250 (a cliff); the earned
+# income and SSI of minor dependents are disregarded; adult SSI counts.
+# Wisconsin Shares Handbook (July 2026) Sections 6.2 and 6.3.
+- name: Case 1, wages count in full.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/month.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_countable_income: 3_000
+
+- name: Case 2, child support of $1,000 per month is fully disregarded.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month.
+        child_support_received: 12_000  # 1,000/month, at or below the 1,250 cap.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_countable_income: 2_000
+
+- name: Case 3, child support of $1,500 per month counts in its entirety.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month.
+        child_support_received: 18_000  # 1,500/month exceeds the 1,250 cap, so all counts.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_countable_income: 3_500  # 2,000 + 1,500.
+
+- name: Case 4, child support of exactly $1,250 per month is still disregarded.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month.
+        child_support_received: 15_000  # Exactly 1,250/month, not above the cap.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_countable_income: 2_000
+
+- name: Case 5, earnings of a minor dependent are disregarded.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month.
+      person2:
+        age: 16
+        employment_income: 6_000  # Minor dependent's wages are disregarded.
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_countable_income: 2_000
+
+- name: Case 6, adult SSI counts while a minor dependent's SSI is disregarded.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 0
+        ssi: 500  # Monthly, counted for adults.
+      person2:
+        age: 10
+        ssi: 300  # Monthly, disregarded for minor dependents.
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_countable_income: 500
+
+- name: Case 7, Social Security, unemployment insurance, and pensions all count.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        social_security: 12_000  # 1,000/month.
+        unemployment_compensation: 6_000  # 500/month.
+        pension_income: 6_000  # 500/month.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_countable_income: 2_000
+
+- name: Case 8, net self-employment income counts.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 24_000  # 2,000/month.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_countable_income: 2_000
+
+- name: Case 9, a self-employment loss larger than wages floors countable income at zero.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month.
+        self_employment_income: -36_000  # -3,000/month loss.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # 2,000 - 3,000 = -1,000, floored at zero.
+    wi_shares_countable_income: 0
+
+- name: Case 10, a minor parent's earned income counts because they are a head, not a dependent.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 24_000  # 2,000/month; the minor-dependent disregard does not apply to a head.
+        is_tax_unit_head_or_spouse: true  # A teen parent heads their own tax unit.
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_countable_income: 2_000
+
+- name: Case 11, farm, partnership, farm rental, and estate income all count.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        farm_operations_income: 12_000  # 1,000/month.
+        partnership_s_corp_income: 6_000  # 500/month.
+        farm_rent_income: 3_000  # 250/month.
+        estate_income: 3_000  # 250/month.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # 1,000 + 500 + 250 + 250 = 2,000.
+    wi_shares_countable_income: 2_000
+
+- name: Case 12, a minor dependent's farm and partnership earnings are disregarded.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month.
+      person2:
+        age: 16
+        farm_operations_income: 6_000  # Minor dependent's farm self-employment earnings are disregarded.
+        partnership_s_corp_income: 3_000  # Minor dependent's partnership earnings are disregarded.
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_countable_income: 2_000
+
+- name: Case 13, SSTB self-employment income counts alongside non-SSTB self-employment income.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 12_000  # 1,000/month, non-SSTB.
+        sstb_self_employment_income: 12_000  # 1,000/month from a specified service trade or business.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # 1,000 + 1,000 = 2,000.
+    wi_shares_countable_income: 2_000
+
+- name: Case 14, a minor dependent's SSTB self-employment earnings are disregarded.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month.
+      person2:
+        age: 16
+        sstb_self_employment_income: 6_000  # Minor dependent's SSTB earnings are disregarded.
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_countable_income: 2_000

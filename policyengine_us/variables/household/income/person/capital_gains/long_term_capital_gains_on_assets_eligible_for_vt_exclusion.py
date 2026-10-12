@@ -7,6 +7,7 @@ class long_term_capital_gains_on_assets_eligible_for_vt_exclusion(Variable):
     label = "Long-term capital gains on assets eligible for Vermont's 40% exclusion"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.long_term_capital_gains"
     defined_for = StateCode.VT
     reference = (
         "https://tax.vermont.gov/sites/tax/files/documents/IN-153-2024.pdf#page=2",

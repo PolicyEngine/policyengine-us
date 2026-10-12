@@ -1,0 +1,15 @@
+description: Washington limits income to this fraction of the state median income when determining family financial need under the Early Childhood Education and Assistance Program.
+
+values:
+  2025-07-01: 0.36
+  2030-08-01: 0.5
+
+metadata:
+  unit: /1
+  period: year
+  label: Washington ECEAP income threshold as fraction of state median income
+  reference:
+    - title: RCW 43.216.505 Eligible children (36 percent of SMI until the 2030-31 school year; sections 204-206 of 2021 c 199 take effect July 1, 2025)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=43.216.505
+    - title: DCYF 2026 ECEAP Income Eligibility Levels - State Median Income
+      href: https://www.dcyf.wa.gov/sites/default/files/pdf/eceap/State-Median-Income-Chart.pdf

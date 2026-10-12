@@ -309,10 +309,20 @@ values:
   2025-06-01: 178.909
   2025-07-01: 179.154
   2025-08-01: 179.656
+  2025-09-01: 180.196
+  # October 2025 CPI was not published (BLS canceled the release); the
+  # September value carries forward at October instants.
+  2025-11-01: 179.712
+  2025-12-01: 179.598
+  2026-01-01: 180.232
+  2026-02-01: 181.080
+  2026-03-01: 183.013
+  2026-04-01: 184.499
+  2026-05-01: 185.589
+  2026-06-01: 184.992
   # CBO projections from CBO Feb 2026 forecast for future periods.
   # CBO projects the average C-CPI-U over the 12mo ending August,
   # which determines tax parameters for the following year.
-  2026-02-01: 183.1 # 2027 value.
   2027-02-01: 187.2 # 2028 value.
   2028-02-01: 191.1 # 2029 value.
   2029-02-01: 194.9 # 2030 value.
@@ -328,6 +338,8 @@ metadata:
   unit: currency-USD
   label: Chained CPI-U
   reference:
+    - title: BLS | Chained CPI-U, U.S. city average, all items (SUUR0000SA0), monthly values through June 2026
+      href: https://data.bls.gov/timeseries/SUUR0000SA0
     - title: CBO | Tax Parameters and Effective Marginal Tax Rates | June 2024
       # Source: https://www.cbo.gov/data/budget-economic-data#10
       # Row: 159

@@ -24,7 +24,7 @@ class mi_ssp_payment_category(Variable):
         # override the manual input for the categories Michigan shares with
         # federal SSI. Adult Foster Care and Home for the Aged categories
         # are MI-specific and fall back to the user-provided input.
-        federal_arrangement = person("ssi_federal_living_arrangement", period.this_year)
+        federal_arrangement = person("ssi_federal_living_arrangement", period)
         federal_values = federal_arrangement.possible_values
         in_medical_facility = (
             federal_arrangement == federal_values.MEDICAL_TREATMENT_FACILITY

@@ -1,0 +1,23 @@
+description: The IRS subtracts these non-refundable credits, which are ordered after the Child Tax Credit, from the tax liability that limits the non-refundable Child Tax Credit when the filer completes Credit Limit Worksheet B.
+values:
+  # The adoption credit (Schedule 3, line 6c), mortgage interest credit
+  # (line 6g) and District of Columbia first-time homebuyer credit (line 6h)
+  # also belong here but are not modeled.
+  2013-01-01:
+    - residential_clean_energy_credit # Form 5695, line 15 (Schedule 3, line 5a from 2023)
+
+metadata:
+  unit: list
+  period: year
+  label: Non-refundable credits following the Child Tax Credit
+  reference:
+    - title: 2025 Instructions for Schedule 8812 (Form 1040), Credit Limit Worksheet A, line 4
+      href: https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=4
+    - title: 2025 Instructions for Schedule 8812 (Form 1040), Credit Limit Worksheet B, line 15
+      href: https://www.irs.gov/pub/irs-pdf/i1040s8.pdf#page=6
+    - title: 2020 Publication 972, Line 14 Worksheet, line 15
+      href: https://www.irs.gov/pub/irs-prior/p972--2020.pdf#page=9
+    - title: 26 U.S. Code § 24(d)(1)(B) - Portion of credit refundable
+      href: https://www.law.cornell.edu/uscode/text/26/24#d_1_B
+    - title: 26 U.S. Code § 25D(c) - Carryforward of unused credit
+      href: https://www.law.cornell.edu/uscode/text/26/25D#c

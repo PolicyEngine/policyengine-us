@@ -1,0 +1,46 @@
+# Tests for oh_ccap_fpg (SPMUnit, MONTH).
+# DCY Procedure Letter 21 income standards use the federal poverty guideline
+# in effect each October 1 and remain effective until the next annual letter,
+# so months before October use the prior year's guideline. At 2026-01 the 2025
+# FPG applies: 15,650 + 5,500 * (size - 1) annually (CONTIGUOUS_US).
+- name: Case 1, family of three uses the 2025 guideline in January 2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # (15,650 + 2 * 5,500) / 12 = 26,650 / 12 = 2,220.83.
+    oh_ccap_fpg: 2_220.83
+
+- name: Case 2, family of two uses the 2025 guideline in January 2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    # (15,650 + 5,500) / 12 = 21,150 / 12 = 1,762.50.
+    oh_ccap_fpg: 1_762.5

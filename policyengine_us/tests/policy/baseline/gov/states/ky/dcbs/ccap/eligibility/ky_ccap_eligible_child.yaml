@@ -1,0 +1,131 @@
+# KY CCAP eligible child (Section 3(1)): under 13 (or under 19 if special needs),
+# and US citizen or qualified alien (is_ccdf_immigration_eligible_child).
+
+- name: Case 1, citizen child under 13 is an eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ccap_eligible_child: true
+
+- name: Case 2, child at exactly 13 is not an eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 13
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ccap_eligible_child: false
+
+- name: Case 3, special-needs child age 15 is eligible under the 19 limit.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 15
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ccap_eligible_child: true
+
+- name: Case 4, special-needs child at exactly 19 is not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 19
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ccap_eligible_child: false
+
+- name: Case 5, non-qualified immigrant child is not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ccap_eligible_child: false
+
+- name: Case 6, child at exactly 12 is just under the age-13 limit and eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 12
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ccap_eligible_child: true
+
+- name: Case 7, newborn citizen is an eligible child.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ccap_eligible_child: true
+
+- name: Case 8, non-special-needs child at age 14 is over the limit and not eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 14
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ccap_eligible_child: false
+
+- name: Case 9, special-needs child at exactly 18 is just under the 19 limit and eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+  output:
+    ky_ccap_eligible_child: true

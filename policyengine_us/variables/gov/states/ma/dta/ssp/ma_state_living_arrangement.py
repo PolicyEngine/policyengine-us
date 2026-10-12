@@ -14,7 +14,7 @@ class ma_state_living_arrangement(Variable):
     value_type = Enum
     entity = Household
     label = "Massachusetts State Living Arrangement"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.MA
     possible_values = MAStateLivingArrangement
     default_value = MAStateLivingArrangement.FULL_COST

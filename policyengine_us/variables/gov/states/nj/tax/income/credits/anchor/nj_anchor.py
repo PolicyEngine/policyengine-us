@@ -24,7 +24,8 @@ class nj_anchor(Variable):
         is_senior = greater_age >= p.age_threshold
 
         # Determine if homeowner or renter
-        pays_property_taxes = add(tax_unit, period, ["real_estate_taxes"]) > 0
+        property_taxes = add(tax_unit, period, ["real_estate_taxes"])
+        pays_property_taxes = property_taxes > 0
         pays_rent = tax_unit("rents", period)
         is_homeowner = pays_property_taxes & ~pays_rent
         is_renter = pays_rent & ~pays_property_taxes
@@ -46,6 +47,7 @@ class nj_anchor(Variable):
         homeowner_amount = where(
             is_senior, homeowner_senior_amount, homeowner_non_senior_amount
         )
+        homeowner_amount = min_(homeowner_amount, property_taxes)
 
         # Calculate renter benefit amounts
         renter_amount = where(

@@ -1,0 +1,106 @@
+description: Wisconsin charges assistance groups with one authorized child this hourly copayment, based on income as a share of the federal poverty guideline, under the Wisconsin Shares Child Care Subsidy Program.
+
+# Copay per hour by the assistance group's income as a share of the federal
+# poverty guideline. The schedule floors income to the lower 5% FPL line ("If
+# the assistance group's income is between two lines, it uses the lower
+# amount"); the 65% to 100% FPL rows are all $0.00 and collapse into the first
+# bracket. The copayment formula rounds the income ratio before this lookup
+# so float32 noise at an exact band edge cannot drop a family into the lower
+# band. The 200% FPL row equals the 195% row, so income at or above
+# 195% FPL keeps the top rate; the exit period adds a separate copayment on
+# top (see exit/phase_out_rate.yaml).
+brackets:
+  - threshold:
+      2026-02-01: 0
+    amount:
+      2026-02-01: 0 # At or below 100% FPL
+  - threshold:
+      2026-02-01: 1.05
+    amount:
+      2026-02-01: 0.9 # 105% FPL band
+  - threshold:
+      2026-02-01: 1.1
+    amount:
+      2026-02-01: 0.96 # 110% FPL band
+  - threshold:
+      2026-02-01: 1.15
+    amount:
+      2026-02-01: 1.03 # 115% FPL band
+  - threshold:
+      2026-02-01: 1.2
+    amount:
+      2026-02-01: 1.1 # 120% FPL band
+  - threshold:
+      2026-02-01: 1.25
+    amount:
+      2026-02-01: 1.22 # 125% FPL band
+  - threshold:
+      2026-02-01: 1.3
+    amount:
+      2026-02-01: 1.39 # 130% FPL band
+  - threshold:
+      2026-02-01: 1.35
+    amount:
+      2026-02-01: 1.47 # 135% FPL band
+  - threshold:
+      2026-02-01: 1.4
+    amount:
+      2026-02-01: 1.52 # 140% FPL band
+  - threshold:
+      2026-02-01: 1.45
+    amount:
+      2026-02-01: 1.6 # 145% FPL band
+  - threshold:
+      2026-02-01: 1.5
+    amount:
+      2026-02-01: 1.65 # 150% FPL band
+  - threshold:
+      2026-02-01: 1.55
+    amount:
+      2026-02-01: 1.73 # 155% FPL band
+  - threshold:
+      2026-02-01: 1.6
+    amount:
+      2026-02-01: 1.79 # 160% FPL band
+  - threshold:
+      2026-02-01: 1.65
+    amount:
+      2026-02-01: 1.85 # 165% FPL band
+  - threshold:
+      2026-02-01: 1.7
+    amount:
+      2026-02-01: 1.9 # 170% FPL band
+  - threshold:
+      2026-02-01: 1.75
+    amount:
+      2026-02-01: 1.97 # 175% FPL band
+  - threshold:
+      2026-02-01: 1.8
+    amount:
+      2026-02-01: 2.06 # 180% FPL band
+  - threshold:
+      2026-02-01: 1.85
+    amount:
+      2026-02-01: 2.15 # 185% FPL band
+  - threshold:
+      2026-02-01: 1.9
+    amount:
+      2026-02-01: 2.24 # 190% FPL band
+  - threshold:
+      2026-02-01: 1.95
+    amount:
+      2026-02-01: 2.34 # 195% FPL band
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: hour
+  label: Wisconsin Shares hourly copayment with one authorized child
+  reference:
+    - title: Wisconsin Shares Copayment Schedule, effective February 1, 2026
+      href: https://dcf.wisconsin.gov/files/wishares/pdf/wishares-copay-schedule.pdf
+    - title: Wisconsin Shares Handbook (July 2026), Section 18.2 Copayments
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=150
+    - title: Wis. Stat. § 49.155(5)(a)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/49/III/155/5

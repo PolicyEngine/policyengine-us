@@ -1,0 +1,16 @@
+description: Utah caps the household size at this number of people in the copayment schedule under the Child Care Assistance program.
+
+# The Table 4 (effective April 1, 2026) copayment schedule's largest
+# bracket covers households of 12 or more people; larger households use
+# the size 12 column. The 2020 entry is placed at PolicyEngine's
+# backdating floor.
+values:
+  2020-01-01: 12
+
+metadata:
+  unit: person
+  period: year
+  label: Utah CCAP copayment schedule maximum household size
+  reference:
+    - title: Utah DWS Table 4 - Child Care Income Eligibility and Co-Payment (effective April 1, 2026)
+      href: https://jobs.utah.gov/Infosource/eligibilitymanual/Tables,_Appendicies,_and_Charts/Tables,_Appendicies,_and_Charts/Table_4_-_Child_Care_Income_Eligibility_and_Co-Payment.htm

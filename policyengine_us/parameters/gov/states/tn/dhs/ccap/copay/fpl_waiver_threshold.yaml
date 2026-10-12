@@ -1,0 +1,20 @@
+description: Tennessee waives the parent copay for families with countable income at or below this share of the federal poverty guideline under the Child Care Certificate Program.
+# Before October 1, 2025 the copay was waived at or below 150% FPL. That waiver ended
+# September 30, 2025, so from October 1, 2025 all families pay the 5% copay (a
+# threshold of 0 leaves only zero-income families with no copay, which is already
+# implied by 5% of zero income).
+values:
+  2024-06-01: 1.5
+  2025-10-01: 0
+
+metadata:
+  unit: /1
+  period: year
+  label: Tennessee CCAP copay FPL waiver threshold
+  reference:
+    - title: TDHS Income Eligibility Limits and Parent Co-Pay Fees, copay waived at or below 150% FPL (effective June 1, 2024)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/Income%20Eligibility%20and%20Co-Pay%20Chart_June_1_2024.pdf#page=1
+    - title: TDHS Update on Child Care Funding (150% FPL waiver ended September 30, 2025)
+      href: https://www.tn.gov/humanservices/for-families/child-care-services/update-on-child-care-funding.html
+    - title: Tennessee CCDF State Plan FFY 2025-2027, Section 3.3.1
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/CCDF%20State%20Plan%20FFY%202025-2027%20Tennessee.pdf#page=49

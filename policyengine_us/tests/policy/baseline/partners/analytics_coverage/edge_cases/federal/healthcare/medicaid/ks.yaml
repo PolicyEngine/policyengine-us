@@ -1,0 +1,212 @@
+# Kansas-specific Medicaid policy (only cases whose outputs differ from the
+# federal.yaml TX baseline for KS-policy reasons):
+# - KS parent/caretaker limit is 0.38 FPL (vs 0.19 in TX), so a single
+#   parent at ~0.37 FPL is eligible in KS but would be ineligible in TX.
+# - KS still requires child deprivation for parent Medicaid
+#   (parent/requires_deprivation.yaml), so an income-eligible two-parent
+#   household is categorically ineligible.
+# KS Medicaid per capita: $5,222,302,809 / 411,381 enrolled = $12,694.56.
+- name: medicaid_ks_single_parent_below_38pct_fpl_limit (ks)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 8_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code: KS
+        zip_code: '67202'
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # 8,000 / 21,640 (2p FPG) = 0.370 FPL <= KS parent limit 0.38 and
+        # a single parent meets the KS deprivation requirement -> PARENT
+        # (TX baseline limit 0.19 would reject this income).
+        # Household avg SLCSP index = (666.12 + 417.00) / 2 = 541.56;
+        # 12,694.56 x 666.12 / 541.56 = 15,614.31.
+        medicaid: 15_614.31
+        is_medicaid_eligible: true
+        medicaid_category: 5  # PARENT
+        chip: 0.0
+        is_aca_ptc_eligible: false
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # 0.370 FPL < KS young child limit 1.54:
+        # 12,694.56 x 417.00 / 541.56 = 9,774.83.
+        medicaid: 9_774.83
+        is_medicaid_eligible: true
+        medicaid_category: 1  # YOUNG_CHILD
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: medicaid_ks_two_parent_household_fails_deprivation_rule (ks)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 10_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id002
+        - head
+        - spouse
+        - child1
+        state_code: KS
+        zip_code: '67202'
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # Categorical boundary pin: 10,000 / 27,320 (3p FPG) = 0.366 FPL
+        # passes the KS parent income limit 0.38, but KS requires child
+        # deprivation and a two-parent (joint-filing) household fails it,
+        # so both parents are ineligible despite qualifying income. KS has
+        # no adult expansion (-inf) to fall back on.
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        medicaid_category: 9  # NONE
+        chip: 0.0
+        is_aca_ptc_eligible: false
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        medicaid_category: 9  # NONE
+        chip: 0.0
+        is_aca_ptc_eligible: false
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # The child is unaffected by the parents' deprivation failure:
+        # household avg index = (666.12 + 653.02 + 417.00) / 3 = 578.71;
+        # 12,694.56 x 417.00 / 578.71 = 9,147.26.
+        medicaid: 9_147.26
+        is_medicaid_eligible: true
+        medicaid_category: 1  # YOUNG_CHILD
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0

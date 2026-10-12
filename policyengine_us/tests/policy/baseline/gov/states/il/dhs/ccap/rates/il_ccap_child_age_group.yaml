@@ -1,0 +1,31 @@
+- name: Case 1, a child younger than two is in the under-two group.
+  period: 2026-01
+  input:
+    age: 1.99
+    state_code: IL
+  output:
+    il_ccap_child_age_group: UNDER_TWO
+
+- name: Case 2, the exact age-two boundary is in the age-two group.
+  period: 2026-01
+  input:
+    age: 2
+    state_code: IL
+  output:
+    il_ccap_child_age_group: AGE_TWO
+
+- name: Case 3, a child just below age three remains in the age-two group.
+  period: 2026-01
+  input:
+    age: 2.99
+    state_code: IL
+  output:
+    il_ccap_child_age_group: AGE_TWO
+
+- name: Case 4, the exact age-three boundary is in the oldest group.
+  period: 2026-01
+  input:
+    age: 3
+    state_code: IL
+  output:
+    il_ccap_child_age_group: AGE_THREE_OR_OLDER

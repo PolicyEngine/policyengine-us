@@ -1,0 +1,834 @@
+# Federal tax-credit composition edge cases (EITC / CTC / refundable CTC / CDCC).
+# 2026 parameters used in derivations:
+#   EITC max (0/1/2/3 children): 664 / 4_427 / 7_316 / 8_231
+#   EITC phase-in rates: 7.65% / 34% / 40% / 45%
+#   EITC phase-out rates: 7.65% / 15.98% / 21.06% / 21.06%
+#   EITC phase-out start: 10_860 (childless) / 23_890 (with children); joint bonus 7_280 / 7_270
+#   EITC age limits (childless): 25-64
+#   CTC: 2_200 per child under 17; 500 other-dependent credit; refundable cap 1_700/child;
+#     refundable phase-in 15% of earnings over 2_500; phase-out 50 per 1_000 over 200k/400k
+#   CDCC 2026: 50% max rate, -1% per 2_000 AGI over 15_000 (floor 35%), second phase-out
+#     -1% per 2_000 AGI over 75_000 single/HoH (floor 20%); expense cap 3_000 per qualifying child
+#   Standard deduction: 16_100 single / 32_200 joint / 24_150 HoH
+- name: fedtax_size_1_single_adult_age_30 (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        is_full_time_student: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # Demographically eligible (age 30 is within 25-64) but income route zeroes
+        # the amount: childless single phase-out ends at
+        # 10_860 + 664 / 0.0765 = 19_539.93 < 20_000, so EITC = 0.
+        eitc: 0.0
+        eitc_eligible: true
+        ctc: 0.0
+        ctc_value: 0.0
+        refundable_ctc: 0.0
+        cdcc: 0.0
+        adjusted_gross_income: 20_000.0
+        # income_tax = 10% x (20_000 - 16_100 single standard deduction) = 390
+        income_tax: 390.0
+- name: fedtax_size_1_childless_age_64_eitc_phase_in (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 5_000
+        is_full_time_student: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # Age 64 is the inclusive childless upper bound; earnings are in the
+        # phase-in region: eitc = 7.65% x 5_000 = 382.50 (< 664 max).
+        eitc: 382.5
+        eitc_eligible: true
+        ctc: 0.0
+        ctc_value: 0.0
+        refundable_ctc: 0.0
+        cdcc: 0.0
+        adjusted_gross_income: 5_000.0
+        # 5_000 < 16_100 standard deduction -> no tax before credits;
+        # income_tax = 0 - 382.50 refundable EITC.
+        income_tax: -382.5
+- name: fedtax_size_1_childless_age_65_eitc_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 5_000
+        is_full_time_student: false
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # Deliberate demographic-ineligibility boundary pin: age 65 exceeds the
+        # childless upper bound of 64, with the same phase-in earnings as the
+        # age-64 case so the age test is isolated from the income test.
+        eitc: 0.0
+        eitc_eligible: false
+        ctc: 0.0
+        ctc_value: 0.0
+        refundable_ctc: 0.0
+        cdcc: 0.0
+        adjusted_gross_income: 5_000.0
+        income_tax: 0.0
+- name: fedtax_size_2_married_couple_no_children (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        is_full_time_student: false
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: &id004
+        - head
+        - spouse
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    tax_units:
+      tax_unit:
+        # Childless joint mid-phase-out: start = 10_860 + 7_280 joint bonus = 18_140;
+        # eitc = 664 - 7.65% x (20_000 - 18_140) = 664 - 142.29 = 521.71.
+        eitc: 521.71
+        eitc_eligible: true
+        ctc: 0.0
+        ctc_value: 0.0
+        refundable_ctc: 0.0
+        cdcc: 0.0
+        adjusted_gross_income: 20_000.0
+        # 20_000 < 32_200 joint standard deduction -> income_tax = -521.71.
+        income_tax: -521.71
+- name: fedtax_size_2_single_parent_1_child (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        is_full_time_student: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: &id005
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id005
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # 1-child plateau: phase-in ends at 4_427 / 0.34 = 13_020.59;
+        # 20_000 < 23_890 phase-out start -> max eitc = 4_427.
+        eitc: 4_427.0
+        eitc_eligible: true
+        ctc: 2_200.0
+        # ctc_value = liability 0 + refundable_ctc 1_700 (nonrefundable portion
+        # unusable: 20_000 < 24_150 HoH deduction).
+        ctc_value: 1_700.0
+        # Refundable per-child cap binds: min(1_700 x 1 child, 2_625 phase-in,
+        # ctc 2_200) = 1_700 (no tax liability, 20_000 < 24_150 HoH deduction).
+        refundable_ctc: 1_700.0
+        cdcc: 0.0
+        adjusted_gross_income: 20_000.0
+        # income_tax = -(4_427 + 1_700) = -6_127.
+        income_tax: -6_127.0
+- name: fedtax_size_2_single_parent_1_child_earnings_at_refundable_ctc_floor (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 2_500
+        is_full_time_student: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: &id006
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id006
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # 1-child EITC phase-in slope: eitc = 34% x 2_500 = 850.
+        eitc: 850.0
+        eitc_eligible: true
+        ctc: 2_200.0
+        # Earnings exactly at the 2_500 refundable-CTC floor: phase-in =
+        # 15% x (2_500 - 2_500) = 0, so ctc_value = 0 and refundable_ctc = 0
+        # while the (unusable, nonrefundable) ctc stays 2_200.
+        ctc_value: 0.0
+        refundable_ctc: 0.0
+        cdcc: 0.0
+        adjusted_gross_income: 2_500.0
+        # income_tax = -850 (EITC only; no tax before credits).
+        income_tax: -850.0
+- name: fedtax_size_2_single_parent_child_age_17_ctc_cliff (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        is_full_time_student: false
+      child1:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: true
+    households:
+      household:
+        members: &id007
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id007
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # A 17-year-old is still an EITC qualifying child (under 19):
+        # 1-child plateau eitc = 4_427.
+        eitc: 4_427.0
+        eitc_eligible: true
+        # CTC qualifying-child age cliff: age 17 exceeds the under-17 limit, so
+        # the dependent gets the 500 other-dependent credit instead of 2_200.
+        ctc: 500.0
+        # ctc_value = 0: the other-dependent credit is nonrefundable and there
+        # is no tax liability (20_000 < 24_150 HoH deduction).
+        ctc_value: 0.0
+        # The other-dependent credit is nonrefundable and there are no CTC
+        # qualifying children, so the refundable maximum is 1_700 x 0 = 0.
+        refundable_ctc: 0.0
+        cdcc: 0.0
+        adjusted_gross_income: 20_000.0
+        # income_tax = -4_427 (no tax before credits: 20_000 < 24_150 HoH deduction).
+        income_tax: -4_427.0
+- name: fedtax_size_2_single_parent_1_child_cdcc_positive (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 40_000
+        is_full_time_student: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+        pre_subsidy_childcare_expenses: 4_000
+    households:
+      household:
+        members: &id008
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id008
+    tax_units:
+      tax_unit:
+        members: *id008
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id008
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # 1-child phase-out region: eitc = 4_427 - 15.98% x (40_000 - 23_890)
+        # = 4_427 - 2_574.38 = 1_852.62.
+        eitc: 1_852.62
+        eitc_eligible: true
+        ctc: 2_200.0
+        # ctc_value = remaining liability 475 + refundable 1_700 = 2_175.
+        ctc_value: 2_175.0
+        # 2026 CDCC rate at AGI 40_000: 50% - 1% x ceil((40_000 - 15_000)/2_000)
+        # = 50% - 13% = 37%; expenses capped at min(4_000, 3_000, earnings) = 3_000;
+        # cdcc = 37% x 3_000 = 1_110 (< 1_585 pre-credit tax, so uncapped).
+        cdcc: 1_110.0
+        # Tax before credits = 10% x (40_000 - 24_150) = 1_585; CDCC uses 1_110,
+        # nonrefundable CTC uses the remaining 475; refundable_ctc =
+        # min(1_700 cap, unused ctc 2_200 - 475 = 1_725) = 1_700.
+        refundable_ctc: 1_700.0
+        adjusted_gross_income: 40_000.0
+        # income_tax = 1_585 - 1_110 - 475 - 1_700 - 1_852.62 = -3_552.62.
+        income_tax: -3_552.62
+- name: fedtax_size_3_single_parent_2_children (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        is_full_time_student: false
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: &id009
+        - head
+        - child1
+        - child2
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id009
+    tax_units:
+      tax_unit:
+        members: *id009
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id009
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    tax_units:
+      tax_unit:
+        # 2-child plateau: phase-in ends at 7_316 / 0.40 = 18_290;
+        # 20_000 < 23_890 phase-out start -> max eitc = 7_316.
+        eitc: 7_316.0
+        eitc_eligible: true
+        ctc: 4_400.0
+        # Phase-in side of the min() binds: ctc_value = min(4_400,
+        # 15% x (20_000 - 2_500) = 2_625) = 2_625.
+        ctc_value: 2_625.0
+        # refundable_ctc = min(1_700 x 2 = 3_400, 2_625 phase-in, ctc 4_400) = 2_625.
+        refundable_ctc: 2_625.0
+        cdcc: 0.0
+        adjusted_gross_income: 20_000.0
+        # income_tax = -(7_316 + 2_625) = -9_941.
+        income_tax: -9_941.0
+- name: fedtax_size_3_single_parent_2_children_2025 (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+        is_full_time_student: false
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: &id010
+        - head
+        - child1
+        - child2
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id010
+    tax_units:
+      tax_unit:
+        members: *id010
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id010
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    tax_units:
+      tax_unit:
+        # 2025 regime: 2-child max eitc = 7_152 (plateau: 17_880 < 20_000 <
+        # 23_350 phase-out start).
+        eitc: 7_152.0
+        eitc_eligible: true
+        # 2025 CTC is already 2_200/child under OBBBA: 2 x 2_200 = 4_400.
+        ctc: 4_400.0
+        # ctc_value = min(4_400, 15% x (20_000 - 2_500) = 2_625) = 2_625.
+        ctc_value: 2_625.0
+        # refundable_ctc = min(1_700 x 2 = 3_400, 2_625, 4_400) = 2_625.
+        refundable_ctc: 2_625.0
+        cdcc: 0.0
+        adjusted_gross_income: 20_000.0
+        # No tax before credits (20_000 < 23_625 2025 HoH standard deduction);
+        # income_tax = -(7_152 + 2_625) = -9_777.
+        income_tax: -9_777.0
+- name: fedtax_size_4_couple_2_children_ctc_phase_out (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 420_000
+        is_full_time_student: false
+      spouse:
+        age: 43
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: &id011
+        - head
+        - spouse
+        - child1
+        - child2
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id011
+    tax_units:
+      tax_unit:
+        members: *id011
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id011
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+  output:
+    tax_units:
+      tax_unit:
+        # Income route to zero EITC (far above phase-out end).
+        eitc: 0.0
+        eitc_eligible: true
+        # CTC phase-out above the 400_000 joint threshold: reduction =
+        # ceil(20_000 / 1_000) x 50 = 1_000; ctc = 2 x 2_200 - 1_000 = 3_400.
+        ctc: 3_400.0
+        # ctc_value = min(3_400, 15% x (420_000 - 2_500)) = 3_400.
+        ctc_value: 3_400.0
+        # Full CTC is absorbed nonrefundably by the large tax liability, so no
+        # unused credit remains to refund.
+        refundable_ctc: 0.0
+        cdcc: 0.0
+        adjusted_gross_income: 420_000.0
+        # Taxable income = 420_000 - 32_200 = 387_800. 2026 joint brackets:
+        # 10% x 24_800 + 12% x 76_000 + 22% x 110_600 + 24% x 176_400 = 78_268;
+        # minus nonrefundable ctc 3_400 -> income_tax = 74_868. (The 0.9%
+        # additional Medicare tax is booked in employee_payroll_tax, not here.)
+        income_tax: 74_868.0
+- name: fedtax_size_4_single_parent_3_children_negative_self_employment (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 22_000
+        self_employment_income_before_lsr: -2_000
+        is_full_time_student: false
+      child1:
+        age: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+      child2:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+      child3:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_full_time_student: false
+    households:
+      household:
+        members: &id012
+        - head
+        - child1
+        - child2
+        - child3
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id012
+    tax_units:
+      tax_unit:
+        members: *id012
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id012
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+      mu_child3:
+        members:
+        - child3
+  output:
+    tax_units:
+      tax_unit:
+        # Net earned income = 22_000 wages - 2_000 self-employment loss = 20_000,
+        # on the 3-child plateau (phase-in ends 8_231 / 0.45 = 18_291;
+        # 20_000 < 23_890): eitc = 8_231 (3-child schedule maximum).
+        eitc: 8_231.0
+        eitc_eligible: true
+        ctc: 6_600.0
+        # Negative self-employment income must reduce the refundable-CTC earnings
+        # base: phase-in = 15% x (20_000 - 2_500) = 2_625 (not 2_925 from gross
+        # wages); ctc_value = min(6_600, 2_625) = 2_625.
+        ctc_value: 2_625.0
+        # refundable_ctc = min(1_700 x 3 = 5_100, 2_625, 6_600) = 2_625.
+        refundable_ctc: 2_625.0
+        cdcc: 0.0
+        # AGI = 22_000 - 2_000 = 20_000 (no SE tax deduction on a loss).
+        adjusted_gross_income: 20_000.0
+        # income_tax = -(8_231 + 2_625) = -10_856.
+        income_tax: -10_856.0

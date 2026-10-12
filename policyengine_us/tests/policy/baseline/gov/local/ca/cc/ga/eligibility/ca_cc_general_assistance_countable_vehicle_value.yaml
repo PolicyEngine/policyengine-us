@@ -1,0 +1,112 @@
+# One vehicle is exempt only if valued at or below the $4,500 limit
+# (GA-80 brochure); a vehicle over the limit counts in full, as do
+# additional vehicles (household-average value per vehicle).
+- name: Case 1, no vehicles produce no countable vehicle value.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+        household_vehicles_owned: 0
+        household_vehicles_value: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_countable_vehicle_value: 0
+
+- name: Case 2, one vehicle below the $4,500 limit is exempt.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+        household_vehicles_owned: 1
+        household_vehicles_value: 4_499
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_countable_vehicle_value: 0
+
+- name: Case 3, one vehicle exactly at the $4,500 limit is exempt (at-or-below).
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+        household_vehicles_owned: 1
+        household_vehicles_value: 4_500
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_countable_vehicle_value: 0
+
+- name: Case 4, one vehicle above the $4,500 limit counts in full.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+        household_vehicles_owned: 1
+        household_vehicles_value: 4_501
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_countable_vehicle_value: 4_501
+
+- name: Case 5, two vehicles with average within the limit, one exempt.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+        household_vehicles_owned: 2
+        household_vehicles_value: 8_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Average value 4,000 <= 4,500, so one vehicle is exempt: 8,000 - 4,000.
+    ca_cc_general_assistance_countable_vehicle_value: 4_000
+
+- name: Case 6, two vehicles with average above the limit, none exempt.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+        household_vehicles_owned: 2
+        household_vehicles_value: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    # Average value 6,000 > 4,500, so no vehicle is exempt.
+    ca_cc_general_assistance_countable_vehicle_value: 12_000

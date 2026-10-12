@@ -7,15 +7,18 @@ metadata:
     - nj_ccap_time_category
     - nj_ccap_age_group
   reference:
-    - title: CC-230 (02/25) Maximum Child Care Payment Rates, Approved Homes (FFN and In-Home)
+    - title: CC-230 (03/26) Maximum Child Care Payment Rates, Approved Homes (FFN and In-Home), effective April 1, 2026
       href: https://www.childcarenj.gov/ChildCareNJ/media/media_library/Max_CC_Payment_Rates.pdf#page=3
+    - title: CC-230 (02/25) Maximum Child Care Payment Rates, Approved Homes (FFN and In-Home), effective March 1, 2025 (Bergen County mirror)
+      href: https://bergencountynj.gov/wp-content/uploads/2025/03/CC-230-March-2025-Rate-Chart.pdf#page=3
     - title: CC-230 (02/24) Maximum Child Care Payment Rates, Approved Homes (FFN and In-Home)
       href: http://www.bccap.org/wp-content/uploads/2024/03/Maximum-Child-Care-Payment-Rates-March-2024.pdf#page=3
 
 # 2024-01-01 values are CC-230 (02/24) rates effective March 1, 2024,
 # backdated to January 1 for microsimulation coverage.
 # The prior (March 2023) rates could not be sourced.
-# Rates unchanged between CC-230 (02/24) and CC-230 (02/25).
+# Rates unchanged through the CC-230 (07/24), (02/25), and (03/26) editions
+# (the latest effective April 1, 2026).
 FULL_TIME:
   INFANT:
     2024-01-01: 139.39

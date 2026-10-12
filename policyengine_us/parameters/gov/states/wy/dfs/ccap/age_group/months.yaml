@@ -1,0 +1,41 @@
+description: Wyoming maps a child's age in months to a child care rate age band under the Child Care, Purchase of Service program, where 0 is 0-11 months, 1 is 12-23 months, 2 is 2-3 years, 3 is 4-5 years, and 4 is 6-13 years.
+# Table I rate columns: 0-11 months, 12-23 months, 2-3 years (24-47 months),
+# 4-5 years (48-71 months), and 6-13 years (72+ months). Rates are based on the
+# child's age on the first day of the month. Amounts are enum indices:
+# 0 = AGE_0_TO_11_MONTHS, 1 = AGE_12_TO_23_MONTHS, 2 = AGE_2_TO_3_YEARS,
+# 3 = AGE_4_TO_5_YEARS, 4 = AGE_6_TO_13_YEARS.
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Wyoming CCAP child age band by months
+  reference:
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/25-03/31/26 (single page)
+      href: https://dfs.wyo.gov/services/family-services/child-care/
+    - title: Wyo. Admin. Rules, DFS, Child Care - Purchase of Service, Ch. 1 §9(o), eff. 05/07/2025 (PDF p. 25)
+      href: https://rules.wyo.gov/DownloadFile.aspx?source_id=24638&source_type_id=81&doc_type_id=110&include_meta_data=Y&file_type=pdf&filename=24638.pdf&token=189087205215053222164006221008072207044097222254
+    - title: Wyoming DFS Child Care Subsidy Policy Manual §1101.N.5 (PDF p. 2)
+      href: https://dfs.wyo.gov/about/policy-manuals/child-care-subsidy-policy-manual/
+
+brackets:
+  - threshold:
+      2024-04-01: 0
+    amount:
+      2024-04-01: 0
+  - threshold:
+      2024-04-01: 12
+    amount:
+      2024-04-01: 1
+  - threshold:
+      2024-04-01: 24
+    amount:
+      2024-04-01: 2
+  - threshold:
+      2024-04-01: 48
+    amount:
+      2024-04-01: 3
+  - threshold:
+      2024-04-01: 72
+    amount:
+      2024-04-01: 4

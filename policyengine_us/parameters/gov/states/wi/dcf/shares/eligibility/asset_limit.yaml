@@ -1,0 +1,19 @@
+description: Wisconsin limits the liquid assets of an assistance group to this amount under the Wisconsin Shares Child Care Subsidy Program.
+
+# Only liquid assets (cash, checking, savings, money market accounts, and
+# credit union share accounts) are included in the asset test; the amount is
+# self-declared. The statutory home value (200% of the statewide median,
+# § 49.155(1m)(cr)1.) and vehicle equity ($20,000, § 49.155(1m)(cr)2.) limits
+# are not part of the handbook's operational asset test.
+values:
+  2025-10-01: 25_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Wisconsin Shares liquid asset limit
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 6.5 Liquid Asset Limit
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=64
+    - title: Wis. Stat. § 49.155(1m)(cm)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/49/III/155/1m/cm

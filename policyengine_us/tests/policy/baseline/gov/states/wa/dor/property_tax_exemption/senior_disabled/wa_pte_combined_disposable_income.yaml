@@ -1,0 +1,219 @@
+- name: Case 1, AGI only with no add-backs or deductions.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_pte_combined_disposable_income: 40_000
+
+- name: Case 2, AGI plus tax-exempt social security and pension add-backs.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        tax_exempt_pension_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 30_000
+        tax_exempt_social_security: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 30_000 + 12_000 + 8_000 = 50_000
+    wa_pte_combined_disposable_income: 50_000
+
+- name: Case 3, all modeled add-backs included; veterans_benefits is ignored.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        tax_exempt_pension_income: 5_000
+        military_basic_pay: 3_000
+        veterans_benefits: 4_000
+        tax_exempt_interest_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 20_000
+        tax_exempt_social_security: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 20_000 + 5_000 + 3_000 + 10_000 + 2_000 = 40_000
+    # veterans_benefits (4_000) is NOT added — statute excludes VA disability,
+    # DIC, attendant-care, medical-aid; the PolicyEngine aggregate is
+    # dominated by those excluded categories.
+    wa_pte_combined_disposable_income: 40_000
+
+- name: Case 4, medical deductions reduce combined disposable income.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        other_medical_expenses: 5_000
+        long_term_health_insurance_premiums: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # 50_000 - 5_000 - 3_000 = 42_000
+    wa_pte_combined_disposable_income: 42_000
+
+- name: Case 5, couple income and deductions sum across tax unit.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        other_medical_expenses: 2_000
+      person2:
+        age: 68
+        long_term_health_insurance_premiums: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 30_000
+        tax_exempt_social_security: 14_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # 30_000 + 14_000 - 2_000 - 1_500 = 40_500
+    wa_pte_combined_disposable_income: 40_500
+
+- name: Case 6, 2028 single claimant elects standard deduction over small itemized.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 70
+        other_medical_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # itemized = 3,000; standard = 7,500 (single)
+    # deduction = max(3,000, 7,500) = 7,500
+    # 50,000 - 7,500 = 42,500
+    wa_pte_combined_disposable_income: 42_500
+
+- name: Case 7, 2028 joint filers get doubled standard deduction.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 70
+        other_medical_expenses: 5_000
+      person2:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 80_000
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # itemized = 5,000; standard = 7,500 * 2 = 15,000
+    # deduction = max(5,000, 15,000) = 15,000
+    # 80,000 - 15,000 = 65,000
+    wa_pte_combined_disposable_income: 65_000
+
+- name: Case 8, 2028 single claimant with large medical expenses keeps itemized.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 70
+        other_medical_expenses: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 50_000
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # itemized = 20,000 > standard = 7,500 -> use itemized
+    # 50,000 - 20,000 = 30,000
+    wa_pte_combined_disposable_income: 30_000
+
+- name: Case 9, cotenant disposable income is added per RCW 84.36.383(2).
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 30_000
+        wa_pte_cotenant_disposable_income: 25_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # Cotenant filed a separate return; statute folds their disposable income
+    # into the combined total. 30,000 + 25,000 = 55,000.
+    wa_pte_combined_disposable_income: 55_000

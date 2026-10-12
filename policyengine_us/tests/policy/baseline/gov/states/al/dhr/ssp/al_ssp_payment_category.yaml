@@ -65,3 +65,18 @@
     state_code: AL
   output:
     al_ssp_payment_category: IHC_LEVEL_B
+
+- name: Nursing care category follows monthly Medicaid payment status
+  period: 2025
+  input:
+    al_ssp_care_setting:
+      2025-01: NURSING_FACILITY
+      2025-02: NURSING_FACILITY
+    ssi_medicaid_pays_majority_of_care:
+      2025-01: true
+      2025-02: false
+    state_code: AL
+  output:
+    al_ssp_payment_category:
+      2025-01: FCMP_NURSING_CARE
+      2025-02: NURSING_CARE

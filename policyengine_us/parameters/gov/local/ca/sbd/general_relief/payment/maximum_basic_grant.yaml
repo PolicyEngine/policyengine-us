@@ -1,0 +1,52 @@
+description: San Bernardino County provides this maximum basic grant based on assistance unit size under the General Relief program.
+metadata:
+  unit: currency-USD
+  breakdown:
+    - range(1, 6)
+  breakdown_labels:
+    - Assistance unit size
+  period: month
+  label: San Bernardino County General Relief maximum basic grant
+  reference:
+    - title: San Bernardino County GRPHB Handbook Letter 7364, Chapter A p. A-7 (Maximum Basic Grant Levels, 6/1/21 through 7/1/26 and ongoing)
+      href: https://sanbernardino.legistar1.com/sanbernardino/attachments/eae80072-cef4-49e5-b04e-a9b442290034.docx
+    - title: San Bernardino County Board of Supervisors Agenda Item 64 of December 7, 2021, Record of Action p. 1 (approved grant schedule)
+      href: https://sanbernardino.legistar1.com/sanbernardino/attachments/b2fb756f-da07-452e-bdba-e3c4eda464c5.doc
+# The size-5 row applies to assistance units of five or more members.
+# The 7/1/2026 schedule is ongoing, with no cost-of-living adjustment
+# provision.
+1:
+  2021-06-01: 332
+  2022-07-01: 365
+  2023-07-01: 402
+  2024-07-01: 442
+  2025-07-01: 486
+  2026-07-01: 504
+2:
+  2021-06-01: 445
+  2022-07-01: 487
+  2023-07-01: 529
+  2024-07-01: 572
+  2025-07-01: 615
+  2026-07-01: 641
+3:
+  2021-06-01: 558
+  2022-07-01: 612
+  2023-07-01: 667
+  2024-07-01: 722
+  2025-07-01: 777
+  2026-07-01: 809
+4:
+  2021-06-01: 672
+  2022-07-01: 738
+  2023-07-01: 804
+  2024-07-01: 871
+  2025-07-01: 938
+  2026-07-01: 977
+5:
+  2021-06-01: 785
+  2022-07-01: 863
+  2023-07-01: 941
+  2024-07-01: 1_020
+  2025-07-01: 1_099
+  2026-07-01: 1_145

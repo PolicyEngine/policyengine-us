@@ -1,0 +1,61 @@
+# Wisconsin Shares monthly subsidized hours use fixed conversions, not the
+# child's actual hours: part time converts to 30 weekly hours and full time
+# to 35 weekly hours, times 4.348125 weeks per month, rounded up.
+# Part time: 30 x 4.348125 = 130.44 -> 131 monthly hours.
+# Full time: 35 x 4.348125 = 152.18 -> 153 monthly hours.
+# Wisconsin Shares Handbook (July 2026) Section 18.5 and Appendix II.
+- name: Case 1, part-time authorization converts to 131 monthly hours.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 15
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_monthly_subsidized_hours: 131
+
+- name: Case 2, full-time authorization converts to 153 monthly hours.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_monthly_subsidized_hours: 153
+
+- name: Case 3, sixty weekly hours stays at 153 monthly hours because the above-full-time add-on is separate.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 60
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_monthly_subsidized_hours: 153
+
+- name: Case 4, child with no hours of care has no authorization and no subsidized hours.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_monthly_subsidized_hours: 0

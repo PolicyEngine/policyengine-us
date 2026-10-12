@@ -1,0 +1,196 @@
+# Court supervision extends this state's age test without setting disability
+# or protective-services status. Cases include both age boundaries and adults.
+- name: Case 1, NM court supervision age boundaries and default status.
+  period: 2025-01
+  input:
+    state_code: [NM, NM, NM, NM, NM, NM, NM, NM]
+    age: [12, 13, 13, 17, 18, 19, 18, 40]
+    is_under_court_supervision: [false, false, true, true, true, true, false, true]
+  output:
+    nm_ccap_eligible_child: [true, false, true, true, false, false, false, false]
+    # NM CCAP reads neither status (its special-supervision proxy is
+    # has_developmental_delay), so no downstream variable can show the
+    # difference; these rows record that the court flag leaves both unset.
+    is_disabled: [false, false, false, false, false, false, false, false]
+    receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
+
+- name: Case 2, NM court supervision does not bypass child immigration eligibility.
+  period: 2025-01
+  input:
+    state_code: NM
+    age: 17
+    is_under_court_supervision: true
+    immigration_status: UNDOCUMENTED
+  output:
+    nm_ccap_eligible_child: false
+
+# 2026 Laws, Chapter 63 (SB 241), section 4(B) extends eligibility to under
+# age 19 for a child under court supervision or incapable of self-care, and
+# section 5(G) exempts such a child through age 18 from the slot cap,
+# effective May 20, 2026. Monthly periods resolve parameters at the first of
+# the month, so the age-19 limit first applies in June 2026.
+- name: Case 3, NM 2026-05 age 18, court True, medical-supervision proxy False.
+  period: 2026-05
+  input:
+    people:
+      person1:
+        age:
+          2026: 18
+        is_under_court_supervision:
+          2026: true
+        has_developmental_delay:
+          2026: false
+    households:
+      household:
+        members:
+        - person1
+        state_code:
+          2026: NM
+  output:
+    # May 2026 still uses the age-18 limit: 18 < 18 is false.
+    nm_ccap_eligible_child: false
+
+- name: Case 4, NM 2026-06 age 18, court True, medical-supervision proxy False.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age:
+          2026: 18
+        is_under_court_supervision:
+          2026: true
+        has_developmental_delay:
+          2026: false
+    households:
+      household:
+        members:
+        - person1
+        state_code:
+          2026: NM
+  output:
+    # June 2026 uses the age-19 limit: 18 < 19.
+    nm_ccap_eligible_child: true
+
+- name: Case 5, NM 2026-06 age 18, court False, medical-supervision proxy True.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age:
+          2026: 18
+        is_under_court_supervision:
+          2026: false
+        has_developmental_delay:
+          2026: true
+    households:
+      household:
+        members:
+        - person1
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: true
+
+- name: Case 6, NM 2026-06 age 18, court False, medical-supervision proxy False.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age:
+          2026: 18
+        is_under_court_supervision:
+          2026: false
+        has_developmental_delay:
+          2026: false
+    households:
+      household:
+        members:
+        - person1
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
+
+- name: Case 7, NM 2026-06 age 19, court True, medical-supervision proxy False.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age:
+          2026: 19
+        is_under_court_supervision:
+          2026: true
+        has_developmental_delay:
+          2026: false
+    households:
+      household:
+        members:
+        - person1
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
+
+- name: Case 8, NM 2026-06 age 19, court False, medical-supervision proxy True.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age:
+          2026: 19
+        is_under_court_supervision:
+          2026: false
+        has_developmental_delay:
+          2026: true
+    households:
+      household:
+        members:
+        - person1
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
+
+- name: Case 9, NM 2026-06 age 19, court False, medical-supervision proxy False.
+  period: 2026-06
+  input:
+    people:
+      person1:
+        age:
+          2026: 19
+        is_under_court_supervision:
+          2026: false
+        has_developmental_delay:
+          2026: false
+    households:
+      household:
+        members:
+        - person1
+        state_code:
+          2026: NM
+  output:
+    nm_ccap_eligible_child: false
+
+# The age-19 limit continues in later years.
+- name: Case 10, NM 2027-01 household applies the age-19 limit to court and delay routes.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_under_court_supervision: true
+      person2:
+        age: 19
+        is_under_court_supervision: true
+      person3:
+        age: 18
+        has_developmental_delay: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # Court-supervised 18 < 19: eligible.
+    # Court-supervised 19 is not under 19: not eligible.
+    # Developmental delay 18 < 19: eligible.
+    nm_ccap_eligible_child: [true, false, true]

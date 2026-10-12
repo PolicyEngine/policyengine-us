@@ -1,0 +1,8 @@
+- name: NIPA proprietors' income mapping.
+  period: 2024
+  input:
+    self_employment_income_before_lsr: 3_000
+    farm_income: 1_000
+    partnership_s_corp_income: 2_000
+  output:
+    nipa_proprietors_income: 6_000

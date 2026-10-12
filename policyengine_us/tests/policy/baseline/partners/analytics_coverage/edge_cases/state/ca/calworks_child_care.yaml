@@ -1,0 +1,173 @@
+# CalWORKs Stage 1 child care partner edge cases.
+# Stage 1 requires current CalWORKs cash aid (ca_tanf > 0), an age-eligible
+# child (<= 13), and earnings/welfare-to-work activity.
+# RMR ceiling (2022-01-01), child care center, age 2-5 ("middle"):
+#   monthly full-time = $1,253.26; monthly part-time = $793.85.
+- name: ca_calworks_cc_full_time_center_ceiling_bound (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 12_000
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # On cash aid: $1,000/mo earned -> recipient countable (1,000 - 600) x 50%
+        # = $200 < $930 MAP size 2 -> ca_tanf > 0. Work requirement met (earnings).
+        # Payment: min($1,253.26 ceiling, $24,000 / 12 = $2,000 expenses)
+        # = $1,253.26/mo x 12 = $15,039.12.
+        ca_calworks_child_care_eligible: true
+        ca_calworks_child_care: 15_039.12
+- name: ca_calworks_cc_part_time_expense_bound (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 12_000
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+        pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # Payment: min($793.85 part-time ceiling, $6,000 / 12 = $500 expenses)
+        # = $500/mo x 12 = $6,000 (actual expenses bind).
+        ca_calworks_child_care_eligible: true
+        ca_calworks_child_care: 6_000.0
+- name: ca_calworks_cc_not_on_cash_aid_ineligible (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 24_000
+    households:
+      household:
+        members: &id003
+        - head
+        - child1
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # $2,500/mo earned -> applicant countable (2,500 - 450) = 2,050 > 1,526
+        # MBSAC size 2 -> no CalWORKs cash aid -> Stage 1 ineligible even though
+        # child care expenses exist (categorical route: must be on cash aid).
+        ca_calworks_child_care_eligible: false
+        ca_calworks_child_care: 0.0

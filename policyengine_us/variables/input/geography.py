@@ -97,7 +97,7 @@ class medicaid_rating_area(Variable):
     def formula(household, period, parameters):
         three_digit_zip_code = household("three_digit_zip_code", period)
         county = household("county_str", period)
-        # Try a lookup on zip code, fill missing values with a lookup on county, fill missing with zero.
+        # Try a lookup on county, fill missing values with a lookup on three-digit zip code, fill missing with 1.
         df = pd.DataFrame(
             {
                 "location": county,

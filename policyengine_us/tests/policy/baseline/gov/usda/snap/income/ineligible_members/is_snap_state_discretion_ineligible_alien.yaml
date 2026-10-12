@@ -1,0 +1,98 @@
+- name: Case 1, undocumented member is a state-discretion ineligible alien.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_state_discretion_ineligible_alien: true
+
+- name: Case 2, DACA member is a state-discretion ineligible alien.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: DACA
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_state_discretion_ineligible_alien: true
+
+- name: Case 3, TPS member is a state-discretion ineligible alien.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: TPS
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_state_discretion_ineligible_alien: true
+
+- name: Case 4, conditional entrant is a state-discretion ineligible alien.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CONDITIONAL_ENTRANT
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_state_discretion_ineligible_alien: true
+
+- name: Case 5, refugee is ineligible after OBBBA but falls in the excepted categories, which always prorate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: REFUGEE
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_state_discretion_ineligible_alien: false
+
+- name: Case 6, citizen is not an ineligible alien.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_state_discretion_ineligible_alien: false
+
+- name: Case 7, ineligible students are treated as nonhousehold members rather than under the ineligible-alien rules.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 20
+        immigration_status: UNDOCUMENTED
+        is_snap_ineligible_student: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_snap_state_discretion_ineligible_alien: false

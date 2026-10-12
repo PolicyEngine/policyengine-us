@@ -1,0 +1,417 @@
+# Tests for Oklahoma UI annual benefit (top-level variable).
+# Annual benefit = min(partial_weekly_benefit * weeks_unemployed, MBA).
+# Gated by ok_ui_monetarily_eligible (defined_for) and StateCode.OK.
+# Reference: 40 O.S. §2-105, §2-106.
+
+- name: Case 1, eligible claimant - 10 weeks unemployed yields partial of MBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $9,200 -> WBA = $400 (within 2025 [$16, $541] range).
+        ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_base_period_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: 30_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 10
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: taxable $9,200 >= $1,500 AND total $30,000 >= 1.5 * $9,200 = $13,800 -> passes.
+        ok_ui_monetarily_eligible: true
+        ok_ui_weekly_benefit_rate: 400
+        ok_ui_weekly_payable: 400
+        # MBA = $400 * 16 weeks = $6,400.
+        ok_ui_maximum_benefit_amount: 6_400
+        # Annual = min($400 * 10, $6,400) = min($4,000, $6,400) = $4,000.
+        ok_ui: 4_000
+
+- name: Case 2, eligible claimant - weeks exceed max_weeks - capped at MBA.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_base_period_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: 30_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 20
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_monetarily_eligible: true
+        ok_ui_weekly_benefit_rate: 400
+        ok_ui_maximum_benefit_amount: 6_400
+        # Annual = min($400 * 20, $6,400) = min($8,000, $6,400) = $6,400 (capped at MBA).
+        ok_ui: 6_400
+
+- name: Case 3, monetarily ineligible - zero benefit regardless of weeks.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_taxable_wages: 1_000
+        ok_ui_base_period_total_wages: 12_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 16
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: taxable $1,000 < $1,500 -> fails.
+        # Test B: total $12,000 < $28,200 (2025 wage base) -> fails.
+        ok_ui_monetarily_eligible: false
+        # defined_for gate -> $0.
+        ok_ui: 0
+
+# --- End-to-end edge cases redistributed from edge_cases.yaml. ---
+
+- name: Case 4, all wages zero - both tests fail, no benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 0
+        ok_ui_base_period_taxable_wages: 0
+        ok_ui_base_period_total_wages: 0
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 16
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: $0 < $1,500 -> fails. Test B: $0 not > 0 -> fails.
+        ok_ui_monetarily_eligible: false
+        # defined_for gate -> $0.
+        ok_ui: 0
+
+- name: Case 5, eligible but zero weeks unemployed - annual benefit zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_base_period_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: 30_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_monetarily_eligible: true
+        # WBA: floor($9,200 / 23) = $400.
+        ok_ui_weekly_benefit_rate: 400
+        # MBA = $400 * 16 = $6,400 (defined regardless of weeks worked).
+        ok_ui_maximum_benefit_amount: 6_400
+        # Annual: min($400 * 0, $6,400) = $0.
+        ok_ui: 0
+
+- name: Case 6, non-OK state with otherwise eligible inputs - benefit zeroed.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 11_500
+        ok_ui_base_period_taxable_wages: 11_500
+        ok_ui_base_period_total_wages: 35_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 16
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    people:
+      person1:
+        # state_code TX: StateCode.OK gate on upstream variables and the
+        # ok_ui_monetarily_eligible defined_for cascade returns $0.
+        ok_ui: 0
+
+- name: Case 7, OK state with same inputs as Case 6 - benefit positive.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 11_500
+        ok_ui_base_period_taxable_wages: 11_500
+        ok_ui_base_period_total_wages: 35_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 16
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_monetarily_eligible: true
+        # WBA: floor($11,500 / 23) = $500; within 2024 [$16, $519] -> $500.
+        ok_ui_weekly_benefit_rate: 500
+        # MBA = $500 * 16 = $8,000; annual = min($500 * 16, $8,000) = $8,000.
+        ok_ui: 8_000
+
+- name: Case 8, base-period wages share caps annual benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_taxable_wages: 10_000
+        ok_ui_base_period_total_wages: 15_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 16
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_monetarily_eligible: true
+        ok_ui_weekly_benefit_rate: 434
+        # Lesser of $434 * 16 = $6,944, statewide $8,656, and 40% * $15,000 = $6,000.
+        ok_ui_maximum_benefit_amount: 6_000
+        ok_ui: 6_000
+
+# --- Item 18(e): share-cap-derived MBA binds ok_ui even though weeks < 16. ---
+
+- name: Case 9, share cap binds annual benefit at 14 weeks (< 16).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_taxable_wages: 10_000
+        ok_ui_base_period_total_wages: 15_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 14
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: total $15,000 >= 1.5 * $10,000 = $15,000 -> passes.
+        ok_ui_monetarily_eligible: true
+        # WBR: floor($10,000 / 23) = $434.
+        ok_ui_weekly_benefit_rate: 434
+        # MBA = lesser of $434 * 16 = $6,944, statewide $8,656, and
+        # 40% * $15,000 = $6,000 -> share cap binds at $6,000.
+        ok_ui_maximum_benefit_amount: 6_000
+        # Annual: min($434 * 14 = $6,076, $6,000) = $6,000 -> share-derived MBA
+        # binds despite only 14 weeks (< 16 max_weeks).
+        ok_ui: 6_000
+
+# --- Item 19: negative base-period wages -> ok_ui $0 (monetary gate fails; the
+# max_(..., 0) guard also prevents a negative MBA). ---
+
+- name: Case 10, negative base-period total wages - no benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_base_period_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: -5_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 16
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: total -$5,000 < 1.5 * $9,200 = $13,800 -> fails.
+        # Test B: total -$5,000 < $28,200 -> fails.
+        ok_ui_monetarily_eligible: false
+        # defined_for gate -> $0 (guard also keeps MBA >= 0).
+        ok_ui: 0
+
+# --- C3 (end-to-end): statewide max_amount $9,900 binds ok_ui in 2022 under the
+# 26-week regime, where WBR*26 overshoots the cap. ---
+
+- name: Case 11, 2022 - statewide max_amount caps annual benefit at $9,900.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $20,000 -> floor($20,000 / 23) = $869 -> clamped to $476 (2022 max WBA).
+        ok_ui_high_quarter_taxable_wages: 20_000
+        ok_ui_high_quarter_total_wages: 20_000
+        ok_ui_base_period_taxable_wages: 20_000
+        ok_ui_base_period_total_wages: 100_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 26
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: taxable $20,000 >= $1,500; total $100,000 >= 1.5 * $20,000 = $30,000 -> passes.
+        ok_ui_monetarily_eligible: true
+        ok_ui_weekly_benefit_rate: 476
+        # MBA = min(min($476 * 26 = $12,376, $9,900 max_amount), 0.4 * $100,000 = $40,000) = $9,900.
+        ok_ui_maximum_benefit_amount: 9_900
+        # Annual: min($476 * 26 = $12,376, $9,900) = $9,900 (statewide max_amount binds).
+        ok_ui: 9_900
+
+# --- C4: end-to-end year coverage for 2023 and 2026 (publishes verified_years
+# 2022-2026). ---
+
+- name: Case 12, 2023 - first 16-week year yields ok_ui $4,800.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $6,900 -> floor($6,900 / 23) = $300 (within 2023 [$16, $493]).
+        ok_ui_high_quarter_taxable_wages: 6_900
+        ok_ui_high_quarter_total_wages: 6_900
+        ok_ui_base_period_taxable_wages: 6_900
+        ok_ui_base_period_total_wages: 50_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 16
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: taxable $6,900 >= $1,500; total $50,000 >= 1.5 * $6,900 = $10,350 -> passes.
+        ok_ui_monetarily_eligible: true
+        ok_ui_weekly_benefit_rate: 300
+        # MBA = min(min($300 * 16 = $4,800, $7,888 max_amount), 0.4 * $50,000 = $20,000) = $4,800.
+        ok_ui_maximum_benefit_amount: 4_800
+        # Annual: min($300 * 16 = $4,800, $4,800) = $4,800.
+        ok_ui: 4_800
+
+- name: Case 13, 2026 - 16 x max WBA equals max_amount, ok_ui $10,384.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $20,000 -> floor($20,000 / 23) = $869 -> clamped to $649 (2026 max WBA).
+        ok_ui_high_quarter_taxable_wages: 20_000
+        ok_ui_high_quarter_total_wages: 20_000
+        ok_ui_base_period_taxable_wages: 20_000
+        ok_ui_base_period_total_wages: 100_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 16
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: taxable $20,000 >= $1,500; total $100,000 >= 1.5 * $20,000 = $30,000 -> passes.
+        ok_ui_monetarily_eligible: true
+        ok_ui_weekly_benefit_rate: 649
+        # MBA = min(min($649 * 16 = $10,384, $10,384 max_amount), 0.475 * $100,000 = $47,500) = $10,384.
+        # ($649 * 16 ties the $10,384 max_amount because max_amount is published as 16 x max WBA.)
+        ok_ui_maximum_benefit_amount: 10_384
+        # Annual: min($649 * 16 = $10,384, $10,384) = $10,384.
+        ok_ui: 10_384
+
+# --- A3/A9 hardening: minimum WBA floor and negative-weeks guard. ---
+
+- name: Case 14, zero high-quarter taxable wages - WBR floored at statutory $16 minimum.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW taxable $0 -> floor($0 / 23) = $0 -> floored up to the $16 minimum.
+        ok_ui_high_quarter_taxable_wages: 0
+        ok_ui_high_quarter_total_wages: 1_000
+        ok_ui_base_period_taxable_wages: 1_500
+        ok_ui_base_period_total_wages: 30_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: 10
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # Test A: taxable $1,500 >= $1,500; total $30,000 >= 1.5 * $1,000 = $1,500 -> passes.
+        ok_ui_monetarily_eligible: true
+        # max(floor($0 / 23), $16) = $16 (statutory minimum floor).
+        ok_ui_weekly_benefit_rate: 16
+        # Annual: min($16 * 10 = $160, MBA $256) = $160.
+        ok_ui: 160
+
+- name: Case 15, negative weeks unemployed - guarded to zero benefit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_high_quarter_total_wages: 9_200
+        ok_ui_base_period_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: 30_000
+        ok_ui_gross_weekly_earnings: 0
+        weeks_unemployed: -5
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_monetarily_eligible: true
+        # max(-5, 0) = 0 weeks; annual = min($400 * 0, $6,400) = $0 (not negative).
+        ok_ui: 0

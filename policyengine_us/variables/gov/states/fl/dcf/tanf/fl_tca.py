@@ -15,9 +15,15 @@ class fl_tca(Variable):
 
     def formula(spm_unit, period, parameters):
         # Per Florida Statutes 414.095(12) and FAC 65A-4.220
+        p = parameters(period).gov.states.fl.dcf.tanf
         payment_standard = spm_unit("fl_tca_payment_standard", period)
         countable_income = spm_unit("fl_tca_countable_income", period)
 
-        # Benefit = Payment Standard - Countable Income
-        benefit = max_(payment_standard - countable_income, 0)
-        return min_(benefit, payment_standard)
+        # Benefit = Payment Standard - Countable Income (bounded by the payment
+        # standard when countable income is negative).
+        benefit = min_(max_(payment_standard - countable_income, 0), payment_standard)
+
+        # Per DCF 2620.0111.01 Step 6, a benefit is issued only when the deficit
+        # is at least $10; the Note confirms "Cash benefits are not issued for
+        # amounts less than $10." Deficits from $0.01 to $9.99 produce $0.
+        return where(benefit >= p.minimum_benefit, benefit, 0)

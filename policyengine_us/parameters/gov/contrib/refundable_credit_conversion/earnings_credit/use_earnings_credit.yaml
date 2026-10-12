@@ -1,0 +1,7 @@
+description: Apply the per-earner refundable earnings subsidy (rate times capped earnings, summed across earners in the tax unit). When false, the earnings credit is zero regardless of the rate or cap parameters.
+metadata:
+  unit: bool
+  period: year
+  label: Refundable credit conversion apply per-earner earnings credit
+values:
+  0000-01-01: false

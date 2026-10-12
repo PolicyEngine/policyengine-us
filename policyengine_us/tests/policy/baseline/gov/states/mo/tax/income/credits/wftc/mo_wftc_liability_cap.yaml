@@ -1,0 +1,19 @@
+# Form MO-WFTC Line 9: MO-1040 Line 36 tax less Line 43 (property tax
+# credit), floored at zero. MO-1040 Line 42 (Form MO-TC miscellaneous
+# credits) is not modeled.
+- name: Property tax credit reduces the liability base
+  period: 2023
+  input:
+    state_code: MO
+    mo_income_tax_before_credits: 100
+    mo_property_tax_credit: 60
+  output:
+    mo_wftc_liability_cap: 40
+- name: Property tax credit above the liability floors the base at zero
+  period: 2023
+  input:
+    state_code: MO
+    mo_income_tax_before_credits: 100
+    mo_property_tax_credit: 150
+  output:
+    mo_wftc_liability_cap: 0

@@ -13,30 +13,34 @@ class ar_tea(Variable):
     defined_for = "ar_tea_eligible"
 
     def formula(spm_unit, period, parameters):
-        # Per TEA Manual Section 2362 - Reduced Payment - Gross Income Trigger
+        # Per TEA Policy Manual Section 2362 - Reduced Payment - Gross Income
+        # Trigger (effective 01/01/2023). Income eligibility (countable income
+        # <= $513) is already enforced by ar_tea_eligible, so a family reaching
+        # this formula is income eligible. The payment is a flat grant, not a
+        # gap-filled benefit: it is the full maximum grant for the family size
+        # when gross income is below the trigger, and 50% of that maximum when
+        # gross income is at or above the trigger. Countable income is never
+        # subtracted from the grant (Section 2362 Example #1: $150 gross income
+        # yields the full $204 grant for a family of three).
         p = parameters(period).gov.states.ar.dhs.tea
 
         maximum_benefit = spm_unit("ar_tea_maximum_benefit", period)
-        countable_income = spm_unit("ar_tea_countable_income", period)
 
-        # Check if gross income triggers 50% payment reduction
+        # Countable monthly gross income, excluding assigned child support.
         gross_income = add(
             spm_unit,
             period,
             ["tanf_gross_earned_income", "tanf_gross_unearned_income"],
         )
 
+        # When gross income >= trigger: payment reduced by 50% of the maximum.
+        # When gross income < trigger: payment is the full maximum grant.
         above_trigger = gross_income >= p.payment_standard.trigger.amount
         reduced_payment = maximum_benefit * (
             1 - p.payment_standard.trigger.reduction_rate
         )
-
-        # When gross income >= trigger: payment is 50% of max (no subtraction)
-        # When gross income < trigger: payment is max - countable income
-        below_trigger_benefit = max_(maximum_benefit - countable_income, 0)
-        capped_benefit = min_(below_trigger_benefit, maximum_benefit)
         return where(
             above_trigger,
             reduced_payment,
-            capped_benefit,
+            maximum_benefit,
         )

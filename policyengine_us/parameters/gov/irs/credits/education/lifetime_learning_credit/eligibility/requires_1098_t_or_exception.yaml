@@ -1,0 +1,13 @@
+description: The IRS requires a Form 1098-T payee statement, or an exception allowed by the Secretary, to claim the Lifetime Learning Credit if this is true.
+values:
+  0000-01-01: false
+  2016-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Lifetime Learning Credit Form 1098-T requirement applies
+  reference:
+    - title: 26 U.S. Code § 25A(g)(8)
+      href: https://www.law.cornell.edu/uscode/text/26/25A#g_8
+    - title: 26 U.S. Code § 25A effective date notes
+      href: https://www.law.cornell.edu/uscode/text/26/25A#notes

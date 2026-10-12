@@ -1,0 +1,47 @@
+description: Marin County counts these income sources as gross income under the General Relief program.
+values:
+  2025-07-01:
+    # Income from a job of any type.
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    # Income from rental property.
+    - rental_income
+    # Interest, dividends, capital gains, estates, and trusts.
+    - interest_income
+    - dividend_income
+    - capital_gains
+    - estate_income
+    # Retirement and pension income.
+    - pension_income
+    - retirement_distributions
+    - railroad_benefits
+    # Unemployment Insurance Benefits.
+    - unemployment_compensation
+    # State Disability Insurance.
+    - ca_state_disability_insurance
+    # Disability and workers' compensation benefits.
+    - disability_benefits
+    - workers_compensation
+    # Veterans benefits.
+    - veterans_benefits
+    # Support payments and other cash assistance.
+    - alimony_income
+    - child_support_received
+    - gi_cash_assistance
+    - strike_benefits
+    # Social Security retirement, survivors, and disability benefits.
+    - social_security
+    - survivor_benefits
+    - life_insurance_benefits
+    # SSI recipients are barred at the person level (Section II.I), but a
+    # barred spouse's income must still be considered under Section II.N, so
+    # SSI counts toward the unit's pooled income.
+    - ssi
+metadata:
+  unit: list
+  period: year
+  label: Marin County General Relief income sources
+  reference:
+    - title: Marin County General Relief Program Policies and Standards, Section II.I Income
+      href: https://marin.granicus.com/DocumentViewer.php?file=marin_ce4ed1aaf509aaf7176c360d26f8f1c6.pdf#page=11

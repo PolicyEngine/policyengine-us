@@ -1,0 +1,69 @@
+- name: Case 1, single adult with $1,000/mo countable income, around 18% SMI.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    # WA SMI 2024-10-01 size 1: 131,054 * 0.52 / 12 = $5,679.01/mo.
+    # Income 12,000/yr = 1,000/mo. Fraction = 1000 / 5679.01 = 0.176.
+    wa_wccc_smi_fraction: 0.176
+
+- name: Case 2, family of 2 with $30,000/yr countable income.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        employment_income: 30_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    # WA SMI 2024-10-01 size 2: 131,054 * 0.68 / 12 = $7,426.39/mo.
+    # Income 30,000/yr = 2,500/mo. Fraction = 2500 / 7426.39 = 0.337.
+    wa_wccc_smi_fraction: 0.337
+
+- name: Case 3, zero countable income, fraction is zero.
+  period: 2025-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+  output:
+    wa_wccc_smi_fraction: 0

@@ -1,0 +1,13 @@
+- name: Case 1, monthly hours worked derives from last week's hours.
+  period: 2027
+  absolute_error_margin: 0.001
+  input:
+    hours_worked_last_week: 20
+  output:
+    monthly_hours_worked: 86.667
+
+- name: Case 2, missing last-week hours derive zero monthly hours.
+  period: 2027
+  input: {}
+  output:
+    monthly_hours_worked: 0

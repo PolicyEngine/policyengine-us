@@ -40,6 +40,14 @@
   output:
     county: [NASSAU_COUNTY_NY, LOS_ANGELES_COUNTY_CA, WAYNE_COUNTY_MI, CLARK_COUNTY_NV]
 
+- name: Mixed known and missing county FIPS preserves known rows
+  period: 2025
+  input:
+    county_fips: ["36059", ""]
+    state_code: [NY, CA]
+  output:
+    county: [NASSAU_COUNTY_NY, ALAMEDA_COUNTY_CA]
+
 - name: Only have the state code CA as input, return the first county of that state.
   period: 2025
   input:

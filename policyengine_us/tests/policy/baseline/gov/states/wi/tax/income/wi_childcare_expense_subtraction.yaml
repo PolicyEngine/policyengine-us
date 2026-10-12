@@ -30,3 +30,52 @@
     state_code: WI
   output:
     wi_childcare_expense_subtraction: 2_000
+
+- name: WI childcare_expense_subtraction separate filer is not eligible per Wis. Stat. 71.05(6)(b)43.e.
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    tax_unit_childcare_expenses: 2_000
+    count_cdcc_eligible: 1
+    min_head_spouse_earned: 3_000
+    filing_status: SEPARATE
+    state_code: WI
+  output:
+    wi_childcare_expense_subtraction: 0
+
+- name: WI childcare_expense_subtraction separated filer maintaining a home for a qualifying child keeps the subtraction, IRC 21(e)(4)
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 35
+        is_separated: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SEPARATE
+        tax_unit_childcare_expenses: 2_000
+        count_cdcc_eligible: 1
+        min_head_spouse_earned: 3_000
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+  output:
+    wi_childcare_expense_subtraction: 2_000
+
+- name: WI childcare_expense_subtraction includes care expenses for a disabled adult qualifying individual
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    tax_unit_childcare_expenses: 0
+    care_expenses: 2_000
+    count_cdcc_eligible: 1
+    min_head_spouse_earned: 3_000
+    state_code: WI
+  output:
+    wi_childcare_expense_subtraction: 2_000

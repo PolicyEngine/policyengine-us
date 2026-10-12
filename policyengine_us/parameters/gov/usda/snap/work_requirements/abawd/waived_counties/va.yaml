@@ -1,0 +1,26 @@
+description: Counties in Virginia with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  2024-07-01:
+    - BRUNSWICK_COUNTY_VA # FIPS 51025
+    - BUCHANAN_COUNTY_VA # FIPS 51027
+    - DICKENSON_COUNTY_VA # FIPS 51051
+    - DINWIDDIE_COUNTY_VA # FIPS 51053
+    - GREENSVILLE_COUNTY_VA # FIPS 51081
+    - SURRY_COUNTY_VA # FIPS 51181
+    - SUSSEX_COUNTY_VA # FIPS 51183
+    - DANVILLE_CITY_VA # FIPS 51590
+    - EMPORIA_CITY_VA # FIPS 51595
+    - HOPEWELL_CITY_VA # FIPS 51670
+    - MARTINSVILLE_CITY_VA # FIPS 51690
+    - PETERSBURG_CITY_VA # FIPS 51730
+  2025-07-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in Virginia
+  reference:
+    - title: USDA FNS Virginia FY 2024 ABAWD Waiver Response
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/va-abawd-response-fy2024.pdf

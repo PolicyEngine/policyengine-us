@@ -1,0 +1,42 @@
+description: Washington counts these income sources toward combined disposable income under the Senior Citizens and Disabled Persons Property Tax Exemption program.
+values:
+  2008-01-01:
+    - adjusted_gross_income
+    # RCW 84.36.383(7)(d) — pension and annuity receipts not in AGI
+    - tax_exempt_pension_income
+    # RCW 84.36.383(7)(e) — military pay/benefits not in AGI
+    - military_basic_pay
+    # RCW 84.36.383(7)(f) — veterans benefits not in AGI, but the statute
+    # excludes attendant-care, medical-aid, VA disability compensation, and
+    # DIC. PolicyEngine's veterans_benefits is an undecomposed aggregate
+    # dominated by those excluded categories, so adding it back would
+    # systematically over-count CDI. We omit it conservatively at the moment
+    # and don't track the included subcomponents separately.
+    # RCW 84.36.383(7)(g) — Social Security and Railroad Retirement not in AGI
+    - tax_exempt_social_security
+    # RCW 84.36.383(7)(i) — state/municipal bond interest not in AGI
+    - tax_exempt_interest_income
+    # RCW 84.36.383(7)(a) — capital gains add-back. AGI already includes
+    # net capital gains (capped by the federal $3,000 loss limit), so the
+    # statutory add-back targets the §121 home-sale gain that taxpayers
+    # excluded from AGI. Not modeled — we don't have a separate variable
+    # for the §121 home-sale exclusion at the moment.
+    # RCW 84.36.383(7)(b)/(c) — depreciation and capital/business/rental
+    # loss add-backs. Not modeled — we don't track these subcomponents
+    # of AGI separately at the moment.
+    # RCW 84.36.383(7)(h) — dividend receipts not in AGI (e.g., certain
+    # tax-exempt fund distributions). Not modeled — qualified and ordinary
+    # dividends already flow through AGI; we don't have a variable for
+    # non-AGI dividend receipts at the moment.
+
+metadata:
+  unit: list
+  period: year
+  label: Washington senior/disabled property tax exemption combined disposable income sources
+  reference:
+    - title: RCW 84.36.383(7)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=84.36.383
+    - title: WAC 458-16A-120
+      href: https://app.leg.wa.gov/WAC/default.aspx?cite=458-16A-120
+    - title: Washington DOR Property Tax Exemption for Senior Citizens and People with Disabilities (PT0017)
+      href: https://dor.wa.gov/sites/default/files/2022-02/PTExemption_Senior.pdf

@@ -1,0 +1,40 @@
+- name: Case 1, disabled spouse assigned as tax unit head is eligible for the income floor.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        is_incapable_of_self_care: true
+      person2:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    is_tax_unit_head: [true, false]
+    is_tax_unit_spouse: [false, true]
+    cdcc_income_floor_eligible: [true, false]
+
+- name: Case 2, disabled single tax unit head is not eligible for the spouse income floor.
+  period: 2024
+  input:
+    age: 40
+    is_incapable_of_self_care: true
+    is_tax_unit_head: true
+  output:
+    cdcc_income_floor_eligible: false
+
+- name: Case 3, full-time student spouse is eligible for the income floor.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+      person2:
+        age: 45
+        is_full_time_student: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    cdcc_income_floor_eligible: [false, true]

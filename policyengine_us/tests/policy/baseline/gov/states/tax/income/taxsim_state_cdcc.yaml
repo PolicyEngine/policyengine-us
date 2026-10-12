@@ -1,0 +1,33 @@
+- name: OH CDCC is included in the state CDCC aggregate from 2021
+  period: 2021
+  input:
+    people:
+      parent:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [parent]
+        oh_cdcc: 200
+    households:
+      household:
+        members: [parent]
+        state_code: OH
+  output:
+    taxsim_state_cdcc: 200
+
+- name: OH CDCC is not counted before 2021
+  period: 2020
+  input:
+    people:
+      parent:
+        age: 35
+    tax_units:
+      tax_unit:
+        members: [parent]
+        oh_cdcc: 200
+    households:
+      household:
+        members: [parent]
+        state_code: OH
+  output:
+    taxsim_state_cdcc: 0

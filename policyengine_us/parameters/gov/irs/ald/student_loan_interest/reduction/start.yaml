@@ -1,6 +1,7 @@
 description: IRS allows for a student loan interest deduction of this amount, based on filing status.
 
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: year
   label: Student loan interest deduction amount

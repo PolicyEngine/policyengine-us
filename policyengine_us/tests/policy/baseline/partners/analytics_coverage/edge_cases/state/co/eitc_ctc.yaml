@@ -1,0 +1,144 @@
+# YAML regression-test fixture (policyengine-us partner edge cases).
+# Pins CO-specific EITC/CTC model behavior that tax_credits_composition.yaml
+# does not: the under-25 childless EITC expansion (state credit where the
+# federal EITC is 0) and a mid-bracket CO CTC amount. Comments show how each
+# pinned value derives from parameters in parameters/gov/... (no logic here).
+- name: co_eitc_under_25_expansion_childless_age_22 (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 22
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 10_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # Age 22 is below the federal childless minimum age (25) -> federal EITC 0.
+        eitc: 0.0
+        # CO under-25 expansion (ages 19-24, non-student): childless EITC-like
+        # amount at earned 10,000 = min(0.0765 x 10,000, 664) = 664 (plateau,
+        # below the 10,860 reduction start); co_eitc = 664 x 0.25 match = 166.
+        co_eitc: 166.0
+        co_ctc: 0.0
+        co_care_worker_credit: 0.0
+        adjusted_gross_income: 10_000.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+- name: co_eitc_ctc_single_parent_agi_40k_mid_bracket (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 40_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # Federal 1-child EITC past the 23,890 reduction start:
+        # 4,427 - 0.1598 x (40,000 - 23,890) = 1,852.62;
+        # co_eitc = 1,852.62 x 0.25 match = 463.16.
+        co_eitc: 463.16
+        # CO CTC (HOH, 2026): AGI 40,000 is in the (26,000, 51,000] tier
+        # -> 600 per child under age 6; 1 eligible child -> 600.
+        co_ctc: 600.0
+        co_care_worker_credit: 0.0
+        adjusted_gross_income: 40_000.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+      child1:
+        # FAC mid-reduction (HOH threshold 16,000): excess 24,000 ->
+        # ceil(24,000 / 5,000) = 5 increments x 6.875% = 34.375% reduction;
+        # 3,273 x 1.0 (age under 6) x 0.65625 = 2,147.91.
+        co_family_affordability_credit: 2_147.91
+        co_state_supplement: 0.0
+        co_oap: 0.0

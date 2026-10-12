@@ -1,0 +1,77 @@
+# ak_ccap_child_eligible: Person, bool, MONTH
+# Combines: age eligible AND immigration eligible (federal
+# is_ccdf_immigration_eligible_child).
+# Manual Section 4070-2 Eligible Child.
+
+- name: Case 1, citizen child age 4 is eligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_child_eligible: true
+
+- name: Case 2, citizen child age 13 is ineligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 13
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Age fails -> overall ineligible
+    ak_ccap_child_eligible: false
+
+- name: Case 3, undocumented child age 4 is ineligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    # Federal is_ccdf_immigration_eligible_child blocks undocumented children
+    ak_ccap_child_eligible: false
+
+- name: Case 4, disabled citizen child age 12 is eligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 12
+        is_disabled: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_child_eligible: true
+
+- name: Case 5, adult citizen is ineligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    ak_ccap_child_eligible: false

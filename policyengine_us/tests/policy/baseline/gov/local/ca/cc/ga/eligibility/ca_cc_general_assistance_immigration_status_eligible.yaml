@@ -1,0 +1,39 @@
+- name: US citizen is a qualified immigration status.
+  period: 2024-01
+  input:
+    immigration_status: CITIZEN
+    county: CONTRA_COSTA_COUNTY_CA
+  output:
+    ca_cc_general_assistance_immigration_status_eligible: true
+
+- name: Refugee is a qualified immigration status.
+  period: 2024-01
+  input:
+    immigration_status: REFUGEE
+    county: CONTRA_COSTA_COUNTY_CA
+  output:
+    ca_cc_general_assistance_immigration_status_eligible: true
+
+- name: Legal permanent resident is a qualified immigration status.
+  period: 2024-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    county: CONTRA_COSTA_COUNTY_CA
+  output:
+    ca_cc_general_assistance_immigration_status_eligible: true
+
+- name: Undocumented is not a qualified immigration status.
+  period: 2024-01
+  input:
+    immigration_status: UNDOCUMENTED
+    county: CONTRA_COSTA_COUNTY_CA
+  output:
+    ca_cc_general_assistance_immigration_status_eligible: false
+
+- name: Paroled for one year is not a qualified status (time-limited parole).
+  period: 2024-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    county: CONTRA_COSTA_COUNTY_CA
+  output:
+    ca_cc_general_assistance_immigration_status_eligible: false

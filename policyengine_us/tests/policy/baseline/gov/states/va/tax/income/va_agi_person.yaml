@@ -1,15 +1,16 @@
-- name: Attributing the state adjusted gross income based on federal AGI
+- name: Each person's VAGI is their federal AGI less their own Virginia subtractions
   period: 2021
   input:
     people:
       person1:
         adjusted_gross_income_person: 10_000
+        va_subtractions_person: 2_500
       person2:
         adjusted_gross_income_person: 30_000
+        va_subtractions_person: 7_500
     tax_units:
       tax_unit:
         members: [person1, person2]
-        va_subtractions: 10_000
     households:
       household:
         members: [person1, person2]
@@ -23,18 +24,65 @@
     people:
       person1:
         adjusted_gross_income_person: 10_000
+        va_subtractions_person: 2_000
       person2:
         adjusted_gross_income_person: 0
+        va_subtractions_person: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
-        va_subtractions: 2_000
     households:
       household:
         members: [person1, person2]
         state_code: VA
   output:
     va_agi_person: [8_000, 0]
+
+- name: Social Security subtraction applied directly to the recipient, not prorated
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 100_000
+      person2:
+        age: 70
+        social_security_retirement: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # person2's $17,000 taxable Social Security is exempt in Virginia and is
+    # subtracted from her own Virginia AGI (not prorated to person1), so her
+    # separate VAGI is 0. The two columns still sum to the tax unit's VAGI.
+    va_agi_person: [100_000, 0]
+
+- name: Unemployment subtraction applied directly to the recipient, not prorated
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 100_000
+      person2:
+        age: 45
+        unemployment_compensation: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Virginia subtracts unemployment compensation; person2's $15,000 is
+    # attributed to her, so her separate VAGI is 0 rather than a prorated
+    # share of the subtraction. The columns still sum to the tax unit's VAGI.
+    va_agi_person: [100_000, 0]
 
 - name: Age deduction applied directly to eligible person, not prorated
   period: 2021

@@ -20,6 +20,18 @@
     # Reduction: $27,680 * 0.5 = $13,840
     ss_earnings_test_reduction: 13_840
 
+- name: Reduction includes SSTB self-employment earnings under FRA
+  period: 2024
+  input:
+    age: 64
+    employment_income: 0
+    sstb_self_employment_income: 50_000
+    ss_retirement_benefit_before_earnings_test: 24_000
+  output:
+    # Excess: $50,000 - $22,320 = $27,680
+    # Reduction: $27,680 * 0.5 = $13,840
+    ss_earnings_test_reduction: 13_840
+
 - name: Reduction capped at benefit amount
   period: 2024
   input:
@@ -58,3 +70,27 @@
   output:
     ss_earnings_test_reduction: 0
 
+- name: Under FRA reduction uses 2026 exempt amount
+  period: 2026
+  input:
+    age: 64
+    employment_income: 30_000
+    self_employment_income: 0
+    ss_retirement_benefit_before_earnings_test: 100_000
+  output:
+    # Excess: $30,000 - $24,480 = $5,520
+    # Reduction: $5,520 * 0.5 = $2,760
+    ss_earnings_test_reduction: 2_760
+
+- name: Year of FRA reduction uses 2026 exempt amount
+  period: 2026
+  input:
+    age: 66.5
+    employment_income: 70_000
+    self_employment_income: 0
+    ss_retirement_benefit_before_earnings_test: 100_000
+    ss_full_retirement_age_months: 804
+  output:
+    # Excess: $70,000 - $65,160 = $4,840
+    # Reduction: $4,840 * 0.333333 = $1,613.33
+    ss_earnings_test_reduction: 1_613.3317

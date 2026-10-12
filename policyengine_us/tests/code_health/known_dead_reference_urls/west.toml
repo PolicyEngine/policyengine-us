@@ -1,0 +1,179 @@
+# Dead reference URLs retired in the west batch of the 2026-09-30 audit.
+# Each prefix failed a GET request (404/410, a soft 404, a dead host or a
+# persistent server error) on the date given; see the PR for evidence.
+# See test_known_dead_reference_urls.py for the format.
+
+[[dead]]
+prefix = "https://app.leg.wa.gov/documents/laws/WAC/WAC%20388%20%20TITLE/WAC%20388%20-478%20%20CHAPTER/WAC%20388%20-478%20-0015.htm"
+verified = "2026-10-01"
+replacement = "https://lawfilesext.leg.wa.gov/law/WACArchive/2025/pdf/WAC%20388%20-478%20%20CHAPTER/WAC%20388%20-478%20-0015.pdf"
+
+[[dead]]
+prefix = "https://archive.legmt.gov/bills/2021/sesslaws/ch0503.pdf"
+verified = "2026-10-01"
+replacement = "https://docs.legmt.gov/download-ticket?ticketId=fa765563-ee0b-4c30-8549-720e03d0f349"
+
+[[dead]]
+prefix = "https://archive.legmt.gov/bills/2023/billhtml/HB0222.htm"
+verified = "2026-10-01"
+replacement = "https://docs.legmt.gov/download-ticket?ticketId=ff6faf83-515f-4472-a079-c41a4a75e827"
+
+[[dead]]
+prefix = "https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_MCTCP_0.pdf"
+verified = "2026-10-01"
+replacement = "https://azdor.gov/sites/default/files/document/FORMS_INDIVIDUAL_2025_MCTCP.pdf"
+
+[[dead]]
+prefix = "https://denvergov.org/files/assets/public/v/2/denver-human-services/documents/property-tax-relief/dptr-instructions-2023.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20240803030400/https://denvergov.org/files/assets/public/v/2/denver-human-services/documents/property-tax-relief/dptr-instructions-2023.pdf"
+
+[[dead]]
+prefix = "https://denvergov.org/files/content/public/v/37/government/agencies-departments-offices/agencies-departments-offices-directory/denver-human-services/be-supported/additional-assistance/property-tax-relief/denver-property-tax-relief-program-year-2021-rules.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20240804043816/https://denvergov.org/files/content/public/v/37/government/agencies-departments-offices/agencies-departments-offices-directory/denver-human-services/be-supported/additional-assistance/property-tax-relief/denver-property-tax-relief-program-year-2021-rules.pdf"
+
+[[dead]]
+prefix = "https://dor.wa.gov/sites/default/files/2022-09/3240.pdf"
+verified = "2026-10-01"
+replacement = "https://dor.wa.gov/sites/default/files/2026-07/ETA3240.2026.pdf"
+
+[[dead]]
+prefix = "https://incometax.utah.gov/credits/child-tax-credit"
+verified = "2026-10-01"
+replacement = "https://files.tax.utah.gov/tax/forms/2024/tc-40inst.pdf"
+
+[[dead]]
+prefix = "https://incometax.utah.gov/credits/earned-income"
+verified = "2026-10-01"
+replacement = "https://incometax.utah.gov/tc-40a/"
+
+[[dead]]
+prefix = "https://lawfilesext.leg.wa.gov/biennium/2019-20/Pdf/Bills/Session%20Laws/House/1105-S.SL.pdf"
+verified = "2026-10-01"
+replacement = "https://lawfilesext.leg.wa.gov/biennium/2019-20/Pdf/Bills/Session%20Laws/House/1105-S2.SL.pdf"
+
+[[dead]]
+prefix = "https://leg.mt.gov/bills/2021/SB0399/SB0399_3.pdf"
+verified = "2026-10-01"
+replacement = "https://docs.legmt.gov/download-ticket?ticketId=2f0614a3-8bb9-4b4e-93de-21647c203b7c"
+
+[[dead]]
+prefix = "https://leg.mt.gov/bills/2023/billhtml/HB0268.htm"
+verified = "2026-10-01"
+replacement = "https://docs.legmt.gov/download-ticket?ticketId=6a5df83b-5948-4d76-ba4d-232fc26f9faa"
+
+[[dead]]
+prefix = "https://legislature.idaho.gov/sessioninfo/2022spcl/legislation/H0001/"
+verified = "2026-10-01"
+replacement = "https://legislature.idaho.gov/sessioninfo/2022extra1/legislation/H0001/"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/montana-tax-simplification-resource-hub/"
+verified = "2026-10-01"
+replacement = "https://revenue.mt.gov/montana-tax-simplification-resource-hub"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/2441-M_2022.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Child-and-Dependent-Care-Expense-Deduction-Form-2441-M/2022_Child_and_Dependent_Care_Expense_Deduction_Form_2441-M.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2022/12/Form-2-2022-Instructions.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/05/Montana-Idividiual-Income-Tax-Return-Form-2-2022v6.2.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2022_Montana_Individual_Income_Tax_Return_Form_2.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/08/2022-Montana-Property-Tax-Rebate-Form-MPTR22.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20231130173751/https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/08/2022-Montana-Property-Tax-Rebate-Form-MPTR22.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2023_Montana_Individual_Income_Tax_Return_Form_2.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/12/Form_2_2023_Instructions.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2024/12/2024-Tax-Tables.pdf"
+verified = "2026-10-01"
+replacement = "https://revenue.mt.gov/taxes/tax-tables-and-deductions/2024"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2025/02/Form-2-Instructions-2024-2.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021%20instructions.pdf"
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2021_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021."
+verified = "2026-10-01"
+replacement = "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2021_Montana_Individual_Income_Tax_Return_Form_2.pdf"
+
+[[dead]]
+prefix = "https://mtrevenue.gov/wp-content/uploads/mdocs/form%202%202021.pdf"
+verified = "2026-10-01"
+replacement = "https://revenue.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2/2021_Montana_Individual_Income_Tax_Return_Form_2.pdf"
+
+[[dead]]
+prefix = "https://revenue.mt.gov/files/BIT/Montana-Tax-Tables-and-Deductions/2025-Tax-Rates-and-Deductions.pdf"
+verified = "2026-10-01"
+replacement = "https://revenue.mt.gov/taxes/tax-tables-and-deductions/2025"
+
+[[dead]]
+prefix = "https://rules.mt.gov/gateway/Subchapterhome.asp?scn=42%2E15%2E2"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20220523051049/https://rules.mt.gov/gateway/Subchapterhome.asp?scn=42%2E15%2E2"
+
+[[dead]]
+prefix = "https://tax.colorado.gov/sites/tax/files/documents/DR_0104CN_2024.pdf"
+verified = "2026-10-01"
+replacement = "https://tax.colorado.gov/sites/tax/files/documents/DR0104CN_2024.pdf"
+
+[[dead]]
+prefix = "https://tax.colorado.gov/sites/tax/files/documents/DR_0104EP_2023.pdf"
+verified = "2026-10-01"
+replacement = "https://tax.colorado.gov/sites/tax/files/documents/DR_0104EP_2022_0.pdf"
+
+[[dead]]
+prefix = "https://tax.colorado.gov/sites/tax/files/documents/DR_0104_Book_2022.pdf"
+verified = "2026-10-01"
+replacement = "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf"
+
+[[dead]]
+prefix = "https://tax.colorado.gov/sites/tax/files/documents/ITT_Social_Security_Pensions_and_Annuities_Feb_2023.pdf"
+verified = "2026-10-01"
+replacement = "https://tax.colorado.gov/income-tax-topics-social-security-pensions-and-annuities"
+
+[[dead]]
+prefix = "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_09-29-2025.pdf"
+verified = "2026-10-01"
+replacement = "https://tax.idaho.gov/wp-content/uploads/forms/EIN00046/EIN00046_03-02-2026.pdf"
+
+[[dead]]
+prefix = "https://www.dcyf.wa.gov/sites/default/files/pdf/eceap/ECEAP-Federal-Poverty-Level-Chart.pdf"
+verified = "2026-10-01"
+replacement = "https://web.archive.org/web/20250527155545/https://www.dcyf.wa.gov/sites/default/files/pdf/eceap/ECEAP-Federal-Poverty-Level-Chart.pdf"
+
+[[dead]]
+prefix = "https://www.idsaves.org/home/features-and-benefits/tax-benefits.html"
+verified = "2026-10-01"
+replacement = "https://www.idsaves.org/tax-benefits/"
+
+[[dead]]
+prefix = "https://www.srca.nm.gov/parts/title08/08.401.0002.html"
+verified = "2026-10-01"
+replacement = "https://prod-rf-lambda.rtssaas.com/PublicFiles/d89c47bd0d70402dba89b03a22bda6d1/45b8668e-460f-45cd-804f-92ee3d442343/8.401.2.html"

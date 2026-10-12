@@ -1,0 +1,151 @@
+# Income thresholds per OKDHS Appendix C-4 (10/1/2025): $4,525/month for a
+# household of two, $5,589 for a household of three.
+- name: Case 1, household of two below the threshold is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_000  # $4,500/month, below $4,525.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_income_eligible: true
+
+- name: Case 2, household of two above the threshold is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 55_200  # $4,600/month, above $4,525.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_income_eligible: false
+
+- name: Case 3, household of three below the threshold is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 66_000  # $5,500/month, below $5,589.
+      person2:
+        age: 28
+      person3:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OK
+  output:
+    ok_ccs_income_eligible: true
+
+- name: Case 4, household of two exactly at the threshold is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_300  # $4,525/month, exactly at $4,525.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_income_eligible: true
+
+- name: Case 5, household of ten exactly at the ten-person threshold is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 114_984  # $9,582/month, exactly at $9,582.
+      person2:
+        age: 28
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 9
+      person6:
+        age: 8
+      person7:
+        age: 7
+      person8:
+        age: 6
+      person9:
+        age: 5
+      person10:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: OK
+  output:
+    ok_ccs_income_eligible: true
+
+- name: Case 6, household of eleven above the ten-person threshold is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 114_996  # $9,583/month, above the $9,582 ten-person limit.
+      person2:
+        age: 28
+      person3:
+        age: 12
+      person4:
+        age: 11
+      person5:
+        age: 10
+      person6:
+        age: 9
+      person7:
+        age: 8
+      person8:
+        age: 7
+      person9:
+        age: 6
+      person10:
+        age: 5
+      person11:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: OK
+  output:
+    ok_ccs_income_eligible: false

@@ -1,0 +1,174 @@
+# MA LIHEAP (HEAP): benefit level 1-6 from income/FPG ratio, payment from
+# gov/states/ma/doer/liheap/standard/amount/non_subsidized.yaml (FY2026 values,
+# 2025-10-01), capped at actual heating expenses. Income limit: 60% of state
+# median income. 2026 FPG (1 person, contiguous, 2025-10-01 instant): 15,650.
+- name: ma_liheap_deliverable_fuel_max_benefit (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 12_000
+        heating_expense_person: 2_500
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id001
+        ma_liheap_heating_type: HEATING_OIL_AND_PROPANE
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Income 12,000 / FPG 15,650 = 0.77 -> level 1; deliverable fuel,
+        # non-subsidized level 1 = 1,400 (FY2026); expenses 2,500 >= 1,400 -> 1,400.
+        ma_liheap: 1_400.0
+- name: ma_liheap_utility_mid_level_benefit (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+        heating_expense_person: 1_200
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id002
+        ma_liheap_heating_type: ELECTRICITY
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Income 30,000 / FPG 15,650 = 1.92 -> level 5; electricity ->
+        # utility category, non-subsidized level 5 = 630 (FY2026);
+        # expenses 1,200 >= 630 -> 630.
+        ma_liheap: 630.0
+- name: ma_liheap_expense_capped_below_payment (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 12_000
+        heating_expense_person: 800
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id003
+        ma_liheap_heating_type: HEATING_OIL_AND_PROPANE
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Level 1 deliverable-fuel payment is 1,400 but actual heating
+        # expenses of 800 bind -> min(800, 1,400) = 800.
+        ma_liheap: 800.0
+- name: ma_liheap_above_60pct_smi_ineligible (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 70_000
+        heating_expense_person: 1_200
+    households:
+      household:
+        members: &id004
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id004
+        ma_liheap_heating_type: ELECTRICITY
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Income 70,000 exceeds 60% of MA state median income for a
+        # 1-person household -> income-ineligible (heating expenses present,
+        # so the zero is driven by income, not missing inputs).
+        ma_liheap: 0.0

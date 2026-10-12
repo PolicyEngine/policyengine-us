@@ -1,0 +1,107 @@
+# Unit tests for wy_ccap_daily_benefit (Person, MONTH, USD/day).
+# Rules Ch. 1 §9(c) / Manual §1101.M: DFS pays the lower of the provider's
+# actual charge and the Table I statewide maximum rate for each authorized
+# day. The daily charge is the monthly pre-subsidy expense (annual / 12)
+# divided by the attended days. Each case uses a center full-day
+# three-year-old, whose Table I maximum is $32.00.
+- name: Case 1, the Table I maximum binds when the provider charges more.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+        # 6_000 / 12 = 500 per month / 10 days = 50 per day > 32 maximum.
+        pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_daily_benefit: [0, 32]
+
+- name: Case 2, the provider's actual charge binds when below the maximum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+        # 3_000 / 12 = 250 per month / 10 days = 25 per day < 32 maximum.
+        pre_subsidy_childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_daily_benefit: [0, 25]
+
+- name: Case 3, zero attended days yields no daily benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 0
+        wy_ccap_provider_type: CENTER
+        pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_daily_benefit: [0, 0]
+
+- name: Case 4, zero child care expenses yield no daily benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+        pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_daily_benefit: [0, 0]
+
+- name: Case 5, an ineligible fourteen-year-old receives no daily benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 14
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 10
+        wy_ccap_provider_type: CENTER
+        pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    wy_ccap_daily_benefit: [0, 0]

@@ -1,0 +1,13 @@
+description: South Dakota classifies children below this age in months as infants for reimbursement rates under the Child Care Assistance program.
+
+# The rate-table "Infant" column covers children under 12 months.
+values:
+  2026-08-01: 12
+
+metadata:
+  unit: month
+  period: year
+  label: South Dakota CCA infant maximum age in months
+  reference:
+    - title: South Dakota Child Care Assistance Rates, effective 8/3/2026
+      href: https://dss.sd.gov/docs/childcare/assistance/CCA_Weekly_Reimbursement_Rates.pdf

@@ -1,0 +1,62 @@
+- name: Case 1, daily and weekly care hours are capped.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    childcare_days_per_week: 7
+    childcare_hours_per_day: 20
+    childcare_hours_per_week: 100
+    state_code: NE
+  output:
+    ne_child_care_subsidy_authorized_weekly_hours: 60
+
+- name: Case 2, less than five daily hours produces a partial-day unit.
+  period: 2026-01
+  input:
+    childcare_days_per_week: 5
+    childcare_hours_per_day: 4.99
+    childcare_hours_per_week: 24.95
+    ne_child_care_subsidy_provider_type: CENTER
+    state_code: NE
+  output:
+    ne_child_care_subsidy_rate_unit: PARTIAL_DAY
+
+- name: Case 3, exactly five daily hours produces a full-day unit.
+  period: 2026-01
+  input:
+    childcare_days_per_week: 5
+    childcare_hours_per_day: 5
+    childcare_hours_per_week: 25
+    ne_child_care_subsidy_provider_type: CENTER
+    state_code: NE
+  output:
+    ne_child_care_subsidy_rate_unit: FULL_DAY
+
+- name: Case 4, ten daily hours produces a full-plus-partial unit.
+  period: 2026-01
+  input:
+    childcare_days_per_week: 5
+    childcare_hours_per_day: 10
+    childcare_hours_per_week: 50
+    ne_child_care_subsidy_provider_type: HOME_I_II
+    state_code: NE
+  output:
+    ne_child_care_subsidy_rate_unit: FULL_PLUS_PARTIAL
+
+- name: Case 5, approved in-home care is paid by the hour.
+  period: 2026-01
+  input:
+    childcare_days_per_week: 5
+    childcare_hours_per_day: 8
+    childcare_hours_per_week: 40
+    ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_IN_HOME
+    state_code: NE
+  output:
+    ne_child_care_subsidy_rate_unit: HOUR
+
+- name: Case 6, unreported care hours default to a full-day unit.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_provider_type: CENTER
+    state_code: NE
+  output:
+    ne_child_care_subsidy_rate_unit: FULL_DAY

@@ -1,0 +1,73 @@
+# The infant cutoff depends on provider licensure (24 months licensed,
+# 12 months license-exempt); other age boundaries are shared.
+
+- name: An 18-month-old at a licensed certified center is an infant.
+  period: 2027-01
+  input:
+    or_erdc_eligible_child: true
+    age: 1.5
+    or_erdc_provider_type: CERTIFIED_CENTER
+    state_code: OR
+  output:
+    or_erdc_age_group: INFANT
+
+- name: An 18-month-old at a license-exempt standard family provider is a toddler.
+  period: 2027-01
+  input:
+    or_erdc_eligible_child: true
+    age: 1.5
+    or_erdc_provider_type: STANDARD_FAMILY
+    state_code: OR
+  output:
+    or_erdc_age_group: TODDLER
+
+- name: A child just under three years old is a toddler.
+  period: 2027-01
+  input:
+    or_erdc_eligible_child: true
+    age: 2.9
+    or_erdc_provider_type: CERTIFIED_CENTER
+    state_code: OR
+  output:
+    or_erdc_age_group: TODDLER
+
+- name: A child age three is a preschooler.
+  period: 2027-01
+  input:
+    or_erdc_eligible_child: true
+    age: 3
+    or_erdc_provider_type: CERTIFIED_CENTER
+    state_code: OR
+  output:
+    or_erdc_age_group: PRESCHOOL
+
+- name: A child age five is a preschooler.
+  period: 2027-01
+  input:
+    or_erdc_eligible_child: true
+    age: 5
+    or_erdc_provider_type: CERTIFIED_CENTER
+    state_code: OR
+  output:
+    or_erdc_age_group: PRESCHOOL
+
+- name: A child age six is school age.
+  period: 2027-01
+  input:
+    or_erdc_eligible_child: true
+    age: 6
+    or_erdc_provider_type: CERTIFIED_CENTER
+    state_code: OR
+  output:
+    or_erdc_age_group: SCHOOL
+
+- name: A disabled child uses the special needs group regardless of age.
+  period: 2027-01
+  input:
+    or_erdc_eligible_child: true
+    age: 10
+    is_disabled: true
+    or_erdc_provider_type: CERTIFIED_CENTER
+    state_code: OR
+  output:
+    or_erdc_age_group: SPECIAL_NEEDS

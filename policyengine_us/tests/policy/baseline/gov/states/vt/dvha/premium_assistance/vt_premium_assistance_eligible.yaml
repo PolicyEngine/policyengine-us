@@ -1,0 +1,201 @@
+# Unit tests for Vermont Premium Assistance eligibility (REQ-1, REQ-2, REQ-3,
+# REQ-8). A tax unit is eligible when the program is in effect (2026+), at least
+# one member is federal-ACA-PTC-eligible (is_aca_ptc_eligible), and ACA MAGI is
+# at or below 300% of the federal poverty line (aca_magi_fraction <= 3.0).
+#   eligible = in_effect & any(is_aca_ptc_eligible) & (aca_magi_fraction <= 3.0)
+# aca_magi_fraction is injected directly so the 300% boundary is exact and each
+# expectation is hand-verifiable. There is no minimum-income floor.
+
+- name: Case 1, 250% FPL APTC-eligible Vermont tax unit is eligible.
+  # in_effect (2026) true; member APTC-eligible; 2.50 <= 3.0 -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance_eligible: true
+
+- name: Case 2, 299% FPL just below the ceiling is eligible.
+  # 2.99 <= 3.0 -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.99
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance_eligible: true
+
+- name: Case 3, exactly 300% FPL is eligible (boundary is inclusive).
+  # 3.00 <= 3.0 -> eligible (REQ-2 boundary is inclusive).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.00
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance_eligible: true
+
+- name: Case 4, 301% FPL just above the ceiling is ineligible.
+  # 3.01 > 3.0 -> ineligible (REQ-2 boundary).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.01
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance_eligible: false
+
+- name: Case 5, no APTC-eligible member is ineligible.
+  # any(is_aca_ptc_eligible) is false -> ineligible (REQ-1), even at 250% FPL.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance_eligible: false
+
+- name: Case 6, one APTC-eligible member among two makes the unit eligible.
+  # tax_unit.any() is satisfied by a single eligible member (REQ-1).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+      person2:
+        age: 38
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    vt_premium_assistance_eligible: true
+
+- name: Case 7, non-Vermont household is ineligible via defined_for.
+  # defined_for = StateCode.VT gates the whole variable off for other states.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    vt_premium_assistance_eligible: false
+
+- name: Case 8, 2025 off-year before the program is in effect is ineligible.
+  # in_effect is false before 2026-01-01 -> ineligible (REQ-8).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance_eligible: false
+
+- name: Case 9, 2027 later year keeps the standing program in effect.
+  # in_effect is open-ended (no sunset), so 2027 remains eligible (REQ-8).
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance_eligible: true
+
+- name: Case 10, 300.01% FPL just barely above the ceiling is ineligible.
+  # 3.0001 > 3.0 -> ineligible. Tightest just-above-ceiling case (REQ-2 boundary),
+  # complementing the inclusive 3.00 eligible case and the coarser 3.01 case.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.0001
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_premium_assistance_eligible: false

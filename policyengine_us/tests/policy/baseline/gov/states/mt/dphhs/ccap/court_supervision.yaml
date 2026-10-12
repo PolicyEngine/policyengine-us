@@ -1,0 +1,27 @@
+# Court supervision extends this state's age test without setting disability
+# or protective-services status. Cases include both age boundaries and adults.
+- name: Case 1, MT court supervision age boundaries and default status.
+  period: 2025-01
+  input:
+    state_code: [MT, MT, MT, MT, MT, MT, MT, MT]
+    age: [12, 13, 13, 17, 18, 19, 18, 40]
+    is_under_court_supervision: [false, false, true, true, true, true, false, true]
+  output:
+    mt_ccap_eligible_child: [true, false, true, true, true, false, false, false]
+    # is_disabled would waive the work-hour requirement for the adult units
+    # (ages 18, 19, 18, and 40). No one reports hours, so every unit fails
+    # the activity test, including the court-supervised adults.
+    mt_ccap_activity_eligible: [false, false, false, false, false, false, false, false]
+    # MT CCAP does not read receives_or_needs_protective_services, so this row
+    # only records that the court flag leaves it unset.
+    receives_or_needs_protective_services: [false, false, false, false, false, false, false, false]
+
+- name: Case 2, MT court supervision does not bypass child immigration eligibility.
+  period: 2025-01
+  input:
+    state_code: MT
+    age: 17
+    is_under_court_supervision: true
+    immigration_status: UNDOCUMENTED
+  output:
+    mt_ccap_eligible_child: false

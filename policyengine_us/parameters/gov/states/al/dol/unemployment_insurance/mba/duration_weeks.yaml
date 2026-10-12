@@ -1,0 +1,43 @@
+description: Alabama provides this maximum number of weeks of regular benefits under the Unemployment Compensation program.
+
+brackets:
+  - threshold:
+      2020-01-01: 0
+    amount:
+      2020-01-01: 14
+  - threshold:
+      2020-01-01: 0.07  # >= 7.0% — 1 completed 0.5pp increment above 6.5%
+    amount:
+      2020-01-01: 15
+  - threshold:
+      2020-01-01: 0.075  # >= 7.5% — 2 completed 0.5pp increments above 6.5%
+    amount:
+      2020-01-01: 16
+  - threshold:
+      2020-01-01: 0.08  # >= 8.0% — 3 completed 0.5pp increments above 6.5%
+    amount:
+      2020-01-01: 17
+  - threshold:
+      2020-01-01: 0.085  # >= 8.5% — 4 completed 0.5pp increments above 6.5%
+    amount:
+      2020-01-01: 18
+  - threshold:
+      2020-01-01: 0.09  # >= 9.0% — 5 completed 0.5pp increments above 6.5%
+    amount:
+      2020-01-01: 19
+  - threshold:
+      2020-01-01: 0.095  # >= 9.5% — 20-week cap per § 25-4-74(a): 14 weeks + 1 per completed 0.5pp above 6.5%
+    amount:
+      2020-01-01: 20
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: week
+  period: year
+  label: Alabama UI maximum weeks of regular benefits by unemployment rate
+  reference:
+    - title: Code of Alabama § 25-4-74(a)
+      href: https://law.justia.com/codes/alabama/title-25/chapter-4/article-4/section-25-4-74/
+    - title: U.S. DOL Comparison of State UI Laws 2023, Table 3-12
+      href: https://oui.doleta.gov/unemploy/pdf/uilawcompar/2023/monetary.pdf#page=29

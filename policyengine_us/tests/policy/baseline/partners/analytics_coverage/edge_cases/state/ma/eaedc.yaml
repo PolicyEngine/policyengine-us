@@ -1,0 +1,133 @@
+# MA EAEDC (Emergency Aid to the Elderly, Disabled and Children).
+# Living arrangement defaults to A: standard assistance base 441.10/month
+# (gov/states/ma/dta/tcap/eaedc/standard_assistance/amount/base.yaml, 2025-04-01).
+# Non-financial routes require the disabled/elderly member NOT to be SSI-eligible,
+# so these cases set ssi_countable_resources above the $2,000 SSI limit
+# (a common real-world EAEDC population: fails the SSI resource test).
+- name: ma_eaedc_disabled_full_benefit (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ssi_countable_resources: 5_000
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Disabled head, not SSI-eligible (resources 5,000 > 2,000), no income:
+        # full standard assistance, arrangement A, size 1 = 441.10 x 12 = 5,293.20.
+        ma_eaedc: 5_293.2
+- name: ma_eaedc_elderly_partial_with_earnings (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 6_000
+        ssi_countable_resources: 5_000
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Earnings 500/mo: - 200 work-related deduction - 30 flat disregard = 270.
+        # Months 1-4 also get the 33% disregard: 270 x 0.67 = 180.90
+        #   -> benefit 441.10 - 180.90 = 260.20/mo.
+        # Months 5-12: 270 -> benefit 441.10 - 270 = 171.10/mo.
+        # Annual: 4 x 260.20 + 8 x 171.10 = 2,409.60.
+        ma_eaedc: 2_409.6
+- name: ma_eaedc_income_over_standard_ineligible (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 12_000
+        ssi_countable_resources: 5_000
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: MA
+        zip_code: "02118"
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Earnings 1,000/mo: - 200 - 30 = 770; even with the months 1-4
+        # 33% disregard (770 x 0.67 = 515.90) net income exceeds the 441.10
+        # standard assistance in every month -> income-ineligible all year.
+        ma_eaedc: 0.0

@@ -1,0 +1,15 @@
+description: Hawaii applies its static-conformity student loan interest deduction for the tax year if this indicator is true.
+
+values:
+  2020-01-01: false
+  2025-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Hawaii student loan interest deduction in effect
+  reference:
+    - title: 2025 Hawaii N-11 Instructions
+      href: https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=35
+    - title: HRS section 235-2.4 - Hawaii operative IRC provisions (sections 63 to 530)
+      href: https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0002_0004.htm

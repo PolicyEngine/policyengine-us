@@ -1,0 +1,214 @@
+- name: Case 1, applicant family of 3 in 2025-01 uses 2024-10-01 SMI table.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+      person2:
+        age: 28
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+        is_homeless: false
+  output:
+    # WA SMI 2024-10-01: $131,054. Size 3 adjustment 0.84 = $110,085.36.
+    # Applicant rate 0.60. Monthly = 110,085.36 * 0.60 / 12 = $5,504.27.
+    wa_wccc_smi_limit: 5_504.27
+
+- name: Case 2, recipient family of 2 in 2025-01.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: true
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        is_homeless: false
+  output:
+    # WA SMI 2024-10-01: $131,054. Size 2 adjustment 0.68 = $89,116.72.
+    # Recipient rate 0.65. Monthly = 89,116.72 * 0.65 / 12 = $4,827.16.
+    wa_wccc_smi_limit: 4_827.16
+
+- name: Case 3, homeless family of 4 in 2025-01, 85% SMI.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+      person2:
+        age: 28
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WA
+        is_homeless: true
+  output:
+    # WA SMI 2024-10-01: $131,054. Size 4 adjustment 1.00 = $131,054.
+    # Homeless rate 0.85. Monthly = 131,054 * 0.85 / 12 = $9,282.99.
+    wa_wccc_smi_limit: 9_282.99
+
+- name: Case 4, single adult applicant in 2025-01, size 1 SMI limit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        is_homeless: false
+  output:
+    # WA SMI 2024-10-01: $131,054. Size 1 adjustment 0.52 = $68,148.08.
+    # Applicant rate 0.60. Monthly = 68,148.08 * 0.60 / 12 = $3,407.40.
+    wa_wccc_smi_limit: 3_407.40
+
+- name: Case 5, large family of 10 applicant in 2025-01, size 10 SMI limit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+        is_wccc_enrolled: false
+      person2:
+        age: 33
+        is_tax_unit_head_or_spouse: true
+        is_in_k12_school: false
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+      person4:
+        age: 10
+        is_tax_unit_dependent: true
+      person5:
+        age: 8
+        is_tax_unit_dependent: true
+      person6:
+        age: 6
+        is_tax_unit_dependent: true
+      person7:
+        age: 5
+        is_tax_unit_dependent: true
+      person8:
+        age: 4
+        is_tax_unit_dependent: true
+      person9:
+        age: 2
+        is_tax_unit_dependent: true
+      person10:
+        age: 1
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+          ]
+    tax_units:
+      tax_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+          ]
+    households:
+      household:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+          ]
+        state_code: WA
+        is_homeless: false
+  output:
+    # WA SMI 2024-10-01: $131,054. Size 10: 0.52 + 0.16*5 + 0.03*4 = 1.44.
+    # Annual = 131,054 * 1.44 = $188,717.76.
+    # Applicant rate 0.60. Monthly = 188,717.76 * 0.60 / 12 = $9,435.89.
+    wa_wccc_smi_limit: 9_435.89

@@ -1,0 +1,458 @@
+# Maryland CCS Integration Tests
+# FY2025 SMI base for MD (from 2024-10-01): $149,249
+# Family of 2: hhs_smi = 149,249 * 0.68 = 101,489.32
+# Family of 3: hhs_smi = 149,249 * 0.84 = 125,369.16
+# Family of 4: hhs_smi = 149,249 * 1.00 = 149,249
+#
+# 75% SMI (initial): fam 2 = 76,116.99, fam 4 = 111,936.75
+# 85% SMI (continuation): fam 2 = 86,265.92, fam 4 = 126,861.65
+
+- name: Case 1, single parent with one child age 3 and full-time care.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 50_000
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # === Child eligibility ===
+    # person1: adult, not dependent -> false
+    # person2: age 3 < 13, dependent, citizen -> true
+    md_ccs_eligible_child: [false, true]
+
+    # === Income ===
+    # employment_income: 50,000
+    # monthly countable: 50,000 / 12 = 4,166.67
+    md_ccs_countable_income: 4_166.67
+
+    # === Income eligibility ===
+    # hhs_smi for fam 2 = 101,489.32 annual
+    # monthly 75% SMI = 101,489.32 * 0.75 / 12 = 6,343.08
+    # 4,166.67 <= 6,343.08 -> eligible
+    md_ccs_income_eligible: true
+
+    # === Overall eligibility ===
+    md_ccs_eligible: true
+
+    # === Copay ===
+    # 8 hrs/day >= 6 -> 3 units (full-time) -> $3/week
+    # Not TCA/SSI/SNAP/WIC -> standard copay
+    md_ccs_weekly_copay: 3
+
+    # === Benefit ===
+    # 2025-01 uses 5/23/22 historical schedule (current schedule effective 2026-03-01).
+    # Default county: Allegany = Region Z, Center, REGULAR, UNIT_3 -> $183/week
+    # annual max reimbursement: $183 * 52 = $9,516
+    # annual copay: $3 * 52 = $156
+    # uncapped: max(12,000 - 156, 0) = 11,844
+    # capped: min(11,844, 9,516) = 9,516
+    # monthly: 9,516 / 12 = 793.00
+    md_ccs: 793
+
+- name: Case 2, two-parent family with two children and mixed income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+        self_employment_income: 20_000
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person3:
+        age: 7
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MD
+  output:
+    # === Child eligibility ===
+    # person1: adult -> false
+    # person2: adult -> false
+    # person3: age 7 < 13, dependent, citizen -> true
+    # person4: age 3 < 13, dependent, citizen -> true
+    md_ccs_eligible_child: [false, false, true, true]
+
+    # === Income ===
+    # employment: 60,000
+    # self_employment: 20,000 * (1 - 0.30) = 14,000
+    # total annual: 60,000 + 14,000 = 74,000
+    # monthly countable: 74,000 / 12 = 6,166.67
+    md_ccs_countable_income: 6_166.67
+
+    # === Income eligibility ===
+    # hhs_smi for fam 4 = 149,249
+    # monthly 75% SMI = 149,249 * 0.75 / 12 = 9,328.06
+    # 6,166.67 <= 9,328.06 -> eligible
+    md_ccs_income_eligible: true
+
+    md_ccs_eligible: true
+
+    # === Copay ===
+    # person3: 8 hrs/day >= 6 -> 3 units -> $3/week
+    # person4: 4 hrs/day, >3 and <6 -> 2 units -> $2/week
+    # total weekly copay: $3 + $2 = $5
+    md_ccs_weekly_copay: 5
+
+    # === Benefit ===
+    # 2025-01 uses 5/23/22 historical schedule.
+    # Default county: Allegany = Region Z, Center.
+    # person3 (age 7, REGULAR, UNIT_3): $183 * 1 = $183/week
+    # person4 (age 3, REGULAR, UNIT_2): $183 * (2/3) = $122/week
+    # weekly max: $183 + $122 = $305 -> annual max reimbursement: $305 * 52 = $15,860
+    # annual copay: $5 * 52 = $260
+    # uncapped: max(18,000 - 260, 0) = 17,740
+    # capped: min(17,740, 15,860) = 15,860
+    # monthly: 15,860 / 12 = 1,321.67
+    md_ccs: 1_321.67
+
+- name: Case 3, TCA recipient family with zero copay.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 15_000
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 8_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # === Child eligibility ===
+    md_ccs_eligible_child: [false, true]
+
+    # === Income ===
+    # monthly: 15,000 / 12 = 1,250
+    md_ccs_countable_income: 1_250
+
+    # === Eligibility ===
+    # TCA -> income test waived
+    md_ccs_income_eligible: true
+    md_ccs_eligible: true
+
+    # === Copay ===
+    # TCA recipient -> $0
+    md_ccs_weekly_copay: 0
+
+    # === Benefit ===
+    # annual: max(8,000 - 0, 0) = 8,000
+    # monthly: 8,000 / 12 = 666.67
+    md_ccs: 666.67
+
+- name: Case 4, family at income boundary just below 75 percent SMI.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MD
+  output:
+    # === Child eligibility ===
+    md_ccs_eligible_child: [false, false, true, true]
+
+    # === Income ===
+    # monthly countable: 100,000 / 12 = 8,333.33
+    md_ccs_countable_income: 8_333.33
+
+    # === Income eligibility ===
+    # hhs_smi fam 4 = 149,249
+    # monthly 75% SMI = 149,249 * 0.75 / 12 = 9,328.06
+    # 8,333.33 <= 9,328.06 -> eligible
+    md_ccs_income_eligible: true
+
+    md_ccs_eligible: true
+
+    # === Copay ===
+    # 2 children, each full-time (8 hrs >= 6) -> $3 + $3 = $6/week
+    md_ccs_weekly_copay: 6
+
+    # === Benefit ===
+    # 2025-01 uses 5/23/22 historical schedule. Default county: Allegany = Region Z, Center.
+    # person3 (age 5, REGULAR, UNIT_3): $183; person4 (age 3, REGULAR, UNIT_3): $183
+    # annual max reimbursement: ($183 + $183) * 52 = $19,032
+    # annual copay: $6 * 52 = $312
+    # uncapped: max(20,000 - 312, 0) = 19,688
+    # capped: min(19,688, 19,032) = 19,032
+    # monthly: 19,032 / 12 = 1,586.00
+    md_ccs: 1_586
+
+- name: Case 5, enrolled family between 75 and 85 percent SMI with continuation eligibility.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 120_000
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person3:
+        age: 6
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        md_ccs_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 22_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MD
+  output:
+    # === Child eligibility ===
+    md_ccs_eligible_child: [false, false, true, true]
+
+    # === Income ===
+    # monthly: 120,000 / 12 = 10,000
+    md_ccs_countable_income: 10_000
+
+    # === Income eligibility ===
+    # monthly 75% SMI = 9,328.06 -> 10,000 > 9,328.06 (would fail initial)
+    # enrolled -> use 85% SMI = 149,249 * 0.85 / 12 = 10,571.81
+    # 10,000 <= 10,571.81 -> eligible (continuation)
+    md_ccs_income_eligible: true
+
+    md_ccs_eligible: true
+
+    # === Copay ===
+    # 2 children, each full-time -> $3 + $3 = $6/week
+    md_ccs_weekly_copay: 6
+
+    # === Benefit ===
+    # 2025-01 uses 5/23/22 historical schedule. Default county: Allegany = Region Z, Center.
+    # person3 (age 6): REGULAR, UNIT_3 -> $183/week
+    # person4 (age 2 = 24 months, not < 24): REGULAR, UNIT_3 -> $183/week
+    # annual max reimbursement: ($183 + $183) * 52 = $19,032
+    # annual copay: $6 * 52 = $312
+    # uncapped: max(22,000 - 312, 0) = 21,688
+    # capped: min(21,688, 19,032) = 19,032
+    # monthly: 19,032 / 12 = 1,586.00
+    md_ccs: 1_586
+
+- name: Case 6, SSI recipient with disabled teenager.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 200_000
+        ssi: 9_000
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 16
+        is_disabled: true
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 6
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 15_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # === Child eligibility ===
+    # person2: age 16 < 19 (disabled threshold), disabled, dependent -> true
+    md_ccs_eligible_child: [false, true]
+
+    # === Income ===
+    # sources list does NOT include ssi (only employment_income counts here)
+    # employment_income: 200,000 / 12 = 16,666.67
+    md_ccs_countable_income: 16_666.67
+
+    # === Eligibility ===
+    # income $16,666.67/month > 75% SMI for fam 2 ($6,343.08) -> income test fails
+    md_ccs_income_eligible: false
+    # BUT SSI recipient (ssi > 0) -> overall eligibility via SSI bypass
+    md_ccs_eligible: true
+
+    # === Copay ===
+    # SSI recipient -> $0
+    md_ccs_weekly_copay: 0
+
+    # === Benefit ===
+    # 2025-01 uses 5/23/22 historical schedule.
+    # Default county: Allegany = Region Z, Center, REGULAR, UNIT_3 -> $183/week
+    # annual max reimbursement: $183 * 52 = $9,516
+    # uncapped: max(15,000 - 0, 0) = 15,000
+    # capped: min(15,000, 9,516) = 9,516
+    # monthly: 9,516 / 12 = 793.00
+    md_ccs: 793
+
+- name: Case 7, family with income above 85 percent SMI is not eligible even when enrolled.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 140_000
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 33
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        md_ccs_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MD
+  output:
+    # === Child eligibility ===
+    md_ccs_eligible_child: [false, false, true, true]
+
+    # === Income ===
+    # monthly: 140,000 / 12 = 11,666.67
+    md_ccs_countable_income: 11_666.67
+
+    # === Income eligibility ===
+    # enrolled -> use 85% SMI = 149,249 * 0.85 / 12 = 10,571.81
+    # 11,666.67 > 10,571.81 -> not eligible
+    md_ccs_income_eligible: false
+
+    md_ccs_eligible: false
+    md_ccs: 0

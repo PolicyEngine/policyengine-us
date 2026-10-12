@@ -7,3 +7,4 @@ class spm_unit_assets(Variable):
     label = "SPM unit assets"
     definition_period = YEAR
     unit = USD
+    quantity_type = STOCK

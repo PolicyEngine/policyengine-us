@@ -1,0 +1,133 @@
+# Texas Lifeline state variant (16 Tex. Admin. Code 26.412).
+# TX expands the income limit from 135% to 150% FPG and adds a 3.50/mo
+# state supplement: max benefit = (9.25 + 3.50) * 12 = 153/yr.
+# 2026 FPG (size 1) = 15_960 -> 150% = 23_940.
+# snap_assets 6_000 exceeds TX's 5_000 BBCE asset limit, and income above
+# 130% FPG fails the regular SNAP gross test, so snap = 0 and eligibility
+# flips purely on the TX 150% income boundary (TX has no Medicaid expansion).
+- name: lifeline_tx_expanded_income_between_135_and_150pct_fpg (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # 21_600 / 15_960 = 1.353: ineligible federally (see federal.yaml
+        # lifeline_income_ineligible_just_above_135pct_fpg) but eligible
+        # under TX's 150% limit.
+        employment_income_before_lsr: 21_600
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+        phone_cost: 480
+        snap_assets: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    spm_units:
+      spm_unit:
+        # min(480, (9.25 + 3.50) * 12 = 153) = 153.
+        lifeline: 153
+        is_lifeline_eligible: true
+- name: lifeline_tx_just_below_150pct_fpg (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # 23_900 / 15_960 = 1.4975 < 1.5 -> eligible under the TX limit.
+        employment_income_before_lsr: 23_900
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+        phone_cost: 600
+        snap_assets: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    spm_units:
+      spm_unit:
+        # min(600, (9.25 + 3.50) * 12 = 153) = 153.
+        lifeline: 153
+        is_lifeline_eligible: true
+- name: lifeline_tx_income_ineligible_just_above_150pct_fpg (tx)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # 24_000 / 15_960 = 1.504 > 1.5 -> above even the TX expanded limit.
+        employment_income_before_lsr: 24_000
+    households:
+      household:
+        members: [head]
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: [head]
+        phone_cost: 600
+        snap_assets: 6_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    spm_units:
+      spm_unit:
+        # Deliberate ineligible-side boundary pin (income route, TX limit):
+        # phone expense is set, so the zero comes only from ineligibility.
+        lifeline: 0
+        is_lifeline_eligible: false

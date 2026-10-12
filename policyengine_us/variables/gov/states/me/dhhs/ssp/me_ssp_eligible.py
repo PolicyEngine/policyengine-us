@@ -20,7 +20,7 @@ class me_ssp_eligible(Variable):
         # immigration but NOT income, so it captures both groups. The
         # but-for-citizenship pathway is not modeled because we don't
         # track the 8/96 immigration category at the moment.
-        categorically_eligible = person("is_ssi_eligible", period.this_year)
+        categorically_eligible = person("is_ssi_eligible", period)
         category = person("me_ssp_payment_category", period)
         in_qualifying_category = category != category.possible_values.NONE
         return categorically_eligible & in_qualifying_category

@@ -1,0 +1,85 @@
+# Composite SPM-unit eligibility: at least one eligible person AND no dependent
+# children AND income below the grant standard.
+- name: Otherwise-eligible single adult with low income and no children is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 300 * 12  # $300/month countable < $336 MAP
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_eligible: true
+
+- name: Adult with income below MAP but a dependent child is not eligible (no-children gate).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 100 * 12  # income passes, but the child gate fails
+      child1:
+        age: 5
+        is_tax_unit_head_or_spouse: false
+    households:
+      household:
+        members: [person1, child1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+  output:
+    ca_cc_general_assistance_income_eligible: true
+    ca_cc_general_assistance_eligible: false
+
+- name: No eligible person (SSI recipient) is not eligible even with zero income.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        ssi: 100  # categorically ineligible -> no eligible person
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_eligible: false
+
+- name: Income at or above the grant standard is not eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        immigration_status: CITIZEN
+        personal_property: 0
+        employment_income: 400 * 12  # $400/month countable > $336 MAP
+    households:
+      household:
+        members: [person1]
+        county: CONTRA_COSTA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_cc_general_assistance_eligible: false

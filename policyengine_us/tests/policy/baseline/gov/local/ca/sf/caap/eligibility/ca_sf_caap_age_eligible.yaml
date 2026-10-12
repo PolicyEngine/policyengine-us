@@ -1,0 +1,51 @@
+# age_threshold is 18; ca_sf_caap_age_eligible requires ALL members to be at
+# least 18 (units with a member under 18 are CalWORKs-track instead).
+- name: Case 1, single adult at or above the age threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_sf_caap_age_eligible: true
+
+- name: Case 2, adult exactly at the age threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 18
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_sf_caap_age_eligible: true
+
+- name: Case 3, unit including a member under the age threshold.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 10
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_sf_caap_age_eligible: false

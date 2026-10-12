@@ -1,0 +1,19 @@
+description: Florida sets this daily hours threshold for full-time child care under the School Readiness program.
+# Fla. Stat. 1002.81(9) defines full-time care as "at least 6 hours, but not more
+# than 11 hours, of child care or early childhood education services within a
+# 24-hour period"; 1002.81(11) defines part-time care as less than 6 hours within
+# a 24-hour period. A child is classified full-time when daily care hours reach
+# this threshold -- a daily measure, not a weekly one (e.g. 4 days x 6 hours is
+# full-time even though it is only 24 hours/week). The separate full-time/part-time
+# "unit of care" used for reimbursement is coalition-defined (6M-4.500); this
+# parameter encodes the statutory care definition.
+values:
+  2025-10-01: 6
+
+metadata:
+  unit: hour
+  period: year
+  label: Florida School Readiness full-time daily hours threshold
+  reference:
+    - title: Fla. Stat. § 1002.81(9) (full-time care -- at least 6 hours within a 24-hour period) and (11) (part-time care -- less than 6 hours within a 24-hour period)
+      href: https://www.flsenate.gov/Laws/Statutes/2025/1002.81

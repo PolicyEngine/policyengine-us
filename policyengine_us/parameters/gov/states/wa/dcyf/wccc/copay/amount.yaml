@@ -1,0 +1,40 @@
+description: Washington provides this monthly copayment under the Working Connections Child Care program based on the household's income as a share of the state median income.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: currency-USD
+  period: month
+  label: Washington WCCC monthly copayment by SMI tier
+  reference:
+    - title: WAC 110-15-0075(2)
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=110-15-0075
+    - title: DCYF Copay Calculation Table (effective October 1, 2025)
+      href: https://www.dcyf.wa.gov/sites/default/files/pdf/copay_calculation_table.pdf#page=1
+
+brackets:
+  # At or below 20% SMI: waived
+  - threshold:
+      2018-07-01: 0
+    amount:
+      2018-07-01: 0
+  # Above 20% and at or below 36% SMI
+  - threshold:
+      2018-07-01: 0.2001
+    amount:
+      2018-07-01: 65
+  # Above 36% and at or below 50% SMI
+  - threshold:
+      2018-07-01: 0.3601
+    amount:
+      2018-07-01: 90
+  # Above 50% and at or below 60% SMI
+  - threshold:
+      2018-07-01: 0.5001
+    amount:
+      2018-07-01: 165
+  # Above 60% and at or below 65% SMI (reapplication)
+  # or above 60% and at or below 75% SMI (state-registered apprenticeship)
+  - threshold:
+      2018-07-01: 0.6001
+    amount:
+      2018-07-01: 215

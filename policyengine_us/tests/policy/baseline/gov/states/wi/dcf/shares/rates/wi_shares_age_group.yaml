@@ -1,0 +1,107 @@
+# Wisconsin Shares rate-table age groups: "0 through 1" (under 2),
+# "2 through 3", "4 through 5", and "6+".
+# Wisconsin Shares Handbook (July 2026) Section 18.5.1; statewide maximum
+# rate table effective 10/1/2025.
+- name: Case 1, one-year-old is in the 0 through 1 group.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 1
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_age_group: AGE_0_THROUGH_1
+
+- name: Case 2, two-year-old is in the 2 through 3 group.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_age_group: AGE_2_THROUGH_3
+
+- name: Case 3, three-year-old is in the 2 through 3 group.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_age_group: AGE_2_THROUGH_3
+
+- name: Case 4, four-year-old is in the 4 through 5 group.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_age_group: AGE_4_THROUGH_5
+
+- name: Case 5, five-year-old is in the 4 through 5 group.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_age_group: AGE_4_THROUGH_5
+
+- name: Case 6, six-year-old is in the 6 and older group.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 6
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_age_group: AGE_6_AND_OLDER
+
+- name: Case 7, twelve-year-old is in the 6 and older group.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 12
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_age_group: AGE_6_AND_OLDER
+
+- name: Case 8, newborn is in the 0 through 1 group.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_age_group: AGE_0_THROUGH_1

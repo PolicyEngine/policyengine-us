@@ -1,0 +1,67 @@
+- name: Case 1, child under 13 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 12
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_ccs_eligible_child: true
+
+- name: Case 2, child aged 13 is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_ccs_eligible_child: false
+
+- name: Case 3, disabled child aged 18 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_ccs_eligible_child: true
+
+- name: Case 4, disabled child aged 19 is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 19
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_ccs_eligible_child: false
+
+- name: Case 5, undocumented child is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    ok_ccs_eligible_child: false

@@ -6,4 +6,5 @@ class pell_grant_countable_assets(Variable):
     entity = Person
     label = "Pell Grant countable assets"
     unit = USD
+    quantity_type = STOCK
     definition_period = YEAR

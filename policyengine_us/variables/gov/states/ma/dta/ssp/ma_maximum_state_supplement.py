@@ -6,12 +6,12 @@ class ma_maximum_state_supplement(Variable):
     entity = Person
     label = "Massachusetts maximum State Supplement payment amount"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "is_ssi_eligible"
 
     def formula(person, period, parameters):
         """
-        Returns the maximum annual state supplement for an SSI-eligible individual,
+        Returns the maximum monthly state supplement for an SSI-eligible individual,
         before subtracting any leftover income. Depends on:
           - The person's state of residence
           - Living arrangement (e.g. FULL_COST, REST_HOME, etc.)
@@ -33,20 +33,20 @@ class ma_maximum_state_supplement(Variable):
 
         # 4. Identify whether the person is aged, blind, or disabled.
         #    (It's possible to be both aged+blind, so we might pick whichever rate is higher.)
-        is_blind = person("is_blind", period)
-        is_aged = person("is_ssi_aged", period)
-        is_disabled = person("is_ssi_disabled", period)
+        is_blind = person("is_blind", period.this_year)
+        is_aged = person("is_ssi_aged", period.this_year)
+        is_disabled = person("is_ssi_disabled", period.this_year)
 
         # 5. We'll build an array of the single or double (couple) label: e.g. "1" or "2".
         #    This matches the structure in the parameter file.
-        joint_claim = person("ssi_claim_is_joint", period)
+        joint_claim = person("ssi_claim_is_joint", period.this_year)
         # Convert True -> "2", False -> "1"
         single_or_double_str = where(joint_claim, 2, 1).astype(str)
 
         # 6. For vectorization, we note how many people are in the array dimension.
         #    We do the same trick for categories. For each person, we might pick
         #    'AGED', 'BLIND', or 'DISABLED' monthly rate. This code uses np arrays:
-        ssi_categories = person("ssi_category", period).possible_values
+        ssi_categories = person("ssi_category", period.this_year).possible_values
         count_persons = len(is_blind)  # number of entries in the vector
 
         # 7. Create arrays for each category's monthly rate. For each person, we do:
@@ -82,16 +82,12 @@ class ma_maximum_state_supplement(Variable):
             [monthly_aged_rate, monthly_blind_rate, monthly_disabled_rate]
         )
 
-        # 9. Multiply by 12 to get an annual figure. This is the maximum annual supplement
-        #    (still for each person individually).
-        annual_rate = monthly_rate * MONTHS_IN_YEAR
-
-        # 10. Summation across the marital unit. If we have a couple, we might want
+        # 9. Summation across the marital unit. If we have a couple, we might want
         #     the total combined amount, then split it. Or we might directly keep it as per-person.
         # Here, they sum for the entire marital unit, then later they do dividing if needed.
-        combined_amount_for_marital_unit = person.marital_unit.sum(annual_rate)
+        combined_amount_for_marital_unit = person.marital_unit.sum(monthly_rate)
 
-        # 11. Finally, the code divides by 2 if it's a joint claim, presumably so that
+        # 10. Finally, the code divides by 2 if it's a joint claim, presumably so that
         #     each person sees their half. If it's not joint, it just returns the full amount.
         # This "per-person" approach might be confusing if the state has a special "couple rate"
         # that isn't exactly double or half. But that's how the code is set up now.

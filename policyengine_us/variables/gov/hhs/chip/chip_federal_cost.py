@@ -7,7 +7,8 @@ class chip_federal_cost(Variable):
     label = "CHIP federal cost"
     documentation = (
         "Portion of CHIP expenditures borne by the federal government, "
-        "equal to total CHIP cost multiplied by the enhanced FMAP."
+        "equal to enrolled net CHIP cost multiplied by the enhanced FMAP. "
+        "This budget variable is enrollment-gated through `chip`."
     )
     unit = USD
     definition_period = YEAR

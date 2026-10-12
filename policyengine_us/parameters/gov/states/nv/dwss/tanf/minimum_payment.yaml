@@ -1,0 +1,13 @@
+description: Nevada pays no regular monthly TANF benefit below this amount; benefits under this floor are issued only as supplemental payments or after an overpayment recoupment.
+# The $10 minimum issuance rule is a longstanding Nevada TANF benefit-issuance
+# standard; it is dated to the start of the modeled NV TANF payment standard
+# (2007) and sourced to the current Eligibility and Payments Manual A-660.12.
+values:
+  2007-07-01: 10
+metadata:
+  unit: currency-USD
+  period: month
+  label: Nevada TANF minimum payment
+  reference:
+    - title: Nevada DWSS Eligibility and Payments Manual, A-660.12 TANF Benefit Amount/SNAP Allotment
+      href: https://dwss.nv.gov/siteassets/dwss.nv.gov/ep-manual-section-a/chapter-a-600-budgeting-ada-8.2025.pdf#page=38

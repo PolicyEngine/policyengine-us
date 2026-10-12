@@ -1,0 +1,39 @@
+- name: Case 1, take-up false zeroes TANF but preserves the entitlement.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ks_tanf: 1_740
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    tanf_if_takes_up: 1_740
+    tanf: 0
+
+- name: Case 2, take-up true passes the entitlement through.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ks_tanf: 1_740
+        takes_up_tanf_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    tanf_if_takes_up: 1_740
+    tanf: 1_740

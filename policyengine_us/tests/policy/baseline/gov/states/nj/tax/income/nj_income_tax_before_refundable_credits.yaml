@@ -1,0 +1,83 @@
+- name: Below the SINGLE filing threshold, pre-refundable-credit tax is zero
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 9_999
+    filing_status: SINGLE
+    nj_main_income_tax: 140
+  output:
+    nj_income_tax_before_refundable_credits: 0
+
+- name: AGI exactly at the SINGLE filing threshold is still inside the no-tax zone
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 10_000
+    filing_status: SINGLE
+    nj_main_income_tax: 140
+  output:
+    nj_income_tax_before_refundable_credits: 0
+
+- name: One dollar above the SINGLE filing threshold falls through to the schedule
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 10_001
+    filing_status: SINGLE
+    nj_main_income_tax: 140
+    nj_non_refundable_credits: 40
+  output:
+    nj_income_tax_before_refundable_credits: 100
+
+- name: Below the JOINT filing threshold, pre-refundable-credit tax is zero
+  period: 2022
+  input:
+    state_code: NJ
+    nj_agi: 19_999
+    filing_status: JOINT
+    nj_main_income_tax: 280
+  output:
+    nj_income_tax_before_refundable_credits: 0
+
+- name: Single filer with gross income below the threshold owes no tax end to end
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    filing_status: SINGLE
+    self_employment_income: 5_800
+  output:
+    nj_income_tax_before_refundable_credits: 0
+
+# Issue #8849: the NJBEST 529 deduction (N.J.S.A. 54A:3-13, Form NJ-1040 line
+# 37a) must not net into New Jersey gross income (line 29), which the filing
+# threshold keys on. A single filer with $10,500 of gross income and $10,000
+# of 529 contributions stays above the $10,000 gross-income threshold, so the
+# no-tax floor does not apply. nj_agi therefore equals gross income, unmoved
+# by the deduction, and the deduction instead lands in nj_total_deductions.
+- name: 529 contributions do not push a just-above-threshold filer below the gross-income floor
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    filing_status: SINGLE
+    employment_income: 10_500
+    investment_in_529_plan_indv: 10_000
+  output:
+    nj_agi: 10_500
+    nj_529_deduction: 10_000
+    nj_total_deductions: 10_000
+
+# P.L. 2021, c.419 § 1 applies to taxable years beginning on or after
+# January 1, 2022, so no 529 deduction exists in 2021.
+- name: No 529 deduction before the 2022 College Affordability Act effective date
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: NJ
+    filing_status: SINGLE
+    employment_income: 50_000
+    investment_in_529_plan_indv: 5_000
+  output:
+    nj_529_deduction: 0
+    nj_total_deductions: 0

@@ -17,7 +17,7 @@ class ct_c4k_region(Variable):
     definition_period = MONTH
     defined_for = StateCode.CT
     label = "Connecticut Care 4 Kids geographic region"
-    reference = "https://www.ctoec.org/care-4-kids/c4k-providers/c4k-rates/"
+    reference = "https://www.ctoec.org/care-4-kids-regulations/#rates"
 
     def formula(household, period, parameters):
         # NOTE: Uses county approximation; CT C4K regions are town-based.

@@ -315,3 +315,50 @@
     # Child is not a dependent, so no deduction
     # Total max: $0
     # min(200, 0) = $0
+
+- name: Incapacitated adult care expenses count toward the deduction
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # Per PAMMS 1615: $175/month for each individual age two or above,
+    # including an incapacitated individual in the home.
+    # Expenses = 1,200 / 12 = 100/month, below the cap.
+    ga_tanf_childcare_deduction: 100
+
+- name: Adult care expenses without incapacity are not deducted
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_tax_unit_dependent: false
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    # Person2 is neither a dependent nor incapacitated, so the cap is $0:
+    # min(100, 0) = 0.
+    ga_tanf_childcare_deduction: 0

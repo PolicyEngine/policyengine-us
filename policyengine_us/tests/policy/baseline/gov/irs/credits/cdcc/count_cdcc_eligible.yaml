@@ -1,0 +1,97 @@
+- name: Both spouses incapable of self-care count as one qualifying individual
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_incapable_of_self_care: true
+      person2:
+        age: 43
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+  output:
+    # Both are is_cdcc_eligible, but only one spouse is a qualifying individual
+    # (the other is the taxpayer) per IRC 21(b)(1)(C).
+    is_cdcc_eligible: [true, true]
+    count_cdcc_eligible: 1
+
+- name: Disabled spouse plus a young child count as two qualifying individuals
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_incapable_of_self_care: true
+      person2:
+        age: 43
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+  output:
+    count_cdcc_eligible: 2
+
+- name: Both disabled spouses plus a child count as two qualifying individuals
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_incapable_of_self_care: true
+      person2:
+        age: 43
+        is_incapable_of_self_care: true
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+  output:
+    count_cdcc_eligible: 2
+
+- name: Two disabled adult dependents count as two qualifying individuals
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 20
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+      person3:
+        age: 22
+        is_incapable_of_self_care: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+  output:
+    count_cdcc_eligible: 2
+
+- name: Healthy couple with two young children count as two qualifying individuals
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 43
+      person3:
+        age: 5
+      person4:
+        age: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+  output:
+    count_cdcc_eligible: 2

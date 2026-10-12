@@ -1,13 +1,15 @@
-- name: separate
+- name: separate with ample column tax sums each spouse's own credits
   period: 2022
   input:
     people:
       person1:
         ky_personal_tax_credits_indiv: 40
         ky_personal_tax_credits_joint: 40
+        ky_income_tax_before_non_refundable_credits_indiv: 1000000
       person2:
         ky_personal_tax_credits_indiv: 100
         ky_personal_tax_credits_joint: 50
+        ky_income_tax_before_non_refundable_credits_indiv: 1000000
     tax_units:
       tax_unit:
         members:
@@ -23,6 +25,34 @@
         state_code: KY
   output:
     ky_personal_tax_credits: 140
+- name: separate floors each spouse's credit at their own column tax
+  period: 2022
+  input:
+    people:
+      person1:
+        ky_personal_tax_credits_indiv: 40
+        ky_personal_tax_credits_joint: 40
+        ky_income_tax_before_non_refundable_credits_indiv: 20
+      person2:
+        ky_personal_tax_credits_indiv: 100
+        ky_personal_tax_credits_joint: 50
+        ky_income_tax_before_non_refundable_credits_indiv: 0
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        ky_files_separately: true
+        ky_income_tax_before_non_refundable_credits_unit: 1000000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: KY
+  output:
+    # Person1: min(40, 20) = 20; Person2: min(100, 0) = 0; total = 20
+    ky_personal_tax_credits: 20
 - name: separate
   period: 2022
   input:

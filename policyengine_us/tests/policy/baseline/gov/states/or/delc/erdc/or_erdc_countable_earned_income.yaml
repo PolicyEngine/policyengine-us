@@ -1,0 +1,155 @@
+# OAR 414-175-0035(21)(a) excludes the earned income of a child; only
+# caretakers (tax unit heads and spouses) contribute earned income.
+
+- name: Case 1, a working single caretaker's wages are counted.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_erdc_countable_earned_income: [2_000, 0]
+
+- name: Case 2, a working 16-year-old child's wages are excluded.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 36_000
+      teen:
+        age: 16
+        employment_income: 24_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, teen, child]
+    spm_units:
+      spm_unit:
+        members: [parent, teen, child]
+    households:
+      household:
+        members: [parent, teen, child]
+        state_code: OR
+  output:
+    or_erdc_countable_earned_income: [3_000, 0, 0]
+
+- name: Case 3, an 18-year-old in secondary school remains a child with excluded wages.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 36_000
+      teen:
+        age: 18
+        is_in_secondary_school: true
+        employment_income: 24_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, teen, child]
+    spm_units:
+      spm_unit:
+        members: [parent, teen, child]
+    households:
+      household:
+        members: [parent, teen, child]
+        state_code: OR
+  output:
+    or_erdc_countable_earned_income: [3_000, 0, 0]
+
+- name: Case 4, both spouses' earnings are counted.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent_1:
+        age: 32
+        employment_income: 24_000
+      parent_2:
+        age: 30
+        employment_income: 12_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent_1, parent_2, child]
+    spm_units:
+      spm_unit:
+        members: [parent_1, parent_2, child]
+    households:
+      household:
+        members: [parent_1, parent_2, child]
+        state_code: OR
+  output:
+    or_erdc_countable_earned_income: [2_000, 1_000, 0]
+
+- name: Case 5, a caretaker's self-employment loss cannot offset wages.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 24_000
+        self_employment_income: -12_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    or_erdc_countable_earned_income: [2_000, 0]
+
+- name: Case 6, a farm gain and a separate self-employment loss do not net across businesses.
+  period: 2027-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        farm_operations_income: 12_000
+        self_employment_income: -12_000
+      child:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    # OAR 414-175-0035(81)(a) determines each business separately: the farm gain
+    # (12,000/year) and the floored self-employment loss (0) do not net, so
+    # countable self-employment is 12,000/year = 1,000/month.
+    or_erdc_countable_self_employment_income: [1_000, 0]

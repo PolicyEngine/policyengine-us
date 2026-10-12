@@ -1,0 +1,22 @@
+description: Oregon limits standard monthly payable child care to this number of hours under the Employment Related Day Care program.
+values:
+  2024-01-01: 215
+
+# OAR 414-175-0075(9)-(10) allow payment above 215 hours (up to 1.5 times the
+# monthly rate, about 323 hours) when the Department approves special
+# circumstances, such as a caretaker who consistently works more than 40
+# hours a week. That case-by-case determination is not modeled, so all
+# authorized hours are conservatively capped at this standard maximum; the
+# 75-hour weekly bracket in hours/authorized/weekly.yaml therefore only
+# produces the full-time outcome.
+metadata:
+  unit: hour
+  period: month
+  label: Oregon ERDC maximum standard monthly hours
+  reference:
+    - title: OAR 414-175-0075(6)-(8)
+      href: https://secure.sos.state.or.us/oard/view.action?ruleNumber=414-175-0075
+    - title: ERDC Provider Guide Insert, 2026 monthly billing range
+      href: https://www.oregon.gov/delc/providers/Documents/Provider%20Rate%20Increase%20For%20Jan%202026_Phase%202_ENG.pdf#page=2
+    - title: Oregon DELC ERDC Provider Guide Insert DELC 7492i (01/24), monthly billing range
+      href: http://web.archive.org/web/20251012133829id_/https://www.oregon.gov/delc/programs/ERDC%20Fliers/Provider%20Guide%20Insert%20Final%20EN.pdf#page=3

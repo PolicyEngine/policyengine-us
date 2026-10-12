@@ -1,0 +1,96 @@
+# Total monthly co-payment = sliding fee scale daily copay x paid days,
+# summed over eligible children in care; the copay is per child per day.
+- name: Case 1, one toddler in the $2 band five days a week.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $3,500/month, $2 copay band.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # $2 x 21.67 days = $43.33.
+    la_ccap_total_copay: 43.33
+
+- name: Case 2, two children each owe the per-child daily copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_000  # $4,500/month, $2 band for 3 persons.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 0.5
+        childcare_days_per_week: 5
+      person3:
+        age: 4
+        childcare_days_per_week: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    # $2 x 21.67 days x 2 children = $86.67.
+    la_ccap_total_copay: 86.67
+
+- name: Case 3, TANF-enrolled household owes no co-payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_total_copay: 0
+
+- name: Case 4, part-time hours owe the copay on prorated days.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # $2 copay band.
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_hours_per_week: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # $2 x 11 day-equivalents = $22.
+    la_ccap_total_copay: 22

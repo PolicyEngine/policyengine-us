@@ -1,0 +1,55 @@
+- name: Age 2, below ECEAP age range.
+  period: 2025
+  input:
+    age: 2
+    state_code: WA
+  output:
+    wa_eceap_age_eligible: false
+
+- name: Age 3, at lower bound of ECEAP age range.
+  period: 2025
+  input:
+    age: 3
+    state_code: WA
+  output:
+    wa_eceap_age_eligible: true
+
+- name: Age 4, within ECEAP age range.
+  period: 2025
+  input:
+    age: 4
+    state_code: WA
+  output:
+    wa_eceap_age_eligible: true
+
+- name: Age 5, generous reading - eligible to capture mid-year turn-5 carry-over.
+  period: 2025
+  input:
+    age: 5
+    state_code: WA
+  output:
+    wa_eceap_age_eligible: true
+
+- name: Age 6, above ECEAP age range.
+  period: 2025
+  input:
+    age: 6
+    state_code: WA
+  output:
+    wa_eceap_age_eligible: false
+
+- name: Age 0, far below ECEAP age range.
+  period: 2025
+  input:
+    age: 0
+    state_code: WA
+  output:
+    wa_eceap_age_eligible: false
+
+- name: Age 4 in Oregon, not eligible due to residency.
+  period: 2025
+  input:
+    age: 4
+    state_code: OR
+  output:
+    wa_eceap_age_eligible: false

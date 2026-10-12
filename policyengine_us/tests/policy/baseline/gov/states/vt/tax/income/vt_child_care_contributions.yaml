@@ -1,18 +1,27 @@
-- name: In 2024, only 50% of the self-employment income is counted towards the child care contributions
-  period: 2024
-  input:
-    self_employment_income: 10_000
-    state_code: VT
-  output:
-    vt_child_care_contributions: 5.5
+# The Child Care Contribution Worksheet applies the 0.11% rate to net
+# earnings from self-employment (federal Schedule SE, Line 6 =
+# taxable_self_employment_income = 92.35% of net self-employment profit).
 
-- name: In 2025, all of the self-employment income is counted towards the child care contributions
-  period: 2025
+- name: In 2024, only 50% of the net self-employment earnings are counted towards the child care contributions
+  period: 2024
+  absolute_error_margin: 0.01
   input:
     self_employment_income: 10_000
     state_code: VT
   output:
-    vt_child_care_contributions: 11
+    # Net SE earnings = 9,235 (92.35%); 50% counted in 2024:
+    # 9,235 * 0.5 * 0.0011 = 5.08
+    vt_child_care_contributions: 5.08
+
+- name: In 2025, all of the net self-employment earnings are counted towards the child care contributions
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 10_000
+    state_code: VT
+  output:
+    # Net SE earnings = 9,235 (92.35%); 9,235 * 0.0011 = 10.16
+    vt_child_care_contributions: 10.16
 
 - name: Only self-employment income is taxed
   period: 2025
@@ -25,12 +34,14 @@
 
 - name: Mixed income
   period: 2025
+  absolute_error_margin: 0.01
   input:
     self_employment_income: 1_000
     employment_income: 10_000
     state_code: VT
   output:
-    vt_child_care_contributions: 1.1
+    # Net SE earnings = 923.50; 923.50 * 0.0011 = 1.02
+    vt_child_care_contributions: 1.02
 
 - name: Negative self-employment income
   period: 2024
@@ -42,8 +53,23 @@
 
 - name: SSTB self-employment income is counted toward the child care contributions
   period: 2025
+  absolute_error_margin: 0.01
   input:
     sstb_self_employment_income: 10_000
     state_code: VT
   output:
-    vt_child_care_contributions: 11
+    # Net SE earnings = 9,235 (92.35%); 9,235 * 0.0011 = 10.16
+    vt_child_care_contributions: 10.16
+
+# Regression test for policyengine-taxsim#1002: the contribution is computed on
+# net self-employment earnings (Schedule SE Line 6), matching the VT Child Care
+# Contribution Worksheet (which yields $81 for this filer), not gross SE income.
+- name: Contribution uses net self-employment earnings, matching the VT worksheet
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    self_employment_income: 79_684.13
+    state_code: VT
+  output:
+    # Net SE earnings = 73,588.30 (92.35%); 73,588.30 * 0.0011 = 80.95
+    vt_child_care_contributions: 80.95

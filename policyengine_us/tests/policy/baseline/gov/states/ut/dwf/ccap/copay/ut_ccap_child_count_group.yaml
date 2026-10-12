@@ -1,0 +1,133 @@
+# Tests for ut_ccap_child_count_group (SPMUnit, MONTH, Enum).
+# Table 4 copayments vary by the number of children receiving the subsidy:
+# one, two, or more than two. The model counts CCAP-eligible children in
+# the SPM unit.
+
+- name: Case 1, one eligible child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_child_count_group: ONE
+
+- name: Case 2, two eligible children.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+      person3:
+        age: 6
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    ut_ccap_child_count_group: TWO
+
+- name: Case 3, three eligible children.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+      person3:
+        age: 4
+      person4:
+        age: 9
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: UT
+  output:
+    ut_ccap_child_count_group: THREE_PLUS
+
+- name: Case 4, five eligible children still map to the top group.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+      person3:
+        age: 3
+      person4:
+        age: 5
+      person5:
+        age: 8
+      person6:
+        age: 11
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6]
+        state_code: UT
+  output:
+    ut_ccap_child_count_group: THREE_PLUS
+
+- name: Case 5, an ineligible teenager does not count.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+      person3:
+        age: 14
+        is_disabled: false  # over the age 13 limit and not special needs
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # Only the three-year-old is an eligible child, so the copayment uses
+    # the one-child column.
+    ut_ccap_child_count_group: ONE
+
+- name: Case 6, a unit with no eligible children falls in the one-child group.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Zero eligible children map to the one-child column so the copayment
+    # lookup stays defined for units that never qualify.
+    ut_ccap_child_count_group: ONE

@@ -7,6 +7,7 @@ class nm_works_countable_liquid_resources(Variable):
     label = "New Mexico Works countable liquid resources"
     unit = USD
     definition_period = MONTH
+    quantity_type = STOCK
     reference = (
         "https://www.srca.nm.gov/parts/title08/08.102.0510.html",
         "https://www.hca.nm.gov/wp-content/uploads/TANF-Final-State-Plan-2024-to-2026.pdf#page=20",

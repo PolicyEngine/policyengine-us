@@ -1,0 +1,86 @@
+- name: Unemployment compensation is fully subtracted in 2021
+  period: 2021
+  input:
+    taxable_unemployment_compensation: 23_120
+    state_code: MT
+  output:
+    mt_unemployment_compensation_subtraction: 23_120
+
+- name: No unemployment compensation, no subtraction
+  period: 2021
+  input:
+    taxable_unemployment_compensation: 0
+    state_code: MT
+  output:
+    mt_unemployment_compensation_subtraction: 0
+
+- name: Subtraction repealed by SB 399 effective tax year 2024
+  period: 2024
+  input:
+    people:
+      person1:
+        taxable_unemployment_compensation: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_subtractions: 0
+
+- name: Taxsim issue 1120 record - unemployment exemption flows through the
+    taxable Social Security worksheet
+  absolute_error_margin: 0.05
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 74
+        taxable_interest_income: 956.886_6
+        taxable_pension_income: 17_539.746
+        social_security_retirement: 48_053.035
+        unemployment_compensation: 23_120
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Subtractions Schedule: line 3 interest exemption 800, line 7
+    # unemployment 23,120.
+    mt_subtractions: 23_920
+    # Worksheet VIII: provisional income 41,723.16 -> 85% x (41,723.16
+    # - 34,000) + 4,500 = 11,064.69 (federal taxable amount is 31,396.68,
+    # matching TaxAct's line 37 subtraction of 20,332).
+    mt_taxable_social_security: 11_064.69
+    # 73,013.31 - 800 - 23,120 - (31,396.68 - 11,064.69) = 28,761.32
+    mt_agi_indiv: 28_761.32
+
+- name: Taxsim issue 1121 record - unemployment-only income zeroes out
+    Montana taxable income
+  absolute_error_margin: 0.05
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 53
+        taxable_interest_income: 309.730_99
+        unemployment_compensation: 50_823.199
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_subtractions: 50_823.20
+    # Only the interest remains in Montana AGI; the standard deduction
+    # floors at the single minimum (2,140), so taxable income is zero.
+    mt_agi_indiv: 309.73
+    mt_taxable_income_indiv: 0
+    mt_income_tax: 0

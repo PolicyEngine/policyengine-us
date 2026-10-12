@@ -1,0 +1,12 @@
+description: Oklahoma pays its Child Care/Child Tax Credit as a refundable credit when this parameter is in effect. By default, the credit is nonrefundable under 68 O.S. § 2357 ("neither credit shall exceed the tax imposed").
+
+values:
+  0000-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Oklahoma refundable Child Care/Child Tax Credit in effect
+  reference:
+    - title: 68 O.S. § 2357.43 - Oklahoma Child Care/Child Tax Credit (nonrefundable in baseline)
+      href: https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-NR-Pkt.pdf#page=11

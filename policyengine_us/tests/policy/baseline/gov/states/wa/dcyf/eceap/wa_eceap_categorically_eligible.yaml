@@ -1,0 +1,60 @@
+- name: No categorical path, not categorically eligible.
+  period: 2026
+  input:
+    age: 4
+    is_homeless: false
+    has_individualized_education_program: false
+    state_code: WA
+  output:
+    wa_eceap_categorically_eligible: false
+
+- name: Foster care alone does NOT confer categorical eligibility (RCW 43.216.512 lists child welfare involvement as a risk factor, not a categorical path).
+  period: 2026
+  input:
+    age: 4
+    is_homeless: false
+    has_individualized_education_program: false
+    is_in_foster_care: true
+    state_code: WA
+  output:
+    wa_eceap_categorically_eligible: false
+
+- name: Homeless child, categorically eligible.
+  period: 2026
+  input:
+    age: 4
+    is_homeless: true
+    has_individualized_education_program: false
+    state_code: WA
+  output:
+    wa_eceap_categorically_eligible: true
+
+- name: Child with IEP, categorically eligible.
+  period: 2026
+  input:
+    age: 4
+    is_homeless: false
+    has_individualized_education_program: true
+    state_code: WA
+  output:
+    wa_eceap_categorically_eligible: true
+
+- name: Both homeless and IEP, categorically eligible.
+  period: 2026
+  input:
+    age: 4
+    is_homeless: true
+    has_individualized_education_program: true
+    state_code: WA
+  output:
+    wa_eceap_categorically_eligible: true
+
+- name: Homeless child in Oregon, not eligible due to residency.
+  period: 2026
+  input:
+    age: 4
+    is_homeless: true
+    has_individualized_education_program: false
+    state_code: OR
+  output:
+    wa_eceap_categorically_eligible: false

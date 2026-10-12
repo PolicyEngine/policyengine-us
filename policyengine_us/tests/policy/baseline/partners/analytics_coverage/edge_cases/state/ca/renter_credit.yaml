@@ -1,0 +1,262 @@
+# California renter credit (R&TC 17053.5) edge cases, 2026 parameters:
+# $60 single/separate, $120 joint/HOH/surviving spouse; CA AGI cap $55,217.66
+# (single) / $110,434.30 (joint). Nonrefundable: it only reduces liability via
+# ca_non_refundable_credits inside ca_income_tax_before_refundable_credits.
+- name: ca_renter_credit_joint_fully_usable_against_liability (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_000
+        long_term_capital_gains_before_response: 0
+        rent: 12_000
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    tax_units:
+      tax_unit:
+        # Joint, CA AGI 50,000 < 110,434.30 cap, positive rent -> $120.
+        ca_renter_credit: 120.0
+        # CA taxable = 50,000 - 11,670.63 std deduction = 38,329.37;
+        # tax = 1% x 22,660.16 + 2% x (38,329.37 - 22,660.16) = 226.60 + 313.38
+        # = 539.99.
+        ca_income_tax_before_credits: 539.99
+        # Two personal exemption credits (2 x 156.47) + renter 120 = 432.93.
+        ca_non_refundable_credits: 432.93
+        # 539.99 - 432.93 = 107.05 > 0: the renter credit is fully usable.
+        ca_income_tax_before_refundable_credits: 107.05
+- name: ca_renter_credit_single_at_income_cap_55217 (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 55_217
+        long_term_capital_gains_before_response: 0
+        rent: 12_000
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # CA AGI 55,217 is just below the 2026 uprated single cap (55,217.66)
+        # -> single amount $60.
+        ca_renter_credit: 60.0
+- name: ca_renter_credit_single_above_income_cap_55218 (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 55_218
+        long_term_capital_gains_before_response: 0
+        rent: 12_000
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # CA AGI 55,218 exceeds the 55,217.66 cap -> $0 (income route).
+        ca_renter_credit: 0.0
+- name: ca_renter_credit_no_rent_ineligible (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id004
+        - head
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # Income-eligible but no rent paid -> $0 (categorical route).
+        ca_renter_credit: 0.0
+- name: ca_renter_credit_limited_by_liability_single_12000 (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 40
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 12_000
+        long_term_capital_gains_before_response: 0
+        rent: 6_000
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id005
+        - head
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id005
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        # The credit itself is $60 (single, income under the cap, rent paid) ...
+        ca_renter_credit: 60.0
+        # ... but CA taxable = 12,000 - 5,835.31 std deduction = 6,164.69;
+        # tax = 1% x 6,164.69 = 61.65.
+        ca_income_tax_before_credits: 61.65
+        # Personal exemption 156.47 + renter 60 = 216.47 > 62.94 liability.
+        ca_non_refundable_credits: 216.47
+        # Nonrefundable credits are capped at liability -> 0 (credit partially
+        # wasted; liability-limited side of the renter credit).
+        ca_income_tax_before_refundable_credits: 0.0

@@ -1,0 +1,23 @@
+description: Massachusetts counts a disabled spouse as an eligible individual if this is true under the Child and Family Tax Credit program.
+values:
+  # The predecessor credit for eligible dependents covered only IRC Section 152
+  # dependents; the 2023 child and family tax credit added qualifying
+  # individuals under IRC Section 21, which include a spouse incapable of
+  # self-care.
+  2021-01-01: false
+  2023-01-01: true
+metadata:
+  reference:
+    - title: Massachusetts General Laws Part I Title IX Chapter 62 Section 6 (x) (ii)
+      href: https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section6
+    - title: IRC Section 21 (b) (1) (C)
+      href: https://www.law.cornell.edu/uscode/text/26/21#b_1_C
+    - title: Credit for Eligible Dependents, Governor's FY25 Budget Tax Expenditure 1.624
+      href: https://budget.digital.mass.gov/govbudget/fy25/tax-expenditure-budget/personal-income-tax/credits-against-tax/1-624/
+    - title: Massachusetts Session Laws Chapter 50 of the Acts of 2023 Section 21
+      href: https://malegislature.gov/Laws/SessionLaws/Acts/2023/Chapter50
+    - title: Massachusetts Session Laws Chapter 50 of the Acts of 2023 Section 49
+      href: https://malegislature.gov/Laws/SessionLaws/Acts/2023/Chapter50
+  unit: bool
+  period: year
+  label: Massachusetts child and family tax credit disabled spouse eligible

@@ -13,6 +13,7 @@ class mo_wftc_potential(Variable):
     defined_for = StateCode.MO
 
     def formula(tax_unit, period, parameters):
+        eligible = tax_unit("mo_wftc_eligible", period)
         federal_eitc = tax_unit("eitc", period)
         rate = parameters(period).gov.states.mo.tax.income.credits.wftc.match
-        return federal_eitc * rate
+        return eligible * federal_eitc * rate

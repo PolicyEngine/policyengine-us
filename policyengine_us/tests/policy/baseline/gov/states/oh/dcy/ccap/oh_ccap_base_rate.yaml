@@ -1,0 +1,239 @@
+# Tests for oh_ccap_base_rate (Person, MONTH, defined_for oh_ccap_eligible_child).
+# 5180:6-1-10 Appendix A: maximum reimbursement ceilings keyed by county rate
+# category, age group, provider type, and time category. Hourly cells are
+# per-hour amounts applied to the child's authorized monthly hours; part-time
+# and full-time cells are weekly amounts converted to monthly (x 52 / 12).
+# Rates start 2025-11-01, so cases use period 2026. The parent (person1) is not
+# an eligible child, so its base rate is 0.
+- name: Case 1, category 1 center infant full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0.5  # infant
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40  # full-time
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: BROWN_COUNTY_OH  # category 1
+  output:
+    # 195/week * 52 / 12 = 845
+    oh_ccap_base_rate: [0, 845]
+
+- name: Case 2, category 2 center toddler full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2  # toddler
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH  # category 2
+  output:
+    # 220/week * 52 / 12 = 953.333...
+    oh_ccap_base_rate: [0, 953.33]
+
+- name: Case 3, category 3 center preschool full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4  # preschool
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: FRANKLIN_COUNTY_OH  # category 3
+  output:
+    # 258/week * 52 / 12 = 1,118
+    oh_ccap_base_rate: [0, 1_118]
+
+- name: Case 4, category 3 center school-age full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 9  # school-age (school year in January)
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: FRANKLIN_COUNTY_OH  # category 3
+  output:
+    # 165/week * 52 / 12 = 715
+    oh_ccap_base_rate: [0, 715]
+
+- name: Case 5, category 2 licensed home preschool full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4  # preschool
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: HOME
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH  # category 2
+  output:
+    # Home preschool category 2: 180/week * 52 / 12 = 780
+    oh_ccap_base_rate: [0, 780]
+
+- name: Case 6, category 2 licensed home infant part-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0.5  # infant
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: HOME
+        childcare_hours_per_week: 20  # part-time
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: STARK_COUNTY_OH  # category 2
+  output:
+    # Home infant part-time category 2: 135/week * 52 / 12 = 585
+    oh_ccap_base_rate: [0, 585]
+
+- name: Case 7, category 1 center preschool hourly.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4  # preschool
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        childcare_hours_per_week: 8  # hourly (under 10)
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: BROWN_COUNTY_OH  # category 1
+  output:
+    # Hourly rate 6.25/hour * monthly hours (8 * 52 / 12 = 34.667) = 216.667
+    oh_ccap_base_rate: [0, 216.67]
+
+- name: Case 8, child with zero care hours has no base rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: CENTER
+        childcare_hours_per_week: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: FRANKLIN_COUNTY_OH
+  output:
+    oh_ccap_base_rate: [0, 0]
+
+# Edge cases: cover the remaining county-category x provider-type combinations
+# (HOME in categories 1 and 3) and an hourly HOME cell.
+- name: Case 9, category 1 licensed home school-age full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 9  # school-age (school year in January)
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: HOME
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: BROWN_COUNTY_OH  # category 1
+  output:
+    # Home school-age category 1: 131/week * 52 / 12 = 567.67
+    oh_ccap_base_rate: [0, 567.67]
+
+- name: Case 10, category 3 licensed home infant full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 0.5  # infant
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: HOME
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: FRANKLIN_COUNTY_OH  # category 3
+  output:
+    # Home infant category 3: 225/week * 52 / 12 = 975
+    oh_ccap_base_rate: [0, 975]
+
+- name: Case 11, category 3 licensed home toddler hourly.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2  # toddler
+        immigration_status: CITIZEN
+        oh_ccap_provider_type: HOME
+        childcare_hours_per_week: 8  # hourly (under 10)
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+        county_str: FRANKLIN_COUNTY_OH  # category 3
+  output:
+    # Home toddler hourly category 3: 10/hour * monthly hours (8 * 52 / 12 =
+    # 34.667) = 346.67
+    oh_ccap_base_rate: [0, 346.67]

@@ -1,0 +1,310 @@
+- name: Case 1, 2025 licensed center maximum caps charges before one family copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    il_ccap_countable_income: 2_000
+    il_ccap_income_eligible: true
+    il_ccap_eligible_child: [false, true]
+    il_ccap_parent_meets_working_requirements: true
+    il_ccap_eligible: true
+    il_ccap_county_group: GROUP_1A
+    il_ccap_care_duration: [NONE, FULL_DAY]
+    il_ccap_max_daily_rate: [0, 67]
+    il_ccap_max_monthly_reimbursement: [0, 1_340]
+    # Charge is $2,000/month; cap is 67 * 20 = $1,340.
+    # Family-size-two Table A copay at $2,000 income is $39.
+    il_ccap_copay: 39
+    il_ccap: 1_301
+
+- name: Case 2, 2026 licensed home serves an undocumented child with State dollars.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        is_full_time_student: true
+      person2:
+        age: 2
+        immigration_status: UNDOCUMENTED
+        is_tax_unit_dependent: true
+        childcare_provider_type_group: FDC_GFDC
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 14
+        pre_subsidy_childcare_expenses: 7_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county_str: ADAMS_COUNTY_IL
+  output:
+    il_ccap_countable_income: 0
+    il_ccap_income_eligible: true
+    il_ccap_eligible_child: [false, true]
+    il_ccap_parent_meets_working_requirements: true
+    il_ccap_eligible: true
+    il_ccap_provider_type: [LICENSED_CENTER, LICENSED_HOME]
+    il_ccap_county_group: GROUP_2
+    il_ccap_child_age_group: [AGE_THREE_OR_OLDER, AGE_TWO]
+    il_ccap_max_daily_rate: [0, 44.99]
+    il_ccap_max_monthly_reimbursement: [0, 629.86]
+    # Actual charge is $600/month, below the 14 * $44.99 = $629.86 State maximum.
+    # The ordinary minimum copay is $1, so State payment is $599.
+    il_ccap_copay: 1
+    il_ccap: 599
+
+- name: Case 3, school-age part-day care uses the Table B copay in a school month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 21_168
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        is_in_k12_school: true
+        childcare_provider_type_group: LE_GC
+        childcare_hours_per_day: 4
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county_str: CHAMPAIGN_COUNTY_IL
+  output:
+    il_ccap_countable_income: 1_764
+    il_ccap_income_eligible: true
+    il_ccap_eligible_child: [false, true]
+    il_ccap_eligible: true
+    il_ccap_provider_type: [LICENSED_CENTER, LICENSE_EXEMPT_CENTER]
+    il_ccap_county_group: GROUP_1B
+    il_ccap_care_duration: [NONE, PART_DAY]
+    il_ccap_max_daily_rate: [0, 18]
+    il_ccap_max_monthly_reimbursement: [0, 360]
+    # Table A is $18 at the exact $1,764 threshold; the eight-year-old in
+    # part-day care during January halves it to $9 under Table B.
+    il_ccap_table_b_applies: true
+    il_ccap_copay: 9
+    il_ccap: 351
+
+- name: Case 4, two children share one copay after separate reimbursement caps.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 13
+        childcare_attending_days_per_month: 10
+        pre_subsidy_childcare_expenses: 12_000
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_provider_type_group: LE_STD
+        childcare_hours_per_day: 17
+        childcare_attending_days_per_month: 10
+        pre_subsidy_childcare_expenses: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_fpg: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: IL
+        county_str: ADAMS_COUNTY_IL
+  output:
+    il_ccap_countable_income: 2_250
+    il_ccap_income_eligible: true
+    il_ccap_eligible_child: [false, true, true]
+    il_ccap_eligible: true
+    il_ccap_care_duration: [NONE, FULL_PLUS_PART, TWO_FULL_DAYS]
+    il_ccap_max_daily_rate: [0, 60, 51.52]
+    il_ccap_max_monthly_reimbursement: [0, 600, 515.2]
+    # Child charges bind at $600 State cap and $300 actual charge: $900 total.
+    # Family-size-three Table A copay is $22 and is subtracted once.
+    il_ccap_copay: 22
+    il_ccap: 878
+
+- name: Case 5, enrolled phase-out family has no payment when copay exceeds charges.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 96_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 8
+        is_tax_unit_dependent: true
+        is_full_time_student: true
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 5
+        pre_subsidy_childcare_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 120_000
+        il_ccap_enrolled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county_str: ADAMS_COUNTY_IL
+  output:
+    il_ccap_countable_income: 8_000
+    # $8,000 is below the enrolled-family ceiling of 85% * $10,000 SMI.
+    il_ccap_income_eligible: true
+    il_ccap_eligible_child: [false, true]
+    il_ccap_eligible: true
+    il_ccap_county_group: GROUP_2
+    il_ccap_max_daily_rate: [0, 40]
+    il_ccap_max_monthly_reimbursement: [0, 200]
+    # Actual charge is only $100/month; the 2026 maximum Table A copay is $341.
+    il_ccap_copay: 341
+    il_ccap: 0
+
+- name: Case 6, income-ineligible family receives no payment from negative charges.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: -1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    il_ccap_countable_income: 5_000
+    # New-applicant ceiling is 225% * $1,000 monthly FPG = $2,250.
+    il_ccap_income_eligible: false
+    il_ccap_eligible_child: [false, true]
+    il_ccap_parent_meets_working_requirements: true
+    il_ccap_eligible: false
+    il_ccap_care_duration: [NONE, FULL_DAY]
+    il_ccap_max_daily_rate: [0, 46]
+    il_ccap_max_monthly_reimbursement: [0, 920]
+    # Negative observed charges floor at zero; defined-for eligibility also blocks payment.
+    il_ccap: 0
+
+- name: Case 7, an eligible family receives no payment in the months before the July 2025 activation.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 1
+        is_tax_unit_dependent: true
+        childcare_provider_type_group: DCC_SACC
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    # The family meets every 2025 eligibility rule all year; the in_effect
+    # gate alone zeroes January through June. From July the Case 1 arithmetic
+    # applies: 67 * 20 = $1,340 cap, $39 copay, $1,301 payment.
+    il_ccap_eligible:
+      2025-01: true
+      2025-07: true
+    il_ccap_copay:
+      2025-01: 0
+      2025-06: 0
+      2025-07: 39
+    il_ccap:
+      2025-01: 0
+      2025-06: 0
+      2025-07: 1_301

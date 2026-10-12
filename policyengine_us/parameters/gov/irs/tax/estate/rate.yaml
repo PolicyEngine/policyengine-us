@@ -1,53 +1,56 @@
 description: The IRS taxes estate at the following rates. 
 brackets:
   - threshold:
-      2017-01-01: 0
+      2011-01-01: 0
     rate:
-      2017-01-01: 0.18
+      2011-01-01: 0.18
   - threshold:
-      2017-01-01: 10_000
+      2011-01-01: 10_000
     rate:
-      2017-01-01: 0.2
+      2011-01-01: 0.2
   - threshold:
-      2017-01-01: 20_000
+      2011-01-01: 20_000
     rate:
-      2017-01-01: 0.22
+      2011-01-01: 0.22
   - threshold:
-      2017-01-01: 40_000
+      2011-01-01: 40_000
     rate:
-      2017-01-01: 0.24
+      2011-01-01: 0.24
   - threshold:
-      2017-01-01: 60_000
+      2011-01-01: 60_000
     rate:
-      2017-01-01: 0.26
+      2011-01-01: 0.26
   - threshold:
-      2017-01-01: 80_000
+      2011-01-01: 80_000
     rate:
-      2017-01-01: 0.28
+      2011-01-01: 0.28
   - threshold:
-      2017-01-01: 100_000
+      2011-01-01: 100_000
     rate:
-      2017-01-01: 0.3
+      2011-01-01: 0.3
   - threshold:
-      2017-01-01: 150_000
+      2011-01-01: 150_000
     rate:
-      2017-01-01: 0.32
+      2011-01-01: 0.32
   - threshold:
-      2017-01-01: 250_000
+      2011-01-01: 250_000
     rate:
-      2017-01-01: 0.34
+      2011-01-01: 0.34
   - threshold:
-      2017-01-01: 500_000
+      2011-01-01: 500_000
     rate:
-      2017-01-01: 0.37
+      2011-01-01: 0.35
+      2013-01-01: 0.37
   - threshold:
-      2017-01-01: 750_000
+      2011-01-01: 750_000
     rate:
-      2017-01-01: 0.39
+      2011-01-01: 0.35
+      2013-01-01: 0.39
   - threshold:
-      2017-01-01: 1_000_000
+      2011-01-01: 1_000_000
     rate:
-      2017-01-01: 0.4
+      2011-01-01: 0.35
+      2013-01-01: 0.4
 metadata:
   type: marginal_rate
   rate_unit: /1
@@ -56,10 +59,18 @@ metadata:
   label: Estate tax rate  
   reference:
     - title: 26 U.S. Code § 2001 - Imposition and rate of tax - (c)
-      href: https://www.law.cornell.edu/uscode/text/26/2001#b_1
+      href: https://www.law.cornell.edu/uscode/text/26/2001#c
+    - title: Public Law 112-240 (American Taxpayer Relief Act of 2012), § 101(c)(1) (40% top rate for decedents dying after 2012)
+      href: https://www.govinfo.gov/content/pkg/PLAW-112publ240/pdf/PLAW-112publ240.pdf#page=6
+    - title: Public Law 111-312 (Tax Relief, Unemployment Insurance Reauthorization, and Job Creation Act of 2010), § 302(a)(2) (35% top rate)
+      href: https://www.govinfo.gov/content/pkg/PLAW-111publ312/pdf/PLAW-111publ312.pdf#page=7
+    - title: Instructions for Form 706 (Rev. October 2024), Table A
+      href: https://www.irs.gov/pub/irs-prior/i706--2024.pdf#page=6
     - title: Instructions for Form 706 (Rev. September 2023)
-      href: https://www.irs.gov/pub/irs-pdf/i706.pdf#page=6
+      href: https://www.irs.gov/pub/irs-prior/i706--2023.pdf#page=6
     - title: Instructions for Form 706 (Rev. September 2022)
       href: https://www.irs.gov/pub/irs-prior/i706--2022.pdf#page=6
     - title: Instructions for Form 706 (Rev. September 2021)
       href: https://www.irs.gov/pub/irs-prior/i706--2021.pdf#page=6
+    - title: Instructions for Form 706 (Rev. August 2011), Table A (35% top rate for 2011)
+      href: https://www.irs.gov/pub/irs-prior/i706--2011.pdf#page=4

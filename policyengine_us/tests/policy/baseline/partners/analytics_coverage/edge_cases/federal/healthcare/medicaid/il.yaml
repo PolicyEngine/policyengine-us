@@ -1,0 +1,134 @@
+# Illinois Medicaid cases (outputs differ from the federal.yaml TX
+# non-expansion baseline for IL-policy reasons):
+# - IL adopted the ACA expansion, so the $22,000 adult is covered through
+#   the last adult age (64).
+# - At 65 the adult category ends and IL's optional senior pathway takes
+#   over (income limit 1.00 FPL with a $25/month disregard; asset limit
+#   $17,500 since 2024 vs $2,000 in most states).
+# IL Medicaid per capita: $32,282,765,114 / 3,243,413 enrolled = $9,953.33.
+- name: medicaid_adult_age_64_last_adult_age_expansion (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 64
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 22_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # Expansion state at the adult age upper boundary: age 64 is the
+        # last age inside the 19-64 adult range, and 22,000 / 15,960 =
+        # 1.378 FPL < 1.38 (the identical household is ineligible in the
+        # TX baseline). Single enrollee: medicaid = IL per capita 9,953.33.
+        medicaid: 9_953.33
+        is_medicaid_eligible: true
+        medicaid_category: 4  # ADULT
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: medicaid_senior_age_65_medicare_handoff_to_optional_pathway (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 22_000
+        is_medicare_eligible: true
+        # Pin 0 quarters so QMB covers the full Part A premium; the model
+        # defaults to 40 (premium-free Part A) when quarters are not sent.
+        medicare_quarters_of_coverage: 0
+        ssi_countable_resources: 5_000
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # SSI resource test fails ($5,000 > $2,000), so no SSI.
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: true
+        # QMB -> MSP pays Part A + Part B premiums:
+        # (565.00 + 202.90) x 12 = 9,214.80.
+        msp: 9_214.8
+        msp_eligible: true
+        # Age boundary pin: at 65 the ADULT expansion category ends and the
+        # optional senior pathway takes over. Countable income
+        # (22,000 - 300 IL disregard - 780 earned-income exclusion) / 2 =
+        # 10,460 < 15,960 (IL 1.00 FPL limit), and $5,000 resources pass
+        # IL's $17,500 asset limit (they would fail TX's $2,000).
+        # Single enrollee: medicaid = IL per capita 9,953.33.
+        medicaid: 9_953.33
+        is_medicaid_eligible: true
+        medicaid_category: 8  # SENIOR_OR_DISABLED
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0

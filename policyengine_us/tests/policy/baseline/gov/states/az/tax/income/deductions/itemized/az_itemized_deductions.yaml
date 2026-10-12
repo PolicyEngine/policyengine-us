@@ -75,11 +75,54 @@
   period: 2022
   input:
     state_code: AZ
-    interest_deduction: 200 
-    casualty_loss_deduction: 300 
+    interest_deduction: 200
+    casualty_loss_deduction: 300
     other_medical_expenses: 600
-    charitable_deduction: 700 
+    charitable_deduction: 700
     az_charitable_contributions_credit_potential: 800
     state_sales_tax: 0
   output:
     az_itemized_deductions: 1_100
+
+# HB 4168 (2026): Arizona caps the SALT itemized deduction at $10,000
+# (A.R.S. 43-1042(D)). Before 2026 the cap is infinite, so the full SALT
+# deduction passes through unchanged.
+
+- name: Large SALT deduction passes through in 2025 (no cap)
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    state_code: AZ
+    salt_deduction: 15_000
+    charitable_deduction: 0
+    az_charitable_contributions_credit_potential: 0
+    itemized_medical_expenses: 0
+  output:
+    # 2025 cap is infinite: full $15,000 SALT included
+    az_itemized_deductions: 15_000
+
+- name: Large SALT deduction capped at $10,000 in 2026
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    state_code: AZ
+    salt_deduction: 15_000
+    charitable_deduction: 0
+    az_charitable_contributions_credit_potential: 0
+    itemized_medical_expenses: 0
+  output:
+    # 2026 cap is $10,000: min($15,000, $10,000) = $10,000
+    az_itemized_deductions: 10_000
+
+- name: SALT deduction below cap unaffected in 2026
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    state_code: AZ
+    salt_deduction: 8_000
+    charitable_deduction: 0
+    az_charitable_contributions_credit_potential: 0
+    itemized_medical_expenses: 0
+  output:
+    # min($8,000, $10,000) = $8,000
+    az_itemized_deductions: 8_000

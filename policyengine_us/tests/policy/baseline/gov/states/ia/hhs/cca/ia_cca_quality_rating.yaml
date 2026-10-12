@@ -1,0 +1,42 @@
+# ia_cca_quality_rating: Person, Enum input, MONTH.
+# Input variable for the provider's IQ4K quality rating. Default is NO_RATING.
+
+- name: Defaults to no quality rating.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 4
+    households:
+      household:
+        members: [child]
+        state_code: IA
+  output:
+    ia_cca_quality_rating: NO_RATING
+
+- name: Each quality rating round-trips as set.
+  period: 2025-01
+  input:
+    people:
+      a:
+        age: 4
+        ia_cca_quality_rating: NO_RATING
+      b:
+        age: 4
+        ia_cca_quality_rating: RATING_1_OR_2
+      c:
+        age: 4
+        ia_cca_quality_rating: RATING_3_OR_4
+      d:
+        age: 4
+        ia_cca_quality_rating: RATING_5
+    households:
+      household:
+        members: [a, b, c, d]
+        state_code: IA
+  output:
+    ia_cca_quality_rating:
+      - NO_RATING
+      - RATING_1_OR_2
+      - RATING_3_OR_4
+      - RATING_5

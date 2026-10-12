@@ -59,3 +59,69 @@
     spm_unit_fpg: 19_720
     il_ccap_income_eligible: false
     # income threshold: 19_720 * 2.75 = 54_230
+
+- name: Case 6, 2025 phase-out family below 275 percent FPL is eligible.
+  period: 2026-01
+  input:
+    il_ccap_countable_income: 5_499
+    spm_unit_fpg: 24_000
+    hhs_smi: 120_000
+    il_ccap_enrolled: true
+    state_code: IL
+  output:
+    il_ccap_income_eligible: true
+
+- name: Case 7, 2025 phase-out family at 275 percent FPL is eligible.
+  period: 2026-01
+  input:
+    il_ccap_countable_income: 5_500
+    spm_unit_fpg: 24_000
+    hhs_smi: 120_000
+    il_ccap_enrolled: true
+    state_code: IL
+  output:
+    il_ccap_income_eligible: true
+
+- name: Case 8, 2025 phase-out family above 275 percent FPL remains eligible.
+  period: 2026-01
+  input:
+    il_ccap_countable_income: 5_501
+    spm_unit_fpg: 24_000
+    hhs_smi: 120_000
+    il_ccap_enrolled: true
+    state_code: IL
+  output:
+    il_ccap_income_eligible: true
+
+- name: Case 9, new applicant remains subject to the 225 percent FPL ceiling.
+  period: 2026-01
+  input:
+    il_ccap_countable_income: 4_501
+    spm_unit_fpg: 24_000
+    hhs_smi: 120_000
+    il_ccap_enrolled: false
+    state_code: IL
+  output:
+    il_ccap_income_eligible: false
+
+- name: Case 10, 2025 phase-out family at 85 percent SMI is eligible.
+  period: 2026-01
+  input:
+    il_ccap_countable_income: 8_500
+    spm_unit_fpg: 24_000
+    hhs_smi: 120_000
+    il_ccap_enrolled: true
+    state_code: IL
+  output:
+    il_ccap_income_eligible: true
+
+- name: Case 11, 2025 phase-out family above 85 percent SMI is ineligible.
+  period: 2026-01
+  input:
+    il_ccap_countable_income: 8_501
+    spm_unit_fpg: 24_000
+    hhs_smi: 120_000
+    il_ccap_enrolled: true
+    state_code: IL
+  output:
+    il_ccap_income_eligible: false

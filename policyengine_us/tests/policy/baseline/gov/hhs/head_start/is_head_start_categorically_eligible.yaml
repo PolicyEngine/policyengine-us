@@ -164,3 +164,78 @@
     # 140% FPL for 2-person household in 2024
     # Computed SNAP > 0 at this income, making family categorically eligible
     is_head_start_categorically_eligible: [true, true]
+
+- name: Case 10, reported SSI receipt makes family categorically eligible despite zero computed benefits.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+        receives_ssi: true
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Income too high for computed TANF/SSI/SNAP, but reported SSI receipt
+    # confers categorical eligibility
+    is_head_start_categorically_eligible: [true, true]
+
+- name: Case 11, reported TANF receipt makes family categorically eligible despite zero computed benefits.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        receives_tanf: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Income too high for computed TANF/SSI/SNAP, but reported TANF receipt
+    # confers categorical eligibility
+    is_head_start_categorically_eligible: [true, true]
+
+- name: Case 12, reported SNAP receipt makes family categorically eligible despite zero computed benefits.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 200_000
+      person2:
+        age: 4
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        receives_snap: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Income too high for computed TANF/SSI/SNAP, but reported SNAP receipt
+    # confers categorical eligibility
+    is_head_start_categorically_eligible: [true, true]

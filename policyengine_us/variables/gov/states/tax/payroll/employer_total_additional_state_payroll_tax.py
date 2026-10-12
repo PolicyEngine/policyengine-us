@@ -15,7 +15,6 @@ class employer_total_additional_state_payroll_tax(Variable):
     def formula(person, period, parameters):
         state_code = person.household("state_code", period)
         headcount = person("employer_headcount", period)
-        gross_wages = person("employer_total_payroll_tax_gross_wages", period)
         ss_taxable = person(
             "employer_total_taxable_earnings_for_social_security", period
         )
@@ -33,13 +32,15 @@ class employer_total_additional_state_payroll_tax(Variable):
         co_p = parameters(period).gov.states.co.tax.payroll.famli
         co = where(
             headcount >= co_p.employer_headcount_threshold,
-            co_p.employer_rate * ss_taxable,
+            co_p.employer_rate
+            * person("employer_total_co_famli_taxable_wages", period),
             0,
         )
 
-        dc = (
-            parameters(period).gov.states.dc.tax.payroll.paid_leave.employer_rate
-            * gross_wages
+        dc = parameters(
+            period
+        ).gov.states.dc.tax.payroll.paid_leave.employer_rate * person(
+            "employer_total_dc_paid_leave_taxable_wages", period
         )
 
         de_p = parameters(period).gov.states.de.tax.payroll.paid_leave
@@ -59,21 +60,25 @@ class employer_total_additional_state_payroll_tax(Variable):
         ma_p = parameters(period).gov.states.ma.tax.payroll.paid_leave
         ma = where(
             headcount >= ma_p.employer_headcount_threshold,
-            ma_p.medical_rate * (1 - ma_p.medical_employee_share) * ss_taxable,
+            ma_p.medical_rate
+            * (1 - ma_p.medical_employee_share)
+            * person("employer_total_ma_paid_leave_taxable_wages", period),
             0,
         )
 
         me_p = parameters(period).gov.states.me.tax.payroll.paid_leave
         me = where(
             headcount >= me_p.employer_headcount_threshold,
-            me_p.employer_rate * ss_taxable,
+            me_p.employer_rate
+            * person("employer_total_me_paid_leave_taxable_wages", period),
             0,
         )
 
         or_p = parameters(period).gov.states["or"].tax.payroll.paid_leave
         or_tax = where(
             headcount >= or_p.employer_headcount_threshold,
-            or_p.employer_rate * ss_taxable,
+            or_p.employer_rate
+            * person("employer_total_or_paid_leave_taxable_wages", period),
             0,
         )
 
@@ -84,15 +89,18 @@ class employer_total_additional_state_payroll_tax(Variable):
             * state_ui_taxable
         )
 
-        vt = (
-            parameters(period).gov.states.vt.tax.payroll.child_care.employer_rate
-            * gross_wages
+        vt = parameters(
+            period
+        ).gov.states.vt.tax.payroll.child_care.employer_rate * person(
+            "employer_total_vt_child_care_contribution_wages", period
         )
 
         wa_p = parameters(period).gov.states.wa.tax.payroll.paid_leave
         wa = where(
             headcount >= wa_p.employer_headcount_threshold,
-            wa_p.total_rate * wa_p.employer_share * ss_taxable,
+            wa_p.total_rate
+            * wa_p.employer_share
+            * person("employer_total_wa_paid_leave_taxable_wages", period),
             0,
         )
 

@@ -1,0 +1,648 @@
+# Florida School Readiness (SR) integration tests.
+# Pipeline: countable income (gross, monthly) and FFY2026 monthly SMI ->
+# SMI ratio -> bracket rate (FT 4%/6%, PT 2%/3%) -> copay. The copay is then
+# WAIVED for families at or below 150% FPG (fl_sr_copay_waived; State Plan
+# s. 3.3.1): Cases 5 and 12 are <= 150% FPG so their copay is $0, while Cases
+# 1-4 use income above 150% FPG to exercise the bracket rate. In parallel the
+# provider rate cap = sum over eligible children of
+#   fl_sr_max_daily_rate * childcare_attending_days_per_month
+# (6M-4.500; SPB 2502 FY2025-26). The benefit is
+#   fl_sr = max(min(monthly childcare expense, monthly cap) - copay, 0)
+# A county with no published FL rate (an unknown / non-Florida county) gives a
+# zero cap and therefore a $0 benefit even when otherwise eligible (Case 14).
+# The MONTH benefit aggregates to the YEAR fl_child_care_subsidies (sum of 12
+# months) and flows into the federal child_care_subsidies total.
+#
+# All Florida cases are Miami-Dade, Licensed/Exempt providers. FY2025-26 daily
+# rates used below (Licensed/Exempt): Preschool 4 FT = 28.00, School Age FT =
+# 22.14, Preschool 4 PT = 26.25.
+#
+# FFY2026 SMI (instant 2025-10-01) by family size (with monthly FPG / 150% FPG):
+#   size 3: monthly SMI 7_214.41 (55% = 3_967.93, 85% = 6_132.25); FPG 2_276.67 (150% = 3_415.00)
+#   size 4: monthly SMI 8_588.58 (55% = 4_723.72, 85% = 7_300.30); FPG 2_750.00 (150% = 4_125.00)
+
+- name: Case 1, full-time family above 150% FPG below the rate cap (cap does not bind).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 43_200  # 3_600 / month (> 150% FPG, not waived)
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
+        childcare_attending_days_per_month: 45  # cap = 28 * 45 = 1_260 > 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1_000 / month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    # 3_600 / month = 1.58x FPG (> 150%) -> not waived
+    # SMI ratio = 3_600 / 7_214.41 = 0.499 <= 0.55 -> 4% full time
+    fl_sr_copay: 144  # 3_600 * 0.04
+    is_fl_sr_eligible: true
+    # cap = 28.00 * 45 = 1_260 > 1_000 expense -> cap does not bind
+    # benefit = max(min(1_000, 1_260) - 144, 0) = 856 / month
+    fl_sr: 856
+    # YEAR aggregators evaluated at a MONTH period return the month's slice
+    # (Case 8 asserts the full annual aggregate and federal flow-through).
+    fl_child_care_subsidies: 856
+    child_care_subsidies: 856
+
+- name: Case 2, part-time care pays a lower copay and a higher benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 43_200  # 3_600 / month (> 150% FPG, not waived)
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4  # part time (< 6 hrs/day) -> 26.25 daily rate
+        childcare_attending_days_per_month: 45  # cap = 26.25 * 45 = 1_181.25 > 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1_000 / month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    # SMI ratio 0.499 <= 0.55 -> 2% part time (vs Case 1's 4% full time at the
+    # same income: a lower copay 72 < 144 and a higher benefit 928 > 856)
+    fl_sr_copay: 72  # 3_600 * 0.02
+    is_fl_sr_eligible: true
+    # cap = 26.25 * 45 = 1_181.25 > 1_000 -> cap does not bind
+    # benefit = max(min(1_000, 1_181.25) - 72, 0) = 928 / month
+    fl_sr: 928
+    fl_child_care_subsidies: 928  # month slice of the YEAR aggregator
+
+- name: Case 3, enrolled family above 55% SMI lands in the 6 percent tier with the cap binding.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5_000 / month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
+        childcare_attending_days_per_month: 20  # cap = 28 * 20 = 560 < 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: true  # 5_000/mo > 55% entry; continued eligibility to 85%
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1_000 / month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    # SMI ratio = 5_000 / 7_214.41 = 0.6931 > 0.55 -> 6% full time
+    # (algebraically distinct from the 4% low tier)
+    fl_sr_copay: 300  # 5_000 * 0.06 (7% cap = 350, not binding)
+    is_fl_sr_income_eligible: true  # 5_000 <= 85% SMI (6_132.25) for enrolled
+    is_fl_sr_eligible: true
+    # cap = 28.00 * 20 = 560 < 1_000 -> cap BINDS
+    # benefit = max(min(1_000, 560) - 300, 0) = max(560 - 300, 0) = 260 / month
+    fl_sr: 260
+    fl_child_care_subsidies: 260  # month slice of the YEAR aggregator
+
+- name: Case 4, enrolled family near the 85 percent SMI ceiling with the cap not binding.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 86_400  # 7_200 / month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time -> 22.14 daily rate (school age)
+        childcare_attending_days_per_month: 40
+      person4:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
+        childcare_attending_days_per_month: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        fl_sr_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1_500 / month
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    # size 4 monthly SMI = 8_588.58; ratio = 7_200 / 8_588.58 = 0.8383
+    # 0.8383 <= 0.85 exit limit -> income eligible (enrolled)
+    is_fl_sr_income_eligible: true
+    # ratio > 0.55 -> 6% full time
+    fl_sr_copay: 432  # 7_200 * 0.06
+    is_fl_sr_eligible: true
+    # cap = (22.14 + 28.00) * 40 = 2_005.60 > 1_500 -> cap does not bind
+    # benefit = max(min(1_500, 2_005.60) - 432, 0) = 1_068 / month
+    fl_sr: 1_068
+    fl_child_care_subsidies: 1_068  # month slice of the YEAR aggregator
+
+- name: Case 5, two-parent family with asymmetric work hours and the cap binding.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 48_000  # 4_000 / month
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 15  # 30 + 15 = 45 >= 40 combined
+      person3:
+        age: 6
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time -> 22.14 daily rate (school age)
+        childcare_attending_days_per_month: 20
+      person4:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 14_000  # 1_166.67 / month
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    is_fl_sr_activity_eligible: true  # 45 combined hours >= 40
+    # size 4 monthly SMI = 8_588.58; ratio = 4_000 / 8_588.58 = 0.4657 <= 0.55
+    # 4_000 <= 55% entry limit (4_723.72) -> income eligible (new applicant)
+    is_fl_sr_eligible: true
+    # 4_000 / month = 1.45x monthly FPG (2_750) <= 150% -> copay WAIVED
+    # (State Plan s. 3.3.1); without the waiver it would be 4_000 * 0.04 = 160
+    fl_sr_copay: 0
+    # cap = (22.14 + 28.00) * 20 = 1_002.80 < 1_166.67 -> cap BINDS
+    # benefit = max(min(1_166.67, 1_002.80) - 0, 0) = 1_002.80 / month
+    fl_sr: 1_002.80
+    fl_child_care_subsidies: 1_002.80  # month slice of the YEAR aggregator
+
+- name: Case 6, single parent below the activity threshold gets no benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2_000 / month, income eligible
+        weekly_hours_worked_before_lsr: 10  # < 20 single-parent threshold
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    is_fl_sr_income_eligible: true  # income passes, but activity fails
+    is_fl_sr_activity_eligible: false
+    is_fl_sr_eligible: false
+    fl_sr: 0
+
+- name: Case 7, an otherwise-eligible family outside Florida gets no benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 45
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: GA  # not Florida -> defined_for gate
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    is_fl_sr_eligible: false
+    fl_sr: 0
+    fl_child_care_subsidies: 0
+
+- name: Case 8, annual benefit flows through to the federal child care subsidy total.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 43_200  # 3_600 / month (> 150% FPG, not waived)
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time
+        childcare_attending_days_per_month: 45  # cap = 28 * 45 = 1_260 > 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    # Same family as Case 1 (cap does not bind): monthly benefit 856 over 12 months.
+    # fl_child_care_subsidies (YEAR) = 856 * 12 = 10_272
+    fl_child_care_subsidies: 10_272
+    # The state aggregator feeds the federal child_care_subsidies total.
+    child_care_subsidies: 10_272
+
+# Edge cases.
+
+- name: Case 9, before the 2025-10-01 effective date the program pays nothing.
+  # 2025-01 predates the in_effect flag (false until 2025-10-01), so the
+  # otherwise-fully-eligible Case 1 family is ineligible and gets $0 this month.
+  # Asserted at the MONTH level only: the YEAR aggregator
+  # (fl_child_care_subsidies) spans the 2025-10-01 on-switch, so it is non-zero
+  # for the 2025 year and is not asserted here.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3_000 / month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time
+        childcare_attending_days_per_month: 45
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    is_fl_sr_eligible: false
+    fl_sr: 0
+
+- name: Case 10, zero income gives a zero copay and the full (uncapped) expense as benefit.
+  # Zero income is at or below 150% FPG so the copay is waived (and 0 x rate = 0
+  # regardless). The daily rate cap is high enough (28 * 45 = 1_260 > 1_000) not
+  # to bind, so the family receives the entire monthly childcare expense.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time
+        childcare_attending_days_per_month: 45  # cap = 28 * 45 = 1_260 > 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1_000 / month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    fl_sr_countable_income: 0
+    fl_sr_copay: 0
+    is_fl_sr_eligible: true
+    # benefit = max(min(1_000, 1_260) - 0, 0) = 1_000 / month (full expense)
+    fl_sr: 1_000
+
+- name: Case 11, income above the 85% SMI ceiling makes the family ineligible.
+  # Family of 3, monthly SMI 7_214.41; 85% exit limit = 6_132.25. Enrolled so the
+  # exit (not entry) limit applies; income above it ends eligibility and the
+  # benefit drops to $0.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 84_000  # 7_000 / month > 6_132.25 exit limit
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time
+        childcare_attending_days_per_month: 45
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    is_fl_sr_income_eligible: false
+    is_fl_sr_eligible: false
+    fl_sr: 0
+
+- name: Case 12, an ineligible older child is excluded from the rate cap.
+  # Two children: person3 is 12 (eligible) and person4 is 13 (ineligible). The
+  # unit still has an eligible child, so the family qualifies; only the eligible
+  # child contributes to the rate cap and the full-time copay determination.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 36_000  # 3_000 / month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 12
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time -> 22.14 daily rate, eligible child
+        childcare_attending_days_per_month: 20
+      person4:
+        age: 13
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time, but age-ineligible (excluded from cap)
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1_000 / month
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    is_fl_sr_child_eligible: [false, false, true, false]
+    is_fl_sr_eligible: true
+    # 3_000 / month = 1.09x monthly FPG (2_750) <= 150% -> copay WAIVED
+    # (State Plan s. 3.3.1); without the waiver it would be 3_000 * 0.04 = 120
+    fl_sr_copay: 0
+    # cap counts only the eligible child (person3): 22.14 * 20 = 442.80
+    # (person4's days do NOT count). 442.80 < 1_000 -> cap BINDS
+    # benefit = max(min(1_000, 442.80) - 0, 0) = 442.80
+    fl_sr: 442.80
+
+- name: Case 13, a self-employment loss floors the copay at zero and the cap still binds.
+  # person1 has a -10_000/month business loss, so gross countable income is
+  # 3_000 - 10_000 = -7_000/month (well under the 55% SMI entry limit, so the
+  # family is still income eligible). The copay is income * rate, so a negative
+  # income would yield a negative copay and, via max(expense - copay, 0), a
+  # benefit ABOVE the actual expense. Income is floored at 0 in the copay:
+  #   copay = max(countable_income, 0) * rate = max(-7_000, 0) * 0.04 = 0
+  # so a negative copay never inflates the benefit. The rate cap (28 * 20 = 560)
+  # is below the 1_000 expense, so the capped expense (560) is the payable base.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3_000 / month
+        self_employment_income: -120_000  # -10_000 / month business loss
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
+        childcare_attending_days_per_month: 20  # cap = 28 * 20 = 560 < 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1_000 / month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    # gross countable income = 3_000 - 10_000 = -7_000 / month
+    fl_sr_countable_income: -7_000
+    # -7_000 <= 55% SMI entry limit (3_967.93) -> income eligible
+    is_fl_sr_income_eligible: true
+    is_fl_sr_eligible: true
+    # income floored at 0 -> copay = max(-7_000, 0) * 0.04 = 0 (NOT a negative
+    # copay); the family is also <= 150% FPG, so the copay is waived as well
+    fl_sr_copay: 0
+    # cap = 28 * 20 = 560 < 1_000 -> capped expense = 560
+    # benefit = max(min(1_000, 560) - 0, 0) = 560 (the cap, NOT 1_280 from a negative copay)
+    fl_sr: 560
+
+- name: Case 14, otherwise-eligible family in a non-Florida county gets $0 (no published rate).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3_000 / month
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        childcare_attending_days_per_month: 22
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1_000 / month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+        county_str: ORANGE_COUNTY_CA  # not a Florida county -> no published rate
+  output:
+    # Eligibility does not depend on county, so the unit is still eligible...
+    is_fl_sr_eligible: true
+    # ...but ORANGE_COUNTY_CA has no published FL rate -> rate 0 -> cap 0 ->
+    # min(1_000, 0) = 0 -> benefit 0 (NOT a fall-back to expenses).
+    fl_sr_max_daily_rate: 0
+    fl_sr: 0
+    fl_child_care_subsidies: 0
+    child_care_subsidies: 0
+
+- name: Case 15, a protective-services child is eligible despite income above 85% SMI and no work.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 84_000  # 7_000 / month > 85% SMI exit limit (6_132.25)
+        weekly_hours_worked_before_lsr: 0  # not working
+      person2:
+        age: 28
+        weekly_hours_worked_before_lsr: 0
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        receives_or_needs_protective_services: true
+        childcare_hours_per_day: 8  # full time -> 28.00 daily rate
+        childcare_attending_days_per_month: 45  # cap = 28 * 45 = 1_260
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        fl_sr_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 18_000  # 1_500 / month
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+        county_str: MIAMI_DADE_COUNTY_FL
+  output:
+    # State Plan s. 2.2.2.f-h: a protective-services child qualifies with the
+    # income AND activity tests waived (income 7_000/mo > 85% SMI; parent not working).
+    is_fl_sr_income_eligible: false
+    is_fl_sr_activity_eligible: true
+    is_fl_sr_eligible: true
+    # Copay is NOT waived (the s. 3.3.1 copay waiver keys on foster care, not the
+    # protective-services pathway): copay = 7_000 * 0.06 = 420 (ratio 0.97 > 0.55).
+    fl_sr_copay: 420
+    # cap = 28 * 45 = 1_260 < 1_500 expense -> cap binds; benefit = 1_260 - 420 = 840
+    fl_sr: 840

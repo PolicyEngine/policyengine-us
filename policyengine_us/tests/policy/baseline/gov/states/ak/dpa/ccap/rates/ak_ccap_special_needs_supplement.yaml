@@ -1,0 +1,144 @@
+# ak_ccap_special_needs_supplement: Person, float (USD), MONTH
+# Alaska IN! supplemental rate per 7 AAC 41.060(b). Up to 2x standard rate
+# (combined cap); the supplement above the standard rate is
+# (multiplier - 1) * base = 1 * base.
+# Applies only when is_disabled AND ak_ccap_child_eligible.
+
+- name: Case 1, non-disabled eligible child receives no supplement.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+        is_disabled: false
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    ak_ccap_special_needs_supplement: 0
+
+- name: Case 2, disabled eligible preschooler in Anchorage gets supplement.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+        is_disabled: true
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # Base rate Anchorage center preschool FT_MONTH = 1_019
+    # Supplement = (2 - 1) * 1_019 = 1_019
+    ak_ccap_special_needs_supplement: 1_019
+
+- name: Case 3, disabled but age-ineligible child gets no supplement.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 14  # over CCAP age cap
+        immigration_status: CITIZEN
+        is_disabled: true
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # Not ak_ccap_child_eligible -> no supplement
+    ak_ccap_special_needs_supplement: 0
+
+- name: Case 4, disabled adult gets no supplement.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        is_disabled: true
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    ak_ccap_special_needs_supplement: 0
+
+- name: Case 5, supplement uses authorized rate when charged is below state max.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: CITIZEN
+        is_disabled: true
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+        ak_ccap_charged_rate: 500  # below max 1_019
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # Authorized = min(500, 1_019) = 500; supplement = (2 - 1) * 500 = 500
+    # Not (2 - 1) * 1_019 = 1_019 — supplement scales with authorized, not max.
+    ak_ccap_special_needs_supplement: 500
+
+- name: Case 6, disabled but undocumented child gets no supplement.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: UNDOCUMENTED
+        is_disabled: true
+        ak_ccap_provider_type: LICENSED_CENTER
+        ak_ccap_care_schedule: FT_MONTH
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+  output:
+    # Not ak_ccap_child_eligible (immigration) -> no supplement
+    ak_ccap_special_needs_supplement: 0

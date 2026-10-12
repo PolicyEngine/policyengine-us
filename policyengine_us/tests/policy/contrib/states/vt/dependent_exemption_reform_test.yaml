@@ -1,0 +1,254 @@
+- name: VT dependent exemption reform - default amount reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.vt.dependent_exemption.vt_dependent_exemption_reform.vt_dependent_exemption_reform
+  input:
+    gov.contrib.states.vt.dependent_exemption.in_effect: true
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: VT
+  output:
+    # 1 personal + 2 dependents, all at $5,300 = $15,900 (matches baseline)
+    vt_personal_exemptions: 15_900
+
+- name: VT dependent exemption reform - amount zero removes dependent portion only
+  period: 2025
+  reforms: policyengine_us.reforms.states.vt.dependent_exemption.vt_dependent_exemption_reform.vt_dependent_exemption_reform
+  input:
+    gov.contrib.states.vt.dependent_exemption.in_effect: true
+    gov.contrib.states.vt.dependent_exemption.amount: 0
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: VT
+  output:
+    # Personal exemption kept ($5,300), dependent portion removed
+    vt_personal_exemptions: 5_300
+
+- name: VT dependent exemption reform - childless single unaffected
+  period: 2025
+  reforms: policyengine_us.reforms.states.vt.dependent_exemption.vt_dependent_exemption_reform.vt_dependent_exemption_reform
+  input:
+    gov.contrib.states.vt.dependent_exemption.in_effect: true
+    gov.contrib.states.vt.dependent_exemption.amount: 0
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [parent]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent]
+        state_name: VT
+  output:
+    vt_personal_exemptions: 5_300
+
+- name: VT dependent exemption reform - age limit excludes over-age dependent
+  period: 2025
+  reforms: policyengine_us.reforms.states.vt.dependent_exemption.vt_dependent_exemption_reform.vt_dependent_exemption_reform
+  input:
+    gov.contrib.states.vt.dependent_exemption.in_effect: true
+    gov.contrib.states.vt.dependent_exemption.amount: 0
+    gov.contrib.states.vt.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.vt.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 20
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: VT
+  output:
+    # Over-age dependent (20) falls back to personal count: 2 personal units * $5,300
+    # Eligible dependent (10) gets $0 dependent exemption
+    vt_personal_exemptions: 10_600
+
+- name: VT dependent exemption reform - joint two-adult unit splits head/spouse from dependents
+  period: 2025
+  reforms: policyengine_us.reforms.states.vt.dependent_exemption.vt_dependent_exemption_reform.vt_dependent_exemption_reform
+  input:
+    gov.contrib.states.vt.dependent_exemption.in_effect: true
+    gov.contrib.states.vt.dependent_exemption.amount: 0
+    people:
+      parent1:
+        age: 40
+        employment_income: 60_000
+      parent2:
+        age: 38
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child1, child2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_name: VT
+  output:
+    # Head + spouse each get a personal exemption (eligible_head + eligible_spouse
+    # on a joint return): 2 * $5,300 = $10,600. Dependent portion removed (amount 0).
+    # Confirms no off-by-one in a 2-adult unit.
+    vt_personal_exemptions: 10_600
+
+- name: VT dependent exemption reform - dependent at age limit boundary minus one is eligible
+  period: 2025
+  reforms: policyengine_us.reforms.states.vt.dependent_exemption.vt_dependent_exemption_reform.vt_dependent_exemption_reform
+  input:
+    gov.contrib.states.vt.dependent_exemption.in_effect: true
+    gov.contrib.states.vt.dependent_exemption.amount: 0
+    gov.contrib.states.vt.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.vt.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: VT
+  output:
+    # age 17 < 18: dependent is eligible, gets the (zeroed) dependent exemption
+    # and is removed from the personal count. Personal = head only = 1 * $5,300.
+    vt_personal_exemptions: 5_300
+
+- name: VT dependent exemption reform - dependent at age limit boundary is excluded
+  period: 2025
+  reforms: policyengine_us.reforms.states.vt.dependent_exemption.vt_dependent_exemption_reform.vt_dependent_exemption_reform
+  input:
+    gov.contrib.states.vt.dependent_exemption.in_effect: true
+    gov.contrib.states.vt.dependent_exemption.amount: 0
+    gov.contrib.states.vt.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.vt.dependent_exemption.age_limit.threshold: 18
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 18
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1]
+        state_name: VT
+  output:
+    # age 18 is not < 18: dependent is excluded and falls back to the personal
+    # count. Personal = head + over-age dependent = 2 * $5,300.
+    vt_personal_exemptions: 10_600
+
+- name: VT dependent exemption reform - default flows through to income tax (downstream end-to-end)
+  period: 2025
+  reforms: policyengine_us.reforms.states.vt.dependent_exemption.vt_dependent_exemption_reform.vt_dependent_exemption_reform
+  absolute_error_margin: 0.1
+  input:
+    gov.contrib.states.vt.dependent_exemption.in_effect: true
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: VT
+  # End-to-end: with the default (no-op) amount the personal exemptions stay at
+  # $15,900 (1 personal + 2 dependents), so VT income tax matches baseline.
+  output:
+    vt_income_tax: 1221.08
+
+- name: VT dependent exemption reform - amount zero raises income tax (downstream end-to-end)
+  period: 2025
+  reforms: policyengine_us.reforms.states.vt.dependent_exemption.vt_dependent_exemption_reform.vt_dependent_exemption_reform
+  absolute_error_margin: 0.1
+  input:
+    gov.contrib.states.vt.dependent_exemption.in_effect: true
+    gov.contrib.states.vt.dependent_exemption.amount: 0
+    people:
+      parent:
+        age: 40
+        employment_income: 60_000
+      child1:
+        age: 10
+        is_tax_unit_dependent: true
+      child2:
+        age: 12
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_name: VT
+  # End-to-end: removing the dependent portion (amount 0) drops personal
+  # exemptions from $15,900 to $5,300 ($10,600 of taxable income added), raising
+  # VT income tax from 1,221.08 to 1,576.18 (about +355.10).
+  output:
+    vt_income_tax: 1576.18

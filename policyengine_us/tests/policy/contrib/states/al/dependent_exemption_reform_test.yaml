@@ -1,0 +1,74 @@
+- name: AL dependent exemption reform - default reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.al.dependent_exemption.al_dependent_exemption_reform.al_dependent_exemption_reform
+  input:
+    gov.contrib.states.al.dependent_exemption.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AL}}
+  output: {al_dependent_exemption: 2_000}
+
+- name: AL dependent exemption reform - amount zero eliminates the exemption
+  period: 2025
+  reforms: policyengine_us.reforms.states.al.dependent_exemption.al_dependent_exemption_reform.al_dependent_exemption_reform
+  input:
+    gov.contrib.states.al.dependent_exemption.in_effect: true
+    gov.contrib.states.al.dependent_exemption.amount: 0
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AL}}
+  output: {al_dependent_exemption: 0}
+
+- name: AL dependent exemption reform - age limit excludes dependents at or over the age
+  period: 2025
+  reforms: policyengine_us.reforms.states.al.dependent_exemption.al_dependent_exemption_reform.al_dependent_exemption_reform
+  input:
+    gov.contrib.states.al.dependent_exemption.in_effect: true
+    gov.contrib.states.al.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.al.dependent_exemption.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: AL}}
+  output: {al_dependent_exemption: 1_000}
+
+- name: AL dependent exemption reform - age at limit threshold is excluded
+  period: 2025
+  reforms: policyengine_us.reforms.states.al.dependent_exemption.al_dependent_exemption_reform.al_dependent_exemption_reform
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.al.dependent_exemption.in_effect: true
+    gov.contrib.states.al.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.al.dependent_exemption.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 13, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: AL}}
+  # Dependent at the age limit (13 == threshold) is excluded; AL has no personal
+  # dependent fallback, so the exemption is nothing.
+  output: {al_dependent_exemption: 0}
+
+- name: AL dependent exemption reform - age one below threshold is included
+  period: 2025
+  reforms: policyengine_us.reforms.states.al.dependent_exemption.al_dependent_exemption_reform.al_dependent_exemption_reform
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.al.dependent_exemption.in_effect: true
+    gov.contrib.states.al.dependent_exemption.age_limit.in_effect: true
+    gov.contrib.states.al.dependent_exemption.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 30_000}
+      child1: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: AL}}
+  # Dependent one year under the limit (12 < 13) receives the re-priced exemption.
+  output: {al_dependent_exemption: 1_000}

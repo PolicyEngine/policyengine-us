@@ -20,3 +20,67 @@
         state_code: CT
   output:
     medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [11_610, 0]
+
+# Missouri MHABD considers the gross income of a married couple living
+# together (DSS Manual § 0805.015.05), so the spouse's income counts
+# even when it falls below the SSI FBR differential ($497 monthly in
+# 2026) that gates deeming under 20 CFR § 416.1163.
+- name: Case 2, Missouri counts spouse income below the SSI FBR differential.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_unearned_income: 17_400
+      person2:
+        age: 60
+        ssi_earned_income: 4_800
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # The spouse's $400 monthly wage is below the $497 differential, so
+    # SSI deeming would not apply.
+    is_ssi_spousal_deeming_applies: [false, false]
+    # Couple budget, monthly: (400 - 65) x 0.5 + 1,450 - 20 = 1,597.50,
+    # rounded down to 1,597. Alone: 1,450 - 20 = 1,430. Deemed: 167.
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [2_004, 0]
+    medicaid_optional_senior_or_disabled_countable_income: [19_164, 0]
+    # 1,597 monthly exceeds the $1,533 couple standard.
+    is_optional_senior_or_disabled_income_eligible: [false, false]
+
+- name: Case 3, Missouri deems nothing to an unmarried filer.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_unearned_income: 17_400
+    tax_units:
+      tax_unit:
+        members: [person1]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    is_ssi_spousal_deeming_applies: false
+    # No ineligible spouse is present, so the Missouri gross-income
+    # couple budget does not apply and nothing is deemed.
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: 0
+    # 1,450 - 20 = 1,430 monthly, or 17,160 annually.
+    medicaid_optional_senior_or_disabled_countable_income: 17_160
+    is_optional_senior_or_disabled_income_eligible: false

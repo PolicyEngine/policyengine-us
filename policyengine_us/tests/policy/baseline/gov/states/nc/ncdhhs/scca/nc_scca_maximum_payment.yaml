@@ -75,3 +75,105 @@
         state_code: NC
   output:
     nc_scca_maximum_payment: 108
+
+- name: Case 4, Durham family of three, ages 7 and 4, income between 133% and 200% FPL, only the 4-year-old counts.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 7
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 4
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        # 2026 FPG for 3 = 2_276.67/mo; 133% = 3_027.97, 200% = 4_553.33.
+        nc_scca_countable_income: 4_500
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_child_eligible: [false, false, true]
+    # School-age rate 380 excluded; preschool rate 1_167 included.
+    nc_scca_market_rate: [0, 0, 1_167]
+    nc_scca_parent_fee: 450
+    nc_scca_maximum_payment: 717
+
+- name: Case 5, Durham family of four, 19-month-old twins and an 8-year-old, income between 133% and 200% FPL.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 1
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child2:
+        age: 1
+        is_disabled: false
+        is_tax_unit_dependent: true
+      child3:
+        age: 8
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        # 2026 FPG for 4 = 2_750/mo; 133% = 3_657.50, 200% = 5_500.
+        nc_scca_countable_income: 4_125
+        members: [person1, child1, child2, child3]
+    households:
+      household:
+        members: [person1, child1, child2, child3]
+        county_str: DURHAM_COUNTY_NC
+        state_code: NC
+  output:
+    nc_scca_child_eligible: [false, true, true, false]
+    nc_scca_market_rate: [0, 1_401, 1_401, 0]
+    # Fee = round(0.1 x 4_125) = 412 (banker's rounding of 412.5).
+    nc_scca_parent_fee: 412
+    nc_scca_maximum_payment: 2_390
+
+- name: Case 6, Wake family of three, disabled 9-year-old and non-disabled 7-year-old, income between 133% and 200% FPL, only the disabled child counts.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: false
+      child1:
+        age: 9
+        is_disabled: true
+        is_tax_unit_dependent: true
+      child2:
+        age: 7
+        is_disabled: false
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        # 2026 FPG for 3 = 2_276.67/mo; 133% = 3_027.97, 200% = 4_553.33.
+        nc_scca_countable_income: 3_500
+        members: [person1, child1, child2]
+    households:
+      household:
+        members: [person1, child1, child2]
+        county_str: WAKE_COUNTY_NC
+        state_code: NC
+  output:
+    # Special needs overrides age: the 9-year-old is compared to 200% FPL,
+    # the non-disabled 7-year-old to 133% FPL.
+    nc_scca_child_eligible: [false, true, false]
+    # Both children are school age (Wake rate 455); only the disabled one counts.
+    nc_scca_market_rate: [0, 455, 0]
+    nc_scca_parent_fee: 350
+    nc_scca_maximum_payment: 105

@@ -1,0 +1,27 @@
+description: Utah limits countable income to this share of the state median income under the Child Care Assistance program.
+
+# R986-700-710(6)(b) requires countable income, less applicable deductions,
+# to be at or below a percentage of the state median income determined by
+# the Department. The Department's published percentage is 85% (fact sheet,
+# effective October 1, 2025; the Table 4 Group 16 upper bounds equal 85% of
+# the state median income by household size). Cross-checked: each Table 4
+# Group 16 monthly upper bound divided by 0.85 reproduces the FFY 2026 HHS
+# state median income for Utah (4-person $117,667, effective October 1,
+# 2025) scaled by the HHS household-size factors (0.52 + 0.16 per person
+# through six, plus 0.03 per additional person), rounded to the dollar,
+# for every household size 2-12. The 2020 entry is placed at
+# PolicyEngine's backdating floor; 85% was in use before this date.
+values:
+  2020-01-01: 0.85
+
+metadata:
+  unit: /1
+  period: year
+  label: Utah CCAP state median income limit rate
+  reference:
+    - title: Utah DWS Office of Child Care subsidy fact sheet (OCC_2_09/24/25)
+      href: https://jobs.utah.gov/customereducation/services/childcare/occsubsidyfact.pdf#page=1
+    - title: Utah Admin. Code R986-700-710(6)(b)
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-700-710
+    - title: Utah DWS Table 4 - Child Care Income Eligibility and Co-Payment (effective April 1, 2026)
+      href: https://jobs.utah.gov/Infosource/eligibilitymanual/Tables,_Appendicies,_and_Charts/Tables,_Appendicies,_and_Charts/Table_4_-_Child_Care_Income_Eligibility_and_Co-Payment.htm

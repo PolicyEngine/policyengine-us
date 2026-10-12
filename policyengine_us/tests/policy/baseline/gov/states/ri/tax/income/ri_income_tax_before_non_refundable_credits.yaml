@@ -22,3 +22,27 @@
   output:
     # (70,000 - 66,200) * 0.0475 + 66,200 * 0.0375
     ri_income_tax_before_non_refundable_credits: 2_663
+
+- name: 2026 first bracket ceiling
+  period: 2026
+  input:
+    state_code: RI
+    ri_taxable_income: 82_050
+  output:
+    ri_income_tax_before_non_refundable_credits: 3_076.875
+
+- name: 2026 second bracket
+  period: 2026
+  input:
+    state_code: RI
+    ri_taxable_income: 100_000
+  output:
+    ri_income_tax_before_non_refundable_credits: 3_929.50
+
+- name: 2026 top bracket
+  period: 2026
+  input:
+    state_code: RI
+    ri_taxable_income: 200_000
+  output:
+    ri_income_tax_before_non_refundable_credits: 8_847.52

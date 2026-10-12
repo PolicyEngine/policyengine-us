@@ -9,3 +9,5 @@ class hi_additions(Variable):
     defined_for = StateCode.HI
     unit = USD
     definition_period = YEAR
+
+    adds = "gov.states.hi.tax.income.additions.additions"

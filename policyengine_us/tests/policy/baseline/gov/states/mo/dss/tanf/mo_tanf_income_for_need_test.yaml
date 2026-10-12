@@ -1,0 +1,48 @@
+- name: Applicant earnings count in full in the need test
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_gross_earned_income: 300
+  output:
+    # 13 CSR 40-2.310(11): the (9)(A)2.-5. disregards (including the
+    # $90 work expense) do not apply in the Standard of Need test.
+    mo_tanf_income_for_need_test: 300
+
+- name: Child care does not reduce need-test income
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_gross_earned_income: 100
+    mo_tanf_child_care_deduction: 60
+  output:
+    # The (9)(A)5. dependent care disregard is suspended by (11).
+    mo_tanf_income_for_need_test: 100
+
+- name: Unearned income counts in full
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_gross_unearned_income: 100
+  output:
+    mo_tanf_income_for_need_test: 100
+
+- name: Active participant's need test applies the two-thirds disregard
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    is_tanf_enrolled: true
+    mo_tanf_gross_earned_income: 900
+  output:
+    # (9)(D) is not suspended by (11), and DSS Manual 0210.015.30.20
+    # determines eligibility with the two-thirds disregard:
+    # 900 - (2/3 x 900) = 300.
+    mo_tanf_income_for_need_test: 300
+
+- name: The same earnings count in full for an applicant
+  period: 2024-01
+  input:
+    state_code: MO
+    mo_tanf_gross_earned_income: 900
+  output:
+    mo_tanf_income_for_need_test: 900

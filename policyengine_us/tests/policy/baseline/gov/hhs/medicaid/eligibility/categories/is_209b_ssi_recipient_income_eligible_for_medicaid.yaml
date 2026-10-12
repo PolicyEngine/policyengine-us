@@ -1,0 +1,163 @@
+- name: Case 1, raw senior or disabled income eligibility qualifies.
+  period: 2026
+  input:
+    is_optional_senior_or_disabled_income_eligible: true
+  output:
+    is_209b_ssi_recipient_income_eligible_for_medicaid: true
+
+- name: Case 2, Illinois SSI recipient qualifies after medical spenddown.
+  period: 2026
+  input:
+    state_code: IL
+    medicaid_optional_senior_or_disabled_countable_income: 30_000
+    # 30,000 - 15,000 = 15,000, within Illinois' 100% FPL individual
+    # standard of 15,960 in 2026.
+    medicaid_medically_needy_medical_expenses: 15_000
+  output:
+    is_209b_ssi_recipient_income_eligible_for_medicaid: true
+
+- name: Case 3, Illinois SSI recipient remains above the spenddown income limit.
+  period: 2026
+  input:
+    state_code: IL
+    medicaid_optional_senior_or_disabled_countable_income: 30_000
+    medicaid_medically_needy_medical_expenses: 5_000
+  output:
+    is_209b_ssi_recipient_income_eligible_for_medicaid: false
+
+# Missouri's 209(b) criteria are the MHABD standards, which test
+# blindness-based eligibility against 100% of the poverty guideline
+# rather than the 85% aged/disabled standard (DSS Manual
+# § 0805.015.45). After spenddown, 14,500 falls between the two, so
+# the case passes only under the blind standard.
+- name: Case 4, Missouri blind SSI recipient qualifies under the 100% FPL blind standard.
+  period: 2026
+  input:
+    state_code: MO
+    is_blind: true
+    medicaid_optional_senior_or_disabled_countable_income: 20_000
+    medicaid_medically_needy_medical_expenses: 5_500
+  output:
+    is_209b_ssi_recipient_income_eligible_for_medicaid: true
+
+- name: Case 5, Missouri non-blind SSI recipient with the same income fails the 85% standard.
+  period: 2026
+  input:
+    state_code: MO
+    medicaid_optional_senior_or_disabled_countable_income: 20_000
+    medicaid_medically_needy_medical_expenses: 5_500
+  output:
+    is_209b_ssi_recipient_income_eligible_for_medicaid: false
+
+- name: Case 6, Missouri married couple filing separately spends down on combined income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 14_880
+        medicaid_medically_needy_medical_expenses: 0
+      person2:
+        age: 68
+        medicaid_optional_senior_or_disabled_countable_income: 14_880
+        medicaid_medically_needy_medical_expenses: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 29,760 combined exceeds the 18,396 couple standard with no expenses.
+    is_209b_ssi_recipient_income_eligible_for_medicaid: [false, false]
+
+# Each spouse is under the 13,572 individual standard, so only the couple
+# sum makes Case 7 ineligible; one spouse's medical expenses then bring
+# the couple's combined income under the standard in Case 8.
+- name: Case 7, Missouri couple each under the individual standard but over the couple standard combined is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 9_300
+        medicaid_medically_needy_medical_expenses: 0
+      person2:
+        age: 68
+        medicaid_optional_senior_or_disabled_countable_income: 9_300
+        medicaid_medically_needy_medical_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 18,600 combined exceeds the 18,396 couple standard.
+    is_209b_ssi_recipient_income_eligible_for_medicaid: [false, false]
+
+- name: Case 8, Missouri couple spends down on one spouse's medical expenses.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        medicaid_optional_senior_or_disabled_countable_income: 9_300
+        medicaid_medically_needy_medical_expenses: 300
+      person2:
+        age: 68
+        medicaid_optional_senior_or_disabled_countable_income: 9_300
+        medicaid_medically_needy_medical_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 18,600 - 300 = 18,300, within the 18,396 couple standard.
+    is_209b_ssi_recipient_income_eligible_for_medicaid: [true, true]
+
+- name: Case 9, Missouri blind couple spends down to the 100% FPL blind couple standard.
+  period: 2026
+  input:
+    people:
+      person1:
+        is_blind: true
+        medicaid_optional_senior_or_disabled_countable_income: 11_000
+        medicaid_medically_needy_medical_expenses: 400
+      person2:
+        is_blind: true
+        medicaid_optional_senior_or_disabled_countable_income: 11_000
+        medicaid_medically_needy_medical_expenses: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_is_joint: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # 22,000 - 400 = 21,600, within the 21,648 blind couple standard
+    # (ceil(21,640 / 12) x 12) but over the 18,396 aged/disabled standard.
+    is_209b_ssi_recipient_income_eligible_for_medicaid: [true, true]

@@ -22,18 +22,18 @@
     # Deduction: min($3,000, $2,400) = $2,400
     va_tanf_childcare_deduction: 2_400
 
-- name: Family with mother, disabled father, two children, expenses below max
+- name: Family with mother, incapacitated father, two children, expenses below max
   period: 2023
   input:
     people:
       person1:
         is_tax_unit_dependent: false
-        is_disabled: false
+        is_incapable_of_self_care: false
         age: 25
       person2:
         is_tax_unit_dependent: false
         is_adult: true
-        is_disabled: true
+        is_incapable_of_self_care: true
         age: 25
       person3:
         is_tax_unit_dependent: true
@@ -50,7 +50,7 @@
         members: [person1, person2, person3, person4]
         state_code: VA
   output:
-    # Max deduction: $200 (child under 2) + $175 (child 2+) + $175 (disabled adult) = $550/month = $6,600/year
+    # Max deduction: $200 (child under 2) + $175 (child 2+) + $175 (incapacitated adult) = $550/month = $6,600/year
     # Actual expenses: $4,800/year
     # Deduction: min($4,800, $6,600) = $4,800
     va_tanf_childcare_deduction: 4_800
@@ -110,12 +110,12 @@
       person1:
         is_tax_unit_dependent: false
         is_adult: true
-        is_disabled: false
+        is_incapable_of_self_care: false
         age: 30
       person2:
         is_tax_unit_dependent: false
         is_adult: true
-        is_disabled: false
+        is_incapable_of_self_care: false
         age: 28
     spm_units:
       spm_unit:
@@ -126,7 +126,7 @@
         members: [person1, person2]
         state_code: VA
   output:
-    # No dependents, no disabled adults
+    # No dependents, no incapacitated adults
     # Max deduction = $0/year
     # Deduction: min($3,000, $0) = $0
     va_tanf_childcare_deduction: 0
@@ -184,3 +184,49 @@
     # Actual expenses: $5,000/year
     # Deduction: min($5,000, $4,500) = $4,500
     va_tanf_childcare_deduction: 4_500
+
+- name: Case 8, incapacitated adult care expenses count toward the deduction.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Per VA TANF Manual 305.3 item 5: incapacitated adult care up to
+    # $175/month (full-time). Expenses = 1,200 / 12 = 100/month.
+    va_tanf_childcare_deduction: 100
+
+- name: Case 9, adult care expenses without incapacity are not deducted.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_tax_unit_dependent: false
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Person2 is neither a dependent nor incapacitated, so the cap is $0:
+    # min(100, 0) = 0.
+    va_tanf_childcare_deduction: 0

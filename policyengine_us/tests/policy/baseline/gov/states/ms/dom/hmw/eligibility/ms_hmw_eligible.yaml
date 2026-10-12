@@ -1,0 +1,35 @@
+- name: Case 1, all eligibility components pass.
+  period: 2026
+  input:
+    state_code: MS
+    ms_hmw_demographic_eligible: true
+    ms_hmw_non_medicare_eligible: true
+    ms_hmw_income_eligible: true
+    ms_hmw_resource_eligible: true
+    ms_hmw_other_coverage_ineligible: true
+  output:
+    ms_hmw_eligible: true
+
+- name: Case 2, ineligible before waiver start date.
+  period: 2005
+  input:
+    state_code: MS
+    ms_hmw_demographic_eligible: true
+    ms_hmw_non_medicare_eligible: true
+    ms_hmw_income_eligible: true
+    ms_hmw_resource_eligible: true
+    ms_hmw_other_coverage_ineligible: true
+  output:
+    ms_hmw_eligible: false
+
+- name: Case 3, one failed eligibility component fails.
+  period: 2026
+  input:
+    state_code: MS
+    ms_hmw_demographic_eligible: true
+    ms_hmw_non_medicare_eligible: false
+    ms_hmw_income_eligible: true
+    ms_hmw_resource_eligible: true
+    ms_hmw_other_coverage_ineligible: true
+  output:
+    ms_hmw_eligible: false

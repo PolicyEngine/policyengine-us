@@ -1,5 +1,6 @@
 description: Maximum amount of state and local income, sales and real estate tax deductions allowed.
 metadata:
+  propagate_metadata_to_children: true
   label: SALT cap
   breakdown:
     - filing_status

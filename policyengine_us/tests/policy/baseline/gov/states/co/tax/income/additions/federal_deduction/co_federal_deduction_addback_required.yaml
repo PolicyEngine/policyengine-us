@@ -42,3 +42,32 @@
     tax_unit_itemizes: false
   output:
     co_federal_deduction_addback_required: false
+
+# C.R.S. 39-22-104(3)(p.5)/(3)(p.7): the addback applies to AGI "equal to or
+# exceeding" the threshold, so AGI exactly at the threshold is included.
+- name: In 2023, AGI exactly at the 300_000 threshold is subject to the addback.
+  period: 2023
+  input:
+    state_code: CO
+    adjusted_gross_income: 300_000
+    tax_unit_itemizes: false
+  output:
+    co_federal_deduction_addback_required: true
+
+- name: In 2023, AGI one dollar below the threshold is not subject.
+  period: 2023
+  input:
+    state_code: CO
+    adjusted_gross_income: 299_999
+    tax_unit_itemizes: false
+  output:
+    co_federal_deduction_addback_required: false
+
+- name: In 2026, AGI exactly at the 300_000 threshold is subject to the addback.
+  period: 2026
+  input:
+    state_code: CO
+    adjusted_gross_income: 300_000
+    tax_unit_itemizes: false
+  output:
+    co_federal_deduction_addback_required: true

@@ -61,3 +61,16 @@
     il_liheap: 300
   output:
     il_ihwap_categorically_eligible: true
+
+- name: Reported SSI receipt with a zero modeled payment is categorically eligible.
+  period: 2026
+  input:
+    state_code: IL
+    il_liheap: 0
+    ssi: 0
+    receives_ssi: true
+    il_tanf: 0
+    il_aabd: 0
+    housing_assistance: 0
+  output:
+    il_ihwap_categorically_eligible: true

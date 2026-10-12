@@ -1,0 +1,19 @@
+description: Hawaii limits the Child Care Subsidy program for a child receiving child protective services under court supervision to children younger than this age.
+# HAR 17-798.3-9(a)(5) (17-798.2-9(a)(3) before August 6, 2021) covers a child
+# receiving child protective services whose court-ordered case plan specifies
+# child care; HAR 17-798.3-2 (17-798.2-2) defines a child as under 18.
+values:
+  2008-03-08: 18
+metadata:
+  unit: year
+  period: year
+  label: Hawaii CCAP protective services under court supervision child age limit
+  reference:
+    - title: HAR 17-798.2-2, definition of child
+      href: https://humanservices.hawaii.gov/bessd/files/2013/01/HAR-17-798.2-Child-Care-Services-Rules.pdf#page=4
+    - title: HAR 17-798.2-9(a)(3)
+      href: https://humanservices.hawaii.gov/bessd/files/2013/01/HAR-17-798.2-Child-Care-Services-Rules.pdf#page=14
+    - title: HAR 17-798.3-2, definition of child
+      href: https://humanservices.hawaii.gov/bessd/files/2021/09/CHAPTER-17-798.3-Child-Care-Payments.pdf#page=6
+    - title: HAR 17-798.3-9(a)(5)
+      href: https://humanservices.hawaii.gov/bessd/files/2021/09/CHAPTER-17-798.3-Child-Care-Payments.pdf#page=19

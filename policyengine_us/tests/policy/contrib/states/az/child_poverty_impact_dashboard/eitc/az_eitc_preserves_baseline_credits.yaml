@@ -1,0 +1,31 @@
+# Regression test for #8775: activating the AZ EITC reform must ADD the new
+# refundable EITC to Arizona's baseline refundable credits, not replace the
+# baseline list. Baseline credits are supplied as inputs so the expected value
+# is deterministic; if the reform regresses to returning only the EITC, these
+# baseline amounts would be dropped and the test would fail.
+- name: AZ reform preserves baseline refundable credits and adds the EITC
+  period: 2024
+  reforms: policyengine_us.reforms.states.az.eitc.az_eitc
+  input:
+    gov.contrib.states.az.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: AZ
+    eitc: 1_000
+    az_increased_excise_tax_credit: 100
+    az_property_tax_credit: 200
+  output:
+    az_eitc: 100
+    # 100 EITC + 100 excise + 200 property tax credit
+    az_refundable_credits: 400
+
+- name: AZ baseline refundable credits remain when the EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.az.eitc.az_eitc
+  input:
+    gov.contrib.states.az.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: AZ
+    eitc: 0
+    az_increased_excise_tax_credit: 100
+    az_property_tax_credit: 200
+  output:
+    az_eitc: 0
+    az_refundable_credits: 300  # baseline credits not deleted

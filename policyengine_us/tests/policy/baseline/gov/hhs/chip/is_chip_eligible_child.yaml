@@ -97,3 +97,321 @@
         members: [head]
   output:
     is_chip_eligible_child: False
+
+- name: TX child with direct-purchase coverage is not CHIP-eligible
+  period: 2023
+  input:
+    people:
+      head:
+        age: 10
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 2.0
+        has_non_marketplace_direct_purchase_health_coverage_at_interview: True
+    households:
+      household:
+        state_code: TX
+        members: [head]
+  output:
+    is_chip_eligible_child: False
+
+- name: TX child with VA health coverage is not CHIP-eligible
+  period: 2023
+  input:
+    people:
+      head:
+        age: 10
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 2.0
+        has_va_health_coverage_at_interview: True
+    households:
+      household:
+        state_code: TX
+        members: [head]
+  output:
+    is_chip_eligible_child: False
+
+- name: TX child receiving Medicaid is not CHIP-eligible
+  period: 2023
+  input:
+    people:
+      head:
+        age: 10
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 2.0
+        receives_medicaid: True
+    households:
+      household:
+        state_code: TX
+        members: [head]
+  output:
+    has_chip_disqualifying_health_coverage: True
+    is_chip_eligible_child: False
+
+- name: MO child at 154% FPL is not Medicaid-eligible and routes to CHIP
+  period: 2026
+  input:
+    people:
+      head:
+        age: 8
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.54
+    households:
+      household:
+        state_code: MO
+        members: [head]
+  output:
+    is_medicaid_eligible: false
+    is_chip_eligible_child: true
+
+- name: MO child at 152% FPL is Medicaid-eligible and does not route to CHIP
+  period: 2026
+  input:
+    people:
+      head:
+        age: 8
+        immigration_status: CITIZEN
+        medicaid_income_level: 1.52
+    households:
+      household:
+        state_code: MO
+        members: [head]
+  output:
+    is_medicaid_eligible: true
+    is_chip_eligible_child: false
+
+- name: TX child with partner-reported health coverage other than CHIP is not CHIP-eligible
+  period: 2023
+  input:
+    people:
+      head:
+        age: 10
+        immigration_status: CITIZEN
+        is_medicaid_eligible: False
+        medicaid_income_level: 2.0
+        has_health_coverage_other_than_chip: True
+    households:
+      household:
+        state_code: TX
+        members: [head]
+  output:
+    has_chip_disqualifying_health_coverage: True
+    is_chip_eligible_child: False
+
+# Missouri applies the CHIP 75 limit (300% FPL plus the 5% disregard) as the
+# Appendix A monthly-dollar maximum, rounded up to the next whole dollar:
+# household of 2 in 2026, 21,640 x 3.05 / 12 = 5,500.17 -> $5,501.
+- name: MO child at exactly the $5,501 CHIP 75 maximum is CHIP-eligible although the exact ratio is 3.0505
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 66_012
+      child:
+        age: 8
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    is_medicaid_eligible: [false, false]
+    is_chip_eligible_child: [false, true]
+
+- name: MO child $1 above the $5,501 CHIP 75 maximum is not CHIP-eligible
+  period: 2026
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 66_024
+      child:
+        age: 8
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    is_chip_eligible_child: [false, false]
+
+# CMS SHO #12-002 excludes DACA from the CHIPRA lawfully residing option.
+# https://www.medicaid.gov/federal-policy-guidance/downloads/sho-12-002.pdf
+- name: Case 15, CHIP excludes only DACA and undocumented children; citizens, refugees and asylees remain covered.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 17
+        immigration_status: DACA
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+        has_chip_disqualifying_health_coverage: false
+      person2:
+        age: 17
+        immigration_status: UNDOCUMENTED
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+        has_chip_disqualifying_health_coverage: false
+      person3:
+        age: 17
+        immigration_status: CITIZEN
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+        has_chip_disqualifying_health_coverage: false
+      person4:
+        age: 17
+        immigration_status: REFUGEE
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+        has_chip_disqualifying_health_coverage: false
+      person5:
+        age: 17
+        immigration_status: ASYLEE
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+        has_chip_disqualifying_health_coverage: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: TX
+  output:
+    is_chip_eligible_child: [false, false, true, true, true]
+    chip_category: [NONE, NONE, CHILD, CHILD, CHILD]
+    is_chip_eligible: [false, false, true, true, true]
+
+- name: Case 16, DACA child at qualifying income receives no CHIP payment.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 17
+        immigration_status: DACA
+        is_medicaid_eligible: false
+        medicaid_income_level: 2.0
+        has_chip_disqualifying_health_coverage: false
+        takes_up_chip_if_eligible: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    is_chip_eligible: false
+    chip_enrolled: false
+    per_capita_chip: 0
+    chip: 0
+
+# Separate CHIP applies the five-year bar and the qualified-alien limit (8 USC
+# 1611(a) and 1613) unless the state elected the lawfully residing option in both
+# CHIP and Medicaid (42 USC 1397gg(e)(1)(Q)). Arizona did not elect it; Texas did.
+- name: Case 17, recent permanent resident child in Arizona fails CHIP inside the five-year bar and qualifies after it.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 2
+        medicaid_income_level: 2.0
+      person2:
+        age: 10
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 5
+        medicaid_income_level: 2.0
+    households:
+      household1:
+        members: [person1]
+        state_code: AZ
+      household2:
+        members: [person2]
+        state_code: AZ
+  output:
+    is_medicaid_eligible: [false, false]
+    is_chip_eligible_child: [false, true]
+
+- name: Case 18, temporary protected status child qualifies for CHIP in Texas but not in Arizona.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: TPS
+        medicaid_income_level: 2.0
+      person2:
+        age: 10
+        immigration_status: TPS
+        medicaid_income_level: 2.0
+    households:
+      household1:
+        members: [person1]
+        state_code: AZ
+      household2:
+        members: [person2]
+        state_code: TX
+  output:
+    is_medicaid_eligible: [false, false]
+    is_chip_eligible_child: [false, true]
+
+- name: Case 19, refugee child in Arizona qualifies for CHIP before section 71109 applies.
+  period: 2025
+  input:
+    age: 10
+    immigration_status: REFUGEE
+    medicaid_income_level: 2.0
+    state_code: AZ
+  output:
+    is_chip_eligible_child: true
+
+# H.R.1 section 71109 applies the October 1, 2026 status limits to CHIP
+# (42 USC 1397gg(e)(1)(R)), read from 2027 in annual simulations.
+- name: Case 20, after section 71109 a refugee child keeps CHIP only in a state that elected the option.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: REFUGEE
+        medicaid_income_level: 2.0
+      person2:
+        age: 10
+        immigration_status: REFUGEE
+        medicaid_income_level: 2.0
+    households:
+      household1:
+        members: [person1]
+        state_code: AZ
+      household2:
+        members: [person2]
+        state_code: TX
+  output:
+    is_medicaid_eligible: [false, false]
+    is_chip_eligible_child: [false, true]
+
+- name: Case 21, Georgia CHIP election for lawfully residing children applies from 2024.
+  period: 2024
+  input:
+    age: 10
+    immigration_status: TPS
+    medicaid_income_level: 2.0
+    state_code: GA
+  output:
+    is_chip_eligible_child: true
+
+- name: Case 22, Georgia CHIP election for lawfully residing children does not apply in 2023.
+  period: 2023
+  input:
+    age: 10
+    immigration_status: TPS
+    medicaid_income_level: 2.0
+    state_code: GA
+  output:
+    is_chip_eligible_child: false

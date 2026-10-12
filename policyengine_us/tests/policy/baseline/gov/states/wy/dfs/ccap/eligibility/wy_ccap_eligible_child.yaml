@@ -1,0 +1,67 @@
+# Unit tests for wy_ccap_eligible_child (Person, MONTH, bool).
+# Rules Ch. 1 §8(e)(i)(A): a child must be under 13, or 13 through under 18
+# with special needs or a developmental delay (eligibility/child_age_limit = 13,
+# special_needs_child_age_limit = 18). §8(e)(ii): the child must be a U.S.
+# citizen or qualified alien (is_ccdf_immigration_eligible_child); no test
+# applies to the parent. person1 is always the adult parent (never an
+# eligible child).
+- name: Case 1, a twelve-year-old is eligible and a thirteen-year-old without special needs is not.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 12  # under the age-13 limit
+      person3:
+        age: 13  # exactly at the limit, age < 13 fails
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WY
+  output:
+    wy_ccap_eligible_child: [false, true, false]
+
+- name: Case 2, special needs extend eligibility through age 17 but not to 18.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 13
+        is_disabled: true  # 13 with special needs stays eligible
+      person3:
+        age: 17
+        has_developmental_delay: true  # developmental delay pathway
+      person4:
+        age: 18
+        is_disabled: true  # age < 18 fails even with special needs
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_eligible_child: [false, true, true, false]
+
+- name: Case 3, the child must be a citizen or qualified alien.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED  # no test applies to the parent
+      person2:
+        age: 5
+        immigration_status: UNDOCUMENTED
+      person3:
+        age: 5
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+      person4:
+        age: 5  # defaults to citizen
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WY
+  output:
+    wy_ccap_eligible_child: [false, false, true, true]

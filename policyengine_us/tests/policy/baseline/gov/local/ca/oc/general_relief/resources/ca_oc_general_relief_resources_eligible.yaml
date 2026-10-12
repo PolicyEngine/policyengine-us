@@ -1,0 +1,34 @@
+# Resource check (Sec 60.2.a): countable personal property -- cash plus vehicle
+# value above the $4,650 exclusion (Sec 60.4.c) -- must not exceed $1,000.
+- name: Cash at the limit with a fully excluded vehicle passes.
+  period: 2026-01
+  input:
+    spm_unit_cash_assets: 1_000
+    household_vehicles_value: 4_650  # 4,650 - 4,650 = 0 countable
+    in_oc: true
+  output:
+    ca_oc_general_relief_resources_eligible: true
+
+- name: Cash above the limit fails.
+  period: 2026-01
+  input:
+    spm_unit_cash_assets: 1_001
+    in_oc: true
+  output:
+    ca_oc_general_relief_resources_eligible: false
+
+- name: A vehicle a little over the exclusion still passes.
+  period: 2026-01
+  input:
+    household_vehicles_value: 5_000  # 5,000 - 4,650 = 350 countable <= 1,000
+    in_oc: true
+  output:
+    ca_oc_general_relief_resources_eligible: true
+
+- name: A vehicle whose value over the exclusion exceeds the limit fails.
+  period: 2026-01
+  input:
+    household_vehicles_value: 6_000  # 6,000 - 4,650 = 1,350 countable > 1,000
+    in_oc: true
+  output:
+    ca_oc_general_relief_resources_eligible: false

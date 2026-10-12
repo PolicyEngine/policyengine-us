@@ -1,0 +1,15 @@
+description: Florida limits enrolled families in the School Readiness program to gross income at or below this share of the state median income at redetermination.
+# 85% SMI is the upper threshold for continued School Readiness eligibility per the
+# October 1, 2025 sliding fee schedule footnote and 6M-4.200(2)(b)(3)a., (4)(a).
+values:
+  2025-10-01: 0.85
+
+metadata:
+  unit: /1
+  period: year
+  label: Florida School Readiness continued eligibility income SMI rate
+  reference:
+    - title: Florida Division of Early Learning, Sliding Fee Schedule for School Readiness Program (effective October 1, 2025), upper threshold footnote
+      href: https://www.elclc.org/wp-content/uploads/2025/10/2025-2026-Sliding-Fee-Schedule-for-10012025-4-and-6-Percent.pdf#page=2
+    - title: Fla. Admin. Code 6M-4.200(2)(b)(3)a., (4)(a)
+      href: https://flrules.elaws.us/fac/6m-4.200

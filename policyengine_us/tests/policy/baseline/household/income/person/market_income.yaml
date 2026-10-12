@@ -7,5 +7,16 @@
     interest_income: 4
     gi_cash_assistance: 5
     farm_operations_income: 6
+    miscellaneous_income: 7
+    alimony_income: 8
+    strike_benefits: 9
   output:
-    market_income: 1 + 2 + 3 + 4 + 5 + 6
+    market_income: 1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9
+
+- name: Estate and trust income is market income, with its sign.
+  period: 2026
+  input:
+    employment_income: 1_000
+    estate_income: -300
+  output:
+    market_income: 700

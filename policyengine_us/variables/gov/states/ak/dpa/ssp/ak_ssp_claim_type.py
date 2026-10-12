@@ -11,7 +11,7 @@ class ak_ssp_claim_type(Variable):
     value_type = Enum
     entity = Person
     label = "Alaska Adult Public Assistance claim type"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.AK
     possible_values = AKSSPClaimType
     default_value = AKSSPClaimType.INDIVIDUAL
@@ -20,8 +20,10 @@ class ak_ssp_claim_type(Variable):
     )
 
     def formula(person, period, parameters):
-        joint_claim = person("ssi_claim_is_joint", period)
-        marital_unit_size = person.marital_unit.sum(person("age", period) >= 0)
+        joint_claim = person("ssi_claim_is_joint", period.this_year)
+        marital_unit_size = person.marital_unit.sum(
+            person("age", period.this_year) >= 0
+        )
         living_arrangement = person("ak_ssp_living_arrangement", period)
         living_arrangement_values = living_arrangement.possible_values
         # Both spouses must share the same living arrangement to be
@@ -53,7 +55,7 @@ class ak_ssp_claim_type(Variable):
                 == marital_unit_size
             )
         )
-        is_eligible_individual = person("is_ssi_aged_blind_disabled", period)
+        is_eligible_individual = person("is_ssi_aged_blind_disabled", period.this_year)
         # COUPLE_ONE_ELIGIBLE requires exactly one spouse to be
         # individually ABD-eligible. If both spouses qualify but they
         # are not jointly claiming, they should not be misclassified

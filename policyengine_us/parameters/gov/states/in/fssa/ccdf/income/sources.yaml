@@ -1,0 +1,32 @@
+description: Indiana counts these income sources as countable income under the Child Care and Development Fund program.
+values:
+  2024-10-14:
+    # Earned income
+    - employment_income
+    - self_employment_income
+    # Unearned income
+    - rental_income
+    # social_security already includes the disability, retirement, survivors,
+    # and dependents components, so social_security_disability is not listed
+    # separately to avoid double-counting Social Security Disability Insurance.
+    - social_security
+    - ssi
+    - unemployment_compensation
+    - veterans_benefits
+    - workers_compensation
+    - child_support_received
+    - alimony_income
+    # TANF cash assistance is countable per the Policy Manual but is omitted here
+    # to avoid the Child Care and Development Fund to Temporary Assistance for
+    # Needy Families circular dependency through the dependent care deduction.
+    # Earned income of household members under 18 is excluded in the formula.
+
+metadata:
+  unit: list
+  period: year
+  label: Indiana CCDF countable income sources
+  reference:
+    - title: Indiana CCDF Policy Manual, Section 1.8 Countable Income
+      href: https://www.in.gov/fssa/carefinder/files/CCDF-Policy-Manual.pdf#page=26
+    - title: Income to Get on CCDF
+      href: https://www.in.gov/fssa/carefinder/files/Income-Get-on-CCDF.pdf

@@ -17,11 +17,15 @@ metadata:
     - title: 2023 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=24
     - title: 2023 Oregon Income Tax Rates and Brackets
-      href: https://www.efile.com/oregon-tax-brackets-rates-and-forms/
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-17_101-431_2023.pdf#page=146
     - title: 2024 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-n_or-40-p-inst_101-048-1_2024.pdf#page=21
     - title: 2025 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2025.pdf#page=17
+    - title: 2026 Publication OR-ESTIMATE, Oregon Estimated Income Tax Instructions, rate charts for 2026 (Charts S and J)
+      href: https://www.oregon.gov/dor/forms/FormsPubs/publication-or-estimate_101-026_2026.pdf#page=3
+    - title: 2026 Oregon Withholding Tax Formulas (150-206-436), annual wages formula
+      href: https://www.oregon.gov/dor/forms/FormsPubs/withholding-tax-formulas_206-436_2026.pdf#page=6
 brackets:
   # "* Since 1993 the tax brackets have been indexed for inflation.
   #  ** In 2002, the inflation index changed from the Portland CPI to the U.S. city average CPI."
@@ -45,6 +49,7 @@ brackets:
         2023-01-01: 4_050
         2024-01-01: 4_300
         2025-01-01: 4_400
+        2026-01-01: 4_550
       metadata:
         uprating:
           parameter: gov.irs.uprating
@@ -66,6 +71,7 @@ brackets:
         2023-01-01: 10_200
         2024-01-01: 10_750
         2025-01-01: 11_100
+        2026-01-01: 11_400
       metadata:
         uprating: 
           parameter: gov.irs.uprating

@@ -1,0 +1,67 @@
+# Tests for nd_ccap_child_support_deduction (SPMUnit, MONTH, USD).
+# The only deduction from countable income is court-ordered child and spousal
+# support paid by a counted unit member (400-28-65-30, NDAC 75-02-01.3-09),
+# modeled as child_support_expense plus alimony_expense. These are annual
+# person-level inputs read with the bare monthly period, so Core auto-divides
+# them to monthly amounts.
+
+- name: Case 1, no support paid, no deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_child_support_deduction: 0
+
+- name: Case 2, court-ordered child support paid.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_expense: 12_000  # 1,000/mo
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_child_support_deduction: 1_000
+
+- name: Case 3, child support and spousal support both deducted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        child_support_expense: 12_000  # 1,000/mo
+        alimony_expense: 6_000  # 500/mo
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    # (12,000 + 6,000) / 12 = 1,500
+    nd_ccap_child_support_deduction: 1_500

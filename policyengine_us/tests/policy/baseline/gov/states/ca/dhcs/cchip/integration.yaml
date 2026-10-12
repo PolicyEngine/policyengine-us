@@ -1,0 +1,943 @@
+# California County Children's Health Initiative Program (CCHIP) end to end.
+# Married couple with one child, 2025. The three-person FPG is 26,650, so
+# 80,000 of employment income is 300 percent FPL (medicaid_income_level 3.0),
+# inside the CCHIP band (above the 266 percent Medi-Cal child limit, at or
+# below 322 percent). per_capita_chip is California separate-CHIP spending
+# divided by enrollment from the MACPAC calibration parameters.
+- name: Case 1, Santa Clara County child at 300 percent FPL gets CCHIP and loses ACA PTC eligibility.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_income_level: [3, 3, 3]
+    is_medicaid_eligible: [false, false, false]
+    ca_cchip_eligible: [false, false, true]
+    chip_category: [NONE, NONE, CHILD_CCHIP]
+    is_chip_eligible: [false, false, true]
+    # 678,088,532 / 51,684 = 13,119.89
+    per_capita_chip: [0, 0, 13_119.89]
+    chip: [0, 0, 13_119.89]
+    is_aca_ptc_eligible: [true, true, false]
+
+- name: Case 2, San Mateo County child at 300 percent FPL gets CCHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SAN_MATEO_COUNTY_CA
+  output:
+    ca_cchip_eligible: [false, false, true]
+    chip_category: [NONE, NONE, CHILD_CCHIP]
+    chip: [0, 0, 13_119.89]
+
+- name: Case 3, San Francisco County child at 300 percent FPL gets CCHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SAN_FRANCISCO_COUNTY_CA
+  output:
+    ca_cchip_eligible: [false, false, true]
+    chip_category: [NONE, NONE, CHILD_CCHIP]
+    chip: [0, 0, 13_119.89]
+
+- name: Case 4, Los Angeles County child at 300 percent FPL gets no CHIP and keeps ACA PTC eligibility.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    medicaid_income_level: [3, 3, 3]
+    is_medicaid_eligible: [false, false, false]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    chip: [0, 0, 0]
+    is_aca_ptc_eligible: [true, true, true]
+
+- name: Case 5, Santa Clara County child above 322 percent FPL gets no CHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # 90,000 / 26,650 = 3.38 FPL
+        employment_income: 90_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_income_level: [3.38, 3.38, 3.38]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    chip: [0, 0, 0]
+    is_aca_ptc_eligible: [true, true, true]
+
+- name: Case 6, Santa Clara County child below 266 percent FPL gets Medi-Cal, not CCHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # 60,000 / 26,650 = 2.25 FPL, at or below the 2.66 Medi-Cal child limit
+        employment_income: 60_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_income_level: [2.25, 2.25, 2.25]
+    is_medicaid_eligible: [false, false, true]
+    medicaid_category: [NONE, NONE, OLDER_CHILD]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    chip: [0, 0, 0]
+    is_aca_ptc_eligible: [true, true, false]
+
+- name: Case 7, pregnant spouse gets FCEP CHIP while the child gets Medi-Cal.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+        is_pregnant: true
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    # California counts the unborn child for all three MAGI household members.
+    # At 249% FPL the pregnant parent qualifies for MCAP and the child for
+    # Medi-Cal, whose child ceiling is 266% FPL (DHCS ACWDL 20-10, page 4).
+    medicaid_household_size: [4, 4, 4]
+    medicaid_income_level: [2.49, 2.49, 2.49]
+    is_medicaid_eligible: [false, false, true]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, PREGNANT_FCEP, NONE]
+    chip: [0, 13_119.89, 0]
+    is_aca_ptc_eligible: [true, false, false]
+
+- name: Case 8, Santa Clara County child with employer coverage gets no CCHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+        has_esi: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    chip: [0, 0, 0]
+
+- name: Case 9, available employer coverage excludes an uninsured child from CCHIP.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 8
+        has_esi: false
+        offered_aca_disqualifying_esi: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    is_medicaid_eligible: [false, false, false]
+    has_chip_disqualifying_health_coverage: [false, false, false]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    is_chip_eligible: [false, false, false]
+    chip_enrolled: [false, false, false]
+    chip: [0, 0, 0]
+    is_aca_ptc_eligible: [true, true, false]
+
+# The child stays PTC eligible because the 2025 parameters are read at
+# January 1, 2025, when gov.aca.ineligible_immigration_statuses did not yet
+# include DACA again (it does from August 25, 2025).
+- name: Case 10, DACA child does not lose ACA PTC eligibility through CCHIP.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+      person3:
+        age: 18
+        immigration_status: DACA
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    is_medicaid_eligible: [false, false, false]
+    has_chip_disqualifying_health_coverage: [false, false, false]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    is_chip_eligible: [false, false, false]
+    chip_enrolled: [false, false, false]
+    chip: [0, 0, 0]
+    is_aca_ptc_eligible: [true, true, true]
+
+# Cases 11 onward: interactions with Medi-Cal pregnancy counting (DHCS ACWDL
+# 20-10, pp. 3-5), the MCAP insurance exclusion (WIC §§ 15833-15834, applied
+# through the CHIP FCEP formula), CARE and WIC. With a pregnant spouse the
+# household size is 3 + 1 unborn = 4 and the 2025 four-person FPG is 32,150,
+# so 80,000 is 2.49 FPL: the pregnant spouse qualifies for MCAP (213 to 322
+# percent) and the child for Medi-Cal (at or below 266 percent).
+- name: Case 11, pregnant-parent household preserves Medi-Cal, CARE and WIC for child age 8.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+        is_pregnant: true
+      person3:
+        age: 8
+        is_wic_at_nutritional_risk: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        pre_subsidy_electricity_expense: 2_400
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_household_size: [4, 4, 4]
+    is_medicaid_eligible: [false, false, true]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, PREGNANT_FCEP, NONE]
+    # CARE is categorical through the child's Medi-Cal enrollment
+    # (gov.states.ca.cpuc.care.eligibility.categorical); 2,400 x 32.5% = 780.
+    ca_care_eligible: true
+    ca_care: 780
+    # An 8-year-old has no WIC category, and the pregnant spouse fails the WIC
+    # income test (80,000 exceeds 1.85 x FPG for four) with no Medi-Cal,
+    # SNAP or TANF categorical path.
+    wic: [0, 0, 0]
+    is_aca_ptc_eligible: [true, false, false]
+
+- name: Case 12, pregnant-parent household preserves Medi-Cal, CARE and WIC for child age 3.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+        is_pregnant: true
+      person3:
+        age: 3
+        is_wic_at_nutritional_risk: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        pre_subsidy_electricity_expense: 2_400
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_household_size: [4, 4, 4]
+    is_medicaid_eligible: [false, false, true]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, PREGNANT_FCEP, NONE]
+    # 2,400 x 32.5% = 780, categorical through the child's Medi-Cal enrollment.
+    ca_care_eligible: true
+    ca_care: 780
+    # The 3-year-old is WIC categorically eligible through Medi-Cal enrollment;
+    # the pregnant spouse is above the WIC income limit with no categorical path.
+    wic_category: [NONE, PREGNANT, CHILD]
+    is_aca_ptc_eligible: [true, false, false]
+
+# Cases 13 to 18 sit at the published monthly Medi-Cal child ceiling for three
+# people. 2.66 x 26,650 / 12 = 5,907.42, rounded up to the 5,908 whole-dollar
+# monthly limit, or 70,896 a year; 70,897.2 is 5,908.10 a month, ten cents
+# above it. The CCHIP ceiling is 3.22 x 26,650 / 12 = 7,151.08, rounded up to
+# 7,152 a month (85,824 a year), so both incomes are inside the CCHIP band.
+- name: Case 13, child age 0 at the published monthly Medi-Cal ceiling remains in Medi-Cal.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 70_896
+      person2:
+        age: 35
+      person3:
+        age: 0
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    is_medicaid_eligible: [false, false, true]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    is_aca_ptc_eligible: [true, true, false]
+
+- name: Case 14, child age 0 ten cents monthly above the Medi-Cal ceiling moves to CCHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 70_897.2
+      person2:
+        age: 35
+      person3:
+        age: 0
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    is_medicaid_eligible: [false, false, false]
+    ca_cchip_eligible: [false, false, true]
+    chip_category: [NONE, NONE, CHILD_CCHIP]
+    is_aca_ptc_eligible: [true, true, false]
+
+- name: Case 15, child age 3 at the published monthly Medi-Cal ceiling remains in Medi-Cal.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 70_896
+      person2:
+        age: 35
+      person3:
+        age: 3
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    is_medicaid_eligible: [false, false, true]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    is_aca_ptc_eligible: [true, true, false]
+
+- name: Case 16, child age 3 ten cents monthly above the Medi-Cal ceiling moves to CCHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 70_897.2
+      person2:
+        age: 35
+      person3:
+        age: 3
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    is_medicaid_eligible: [false, false, false]
+    ca_cchip_eligible: [false, false, true]
+    chip_category: [NONE, NONE, CHILD_CCHIP]
+    is_aca_ptc_eligible: [true, true, false]
+
+- name: Case 17, child age 8 at the published monthly Medi-Cal ceiling remains in Medi-Cal.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 70_896
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    is_medicaid_eligible: [false, false, true]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    is_aca_ptc_eligible: [true, true, false]
+
+- name: Case 18, child age 8 ten cents monthly above the Medi-Cal ceiling moves to CCHIP.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 70_897.2
+      person2:
+        age: 35
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    is_medicaid_eligible: [false, false, false]
+    ca_cchip_eligible: [false, false, true]
+    chip_category: [NONE, NONE, CHILD_CCHIP]
+    is_aca_ptc_eligible: [true, true, false]
+
+# Cases 19 and 20: a pregnant 17-year-old dependent of joint filers earning
+# 100,000. The household is 3 + 1 unborn = 4 for every member, so income is
+# 100,000 / 32,150 = 3.11 FPL: above the 266 percent Medi-Cal child ceiling and
+# inside the 213 to 322 percent MCAP band.
+- name: Case 19, pregnant teenager with comprehensive employer insurance cannot bypass the CHIP exclusion.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+      person2:
+        age: 35
+      person3:
+        age: 17
+        is_pregnant: true
+        has_esi: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: [false, false, false]
+    is_chip_fcep_eligible_person: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    chip: [0, 0, 0]
+
+- name: Case 20, uninsured pregnant teenager is MCAP eligible, so CCHIP excludes her under WIC § 15853(a)(1)(A).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+      person2:
+        age: 35
+      person3:
+        age: 17
+        is_pregnant: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    # The child "does not qualify for ... the Access program" condition means
+    # the MCAP-eligible teen takes the FCEP category, not CCHIP; both map to
+    # the same California per-capita value, 678,088,532 / 51,684 = 13,119.89.
+    is_chip_fcep_eligible_person: [false, false, true]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, PREGNANT_FCEP]
+    chip: [0, 0, 13_119.89]
+    is_aca_ptc_eligible: [true, true, false]
+
+- name: Case 21, pregnant parent with employer insurance is excluded from MCAP while the child receives Medi-Cal.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 80_000
+      person2:
+        age: 35
+        is_pregnant: true
+        has_esi: true
+      person3:
+        age: 8
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        pre_subsidy_electricity_expense: 2_400
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    is_medicaid_eligible: [false, false, true]
+    chip_category: [NONE, NONE, NONE]
+    chip: [0, 0, 0]
+    # 2,400 x 32.5% = 780, categorical through the child's Medi-Cal enrollment.
+    ca_care: 780
+    is_aca_ptc_eligible: [true, false, false]
+
+# Cases 22 and 23: the 2026 four-person FPG is 15,960 + 3 x 5,680 = 33,000, and
+# 3.22 x 33,000 / 12 = 8,855 is already a whole dollar, so 106,260 a year sits
+# exactly at the DHCS monthly CCHIP limit and 106,261.2 is ten cents above it.
+- name: Case 22, at the published 8,855 monthly limit in 2026.
+  period: 2026
+  input:
+    state_code: CA
+    medicaid_household_size: 4
+    medicaid_household_income: 106_260
+    age: 17
+    is_medicaid_eligible: false
+    county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: true
+
+- name: Case 23, ten cents above the published 8,855 monthly limit in 2026.
+  period: 2026
+  input:
+    state_code: CA
+    medicaid_household_size: 4
+    medicaid_household_income: 106_261.2
+    age: 17
+    is_medicaid_eligible: false
+    county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    ca_cchip_eligible: false
+
+# Case 24: the same pregnant 17-year-old as Case 20 (household of 3 + 1 unborn
+# = 4, 100,000 / 32,150 = 3.11 FPL) but enrolled in CHAMPVA, which is on
+# gov.hhs.chip.disqualifying_health_coverage. A pregnant child who is not MCAP
+# eligible but is CCHIP eligible cannot exist: the two share the
+# has_chip_disqualifying_health_coverage exclusion (WIC § 15834 for MCAP) and
+# the 3.22 FPL ceiling, so the only way a pregnant child in the CCHIP band
+# fails MCAP is coverage that fails CCHIP too. The ~mcap term in
+# ca_cchip_eligible restates WIC § 15853(a)(1)(A) and never opens a gap.
+# CHAMPVA is also on gov.aca.qualifying_non_marketplace_health_coverage, so
+# the teen does not pay an ACA premium either.
+- name: Case 24, pregnant teenager with CHAMPVA coverage is excluded from both MCAP and CCHIP by the coverage rule, not the MCAP gate.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+      person2:
+        age: 35
+      person3:
+        age: 17
+        is_pregnant: true
+        has_champva_health_coverage_at_interview: true
+    families:
+      family:
+        members: [person1, person2, person3]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: CA
+        county_str: SANTA_CLARA_COUNTY_CA
+  output:
+    medicaid_household_size: [4, 4, 4]
+    medicaid_income_level: [3.11, 3.11, 3.11]
+    is_medicaid_eligible: [false, false, false]
+    has_chip_disqualifying_health_coverage: [false, false, true]
+    is_chip_fcep_eligible_person: [false, false, false]
+    ca_cchip_eligible: [false, false, false]
+    chip_category: [NONE, NONE, NONE]
+    is_chip_eligible: [false, false, false]
+    chip: [0, 0, 0]
+    is_aca_ptc_eligible: [true, true, false]

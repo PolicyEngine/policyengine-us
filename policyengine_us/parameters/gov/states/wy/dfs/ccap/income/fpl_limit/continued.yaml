@@ -1,0 +1,21 @@
+description: Wyoming limits countable income to this share of the federal poverty guideline for continued assistance under the Child Care, Purchase of Service program.
+# A unit already receiving assistance may continue through Sliding Fee Scale
+# Steps 5-6 (the transitional/graduated phaseout, Step 6 = 225% of the federal
+# poverty guideline). Rules §8(e)(i)(N)(II) conditions this on gross income
+# having "increased due to employment"; Manual §1201.B carries no such
+# condition, requiring only that countable income stay within Step 6 with no
+# 30-or-more-day break in aid. Proxied by the wy_ccap_enrolled input, which
+# tracks neither the cause of the increase nor the break in aid; first-time
+# applicants use the initial Step 4 share (see initial.yaml).
+values:
+  2024-04-01: 2.25
+
+metadata:
+  unit: /1
+  period: year
+  label: Wyoming CCAP continued income limit share of federal poverty guideline
+  reference:
+    - title: Wyo. Admin. Rules, DFS, Child Care - Purchase of Service, Ch. 1 §8(e)(i)(N) and Appendix A, eff. 05/07/2025 (PDF pp. 18, 37)
+      href: https://rules.wyo.gov/DownloadFile.aspx?source_id=24638&source_type_id=81&doc_type_id=110&include_meta_data=Y&file_type=pdf&filename=24638.pdf&token=189087205215053222164006221008072207044097222254
+    - title: Wyoming DFS Child Care Subsidy Policy Manual §1201.B (PDF p. 1)
+      href: https://dfs.wyo.gov/about/policy-manuals/child-care-subsidy-policy-manual/

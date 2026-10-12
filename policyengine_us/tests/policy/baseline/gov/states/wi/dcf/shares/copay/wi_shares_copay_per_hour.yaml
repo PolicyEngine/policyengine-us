@@ -1,0 +1,267 @@
+# Wisconsin Shares hourly copayment: looked up from the Copayment Schedule
+# (effective 2/1/2026) by the assistance group's income as a share of the
+# federal poverty guideline (floored to the lower 5% line, $0 at or below
+# 100% FPL) and the number of children with authorizations (1 through 5 or
+# more). Wisconsin Shares Handbook (July 2026) Section 18.2.
+# spm_unit_fpg is set to 24,000/year (2,000/month) so the FPL ratios are
+# exact; each child's positive care hours make them count toward the lookup.
+- name: Case 1, one child at 115% of the poverty guideline.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_600  # 2,300/month = 115% FPL.
+      person2:
+        age: 4
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_copay_per_hour: 1.03
+
+- name: Case 2, two children at 115% of the poverty guideline.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_600  # 2,300/month = 115% FPL.
+      person2:
+        age: 2
+        childcare_hours_per_week: 20
+      person3:
+        age: 4
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_shares_copay_per_hour: 0.65
+
+- name: Case 3, three children at 130% of the poverty guideline.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_200  # 2,600/month = 130% FPL.
+      person2:
+        age: 1
+        childcare_hours_per_week: 20
+      person3:
+        age: 3
+        childcare_hours_per_week: 20
+      person4:
+        age: 5
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: WI
+  output:
+    wi_shares_copay_per_hour: 0.67
+
+- name: Case 4, four children at 150% of the poverty guideline.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/month = 150% FPL.
+      person2:
+        age: 1
+        childcare_hours_per_week: 20
+      person3:
+        age: 3
+        childcare_hours_per_week: 20
+      person4:
+        age: 5
+        childcare_hours_per_week: 20
+      person5:
+        age: 7
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WI
+  output:
+    wi_shares_copay_per_hour: 0.69
+
+- name: Case 5, six children use the five-or-more column at 150% of the poverty guideline.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/month = 150% FPL.
+      person2:
+        age: 1
+        childcare_hours_per_week: 20
+      person3:
+        age: 2
+        childcare_hours_per_week: 20
+      person4:
+        age: 3
+        childcare_hours_per_week: 20
+      person5:
+        age: 4
+        childcare_hours_per_week: 20
+      person6:
+        age: 5
+        childcare_hours_per_week: 20
+      person7:
+        age: 6
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        state_code: WI
+  output:
+    wi_shares_copay_per_hour: 0.63
+
+- name: Case 6, income at 100% of the poverty guideline pays no copayment.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month = 100% FPL.
+      person2:
+        age: 2
+        childcare_hours_per_week: 20
+      person3:
+        age: 4
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_shares_copay_per_hour: 0
+
+- name: Case 7, income between two lines floors to the lower 5% level.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 28_080  # 2,340/month = 117% FPL, floors to the 115% line.
+      person2:
+        age: 4
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_copay_per_hour: 1.03
+
+- name: Case 8, income at 200% of the poverty guideline uses the top schedule rate.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 4,000/month = 200% FPL; the 200% row equals the 195% row.
+      person2:
+        age: 2
+        childcare_hours_per_week: 20
+      person3:
+        age: 4
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    wi_shares_copay_per_hour: 1.46
+
+- name: Case 9, income at 103% of the poverty guideline floors to the $0 line at 100%.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_720  # 2,060/month = 103% FPL, floors to the 100% line.
+      person2:
+        age: 4
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # Above 100% FPL, but the schedule's lowest positive line is 105%.
+    wi_shares_copay_per_hour: 0
+
+- name: Case 10, income at exactly 105% of the poverty guideline uses the 105% line.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_200  # 2,100/month = exactly 105% FPL.
+      person2:
+        age: 4
+        childcare_hours_per_week: 20
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # The first positive band edge: one child at the 105% line pays 0.90.
+    wi_shares_copay_per_hour: 0.90

@@ -26,3 +26,301 @@
     total_itemized_taxable_income_deductions: 1_000
   output: 
     itemized_taxable_income_deductions_reduction: 54
+
+# 26 U.S.C. 68(c) before P.L. 119-21: medical expenses, investment interest,
+# and casualty, theft and wagering losses are not "itemized deductions" for
+# the 80 percent ceiling. Expected values follow the Itemized Deductions
+# Worksheet—Line 29 in the Instructions for Schedule A (Form 1040): line 2 is
+# "the amount from Schedule A, lines 4, 14, and 20" (medical, investment
+# interest, casualty or theft), and line 4 is 80% of line 1 minus line 2.
+- name: 2016 single filer with medical expenses - the 80 percent ceiling binds
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 400_000
+    filing_status: SINGLE
+    medical_expense_deduction: 60_000
+    charitable_deduction: 5_000
+    interest_deduction: 0
+    salt_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # 2016 worksheet:
+    # Line 1: 60_000 + 5_000 = 65_000
+    # Line 2: 60_000 (Schedule A line 4, medical)
+    # Line 3: 65_000 - 60_000 = 5_000
+    # Line 4: 5_000 * 80% = 4_000
+    # Line 7: 400_000 - 259_400 = 140_600
+    # Line 8: 140_600 * 3% = 4_218
+    # Line 9: smaller of 4_000 or 4_218 = 4_000
+    # Line 10: 65_000 - 4_000 = 61_000
+    itemized_taxable_income_deductions_reduction: 4_000
+    itemized_taxable_income_deductions: 61_000
+
+- name: 2017 joint filers with investment interest and a casualty loss - the 80 percent ceiling binds
+  period: 2017
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        investment_interest_expense: 30_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 600_000
+        filing_status: JOINT
+        casualty_loss_deduction: 20_000
+        charitable_deduction: 10_000
+        medical_expense_deduction: 0
+        salt_deduction: 0
+        misc_deduction: 0
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    # 2017 worksheet:
+    # Line 1: 30_000 + 20_000 + 10_000 = 60_000
+    # Line 2: 30_000 (line 14, investment interest) + 20_000 (line 20) = 50_000
+    # Line 3: 60_000 - 50_000 = 10_000
+    # Line 4: 10_000 * 80% = 8_000
+    # Line 7: 600_000 - 313_800 = 286_200
+    # Line 8: 286_200 * 3% = 8_586
+    # Line 9: smaller of 8_000 or 8_586 = 8_000
+    # Line 10: 60_000 - 8_000 = 52_000
+    interest_deduction: 30_000
+    total_itemized_taxable_income_deductions: 60_000
+    itemized_taxable_income_deductions_reduction: 8_000
+    itemized_taxable_income_deductions: 52_000
+
+- name: 2015 head of household with only medical expenses - deduction not limited
+  period: 2015
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 500_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    medical_expense_deduction: 40_000
+    charitable_deduction: 0
+    interest_deduction: 0
+    salt_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # 2015 worksheet:
+    # Line 1: 40_000
+    # Line 2: 40_000 (Schedule A line 4, medical)
+    # Line 3: line 2 is not less than line 1, so "Your deduction isn't
+    # limited" and line 29 is line 1.
+    itemized_taxable_income_deductions_reduction: 0
+    itemized_taxable_income_deductions: 40_000
+
+- name: 2016 separate filer - the 3 percent amount binds despite medical expenses
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 200_000
+    filing_status: SEPARATE
+    medical_expense_deduction: 10_000
+    salt_deduction: 40_000
+    charitable_deduction: 0
+    interest_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # 2016 worksheet:
+    # Line 1: 10_000 + 40_000 = 50_000
+    # Line 2: 10_000
+    # Line 3: 40_000
+    # Line 4: 40_000 * 80% = 32_000
+    # Line 7: 200_000 - 155_650 = 44_350
+    # Line 8: 44_350 * 3% = 1_330.50
+    # Line 9: smaller of 32_000 or 1_330.50 = 1_330.50
+    # Line 10: 50_000 - 1_330.50 = 48_669.50
+    itemized_taxable_income_deductions_reduction: 1_330.50
+    itemized_taxable_income_deductions: 48_669.50
+
+# P.L. 119-21, sec. 70111(a), rewrote section 68 for taxable years beginning
+# after December 31, 2025, without the former subsection (c). Medical
+# expenses therefore count toward "such amount of itemized deductions".
+# The 37 percent bracket for single filers begins at $640,600 in 2026
+# (Rev. Proc. 2025-32, sec. 4.01, Table 3).
+- name: 2026 single filer with medical expenses - no section 68(c) exclusion
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 900_000
+    filing_status: SINGLE
+    medical_expense_deduction: 150_000
+    charitable_deduction: 50_000
+    interest_deduction: 0
+    salt_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # Itemized deductions: 150_000 + 50_000 = 200_000
+    # Excess over the 37 percent bracket: 900_000 - 640_600 = 259_400
+    # Lesser: 200_000; reduction: 200_000 * 2 / 37 = 10_810.81
+    itemized_taxable_income_deductions_reduction: 10_810.81
+
+# Section 68(a)(2) as rewritten by P.L. 119-21, sec. 70111(a): "so much of the
+# taxable income of the taxpayer for the taxable year (determined without
+# regard to this section and increased by such amount of itemized
+# deductions) as exceeds the dollar amount at which the 37 percent rate
+# bracket under section 1 begins". That is adjusted gross income less the
+# deductions section 63(b) allows besides itemized deductions, such as the
+# qualified business income deduction. The 37 percent bracket begins at
+# $640,600 (single, head of household), $768,700 (joint, surviving spouse) and
+# $384,350 (separate) in 2026 (Rev. Proc. 2025-32, sec. 4.01, Tables 1-4).
+- name: 2026 single filer - the QBI deduction lowers the taxable income leg
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 700_000
+    filing_status: SINGLE
+    qualified_business_income_deduction: 20_000
+    charitable_deduction: 50_000
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # Leg (1): 50_000
+    # Leg (2): 700_000 - 20_000 = 680_000 (taxable income 630_000 plus the
+    # 50_000 of itemized deductions); 680_000 - 640_600 = 39_400
+    # Reduction: 2 / 37 * 39_400 = 2_129.73
+    taxable_income_before_itemized_deductions: 680_000
+    itemized_taxable_income_deductions_reduction: 2_129.73
+    itemized_taxable_income_deductions: 47_870.27
+
+- name: 2026 single filer - the QBI deduction keeps the taxable income leg under the 37 percent bracket
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 700_000
+    filing_status: SINGLE
+    qualified_business_income_deduction: 60_000
+    charitable_deduction: 50_000
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # Leg (2): 700_000 - 60_000 = 640_000, below 640_600, so no reduction.
+    itemized_taxable_income_deductions_reduction: 0
+    itemized_taxable_income_deductions: 50_000
+
+- name: 2026 joint filers - the QBI and tip deductions lower the taxable income leg
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 1_000_000
+        filing_status: JOINT
+        qualified_business_income_deduction: 150_000
+        tip_income_deduction: 10_000
+        charitable_deduction: 100_000
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    # Leg (1): 100_000
+    # Leg (2): 1_000_000 - 150_000 - 10_000 = 840_000; 840_000 - 768_700 = 71_300
+    # Reduction: 2 / 37 * 71_300 = 3_854.05
+    itemized_taxable_income_deductions_reduction: 3_854.05
+    itemized_taxable_income_deductions: 96_145.95
+
+- name: 2026 separate filer - the QBI deduction lowers the taxable income leg
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 450_000
+    filing_status: SEPARATE
+    qualified_business_income_deduction: 40_000
+    charitable_deduction: 30_000
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # Leg (2): 450_000 - 40_000 = 410_000; 410_000 - 384_350 = 25_650
+    # Reduction: 2 / 37 * 25_650 = 1_386.49
+    itemized_taxable_income_deductions_reduction: 1_386.49
+
+- name: 2026 head of household - the itemized deductions leg binds whatever the QBI deduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 800_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    qualified_business_income_deduction: 100_000
+    charitable_deduction: 20_000
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # Leg (2): 800_000 - 100_000 = 700_000; 700_000 - 640_600 = 59_400
+    # Lesser of 20_000 and 59_400: 20_000; 2 / 37 * 20_000 = 1_081.08
+    itemized_taxable_income_deductions_reduction: 1_081.08
+
+# Section 199A(e)(1), as amended by P.L. 119-21, sec. 70111(b)(1): "taxable
+# income shall be computed without regard to section 68 and without regard to
+# any deduction allowable under this section." The QBI deduction caps at 20
+# percent of that taxable income (section 199A(a)(2)), and section 68 then
+# nets the QBI deduction out of its own taxable income leg.
+- name: 2026 single filer with qualified REIT dividends - QBI deduction capped by taxable income without section 68
+  period: 2026
+  # Float32 spacing near $572,000 is 6.25 cents.
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 50
+        non_qualified_dividend_income: 1_000_000
+        qualified_reit_and_ptp_income: 1_000_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_itemizes: true
+        charitable_deduction: 300_000
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    adjusted_gross_income: 1_000_000
+    # Taxable income without section 68 or 199A: 1_000_000 - 300_000 = 700_000
+    taxable_income_less_qbid: 700_000
+    # Section 199A(b)(1)(B): 20 percent of 1_000_000 = 200_000;
+    # section 199A(a)(2): 20 percent of 700_000 = 140_000; lesser: 140_000
+    qualified_business_income_deduction: 140_000
+    # Leg (2): 1_000_000 - 140_000 = 860_000; 860_000 - 640_600 = 219_400
+    # Lesser of 300_000 and 219_400: 219_400; 2 / 37 * 219_400 = 11_859.46
+    itemized_taxable_income_deductions_reduction: 11_859.46
+    itemized_taxable_income_deductions: 288_140.54
+    # 1_000_000 - 288_140.54 - 140_000 = 571_859.46
+    taxable_income: 571_859.46

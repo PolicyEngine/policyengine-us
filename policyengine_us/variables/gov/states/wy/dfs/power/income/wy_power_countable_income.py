@@ -15,5 +15,5 @@ class wy_power_countable_income(Variable):
     # Per Section 1101: Countable income = Countable earned + Gross unearned
     adds = [
         "wy_power_countable_earned_income",
-        "tanf_gross_unearned_income",
+        "wy_power_gross_unearned_income",
     ]

@@ -1,0 +1,179 @@
+# Indiana blind or disabled property tax credit (Senate Enrolled Act 1, 2025;
+# IC 6-1.1-51.3-2): a $125 credit for a blind or disabled owner of a principal
+# residence, with no income limit, for taxes first due and payable in 2026 and
+# after. The credit cannot exceed the property tax liability.
+
+- name: 2026 blind homeowner receives the $125 credit
+  period: 2026
+  input:
+    people:
+      person1:
+        is_blind: true
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_blind_disabled_property_tax_credit: 125
+
+- name: 2026 disabled homeowner receives the $125 credit
+  period: 2026
+  input:
+    people:
+      person1:
+        is_disabled: true
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_blind_disabled_property_tax_credit: 125
+
+- name: 2026 blind homeowner is limited to the property tax liability
+  period: 2026
+  input:
+    people:
+      person1:
+        is_blind: true
+        real_estate_taxes: 80
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_blind_disabled_property_tax_credit: 80
+
+- name: 2026 homeowner who is neither blind nor disabled receives no credit
+  period: 2026
+  input:
+    people:
+      person1:
+        is_blind: false
+        is_disabled: false
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_blind_disabled_property_tax_credit: 0
+
+- name: 2026 blind renter with no real estate taxes receives no credit
+  period: 2026
+  input:
+    people:
+      person1:
+        is_blind: true
+        real_estate_taxes: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_blind_disabled_property_tax_credit: 0
+
+- name: 2026 non-Indiana blind homeowner receives no credit
+  period: 2026
+  input:
+    people:
+      person1:
+        is_blind: true
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    in_blind_disabled_property_tax_credit: 0
+
+- name: 2026 credit requires the blind or disabled person to be head or spouse
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 45
+        real_estate_taxes: 2_000
+      child:
+        age: 10
+        is_blind: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IN
+  output:
+    # The blind person is a dependent, not the head or spouse, so no credit.
+    in_blind_disabled_property_tax_credit: 0
+
+- name: 2026 married couple where only the spouse is blind receives the credit
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+      person2:
+        age: 45
+        is_blind: true
+        real_estate_taxes: 2_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    in_blind_disabled_property_tax_credit: 125
+
+- name: 2026 married couple where both spouses are blind receives one credit per return
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_blind: true
+        real_estate_taxes: 2_000
+      person2:
+        age: 45
+        is_blind: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IN
+  output:
+    # Modeled as one $125 credit per return via tax_unit.any (IC 6-1.1-51.3-2
+    # has no per-property limit, but the model gives one credit per tax unit).
+    in_blind_disabled_property_tax_credit: 125

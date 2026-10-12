@@ -1,0 +1,533 @@
+# tn_ccap_max_weekly_benefit: Person, float (USD), MONTH
+# Per-child weekly rate = charted whole-dollar licensed-provider QRIS rate
+#   * (1 + infant/toddler differential) * (1 + disability differential),
+# halved and rounded up for part-time care; $0 if not in care (hours == 0).
+# Only eligible children get a rate (defined_for tn_ccap_eligible_child), so the
+# parent's value is 0. Base State Rates are unchanged across both eras.
+# Era differences (all verified against the rate charts):
+#   QRIS bonus: +15%/+20% before 2026-01-01, then +5%/+10%.
+#   Toddler differential: +15% before 2025-10-01, then 0.
+# Currency output, margin 0.01. Output arrays are [parent, child].
+
+# ---- Current era (2026-01): QRIS +5%/+10%, no toddler differential ----
+
+- name: Case 1, center Top Tier preschool state rate full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # Center Top Tier preschool = 208
+    tn_ccap_max_weekly_benefit: [0, 208]
+
+- name: Case 2, center Lower Tier preschool state rate full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: CANNON_COUNTY_TN
+  output:
+    # Center Lower Tier preschool = 148
+    tn_ccap_max_weekly_benefit: [0, 148]
+
+- name: Case 3, center Top Tier infant state rate full-time (infant differential).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # 260 * (1 + 0.15 infant) = 299
+    tn_ccap_max_weekly_benefit: [0, 299]
+
+- name: Case 4, center Top Tier infant with QRIS 90-100 bonus full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: QRIS_90_100
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # 260 * (1 + 0.10 QRIS) * (1 + 0.15 infant) = 260 * 1.10 * 1.15 = 328.90
+    tn_ccap_max_weekly_benefit: [0, 328.90]
+
+- name: Case 5, center Top Tier toddler state rate has no toddler differential now.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # Toddler differential eliminated 2025-10-01 -> base 240
+    tn_ccap_max_weekly_benefit: [0, 240]
+
+- name: Case 6, group home Top Tier preschool with QRIS 80-89 bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: GROUP_HOME
+        tn_ccap_qris_tier: QRIS_80_89
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # Charted Group Home Top Tier preschool QRIS 80-89 rate = 193
+    tn_ccap_max_weekly_benefit: [0, 193]
+
+- name: Case 7, family home Lower Tier school-age (school in session) full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_in_k12_school: true
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: FAMILY_HOME
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: CANNON_COUNTY_TN
+  output:
+    # Family home Lower Tier School In = 79
+    tn_ccap_max_weekly_benefit: [0, 79]
+
+- name: Case 8, authorized provider Lower Tier preschool full-time.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: AUTHORIZED
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: CANNON_COUNTY_TN
+  output:
+    # Authorized Lower Tier preschool = 78
+    tn_ccap_max_weekly_benefit: [0, 78]
+
+- name: Case 9, center Top Tier preschool part-time is half rounded up.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 15
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # ceil(208 * 0.5) = 104
+    tn_ccap_max_weekly_benefit: [0, 104]
+
+- name: Case 10, disabled infant at center Top Tier adds the disability differential.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        is_disabled: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # 260 * (1 + 0.15 infant) * (1 + 0.15 disability) = 260 * 1.15 * 1.15 = 343.85
+    tn_ccap_max_weekly_benefit: [0, 343.85]
+
+- name: Case 11, eligible child not in care draws no rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 0
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # 0 hours in care -> 0
+    tn_ccap_max_weekly_benefit: [0, 0]
+
+# ---- Prior era (2025-01): QRIS +15%/+20%, toddler differential +15% ----
+
+- name: Case 12, center Top Tier toddler state rate keeps the toddler differential.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # 240 * (1 + 0.15 toddler) = 276
+    tn_ccap_max_weekly_benefit: [0, 276]
+
+- name: Case 13, center Top Tier infant with QRIS 90-100 in the prior era.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: QRIS_90_100
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # 260 * (1 + 0.20 QRIS) * (1 + 0.15 infant) = 260 * 1.20 * 1.15 = 358.80
+    tn_ccap_max_weekly_benefit: [0, 358.80]
+
+- name: Case 14, group home Top Tier preschool QRIS 80-89 in the prior era.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: GROUP_HOME
+        tn_ccap_qris_tier: QRIS_80_89
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # Charted Group Home Top Tier preschool QRIS 80-89 rate = 212
+    tn_ccap_max_weekly_benefit: [0, 212]
+
+- name: Case 15, family home Top Tier preschool part-time in the prior era.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 15
+        tn_ccap_provider_type: FAMILY_HOME
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # ceil(163 * 0.5) = ceil(81.5) = 82
+    tn_ccap_max_weekly_benefit: [0, 82]
+
+- name: Case 16, center Lower Tier toddler part-time in the prior era.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 15
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: CANNON_COUNTY_TN
+  output:
+    # full-time = 160 * (1 + 0.15 toddler) = 184; part-time = ceil(184 * 0.5) = 92
+    tn_ccap_max_weekly_benefit: [0, 92]
+
+# ---- Edge cases ----
+
+- name: Case 17, authorized provider Top Tier infant full-time (current era).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: AUTHORIZED
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # Authorized Top Tier infant = 126 * (1 + 0.15 infant) = 144.90
+    # (covers the authorized provider type at the Top Tier)
+    tn_ccap_max_weekly_benefit: [0, 144.90]
+
+- name: Case 18, disabled toddler at center Top Tier stacks toddler and disability (prior era).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 2
+        is_disabled: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # Prior-era toddler differential active: 240 * (1 + 0.15 toddler) * (1 + 0.15 disability)
+    # = 240 * 1.15 * 1.15 = 317.40 (both differentials stack multiplicatively)
+    tn_ccap_max_weekly_benefit: [0, 317.40]
+
+- name: Case 19, part-time school-age child keeps the full School-In rate (not halved).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 8
+        immigration_status: CITIZEN
+        is_in_k12_school: true
+        childcare_hours_per_week: 15
+        tn_ccap_provider_type: FAMILY_HOME
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: CANNON_COUNTY_TN
+  output:
+    # 15 hrs is part-time (< 20), but chart footnote (a) scopes the part-time
+    # half-rate to Infant/Toddler/Preschool only; School In/Out rows carry no
+    # "(a)" marker. A school-age (SCHOOL_IN) child therefore keeps the FULL
+    # School-In rate. Family home Lower Tier School In = 79 (not ceil(79*0.5)=40).
+    tn_ccap_max_weekly_benefit: [0, 79]
+
+- name: Case 20, authorized provider does not receive a QRIS bonus.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: AUTHORIZED
+        tn_ccap_qris_tier: QRIS_90_100
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_ccap_max_weekly_benefit: [0, 95]

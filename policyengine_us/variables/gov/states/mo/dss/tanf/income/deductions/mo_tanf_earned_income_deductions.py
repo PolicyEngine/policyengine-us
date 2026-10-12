@@ -10,25 +10,25 @@ class mo_tanf_earned_income_deductions(Variable):
     reference = (
         "https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-310",
         "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-30/",
+        "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-30-10/",
+        "https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-30-20/",
     )
     defined_for = StateCode.MO
 
     def formula(spm_unit, period, parameters):
-        # Note: Missouri has time-limited earned income disregards ($30+1/3 for
-        # first 4 months, $30-only for next 8 months, 2/3 for up to 12 months).
-        # This simplified implementation does not model these month limits.
-        p = parameters(period).gov.states.mo.dss.tanf.earned_income_disregard
-        gross_earned = add(spm_unit, period, ["tanf_gross_earned_income"])
-        is_enrolled = spm_unit("is_tanf_enrolled", period)
-        work_expense = min_(gross_earned, p.amount)
+        # 13 CSR 40-2.310(9)(A) and (9)(D): the disregards apply to each
+        # participant's earned income separately, then the per-person
+        # amounts are summed (DSS Manual 0210.015.30.10: "Add together
+        # the $30 plus 1/3 disregard amount from each person's income").
+        # The membership and exemption masks must stay identical to
+        # mo_tanf_gross_earned_income so deductions attach only to
+        # earnings that are counted: a loss earner's negative deduction
+        # then cancels exactly against their negative gross in
+        # mo_tanf_countable_income. Diverging the masks (or flooring one
+        # side alone) breaks that cancellation.
+        person = spm_unit.members
+        member = person("mo_tanf_is_assistance_unit_member", period)
+        exempt = person("is_mo_tanf_earned_income_exempt", period)
+        person_deductions = person("mo_tanf_earned_income_deductions_person", period)
         child_care = spm_unit("mo_tanf_child_care_deduction", period)
-        after_work_expense = max_(gross_earned - p.amount, 0)
-        two_thirds = after_work_expense * p.two_thirds_disregard.percentage
-        thirty_one_third = where(
-            gross_earned > 0,
-            p.thirty_plus_one_third.flat_amount
-            + after_work_expense * p.thirty_plus_one_third.percentage,
-            0,
-        )
-        earned_disregard = where(is_enrolled, two_thirds, thirty_one_third)
-        return work_expense + earned_disregard + child_care
+        return spm_unit.sum(person_deductions * member * ~exempt) + child_care

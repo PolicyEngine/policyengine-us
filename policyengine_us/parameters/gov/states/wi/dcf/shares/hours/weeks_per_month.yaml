@@ -1,0 +1,17 @@
+description: Wisconsin multiplies weekly authorized hours by this factor to determine monthly hours under the Wisconsin Shares Child Care Subsidy Program.
+
+# The handbook's exact conversion factor: "The weekly approved authorization
+# hours are multiplied by 4.348125 to determine the final monthly authorized
+# hours." Monthly hours are rounded up to the nearest whole hour.
+values:
+  2025-10-01: 4.348125
+
+metadata:
+  unit: /1
+  period: year
+  label: Wisconsin Shares weeks per month conversion factor
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 16.1.1 Authorization Hours
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=111
+    - title: Wisconsin Shares Handbook (July 2026), Appendix II Benefit Calculation Examples
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=173

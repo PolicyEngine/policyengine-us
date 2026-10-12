@@ -65,7 +65,7 @@
   output:
     mt_tanf_dependent_care_deduction: 200
 
-- name: Case 7, incapacitated adult without dependency
+- name: Case 7, incapacitated adult without dependency (e.g. a spouse)
   period: 2023-01
   absolute_error_margin: 0.1
   input:
@@ -75,7 +75,9 @@
     is_incapable_of_self_care: true
     childcare_expenses: 250*12
   output:
-    mt_tanf_dependent_care_deduction: 0
+    # Mont. Admin. r. 37.78.406(2)(c) imposes no dependency requirement on
+    # the incapacitated adult: min(250, 200) = 200.
+    mt_tanf_dependent_care_deduction: 200
 
 - name: Case 8, incapacitated adult without expenses
   period: 2023-01
@@ -144,3 +146,98 @@
     # spm_unit2: person3 and person5 → 2 * 200 = 400/month
     # min(5_000/12, 400) = min(416.67, 400) = 400
     mt_tanf_dependent_care_deduction: [400, 400]
+
+- name: Case 11, incapacitated adult dependent care expenses.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_tax_unit_dependent: true
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Per TANF manual 602-1: $200/month cap per incapacitated adult.
+    # Expenses = 1,200 / 12 = 100/month, below the cap.
+    mt_tanf_dependent_care_deduction: 100
+
+- name: Case 12, incapacitated adult care expenses above the cap.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_incapable_of_self_care: true
+        care_expenses: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Expenses = 3,600 / 12 = 300/month, above the $200/month cap.
+    mt_tanf_dependent_care_deduction: 200
+
+- name: Case 13, adult care expenses without incapacity are not deducted.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # Neither adult is incapable of self-care, so no one is an eligible
+    # care recipient: min(100, 0) = 0.
+    mt_tanf_dependent_care_deduction: 0
+
+- name: Case 14, combined child care and incapacitated adult care expenses.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 3_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # Child care 3,000 / 12 = 250/month plus adult care 1,200 / 12 =
+    # 100/month sums to 350/month, below the two-person cap of 2 * $200.
+    mt_tanf_dependent_care_deduction: 350

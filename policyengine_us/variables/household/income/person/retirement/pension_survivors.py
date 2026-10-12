@@ -7,3 +7,4 @@ class pension_survivors(Variable):
     definition_period = YEAR
     label = "Pension and annuity income from survivors benefits"
     unit = USD
+    uprating = "calibration.gov.irs.soi.taxable_pension_income"

@@ -1,0 +1,92 @@
+# From May 2022 the GR 101 brochure's broader list governs: citizens,
+# legal permanent residents, and other non-citizens authorized to live in
+# the United States, mapped to the same statuses the model applies for
+# CalWORKs (adding refugees, asylees, and people paroled for at least one
+# year). Before then, Handbook Letter #7358 limits the program to citizens
+# and legal permanent residents.
+- name: Case 1, a citizen is immigration-status eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_immigration_status_eligible: true
+
+- name: Case 2, a refugee is immigration-status eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: REFUGEE
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_immigration_status_eligible: true
+
+- name: Case 3, a DACA recipient is not on the modeled status list.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: DACA
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Lawfully present but outside the CalWORKs-consistent qualified list.
+    ca_sbd_general_relief_immigration_status_eligible: false
+
+- name: Case 4, an undocumented person is not immigration-status eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_immigration_status_eligible: false
+
+- name: Case 5, before May 2022 a TPS holder is not immigration-status eligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: TPS
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Handbook Letter #7358's narrower citizen and legal-permanent-resident
+    # rule still governs in January 2022.
+    ca_sbd_general_relief_immigration_status_eligible: false
+
+- name: Case 6, before May 2022 a legal permanent resident is immigration-status eligible.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_immigration_status_eligible: true

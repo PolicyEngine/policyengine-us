@@ -11,7 +11,7 @@ class in_income_tax_before_refundable_credits(Variable):
     defined_for = StateCode.IN
 
     def formula(tax_unit, period, parameters):
-        tax = add(tax_unit, period, ["in_agi_tax", "in_use_tax"])
+        tax = tax_unit("in_agi_tax", period)
         # Non-refundable 529 credit reduces tax to zero but not below
         credit_529 = tax_unit("in_529_plan_credit", period)
         return max_(tax - credit_529, 0)

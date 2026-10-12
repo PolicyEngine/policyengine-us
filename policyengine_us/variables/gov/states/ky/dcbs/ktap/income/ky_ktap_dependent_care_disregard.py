@@ -15,8 +15,20 @@ class ky_ktap_dependent_care_disregard(Variable):
         p = parameters(period).gov.states.ky.dcbs.ktap.income.deductions
         person = spm_unit.members
         is_dependent = person("is_tax_unit_dependent", period)
+        # Per 921 KAR 2:016 Section 5(3)(b)1.b, the disregard covers an
+        # incapacitated adult living in the home and receiving KTAP.
+        incapacitated_adult = person("is_adult", period.this_year) & person(
+            "is_incapable_of_self_care", period.this_year
+        )
         age = person("age", period.this_year)
-        max_per_child = p.dependent_care.calc(age) * is_dependent
-        total_max_disregard = spm_unit.sum(max_per_child)
+        # Children use their age-based rate; the older-age zero-out reflects
+        # children aging out of care. An incapacitated adult instead receives
+        # the standard age-two-or-older rate per 921 KAR 2:016 Section
+        # 5(3)(b)2, so evaluate the schedule at the age-two boundary for them.
+        cap_age = where(incapacitated_adult, p.dependent_care.thresholds[1], age)
+        care_recipient = is_dependent | incapacitated_adult
+        max_per_person = p.dependent_care.calc(cap_age) * care_recipient
+        total_max_disregard = spm_unit.sum(max_per_person)
         childcare_expenses = spm_unit("childcare_expenses", period)
-        return min_(childcare_expenses, total_max_disregard)
+        adult_care_expenses = add(spm_unit, period, ["care_expenses"])
+        return min_(childcare_expenses + adult_care_expenses, total_max_disregard)

@@ -1,0 +1,39 @@
+- name: Case 1, Dakota County is urban.
+  period: 2026
+  input:
+    county_str: DAKOTA_COUNTY_NE
+    state_code: NE
+  output:
+    ne_child_care_subsidy_location: URBAN
+
+- name: Case 2, Douglas County is urban.
+  period: 2026
+  input:
+    county_str: DOUGLAS_COUNTY_NE
+    state_code: NE
+  output:
+    ne_child_care_subsidy_location: URBAN
+
+- name: Case 3, Lancaster County is urban.
+  period: 2026
+  input:
+    county_str: LANCASTER_COUNTY_NE
+    state_code: NE
+  output:
+    ne_child_care_subsidy_location: URBAN
+
+- name: Case 4, Sarpy County is urban.
+  period: 2026
+  input:
+    county_str: SARPY_COUNTY_NE
+    state_code: NE
+  output:
+    ne_child_care_subsidy_location: URBAN
+
+- name: Case 5, Buffalo County is rural.
+  period: 2026
+  input:
+    county_str: BUFFALO_COUNTY_NE
+    state_code: NE
+  output:
+    ne_child_care_subsidy_location: RURAL

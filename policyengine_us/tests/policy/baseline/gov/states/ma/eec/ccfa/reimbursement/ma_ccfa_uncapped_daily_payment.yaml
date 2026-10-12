@@ -1,8 +1,40 @@
 - name: Case 1.
   period: 2024-01
   input: 
-    ma_ccfa_center_based_early_education_reimbursement: 105
-    ma_ccfa_care_provider_type: CENTER_BASED_CARE_EARLY_EDUCATION
+    ma_ccfa_center_based_reimbursement: 105
+    ma_ccfa_care_provider_type: CENTER_BASED_CARE
     state_code: MA
   output:
     ma_ccfa_uncapped_daily_payment: 105
+
+- name: Case 2, preschool child with no provider type input receives the center-based preschool rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 3
+    county_str: BERKSHIRE_COUNTY_MA
+    state_code: MA
+  output:
+    ma_ccfa_uncapped_daily_payment: 58.78
+
+- name: Case 3, school-age child with no provider type input receives the center-based school-age full-day rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 6
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_schedule_type: FULL_DAY
+    state_code: MA
+  output:
+    ma_ccfa_uncapped_daily_payment: 49.94
+
+- name: Case 4, explicit provider type input overrides the age-based default.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 3
+    ma_ccfa_care_provider_type: FAMILY_CHILD_CARE
+    ma_ccfa_family_child_care_reimbursement: 60
+    state_code: MA
+  output:
+    ma_ccfa_uncapped_daily_payment: 60

@@ -8,10 +8,10 @@ class dc_disabled_exclusion_subtraction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=63"
-        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=55"
+        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/52926_D-40_12.21.21_Final_Rev011122.pdf#page=63",
+        "https://otr.cfo.dc.gov/sites/default/files/dc/sites/otr/publication/attachments/2022_D-40_Booklet_Final_blk_01_23_23_Ordc.pdf#page=55",
         # More details on page 56.
-        "https://code.dccouncil.gov/us/dc/council/code/titles/47/chapters/18/subchapters/III"
+        "https://code.dccouncil.gov/us/dc/council/code/titles/47/chapters/18/subchapters/III",
     )
     defined_for = StateCode.DC
 
@@ -20,7 +20,7 @@ class dc_disabled_exclusion_subtraction(Variable):
         is_disabled = person("is_permanently_and_totally_disabled", period)
         gets_ssi_or_ssdi = (
             add(person, period, ["ssi", "social_security_disability"]) > 0
-        )
+        ) | (add(person, period, ["receives_ssi"]) > 0)
         disabled_eligible = is_disabled & gets_ssi_or_ssdi
         # Determine income-related eligibility
         p = parameters(period).gov.states.dc.tax.income.subtractions.disabled_exclusion

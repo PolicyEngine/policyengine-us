@@ -21,5 +21,5 @@ class il_aabd_institutional_status(Variable):
     default_value = IllinoisAABDInstitutionalStatus.NONE
     definition_period = MONTH
     label = "Illinois AABD Institutional Status"
-    defined_for = StateCode.MA
+    defined_for = StateCode.IL
     reference = "https://www.law.cornell.edu/regulations/illinois/Ill-Admin-Code-tit-89-SS-113.70"

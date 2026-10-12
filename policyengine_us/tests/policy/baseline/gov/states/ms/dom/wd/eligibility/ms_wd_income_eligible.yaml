@@ -1,0 +1,26 @@
+- name: Case 1, both earned and unearned tests pass.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_earned_income_eligible: true
+    ms_wd_unearned_income_eligible: true
+  output:
+    ms_wd_income_eligible: true
+
+- name: Case 2, failing earned income fails overall income.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_earned_income_eligible: false
+    ms_wd_unearned_income_eligible: true
+  output:
+    ms_wd_income_eligible: false
+
+- name: Case 3, failing unearned income fails overall income.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_earned_income_eligible: true
+    ms_wd_unearned_income_eligible: false
+  output:
+    ms_wd_income_eligible: false

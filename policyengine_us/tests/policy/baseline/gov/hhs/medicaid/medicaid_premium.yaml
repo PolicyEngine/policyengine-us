@@ -35,3 +35,10 @@
         state_code: MT
   output:
     medicaid_premium: 500
+
+- name: Case 3, federal Medicaid premium includes working disabled Buy-In premiums.
+  period: 2026
+  input:
+    medicaid_working_disabled_buy_in_premium: 420
+  output:
+    medicaid_premium: 420

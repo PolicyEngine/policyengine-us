@@ -1,5 +1,6 @@
 description: Michigan caps the subtraction for 529 education savings plan contributions at this amount.
 metadata:
+  propagate_metadata_to_children: true
   label: Michigan 529 plan contribution subtraction cap
   period: year
   unit: currency-USD
@@ -7,7 +8,7 @@ metadata:
   - filing_status
   reference:
   - title: Michigan Compiled Laws § 206.30(1)(bb)
-    href: http://legislature.mi.gov/doc.aspx?mcl-206-30
+    href: https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30
   - title: Michigan 2024 Individual Income Tax Instructions
     href: https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/MI-1040-Instructions.pdf#page=13
 

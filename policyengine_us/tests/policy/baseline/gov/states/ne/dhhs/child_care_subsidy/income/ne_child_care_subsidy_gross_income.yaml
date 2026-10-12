@@ -1,0 +1,142 @@
+- name: Case 1, adult employment and military pay are earned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 20_000
+        military_service_income: 4_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_gross_earned_income: 24_000
+    ne_child_care_subsidy_gross_income: 24_000
+
+- name: Case 2, net self-employment and farm income use the approved proxy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income: 8_000
+        farm_operations_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_gross_earned_income: 11_000
+
+- name: Case 3, earnings of an in-school child age 18 are excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 18
+        employment_income: 6_000
+        is_in_k12_school: true
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_gross_earned_income: 30_000
+
+- name: Case 4, earnings after the student age limit are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 19
+    employment_income: 6_000
+    is_in_k12_school: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_gross_earned_income: 6_000
+
+- name: Case 5, mapped unearned sources are summed.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    unemployment_compensation: 4_000
+    child_support_received: 3_600
+    military_retirement_pay: 2_400
+    state_code: NE
+  output:
+    ne_child_care_subsidy_gross_unearned_income: 10_000
+    ne_child_care_subsidy_gross_income: 10_000
+
+- name: Case 6, excluded tax and nutrition benefits do not enter income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    eitc: 5_000
+    snap: 3_000
+    state_code: NE
+  output:
+    ne_child_care_subsidy_gross_income: 0
+
+- name: Case 7, an 18-year-old part-time student's earnings are excluded.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 18.5
+        employment_income: 6_000
+        is_part_time_college_student: true
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_gross_earned_income: 30_000
+
+- name: Case 8, Railroad Retirement is countable unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    railroad_benefits: 4_800
+    state_code: NE
+  output:
+    ne_child_care_subsidy_gross_unearned_income: 4_800
+
+- name: Case 9, an in-school teen head of unit keeps wages counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 18
+    employment_income: 6_000
+    is_in_k12_school: true
+    is_tax_unit_head_or_spouse: true
+    state_code: NE
+  output:
+    # 392 NAC 2-010.04(17) excludes a child's earnings only, so a teen
+    # parent heading the unit keeps their wages counted.
+    ne_child_care_subsidy_gross_earned_income: 6_000

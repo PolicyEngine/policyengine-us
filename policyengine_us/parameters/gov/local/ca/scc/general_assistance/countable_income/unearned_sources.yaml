@@ -1,0 +1,28 @@
+description: Santa Clara County uses these unearned income sources when determining eligibility for the General Assistance program.
+values:
+  2016-04-01:
+    - social_security
+    - ca_state_disability_insurance
+    - disability_benefits
+    - railroad_benefits
+    - unemployment_compensation
+    - veterans_benefits
+    - workers_compensation
+    - taxable_pension_income
+    - tax_exempt_pension_income
+    - taxable_interest_income
+    - tax_exempt_interest_income
+    - qualified_dividend_income
+    - non_qualified_dividend_income
+    - alimony_income
+    - child_support_received
+    - rental_income
+metadata:
+  unit: list
+  period: year
+  label: Santa Clara County General Assistance unearned income sources
+  reference:
+    - title: Santa Clara County General Assistance Handbook, GA 200-204 (Income Policies)
+      href: https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/09Income/GA_Policies.htm
+    - title: Santa Clara County General Assistance Handbook, Types of Income chapter (Unearned Income)
+      href: https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/09Income/Types_Income.htm

@@ -37,3 +37,253 @@
     la_general_relief_rent_contribution: 100
   output:
     la_general_relief_housing_subsidy: 0
+
+- name: CalWORKs counted once activates housing eligibility without rent
+  absolute_error_margin: 0.0001
+  period: 2024-01
+  input:
+    people:
+      recipient:
+        age: {2024: 40}
+        immigration_status_str: {2024: CITIZEN}
+        veterans_benefits: {2024: 5_148}
+        rent: {2024: 0}
+      other_adult:
+        age: {2024: 35}
+        immigration_status_str: {2024: CITIZEN}
+        rent: {2024: 0}
+    tax_units:
+      recipient_tax_unit:
+        members: [recipient]
+        tax_unit_dependents: {2024: 0}
+      other_tax_unit:
+        members: [other_adult]
+        tax_unit_dependents: {2024: 0}
+    families:
+      recipient_family:
+        members: [recipient]
+        is_married: {2024: false}
+      other_family:
+        members: [other_adult]
+        is_married: {2024: false}
+    spm_units:
+      unit:
+        members: [recipient, other_adult]
+        tanf: {2024: 12}
+        spm_unit_paycheck_withholdings: {2024: 0}
+        la_general_relief_recipient: {2024: true}
+        la_general_relief_housing_subsidy_program_eligible: {2024: true}
+    households:
+      household:
+        members: [recipient, other_adult]
+        state_code: {2024: CA}
+        in_la: {2024: true}
+        is_homeless: {2024: true}
+  output:
+    # Net = (5,148 + 12) / 12 = 430.
+    la_general_relief_net_income: 430
+    la_general_relief_eligible: true
+    # Base = 221 * (1 - (430 - 201) / (620 - 201)) = 100.214797.
+    la_general_relief_base_amount: 100.214797
+    la_general_relief_housing_subsidy_eligible: true
+    # No rent means min(0, 475 + 100) = 0; no contribution is deducted.
+    la_general_relief_housing_subsidy: 0
+    la_general_relief_rent_contribution: 0
+    la_general_relief: 100.214797
+
+- name: CalWORKs counted once activates housing subsidy and rent contribution
+  absolute_error_margin: 0.0001
+  period: 2024-01
+  input:
+    people:
+      recipient:
+        age: {2024: 40}
+        immigration_status_str: {2024: CITIZEN}
+        veterans_benefits: {2024: 5_148}
+        rent: {2024: 7_200}
+      other_adult:
+        age: {2024: 35}
+        immigration_status_str: {2024: CITIZEN}
+        rent: {2024: 0}
+    tax_units:
+      recipient_tax_unit:
+        members: [recipient]
+        tax_unit_dependents: {2024: 0}
+      other_tax_unit:
+        members: [other_adult]
+        tax_unit_dependents: {2024: 0}
+    families:
+      recipient_family:
+        members: [recipient]
+        is_married: {2024: false}
+      other_family:
+        members: [other_adult]
+        is_married: {2024: false}
+    spm_units:
+      unit:
+        members: [recipient, other_adult]
+        tanf: {2024: 12}
+        spm_unit_paycheck_withholdings: {2024: 0}
+        la_general_relief_recipient: {2024: true}
+        la_general_relief_housing_subsidy_program_eligible: {2024: true}
+    households:
+      household:
+        members: [recipient, other_adult]
+        state_code: {2024: CA}
+        in_la: {2024: true}
+        is_homeless: {2024: true}
+  output:
+    # Net = (5,148 + 12) / 12 = 430.
+    la_general_relief_net_income: 430
+    la_general_relief_eligible: true
+    # Base = 221 * (1 - (430 - 201) / 419) = 100.214797 >= 100.
+    la_general_relief_base_amount: 100.214797
+    la_general_relief_housing_subsidy_eligible: true
+    # Housing = min(7,200 / 12, 475 + 100) = 575.
+    la_general_relief_housing_subsidy: 575
+    la_general_relief_rent_contribution: 100
+    # GR cash = 100.214797 - 100 = 0.214797.
+    la_general_relief: 0.214797
+
+- name: Base grant below rent contribution threshold skips housing subsidy
+  absolute_error_margin: 0.0001
+  period: 2024-01
+  input:
+    people:
+      recipient:
+        age: {2024: 40}
+        immigration_status_str: {2024: CITIZEN}
+        veterans_benefits: {2024: 5_148}
+        rent: {2024: 7_200}
+      other_adult:
+        age: {2024: 35}
+        immigration_status_str: {2024: CITIZEN}
+        rent: {2024: 0}
+    tax_units:
+      recipient_tax_unit:
+        members: [recipient]
+        tax_unit_dependents: {2024: 0}
+      other_tax_unit:
+        members: [other_adult]
+        tax_unit_dependents: {2024: 0}
+    families:
+      recipient_family:
+        members: [recipient]
+        is_married: {2024: false}
+      other_family:
+        members: [other_adult]
+        is_married: {2024: false}
+    spm_units:
+      unit:
+        members: [recipient, other_adult]
+        tanf: {2024: 24}
+        spm_unit_paycheck_withholdings: {2024: 0}
+        la_general_relief_recipient: {2024: true}
+        la_general_relief_housing_subsidy_program_eligible: {2024: true}
+    households:
+      household:
+        members: [recipient, other_adult]
+        state_code: {2024: CA}
+        in_la: {2024: true}
+        is_homeless: {2024: true}
+  output:
+    # Net = (5,148 + 24) / 12 = 431.
+    la_general_relief_net_income: 431
+    la_general_relief_eligible: true
+    # Base = 221 * (1 - (431 - 201) / 419) = 99.687351 < 100.
+    la_general_relief_base_amount: 99.687351
+    la_general_relief_housing_subsidy_eligible: false
+    la_general_relief_housing_subsidy: 0
+    la_general_relief_rent_contribution: 0
+    la_general_relief: 99.687351
+
+- name: Recipient above housing threshold with no CalWORKs avoids dependency cycle
+  absolute_error_margin: 0.0001
+  period: 2024-01
+  input:
+    people:
+      recipient:
+        age: {2024: 40}
+        immigration_status_str: {2024: CITIZEN}
+        veterans_benefits: {2024: 5_148}
+        rent: {2024: 7_200}
+      other_adult:
+        age: {2024: 35}
+        immigration_status_str: {2024: CITIZEN}
+        rent: {2024: 0}
+    tax_units:
+      recipient_tax_unit:
+        members: [recipient]
+        tax_unit_dependents: {2024: 0}
+      other_tax_unit:
+        members: [other_adult]
+        tax_unit_dependents: {2024: 0}
+    families:
+      recipient_family:
+        members: [recipient]
+        is_married: {2024: false}
+      other_family:
+        members: [other_adult]
+        is_married: {2024: false}
+    spm_units:
+      unit:
+        members: [recipient, other_adult]
+        tanf: {2024: 0}
+        spm_unit_paycheck_withholdings: {2024: 0}
+        la_general_relief_recipient: {2024: true}
+        la_general_relief_housing_subsidy_program_eligible: {2024: true}
+    households:
+      household:
+        members: [recipient, other_adult]
+        state_code: {2024: CA}
+        in_la: {2024: true}
+        is_homeless: {2024: true}
+  output:
+    # Net = 5,148 / 12 = 429.
+    la_general_relief_net_income: 429
+    la_general_relief_eligible: true
+    # Base = 221 * (1 - (429 - 201) / 419) = 100.742243 >= 100.
+    la_general_relief_base_amount: 100.742243
+    la_general_relief_housing_subsidy_eligible: true
+    # Housing = min(600, 475 + 100) = 575; GR cash = base - 100.
+    la_general_relief_housing_subsidy: 575
+    la_general_relief_rent_contribution: 100
+    la_general_relief: 0.742243
+
+# DPSS 46-103, Policy: county subsidy up to $475 for a single participant.
+# PA 6182, page 1, items 2-3: pay subsidy and deduct the supplied rent
+# contribution from cash GR. Supplied contributions are a model input contract;
+# these overrides do not change the policy's $100 scheduled contribution.
+- name: Supplied zero contribution preserves main housing payment and cash deduction
+  period: 2024-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: true
+    la_general_relief_base_amount: 221
+    rent: 7_200
+    la_general_relief_rent_contribution: 0
+  output:
+    la_general_relief_housing_subsidy_amount: 475
+    # Payment = min(7,200 / 12, 475 + 0) = 475.
+    la_general_relief_housing_subsidy: 475
+    la_general_relief_rent_contribution: 0
+    # Cash GR = 221 - 0 = 221.
+    la_general_relief: 221
+
+- name: Supplied contribution above schedule affects payment and cash deduction
+  period: 2024-01
+  input:
+    is_married: false
+    la_general_relief_eligible: true
+    la_general_relief_housing_subsidy_eligible: true
+    la_general_relief_base_amount: 221
+    rent: 7_200
+    la_general_relief_rent_contribution: 150
+  output:
+    la_general_relief_housing_subsidy_amount: 475
+    # Payment = min(7,200 / 12, 475 + 150) = 600.
+    la_general_relief_housing_subsidy: 600
+    la_general_relief_rent_contribution: 150
+    # Cash GR = 221 - 150 = 71; use the same supplied contribution.
+    la_general_relief: 71

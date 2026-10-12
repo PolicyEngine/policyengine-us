@@ -1,15 +1,25 @@
-description: Rhode Island provides this child tax rebate amount for each eligible child.
+description: Rhode Island provides this amount for each eligible child under the Child Tax Rebate program.
 
 values:
+  # R.I. Gen. Laws 44-30-103 (P.L. 2022, ch. 231, art. 6, sec. 10) pays a
+  # one-time rebate of $250 per child, up to 3 children (3 x $250 = $750),
+  # based on the 2021 Rhode Island return. It was enacted and paid in 2022 but
+  # is booked to the 2021 eligibility year. The explicit zeros keep it out of
+  # other years. Without the 2020 zero, backdating would copy the 2021 value
+  # into 2015-2020, where the backdated 2021 refundable credits list would pay
+  # it.
+  2020-01-01: 0
   2021-01-01: 250
+  2022-01-01: 0
 
 metadata:
   unit: currency-USD
   period: year
   label: Rhode Island child tax rebate amount
   reference:
-    # The child tax rebate was introduced in 2022
-    - title: 2022 RI Schedule M - page 1 RI Modifications to Federal AGI line 1v
-      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI%20Schedule%20M_w.pdf#page=1
-    - title: R.I. Gen. Laws § 44-30-103  44-30-103. Child tax rebates. (b), (1)
+    - title: R.I. Gen. Laws § 44-30-103(b)(1)
       href: https://webserver.rilegislature.gov/Statutes/TITLE44/44-30/44-VI/44-30-103.htm
+    # The 2022 Schedule M lists a modification for the rebate, which was
+    # received in 2022.
+    - title: 2022 RI Schedule M, RI Modifications to Federal AGI, line 1v
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI%20Schedule%20M_w.pdf#page=1

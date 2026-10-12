@@ -1,0 +1,426 @@
+# YAML regression-test fixture (policyengine-us partner edge cases).
+# CO Family Affordability Credit (HB24-1311), 2026 parameters: base 3,273 per
+# qualifying-child dependent; age multiplier 1.0 under 6, 0.75 ages 6-16, 0 at
+# 17+; AGI reduction of 6.875% per 5,000 increment above 16,000
+# (single/HOH) or 26,000 (joint), uprated values for 2026.
+- name: co_family_affordability_age_multiplier_ladder_5_6_17 (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 10_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child2:
+        age: 6
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child3:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        - child2
+        - child3
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+      mu_child3:
+        members:
+        - child3
+  output:
+    tax_units:
+      tax_unit:
+        # Federal 3-child EITC phase-in: 0.45 x 10,000 = 4,500;
+        # co_eitc = 4,500 x 0.25 match = 1,125.
+        co_eitc: 1_125.0
+        # CO CTC joint AGI 10,000 (lowest tier, 1,200/child under 6):
+        # only child1 (age 5) qualifies -> 1,200.
+        co_ctc: 1_200.0
+        co_care_worker_credit: 0.0
+        adjusted_gross_income: 10_000.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+      spouse:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+      child1:
+        # AGI 10,000 < 26,000 joint threshold -> no reduction;
+        # age 5 -> 3,273 x 1.0 = 3,273.
+        co_family_affordability_credit: 3_273.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+      child2:
+        # Age 6 -> 3,273 x 0.75 = 2,454.75.
+        co_family_affordability_credit: 2_454.75
+        co_state_supplement: 0.0
+        co_oap: 0.0
+      child3:
+        # Age 17 -> multiplier 0 (demographic-route zero).
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+- name: co_family_affordability_joint_agi_at_26k_threshold_full_credit (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 26_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id002
+        - head
+        - spouse
+        - child1
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # Federal 1-child EITC plateau (joint reduction starts at
+        # 23,890 + 7,270 = 31,160 > 26,000): 4,427 x 0.25 match = 1,106.75.
+        co_eitc: 1_106.75
+        # CO CTC joint AGI 26,000 (lowest tier through 36,000) -> 1,200.
+        co_ctc: 1_200.0
+        co_care_worker_credit: 0.0
+        adjusted_gross_income: 26_000.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+      spouse:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+      child1:
+        # AGI exactly at the 26,000 joint threshold -> excess 0 -> full
+        # 3,273 x 1.0 (age under 6); $1 more starts the reduction.
+        co_family_affordability_credit: 3_273.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+- name: co_family_affordability_joint_agi_26k_plus_1_first_increment (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 26_001
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id003
+        - head
+        - spouse
+        - child1
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # Federal 1-child EITC still in the joint plateau at 26,001:
+        # 4,427 x 0.25 match = 1,106.75.
+        co_eitc: 1_106.75
+        co_ctc: 1_200.0
+        co_care_worker_credit: 0.0
+        adjusted_gross_income: 26_001.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+      spouse:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+      child1:
+        # Excess 1 over the 26,000 joint threshold -> ceil(1/5,000) = 1
+        # increment x 6.875%; 3,273 x 0.93125 = 3,047.98.
+        co_family_affordability_credit: 3_047.98
+        co_state_supplement: 0.0
+        co_oap: 0.0
+- name: co_family_affordability_hoh_agi_90k_fully_phased_out (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 90_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id004
+        - head
+        - child1
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        co_eitc: 0.0
+        # CO CTC: AGI 90,000 > 77,000 HOH cutoff -> 0.
+        co_ctc: 0.0
+        co_care_worker_credit: 0.0
+        adjusted_gross_income: 90_000.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+      child1:
+        # Income-route zero pin: excess 74,000 over the 16,000 HOH threshold
+        # -> ceil(74,000/5,000) = 15 increments x 6.875% = 103% -> capped at
+        # 100% reduction -> 0.
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0

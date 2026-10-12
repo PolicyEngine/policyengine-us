@@ -1,0 +1,15 @@
+- name: Household gross income adds nontaxable Social Security to AGI (IT-214 line 16)
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        employment_income: 5_000
+        social_security: 12_000
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    # AGI 5,000 (Social Security not taxable at this income) + nontaxable SS 12,000
+    ny_household_gross_income: 17_000

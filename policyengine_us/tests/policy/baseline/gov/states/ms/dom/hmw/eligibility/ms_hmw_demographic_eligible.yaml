@@ -1,0 +1,29 @@
+- name: Case 1, aged blind or disabled person passes demographic rules.
+  period: 2026
+  input:
+    state_code: MS
+    is_ssi_aged_blind_disabled: true
+    is_pregnant: false
+    is_in_medicaid_facility: false
+  output:
+    ms_hmw_demographic_eligible: true
+
+- name: Case 2, pregnant person fails demographic rules.
+  period: 2026
+  input:
+    state_code: MS
+    is_ssi_aged_blind_disabled: true
+    is_pregnant: true
+    is_in_medicaid_facility: false
+  output:
+    ms_hmw_demographic_eligible: false
+
+- name: Case 3, person in Medicaid facility fails demographic rules.
+  period: 2026
+  input:
+    state_code: MS
+    is_ssi_aged_blind_disabled: true
+    is_pregnant: false
+    is_in_medicaid_facility: true
+  output:
+    ms_hmw_demographic_eligible: false

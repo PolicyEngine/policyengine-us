@@ -25,6 +25,7 @@ SURVIVING_SPOUSE:
   metadata:
     label: WFTCA surviving spouse filer amount
 metadata:
+  propagate_metadata_to_children: true
   label: Bonus guaranteed deduction
   breakdown:
     - filing_status

@@ -1,0 +1,121 @@
+# Colorado (Medicaid expansion state) — pins the 138%-FPG Medicaid/PTC
+# handoff that distinguishes expansion states from the federal.yaml TX
+# baseline. 2026 adult expansion limit = 1.38 x 15,960 (2026 FPG) = 22,024.80.
+# Arapahoe County is rating area 3 (2026 age-0 SLCSP $305.00/month).
+- name: aca_ptc_single_below_138pct_fpg_medicaid_blocks_ptc (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 21_800
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # 21,800 < 22,024.80: within the CO expansion-adult Medicaid limit,
+        # so Medicaid (CO per-capita amount) blocks the PTC even though the
+        # ACA MAGI fraction (21,800 / 15,650 = 1.39) is income-eligible.
+        medicaid: 10_936.13
+        is_medicaid_eligible: true
+        chip: 0.0
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+- name: aca_ptc_single_above_138pct_fpg_medicaid_handoff (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 22_200
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # 22,200 > 22,024.80: just past the expansion limit, Medicaid ends
+        # and PTC eligibility begins.
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        # SLCSP = 305.00 x 1.4837 x 12 = 5,430.34. MAGI fraction =
+        # floor(100 x 22,200 / 15,650) / 100 = 1.41; figure = 0.0314 +
+        # (1.41 - 1.33) / 0.17 x (0.0419 - 0.0314) = 0.036341.
+        # PTC = 5,430.34 - 0.036341 x 22,200 = 4,623.57.
+        aca_ptc: 4_623.57
+        premium_tax_credit: 4_623.57

@@ -1,0 +1,98 @@
+- name: per-column credits cap at column tax (Line 32)
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        de_income_tax_before_non_refundable_credits_indv: 50
+        de_personal_credit_indv: 110
+        de_aged_personal_credit_indv: 110
+        de_cdcc_indv: 0
+      person2:
+        is_tax_unit_spouse: true
+        de_income_tax_before_non_refundable_credits_indv: 1_000
+        de_personal_credit_indv: 110
+        de_aged_personal_credit_indv: 110
+        de_cdcc_indv: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Head: $50 tax, $220 credits → capped at $50, line33 = $0
+    # Spouse: $1000 tax, $220 credits → line33 = $780
+    de_income_tax_after_non_refundable_credits_indv: [0, 780]
+
+- name: full credit absorption
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        de_income_tax_before_non_refundable_credits_indv: 500
+        de_personal_credit_indv: 110
+        de_aged_personal_credit_indv: 0
+        de_cdcc_indv: 0
+      person2:
+        is_tax_unit_spouse: true
+        de_income_tax_before_non_refundable_credits_indv: 800
+        de_personal_credit_indv: 110
+        de_aged_personal_credit_indv: 0
+        de_cdcc_indv: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Head: $500 - $110 = $390
+    # Spouse: $800 - $110 = $690
+    de_income_tax_after_non_refundable_credits_indv: [390, 690]
+
+- name: both spouses 60+ with very low column taxes (aged credit waste)
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        de_income_tax_before_non_refundable_credits_indv: 50
+        de_personal_credit_indv: 0
+        de_aged_personal_credit_indv: 110
+        de_cdcc_indv: 0
+      person2:
+        is_tax_unit_spouse: true
+        de_income_tax_before_non_refundable_credits_indv: 80
+        de_personal_credit_indv: 0
+        de_aged_personal_credit_indv: 110
+        de_cdcc_indv: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Head: $50 tax, $110 aged → capped at $50, line33 = $0 ($60 wasted)
+    # Spouse: $80 tax, $110 aged → capped at $80, line33 = $0 ($30 wasted)
+    de_income_tax_after_non_refundable_credits_indv: [0, 0]
+
+- name: dependents return zero (only head/spouse have line 33)
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        de_income_tax_before_non_refundable_credits_indv: 1_000
+        de_personal_credit_indv: 220
+        de_aged_personal_credit_indv: 0
+        de_cdcc_indv: 0
+      person2:
+        is_tax_unit_dependent: true
+        age: 10
+        de_income_tax_before_non_refundable_credits_indv: 0
+        de_personal_credit_indv: 0
+        de_aged_personal_credit_indv: 0
+        de_cdcc_indv: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    de_income_tax_after_non_refundable_credits_indv: [780, 0]

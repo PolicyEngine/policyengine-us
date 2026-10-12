@@ -5,16 +5,40 @@ See the [shared PolicyEngine contribution guide](https://github.com/PolicyEngine
 ## Commands
 
 ```bash
-make install                                         # install deps (uv)
+make install                                         # pip install -e .[dev] (CI uses uv sync --extra dev)
 make format                                          # format (required)
 make test                                            # full test suite
-make test-yaml-structural                            # YAML tests that need microsim
-make test-yaml-no-structural                         # YAML tests that don't
+make test-yaml-structural                            # contrib-reform YAML tests, non-states
+# The YAML suites are sharded; there is no single test-yaml-no-structural
+# target. Examples (see the Makefile for all shards):
+make test-yaml-no-structural-states                  # baseline state YAML tests
+make test-yaml-no-structural-other-irs               # other shards: household, ssa-usda, rest-a, rest-b, hhs, ...
 uv run policyengine-core test policyengine_us/tests/path/to/test.yaml -c policyengine_us
 uv run pytest policyengine_us/tests/path/to/test_file.py::test_name -v
 ```
 
-Python 3.11–3.14. Default branch: `main`.
+### Memory: running suites locally
+
+`make test` runs the same suites as CI, one batched subprocess at a time
+(`policyengine_us/tests/test_batched.py`). CI sizes those batches to stay
+under about 8 GB each on 16 GB runners, so this is the safe way to run
+everything on a laptop.
+
+- One area: its `make test-yaml-*` target, or
+  `uv run python policyengine_us/tests/test_batched.py <dir> --mode per-subdir --workers 1`.
+- A few files: `uv run policyengine-core test <files> -c policyengine_us`.
+- Never give one `policyengine-core test` process a whole directory tree or
+  hundreds of files. The YAML runner keeps every case's simulation, a full
+  copy of the tax-benefit system for each distinct `reforms` /
+  dotted-parameter combination (about 1.2 GB each), and a copy of the
+  parameter tree for every date a case asked about, all for the life of the
+  process. A 1,500-file baseline run reached 118 GB on 2026-10-02.
+  PolicyEngine/policyengine-core#569 and #570 (open drafts) would bound
+  this; until they are released, keep each process to a bounded batch.
+- Run one large suite at a time: don't start several `make test-yaml-*`
+  targets, or several `test_batched.py` runs, in parallel.
+
+Python 3.9–3.14 (`requires-python = ">=3.9,<3.15"`; CI smoke-imports on every minor). Default branch: `main`.
 
 ## Writing variables and programs
 
@@ -29,10 +53,12 @@ Four types of files usually change together:
 
 Conventions:
 
+- Changelog fragments must be top-level files like `changelog.d/my-change.fixed.md`; do not use `changelog.d/fixed/my-change.md` or omit the type suffix.
 - Write YAML tests **first** (TDD). They fail until the variable formula is in place.
 - Use `where(...)`, `max_(...)`, `min_(...)` inside formulas — never Python `if` / `max` / `min`. Vectorisation requires numpy.
 - Match the variable file name to the class name (e.g. `my_tax_credit.py` defines `class my_tax_credit(Variable)`).
 - Filing-status breakdowns must cover all five statuses: `SINGLE`, `SEPARATE`, `SURVIVING_SPOUSE`, `HEAD_OF_HOUSEHOLD`, `JOINT`. If a source only lists four, treat `SURVIVING_SPOUSE` the same as `JOINT`.
+- Enum breakdown parameters must be real tables, not single-member tables. If a parameter only applies to one enum member, make it a scalar under a member-specific path instead of using `metadata.breakdown`; for example use `.../income_limit/ny/earned_income.yaml` with `values:` rather than a `state_code` table containing only `NY`.
 - For scale parameters returning integers, use `/1` in `rate_unit`, not `int`.
 - Cite the specific CFR / USC / state-code section in the variable's `reference` field.
 - State programs should be self-contained with state-specific variable names (e.g. `il_tanf_countable_income`, not `tanf_countable_income`).
@@ -41,11 +67,19 @@ See [CLAUDE.md](./CLAUDE.md) for variable/parameter/period/testing patterns in d
 
 ## Program registry
 
-`policyengine_us/programs.yaml` is the single source of truth for program coverage metadata and drives the `/us/metadata` API. When adding a new program, add an entry with `id`, `name`, `full_name`, `category`, `agency`, `status`, `coverage`, `variable`, `parameter_prefix`. When extending year coverage, bump `verified_years` (e.g. `"2022-2026"`) after verifying parameters and tests cover the new year. When adding a state implementation of a federal program, add it to `state_implementations` under the parent federal entry.
+`policyengine_us/programs.yaml` is the single source of truth for program coverage metadata and drives the `/us/metadata` API. When adding a new program, add an entry with `id`, `name`, `full_name`, `category`, `agency`, `status`, `coverage`, `variable`, `parameter_prefix`. When extending year coverage, bump the entry's year field — most entries use `verified_start_year`; a few use a `verified_years` range (e.g. `"2022-2026"`) — after verifying parameters and tests cover the new year. When adding a state implementation of a federal program, add it to `state_implementations` under the parent federal entry.
+
+## Axiom parity
+
+Every policy change here must also be correct in [rulespec-us](https://github.com/TheAxiomFoundation/rulespec-us). That covers a new program, a parameter or threshold update, an eligibility rule and a bug fix. The shared guide, [Mirror policy changes in Axiom](https://github.com/PolicyEngine/.github/blob/main/CONTRIBUTING.md#mirror-policy-changes-in-axiom), defines the `axiom:` line your PR description needs and what a `queued` issue must contain. US specifics:
+
+- Federal modules live under `us/` (for example `us/statutes/26/32.yaml` for the EITC and `us/policies/irs/rev-proc-2025-32/` for annual IRS amounts). State modules live under `us-<state>/` (for example `us-nj/statutes/54a:4-7.yaml`). Search `main` there before opening a new issue.
+- An `encoded-correct` claim names the module and a companion case in its `.test.yaml` that exercises the same situation as your YAML test.
+- Use `queued` only when the signed encoder is blocked; record the blocker in the issue. Each billed encoder run requires separate approval. Label `queued` issues `pe-parity`. Reuse your YAML test's external expected values as the companion tests; don't copy values computed by policyengine-us.
 
 ## Repo-specific anti-patterns
 
-- **Don't** open PRs from forks — create the branch on upstream (`make push-pr-branch`). Fork PRs can't access repository secrets and CI fails on data-download steps.
+- Branching on upstream (`git push upstream <branch>`) is preferred when you have write access, but fork PRs are fine here: PR CI needs no repository secrets (the only one, `CODECOV_TOKEN`, uploads with `fail_ci_if_error: false`, and codecov passes tokenless) and downloads no gated data, so fork PRs run the full suite green.
 - **Don't** hardcode logic just to pass specific test cases. Fix the root cause. No `period.start.year == 2024` conditional returns.
 - **Don't** delete code without grepping for callers (`grep -r 'name' --include='*.py' | grep -v test | grep -v __pycache__`). Tests may bypass the code being removed.
 - **Don't** modify the `Variable` or `Parameter` base-class contracts without coordinating with `policyengine-core`.

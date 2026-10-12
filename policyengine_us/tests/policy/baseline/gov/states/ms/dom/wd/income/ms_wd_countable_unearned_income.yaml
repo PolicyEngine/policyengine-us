@@ -1,0 +1,15 @@
+- name: Case 1, unearned income excludes the first fifty dollars.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_gross_unearned_income: 100
+  output:
+    ms_wd_countable_unearned_income: 50
+
+- name: Case 2, unearned income below the general exclusion floors at zero.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_gross_unearned_income: 25
+  output:
+    ms_wd_countable_unearned_income: 0

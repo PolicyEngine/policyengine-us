@@ -1,0 +1,186 @@
+# Form 461 line 15; Rev. Proc. 2025-32 section 4.31.
+
+- name: 2024 SINGLE excess business loss threshold
+  period: 2024
+  input:
+    filing_status: SINGLE
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 305_000
+
+- name: 2024 JOINT excess business loss threshold
+  period: 2024
+  input:
+    filing_status: JOINT
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 610_000
+
+- name: 2024 SEPARATE excess business loss threshold
+  period: 2024
+  input:
+    filing_status: SEPARATE
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 305_000
+
+- name: 2024 HEAD_OF_HOUSEHOLD excess business loss threshold
+  period: 2024
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 305_000
+
+- name: 2024 SURVIVING_SPOUSE excess business loss threshold
+  period: 2024
+  input:
+    filing_status: SURVIVING_SPOUSE
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 305_000
+
+- name: 2025 SINGLE excess business loss threshold
+  period: 2025
+  input:
+    filing_status: SINGLE
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 313_000
+
+- name: 2025 JOINT excess business loss threshold
+  period: 2025
+  input:
+    filing_status: JOINT
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 626_000
+
+- name: 2025 SEPARATE excess business loss threshold
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 313_000
+
+- name: 2025 HEAD_OF_HOUSEHOLD excess business loss threshold
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 313_000
+
+- name: 2025 SURVIVING_SPOUSE excess business loss threshold
+  period: 2025
+  input:
+    filing_status: SURVIVING_SPOUSE
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 313_000
+
+- name: 2026 SINGLE excess business loss threshold
+  period: 2026
+  input:
+    filing_status: SINGLE
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 256_000
+
+- name: 2026 JOINT excess business loss threshold
+  period: 2026
+  input:
+    filing_status: JOINT
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 512_000
+
+- name: 2026 SEPARATE excess business loss threshold
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 256_000
+
+- name: 2026 HEAD_OF_HOUSEHOLD excess business loss threshold
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 256_000
+
+- name: 2026 SURVIVING_SPOUSE excess business loss threshold
+  period: 2026
+  input:
+    filing_status: SURVIVING_SPOUSE
+    self_employment_income: -1_000_000
+  output:
+    loss_ald: 256_000
+
+- name: Single 2025 business loss of 312_999
+  period: 2025
+  input:
+    filing_status: SINGLE
+    self_employment_income: -312_999
+  output:
+    loss_ald: 312_999
+
+- name: Single 2025 business loss of 313_000
+  period: 2025
+  input:
+    filing_status: SINGLE
+    self_employment_income: -313_000
+  output:
+    loss_ald: 313_000
+
+- name: Single 2025 business loss of 313_001
+  period: 2025
+  input:
+    filing_status: SINGLE
+    self_employment_income: -313_001
+  output:
+    loss_ald: 313_000
+
+- name: 2018 historical business loss limits across filing statuses
+  period: 2018
+  input:
+    filing_status: [SINGLE, JOINT, SEPARATE, HEAD_OF_HOUSEHOLD, SURVIVING_SPOUSE]
+    self_employment_income: [-1_000_000, -1_000_000, -1_000_000, -1_000_000, -1_000_000]
+  output:
+    loss_ald: [1_000_000, 1_000_000, 1_000_000, 1_000_000, 1_000_000]
+
+- name: 2019 historical business loss limits across filing statuses
+  period: 2019
+  input:
+    filing_status: [SINGLE, JOINT, SEPARATE, HEAD_OF_HOUSEHOLD, SURVIVING_SPOUSE]
+    self_employment_income: [-1_000_000, -1_000_000, -1_000_000, -1_000_000, -1_000_000]
+  output:
+    loss_ald: [1_000_000, 1_000_000, 1_000_000, 1_000_000, 1_000_000]
+
+- name: 2020 historical business loss limits across filing statuses
+  period: 2020
+  input:
+    filing_status: [SINGLE, JOINT, SEPARATE, HEAD_OF_HOUSEHOLD, SURVIVING_SPOUSE]
+    self_employment_income: [-1_000_000, -1_000_000, -1_000_000, -1_000_000, -1_000_000]
+  output:
+    loss_ald: [1_000_000, 1_000_000, 1_000_000, 1_000_000, 1_000_000]
+
+- name: 2021 historical business loss limits across filing statuses
+  period: 2021
+  input:
+    filing_status: [SINGLE, JOINT, SEPARATE, HEAD_OF_HOUSEHOLD, SURVIVING_SPOUSE]
+    self_employment_income: [-1_000_000, -1_000_000, -1_000_000, -1_000_000, -1_000_000]
+  output:
+    loss_ald: [262_000, 524_000, 262_000, 262_000, 262_000]
+
+- name: Projected joint threshold remains twice the rounded nonjoint amount
+  period: 2030
+  input:
+    filing_status: [SINGLE, JOINT, SEPARATE, HEAD_OF_HOUSEHOLD, SURVIVING_SPOUSE]
+    self_employment_income: [-1_000_000, -1_000_000, -1_000_000, -1_000_000, -1_000_000]
+  output:
+    # These are inflation projections, not IRS-published amounts.
+    loss_ald: [280_000, 560_000, 280_000, 280_000, 280_000]

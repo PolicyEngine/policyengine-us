@@ -1,0 +1,150 @@
+# FTB 3514 Step 1 uses an exclusive federal AGI limit. These tests use
+# supplied income amounts without applying optional tax-return rounding.
+- name: CalEITC 2023 exclusive AGI boundary includes fractional income below the limit
+  period: 2023
+  input:
+    age: [35, 35, 35, 35, 35, 35, 35]
+    state_code: [CA, CA, CA, CA, CA, CA, CA]
+    adjusted_gross_income: [30_949, 30_950, 30_950.01, 30_950.49, 30_950.50, 30_950.99, 30_951]
+  output:
+    ca_eitc_eligible: [true, true, true, true, true, true, false]
+
+- name: CalEITC 2024 exclusive AGI boundary includes fractional income below the limit
+  period: 2024
+  input:
+    age: [35, 35, 35, 35, 35, 35, 35]
+    state_code: [CA, CA, CA, CA, CA, CA, CA]
+    adjusted_gross_income: [31_949, 31_950, 31_950.01, 31_950.49, 31_950.50, 31_950.99, 31_951]
+  output:
+    ca_eitc_eligible: [true, true, true, true, true, true, false]
+
+- name: CalEITC 2025 exclusive AGI boundary includes fractional income below the limit
+  period: 2025
+  input:
+    age: [35, 35, 35, 35, 35, 35, 35]
+    state_code: [CA, CA, CA, CA, CA, CA, CA]
+    adjusted_gross_income: [32_899, 32_900, 32_900.01, 32_900.49, 32_900.50, 32_900.99, 32_901]
+  output:
+    ca_eitc_eligible: [true, true, true, true, true, true, false]
+
+# The model uses a continuous phase-out rather than FTB's $50 table bins.
+# At $31,950 its credit remains positive for each child count; at $31,951
+# it reaches zero. These amounts are continuous-formula expectations.
+- name: CalEITC 2024 remains positive at the last qualifying whole dollar
+  period: 2024
+  absolute_error_margin: 0.0001
+  input:
+    age: [35, 35, 35, 35]
+    state_code: [CA, CA, CA, CA]
+    employment_income: [31_950, 31_950, 31_950, 31_950]
+    eitc_child_count: [0, 1, 2, 3]
+  output:
+    ca_eitc_eligible: [true, true, true, true]
+    ca_eitc: [0.009155, 0.030057, 0.041937, 0.042520]
+
+- name: CalEITC 2024 reaches zero at the earned income limit even with lower AGI
+  period: 2024
+  input:
+    age: [35, 35, 35, 35]
+    state_code: [CA, CA, CA, CA]
+    employment_income: [31_951, 31_951, 31_951, 31_951]
+    adjusted_gross_income: [10_000, 10_000, 10_000, 10_000]
+    eitc_child_count: [0, 1, 2, 3]
+  output:
+    ca_eitc_eligible: [true, true, true, true]
+    ca_eitc: [0, 0, 0, 0]
+
+- name: CalEITC 2024 AGI boundary controls YCTC with low wages and pension income
+  period: 2024
+  absolute_error_margin: 0.0001
+  input:
+    people:
+      parent_below:
+        age: 35
+        employment_income: 10_000
+        taxable_private_pension_income: 21_949
+      child_below:
+        age: 4
+      parent_last_dollar:
+        age: 35
+        employment_income: 10_000
+        taxable_private_pension_income: 21_950
+      child_last_dollar:
+        age: 4
+      parent_at_limit:
+        age: 35
+        employment_income: 10_000
+        taxable_private_pension_income: 21_951
+      child_at_limit:
+        age: 4
+    tax_units:
+      below:
+        members: [parent_below, child_below]
+      last_dollar:
+        members: [parent_last_dollar, child_last_dollar]
+      at_limit:
+        members: [parent_at_limit, child_at_limit]
+    households:
+      below:
+        members: [parent_below, child_below]
+        state_code: CA
+      last_dollar:
+        members: [parent_last_dollar, child_last_dollar]
+        state_code: CA
+      at_limit:
+        members: [parent_at_limit, child_at_limit]
+        state_code: CA
+  output:
+    adjusted_gross_income: [31_949, 31_950, 31_951]
+    filer_adjusted_earnings: [10_000, 10_000, 10_000]
+    ca_eitc_eligible: [true, true, false]
+    ca_eitc: [0.060114, 0.030057, 0]
+    ca_yctc: [1_154, 1_154, 0]
+
+- name: CalEITC 2024 AGI boundary controls YCTC with zero earnings
+  period: 2024
+  input:
+    people:
+      parent_last_dollar:
+        age: 35
+        taxable_private_pension_income: 31_950
+      child_last_dollar:
+        age: 4
+      parent_at_limit:
+        age: 35
+        taxable_private_pension_income: 31_951
+      child_at_limit:
+        age: 4
+    tax_units:
+      last_dollar:
+        members: [parent_last_dollar, child_last_dollar]
+      at_limit:
+        members: [parent_at_limit, child_at_limit]
+    households:
+      last_dollar:
+        members: [parent_last_dollar, child_last_dollar]
+        state_code: CA
+      at_limit:
+        members: [parent_at_limit, child_at_limit]
+        state_code: CA
+  output:
+    adjusted_gross_income: [31_950, 31_951]
+    filer_adjusted_earnings: [0, 0]
+    ca_eitc_eligible: [true, false]
+    ca_eitc: [0, 0]
+    ca_yctc: [1_154, 0]
+
+- name: CalEITC 2024 AGI boundary controls FYTC with low wages and pension income
+  period: 2024
+  absolute_error_margin: 0.0001
+  input:
+    age: [23, 23, 23]
+    state_code: [CA, CA, CA]
+    was_in_foster_care: [true, true, true]
+    employment_income: [10_000, 10_000, 10_000]
+    taxable_private_pension_income: [21_949, 21_950, 21_951]
+  output:
+    adjusted_gross_income: [31_949, 31_950, 31_951]
+    ca_eitc_eligible: [true, true, false]
+    ca_eitc: [0.018309, 0.009155, 0]
+    ca_foster_youth_tax_credit: [1_154, 1_154, 0]

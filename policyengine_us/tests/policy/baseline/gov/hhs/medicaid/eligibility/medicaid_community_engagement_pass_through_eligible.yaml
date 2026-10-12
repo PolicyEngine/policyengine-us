@@ -1,0 +1,545 @@
+- name: Case 1, SNAP household member subject to work rules passes through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: true
+
+- name: Case 2, TANF work compliance passes through without SNAP.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+        meets_tanf_work_requirements: true
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    medicaid_community_engagement_pass_through_eligible: true
+
+- name: Case 3, no SNAP or TANF pass-through fails.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: false
+
+- name: Case 4, SNAP member exempt from work registration does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: false
+
+- name: Case 5, child in SNAP household is exempt from work rules.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 15
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 100
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: [true, false]
+
+# The following cases lock the boundaries of the SNAP general work
+# requirements age exemption (gov.usda.snap.work_requirements.general.
+# age_threshold.exempted): under 16 or 60+ is exempt from work
+# requirements (regression test for a bitwise-NOT bug on the bool-bracket
+# .calc() result — see #8780).
+- name: Case 6, age 15 is under the exempt age threshold and does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 15
+        weekly_hours_worked_before_lsr: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: false
+
+- name: Case 7, age 16 is at the non-exempt age boundary and passes through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 16
+        weekly_hours_worked_before_lsr: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: true
+
+- name: Case 8, age 59 is just below the upper exempt age threshold and passes through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 59
+        weekly_hours_worked_before_lsr: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: true
+
+- name: Case 9, pre-HR1 age 60 is above both the general and ABAWD age thresholds and does not pass through.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 60
+        weekly_hours_worked_before_lsr: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # Pre-HR1 the ABAWD age range tops out at 54, so age 60 is exempt from
+    # both the general (16-59) and ABAWD work requirements -> does not pass through.
+    medicaid_community_engagement_pass_through_eligible: false
+
+# Under the 42 CFR 435.554(c)(7) status test, the adult passes through on
+# SNAP receipt plus subject-to status alone; her work program hours and the
+# ABAWD test are not consulted. The 13-year-old household member is under
+# the general work-rule age floor (exempt) and does not pass through,
+# regardless of tax-unit dependency.
+- name: Case 10, adult passes through on status while an under-14 member is age-exempt.
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_snap_work_program_participant: true
+      teen:
+        age: 13
+        weekly_hours_worked_before_lsr: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit_a:
+        members: [adult]
+      tax_unit_b:
+        members: [teen]
+    spm_units:
+      spm_unit:
+        members: [adult, teen]
+        snap: 100
+    households:
+      household:
+        members: [adult, teen]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: [true, false]
+
+# Same adult without an under-threshold household member: under the status
+# test the ABAWD hours test still does not bind — both non-exempt adults in
+# the SNAP household pass through regardless of hours worked.
+- name: Case 11, with no under-threshold household member both non-exempt adults still pass through.
+  period: 2026-01
+  input:
+    people:
+      adult:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_snap_work_program_participant: true
+      housemate:
+        age: 25
+        weekly_hours_worked_before_lsr: 0
+        is_tax_unit_dependent: false
+    tax_units:
+      tax_unit_a:
+        members: [adult]
+      tax_unit_b:
+        members: [housemate]
+    spm_units:
+      spm_unit:
+        members: [adult, housemate]
+        snap: 100
+    households:
+      household:
+        members: [adult, housemate]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: [true, true]
+
+- name: Case 12, non-working SNAP member subject to work rules passes through without a compliance check.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        # Subject to (not exempt from) the SNAP general work requirement. Under
+        # 42 CFR 435.554(c)(7) the SNAP exclusion is a status test - unlike the
+        # TANF prong, actual work-requirement compliance is not confirmed - so
+        # not working and failing the SNAP ABAWD time limit are irrelevant.
+        age: 30
+        is_disabled: false
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: true
+
+- name: Case 13, reported SNAP receipt passes through when computed SNAP is zero.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        receives_snap: true
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: true
+
+# Post-HR1 (P.L. 119-21) the ABAWD age range extends to 64. Adults aged 60-64
+# are exempt from the general SNAP work requirement (16-59) but subject to the
+# ABAWD time limit, so they pass through the Medicaid community engagement
+# requirement (42 CFR 435.554(c)(7)). See issue #8969.
+- name: Case 14, post-HR1 age 60 is subject to the ABAWD requirement and passes through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 60
+        weekly_hours_worked_before_lsr: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: true
+
+- name: Case 15, post-HR1 age 64 is at the upper ABAWD age boundary and passes through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 64
+        weekly_hours_worked_before_lsr: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: true
+
+- name: Case 16, post-HR1 age 65 is above the ABAWD age range and does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 65
+        weekly_hours_worked_before_lsr: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: false
+
+# The ABAWD "without dependents" gate: a post-HR1 62-year-old living with a
+# child under 14 is not subject to the ABAWD time limit (routed around it) and
+# is exempt from the general work requirement, so does not pass through. Guards
+# against over-capturing parents via the ABAWD path.
+- name: Case 17, post-HR1 age 62 with a household child under 14 does not pass through.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 62
+        weekly_hours_worked_before_lsr: 15
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        snap: 100
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: [false, false]
+
+# A person working 30 or more hours weekly is exempt from SNAP work
+# registration under 7 CFR 273.7(b)(1)(vii) and therefore also exempt from
+# the ABAWD time limit under 7 U.S.C. 2015(o)(3)(D), so they are not
+# subject to either SNAP work requirement and do not pass through.
+- name: Case 18, working 30 or more hours weekly is exempt from both SNAP work requirements and does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 35
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: false
+
+# Guards the ABAWD prong against over-capture: a 60-64-year-old who is
+# ABAWD-exempt for a non-age reason (pregnancy, 7 U.S.C. 2015(o)(3)(E)) is
+# exempt from both requirements and does not pass through.
+- name: Case 19, post-HR1 age 62 who is pregnant is ABAWD-exempt and does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 62
+        is_pregnant: true
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    medicaid_community_engagement_pass_through_eligible: false
+
+# California delays HR1 ABAWD adoption until 2026-06-01, so in early 2026
+# pre-HR1 rules still apply there: age 62 is above the pre-HR1 ABAWD age
+# range (55+ exempt) and above the general age threshold (60+), so the
+# same person who passes through in Texas (Case 14/15) does not in CA.
+- name: Case 20, age 62 in California before its delayed HR1 adoption does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 62
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    medicaid_community_engagement_pass_through_eligible: false
+
+# SNAP work-test changes (7 CFR 273.7(b)(1)(v) and (vii)) flow into the
+# pass-through through is_snap_work_registration_exempt_non_age and
+# is_subject_to_snap_abawd. Hours are averaged over the year (usual hours x
+# weeks worked / 52), earnings over 52 weeks against 7.25 x 30 = 217.50 a
+# week, and UI exempts only in its months of receipt.
+- name: Case 21, SNAP member working 40 usual hours for 10 weeks is subject to SNAP work rules and passes through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+        weeks_worked:
+          2026: 10
+        employment_income_before_lsr:
+          2026: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: TX
+  output:
+    # 40 x 10 / 52 = 7.69 hours < 30 and 6,000 / 52 = 115.38 < 217.50: not
+    # registration-exempt -> subject to the general requirement -> passes
+    # through. Before this change: 40 hours -> exempt -> false.
+    medicaid_community_engagement_pass_through_eligible: true
+
+- name: Case 22, same person without weeks worked is still 30-hour exempt and does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 40
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: TX
+  output:
+    # weeks_worked absent -> usual 40 hours >= 30 -> exempt from both SNAP
+    # work requirements.
+    medicaid_community_engagement_pass_through_eligible: false
+
+- name: Case 23, SNAP member earning the minimum wage times 30 is exempt and does not pass through.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 15
+        employment_income_before_lsr:
+          2026: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: TX
+  output:
+    # 15 hours < 30, but 12,000 / 52 = 230.77 >= 217.50 -> registration-exempt
+    # and ABAWD-exempt. Before this change: 15 hours -> subject -> true.
+    medicaid_community_engagement_pass_through_eligible: false
+
+- name: Case 24, UI recipient whose receipt block starts in February passes through in January.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        unemployment_compensation:
+          2026: 5_000
+        weeks_unemployed:
+          2026: 13
+        person_id:
+          2026: 1
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 100
+    households:
+      household:
+        members: [person1]
+        state_code:
+          2026: TX
+  output:
+    # months = ceil(13 x 12 / 52) = 3; person_id 1 starts in February ->
+    # Feb-Apr, so January (the month medicaid_work_requirement_eligible reads)
+    # has no UI exemption -> subject -> passes through. Before this change:
+    # any UI exempted all 12 months -> false.
+    medicaid_community_engagement_pass_through_eligible: true

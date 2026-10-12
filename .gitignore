@@ -25,6 +25,7 @@ venv/
 # Python caches
 
 .pytest_cache
+.hypothesis
 **/__pycache__
 
 # Data
@@ -61,6 +62,7 @@ venv/**
 oryx-build-commands.txt
 
 **/*.csv.gz
+!policyengine_us/data/county_fips_2020.csv.gz
 **/*.pkl
 
 # Claude Code temporary files
@@ -69,3 +71,6 @@ tmpclaude-*-cwd
 # Claude Code worktrees
 .claude/worktrees/
 .gitnexus/
+
+# Hypothesis example database
+.hypothesis/

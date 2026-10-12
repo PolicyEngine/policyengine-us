@@ -1,0 +1,131 @@
+description: North Dakota sets the family monthly co-payment as this share of the monthly state median income, by the family's income as a share of the state median income, under the Child Care Assistance Program.
+
+# HHS "Individual Worksheet for Calculating Co-pay" (ND publishes no static
+# table). Each amount = band rate x the band's lower SMI bound, so co-pay =
+# amount x monthly SMI. Band rate: 2% (30-50%), 4% (50-60%), 6% (60%+); waived
+# at or below 30% SMI. Effective 2024-07-01 (ML #3827); pre-2024-07 not modeled.
+brackets:
+  - threshold:
+      2024-07-01: 0
+    amount:
+      2024-07-01: 0  # at or below 30%: waived
+  - threshold:
+      2024-07-01: 0.3
+    amount:
+      2024-07-01: 0.006  # 30-32%: 2% x 0.3
+  - threshold:
+      2024-07-01: 0.32
+    amount:
+      2024-07-01: 0.0064  # 32-34%
+  - threshold:
+      2024-07-01: 0.34
+    amount:
+      2024-07-01: 0.0068  # 34-36%
+  - threshold:
+      2024-07-01: 0.36
+    amount:
+      2024-07-01: 0.0072  # 36-38%
+  - threshold:
+      2024-07-01: 0.38
+    amount:
+      2024-07-01: 0.0076  # 38-40%
+  - threshold:
+      2024-07-01: 0.4
+    amount:
+      2024-07-01: 0.008  # 40-42%: 2% x 0.4
+  - threshold:
+      2024-07-01: 0.42
+    amount:
+      2024-07-01: 0.0084  # 42-44%
+  - threshold:
+      2024-07-01: 0.44
+    amount:
+      2024-07-01: 0.0088  # 44-46%
+  - threshold:
+      2024-07-01: 0.46
+    amount:
+      2024-07-01: 0.0092  # 46-48%
+  - threshold:
+      2024-07-01: 0.48
+    amount:
+      2024-07-01: 0.0096  # 48-50%
+  - threshold:
+      2024-07-01: 0.5
+    amount:
+      2024-07-01: 0.02  # 50-52%: 4% x 0.5
+  - threshold:
+      2024-07-01: 0.52
+    amount:
+      2024-07-01: 0.0208  # 52-54%
+  - threshold:
+      2024-07-01: 0.54
+    amount:
+      2024-07-01: 0.0216  # 54-56%
+  - threshold:
+      2024-07-01: 0.56
+    amount:
+      2024-07-01: 0.0224  # 56-58%
+  - threshold:
+      2024-07-01: 0.58
+    amount:
+      2024-07-01: 0.0232  # 58-60%
+  - threshold:
+      2024-07-01: 0.6
+    amount:
+      2024-07-01: 0.036  # 60-63%: 6% x 0.6 (3-point band)
+  - threshold:
+      2024-07-01: 0.63
+    amount:
+      2024-07-01: 0.0378  # 63-65%: 6% x 0.63
+  - threshold:
+      2024-07-01: 0.65
+    amount:
+      2024-07-01: 0.039  # 65-67%
+  - threshold:
+      2024-07-01: 0.67
+    amount:
+      2024-07-01: 0.0402  # 67-69%
+  - threshold:
+      2024-07-01: 0.69
+    amount:
+      2024-07-01: 0.0414  # 69-71%
+  - threshold:
+      2024-07-01: 0.71
+    amount:
+      2024-07-01: 0.0426  # 71-73%
+  - threshold:
+      2024-07-01: 0.73
+    amount:
+      2024-07-01: 0.0438  # 73-75%
+  - threshold:
+      2024-07-01: 0.75
+    amount:
+      2024-07-01: 0.045  # 75-77% (enrolled)
+  - threshold:
+      2024-07-01: 0.77
+    amount:
+      2024-07-01: 0.0462  # 77-79% (enrolled)
+  - threshold:
+      2024-07-01: 0.79
+    amount:
+      2024-07-01: 0.0474  # 79-81% (enrolled)
+  - threshold:
+      2024-07-01: 0.81
+    amount:
+      2024-07-01: 0.0486  # 81-83% (enrolled)
+  - threshold:
+      2024-07-01: 0.83
+    amount:
+      2024-07-01: 0.0498  # 83-85% (enrolled)
+
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: North Dakota CCAP family co-payment share of SMI by income band
+  reference:
+    - title: North Dakota CCAP Policy Manual, Co-pay Determination 400-28-90-10
+      href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm
+    - title: North Dakota HHS Individual Worksheet for Calculating Co-pay
+      href: https://app.powerbigov.us/view?r=eyJrIjoiOGI5NDY4NzctM2QzOS00NWY4LWJjNTAtMDA5N2IxMmE5NTMyIiwidCI6IjJkZWEwNDY0LWRhNTEtNGE4OC1iYWUyLWIzZGI5NGJjMGM1NCJ9

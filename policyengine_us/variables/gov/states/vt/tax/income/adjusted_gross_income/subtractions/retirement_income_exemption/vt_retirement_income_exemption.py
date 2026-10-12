@@ -8,7 +8,7 @@ class vt_retirement_income_exemption(Variable):
     label = "Vermont retirement income exemption"
     reference = (
         "https://legislature.vermont.gov/statutes/section/32/151/05811",  # Titl. 32 V.S.A. § 5811(21)(B)(iv)
-        "https://legislature.vermont.gov/statutes/section/32/151/05830e"  # Titl. 32 V.S.A. § 5830e
+        "https://legislature.vermont.gov/statutes/section/32/151/05830e",  # Titl. 32 V.S.A. § 5830e
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3",  # Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
         "https://tax.vermont.gov/individuals/seniors-and-retirees",  # Instruction for exemption from different retirement system
     )
@@ -73,5 +73,16 @@ class vt_retirement_income_exemption(Variable):
         partial_exemption_ratio = min_(partial_exemption_ratio, 1)
         # Calculate parital exemption amount
         partial_exemption = chosen_retirement_income * partial_exemption_ratio
-        # Return final exemption amount based on eligibility status
-        return where(partial_qualified, partial_exemption, chosen_retirement_income)
+        csrs_or_ss_exemption = where(
+            partial_qualified, partial_exemption, chosen_retirement_income
+        )
+        # The 2025 income-based military exclusion (32 V.S.A. 5830e(d)) has its own
+        # $125k-$175k phase-out inside vt_military_retirement_income_based_exemption,
+        # so when it is the chosen exclusion it bypasses the CSRS reduction band
+        # rather than being phased a second time.
+        use_military = ~use_ss & (
+            vt_military_retirement_pay_exclusion == chosen_retirement_income
+        )
+        military_income_based = p.military_retirement.income_based_structure.in_effect
+        bypass_csrs_band = use_military & military_income_based
+        return where(bypass_csrs_band, chosen_retirement_income, csrs_or_ss_exemption)

@@ -148,3 +148,41 @@
   output:
     co_income_qualified_senior_housing_credit: 45
 
+# in_effect gate (issue #5573): credit is authorized only for TY2022 and TY2024.
+# These cases supply the underlying eligibility inputs (age/AGI) rather than
+# pinning co_income_qualified_senior_housing_credit_eligible, so the in_effect
+# parameter flows through the eligibility variable. They FAIL if the gate is removed.
+
+- name: off-year 2023 otherwise-eligible SINGLE senior gets no credit
+  period: 2023
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    age_head: 65
+    adjusted_gross_income: 25_499
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit: 0
+
+- name: off-year 2025 otherwise-eligible SINGLE senior gets no credit
+  period: 2025
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    age_head: 65
+    adjusted_gross_income: 25_499
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit: 0
+
+- name: in-effect 2024 eligible SINGLE senior at reduction start gets full 800 credit
+  period: 2024
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    age_head: 65
+    adjusted_gross_income: 25_499
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit: 800
+

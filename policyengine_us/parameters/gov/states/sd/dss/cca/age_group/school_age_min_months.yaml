@@ -1,0 +1,17 @@
+description: South Dakota classifies school-enrolled children at or above this age in months as school age for reimbursement rates under the Child Care Assistance program.
+
+# The rate-table "School Age" column covers children 60 or more months. A child
+# 60 through 71 months old is classified as school age only when enrolled in
+# school; otherwise the child remains a preschooler through 71 months.
+values:
+  2026-08-01: 60
+
+metadata:
+  unit: month
+  period: year
+  label: South Dakota CCA school age minimum age in months
+  reference:
+    - title: South Dakota Child Care Assistance Rates, effective 8/3/2026
+      href: https://dss.sd.gov/docs/childcare/assistance/CCA_Weekly_Reimbursement_Rates.pdf
+    - title: South Dakota BEES Child Care Assistance Policy Manual, Section 10.2.4 School Aged Children
+      href: https://dss.sd.gov/docs/childcare/assistance/BEES_CCA_Policy_Manual.pdf#page=45

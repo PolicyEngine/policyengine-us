@@ -7,6 +7,7 @@ class tx_tanf_countable_resources(Variable):
     label = "Texas TANF countable resources"
     unit = USD
     definition_period = MONTH
+    quantity_type = STOCK
     reference = (
         "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1210-general-policy",
         "https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1220-limits",

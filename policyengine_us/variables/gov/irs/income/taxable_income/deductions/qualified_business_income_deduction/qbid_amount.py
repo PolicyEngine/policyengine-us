@@ -9,6 +9,7 @@ class qbid_amount(Variable):
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/199A#b_1",
+        "https://www.law.cornell.edu/cfr/text/26/1.199A-1#d_2",
         "https://www.law.cornell.edu/uscode/text/26/199A#d_3",
         "https://www.irs.gov/pub/irs-prior/p535--2018.pdf",
         "https://www.irs.gov/pub/irs-pdf/f8995.pdf",
@@ -27,9 +28,19 @@ class qbid_amount(Variable):
         filing_status = person.tax_unit("filing_status", period)
         po_start = p.phase_out.start[filing_status]
         po_length = p.phase_out.length[filing_status]
-        reduction_rate = min_(  # Worksheet 12-A, line 24; Schedule A, line 9
-            1, (max_(0, taxinc_less_qbid - po_start)) / po_length
+        # po_length can legitimately be zero for filing-status / year
+        # combinations where the phaseout is not configured. Guarded
+        # division avoids RuntimeWarning: invalid value encountered in
+        # divide; when po_length is zero the row above the threshold
+        # is treated as fully phased out (reduction_rate=1).
+        excess = max_(0, taxinc_less_qbid - po_start)
+        raw_reduction = np.divide(
+            excess,
+            po_length,
+            out=np.ones_like(excess, dtype=float),
+            where=po_length > 0,
         )
+        reduction_rate = min_(1, raw_reduction)  # Worksheet 12-A, line 24
         applicable_rate = 1 - reduction_rate  # Schedule A, line 10
         total_w2_wages = person("w2_wages_from_qualified_business", period)
         total_b_property = person("unadjusted_basis_qualified_property", period)
@@ -55,8 +66,19 @@ class qbid_amount(Variable):
         sstb_qbi = sstb_qbi_from_se + where(is_sstb_legacy, non_sstb_qbi, 0)
         non_sstb_qbi_final = where(is_sstb_legacy, 0, non_sstb_qbi)
 
-        has_non_sstb = non_sstb_qbi_final > 0
-        has_sstb = sstb_qbi > 0
+        non_sstb_gross = 0
+        for var in p.income_definition:
+            non_sstb_gross += person(var, period) * person(
+                var + "_would_be_qualified", period
+            )
+        sstb_gross = person("sstb_self_employment_income", period) * person(
+            "sstb_self_employment_income_would_be_qualified", period
+        )
+        non_sstb_gross_final = where(is_sstb_legacy, 0, non_sstb_gross)
+        sstb_gross_final = sstb_gross + where(is_sstb_legacy, non_sstb_gross, 0)
+
+        has_non_sstb = (non_sstb_gross_final != 0) | (non_sstb_qbi_final != 0)
+        has_sstb = (sstb_gross_final != 0) | (sstb_qbi != 0)
         has_mixed_categories = has_non_sstb & has_sstb
 
         # Schedule A applies the SSTB applicable percentage to the SSTB's own
@@ -109,15 +131,42 @@ class qbid_amount(Variable):
             )
             return max_(wage_cap, alt_cap)  # Worksheet 12-A, line 10
 
+        # Section 1.199A-1(d)(2) orders SSTB exclusion before loss netting,
+        # then applies wage/property limits to each positive component.
+        # Allocate all eligible losses on the return proportionately to
+        # positive QBI; a losing business supplies no wages/property to
+        # another one. The head's and spouse's businesses are netted together;
+        # a tax unit dependent's businesses are on the dependent's own return,
+        # so they are netted alone and never offset the filer's.
+        eligible_sstb_qbi = sstb_qbi * applicable_rate
+        positive_non_sstb = max_(0, non_sstb_qbi_final)
+        positive_sstb = max_(0, eligible_sstb_qbi)
+        own_positive = positive_non_sstb + positive_sstb
+        own_losses = max_(0, -non_sstb_qbi_final) + max_(0, -eligible_sstb_qbi)
+        is_dependent = person("is_tax_unit_dependent", period)
+        filer = ~is_dependent
+        total_positive = where(
+            is_dependent, own_positive, person.tax_unit.sum(own_positive * filer)
+        )
+        total_losses = where(
+            is_dependent, own_losses, person.tax_unit.sum(own_losses * filer)
+        )
+        retained_share = np.divide(
+            max_(0, total_positive - total_losses),
+            total_positive,
+            out=np.zeros_like(total_positive),
+            where=total_positive > 0,
+        )
+
         non_sstb_component = qbi_component(
-            non_sstb_qbi_final,
+            positive_non_sstb * retained_share,
             full_cap(non_sstb_w2_wages, non_sstb_b_property),
             1,
         )
         sstb_component = qbi_component(
-            sstb_qbi,
-            full_cap(sstb_w2_wages, sstb_b_property),
-            applicable_rate,
+            positive_sstb * retained_share,
+            full_cap(sstb_w2_wages, sstb_b_property) * applicable_rate,
+            1,
         )
 
         # REIT/PTP component (Form 8995 Lines 6-9).

@@ -40,6 +40,8 @@
     # Total loss_ald: 610,000 + 3,000 = 613,000
     # Gross income: 82,813 + 20 (interest) = 82,833
     # AGI: 82,833 - 613,000 = -530,167
+    limited_business_loss: 610_000
+    limited_capital_loss: 3_000
     loss_ald: 613_000
     adjusted_gross_income: -530_167
 
@@ -289,9 +291,9 @@
     # Under threshold, so full deduction
     loss_ald: 500_000
 
-- name: Section 461(l) remains in effect in 2027 under OBBBA (permanent)
-  # OBBBA § 70601 made the excess business loss limitation permanent.
-  period: 2027
+- name: Section 461(l) remains in effect in 2030 under OBBBA (permanent)
+  # OBBBA § 70_601 made the excess business loss limitation permanent.
+  period: 2030
   absolute_error_margin: 1
   input:
     people:
@@ -310,5 +312,5 @@
         members: [person1]
         state_code: TX
   output:
-    # 461(l) threshold carries forward from 2024 ($305,000 single) under OBBBA.
-    loss_ald: 305_000
+    # Inflation projection, not an IRS-published 2030 threshold.
+    loss_ald: 280_000

@@ -1,0 +1,30 @@
+# Regression test for #8775: the WV EITC reform must ADD the new refundable
+# EITC to West Virginia's baseline refundable credits (SCTC, homestead excess
+# property tax credit), not replace the baseline list. Baseline credits are
+# supplied as inputs for a deterministic expected value.
+- name: WV reform preserves baseline refundable credits and adds the EITC
+  period: 2024
+  reforms: policyengine_us.reforms.states.wv.eitc.wv_eitc
+  input:
+    gov.contrib.states.wv.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: WV
+    eitc: 1_000
+    wv_sctc: 80
+    wv_homestead_excess_property_tax_credit: 40
+  output:
+    wv_eitc: 100
+    # 100 EITC + 80 SCTC + 40 homestead excess property tax credit
+    wv_refundable_credits: 220
+
+- name: WV baseline refundable credits remain when the EITC is 0
+  period: 2024
+  reforms: policyengine_us.reforms.states.wv.eitc.wv_eitc
+  input:
+    gov.contrib.states.wv.child_poverty_impact_dashboard.eitc.match: 0.1
+    state_code: WV
+    eitc: 0
+    wv_sctc: 80
+    wv_homestead_excess_property_tax_credit: 40
+  output:
+    wv_eitc: 0
+    wv_refundable_credits: 120  # baseline credits not deleted

@@ -14,9 +14,9 @@ class capped_qualified_tuition_expenses_ald(Variable):
         "`adjusted_gross_income`."
     )
     reference = (
-        "https://www.irs.gov/pub/irs-pdf/f8917.pdf#page=2"
+        "https://www.irs.gov/pub/irs-pdf/f8917.pdf#page=2",
         # Law was repealed starting tax year 2021.
-        "https://irc.bloombergtax.com/public/uscode/doc/irc/section_222"
+        "https://irc.bloombergtax.com/public/uscode/doc/irc/section_222",
     )
 
     def formula(tax_unit, period, parameters):

@@ -1,0 +1,39 @@
+description: Michigan rounds biweekly need hours up to one of these authorized hour tiers per child under the Child Development and Care program.
+
+brackets:
+  - threshold:
+      2024-09-22: 0
+    amount:
+      2024-09-22: 0
+  - threshold:
+      2024-09-22: 0.0001
+    amount:
+      2024-09-22: 20
+  - threshold:
+      2024-09-22: 20.0001
+    amount:
+      2024-09-22: 40
+  - threshold:
+      2024-09-22: 40.0001
+    amount:
+      2024-09-22: 60
+  - threshold:
+      2024-09-22: 60.0001
+    amount:
+      2024-09-22: 80
+  - threshold:
+      2024-09-22: 80.0001
+    amount:
+      2024-09-22: 90
+
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: hour
+  period: year
+  label: Michigan CDC authorized hour tiers
+  reference:
+    - title: BEM 706, Biweekly Authorized Hours
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/ex/BP/Public/BEM/706.pdf#page=2
+    - title: BEM 710, Need Calculation
+      href: https://mdhhs-pres-prod.michigan.gov/olmweb/EXF/BP/Public/BEM/710.pdf#page=1

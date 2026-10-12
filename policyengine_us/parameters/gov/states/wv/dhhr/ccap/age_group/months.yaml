@@ -1,0 +1,28 @@
+description: West Virginia defines these child age group boundaries in months under the Child Care Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: West Virginia CCAP child age group by months
+  reference:
+    - title: WV Child Care Subsidy Appendix B — Rate Structure (Oct 1, 2024)
+      href: https://bfa.wv.gov/media/6831/download?inline#page=1
+
+brackets:
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 0
+  - threshold:
+      2024-10-01: 25
+    amount:
+      2024-10-01: 1
+  - threshold:
+      2024-10-01: 37
+    amount:
+      2024-10-01: 2
+  - threshold:
+      2024-10-01: 60
+    amount:
+      2024-10-01: 3

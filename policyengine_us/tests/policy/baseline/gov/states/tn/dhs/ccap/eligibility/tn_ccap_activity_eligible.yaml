@@ -1,0 +1,316 @@
+# tn_ccap_activity_eligible: SPMUnit, bool, MONTH
+# Each parent/guardian (tax-unit head or spouse) must work at least 30 hours a
+# week (weekly_hours_worked_before_lsr) OR be a full-time student. In two-parent
+# households BOTH must qualify. A CCDF activity-test fallback (job search,
+# training, protective-services referral, etc.) also satisfies the requirement.
+# Employment income or self-employment income must also establish that the
+# parent is employed; the 40-hour default alone does not satisfy the test.
+# Boolean output, so no error margin.
+
+- name: Case 1, single parent working 35 hours qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 35
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ccap_activity_eligible: true
+
+- name: Case 2, single parent working only 20 hours and not a student fails.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 20
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ccap_activity_eligible: false
+
+- name: Case 3, single parent who is a full-time student qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 22
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      person2:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ccap_activity_eligible: true
+
+- name: Case 4, two parents both working 30+ hours qualify.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 32
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    tn_ccap_activity_eligible: true
+
+- name: Case 5, two parents where one falls below the hour threshold fails.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 33
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 10
+        is_full_time_student: false
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    # Both parents must qualify; one works only 10 hours -> fails
+    tn_ccap_activity_eligible: false
+
+- name: Case 6, unit with only dependents has no qualifying parent.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 16
+        is_tax_unit_dependent: true
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # No head/spouse in the unit -> does not vacuously pass
+    tn_ccap_activity_eligible: false
+
+- name: Case 7, non-working parent covered by the CCDF activity-test fallback.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Fallback covers approved activities not individually modeled
+    tn_ccap_activity_eligible: true
+
+- name: Case 8, single parent working exactly 30 hours qualifies at the boundary.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 30
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # hours_worked >= 30 is inclusive, so exactly 30 hrs meets the requirement.
+    tn_ccap_activity_eligible: true
+
+- name: Case 9, single parent working 29.9 hours falls just below the boundary.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 29.9
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # 29.9 < 30 -> fails the work requirement, and not a student -> not eligible.
+    tn_ccap_activity_eligible: false
+
+- name: Case 10, unemployed parent does not qualify from the 40-hour default.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ccap_activity_eligible: false
+
+- name: Case 11, working parent qualifies when the other parent is disabled.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 33
+        is_disabled: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    tn_ccap_activity_eligible: true
+
+- name: Case 12, disabled-parent exception requires the other parent to work.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_full_time_student: true
+      person2:
+        age: 33
+        is_disabled: true
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TN
+  output:
+    tn_ccap_activity_eligible: false

@@ -117,3 +117,48 @@
         state_code: ME
   output:
     me_tanf_child_care_deduction: 0
+
+- name: Case 6, incapacitated adult care expenses count toward the deduction.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Per 10-144 CMR ch. 331, Ch. IV, Section B(2)(b): incapacitated adult
+    # at the $175/month tier. Expenses = 1,200 / 12 = 100/month.
+    me_tanf_child_care_deduction: 100
+
+- name: Case 7, adult care expenses without incapacity are not deducted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ME
+  output:
+    # Person2 is neither a child nor incapacitated, so the cap is $0:
+    # min(100, 0) = 0.
+    me_tanf_child_care_deduction: 0

@@ -1,0 +1,14 @@
+description: South Dakota classifies child care of at least this many hours per week as part-time under the Child Care Assistance program.
+
+# Part-time level of service is 16 to 27 hours per week; limited-time care is 1
+# to 15 hours per week.
+values:
+  2026-08-01: 16
+
+metadata:
+  unit: hour
+  period: week
+  label: South Dakota CCA part-time minimum weekly hours
+  reference:
+    - title: South Dakota Child Care Assistance Rates, effective 8/3/2026
+      href: https://dss.sd.gov/docs/childcare/assistance/CCA_Weekly_Reimbursement_Rates.pdf

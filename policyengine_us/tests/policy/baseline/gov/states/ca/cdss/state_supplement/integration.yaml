@@ -31,11 +31,13 @@
         age: 66
         is_tax_unit_spouse: true
         is_disabled: true
+        meets_ssi_disability_criteria: true
         in_out_of_home_care_facility: true
       person3:
         age: 17
         is_tax_unit_dependent: true
         is_disabled: true
+        meets_ssi_disability_criteria: true
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -55,6 +57,7 @@
       person1:
         age: 30
         is_disabled: true
+        meets_ssi_disability_criteria: true
       person2:
         age: 4
         is_tax_unit_dependent: true
@@ -76,10 +79,12 @@
       person1:
         age: 30
         is_disabled: true
+        meets_ssi_disability_criteria: true
       person2:
         age: 4
         is_tax_unit_dependent: true
         is_disabled: true
+        meets_ssi_disability_criteria: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -102,6 +107,7 @@
         age: 4
         is_tax_unit_dependent: true
         is_disabled: true
+        meets_ssi_disability_criteria: true
     spm_units:
       spm_unit:
         members: [person1, person2]
@@ -120,6 +126,7 @@
       person1:
         age: 30
         is_disabled: true
+        meets_ssi_disability_criteria: true
       person2:
         age: 22
     spm_units:
@@ -140,9 +147,11 @@
       person1:
         age: 30
         is_disabled: true
+        meets_ssi_disability_criteria: true
       person2:
         age: 22
         is_disabled: true
+        meets_ssi_disability_criteria: true
     spm_units:
       spm_unit:
         members: [person1, person2]

@@ -10,7 +10,7 @@
         ssi_countable_resources: 1_000
 
         ct_ssp_has_therapeutic_diet: false
-        ssi: 11_928  # $994/mo
+        ssi: 994  # monthly SSI
         employment_income: 0
         rent: 12_000
     marital_units:
@@ -37,6 +37,7 @@
         age: 10
         is_blind: false
         is_disabled: true
+        meets_ssi_disability_criteria: true
         immigration_status: CITIZEN
         ssi_countable_resources: 500
 
@@ -69,7 +70,7 @@
         ssi_countable_resources: 500
 
         ct_ssp_has_therapeutic_diet: false
-        ssi: 11_928
+        ssi: 994
         employment_income: 0
         rent: 12_000
     marital_units:
@@ -99,7 +100,7 @@
         ssi_countable_resources: 1_700  # > $1,600 CT limit
 
         ct_ssp_has_therapeutic_diet: false
-        ssi: 11_928
+        ssi: 994
         employment_income: 0
         rent: 12_000
     marital_units:
@@ -157,7 +158,7 @@
         ssi_countable_resources: 500
 
         ct_ssp_has_therapeutic_diet: false
-        ssi: 11_928
+        ssi: 994
         employment_income: 0
         rent: 12_000
     marital_units:
@@ -213,11 +214,12 @@
         age: 10
         is_blind: true
         is_disabled: true
+        meets_ssi_disability_criteria: true
         immigration_status: CITIZEN
         ssi_countable_resources: 500
 
         ct_ssp_has_therapeutic_diet: false
-        ssi: 11_928
+        ssi: 994
         employment_income: 0
         rent: 12_000
     marital_units:

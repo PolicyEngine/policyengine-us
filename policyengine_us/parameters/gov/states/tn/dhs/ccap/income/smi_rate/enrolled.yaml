@@ -1,0 +1,18 @@
+description: Tennessee limits countable monthly gross income to this share of the state median income for enrolled families at redetermination under the Child Care Certificate Program.
+# The Smart Steps Plus extension (effective October 1, 2025) lets families already
+# receiving Smart Steps remain eligible at redetermination with income up to the
+# 100th percentile SMI. Before then, enrolled families used the same 85% limit as
+# new applicants.
+values:
+  2024-06-01: 0.85
+  2025-10-01: 1
+
+metadata:
+  unit: /1
+  period: year
+  label: Tennessee CCAP enrolled income limit SMI share
+  reference:
+    - title: TDHS Income Eligibility Limits and Parent Co-Pay Fees, below 85th percentile SMI (effective June 1, 2024)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/Income%20Eligibility%20and%20Co-Pay%20Chart_June_1_2024.pdf#page=1
+    - title: TDHS Income Eligibility Limits and Parent Co-Pay Fees, Smart Steps Plus 86th-100th percentile SMI at redetermination (effective October 1, 2025)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/Income%20Eligibility%20Limits%20and%20CoPay%20Chart%2010.1.25.pdf#page=1

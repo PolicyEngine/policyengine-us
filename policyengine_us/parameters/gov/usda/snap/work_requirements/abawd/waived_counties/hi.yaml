@@ -1,0 +1,16 @@
+description: Counties in Hawaii with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  2024-07-01:
+    - KAUAI_COUNTY_HI # FIPS 15007
+    - MAUI_COUNTY_HI # FIPS 15009
+  2025-07-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in Hawaii
+  reference:
+    - title: USDA FNS Hawaii FY 2024 ABAWD Waiver Response
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/hi-abawd-response-fy2024.pdf

@@ -1,0 +1,19 @@
+description: Counties in Massachusetts with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  2024-07-01:
+    - BERKSHIRE_COUNTY_MA # FIPS 25003
+    - DUKES_COUNTY_MA # FIPS 25007
+    - HAMPDEN_COUNTY_MA # FIPS 25013
+    - HAMPSHIRE_COUNTY_MA # FIPS 25015
+    - NANTUCKET_COUNTY_MA # FIPS 25019
+  2025-07-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in Massachusetts
+  reference:
+    - title: USDA FNS Massachusetts FY 2024 ABAWD Waiver Response
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ma-abawd-response-fy2024.pdf

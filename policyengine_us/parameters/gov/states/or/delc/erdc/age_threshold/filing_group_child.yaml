@@ -1,0 +1,14 @@
+description: Oregon includes unmarried children under this age in the filing group under the Employment Related Day Care program.
+# Children who are 18 and attending secondary or vocational school at least
+# half-time also remain filing-group children; we don't track half-time
+# attendance at the moment, so any 18-year-old secondary student qualifies.
+values:
+  2023-07-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Oregon ERDC filing group child age threshold
+  reference:
+    - title: OAR 414-175-0015(2)(d)
+      href: https://secure.sos.state.or.us/oard/view.action?ruleNumber=414-175-0015

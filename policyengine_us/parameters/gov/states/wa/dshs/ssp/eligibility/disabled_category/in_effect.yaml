@@ -1,0 +1,22 @@
+description: Washington uses this indicator to determine whether the standalone disabled qualifying category applies under the State Supplementary Payment program.
+
+# NOTE: Disabled SSI recipients were added as a standalone qualifying SSP
+# category by HB 1128 (chapter 201, Laws of 2023). The change took effect via
+# emergency rule WSR 23-14-065 on 2023-07-01 and was made permanent by
+# WSR 23-24-009 on 2023-12-28.
+
+values:
+  2006-08-28: false
+  2023-07-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Washington SSP standalone disabled category in effect
+  reference:
+    - title: WAC 388-474-0012(2)(e) Eligibility for state supplemental payment
+      href: https://app.leg.wa.gov/wac/default.aspx?cite=388-474-0012
+    - title: WSR 23-14-065 — Emergency rule adding standalone disabled category (eff. 2023-07-01) per HB 1128
+      href: https://lawfilesext.leg.wa.gov/law/wsr/2023/14/23-14-065.htm
+    - title: WSR 23-24-009 — Permanent rule replacing the emergency rule (eff. 2023-12-28)
+      href: https://lawfilesext.leg.wa.gov/law/wsr/2023/24/23-24-009.htm

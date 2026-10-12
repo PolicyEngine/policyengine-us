@@ -1,0 +1,31 @@
+- name: Case 1, general assistance counts as unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        general_assistance: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    # 2,400 / 12 = 200
+    il_tanf_gross_unearned_income: 200
+
+- name: Case 2, exempt veterans benefits and pensions do not count.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        veterans_benefits: 2_400
+        pension_income: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+  output:
+    il_tanf_gross_unearned_income: 0

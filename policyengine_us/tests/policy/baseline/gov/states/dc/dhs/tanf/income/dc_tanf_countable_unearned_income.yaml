@@ -47,3 +47,22 @@
     child_support_received: 2_000 # disregard $150 per month * 12
   output:
     dc_tanf_countable_unearned_income: 200
+
+
+- name: General assistance counts as unearned income, $1,200 per year
+  period: 2023
+  input:
+    state_code: DC
+    general_assistance: 1_200
+  output:
+    dc_tanf_countable_unearned_income: 1_200
+
+
+- name: No general assistance, $1,200 of pension income only, $1,200 per year
+  period: 2023
+  input:
+    state_code: DC
+    pension_income: 1_200
+    general_assistance: 0
+  output:
+    dc_tanf_countable_unearned_income: 1_200

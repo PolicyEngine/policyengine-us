@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.usda.snap.income.snap_income_standard_helpers import (
+    snap_monthly_fpg_amounts,
+)
 
 
 class snap_fpg(Variable):
@@ -8,17 +11,12 @@ class snap_fpg(Variable):
     unit = USD
     documentation = "The federal poverty guideline used to determine SNAP eligibility."
     definition_period = MONTH
+    reference = (
+        "https://www.law.cornell.edu/cfr/text/7/273.9#a_3",
+        "https://www.law.cornell.edu/uscode/text/7/2014#c",
+    )
 
     def formula(spm_unit, period, parameters):
         n = spm_unit("snap_unit_size", period)
-        state_group = spm_unit.household("state_group_str", period.this_year)
-        year = period.start.year
-        month = period.start.month
-        if month >= 10:
-            instant_str = f"{year}-10-01"
-        else:
-            instant_str = f"{year - 1}-10-01"
-        p_fpg = parameters(instant_str).gov.hhs.fpg
-        p1 = p_fpg.first_person[state_group] / MONTHS_IN_YEAR
-        pn = p_fpg.additional_person[state_group] / MONTHS_IN_YEAR
+        p1, pn = snap_monthly_fpg_amounts(spm_unit, period, parameters)
         return p1 + pn * (n - 1)

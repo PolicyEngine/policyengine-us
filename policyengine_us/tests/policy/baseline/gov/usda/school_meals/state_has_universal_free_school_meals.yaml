@@ -1,0 +1,147 @@
+- name: California provides universal free meals from SY 2022-23.
+  period: 2023
+  input:
+    state_code: CA
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: California had no universal program before AB 130 took effect.
+  period: 2021
+  input:
+    state_code: CA
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: Maine provides universal free meals from SY 2022-23.
+  period: 2023
+  input:
+    state_code: ME
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: Maine had no standing universal program before LD 1679 took effect.
+  period: 2021
+  input:
+    state_code: ME
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: Colorado provides universal free meals from SY 2023-24.
+  period: 2024
+  input:
+    state_code: CO
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: Colorado had no universal program in 2022 before Proposition FF took effect.
+  period: 2022
+  input:
+    state_code: CO
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: Massachusetts provides universal free meals from FY24.
+  period: 2024
+  input:
+    state_code: MA
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: Massachusetts had no universal program before FY24 budget took effect.
+  period: 2022
+  input:
+    state_code: MA
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: Michigan provides universal free meals from FY24.
+  period: 2024
+  input:
+    state_code: MI
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: Michigan had no universal program before PA 103 of 2023 took effect.
+  period: 2022
+  input:
+    state_code: MI
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: Minnesota provides universal free meals from SY 2023-24.
+  period: 2024
+  input:
+    state_code: MN
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: Minnesota had no universal program before HF 5 (2023) took effect.
+  period: 2022
+  input:
+    state_code: MN
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: New Mexico provides universal free meals from SY 2023-24.
+  period: 2024
+  input:
+    state_code: NM
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: New Mexico had no universal program before SB 4 (2023) took effect.
+  period: 2022
+  input:
+    state_code: NM
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: Vermont provides universal free meals from SY 2023-24.
+  period: 2024
+  input:
+    state_code: VT
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: Vermont had no universal program before Act 64 (2023) took effect.
+  period: 2022
+  input:
+    state_code: VT
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: New York provides universal free meals from SY 2025-26.
+  period: 2026
+  input:
+    state_code: NY
+  output:
+    state_has_universal_free_school_meals: true
+
+- name: New York had no universal program in 2024 before the FY26 budget.
+  period: 2024
+  input:
+    state_code: NY
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: Texas has no universal free meals program.
+  period: 2026
+  input:
+    state_code: TX
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: Florida has no universal free meals program.
+  period: 2026
+  input:
+    state_code: FL
+  output:
+    state_has_universal_free_school_meals: false
+
+- name: Vectorized lookup across CA, TX, and NY in 2024 returns per-state values.
+  period: 2024
+  input:
+    state_code: [CA, TX, NY]
+  output:
+    # CA universal active since 2022-07-01; TX never; NY not until 2025-07-01.
+    state_has_universal_free_school_meals: [true, false, false]

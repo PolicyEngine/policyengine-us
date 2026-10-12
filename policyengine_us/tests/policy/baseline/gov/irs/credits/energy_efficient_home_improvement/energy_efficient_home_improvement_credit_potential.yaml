@@ -43,3 +43,17 @@
     capped_energy_efficient_door_credit: 1
   output:
     energy_efficient_home_improvement_credit_potential: 0
+
+- name: Nonzero in 2025, before the One Big Beautiful Bill Act termination.
+  period: 2025
+  input:
+    capped_energy_efficient_window_credit: 100
+  output:
+    energy_efficient_home_improvement_credit_potential: 100
+
+- name: Terminated in 2026 by the One Big Beautiful Bill Act (Pub. L. 119-21).
+  period: 2026
+  input:
+    capped_energy_efficient_window_credit: 100
+  output:
+    energy_efficient_home_improvement_credit_potential: 0

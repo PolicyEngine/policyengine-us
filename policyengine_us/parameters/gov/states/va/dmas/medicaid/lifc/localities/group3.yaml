@@ -1,0 +1,25 @@
+description: Virginia assigns these localities to Group III under the Medicaid Low Income Families With Children program.
+values:
+  2017-07-01:
+    # Counties
+    - ARLINGTON_COUNTY_VA
+    - FAIRFAX_COUNTY_VA
+    - MONTGOMERY_COUNTY_VA
+    - PRINCE_WILLIAM_COUNTY_VA
+    # Cities
+    - ALEXANDRIA_CITY_VA
+    - CHARLOTTESVILLE_CITY_VA
+    - COLONIAL_HEIGHTS_CITY_VA
+    - FALLS_CHURCH_CITY_VA
+    - FREDERICKSBURG_CITY_VA
+    - HAMPTON_CITY_VA
+    - MANASSAS_CITY_VA
+    - MANASSAS_PARK_CITY_VA
+    - WAYNESBORO_CITY_VA
+metadata:
+  unit: list
+  period: year
+  label: Virginia Medicaid LIFC Group III localities
+  reference:
+    - title: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 4
+      href: https://www.dmas.virginia.gov/media/0aynyhxk/m04-1-1-26a.pdf#page=52

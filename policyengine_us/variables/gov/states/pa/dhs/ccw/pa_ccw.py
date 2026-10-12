@@ -22,7 +22,7 @@ class pa_ccw(Variable):
         pre_subsidy_childcare_expenses = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period
         )
-        uncapped = max_(pre_subsidy_childcare_expenses - copay, 0)
-        benefit = min_(uncapped, maximum_monthly_payment)
+        capped_expenses = min_(pre_subsidy_childcare_expenses, maximum_monthly_payment)
+        benefit = max_(capped_expenses - copay, 0)
         min_monthly_payment = p.min_dept_payment * WEEKS_IN_YEAR / MONTHS_IN_YEAR
         return where(benefit >= min_monthly_payment, benefit, 0)

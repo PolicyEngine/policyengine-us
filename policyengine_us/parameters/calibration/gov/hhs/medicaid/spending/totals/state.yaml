@@ -1,5 +1,6 @@
 description: States spend this amount on Medicaid.
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: year
   label: State Medicaid spending

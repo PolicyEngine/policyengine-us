@@ -83,3 +83,23 @@
     state_code: TX
   output:
     msp_asset_eligible: false
+
+- name: Case 6, Maine does not apply an MSP asset test.
+  period: 2024-01
+  input:
+    age: 67
+    bank_account_assets: 100_000
+    spm_unit_is_married: false
+    state_code: ME
+  output:
+    msp_asset_eligible: true
+
+- name: Case 7, Massachusetts does not apply an MSP asset test.
+  period: 2024-01
+  input:
+    age: 67
+    bank_account_assets: 100_000
+    spm_unit_is_married: false
+    state_code: MA
+  output:
+    msp_asset_eligible: true

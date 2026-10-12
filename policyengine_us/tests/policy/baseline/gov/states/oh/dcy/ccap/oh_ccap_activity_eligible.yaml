@@ -1,0 +1,151 @@
+# Tests for oh_ccap_activity_eligible (SPMUnit, MONTH).
+# 5180:6-1-02(B)(2): every caretaker (tax-unit head or spouse) must be engaged
+# in a qualifying activity — working (weekly_hours_worked > 0) or attending
+# school full time — with meets_ccdf_activity_test as a fallback input for
+# approved activities PolicyEngine does not individually model (job search,
+# training, temporary leave). Work hours come from weekly_hours_worked, which
+# defaults to 40 via weekly_hours_worked_before_lsr, so blocking-direction
+# cases must set weekly_hours_worked_before_lsr: 0 explicitly.
+- name: Case 1, single working caretaker is activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_activity_eligible: true
+
+- name: Case 2, single caretaker with no work hours and no schooling is not activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_activity_eligible: false
+
+- name: Case 3, two caretakers with one inactive fail the all-caretakers requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_activity_eligible: false
+
+- name: Case 4, two caretakers with one working and one a full-time student are activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_activity_eligible: true
+
+- name: Case 5, non-working full-time-student caretaker is activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 22
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_activity_eligible: true
+
+- name: Case 6, inactive caretaker flagged as meeting the CCDF activity test is activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_activity_eligible: true
+
+- name: Case 7, unit with no caretaker is not activity-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 10
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_ccap_activity_eligible: false

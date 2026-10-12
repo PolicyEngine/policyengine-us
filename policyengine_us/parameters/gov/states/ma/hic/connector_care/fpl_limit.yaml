@@ -1,0 +1,21 @@
+description: Massachusetts limits income to this share of the federal poverty line under the ConnectorCare program.
+values:
+  # For PY2026 the operational program caps household income at 400% FPL (Plan Type
+  # 3C ceiling), applied as a "<=" comparison. The 500% pilot has lapsed
+  # operationally: the 2026 ConnectorCare Overview states households above 400% FPL
+  # do not qualify and omits Plan Type 3D (400.1-500% FPL) from its band table. The
+  # amended 956 CMR 12.04(3)(a)1 still reads "at or below 500 percent of the FPL"
+  # and still defines Plan Type 3D, but that superseded pilot text is not modeled.
+  2026-01-01: 4
+
+metadata:
+  unit: /1
+  period: year
+  label: Massachusetts ConnectorCare income limit as a share of the federal poverty line
+  reference:
+    - title: ConnectorCare Overview 2026
+      href: https://www.mahealthconnector.org/wp-content/uploads/ConnectorCare-Overview-2026.pdf#page=1
+    - title: 956 CMR 12.04(3)(b)3.c
+      href: https://www.mahealthconnector.org/wp-content/uploads/amended-956CMR12.00.pdf#page=6
+    - title: ConnectorCare Overview 2026, Table 2 income bands
+      href: https://www.mahealthconnector.org/wp-content/uploads/ConnectorCare-Overview-2026.pdf#page=1

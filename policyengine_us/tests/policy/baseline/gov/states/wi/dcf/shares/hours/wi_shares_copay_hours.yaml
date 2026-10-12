@@ -1,0 +1,61 @@
+# Wisconsin Shares copayment hours per child: 131 for part-time
+# authorizations and 152 for full-time authorizations (the 153rd subsidized
+# hour is not charged a copayment; each child's copay hours are capped at 152
+# per provider location). Wisconsin Shares Handbook (July 2026) Section 18.2
+# and Appendix II Example 1.
+- name: Case 1, part-time authorization yields 131 copayment hours.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 20
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_copay_hours: 131
+
+- name: Case 2, full-time authorization yields 152 copayment hours.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 28
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_copay_hours: 152
+
+- name: Case 3, above-full-time care is still capped at 152 copayment hours.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 60
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_copay_hours: 152
+
+- name: Case 4, foster child has a $0 copayment type and contributes no copayment hours.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 40
+        is_in_foster_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_copay_hours: 0

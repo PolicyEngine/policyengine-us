@@ -20,23 +20,23 @@
   output:
     tax_unit_itemizes: True
 
-- name: When tax liability is equal, itemization is based on state deductions
+- name: When tax liability is equal, itemization is based on federal deduction comparison
   period: 2024
   input:
     gov.simulation.branch_to_determine_itemization: true
-    state_itemized_deductions: 14_000
-    state_standard_deduction: 11_000
+    itemized_taxable_income_deductions: 14_000
+    standard_deduction: 11_000
     tax_liability_if_itemizing: 10_000
     tax_liability_if_not_itemizing: 10_000
   output:
     tax_unit_itemizes: True
 
-- name: When tax liability is equal, itemization is based on state deductions, unit itemizes
+- name: When tax liability is equal and itemized below standard, unit does not itemize
   period: 2024
   input:
     gov.simulation.branch_to_determine_itemization: true
-    state_itemized_deductions: 14_000
-    state_standard_deduction: 16_000
+    itemized_taxable_income_deductions: 14_000
+    standard_deduction: 16_000
     tax_liability_if_itemizing: 10_000
     tax_liability_if_not_itemizing: 10_000
   output:
@@ -54,6 +54,74 @@
     itemized_taxable_income_deductions: 13_000
   output:
     tax_unit_itemizes: False
+
+- name: 2026 - the itemization choice uses the section 68 limitation net of the QBI deduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+        employment_income: 400_000
+        non_qualified_dividend_income: 300_000
+        qualified_reit_and_ptp_income: 300_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        charitable_deduction: 16_500
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # QBI deduction: 20 percent of the 300_000 of qualified REIT dividends,
+    # 60_000, under 20 percent of taxable income either way (199A(a)).
+    qualified_business_income_deduction: 60_000
+    # Section 68(a)(2): 700_000 - 60_000 = 640_000 does not exceed the
+    # 640_600 single 37 percent bracket start (Rev. Proc. 2025-32, sec.
+    # 4.01, Table 3), so the 16_500 of itemized deductions is not reduced and
+    # exceeds the 16_100 standard deduction (sec. 4.14).
+    itemized_taxable_income_deductions: 16_500
+    standard_deduction: 16_100
+    tax_unit_itemizes: true
+    # 700_000 - 16_500 - 60_000
+    taxable_income: 623_500
+
+- name: 2026 without branching - the deduction comparison uses the section 68 limitation net of the QBI deduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    gov.simulation.branch_to_determine_itemization: false
+    people:
+      head:
+        age: 50
+        employment_income: 400_000
+        non_qualified_dividend_income: 300_000
+        qualified_reit_and_ptp_income: 300_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        charitable_deduction: 16_500
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # As in the case above: leg (2) is 700_000 - 60_000 = 640_000, so the
+    # 16_500 of itemized deductions is not reduced and exceeds 16_100.
+    qualified_business_income_deduction: 60_000
+    itemized_taxable_income_deductions: 16_500
+    tax_unit_itemizes: true
 
 - name: Integration test which fails without tolerance in the itemization choice
   period: 2024
@@ -177,4 +245,4 @@
   output:
     ok_itemized_deductions: 0
     tax_unit_itemizes: false
-    ok_income_tax: 3_483
+    ok_income_tax: 3_410.03

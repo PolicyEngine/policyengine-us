@@ -1,0 +1,51 @@
+# Massachusetts eliminated the MSP asset test (gov/hhs/medicare/savings_programs/eligibility/asset/applies.yaml,
+# MA false from 2024-01-01 (MassHealth EOM 24-03)). The identical household in TX (federal.yaml, msp_resources_above_limit_ineligible,
+# resources above the 9_950 individual limit) is ineligible — this pins the state-option divergence.
+- name: msp_qmb_no_asset_test_high_resources (ma)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        social_security_retirement: 14_400
+        is_medicare_eligible: true
+        medicare_quarters_of_coverage: 40
+        ssi_countable_resources: 50_000
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: MA
+        zip_code: '02118'
+        county_str: SUFFOLK_COUNTY_MA
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    people:
+      head:
+        # Countable income 1_200/mo - 20 = 1_180 <= 1_330 (100% FPL) -> QMB despite 50_000 resources,
+        # because MA applies no asset test (TX equivalent is ineligible)
+        # 40 quarters -> premium-free Part A; QMB covers Part B: 202.90 x 12 = 2_434.80
+        msp: 2_434.8
+        msp_eligible: true
+        msp_category: 1  # QMB (enum index: NONE=0, QMB=1, SLMB=2, QI=3)

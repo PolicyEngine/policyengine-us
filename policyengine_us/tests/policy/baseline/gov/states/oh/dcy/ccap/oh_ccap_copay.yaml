@@ -1,0 +1,319 @@
+# Tests for oh_ccap_copay (SPMUnit, MONTH).
+# 5180:2-16-05(B): the copay is computed from the family's poverty-band maximum
+# income, not its actual income. Steps: annualize income, divide by annual FPG
+# for the family's FPL ratio, round the ratio up to the next 5%, take that
+# band's max monthly income (rounded up to the nearest dollar), multiply by the
+# Appendix A multiplier, round to the nearest dollar, annualize and divide by
+# 52 weeks for the weekly copay, then convert to monthly. Families at or below
+# 100% FPG, and protective/homeless families (5180:2-16-05(G)), pay $0.
+#
+# PL 21 uses the FPG in effect each October 1, so 2026-01 cases use the 2025
+# guidelines. Family of 3 (CONTIGUOUS_US): annual 100% FPG = 26,650; monthly
+# = 2,220.83. Copay parameters start 2022-12-11 but depend on FPG, so cases
+# use 2026.
+- name: Case 1, income at or below 100% FPG has a zero copay.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month, ratio 0.90, below 100% FPG
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_copay: 0
+
+- name: Case 2, income just above 100% FPG lands in the 105% band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_600  # 2,300/month, ratio 1.0356
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # ratio 1.0356 rounds up to 1.05; band max monthly = ceil(1.05 * 26,650 / 12)
+    #   = ceil(2,331.88) = 2,332; multiplier 0.07; weekly = round(2,332 * 0.07)
+    #   = round(163.24) = 163; weekly copay = 163 * 12 / 52 = 37.615...;
+    # monthly copay = 37.615... * 52 / 12 = 163.
+    oh_ccap_copay: 163
+
+- name: Case 3, income in the 135-200% plateau band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/month, ratio 1.3509
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # ratio 1.3509 rounds up to 1.40; band max monthly = ceil(1.40 * 26,650 / 12)
+    #   = ceil(3,109.17) = 3,110; multiplier 0.0875 (plateau); weekly =
+    #   round(3,110 * 0.0875) = round(272.13) = 272; monthly = 272 * 12 / 52
+    #   * 52 / 12 = 272.
+    oh_ccap_copay: 272
+
+- name: Case 4, protective-services family has the copay waived.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # would otherwise owe 272/month
+      person2:
+        age: 28
+      person3:
+        age: 3
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_protective_care: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_copay: 0
+
+- name: Case 5, foster care alone does not waive the copay.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # would otherwise owe 272/month
+      person2:
+        age: 28
+      person3:
+        age: 3
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_copay: 272
+
+- name: Case 6, homeless family has the copay waived.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # would otherwise owe 272/month
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+        is_homeless: true
+  output:
+    oh_ccap_copay: 0
+
+# Edge cases.
+# A self-employment loss floors countable income at zero in the copay formula,
+# so the family lands in the 0% band and the copay does not go negative.
+- name: Case 7, negative self-employment income gives a zero copay, not a negative one.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000  # -5,000/month, no other income
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_copay: 0
+
+- name: Case 8, zero income gives a zero copay.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_copay: 0
+
+# A high-income enrolled family (~220% FPG) lands in an upper copay band.
+- name: Case 9, high-income family in the 220% copay band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5,000/month, ratio 60,000/26,650 = 2.2514
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # ratio 2.2514 rounds up to 2.30; band max monthly = ceil(2.30 * 26,650 / 12)
+    #   = ceil(5,107.92) = 5,108; multiplier 0.14; weekly =
+    #   round(5,108 * 0.14) = round(715.12) = 715; monthly copay = 715.
+    oh_ccap_copay: 715
+
+# The 135-200% multiplier plateau (0.0875) ends at 200%; the 205% band jumps
+# to 0.09. These two cases straddle that plateau-exit boundary.
+- name: Case 10, income just below 200% FPG stays in the plateau band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_800  # 4,400/month, ratio 1.9812
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # ratio 1.9812 rounds up to 2.00; band max monthly = ceil(2.00 * 26,650 / 12)
+    #   = ceil(4,441.67) = 4,442; multiplier 0.0875 (plateau top); weekly =
+    #   round(4,442 * 0.0875) = round(388.68) = 389; monthly copay = 389.
+    oh_ccap_copay: 389
+
+- name: Case 11, income just above 200% FPG exits the plateau into the 205% band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_000  # 4,500/month, ratio 2.0263
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        oh_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # ratio 2.0263 rounds up to 2.05; band max monthly = ceil(2.05 * 26,650 / 12)
+    #   = ceil(4,552.71) = 4,553; multiplier 0.09; weekly = round(4,553 * 0.09)
+    #   = round(409.77) = 410; monthly copay = 410.
+    oh_ccap_copay: 410
+
+# PL 21's desk aid makes each band inclusive of its rounded-up dollar
+# endpoint (size 3: $2,111-$2,221 -> $0.00; $2,222-$2,332 -> $37.62/week).
+- name: Case 12, income at the published 100% FPG endpoint has a zero copay.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 26_652  # exactly 2,221/month, the 100% endpoint
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    oh_ccap_copay: 0
+
+- name: Case 13, income at the published 105% band endpoint stays in the 105% band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_984  # exactly 2,332/month, the 105% endpoint
+      person2:
+        age: 28
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: OH
+  output:
+    # 2,332 fits the previous (105%) band's ceiled maximum, so the copay is
+    # the 105% band's: round(2,332 * 0.07) = 163 (weekly 37.62 per the desk
+    # aid), not the 110% band's 180.
+    oh_ccap_copay: 163

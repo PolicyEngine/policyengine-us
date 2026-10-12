@@ -7,5 +7,6 @@ class household_rental_property_debt(Variable):
     label = "Rental property debt"
     documentation = "Debt secured by household rental property assets."
     unit = USD
+    quantity_type = STOCK
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"

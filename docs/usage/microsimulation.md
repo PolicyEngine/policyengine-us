@@ -32,10 +32,10 @@ income = sim.calc("household_net_income")
 income = sim.calculate("household_net_income")
 
 # MicroSeries supports weighted aggregations
-income.sum()      # Total across population (using weights)
-income.mean()     # Weighted mean
-income.median()   # Weighted median
-income.gini()     # Gini coefficient
+income.sum()  # Total across population (using weights)
+income.mean()  # Weighted mean
+income.median()  # Weighted median
+income.gini()  # Gini coefficient
 ```
 
 ### Key parameters
@@ -91,19 +91,95 @@ hh_eitc = sim.calc("eitc", map_to="household")
 
 ## Available datasets
 
-PolicyEngine US provides datasets hosted on HuggingFace at `hf://policyengine/policyengine-us-data/`.
+### The default build
 
-### National datasets
+The default is the certified Populace build, pinned by build id and hosted as a
+HuggingFace *dataset* repository:
 
 ```python
-# Default: Enhanced CPS 2024 (includes imputed wealth and other enhancements)
+# Default: the certified Populace build named in DEFAULT_DATASET.
 sim = Microsimulation()
-# Equivalent to:
-sim = Microsimulation(dataset="hf://policyengine/policyengine-us-data/enhanced_cps_2024.h5")
-
-# Basic CPS 2023
-sim = Microsimulation(dataset="hf://policyengine/policyengine-us-data/cps_2023.h5")
 ```
+
+### Supplying another population
+
+A population file has to satisfy the SPM input contract: it supplies primitive
+inputs, including observed `county_fips` codes as five-digit strings and
+source-backed `is_spm_independent_minor_role` values, and it must not store
+formula-owned SPM outputs such as `spm_unit_spm_threshold`. Any observed Census
+measurement is retained under a separate report-only name.
+
+The legacy files under `hf://policyengine/policyengine-us-data/` predate that
+contract, so SPM measurements are not available over them:
+
+- `cps_2023.h5` stores `spm_unit_spm_threshold`, so the loader rejects it.
+- `enhanced_cps_2024.h5` loads and computes tax variables, but carries no SPM
+  independence roles, so 18 of its SPM units - each a lone 15-to-17-year-old -
+  classify no measurement adult, and `spm_unit_spm_threshold` raises
+  `SPM_COMPOSITION_REQUIRED` over the file. That is what
+  `test_legacy_enhanced_cps_lacks_source_backed_spm_independence_roles`
+  checks. Outputs that no longer reach the threshold, household net income
+  and benefits among them, do compute over the file.
+
+A household simulation that has no county input can select an SPM area
+explicitly instead:
+
+```python
+sim = Microsimulation(dataset=..., spm={"geography_kind": "national"})
+```
+
+Entity-level single-year datasets are extended through the latest available
+economic-assumption year by default. If a calculation needs only an earlier
+range, set `dataset_end_year` to its final year. Setting it to the dataset's own
+year loads only that year:
+
+```python
+sim = Microsimulation(dataset=single_year_dataset, dataset_end_year=2024)
+```
+
+`dataset_end_year` also works with the default dataset and entity-level HDFStore
+paths. It does not apply to an existing `USMultiYearDataset` or to the legacy
+variable-centric HDF5 format.
+
+### Tax-unit roles
+
+A population file can supply the tax units its constructor built, not just
+their membership, through `tax_unit_role_input` (person): `HEAD`, `SPOUSE` or
+`DEPENDENT`. The certified Populace build supplies it. When every member of a
+tax unit has a supplied role, `is_tax_unit_head` and `is_tax_unit_spouse`
+follow it and `is_tax_unit_dependent` covers everyone else. Explicitly set
+`is_tax_unit_head`, `is_tax_unit_spouse` or `is_tax_unit_dependent` inputs
+still take precedence.
+
+Without supplied roles, a unit falls back to age ordering. The oldest adult is
+the head, skipping adults input as tax-unit dependents unless every adult in
+the unit is one. The next-oldest such adult is the spouse, unless any member of
+the unit is separated. Without dependent inputs, that pairs an adult student
+with a parent as joint filers and leaves a minor living without a parent with
+no head.
+
+The Populace build carries its constructor's filing status in a
+`filing_status_input` column. No variable has that name, so the column is
+ignored. By default, `filing_status` is computed from the unit's members,
+including any supplied roles, and the filing rules. Reforms to those rules
+apply when the formula computes the status. A direct `filing_status` input
+supplied by a caller still overrides the formula.
+
+Supplied roles fail closed rather than falling back. Each of these raises a
+`ValueError`:
+
+- roles supplied for only some members of a unit;
+- a unit without exactly one `HEAD`, or with more than one `SPOUSE`.
+
+Two consequences follow from honoring supplied roles. First, a dependent's
+income is left out of the return they are claimed on, because
+`irs_gross_income` excludes tax-unit dependents, and so are their
+above-the-line deductions. The model does not yet compute a dependent's own
+return ([#9618](https://github.com/PolicyEngine/policyengine-us/issues/9618)),
+so an adult dependent's earnings leave the income tax base. Second, a minor can
+head a return, which programs that identify minor parents as a tax-unit head or
+spouse under 18 will treat as a minor parent
+([#9619](https://github.com/PolicyEngine/policyengine-us/issues/9619)).
 
 ### Filtering by geography
 
@@ -186,12 +262,13 @@ When running microsimulations, verify that weights produce sensible population t
 ```python
 sim = Microsimulation()
 
-# Check population
-person_weight = sim.calc("person_weight", map_to="person")
+# Check population. The weights are the values here, so read them
+# unweighted: a weighted sum would square them.
+person_weight = sim.calc("person_weight", map_to="person", use_weights=False)
 print(f"Total population: {person_weight.sum():,.0f}")
 
 # Check household count
-household_weight = sim.calc("household_weight")
+household_weight = sim.calc("household_weight", use_weights=False)
 print(f"Total households: {household_weight.sum():,.0f}")
 
 # Verify key aggregates against published statistics
@@ -201,6 +278,14 @@ print(f"Total employment income: ${total_earnings / 1e12:.2f}T")
 total_snap = sim.calc("snap").sum()
 print(f"Total SNAP benefits: ${total_snap / 1e9:.1f}B")
 ```
+
+`calc` returns a weighted series whose `sum()` multiplies each value by its
+weight, which is what makes the aggregates above population totals. Summing a
+weight variable that way squares the weights: with household weights of 2 and
+3, `sim.calc("household_weight").sum()` is 13 rather than 5. Either opt out
+with `use_weights=False`, as above, or use `count()`, which sums the weights
+themselves - `sim.calc("age", map_to="person").count()` is the same population
+total.
 
 Compare these totals against official statistics to validate your analysis:
 - US population: ~330 million
@@ -235,9 +320,7 @@ baseline.subsample(10_000, seed=123)  # For faster iteration
 # Define a reform
 reform = Reform.from_dict(
     {
-        "gov.contrib.ubi_center.basic_income.amount": {
-            "2024-01-01.2100-12-31": 1000
-        },
+        "gov.contrib.ubi_center.basic_income.amount": {"2024-01-01.2100-12-31": 1000},
         "gov.contrib.ubi_center.basic_income.phase_out.rate": {
             "2024-01-01.2100-12-31": 0.1
         },

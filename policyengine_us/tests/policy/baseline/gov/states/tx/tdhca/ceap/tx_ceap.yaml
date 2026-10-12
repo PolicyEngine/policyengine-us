@@ -2,7 +2,7 @@
   absolute_error_margin: 0.1
   period: 2024
   input:
-    irs_gross_income: 0
+    employment_income: 0
     spm_unit_size: 1
     state_code: TX
     electricity_expense: 3_000
@@ -14,7 +14,7 @@
   absolute_error_margin: 0.1
   period: 2024
   input:
-    irs_gross_income: 5_000
+    employment_income: 5_000
     spm_unit_size: 4
     state_code: TX
     electricity_expense: 1_000
@@ -26,7 +26,7 @@
   absolute_error_margin: 0.1
   period: 2024
   input:
-    irs_gross_income: 20_000
+    employment_income: 20_000
     spm_unit_size: 4
     state_code: TX
     electricity_expense: 2_500
@@ -38,7 +38,7 @@
   absolute_error_margin: 0.1
   period: 2024
   input:
-    irs_gross_income: 40_000
+    employment_income: 40_000
     spm_unit_size: 4
     state_code: TX
     electricity_expense: 3_000
@@ -50,7 +50,7 @@
   absolute_error_margin: 0.1
   period: 2024
   input:
-    irs_gross_income: 80_000
+    employment_income: 80_000
     spm_unit_size: 1
     state_code: TX
     electricity_expense: 3_000
@@ -63,7 +63,7 @@
   absolute_error_margin: 0.1
   period: 2024
   input:
-    irs_gross_income: 0
+    employment_income: 0
     spm_unit_size: 1
     state_code: TX
     electricity_expense: 0
@@ -75,7 +75,7 @@
   absolute_error_margin: 0.1
   period: 2024
   input:
-    irs_gross_income: 0
+    employment_income: 0
     spm_unit_size: 1
     state_code: TX
     electricity_expense: 0
@@ -87,7 +87,7 @@
   absolute_error_margin: 0.1
   period: 2025
   input:
-    irs_gross_income: 0
+    employment_income: 0
     spm_unit_size: 1
     state_code: TX
     electricity_expense: 3_000
@@ -100,7 +100,7 @@
   period: 2024
   input:
     # 50% FPG for HH of 4 = $15,600 (FPG 2024 = $31,200 * 0.5)
-    irs_gross_income: 15_600
+    employment_income: 15_600
     spm_unit_size: 4
     state_code: TX
     electricity_expense: 3_000

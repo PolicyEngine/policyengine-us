@@ -18,9 +18,8 @@
   output:
     residential_clean_energy_credit_potential: 1_800  # 30% of $6,000.
 
-- name: 26% in 2033.
+- name: Still terminated in 2033 by the One Big Beautiful Bill Act (Pub. L. 119-21).
   period: 2033
-  absolute_error_margin: 0.01
   input:
     qualified_battery_storage_technology_expenditures: 1_000
     geothermal_heat_pump_property_expenditures: 1_000
@@ -31,4 +30,33 @@
     fuel_cell_property_expenditures: 1_100
     fuel_cell_property_capacity: 1
   output:
-    residential_clean_energy_credit_potential: 1_560  # 26% of $6,000.
+    # Prior law phased the rate down to 26% in 2033; the One Big Beautiful
+    # Bill Act (Pub. L. 119-21) instead terminates the credit after 2025,
+    # so the rate remains 0% here.
+    residential_clean_energy_credit_potential: 0
+
+- name: 30% in 2025, before the One Big Beautiful Bill Act termination.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    geothermal_heat_pump_property_expenditures: 1_000
+    small_wind_energy_property_expenditures: 1_000
+    solar_electric_property_expenditures: 1_000
+    solar_water_heating_property_expenditures: 1_000
+    # Fuel cell capped at $1,000 if 1 kW capacity.
+    fuel_cell_property_expenditures: 1_100
+    fuel_cell_property_capacity: 1
+  output:
+    residential_clean_energy_credit_potential: 1_500  # 30% of $5,000.
+
+- name: Terminated in 2026 by the One Big Beautiful Bill Act (Pub. L. 119-21).
+  period: 2026
+  input:
+    geothermal_heat_pump_property_expenditures: 1_000
+    small_wind_energy_property_expenditures: 1_000
+    solar_electric_property_expenditures: 1_000
+    solar_water_heating_property_expenditures: 1_000
+    fuel_cell_property_expenditures: 1_100
+    fuel_cell_property_capacity: 1
+  output:
+    residential_clean_energy_credit_potential: 0

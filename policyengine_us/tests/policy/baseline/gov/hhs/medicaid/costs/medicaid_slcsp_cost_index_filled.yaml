@@ -1,0 +1,38 @@
+- name: Household with a missing premium is filled with the state-average index.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+      person3:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    households:
+      # Missing SLCSP premium data -> zero index, filled with the state average.
+      household1:
+        members: [person1]
+        state_code: TX
+        slcsp_age_0:
+          2026-01: 0
+      household2:
+        members: [person2]
+        state_code: TX
+        slcsp_age_0:
+          2026-01: 1_000
+      household3:
+        members: [person3]
+        state_code: TX
+        slcsp_age_0:
+          2026-01: 2_000
+  output:
+    # person1 filled with mean of the two positive indices (1,670.6, 3,341.2).
+    medicaid_slcsp_cost_index_filled: [2_505.9, 1_670.6, 3_341.2]

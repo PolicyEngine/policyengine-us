@@ -1,0 +1,224 @@
+# R3 P2: shared parent IDs include step-parents. These paired years retain
+# those leaf IDs and demonstrate the documented Missouri annual-flag remedy.
+# The automatic result is preserved as evidence of the disclosed limitation;
+# exclusion from member income does not establish step-parent income deeming.
+- name: A named step-parent is excluded by a complete annual parent-flag override
+  period: 2026-01
+  input:
+    people:
+      mother:
+        person_id:
+          2026: 11
+          2027: 11
+        age:
+          2026: 35
+          2027: 35
+        is_tax_unit_dependent:
+          2026: false
+          2027: false
+        own_children_in_household:
+          2026: 0
+          2027: 0
+        mo_tanf_is_parent_of_dependent_child:
+          2027: true
+      stepfather:
+        person_id:
+          2026: 22
+          2027: 22
+        age:
+          2026: 37
+          2027: 37
+        is_tax_unit_dependent:
+          2026: false
+          2027: false
+        own_children_in_household:
+          2026: 0
+          2027: 0
+        unemployment_compensation:
+          2026: 2400
+          2027: 2400
+        mo_tanf_is_parent_of_dependent_child:
+          2027: false
+      child:
+        person_id:
+          2026: 33
+          2027: 33
+        age:
+          2026: 5
+          2027: 5
+        is_tax_unit_dependent:
+          2026: true
+          2027: true
+        parent_1_id:
+          2026: 11
+          2027: 11
+        parent_2_id:
+          2026: 22
+          2027: 22
+        mo_tanf_is_parent_of_dependent_child:
+          2027: false
+    tax_units:
+      tax_unit:
+        members: [mother, stepfather, child]
+    spm_units:
+      spm_unit:
+        members: [mother, stepfather, child]
+    households:
+      household:
+        members: [mother, stepfather, child]
+        state_code:
+          2026: MO
+          2027: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child:
+      2026: [true, true, false]
+      2027: [true, false, false]
+    mo_tanf_is_assistance_unit_member:
+      2026-01: [true, true, true]
+      2027-01: [true, false, true]
+    mo_tanf_assistance_unit_size:
+      2026-01: 3
+      2027-01: 2
+    mo_tanf_gross_unearned_income:
+      2026-01: 200
+      2027-01: 0
+
+- name: A named step-parent does not block a marked caretaker after the annual override
+  period: 2026-01
+  input:
+    people:
+      grandmother:
+        person_id:
+          2026: 11
+          2027: 11
+        age:
+          2026: 55
+          2027: 55
+        is_tax_unit_dependent:
+          2026: false
+          2027: false
+        mo_tanf_is_non_parent_caretaker:
+          2026: true
+          2027: true
+        mo_tanf_is_parent_of_dependent_child:
+          2027: false
+      stepfather:
+        person_id:
+          2026: 22
+          2027: 22
+        age:
+          2026: 35
+          2027: 35
+        is_tax_unit_dependent:
+          2026: true
+          2027: true
+        own_children_in_household:
+          2026: 0
+          2027: 0
+        mo_tanf_is_parent_of_dependent_child:
+          2027: false
+      child:
+        person_id:
+          2026: 33
+          2027: 33
+        age:
+          2026: 5
+          2027: 5
+        is_tax_unit_dependent:
+          2026: true
+          2027: true
+        # The natural parent is absent; the co-resident ID names only a step-parent.
+        parent_1_id:
+          2026: 99
+          2027: 99
+        parent_2_id:
+          2026: 22
+          2027: 22
+        mo_tanf_is_parent_of_dependent_child:
+          2027: false
+    tax_units:
+      tax_unit:
+        members: [grandmother, stepfather, child]
+    spm_units:
+      spm_unit:
+        members: [grandmother, stepfather, child]
+    households:
+      household:
+        members: [grandmother, stepfather, child]
+        state_code:
+          2026: MO
+          2027: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child:
+      2026: [false, true, false]
+      2027: [false, false, false]
+    mo_tanf_non_parent_caretaker:
+      2026-01: [false, false, false]
+      2027-01: [true, false, false]
+    mo_tanf_is_assistance_unit_member:
+      2026-01: [false, true, true]
+      2027-01: [true, false, true]
+
+# R3 P3: known IDs suppress the head's parent proxy but cannot identify an NPCR.
+# In otherwise identical years, only the explicit caretaker mark changes.
+- name: Known absent parent IDs require an explicit mark to include a needy grandmother
+  period: 2026-01
+  input:
+    people:
+      grandmother:
+        person_id:
+          2026: 11
+          2027: 11
+        age:
+          2026: 55
+          2027: 55
+        is_tax_unit_dependent:
+          2026: false
+          2027: false
+        own_children_in_household:
+          2026: 1
+          2027: 1
+        mo_tanf_is_non_parent_caretaker:
+          2026: false
+          2027: true
+      grandchild:
+        person_id:
+          2026: 33
+          2027: 33
+        age:
+          2026: 5
+          2027: 5
+        is_tax_unit_dependent:
+          2026: true
+          2027: true
+        parent_1_id:
+          2026: 99
+          2027: 99
+        parent_2_id:
+          2026: 0
+          2027: 0
+    tax_units:
+      tax_unit:
+        members: [grandmother, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandmother, grandchild]
+    households:
+      household:
+        members: [grandmother, grandchild]
+        state_code:
+          2026: MO
+          2027: MO
+  output:
+    mo_tanf_is_parent_of_dependent_child:
+      2026: [false, false]
+      2027: [false, false]
+    mo_tanf_non_parent_caretaker:
+      2026-01: [false, false]
+      2027-01: [true, false]
+    mo_tanf_is_assistance_unit_member:
+      2026-01: [false, true]
+      2027-01: [true, true]
+    mo_tanf_assistance_unit_size:
+      2026-01: 1
+      2027-01: 2

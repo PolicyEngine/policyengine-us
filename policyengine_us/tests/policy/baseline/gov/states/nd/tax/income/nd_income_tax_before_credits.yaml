@@ -154,3 +154,191 @@
   output:  # hand calculated to avoid whole-dollar rounding problems
     #(275200-275100)*0.0250 + 3906.83 = 3909.33
     nd_income_tax_before_credits: 3_909.325
+
+# TY2026 boundary cases, one pair per filing status, at and $1 above each of the
+# two bracket thresholds (ND-1ES 2026 p.2). Expected values are hand calculated to
+# avoid whole-dollar rounding, matching this file's existing convention:
+#   at the zero-rate threshold        -> 0 (the first bracket is taxed at 0%)
+#   $1 above it                       -> $1 x 1.95% = 0.0195
+#   at the top-rate threshold         -> (top threshold - zero-rate threshold) x 1.95%
+#   $1 above it                       -> the same base amount + $1 x 2.50%
+# The base amounts reproduce the "your tax is" column printed on the form.
+- name: 2026 single filer at the zero-rate threshold
+  period: 2026
+  input:
+    filing_status: SINGLE
+    nd_taxable_income: 49_575
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 0
+
+- name: 2026 single filer one dollar above the zero-rate threshold
+  period: 2026
+  input:
+    filing_status: SINGLE
+    nd_taxable_income: 49_576
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 0.0195  # $1 over the threshold x 1.95%
+
+- name: 2026 single filer at the top-rate threshold
+  period: 2026
+  input:
+    filing_status: SINGLE
+    nd_taxable_income: 250_400
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 3_916.0875
+
+- name: 2026 single filer one dollar above the top-rate threshold
+  period: 2026
+  input:
+    filing_status: SINGLE
+    nd_taxable_income: 250_401
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 3_916.1125
+
+- name: 2026 joint filer at the zero-rate threshold
+  period: 2026
+  input:
+    filing_status: JOINT
+    nd_taxable_income: 82_800
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 0
+
+- name: 2026 joint filer one dollar above the zero-rate threshold
+  period: 2026
+  input:
+    filing_status: JOINT
+    nd_taxable_income: 82_801
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 0.0195  # $1 over the threshold x 1.95%
+
+- name: 2026 joint filer at the top-rate threshold
+  period: 2026
+  input:
+    filing_status: JOINT
+    nd_taxable_income: 304_850
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 4_329.975
+
+- name: 2026 joint filer one dollar above the top-rate threshold
+  period: 2026
+  input:
+    filing_status: JOINT
+    nd_taxable_income: 304_851
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 4_330
+
+- name: 2026 surviving spouse at the zero-rate threshold
+  period: 2026
+  input:
+    filing_status: SURVIVING_SPOUSE
+    nd_taxable_income: 82_800
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 0
+
+- name: 2026 surviving spouse one dollar above the zero-rate threshold
+  period: 2026
+  input:
+    filing_status: SURVIVING_SPOUSE
+    nd_taxable_income: 82_801
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 0.0195  # $1 over the threshold x 1.95%
+
+- name: 2026 surviving spouse at the top-rate threshold
+  period: 2026
+  input:
+    filing_status: SURVIVING_SPOUSE
+    nd_taxable_income: 304_850
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 4_329.975
+
+- name: 2026 surviving spouse one dollar above the top-rate threshold
+  period: 2026
+  input:
+    filing_status: SURVIVING_SPOUSE
+    nd_taxable_income: 304_851
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 4_330
+
+- name: 2026 separate filer at the zero-rate threshold
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    nd_taxable_income: 41_400
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 0
+
+- name: 2026 separate filer one dollar above the zero-rate threshold
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    nd_taxable_income: 41_401
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 0.0195  # $1 over the threshold x 1.95%
+
+- name: 2026 separate filer at the top-rate threshold
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    nd_taxable_income: 152_425
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 2_164.9875
+
+- name: 2026 separate filer one dollar above the top-rate threshold
+  period: 2026
+  input:
+    filing_status: SEPARATE
+    nd_taxable_income: 152_426
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 2_165.0125
+
+- name: 2026 head-of-household filer at the zero-rate threshold
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    nd_taxable_income: 66_400
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 0
+
+- name: 2026 head-of-household filer one dollar above the zero-rate threshold
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    nd_taxable_income: 66_401
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 0.0195  # $1 over the threshold x 1.95%
+
+- name: 2026 head-of-household filer at the top-rate threshold
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    nd_taxable_income: 277_600
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 4_118.4
+
+- name: 2026 head-of-household filer one dollar above the top-rate threshold
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    nd_taxable_income: 277_601
+    state_code: ND
+  output:
+    nd_income_tax_before_credits: 4_118.425

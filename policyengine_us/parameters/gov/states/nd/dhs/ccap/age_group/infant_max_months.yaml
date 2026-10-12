@@ -1,0 +1,15 @@
+description: North Dakota classifies children below this age in months as infants for reimbursement rates under the Child Care Assistance Program.
+
+# The rate-table column "Infant" covers birth through 17 months (under 18
+# months), matching the manual band of birth through the month the child turns
+# 18 months (400-28-100-30).
+values:
+  2026-01-01: 18
+
+metadata:
+  unit: month
+  period: year
+  label: North Dakota CCAP infant maximum age in months
+  reference:
+    - title: North Dakota CCAP Policy Manual, Basis for Allowable Child Care Rate of Payments 400-28-100-30
+      href: https://www.nd.gov/dhs/policymanuals/40028/40028.htm

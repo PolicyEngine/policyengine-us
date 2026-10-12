@@ -8,5 +8,11 @@ class spm_unit_net_income(Variable):
     definition_period = YEAR
     unit = USD
 
-    adds = ["spm_unit_market_income", "spm_unit_benefits"]
+    adds = [
+        "spm_unit_market_income",
+        "spm_unit_benefits",
+        # Broadband subsidies.
+        "acp",
+        "ebb",
+    ]
     subtracts = ["spm_unit_taxes", "spm_unit_spm_expenses"]

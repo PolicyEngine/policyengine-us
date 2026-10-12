@@ -1,0 +1,34 @@
+description: South Carolina uses this amount as the pre-One Big Beautiful Bill Act standard deduction under the individual income tax program.
+
+SINGLE:
+  2025-01-01: 15_000
+JOINT:
+  2025-01-01: 30_000
+SEPARATE:
+  2025-01-01: 15_000
+HEAD_OF_HOUSEHOLD:
+  2025-01-01: 22_500
+SURVIVING_SPOUSE:
+  2025-01-01: 30_000
+
+metadata:
+  unit: currency-USD
+  label: South Carolina pre-One Big Beautiful Bill Act standard deduction
+  period: year
+  breakdown:
+    - filing_status
+  propagate_metadata_to_children: true
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: nearest
+      interval: 50
+  reference:
+    - title: SC Code § 12-6-40(A)(1)(a) — IRC conformity as amended through December 31, 2024
+      href: https://www.scstatehouse.gov/code/t12c006.php
+    - title: 26 U.S.C. § 63(c)(7) (as enacted by TCJA Pub. L. 115-97 § 11021)
+      href: https://www.congress.gov/115/plaws/publ97/PLAW-115publ97.pdf#page=20
+    - title: IRS Rev. Proc. 2024-40 § 3.15 (2025 inflation-adjusted values under pre-OBBBA rule)
+      href: https://www.irs.gov/pub/irs-drop/rp-24-40.pdf#page=12
+    - title: SC DOR — Internal Revenue Code Conformity Update (IL #26-4 Item 1)
+      href: https://dor.sc.gov/income-tax-south-carolina-internal-revenue-code-conformity-update

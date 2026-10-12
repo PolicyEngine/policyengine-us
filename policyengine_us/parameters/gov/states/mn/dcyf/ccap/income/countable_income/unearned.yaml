@@ -1,0 +1,48 @@
+description: Minnesota counts these unearned income sources under the Child Care Assistance Program.
+values:
+  2025-01-01:
+    # RSDI (gross amount) — Retirement, Survivors, and Disability Insurance.
+    # Listed as components rather than the social_security umbrella, which also
+    # adds social_security_dependents.
+    - social_security_retirement
+    - social_security_survivors
+    - social_security_disability
+    - dividend_income
+    - interest_income
+    - pension_income
+    - veterans_benefits
+    - military_retirement_pay
+    - unemployment_compensation
+    - workers_compensation
+    # Child or spousal support not assigned to the state.
+    - alimony_income
+    - child_support_received
+    # General Assistance is a counted cash-assistance source under manual
+    # section 6.6 (the list also names Minnesota Supplemental Aid and Refugee
+    # Cash Assistance, which have no countable variable here).
+    - general_assistance
+    # The following are counted per Minn. Stat. 256P.06 / manual section 6.6
+    # but have no matching variable, so we do not track them at the moment:
+    # - MFIP cash assistance and MFIP Housing Assistance Grant (also avoids the
+    #   CCAP-to-MFIP circular dependency through the dependent-care deduction)
+    # - Diversionary Work Program (DWP) cash assistance
+    # - Minnesota Supplemental Aid, Refugee Cash Assistance
+    # - cost-effective insurance reimbursement from Medical Assistance
+    # - capital gains from the sale of real property (capital_gains is not
+    #   restricted to real property)
+    # - contract-for-deed payments above principal and interest
+    # - trust income (excluding special or supplemental needs trusts)
+    # - interest from family loans
+    # - disability insurance (separate from social_security_disability)
+    # - cash prizes and winnings
+    # - taxable military entitlements
+
+metadata:
+  unit: list
+  period: year
+  label: Minnesota CCAP countable unearned income sources
+  reference:
+    - title: Minn. Stat. 256P.06, subd. 3 (unearned income)
+      href: https://www.revisor.mn.gov/statutes/cite/256P.06
+    - title: Minn. Rules 3400.0170, subp. 4 (gross annual income)
+      href: https://www.revisor.mn.gov/rules/3400.0170/

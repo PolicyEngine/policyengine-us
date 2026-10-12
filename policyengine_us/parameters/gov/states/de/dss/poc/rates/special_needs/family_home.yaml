@@ -1,5 +1,6 @@
 description: Delaware provides these weekly reimbursement rates for special needs children at family home child care under the Purchase of Care program.
 metadata:
+  propagate_metadata_to_children: true
   period: week
   unit: currency-USD
   label: Delaware Purchase of Care special needs family home weekly rates
@@ -7,7 +8,7 @@ metadata:
     - de_poc_age_group
   reference:
     - title: Delaware DSS Child Care Services - Special Needs Rates
-      href: https://dhss.delaware.gov/dss/childcr/
+      href: https://web.archive.org/web/20260614012446/https://dhss.delaware.gov/dss/childcr/
 
 # Effective July 1, 2024
 INFANT:

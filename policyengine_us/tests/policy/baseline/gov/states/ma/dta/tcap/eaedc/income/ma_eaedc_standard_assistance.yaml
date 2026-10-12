@@ -64,8 +64,19 @@
 - name: Case 8, living arrangement A size of 2.
   period: 2025
   input:
-    ma_eaedc_living_arrangement: A 
-    spm_unit_size: 2 
+    ma_eaedc_living_arrangement: A
+    spm_unit_size: 2
     state_code: MA
   output:
-    ma_eaedc_standard_assistance: 6_264 # 522*12
+    # Jan-Mar 2025 (pre-FY25): (401 + 121) * 3 = 1566
+    # Apr-Dec 2025 (post-FY25): (441.1 + 133.1) * 9 = 5167.8
+    ma_eaedc_standard_assistance: 6_733.80
+
+- name: Case 9, living arrangement A size of 2, post-FY25.
+  period: 2026-01
+  input:
+    ma_eaedc_living_arrangement: A
+    spm_unit_size: 2
+    state_code: MA
+  output:
+    ma_eaedc_standard_assistance: 574.2 # 441.1 + 133.1

@@ -1,0 +1,100 @@
+- name: Standard rate of 35.50 from 2024-04 onward (tested at 2025-01)
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    wa_ssp_payment_category: STANDARD
+    state_code: WA
+  output:
+    wa_ssp: 35.50
+
+- name: Standard rate of 38.25 in 2021
+  period: 2021-01
+  absolute_error_margin: 0.01
+  input:
+    wa_ssp_payment_category: STANDARD
+    state_code: WA
+  output:
+    wa_ssp: 38.25
+
+- name: Standard rate of 40 in 2018 (after 2013-12-01 reduction, before 2021)
+  period: 2018-01
+  absolute_error_margin: 0.01
+  input:
+    wa_ssp_payment_category: STANDARD
+    state_code: WA
+  output:
+    wa_ssp: 40
+
+- name: Standard rate of 46 in 2010 (original rate from 2006-08-28 still in effect)
+  period: 2010-01
+  absolute_error_margin: 0.01
+  input:
+    wa_ssp_payment_category: STANDARD
+    state_code: WA
+  output:
+    wa_ssp: 46
+
+- name: Medical institution rate of 73.20 in 2024 (post-2024-01-01 COLA)
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    wa_ssp_payment_category: MEDICAL_INSTITUTION
+    state_code: WA
+  output:
+    wa_ssp: 73.20
+
+- name: Medical institution rate of 75.78 in 2025
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    wa_ssp_payment_category: MEDICAL_INSTITUTION
+    state_code: WA
+  output:
+    wa_ssp: 75.78
+
+- name: Medical institution rate of 78.74 in 2026
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    wa_ssp_payment_category: MEDICAL_INSTITUTION
+    state_code: WA
+  output:
+    wa_ssp: 78.74
+
+- name: Medical institution rate of 40 in 2020 (post-2019-01-01, pre-2023-07-01)
+  period: 2020-01
+  absolute_error_margin: 0.01
+  input:
+    wa_ssp_payment_category: MEDICAL_INSTITUTION
+    state_code: WA
+  output:
+    wa_ssp: 40
+
+- name: NONE category yields zero benefit
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    wa_ssp_payment_category: NONE
+    state_code: WA
+  output:
+    wa_ssp: 0
+
+- name: Standard rate of 40 in 2017 (between 2013-12-01 reduction and 2021-01-01 reduction)
+  period: 2017-01
+  absolute_error_margin: 0.01
+  input:
+    wa_ssp_payment_category: STANDARD
+    state_code: WA
+  output:
+    # 2017-01 falls within the 2013-12-01 -> 2021-01-01 window -> STANDARD = 40.
+    wa_ssp: 40
+
+- name: Standard rate of 35.50 still in effect in 2026 (no 2026 STANDARD entry, forward extrapolation from 2024-04-01)
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    wa_ssp_payment_category: STANDARD
+    state_code: WA
+  output:
+    # amount.yaml has no 2026 STANDARD entry -> most recent value (2024-04-01: 35.50) carries forward.
+    wa_ssp: 35.50

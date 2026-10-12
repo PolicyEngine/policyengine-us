@@ -1,0 +1,186 @@
+# Unit eligibility requires the flat-grant design to be in effect (June 1,
+# 2021 onward), at least one eligible adult, income eligibility, and
+# resource eligibility.
+- name: Case 1, a single eligible adult with no income or resources qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_eligible: true
+
+- name: Case 2, a unit with only a child has no eligible adult and does not qualify.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 10
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The child passes the person-level screen (linked through the under-16
+    # path) but the unit requires at least one eligible adult.
+    ca_sbd_general_relief_eligible_person: true
+    ca_sbd_general_relief_eligible: false
+
+- name: Case 3, a facility-resident adult with a young child leaves no eligible adult.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        ssi_lives_in_medical_treatment_facility: true
+      person2:
+        age: 10
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # The adult is barred by the treatment-facility exclusion; the child is
+    # an eligible person but cannot satisfy the adult requirement.
+    ca_sbd_general_relief_eligible: false
+
+# The two cases below pin the June 1, 2021 start month itself (May versus
+# June 2021). Year-defined inputs are keyed by year because non-January
+# month periods reject scalar inputs for year variables.
+
+- name: Case 4, May 2021 is the last month before the flat-grant design takes effect.
+  period: 2021-05
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf:
+          2021: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd:
+          2021: true
+  output:
+    ca_sbd_general_relief_eligible: false
+    ca_sbd_general_relief: 0
+
+- name: Case 5, June 2021 is the first month of the flat-grant design.
+  period: 2021-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2021: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf:
+          2021: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd:
+          2021: true
+  output:
+    ca_sbd_general_relief_eligible: true
+    # The size-1 grant of the 6/1/21-6/30/22 era.
+    ca_sbd_general_relief: 332
+
+- name: Case 6, a sole 18-year-old non-student adult is exactly at the age threshold.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 18
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 18 >= 18 satisfies the adult requirement, and an unemployed
+    # non-student links through employability.
+    ca_sbd_general_relief_eligible: true
+    ca_sbd_general_relief: 486
+
+- name: Case 7, a sole 18-year-old high school student cannot qualify through the child student path.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_full_time_student: true
+        is_in_secondary_school: true
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The county evaluates a lone 18-year-old as an adult applicant, and a
+    # full-time student fails the employable path; the 16-to-18 student
+    # path serves children in a cooperating parent's case, so it requires
+    # an adult-linked member in the unit.
+    ca_sbd_general_relief_eligible: false
+
+- name: Case 8, an undocumented parent with a citizen child leaves no eligible adult.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        ssi: 0
+      person2:
+        age: 8
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # The child is an eligible person (under 16, citizen by default), but
+    # the barred parent cannot satisfy the adult requirement.
+    ca_sbd_general_relief_eligible_person: [false, true]
+    ca_sbd_general_relief_eligible: false

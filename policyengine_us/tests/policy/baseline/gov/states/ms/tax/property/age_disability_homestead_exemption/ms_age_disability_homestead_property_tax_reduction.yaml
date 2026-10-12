@@ -1,0 +1,76 @@
+- name: Case 1, reduction equals the property tax on the exempt share of value.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 75_000
+        real_estate_taxes: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    ms_age_disability_homestead_property_tax_reduction: 150
+
+- name: Case 2, reduction cannot exceed property taxes.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 5_000
+        real_estate_taxes: 100
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    ms_age_disability_homestead_property_tax_reduction: 100
+
+- name: Case 3, ineligible filer gets no reduction.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 64
+        assessed_property_value: 75_000
+        real_estate_taxes: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    ms_age_disability_homestead_property_tax_reduction: 0
+
+- name: Case 4, reduction excludes non-joint adult property tax.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 5_000
+        real_estate_taxes: 100
+      person2:
+        age: 40
+        assessed_property_value: 75_000
+        real_estate_taxes: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_age_disability_homestead_property_tax_reduction: 100

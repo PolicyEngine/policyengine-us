@@ -7,6 +7,7 @@ class mt_tanf_countable_resources(Variable):
     label = "Montana Temporary Assistance for Needy Families (TANF) countable resources"
     unit = USD
     definition_period = MONTH
+    quantity_type = STOCK
     reference = (
         "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF4021May012021.pdf#page=1",
         "https://dphhs.mt.gov/assets/hcsd/tanfmanual/TANF403-1Jan012018.pdf#page=1",

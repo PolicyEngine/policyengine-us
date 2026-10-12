@@ -1,0 +1,49 @@
+- name: Case 1, Arkansas 2018 adults ages 30 to 49 below 100 percent FPL are subject.
+  period: 2018
+  input:
+    age: 40
+    medicaid_category: ADULT
+    medicaid_income_level: 0.9
+    state_code: AR
+  output:
+    ar_medicaid_work_requirement_subject: true
+
+- name: Case 2, Arkansas 2018 adults above 100 percent FPL are not subject in the annual approximation.
+  period: 2018
+  input:
+    age: 40
+    medicaid_category: ADULT
+    medicaid_income_level: 1.1
+    state_code: AR
+  output:
+    ar_medicaid_work_requirement_subject: false
+
+- name: Case 3, Arkansas 2019 adults ages 30 to 49 below 138 percent FPL are subject.
+  period: 2019
+  input:
+    age: 40
+    medicaid_category: ADULT
+    medicaid_income_level: 1.2
+    state_code: AR
+  output:
+    ar_medicaid_work_requirement_subject: true
+
+- name: Case 4, Arkansas 2019 adults ages 19 to 29 are excluded from the annual approximation.
+  period: 2019
+  input:
+    age: 25
+    medicaid_category: ADULT
+    medicaid_income_level: 0.8
+    state_code: AR
+  output:
+    ar_medicaid_work_requirement_subject: false
+
+- name: Case 5, Arkansas 2020 adults are not subject after the court halted enforcement.
+  period: 2020
+  input:
+    age: 40
+    medicaid_category: ADULT
+    medicaid_income_level: 0.8
+    state_code: AR
+  output:
+    ar_medicaid_work_requirement_subject: false

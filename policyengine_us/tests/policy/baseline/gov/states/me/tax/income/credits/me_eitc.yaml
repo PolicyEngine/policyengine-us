@@ -99,3 +99,91 @@
         state_code: ME
   output:
     me_eitc: 125
+
+# 36 M.R.S. § 5219-S(5)-(6): childless filers aged 18-24 receive the Maine
+# EITC computed as if they qualified federally, even though federal § 32 bars
+# them on the minimum-age floor. Issue #8927; reported household from
+# PolicyEngine/policyengine-taxsim#1056 (TaxAct return shows $325 on 1040ME).
+- name: 2025 MFJ childless couple aged 23 and 24 gets the Maine expansion credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 23
+        employment_income: 10_476
+      spouse:
+        age: 24
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    eitc: 0
+    me_pro_forma_childless_eitc: 649
+    me_eitc: 324.50
+
+- name: 2025 childless couple aged 25 and 26 unaffected (federal EITC path)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 25
+        employment_income: 10_476
+      spouse:
+        age: 26
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: ME
+  output:
+    eitc: 649
+    me_eitc: 324.50
+
+- name: 2025 childless single aged 17 below Maine floor gets no credit
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 17
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    me_childless_eitc_age_eligible: false
+    me_eitc: 0
+
+- name: 2025 childless single aged 70 outside the expansion gets no credit
+  # Federal Sec. 32 already bars childless filers above age 64; Maine does not
+  # extend the upper bound, and 70 is outside the added 18-24 cohort.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: ME
+  output:
+    eitc: 0
+    me_childless_eitc_age_eligible: false
+    me_eitc: 0

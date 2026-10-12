@@ -38,13 +38,13 @@
   output:
     mo_head_of_household_exemption: 0
 
-- name: HoH filer in 2021 gets $1,400 exemption (statute in effect per RSMo 143.161(2))
+- name: HoH filer in 2021 gets no exemption (no line on the 2021 MO-1040; Line 15 first appeared on the 2022 form — issue 9093)
   period: 2021
   input:
     filing_status: HEAD_OF_HOUSEHOLD
     state_code: MO
   output:
-    mo_head_of_household_exemption: 1_400
+    mo_head_of_household_exemption: 0
 
 - name: HoH filer in 2022 gets $1,400 exemption
   period: 2022

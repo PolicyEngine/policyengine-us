@@ -1,0 +1,112 @@
+# Tests for ut_ccap_gross_income (SPMUnit, MONTH, USD).
+# R986-700-710(4)(a): only the income of the CC client is counted,
+# regardless of who else lives in the household. Parent clients are
+# identified with own_children_in_household (is_parent); when no parent
+# lives in the household, the tax-unit head or spouse proxies the
+# nonparent caretaker client (R986-700-702(2)). The earned income of a
+# child who is not a parent is not counted (R986-700-710(4)(f)), while a
+# child's unearned income stays countable (R986-700-710(4)(d)(i)). No
+# deductions apply at this stage. Annual person-level income inputs are
+# read with the bare monthly period, so Core auto-divides them to
+# monthly amounts.
+
+- name: Case 1, parent earned and unearned income both count.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        interest_income: 1_200  # 100/mo
+        own_children_in_household: 1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # 3,000 (earned) + 100 (interest) = 3,100.
+    ut_ccap_gross_income: 3_100
+
+- name: Case 2, non-parent adult income is fully excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        own_children_in_household: 1
+      person2:
+        age: 5
+      person3:
+        age: 65
+        employment_income: 24_000  # 2,000/mo, excluded
+        social_security: 12_000  # 1,000/mo, excluded
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # The grandparent is neither a parent nor a child, so neither their
+    # wages nor their Social Security count (R986-700-710(4)(a)).
+    ut_ccap_gross_income: 3_000
+
+- name: Case 3, a child's earnings are excluded but their unearned income counts.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        own_children_in_household: 1
+      person2:
+        age: 16
+        employment_income: 12_000  # 1,000/mo, excluded (non-parent child)
+        child_support_received: 2_400  # 200/mo, counted
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # 3,000 (parent earned) + 200 (child support paid on the child's
+    # behalf, R986-700-710(4)(d)(i)) = 3,200; the 16-year-old's wages are
+    # not counted (R986-700-710(4)(f)).
+    ut_ccap_gross_income: 3_200
+
+- name: Case 4, a nonparent caretaker's earnings are counted when no parent is present.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 36_000  # 3,000/mo
+        own_children_in_household: 0
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # With no parent in the household, the caretaker (tax-unit head) is
+    # the CC client (R986-700-702(2)) — a specified relative or
+    # court-appointed guardian — so their 3,000 in wages is counted
+    # (R986-700-710(4)(a) and (4)(b)).
+    ut_ccap_gross_income: 3_000

@@ -1,0 +1,82 @@
+# Tests for oh_ccap_time_category (Person, MONTH).
+# 5180:6-1-10(H): Hourly is under 10 hours/week, Part-time is 10 to under
+# 33 hours/week, Full-time is 33 or more hours/week. childcare_hours_per_week
+# is a YEAR variable read with period.this_year, so it is not divided by 12.
+# Rate parameters start 2025-11-01, so cases use period 2026.
+- name: Case 1, hourly care below 10 hours per week.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 8
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_time_category: HOURLY
+
+- name: Case 2, hourly care just under 10 hours per week.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 9.99
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_time_category: HOURLY
+
+- name: Case 3, part-time care at exactly 10 hours per week.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 10
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_time_category: PART_TIME
+
+- name: Case 4, part-time care just under 33 hours per week.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 32.99
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_time_category: PART_TIME
+
+- name: Case 5, full-time care at exactly 33 hours per week.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 33
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_time_category: FULL_TIME
+
+- name: Case 6, full-time care at 40 hours per week.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 40
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_time_category: FULL_TIME

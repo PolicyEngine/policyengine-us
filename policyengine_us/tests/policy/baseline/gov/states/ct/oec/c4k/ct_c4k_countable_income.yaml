@@ -286,3 +286,25 @@
     # Earnings-only exclusion per 17b-749-05(b)(2)(E); unearned income
     # of minors is counted under 17b-749-05(b)(1)(A).
     ct_c4k_countable_income: 2_500
+
+- name: Case 13, multiple adult earned income sources are counted.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 35
+        employment_income: 24_000
+        self_employment_income: 6_000
+      child:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CT
+  output:
+    # (24,000 + 6,000) / 12 = 2,500
+    ct_c4k_countable_income: 2_500

@@ -1,0 +1,61 @@
+description: San Bernardino County counts these unearned income sources in full under the General Relief program.
+values:
+  2021-06-01:
+    # In-kind income and vendor payments not given directly to the customer
+    # are not counted as income since 6/1/2021 (GRPHB HL #7358, cover
+    # transmittal change summary), hence their absence from this list; vendor
+    # payments given to the customer remain countable unearned income.
+    # Social Security retirement, survivors, and disability benefits.
+    - social_security
+    # Unemployment Insurance Benefits.
+    - unemployment_compensation
+    # State Disability Insurance.
+    - ca_state_disability_insurance
+    # Disability and workers' compensation benefits.
+    - disability_benefits
+    - workers_compensation
+    # Veterans benefits.
+    - veterans_benefits
+    # Retirement and pension income.
+    - pension_income
+    - retirement_distributions
+    - railroad_benefits
+    # Support payments and other cash assistance.
+    - alimony_income
+    - child_support_received
+    - financial_assistance
+    - gi_cash_assistance
+    - strike_benefits
+    # Non-Social-Security survivor and life insurance benefits.
+    - survivor_benefits
+    - life_insurance_benefits
+    # Interest, dividends, capital gains, estates, and trusts.
+    - interest_income
+    - dividend_income
+    - capital_gains
+    - estate_income
+    # Net income from any kind of property is counted as unearned income.
+    - rental_income
+    - farm_rent_income
+    # Grants and scholarships count as unearned income. The A-3 income chart
+    # deducts the portion used for tuition, books, required supplies, and
+    # transportation to and from school; counting educational_assistance
+    # gross is an intentional approved approximation, so that carve-out is
+    # excluded from the model by design.
+    - educational_assistance
+    # SSI stays in this gross source list for completeness, but a person
+    # with SSI is barred from the assistance unit, and the countable-income
+    # formula excludes barred members' income at the unit level — the
+    # other program's budget covers the recipient, so neither their SSI
+    # nor their other income is charged to the AU. SSP
+    # (ca_state_supplement) and CAPI (ca_capi) recipients are barred the
+    # same way, so those unit-level benefits never enter AU income either.
+    - ssi
+
+metadata:
+  unit: list
+  period: year
+  label: San Bernardino County General Relief unearned income sources
+  reference:
+    - title: San Bernardino County GRPHB Handbook Letter 7358, Chapter A p. A-3 (income chart, unearned income rows)
+      href: https://sanbernardino.legistar1.com/sanbernardino/attachments/9e5e1b1a-e577-4f84-92c4-86574a9ff0cf.docx

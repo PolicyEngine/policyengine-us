@@ -1,0 +1,12 @@
+description: Maryland pins the State Median Income (SMI) base year used for Child Care Scholarship income eligibility when smi_freeze_in_effect is true. Maryland's fiscal year starts July 1.
+values:
+  2018-07-01: 2018
+  2022-07-01: 2021
+
+metadata:
+  unit: year
+  period: year
+  label: Maryland CCS SMI frozen year
+  reference:
+    - title: MSDE Child Care Scholarship Program Briefing (Feb 4, 2026), slide 21 - fiscal-year base years
+      href: https://mgaleg.maryland.gov/meeting_material/2026/w&m%20-%20134146885147130127%20-%20Briefing%20materials.pdf#page=21

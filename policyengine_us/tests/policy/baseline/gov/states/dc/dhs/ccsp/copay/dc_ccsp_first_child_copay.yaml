@@ -4,7 +4,7 @@
   input:
     dc_ccsp_countable_income: 3_000
     dc_ccsp_is_full_time: true
-    dc_ccsp_attending_days_per_month: 10
+    childcare_attending_days_per_month: 10
     dc_ccsp_is_youngest_child: true
     spm_unit_size: 2
   output:
@@ -16,7 +16,7 @@
   input:
     dc_ccsp_countable_income: 3_000
     dc_ccsp_is_full_time: true
-    dc_ccsp_attending_days_per_month: 10
+    childcare_attending_days_per_month: 10
     dc_ccsp_is_youngest_child: true
     spm_unit_size: 3
   output:
@@ -28,7 +28,7 @@
   input:
     dc_ccsp_countable_income: 3_000
     dc_ccsp_is_full_time: true
-    dc_ccsp_attending_days_per_month: 10
+    childcare_attending_days_per_month: 10
     dc_ccsp_is_youngest_child: false
     spm_unit_size: 2
   output:
@@ -40,7 +40,7 @@
   input:
     dc_ccsp_countable_income: 3_000
     dc_ccsp_is_full_time: false
-    dc_ccsp_attending_days_per_month: 10
+    childcare_attending_days_per_month: 10
     dc_ccsp_is_youngest_child: true
     spm_unit_size: 2
   output:

@@ -1,0 +1,101 @@
+- name: Case 1, Illinois household in Cook County served by the Greater Chicago Food Depository.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    il_dhs_csfp_county_eligible: true
+
+- name: Case 2, Illinois household in a county served by the St. Louis Area Foodbank.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: ST_CLAIR_COUNTY_IL
+  output:
+    il_dhs_csfp_county_eligible: true
+
+- name: Case 3, Illinois household in a county served by the Tri-State Foodbank.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: PULASKI_COUNTY_IL
+  output:
+    il_dhs_csfp_county_eligible: true
+
+- name: Case 4, Illinois household in a Metro St. Louis county not listed by IDHS.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: CALHOUN_COUNTY_IL
+  output:
+    il_dhs_csfp_county_eligible: false
+
+- name: Case 5, Illinois household in central Illinois outside CSFP covered counties.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: SANGAMON_COUNTY_IL
+  output:
+    il_dhs_csfp_county_eligible: false
+
+- name: Case 6, Illinois household in the Chicago suburbs outside Cook County.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: IL
+        county_str: DUPAGE_COUNTY_IL
+  output:
+    il_dhs_csfp_county_eligible: false

@@ -1,0 +1,154 @@
+description: Whether the limited utility allowance includes telephone costs in this utility region under the Supplemental Nutrition Assistance Program.
+# Under 7 CFR 273.9(d)(6)(iii)(A)(3), including telephone (and/or internet)
+# costs in the limited utility allowance is a state option. Where a state
+# excludes telephone (false), a phone bill does not count toward the
+# two-utility LUA qualification and the state's separate telephone standard
+# is added on top of the LUA for households with phone costs.
+# A false value therefore bundles two state choices: dropping the phone bill
+# from the two-utility count AND stacking the telephone standard on the LUA,
+# as Missouri does. A state that excluded telephone but barred stacking would
+# need a separate switch; no such state has been found.
+# Researched against state manuals (cited in PR #9357): AL, AR, AZ, DE, FL,
+# GA, IA, ID, IL, IN, KS, KY, LA, MO, MS, NC, ND, NE, NH, NJ, NM, NV, OH, OK,
+# SC, SD, TN, TX, UT, WI, WV, WY. All other regions keep the federal default
+# (true) pending research.
+AK_C:
+  2010-01-01: true
+AK_N:
+  2010-01-01: true
+AK_NW:
+  2010-01-01: true
+AK_SC:
+  2010-01-01: true
+AK_SE:
+  2010-01-01: true
+AK_SW:
+  2010-01-01: true
+AL:
+  2010-01-01: true
+AR:
+  2010-01-01: true
+AZ:
+  2010-01-01: true
+CA:
+  2010-01-01: true
+CO:
+  2010-01-01: true
+CT:
+  2010-01-01: true
+DC:
+  2010-01-01: true
+DE:
+  2010-01-01: true
+FL:
+  2010-01-01: true
+GA:
+  2010-01-01: true
+GU:
+  2010-01-01: true
+HI:
+  2010-01-01: true
+IA:
+  2010-01-01: true
+ID:
+  2010-01-01: true
+IL:
+  2010-01-01: true
+IN:
+  2010-01-01: true
+KS:
+  2010-01-01: true
+KY:
+  2010-01-01: true
+LA:
+  2010-01-01: true
+MA:
+  2010-01-01: true
+MD:
+  2010-01-01: true
+ME:
+  2010-01-01: true
+MI:
+  2010-01-01: true
+MN:
+  2010-01-01: true
+MO:
+  # MO DSS manual 1115.035.25.15: the Non-Heating/Cooling Standard excludes
+  # telephone; "The telephone standard may be used with the NHCS or LUA."
+  # Note Missouri's own "Lower Utility Allowance (LUA)" term means its flat
+  # one-utility standard, not the federal two-utility LUA modeled here --
+  # the NHCS is Missouri's analog of this file's LUA concept.
+  2010-01-01: false
+MS:
+  2010-01-01: true
+MT:
+  2010-01-01: true
+NC:
+  2010-01-01: true
+ND:
+  2010-01-01: true
+NE:
+  2010-01-01: true
+NH:
+  2010-01-01: true
+NJ:
+  2010-01-01: true
+NM:
+  2010-01-01: true
+NV:
+  2010-01-01: true
+NY_NAS:
+  2010-01-01: true
+NY_NYC:
+  2010-01-01: true
+NY_ONY:
+  2010-01-01: true
+OH:
+  2010-01-01: true
+OK:
+  2010-01-01: true
+OR:
+  2010-01-01: true
+PA:
+  2010-01-01: true
+RI:
+  2010-01-01: true
+SC:
+  2010-01-01: true
+SD:
+  2010-01-01: true
+TN:
+  2010-01-01: true
+TX:
+  2010-01-01: true
+UT:
+  2010-01-01: true
+VA:
+  2010-01-01: true
+VI:
+  2010-01-01: true
+VT:
+  2010-01-01: true
+WA:
+  2010-01-01: true
+WI:
+  2010-01-01: true
+WV:
+  2010-01-01: true
+WY:
+  2010-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: SNAP limited utility allowance includes telephone
+  breakdown:
+  - snap_utility_region
+  reference:
+  - title: 7 CFR 273.9(d)(6)(iii)(A)(3)
+    href: https://www.ecfr.gov/current/title-7/section-273.9#p-273.9(d)(6)(iii)(A)(3)
+  - title: MO DSS Food Stamps manual 1115.035.25.15, Mandatory Utility Standards (Non-Heating/Cooling Standard and Telephone Standard)
+    href: https://dssmanuals.mo.gov/food-stamps/1115-000-00/1115-035-00/1115-035-25/1115-035-25-15/
+  - title: AZ DES CNAP manual FAA5.I.03.D, NA Utility Expenses and Allowances (telephone counts as one of the two LUA utilities)
+    href: https://dbmefaapolicy.azdes.gov/#page/FAA5/NA_Utility_Expenses_and_Allowances.html
+  - title: AR SNAP Certification Manual 6622, Basic Utility Allowance (telephone costs included in the BUA)
+    href: https://humanservices.arkansas.gov/wp-content/uploads/Recent-Rules-Filing-SNAP-6000-Deductions.pdf#page=29

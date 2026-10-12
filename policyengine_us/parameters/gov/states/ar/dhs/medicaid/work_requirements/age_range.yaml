@@ -1,0 +1,33 @@
+description: Arkansas requires adults within these age brackets to meet this Medicaid work requirement approximation under the Arkansas Works program.
+
+metadata:
+  threshold_unit: year
+  amount_unit: bool
+  period: year
+  type: single_amount
+  label: Arkansas Medicaid work requirement age threshold
+  reference:
+    - title: State Data for Medicaid Work Requirements in Arkansas | KFF
+      href: https://www.kff.org/medicaid/issue-brief/state-data-for-medicaid-work-requirements-in-arkansas/
+    - title: State Annual Report January-December 2018 | Arkansas Works Section 1115
+      href: https://www.medicaid.gov/Medicaid-CHIP-Program-Information/By-Topics/Waivers/1115/downloads/ar/Health-Care-Independence-Program-Private-Option/ar-works-annl-rpt-jan-dec-2018.pdf#page=11
+
+brackets:
+  - threshold:
+      2018-01-01: 0
+    amount:
+      2018-01-01: false
+  - threshold:
+      2018-01-01: 30
+    amount:
+      2018-01-01: true
+  - threshold:
+      2018-01-01: 50
+    amount:
+      2018-01-01: false
+
+# Annual approximation note:
+# - The 2018 phase-in covered ages 30-49.
+# - The 2019 19-29 phase-in is intentionally not modeled here because it was only
+#   partially rolled out before the court halted enforcement, which would overstate
+#   annual effects in default yearly data.

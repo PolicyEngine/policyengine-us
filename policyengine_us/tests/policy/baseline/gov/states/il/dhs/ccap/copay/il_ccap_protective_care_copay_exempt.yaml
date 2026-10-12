@@ -1,0 +1,33 @@
+- name: Case 1, homelessness qualifies for the protective care exemption.
+  period: 2026-01
+  input:
+    is_homeless: true
+    state_code: IL
+  output:
+    il_ccap_protective_care_copay_exempt: true
+
+- name: Case 2, protective services qualify for the protective care exemption.
+  period: 2026-01
+  input:
+    receives_or_needs_protective_services: true
+    state_code: IL
+  output:
+    il_ccap_protective_care_copay_exempt: true
+
+- name: Case 3, the Illinois override qualifies for the protective care exemption.
+  period: 2026-01
+  input:
+    il_ccap_protective_care_override: true
+    state_code: IL
+  output:
+    il_ccap_protective_care_copay_exempt: true
+
+- name: Case 4, a family with no protective care indicator is not exempt.
+  period: 2026-01
+  input:
+    is_homeless: false
+    receives_or_needs_protective_services: false
+    il_ccap_protective_care_override: false
+    state_code: IL
+  output:
+    il_ccap_protective_care_copay_exempt: false

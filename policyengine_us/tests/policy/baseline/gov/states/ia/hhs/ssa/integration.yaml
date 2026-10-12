@@ -1,0 +1,210 @@
+- name: Case 1, one blind spouse receives the categorical supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        is_blind: true
+      second:
+        age: 65
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: IA
+  output:
+    ia_ssa:
+    - 22
+    - 0
+- name: Case 2, two blind spouses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        is_blind: true
+      second:
+        age: 65
+        is_blind: true
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: IA
+  output:
+    ia_ssa:
+    - 22
+    - 22
+- name: Case 3, dependent-person grant is once per eligible couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        ia_ssa_category: DEPENDENT_PERSON
+      second:
+        age: 65
+        ia_ssa_category: DEPENDENT_PERSON
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: IA
+  output:
+    ia_ssa:
+    - 259
+    - 259
+- name: Case 4, mixed blind dependent-person couple follows state manual.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        ia_ssa_category: DEPENDENT_PERSON
+        is_blind: true
+      second:
+        age: 65
+        ia_ssa_category: DEPENDENT_PERSON
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: IA
+  output:
+    ia_ssa:
+    - 270
+    - 270
+- name: Case 5, family-life home eligible couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        ia_ssa_category: FAMILY_LIFE_HOME
+      second:
+        age: 65
+        ia_ssa_category: FAMILY_LIFE_HOME
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: IA
+  output:
+    ia_ssa:
+    - 410.5
+    - 410.5
+- name: Case 6, in-home care counts ineligible spouse income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+      second:
+        age: 40
+        social_security_retirement: 20400
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: IA
+  output:
+    ia_ssa:
+    - 191
+    - 0
+- name: Case 7, in-home couple gets only one earnings disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        employment_income: 24000
+      second:
+        age: 65
+        ia_ssa_category: IN_HOME_CARE
+        ia_ssa_ihhrc_monthly_cost: 400
+        employment_income: 12000
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: IA
+  output:
+    ia_ssa:
+    - 395
+    - 395
+- name: Case 8, annual blind allowance and SNAP income.
+  period: '2026'
+  absolute_error_margin: 0.01
+  input:
+    age: 65
+    state_code: IA
+    is_blind: true
+  output:
+    ia_ssa: 264
+    snap_unearned_income: 12192
+- name: Iowa in-home reimbursement is excluded while blind cash is counted
+  period: '2026'
+  absolute_error_margin: 0.01
+  input:
+    state_code: IA
+    age: 65
+    is_blind: true
+    ia_ssa_category: IN_HOME_CARE
+    ia_ssa_ihhrc_monthly_cost: 4800
+  output:
+    ia_ssa: 5064
+    snap_unearned_income: 12192
+    hud_unearned_income: 12192

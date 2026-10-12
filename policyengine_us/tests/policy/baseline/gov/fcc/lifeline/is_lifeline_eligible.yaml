@@ -8,7 +8,9 @@
   input:
     fcc_fpg_ratio: 1.5
     snap: 0
-    medicaid: 0
+    ssi: 0
+    medicaid_enrolled: false
+    receives_housing_assistance: false
   output:
     is_lifeline_eligible: false
 
@@ -17,7 +19,7 @@
   input:
     fcc_fpg_ratio: 1.5
     snap: 100
-    medicaid: 0
+    medicaid_enrolled: false
   output:
     is_lifeline_eligible: true
 
@@ -29,6 +31,10 @@
     head_start: false
     fdpir: 0
     tanf: 0
+    snap: 0
+    ssi: 0
+    medicaid_enrolled: false
+    receives_housing_assistance: false
   output:
     is_lifeline_eligible: false
 
@@ -48,7 +54,83 @@
   input:
     fcc_fpg_ratio: 1.5
     snap: 0
-    medicaid: 0
+    medicaid_enrolled: false
     state_code: TX
   output:
+    is_lifeline_eligible: true
+
+- name: Family reporting SNAP receipt with a zero modeled allotment is eligible
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    snap: 0
+    receives_snap: true
+    medicaid_enrolled: false
+  output:
+    is_lifeline_eligible: true
+
+- name: Family reporting SSI receipt with a zero modeled payment is eligible
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    snap: 0
+    ssi: 0
+    receives_ssi: true
+    medicaid_enrolled: false
+  output:
+    is_lifeline_eligible: true
+
+- name: Tribal family reporting TANF receipt with a zero modeled benefit is eligible
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    is_on_tribal_land: true
+    head_start: false
+    fdpir: 0
+    tanf: 0
+    receives_tanf: true
+  output:
+    is_lifeline_eligible: true
+
+- name: Tribal family reporting SSI receipt is eligible through the standard programs
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    is_on_tribal_land: true
+    head_start: false
+    fdpir: 0
+    tanf: 0
+    snap: 0
+    ssi: 0
+    receives_ssi: true
+    medicaid_enrolled: false
+  output:
+    # 47 CFR 54.409(b): Tribal households keep the standard routes in 54.409(a).
+    is_lifeline_eligible: true
+
+- name: Family reporting Federal Public Housing Assistance receipt with income >135% of FPG is eligible
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    snap: 0
+    ssi: 0
+    medicaid_enrolled: false
+    receives_housing_assistance: true
+  output:
+    is_lifeline_eligible: true
+
+- name: Tribal family reporting Federal Public Housing Assistance receipt is eligible through the standard programs
+  period: 2022
+  input:
+    fcc_fpg_ratio: 1.5
+    is_on_tribal_land: true
+    head_start: false
+    fdpir: 0
+    tanf: 0
+    snap: 0
+    ssi: 0
+    medicaid_enrolled: false
+    receives_housing_assistance: true
+  output:
+    # 47 CFR 54.409(b): Tribal households keep the standard routes in 54.409(a).
     is_lifeline_eligible: true

@@ -1,0 +1,1 @@
+Montana's child and dependent care expense deduction and the charitable deduction used to test federal itemization now divide a couple's amount between spouses filing separately on the same form with the itemized-deduction spouse allocation rate parameter, as the actual itemized deduction already does, rather than a hard-coded half.

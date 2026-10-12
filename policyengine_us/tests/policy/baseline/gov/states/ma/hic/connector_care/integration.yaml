@@ -1,0 +1,325 @@
+# Integration tests for Massachusetts ConnectorCare (PY2026 premium wrap).
+#
+# These exercise the full chain: aca_magi_fraction (income gate) and
+# is_aca_ptc_eligible (member gate) -> ma_connector_care_member_eligible ->
+# ma_connector_care_eligible -> ma_connector_care (residual subsidy) ->
+# healthcare_benefit_value (household resource aggregation).
+#
+# In Scenarios 1-5 slcsp, aca_ptc, and aca_magi_fraction are supplied directly
+# (slcsp as an annual value) so every expected value is fully hand-verifiable.
+# slcsp is a MONTH variable; supplying it at the YEAR period sets the annual sum.
+# Scenario 6 instead derives aca_magi_fraction, aca_ptc, and is_aca_ptc_eligible
+# from raw employment_income (only slcsp is supplied), per the Code Integrity note
+# that provided-input tests can mask derivation bugs.
+#
+# The ma_connector_care -> healthcare_benefit_value flow-through is verified in
+# tests/policy/baseline/household/healthcare_benefit_value.yaml, where the sibling
+# cost proxies (medicaid_cost, msp_cost, chip, assigned_aca_ptc, ...) are zeroed so
+# the wrap is isolated; here those proxies derive to nonzero values, so this file
+# asserts only the program-specific outputs.
+#
+# Amount formula recap:
+#   n_members      = count of ma_connector_care_member_eligible (= is_aca_ptc_eligible)
+#   per_person_mo  = enrollee_premium.calc(aca_magi_fraction)   # single_amount bracket
+#   contribution   = 12 * per_person_mo * n_members
+#   subsidy        = max(0, slcsp_annual - aca_ptc - contribution)
+#   amount         = where(ma_connector_care_eligible, subsidy, 0)
+# Bracket (per person per month): [1.0,1.5001)->0, [1.5001,2.0001)->53,
+#   [2.0001,2.5001)->103, [2.5001,3.0001)->152, [3.0001,inf)->235.
+
+- name: Scenario 1, single adult at 175% FPL, band 2B ($53/mo), positive residual.
+  # n_members=1, band 2B -> per_person 53. contribution = 12*53 = 636.
+  # subsidy = 7_200 - 5_000 - 636 = 1_564. Eligible (1.75 in [1.0, 4.0], MA, APTC member).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.75
+        slcsp: 7_200
+        aca_ptc: 5_000
+        assigned_aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 1.75
+    slcsp: 7_200  # annual sum of the MONTH variable
+    aca_ptc: 5_000
+    ma_connector_care_member_eligible: true
+    ma_connector_care_eligible: true
+    ma_connector_care: 1_564
+
+- name: Scenario 2, single adult at 140% FPL, band 2A ($0/mo).
+  # band 2A -> per_person 0. contribution 0. subsidy = 6_000 - 5_500 - 0 = 500.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+        slcsp: 6_000
+        aca_ptc: 5_500
+        assigned_aca_ptc: 5_500
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 1.4
+    slcsp: 6_000
+    aca_ptc: 5_500
+    ma_connector_care_member_eligible: true
+    ma_connector_care_eligible: true
+    ma_connector_care: 500
+
+- name: Scenario 3, couple both APTC-eligible at 175% FPL (n=2).
+  # n_members=2, band 2B -> per_person 53. contribution = 12*53*2 = 1_272.
+  # subsidy = 7_200 - 5_000 - 1_272 = 928.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 1.75
+        slcsp: 7_200
+        aca_ptc: 5_000
+        assigned_aca_ptc: 5_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    aca_magi_fraction: 1.75
+    slcsp: 7_200
+    aca_ptc: 5_000
+    ma_connector_care_member_eligible: true
+    ma_connector_care_eligible: true
+    ma_connector_care: 928
+
+- name: Scenario 4, single adult at 350% FPL, band 3C ($235/mo), positive residual.
+  # band 3C -> per_person 235. contribution = 12*235 = 2_820.
+  # subsidy = 8_000 - 4_000 - 2_820 = 1_180.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.5
+        slcsp: 8_000
+        aca_ptc: 4_000
+        assigned_aca_ptc: 4_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 3.5
+    slcsp: 8_000
+    aca_ptc: 4_000
+    ma_connector_care_member_eligible: true
+    ma_connector_care_eligible: true
+    ma_connector_care: 1_180
+
+- name: Scenario 5, high-band household hits the zero floor (no state wrap).
+  # band 3C -> per_person 235. contribution = 12*235 = 2_820.
+  # slcsp - aca_ptc - contribution = 5_000 - 3_000 - 2_820 = -820 -> floored to 0.
+  # Eligible but the wrap is 0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.5
+        slcsp: 5_000
+        aca_ptc: 3_000
+        assigned_aca_ptc: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 3.5
+    slcsp: 5_000
+    aca_ptc: 3_000
+    ma_connector_care_member_eligible: true
+    ma_connector_care_eligible: true
+    ma_connector_care: 0
+
+- name: Scenario 6, single adult deriving the ACA chain from raw employment income.
+  # Only slcsp (8_000 annual) is supplied; aca_magi_fraction, aca_ptc, and
+  # is_aca_ptc_eligible all compute from employment_income = 30_000. This proves
+  # the derivation chain, not just provided inputs.
+  #   aca_magi_fraction derives to 1.91 (30k MAGI over the 2025 single FPG).
+  #   is_aca_ptc_eligible derives to true -> ma_connector_care_member_eligible true.
+  #   aca_ptc derives to 6_150.14 (required contribution against the 8_000 benchmark).
+  #   band 2B (1.91 in [1.5001, 2.0001)) -> per_person 53. contribution = 12*53 = 636.
+  #   subsidy = 8_000 - 6_150.14 - 636 = 1_213.86.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        slcsp: 8_000
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    aca_magi_fraction: 1.91
+    is_aca_ptc_eligible: true
+    ma_connector_care_member_eligible: true
+    aca_ptc: 6_150.14
+    ma_connector_care_eligible: true
+    ma_connector_care: 1_213.86
+
+- name: Scenario 7, non-Massachusetts household receives no wrap.
+  # Identical income profile to Scenario 1 but state_code CA -> defined_for gates
+  # ma_connector_care and its eligibility flags to 0/false.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.75
+        slcsp: 7_200
+        aca_ptc: 5_000
+        assigned_aca_ptc: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ma_connector_care_member_eligible: false
+    ma_connector_care_eligible: false
+    ma_connector_care: 0
+
+- name: Scenario 8, large family of five APTC-eligible members at 350% FPL (n=5).
+  # Entity-size edge end-to-end: the per-person contribution scales by member
+  # count at the top $235 band. n_members=5, band 3C -> per_person 235.
+  # contribution = 12*235*5 = 14_100. subsidy = 20_000 - 0 - 14_100 = 5_900.
+  # Eligible (3.5 in [1.0, 4.0], MA, five APTC members).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+      person3:
+        age: 20
+        is_aca_ptc_eligible: true
+      person4:
+        age: 18
+        is_aca_ptc_eligible: true
+      person5:
+        age: 17
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+        aca_magi_fraction: 3.5
+        slcsp: 20_000
+        aca_ptc: 0
+        assigned_aca_ptc: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MA
+  output:
+    aca_magi_fraction: 3.5
+    slcsp: 20_000
+    aca_ptc: 0
+    ma_connector_care_member_eligible: true
+    ma_connector_care_eligible: true
+    ma_connector_care: 5_900
+
+- name: Scenario 9, married couple deriving the multi-member ACA chain from raw income.
+  # Complements Scenario 6 (single, n=1) with a two-member derivation: only slcsp
+  # (12_000 annual) is supplied; aca_magi_fraction, aca_required_contribution_percentage,
+  # aca_ptc, and is_aca_ptc_eligible all compute from combined employment_income and the
+  # two-person household size, so the per-member multiplier is exercised on a derived chain.
+  #   2025 CONTIGUOUS_US FPG (prior year, per aca_magi_fraction) for size 2:
+  #     15_650 + 5_500 = 21_150.
+  #   aca_magi = 40_000 (wage-only MFJ, AGI == employment_income).
+  #   aca_magi_fraction = floor(100 * 40_000 / 21_150) / 100 = floor(189.12) / 100 = 1.89.
+  #   applicable figure (2026 bracket [1.50, 2.00): initial 0.0419, final 0.066):
+  #     position = (1.89 - 1.50) / 0.50 = 0.78 -> 0.0419 + 0.78 * 0.0241 = 0.060698.
+  #   aca_ptc = 12_000 - 40_000 * 0.060698 = 12_000 - 2_427.92 = 9_572.08.
+  #   is_aca_ptc_eligible derives true for both spouses (in-band, not MFS, pays ACA premium)
+  #     -> ma_connector_care_member_eligible true for each -> n_members = 2.
+  #   band 2B (1.89 in [1.5001, 2.0001)) -> per_person 53. contribution = 12 * 53 * 2 = 1_272.
+  #   subsidy = max(0, 12_000 - 9_572.08 - 1_272) = 1_155.92 (positive residual, no floor).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 20_000
+      person2:
+        age: 43
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        slcsp: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    people:
+      person1:
+        is_aca_ptc_eligible: true
+        ma_connector_care_member_eligible: true
+      person2:
+        is_aca_ptc_eligible: true
+        ma_connector_care_member_eligible: true
+    aca_magi_fraction: 1.89
+    aca_ptc: 9_572.08
+    ma_connector_care_eligible: true
+    ma_connector_care: 1_155.92

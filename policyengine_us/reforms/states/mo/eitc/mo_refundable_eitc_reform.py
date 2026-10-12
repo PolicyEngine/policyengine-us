@@ -20,7 +20,11 @@ def create_mo_refundable_eitc() -> Reform:
         defined_for = StateCode.MO
 
         def formula(tax_unit, period, parameters):
-            return tax_unit("mo_wftc", period)
+            # Use the potential (uncapped) WFTC so the full credit is paid as
+            # a refund; `mo_wftc` is capped at tax liability and would zero out
+            # the credit for the low-liability filers refundability is meant
+            # to help.
+            return tax_unit("mo_wftc_potential", period)
 
     class mo_non_refundable_wftc(Variable):
         value_type = float
@@ -43,7 +47,12 @@ def create_mo_refundable_eitc() -> Reform:
         defined_for = StateCode.MO
 
         def formula(tax_unit, period, parameters):
-            # Include the nonrefundable WFTC (0 when reform is in effect)
+            # Today `gov.states.mo.tax.income.credits.non_refundable` is
+            # just `[mo_wftc]`, so returning the (zeroed) reform replacement
+            # is equivalent to the baseline. If Missouri later adds a second
+            # nonrefundable credit, this formula would silently drop it —
+            # at that point switch to summing the full nonrefundable list
+            # with `mo_wftc` filtered out, mirroring the UT/OH fix pattern.
             return tax_unit("mo_non_refundable_wftc", period)
 
     class mo_refundable_credits(Variable):
@@ -53,14 +62,19 @@ def create_mo_refundable_eitc() -> Reform:
         unit = USD
         definition_period = YEAR
         defined_for = StateCode.MO
+        # The baseline variable computes via `adds`. We replace it with a
+        # formula, so clear the inherited computation modes to avoid mixing
+        # `formula` with `adds`/`subtracts` (rejected by the core engine).
+        adds = None
+        subtracts = None
 
         def formula(tax_unit, period, parameters):
-            # Standard refundable credits
-            other_refundable = add(
-                tax_unit,
-                period,
-                "gov.states.mo.tax.income.credits.refundable",
-            )
+            # Standard refundable credits, resolved to the list of variable
+            # names before passing to `add` (which iterates variable names).
+            refundable_credits = parameters(
+                period
+            ).gov.states.mo.tax.income.credits.refundable
+            other_refundable = add(tax_unit, period, refundable_credits)
             # Add refundable WFTC (positive when reform is in effect)
             refundable_wftc = tax_unit("mo_refundable_wftc", period)
             return other_refundable + refundable_wftc

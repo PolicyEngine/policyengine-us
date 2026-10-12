@@ -1,0 +1,13 @@
+description: New York provides the real property tax credit as a flat amount looked up by federal adjusted gross income when this is true, under the New York State personal income tax.
+values:
+  2000-01-01: false
+  2025-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: New York real property tax credit uses flat amount table
+  reference:
+    - title: Tax Law Section 606(e)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: 2025 Form IT-214 Tables A and B
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it214_fill_in.pdf#page=3

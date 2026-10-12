@@ -1,0 +1,112 @@
+# California Alternative Payment Program (gov/states/ca/cdss/child_care/capp).
+# Child care subsidy for families that have never received CalWORKs, are not
+# currently receiving it, have income <= 85% of SMI, meet the work
+# requirement (earnings), and have a child aged 12 or younger. The payment is
+# min(RMR ceiling, child care expenses) minus the family fee (waived below
+# 75% of SMI).
+- name: ca_capp_working_family_subsidy (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        immigration_status_str: CITIZEN
+        # Earnings meet the work requirement; $2,500/month keeps the family
+        # over the CalWORKs applicant income test (so ca_tanf = 0) but well
+        # below 85% of the 2-person SMI.
+        employment_income_before_lsr: 30_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        # $500/month of child care expenses, below the age-2-to-5
+        # CHILD_CARE_CENTER monthly part-time RMR ceiling of $793.85.
+        pre_subsidy_childcare_expenses: 6_000
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+    households:
+      household:
+        members: &id001
+        - head
+        - child
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+        in_la: true
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: false
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child:
+        members:
+        - child
+  output:
+    spm_units:
+      spm_unit:
+        # min(793.85 ceiling, 500 expense) = 500/month; income 2,500/month is
+        # below 75% of SMI so the family fee is waived: 500 x 12 = 6,000.
+        ca_capp: 6_000
+        ca_capp_eligible: true
+- name: ca_capp_former_calworks_family_ineligible (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        pre_subsidy_childcare_expenses: 6_000
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: false
+    households:
+      household:
+        members: &id002
+        - head
+        - child
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+        in_la: true
+    spm_units:
+      spm_unit:
+        members: *id002
+        # Families that EVER received CalWORKs belong in Stage 2/3, not CAPP.
+        was_calworks_recipient: true
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child:
+        members:
+        - child
+  output:
+    spm_units:
+      spm_unit:
+        ca_capp: 0
+        ca_capp_eligible: false

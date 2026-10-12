@@ -1,0 +1,175 @@
+- name: The neediness budget deducts the $90 work expense and child care but not $30 plus one-third
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        employment_income_before_lsr: 5_184  # $432/month
+        mo_tanf_is_non_parent_caretaker: true
+      spouse:
+        age: 54
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, spouse, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, spouse, grandchild]
+        childcare_expenses: 960  # $80/month
+    households:
+      household:
+        members: [grandparent, spouse, grandchild]
+        state_code: MO
+  output:
+    # DSS Manual 0210.010.10 example: $432 - $90 = $342 - $80 = $262.
+    mo_tanf_non_parent_caretaker_countable_income: 262
+    # $262 is below the size-2 standard of $678.
+    mo_tanf_non_parent_caretaker_needy: true
+
+- name: The neediness budget counts the spouse's earnings and unearned income in full
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        unemployment_compensation: 3_600  # $300/month
+        mo_tanf_is_non_parent_caretaker: true
+      spouse:
+        age: 54
+        employment_income_before_lsr: 6_000  # $500/month
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 9
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 2_400  # a child's earnings stay out
+    tax_units:
+      tax_unit:
+        members: [grandparent, spouse, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, spouse, grandchild]
+    households:
+      household:
+        members: [grandparent, spouse, grandchild]
+        state_code: MO
+  output:
+    # $300 + ($500 - $90) = $710, above the size-2 standard of $678.
+    mo_tanf_non_parent_caretaker_countable_income: 710
+    mo_tanf_non_parent_caretaker_needy: false
+
+- name: Households without a non-parent caretaker have no neediness budget
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        unemployment_compensation: 3_600
+      child:
+        age: 9
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_tanf_non_parent_caretaker_budget_member: [false, false]
+    mo_tanf_non_parent_caretaker_countable_income: 0
+    mo_tanf_non_parent_caretaker_needy: false
+
+- name: An active participant's neediness budget still deducts only the work expense and child care
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        employment_income_before_lsr: 5_184  # $432/month
+        mo_tanf_is_non_parent_caretaker: true
+      spouse:
+        age: 54
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, spouse, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, spouse, grandchild]
+        childcare_expenses: 960  # $80/month
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [grandparent, spouse, grandchild]
+        state_code: MO
+  output:
+    # The two-thirds disregard for participants (13 CSR 40-2.310(9)(D)) is
+    # not an expense of producing income, so the budget stays at $262.
+    mo_tanf_non_parent_caretaker_countable_income: 262
+
+- name: Budget income equal to the standard of need shows no need
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        unemployment_compensation: 8_136  # $678/month
+        mo_tanf_is_non_parent_caretaker: true
+      spouse:
+        age: 54
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 9
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, spouse, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, spouse, grandchild]
+    households:
+      household:
+        members: [grandparent, spouse, grandchild]
+        state_code: MO
+  output:
+    # $678 - $678 = $0 leaves no deficit, so the budget does not "show
+    # need" (DSS Manual 0210.005.35).
+    mo_tanf_non_parent_caretaker_countable_income: 678
+    mo_tanf_non_parent_caretaker_needy: false
+
+- name: Budget income one dollar below the standard of need shows need
+  period: 2026-01
+  input:
+    people:
+      grandparent:
+        age: 55
+        unemployment_compensation: 8_124  # $677/month
+        mo_tanf_is_non_parent_caretaker: true
+      spouse:
+        age: 54
+        mo_tanf_is_non_parent_caretaker: true
+      grandchild:
+        age: 9
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandparent, spouse, grandchild]
+    spm_units:
+      spm_unit:
+        members: [grandparent, spouse, grandchild]
+    households:
+      household:
+        members: [grandparent, spouse, grandchild]
+        state_code: MO
+  output:
+    mo_tanf_non_parent_caretaker_countable_income: 677
+    mo_tanf_non_parent_caretaker_needy: true

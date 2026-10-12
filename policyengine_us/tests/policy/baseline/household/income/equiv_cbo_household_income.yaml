@@ -1,0 +1,23 @@
+- name: Equivalized CBO before-tax income
+  period: 2026
+  input:
+    cbo_household_income_before_transfers_and_taxes: 120
+    household_size: 4
+  output:
+    equiv_cbo_household_income_before_transfers_and_taxes: 60
+
+- name: Equivalized CBO after-tax income
+  period: 2026
+  input:
+    cbo_household_income_after_transfers_and_taxes: 180
+    household_size: 9
+  output:
+    equiv_cbo_household_income_after_transfers_and_taxes: 60
+
+- name: Equivalized CBO household income alias
+  period: 2026
+  input:
+    cbo_household_income: 300
+    household_size: 9
+  output:
+    equiv_cbo_household_income: 100

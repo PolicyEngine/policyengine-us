@@ -1,0 +1,202 @@
+# 18 NYCRR 415.2 opening paragraph: for two-caretaker families, each caretaker
+# must meet one of the eligibility criteria. 415.2(a)(2)(v)(a) serves a family
+# whose caretaker is engaged in work, and (v)(d) one attending an educational or
+# vocational activity. weekly_hours_worked_before_lsr defaults to 0, and
+# meets_ccdf_activity_test is set to false explicitly wherever the case must
+# turn on the modeled work, student or public assistance branch alone.
+- name: Case 1, a single working caretaker is eligible without the fallback input.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+
+- name: Case 2, a single caretaker with no activity is ineligible.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false
+
+# 415.1(o)(1)(i) leaves the minimum weekly hours to the Office, so any hours
+# of work count.
+- name: Case 3, one hour of work a week counts as engaged in work.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked_before_lsr: 1
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+
+- name: Case 4, a two-caretaker family with one idle caretaker is ineligible.
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 32
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: NY
+  output:
+    # The 415.2 opening paragraph requires each caretaker to meet a criterion.
+    ny_ccap_activity_eligible: false
+
+- name: Case 5, a two-caretaker family with both caretakers working is eligible.
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 32
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 30
+        weekly_hours_worked_before_lsr: 20
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+
+- name: Case 6, a working caretaker and a full-time student caretaker are eligible.
+  period: 2025-01
+  input:
+    people:
+      parent1:
+        age: 32
+        weekly_hours_worked_before_lsr: 40
+      parent2:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: NY
+  output:
+    # 415.2(a)(2)(v)(d): educational and vocational activities are a reason
+    # for care.
+    ny_ccap_activity_eligible: true
+
+- name: Case 7, a public assistance family is eligible without modeled work hours.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        is_tanf_enrolled: true
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+
+- name: Case 8, the federal activity input covers pathways not modeled here.
+  period: 2025-01
+  input:
+    people:
+      parent:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [parent, child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: true
+
+- name: Case 9, a unit with no adult caretaker is ineligible on the work branch.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [child]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_activity_eligible: false

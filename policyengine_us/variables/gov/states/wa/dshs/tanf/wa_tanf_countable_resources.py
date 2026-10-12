@@ -7,6 +7,7 @@ class wa_tanf_countable_resources(Variable):
     label = "Countable resources for Washington TANF"
     unit = USD
     definition_period = YEAR
+    quantity_type = STOCK
     reference = (
         "https://app.leg.wa.gov/wac/default.aspx?cite=388-470-0045",
         "https://app.leg.wa.gov/wac/default.aspx?cite=388-470-0070",

@@ -1,0 +1,51 @@
+- name: Case 1, individual at the resource limit qualifies.
+  period: 2026-01
+  input:
+    state_code: MS
+    ssi_countable_resources: 24_000
+  output:
+    ms_wd_resource_eligible: true
+
+- name: Case 2, individual above the resource limit is ineligible.
+  period: 2026-01
+  input:
+    state_code: MS
+    ssi_countable_resources: 24_001
+  output:
+    ms_wd_resource_eligible: false
+
+- name: Case 3, couple at the resource limit qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ssi_countable_resources: 20_000
+      person2:
+        ssi_countable_resources: 6_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_wd_resource_eligible: [true, true]
+
+- name: Case 4, couple above the resource limit is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ssi_countable_resources: 20_000
+      person2:
+        ssi_countable_resources: 6_001
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    ms_wd_resource_eligible: [false, false]

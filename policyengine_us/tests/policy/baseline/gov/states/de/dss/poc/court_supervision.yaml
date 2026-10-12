@@ -1,0 +1,174 @@
+# Authority: https://mychildde.org/wp-content/uploads/4.15.26-ACF-118-CCDF-FFY-2025-2027-For-Delaware.pdf#page=21
+# The FFY 2019-2021, 2022-2024 and 2025-2027 plans each elect the 45 CFR
+# 98.20(a)(1)(ii) court-supervision age extension through 18; the FFY
+# 2016-2018 plan declined it.
+# Ordinary income, activity, immigration and copay rules still apply.
+
+- name: Case 1, court status alone qualifies under the plan election at age 13.
+  period: 2026-01
+  input:
+    state_code: DE
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    de_poc_eligible_child: true
+
+- name: Case 2, court status alone qualifies under the plan election at age 18.
+  period: 2026-01
+  input:
+    state_code: DE
+    age: 18
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    de_poc_eligible_child: true
+
+- name: Case 3, court status alone at age 19 is past the under-19 ceiling.
+  period: 2026-01
+  input:
+    state_code: DE
+    age: 19
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    de_poc_eligible_child: false
+
+- name: Case 4, the court route applies under the FFY 2019-2021 plan.
+  period: 2019-01
+  input:
+    state_code: DE
+    age: 13
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    de_poc_eligible_child: true
+
+- name: Case 5, the court route applies under the FFY 2022-2024 plan.
+  period: 2022-01
+  input:
+    state_code: DE
+    age: 17
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    de_poc_eligible_child: true
+
+- name: Case 6, court-supervised 16-year-old in an income-eligible working family pays an ordinary copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        employment_income: 36_000
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_under_court_supervision: true
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # The court route only extends the age limit; the family still passes
+    # the ordinary income and activity tests and pays the 7% copay.
+    # Countable income: $36,000 / 12 = $3,000.
+    # 2026 FPG, 2 persons: $15,960 + $5,680 = $21,640 / 12 = $1,803.33.
+    # Initial limit: min(200% FPG = $3,606.67, 85% SMI) >= $3,000.
+    # Activity: the parent has employment income.
+    # Copay: FPL ratio 3,000 / 1,803.33 = 1.66 > 1.5 waiver ceiling
+    # -> $3,000 * 0.07 = $210.
+    # Maximum: center, school age full time (8 hours/day >= 4) = $190/week
+    # * 52 / 12 = $823.33/month.
+    # Expenses: $12,000 / 12 = $1,000 > $823.33 -> capped at $823.33.
+    # Benefit: $823.33 - $210 = $613.33.
+    de_poc_eligible_child: [false, true]
+    de_poc_countable_income: 3_000
+    de_poc_income_eligible: true
+    de_poc_activity_eligible: true
+    de_poc_eligible: true
+    de_poc_age_group: [NONE, SCHOOL_AGE_FULL_TIME]
+    de_poc_maximum_weekly_benefit: [0, 190]
+    de_poc_copay: 210
+    de_poc: 613.33
+
+- name: Case 7, over-income family with a court-supervised child gets no benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240_000
+      person2:
+        age: 16
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_disabled: false
+        is_under_court_supervision: true
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Countable income $240,000 / 12 = $20,000 > 200% FPG ($3,606.67).
+    # Court supervision alone does not waive the income test.
+    de_poc_eligible_child: [false, true]
+    de_poc_income_eligible: false
+    de_poc_eligible: false
+    de_poc: 0
+
+- name: Case 8, court supervision combines with disability and applies below 13.
+  period: 2026-01
+  input:
+    state_code: [DE, DE, DE, DE]
+    age: [12, 17, 18, 19]
+    is_tax_unit_dependent: [true, true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, true, true, true]
+    is_under_court_supervision: [true, true, true, true]
+  output:
+    de_poc_eligible_child: [true, true, true, false]
+
+- name: Case 9, the court route does not apply under the FFY 2016-2018 plan.
+  period: 2018-01
+  input:
+    state_code: DE
+    age: 15
+    is_tax_unit_dependent: true
+    immigration_status: CITIZEN
+    is_disabled: false
+    is_under_court_supervision: true
+  output:
+    de_poc_eligible_child: false

@@ -1,0 +1,108 @@
+# Unit tests for mt_child_care_subsidies (SPMUnit, YEAR).
+# State aggregator that sums the monthly mt_ccap benefit across the year and feeds
+# the federal child_care_subsidies total. With constant monthly inputs the annual
+# value is 12 * the monthly mt_ccap benefit.
+- name: Case 1, eligible single-child household annual subsidy.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # monthly mt_ccap = 1,190 (see mt_ccap.yaml Case 1) -> annual 12 * 1,190 = 14,280
+    mt_child_care_subsidies: 14_280
+
+- name: Case 2, ineligible household receives no annual subsidy.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 70_000  # above 200% FPG for size 2
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_child_care_subsidies: 0
+
+# --- Edge cases: TANF flat-$10 copay and a non-Montana household, both through the
+# annual aggregator. ---
+- name: Case 3, TANF-enrolled household annual subsidy (flat $10 copay flows through).
+  period: 2026
+  absolute_error_margin: 0.1
+  # monthly mt_ccap = 1,200 (max rate 1,210 - flat $10 TANF copay); annual = 12 * 1,200.
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_child_care_subsidies: 14_400  # 12 * 1,200
+
+- name: Case 4, identical eligible household outside Montana receives no subsidy.
+  period: 2026
+  absolute_error_margin: 0.1
+  # defined_for = StateCode.MT zeroes the aggregator for non-MT households.
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        mt_ccap_provider_type: CENTER
+        mt_ccap_care_time: FULL_TIME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY  # not Montana
+  output:
+    mt_child_care_subsidies: 0

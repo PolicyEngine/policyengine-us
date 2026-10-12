@@ -1,0 +1,18 @@
+description: San Bernardino County exempts this amount of each vehicle's net market value from countable personal property under the General Relief program.
+# Applies to each vehicle; the balance counts toward the $500 personal
+# property limit (the county's rule evaluating a vehicle used as the
+# principal residence under the real property limit instead is not
+# modeled). Adopted by GRPHB Handbook
+# Letter #7356 (Board approved January 29, 2021). HL #7358's reissued
+# property table omits the Vehicles row without listing a repeal, so the
+# exemption is carried forward.
+values:
+  2021-06-01: 3_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: San Bernardino County General Relief vehicle exemption
+  reference:
+    - title: San Bernardino County GRPHB Handbook Letter 7356, Chapter A p. A-5 and cover transmittal change summary (vehicle exemption)
+      href: https://sanbernardino.legistar1.com/sanbernardino/attachments/39fc00fa-7256-4849-9f07-7710402996f1.docx

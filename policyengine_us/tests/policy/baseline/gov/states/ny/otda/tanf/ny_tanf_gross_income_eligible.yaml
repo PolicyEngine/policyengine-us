@@ -18,9 +18,10 @@
       spm_unit:
         members: [person1, person2]
   output:
-    # Need standard for 2 people = $252/month
-    # 185% threshold = $252 × 1.85 = $466.20
-    # Gross income = $400/month <= $466.20 → passes
+    # Need standard for 2 people, no shelter:
+    # Basic ($252) + home energy ($22.50) + supp. energy ($17) = $291.50
+    # 185% threshold: $291.50 × 1.85 = $539.275
+    # Gross income: $400/month <= $539.275 → passes
     ny_tanf_gross_income_eligible: true
 
 - name: Case 2, pre-reform gross income above 185% threshold.
@@ -29,7 +30,7 @@
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 6_000
+        employment_income_before_lsr: 7_200
       person2:
         age: 5
     households:
@@ -40,9 +41,9 @@
       spm_unit:
         members: [person1, person2]
   output:
-    # Need standard for 2 people = $252/month
-    # 185% threshold = $252 × 1.85 = $466.20
-    # Gross income = $500/month > $466.20 → fails
+    # Need standard for 2 people, no shelter: $291.50
+    # 185% threshold: $291.50 × 1.85 = $539.275
+    # Gross income: $600/month > $539.275 → fails
     ny_tanf_gross_income_eligible: false
 
 - name: Case 3, post-reform gross income test still calculated.
@@ -63,6 +64,8 @@
         members: [person1, person2]
   output:
     # Even post-reform, this variable calculates the gross income test
-    # (ny_tanf_income_eligible handles whether to use it)
-    # Gross income = $400/month <= $466.20 → passes
+    # (ny_tanf_income_eligible handles whether to use it).
+    # Need standard for 2 people, no shelter: $291.50
+    # 185% threshold: $539.275
+    # Gross income $400/month <= $539.275 → passes
     ny_tanf_gross_income_eligible: true

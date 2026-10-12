@@ -1,0 +1,120 @@
+# CalWORKs Stage 3 child care partner edge cases (monthly program).
+# Stage 3 picks up after Stage 2 is exhausted: former recipient, off cash aid,
+# MORE than 24 months since exit, income <= 85% SMI, work need, eligible child.
+- name: ca_calworks_stage_3_just_past_stage_2_limit_eligible (ca)
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 9_600
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id001
+        was_calworks_recipient: true
+        months_since_calworks_exit: 25
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # 25 months since exit (> 24) -> Stage 2 exhausted -> Stage 3.
+        # Off cash aid ($2,500/mo earned > MBSAC route). Fee-exempt (< 75% SMI).
+        # Payment: min($1,253.26 RMR ceiling, $9,600 / 12 = $800 expenses) = $800
+        # (actual expenses bind).
+        ca_calworks_stage_3_eligible: true
+        ca_calworks_stage_3: 800.0
+- name: ca_calworks_stage_3_within_stage_2_window_ineligible (ca)
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 30_000
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        ca_calworks_child_care_provider_category: CHILD_CARE_CENTER
+        ca_calworks_child_care_time_category: MONTHLY
+        ca_calworks_child_care_full_time: true
+        pre_subsidy_childcare_expenses: 9_600
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id002
+        was_calworks_recipient: true
+        months_since_calworks_exit: 24
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    spm_units:
+      spm_unit:
+        # 24 months since exit is still within the Stage 2 window (<= 24) ->
+        # Stage 3 has not started (categorical boundary, opposite side of the
+        # Stage 3 eligible case).
+        ca_calworks_stage_3_eligible: false
+        ca_calworks_stage_3: 0.0

@@ -12,8 +12,10 @@ class is_tanf_non_cash_hheod(Variable):
         state = spm_unit.household("state_code_str", period)
         bbce = parameters(period).gov.hhs.tanf.non_cash
         requires_all = bbce.requires_all_for_hheod[state]
+        # Excluded members are not household members under the 7 CFR 271.2
+        # definition, so they do not confer elderly or disabled status.
         return where(
             requires_all,
             spm_unit("has_all_usda_elderly_disabled", period),
-            spm_unit("has_usda_elderly_disabled", period),
+            spm_unit("has_snap_elderly_disabled_member", period),
         )

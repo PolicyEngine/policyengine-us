@@ -6,7 +6,7 @@ class eitc_demographic_eligible(Variable):
     entity = TaxUnit
     label = "Meets demographic eligibility for EITC"
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/32#c_1_A"
+    reference = "https://www.law.cornell.edu/uscode/text/26/32#c_1_A_ii_II"
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
@@ -24,4 +24,7 @@ class eitc_demographic_eligible(Variable):
         min_age = where(student, min_age_student, min_age_non_student)
         max_age = parameters.gov.irs.credits.eitc.eligibility.age.max(period)
         meets_age_requirements = (age >= min_age) & (age <= max_age)
-        return has_child | tax_unit.any(meets_age_requirements)
+        # IRC § 32(c)(1)(A)(ii)(II) applies the age test to the filer or,
+        # on a joint return, either spouse — never to dependents.
+        is_filer_or_spouse = ~person("is_tax_unit_dependent", period)
+        return has_child | tax_unit.any(meets_age_requirements & is_filer_or_spouse)

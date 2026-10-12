@@ -1,0 +1,13 @@
+description: Oregon limits initial income to this share of the federal poverty guideline under the Employment Related Day Care program.
+# Pre-2026-03 vintages of this limit are not encoded; the model applies this
+# value to earlier periods through parameter backdating.
+values:
+  2026-03-01: 2
+
+metadata:
+  unit: /1
+  period: year
+  label: Oregon ERDC initial income FPL rate
+  reference:
+    - title: OAR 414-175-0050(1)(b)(A)
+      href: https://secure.sos.state.or.us/oard/view.action?ruleNumber=414-175-0050

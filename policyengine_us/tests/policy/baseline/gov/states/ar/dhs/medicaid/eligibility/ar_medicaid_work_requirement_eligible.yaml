@@ -1,0 +1,67 @@
+- name: Case 1, Arkansas 2018 subject adult without hours or exemptions is ineligible under the approximation.
+  period: 2018
+  input:
+    age: 40
+    medicaid_category: ADULT
+    medicaid_income_level: 0.9
+    monthly_hours_worked: 0
+    state_code: AR
+  output:
+    ar_medicaid_work_requirement_eligible: false
+
+- name: Case 2, Arkansas 2018 subject adult meeting 80 monthly hours is eligible.
+  period: 2018
+  input:
+    age: 40
+    medicaid_category: ADULT
+    medicaid_income_level: 0.9
+    monthly_hours_worked: 80
+    state_code: AR
+  output:
+    ar_medicaid_work_requirement_eligible: true
+
+- name: Case 3, Arkansas 2018 caregiver of a dependent child under 18 is exempt.
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 40
+        medicaid_category: ADULT
+        medicaid_income_level: 0.9
+        monthly_hours_worked: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    ar_medicaid_work_requirement_eligible: [true, true]
+
+- name: Case 4, Arkansas 2018 subject adult receiving unemployment compensation is exempt.
+  period: 2018
+  input:
+    age: 40
+    medicaid_category: ADULT
+    medicaid_income_level: 0.9
+    monthly_hours_worked: 0
+    unemployment_compensation: 1_000
+    state_code: AR
+  output:
+    ar_medicaid_work_requirement_eligible: true
+
+- name: Case 5, Arkansas 2019 adults ages 19 to 29 remain eligible because the brief phase-in is not modeled annually.
+  period: 2019
+  input:
+    age: 25
+    medicaid_category: ADULT
+    medicaid_income_level: 0.8
+    monthly_hours_worked: 0
+    state_code: AR
+  output:
+    ar_medicaid_work_requirement_eligible: true

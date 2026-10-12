@@ -5,10 +5,10 @@ values:
   2021-10-01: 271.696 # 2021-06.
   2022-10-01: 296.311 # 2022-06.
   2023-10-01: 305.109 # 2023-06.
+  2024-10-01: 314.175 # 2024-06.
+  2025-10-01: 322.561 # 2025-06.
+  2026-10-01: 333.952 # 2026-06.
   # Forecasts from CBO's Q2 forecasts.
-  2024-10-01: 313.7 # 2024Q2
-  2025-10-01: 321.2 # 2025Q2
-  2026-10-01: 328.4 # 2026Q2
   2027-10-01: 335.5 # 2027Q2
   2028-10-01: 342.7 # 2028Q2
   2029-10-01: 350.3 # 2029Q2
@@ -25,5 +25,7 @@ metadata:
   reference:
     - title: 7 U.S. Code § 2012(u)(4)
       href: https://www.law.cornell.edu/uscode/text/7/2012#u_4
+    - title: BLS Consumer Price Index for All Urban Consumers (CPI-U), all items, U.S. city average, not seasonally adjusted (CUUR0000SA0)
+      href: https://data.bls.gov/timeseries/CUUR0000SA0
     - title: CBO Economic Projections, February 2024.
       href: https://www.cbo.gov/publication/59710

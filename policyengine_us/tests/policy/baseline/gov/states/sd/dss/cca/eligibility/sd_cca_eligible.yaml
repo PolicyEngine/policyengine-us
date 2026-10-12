@@ -1,0 +1,198 @@
+# Tests for sd_cca_eligible (SPMUnit, MONTH, bool).
+# A unit is eligible when it has at least one eligible child AND is income
+# eligible AND asset eligible (ARSD 67:47:01:03, :05; Subsidy Manual
+# Section 3). The activity requirement is embedded per child: an eligible
+# child must have a reason for care (caretaker activity or protective
+# services) via sd_cca_reason_for_care_eligible. Each case below meets every
+# condition except the one under test.
+
+- name: Case 1, all conditions met, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/mo, well below the income limit
+      person2:
+        age: 1  # citizen infant, eligible child
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_eligible: true
+
+- name: Case 2, no eligible child, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 13  # over the age-13 limit, not an eligible child
+        is_in_k12_school: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_eligible: false
+
+- name: Case 3, income too high, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 240_000  # 20,000/mo, far above the income limit
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        is_sd_cca_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_eligible: false
+
+- name: Case 4, assets above the CCDF limit, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+        spm_unit_assets: 2_000_000  # above the $1,000,000 CCDF asset limit
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_eligible: false
+
+- name: Case 5, activity test not met, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30  # no earnings, not in an activity
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # With no caretaker activity and no protective services, the child has no
+    # reason for care, so the unit has no eligible child.
+    sd_cca_eligible: false
+
+- name: Case 6, zero-income family with an eligible child, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30  # activity met via the CCDF activity test
+      person2:
+        age: 1  # citizen infant, eligible child
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    sd_cca_eligible: true
+
+- name: Case 7, enrolled family in the phase-out band, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5,000/mo gross; countable 4,800
+      person2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000  # 209% FPL = 4,180/mo
+        hhs_smi: 84_000  # 85% SMI = 5,950/mo
+        is_sd_cca_enrolled: true  # continuing recipient
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # countable 4,800 exceeds the 4,180 applicant ceiling but is below the
+    # 5,950 continuing ceiling, so the enrolled family remains eligible.
+    sd_cca_eligible: true
+
+- name: Case 8, single adult with no child, ineligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # No eligible child in the unit, so the family is ineligible regardless of
+    # income and activity.
+    sd_cca_eligible: false
+
+- name: Case 9, protective-services child with an inactive caretaker, eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0  # not in any activity
+      person2:
+        age: 1
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Protective services gives the child a reason for care
+    # (ARSD 67:47:01:03), so the unit is eligible without caretaker activity.
+    sd_cca_eligible: true

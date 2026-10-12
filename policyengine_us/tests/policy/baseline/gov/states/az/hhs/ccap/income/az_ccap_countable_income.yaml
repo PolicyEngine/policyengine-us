@@ -1,0 +1,192 @@
+- name: Case 1, parent earnings count as countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # $24,000/year = $2,000/month countable.
+    az_ccap_countable_income: 2_000
+
+- name: Case 2, a minor full-time student's earnings are excluded.
+  # R6-5-4914(G)(13): exclude the earnings of a child under 18 attending school
+  # who is not a minor parent. The teen's $12,000/year does not raise countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+      person3:
+        age: 16
+        is_full_time_student: true
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # ($24,000 + $12,000)/12 - $12,000/12 = $3,000 - $1,000 = $2,000.
+    az_ccap_countable_income: 2_000
+
+- name: Case 3, a non-student minor's earnings count toward countable income.
+  # Without the student exclusion, the teen's $12,000/year is countable, so the
+  # result is higher than Case 2 -- confirming the exclusion is what removes it.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+      person3:
+        age: 16
+        is_full_time_student: false
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # ($24,000 + $12,000)/12 = $3,000.
+    az_ccap_countable_income: 3_000
+
+- name: Case 4, child support paid is deducted from countable income.
+  # R6-5-4914(H): deduct legally mandated child support paid for dependents
+  # residing outside the household.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        child_support_expense: 6_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # $24,000/12 - $6,000/12 = $2,000 - $500 = $1,500.
+    az_ccap_countable_income: 1_500
+
+- name: Case 5, SSI counts as countable income.
+  # R6-5-4914(F)(8): public assistance including SSI is countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 800
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # $800/month SSI is counted directly (SSI is a monthly variable).
+    az_ccap_countable_income: 800
+
+- name: Case 6, a minor student's farm earnings are excluded.
+  # R6-5-4914(G)(13) excludes the child's earnings generally, including farm and
+  # SSTB self-employment, not just wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+      person3:
+        age: 16
+        is_full_time_student: true
+        farm_operations_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AZ
+  output:
+    # ($24,000 + $12,000)/12 - $12,000/12 = $3,000 - $1,000 = $2,000.
+    az_ccap_countable_income: 2_000
+
+- name: Case 7, countable income is rounded down to the whole dollar.
+  # R6-5-4914(I): the Department uses the whole-dollar amount only, rounded down.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_006
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # $18,006/12 = $1,500.50 -> rounded down to $1,500.
+    az_ccap_countable_income: 1_500
+
+- name: Case 8, recurring cash gifts and gambling proceeds count as income.
+  # R6-5-4914(F)(16)-(17): monthly cash gifts and lottery/gambling proceeds are countable.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        financial_assistance: 6_000
+        gambling_winnings: 12_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    # ($6,000 + $12,000)/12 = $1,500.
+    az_ccap_countable_income: 1_500

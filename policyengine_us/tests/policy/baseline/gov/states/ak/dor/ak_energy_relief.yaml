@@ -1,0 +1,28 @@
+- name: Case 1, 2024 Alaska energy relief.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 298.17
+
+- name: Case 2, 2025 Alaska energy relief.
+  period: 2025
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 0
+
+- name: Case 3, 2026 Alaska energy relief.
+  period: 2026
+  input:
+    state_code: AK
+  output:
+    ak_energy_relief: 200
+
+- name: Case 4, Alaska energy relief is zero outside Alaska.
+  period: 2026
+  input:
+    state_code: WA
+  output:
+    ak_energy_relief: 0

@@ -1,0 +1,41 @@
+description: Kansas uses these earned income sources to approximate countable household earnings under the Low Income Energy Assistance Program.
+# Existing net self-employment inputs are used without an additional expense
+# deduction. They approximate KEESM 13360's gross-receipts calculation and do
+# not reproduce its standard deduction or actual-cost election in every case.
+values:
+  2024-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+    # KEESM 6300 treats profit from performing services, including managerial
+    # responsibilities, as earned income, and KEESM 6313 bars deducting a loss
+    # from other income, so pass-through business income is floored with the
+    # other business sources.
+    - partnership_s_corp_income
+
+metadata:
+  unit: list
+  period: year
+  label: Kansas LIEAP countable earned income sources
+  reference:
+    - title: KEESM 13360 Income Eligibility, October 2024 edition (countable income includes earnings by adults; self-employment income paragraph)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13360.htm
+    - title: KEESM 13360 Income Eligibility, January 2026 edition (countable income includes earnings by adults; self-employment income paragraph)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13360.htm
+    - title: KEESM 7122.1 Income Producing Cost Deduction, October 2024 edition (a loss from self-employment cannot be deducted from other income)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm7122.htm
+    - title: KEESM 7122.1 Income Producing Cost Deduction, January 2026 edition (a loss from self-employment cannot be deducted from other income)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm7122.htm
+    - title: Kansas LIHEAP FY2026 State Plan, Section 1.8-1.9, pages 5-6 (gross income; wages, self-employment income, contract income and commissions counted)
+      href: https://liheapch.acf.gov/docs/2026/state-plans/KS_Plan_2026.pdf#page=5
+    - title: Kansas LIHEAP FY2025 State Plan, Section 1.8-1.9, pages 5-6 (gross income; wages, self-employment income, contract income and commissions counted)
+      href: https://liheapch.acf.gov/docs/2025/state-plans/KS_Plan_2025.pdf#page=5
+    - title: KEESM 13320 Household Definition, October 2024 edition (income of all household members living together is used)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13300.htm
+    - title: KEESM 13320 Household Definition, January 2026 edition (income of all household members living together is used)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13300.htm
+    - title: KEESM 6313 Self-Employment, October 2024 edition (a loss from self-employment cannot be deducted from other income)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm6313.htm
+    - title: KEESM 6313 Self-Employment, January 2026 edition (a loss from self-employment cannot be deducted from other income)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm6313.htm

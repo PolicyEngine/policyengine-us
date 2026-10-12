@@ -1,0 +1,396 @@
+# Integration tests for the Utah Child Care Assistance program (ut_ccap).
+# Full pipeline: countable income (R986-700-710) -> Table 4 income group
+# and copayment (R986-700-707) -> Table 3 market rate caps and the
+# per-child lower-of rule (R986-700-713), with eligibility gates
+# (R986-700-702/709, 45 CFR 98.20). The income ceiling is dynamic: 85% of the HHS state
+# median income for the household size. At January 2026, Utah's SMI base
+# (FFY 2025-10-01 vintage) is 117,667, so the size 2 monthly ceiling is
+# 117,667 x 0.68 / 12 x 0.85 = 5,667.63, matching the published Table 4
+# group 16 bound of 5,668.
+
+- name: Case 1, single parent with one child at a licensed center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 3
+        ut_ccap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Income: 3,000 - 100 (one earner) - 100 (medical) = 2,800.
+    ut_ccap_countable_income: 2_800
+    # 2,800 <= 5,667.63 (85% SMI, size 2).
+    ut_ccap_income_eligible: true
+    # The parent works 40 hours, above the single-parent 15-hour bar.
+    ut_ccap_activity_eligible: true
+    ut_ccap_eligible: true
+    # Size 2, group 5 (2,722.01-3,041), one child -> 109.
+    ut_ccap_income_group: 5
+    ut_ccap_copay: 109
+    # Cap: licensed center, three year old = 900. Billed expenses 1,000
+    # exceed the cap: min(1,000, 900) - 109 = 791.
+    ut_ccap: 791
+
+- name: Case 2, two working parents with two children in a licensed family home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 48_000  # 4,000/mo
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 2
+      person2:
+        age: 30
+        employment_income: 24_000  # 2,000/mo
+        weekly_hours_worked_before_lsr: 30
+        own_children_in_household: 2
+      person3:
+        age: 1
+        ut_ccap_provider_type: LICENSED_FAMILY_HOME
+        is_tax_unit_dependent: true
+      person4:
+        age: 4
+        ut_ccap_provider_type: LICENSED_FAMILY_HOME
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        spm_unit_pre_subsidy_childcare_expenses: 16_800  # 1,400/mo
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: UT
+  output:
+    # Income: 4,000 + 2,000 - 200 (two earners) - 100 (medical) = 5,700.
+    ut_ccap_countable_income: 5_700
+    # 5,700 <= 8,334.75 (85% SMI, size 4).
+    ut_ccap_income_eligible: true
+    # One parent at 40 hours (>= 30) and the other at 30 (>= 15).
+    ut_ccap_activity_eligible: true
+    ut_ccap_eligible: true
+    # Size 4, group 8 (5,426.01-5,883), two children -> 231.
+    ut_ccap_income_group: 8
+    ut_ccap_copay: 231
+    # The 1,400 in expenses splits evenly at 700 per child, and both
+    # children stay under their licensed family home caps:
+    # min(700, 850 under two) + min(700, 710 four year old)
+    # = 700 + 700 = 1,400. 1,400 - 231 = 1,169.
+    ut_ccap: 1_169
+
+- name: Case 3, lowest income group pays no copayment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        employment_income: 21_600  # 1,800/mo
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 0
+        ut_ccap_provider_type: LICENSE_EXEMPT_HOME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 7_200  # 600/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Income: 1,800 - 100 (one earner) - 100 (medical) = 1,600.
+    ut_ccap_countable_income: 1_600
+    ut_ccap_eligible: true
+    # Size 2, group 1 (at or below 1,763) -> no copayment
+    # (R986-700-707(5)(a)).
+    ut_ccap_income_group: 1
+    ut_ccap_copay: 0
+    # Cap: license-exempt home, under two = 495. min(600, 495) - 0 = 495.
+    ut_ccap: 495
+
+- name: Case 4, copayment exceeding the cost of care yields no benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 60_000  # 5,000/mo
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 5
+        ut_ccap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 2_400  # 200/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Income: 5,000 - 100 - 100 = 4,800, still under the size 2 ceiling.
+    ut_ccap_countable_income: 4_800
+    ut_ccap_income_eligible: true
+    # Size 2, group 13 (4,667.01-4,918), one child -> 280.
+    ut_ccap_income_group: 13
+    ut_ccap_copay: 280
+    # The 280 copayment exceeds the 200 cost of care, so the family is
+    # ineligible and receives nothing (R986-700-707).
+    ut_ccap_eligible: false
+    ut_ccap: 0
+
+- name: Case 5, SSI excluded and child support partially deducted for a special needs teen.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 36_000  # 3,000/mo
+        weekly_hours_worked_before_lsr: 40
+        child_support_received: 3_600  # 300/mo
+        own_children_in_household: 1
+      person2:
+        age: 14
+        is_disabled: true  # special needs, eligible under age 18
+        ssi: 500  # monthly SSI, excluded from countable income
+        ut_ccap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 6_000  # 500/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Income: 3,000 + 300 (child support) - 50 (first 50 of child support)
+    # - 100 (one earner) - 100 (medical) = 3,050; SSI is excluded
+    # (R986-700-710(4)(e)).
+    ut_ccap_countable_income: 3_050
+    ut_ccap_eligible: true
+    # Size 2, group 6 (3,041.01-3,361), one child -> 122.
+    ut_ccap_income_group: 6
+    ut_ccap_copay: 122
+    # A 14-year-old special needs child falls in the school age band:
+    # licensed center cap = 660. min(500, 660) - 122 = 378.
+    ut_ccap: 378
+
+- name: Case 6, second parent below the work-hour requirement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 36_000  # 3,000/mo
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 30
+        employment_income: 6_000  # 500/mo
+        weekly_hours_worked_before_lsr: 10
+        own_children_in_household: 1
+      person3:
+        age: 2
+        ut_ccap_provider_type: LICENSED_CENTER
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_pre_subsidy_childcare_expenses: 9_600  # 800/mo
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: UT
+  output:
+    # One parent works 40 hours but the other only 10 (< 15), failing the
+    # two-parent 30/15 requirement (R986-700-709(2)(b)(i)(A)); neither
+    # parent is incapacitated, so the R986-700-709(2)(b)(i)(B) pathway
+    # does not apply.
+    ut_ccap_activity_eligible: false
+    ut_ccap_eligible: false
+    ut_ccap: 0
+
+- name: Case 7, income above 85 percent of the state median income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 240_000  # 20,000/mo
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 4
+        ut_ccap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Income: 20,000 - 100 - 100 = 19,800, far above the size 2 ceiling
+    # of 5,667.63 (85% SMI).
+    ut_ccap_income_eligible: false
+    ut_ccap_eligible: false
+    ut_ccap: 0
+
+- name: Case 8, out-of-state household receives nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 3
+        ut_ccap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    # Identical to Case 1 except for the state: the Colorado household is
+    # outside the program.
+    ut_ccap_eligible: false
+    ut_ccap: 0
+
+- name: Case 9, zero-income family pays no copayment and gets billed expenses covered.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 25
+        own_children_in_household: 1
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        ut_ccap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_800  # 900/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Income: 0 - 100 (medical) floors at zero.
+    ut_ccap_countable_income: 0
+    ut_ccap_income_eligible: true
+    # The parent reports 40 weekly hours, above the single-parent 15-hour
+    # bar (the minimum-wage earnings verification rule is not modeled).
+    ut_ccap_eligible: true
+    # Size 2, group 1 -> no copayment (R986-700-707(5)(a)).
+    ut_ccap_income_group: 1
+    ut_ccap_copay: 0
+    # Cap: licensed center, two year old = 992. Billed expenses stay below
+    # the cap: min(900, 992) - 0 = 900.
+    ut_ccap: 900
+
+- name: Case 10, self-employment losses do not inflate the benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000  # -5,000/mo
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 3
+        ut_ccap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 14_400  # 1,200/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Income: -5,000 gross (no earner deduction for a loss) - 100
+    # (medical) floors at zero.
+    ut_ccap_countable_income: 0
+    ut_ccap_income_eligible: true
+    ut_ccap_eligible: true
+    # Size 2, group 1 -> no copayment.
+    ut_ccap_income_group: 1
+    ut_ccap_copay: 0
+    # The subsidy stays capped by Table 3 regardless of how negative the
+    # income is: min(1,200, 900) - 0 = 900.
+    ut_ccap: 900
+
+- name: Case 11, income near the 85 percent ceiling lands in group 16 with the top copayment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 69_600  # 5,800/mo
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 3
+        ut_ccap_provider_type: LICENSED_CENTER
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Income: 5,800 - 100 (one earner) - 100 (medical) = 5,600, above the
+    # group 15 bound (5,418) and just under the size 2 dynamic ceiling of
+    # 5,667.63 (85% SMI).
+    ut_ccap_countable_income: 5_600
+    ut_ccap_income_eligible: true
+    ut_ccap_eligible: true
+    # Size 2, group 16 (5,418.01-5,668), one child -> the schedule's top
+    # copayment of 352.
+    ut_ccap_income_group: 16
+    ut_ccap_copay: 352
+    # Cap: licensed center, three year old = 900. min(1,000, 900) - 352
+    # = 548.
+    ut_ccap: 548

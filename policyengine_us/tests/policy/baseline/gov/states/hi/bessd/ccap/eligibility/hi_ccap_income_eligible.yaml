@@ -1,0 +1,291 @@
+# HI CCAP income-eligibility tests (HAR 17-798.2-9(b)(1)).
+# Monthly gross income must not exceed 85% of the State Median Income for
+# the family size. The income test is waived for families receiving child
+# protective services (b)(1)(B).
+#
+# 2025 HI SMI (family of 2): base 129,108 x size adjustment 0.68 = 87,793.44.
+# 85% SMI / 12 = 87,793.44 x 0.85 / 12 = 6,218.70 monthly limit.
+
+- name: Case 1, income below the limit is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 72_000  # 6,000/month
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 6,000 <= 6,218.70 monthly limit -> eligible
+    hi_ccap_income_eligible: true
+
+- name: Case 2, income above the limit is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 78_000  # 6,500/month
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 6,500 > 6,218.70 monthly limit -> ineligible
+    hi_ccap_income_eligible: false
+
+- name: Case 3, protective services waives the income test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 200_000  # 16,666.67/month, far above limit
+        immigration_status: CITIZEN
+      person2:
+        age: 6
+        receives_or_needs_protective_services: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # Income far above limit, but CPS waiver -> income eligible
+    hi_ccap_income_eligible: true
+
+- name: Case 4, high income without protective services is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 200_000  # 16,666.67/month
+        immigration_status: CITIZEN
+      person2:
+        age: 6
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_ccap_income_eligible: false
+
+- name: Case 5, single adult with zero income is income eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_countable_income: 0
+    hi_ccap_income_eligible: true
+
+# === Edge cases: 85% SMI ceiling and family-size extremes ===
+# Family of 2 monthly ceiling = 129,108 x 0.68 x 0.85 / 12 = 6,218.7017.
+# The test uses "<=", so income at or just under the ceiling is eligible and
+# a dollar over is not. The "at the ceiling" case sits a few cents under the
+# ceiling (not exactly on it) so float32 round-trip drift cannot flip the
+# inclusive boundary assertion.
+
+- name: Case 6, income at the 85 percent SMI ceiling is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 74,624/yr = 6,218.667/mo (~3.5 cents under the 6,218.7017 ceiling)
+        employment_income: 74_624
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 6,218.667 <= 6,218.7017 monthly ceiling -> eligible
+    hi_ccap_income_eligible: true
+
+- name: Case 7, income one dollar per month over the ceiling is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # 74,648.42/yr = 6,220.7017/mo (= ceiling + 2/mo, clearly over)
+        employment_income: 74_648.42
+        immigration_status: CITIZEN
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # 6,220.70 > 6,218.7017 monthly ceiling -> ineligible
+    hi_ccap_income_eligible: false
+
+- name: Case 8, family of one at its 85 percent SMI ceiling is eligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        # Family-of-1 ceiling = 129,108 x 0.52 x 0.85 / 12 = 4,755.4780/mo.
+        # 57,060/yr = 4,755.00/mo (just under the ceiling) -> eligible
+        employment_income: 57_060
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_ccap_income_eligible: true
+
+- name: Case 9, large family of eight uses the higher per-person SMI increment.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        # Family-of-8 ceiling = 129,108 x 1.38 x 0.85 / 12 = 12,620.3070/mo.
+        # adj = 0.52 + 0.16x5 + 0.03x2 = 1.38 (the 7th/8th use 0.03 each).
+        # 151,000/yr = 12,583.33/mo, just under the ceiling -> eligible.
+        employment_income: 151_000
+        immigration_status: CITIZEN
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+      person3:
+        age: 12
+        immigration_status: CITIZEN
+      person4:
+        age: 10
+        immigration_status: CITIZEN
+      person5:
+        age: 8
+        immigration_status: CITIZEN
+      person6:
+        age: 6
+        immigration_status: CITIZEN
+      person7:
+        age: 4
+        immigration_status: CITIZEN
+      person8:
+        age: 2
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members:
+          [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members:
+          [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: HI
+  output:
+    # 12,583.33 <= 12,620.31 family-of-8 monthly ceiling -> eligible
+    hi_ccap_income_eligible: true
+
+- name: Case 10, large family of eight just over its ceiling is ineligible.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        # 152,000/yr = 12,666.67/mo > 12,620.31 ceiling -> ineligible
+        employment_income: 152_000
+        immigration_status: CITIZEN
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+      person3:
+        age: 12
+        immigration_status: CITIZEN
+      person4:
+        age: 10
+        immigration_status: CITIZEN
+      person5:
+        age: 8
+        immigration_status: CITIZEN
+      person6:
+        age: 6
+        immigration_status: CITIZEN
+      person7:
+        age: 4
+        immigration_status: CITIZEN
+      person8:
+        age: 2
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members:
+          [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members:
+          [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: HI
+  output:
+    hi_ccap_income_eligible: false

@@ -1,0 +1,16 @@
+description: California excludes these disability income sources under the Medi-Cal 250 Percent Working Disabled Program.
+values:
+  2000-04-01:
+    - social_security_disability
+    - disability_benefits
+    - workers_compensation
+
+metadata:
+  unit: list
+  period: year
+  label: California 250 Percent Working Disabled Program disability income sources
+  reference:
+    - title: 250% Working Disabled Program | Los Angeles County Department of Public Social Services
+      href: https://my.dpss.lacounty.gov/public/en/home/epolicy/program/medi-cal/non-magi/250-percent-wdp.html
+    - title: 250% Working Disabled Program | Santa Clara County Social Services Agency
+      href: https://stgenssa.sccgov.org/debs/program_handbooks/medi-cal/assets/26250WDP/250WDP.htm

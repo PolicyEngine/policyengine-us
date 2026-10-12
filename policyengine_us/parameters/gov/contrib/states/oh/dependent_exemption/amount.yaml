@@ -1,0 +1,10 @@
+description: Ohio provides this dependent exemption amount per dependent.
+# A negative value is a sentinel meaning the baseline per-person (income-stepped)
+# amount is used, so the reform at default is a no-op; set a non-negative value to
+# apply a flat per-dependent amount.
+values:
+  0000-01-01: -1
+metadata:
+  unit: currency-USD
+  period: year
+  label: Ohio dependent exemption amount

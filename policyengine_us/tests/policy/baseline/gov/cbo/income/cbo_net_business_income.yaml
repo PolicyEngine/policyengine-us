@@ -1,0 +1,27 @@
+- name: Case 1, source concept includes sole proprietor partnership S-corporation rental and farm rental income.
+  period: 2024
+  input:
+    people:
+      person1:
+        self_employment_income_before_lsr: 10_000
+        partnership_income: 20_000
+        s_corp_income: 30_000
+        rental_income: 40_000
+        farm_rent_income: 5_000
+      person2:
+        self_employment_income_before_lsr: -1_000
+        partnership_income: 2_000
+        s_corp_income: 3_000
+        rental_income: -4_000
+        farm_rent_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    # Self-employment: 10,000 - 1,000 = 9,000
+    # Partnership/S-corp: 20,000 + 30,000 + 2,000 + 3,000 = 55,000
+    # Rental: 40,000 - 4,000 = 36,000
+    # Farm rental: 5,000 + 6,000 = 11,000
+    tax_unit_partnership_s_corp_income: 55_000
+    tax_unit_rental_income: 36_000
+    cbo_net_business_income: 111_000

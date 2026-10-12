@@ -1,0 +1,90 @@
+- name: Case 1, zero vehicle value has no countable vehicle value.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    household_vehicles_value: 0
+  output:
+    ca_tanf_countable_vehicle_value: 0
+
+- name: Case 2, 2023 vehicle value at the $32,045 limit is fully exempt.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    household_vehicles_value: 32_045
+  output:
+    ca_tanf_countable_vehicle_value: 0
+
+- name: Case 3, 2023 vehicle value one dollar over the $32,045 limit counts $1.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    household_vehicles_value: 32_046
+  output:
+    ca_tanf_countable_vehicle_value: 1
+
+- name: Case 4, 2025 uses Jul 2024 limit and vehicle value at $32,968 is fully exempt.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    household_vehicles_value: 32_968
+  output:
+    ca_tanf_countable_vehicle_value: 0
+
+- name: Case 5, 2025 uses Jul 2024 limit and vehicle value one dollar over $32,968 counts $1.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    household_vehicles_value: 32_969
+  output:
+    ca_tanf_countable_vehicle_value: 1
+
+- name: Case 6, 2026 uses Jul 2025 limit and vehicle value at $33,499 is fully exempt.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    household_vehicles_value: 33_499
+  output:
+    ca_tanf_countable_vehicle_value: 0
+
+- name: Case 7, 2026 uses Jul 2025 limit and vehicle value one dollar over $33,499 counts $1.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    household_vehicles_value: 33_500
+  output:
+    ca_tanf_countable_vehicle_value: 1
+
+- name: Case 8, 2027 uses Jul 2026 limit and vehicle value at $33,626 is fully exempt.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    household_vehicles_value: 33_626
+  output:
+    ca_tanf_countable_vehicle_value: 0
+
+- name: Case 9, 2027 uses Jul 2026 limit and vehicle value one dollar over $33,626 counts $1.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    household_vehicles_value: 33_627
+  output:
+    ca_tanf_countable_vehicle_value: 1
+
+- name: Case 10, 2024 uses the $32,045 limit since the July 2024 increase is read the following year.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    household_vehicles_value: 32_968
+  output:
+    # 32,968 - 32,045 (limit read at Jan 1, 2024) = 923
+    ca_tanf_countable_vehicle_value: 923

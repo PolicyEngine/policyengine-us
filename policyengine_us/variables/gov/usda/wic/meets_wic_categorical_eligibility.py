@@ -12,7 +12,11 @@ class meets_wic_categorical_eligibility(Variable):
     def formula(person, period, parameters):
         spm_unit = person.spm_unit
         # https://www.law.cornell.edu/uscode/text/42/1786#d_2_A_ii
-        receives_snap_or_tanf = add(spm_unit, period, ["snap", "tanf"]) > 0
+        receives_snap_or_tanf = (
+            (add(spm_unit, period, ["snap", "tanf"]) > 0)
+            | spm_unit("receives_snap", period)
+            | spm_unit("receives_tanf", period)
+        )
         # https://www.law.cornell.edu/uscode/text/42/1786#d_2_A_iii
         receives_medicaid = person("medicaid_enrolled", period)
         # "is a member of a family in which a pregnant woman or an infant receives [Medicaid]."

@@ -6,7 +6,7 @@ class ak_ssp_payment_standard(Variable):
     entity = Person
     label = "Alaska Adult Public Assistance payment standard"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.AK
     reference = (
         "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/ak.pdf#page=2"
@@ -22,4 +22,4 @@ class ak_ssp_payment_standard(Variable):
             monthly_amount / 2,
             monthly_amount,
         )
-        return monthly_amount * MONTHS_IN_YEAR
+        return monthly_amount

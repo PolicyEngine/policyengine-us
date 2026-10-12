@@ -1,0 +1,41 @@
+# C.R.S. 39-22-104(3)(o). The addback equals the section 199A deduction for
+# high-AGI filers, except that it does not apply to a taxpayer required to
+# file Schedule F (Profit or Loss From Farming).
+
+- name: High-AGI joint filer with no farm income adds back the 199A deduction
+  period: 2026
+  input:
+    people:
+      person1:
+        farm_operations_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 1_100_000
+        filing_status: JOINT
+        qualified_business_income_deduction: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_qualified_business_income_deduction_addback: 30_000
+
+- name: Schedule F exception blocks the 199A addition for a farmer
+  period: 2026
+  input:
+    people:
+      person1:
+        farm_operations_income: 250_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 1_100_000
+        filing_status: JOINT
+        qualified_business_income_deduction: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_qualified_business_income_deduction_addback: 0

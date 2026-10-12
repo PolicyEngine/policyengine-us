@@ -1,0 +1,223 @@
+# Court-supervision route for nd_ccap_eligible_child (400-28-35-02, ML 3909
+# p.3): a child 13 to under 19 in need of supervised care under a court order
+# is eligible. Court status does not waive income, activity, or immigration
+# requirements.
+- name: Case 1, court supervision extends the age limit to under 19.
+  period: 2026-01
+  input:
+    state_code: [ND, ND, ND, ND, ND, ND]
+    age: [12, 13, 17, 18, 19, 40]
+    is_under_court_supervision: [true, true, true, true, true, true]
+  output:
+    nd_ccap_eligible_child: [true, true, true, true, false, false]
+
+- name: Case 2, court supervision does not bypass the citizen or permanent resident requirement.
+  period: 2026-01
+  input:
+    state_code: [ND, ND, ND]
+    age: [17, 17, 17]
+    is_under_court_supervision: [true, true, true]
+    immigration_status: [CITIZEN, LEGAL_PERMANENT_RESIDENT, UNDOCUMENTED]
+  output:
+    nd_ccap_eligible_child: [true, true, false]
+
+# Monthly expenses of $100 are below the school-age rate, so the payment is
+# capped at the $100 charge.
+- name: Case 3, supervised 17-year-old receives child-care benefit through the full pipeline.
+  period: 2026-01
+  absolute_error_margin: 0.02
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+        county_str: CASS_COUNTY_ND
+  output:
+    nd_ccap_eligible_child: [false, true]
+    nd_ccap_eligible: true
+    nd_ccap: 100
+
+- name: Case 4, supervised 18-year-old at the top of the extended range receives the same benefit.
+  # An 18-year-old is a non-child adult, so the head/spouse roles are set
+  # explicitly to keep the parent as the only caretaker.
+  period: 2026-01
+  absolute_error_margin: 0.02
+  input:
+    people:
+      person1:
+        age: 35
+        is_tax_unit_head_or_spouse: true
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 18
+        is_tax_unit_dependent: true
+        is_tax_unit_head_or_spouse: false
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+        county_str: CASS_COUNTY_ND
+  output:
+    nd_ccap_eligible_child: [false, true]
+    nd_ccap_eligible: true
+    nd_ccap: 100
+
+- name: Case 5, court supervision does not waive the income requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 500_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+        county_str: CASS_COUNTY_ND
+  output:
+    nd_ccap_income_eligible: false
+    nd_ccap: 0
+
+- name: Case 6, court supervision does not waive the parent activity requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+        weekly_hours_worked_before_lsr: 0
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 30
+        childcare_hours_per_day: 6
+        childcare_days_per_week: 5
+        childcare_attending_days_per_month: 20
+        pre_subsidy_childcare_expenses: 1_200
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 1_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+        county_str: CASS_COUNTY_ND
+  output:
+    nd_ccap_activity_eligible: false
+    nd_ccap: 0
+
+- name: Case 7, eligible supervised child without care receives zero.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 12_000
+        weekly_hours_worked_before_lsr: 25
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_days_per_week: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+        is_under_court_supervision: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+        county_str: CASS_COUNTY_ND
+  output:
+    nd_ccap_eligible: true
+    nd_ccap: 0
+
+- name: Case 8, court supervision is specific to the child in a mixed household.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        is_under_court_supervision: true
+      person2:
+        age: 17
+        is_under_court_supervision: true
+      person3:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    nd_ccap_eligible_child: [false, true, false]

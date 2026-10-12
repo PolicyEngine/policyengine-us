@@ -11,12 +11,16 @@ class or_ctc(Variable):
     defined_for = StateCode.OR
 
     def formula(tax_unit, period, parameters):
+        p = parameters(period).gov.states["or"].tax.income.credits.ctc
+        # HB 3235 (2023) Section 11 limits the credit to tax years
+        # beginning before January 1, 2029.
+        if not p.in_effect:
+            return 0
         # Get age and dependent status of all people in the tax unit.
         person = tax_unit.members
         age = person("age", period)
         dependent = person("is_tax_unit_dependent", period)
         # Get the number of qualifying dependents in the tax unit.
-        p = parameters(period).gov.states["or"].tax.income.credits.ctc
         age_eligible = age < p.ineligible_age
         eligible = age_eligible & dependent
         count_eligible = tax_unit.sum(eligible)

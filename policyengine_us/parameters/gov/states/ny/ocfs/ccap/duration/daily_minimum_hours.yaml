@@ -1,0 +1,11 @@
+description: New York applies the daily market rate at or above this many hours of care per day under the Child Care Assistance Program.
+values:
+  2019-05-01: 6
+
+metadata:
+  unit: hour
+  period: day
+  label: New York CCAP daily rate minimum hours
+  reference:
+    - title: 18 NYCRR 415.9(b)-(c), daily rates at six or more hours per day and part-day rates below six
+      href: https://ocfs.ny.gov/programs/childcare/regulations/415-Child-Care-Services.pdf#page=44

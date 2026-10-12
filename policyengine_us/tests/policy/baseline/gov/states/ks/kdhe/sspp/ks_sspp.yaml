@@ -93,3 +93,21 @@
   output:
     ks_sspp_eligible: false
     ks_sspp: 0
+
+- name: Case 7, reported SSI receipt qualifies when computed SSI is zero.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        ssi: 0
+        receives_ssi: true
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    ks_sspp_eligible: true
+    ks_sspp: 32

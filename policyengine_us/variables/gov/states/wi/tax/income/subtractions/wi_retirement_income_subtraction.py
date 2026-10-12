@@ -8,10 +8,10 @@ class wi_retirement_income_subtraction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB.pdf"
-        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-inst.pdf#page=9"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSBf.pdf"
-        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSB-Inst.pdf#page=7"
+        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB.pdf",
+        "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-inst.pdf#page=9",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSBf.pdf",
+        "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSB-Inst.pdf#page=7",
     )
     defined_for = "wi_retirement_income_subtraction_agi_eligible"
 
@@ -21,7 +21,7 @@ class wi_retirement_income_subtraction(Variable):
         person = tax_unit.members
         age = person("age", period)
         age_eligible = age >= psri.min_age
-        retirement_income = person("taxable_pension_income", period)
+        retirement_income = add(person, period, psri.sources)
         head_or_spouse = ~person("is_tax_unit_dependent", period)
         uncapped_retinc = retirement_income * age_eligible * head_or_spouse
         capped_retinc = min_(psri.max_amount, uncapped_retinc)

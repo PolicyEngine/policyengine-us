@@ -1,0 +1,49 @@
+- name: Case 1, losses are floored per enterprise, not netted within the person.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income_before_lsr: 1_200
+        sstb_self_employment_income_before_lsr: -600
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # $100 monthly regular self-employment income counts in full; the $50
+    # monthly SSTB loss is floored at zero (7 CFR 273.11(a)(2)(ii) offsets
+    # losses only for farm operations), so the result is $100, not $50.
+    snap_gross_self_employment_income_person: 100
+
+- name: Case 2, a sole loss-making enterprise yields zero gross income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income_before_lsr: -12_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    snap_gross_self_employment_income_person: 0
+
+- name: Case 3, positive enterprises sum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        self_employment_income_before_lsr: 12_000
+        sstb_self_employment_income_before_lsr: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    snap_gross_self_employment_income_person: 1_500

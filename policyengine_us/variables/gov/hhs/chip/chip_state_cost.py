@@ -6,8 +6,9 @@ class chip_state_cost(Variable):
     entity = Person
     label = "CHIP state cost"
     documentation = (
-        "Portion of CHIP expenditures borne by the state, equal to total "
-        "CHIP cost less the federal share."
+        "Portion of CHIP expenditures borne by the state, equal to enrolled "
+        "net CHIP cost less the federal share. This budget variable is "
+        "enrollment-gated through `chip`."
     )
     unit = USD
     definition_period = YEAR

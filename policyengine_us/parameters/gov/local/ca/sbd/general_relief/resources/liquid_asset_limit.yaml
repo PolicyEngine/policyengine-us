@@ -1,0 +1,15 @@
+description: San Bernardino County limits liquid assets to this amount per assistance unit under the General Relief program.
+# The handbook limits liquid assets (cash, bank accounts, stocks, and bonds)
+# to "$50 per person or per GR AU"; modeled as a flat per-assistance-unit
+# limit, the strictest literal reading. Liquid assets also count within the
+# $500 personal property limit.
+values:
+  2021-06-01: 50
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: San Bernardino County General Relief liquid asset limit
+  reference:
+    - title: San Bernardino County GRPHB Handbook Letter 7358, Chapter A p. A-4 (property limits, liquid assets row)
+      href: https://sanbernardino.legistar1.com/sanbernardino/attachments/9e5e1b1a-e577-4f84-92c4-86574a9ff0cf.docx

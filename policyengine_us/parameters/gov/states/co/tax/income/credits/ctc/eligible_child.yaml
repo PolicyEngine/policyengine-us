@@ -1,7 +1,7 @@
-description: Colorado qualifies children for the child tax credit under this federal eligibility.
+description: Colorado qualifies children for the child tax credit under this eligibility.
 values:
   2022-01-01:
-    - ctc_qualifying_child
+    - co_ctc_qualifying_child
   2024-01-01:
     - is_child_dependent
 metadata:
@@ -9,6 +9,10 @@ metadata:
   unit: list
   label: Colorado child tax credit child eligibility
   reference:
+    - title: C.R.S. 39-22-129(2)(a)
+      href: https://leg.colorado.gov/sites/default/files/2023a_1112_signed.pdf#page=5
+    - title: C.R.S. 39-22-129(3.5)(a)
+      href: https://leg.colorado.gov/sites/default/files/2023a_1112_signed.pdf#page=5
     - title: House Bill 23-1112, Section 2, (1), (a)
       href: https://leg.colorado.gov/sites/default/files/2023a_1112_signed.pdf#page=4
     - title: 2025 Colorado Individual Tax Filing Guide 104 Book, Line 1

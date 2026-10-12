@@ -1,0 +1,283 @@
+# Florida School Readiness family copay = monthly countable income x bracket
+# rate, capped at 7% of income (45 CFR 98.45(l)(3); the cap is slack because the
+# scale maxes at 6% full time). One copay per household. The full-time rate
+# applies when any eligible child has full-time authorized care (>= 6 hrs/day,
+# Fla. Stat. 1002.81(9)); otherwise the part-time rate applies. The copay is WAIVED for families at or
+# below 150% FPG (fl_sr_copay_waived; State Plan s. 3.3.1), so the scale-test
+# cases below use income above 150% FPG to exercise the bracket rate (Case 10
+# covers the waiver).
+#
+# Family of 3, FFY2026 (instant 2025-10-01):
+#   annual SMI = 86_572.92  ->  monthly SMI = 7_214.41
+#   55% SMI marker (monthly) = 3_967.93
+#   monthly FPG = 2_276.67  ->  150% FPG (waiver line) = 3_415.00
+# Rate brackets keyed to the SMI ratio (income / SMI):
+#   <= 55% SMI -> 4.0% full time / 2.0% part time
+#   >  55% SMI -> 6.0% full time / 3.0% part time
+
+- name: Case 1, low tier full time copay is 4 percent of income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 43_200  # 3_600 / month (> 150% FPG, so not waived)
+      person2:
+        age: 28
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # 3_600 / month = 1.58x FPG (> 150%), so the copay is not waived
+    # ratio 3_600 / 7_214.41 = 0.499 <= 0.55 -> 4% full time
+    # copay = 3_600 * 0.04 = 144
+    fl_sr_copay: 144
+
+- name: Case 2, low tier part time copay is 2 percent of income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 43_200  # 3_600 / month (> 150% FPG, so not waived)
+      person2:
+        age: 28
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4  # part time (< 6 hrs/day)
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # ratio 0.499 <= 0.55 -> 2% part time (not waived; 3_600 > 150% FPG)
+    # copay = 3_600 * 0.02 = 72
+    fl_sr_copay: 72
+
+- name: Case 3, high tier full time copay is 6 percent of income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5_000 / month
+      person2:
+        age: 28
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # ratio 5_000 / 7_214.41 = 0.6931 > 0.55 -> 6% full time
+    # copay = 5_000 * 0.06 = 300 (7% cap = 350, not binding)
+    fl_sr_copay: 300
+
+- name: Case 4, high tier part time copay is 3 percent of income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5_000 / month
+      person2:
+        age: 28
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4  # part time (< 6 hrs/day)
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # ratio 0.6931 > 0.55 -> 3% part time
+    # copay = 5_000 * 0.03 = 150
+    fl_sr_copay: 150
+
+- name: Case 5, zero income yields a zero copay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # income 0 is at or below 150% FPG -> copay waived (and 0 x rate = 0 anyway)
+    fl_sr_copay: 0
+
+# Edge cases: copay-tier boundary at the 0.5501 SMI-ratio bracket switch
+# (4%->6% full time, 2%->3% part time). Family of 3, monthly SMI = 7_214.41;
+# the bracket boundary is at monthly income 3_968.65. Inputs are set with a
+# small dollar margin to keep the ratio cleanly on each side.
+
+- name: Case 6, full-time income just below the tier boundary stays at 4 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_616  # 3_968.00 / month, ratio 0.55001 < 0.5501
+      person2:
+        age: 28
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # low tier -> 4% full time; copay = 3_968.00 * 0.04 = 158.72
+    fl_sr_copay: 158.72
+
+- name: Case 7, full-time income just above the tier boundary jumps to 6 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_640  # 3_970.00 / month, ratio 0.55029 > 0.5501
+      person2:
+        age: 28
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # high tier -> 6% full time; copay = 3_970.00 * 0.06 = 238.20
+    fl_sr_copay: 238.20
+
+- name: Case 8, part-time income just below the tier boundary stays at 2 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_616  # 3_968.00 / month, ratio 0.55001 < 0.5501
+      person2:
+        age: 28
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4  # part time (< 6 hrs/day)
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # low tier -> 2% part time; copay = 3_968.00 * 0.02 = 79.36
+    fl_sr_copay: 79.36
+
+- name: Case 9, part-time income just above the tier boundary jumps to 3 percent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_640  # 3_970.00 / month, ratio 0.55029 > 0.5501
+      person2:
+        age: 28
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 4  # part time (< 6 hrs/day)
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # high tier -> 3% part time; copay = 3_970.00 * 0.03 = 119.10
+    fl_sr_copay: 119.10
+
+- name: Case 10, copay waived for a family at or below 150% FPG.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3_000 / month
+      person2:
+        age: 28
+      person3:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8  # full time
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: FL
+  output:
+    # 3_000 / month = 1.32x monthly FPG (2_276.67) <= 1.5 -> copay waived
+    # (State Plan s. 3.3.1(i)-(ii)). Without the waiver it would be
+    # 3_000 * 0.04 = 120.
+    fl_sr_copay: 0
+
+# The 7% cap (min(income * rate, income * 0.07)) is STRUCTURALLY SLACK: the
+# scale tops out at 6% full time / 3% part time, and both the copay and the cap
+# scale linearly with income, so income * 0.06 < income * 0.07 for all income.
+# The cap can never bind, so no test can exercise the capping arm; the highest
+# achievable copay is the 6% full-time rate (verified by Case 7).

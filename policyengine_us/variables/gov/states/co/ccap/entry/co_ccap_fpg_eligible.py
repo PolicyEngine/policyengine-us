@@ -26,16 +26,14 @@ class co_ccap_fpg_eligible(Variable):
         county = household("county_str", period.this_year)
         fpg_rate = np.zeros_like(county, dtype=float)
         mask = state_eligible
-
-        # Current fix for counties not in the dataset.
-        try:
-            p.entry.fpg_rate[county[mask]]
-        except:
-            county = np.array(
-                ["DENVER_COUNTY_CO"] * len(county),
-            )
         if mask.any():
-            fpg_rate[mask] = p.entry.fpg_rate[county[mask]]
+            valid_counties = np.array(list(p.entry.fpg_rate._children))
+            lookup_county = np.where(
+                np.isin(county, valid_counties),
+                county,
+                "DENVER_COUNTY_CO",
+            )
+            fpg_rate[mask] = p.entry.fpg_rate[lookup_county[mask]]
         fpg = spm_unit("spm_unit_fpg", period)
         fpg_limit = np.round(fpg * fpg_rate, 2)
         meets_income_limit = monthly_gross_income < fpg_limit

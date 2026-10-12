@@ -1,0 +1,17 @@
+description: Montana limits gross income to this share of the federal poverty guideline for initial eligibility under the Best Beginnings Child Care Scholarship program.
+# ARM 37.80.202(1): a household whose income is below 150% of the FPG is eligible.
+# This is the initial / first-time applicant standard; continuing recipients at
+# annual redetermination use the higher graduated share (see graduated.yaml),
+# selected via the mt_ccap_enrolled input.
+values:
+  2016-11-01: 1.5
+
+metadata:
+  unit: /1
+  period: year
+  label: Montana CCAP initial income limit share of federal poverty guideline
+  reference:
+    - title: Mont. Admin. R. 37.80.202(1)
+      href: https://rules.mt.gov/gateway/ruleno.asp?RN=37.80.202
+    - title: Mont. Admin. R. 37.80.202(1) — Cornell LII
+      href: https://www.law.cornell.edu/regulations/montana/Mont-Admin-r-37.80.202

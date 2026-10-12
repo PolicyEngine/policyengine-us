@@ -1,0 +1,87 @@
+- name: Case 1, the family share is one percent of income above FPL.
+  period: 2025-01
+  input:
+    ny_ccap_countable_income: 60_000
+    spm_unit_fpg: 25_750
+    state_code: NY
+  output:
+    ny_ccap_family_share: (60_000 - 25_750) * 0.01 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 2, income at FPL has no family share.
+  period: 2025-01
+  input:
+    ny_ccap_countable_income: 25_750
+    spm_unit_fpg: 25_750
+    state_code: NY
+  output:
+    # 18 NYCRR 415.3(e)(1) exempts families with income at or below the
+    # state income standard; the 415.3(e)(4) $1 weekly minimum applies only
+    # to families required to pay an income-based share.
+    ny_ccap_family_share: 0
+
+- name: Case 3, income just above FPL triggers the weekly minimum.
+  period: 2025-01
+  input:
+    ny_ccap_countable_income: 25_751
+    spm_unit_fpg: 25_750
+    state_code: NY
+  output:
+    # Income-based share is ($25,751 - $25,750) * 1% = $0.01/year, so the
+    # 415.3(e)(4) minimum of $1/week ($52/year) binds.
+    ny_ccap_family_share: 52 / 12
+  absolute_error_margin: 0.01
+
+# 415.3(e)(4) floors the income-based share at $1 a week. The crossover sits
+# at $5,200 of excess income, where 1% is exactly $52 a year.
+- name: Case 4, excess income at the minimum crossover pays the minimum.
+  period: 2025-01
+  input:
+    ny_ccap_countable_income: 30_950
+    spm_unit_fpg: 25_750
+    state_code: NY
+  output:
+    ny_ccap_family_share: 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 5, excess income just below the crossover pays the minimum.
+  period: 2025-01
+  input:
+    ny_ccap_countable_income: 30_949
+    spm_unit_fpg: 25_750
+    state_code: NY
+  output:
+    ny_ccap_family_share: 52 / 12
+  absolute_error_margin: 0.01
+
+- name: Case 6, excess income just above the crossover pays the calculated share.
+  period: 2025-01
+  input:
+    ny_ccap_countable_income: 30_951
+    spm_unit_fpg: 25_750
+    state_code: NY
+  output:
+    ny_ccap_family_share: 5_201 * 0.01 / 12
+  absolute_error_margin: 0.01
+
+# 415.3(e)(3) applies the rate to income above the standard only, so a family
+# at or below it owes nothing and the minimum does not reach them.
+- name: Case 7, income at the state income standard owes no family share.
+  period: 2025-01
+  input:
+    ny_ccap_countable_income: 25_750
+    spm_unit_fpg: 25_750
+    state_code: NY
+  output:
+    ny_ccap_family_share: 0
+  absolute_error_margin: 0.01
+
+- name: Case 8, negative countable income owes no family share.
+  period: 2025-01
+  input:
+    ny_ccap_countable_income: -60_000
+    spm_unit_fpg: 25_750
+    state_code: NY
+  output:
+    ny_ccap_family_share: 0
+  absolute_error_margin: 0.01

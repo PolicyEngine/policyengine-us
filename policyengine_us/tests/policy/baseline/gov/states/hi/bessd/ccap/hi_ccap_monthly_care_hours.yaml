@@ -1,0 +1,47 @@
+# HI CCAP effective monthly hours of care (HAR 17-798.2-14(b)(1)).
+# Effective hours = lesser of the child's monthly care hours and the
+# caretaker's authorized monthly activity hours.
+
+- name: Case 1, child care hours bind below the caretaker's activity hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40  # 173.33 monthly activity hours
+      person2:
+        age: 4
+        childcare_hours_per_week: 4.6  # 4.6 x 52 / 12 = 19.933... monthly care
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # min(19.93 care, 173.33 activity) = 19.93 -> the CHILD's hours bind.
+    hi_ccap_monthly_care_hours: [0, 19.93]
+
+- name: Case 2, caretaker activity hours bind below the child's care hours.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 10  # 10 x 52 / 12 = 43.33 monthly
+      person2:
+        age: 4
+        childcare_hours_per_week: 50  # 50 x 52 / 12 = 216.67 monthly care
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    # min(216.67 care, 43.33 activity) = 43.33 -> the CARETAKER's hours bind.
+    hi_ccap_monthly_care_hours: [0, 43.33]

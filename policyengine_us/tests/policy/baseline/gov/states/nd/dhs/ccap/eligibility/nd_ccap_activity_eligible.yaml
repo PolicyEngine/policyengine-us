@@ -1,0 +1,134 @@
+# Tests for nd_ccap_activity_eligible (SPMUnit, MONTH, bool).
+# Every caretaker (head or spouse) must be in an allowable activity, and the
+# unit must have at least one head or spouse (400-28-55-05). A caretaker who is
+# available (not in an activity) makes the unit ineligible, the proxy for the
+# two-caretaker availability rule (NDAC 75-02-01.3-11). is_tax_unit_head_or_spouse
+# is set directly to isolate the all-caretakers-active aggregation.
+
+- name: Case 1, single working caretaker plus a child, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 3
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_activity_eligible: true
+
+- name: Case 2, two caretakers both working, eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 30
+        employment_income: 18_000
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 3
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    nd_ccap_activity_eligible: true
+
+- name: Case 3, one of two caretakers not in an activity, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 24_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 30  # no activity
+        is_tax_unit_head_or_spouse: true
+      person3:
+        age: 3
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: ND
+  output:
+    nd_ccap_activity_eligible: false
+
+- name: Case 4, single caretaker with no activity, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30  # no earnings, school, TANF, or disability
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 3
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_activity_eligible: false
+
+- name: Case 5, no head or spouse in the unit, ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: ND
+  output:
+    nd_ccap_activity_eligible: false
+
+- name: Case 6, caretaker not individually active but meets the CCDF activity test, eligible via fallback.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30  # no modeled earnings, school, TANF, or disability
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 3
+        is_tax_unit_head_or_spouse: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_ccdf_activity_test: true  # e.g. job search or education/training
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_activity_eligible: true

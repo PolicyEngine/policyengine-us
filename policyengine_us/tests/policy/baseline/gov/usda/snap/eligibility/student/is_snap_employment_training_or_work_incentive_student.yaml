@@ -1,0 +1,31 @@
+- name: Neither program applies
+  period: 2022
+  input:
+    is_snap_employment_training_student: false
+    is_snap_work_incentive_student: false
+  output:
+    is_snap_employment_training_or_work_incentive_student: false
+
+- name: Employment and training program only
+  period: 2022
+  input:
+    is_snap_employment_training_student: true
+    is_snap_work_incentive_student: false
+  output:
+    is_snap_employment_training_or_work_incentive_student: true
+
+- name: Work incentive program only
+  period: 2022
+  input:
+    is_snap_employment_training_student: false
+    is_snap_work_incentive_student: true
+  output:
+    is_snap_employment_training_or_work_incentive_student: true
+
+- name: Both programs apply
+  period: 2022
+  input:
+    is_snap_employment_training_student: true
+    is_snap_work_incentive_student: true
+  output:
+    is_snap_employment_training_or_work_incentive_student: true

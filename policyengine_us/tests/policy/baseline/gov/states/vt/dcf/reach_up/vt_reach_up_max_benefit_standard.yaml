@@ -1,0 +1,88 @@
+- name: Case 1, family of 2 returns CBPP-convention max standard.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Basic needs (size 2): 942
+    # Non-Chittenden housing max: 400
+    # Special housing allowance: 90
+    # (942 + 400 + 90) * 0.496 = 710.27
+    vt_reach_up_max_benefit_standard: 710.27
+
+- name: Case 2, family of 3 matches CBPP $856 figure.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    # Basic needs (size 3): 1236
+    # Non-Chittenden housing max: 400
+    # Special housing allowance: 90
+    # (1236 + 400 + 90) * 0.496 = 856.10
+    vt_reach_up_max_benefit_standard: 856.10
+
+- name: Case 3, county does not affect the headline standard.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT  # Should not change the result
+  output:
+    vt_reach_up_max_benefit_standard: 856.10
+
+- name: Case 4, non-Vermont household returns zero.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    vt_reach_up_max_benefit_standard: 0

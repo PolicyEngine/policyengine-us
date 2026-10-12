@@ -1,0 +1,67 @@
+- name: Case 1, Massachusetts household in a CSFP covered county.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+        county_str: SUFFOLK_COUNTY_MA
+  output:
+    ma_dese_csfp_county_eligible: true
+
+- name: Case 2, Massachusetts household in another CSFP covered county.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+        county_str: PLYMOUTH_COUNTY_MA
+  output:
+    ma_dese_csfp_county_eligible: true
+
+- name: Case 3, Massachusetts household in a county without CSFP distribution sites.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+        county_str: BARNSTABLE_COUNTY_MA
+  output:
+    ma_dese_csfp_county_eligible: false
+
+- name: Case 4, Massachusetts household in central Massachusetts outside CSFP covered counties.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+        county_str: WORCESTER_COUNTY_MA
+  output:
+    ma_dese_csfp_county_eligible: false

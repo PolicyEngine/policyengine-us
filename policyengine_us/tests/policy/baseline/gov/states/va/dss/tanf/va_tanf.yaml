@@ -73,9 +73,9 @@
     va_tanf: 6_000
 
 # Max payment cap tests -- max payment = ceil(base_max * standard_multiplier)
-# For 2023: multiplier is 1.155 (Jan-Jun) and 1.2705 (Jul-Dec)
-# Group III TANF: ceil(745*1.155)=861 (Jan-Jun), ceil(745*1.2705)=947 (Jul-Dec)
-# Annual max = 6*861 + 6*947 = 10_848
+# For 2023: multiplier is 1.155 for all 12 months
+# Group III TANF: ceil(745*1.155)=861
+# Annual max = 12*861 = 10_332
 
 - name: Group III TANF capped at scaled max payment.
   period: 2023
@@ -87,11 +87,11 @@
     va_tanf_countable_income: 0
     county_str: ARLINGTON_COUNTY_VA
   output:
-    # Payment 15000 capped at Group III max: 6*861 + 6*947 = 10_848
-    va_tanf: 10_848
+    # Payment 15000 capped at Group III max: 12*861 = 10_332
+    va_tanf: 10_332
 
-# Group II TANF: ceil(625*1.155)=722 (Jan-Jun), ceil(625*1.2705)=795 (Jul-Dec)
-# Annual max = 6*722 + 6*795 = 9_102
+# Group II TANF: ceil(625*1.155)=722
+# Annual max = 12*722 = 8_664
 
 - name: Group II TANF capped at scaled max payment.
   period: 2023
@@ -103,11 +103,11 @@
     va_tanf_countable_income: 0
     county_str: PITTSYLVANIA_COUNTY_VA
   output:
-    # Payment 15000 capped at Group II max: 6*722 + 6*795 = 9_102
-    va_tanf: 9_102
+    # Payment 15000 capped at Group II max: 12*722 = 8_664
+    va_tanf: 8_664
 
-# Group III TANF-UP: ceil(648*1.155)=749 (Jan-Jun), ceil(648*1.2705)=824 (Jul-Dec)
-# Annual max = 6*749 + 6*824 = 9_438
+# Group III TANF-UP: ceil(648*1.155)=749
+# Annual max = 12*749 = 8_988
 
 - name: Group III TANF-UP capped at scaled max payment.
   period: 2023
@@ -119,11 +119,11 @@
     va_tanf_countable_income: 0
     county_str: ARLINGTON_COUNTY_VA
   output:
-    # Payment 15000 capped at Group III UP max: 6*749 + 6*824 = 9_438
-    va_tanf: 9_438
+    # Payment 15000 capped at Group III UP max: 12*749 = 8_988
+    va_tanf: 8_988
 
-# Group II TANF-UP: ceil(544*1.155)=629 (Jan-Jun), ceil(544*1.2705)=692 (Jul-Dec)
-# Annual max = 6*629 + 6*692 = 7_926
+# Group II TANF-UP: ceil(544*1.155)=629
+# Annual max = 12*629 = 7_548
 
 - name: Group II TANF-UP capped at scaled max payment.
   period: 2023
@@ -135,8 +135,8 @@
     va_tanf_countable_income: 0
     county_str: PITTSYLVANIA_COUNTY_VA
   output:
-    # Payment 15000 capped at Group II UP max: 6*629 + 6*692 = 7_926
-    va_tanf: 7_926
+    # Payment 15000 capped at Group II UP max: 12*629 = 7_548
+    va_tanf: 7_548
 
 - name: Payment below cap is not reduced.
   period: 2023
@@ -148,6 +148,6 @@
     va_tanf_countable_income: 1_200
     county_str: ARLINGTON_COUNTY_VA
   output:
-    # Payment = 9600 - 1200 = 8400, Group III monthly max = 861/947
-    # Monthly payment = 700, which is below both caps
+    # Payment = 9600 - 1200 = 8400, Group III monthly max = 861
+    # Monthly payment = 700, which is below the cap
     va_tanf: 8_400

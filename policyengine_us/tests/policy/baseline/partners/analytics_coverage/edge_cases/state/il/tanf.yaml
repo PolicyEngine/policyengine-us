@@ -1,0 +1,274 @@
+# IL TANF — payment level = 35% of the assistance-unit FPG (89 Ill. Admin.
+# Code 112.251); grant = payment level minus countable income (75% earned
+# disregard); initial eligibility uses the 50%-FPG initial employment
+# deduction instead. FPG instants roll over mid-year (Oct for payment
+# level, Mar for the IED), so annual sums mix two FPG vintages.
+- name: tanf_max_payment_youngest_child_age_17 (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 0
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 0
+      child1:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Demographic boundary (17 < 18 minor-child limit) at zero income ->
+        # full payment level for unit size 3:
+        # Jan-Sep: 0.35 x 26,650/12 = 777.29; Oct-Dec: 0.35 x 27,320/12 =
+        # 796.83, each floored to whole dollars (IDHS PM 10-01-02) ->
+        # 9 x 777 + 3 x 796 = 9,381.
+        il_tanf: 9_381.0
+        tanf: 9_381.0
+- name: tanf_only_child_age_18_ineligible (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 0
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 0
+      child1:
+        age: 18
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Demographic-route ineligible: an 18-year-old non-student is not a
+        # minor child (age < 18), so no eligible child is present (binding
+        # boundary against the age-17 case).
+        il_tanf: 0.0
+        tanf: 0.0
+- name: tanf_earnings_disregard_single_parent_2_children (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 6_000
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 0
+      child2:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head, child1, child2]
+    marital_units:
+      mu_head:
+        members: [head]
+      mu_child1:
+        members: [child1]
+      mu_child2:
+        members: [child2]
+  output:
+    spm_units:
+      spm_unit:
+        # 75% earned disregard: countable = 0.25 x 500/mo = 125/mo; grant =
+        # monthly payment level minus 125, floored to whole dollars ->
+        # 9 x (777.29 - 125 -> 652) + 3 x (796.83 - 125 -> 671) = 7,881.
+        il_tanf: 7_881.0
+        tanf: 7_881.0
+- name: tanf_income_just_below_initial_eligibility_threshold (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 13_610
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Monthly earnings 1,134.17. Initial eligibility: countable =
+        # earnings - IED, where IED = 0.5 x FPG - payment level.
+        # Jan-Feb (2025 FPG both instants): 1,134.17 - 333.13 = 801.04 >
+        # 777.29 -> ineligible; Mar-Sep (2026 IED FPG): 1,134.17 - 361.04 =
+        # 773.13 <= 777.29 -> eligible; Oct-Dec: 792.67 <= 796.83 ->
+        # eligible. Grant = payment level - 0.25 x 1,134.17 = 493.75
+        # (Mar-Sep) / 513.29 (Oct-Dec), floored monthly to whole dollars
+        # (IDHS PM 10-01-02) -> 7 x 493 + 3 x 513 = 4,990.
+        il_tanf: 4_990.0
+        tanf: 4_990.0
+- name: tanf_income_at_initial_eligibility_threshold (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 13_710
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: [head, spouse, child1]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child1]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1]
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: [head, spouse, child1]
+    marital_units:
+      mu_couple:
+        members: [head, spouse]
+      mu_child1:
+        members: [child1]
+  output:
+    spm_units:
+      spm_unit:
+        # Income-route ineligible: at 13,710/yr (1,142.50/mo) countable
+        # income after the IED exceeds the payment level in every month of
+        # 2026 (e.g., Mar-Sep: 781.46 > 777.29), so the annual grant is 0.
+        il_tanf: 0.0
+        tanf: 0.0

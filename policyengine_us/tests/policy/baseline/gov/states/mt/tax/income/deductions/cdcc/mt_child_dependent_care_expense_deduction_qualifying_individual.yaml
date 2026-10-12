@@ -1,0 +1,109 @@
+- name: Case 1, dependents over the age limit capable of self-care are not qualifying individuals.
+  period: 2021
+  input:
+    people:
+      person_1:
+        age: 20
+        is_incapable_of_self_care: false
+        is_tax_unit_dependent: true
+      person_2:
+        age: 17
+        is_incapable_of_self_care: false
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_qualifying_individual: [false, false]
+
+- name: Case 2, dependent children under 15 are qualifying individuals.
+  period: 2021
+  input:
+    people:
+      person_1:
+        age: 14
+        is_incapable_of_self_care: false
+        is_tax_unit_dependent: true
+      person_2:
+        age: 13
+        is_incapable_of_self_care: false
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_qualifying_individual: [true, true]
+
+- name: Case 3, dependents at exactly age 15 capable of self-care are not qualifying individuals.
+  period: 2021
+  input:
+    people:
+      person_1:
+        age: 15
+        is_incapable_of_self_care: false
+        is_tax_unit_dependent: true
+      person_2:
+        age: 15
+        is_incapable_of_self_care: false
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_qualifying_individual: [false, false]
+
+- name: Case 4, dependents incapable of self-care are qualifying individuals regardless of age.
+  period: 2021
+  input:
+    people:
+      person_1:
+        age: 16
+        is_incapable_of_self_care: true
+        is_tax_unit_dependent: true
+      person_2:
+        age: 16
+        is_incapable_of_self_care: true
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_qualifying_individual: [true, true]
+
+- name: Case 5, dependent at exactly age 15 incapable of self-care is a qualifying individual.
+  period: 2021
+  input:
+    people:
+      person_1:
+        age: 15
+        is_incapable_of_self_care: true
+        is_tax_unit_dependent: true
+    households:
+      household:
+        members: [person_1]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_qualifying_individual: true
+
+- name: Case 6, incapacitated spouse is a qualifying individual but a capable spouse is not.
+  period: 2021
+  input:
+    people:
+      person_1:
+        age: 40
+        is_tax_unit_head: true
+        is_incapable_of_self_care: false
+      person_2:
+        age: 38
+        is_tax_unit_spouse: true
+        is_incapable_of_self_care: true
+    households:
+      household:
+        members: [person_1, person_2]
+        state_code: MT
+  output:
+    mt_child_dependent_care_expense_deduction_qualifying_individual: [false, true]

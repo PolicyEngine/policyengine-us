@@ -1,0 +1,71 @@
+- name: Case 1, senior homeowner receives the state levy exemption.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        real_estate_taxes: 1_000
+        assessed_property_value: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    # 100,000 assessed value * 0.0065 state levy.
+    al_senior_homestead_exemption: 650
+
+- name: Case 2, relief is capped at real estate taxes paid.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 500
+        assessed_property_value: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_senior_homestead_exemption: 500
+
+- name: Case 3, homeowner below the age threshold receives no relief.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 64
+        real_estate_taxes: 1_000
+        assessed_property_value: 100_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_senior_homestead_exemption: 0
+
+- name: Case 4, missing assessed property value yields no modeled relief.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_senior_homestead_exemption: 0

@@ -1,0 +1,16 @@
+- name: Weeks worked is an input variable
+  period: 2024
+  input:
+    weeks_worked: 40
+  output:
+    weeks_worked: 40
+
+- name: Weeks worked carries forward when future data is missing
+  period: 2025
+  input:
+    people:
+      person:
+        weeks_worked:
+          2024: 37
+  output:
+    weeks_worked: 37

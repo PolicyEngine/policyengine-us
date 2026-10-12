@@ -18,7 +18,7 @@
   output:
     ca_tanf_eligible: false
 
-- name: Is demographic ineligible, income ineligible and resource eligible.
+- name: Is demographic eligible, income ineligible and resource eligible.
   period: 2023
   input:
     state_code: CA
@@ -28,7 +28,7 @@
   output:
     ca_tanf_eligible: false
 
-- name: Is demographic ineligible, income ineligible and resource ineligible.
+- name: Is demographic eligible, income eligible and resource ineligible.
   period: 2023
   input:
     state_code: CA
@@ -48,26 +48,12 @@
   output:
     ca_tanf_eligible: false
 
-- name: Case 1, all eligible but vehicle value ineligible.
+- name: Case 1, all three conditions met.
   period: 2025
-  absolute_error_margin: 0.1
   input:
     state_code: CA
     is_demographic_tanf_eligible: true
     ca_tanf_financial_eligible: true
     ca_tanf_resources_eligible: true
-    ca_tanf_vehicle_value_eligible: false
-  output:
-    ca_tanf_eligible: false
-
-- name: Case 2, all four conditions met.
-  period: 2025
-  absolute_error_margin: 0.1
-  input:
-    state_code: CA
-    is_demographic_tanf_eligible: true
-    ca_tanf_financial_eligible: true
-    ca_tanf_resources_eligible: true
-    ca_tanf_vehicle_value_eligible: true
   output:
     ca_tanf_eligible: true

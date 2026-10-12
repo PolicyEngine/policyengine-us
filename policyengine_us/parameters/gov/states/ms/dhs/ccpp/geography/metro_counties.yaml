@@ -1,0 +1,37 @@
+description: Mississippi designates these counties as metropolitan for payment rates under the Child Care Payment Program.
+# The 17 Mississippi counties in a Metropolitan Statistical Area under the OMB
+# February 2013 delineation (the basis for the 2013 NCHS Urban-Rural scheme the
+# Market Rate Survey uses). Every other Mississippi county is treated as
+# non-metro. Grouped by MSA: Jackson, Gulfport-Biloxi-Pascagoula, Hattiesburg,
+# and the Mississippi portion of Memphis.
+values:
+  2023-07-01:
+    - COPIAH_COUNTY_MS
+    - HINDS_COUNTY_MS
+    - MADISON_COUNTY_MS
+    - RANKIN_COUNTY_MS
+    - SIMPSON_COUNTY_MS
+    - YAZOO_COUNTY_MS
+    - HANCOCK_COUNTY_MS
+    - HARRISON_COUNTY_MS
+    - JACKSON_COUNTY_MS
+    - FORREST_COUNTY_MS
+    - LAMAR_COUNTY_MS
+    - PERRY_COUNTY_MS
+    - BENTON_COUNTY_MS
+    - DESOTO_COUNTY_MS
+    - MARSHALL_COUNTY_MS
+    - TATE_COUNTY_MS
+    - TUNICA_COUNTY_MS
+
+metadata:
+  unit: list
+  period: year
+  label: Mississippi CCPP metropolitan counties
+  reference:
+    - title: 2024 Mississippi Child Care Market Rate Survey, metropolitan-status classification (NCHS 2013 Urban-Rural Scheme)
+      href: https://www.mdhs.ms.gov/wp-content/uploads/2024/06/Mississippi-Child-Care-Market-Rate-Survey-2024.pdf#page=24
+    - title: NCHS 2013 Urban-Rural Classification Scheme for Counties
+      href: https://www.cdc.gov/nchs/data_access/urban_rural.htm
+    - title: OMB Bulletin No. 13-01, Metropolitan and Micropolitan Statistical Area delineations (February 2013)
+      href: https://www2.census.gov/programs-surveys/metro-micro/geographies/reference-files/2013/delineation-files/list1.xls

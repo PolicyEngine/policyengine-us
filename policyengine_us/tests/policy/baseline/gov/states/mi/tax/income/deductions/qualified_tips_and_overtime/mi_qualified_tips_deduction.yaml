@@ -1,0 +1,47 @@
+# Michigan qualified tips deduction (PA 24 of 2025), in effect TY2026-2028.
+# The federal tip deduction is set directly here to isolate the Michigan gating.
+
+- name: 2026 Michigan tips deduction mirrors the federal tip deduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    tip_income_deduction: 2_000
+    state_code: MI
+  output:
+    mi_qualified_tips_deduction: 2_000
+
+- name: 2027 Michigan tips deduction still applies
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    tip_income_deduction: 2_000
+    state_code: MI
+  output:
+    mi_qualified_tips_deduction: 2_000
+
+- name: 2028 Michigan tips deduction applies (final eligible year)
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    tip_income_deduction: 2_000
+    state_code: MI
+  output:
+    mi_qualified_tips_deduction: 2_000
+
+- name: 2025 Michigan tips deduction is not yet available
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    tip_income_deduction: 2_000
+    state_code: MI
+  output:
+    mi_qualified_tips_deduction: 0
+
+- name: 2029 Michigan tips deduction has sunset
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    tip_income_deduction: 2_000
+    state_code: MI
+  output:
+    mi_qualified_tips_deduction: 0

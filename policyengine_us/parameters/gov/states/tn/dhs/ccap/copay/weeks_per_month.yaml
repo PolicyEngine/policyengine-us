@@ -1,0 +1,16 @@
+description: Tennessee divides the monthly copay by this factor to establish the weekly copay under the Child Care Certificate Program.
+# The copay charts specify dividing 5% of monthly countable gross income by 4.3 to
+# convert it to a weekly payment. This exact regulatory factor is used instead of
+# WEEKS_IN_YEAR / MONTHS_IN_YEAR (4.333...).
+values:
+  2024-06-01: 4.3
+
+metadata:
+  unit: /1
+  period: year
+  label: Tennessee CCAP copay weeks per month factor
+  reference:
+    - title: TDHS Income Eligibility Limits and Parent Co-Pay Fees, weekly copay divided by 4.3 (effective October 1, 2025)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/Income%20Eligibility%20Limits%20and%20CoPay%20Chart%2010.1.25.pdf#page=1
+    - title: TDHS Income Eligibility Limits and Parent Co-Pay Fees, weekly copay divided by 4.3 (effective June 1, 2024)
+      href: https://www.tn.gov/content/dam/tn/human-services/documents/Income%20Eligibility%20and%20Co-Pay%20Chart_June_1_2024.pdf#page=1

@@ -8,7 +8,7 @@ class ga_agi(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://houpl.org/wp-content/uploads/2023/01/2022-IT-511_Individual_Income_Tax_-Booklet-compressed.pdf#page=14",
+        "https://dor.georgia.gov/document/document/2022-it-511-individual-income-tax-booklet/download#page=15",
         "https://www.zillionforms.com/2021/I2122607361.PDF#page14",
     )
     defined_for = StateCode.GA

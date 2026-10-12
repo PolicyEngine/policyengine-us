@@ -10,6 +10,7 @@
         age: 64
         is_tax_unit_spouse: true
         is_disabled: true
+        meets_ssi_disability_criteria: true
       person3:
         age: 4
         is_tax_unit_dependent: true
@@ -64,6 +65,7 @@
         age: 4
         is_tax_unit_dependent: true
         is_disabled: true
+        meets_ssi_disability_criteria: true
     spm_units:
       spm_unit:
         members: [person1, person2, person3]
@@ -73,3 +75,22 @@
         state_code: CA
   output:
     ca_state_supplement_aged_disabled_count: 0
+
+- name: Case 4, SSI disability criteria count as disabled.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        meets_ssi_disability_criteria: true
+        ssi_engaged_in_sga: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ca_state_supplement_aged_disabled_count: 1

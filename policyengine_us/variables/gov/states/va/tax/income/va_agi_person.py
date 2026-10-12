@@ -13,18 +13,18 @@ class va_agi_person(Variable):
 
     def formula(person, period, parameters):
         person_fagi = person("adjusted_gross_income_person", period)
-        # Apply person-level age deduction directly
-        age_deduction = person("va_age_deduction_person", period)
-        # Prorate non-age subtractions by federal AGI share
-        total_subtractions = person.tax_unit("va_subtractions", period)
-        total_age_deduction = person.tax_unit("va_age_deduction", period)
-        non_age_subtractions = max_(total_subtractions - total_age_deduction, 0)
+        # Virginia's "Worksheet for Determining Separate Virginia Adjusted Gross
+        # Income" (Form 760 instructions) attributes each subtraction to the
+        # spouse who received the underlying income (va_subtractions_person),
+        # then sets each spouse's separate VAGI. This matters for the Spouse Tax
+        # Adjustment: a spouse whose only income is Virginia-exempt (e.g. Social
+        # Security, railroad retirement, unemployment) has no separate Virginia
+        # taxable income, so the couple should not qualify for the adjustment.
+        person_subtractions = person("va_subtractions_person", period)
+        # Additions are only defined at the tax-unit level, so prorate them by
+        # federal AGI share.
+        additions = person.tax_unit("va_additions", period)
         total_federal_agi = person.tax_unit.sum(person_fagi)
         prorate = where(total_federal_agi > 0, person_fagi / total_federal_agi, 0)
-        person_non_age_subtractions = non_age_subtractions * prorate
-        # Prorate additions the same way
-        additions = person.tax_unit("va_additions", period)
         person_additions = additions * prorate
-        return (
-            person_fagi + person_additions - age_deduction - person_non_age_subtractions
-        )
+        return person_fagi + person_additions - person_subtractions

@@ -1,0 +1,13 @@
+- name: Case 1, San Mateo County is true.
+  period: 2026
+  input:
+    county_str: SAN_MATEO_COUNTY_CA
+  output:
+    in_smc: true
+
+- name: Case 2, another county is false.
+  period: 2026
+  input:
+    county_str: LOS_ANGELES_COUNTY_CA
+  output:
+    in_smc: false

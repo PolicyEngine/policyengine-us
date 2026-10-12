@@ -1,0 +1,620 @@
+# Kansas TANF (ks_tanf) partner edge-case contract tests.
+# Pins the ks_tanf decision boundaries MyFriendBen-style partners rely on.
+#
+# Parameter facts used (2026, gov/states/ks/dcf/tanf):
+# - Payment standard, non-shared, size 3: Group I $386, Group II $391,
+#   Group III $403, Group IV $429 per month; size 2 Group IV $352
+#   (payment_standard/non_shared.yaml). Group IV is the default for
+#   counties not listed in county_group/group_{1,2,3}.yaml (e.g. Johnson).
+# - Earned income disregard: $90 flat per employed person, then 60% of the
+#   remainder disregarded, i.e. countable = (gross - 90) * 0.4
+#   (income/earned_income_disregard/flat.yaml, rate.yaml).
+# - Gross income limit: gross income < 30% of the monthly FPG
+#   (income/gross_income_limit.yaml). 2026 contiguous-US FPG: 3 people
+#   = $27,320/yr -> 30% = $683.00/mo; 2 people = $21,640/yr -> $541.00/mo.
+# - Resource limit: cash assets <= $3,000 (resource_limit/amount.yaml).
+# - Assigned child support counts for the income eligibility tests but is
+#   excluded from the payment amount (KEESM 6220; ks_tanf formula).
+#
+# Earnings are set via employment_income_before_lsr /
+# self_employment_income_before_lsr, matching the SNAP partner edge-case
+# files: TANF earned income sources
+# (gov/hhs/tanf/cash/income/sources/earned.yaml) read the before-LSR
+# variables, and the YAML harness does not fan employment_income out to
+# its before-LSR component the way the Simulation situation path does.
+- name: Case 1, eligible 3-person family with 2 earners in a Group III county gets payment standard minus countable income.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # $400/month gross earned.
+        employment_income_before_lsr: 4_800
+      person2:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # $200/month gross earned.
+        employment_income_before_lsr: 2_400
+      person3:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id001
+          - person1
+          - person2
+          - person3
+        state_code: KS
+        zip_code: '67202'
+        # Sedgwick County (Wichita) is a Group III county.
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id001
+        # Exactly at the $3,000 resource limit (inclusive, still eligible).
+        spm_unit_cash_assets: 3_000
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+          - person1
+          - person2
+      mu_person3:
+        members:
+          - person3
+  output:
+    spm_units:
+      spm_unit:
+        # Earned income disregard per earner: ($400 - $90) * 0.4 = $124;
+        # ($200 - $90) * 0.4 = $44. Countable income = $168/mo = $2,016/yr.
+        ks_tanf_countable_income: 2_016
+        # Group III non-shared size 3 standard: $403/mo = $4,836/yr.
+        ks_tanf_maximum_benefit: 4_836
+        ks_tanf_assistance_unit_size: 3
+        # Gross test: $600/mo < $683 (30% FPG, 3 people); net: $168 < $403;
+        # resources: $3,000 <= $3,000. Benefit = $403 - $168 = $235/mo.
+        ks_tanf: 2_820
+        tanf: 2_820
+- name: Case 2, same family in a Group I rural county gets the lower Group I payment standard.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 4_800
+      person2:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 2_400
+      person3:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id002
+          - person1
+          - person2
+          - person3
+        state_code: KS
+        zip_code: '66749'
+        # Allen County (Iola) is a Group I rural county.
+        county_str: ALLEN_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id002
+        spm_unit_cash_assets: 3_000
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_couple:
+        members:
+          - person1
+          - person2
+      mu_person3:
+        members:
+          - person3
+  output:
+    spm_units:
+      spm_unit:
+        ks_tanf_countable_income: 2_016
+        # Group I non-shared size 3 standard: $386/mo = $4,632/yr.
+        ks_tanf_maximum_benefit: 4_632
+        # Benefit = $386 - $168 = $218/mo = $2,616/yr.
+        ks_tanf: 2_616
+        tanf: 2_616
+- name: Case 3, same family in a Group II county gets the Group II payment standard.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 4_800
+      person2:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 2_400
+      person3:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id003
+          - person1
+          - person2
+          - person3
+        state_code: KS
+        zip_code: '66067'
+        # Franklin County (Ottawa) is a Group II high-cost rural county.
+        county_str: FRANKLIN_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id003
+        spm_unit_cash_assets: 3_000
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_couple:
+        members:
+          - person1
+          - person2
+      mu_person3:
+        members:
+          - person3
+  output:
+    spm_units:
+      spm_unit:
+        ks_tanf_countable_income: 2_016
+        # Group II non-shared size 3 standard: $391/mo = $4,692/yr.
+        ks_tanf_maximum_benefit: 4_692
+        # Benefit = $391 - $168 = $223/mo = $2,676/yr.
+        ks_tanf: 2_676
+        tanf: 2_676
+- name: Case 4, gross income just below 30 percent of the poverty guideline stays eligible.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # $473/month gross earned.
+        employment_income_before_lsr: 5_676
+      person2:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # $200/month gross earned; unit total $673/mo, $10 below the
+        # $683.00 gross income limit (30% of the 3-person monthly FPG).
+        employment_income_before_lsr: 2_400
+      person3:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id004
+          - person1
+          - person2
+          - person3
+        state_code: KS
+        zip_code: '67202'
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id004
+        spm_unit_cash_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_couple:
+        members:
+          - person1
+          - person2
+      mu_person3:
+        members:
+          - person3
+  output:
+    spm_units:
+      spm_unit:
+        # Countable: ($473 - $90) * 0.4 + ($200 - $90) * 0.4 = $197.20/mo
+        # = $2,366.40/yr.
+        ks_tanf_countable_income: 2_366.4
+        # Benefit = $403 - $197.20 = $205.80/mo = $2,469.60/yr.
+        ks_tanf: 2_469.6
+        tanf: 2_469.6
+- name: Case 5, gross income just above 30 percent of the poverty guideline is ineligible despite passing the net income test.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # $493/month gross earned.
+        employment_income_before_lsr: 5_916
+      person2:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        # Unit total $693/mo, $10 above the $683.00 gross income limit.
+        employment_income_before_lsr: 2_400
+      person3:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id005
+          - person1
+          - person2
+          - person3
+        state_code: KS
+        zip_code: '67202'
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id005
+        spm_unit_cash_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_couple:
+        members:
+          - person1
+          - person2
+      mu_person3:
+        members:
+          - person3
+  output:
+    spm_units:
+      spm_unit:
+        # Countable income $205.20/mo would pass the net test ($205.20 <
+        # $403), so the gross income test alone drives ineligibility here.
+        ks_tanf_countable_income: 2_462.4
+        ks_tanf: 0
+        tanf: 0
+- name: Case 6, resources just above the 3,000 dollar limit make the family ineligible.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 4_800
+      person2:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 2_400
+      person3:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id006
+          - person1
+          - person2
+          - person3
+        state_code: KS
+        zip_code: '67202'
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id006
+        # $1 above the $3,000 resource limit; Case 1 pins the inclusive
+        # at-limit side with identical income.
+        spm_unit_cash_assets: 3_001
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_couple:
+        members:
+          - person1
+          - person2
+      mu_person3:
+        members:
+          - person3
+  output:
+    spm_units:
+      spm_unit:
+        ks_tanf: 0
+        tanf: 0
+- name: Case 7, assigned child support counts for income eligibility but is excluded from the payment amount.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        # $200/month child support: below the $541 gross limit (30% FPG,
+        # 2 people) and the $352 Group IV size-2 net standard, so the unit
+        # stays eligible.
+        child_support_received: 2_400
+      person2:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id007
+          - person1
+          - person2
+        state_code: KS
+        zip_code: '66212'
+        # Johnson County (Overland Park) is unlisted, so it falls to the
+        # default Group IV tier.
+        county_str: JOHNSON_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id007
+        spm_unit_cash_assets: 500
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_person1:
+        members:
+          - person1
+      mu_person2:
+        members:
+          - person2
+  output:
+    spm_units:
+      spm_unit:
+        # Child support is counted in the eligibility tests...
+        ks_tanf_countable_income: 2_400
+        # Group IV non-shared size 2 standard: $352/mo = $4,224/yr.
+        ks_tanf_maximum_benefit: 4_224
+        # ...but assigned support is retained by CSS (KEESM 6220), so the
+        # payment is the full standard: $352 - ($200 - $200) = $352/mo.
+        ks_tanf: 4_224
+        tanf: 4_224
+- name: Case 8, household with no child is demographically ineligible.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      person2:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id008
+          - person1
+          - person2
+        state_code: KS
+        zip_code: '67202'
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id008
+        spm_unit_cash_assets: 0
+    tax_units:
+      tax_unit:
+        members: *id008
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id008
+    marital_units:
+      mu_couple:
+        members:
+          - person1
+          - person2
+  output:
+    spm_units:
+      spm_unit:
+        # Zero income and assets, but no child under the TANF age limit and
+        # nobody pregnant, so the unit fails demographic eligibility.
+        ks_tanf: 0
+        tanf: 0
+- name: Case 9, negative self-employment income does not inflate the benefit above the payment standard.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 4_800
+        # Business loss of $800/month swamps the $400/month wages: this
+        # earner's gross earned income is -$400/mo.
+        self_employment_income_before_lsr: -9_600
+      person2:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 2_400
+      person3:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+    households:
+      household:
+        members: &id009
+          - person1
+          - person2
+          - person3
+        state_code: KS
+        zip_code: '67202'
+        county_str: SEDGWICK_COUNTY_KS
+    spm_units:
+      spm_unit:
+        members: *id009
+        spm_unit_cash_assets: 1_000
+    tax_units:
+      tax_unit:
+        members: *id009
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id009
+    marital_units:
+      mu_couple:
+        members:
+          - person1
+          - person2
+      mu_person3:
+        members:
+          - person3
+  output:
+    spm_units:
+      spm_unit:
+        # Person1's negative earnings floor at $0 after the per-person
+        # disregards and do not offset person2's countable $44/mo:
+        # countable income = $44/mo = $528/yr.
+        ks_tanf_countable_income: 528
+        ks_tanf_maximum_benefit: 4_836
+        # Benefit = $403 - $44 = $359/mo = $4,308/yr, below the $403/mo
+        # standard ($4,836/yr) despite the large reported loss.
+        ks_tanf: 4_308
+        tanf: 4_308

@@ -8,7 +8,7 @@ class vt_retirement_income_exemption_eligible(Variable):
     label = "Vermont retirement income exemption eligibility status"
     reference = (
         "https://legislature.vermont.gov/statutes/section/32/151/05811",  # Titl. 32 V.S.A. § 5811(21)(B)(iv)
-        "https://legislature.vermont.gov/statutes/section/32/151/05830e"  # Titl. 32 V.S.A. § 5830e
+        "https://legislature.vermont.gov/statutes/section/32/151/05830e",  # Titl. 32 V.S.A. § 5830e
         "https://tax.vermont.gov/sites/tax/files/documents/IN-112%20Instr-2022.pdf#page=3",  # Instruction for 2022 SCHEDULE IN-112 - RETIREMENT INCOME EXEMPTION WORKSHEET
         "https://tax.vermont.gov/individuals/seniors-and-retirees",  # Instruction for exemption from different retirement system
     )
@@ -21,11 +21,11 @@ class vt_retirement_income_exemption_eligible(Variable):
         # or other eligible retirement systems to determine eligibility
         filing_status = tax_unit("filing_status", period)
         agi = tax_unit("adjusted_gross_income", period)
-        p = parameters(
-            period
-        ).gov.states.vt.tax.income.agi.retirement_income_exemption.csrs.reduction
+        p = parameters(period).gov.states.vt.tax.income.agi.retirement_income_exemption
         # One of the retirement income should be greater than 0
-        retirement_income = add(
+        # Dependents' income is not in federal AGI; they report it on their
+        # own return, so only the head's and spouse's pay counts.
+        retirement_income = tax_unit_non_dep_add(
             tax_unit,
             period,
             [
@@ -35,8 +35,43 @@ class vt_retirement_income_exemption_eligible(Variable):
             ],
         )
         retirement_income_qualified = retirement_income > 0
+        # Determine which retirement system the filer uses, mirroring the
+        # main exemption formula, so the eligibility gate uses the matching
+        # phase-out threshold (Social Security thresholds differ from CSRS
+        # under 2025 law, S.51).
+        tax_unit_taxable_social_security = tax_unit(
+            "tax_unit_taxable_social_security", period
+        )
+        vt_military_retirement_pay_exclusion = tax_unit(
+            "vt_military_retirement_pay_exclusion", period
+        )
+        vt_csrs_retirement_pay_exclusion = tax_unit(
+            "vt_csrs_retirement_pay_exclusion", period
+        )
+        larger_retirement_income = max_(
+            tax_unit_taxable_social_security,
+            vt_military_retirement_pay_exclusion,
+        )
+        chosen_retirement_income = max_(
+            larger_retirement_income, vt_csrs_retirement_pay_exclusion
+        )
+        use_ss = tax_unit_taxable_social_security == chosen_retirement_income
+        reduction_end = where(
+            use_ss,
+            p.social_security.reduction.end[filing_status],
+            p.csrs.reduction.end[filing_status],
+        )
         # The agi should below threshold
-        agi_qualified = agi < p.end[filing_status]
+        agi_qualified = agi < reduction_end
+        # The 2025 income-based military exclusion (32 V.S.A. 5830e(d)) carries its
+        # own $125k-$175k phase-out, so it does not use the CSRS-end AGI gate; a
+        # high-AGI military retiree stays eligible (the exclusion itself returns 0
+        # above $175k).
+        use_military = ~use_ss & (
+            vt_military_retirement_pay_exclusion == chosen_retirement_income
+        )
+        military_income_based = p.military_retirement.income_based_structure.in_effect
+        agi_qualified = where(use_military & military_income_based, True, agi_qualified)
         # Both qualified then the filer is qualified for vermont retirement
         # income exemption
         return retirement_income_qualified & agi_qualified

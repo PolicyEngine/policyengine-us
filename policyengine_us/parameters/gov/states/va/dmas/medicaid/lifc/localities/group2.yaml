@@ -1,0 +1,40 @@
+description: Virginia assigns these localities to Group II under the Medicaid Low Income Families With Children program.
+values:
+  2017-07-01:
+    # Counties
+    - ALBEMARLE_COUNTY_VA
+    - AUGUSTA_COUNTY_VA
+    - CHESTERFIELD_COUNTY_VA
+    - HENRICO_COUNTY_VA
+    - LOUDOUN_COUNTY_VA
+    - ROANOKE_COUNTY_VA
+    - ROCKINGHAM_COUNTY_VA
+    - WARREN_COUNTY_VA
+    # Cities
+    - CHESAPEAKE_CITY_VA
+    - COVINGTON_CITY_VA
+    - HARRISONBURG_CITY_VA
+    - HOPEWELL_CITY_VA
+    - LEXINGTON_CITY_VA
+    - LYNCHBURG_CITY_VA
+    - MARTINSVILLE_CITY_VA
+    - NEWPORT_NEWS_CITY_VA
+    - NORFOLK_CITY_VA
+    - PETERSBURG_CITY_VA
+    - PORTSMOUTH_CITY_VA
+    - POQUOSON_CITY_VA
+    - RADFORD_CITY_VA
+    - RICHMOND_CITY_VA
+    - ROANOKE_CITY_VA
+    - SALEM_CITY_VA
+    - STAUNTON_CITY_VA
+    - VIRGINIA_BEACH_CITY_VA
+    - WILLIAMSBURG_CITY_VA
+    - WINCHESTER_CITY_VA
+metadata:
+  unit: list
+  period: year
+  label: Virginia Medicaid LIFC Group II localities
+  reference:
+    - title: Virginia Medical Assistance Eligibility Manual, Chapter M04, Appendix 4
+      href: https://www.dmas.virginia.gov/media/0aynyhxk/m04-1-1-26a.pdf#page=52

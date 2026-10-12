@@ -1,0 +1,104 @@
+description: Kentucky charges this daily family copayment for a two-person household by gross monthly countable income under the Child Care Assistance Program, with the fee reduced by the per-member amount for each additional household member.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  threshold_period: month
+  label: Kentucky CCAP daily copayment for a two-person household
+  reference:
+    - title: 922 KAR 2:160 Section 11(3) — CCAP Daily Co-Payment Chart (eff. 11-18-2024)
+      href: https://apps.legislature.ky.gov/law/kar/downloads/docs/15544/document.engrossed.pdf#page=12
+
+brackets:
+  - threshold:
+      2024-11-18: 0
+    amount:
+      2024-11-18: 0
+  - threshold:
+      2024-11-18: 1_600
+    amount:
+      2024-11-18: 4
+  - threshold:
+      2024-11-18: 1_900
+    amount:
+      2024-11-18: 5
+  - threshold:
+      2024-11-18: 2_200
+    amount:
+      2024-11-18: 6
+  - threshold:
+      2024-11-18: 2_500
+    amount:
+      2024-11-18: 7
+  - threshold:
+      2024-11-18: 2_800
+    amount:
+      2024-11-18: 8
+  - threshold:
+      2024-11-18: 3_100
+    amount:
+      2024-11-18: 9
+  - threshold:
+      2024-11-18: 3_400
+    amount:
+      2024-11-18: 10
+  - threshold:
+      2024-11-18: 3_700
+    amount:
+      2024-11-18: 11
+  - threshold:
+      2024-11-18: 4_000
+    amount:
+      2024-11-18: 12
+  - threshold:
+      2024-11-18: 4_300
+    amount:
+      2024-11-18: 13
+  - threshold:
+      2024-11-18: 4_600
+    amount:
+      2024-11-18: 14
+  - threshold:
+      2024-11-18: 4_900
+    amount:
+      2024-11-18: 15
+  - threshold:
+      2024-11-18: 5_200
+    amount:
+      2024-11-18: 16
+  - threshold:
+      2024-11-18: 5_500
+    amount:
+      2024-11-18: 17
+  - threshold:
+      2024-11-18: 5_800
+    amount:
+      2024-11-18: 18
+  - threshold:
+      2024-11-18: 6_100
+    amount:
+      2024-11-18: 19
+  - threshold:
+      2024-11-18: 6_400
+    amount:
+      2024-11-18: 20
+  - threshold:
+      2024-11-18: 6_700
+    amount:
+      2024-11-18: 21
+  - threshold:
+      2024-11-18: 7_000
+    amount:
+      2024-11-18: 22
+  - threshold:
+      2024-11-18: 7_300
+    amount:
+      2024-11-18: 23
+  - threshold:
+      2024-11-18: 7_600
+    amount:
+      2024-11-18: 24
+  - threshold:
+      2024-11-18: 7_900
+    amount:
+      2024-11-18: 25

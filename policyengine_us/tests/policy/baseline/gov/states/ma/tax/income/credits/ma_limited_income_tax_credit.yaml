@@ -23,3 +23,39 @@
     employment_income: 16000
   output:
     ma_limited_income_tax_credit: 0
+- name: Single filer with a dependent in the Limited Income Credit region in 2024
+  # Ziming's diagnostic: a SINGLE filer with a dependent, AGI 8,500 in 2024,
+  # receives a Limited Income Credit of 72.49 and owes 50 after the credit.
+  # filing_status is forced to SINGLE so the SINGLE exemption threshold applies
+  # (a bare dependent would otherwise map the unit to HEAD_OF_HOUSEHOLD).
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        age: 40
+      child:
+        is_tax_unit_dependent: true
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: SINGLE
+        ma_agi: 8_500
+        # ma_income_tax_before_credits provided directly (as in the fixtures
+        # above) to isolate the LIC arithmetic from the full tax computation.
+        ma_income_tax_before_credits: 122.49
+    households:
+      household:
+        members: [head, child]
+        state_code: MA
+  output:
+    # SINGLE exemption threshold (2024): base 8,000 + 0 personal + 0 dependent
+    #   (SINGLE adds neither personal nor dependent exemptions) = 8,000
+    # income_ratio = 8,500 / 8,000 = 1.0625 <= 1.75 -> eligible
+    # income_over_threshold = 8,500 - 8,000 = 500
+    # tax_cap = 0.10 * 500 = 50
+    # excess_tax = max(0, 122.49 - 50) = 72.49
+    ma_limited_income_tax_credit: 72.49

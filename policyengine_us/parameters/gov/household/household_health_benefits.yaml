@@ -1,9 +1,22 @@
 description: The government counts these sources as household benefits.
 values:
   2022-01-01:
-    - medicaid
+    - medicaid_cost
+    - msp_cost
     - chip
-    - premium_tax_credit
+    - assigned_aca_ptc
+    - assigned_ca_premium_subsidy
+    - basic_health_program
+    - co_omnisalud
+    - assigned_co_premium_assistance
+    - ct_covered_connecticut
+    - ma_connector_care
+    - md_premium_assistance
+    - nj_njhps
+    - assigned_nm_premium_assistance
+    - or_healthier_oregon_cost
+    - vt_premium_assistance
+    - wa_cascade_care_savings
 
 metadata:
   unit: list

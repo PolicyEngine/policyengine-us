@@ -1,0 +1,132 @@
+# Tests for ut_ccap_eligible_child (Person, MONTH, bool).
+# R986-700-702(5): the child must be under age 13, or under age 18 if the
+# child has special needs (is_disabled proxy). The child must be a U.S.
+# citizen or qualified noncitizen (R986-700-702; reuses the federal CCDF
+# immigration test, is_ccdf_immigration_eligible_child).
+
+- name: Case 1, five-year-old citizen child is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_eligible_child: true
+
+- name: Case 2, twelve-year-old is still eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 12
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_eligible_child: true
+
+- name: Case 3, thirteen-year-old without special needs is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_disabled: false
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_eligible_child: false
+
+- name: Case 4, thirteen-year-old with special needs is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_eligible_child: true
+
+- name: Case 5, seventeen-year-old with special needs is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 17
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_eligible_child: true
+
+- name: Case 6, eighteen-year-old with special needs is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        is_disabled: true
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_eligible_child: false
+
+- name: Case 7, undocumented child is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_eligible_child: false
+
+- name: Case 8, refugee child is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+        immigration_status: REFUGEE
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # Refugees are federal qualified noncitizens (8 U.S.C. 1641), matching
+    # the fact sheet's citizen/authorized noncitizen/refugee/permanent
+    # resident list.
+    ut_ccap_eligible_child: true
+
+- name: Case 9, legal permanent resident child is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 8
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_eligible_child: true

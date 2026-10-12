@@ -7,7 +7,7 @@ class ma_liheap_hecs_eligible(Variable):
     label = "Eligible for Massachusetts LIHEAP High Energy Cost Supplement (HECS)"
     definition_period = YEAR
     defined_for = "ma_liheap_eligible"
-    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
+    reference = "https://web.archive.org/web/20250720165524/https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
 
     def formula(spm_unit, period, parameters):
         heating_type = spm_unit("ma_liheap_heating_type", period)
@@ -15,5 +15,9 @@ class ma_liheap_hecs_eligible(Variable):
 
         p = parameters(period).gov.states.ma.doer.liheap.hecs.eligibility
         threshold = p.prior_year_cost_threshold[heating_type]
+        # The benefit chart has no threshold row for homes without heating,
+        # so a household reporting no heating type cannot qualify on a
+        # prior-year heating cost.
+        has_heating = heating_type != heating_type.possible_values.NONE
 
-        return heating_expense_last_year > threshold
+        return has_heating & (heating_expense_last_year > threshold)

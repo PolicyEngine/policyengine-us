@@ -1,4 +1,16 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.medicaid.income._claiming_tax_unit import (
+    medicaid_claiming_tax_unit_value,
+    medicaid_external_claimed_sum,
+)
+from policyengine_us.variables.gov.hhs.medicaid.income._non_filer_household import (
+    medicaid_filer_spouse_sum,
+    medicaid_non_filer_member_sum,
+    medicaid_tax_dependent_spouse_sum,
+)
+from policyengine_us.variables.household.demographic.person._parent_links import (
+    household_has_parent_ids,
+)
 
 
 class medicaid_household_size(Variable):
@@ -9,6 +21,9 @@ class medicaid_household_size(Variable):
     reference = (
         "https://www.law.cornell.edu/cfr/text/42/435.603#b",
         "https://www.law.cornell.edu/cfr/text/42/435.603#f",
+        # California (ACWDL 20-10) counts the unborn children of every member of
+        # the applicant's MAGI household; see ca_medicaid_household_pregnancies.
+        "https://www.dhcs.ca.gov/wp-content/uploads/2025/10/c20-10.pdf#page=3",
     )
 
     def formula(person, period, parameters):
@@ -35,13 +50,58 @@ class medicaid_household_size(Variable):
             spouse_count + family_parent_count + family_child_count,
             1 + spouse_count + family_child_count,
         )
+        # With parent links in the household, count each member of the
+        # applicant's own non-filer household once, spouse included.
+        non_filer_household_size = where(
+            household_has_parent_ids(person, period),
+            medicaid_non_filer_member_sum(person, period, np.ones(person.count)),
+            non_filer_household_size,
+        )
         tax_household_size = person.tax_unit("tax_unit_size", period) + (
             cohabitating_separate.astype(int)
         )
+        # With parent links, a head's or spouse's co-resident spouse outside
+        # the unit joins the unit's tax household, which its dependents and
+        # claimants elsewhere share (42 CFR 435.603(f)(2) and (f)(4)).
+        tax_household_size = tax_household_size + person.tax_unit.sum(
+            medicaid_filer_spouse_sum(person, period, np.ones(person.count))
+        ).astype(int)
+        person_count = np.ones_like(person.tax_unit("tax_unit_id", period))
+        tax_household_size = tax_household_size + medicaid_external_claimed_sum(
+            person,
+            period,
+            person.tax_unit("tax_unit_id", period),
+            person_count,
+        ).astype(int)
+        known_claiming_tax_unit = person("medicaid_has_known_claiming_tax_unit", period)
+        claimant_tax_household_size = medicaid_claiming_tax_unit_value(
+            person, period, tax_household_size
+        ).astype(int)
+        tax_route_size = where(
+            known_claiming_tax_unit,
+            claimant_tax_household_size,
+            tax_household_size,
+        )
+        # With parent links in the household, a tax dependent's co-resident
+        # spouse joins their tax household once (42 CFR 435.603(f)(4)).
+        tax_route_size = where(
+            household_has_parent_ids(person, period),
+            tax_route_size
+            + medicaid_tax_dependent_spouse_sum(
+                person, period, np.ones(person.count)
+            ).astype(int),
+            tax_route_size,
+        )
 
-        # Count the applicant's unborn children in their own household size.
-        # The treatment of another household member's pregnancy is state-optional
-        # and is not yet parameterized here.
-        return where(
-            non_filer_rules, non_filer_household_size, tax_household_size
-        ) + person("current_pregnancies", period)
+        # California counts the unborn children of all members included in the
+        # applicant's MAGI household. Preserve the existing treatment elsewhere.
+        state = person.household("state_code", period)
+        pregnancies = where(
+            state == StateCode.CA,
+            person("ca_medicaid_household_pregnancies", period),
+            person("current_pregnancies", period),
+        )
+        return (
+            where(non_filer_rules, non_filer_household_size, tax_route_size)
+            + pregnancies
+        )

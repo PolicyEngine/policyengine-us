@@ -1,0 +1,40 @@
+- name: Case 1, take-up false zeroes SSI but preserves the potential amount.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    uncapped_ssi: 500
+    takes_up_ssi_if_eligible: false
+  output:
+    ssi_if_takes_up: 500
+    ssi: 0
+
+- name: Case 2, take-up true passes the potential amount through.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    uncapped_ssi: 500
+    takes_up_ssi_if_eligible: true
+  output:
+    ssi_if_takes_up: 500
+    ssi: 500
+
+- name: Case 3, negative uncapped SSI floors at zero.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    uncapped_ssi: -100
+    takes_up_ssi_if_eligible: false
+  output:
+    ssi_if_takes_up: 0
+    ssi: 0
+
+- name: Case 4, aged individual with no income shows the full federal benefit rate without take-up.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    takes_up_ssi_if_eligible: false
+  output:
+    # 2025 individual federal benefit rate, no countable income
+    ssi_if_takes_up: 967
+    ssi: 0

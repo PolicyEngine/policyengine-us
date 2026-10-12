@@ -12,6 +12,7 @@ class ssi_countable_resources(Variable):
     )
     unit = USD
     definition_period = YEAR
+    quantity_type = STOCK
     reference = (
         "https://secure.ssa.gov/poms.nsf/lnx/0501140000",  # POMS SI 01140.000 - Types of Countable Resources
     )

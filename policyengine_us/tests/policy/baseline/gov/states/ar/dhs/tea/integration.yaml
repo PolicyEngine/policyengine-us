@@ -39,10 +39,9 @@
     ar_tea_maximum_benefit: 204
     # Family size 3 -> $204 payment standard
     ar_tea: 204
-    # Gross income 0 < 1,026, so no reduction
-    # max(204 - 0, 0) = 204
+    # Gross income 0 < 1,026, so full maximum grant of 204
 
-- name: Case 2, ongoing family of 3 with earned income below trigger receives partial benefit.
+- name: Case 2, ongoing family of 3 with earned income below trigger receives full grant.
   period: 2024-01
   absolute_error_margin: 0.01
   input:
@@ -80,9 +79,9 @@
 
     # Benefit calculation
     ar_tea_maximum_benefit: 204
-    ar_tea: 76
-    # Gross income 400 < 1,026, so no reduction
-    # max(204 - 128, 0) = 76
+    ar_tea: 204
+    # Gross income 400 < 1,026, so full maximum grant of 204
+    # (countable income is not subtracted from the grant)
 
 - name: Case 3, ongoing family of 2 with earnings below trigger.
   period: 2024-01
@@ -119,9 +118,8 @@
 
     # Benefit calculation
     ar_tea_maximum_benefit: 162
-    ar_tea: 19.28
-    # Gross income 446 < 1026, so no reduction
-    # max(162 - 142.72, 0) = 19.28
+    ar_tea: 162
+    # Gross income 446 < 1,026, so full maximum grant of 162
 
 - name: Case 4, ongoing family of 4 with earnings below trigger.
   period: 2024-01
@@ -162,9 +160,8 @@
 
     # Benefit calculation
     ar_tea_maximum_benefit: 247
-    ar_tea: 87
-    # Gross income 500 < 1026, so no reduction
-    # max(247 - 160, 0) = 87
+    ar_tea: 247
+    # Gross income 500 < 1,026, so full maximum grant of 247
 
 - name: Case 5, ongoing recipient with 550 gross earnings below trigger.
   period: 2024-01
@@ -202,11 +199,10 @@
 
     # Benefit calculation
     ar_tea_maximum_benefit: 204
-    ar_tea: 28
-    # Gross income 550 < 1026, so no reduction
-    # max(204 - 176, 0) = 28
+    ar_tea: 204
+    # Gross income 550 < 1,026, so full maximum grant of 204
 
-- name: Case 6, ongoing recipient with high earnings but still income eligible.
+- name: Case 6, ongoing recipient with high earnings below trigger but still income eligible.
   period: 2024-01
   input:
     people:
@@ -241,9 +237,9 @@
 
     # Benefit calculation
     ar_tea_maximum_benefit: 204
-    ar_tea: 0
-    # Gross income 800 < 1,026, so no reduction
-    # max(204 - 256, 0) = 0 (countable income exceeds maximum benefit)
+    ar_tea: 204
+    # Gross income 800 < 1,026, so full maximum grant of 204
+    # (income eligible since countable income 256 <= 513)
 
 - name: Case 7, resources exceed limit making family ineligible.
   period: 2024-01
@@ -314,9 +310,9 @@
 
     # Benefit calculation
     ar_tea_maximum_benefit: 204
-    ar_tea: 0
-    # Gross income 400 < 1,026, so no reduction
-    # max(204 - 320, 0) = 0
+    ar_tea: 204
+    # Gross income 400 < 1,026, so full maximum grant of 204
+    # (applicant income eligible since countable income 320 <= 513)
 
 - name: Case 9, ongoing recipient with gross income above trigger.
   period: 2024-01
@@ -472,9 +468,9 @@
 
     # Benefit calculation
     ar_tea_maximum_benefit: 247
-    ar_tea: 0
-    # Gross income 476.74 < 1026, so no reduction
-    # max(247 - 381.39, 0) = 0
+    ar_tea: 247
+    # Manual Example #2 establishes income eligibility (381.39 <= 513).
+    # Gross income 476.74 < 1,026, so full maximum grant of 247.
 
 # TEA Manual Section 2362 Examples (Gross Income Trigger)
 
@@ -554,9 +550,8 @@
 
     # Benefit calculation
     ar_tea_maximum_benefit: 204
-    ar_tea: 0
-    # Gross income 1,025 < 1,026, so NO reduction
-    # max(204 - 328, 0) = 0 (countable income exceeds maximum benefit)
+    ar_tea: 204
+    # Gross income 1,025 < 1,026, so full maximum grant of 204
 
 - name: Boundary test, gross income $1,027 (one above trigger - 50% reduction).
   period: 2024-01
@@ -634,9 +629,8 @@
 
     # Benefit calculation
     ar_tea_maximum_benefit: 162
-    ar_tea: 19.6
-    # Gross income 445 < 446, so NO reduction
-    # max(162 - 142.4, 0) = 19.6
+    ar_tea: 162
+    # Gross income 445 < 446, so full maximum grant of 162
 
 - name: Historical test 2022, ongoing recipient above $446 trigger.
   period: 2022-01

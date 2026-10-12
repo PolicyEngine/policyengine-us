@@ -1,0 +1,138 @@
+description: Illinois sets these monthly family copayments by monthly income for a family of four under Table A of the Child Care Assistance Program.
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  amount_unit: currency-USD
+  period: month
+  label: Illinois CCAP Table A monthly copayment for family size four
+  reference:
+    - title: IDHS Important Parent Copayment Information, Table A, effective July 1, 2025
+      href: https://www.dhs.state.il.us/OneNetLibrary/27897/documents/Forms/443455B%20CCAP%20Income%20and%20Copay%20Chart%20Eff%207.1.25.pdf#page=2
+    - title: IDEC Important Parent Co-Payment Information, Table A, effective July 1, 2026
+      href: https://idec.illinois.gov/content/dam/soi/en/web/idec/documents/pages/ccap-for-providers/IL444-3455B%20DEC%20-%20Important%20Parent%20Co-Payment%20Information%207.1.26.pdf#page=2
+
+brackets:
+  - threshold:
+      2025-07-01: 0
+    amount:
+      2025-07-01: 1
+  - threshold:
+      2025-07-01: 2_680
+      2026-07-01: 2_751
+    amount:
+      2025-07-01: 27
+      2026-07-01: 28
+  - threshold:
+      2025-07-01: 2_948
+      2026-07-01: 3_026
+    amount:
+      2025-07-01: 59
+      2026-07-01: 61
+  - threshold:
+      2025-07-01: 3_216
+      2026-07-01: 3_301
+    amount:
+      2025-07-01: 96
+      2026-07-01: 99
+  - threshold:
+      2025-07-01: 3_484
+      2026-07-01: 3_576
+    amount:
+      2025-07-01: 139
+      2026-07-01: 143
+  - threshold:
+      2025-07-01: 3_752
+      2026-07-01: 3_851
+    amount:
+      2025-07-01: 188
+      2026-07-01: 193
+  - threshold:
+      2025-07-01: 4_020
+      2026-07-01: 4_126
+    amount:
+      2025-07-01: 241
+      2026-07-01: 248
+  - threshold:
+      2025-07-01: 4_288
+      2026-07-01: 4_401
+    amount:
+      2025-07-01: 300
+      2026-07-01: 308
+  - threshold:
+      2025-07-01: 4_556
+      2026-07-01: 4_676
+    amount:
+      2025-07-01: 319
+      2026-07-01: 327
+  - threshold:
+      2025-07-01: 4_824
+      2026-07-01: 4_951
+    amount:
+      2025-07-01: 338
+      2026-07-01: 347
+  - threshold:
+      2025-07-01: 5_091
+      2026-07-01: 5_226
+    amount:
+      2025-07-01: 356
+      2026-07-01: 366
+  - threshold:
+      2025-07-01: 5_359
+      2026-07-01: 5_501
+    amount:
+      2025-07-01: 375
+      2026-07-01: 385
+  - threshold:
+      2025-07-01: 5_627
+      2026-07-01: 5_776
+    amount:
+      2025-07-01: 394
+      2026-07-01: 404
+  - threshold:
+      2025-07-01: 5_895
+      2026-07-01: 6_051
+    amount:
+      2025-07-01: 413
+      2026-07-01: 424
+  - threshold:
+      2025-07-01: 6_029
+      2026-07-01: 6_189
+    amount:
+      2025-07-01: 422
+      2026-07-01: 433
+  - threshold:
+      2025-07-01: 6_163
+      2026-07-01: 6_326
+    amount:
+      2025-07-01: 431
+      2026-07-01: 443
+  - threshold:
+      2025-07-01: 6_431
+      2026-07-01: 6_601
+    amount:
+      2025-07-01: 450
+      2026-07-01: 462
+  - threshold:
+      2025-07-01: 6_699
+      2026-07-01: 6_876
+    amount:
+      2025-07-01: 469
+      2026-07-01: 481
+  - threshold:
+      2025-07-01: 6_967
+      2026-07-01: 7_151
+    amount:
+      2025-07-01: 488
+      2026-07-01: 501
+  - threshold:
+      2025-07-01: 7_235
+      2026-07-01: 7_426
+    amount:
+      2025-07-01: 506
+      2026-07-01: 520
+  - threshold:
+      2025-07-01: 7_369
+      2026-07-01: 7_564
+    amount:
+      2025-07-01: 506
+      2026-07-01: 520

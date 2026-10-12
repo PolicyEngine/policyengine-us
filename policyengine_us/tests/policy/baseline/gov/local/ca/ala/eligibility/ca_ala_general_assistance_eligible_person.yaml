@@ -33,3 +33,16 @@
     in_ala: true
   output:
     ca_ala_general_assistance_eligible_person: false
+
+- name: Case 4, ineligible due to reported SSI receipt with zero computed SSI.
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    ssi: 0
+    receives_ssi: true
+    personal_property: 500
+    immigration_status: CITIZEN
+    in_ala: true
+  output:
+    ca_ala_general_assistance_eligible_person: false

@@ -1,0 +1,55 @@
+description: North Carolina counts these unearned income sources under the Low Income Energy Assistance Program.
+values:
+  2025-10-01:
+    # Section 300.09 A takes the types of income to count from the FNS manual.
+    # Each source names its row in the FNS 300.02 chart and, where there is
+    # one, its box in the state plan's item 1.9 checklist.
+    # "Supplemental Security Income" (page 22); plan "Supplemental Security
+    # Income (SSI)".
+    - ssi
+    # "Social Security Benefits" (page 20). The plan checks "Including
+    # MediCare deduction", so the benefit is counted gross.
+    - social_security
+    # "General Assistance (GA)" (page 9); plan "General Assistance benefits".
+    - general_assistance
+    # "Pensions" (page 16); plan "Retirement / pension benefits".
+    - pension_income
+    # "Retirement Benefits" (page 18).
+    - retirement_distributions
+    # "Annuities" (page 3) and "Pensions" (page 16): survivor benefits other
+    # than Social Security.
+    - survivor_benefits
+    # "Veterans" (page 25); plan "Veterans Administration (VA) benefits".
+    - veterans_benefits
+    # "Unemployment" (page 24); plan "Unemployment insurance".
+    - unemployment_compensation
+    # "Worker's Compensation" (page 26) and "Disability Payments" (page 6).
+    # The plan leaves "Insurance payments made directly to the insured"
+    # unchecked; the model follows the manual.
+    - workers_compensation
+    - disability_benefits
+    # "Child Support" (page 5); plan "Child support".
+    - child_support_received
+    # "Alimony / Spousal Support" (page 3); plan "Alimony".
+    - alimony_income
+    # "Interest and Dividend" (page 11); plan "Interest, dividends, or
+    # royalties".
+    - interest_income
+    - ordinary_dividend_income
+    # "Contributions" (page 6) and "Gifts (Monetary)" (page 9); plan "Cash
+    # gifts".
+    - financial_assistance
+    # No single chart row. FNS 300.01 B (page 1) defines unearned income as
+    # all income that is not earned.
+    - miscellaneous_income
+metadata:
+  unit: list
+  period: year
+  label: North Carolina LIEAP unearned income sources
+  reference:
+    - title: North Carolina Energy Programs Manual, Section 300.09 A (pages 10-11)
+      href: https://policies.ncdhhs.gov/wp-content/uploads/EP-300-5.1.2026.pdf#page=10
+    - title: North Carolina Food and Nutrition Services Manual, FNS 300.01 B (page 1) and FNS 300.02 sources of income chart, pages 3, 5, 6, 9, 11, 16, 18, 20, 22, 24, 25 and 26
+      href: https://policies.ncdhhs.gov/wp-content/uploads/fns-300-sources-of-income.pdf#page=1
+    - title: North Carolina FY2026 state plan, item 1.9 countable income checklist, pages 6-7
+      href: https://liheapch.acf.gov/docs/2026/state-plans/NC_Plan_2026.pdf#page=6

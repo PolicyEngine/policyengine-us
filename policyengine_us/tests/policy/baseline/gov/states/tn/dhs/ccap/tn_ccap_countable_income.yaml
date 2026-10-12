@@ -1,0 +1,116 @@
+# tn_ccap_countable_income: SPMUnit, float, MONTH
+# counts gross wages or salary, including self-employment earnings (a
+# qualifying work activity under State Plan Section 2.2.2.a.ii). Annual
+# income is auto-divided to a monthly total by the MONTH-period variable.
+
+- name: Case 1, single earner monthly countable income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # 24_000 / 12 = 2_000
+    tn_ccap_countable_income: 2_000
+
+- name: Case 2, child support is excluded from wage-only income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        child_support_received: 3_600
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # Only 24_000 of wages is counted: 24_000 / 12 = 2_000
+    tn_ccap_countable_income: 2_000
+
+# ---- Edge cases ----
+
+- name: Case 3, self-employment income is counted alongside wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        self_employment_income: 12_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # (12_000 + 12_000) / 12 = 2_000
+    tn_ccap_countable_income: 2_000
+
+- name: Case 4, retirement and investment income are excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        social_security_retirement: 12_000
+        interest_income: 2_400
+        pension_income: 3_600
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    tn_ccap_countable_income: 0
+
+- name: Case 5, a self-employment loss offsets wages in the raw sum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        self_employment_income: -24_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+  output:
+    # (12_000 - 24_000) / 12 = -1_000; the copay formula floors this at 0
+    # downstream (see tn_ccap.yaml Case 5).
+    tn_ccap_countable_income: -1_000

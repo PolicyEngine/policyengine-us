@@ -126,6 +126,7 @@
       person1:
         age: 45
         is_disabled: true
+        meets_ssi_disability_criteria: true
         social_security: 8_400
         fl_oss_community_care_type: MHRTF
         fl_oss_program_track: PROTECTED
@@ -329,12 +330,14 @@
       person1:
         age: 45
         is_disabled: true
+        meets_ssi_disability_criteria: true
         social_security: 12_120
         fl_oss_community_care_type: MHRTF
         fl_oss_program_track: REDESIGN
       person2:
         age: 42
         is_disabled: true
+        meets_ssi_disability_criteria: true
         social_security: 12_120
         fl_oss_community_care_type: MHRTF
         fl_oss_program_track: PROTECTED

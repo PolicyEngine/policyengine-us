@@ -1,0 +1,56 @@
+description: Wyoming counts income from these sources as countable income under the Child Care, Purchase of Service program.
+values:
+  2024-04-01:
+    # Earned income (rules Appendix B / manual §901.G Table #1: wages, tips,
+    # bonuses, salary, commissions, S-Corp/LLC wages, severance, vacation and
+    # sick pay, in-kind wages, jury duty, room and board, AmeriCorps living
+    # allowance, sale of blood/plasma, child-care income)
+    - employment_income
+    - self_employment_income  # Net of expenses (Manual §§902-903 actual-expense branch; see wy_ccap_countable_income)
+    - sstb_self_employment_income
+    - farm_operations_income
+    # Unearned income
+    - social_security  # RSDI counted; SSI exempt (social_security omits SSI)
+    - unemployment_compensation
+    - workers_compensation
+    - disability_benefits
+    - interest_income
+    - dividend_income
+    - rental_income  # The manual's mortgage-payment deduction is not modeled
+    - pension_income  # Pensions, annuities, retirement, railroad retirement
+    - retirement_distributions
+    - alimony_income
+    - child_support_received  # From a non-assistance-unit member
+    - veterans_benefits  # VA general; the service-connected exemption at or below 100% FPL is not modeled
+    - capital_gains  # Counted as a lump sum; the lump-sum ineligibility-months rule is not modeled
+    # POWER (Wyoming TANF) cash is deliberately EXCLUDED even though manual
+    # Table #1 (PDF p. 3) and rules Appendix B classify it as nonexempt:
+    # counting the POWER dollar amount would create a CCAP<->POWER circular
+    # dependency (POWER's countable income nets childcare_expenses against
+    # child_care_subsidies). The CCDF Plan 2.2.4.c income definition omits
+    # public assistance, supporting the exclusion; POWER families are handled
+    # via the is_tanf_enrolled categorical pathway instead (mt_ccap precedent).
+    #
+    # Exempt (deliberately not listed): SSI, foster care payments, adoption
+    # assistance, educational assistance (BIA, Pell, SEOG, Title IV, student
+    # loans, scholarships, VA education, GI Bill school portion), wages of
+    # dependent children under 18, college work study, gifts of $50 or less
+    # per person per quarter, Indian judgment funds and per-capita payments of
+    # $2,000 or less per year, bona fide loans, one-time death benefits,
+    # vendor payments, HUD utility allowances, victims' compensation.
+    #
+    # Counted in the manual but with no dedicated PolicyEngine input (not
+    # modeled): trust fund income, mineral leases and royalties, prizes and
+    # winnings, inheritance, cash gifts above $50 per quarter.
+
+metadata:
+  unit: list
+  period: year
+  label: Wyoming CCAP countable income sources
+  reference:
+    - title: Wyo. Admin. Rules, DFS, Child Care - Purchase of Service, Ch. 1, Appendix B, eff. 05/07/2025 (PDF pp. 38-40)
+      href: https://rules.wyo.gov/DownloadFile.aspx?source_id=24638&source_type_id=81&doc_type_id=110&include_meta_data=Y&file_type=pdf&filename=24638.pdf&token=189087205215053222164006221008072207044097222254
+    - title: Wyoming DFS Child Care Subsidy Policy Manual §901.G Table #1 (PDF pp. 2-4)
+      href: https://dfs.wyo.gov/about/policy-manuals/child-care-subsidy-policy-manual/
+    - title: Wyoming CCDF State Plan FFY 2025-2027 §2.2.4.c (PDF p. 21)
+      href: https://dfs.wyo.gov/services/family-services/child-care/

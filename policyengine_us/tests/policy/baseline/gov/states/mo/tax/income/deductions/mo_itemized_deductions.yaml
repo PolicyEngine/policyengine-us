@@ -36,3 +36,18 @@
     state_code: MO
   output:
     mo_itemized_deductions: 1000.00
+
+# MO state-income-tax add-back respects the OBBBA SALT cap phase-down: a
+# high-income MFJ filer whose federal SALT has phased to the $10,000 floor
+# keeps the $50,000 mortgage deduction instead of it being wiped out.
+- name: MO state-income-tax add-back respects the OBBBA SALT cap phase-down
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head: {age: 45, taxable_interest_income: 789_125.13, deductible_mortgage_interest: 50_000}
+      spouse: {age: 45}
+    tax_units: {tax_unit: {members: [head, spouse]}}
+    households: {household: {members: [head, spouse], state_code: MO}}
+  output:
+    mo_itemized_deductions: 50_000

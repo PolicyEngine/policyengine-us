@@ -4,21 +4,32 @@ values:
   2009-01-01:
     - employment_income
     - self_employment_income
+    - sstb_self_employment_income
     - dividend_income
     - interest_income
     - gi_cash_assistance
+    - child_support_received
     - social_security
     - ssi
     - tanf
+    # 7 CFR 245.6(a)(5)(ii) lists welfare among the sources of cash income.
+    - general_assistance
     - pension_income
+    - survivor_benefits
+    - financial_assistance
     - miscellaneous_income
     - veterans_benefits
     - unemployment_compensation
     - strike_benefits
     - rental_income
     - retirement_distributions
+    - educational_assistance
 
 metadata:
   reference:
-    - title: United States Code, Title 7, Subsection 273.9(b)
+    - title: Code of Federal Regulations, 7 CFR 245.6(a)(5)(ii)
+      href: https://www.law.cornell.edu/cfr/text/7/245.6#a_5_ii
+    - title: Code of Federal Regulations, 7 CFR 273.9(b)
       href: https://www.law.cornell.edu/cfr/text/7/273.9#b
+    - title: Code of Federal Regulations, 7 CFR 247.9(d)(1)
+      href: https://www.ecfr.gov/current/title-7/part-247/section-247.9#p-247.9(d)(1)

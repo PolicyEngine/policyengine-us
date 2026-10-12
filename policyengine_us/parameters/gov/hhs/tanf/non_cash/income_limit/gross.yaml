@@ -6,9 +6,19 @@ AK:
   # Alaska is not in the list, indicating it has not elected to BBCE.
   # Non-BBCE states are entered as negative .infinity gross income limit.
   2015-10-01: -.inf
+  # Alaska adopted BBCE for applications and recertifications on or after
+  # 2025-07-01: https://health.alaska.gov/media/vw0lsl2m/bbce-faq.pdf
   2025-07-01: 2
 AZ:
   2015-10-01: 1.85
+  # "Starting the benefit month of 03/2026, the gross income limit for
+  # the NA Expanded Categorical Eligibility changed from 185% of the FPL
+  # to 200% of the FPL." The same note confirms Arizona re-bases each
+  # October ("increased for FFY 2026 starting 10/01/2025"), so
+  # fpg_year_start_month keeps its default of 10. The CNAP manual is not
+  # publicly linkable (des.az.gov serves a 403 challenge page); SNAP
+  # Screener's Arizona guide corroborates the 200% limit (see metadata).
+  2026-03-01: 2
 AR:
   2015-10-01: -.inf # Non-BBCE.
 CA:
@@ -63,11 +73,11 @@ MI:
 MN:
   2015-10-01: 1.65
   2022-09-01: 2
-MO:
-  2015-10-01: -.inf # Non-BBCE
 MS:
   2015-10-01: 1.3
   2019-07-01: -.inf # Non-BBCE.
+MO:
+  2015-10-01: -.inf # Non-BBCE
 MT:
   2015-10-01: 2
 NE:
@@ -87,9 +97,9 @@ NM:
   2024-10-01: 2
   # https://www.hca.nm.gov/2024/09/23/governor-expands-snap-access-increases-benefits-for-new-mexicans/
 NY:
-  # 150% for those with earned income.
-  # 200% for those with dependent care expenses, not currently entered.
-  2015-10-01: 1.5
+  # Households without earned income, dependent care expenses, or elderly/disabled members.
+  # Earned income, dependent care, and elderly/disabled limits are modeled separately.
+  2015-10-01: 1.3
 NC:
   2015-10-01: 2
 ND:
@@ -103,7 +113,7 @@ OR:
   2022-01-01: 2
 PA:
   2015-10-01: 1.6
-  # https://www.snapscreener.com/blog/pennsylvania-snap-increase
+  # http://services.dpw.state.pa.us/oimpolicymanuals/snap/512_Categorical_Eligibility/512_1_General_Policy.htm
   2022-10-01: 2
 RI:
   2015-10-01: 1.85
@@ -111,16 +121,22 @@ SC:
   2015-10-01: 1.3
 SD:
   2015-10-01: -.inf  # Non-BBCE.
-TX:
-  2015-10-01: 1.65
 TN:
   2015-10-01: -.inf # Non-BBCE
+TX:
+  2015-10-01: 1.65
 UT:
   2015-10-01: -.inf # Non-BBCE.
 VT:
   2015-10-01: 1.85
 VI:
-  2015-10-01: 1.75
+  # DHS announced the increase from 130% to 175% effective 2024-10-01
+  # (see metadata reference). The announcement documents 130% as the
+  # limit in effect immediately before October 2024; the 2015-10-01
+  # start date aligns with this file's baseline rather than a documented
+  # adoption date for the 130% level.
+  2015-10-01: 1.3
+  2024-10-01: 1.75
 VA:
   2015-10-01: -.inf # Non-BBCE per ERS data through Sep 2020.
   2021-07-01: 2
@@ -143,5 +159,9 @@ metadata:
       href: https://www.fns.usda.gov/snap/broad-based-categorical-eligibility
     - title: USDA ERS SNAP Policy Database (bbce_inclmt column, Jan 1996 - Dec 2020)
       href: https://www.ers.usda.gov/data-products/snap-policy-data-sets
+    - title: VI Department of Human Services announcement (130% to 175%, effective October 1, 2024)
+      href: https://www.vi.gov/department-of-human-services-announces-change-to-snap-income-guidelines/
+    - title: SNAP Screener Arizona guide (200% gross income limit)
+      href: https://www.snapscreener.com/guides/arizona
   breakdown:
   - state_code

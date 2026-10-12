@@ -1,0 +1,50 @@
+# Total monthly payment rate = state maximum daily rate x paid days, summed
+# over eligible children in care (LAC 28:CLXV.515).
+- name: Case 1, one toddler in a Type III center five days a week.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_800
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 2
+        childcare_days_per_week: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    # Toddler rate $42 x 21.67 days = $910.
+    la_ccap_total_payment_rate: 910
+
+- name: Case 2, an infant and a preschooler sum their rates.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 54_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 0.5
+        childcare_days_per_week: 5
+      person3:
+        age: 4
+        childcare_days_per_week: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: LA
+  output:
+    # Infant $68 x 21.67 + regular $31.50 x 21.67 = $99.50 x 21.67 = $2,155.83.
+    la_ccap_total_payment_rate: 2_155.83

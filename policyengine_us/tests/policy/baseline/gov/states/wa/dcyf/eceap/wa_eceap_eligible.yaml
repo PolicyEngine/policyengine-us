@@ -1,0 +1,333 @@
+- name: Family of 3 in 2025 at $28,000, ECEAP eligible under FPL era (130% ceiling).
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 28_000
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # Family of 3 at 130% FPL (2025) = $34,645 -> $28,000 < $34,645, income-eligible.
+    # Child age 4 within ECEAP age range (3-5).
+    wa_eceap_eligible: [false, true, false]
+
+- name: Family of 3 in 2026 at $42,000, ECEAP eligible under 36% SMI era.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 42_000
+      child:
+        age: 3
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 36% SMI family of 3 = $42,128 -> $42,000 < $42,128, income-eligible.
+    # Child age 3 within ECEAP age range.
+    wa_eceap_eligible: [false, true, false]
+
+- name: Family of 3 in 2026 at $45,000, not ECEAP eligible (above 36% SMI, no categorical).
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 45_000
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        is_single_parent_household: false
+      sibling:
+        age: 6
+        employment_income: 0
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # $45,000 > 36% SMI ($42,128). No categorical path, no risk factor. Not eligible.
+    wa_eceap_eligible: [false, false, false]
+
+- name: Family of 3 in 2031 at $55,000, ECEAP eligible under 50% SMI era.
+  period: 2031
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 55_000
+      child:
+        age: 4
+        employment_income: 0
+      sibling:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child, sibling]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child, sibling]
+    households:
+      household:
+        members: [parent, child, sibling]
+        state_code: WA
+  output:
+    # 50% SMI family of 3 = $58,511 -> $55,000 < $58,511, income-eligible.
+    wa_eceap_eligible: [false, true, false]
+
+- name: Homeless 4-year-old with high income, ECEAP eligible via categorical path.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 120_000
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+        is_homeless: true
+  output:
+    # Homelessness is a categorical path: eligible regardless of income.
+    wa_eceap_eligible: [false, true]
+
+- name: 6-year-old above ECEAP age range, not eligible.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 6
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # Age 6 is above the generous ECEAP age range (3-5).
+    wa_eceap_eligible: [false, false]
+
+- name: Oregon family with 4-year-old and low income, not eligible due to residency.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: OR
+  output:
+    wa_eceap_eligible: [false, false]
+
+# ---- Edge cases ----
+
+- name: Multi-child family with 2-year-old and 4-year-old, only 4-year-old is ECEAP-eligible.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 30_000
+      child_early:
+        age: 2
+        employment_income: 0
+      child_eceap:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child_early, child_eceap]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child_early, child_eceap]
+    households:
+      household:
+        members: [parent, child_early, child_eceap]
+        state_code: WA
+  output:
+    # Only the 4-year-old qualifies for ECEAP (age 3-5 range; 2-year-old too young).
+    wa_eceap_eligible: [false, false, true]
+
+- name: High-income family with IEP child, ECEAP eligible via categorical path.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 120_000
+      child:
+        age: 4
+        employment_income: 0
+        has_individualized_education_program: true
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    # Income above any threshold but IEP is categorical path.
+    wa_eceap_eligible: [false, true]
+
+- name: Idaho family with 4-year-old and low income, not eligible due to residency.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 20_000
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: ID
+  output:
+    wa_eceap_eligible: [false, false]
+
+- name: 2025 FPL era at zero income, ECEAP eligible.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 0
+      child:
+        age: 4
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: WA
+  output:
+    wa_eceap_eligible: [false, true]
+
+- name: 2026 married kinship caregiver family in 36-50% SMI band, foster preschooler ECEAP eligible via risk pathway.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 32
+        employment_income: 50_000
+        is_english_proficient: true
+        is_single_parent_household: false
+      parent2:
+        age: 34
+        employment_income: 0
+        is_english_proficient: true
+        is_single_parent_household: false
+      child:
+        age: 4
+        employment_income: 0
+        is_in_foster_care: true
+        is_english_proficient: true
+        is_single_parent_household: false
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        tanf: 0
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: WA
+  output:
+    # $50,000 is above the standard 36% SMI path and within the 36-50% SMI
+    # risk-factor band. Only the foster child is also age-eligible.
+    wa_eceap_eligible: [false, false, true]
