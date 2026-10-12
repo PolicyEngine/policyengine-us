@@ -1,6 +1,17 @@
 from policyengine_us.model_api import *
 
 
+def choice_branch(tax_unit, period, itemizes):
+    """The branch of the simulation in which every tax unit itemizes, or
+    every tax unit does not."""
+    return get_override_branch(
+        tax_unit.simulation,
+        "itemizing" if itemizes else "not_itemizing",
+        period,
+        {"tax_unit_itemizes": np.full(tax_unit.count, itemizes, dtype=bool)},
+    )
+
+
 class tax_unit_itemizes(Variable):
     value_type = bool
     entity = TaxUnit
@@ -10,9 +21,24 @@ class tax_unit_itemizes(Variable):
     definition_period = YEAR
 
     def formula(tax_unit, period, parameters):
-        standard_deduction = tax_unit("standard_deduction", period)
-        limitation = parameters(period).gov.irs.deductions.itemized.limitation
-        if limitation.applies and limitation.obbb.applies:
+        p = parameters(period).gov.irs
+        limitation = p.deductions.itemized.limitation
+        if "charitable_contributions_ald" in p.ald.deductions:
+            # In 2020 a unit that does not itemize deducts charitable
+            # contributions above the line (26 U.S.C. 62(a)(22)), so adjusted
+            # gross income depends on the choice, and with it the itemized
+            # deductions it limits (the medical floor, the charitable
+            # ceiling) and any standard deduction that phases out with it.
+            # Each comes from the branch that makes that choice (the ones
+            # that also give the tax liabilities compared below).
+            itemized_deductions = choice_branch(tax_unit, period, True).calculate(
+                "itemized_taxable_income_deductions", period
+            )
+            standard_deduction = choice_branch(tax_unit, period, False).calculate(
+                "standard_deduction", period
+            )
+        elif limitation.applies and limitation.obbb.applies:
+            standard_deduction = tax_unit("standard_deduction", period)
             # The itemized deductions the unit would claim if it itemized.
             # The P.L. 119-21 section 68 limitation nets them of the
             # qualified business income deduction, which depends on the
@@ -20,16 +46,11 @@ class tax_unit_itemizes(Variable):
             # (the one that also gives tax_liability_if_itemizing).
             # Calculated before branching, so the branch inherits it.
             tax_unit("total_itemized_taxable_income_deductions", period)
-            itemizing_branch = get_override_branch(
-                tax_unit.simulation,
-                "itemizing",
-                period,
-                {"tax_unit_itemizes": np.ones((tax_unit.count,), dtype=bool)},
-            )
-            itemized_deductions = itemizing_branch.calculate(
+            itemized_deductions = choice_branch(tax_unit, period, True).calculate(
                 "itemized_taxable_income_deductions", period
             )
         else:
+            standard_deduction = tax_unit("standard_deduction", period)
             itemized_deductions = tax_unit("itemized_taxable_income_deductions", period)
         if parameters(period).gov.simulation.branch_to_determine_itemization:
             # determine federal itemization behavior by comparing tax liability
