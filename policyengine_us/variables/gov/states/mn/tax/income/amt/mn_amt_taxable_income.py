@@ -10,6 +10,8 @@ class mn_amt_taxable_income(Variable):
     reference = (
         "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1mt_21.pdf",
         "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1mt_22.pdf",
+        # 2024 Schedule M1MT, line 12
+        "https://www.revenue.state.mn.us/sites/default/files/2025-07/m1mt-24.pdf#page=1",
     )
     defined_for = StateCode.MN
 
@@ -19,7 +21,9 @@ class mn_amt_taxable_income(Variable):
         SOME_DEDUCTIONS = [
             "charitable_deduction",
             "medical_expense_deduction",
-            "casualty_loss_deduction",
+            # M1MT line 12 takes the casualty and theft loss from Schedule
+            # M1SA line 19, Minnesota's own amount.
+            "mn_casualty_loss_deduction",
         ]
         some_itm_deds = itemizing * add(tax_unit, period, SOME_DEDUCTIONS)
         AMT_SUBTRACTIONS = [

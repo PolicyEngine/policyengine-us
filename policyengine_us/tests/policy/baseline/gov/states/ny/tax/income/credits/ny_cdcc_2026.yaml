@@ -1,0 +1,128 @@
+# From tax year 2026 the New York child and dependent care credit is the
+# refundable N.Y. Tax Law 606(c-2) credit, added by L.2026, ch. 59 (S.9009-C),
+# Part A, signed 2026-05-28: qualifying expenses times the applicable
+# percentage, less $20 for each $1,000 of New York AGI above $750,000. The
+# pre-2026 606(c)(1) credit (a percentage of the federal credit) applies only to
+# "taxable years beginning before January first, two thousand twenty-six".
+
+- name: Case 1, PolicyBench scenario_082, head of household with a one-year-old.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 23
+        employment_income: 100_195
+      person2:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 9_600
+        ny_agi: 117_585.15
+        adjusted_gross_income: 117_652.65
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    ny_cdcc_qualifying_expenses: 3_000
+    # 3,000 x (0.55 - 0.0000025 x 102,585.15) = 3,000 x 0.293537125
+    ny_cdcc: 880.61
+    # Empire State child credit: $1,000 for a child under four, less $16.50
+    # for each of 42 whole $1,000 steps of federal AGI above $75,000.
+    ny_ctc: 307
+    # PolicyBench reference audit 2026-10-05: $307 + $880.61, not $667.
+    ny_refundable_credits: 1_187.61
+
+- name: Case 2, the same household in 2025 keeps the 606(c) credit.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 23
+        employment_income: 100_195
+      person2:
+        age: 1
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        tax_unit_childcare_expenses: 9_600
+        ny_agi: 117_585.15
+        adjusted_gross_income: 117_652.65
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+  output:
+    # 3,000 x (606(c) percentage 0.2 x 3.0 (1-a) factor) x 20% federal rate
+    ny_cdcc: 360
+
+- name: Case 3, New York AGI at or below $15,000 earns 55% of qualifying expenses.
+  period: 2026
+  input:
+    state_code: NY
+    ny_agi: 12_000
+    ny_cdcc_qualifying_expenses: 6_000
+  output:
+    ny_cdcc: 3_300
+
+- name: Case 4, the credit is 4% of qualifying expenses at high incomes.
+  period: 2026
+  input:
+    state_code: NY
+    ny_agi: 300_000
+    ny_cdcc_qualifying_expenses: 3_000
+  output:
+    ny_cdcc: 120
+
+- name: Case 5, New York AGI less than $1,000 above $750,000 brings no reduction.
+  period: 2026
+  input:
+    state_code: NY
+    ny_agi: 750_999
+    ny_cdcc_qualifying_expenses: 9_000
+  output:
+    # 9,000 x 0.04; no whole $1,000 above $750,000
+    ny_cdcc: 360
+
+- name: Case 6, $20 reduction for each $1,000 of New York AGI above $750,000.
+  period: 2026
+  input:
+    state_code: NY
+    ny_agi: 760_000
+    ny_cdcc_qualifying_expenses: 9_000
+  output:
+    # 9,000 x 0.04 - 20 x 10
+    ny_cdcc: 160
+
+- name: Case 7, the reduction does not take the credit below zero.
+  period: 2026
+  input:
+    state_code: NY
+    ny_agi: 800_000
+    ny_cdcc_qualifying_expenses: 3_000
+  output:
+    # max(0, 3,000 x 0.04 - 20 x 50)
+    ny_cdcc: 0
+
+- name: Case 8, a married taxpayer filing separately who lives with the spouse gets no credit.
+  period: 2026
+  input:
+    state_code: NY
+    filing_status: SEPARATE
+    ny_agi: 40_000
+    ny_cdcc_qualifying_expenses: 3_000
+  output:
+    ny_cdcc: 0
+
+- name: Case 9, a taxpayer claimed as another taxpayer's dependent gets no credit.
+  period: 2026
+  input:
+    state_code: NY
+    head_is_dependent_elsewhere: true
+    ny_agi: 20_000
+    ny_cdcc_qualifying_expenses: 3_000
+  output:
+    ny_cdcc: 0
