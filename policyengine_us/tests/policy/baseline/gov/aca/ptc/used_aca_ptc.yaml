@@ -74,3 +74,82 @@
     selected_marketplace_plan_premium_proxy: 7_000
     used_aca_ptc: 7_000
     unused_aca_ptc: 2_200
+
+- name: 2025 credit is capped at the coverage family's share of the premium (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+        selected_marketplace_plan_benchmark_ratio: 0.75
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    # min(6,000, 4,500); before, the cap was the whole 9,000 premium.
+    aca_ptc: 6000
+    used_aca_ptc: 4500
+
+- name: 2025 credit is capped at the coverage family's share of the premium (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        claimable_as_dependent_on_another_return: true
+        slcsp_age_curve_amount_person: 6000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+        selected_marketplace_plan_benchmark_ratio: 0.75
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: TX
+  output:
+    aca_ptc: 6000
+    used_aca_ptc: 4500
