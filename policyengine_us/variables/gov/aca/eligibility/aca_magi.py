@@ -15,20 +15,23 @@ class aca_magi(Variable):
         "Household income for the premium tax credit (IRC 36B(d)(2), 26 CFR "
         "1.36B-1(e)(1)): the taxpayer's modified AGI, both spouses' on a "
         "joint return, plus that of other members of the tax family. It is "
-        "medicaid_magi without the tax-exempt interest and Social Security "
-        "of the return's dependents who are outside the tax family "
-        "(is_aca_tax_family_member), which happens only on a return whose "
-        "head or spouse can be claimed elsewhere. medicaid_magi adds those "
-        "two amounts for every member (tax unit AGI already leaves "
-        "dependents' income out); both are nonnegative, so removing them "
-        "after medicaid_magi's zero floor gives the same result as removing "
-        "them before it."
+        "medicaid_magi's AGI plus MAGI additions, without the tax-exempt "
+        "interest and Social Security of the return's dependents who are "
+        "outside the tax family (is_aca_tax_family_member), floored at zero "
+        "once. Those amounts are left out only on a return whose head or "
+        "spouse can be claimed elsewhere (or, in a tax unit with neither, "
+        "whose oldest member can be); otherwise this equals medicaid_magi. "
+        "Tax unit AGI already leaves dependents' income out."
     )
 
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         filer = person("is_tax_unit_head_or_spouse", period)
-        outside_family = ~filer & ~person("is_aca_tax_family_member", period)
+        has_filer = person.tax_unit.any(filer)
+        age = person("age", period)
+        oldest = person.get_rank(tax_unit, -age) == 0
+        files_return = where(has_filer, filer, oldest)
+        outside_family = ~files_return & ~person("is_aca_tax_family_member", period)
         excluded = tax_unit.sum(
             outside_family
             * (
@@ -36,4 +39,10 @@ class aca_magi(Variable):
                 + person("social_security", period)
             )
         )
-        return max_(0, tax_unit("medicaid_magi", period) - excluded)
+        # medicaid_magi's AGI plus additions, before its zero floor, so a
+        # negative excluded amount is removed before the floor too.
+        additions = parameters(period).gov.hhs.medicaid.income.modification
+        unfloored = tax_unit("adjusted_gross_income", period) + add(
+            tax_unit, period, additions
+        )
+        return max_(0, unfloored - excluded)

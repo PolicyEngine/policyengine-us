@@ -28,8 +28,11 @@ class is_aca_tax_family_member(Variable):
         "Dependent Taxpayer Test). No credit is allowed to someone another "
         "taxpayer can claim (IRC 36B(c)(1)(D)), so a return whose every head "
         "and spouse can be claimed has no applicable taxpayer and no family "
-        "for the credit. A tax unit with neither a head nor a spouse has no "
-        "modeled filer, so each member's own claimability decides. A "
+        "for the credit. A tax unit with neither a head nor a spouse (role "
+        "inference makes the oldest adult the head, so a unit of minors has "
+        "none) is treated as filed by its oldest member: everyone is in the "
+        "family if that member cannot be claimed elsewhere, and nobody is if "
+        "they can. A "
         "dependent on a return with an applicable taxpayer is a member even if "
         "another taxpayer could also claim them: this return claims them."
     )
@@ -45,4 +48,12 @@ class is_aca_tax_family_member(Variable):
             "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
         )
         dependent_member = applicable_taxpayer & claims_dependents
-        return where(has_filer, where(filer, ~claimable, dependent_member), ~claimable)
+        # No head or spouse: the oldest member files.
+        age = person("age", period)
+        oldest = person.get_rank(person.tax_unit, -age) == 0
+        oldest_claimable = person.tax_unit.any(oldest & claimable)
+        return where(
+            has_filer,
+            where(filer, ~claimable, dependent_member),
+            ~oldest_claimable,
+        )

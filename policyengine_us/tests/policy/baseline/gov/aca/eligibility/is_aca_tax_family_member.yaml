@@ -431,3 +431,69 @@
   output:
     is_tax_unit_head: [false]
     is_aca_tax_family_member: [true]
+
+- name: "2025 claimable 17-year-old filing with an infant: neither is in a family"
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+        claimable_as_dependent_on_another_return: true
+      infant:
+        age: 1
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [parent, infant]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, infant]
+        state_code: TX
+  output:
+    # Role inference makes the oldest adult the head, so this unit has none; the
+    # oldest member is taken as the filer (IRC 36B(c)(1)(D)).
+    is_tax_unit_head: [false, false]
+    is_aca_tax_family_member: [false, false]
+
+- name: "2025 unclaimed 17-year-old filing with an infant: both are in the family"
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 17
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+      infant:
+        age: 1
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        pays_aca_premium: true
+        slcsp_age_curve_amount_person: 6000
+    tax_units:
+      tax_unit:
+        members: [parent, infant]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [parent, infant]
+        state_code: TX
+  output:
+    is_aca_tax_family_member: [true, true]

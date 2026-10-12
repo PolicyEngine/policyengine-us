@@ -193,3 +193,147 @@
         state_code: TX
   output:
     aca_ptc_coverage_family_premium: 3500
+
+- name: "2025 NY policy with a claimable spouse (refund-only exception) and a child: allocate by each family's tier (the claimable spouse is the head)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+        aca_magi: 22_000
+        tax_unit_is_filer: true
+        selected_marketplace_plan_benchmark_ratio: 0.5
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: NY
+        slcsp_age_0: 6000
+        slcsp_rating_area: 3
+  output:
+    # NY tiers on 6,000: whole policy 2.85 = 17,100; coverage family (one
+    # adult and a child) 1.70 = 10,200; the claimable spouse alone 1.00 =
+    # 6,000. 26 CFR 1.36B-3(h)(1): 8,550 * 10,200 / (10,200 + 6,000).
+    slcsp: 17_100
+    aca_ptc_slcsp: 10_200
+    selected_marketplace_plan_premium_proxy: 8550
+    aca_ptc_coverage_family_premium: 5383.33
+
+- name: "2025 NY policy with a claimable spouse (refund-only exception) and a child: allocate by each family's tier (the claimable spouse is the spouse)"
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+        aca_magi: 22_000
+        tax_unit_is_filer: true
+        selected_marketplace_plan_benchmark_ratio: 0.5
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: NY
+        slcsp_age_0: 6000
+        slcsp_rating_area: 3
+  output:
+    slcsp: 17_100
+    aca_ptc_slcsp: 10_200
+    selected_marketplace_plan_premium_proxy: 8550
+    aca_ptc_coverage_family_premium: 5383.33
+
+- name: "2025 both spouses claimable: no coverage family, so none of a bronze premium"
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        is_medicaid_eligible: false
+        is_chip_eligible: false
+        is_aca_eshi_eligible: false
+        is_medicare_eligible: false
+        is_basic_health_program_eligible: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        aca_magi: 22_590
+        tax_unit_is_filer: true
+        selected_marketplace_plan_category: BRONZE
+        lcbp: 7000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: TX
+  output:
+    aca_ptc_coverage_family_premium: 0

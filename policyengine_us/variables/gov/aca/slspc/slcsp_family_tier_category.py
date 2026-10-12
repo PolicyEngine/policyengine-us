@@ -1,4 +1,7 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.aca.slspc.is_aca_family_tier_dependent_child import (
+    family_tier_child_condition,
+)
 
 
 class FamilyTierCategory(Enum):
@@ -27,7 +30,7 @@ def family_tier_category(tax_unit, period, parameters, enrolled):
     state_code = tax_unit.household("state_code_str", period)
 
     person = tax_unit.members
-    dependent_child = enrolled & person("is_aca_family_tier_dependent_child", period)
+    dependent_child = enrolled & family_tier_child_condition(person, period, parameters)
     non_dependent_adult_count = tax_unit.sum(enrolled & ~dependent_child)
     anchored_child_count = tax_unit.sum(dependent_child)
 
