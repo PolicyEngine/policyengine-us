@@ -136,7 +136,10 @@ DFA_CARDS = {
         (16_000, 0.034, 287.97),
         (26_400, 0.039, 419.96),
     ]
-    + [(t, 0.039, a) for t, a in ladder(94_701, 97_801, 399.30)],
+    + [(t, 0.039, a) for t, a in ladder(94_701, 97_801, 399.30)]
+    # The 2025 card's last line: "For $100,001 and over, $3,809 + 3.9% of the
+    # excess over $100,000", i.e. 3.9% x income - $91.00.
+    + [(100_001, 0.039, 91.00)],
 }
 
 
@@ -248,9 +251,13 @@ def test_ar_schedule_before_modeled_years_still_computes(year):
     assert (model_tax(year, TAXABLE_INCOME) == 0).all()
 
 
-# {income: change in tax from income to income + 1} where the statute itself
+# {income: change in tax from income to income + 1} where the source itself
 # makes tax fall: A.C.A. 26-51-201(a)(4)(A) vs (a)(4)(B)-(C), Act 1 of 2026.
-STATUTORY_DROPS = {2026: {94_700: -2.66}}
+# In 2025 the DFA card's own rules meet at $100,000: its $89.30 row taxes
+# $100,000 at $3,810.70, and its "$100,001 and over" rule taxes $100,001 at
+# $3,809.04. (The card's table is computed at row midpoints, where the
+# 99,901-100,001 row is $3,809; the model uses exact incomes.)
+STATUTORY_DROPS = {2025: {100_000: -1.66}, 2026: {94_700: -2.66}}
 
 
 def invariant_grid(year):

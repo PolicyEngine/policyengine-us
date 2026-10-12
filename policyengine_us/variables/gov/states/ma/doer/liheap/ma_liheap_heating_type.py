@@ -19,7 +19,7 @@ class ma_liheap_heating_type(Variable):
     documentation = "Derived from the canonical heating_type input: fuel oil and propane share the heating oil and propane row; kerosene keeps its own row; wood, coal and other fuels are the other category; solar and UNSPECIFIED take the electricity row (the pre-canonical default); NONE stays NONE. Setting this directly is deprecated during the vocabulary migration and changes only the rate row: the expense cap still follows the canonical heating_type."
     definition_period = YEAR
     defined_for = StateCode.MA
-    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
+    reference = "https://web.archive.org/web/20250720165524/https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
 
     def formula(spm_unit, period, parameters):
         heating_type = spm_unit("heating_type", period)

@@ -16,8 +16,9 @@ values:
   - pension_income
   # Pension income includes annuities and endowment contracts
   - debt_relief
-  # Decedent income
-  # Estate interest income
+  # Income from estates and trusts (Schedule E Part III), including income
+  # in respect of a decedent received through an estate or trust.
+  - estate_income
   # unemployment_compensation and social_security are government transfers,
   # not market income. They are included in household_benefits instead.
   - illicit_income

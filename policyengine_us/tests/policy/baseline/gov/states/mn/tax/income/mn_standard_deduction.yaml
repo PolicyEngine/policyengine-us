@@ -136,3 +136,29 @@
     state_code: MN
   output:
     mn_standard_deduction: 14_950
+
+# 2026 amounts from the Minnesota DOR Tax Year 2026 Inflation-Adjusted Amounts,
+# page 1: standard deduction $15,300 single, $30,600 married joint; additional
+# amount for aged or blind $1,600 married, $2,000 single or head of household.
+- name: 2026 MN standard deduction single below the reduction threshold
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SINGLE
+    aged_blind_count: 0
+    adjusted_gross_income: 100_000
+    state_code: MN
+  output:
+    mn_standard_deduction: 15_300
+
+- name: 2026 MN standard deduction joint, both spouses aged
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: JOINT
+    aged_blind_count: 2
+    adjusted_gross_income: 100_000
+    state_code: MN
+  output:
+    # 30,600 + 2 * 1,600 = 33,800
+    mn_standard_deduction: 33_800

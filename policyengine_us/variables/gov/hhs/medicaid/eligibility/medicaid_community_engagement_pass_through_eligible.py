@@ -18,8 +18,13 @@ class medicaid_community_engagement_pass_through_eligible(Variable):
         "so post-HR1 adults aged 60-64 who are exempt from the general work "
         "requirement but subject to the ABAWD requirement are captured. The "
         "7 CFR 273.7(b)(1)(vii) exemption for people working 30 or more "
-        "hours weekly is included in the registration-exempt set, so such "
-        "workers do not pass through on either prong."
+        "hours weekly, or earning weekly at least the federal minimum wage "
+        "times 30 hours, is included in the registration-exempt set, so "
+        "such workers do not pass through on either prong. Hours and "
+        "earnings are averaged over the year, and unemployment compensation "
+        "exempts only in its allocated months of receipt, so the January "
+        "value read by medicaid_work_requirement_eligible reflects those "
+        "SNAP measures."
     )
     reference = (
         "https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=236",

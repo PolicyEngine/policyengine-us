@@ -1,0 +1,752 @@
+# 8 USC 1612(a)(2); 7 CFR 273.4(a)(6)(ii)-(iii). years_since_us_entry is read
+# as years in qualified alien status. Its default of 5 satisfies the waiting
+# period, so every case that exercises the bar sets it explicitly. The
+# waiting period applies to LEGAL_PERMANENT_RESIDENT, PAROLED_ONE_YEAR and
+# CONDITIONAL_ENTRANT (273.4(a)(6)(iii)); all other statuses pass this gate
+# and are screened only by the status list.
+
+- name: Case 1, citizen is never subject to the waiting period.
+  period: 2026-01
+  input:
+    immigration_status: CITIZEN
+    age: 30
+    years_since_us_entry: 0
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 2, adult LPR two years into qualified status does not meet the waiting period.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 2
+  output:
+    is_snap_alien_waiting_period_exempt: false
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 3, adult LPR just short of five years does not meet the waiting period.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 4.9
+  output:
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 4, adult LPR at exactly five years meets the waiting period.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 5
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 5, default years_since_us_entry leaves an adult LPR past the waiting period.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 6, LPR age 17 is exempt as a child.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 17
+    years_since_us_entry: 1
+  output:
+    is_snap_alien_waiting_period_exempt: true
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 7, LPR age 18 is no longer exempt as a child.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 18
+    years_since_us_entry: 1
+  output:
+    is_snap_alien_waiting_period_exempt: false
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 8, adult LPR receiving Social Security disability benefits is exempt.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 45
+    years_since_us_entry: 2
+    social_security_disability: 12_000
+  output:
+    is_usda_disabled: true
+    is_snap_alien_waiting_period_exempt: true
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 9, adult LPR credited with 40 qualifying quarters is exempt.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 40
+    years_since_us_entry: 3
+    snap_alien_qualifying_quarters: 40
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 10, adult LPR credited with 39 qualifying quarters is not exempt.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 40
+    years_since_us_entry: 3
+    snap_alien_qualifying_quarters: 39
+  output:
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 11, adult LPR veteran is exempt.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 1
+    is_veteran: true
+  output:
+    is_snap_alien_military_connected: true
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 12, adult LPR on active duty is exempt.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 25
+    years_since_us_entry: 1
+    is_military: true
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 13, former refugee who adjusted to LPR keeps the exemption.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 2
+    is_snap_lpr_in_waiting_period_exempt_category: true
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 14, refugee status is not subject to the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: REFUGEE
+    age: 30
+    years_since_us_entry: 0
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 15, parolee two years into qualified status does not meet the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 2
+  output:
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 16, the 40-quarter exception applies only to LPRs.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 2
+    snap_alien_qualifying_quarters: 40
+  output:
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 17, asylee status is not subject to the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: ASYLEE
+    age: 30
+    years_since_us_entry: 0
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 18, deportation withheld status is not subject to the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: DEPORTATION_WITHHELD
+    age: 30
+    years_since_us_entry: 0
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 19, Cuban and Haitian entrant status is not subject to the waiting period.
+  period: 2026-01
+  input:
+    immigration_status: CUBAN_HAITIAN_ENTRANT
+    age: 30
+    years_since_us_entry: 0
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 20, the waiting period gate does not apply to an undocumented immigrant.
+  period: 2026-01
+  input:
+    immigration_status: UNDOCUMENTED
+    age: 30
+    years_since_us_entry: 0
+  output:
+    # Not a qualified alien, so not in the subject list; the status list
+    # alone makes this person ineligible.
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 21, conditional entrant two years into qualified status does not meet the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 30
+    years_since_us_entry: 2
+  output:
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 22, conditional entrant at five years meets the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 30
+    years_since_us_entry: 5
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 23, the exempt-category exception applies only to LPRs.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 2
+    is_snap_lpr_in_waiting_period_exempt_category: true
+  output:
+    is_snap_alien_waiting_period_exempt: false
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 24, parolee child is exempt under the under-18 exception.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 10
+    years_since_us_entry: 2
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 25, parolee receiving Social Security disability benefits is exempt.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 45
+    years_since_us_entry: 2
+    social_security_disability: 12_000
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 26, parolee veteran is exempt under the military exception.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 2
+    is_veteran: true
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 27, adult LPR newly granted status does not meet the waiting period.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 0
+  output:
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 28, the waiting period applies in 2018, the first year of the SNAP status list.
+  period: 2018-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 2
+  output:
+    # The waiting period has applied since 2003-04-01.
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 29, the under-18 exception applies in 2018.
+  period: 2018-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 10
+    years_since_us_entry: 2
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 30, LPR spouse of an active-duty LPR meets the waiting period through the military exception.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+        is_military: true
+        is_tax_unit_head: true
+      person2:
+        age: 28
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+        is_tax_unit_spouse: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # person1 is on active duty; person2 is the spouse of an active-duty
+    # member (7 CFR 273.4(a)(6)(ii)(G)(3)).
+    is_snap_alien_military_connected: [true, true]
+    meets_snap_qualified_alien_waiting_period: [true, true]
+
+- name: Case 31, the military exception does not reach an unmarried adult who is not a dependent.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+        is_military: true
+      person2:
+        age: 28
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 1
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Unrelated roommates: person2 is neither the spouse nor a dependent
+    # child of the service member.
+    is_snap_alien_military_connected: [true, false]
+    meets_snap_qualified_alien_waiting_period: [true, false]
+
+- name: Case 32, adult LPR at four years does not meet the waiting period.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 4
+  output:
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 33, adult LPR at six years meets the waiting period.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 6
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 34, parolee at four years does not meet the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 4
+  output:
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 35, parolee at exactly five years meets the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 5
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 36, parolee at six years meets the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 30
+    years_since_us_entry: 6
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 37, conditional entrant at four years does not meet the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 30
+    years_since_us_entry: 4
+  output:
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 38, conditional entrant at six years meets the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 30
+    years_since_us_entry: 6
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 39, statuses exempt by status meet the waiting period at one year without an individual exception.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: REFUGEE
+        age: 30
+        years_since_us_entry: 1
+      person2:
+        immigration_status: ASYLEE
+        age: 30
+        years_since_us_entry: 1
+      person3:
+        immigration_status: DEPORTATION_WITHHELD
+        age: 30
+        years_since_us_entry: 1
+      person4:
+        immigration_status: CUBAN_HAITIAN_ENTRANT
+        age: 30
+        years_since_us_entry: 1
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+      marital_unit4:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    # None is individually exempt; all pass because the status is not in
+    # the subject list (7 CFR 273.4(a)(6)(ii)(B)-(E)).
+    is_snap_alien_waiting_period_exempt: [false, false, false, false]
+    meets_snap_qualified_alien_waiting_period: [true, true, true, true]
+
+- name: Case 40, DACA and TPS holders are not subject to the waiting period gate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        immigration_status: DACA
+        age: 30
+        years_since_us_entry: 0
+      person2:
+        immigration_status: TPS
+        age: 30
+        years_since_us_entry: 0
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Not qualified aliens; the status list alone screens them out.
+    meets_snap_qualified_alien_waiting_period: [true, true]
+
+- name: Case 41, LPR just under age 18 meets the waiting period as a child.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 17.9
+    years_since_us_entry: 1
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 42, parolee age 17 meets the waiting period as a child.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 17
+    years_since_us_entry: 1
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 43, parolee age 18 does not meet the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: PAROLED_ONE_YEAR
+    age: 18
+    years_since_us_entry: 1
+  output:
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 44, conditional entrant age 17 meets the waiting period as a child.
+  period: 2025-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 17
+    years_since_us_entry: 1
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 45, adult LPR credited with 41 qualifying quarters meets the waiting period.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 40
+    years_since_us_entry: 3
+    snap_alien_qualifying_quarters: 41
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 46, conditional entrant credited with 40 qualifying quarters does not meet the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 40
+    years_since_us_entry: 2
+    snap_alien_qualifying_quarters: 40
+  output:
+    # 7 CFR 273.4(a)(6)(ii)(A) is limited to LPRs.
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 47, conditional entrant with the exempt-category flag does not meet the waiting period.
+  period: 2025-01
+  input:
+    immigration_status: CONDITIONAL_ENTRANT
+    age: 30
+    years_since_us_entry: 2
+    is_snap_lpr_in_waiting_period_exempt_category: true
+  output:
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 48, former asylee who adjusted to LPR meets the waiting period at zero years.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 0
+    is_snap_lpr_in_waiting_period_exempt_category: true
+  output:
+    meets_snap_qualified_alien_waiting_period: true
+
+- name: Case 49, adult LPR with a disability but no disability benefits does not meet the waiting period.
+  period: 2026-01
+  input:
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    age: 30
+    years_since_us_entry: 2
+    is_disabled: true
+  output:
+    # 7 CFR 273.4(a)(6)(ii)(H) requires receipt of disability or blindness
+    # benefits under 271.2; disability status alone does not qualify.
+    is_usda_disabled: false
+    is_snap_alien_waiting_period_exempt: false
+    meets_snap_qualified_alien_waiting_period: false
+
+- name: Case 50, default years in status leave every subject status past the waiting period.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 30
+      person2:
+        immigration_status: PAROLED_ONE_YEAR
+        age: 30
+      person3:
+        immigration_status: CONDITIONAL_ENTRANT
+        age: 30
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # years_since_us_entry defaults to 5 and the new inputs default to
+    # non-exempt values, so the gate passes through the clock, not an
+    # exception.
+    is_snap_alien_waiting_period_exempt: [false, false, false]
+    meets_snap_qualified_alien_waiting_period: [true, true, true]
+
+- name: Case 51, exceptions are applied person by person in an LPR household inside the waiting period.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 45
+        years_since_us_entry: 1
+      person2:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 44
+        years_since_us_entry: 1
+        snap_alien_qualifying_quarters: 40
+      person3:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 18
+        years_since_us_entry: 1
+      person4:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 17
+        years_since_us_entry: 1
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+      marital_unit3:
+        members: [person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: TX
+  output:
+    # person2's 40 quarters exempt only person2. Spouse quarters count for
+    # person1 only if included in person1's own snap_alien_qualifying_quarters
+    # input. person3 (18) is barred and person4 (17) is exempt as a child.
+    is_snap_alien_waiting_period_exempt: [false, true, false, true]
+    meets_snap_qualified_alien_waiting_period: [false, true, false, true]
+
+- name: Case 52, adult sibling claimed as a dependent by an LPR veteran does not meet the waiting period.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 45
+        years_since_us_entry: 1
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 43
+        years_since_us_entry: 1
+        is_tax_unit_spouse: true
+      person3:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 30
+        years_since_us_entry: 1
+        is_tax_unit_dependent: true
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # person3 is neither the veteran's spouse nor a dependent child (18 or
+    # older, not a full-time student, not disabled).
+    is_snap_alien_military_connected: [true, true, false]
+    meets_snap_qualified_alien_waiting_period: [true, true, false]
+
+- name: Case 53, LPR student dependents of a veteran meet the waiting period below age 22 only.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 50
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 21
+        years_since_us_entry: 1
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+      person3:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 22
+        years_since_us_entry: 1
+        is_full_time_college_student: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    # Full-time student under 22 (7 CFR 273.4(a)(6)(ii)(G)(3)).
+    is_snap_alien_military_connected: [true, true, false]
+    meets_snap_qualified_alien_waiting_period: [true, true, false]
+
+- name: Case 54, disabled adult LPR dependent of a veteran meets the waiting period through the military exception.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 55
+        is_veteran: true
+        is_tax_unit_head: true
+      person2:
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        age: 30
+        years_since_us_entry: 1
+        is_disabled: true
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Unlike Case 49, disability status alone suffices here because it
+    # qualifies person2 as a dependent child of a veteran, not as a
+    # disability-benefit recipient.
+    is_usda_disabled: [false, false]
+    is_snap_alien_military_connected: [true, true]
+    meets_snap_qualified_alien_waiting_period: [true, true]

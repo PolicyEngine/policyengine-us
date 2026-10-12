@@ -7,7 +7,7 @@ class va_tanf_income_eligibility(Variable):
     label = "VA TANF income eligibility"
     definition_period = MONTH
     defined_for = StateCode.VA
-    reference = "https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=47"
+    reference = "https://www.dss.virginia.gov/media/vdss/benefit-programs/documents/tanfx2fview/tanf/Chapter-300---Need-and-Amount-of-Assistance.pdf#page=51"
 
     def formula(spm_unit, period, parameters):
         # Two-step income test per Virginia TANF Manual Section 305.1

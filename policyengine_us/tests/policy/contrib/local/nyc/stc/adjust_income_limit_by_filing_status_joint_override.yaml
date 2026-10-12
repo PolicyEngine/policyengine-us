@@ -1,0 +1,71 @@
+# Keep JOINT overrides separate to respect the per-file reform-combination budget.
+# The reform gates the whole NYC school tax credit on nyc_school_credit_income,
+# which NY Tax Law § 606(ggg)(2) and RPTL § 425(4)(b)(ii) define as federal AGI
+# minus the IRA distributions included in it (IT-201 line 19 minus line 9).
+# These cases pin that reading: an IRA distribution can bring a filer under the
+# reform's filing-status income limit even when federal AGI is over it.
+# TY2025 rates (IT-201-I 2025, line 69 and 69a): fixed amount $63 single, $125
+# joint; rate reduction 0.171% of city taxable income up to $12,000 (single) or
+# $21,600 (joint), then 0.228% above it. Above the first band the form prints
+# rounded base amounts ($21 single, $37 joint) while the model carries in the
+# first band at the marginal rate (12,000 x 0.171% = $20.52; 21,600 x 0.171% =
+# $36.936), and the expected values below follow the model; that gap is #8947.
+
+- name: Case 10, the joint filing-status limit set to the joint retirees' school credit income is met.
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children.adjust_income_limit_and_min_children_by_filing_status
+  input:
+    gov.contrib.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children: true
+    gov.contrib.local.nyc.stc.income_limit.JOINT: 200_000
+    people:
+      person1:
+        age: 67
+        employment_income: 200_000
+        taxable_ira_distributions: 100_000
+      person2:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_school_credit_income: 200_000
+    nyc_school_tax_credit_eligible: true
+    nyc_school_tax_credit: 714.49
+
+- name: Case 11, the joint limit one dollar under school credit income is not met while the single limit stays at $250,000.
+  period: 2025
+  reforms: policyengine_us.reforms.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children.adjust_income_limit_and_min_children_by_filing_status
+  input:
+    gov.contrib.local.nyc.stc.adjust_income_limit_by_filing_status_and_eligibility_by_children: true
+    gov.contrib.local.nyc.stc.income_limit.JOINT: 199_999
+    people:
+      person1:
+        age: 67
+        employment_income: 200_000
+        taxable_ira_distributions: 100_000
+      person2:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+        in_nyc: true
+  output:
+    nyc_school_credit_income: 200_000
+    nyc_school_tax_credit_eligible: false
+    nyc_school_tax_credit: 0

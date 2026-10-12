@@ -2,6 +2,11 @@ description: Counties in Arizona with an approved USDA FNS waiver of the SNAP AB
 
 values:
   2018-01-01: []
+  # FY2025 waiver: 14 counties plus 16 reservation areas (sub-county, not
+  # modeled), 2024-10-01 through 2025-09-30 (the letter prints
+  # "September 31, 2025"). The FY2024 waiver covered the same 14 counties
+  # from 2023-10-01 through 2024-09-30; it ended before the waiver
+  # parameters' 2024-11-01 modeling start and is not modeled.
   2024-10-01:
     - APACHE_COUNTY_AZ # FIPS 04001
     - COCHISE_COUNTY_AZ # FIPS 04003
@@ -18,11 +23,33 @@ values:
     - YAVAPAI_COUNTY_AZ # FIPS 04025
     - YUMA_COUNTY_AZ # FIPS 04027
   2025-10-01: []
+  # FY2026 waiver (unemployment over 10 percent): Yuma County plus six
+  # reservation areas (sub-county, not modeled), 2026-03-01 through
+  # 2027-02-28 (FNS response, March 12, 2026). Arizona requested
+  # 2025-10-01; FNS set the implementation date to 2026-03-01. The FY 2026
+  # Quarter 1 and Quarter 2 status reports list Arizona as a partial-waiver
+  # state before that date, but no approval covers 2025-10 through 2026-02;
+  # the approval letter governs.
+  2026-03-01:
+    - YUMA_COUNTY_AZ # FIPS 04027
+  2027-03-01: []
 
 metadata:
   unit: list
   period: month
   label: SNAP ABAWD waived counties in Arizona
   reference:
-    - title: USDA FNS Arizona FY 2025 ABAWD Waiver Response
-      href: https://www.fns.usda.gov/sites/default/files/resource-files/az-abawd-response-fy2025.pdf
+    - title: USDA FNS Arizona ABAWD Waiver Response, August 25, 2023 - county list (FY2024 waiver, not modeled)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/az-abawd-response-fy2024.pdf#page=3
+    - title: USDA FNS Arizona ABAWD Waiver Response, August 25, 2023 - implementation date (2023-10-01) and expiration date (2024-09-30)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/az-abawd-response-fy2024.pdf#page=4
+    - title: USDA FNS Arizona ABAWD Waiver Response, September 12, 2024 - requested area (14 counties and 16 reservation areas)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/az-abawd-response-fy2025.pdf#page=2
+    - title: USDA FNS Arizona ABAWD Waiver Response, September 12, 2024 - county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/az-abawd-response-fy2025.pdf#page=3
+    - title: USDA FNS Arizona ABAWD Waiver Response, September 12, 2024 - implementation date (2024-10-01) and expiration date (printed as September 31, 2025)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/az-abawd-response-fy2025.pdf#page=4
+    - title: USDA FNS Arizona ABAWD Waiver Response, March 12, 2026 - requested area and Yuma County (13.0 percent)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/az-abawd-response-fy2026.pdf#page=2
+    - title: USDA FNS Arizona ABAWD Waiver Response, March 12, 2026 - implementation date (2026-03-01) and expiration date (2027-02-28)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/az-abawd-response-fy2026.pdf#page=4

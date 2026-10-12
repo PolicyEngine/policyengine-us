@@ -2,6 +2,45 @@ description: Counties in Oregon with an approved USDA FNS waiver of the SNAP ABA
 
 values:
   2018-01-01: []
+  # FY2024 waiver: 31 counties plus eight reservation areas (sub-county,
+  # not modeled), 2024-01-01 through 2024-12-31. Modeled from 2024-11-01,
+  # the waiver parameters' modeling start date.
+  2024-11-01:
+    - BAKER_COUNTY_OR # FIPS 41001
+    - CLATSOP_COUNTY_OR # FIPS 41007
+    - COLUMBIA_COUNTY_OR # FIPS 41009
+    - COOS_COUNTY_OR # FIPS 41011
+    - CROOK_COUNTY_OR # FIPS 41013
+    - CURRY_COUNTY_OR # FIPS 41015
+    - DESCHUTES_COUNTY_OR # FIPS 41017
+    - DOUGLAS_COUNTY_OR # FIPS 41019
+    - GILLIAM_COUNTY_OR # FIPS 41021
+    - GRANT_COUNTY_OR # FIPS 41023
+    - HARNEY_COUNTY_OR # FIPS 41025
+    - HOOD_RIVER_COUNTY_OR # FIPS 41027
+    - JACKSON_COUNTY_OR # FIPS 41029
+    - JEFFERSON_COUNTY_OR # FIPS 41031
+    - JOSEPHINE_COUNTY_OR # FIPS 41033
+    - KLAMATH_COUNTY_OR # FIPS 41035
+    - LAKE_COUNTY_OR # FIPS 41037
+    - LANE_COUNTY_OR # FIPS 41039
+    - LINCOLN_COUNTY_OR # FIPS 41041
+    - LINN_COUNTY_OR # FIPS 41043
+    - MALHEUR_COUNTY_OR # FIPS 41045
+    - MARION_COUNTY_OR # FIPS 41047
+    - MORROW_COUNTY_OR # FIPS 41049
+    - POLK_COUNTY_OR # FIPS 41053
+    - SHERMAN_COUNTY_OR # FIPS 41055
+    - TILLAMOOK_COUNTY_OR # FIPS 41057
+    - UMATILLA_COUNTY_OR # FIPS 41059
+    - UNION_COUNTY_OR # FIPS 41061
+    - WALLOWA_COUNTY_OR # FIPS 41063
+    - WASCO_COUNTY_OR # FIPS 41065
+    - WHEELER_COUNTY_OR # FIPS 41069
+  # FY2025 waiver: 30 counties (drops Hood River) plus seven reservation
+  # areas (sub-county, not modeled), 2025-01-01 through 2025-12-31
+  # (terminated November 2, 2025 and reinstated through its original
+  # expiration date; USDA February 26, 2026 memorandum, Appendix A).
   2025-01-01:
     - BAKER_COUNTY_OR # FIPS 41001
     - CLATSOP_COUNTY_OR # FIPS 41007
@@ -33,6 +72,9 @@ values:
     - WALLOWA_COUNTY_OR # FIPS 41063
     - WASCO_COUNTY_OR # FIPS 41065
     - WHEELER_COUNTY_OR # FIPS 41069
+  # The FY2026 approval (2026-01-01 through 2026-12-31, as modified by the
+  # FNS response of March 30, 2026) covers five reservation areas only and
+  # is not modeled.
   2026-01-01: []
 
 metadata:
@@ -40,5 +82,22 @@ metadata:
   period: month
   label: SNAP ABAWD waived counties in Oregon
   reference:
-    - title: USDA FNS Oregon FY 2025 ABAWD Waiver Response
-      href: https://www.fns.usda.gov/sites/default/files/resource-files/or-abawd-response-fy2025.pdf
+    - title: USDA FNS Oregon ABAWD Waiver Response, November 8, 2023 - requested area (31 counties and eight reservation areas) and county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/or-abawd-response-fy2024.pdf#page=2
+    - title: USDA FNS Oregon ABAWD Waiver Response, November 8, 2023 - county list (continued) and reservation areas
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/or-abawd-response-fy2024.pdf#page=3
+    - title: USDA FNS Oregon ABAWD Waiver Response, November 8, 2023 - reservation areas (continued), implementation date (2024-01-01), and expiration date (2024-12-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/or-abawd-response-fy2024.pdf#page=4
+    - title: USDA FNS Oregon ABAWD Waiver Response, October 22, 2024 - requested area (30 counties and seven reservation areas)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/or-abawd-response-fy2025.pdf#page=2
+    - title: USDA FNS Oregon ABAWD Waiver Response, October 22, 2024 - county list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/or-abawd-response-fy2025.pdf#page=3
+    - title: USDA FNS Oregon ABAWD Waiver Response, October 22, 2024 - implementation date (2025-01-01) and expiration date (2025-12-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/or-abawd-response-fy2025.pdf#page=4
+    # Appendix A is file page 2 of the 2-page Google Drive copy of this
+    # memo, but that page's page label reads "Page 3 of 3", so the canonical
+    # usda.gov PDF (which returns 403) may place it on #page=3.
+    - title: USDA SNAP Waiver of the Time Limit - Status Update Memorandum, February 26, 2026 (Appendix A, Oregon through 2025-12-31)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fna.obbb-time-limit-waivers-reinstatement.pdf#page=2
+    - title: USDA FNS Oregon ABAWD Waiver Response, March 30, 2026 - modification of the reservation-area-only FY2026 waiver to 2026-01-01 through 2026-12-31
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/or-abawd-response-fy2026-b.pdf#page=1

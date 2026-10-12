@@ -10,7 +10,7 @@ class is_complying_with_tanf_work_requirements(Variable):
         "requirements of the Temporary Assistance for Needy Families "
         "(TANF) program under title IV of the Social Security Act. "
         "This is an input variable that the data layer may not yet "
-        "populate; see PolicyEngine/populace#244."
+        "populate; see PolicyEngine/populace#248."
     )
     definition_period = MONTH
     reference = "https://www.law.cornell.edu/cfr/text/7/273.7#b_1_iii"

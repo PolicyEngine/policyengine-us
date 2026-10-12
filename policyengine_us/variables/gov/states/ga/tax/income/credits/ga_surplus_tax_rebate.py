@@ -8,7 +8,7 @@ class ga_surplus_tax_rebate(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.justia.com/codes/georgia/2022/title-48/chapter-7/article-2/section-48-7-20-2/",
+        "https://www.legis.ga.gov/api/legislation/document/20232024/217823",
         "https://www.legis.ga.gov/api/legislation/document/20232024/217823#page=2",
     )
     defined_for = StateCode.GA

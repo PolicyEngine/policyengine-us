@@ -1,15 +1,37 @@
 # SNAP ABAWD area waivers — 7 U.S.C. 2015(o)(4), 7 CFR 273.24(f).
-# From 2024-11-01, FNS waived the ABAWD time limit in every Alaska
-# borough and census area except the Municipality of Anchorage
-# (FIPS 02020).
+# Alaska: from 2024-11-01 through 2025-10-31, the FY2025 waiver covered
+# every borough and census area except the Municipality of Anchorage
+# (FIPS 02020). From 2025-11-01 through 2026-10-31, the FY2026 waiver (20
+# boroughs and census areas) and the 7 U.S.C. 2015(o)(7) good-faith
+# exemption (every area except Anchorage) together keep the same 29 areas
+# waived. FNS has posted no approval document for Alaska's good-faith
+# exemption, so the geographic scope rests on the Alaska Division of Public
+# Assistance FAQ (all areas except Anchorage).
 # From 2025-11-01 through 2026-10-31, FNS waived the time limit in seven
 # California counties (CDSS ACL 25-79 and ACL 26-15).
-# Statewide waivers (CA, DC, IL, NV, and NY through 2025-02-28) are
-# modeled in waived_states, including the period litigation kept them in
-# effect (Rhode Island State Council of Churches v. Rollins, D.R.I.
-# No. 1:25-cv-00569).
+# Statewide waivers (CA, DC, IL, NV, NM through 2024-12-31, and NY through
+# 2025-02-28) are modeled in waived_states, including the period litigation
+# kept them in effect (Rhode Island State Council of Churches v. Rollins,
+# D.R.I. No. 1:25-cv-00569).
+# FY2025 county waivers are modeled in waived_counties for New York (61 of
+# 62 counties, all but Saratoga, 2025-03-01 through 2026-02-28), New Mexico
+# (29 of 33 counties, 2025-01-01 through 2025-12-31), and Delaware (Kent and
+# Sussex counties, 2024-10-01 through 2025-09-30), as is New Mexico's FY2026
+# Luna County waiver (2026-01-01 through 2026-12-31). Their sub-county parts
+# (NM and NY reservation areas, the city of Wilmington) are not modeled.
+# FY2024 county waivers still in effect on 2024-11-01 are modeled from that
+# date: Kentucky (98 counties, through 2024-11-30), Michigan (82, through
+# 2025-02-28), New Jersey (17, through 2025-01-31), Washington (38, through
+# 2025-01-31), and Oregon (31, through 2024-12-31).
+# FY2026 county waivers under the P.L. 119-21 criteria are modeled for
+# Arizona (Yuma, 2026-03-01 through 2027-02-28), Kentucky (five counties,
+# 2025-12-01 through 2026-11-30), Michigan (15 counties, through
+# 2026-10-31, listed from 2026-03-01 when its FY2025 list ends), Minnesota
+# (Clearwater, through 2026-11-30, listed from 2026-07-01 when its FY2025
+# list ends), New Jersey (Cape May, 2026-02-01 through 2027-01-31), and
+# Nevada (Mineral, 2026-02-01 through 2027-01-31).
 
-- name: Case 1, post-HR1 AK resident of waived borough (Fairbanks North Star) meets ABAWD requirements via area waiver.
+- name: Case 1, post-HR1 AK resident of Fairbanks North Star Borough, listed only through the good-faith exemption and not the FY2026 area waiver, meets ABAWD requirements.
   period: 2026-01
   absolute_error_margin: 0.1
   input:
@@ -182,7 +204,7 @@
     is_in_snap_abawd_waived_area: true
     meets_snap_abawd_work_requirements: true
 
-- name: Case 12, NV resident (2026-02) is no longer exempt after the statewide waiver expires on 2026-01-31.
+- name: Case 12, NV resident without county geography (2026-02) is not exempt after the statewide waiver expires on 2026-01-31 because the Carson City fallback is outside the FY2026 Mineral County waiver.
   period: 2026-02
   input:
     age:
@@ -242,26 +264,25 @@
     is_in_snap_abawd_waived_area: true
     meets_snap_abawd_work_requirements: true
 
-# Documented limitation: 12 of the 16 litigation-reinstated waivers were
-# partial-state waivers (e.g., NY covered 61 of 62 counties from
-# 2025-03-01) and are not modeled; see waived_states.yaml. New York's
-# earlier FY2024 waiver (2024-03-01 through 2025-02-28) WAS statewide and
-# is modeled from 2024-11-01.
+# New York's FY2024 waiver (2024-03-01 through 2025-02-28) was statewide
+# and is modeled in waived_states from 2024-11-01. Its FY2025 waiver covered
+# 61 of 62 counties (all but Saratoga) from 2025-03-01 and was reinstated
+# through 2026-02-28 (USDA February 26, 2026 guidance); it is modeled in
+# waived_counties/ny.yaml. A NY household with no county geography falls
+# back to Albany County, the first county in the state, which is waived.
 
-- name: Case 16, NY resident (2026-02) is not exempt because NY's litigation-reinstated waiver was partial-state and is not modeled.
-  period: 2026-02
+- name: Case 16, NY household without county geography (2026-02) falls back to Albany County, inside the 61-county waiver reinstated through 2026-02-28.
+  period: 2026
   input:
-    age:
-      2026: 30
-    weekly_hours_worked_before_lsr:
-      2026: 1
-    is_disabled:
-      2026: false
-    state_code:
-      2026: NY
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NY
   output:
-    is_in_snap_abawd_waived_area: false
-    meets_snap_abawd_work_requirements: false
+    is_in_snap_abawd_waived_area:
+      2026-02: true
+    meets_snap_abawd_work_requirements:
+      2026-02: true
 
 - name: Case 17, NY resident (2025-01) is exempt via the FY2024 statewide waiver under pre-HR1 rules.
   period: 2025-01
@@ -278,20 +299,18 @@
     is_in_snap_abawd_waived_area: true
     meets_snap_abawd_work_requirements: true
 
-- name: Case 18, NY resident (2025-03) is not exempt after the FY2024 statewide waiver expires on 2025-02-28 (the 61-county FY2025 waiver is not modeled).
-  period: 2025-03
+- name: Case 18, NY household without county geography (2025-03) falls back to Albany County, waived in the first month of the 61-county FY2025 waiver.
+  period: 2025
   input:
-    age:
-      2025: 30
-    weekly_hours_worked_before_lsr:
-      2025: 1
-    is_disabled:
-      2025: false
-    state_code:
-      2025: NY
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NY
   output:
-    is_in_snap_abawd_waived_area: false
-    meets_snap_abawd_work_requirements: false
+    is_in_snap_abawd_waived_area:
+      2025-03: true
+    meets_snap_abawd_work_requirements:
+      2025-03: true
 
 # CA county waiver window edges: the county list applies from 2025-11-01
 # through 2026-10-31 only.
@@ -425,11 +444,12 @@
     is_in_snap_abawd_waived_area: true
     meets_snap_abawd_work_requirements: true
 
-# Alaska county block split (2025-11-01 good faith exemption waiver under
-# P.L. 119-21 section 10102): the waived-borough list continues after the
-# 2025-11-01 renewal, so Fairbanks remains waived.
+# Alaska county block split at 2025-11-01, when the FY2025 area waiver ends
+# and the FY2026 area waiver (20 areas) and the 7 U.S.C. 2015(o)(7)
+# good-faith exemption begin. Fairbanks is not among the 20 FNS-waived
+# areas; it remains listed through the good-faith exemption only.
 
-- name: Case 26, AK resident of waived Fairbanks North Star Borough (2025-11, after the good faith exemption waiver renewal) is exempt via the area waiver.
+- name: Case 26, AK resident of Fairbanks North Star Borough (2025-11, after the FY2025 area waiver ends) is exempt via the good-faith exemption, not the FY2026 area waiver.
   period: 2025-11
   input:
     age:
@@ -551,10 +571,10 @@
 
 # FY2025 partial-state waivers (FNS FY2025 Q1 status report; USDA February 26,
 # 2026 Appendix A terminations). Kentucky's 117-county waiver runs 2024-12-01
-# through 2025-11-30, so a Kentucky county is waived within the window and
-# reverts to the time limit the month after termination. Adair County (FIPS
-# 21001) appears in every KY block from 2024-12-01 through 2025-11-01, and is
-# absent from the 2025-12-01 block onward.
+# through 2025-11-30. Adair County (FIPS 21001) is waived under the FY2024
+# list from 2024-11-01 and under the FY2025 list through 2025-11-30. It is
+# outside the five-county FY2026 waiver (2025-12-01 through 2026-11-30), so
+# it reverts to the time limit from 2025-12.
 
 - name: Case 33, KY resident of waived Adair County (2025-01, within the FY2025 waiver window) is exempt via the county waiver.
   period: 2025-01
@@ -586,12 +606,12 @@
     is_in_snap_abawd_waived_area: false
     meets_snap_abawd_work_requirements: false
 
-# Staggered start. Washington's 38-county waiver takes effect 2025-02-01, so a
-# Washington county is NOT waived in January 2025 (Spokane County, FIPS 53063,
-# is absent from the 2025-01-01 block) but IS waived from 2025-02-01 onward
-# (present in the 2025-02-01 and 2025-03-01 blocks).
+# Washington handoff. The FY2024 waiver (2024-02-01 through 2025-01-31,
+# modeled from 2024-11-01) and the FY2025 waiver (from 2025-02-01) cover
+# the same 38 counties, so Spokane County (FIPS 53063) is waived on both
+# sides of the 2025-02-01 handoff.
 
-- name: Case 35, WA resident of Spokane County (2025-01, before the WA waiver takes effect on 2025-02-01) is subject to the time limit.
+- name: Case 35, WA resident of Spokane County (2025-01, before the FY2025 waiver takes effect on 2025-02-01) is exempt via the FY2024 county waiver, which covers the same 38 counties through 2025-01-31.
   period: 2025-01
   absolute_error_margin: 0.1
   input:
@@ -601,10 +621,10 @@
     state_code: WA
     county_fips: "53063"
   output:
-    is_in_snap_abawd_waived_area: false
-    meets_snap_abawd_work_requirements: false
+    is_in_snap_abawd_waived_area: true
+    meets_snap_abawd_work_requirements: true
 
-- name: Case 36, WA resident of waived Spokane County (2025-03, after the WA waiver takes effect on 2025-02-01) is exempt via the county waiver.
+- name: Case 36, WA resident of waived Spokane County (2025-03, after the FY2025 waiver takes effect on 2025-02-01) is exempt via the county waiver.
   period: 2025-03
   input:
     age:
@@ -626,7 +646,7 @@
 # Fairbanks North Star Borough (FIPS 02090) remains waived in 2026-03, a month
 # in which every FY2025 partial-state waiver has already terminated (Kentucky
 # 2025-11-30, Oregon 2025-12-31, New Jersey and Washington 2026-01-31, Michigan
-# 2026-02-28). Fairbanks is present in the 2026-03-01 block.
+# 2026-02-28). Fairbanks is present in the 2025-11-01 block.
 
 - name: Case 37, AK resident of waived Fairbanks North Star Borough (2026-03, after all FY2025 partial-state waivers terminated) remains exempt via the Alaska good faith exemption waiver.
   period: 2026-03
@@ -707,7 +727,7 @@
       2025-08: true
       2025-09: false
 
-- name: Case 43, AZ waiver starts in October 2024.
+- name: Case 43, AZ resident of Apache County is not waived in 2024-09 because Arizona's FY2024 waiver (the same 14 counties, through 2024-09-30) is not modeled, and is waived from the FY2025 waiver's 2024-10-01 start.
   period: 2024
   input:
     state_code: AZ
@@ -780,3 +800,745 @@
     is_in_snap_abawd_waived_area:
       2025-06: true
       2025-07: true
+
+# Statewide waiver expiry, end to end. A single IL adult who does not work
+# is waived through the statewide waiver's 2026-01-31 expiration. From
+# 2026-02 no waiver applies, so the adult fails the ABAWD work requirement,
+# is excluded from the SNAP unit, and the one-person unit size falls to 0.
+# General work rules pass (no work-registration noncompliance), so the
+# waiver alone drives the unit result.
+
+- name: Case 50, IL single adult with no work is waived through the statewide waiver's 2026-01-31 expiration and subject to the time limit after it.
+  period: 2026
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 0
+    is_disabled: false
+    state_code: IL
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-01: true
+      2026-07: false
+    meets_snap_abawd_work_requirements:
+      2026-01: true
+      2026-07: false
+    meets_snap_work_requirements:
+      2026-01: true
+      2026-07: false
+    snap_unit_size:
+      2026-01: 1
+      2026-07: 0
+
+# New York FY2025 county waiver (waived_counties/ny.yaml). The FY2024
+# statewide waiver ends 2025-02-28 and the 61-county waiver starts
+# 2025-03-01, so a waived county has no gap. The county waiver was
+# reinstated through 2026-02-28 and cleared from 2026-03-01. Saratoga
+# County (FIPS 36091) is the one county left out of the FY2025 waiver.
+
+- name: Case 51, NY resident of Kings County is waived without a gap as the statewide waiver hands off to the 61-county waiver.
+  period: 2025
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NY
+    county_fips: "36047"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-02: true
+      2025-03: true
+      2025-12: true
+
+- name: Case 52, NY resident of Kings County is waived through 2026-02-28 and not after.
+  period: 2026
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NY
+    county_fips: "36047"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-02: true
+      2026-03: false
+
+- name: Case 53, NY resident of Saratoga County loses the waiver when the statewide waiver ends because Saratoga is excluded from the FY2025 county waiver.
+  period: 2025
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NY
+    county_fips: "36091"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-02: true
+      2025-03: false
+
+- name: Case 54, NY resident of St. Lawrence County identified by county_str (2025-06) is exempt via the county waiver.
+  period: 2025
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NY
+    county_str: ST_LAWRENCE_COUNTY_NY
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+    meets_snap_abawd_work_requirements:
+      2025-06: true
+
+# New Mexico. The FY2024 statewide waiver runs through 2024-12-31 (modeled
+# in waived_states from 2024-11-01). The FY2025 waiver covers 29 of 33
+# counties from 2025-01-01 through 2025-12-31 (waived_counties/nm.yaml);
+# Bernalillo, Eddy, Los Alamos, and Santa Fe counties are excluded. The
+# FY2026 waiver covers Luna County only (plus reservation areas, not
+# modeled), 2026-01-01 through 2026-12-31. Dona Ana County is entered by
+# FIPS code (35013) because its County enum name has a non-ASCII
+# character. A NM household with no county geography falls back
+# to Bernalillo County, the first county in the state, which is not waived.
+
+- name: Case 55, NM resident of Dona Ana County is exempt via the county waiver throughout 2025.
+  period: 2025
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NM
+    county_fips: "35013"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-01: true
+      2025-12: true
+    meets_snap_abawd_work_requirements:
+      2025-01: true
+      2025-12: true
+
+- name: Case 56, NM resident of Dona Ana County (2026-01, after the county waiver expired on 2025-12-31) is subject to the time limit.
+  period: 2026-01
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NM
+    county_fips: "35013"
+  output:
+    is_in_snap_abawd_waived_area: false
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 57, NM resident of Bernalillo County is not waived in 2025 because Bernalillo is excluded from the FY2025 county waiver.
+  period: 2025
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NM
+    county_fips: "35001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-01: false
+      2025-06: false
+
+- name: Case 58, NM household without county geography (2025-06) falls back to Bernalillo County, which is not waived.
+  period: 2025
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NM
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: false
+
+- name: Case 59, NM household without county geography is exempt via the FY2024 statewide waiver in November and December 2024.
+  period: 2024
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: NM
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-11: true
+      2024-12: true
+
+# Delaware FY2025 county waiver (waived_counties/de.yaml): Kent and Sussex
+# counties from 2024-10-01 through 2025-09-30. New Castle County is not
+# waived (only the city of Wilmington inside it was, which is not modeled).
+# FNS denied the FY2026 renewal. A DE household with no county geography
+# falls back to Kent County, the first county in the state, which is
+# waived.
+
+- name: Case 60, DE resident of Kent County (2024-10) is exempt via the county waiver in its first month.
+  period: 2024
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: DE
+    county_fips: "10001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-10: true
+
+- name: Case 61, DE resident of Sussex County is waived through 2025-09-30 and not after.
+  period: 2025
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: DE
+    county_fips: "10005"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-09: true
+      2025-10: false
+
+- name: Case 62, DE resident of New Castle County (2025-06) is not waived.
+  period: 2025
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: DE
+    county_fips: "10003"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: false
+
+- name: Case 63, DE household without county geography (2025-06) falls back to Kent County, which is waived.
+  period: 2025
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: DE
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+
+# Enactment month with hr1_waiver_criteria.in_effect at its default. The
+# switch turns true on 2025-07-04, so July 2025 (period start 2025-07-01)
+# still takes the pre-HR1 branch, but that branch reads the lists at the
+# earlier of the period start and 2025-07-03, which is 2025-07-01, the same
+# lists current law reads. The default switch therefore changes nothing in
+# June, July, or August 2025. Kauai County's waiver ended 2025-06-30, so it
+# is not revived in July; Armstrong County's waiver ran through 2025-08-31,
+# so the switch flip does not interrupt it.
+
+- name: Case 64, HI resident of Kauai County is waived in June 2025 but not in the enactment month or after, with the switch at its default.
+  period: 2025
+  input:
+    state_code: HI
+    county_fips: "15007"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-07: false
+      2025-08: false
+
+- name: Case 65, PA resident of Armstrong County stays waived across the enactment month with the switch at its default.
+  period: 2025
+  input:
+    state_code: PA
+    county_fips: "42005"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-06: true
+      2025-07: true
+      2025-08: true
+
+# New York end of window without county geography: the Albany County
+# fallback follows the 61-county waiver's 2026-02-28 end (see Case 16).
+
+- name: Case 66, NY household without county geography is waived through 2026-02-28 and not after.
+  period: 2026
+  input:
+    state_code: NY
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-02: true
+      2026-03: false
+
+# New Mexico statewide-to-county handoff at 2025-01-01. A county in the
+# FY2025 29-county waiver stays waived without a gap; Bernalillo County,
+# which the county waiver excludes, loses the waiver when the statewide
+# waiver ends on 2024-12-31.
+
+- name: Case 67, NM resident of Dona Ana County is waived without a gap as the statewide waiver hands off to the 29-county waiver.
+  period: 2024
+  input:
+    state_code:
+      2024: NM
+      2025: NM
+    county_fips:
+      2024: "35013"
+      2025: "35013"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-11: true
+      2024-12: true
+      2025-01: true
+
+- name: Case 68, NM resident of Bernalillo County is waived through the statewide waiver's 2024-12-31 end and not after.
+  period: 2024
+  input:
+    state_code:
+      2024: NM
+      2025: NM
+    county_fips:
+      2024: "35001"
+      2025: "35001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-12: true
+      2025-01: false
+
+# Delaware end of window without county geography: the Kent County
+# fallback follows the county waiver's 2025-09-30 end (see Case 63).
+
+- name: Case 69, DE household without county geography is waived through 2025-09-30 and not after.
+  period: 2025
+  input:
+    state_code: DE
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-09: true
+      2025-10: false
+
+# New Mexico FY2026 county waiver: Luna County (FIPS 35029, 12.5 percent
+# unemployment) from 2026-01-01 through 2026-12-31 (FNS response, October
+# 23, 2025). Luna is also in the FY2025 29-county list, so it is waived
+# without a gap at 2026-01-01.
+
+- name: Case 70, NM resident of Luna County is waived without a gap as the FY2025 waiver hands off to the FY2026 waiver, through 2026-12-31.
+  period: 2025
+  input:
+    state_code:
+      2025: NM
+      2026: NM
+      2027: NM
+    county_fips:
+      2025: "35029"
+      2026: "35029"
+      2027: "35029"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-12: true
+      2026-01: true
+      2026-12: true
+      2027-01: false
+
+# District of Columbia. The FY2024 districtwide waiver (2023-12-01 through
+# 2024-11-30, FNS response of August 25, 2023) is modeled from 2024-11-01
+# and hands off to the FY2025 districtwide waiver on 2024-12-01. Before
+# P.L. 119-21, the pre-HR1 exemption set includes the area waiver, so a
+# DC adult who works 1 hour a week meets the ABAWD requirement.
+
+- name: Case 71, DC resident is waived in November 2024 under the FY2024 districtwide waiver and without a gap under the FY2025 waiver.
+  period: 2024
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: DC
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-11: true
+      2024-12: true
+    meets_snap_abawd_work_requirements:
+      2024-11: true
+
+# New Mexico FY2026 guard: the no-county fallback is not Luna County.
+
+- name: Case 72, NM household without county geography (2026-01) is not waived because the Bernalillo County fallback is outside the FY2026 Luna County waiver.
+  period: 2026
+  input:
+    state_code: NM
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-01: false
+
+# Modeling start boundaries. Months before 2024-11 are incomplete: waivers
+# that ended before 2024-11-01 are not modeled, and earlier waivers still
+# running on 2024-11-01 are keyed at that date, while county approvals that
+# took effect from mid-2024 on keep their implementation dates (for example,
+# Delaware's FY2025 county waiver, from 2024-10-01). Delaware's FY2024
+# statewide waiver (through 2024-09-30) is therefore absent, and the New
+# Mexico and New York FY2024 statewide waivers read as not waived before
+# 2024-11-01. The implementation-date rule covers county lists only:
+# Nevada's statewide waiver, in effect from 2024-07-01, is keyed at
+# 2024-11-01 in waived_states.
+
+- name: Case 73, DE resident of Kent County is not waived in 2024-09 because Delaware's FY2024 statewide waiver is not modeled, and is waived from the FY2025 county waiver's 2024-10-01 start.
+  period: 2024
+  input:
+    state_code: DE
+    county_fips: "10001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-09: false
+      2024-10: true
+
+- name: Case 74, NM household without county geography is not waived in 2024-10 as an artifact of the 2024-11-01 modeling start date, and is waived from 2024-11.
+  period: 2024
+  input:
+    state_code: NM
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-10: false
+      2024-11: true
+
+- name: Case 75, NY household without county geography is not waived in 2024-10 as an artifact of the 2024-11-01 modeling start date, and is waived from 2024-11.
+  period: 2024
+  input:
+    state_code: NY
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-10: false
+      2024-11: true
+
+# Termination month. USDA terminated lack-of-sufficient-jobs waivers
+# effective 2025-11-02, but its February 26, 2026 memorandum (Appendix A)
+# kept them in effect through their original expiration dates, so the NY
+# and NM county waivers have no November 2025 gap.
+
+- name: Case 76, NY resident of Kings County (2025-11) stays waived in the termination month through the reinstated 61-county waiver.
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36047"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-11: true
+
+- name: Case 77, NM resident of Dona Ana County (2025-11) stays waived in the termination month through the reinstated 29-county waiver.
+  period: 2025
+  input:
+    state_code: NM
+    county_fips: "35013"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-11: true
+
+# FY2024 predecessor county waivers still in effect on 2024-11-01, modeled
+# from 2024-11-01 (KY 98 counties through 2024-11-30; MI 82 through
+# 2025-02-28; NJ 17 through 2025-01-31; WA 38 through 2025-01-31; OR 31
+# through 2024-12-31).
+
+- name: Case 78, KY resident of Adair County is waived in November 2024 under the FY2024 waiver and without a gap under the FY2025 waiver.
+  period: 2024
+  input:
+    state_code: KY
+    county_fips: "21001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-11: true
+      2024-12: true
+
+- name: Case 79, KY resident of Jefferson County is not waived in November 2024 because the FY2024 waiver excludes it, and is waived from December 2024 under the FY2025 waiver.
+  period: 2024
+  input:
+    state_code: KY
+    county_fips: "21111"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-11: false
+      2024-12: true
+
+- name: Case 80, MI resident of Kent County is waived under the FY2024 waiver through 2025-02-28 and not after, because the FY2025 waiver drops Kent.
+  period: 2024
+  input:
+    state_code:
+      2024: MI
+      2025: MI
+    county_fips:
+      2024: "26081"
+      2025: "26081"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-11: true
+      2025-02: true
+      2025-03: false
+
+- name: Case 81, MI resident of Oakland County is not waived in November 2024 because the FY2024 waiver excludes it.
+  period: 2024
+  input:
+    state_code: MI
+    county_fips: "26125"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-11: false
+
+- name: Case 82, NJ resident of Hunterdon County is not waived in January 2025 under the FY2024 waiver and is waived from February 2025 under the FY2025 waiver.
+  period: 2025
+  input:
+    state_code: NJ
+    county_fips: "34019"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-01: false
+      2025-02: true
+
+- name: Case 83, NJ resident of Atlantic County is waived without a gap as the FY2024 waiver hands off to the FY2025 waiver.
+  period: 2024
+  input:
+    state_code:
+      2024: NJ
+      2025: NJ
+    county_fips:
+      2024: "34001"
+      2025: "34001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-11: true
+      2025-01: true
+      2025-02: true
+
+- name: Case 84, WA resident of Spokane County is waived in November 2024 under the FY2024 waiver.
+  period: 2024
+  input:
+    state_code: WA
+    county_fips: "53063"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-11: true
+
+- name: Case 85, WA resident of King County is not waived because neither the FY2024 nor the FY2025 waiver covers King.
+  period: 2025
+  input:
+    state_code: WA
+    county_fips: "53033"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-01: false
+      2025-06: false
+
+- name: Case 86, WA resident of Spokane County is waived through the FY2025 waiver's 2026-01-31 end and not after.
+  period: 2026
+  input:
+    state_code: WA
+    county_fips: "53063"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-01: true
+      2026-02: false
+
+- name: Case 87, OR resident of Hood River County is waived under the FY2024 waiver through 2024-12-31 and not after, because the FY2025 waiver drops Hood River.
+  period: 2024
+  input:
+    state_code:
+      2024: OR
+      2025: OR
+    county_fips:
+      2024: "41027"
+      2025: "41027"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-11: true
+      2024-12: true
+      2025-01: false
+
+- name: Case 88, OR resident of Baker County is waived without a gap as the FY2024 waiver hands off to the FY2025 waiver.
+  period: 2024
+  input:
+    state_code:
+      2024: OR
+      2025: OR
+    county_fips:
+      2024: "41001"
+      2025: "41001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2024-12: true
+      2025-01: true
+
+# FY2026 county waivers approved under the P.L. 119-21 criteria
+# (unemployment over 10 percent): AZ Yuma 2026-03-01 to 2027-02-28;
+# KY Elliott, Lewis, Magoffin, Martin, Wolfe 2025-12-01 to 2026-11-30;
+# MI 15 counties 2025-11-01 to 2026-10-31; MN Clearwater 2025-12-01 to
+# 2026-11-30; NJ Cape May 2026-02-01 to 2027-01-31; NV Mineral 2026-02-01
+# to 2027-01-31. New Mexico's FY2026 Luna County waiver is covered by
+# Case 70.
+
+- name: Case 89, AZ resident of Yuma County is not waived before the FY2026 waiver's 2026-03-01 implementation date and is waived from it.
+  period: 2026
+  input:
+    state_code: AZ
+    county_fips: "04027"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-02: false
+      2026-03: true
+      2026-12: true
+
+- name: Case 90, AZ resident of Yuma County is waived through the FY2026 waiver's 2027-02-28 end and not after.
+  period: 2027
+  input:
+    state_code: AZ
+    county_fips: "04027"
+  output:
+    is_in_snap_abawd_waived_area:
+      2027-02: true
+      2027-03: false
+
+- name: Case 91, AZ resident of Apache County (2026-03) is not waived because the FY2026 waiver covers only Yuma County.
+  period: 2026-03
+  input:
+    state_code:
+      2026: AZ
+    county_fips:
+      2026: "04001"
+  output:
+    is_in_snap_abawd_waived_area: false
+
+- name: Case 92, KY resident of Wolfe County is waived without a gap as the FY2025 waiver hands off to the FY2026 waiver, through 2026-11-30.
+  period: 2025
+  input:
+    state_code:
+      2025: KY
+      2026: KY
+    county_fips:
+      2025: "21237"
+      2026: "21237"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-11: true
+      2025-12: true
+      2026-11: true
+      2026-12: false
+
+- name: Case 93, MI resident of Oscoda County stays waived after the FY2025 waiver ends, under the FY2026 waiver through 2026-10-31.
+  period: 2026
+  input:
+    state_code: MI
+    county_fips: "26135"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-02: true
+      2026-03: true
+      2026-10: true
+      2026-11: false
+
+- name: Case 94, MI resident of Wayne County is waived through the FY2025 waiver's 2026-02-28 end and not after, because the FY2026 waiver covers only the city of Detroit within Wayne.
+  period: 2026
+  input:
+    state_code: MI
+    county_fips: "26163"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-02: true
+      2026-03: false
+
+- name: Case 95, MI household without county geography (2026-06) falls back to Alcona County, which the FY2026 waiver covers.
+  period: 2026
+  input:
+    state_code: MI
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-06: true
+
+- name: Case 96, MN resident of Clearwater County stays waived after the FY2025 waiver ends, under the FY2026 waiver through 2026-11-30.
+  period: 2026
+  input:
+    state_code: MN
+    county_fips: "27029"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-06: true
+      2026-07: true
+      2026-11: true
+      2026-12: false
+
+- name: Case 97, MN resident of Aitkin County is waived through the FY2025 waiver's 2026-06-30 end and not after.
+  period: 2026
+  input:
+    state_code: MN
+    county_fips: "27001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-06: true
+      2026-07: false
+
+- name: Case 98, NJ resident of Cape May County is waived without a gap as the FY2025 waiver hands off to the FY2026 waiver, through 2027-01-31.
+  period: 2026
+  input:
+    state_code:
+      2026: NJ
+      2027: NJ
+    county_fips:
+      2026: "34009"
+      2027: "34009"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-01: true
+      2026-02: true
+      2027-01: true
+      2027-02: false
+
+- name: Case 99, NJ resident of Atlantic County is waived through the FY2025 waiver's 2026-01-31 end and not after.
+  period: 2026
+  input:
+    state_code: NJ
+    county_fips: "34001"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-01: true
+      2026-02: false
+
+- name: Case 100, NV resident of Mineral County is waived without a gap as the statewide waiver hands off to the FY2026 county waiver, through 2027-01-31.
+  period: 2026
+  input:
+    state_code:
+      2026: NV
+      2027: NV
+    county_fips:
+      2026: "32021"
+      2027: "32021"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-01: true
+      2026-02: true
+      2027-01: true
+      2027-02: false
+
+- name: Case 101, NV resident of Clark County (2026-02) is not waived after the statewide waiver ends because the FY2026 waiver covers only Mineral County.
+  period: 2026-02
+  input:
+    state_code:
+      2026: NV
+    county_fips:
+      2026: "32003"
+  output:
+    is_in_snap_abawd_waived_area: false
+
+# Alaska, 2025-11-01 through 2026-10-31: the FY2026 waiver (20 boroughs and
+# census areas, 1.5 times the national rate) plus the 7 U.S.C. 2015(o)(7)
+# good-faith exemption (every borough and census area except Anchorage).
+
+- name: Case 102, AK resident of Bethel Census Area is waived through 2026-10-31 and not after.
+  period: 2026
+  input:
+    state_code: AK
+    county_fips: "02050"
+  output:
+    is_in_snap_abawd_waived_area:
+      2026-10: true
+      2026-11: false
+
+- name: Case 103, AK resident of Juneau, which is outside the FY2026 waiver's 20 areas, is waived without a gap through 2026-10-31 under the good-faith exemption.
+  period: 2025
+  input:
+    state_code:
+      2025: AK
+      2026: AK
+    county_fips:
+      2025: "02110"
+      2026: "02110"
+  output:
+    is_in_snap_abawd_waived_area:
+      2025-10: true
+      2025-11: true
+      2026-10: true
+      2026-11: false

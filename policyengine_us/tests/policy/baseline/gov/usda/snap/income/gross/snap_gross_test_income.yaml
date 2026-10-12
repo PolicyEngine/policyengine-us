@@ -177,3 +177,33 @@
     snap_earned_income: 1_333.33
     snap_gross_income: 1_333.33
     snap_gross_test_income: 2_000
+
+- name: Farm rent of an undocumented member is prorated under the net test and counted in full under the gross test in a hybrid state.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        farm_rent_income: 24_000
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 33
+      person3:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # Isolate SNAP's own proration from TANF, which would otherwise pay
+        # this family and count as SNAP unearned income.
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AR
+  output:
+    # Net side counts 2/3 of the undocumented member's $2,000 of monthly farm
+    # rent: $1,333.33.
+    snap_gross_income: 1_333.33
+    # Gross test counts the full $2,000.
+    snap_gross_test_income: 2_000

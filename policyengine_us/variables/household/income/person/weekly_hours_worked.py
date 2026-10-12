@@ -25,8 +25,10 @@ class weekly_hours_worked_before_lsr(Variable):
     definition_period = YEAR
     documentation = (
         "Usual weekly hours worked, before labor supply responses. Datasets "
-        "populate this from survey data; it is the input the SNAP ABAWD "
-        "(20-hour) and general (30-hour) work-requirement tests read. The "
+        "populate this from survey data as usual hours in the weeks worked; "
+        "the SNAP ABAWD (20-hour) and general (30-hour) work-requirement "
+        "tests read it through snap_work_requirement_weekly_hours, which "
+        "averages it over weeks worked. The "
         "default is 0, not a full-time 40, so a household or dataset that "
         "fails to populate it reads as 'no hours' and fails the work-hours "
         "test loudly, rather than silently clearing every hours-conditioned "

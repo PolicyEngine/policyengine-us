@@ -1,0 +1,244 @@
+# Kansas LIEAP countable gross income (KS LIHEAP State Plan FY2026 sections
+# 1.8-1.9, pages 5-7; KEESM 13320). Counted: wages, self-employment,
+# unemployment insurance, SSA benefits, SSI, retirement/pension, TANF, child
+# support, alimony, rental income, VA benefits and recurring adult interest.
+# Earned income of children under 18 is excluded. Income of other
+# household members counts, including non-qualified noncitizens (KEESM 13330).
+# All amounts are annual (YEAR variable).
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
+
+- name: Case 1, recurring adult interest and dividends are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+        interest_income: 3_000
+        qualified_dividend_income: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 20,000 wages + 3,000 interest + 2,000 dividends (KEESM 13360).
+    ks_liheap_countable_income: 25_000
+
+- name: Case 2, Social Security and SSI are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security: 12_000
+        ssi: 3_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 12,000 SSA + 3,000 SSI = 15,000 (plan 1.8: SSA and SSI checked).
+    ks_liheap_countable_income: 15_000
+
+- name: Case 3, unearned income of a child under 18 is still counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        employment_income: 18_000
+      person2:
+        age: 12
+        social_security: 4_000
+        employment_income: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # Only the child's *earned* income is excluded (plan 1.9); the child's
+    # 4,000 SSA survivor benefit counts: 18,000 + 4,000 = 22,000.
+    ks_liheap_countable_income: 22_000
+
+- name: Case 4, other checked income sources are summed.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        self_employment_income: 8_000
+        unemployment_compensation: 6_000
+        pension_income: 10_000
+        child_support_received: 3_000
+        alimony_income: 2_000
+        rental_income: 4_000
+        veterans_benefits: 5_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 8,000 + 6,000 + 10,000 + 3,000 + 2,000 + 4,000 + 5,000 = 38,000
+    # (plan 1.8 checked boxes: self-employment, UI, retirement, child support,
+    # alimony, rental income, VA benefits).
+    ks_liheap_countable_income: 38_000
+
+- name: Case 5, TANF cash assistance is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 3_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ks_tanf: 2_400
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # 3,000 wages + 2,400 TANF (plan 1.8: TANF checked) = 5,400.
+    ks_liheap_countable_income: 5_400
+
+- name: Case 6, income of a non-qualified noncitizen member is counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+        employment_income: 6_000
+      person2:
+        age: 33
+        immigration_status: UNDOCUMENTED
+        employment_income: 12_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # KEESM 13330: income from non-qualified members is counted -> 18,000.
+    ks_liheap_countable_income: 18_000
+
+- name: Case 7, countable earned income supplied by the caller is used as given.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: 5_000
+        # The caller supplies the countable earned income amount.
+        ks_liheap_countable_earned_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 18,000 supplied countable earned income + 0 unearned income = 18,000.
+    ks_liheap_countable_income: 18_000
+
+- name: Case 8, employer disability benefits are counted as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 52
+        # Example amount: 1,200 a month of employer disability benefits.
+        disability_benefits: 14_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # disability_benefits is in the unearned source list: 1,200 x 12 = 14,400;
+    # every other listed source is 0.
+    ks_liheap_countable_unearned_income: 14_400
+    # 0 earned income + 14,400 unearned income = 14,400.
+    ks_liheap_countable_income: 14_400
+
+- name: Case 9, strike benefits, general assistance and workers' compensation are counted.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        # Example amounts: 100, 200 and 300 a month.
+        strike_benefits: 1_200
+        general_assistance: 2_400
+        workers_compensation: 3_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # All three are in the unearned source list: 1,200 + 2,400 + 3,600 = 7,200.
+    ks_liheap_countable_unearned_income: 7_200
+    # 0 earned income + 7,200 unearned income = 7,200.
+    ks_liheap_countable_income: 7_200
+
+- name: Case 10, farm rental income is counted as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        # 600 a month from leased farmland.
+        farm_rent_income: 7_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # KEESM 6313: income from rental property is unearned unless a household
+    # member actively manages it at least 20 hours a week.
+    ks_liheap_countable_unearned_income: 7_200
+    # 0 earned income + 7,200 unearned income = 7,200.
+    ks_liheap_countable_income: 7_200

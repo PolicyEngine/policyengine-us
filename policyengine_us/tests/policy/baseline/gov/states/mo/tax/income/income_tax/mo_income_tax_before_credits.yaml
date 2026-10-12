@@ -88,3 +88,28 @@
     state_code: MO
   output:
     mo_income_tax_before_credits: 2_290.77
+
+# 2026 Form MO-1040ES Tax Rate Chart (page 2): brackets start at $1,348,
+# $2,696, $4,044, $5,392, $6,740, $8,088 and $9,436; 4.7% over $9,436.
+# The chart rounds the base amounts to whole dollars ($27, $263); the model
+# applies each rate to the bracket width of $1,348.
+- name: $4,000 MO taxable income in 2026 (MO-1040ES Example 1)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 4_000
+    state_code: MO
+  output:
+    # 2% x 1,348 + 2.5% x (4,000 - 2,696) = 26.96 + 32.60
+    mo_income_tax_before_credits: 0.02 * 1_348 + 0.025 * (4_000 - 2_696)
+
+- name: $12,300 MO taxable income in 2026 (MO-1040ES Example 2)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    mo_taxable_income: 12_300
+    state_code: MO
+  output:
+    # (2% + 2.5% + 3% + 3.5% + 4% + 4.5%) x 1,348 + 4.7% x (12,300 - 9,436)
+    # = 262.86 + 134.61 (the chart shows $263 + $134.61 = $397.61)
+    mo_income_tax_before_credits: 0.195 * 1_348 + 0.047 * (12_300 - 9_436)

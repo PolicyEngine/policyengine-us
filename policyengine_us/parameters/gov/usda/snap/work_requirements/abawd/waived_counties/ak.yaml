@@ -2,6 +2,9 @@ description: Counties in Alaska with an approved USDA FNS waiver of the SNAP ABA
 
 values:
   2018-01-01: []
+  # FY2025 waiver (lack of sufficient jobs criterion): all 29 boroughs and
+  # census areas except the Municipality of Anchorage, plus the Eklutna
+  # ANVSA (sub-county, not modeled), 2024-11-01 through 2025-10-31.
   2024-11-01:
     - ALEUTIANS_EAST_BOROUGH_AK # FIPS 02013
     - ALEUTIANS_WEST_CENSUS_AREA_AK # FIPS 02016
@@ -32,6 +35,53 @@ values:
     - WRANGELL_CITY_AND_BOROUGH_AK # FIPS 02275
     - YAKUTAT_CITY_AND_BOROUGH_AK # FIPS 02282
     - YUKON_KOYUKUK_CENSUS_AREA_AK # FIPS 02290
+  # From 2025-11-01 through 2026-10-31 two approvals overlap:
+  # - FNS approved a waiver for 20 boroughs and census areas under the
+  #   noncontiguous-State criterion (unemployment at least 1.5 times the
+  #   national rate; FNS response, October 23, 2025).
+  # - FNS approved Alaska's good-faith exemption under 7 U.S.C. 2015(o)(7),
+  #   which per the Alaska Division of Public Assistance "exempts all Alaska
+  #   census areas and boroughs from the ABAWD time-limit criteria, except
+  #   the Municipality of Anchorage". It covers the nine areas marked below.
+  # Limitation: FNS has posted no approval document for Alaska's good-faith
+  # exemption, so the geographic scope rests on the Alaska Division of
+  # Public Assistance FAQ; the nine marked entries follow it (all areas
+  # except Anchorage). FNS Q&A #1
+  # (June 11, 2026, question 17) describes (o)(7) exemptions as applying to
+  # individuals rather than to areas. If FNS terminates the exemption early
+  # (7 U.S.C. 2015(o)(7)(D)(ii)), remove the nine marked entries from that
+  # date.
+  2025-11-01:
+    - ALEUTIANS_EAST_BOROUGH_AK # FIPS 02013; good-faith exemption only
+    - ALEUTIANS_WEST_CENSUS_AREA_AK # FIPS 02016; good-faith exemption only
+    - BETHEL_CENSUS_AREA_AK # FIPS 02050
+    - BRISTOL_BAY_BOROUGH_AK # FIPS 02060
+    - CHUGACH_CENSUS_AREA_AK # FIPS 02063
+    - COPPER_RIVER_CENSUS_AREA_AK # FIPS 02066
+    - DENALI_BOROUGH_AK # FIPS 02068
+    - DILLINGHAM_CENSUS_AREA_AK # FIPS 02070
+    - FAIRBANKS_NORTH_STAR_BOROUGH_AK # FIPS 02090; good-faith exemption only
+    - HAINES_BOROUGH_AK # FIPS 02100
+    - HOONAH_ANGOON_CENSUS_AREA_AK # FIPS 02105
+    - JUNEAU_CITY_AND_BOROUGH_AK # FIPS 02110; good-faith exemption only
+    - KENAI_PENINSULA_BOROUGH_AK # FIPS 02122
+    - KETCHIKAN_GATEWAY_BOROUGH_AK # FIPS 02130; good-faith exemption only
+    - KODIAK_ISLAND_BOROUGH_AK # FIPS 02150
+    - KUSILVAK_CENSUS_AREA_AK # FIPS 02158
+    - LAKE_AND_PENINSULA_BOROUGH_AK # FIPS 02164
+    - MATANUSKA_SUSITNA_BOROUGH_AK # FIPS 02170; good-faith exemption only
+    - NOME_CENSUS_AREA_AK # FIPS 02180
+    - NORTH_SLOPE_BOROUGH_AK # FIPS 02185; good-faith exemption only
+    - NORTHWEST_ARCTIC_BOROUGH_AK # FIPS 02188
+    - PETERSBURG_BOROUGH_AK # FIPS 02195
+    - PRINCE_OF_WALES_HYDER_CENSUS_AREA_AK # FIPS 02198
+    - SITKA_CITY_AND_BOROUGH_AK # FIPS 02220; good-faith exemption only
+    - SKAGWAY_MUNICIPALITY_AK # FIPS 02230
+    - SOUTHEAST_FAIRBANKS_CENSUS_AREA_AK # FIPS 02240
+    - WRANGELL_CITY_AND_BOROUGH_AK # FIPS 02275; good-faith exemption only
+    - YAKUTAT_CITY_AND_BOROUGH_AK # FIPS 02282
+    - YUKON_KOYUKUK_CENSUS_AREA_AK # FIPS 02290
+  # Both approvals end 2026-10-31.
   2026-11-01: []
 
 metadata:
@@ -39,7 +89,26 @@ metadata:
   period: month
   label: SNAP ABAWD waived counties in Alaska
   reference:
-    - title: USDA FNS Alaska FY 2025 ABAWD Waiver Response
+    - title: USDA FNS Alaska ABAWD Waiver Response, September 20, 2024 - requested area (29 boroughs and census areas) and area list
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ak-abawd-response-fy2025.pdf#page=2
+    - title: USDA FNS Alaska ABAWD Waiver Response, September 20, 2024 - area list (continued)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ak-abawd-response-fy2025.pdf#page=3
+    - title: USDA FNS Alaska ABAWD Waiver Response, September 20, 2024 - Eklutna ANVSA, implementation date (2024-11-01), and expiration date (2025-10-31)
       href: https://www.fns.usda.gov/sites/default/files/resource-files/ak-abawd-response-fy2025.pdf#page=4
-    - title: Alaska Department of Health H.R. 1 impacts
-      href: https://health.alaska.gov/en/education/hr-1-ak-impacts/
+    - title: USDA FNS Alaska ABAWD Waiver Response, October 23, 2025 - requested area (20 boroughs and census areas, 1.5 times the national rate)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ak-abawd-response-fy2026.pdf#page=2
+    - title: USDA FNS Alaska ABAWD Waiver Response, October 23, 2025 - area list (continued), implementation date (2025-11-01), and expiration date (2026-10-31)
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/ak-abawd-response-fy2026.pdf#page=3
+    - title: Alaska Division of Public Assistance, SNAP - Frequently Asked Questions (Good Faith Exemption waiver, November 1, 2025 through October 31, 2026, all census areas and boroughs except the Municipality of Anchorage)
+      href: https://health.alaska.gov/en/services/division-of-public-assistance-dpa-services/snap-nutrition-assistance/#faqs
+    - title: Public Law 119-21, Section 10102(c) - Exemption for noncontiguous States (7 U.S.C. 2015(o)(7)(A) and (B))
+      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=12
+    - title: Public Law 119-21, Section 10102(c) - expiration and early termination of noncontiguous State exemptions (7 U.S.C. 2015(o)(7)(D))
+      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=13
+    # Archived copy of the same 4-page memo, against which both page anchors
+    # were checked:
+    # https://web.archive.org/web/20260313032048id_/https://fns-prod.azureedge.us/sites/default/files/resource-files/OBBB-Implementation%20Memo-ABAWD-Waivers.pdf#page=3
+    - title: USDA FNS, SNAP Provisions of the One Big Beautiful Bill Act of 2025 - ABAWD Waivers - Implementation Memorandum (October 3, 2025) - ABAWD good faith exemptions for Alaska and Hawaii
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-abawd-waivers-implementation.pdf#page=3
+    - title: USDA FNS, SNAP Provisions of the One Big Beautiful Bill Act of 2025 - ABAWD Waivers - Implementation Memorandum (October 3, 2025) - termination of ABAWD good faith exemption approvals
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-abawd-waivers-implementation.pdf#page=4

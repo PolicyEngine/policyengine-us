@@ -9,7 +9,7 @@ class ca_ala_general_assistance_income_eligible(Variable):
     )
     definition_period = MONTH
     defined_for = "in_ala"
-    reference = "https://www.alamedacountysocialservices.org/acssa-assets/PDF/GA-Policies/GA-Regulations.pdf#page=22"
+    reference = "https://socialservices.alamedacountyca.gov/acssa-assets/PDF/GA-Policies/GA-Regulations.pdf#page=22"
 
     def formula(spm_unit, period, parameters):
         income = spm_unit("ca_ala_general_assistance_countable_income", period)

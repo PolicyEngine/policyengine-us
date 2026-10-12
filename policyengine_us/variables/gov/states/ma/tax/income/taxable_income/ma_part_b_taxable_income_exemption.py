@@ -7,7 +7,7 @@ class ma_part_b_taxable_income_exemption(Variable):
     label = "MA Part B taxable income exemption"
     unit = USD
     definition_period = YEAR
-    reference = "https://www.mass.gov/service-details/view-massachusetts-personal-income-tax-exemption"
+    reference = "https://www.mass.gov/info-details/personal-income-tax-exemptions"
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):

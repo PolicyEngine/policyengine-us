@@ -10,7 +10,7 @@ class ma_ccfa_base_copay(Variable):
     defined_for = StateCode.MA
     reference = (
         "https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=76",
-        "https://www.mass.gov/doc/parent-fee-chart-fy2025/download",
+        "https://web.archive.org/web/20250902041737/https://www.mass.gov/doc/parent-fee-chart-fy2025/download",
         "https://www.mass.gov/doc/parent-fee-chart-fy2026/download",
     )
 

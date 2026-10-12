@@ -1,0 +1,36 @@
+description: The Department of Agriculture limits the qualified alien waiting period to these immigration statuses under the Supplemental Nutrition Assistance Program.
+
+# 7 CFR 273.4(a)(6)(iii) lists the qualified aliens who must hold qualified
+# status for 5 years: (A) lawful permanent residents age 18 or older,
+# (B) aliens paroled for at least 1 year, (C) battered aliens and
+# (D) conditional entrants. Lawful permanent residents under 18 are covered
+# by the under-18 exception (7 CFR 273.4(a)(6)(ii)(J)).
+# Battered aliens (8 USC 1641(c)(1)-(3)) have no ImmigrationStatus value and
+# are not represented.
+# REFUGEE, ASYLEE, DEPORTATION_WITHHELD and CUBAN_HAITIAN_ENTRANT are exempt by
+# status under 7 CFR 273.4(a)(6)(ii)(B)-(E), so they are omitted from this list.
+# PolicyEngine does not distinguish Afghan (paroled 2021-07-31 to 2023-09-30) or
+# Ukrainian (paroled 2022-02-24 to 2024-09-30) humanitarian parolees from other
+# PAROLED_ONE_YEAR parolees, so all parolees are modeled as subject to the
+# waiting period.
+# The FNS October 31, 2025 memo, Attachment 1 (file page 7), labels conditional
+# entrants "Eligible immediately" before P.L. 119-21, which conflicts with
+# 7 CFR 273.4(a)(6)(iii)(D) and the FNS December 2025 Q&A chart (file page 4);
+# the regulation is followed.
+values:
+  2003-04-01:
+    - LEGAL_PERMANENT_RESIDENT
+    - PAROLED_ONE_YEAR
+    - CONDITIONAL_ENTRANT
+
+metadata:
+  unit: list
+  period: year
+  label: SNAP qualified alien waiting period immigration statuses
+  reference:
+    - title: 7 CFR 273.4(a)(6)(iii)(A), (B) and (D) - Qualified aliens who must be in a qualified status for 5 years
+      href: https://www.law.cornell.edu/cfr/text/7/273.4#a_6_iii
+    - title: USDA FNS, Alien SNAP Eligibility - Question and Answer #1 REVISED (December 9, 2025), Question 5 chart
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-alien-eligibility-qas1.pdf#page=4
+    - title: USDA FNS, SNAP Implementation of the One Big Beautiful Bill Act of 2025 - Alien SNAP Eligibility (October 31, 2025), Attachment 1 (parolees)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-alien-eligibility.pdf#page=8

@@ -7,6 +7,9 @@ values:
     - partnership_s_corp_income
     - loss_limited_net_capital_gains_person
     - rental_income
+    # Line 41: rental real estates, royalties, partnerships, S corporations,
+    # trusts, etc. (income or loss from federal Schedule E)
+    - estate_income
     - farm_operations_income
     - interest_income
     - qualified_dividend_income
@@ -22,14 +25,14 @@ metadata:
   period: year
   reference: 
     - title: Mississippi Resident INCOME TAX Instructions
-      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100221.pdf#page=10 # Line 38 - 48
+      href: https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100221.pdf#page=10 # Line 38 - 48
     - title: Mississippi Income Tax and Withholding Article 1 § 27-7-15
       href: https://law.justia.com/codes/mississippi/2020/title-27/chapter-7/article-1/section-27-7-15/
     - title: Mississippi Resident Individual Income Tax Return 2022
-      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80105228.pdf#page=2 # Line 38 - 48
+      href: https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80105228.pdf#page=2 # Line 38 - 48
     - title: Mississippi Income Tax Instructions 2023
-      href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100231.pdf#page=11 # Line 38 - 48
+      href: https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100231.pdf#page=11 # Line 38 - 48
     - title: Mississippi Income Tax Instructions 2024
       href: https://www.dor.ms.gov/sites/default/files/Forms/Individual/80100241.pdf#page=10
-    - title: Mississippi Income Tax Instructions 2025
+    - title: "Mississippi Income Tax Instructions 2025 #page 10-11"
       href: https://www.dor.ms.gov/sites/default/files/tax-forms/individual/80100251%202.pdf#page=10

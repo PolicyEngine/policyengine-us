@@ -1,5 +1,5 @@
-- name: Zero income gives zero SAB countable income.
-  period: 2026
+- name: Case 1, zero income gives zero SAB countable income.
+  period: 2026-01
   input:
     people:
       person1:
@@ -12,34 +12,677 @@
   output:
     mo_sab_countable_income: 0
 
-- name: $12,000 annual employment income gives ~$5,490 annual SAB countable income after SSI-style exclusions.
-  period: 2026
+- name: Case 2, modeled taxes do not create a deduction when no taxes are reported.
+  period: 2026-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 50
+        employment_income: 12_000
+        mo_withheld_income_tax: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        income_tax_before_credits: 2_400
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Monthly earned = $1,000. ($1,000 - $85) x 0.5 = $457.50, less the
+    # $100 personal standard = $357.50. The 13 CSR 40-2.120(8) standard tax
+    # table is not modeled.
+    mo_sab_reported_earnings_taxes: 0
+    mo_sab_countable_income: 357.5
+
+- name: Case 3, earnings below the $85 exemption are fully exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 960
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Monthly earned = $80, all within the $85 exemption.
+    mo_sab_countable_income: 0
+
+- name: Case 4, earnings of exactly $85 are fully exempt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 1_020
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_sab_countable_income: 0
+
+- name: Case 5, the personal standard is 10% of gross earnings, not of the remainder.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 1_800
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Monthly earned = $150. ($150 - $85) x 0.5 = $32.50, less the $15
+    # personal standard = $17.50.
+    mo_sab_countable_income: 17.5
+
+- name: Case 6, the personal standard is 10% of exact gross earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 5_940.12
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Monthly earned = $495.01. ($495.01 - $85) x 0.5 = $205.005, less the
+    # $49.501 personal standard = $155.504. The 13 CSR table would round the
+    # standard up to $50, the top of the $495.01-$500 band.
+    mo_sab_countable_income: 155.504
+
+- name: Case 7, reported taxes reduce countable earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 36_000
+        mo_sab_reported_earnings_taxes: 529.5
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Monthly earned = $3,000. ($3,000 - $85) x 0.5 = $1,457.50, less $529.50
+    # reported taxes and the $300 personal standard = $628.
+    mo_sab_countable_income: 628
+
+- name: Case 8, earnings with no reported taxes get no tax deduction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 36_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_sab_countable_income: 1_157.5
+
+- name: Case 9, reported taxes reduce countable earnings; the 13 CSR tax table is not modeled.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 12_000
+        mo_sab_reported_earnings_taxes: 76.5
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $457.50 - $76.50 reported taxes - $100 personal standard = $281.
+    mo_sab_countable_income: 281
+
+- name: Case 10, unearned income counts in full, and reported taxes need earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        pension_income: 12_876
+        mo_sab_reported_earnings_taxes: 100
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $1,073 monthly pension is fully countable under 13 CSR 40-2.120(2)(B).
+    mo_sab_countable_income: 1_073
+
+- name: Case 11, earned and unearned income combine.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 6_000
+        pension_income: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Earned $500: ($500 - $85) x 0.5 = $207.50, less the $50 personal
+    # standard = $157.50. Plus $300 pension = $457.50.
+    mo_sab_countable_income: 457.5
+
+- name: Case 12, a spouse's income is not deemed to the SAB claimant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        is_blind: true
+        pension_income: 6_000
+        mo_ssp_living_arrangement: SAB
+      person2:
+        age: 50
+        employment_income: 15_600
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # The SAB income test is individual regardless of marital status
+    # (Appendix K), so person1 counts only the own $500 pension. Person2's own
+    # figure is ($1,300 - $85) x 0.5 - $130 = $477.50.
+    mo_sab_countable_income: [500, 477.5]
+
+- name: Case 13, the SSI student earned income exclusion does not apply.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 20
+        is_blind: true
+        is_full_time_student: true
         employment_income: 12_000
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # Monthly earned = $1,000. After $20 general + $65 earned exclusion =
-    # $915, then 50% remainder = $457.50/month, annualized to $5,490.
-    mo_sab_countable_income: 5_490
+    # SSI would exclude all $1,000 for a blind student under 22; SAB applies
+    # only the $85-plus-half exemption and personal standard.
+    mo_sab_countable_income: 357.5
 
-- name: $30,000 annual employment income gives ~$14,490 annual SAB countable income.
-  period: 2026
+- name: Case 14, in-kind support and maintenance is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 50
-        employment_income: 30_000
+        ssi_in_kind_support_and_maintenance: 3_000
     households:
       household:
         members: [person1]
         state_code: MO
   output:
-    # Monthly earned = $2,500. After $20 + $65 = $2,415, then 50% = $1,207.50,
-    # annualized to $14,490. Monthly $1,207.50 exceeds $1,073 SAB limit.
-    mo_sab_countable_income: 14_490
+    # § 0410.015.15 excludes income in kind such as food, utilities, and rent.
+    mo_sab_countable_income: 0
+
+- name: Case 15, negative self-employment income does not offset unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        self_employment_income: -12_000
+        pension_income: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_sab_countable_income: 500
+
+- name: Case 16, a self-employment loss offsets wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 12_000
+        self_employment_income: -6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Net earnings = $1,000 - $500 = $500. ($500 - $85) x 0.5 - $50.
+    mo_sab_countable_income: 157.5
+
+- name: Case 17, a rental loss offsets other unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        pension_income: 12_000
+        rental_income: -2_400
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_sab_countable_income: 800
+
+- name: Case 18, farm operations profit is earned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        farm_operations_income: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 13 CSR 40-2.050(1)(A) counts profit from farming as earned income.
+    mo_sab_countable_income: 357.5
+
+- name: Case 19, railroad retirement, strike benefits, and gambling income count as unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        railroad_benefits: 1_200
+        strike_benefits: 1_200
+        gambling_winnings: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0410.015.10 lists each source; $100 a month each.
+    mo_sab_countable_income: 300
+
+- name: Case 20, child support received counts when no child lives in the home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        child_support_received: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0410.015.10 counts child support paid for someone outside the home;
+    # $500 a month.
+    mo_sab_countable_income: 500
+
+- name: Case 21, court-ordered child support paid is an expense of producing income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 36_000
+        mo_sab_reported_earnings_taxes: 529.5
+        child_support_expense: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $628 (Case 7) less $300 monthly child support paid = $328.
+    mo_sab_countable_income: 328
+
+- name: Case 22, child support paid also reduces unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        pension_income: 13_200
+        child_support_expense: 3_600
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0410.015.10 applies the § 0410.015.05.25 expenses to unearned income:
+    # $1,100 pension - $300 child support paid = $800.
+    mo_sab_countable_income: 800
+
+- name: Case 23, alimony paid above countable earnings reduces unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 12_000
+        pension_income: 6_000
+        alimony_expense: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $357.50 countable earnings + $500 pension - $500 alimony = $357.50.
+    mo_sab_countable_income: 357.5
+
+- name: Case 24, expenses of producing income cannot make countable income negative.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        pension_income: 1_200
+        alimony_expense: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_sab_countable_income: 0
+
+- name: Case 25, reported taxes include mandatory city earnings tax.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 36_000
+        mo_sab_reported_earnings_taxes: 559.5
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $529.50 federal, state, and Social Security tax plus $30 city earnings tax:
+    # $1,457.50 - $559.50 - $300 = $598.
+    mo_sab_countable_income: 598
+
+- name: Case 26, reported taxes above countable earnings do not reduce unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 12_000
+        pension_income: 6_000
+        mo_sab_reported_earnings_taxes: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # The $1,000 exceeds $357.50 countable earnings; the $500 pension remains.
+    mo_sab_countable_income: 500
+
+- name: Case 27, spouses each use their own reported taxes.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 36_000
+        mo_sab_reported_earnings_taxes: 329.5
+      person2:
+        age: 50
+        employment_income: 36_000
+        mo_sab_reported_earnings_taxes: 529.5
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Each person's $1,157.50 before taxes is reduced by their own amount.
+    mo_sab_countable_income: [828, 628]
+
+- name: Case 28, a dependent claimant uses their own reported taxes.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 60_000
+      person2:
+        age: 20
+        is_blind: true
+        is_tax_unit_dependent: true
+        employment_income: 36_000
+        mo_sab_reported_earnings_taxes: 329.5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        income_tax_before_credits: 4_800
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # Parent: ($5,000 - $85) x 0.5 - $500, with no reported taxes.
+    # Claimant: ($3,000 - $85) x 0.5 - $300 - $329.50.
+    mo_sab_countable_income: [1_957.5, 828]
+
+- name: Case 29, monthly reported taxes carry forward until changed.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 36_000
+        mo_sab_reported_earnings_taxes:
+          2026-01: 100
+          2026-02: 200
+          2026-04: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # The February amount also applies in March, which has no entry of its own.
+    mo_sab_countable_income:
+      2026-01: 1_057.5
+      2026-02: 957.5
+      2026-03: 957.5
+      2026-04: 1_157.5
+
+- name: Case 30, historical earnings accept reported taxes without calculating tax liability.
+  period: 2014-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 12_000
+        mo_sab_reported_earnings_taxes: 76.5
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_sab_countable_income: 281
+
+- name: Case 31, child support received for a child in the home is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        pension_income: 7_200
+        child_support_received: 6_000
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    # § 0410.015.10: support for a child in the home is the child's income.
+    mo_sab_countable_income: [600, 0]
+
+- name: Case 32, an annual reported tax amount is spread across months.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 12_000
+        mo_sab_reported_earnings_taxes: 1_200
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # $1,200 a year is $100 a month: $457.50 - $100 - $100 = $257.50.
+    mo_sab_countable_income:
+      2026-01: 257.5
+
+- name: Case 33, military retirement pay is unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        social_security: 12_000
+        military_retirement_pay: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0410.015.10 lists military retirement.
+    # $1,000 Social Security + $500 = $1,500, above the $1,073 standard.
+    mo_sab_countable_income: 1_500
+
+- name: Case 34, farm rental income is unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        social_security: 12_000
+        farm_rent_income: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0410.015.10 lists property rental.
+    # $1,000 Social Security + $500 = $1,500, above the $1,073 standard.
+    mo_sab_countable_income: 1_500
+
+- name: Case 35, estate and trust income is unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        social_security: 12_000
+        estate_income: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0410.015.10 lists income from trusts.
+    # $1,000 Social Security + $500 = $1,500, above the $1,073 standard.
+    mo_sab_countable_income: 1_500
+
+- name: Case 36, partnership and S corporation income is unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        social_security: 12_000
+        partnership_s_corp_income: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Counted as a passive return on investment.
+    # $1,000 Social Security + $500 = $1,500, above the $1,073 standard.
+    mo_sab_countable_income: 1_500
+
+- name: Case 37, general assistance is unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+        social_security: 12_000
+        general_assistance: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # § 0410.015.10 lists other need-based assistance programs.
+    # $1,000 Social Security + $500 = $1,500, above the $1,073 standard.
+    mo_sab_countable_income: 1_500

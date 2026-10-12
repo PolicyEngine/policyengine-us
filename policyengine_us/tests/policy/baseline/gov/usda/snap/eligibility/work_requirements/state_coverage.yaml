@@ -2,11 +2,13 @@
 # See policyengine_us/parameters/gov/usda/snap/work_requirements/README.md
 # for the full coverage table.
 # Federal effective date: 2025-07-04; CA delays to 2026-06-01 per ACL 25-93.
-# HI/AK delayed adoption (2025-11-01) is not yet modeled — tracked in
-# https://github.com/PolicyEngine/policyengine-us/issues/8821 — so no HI/AK
-# cases are asserted here until that lands.
-# AK borough-level waivers are tracked in
-# https://github.com/PolicyEngine/policyengine-us/issues/8822.
+# HI and AK delay adoption to 2025-11-01
+# (gov.states.{hi.dhs,ak.dpa}.snap.work_requirements.abawd.hr1_in_effect);
+# their cases are asserted in is_snap_abawd_hr1_in_effect.yaml.
+# AK borough-level waivers are modeled in
+# gov.usda.snap.work_requirements.abawd.waived_counties.ak and tested in
+# is_in_snap_abawd_waived_area.yaml; known list gaps are tracked in
+# https://github.com/PolicyEngine/policyengine-us/issues/9659.
 # state_code is a yearly variable, so non-January test months key it to the
 # calendar year explicitly.
 

@@ -104,3 +104,99 @@
         state_code: RI
   output:
     ri_child_tax_rebate: 750
+
+- name: No child tax rebate before the one-time 2021 program
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ri_child_tax_rebate_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_child_tax_rebate: 0
+
+- name: No child tax rebate after the one-time 2021 program
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ri_child_tax_rebate_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ri_child_tax_rebate: 0
+
+- name: Child tax rebate does not reach Rhode Island refundable credits or income tax in 2020
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ri_child_tax_rebate_eligible: true
+        ri_refundable_eitc: 0
+        ri_property_tax_credit: 0
+        ri_income_tax_before_refundable_credits: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # min(1 eligible child, 3 child cap) x 0 amount in 2020 = 0.
+    ri_child_tax_rebate: 0
+    # Backdated 2021 list: 0 eitc + 0 property tax credit + 0 child tax rebate = 0.
+    ri_refundable_credits: 0
+    # 1,000 before refundable credits - 0 refundable credits = 1,000.
+    ri_income_tax: 1_000
+
+- name: Child tax rebate reaches Rhode Island refundable credits and income tax in 2021
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        ri_child_tax_rebate_eligible: true
+        ri_refundable_eitc: 0
+        ri_property_tax_credit: 0
+        ri_income_tax_before_refundable_credits: 1_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # min(1 eligible child, 3 child cap) x 250 = 250.
+    ri_child_tax_rebate: 250
+    # 0 eitc + 0 property tax credit + 250 child tax rebate = 250.
+    ri_refundable_credits: 250
+    # 1,000 before refundable credits - 250 refundable credits = 750.
+    ri_income_tax: 750

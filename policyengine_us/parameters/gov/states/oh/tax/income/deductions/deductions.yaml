@@ -11,6 +11,8 @@ values:
     - oh_unreimbursed_medical_care_expense_deduction_person
     - us_govt_interest_person
     - salt_refund_income
+    - oh_business_income_deduction_person # Schedule of Adjustments, line 13
+    - oh_qualifying_capital_gain_deduction # R.C. 5747.01(A)(34), from 2026
 
 metadata:
   unit: list
