@@ -26,6 +26,15 @@ class charitable_contributions_ald(Variable):
     )
 
     def formula(tax_unit, period, parameters):
+        # Only in years that list it among above-the-line deductions, where
+        # tax_unit_itemizes takes the itemization choice from branches.
+        # State additions that read it then never reach the choice in other
+        # years.
+        if (
+            "charitable_contributions_ald"
+            not in parameters(period).gov.irs.ald.deductions
+        ):
+            return 0
         p = parameters(period).gov.irs.ald.charitable_contributions
         # 62(f)(1): an eligible individual is one who does not elect to
         # itemize deductions.
