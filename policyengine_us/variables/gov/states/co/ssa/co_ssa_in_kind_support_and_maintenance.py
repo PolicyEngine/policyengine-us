@@ -23,21 +23,21 @@ def _ism_exempt(person, period):
 
 
 def _colorado_shelter_ism(person, period, maximum):
-    """ISM for shelter as Colorado computes it, up to the maximum.
+    """ISM for shelter as Colorado computes it.
 
-    3.520.79(A), (C) (3.250.22 and 3.250.221 before 2014). PolicyEngine has
-    no input for the client's own shelter payment, the household's fair share
-    or the market value, so the SSI shelter inputs stand in: a client who
-    receives shelter from others pays no shelter costs and is counted the
-    maximum ((C)(3)), unless the value of the shelter support is given, in
-    which case the lesser of that value and the maximum is counted.
+    3.520.79(A), (C) (3.250.22 and 3.250.221 before 2014). Colorado's amount
+    depends on what the client pays, not on what the shelter is worth: the
+    maximum less the client's payment ((C)(1)), the lesser of the fair share
+    and the maximum less the payment ((C)(2)), or, for a client "paying no
+    shelter costs", the maximum ((C)(3)). PolicyEngine has no input for the
+    client's payment, the fair share or the market value, so a client who
+    receives shelter from others is taken to pay none and is counted the
+    maximum.
     """
     receives_shelter = person(
         "ssi_receives_shelter_from_others_in_household", period
     ) | person("ssi_receives_outside_shelter_support", period)
-    value = person("ssi_shelter_support_value", period.this_year) / MONTHS_IN_YEAR
-    ism = where(value > 0, min_(value, maximum), maximum)
-    return where(receives_shelter & ~_ism_exempt(person, period), ism, 0)
+    return where(receives_shelter & ~_ism_exempt(person, period), maximum, 0)
 
 
 def _ssa_ism(person, period, parameters):

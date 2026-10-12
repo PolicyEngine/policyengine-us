@@ -11,21 +11,21 @@ earnings, single or married to a disabled spouse with the same arrangement,
 in 2026. Each case appears twice, as a twin with no in-kind support (N) and
 as one receiving it (S): in another person's household under SSI's
 one-third reduction, or in their own household with outside shelter support,
-optionally of a given value. A third set of people are clients aged 60-64
+optionally of a given value. A third set of people are clients aged 62
 without SSI, receiving shelter support of a drawn value.
 
 1. Matching (differential): an SSI recipient's ISM equals SSA's. Under the
    one-third reduction this is the cut SSA made to the benefit rate, the
    twins' ssi_amount_if_eligible difference; otherwise it is SSI's presumed
    maximum value ISM, halved for a couple.
-2. Bounds: ISM is non-negative; a client without SSI is counted no more than
-   the $351 maximum, and an SSI recipient no more than the presumed maximum
-   value, one-third of the benefit rate plus $20.
+2. Bounds: ISM is non-negative, and an SSI recipient's is no more than the
+   presumed maximum value, one-third of the benefit rate plus $20.
 3. No backfill: receiving in-kind support lowers SSI plus AND-CS by at least
    SSA's ISM less the client's share of the $20 disregard (3.549(A)(2)), so
    AND-CS never restores more of SSA's reduction than that disregard.
-4. Monotonicity: for a client without SSI, ISM never falls as the value of
-   the shelter support rises, and never exceeds that value.
+4. Payment, not value: a client without SSI who receives shelter from
+   others, and so pays none (3.520.79(C)(3)), is counted the $351 maximum
+   whatever the shelter is worth.
 """
 
 import numpy as np
@@ -147,22 +147,16 @@ def assert_properties(cases, values):
             drop = ssi[n] + supplement[n] - ssi[s] - supplement[s]
             assert drop >= ism[s] - share - TOLERANCE, c
     for j, value in enumerate(values):
-        older = ism[f"older_{j}"]
-        # 2. Bounds for clients without SSI; 4. ISM is the support value up
-        # to the maximum, so it rises with the value.
-        expected = min(value, maximum) if value > 0 else maximum
-        assert older == pytest.approx(expected, abs=TOLERANCE), value
-        assert older <= maximum + TOLERANCE, value
-    ordered = sorted(range(len(values)), key=lambda j: values[j])
-    positive = [ism[f"older_{j}"] for j in ordered if values[j] > 0]
-    assert all(b >= a - TOLERANCE for a, b in zip(positive, positive[1:]))
+        # 4. Payment, not value.
+        assert ism[f"older_{j}"] == pytest.approx(maximum, abs=TOLERANCE), value
 
 
 def test_worked_examples():
     """co_state_supplement YAML Cases 28 and 32, monthly: a single client in
     another person's household is charged 331.33 and paid $20; each member of
-    a couple is charged 248.50 and paid 258.50. A client without SSI is
-    counted the $351 maximum, or a lower support value."""
+    a couple is charged 248.50 and paid 258.50. A client without SSI who
+    pays nothing is counted the $351 maximum, whatever the support is
+    worth."""
     single = {
         "married": False,
         "client_age": 40,
@@ -183,7 +177,7 @@ def test_worked_examples():
     assert ism["client_S1"] == pytest.approx(248.50, abs=TOLERANCE)
     assert supplement["spouse_S1"] == pytest.approx(258.50, abs=TOLERANCE)
     assert ism["older_0"] == pytest.approx(351, abs=TOLERANCE)
-    assert ism["older_1"] == pytest.approx(200, abs=TOLERANCE)
+    assert ism["older_1"] == pytest.approx(351, abs=TOLERANCE)
     assert ism["older_2"] == pytest.approx(351, abs=TOLERANCE)
     assert_properties([single, couple], [0, 200, 400])
 

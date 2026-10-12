@@ -148,9 +148,10 @@
     ssi: 0
     co_ssa_in_kind_support_and_maintenance: 351
 
-- name: Case 7, a client without SSI receiving shelter support worth less than the maximum.
-  # Shelter support worth $200/month is counted, below the $351 maximum.
-  absolute_error_margin: 0.01
+- name: Case 7, a client without SSI who pays nothing is counted the maximum whatever the shelter is worth.
+  # Others supply shelter worth $200/month in full. 3.520.79(C)(3) counts
+  # "the current maximum ISM amount", $351, for a client "paying no shelter
+  # costs"; the value of the shelter does not enter Colorado's calculation.
   period: 2026-01
   input:
     people:
@@ -164,7 +165,7 @@
         members: [person]
         state_code: CO
   output:
-    co_ssa_in_kind_support_and_maintenance: 200
+    co_ssa_in_kind_support_and_maintenance: 351
 
 - name: Case 8, a client without SSI in subsidized housing is not charged ISM.
   # 3.520.79(B)(2).
