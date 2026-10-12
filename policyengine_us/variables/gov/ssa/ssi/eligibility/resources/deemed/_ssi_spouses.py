@@ -96,3 +96,15 @@ def _ssi_resource_couple(person, period):
     eligible = _ssi_eligible_apart_from_means(person, period)
     spouse = np.maximum(_ssi_spouse_index(person, period), 0)
     return person("ssi_claim_is_joint", period) & eligible & eligible[spouse]
+
+
+def _ssi_couple_total(person, period, values):
+    """Each person's value plus their co-resident spouse's, if they have one.
+
+    This equals the marital-unit sum for units of one or two people, and
+    adds only the spouse when a unit holds more people, as the default unit
+    of a situation that omits marital units can. ``period`` is the year of
+    the spouse test.
+    """
+    spouse = _ssi_spouse_index(person, period)
+    return values + where(spouse >= 0, values[np.maximum(spouse, 0)], 0)

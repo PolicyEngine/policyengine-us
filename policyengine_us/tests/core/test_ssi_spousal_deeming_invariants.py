@@ -1,6 +1,8 @@
 """Simulation-API invariants for SSI couples and spousal deeming.
 
-Two vectorized simulations, each built once per module:
+Two vectorized grid simulations, each built once per module, plus one small
+simulation per Hypothesis example (three examples, more if a failure is
+shrunk):
 
 - An income grid of 400 two-person households: an aged claimant with only
   unearned income and a spouse under 65 with unearned and earned income. The
