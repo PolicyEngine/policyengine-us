@@ -31,6 +31,7 @@ class vt_retirement_income_exemption_eligible(Variable):
             [
                 "tax_unit_taxable_social_security",
                 "military_retirement_pay",
+                "military_retirement_pay_survivors",
                 "csrs_retirement_pay",
             ],
         )
