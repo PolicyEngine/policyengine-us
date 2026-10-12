@@ -376,3 +376,14 @@ def test_baseline_measurement_drops_incompatible_holders(change):
     assert original_holder.variable.definition_period == (
         YEAR_PERIOD if change == "period" else ETERNITY
     )
+
+
+def test_a_fully_calculated_clone_remeasures_changed_wages():
+    source = make_simulation(situation=household(50_000), reform=LSR_REFORM)
+    original_net_income = source.calculate("household_net_income", YEAR).copy()
+    cloned = source.clone()
+    set_wages(cloned, 100_000)
+    np.testing.assert_allclose(response(cloned), fresh_response(100_000), atol=1e-3)
+    np.testing.assert_array_equal(
+        source.calculate("household_net_income", YEAR), original_net_income
+    )
