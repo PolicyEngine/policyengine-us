@@ -1,0 +1,35 @@
+description: South Carolina counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
+values:
+  1996-07-01:
+    # Section 7.1 defines income as money received from any source, and the
+    # Section 7.7 chart counts each source below at its gross amount.
+    - social_security # SSA benefits: count the gross amount
+    - unemployment_compensation
+    - pension_income # Pension; annuities and endowment contracts
+    - railroad_benefits # Retirement Pay (Railroad Retirement)
+    - survivor_benefits # Pension and retirement pay to survivors
+    - veterans_benefits
+    - workers_compensation
+    - disability_benefits # Income maintenance insurance, including disability insurance
+    - child_support_received # Child support/direct
+    - alimony_income
+    - financial_assistance # Cash contributions
+    - interest_income # Interest, dividends and royalties
+    - ordinary_dividend_income
+    - capital_gains # Capital gains (other)
+    - rental_income # Rent payments; royalties are included in rental income
+    - farm_rent_income
+    - partnership_s_corp_income
+    - miscellaneous_income
+    - illicit_income
+    # Not listed: farm operations income is earned self-employment income
+    # (Section 7.7); retirement account distributions draw down IRA, Keogh and
+    # deferred compensation balances that Section 6.6 treats as resources; and
+    # discharged debt is not money received.
+metadata:
+  unit: list
+  period: month
+  label: South Carolina TANF unearned income sources
+  reference:
+    - title: "SC DSS TANF Policy Manual (Volume 67), Sections 7.1 and 7.7 #page 102,107-120"
+      href: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=102
