@@ -543,18 +543,20 @@
 # 2026 (Rev. Proc. 2025-32, sec. 4.14: $1,350, $450, $16,100 and $2,050):
 # https://www.irs.gov/pub/irs-drop/rp-25-32.pdf#page=18
 # Section 6012(f) ends with 2025, so section 6012(a)(1) applies. Its unearned
-# income and gross income tests for these filers say "in excess of", as Chart
-# B does. Its earned income threshold comes from (a)(1)(A)(i), which says
-# "less than", and the 2026 instructions are not yet published, so the earned
-# income cases stay a dollar away from $16,100.
+# income and gross income tests for these filers, in (a)(1)(C)(i), say "in
+# excess of", as Chart B does. But a filer who meets neither is excused only
+# by (a)(1)(A)(i), whose gross income must be "less than" the basic standard
+# deduction, so on the literal text a return is due at exactly the limited
+# deduction. The 2026 instructions are not yet published, so every 2026 case
+# stays a dollar away from a threshold.
 
-- name: 2026, single dependent with unearned income of $1,350 need not file
+- name: 2026, single dependent with unearned income under $1,350 need not file
   period: 2026
   input:
     filing_status: SINGLE
     age: 19
     claimed_as_dependent_on_another_return: true
-    taxable_interest_income: 1_350
+    taxable_interest_income: 1_349
   output:
     tax_unit_is_required_to_file: false
 
@@ -588,14 +590,14 @@
   output:
     tax_unit_is_required_to_file: true
 
-- name: 2026, single dependent with gross income equal to earned income plus $450 need not file
+- name: 2026, single dependent with gross income under earned income plus $450 need not file
   period: 2026
   input:
     filing_status: SINGLE
     age: 19
     claimed_as_dependent_on_another_return: true
     employment_income: 3_000
-    taxable_interest_income: 450
+    taxable_interest_income: 449
   output:
     tax_unit_is_required_to_file: false
 
@@ -610,13 +612,13 @@
   output:
     tax_unit_is_required_to_file: true
 
-- name: 2026, single dependent aged 65 with unearned income of $3,400 need not file
+- name: 2026, single dependent aged 65 with unearned income under $3,400 need not file
   period: 2026
   input:
     filing_status: SINGLE
     age: 65
     claimed_as_dependent_on_another_return: true
-    taxable_interest_income: 3_400
+    taxable_interest_income: 3_399
   output:
     # $1,350 + $2,050.
     tax_unit_is_required_to_file: false
