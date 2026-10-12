@@ -68,13 +68,16 @@ class tax_unit_is_required_to_file(Variable):
         # additional standard deduction for each spouse aged 65 or older
         # (section 63(f)(1)). Blindness does not raise it, and gross income
         # equal to it requires a return. A married individual filing
-        # separately has no exception.
+        # separately has no exception. The WFTCA contributed reform's bonus
+        # guaranteed deduction is an increase to the basic standard deduction
+        # (zero unless that reform is on).
         aged_count = tax_unit("aged_head", period).astype(int) + tax_unit(
             "aged_spouse", period
         ).astype(int)
         basic_threshold = (
             exemption_amount * tax_unit("head_spouse_count", period)
             + tax_unit("basic_standard_deduction", period)
+            + tax_unit("bonus_guaranteed_deduction", period)
             + aged_count * p.deductions.standard.aged_or_blind.amount[filing_status]
         )
         income_at_least_basic_threshold = (gross_income > 0) & (

@@ -29,29 +29,32 @@ of $0, $1, and a dollar under, at and over each rule's threshold:
 Hypothesis (single, head of household, surviving spouse, separate and joint;
 any mix of age, blindness, claimability, wages, interest, dividends, and
 self-employment profit or loss; gross income often at a threshold) and runs
-each batch, with two variants of every unit, as one simulation. It runs the
-batch again under a reform that keeps 6012(f) in force for 2026:
+each batch, with two variants of every unit, as one simulation:
 
 3. Differentials 1 and 2 on every drawn unit nobody can claim.
 4. Blindness: for a unit nobody can claim, it never changes the 2026 result.
    For every other unit and year, more blindness never adds a requirement.
 5. Age: reaching 65 never adds a requirement, for any unit or year.
-6. The switch: with 6012(f) kept for 2026, a unit nobody can claim gets
-   6012(f) with the 2026 amounts, and the 2025 result is unchanged.
-7. Claimable units are untouched: for a unit whose head or spouse can be
-   claimed, the 2026 result is the same with and without the switch. Their
-   rule is decision d1395.
-8. Inclusion: in 2026, 6012(a)(1) never excuses a unit nobody can claim that
-   6012(f) would require to file.
+6. Inclusion: in 2026, the model never excuses a unit nobody can claim that
+   6012(f), with the 2026 amounts, would require to file.
+7. Claimable units keep one rule in both years: for a unit whose head or
+   spouse can be claimed, a return is required exactly when gross income is
+   over the unit's standard deduction (any gross income on a separate
+   return), or a claimable adult's interest and dividends are over the
+   section 63(c)(5)(A) amount ($1,350 in 2025 and 2026) plus that adult's
+   own additions for age and blindness. How 6012(a)(1) applies to these
+   filers is decision d1395, so the change leaves them alone.
+
+The tests use the default tax-benefit system only. A reform that kept 6012(f)
+for 2026 would compare the two rules directly, but it costs a second
+parameter tree (about 0.7 GB) in the CI group, so properties 6 and 7 compare
+the model with references instead.
 """
 
 import numpy as np
-import pytest
 from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
-from policyengine_core.reforms import Reform
 
-from policyengine_us import CountryTaxBenefitSystem
 from policyengine_us.tests.core.test_filing_requirement_dependent_invariants import (  # noqa: E501
     simulate,
 )
@@ -93,25 +96,11 @@ GROSS_INCOME_ITEMS = [
     "taxable_interest_income",
     "qualified_dividend_income",
 ]
+# Section 63(c)(5)(A) amount: Rev. Proc. 2024-40, sec. 2.15(2), and Rev. Proc.
+# 2025-32, sec. 4.14(2).
+DEPENDENT_AMOUNT = {2025: 1_350, 2026: 1_350}
+UNEARNED_ITEMS = ["taxable_interest_income", "qualified_dividend_income"]
 VARIANTS = ["base", "blindness_flipped", "aged"]
-KEEP_6012_F_IN_2026 = {
-    "gov.irs.income.filing_requirement.standard_deduction_rule.applies": {
-        "2026-01-01.2100-12-31": True
-    }
-}
-
-
-@pytest.fixture(scope="module")
-def system_keeping_6012_f():
-    """The tax-benefit system with 6012(f) kept for 2026, built once.
-
-    Passing the reform to each Simulation would rebuild the system for every
-    Hypothesis example. The simulations only read it, as they read the
-    default system, and pytest drops it after this module.
-    """
-    return CountryTaxBenefitSystem(
-        reform=Reform.from_dict(KEEP_6012_F_IN_2026, country_id="us")
-    )
 
 
 def gross_income(unit):
@@ -143,6 +132,18 @@ def reference(unit, year, rule):
     if rule == "6012(a)(1)":
         return income >= limit
     return income > limit
+
+
+def claimable_unearned_test(unit, year):
+    """Whether a claimable adult's interest and dividends are over the
+    section 63(c)(5)(A) amount plus that adult's own additions."""
+    addition = ADDITIONAL[year][unit["filing_status"]]
+    return any(
+        adult["claimed_as_dependent_on_another_return"]
+        and sum(max(0, adult.get(item, 0)) for item in UNEARNED_ITEMS)
+        > DEPENDENT_AMOUNT[year] + addition * ((adult["age"] >= 65) + adult["is_blind"])
+        for adult in unit["adults"]
+    )
 
 
 def rule_in_force(year):
@@ -258,10 +259,8 @@ def units(draw):
     return {"filing_status": status, "adults": adults, "children": []}
 
 
-@st.composite
-def unit_variants(draw):
-    """A drawn tax unit and its variants, in VARIANTS order."""
-    base = draw(units())
+def variants_of(base):
+    """A tax unit and its variants, in VARIANTS order."""
 
     def variant(change):
         copy = {**base, "adults": [dict(adult) for adult in base["adults"]]}
@@ -278,6 +277,31 @@ def unit_variants(draw):
     return [base, variant(flip_blindness), variant(reach_65)]
 
 
+@st.composite
+def unit_variants(draw):
+    return variants_of(draw(units()))
+
+
+# Every example holds a unit nobody can claim, at the 2026 threshold of a blind
+# filer, and a unit whose head can be claimed, over the unearned income test.
+ANCHORS = [
+    variants_of(
+        {
+            "filing_status": "SINGLE",
+            "adults": [adult(40, True, employment_income=16_100)],
+            "children": [],
+        }
+    ),
+    variants_of(
+        {
+            "filing_status": "SINGLE",
+            "adults": [adult(19, False, True, taxable_interest_income=2_000)],
+            "children": [],
+        }
+    ),
+]
+
+
 def blind_count(unit):
     return sum(adult["is_blind"] for adult in unit["adults"])
 
@@ -289,10 +313,10 @@ def blind_count(unit):
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
 )
 @given(drawn=st.lists(unit_variants(), min_size=8, max_size=24))
-def test_filing_requirement_properties(system_keeping_6012_f, drawn):
+def test_filing_requirement_properties(drawn):
+    drawn = ANCHORS + drawn
     flat = [unit for variants in drawn for unit in variants]
-    baseline = simulate(flat)
-    kept = simulate(flat, tax_benefit_system=system_keeping_6012_f)
+    simulation = simulate(flat)
     by_variant = {
         name: [variants[n] for variants in drawn] for n, name in enumerate(VARIANTS)
     }
@@ -308,14 +332,13 @@ def test_filing_requirement_properties(system_keeping_6012_f, drawn):
         ]
     )
 
-    def results(simulation, year):
-        values = simulation.calculate("tax_unit_is_required_to_file", year)
+    def results(variable, year):
+        values = simulation.calculate(variable, year)
         columns = np.asarray(values).reshape(-1, len(VARIANTS)).T
         return dict(zip(VARIANTS, columns))
 
     for year in YEARS:
-        required = results(baseline, year)
-        required_kept = results(kept, year)
+        required = results("tax_unit_is_required_to_file", year)
         base = required["base"]
         # Property 3.
         expected = np.array(
@@ -346,27 +369,28 @@ def test_filing_requirement_properties(system_keeping_6012_f, drawn):
             f"{year}: reaching 65 added a requirement"
         )
         # Property 6.
-        kept_base = required_kept["base"]
         if year >= 2026:
-            expected_f = np.array(
+            required_by_f = np.array(
                 [reference(unit, year, "6012(f)") for unit in by_variant["base"]]
             )
-            np.testing.assert_array_equal(
-                kept_base[unclaimable],
-                expected_f[unclaimable],
-                err_msg=f"{year}: the switch did not restore 6012(f)",
+            assert not (required_by_f & ~base)[unclaimable].any(), (
+                f"{year}: excused a unit 6012(f) requires"
             )
-            # Property 7.
-            np.testing.assert_array_equal(
-                kept_base[~unclaimable],
-                base[~unclaimable],
-                err_msg=f"{year}: the rule changed for a claimable unit",
-            )
-            # Property 8.
-            assert not (kept_base & ~base)[unclaimable].any(), (
-                f"{year}: 6012(a)(1) excused a unit 6012(f) requires"
-            )
-        else:
-            np.testing.assert_array_equal(
-                kept_base, base, err_msg=f"{year}: the 2026 reform changed {year}"
-            )
+        # Property 7.
+        standard_deduction = results("standard_deduction", year)["base"]
+        expected_claimable = np.array(
+            [
+                (
+                    gross_income(unit) > 0
+                    if unit["filing_status"] == "SEPARATE"
+                    else gross_income(unit) > deduction
+                )
+                or claimable_unearned_test(unit, year)
+                for unit, deduction in zip(by_variant["base"], standard_deduction)
+            ]
+        )
+        np.testing.assert_array_equal(
+            base[~unclaimable],
+            expected_claimable[~unclaimable],
+            err_msg=f"{year}: the rule for claimable units changed",
+        )
