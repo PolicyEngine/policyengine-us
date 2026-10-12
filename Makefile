@@ -38,7 +38,11 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 #   cached-arrays (403 s): test_formulas_do_not_write_into_cached_arrays.
 #   heavy-a (350 s): md_poverty_line_credit_invariants (134 s),
 #     ald_determinism (94 s), dependent_net_investment_income_invariants
-#     (64 s), ssi_state_supplement_medicaid_dependency (59 s).
+#     (64 s), ssi_state_supplement_medicaid_dependency (59 s); since then
+#     capital_gains_mtr_measurement (246 s in core in run 38056548883,
+#     before its fixed cases moved to YAML), placed here because heavy-a
+#     had the lowest time and peak memory of the groups in that run (357 s,
+#     5.4 GB; core 838 s and 7.1 GB with it).
 #   heavy-b (345 s): marginal_tax_rate_coverage (124 s),
 #     multi_year_simulation (88 s), behavioral_response_measurements (84 s),
 #     dependent_losses_agi_invariants (49 s).
@@ -48,7 +52,8 @@ REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_array
 REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
 	$(TESTS)/core/test_ald_determinism.py \
 	$(TESTS)/core/test_dependent_net_investment_income_invariants.py \
-	$(TESTS)/core/test_ssi_state_supplement_medicaid_dependency.py
+	$(TESTS)/core/test_ssi_state_supplement_medicaid_dependency.py \
+	$(TESTS)/core/test_capital_gains_mtr_measurement.py
 REST_HEAVY_B_TESTS := $(TESTS)/core/test_marginal_tax_rate_coverage.py \
 	$(TESTS)/core/test_multi_year_simulation.py \
 	$(TESTS)/core/test_behavioral_response_measurements.py \
