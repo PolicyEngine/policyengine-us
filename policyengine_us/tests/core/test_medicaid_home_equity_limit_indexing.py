@@ -15,8 +15,11 @@ from types import SimpleNamespace
 import pytest
 
 from policyengine_us import Simulation
+from policyengine_core.parameters import ParameterNode
+
 from policyengine_us.parameters.uprating_extensions import (
     adjust_home_equity_limit_for_inflation,
+    extend_medicaid_home_equity_limits,
     get_cms_cpi_u_percentage_increase,
 )
 from policyengine_us.system import system
@@ -128,3 +131,58 @@ def test_chassis_screen_reads_each_years_agricultural_limit():
         "is_medicaid_long_term_care_home_equity_eligible", 2029
     )
     assert eligible.tolist() == [True, True, False]
+
+
+@pytest.mark.parametrize("agricultural_published_through", [2026, 2027])
+def test_non_agricultural_fill_follows_its_own_coverage(
+    agricultural_published_through,
+):
+    # Publishing the 2027 agricultural limit before the non-agricultural one
+    # must not leave the non-agricultural 2027 limit at its 2026 value.
+    agricultural = {"2025-01-01": 1_097_000, "2026-01-01": 1_130_000}
+    if agricultural_published_through == 2027:
+        agricultural["2027-01-01"] = 1_164_000
+    non_agricultural = {
+        "2025-01-01": 1_097_000,
+        "2026-01-01": 1_130_000,
+        "2028-01-01": 1_000_000,
+    }
+    septembers = {
+        f"{year}-09-01": 100 * 1.03 ** (year - 2024) for year in range(2024, 2031)
+    }
+    parameters = ParameterNode(
+        data={
+            "gov": {
+                "hhs": {
+                    "medicaid": {
+                        "eligibility": {
+                            "long_term_care": {
+                                "home_equity": {
+                                    "agricultural_limit": {"values": agricultural},
+                                    "limit": {"values": non_agricultural},
+                                }
+                            }
+                        }
+                    }
+                },
+                "bls": {
+                    "cpi": {
+                        "cpi_u_nsa_september": {"values": septembers},
+                        "cpi_u": {"values": septembers},
+                    }
+                },
+            }
+        }
+    )
+    extend_medicaid_home_equity_limits(parameters, end_year=2030)
+    home_equity = parameters.gov.hhs.medicaid.eligibility.long_term_care.home_equity
+    assert home_equity.limit("2027-01-01") == home_equity.agricultural_limit(
+        "2027-01-01"
+    )
+    assert home_equity.limit("2027-01-01") > 1_130_000
+    assert home_equity.limit("2028-01-01") == 1_000_000
+    assert home_equity.agricultural_limit(
+        "2028-01-01"
+    ) == adjust_home_equity_limit_for_inflation(
+        home_equity.agricultural_limit("2027-01-01"), 3.0
+    )

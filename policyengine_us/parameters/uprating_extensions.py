@@ -661,7 +661,7 @@ def extend_medicaid_home_equity_limits(
         int(value.instant_str[:4]) for value in non_agricultural.values_list
     }
     for year in range(
-        first_projected_year, HOME_EQUITY_NON_AGRICULTURAL_CAP_START_YEAR
+        min(encoded_years) + 1, HOME_EQUITY_NON_AGRICULTURAL_CAP_START_YEAR
     ):
         if year not in encoded_years:
             non_agricultural.update(
