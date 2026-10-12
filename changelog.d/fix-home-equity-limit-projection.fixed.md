@@ -1,0 +1,1 @@
+Index the Medicaid long-term care agricultural home equity limit each January 1 instead of each February 1, drop its unpublished 2027 and 2028 values, label the 2027 non-agricultural limit as a CPI-U projection, and correct the CMS bulletin citations.
