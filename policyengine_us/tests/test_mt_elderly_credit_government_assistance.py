@@ -263,9 +263,7 @@ def test_worked_example():
     assert result["gross_household_income"][:, 0] == pytest.approx(
         [27_800, 27_800, 27_800, 35_800], abs=TOLERANCE
     )
-    assert result["credit"][:, 0] == pytest.approx(
-        [740, 740, 740, 136], abs=TOLERANCE
-    )
+    assert result["credit"][:, 0] == pytest.approx([740, 740, 740, 136], abs=TOLERANCE)
     assert_properties([case])
 
 
