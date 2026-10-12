@@ -37,7 +37,8 @@ class nc_mortgage_and_property_tax_limitation(Variable):
             person.marital_unit.sum(separate_head) == 2
         )
         # Each spouse's amount before limitation (Schedule A line 3), on the
-        # head of their own return.
+        # head of their own return. Line 3 also computes federal amounts for
+        # an other-state spouse, whose payments count toward the shared cap.
         before_limitation = tax_unit(
             "nc_mortgage_and_property_tax_before_limitation", period
         )

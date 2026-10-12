@@ -368,8 +368,8 @@
         members: [person1, person2]
         state_code: NC
   output:
-    # Both share the default marital unit, and married people filing
-    # separately must both file separately, so the two are spouses.
+    # Both separate heads share a default two-person marital unit,
+    # which the model uses to identify the two as spouses.
     nc_mortgage_and_property_tax_limitation: [10_000, 10_000]
 
 - name: A separate filer does not share the limitation with an unrelated single filer
@@ -457,3 +457,68 @@
   output:
     # $40,000 combined: $20,000 x 30/40 and $20,000 x 10/40.
     nc_mortgage_and_property_tax_limitation: [15_000, 5_000]
+
+- name: A considered-unmarried head-of-household spouse does not share the cap with a separate filer
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+        is_tax_unit_head: true
+      spouse2:
+        age: 45
+        is_tax_unit_head: true
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: HEAD_OF_HOUSEHOLD
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # The considered-unmarried HOH filer is outside the spouses' shared
+    # cap: each has $20,000, and min($15,000, $20,000) is $15,000.
+    nc_mortgage_and_property_tax_limitation: [20_000, 20_000]
+    nc_mortgage_and_property_tax_deduction: [15_000, 15_000]
+
+- name: Separate returns with no tax-unit heads fall back to the per-return cap
+  period: 2024
+  input:
+    people:
+      spouse1:
+        age: 45
+        is_tax_unit_head: false
+      spouse2:
+        age: 45
+        is_tax_unit_head: false
+    marital_units:
+      couple:
+        members: [spouse1, spouse2]
+    tax_units:
+      tax_unit1:
+        members: [spouse1]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+      tax_unit2:
+        members: [spouse2]
+        filing_status: SEPARATE
+        nc_mortgage_and_property_tax_before_limitation: 15_000
+    households:
+      household:
+        members: [spouse1, spouse2]
+        state_code: NC
+  output:
+    # Without two separate heads the spouse guard is false: each return
+    # keeps $20,000, and min($15,000, $20,000) is $15,000. These invalid filer
+    # roles are outside the property tests' valid-head shared-cap domain.
+    nc_mortgage_and_property_tax_limitation: [20_000, 20_000]
+    nc_mortgage_and_property_tax_deduction: [15_000, 15_000]

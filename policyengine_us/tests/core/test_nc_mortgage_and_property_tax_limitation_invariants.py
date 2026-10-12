@@ -7,19 +7,21 @@ paid by each spouse", or, "for joint obligations paid from joint accounts",
 "based on the income reported by each spouse". Form D-400 Schedule A applies
 this as line 4 (the limitation) and line 5 (the smaller of line 3 and line 4).
 
-Spouses filing separately are two tax units linked by a marital unit, so
-YAML's single-situation cases cannot cover what this file checks: many mixed
-returns in one vectorized simulation (separate couples with and without a
-joint account, joint returns, single filers, a lone separate filer, and a
-separate return with a dependent), the same returns with the spouses listed
-in the other order, and the results under higher payments. Hypothesis draws
-batches, and a seeded population of 120 returns adds breadth. Line 3 and AGI
-are inputs, so no federal calculation runs. For every return:
+Generated situations use nonnegative line 3, valid tax-unit heads, explicit
+marital units, and NC households. They include separate couples with and
+without a joint account, joint returns, single filers, a lone separate filer,
+and a separate return with a dependent. YAML can represent mixed vectorized
+populations; Python adds randomized generation, shrinking, and dynamic
+comparisons after swapping spouse labels or raising payments. Hypothesis
+draws six batches of 5 to 25 records, choosing 2024 or 2026 for each; a seeded
+population of 120 records runs in both years. Line 3 and AGI are inputs, so
+these tests do not cover the federal line-3 calculation. Within this domain:
 
 1. Differential: lines 4 and 5 equal an independent restatement of the
    statute, with the $20,000 taken from the statute rather than the
-   parameter files. Separate filers are spouses only when an explicit marital
-   unit pairs them; the paid share is each spouse's line 3 over the couple's;
+   parameter files. In these fixtures, two separate heads in an explicit
+   two-person marital unit are spouses. The paid share is each spouse's line 3
+   over the couple's total;
    the joint-account share is each spouse's federal AGI, not below zero, over
    the couple's, or one half when neither spouse has any.
 2. Bounds: 0 <= line 5 <= line 3, and a couple's two lines 5 never exceed
