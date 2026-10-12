@@ -1,3 +1,50 @@
+## [2.41.0] - 2026-10-12
+
+### Added
+
+- Add semi-elasticity and net-of-tax-elasticity forms for the capital gains realization response, selected by setting `gov.simulation.capital_gains_responses.semi_elasticity` or `net_of_tax_elasticity`. The semi-elasticity form is defined at a 0% baseline rate; in a single-rate model with a semi-elasticity above 1 it puts the revenue-maximizing rate at 1 / semi-elasticity, so JCT's 1990 coefficient of 3.51 gives its published 28.5%. The new forms reject parameters that are negative, too large or not finite. The existing log-rate `elasticity` form is unchanged.
+- Add North Carolina's itemized deduction for repaying income received under a claim of right (G.S. 105-153.5(a)(2)d), with a new claim_of_right_repayment input.
+
+### Changed
+
+- Isolate memory-heavy Rest Python tests in sequential groups on the existing CI runner.
+
+### Fixed
+
+- Leave tax unit dependents' income and deductions out of Alabama adjusted gross income; dependents report them on their own Alabama returns.
+- Pay Alabama's $1,000 dependent exemption at AGI of exactly $20,000 (2021 and before) or $50,000 (2022 on), and $500 at exactly $100,000, as Ala. Code 40-18-19(a)(9) provides.
+- The EITC investment income test now includes farm rental income and losses in the passive basket, and leaves out passive partnership income or loss that is also earned income (26 U.S.C. 32(i)(2)(E)), entered through the new eitc_passive_income_also_in_earned_income input.
+- Apply the full Montana elderly homeowner/renter credit multiplier when permitted adjustments make household income negative.
+- Limit the Montana elderly homeowner/renter credit to one claimant per household (MCA 15-30-2341(1)): when several tax units in a household qualify, only the one with the largest credit is paid.
+- Montana's child and dependent care expense deduction and the charitable deduction used to test federal itemization now divide a couple's amount between spouses filing separately on the same form with the itemized-deduction spouse allocation rate parameter, as the actual itemized deduction already does, rather than a hard-coded half.
+- Report Montana's state adjusted gross income (taxsim_state_agi) as the Montana AGI of the filing path used through 2023, pooled on joint returns, and federal AGI from 2024, instead of 0 from 2024.
+- Halve the married-filing-separately SALT cap after the 2025-2029 phase-down and $10,000 floor rather than before, as 26 USC 164(b)(6)(B) and (7)(B) and the 2025 Schedule A worksheet require, and stop the floor from raising a reformed cap that starts below it.
+- Declare `ky_tuition_tax_credit_eligible` as a boolean with no unit, instead of a dollar amount, so API and app metadata show the Kentucky tuition tax credit eligibility flag as true or false.
+- Count the SPM unit's CalWORKs (tanf) once in Los Angeles County General Relief gross income instead of once per member.
+
+  The public `la_general_relief_gross_income` variable moves from Person to SPMUnit. Callers supplying it must move the input from `people` to `spm_units`; direct calculations now return one value per SPM unit instead of one per person.
+
+  Break the circular housing subsidy and rent contribution calculation reached when corrected income permits housing assistance. Separate the county allowance from the total landlord payment so supplied rent contributions affect both the housing payment and cash grant deduction, preserving main's contribution-override behavior for nonnegative contributions.
+
+  The existing `la_general_relief_housing_subsidy` remains the total landlord payment. The new `la_general_relief_housing_subsidy_amount` is the county allowance before the final landlord-payment cap. Callers supplying an allowance to determine the rent contribution must now supply that variable instead; a supplied total payment no longer determines the contribution.
+
+  Report additional county subsidy actually paid separately as `la_general_relief_housing_subsidy_paid`, equal to the landlord payment less the contribution, floored at zero. This prevents reporting the allowance as expenditure when the final rent cap reduces county aid, without changing existing payment or contribution formulas.
+- Charge the Medicare Part D income-related monthly adjustment amount only to Part D enrollees, through a new takes_up_medicare_part_d_if_eligible input that defaults to true.
+- Value Medicare enrollees at CMS's Medicare spending per enrollee (National Health Expenditure projections, 2013-2034, extended to 2100) instead of a $14,500 estimate held flat from 2025.
+- From 2026, the section 68 limitation on itemized deductions measures taxable income net of the deductions other than itemized deductions, such as the qualified business income deduction, and the qualified business income deduction's taxable income ignores section 68.
+- Set the delayed retirement credit to 1 percent a year, not 3 percent, for people born before 1917 (first eligible before 1979), per 42 U.S.C. 402(w)(6)(A).
+- Restore the federally claimed educator-expense deduction to California adjusted gross income, as required by California's nonconformity rule.
+- Exclude self-employed health insurance premiums already deducted above the line from federal and applicable state itemized medical expenses, cap New Jersey dependent exclusions per payer, preserve North Dakota and New Mexico gross medical costs and caller-supplied subtotals by restoring only exclusions applied by the federal formula, and exclude already-deducted premiums from Missouri's qualifying pool using its required whole-percent overlap ratio. Require policyengine-core>=3.32.27 so deleting and recalculating a supplied medical subtotal also preserves correct North Dakota and New Mexico results.
+- Apply the 2021 $10,500 ($5,250 for a separate return) cap on excluded employer dependent care benefits under IRC 129(a)(2)(D). California, Hawaii and Alabama's 2021 recompute keep the $5,000 ($2,500) cap, California's credit ceiling includes net expenses from federal Form 2441 line 31, and Virginia's and Idaho's 2021 dependent care deductions use the ARPA $8,000 ($16,000) limit.
+- Count Form 4797 gains and losses on Massachusetts Schedule D (Part C) instead of Part B.
+- Base Missouri's capital gains subtraction on the filers' gains included in federal AGI: exclude dependents and supplied tax-unit aggregates, include capital gain distributions and directly supplied person gains, and allocate only to filers with positive gains.
+- Count Form 2555 line 43, the gross section 911 exclusion, toward the federal filing threshold under 26 U.S.C. 6012(c), instead of the Foreign Earned Income Tax Worksheet line 2c amount, and share one Form 2555 leaf input check across the formulas that choose between leaf and legacy inputs.
+
+### Removed
+
+- Removed the deprecated first_home_mortgage_interest and second_home_mortgage_interest inputs; the person-level home_mortgage_interest input is now the only mortgage-interest input, while the per-mortgage balance and origination-year inputs are unchanged. API callers that pass either removed input now receive an unknown-variable error and should supply home_mortgage_interest on the filer(s) instead. Datasets that still carry the removed columns load with policyengine-core's unknown-column warning, and any tax unit whose interest appeared only in those columns now computes zero mortgage interest; the certified default dataset has no such tax units.
+
+
 ## [2.40.1] - 2026-10-12
 
 ### Changed
