@@ -1,3 +1,19 @@
+## [2.40.0] - 2026-10-12
+
+### Added
+
+- Added gov.simulation.medicare_irmaa_uses_current_year_income, which sets Medicare Part B and Part D IRMAA from the benefit year's own MAGI (medicare_irmaa_magi, medicare_irmaa_tax_year_magi) for marginal tax rate and behavioral response analysis.
+
+### Changed
+
+- Uprate health savings account payroll contributions by the 26 U.S.C. 223(b)(2) family contribution limit, now encoded for 2004–2027 and projected from the statute under 223(g), instead of CMS per-capita out-of-pocket health spending.
+
+### Fixed
+
+- Medicare IRMAA no longer drops to zero when the year two years before the benefit year precedes every input (single-year datasets in their first two years, and households entered for one year): the earliest input year's MAGI stands in, deflated to that year by per-capita CBO AGI. For a household entered for one year this imputes the lookback income from that year's income, so its IRMAA now moves with that income.
+- Add the 2015-2020 Medicare Part A premiums and the 2015-2023 and 2026 Part A inpatient hospital deductibles, which had used later years' amounts.
+
+
 ## [2.39.1] - 2026-10-11
 
 ### Fixed
