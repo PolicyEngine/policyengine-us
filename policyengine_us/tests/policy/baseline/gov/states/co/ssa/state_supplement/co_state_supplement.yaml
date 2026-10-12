@@ -480,10 +480,10 @@
     co_state_supplement: 0
 
 - name: Case 28, a single SSI recipient in another person's household.
-  # SSI pays two-thirds of the $994 rate, 662.67/month (20 CFR 416.1131).
-  # With no countable income, the grant is 994 - 662.67 = 331.33/month, or
-  # 3,976/year. SSA's Colorado tables describe the supplement as increased to
-  # offset the reduced federal payment.
+  # SSI counts one-third of the $994 rate, 331.33, as income and pays 662.67
+  # (20 CFR 416.1131). 3.520.79(B)(6) charges a matching ISM of 331.33,
+  # counted as unearned income less the $20 disregard (3.549(A)(2)): 311.33.
+  # Grant 994 - 662.67 - 311.33 = 20/month, or 240/year.
   absolute_error_margin: 0.1
   period: 2026
   input:
@@ -501,7 +501,9 @@
         state_code: CO
   output:
     ssi: 7_952
-    co_state_supplement: 3_976
+    co_ssa_in_kind_support_and_maintenance: 3_976
+    co_state_supplement_countable_income: 3_736
+    co_state_supplement: 240
 
 - name: Case 29, a client whose working spouse is on Medicaid.
   # The client has no income; the spouse is not disabled, earns $1,500/month
@@ -630,3 +632,138 @@
         state_code: CO
   output:
     co_state_supplement: 0
+
+- name: Case 33, in another person's household with other unearned income.
+  # $100/month of SSDI: SSI 662.67 - (100 - 20) = 582.67. Colorado counts
+  # 100 + 331.33 - 20 = 411.33, so total countable income is
+  # 582.67 + 411.33 = 994, the grant standard: not eligible (3.520.781(A)).
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        social_security_disability: 1_200
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 6_992
+    co_state_supplement_countable_income: 4_936
+    co_state_supplement: 0
+
+- name: Case 34, an SSI couple in another person's household.
+  # SSI counts one-third of the $1,491 couple rate, 497, and pays 497 to each
+  # spouse. Each spouse matches half the couple's ISM, 248.50, less their $10
+  # share of the disregard: 238.50. Grant 994 - 497 - 238.50 = 258.50/month
+  # (3,102/year) each.
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [5_964, 5_964]
+    co_state_supplement_countable_income: [2_862, 2_862]
+    co_state_supplement: [3_102, 3_102]
+
+- name: Case 35, before 2014 free shelter and food leave no grant.
+  # 2012: SSI pays two-thirds of $698, 465.33. 9 CCR 2503-2 3.250.22,
+  # 3.250.222 count shelter and utilities (36.6%) and food (20.5%) of the
+  # $698 standard, 398.56, less $20: 378.56. 698 - 465.33 - 378.56 < 0.
+  absolute_error_margin: 0.1
+  period: 2012
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 5_584
+    co_ssa_in_kind_support_and_maintenance: 4_782.7
+    co_state_supplement: 0
+
+- name: Case 36, 2014 changes from Colorado's maximum ISM to SSA's in March.
+  # SSI pays two-thirds of $721, 480.67. January and February count the $260
+  # maximum, less $20: grant 721 - 480.67 - 240 = 0.33. From March the
+  # matching ISM is 240.33, less $20: grant 721 - 480.67 - 220.33 = 20.
+  # For the year: 2 x 0.33 + 10 x 20 = 200.67. There is no payment floor
+  # before 2026.
+  absolute_error_margin: 0.1
+  period: 2014
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_state_supplement: 200.67
+
+- name: Case 37, 2025 in another person's household.
+  # SSI pays two-thirds of $967, 644.67; the matching ISM 322.33 less $20 is
+  # 302.33. Grant 967 - 644.67 - 302.33 = 20/month, or 240/year.
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 7_736
+    co_state_supplement: 240

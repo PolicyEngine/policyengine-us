@@ -1,0 +1,372 @@
+- name: Case 1, an SSI recipient in another person's household is charged SSA's one-third reduction.
+  # 9 CCR 2503-5 3.520.79(B)(6), 3.520.71(E): a matching ISM. SSA counts
+  # one-third of the $994 rate as income, 331.33 (20 CFR 416.1131(a)), and
+  # pays 994 - 331.33 = 662.67.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 662.67
+    co_ssa_in_kind_support_and_maintenance: 331.33
+
+- name: Case 2, an SSI recipient with outside shelter support is charged SSA's presumed maximum value.
+  # 994 / 3 + 20 = 351.33 (20 CFR 416.1140), matched under 3.520.79(B)(6).
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_outside_shelter_support: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_ssa_in_kind_support_and_maintenance: 351.33
+
+- name: Case 3, SSA's lower actual value of shelter support is matched.
+  # Shelter support worth $200/month is below the 351.33 presumed maximum
+  # value, so SSA counts 200 and pays 994 - 180 = 814; Colorado matches 200.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_outside_shelter_support: true
+        ssi_shelter_support_value: 2_400
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 814
+    co_ssa_in_kind_support_and_maintenance: 200
+
+- name: Case 4, each member of an SSI couple in another person's household is charged half the couple's reduction.
+  # SSA counts one-third of the $1,491 couple rate, 497, and pays
+  # 994 / 2 = 497 to each spouse; each spouse matches 248.50.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [497, 497]
+    co_ssa_in_kind_support_and_maintenance: [248.5, 248.5]
+
+- name: Case 5, each member of an SSI couple with outside shelter support is charged half the couple's presumed maximum value.
+  # 1,491 / 3 + 20 = 517 for the couple, 258.50 each.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_outside_shelter_support: true
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_outside_shelter_support: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_ssa_in_kind_support_and_maintenance: [258.5, 258.5]
+
+- name: Case 6, a client without SSI who pays no shelter costs is counted the maximum ISM.
+  # Aged 62 and not disabled, so not on SSI. 3.520.79(C)(3): "the current
+  # maximum ISM amount is counted", $351 in 2026 (3.530(B)).
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 62
+        pension_income: 6_000
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 0
+    co_ssa_in_kind_support_and_maintenance: 351
+
+- name: Case 7, a client without SSI receiving shelter support worth less than the maximum.
+  # Shelter support worth $200/month is counted, below the $351 maximum.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 62
+        pension_income: 6_000
+        ssi_receives_outside_shelter_support: true
+        ssi_shelter_support_value: 2_400
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_ssa_in_kind_support_and_maintenance: 200
+
+- name: Case 8, a client without SSI in subsidized housing is not charged ISM.
+  # 3.520.79(B)(2).
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 62
+        pension_income: 6_000
+        ssi_receives_outside_shelter_support: true
+    spm_units:
+      spm_unit:
+        members: [person]
+        receives_housing_assistance: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_ssa_in_kind_support_and_maintenance: 0
+
+- name: Case 9, a client without SSI who owns their home is not charged ISM.
+  # 3.520.79(B)(1).
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 62
+        pension_income: 6_000
+        ssi_receives_outside_shelter_support: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+        tenure_type: OWNED_OUTRIGHT
+  output:
+    co_ssa_in_kind_support_and_maintenance: 0
+
+- name: Case 10, an SSI recipient who owns their home is charged SSA's ISM anyway.
+  # 3.520.79(B)(5)-(6): the exemptions apply "unless" SSA charges an ISM, in
+  # which case the client is charged a matching ISM, 351.33.
+  absolute_error_margin: 0.01
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_outside_shelter_support: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+        tenure_type: OWNED_OUTRIGHT
+  output:
+    co_ssa_in_kind_support_and_maintenance: 351.33
+
+- name: Case 11, a child whom SSI deems from parents is not charged ISM.
+  # A disabled child living with a parent who has no income: SSI deems
+  # instead of counting in-kind support (20 CFR 416.1165), so SSA charges
+  # no ISM and Colorado matches none.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 40
+        own_children_in_household: 1
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_shelter_from_others_in_household: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    ssi: [0, 994]
+    co_ssa_in_kind_support_and_maintenance: [0, 0]
+
+- name: Case 12, no shelter support, no ISM.
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_ssa_in_kind_support_and_maintenance: 0
+
+- name: Case 13, before the matching rule, January 2014 counts Colorado's maximum.
+  # 9 CCR 2503-2 3.250.22 caps ISM at the shelter component, $260 from
+  # January 1, 2014 (9 CCR 2503-4 3.460.45); the client pays no shelter
+  # costs, so the full $260 is counted.
+  period: 2014-01
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_ssa_in_kind_support_and_maintenance: 260
+
+- name: Case 14, the matching rule takes effect in March 2014.
+  # January and February 2014 count Colorado's $260 maximum (Case 13). From
+  # March, 3.520.79(D) (effective March 2, 2014) matches SSA's one-third
+  # reduction, one-third of the $721 rate, 240.33/month. For the year:
+  # 2 x 260 + 10 x 240.33 = 2,923.33.
+  absolute_error_margin: 0.1
+  period: 2014
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_ssa_in_kind_support_and_maintenance: 2_923.33
+
+- name: Case 15, before 2014 free shelter and food count their grant standard components.
+  # 3.250.22, 3.250.222 and 3.460.45 (components effective 2007): shelter
+  # and utilities 36.6% and food 20.5% of the $698 standard,
+  # 255.47 + 143.09 = 398.56.
+  absolute_error_margin: 0.01
+  period: 2012-01
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_ssa_in_kind_support_and_maintenance: 398.56
+
+- name: Case 16, before 2014 shelter support alone counts the shelter component.
+  # 36.6% of $698 = 255.47; food is not supplied in full.
+  absolute_error_margin: 0.01
+  period: 2012-01
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_outside_shelter_support: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_ssa_in_kind_support_and_maintenance: 255.47
+
+- name: Case 17, the 2004 components apply before 2007.
+  # Shelter and utilities 37.0% and food 20.5% of the $604 standard:
+  # 223.48 + 123.82 = 347.30.
+  absolute_error_margin: 0.01
+  period: 2005-01
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_ssa_in_kind_support_and_maintenance: 347.3

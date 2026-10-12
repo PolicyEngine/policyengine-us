@@ -1,0 +1,1 @@
+Count Colorado's in-kind support and maintenance (9 CCR 2503-5 3.520.79) in AND-CS income: SSA's one-third reduction for SSI recipients in another person's household from March 2014, Colorado's maximum for clients without SSI, and the pre-2014 shelter and food components.

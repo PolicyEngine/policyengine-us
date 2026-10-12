@@ -1,0 +1,24 @@
+description: Before 2014 Colorado counted up to this share of the Aid to the Needy Disabled-Colorado Supplement grant standard as in-kind support and maintenance for shelter and utilities.
+
+values:
+  # The earliest rule text on the Secretary of State's site is the table
+  # effective January 1, 2004; it is applied from 2002, the first year of the
+  # grant standard. From 2014 the cap is a dollar amount (ism/maximum.yaml).
+  2002-01-01: 0.37
+  2007-01-01: 0.366
+
+metadata:
+  unit: /1
+  period: month
+  label: Colorado AND-CS shelter and utilities component share before 2014
+  reference:
+    - title: 9 CCR 2503-1, Section 3.250.22 (in-kind support and maintenance capped at the shelter and utility component)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-1&ruleVersionId=584#page=95
+    - title: 9 CCR 2503-1, Sections 3.460.43, 3.460.45, AND/AB/SSI-CS components (effective January 1, 2004)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-1&ruleVersionId=584#page=124
+    - title: 9 CCR 2503-1, Sections 3.460.43, 3.460.45, AND/AB/SSI-CS components (emergency rule effective January 1, 2007)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-1&ruleVersionId=2137#page=134
+    - title: 9 CCR 2503-2, Section 3.250.22 (effective September 15, 2012)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-2&ruleVersionId=4793#page=30
+    - title: 9 CCR 2503-4, Sections 3.460.43, 3.460.45 (effective September 15, 2012)
+      href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-4&ruleVersionId=4795#page=13
