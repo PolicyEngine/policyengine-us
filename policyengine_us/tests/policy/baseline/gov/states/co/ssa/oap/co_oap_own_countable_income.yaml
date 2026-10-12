@@ -1,0 +1,196 @@
+- name: Case 1, earnings only, with the whole disregard reaching earnings.
+  # 9 CCR 2503-5 3.533(A)(2)(f): gross unearned income of $0 is under $20, so
+  # the $20 reduces earnings: (500 - 65 - 20) / 2 = 207.50/month, or
+  # 2,490/year. At 62 the client is not SSI-eligible, so SSI counts nothing.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 6_000
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi_countable_income: 0
+    co_oap_own_countable_income: 2_490
+
+- name: Case 2, unearned income less the $20 disregard.
+  # 3.533(A)(2): 500 - 20 = 480/month, or 5,760/year.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        pension_income: 6_000
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: 5_760
+
+- name: Case 3, unearned income under $20 passes the rest of the disregard to earnings.
+  # $10/month of interest and $500/month of earnings. The disregard covers the
+  # $10 of interest (3.533(A)(2)(c)) and the other $10 reduces earnings
+  # (3.533(A)(2)(f)): (500 - 65 - 10) / 2 = 212.50/month, or 2,550/year.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        interest_income: 120
+        employment_income: 6_000
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: 2_550
+
+- name: Case 4, a married client's half of the disregard reaches earnings.
+  # 3.533(A)(2)(c)(1) splits the $20 between the spouses, so the client's
+  # disregard is $10: (500 - 65 - 10) / 2 = 212.50/month. The spouse has no
+  # income.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        employment_income: 6_000
+        is_tax_unit_head: true
+      spouse:
+        age: 62
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: [2_550, 0]
+
+- name: Case 5, a married client's half of the disregard reduces unearned income.
+  # 500 - 10 = 490/month, or 5,880/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        pension_income: 6_000
+        is_tax_unit_head: true
+      spouse:
+        age: 62
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: [5_880, 0]
+
+- name: Case 6, an SSI-only client with earnings gets no unearned disregard.
+  # $300/month of earnings. SSI moves its $20 general exclusion to earnings:
+  # (300 - 20 - 65) / 2 = 107.50, so SSI pays 994 - 107.50 = 886.50.
+  # 3.533(A)(2)(c)(2) gives a client whose only unearned income is SSI no
+  # disregard, so none reaches earnings: (300 - 65) / 2 = 117.50/month, or
+  # 1,410/year.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+        employment_income: 3_600
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 10_638
+    ssi_countable_income: 1_290
+    co_oap_own_countable_income: 1_410
+
+- name: Case 7, SSI brings gross unearned income above $20, so nothing reaches earnings.
+  # $5/month of interest and $200/month of earnings. The disregard covers the
+  # $5 of interest; gross unearned income including SSI is far above $20, so
+  # nothing reaches earnings (3.533(A)(2)(f)): (200 - 65) / 2 = 67.50/month,
+  # or 810/year. SSI moves the unused $15 to earnings:
+  # (200 - 65 - 15) / 2 = 60, or 720/year.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+        interest_income: 60
+        employment_income: 2_400
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi_countable_income: 720
+    co_oap_own_countable_income: 810
+
+- name: Case 8, earnings under the $65 disregard count as nothing.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 600
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: 0
+
+- name: Case 9, an SSI recipient charged ISM by SSA is charged a matching ISM.
+  # In their own household with shelter supplied from outside, SSA counts the
+  # presumed maximum value of 994 / 3 + 20 = 351.33/month and pays
+  # 994 - 331.33 = 662.67. 3.520.79(B)(6) charges the same ISM, which OAP
+  # counts as unearned income less the $20 disregard: 331.33/month, or
+  # 3,976/year. Total countable income 662.67 + 331.33 = 994 leaves a grant
+  # of 38, raised to the $189 floor.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person:
+        age: 70
+        ssi_receives_outside_shelter_support: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 7_952
+    co_oap_own_countable_income: 3_976
+    co_oap: 2_268
+
+- name: Case 10, SSI's ISM is not charged to a client who is not on SSI.
+  # Colorado's own ISM for clients not on SSI (3.520.79(C)) is not modeled.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        ssi_receives_outside_shelter_support: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: 0

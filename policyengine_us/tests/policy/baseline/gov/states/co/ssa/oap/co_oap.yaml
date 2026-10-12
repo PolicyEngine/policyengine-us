@@ -1,35 +1,345 @@
-- name: Countable Income
+- name: Case 1, countable income other than SSI reduces the grant.
+  # 9 CCR 2503-5 3.533(B): 952 x 12 - 1,000 = 10,424.
   period: 2023
   input:
     co_oap_eligible: true
-    ssi_countable_income: 1_000
+    co_oap_countable_income: 1_000
     ssi: 0
   output:
     co_oap: 10_424
 
-- name: Has some SSI
+- name: Case 2, SSI reduces the grant.
+  # 3.533(A)(2)(d) adds SSI back to countable income: 11,424 - 2,000 = 9,424.
   period: 2023
   input:
     co_oap_eligible: true
-    ssi_countable_income: 0
+    co_oap_countable_income: 0
     ssi: 2_000
   output:
     co_oap: 9_424
 
-- name: More total income than grant standard
+- name: Case 3, total countable income above the grant standard.
   period: 2023
   input:
     co_oap_eligible: true
-    ssi_countable_income: 6_000
+    co_oap_countable_income: 6_000
     ssi: 6_000
   output:
     co_oap: 0
 
-- name: 2026 grant standard
+- name: Case 4, 2026 grant standard.
   period: 2026
   input:
     co_oap_eligible: true
-    ssi_countable_income: 0
+    co_oap_countable_income: 0
     ssi: 0
   output:
     co_oap: 12_384
+
+- name: Case 5, the 2026 payment floor raises a grant below $189.
+  # SSI of $994/month: 1,032 - 994 = 38, raised to the $189 payment floor
+  # standard (3.530(C)) by a state supplementary payment (3.532(B), 3.533(B)).
+  # 189 x 12 = 2,268.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 0
+    ssi: 11_928
+  output:
+    co_oap: 2_268
+
+- name: Case 6, a grant at the floor is unchanged.
+  # 1,032 - 843 = 189/month.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 10_116
+    ssi: 0
+  output:
+    co_oap: 2_268
+
+- name: Case 7, a grant above the floor is unchanged.
+  # 1,032 - 800 = 232/month, or 2,784/year.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 9_600
+    ssi: 0
+  output:
+    co_oap: 2_784
+
+- name: Case 8, a grant of a fraction of a dollar is raised to the floor.
+  # 1,032 - 1,031.50 = 0.50/month, raised to 189.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 12_378
+    ssi: 0
+  output:
+    co_oap: 2_268
+
+- name: Case 9, income equal to the grant standard gets no floor.
+  # 3.533: a client whose total countable income equals or exceeds the grant
+  # standard is denied or discontinued (also 3.520.781(A)), so there is no
+  # grant to raise.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 6_000
+    ssi: 6_384
+  output:
+    co_oap: 0
+
+- name: Case 10, income above the grant standard gets no floor.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 13_200
+    ssi: 0
+  output:
+    co_oap: 0
+
+- name: Case 11, there was no payment floor in 2025.
+  # 1,005 - 1,000 = 5/month, or 60/year. Colorado met the pass-along
+  # requirement by total expenditures until the 2026 rule.
+  period: 2025
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 12_000
+    ssi: 0
+  output:
+    co_oap: 60
+
+- name: Case 12, the floor applies month by month.
+  # January-June: 1,032 - 1,000 = 32, raised to 189. July-December: income of
+  # 1,100 exceeds the standard, so nothing is paid. 6 x 189 = 1,134.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    ssi: 0
+    co_oap_countable_income:
+      2026-01: 1_000
+      2026-02: 1_000
+      2026-03: 1_000
+      2026-04: 1_000
+      2026-05: 1_000
+      2026-06: 1_000
+      2026-07: 1_100
+      2026-08: 1_100
+      2026-09: 1_100
+      2026-10: 1_100
+      2026-11: 1_100
+      2026-12: 1_100
+  output:
+    co_oap: 1_134
+
+- name: Case 13, an ineligible person gets nothing.
+  period: 2026
+  input:
+    co_oap_eligible: false
+    co_oap_countable_income: 0
+    ssi: 0
+  output:
+    co_oap: 0
+
+- name: Case 14, a 62-year-old's pension reduces OAP.
+  # Not aged, blind or disabled, so ssi_countable_income is 0. 3.533(A)(2):
+  # 2,500/month of pension less the $20 disregard is 2,480, above the $1,032
+  # standard.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        pension_income: 30_000
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi_countable_income: 0
+    co_oap_countable_income: 29_760
+    co_oap: 0
+
+- name: Case 15, a 62-year-old's earnings reduce OAP.
+  # 3.533(A)(1), (A)(2)(f): 5,000/month of earnings, no unearned income, so
+  # the whole $20 disregard reaches earnings: (5,000 - 65 - 20) / 2 = 2,457.50.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 60_000
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_countable_income: 29_490
+    co_oap: 0
+
+- name: Case 16, a 62-year-old with earnings just under the standard gets the floor.
+  # (2,080 - 65 - 20) / 2 = 997.50; 1,032 - 997.50 = 34.50, raised to 189.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 24_960
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_countable_income: 11_970
+    co_oap: 2_268
+
+- name: Case 17, early Social Security retirement benefits below the floor threshold.
+  # 900/month less the $20 disregard is 880; 1,032 - 880 = 152, raised to 189.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        social_security_retirement: 10_800
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_countable_income: 10_560
+    co_oap: 2_268
+
+- name: Case 18, early Social Security retirement benefits above the floor threshold.
+  # 800 - 20 = 780; 1,032 - 780 = 252/month, or 3,024/year.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        social_security_retirement: 9_600
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 3_024
+
+- name: Case 19, the same benefits in 2025, before the floor.
+  # 1,005 - 880 = 125/month, or 1,500/year.
+  period: 2025
+  input:
+    people:
+      person:
+        age: 62
+        social_security_retirement: 10_800
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 1_500
+
+- name: Case 20, an SSI recipient with no other income gets the floor.
+  # SSI pays 994/month; 1,032 - 994 = 38, raised to 189.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 70
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 11_928
+    co_oap_countable_income: 0
+    co_oap: 2_268
+
+- name: Case 21, each member of an SSI couple is a client.
+  # SSI pays each spouse 745.50/month (half the $1,491 couple rate). Each is
+  # exempt from the other's deeming as an SSI recipient (3.534(C)):
+  # 1,032 - 745.50 = 286.50/month, or 3,438/year, above the floor.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        is_tax_unit_head: true
+      spouse:
+        age: 68
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [8_946, 8_946]
+    co_oap_deemed_income: [0, 0]
+    co_oap: [3_438, 3_438]
+
+- name: Case 22, a working spouse's deemed earnings leave a grant below the floor.
+  # The client is 62 with no income. The spouse, 50, earns $2,000/month and
+  # does not take up Medicaid. 3.534(A): (2,000 - 65) / 2 = 967.50 deemed;
+  # 1,032 - 967.50 = 64.50, raised to 189.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        employment_income: 24_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [11_610, 0]
+    co_oap: [2_268, 0]
+
+- name: Case 23, a spouse's pension above the grant standard is deemed.
+  # Both are 62. The spouse's $1,500/month pension: own countable income
+  # 1,500 - 10 = 1,490 exceeds the OAP limit, so it is deemed (3.534(B)):
+  # 1,500 - 1,032 = 468. The client: 1,032 - 468 = 564/month, or 6,768/year.
+  # The client has no income and is an OAP client within the limit, so
+  # nothing is deemed to the spouse, whose own income makes them ineligible.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 62
+        pension_income: 18_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_oap_deeming_exempt: [true, false]
+    co_oap_deemed_income: [5_616, 0]
+    co_oap: [6_768, 0]

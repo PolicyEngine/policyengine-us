@@ -57,6 +57,46 @@ def test_ssp_snap_medicaid_calculation_order(year, state, benefit):
     assert results[0]["medicaid_enrolled"].tolist() == [True, state == "IN"]
 
 
+def co_oap_couple(year):
+    """An Old Age Pension client whose spouse is a SNAP workfare participant."""
+    people = {
+        "client": {"age": {year: 62}},
+        "spouse": {
+            "age": {year: 40},
+            "employment_income": {year: 5_000},
+            "is_snap_workfare_participant": {year: True},
+        },
+    }
+    unit = {"unit": {"members": list(people)}}
+    return {
+        "people": people,
+        **{
+            entity: unit
+            for entity in ("tax_units", "marital_units", "spm_units", "families")
+        },
+        "households": {"unit": {"members": list(people), "state_code": {year: "CO"}}},
+    }
+
+
+@pytest.mark.parametrize("year", [2027, 2030, 2035])
+def test_co_oap_snap_medicaid_calculation_order(year):
+    """Colorado OAP reads the spouse's Medicaid enrollment to decide whether the
+    spouse's income is deemed (9 CCR 2503-5 3.534(C)), and SNAP counts OAP as
+    income. YAML cannot express repeated calculations in different orders."""
+    variables = ("co_oap", "snap", "medicaid_enrolled")
+    results = []
+    for order in (variables, variables[::-1]):
+        simulation = Simulation(situation=co_oap_couple(year))
+        results.append({name: simulation.calculate(name, year) for name in order})
+        assert not any(
+            "ssi_state_supplement_medicaid" in name for name in simulation.branches
+        )
+    for name in variables:
+        np.testing.assert_array_equal(results[0][name], results[1][name])
+    assert results[0]["co_oap"][0] > 0
+    assert results[0]["snap"][0] > 0
+
+
 @pytest.mark.parametrize(
     "variable",
     ["medicaid_enrolled", "is_medicaid_eligible", "takes_up_medicaid_if_eligible"],
