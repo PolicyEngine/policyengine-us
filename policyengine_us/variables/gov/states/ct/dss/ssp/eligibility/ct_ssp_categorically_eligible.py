@@ -19,7 +19,7 @@ class ct_ssp_categorically_eligible(Variable):
         # who meet state eligibility criteria, but do not meet
         # federal SSI eligibility guidelines."
         # https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/ct.html
-        is_ssi_eligible = person("is_ssi_eligible", period.this_year)
+        is_ssi_eligible = person("is_ssi_eligible", period)
 
         # Per CGS 17b-600: Only blind children are eligible; disabled
         # (non-blind) children are excluded from CT SSP.

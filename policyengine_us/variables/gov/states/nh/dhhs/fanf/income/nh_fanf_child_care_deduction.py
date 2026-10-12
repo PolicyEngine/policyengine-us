@@ -22,18 +22,25 @@ class nh_fanf_child_care_deduction(Variable):
         # Get child age and status
         age = person("age", period.this_year)
         is_child = person("is_child", period)
+        # Per FAM 603.05, the deduction also covers an incapacitated parent
+        # living in the employed person's home, at the age-2+ tier.
+        incapacitated_parent = person("is_tax_unit_head_or_spouse", period) & person(
+            "is_incapable_of_self_care", period.this_year
+        )
 
-        # Calculate max deduction per child based on employment status and age
+        # Calculate max deduction per person based on employment status and age
         full_time_max = p.full_time.calc(age)
         part_time_max = p.part_time.calc(age)
         any_full_time_person = spm_unit.project(any_full_time)
-        max_per_child = where(any_full_time_person, full_time_max, part_time_max)
+        max_per_person = where(any_full_time_person, full_time_max, part_time_max)
 
-        # Only count children
-        max_deduction_per_child = max_per_child * is_child
-        total_max_deduction = spm_unit.sum(max_deduction_per_child)
+        # Count children and incapacitated parents
+        care_recipient = is_child | incapacitated_parent
+        max_deduction_per_person = max_per_person * care_recipient
+        total_max_deduction = spm_unit.sum(max_deduction_per_person)
 
-        # Cap at actual childcare expenses.
+        # Cap at actual care expenses.
         childcare_expenses = spm_unit("childcare_expenses", period)
+        adult_care_expenses = add(spm_unit, period, ["care_expenses"])
 
-        return min_(childcare_expenses, total_max_deduction)
+        return min_(childcare_expenses + adult_care_expenses, total_max_deduction)

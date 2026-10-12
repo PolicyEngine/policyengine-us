@@ -17,7 +17,7 @@ class ma_liheap_utility_category(Variable):
     label = "Massachusetts LIHEAP household's utility category"
     definition_period = YEAR
     defined_for = StateCode.MA
-    reference = "https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
+    reference = "https://web.archive.org/web/20250720165524/https://www.mass.gov/doc/fy-2025-heap-income-eligibility-benefit-chart-may-8-2025/download"
 
     def formula(spm_unit, period, parameters):
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)

@@ -67,7 +67,7 @@
     is_veteran: false
     is_full_time_student: false
     snap: 0
-    medicaid: 0
+    medicaid_enrolled: false
     chip: 0
     tanf: 0
     wic: 0
@@ -83,28 +83,28 @@
         age: 35
         is_veteran: false
         is_medicare_eligible: false
-        medicaid: 0
+        medicaid_enrolled: false
         chip: 0
         wic: 0
       parent2:
         age: 33
         is_veteran: false
         is_medicare_eligible: false
-        medicaid: 0
+        medicaid_enrolled: false
         chip: 0
         wic: 0
       toddler:
         age: 2
         is_veteran: false
         is_medicare_eligible: false
-        medicaid: 0
+        medicaid_enrolled: false
         chip: 0
         wic: 0
       senior:
         age: 70
         is_veteran: false
         is_medicare_eligible: false
-        medicaid: 0
+        medicaid_enrolled: false
         chip: 0
         wic: 0
     spm_units:

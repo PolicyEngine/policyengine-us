@@ -6,17 +6,117 @@
   output:
     is_older_child_for_medicaid: true
 
-- name: Child under 19 but not FPL limit, ineligible in CA
+- name: Child under 19 at the inclusive FPL limit, eligible in CA
   period: 2022
   input:
     age: 18
     medicaid_income_level: 2.66
   output:
-    is_older_child_for_medicaid: false
+    is_older_child_for_medicaid: true
 
 - name: Child over 19, ineligible in CA
   period: 2022
   input:
     age: 19
   output:
+    is_older_child_for_medicaid: false
+
+- name: MO child at 152% FPL, within the 148% base plus 5% disregard, eligible
+  period: 2026
+  input:
+    age: 8
+    medicaid_income_level: 1.52
+    state_code: MO
+  output:
+    is_older_child_for_medicaid: true
+
+# The published monthly ceiling includes income exactly at 153% FPL.
+- name: MO child at exactly 153% FPL, the income maximum, eligible
+  period: 2026
+  input:
+    age: 8
+    medicaid_income_level: 1.53
+    state_code: MO
+  output:
+    is_older_child_for_medicaid: true
+
+- name: MO child at 154% FPL, above the 153% effective standard, ineligible
+  period: 2026
+  input:
+    age: 8
+    medicaid_income_level: 1.54
+    state_code: MO
+  output:
+    is_older_child_for_medicaid: false
+
+# Missouri applies the MHK ages 1-18 limit (148% FPL plus the 5% disregard)
+# as the Appendix A monthly-dollar maximum, rounded up to the next whole
+# dollar: household of 3 in 2026, 27,320 x 1.53 / 12 = 3,483.30 -> $3,484.
+- name: MO children at exactly the Appendix A $3,484 monthly maximum, eligible although the exact ratio is 1.5303
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 41_808
+      person2:
+        age: 8
+      person3:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    is_older_child_for_medicaid: [false, true, true]
+
+- name: MO children $1 above the Appendix A monthly maximum ($3,485), ineligible
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 41_820
+      person2:
+        age: 8
+      person3:
+        age: 12
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    is_older_child_for_medicaid: [false, false, false]
+
+# 42 USC 1396a(l)(1)(D) and 42 CFR 435.118 require both the age test and the
+# income test, so the category is the AND of the _fc and _nfc halves.
+# CA household of 2 in 2026: 21,640 x 2.66 / 12 = 4,796.87 -> $4,797 -> 57,564/yr.
+- name: CA 19-year-old with income at the limit passes the income test but fails the age test, ineligible
+  period: 2026
+  input:
+    state_code: CA
+    age: 19
+    medicaid_household_size: 2
+    medicaid_household_income: 57_564
+  output:
+    is_older_child_for_medicaid_fc: true
+    is_older_child_for_medicaid_nfc: false
+    is_older_child_for_medicaid: false
+
+- name: CA 10-year-old with income one cent monthly above the limit passes the age test but fails the income test, ineligible
+  period: 2026
+  input:
+    state_code: CA
+    age: 10
+    medicaid_household_size: 2
+    medicaid_household_income: 57_564.12
+  output:
+    is_older_child_for_medicaid_fc: false
+    is_older_child_for_medicaid_nfc: true
     is_older_child_for_medicaid: false

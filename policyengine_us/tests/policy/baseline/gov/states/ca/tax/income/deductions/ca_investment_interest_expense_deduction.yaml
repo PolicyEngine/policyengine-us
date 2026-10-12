@@ -1,0 +1,17 @@
+- name: Case 1, net investment income below investment interest.
+  period: 2026
+  input:
+    state_code: CA
+    investment_interest_expense: 10_000
+    investment_expenses: 2_000
+  output:
+    ca_investment_interest_expense_deduction: 8_000
+
+- name: Case 2, investment expenses exceed investment interest.
+  period: 2026
+  input:
+    state_code: CA
+    investment_interest_expense: 10_000
+    investment_expenses: 12_000
+  output:
+    ca_investment_interest_expense_deduction: 0

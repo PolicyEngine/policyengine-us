@@ -1,0 +1,284 @@
+# Tests for Oklahoma UI weekly benefit amount (40 O.S. §2-104(A), §2-102).
+# Formula: WBA = clamp(floor(HQW_taxable / 23), [min=$16, max=annual_cap]).
+# Annual max WBA: 2022=$476, 2023=$493, 2024=$519, 2025=$541, 2026=$649.
+# Min WBA $16 has been the statutory floor since 1980.
+# Reference: 40 O.S. §2-104(A), §2-102; OESC Important Numbers.
+
+- name: Case 1, handbook example - HQW $14,000 in 2024 clamped to max $519.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 14_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # floor($14,000 / 23) = floor($608.69) = $608.
+        # $608 > $519 (2024 max) -> clamped to $519.
+        # Matches OES-339 page 4 worked example.
+        ok_ui_weekly_benefit_rate: 519
+
+- name: Case 2, low HQW lifted to statutory minimum $16.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 200
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # floor($200 / 23) = floor($8.70) = $8.
+        # $8 < $16 -> lifted to $16 minimum.
+        ok_ui_weekly_benefit_rate: 16
+
+- name: Case 3, mid HQW within 2025 range.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # floor($10,000 / 23) = floor($434.78) = $434.
+        # $16 <= $434 <= $541 (2025 max) -> WBA = $434.
+        ok_ui_weekly_benefit_rate: 434
+
+- name: Case 4, mid HQW within 2026 range.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 10_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # floor($10,000 / 23) = $434.
+        # $16 <= $434 <= $649 (2026 max) -> WBA = $434.
+        ok_ui_weekly_benefit_rate: 434
+
+- name: Case 5, high HQW clamped to 2026 maximum.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ok_ui_high_quarter_taxable_wages: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # floor($20,000 / 23) = floor($869.57) = $869.
+        # $869 > $649 (2026 max) -> clamped to $649.
+        ok_ui_weekly_benefit_rate: 649
+
+- name: Case 6, high HQW clamped to 2022 maximum.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        ok_ui_high_quarter_taxable_wages: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # floor($20,000 / 23) = floor($869.57) = $869.
+        # $869 > $476 (2022 max) -> clamped to $476.
+        ok_ui_weekly_benefit_rate: 476
+
+# --- WBA clamp boundaries redistributed from edge_cases.yaml (min $16 floor,
+# annual max ceiling; §2-104(A)). ---
+
+- name: Case 7, WBA below minimum - HQW $367 clamped up to $16 floor.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 367
+        ok_ui_base_period_taxable_wages: 1_500
+        ok_ui_base_period_total_wages: 2_250
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # floor($367 / 23) = floor($15.957) = $15 -> below $16 minimum -> clamped to $16.
+        ok_ui_weekly_benefit_rate: 16
+
+- name: Case 8, WBA exactly at minimum - HQW $368 yields $16.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 368
+        ok_ui_base_period_taxable_wages: 1_500
+        ok_ui_base_period_total_wages: 2_250
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # floor($368 / 23) = floor($16.0) = $16 -> exactly at minimum.
+        ok_ui_weekly_benefit_rate: 16
+
+- name: Case 9, WBA exactly at 2024 maximum - HQW $11,937 yields $519.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 11_937
+        ok_ui_base_period_taxable_wages: 11_937
+        ok_ui_base_period_total_wages: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # 519 * 23 = $11,937 exactly; floor($11,937 / 23) = $519.
+        # 2024 max is $519 -> no clamp needed, exactly at boundary.
+        ok_ui_weekly_benefit_rate: 519
+
+- name: Case 10, WBA still at 2024 max - HQW $11,938 yields $519.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 11_938
+        ok_ui_base_period_taxable_wages: 11_938
+        ok_ui_base_period_total_wages: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # floor($11,938 / 23) = floor($519.043) = $519 -> at 2024 max, no clamp.
+        ok_ui_weekly_benefit_rate: 519
+
+- name: Case 11, WBA clamped down at 2024 max - HQW $11,960 yields $520 raw, clamped to $519.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 11_960
+        ok_ui_base_period_taxable_wages: 11_960
+        ok_ui_base_period_total_wages: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # 520 * 23 = $11,960 exactly; floor($11,960 / 23) = $520.
+        # $520 > $519 (2024 max) -> clamped down to $519.
+        ok_ui_weekly_benefit_rate: 519
+
+- name: Case 12, very high HQW clamped to 2025 max $541.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 100_000
+        ok_ui_base_period_taxable_wages: 100_000
+        ok_ui_base_period_total_wages: 300_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # floor($100,000 / 23) = floor($4,347.83) = $4,347 -> far above $541 (2025 max) -> clamped to $541.
+        ok_ui_weekly_benefit_rate: 541
+
+# --- WBA annual-max clamp seams (item 18b) and negative-HQW floor (item 19). ---
+
+- name: Case 13, very high HQW clamped to 2023 max $493.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # floor($100,000 / 23) = $4,347 -> above $493 (2023 max) -> clamped to $493.
+        ok_ui_weekly_benefit_rate: 493
+
+- name: Case 14, negative HQW lifted to $16 statutory floor.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ok_ui_high_quarter_taxable_wages: -1_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        # floor(-$1,000 / 23) = floor(-$43.48) = -$44; max(-$44, $16) = $16;
+        # min($16, $541) = $16. The $16 min_amount floor absorbs negative HQW.
+        ok_ui_weekly_benefit_rate: 16

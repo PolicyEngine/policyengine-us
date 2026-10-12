@@ -62,6 +62,14 @@
   output:
     ss_quarters_of_coverage: 4
 
+- name: SSTB self-employment income counts for quarters
+  period: 2024
+  input:
+    employment_income: 0
+    sstb_self_employment_income: 6_920
+  output:
+    ss_quarters_of_coverage: 4
+
 - name: Combined employment and self-employment
   period: 2024
   input:
@@ -78,4 +86,10 @@
   output:
     ss_quarters_of_coverage: 4
 
-
+- name: Test with 2026 values
+  period: 2026
+  input:
+    employment_income: 7_560  # 4 * $1,890
+    self_employment_income: 0
+  output:
+    ss_quarters_of_coverage: 4

@@ -150,3 +150,122 @@
     # Tax = $79,900 * 0.0375 + ($181,650 - $79,900) * 0.0475 + ($184,000 - $181,650) * 0.0599
     #     = $2,996.25 + $4,833.125 + $140.765 = $7,970.14
     ri_income_tax: 7_970
+
+# Locks in the fix for #8210 / taxsim #868. Pre-fix the tied-federal-tax
+# fallback in tax_unit_itemizes returned False; ri_cdcc was $150 (computed
+# against standard-deduction federal tax) and ri_income_tax matched the
+# standard-deduction path. Post-fix: itemizes, federal tax is $0 so federal
+# cdcc and ri_cdcc both round to $0, matching TaxAct's ri_cdcc of $0.
+- name: 2025 RI joint with property tax + mortgage itemizes when federal tax tied (taxsim #868)
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 26_190.477
+        real_estate_taxes: 30_000
+        deductible_mortgage_interest: 20_000
+        taxable_interest_income: 939.4469
+        is_tax_unit_head: true
+      person2:
+        age: 40
+        employment_income: 20_000
+        is_tax_unit_spouse: true
+      child1:
+        age: 11
+        is_tax_unit_dependent: true
+      child2:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 3_000
+        premium_tax_credit: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2, child1, child2]
+    households:
+      household:
+        members: [person1, person2, child1, child2]
+        state_code: RI
+  output:
+    tax_unit_itemizes: true
+    ri_cdcc: 0
+    ri_income_tax: -398
+
+# Locks the "no-op for covered years" claim behind PR #9123: for 2021+,
+# refundable_percent = 1, so ri_refundable_eitc == ri_eitc and the swap to
+# ri_refundable_eitc in refundable.yaml leaves 2015+ behavior unchanged. Low
+# earner produces a real federal EITC that matches at 15% (ri_eitc), is fully
+# refundable, and flows through ri_refundable_credits into a negative
+# ri_income_tax. Existing RI integration cases are high-income with ~zero EITC,
+# so this exercises the ri_eitc -> ri_refundable_eitc -> ri_income_tax chain.
+- name: 2023 RI low-earner HOH with 1 child - refundable EITC flows to negative income tax
+  absolute_error_margin: 0.01
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+      child1:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, child1]
+        filing_status: HEAD_OF_HOUSEHOLD
+    spm_units:
+      spm_unit:
+        members: [person1, child1]
+        snap: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, child1]
+        state_code: RI
+  output:
+    # Federal EITC = 3,995; RI match = 15% -> ri_eitc = 599.25.
+    # 2023 refundable_percent = 1, so ri_refundable_eitc == ri_eitc, it flows
+    # through ri_refundable_credits, and with zero pre-credit liability drives
+    # ri_income_tax to -599.25.
+    ri_eitc: 599.25
+    ri_refundable_eitc: 599.25
+    ri_income_tax: -599.25
+
+- name: 2027 RI CTC and high-income surtax apply in the same tax unit
+  absolute_error_margin: 0.01
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+        birth_year: 1990
+        social_security: 20_000
+        taxable_social_security: 10_000
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, child]
+        filing_status: SINGLE
+        adjusted_gross_income: 70_000
+        ri_agi: 0
+        ri_taxable_income: 1_250_000
+    households:
+      household:
+        members: [person1, child]
+        state_code: RI
+  output:
+    ri_ctc: 330
+    ri_high_earner_tax: 2_500
+    ri_social_security_modification: 10_000
+    # Baseline tax uses gov/states/ri/tax/income/rate.yaml's bracket
+    # thresholds, gov.irs.uprating-projected for 2027 from the official 2026
+    # thresholds (84,450 / 192,000): 71,649.70 before credits, + 2,500 surtax,
+    # - 330 CTC = 73,819.70.
+    ri_income_tax: 73_819.70

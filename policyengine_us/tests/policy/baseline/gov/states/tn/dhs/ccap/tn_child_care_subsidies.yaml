@@ -1,0 +1,91 @@
+# tn_child_care_subsidies: SPMUnit, float (USD), YEAR
+# adds the monthly tn_ccap benefit across the year (feeds the federal
+# child_care_subsidies aggregator). Currency output, margin 0.01.
+
+- name: Case 1, eligible family's monthly benefit sums across the year.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    # Monthly tn_ccap = 802.43; annual = 802.43 * 12 = 9_629.20
+    tn_child_care_subsidies: 9_629.20
+    # The federal aggregator picks up the TN entry in
+    # gov/hhs/ccdf/child_care_subsidy_programs.yaml.
+    child_care_subsidies: 9_629.20
+
+- name: Case 2, ineligible family has no annual subsidy.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        is_in_k12_school: false
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_child_care_subsidies: 0
+
+- name: Case 3, Tennessee contributes nothing before modeled rates take effect.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        tn_ccap_provider_type: CHILD_CARE_CENTER
+        tn_ccap_qris_tier: STATE_RATE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TN
+        county_str: DAVIDSON_COUNTY_TN
+  output:
+    tn_child_care_subsidies: 0
+    child_care_subsidies: 0

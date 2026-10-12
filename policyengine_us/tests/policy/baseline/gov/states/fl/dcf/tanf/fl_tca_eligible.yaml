@@ -89,7 +89,7 @@
     # Gross test: 0 < 185% FPL ($3,151) -> Pass
     # Net test: 0 < $241 payment standard -> Pass
 
-- name: Case 5, moderate income eligible.
+- name: Case 5, moderate income small family ineligible ($200 and 1/2 disregard denied).
   period: 2024-01
   input:
     people:
@@ -107,11 +107,13 @@
         members: [person1, person2]
         state_code: FL
   output:
-    fl_tca_eligible: true
-    # Gross test: $500 < 185% FPL -> Pass
-    # Net test: max(max(500-90,0)-200,0)*0.5 = 105 < $241 -> Pass
+    fl_tca_eligible: false
+    # Gross test: $500 < 185% FPL -> Pass.
+    # $200 and 1/2 disregard (2420.0315): income after $90 = $410 >= payment
+    # standard $241, so the disregard is denied; only the $90 is deducted.
+    # Net test: countable $410 > $241 -> Fail. Over-income for TCA.
 
-- name: Case 6, larger family with higher thresholds.
+- name: Case 6, larger family income above payment standard after $90 ineligible.
   period: 2024-01
   input:
     people:
@@ -133,10 +135,39 @@
         members: [person1, person2, person3, person4]
         state_code: FL
   output:
+    fl_tca_eligible: false
+    # Size 4, >$50 shelter payment standard: $364.
+    # Income after $90 = $910 >= $364, so the $200 and 1/2 disregard is denied.
+    # Net test: countable $910 > $364 -> Fail. (Under an unconditional disregard
+    # this case would incorrectly compute countable $355 and appear eligible.)
+
+- name: Case 7 (new), large family low earnings eligible with $200 and 1/2 disregard.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 3_600  # $300/month
+        pre_subsidy_rent: 24_000
+      person2: {age: 12}
+      person3: {age: 10}
+      person4: {age: 8}
+      person5: {age: 6}
+      person6: {age: 4}
+      person7: {age: 2}
+      person8: {age: 1}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: FL
+  output:
     fl_tca_eligible: true
-    # Size 4, >$50 shelter payment standard: $364
-    # Countable income: max(max(1000-90,0)-200,0)*0.5 = 355
-    # Net test: 355 < $364 -> Pass
+    # Size 8, >$50 shelter payment standard: $610.
+    # Income after $90 = $210 < $610, so the $200 and 1/2 disregard applies:
+    # countable = max(max(300-90,0)-200,0)*0.5 = $5 < $610 -> net test passes.
 
 - name: Case 7, adult-only household ineligible.
   period: 2024-01

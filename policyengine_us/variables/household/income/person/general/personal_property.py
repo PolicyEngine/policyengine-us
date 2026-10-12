@@ -6,4 +6,5 @@ class personal_property(Variable):
     entity = Person
     label = "Personal property value"
     unit = USD
+    quantity_type = STOCK
     definition_period = YEAR

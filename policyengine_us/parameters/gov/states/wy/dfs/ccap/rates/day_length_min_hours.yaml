@@ -1,0 +1,14 @@
+description: Wyoming treats child care of at least this many hours per day as a full day under the Child Care, Purchase of Service program.
+# Table I: Part Day is less than 5 hours; Full Day is 5 hours or more.
+values:
+  2024-04-01: 5
+
+metadata:
+  unit: hour
+  period: year
+  label: Wyoming CCAP full-day minimum hours
+  reference:
+    - title: Wyoming DFS Table I - Child Care Sliding Fee Scale, eff. 04/01/25-03/31/26 (single page)
+      href: https://dfs.wyo.gov/services/family-services/child-care/
+    - title: Wyoming DFS Child Care Subsidy Policy Manual §1101.N.1 (PDF p. 2)
+      href: https://dfs.wyo.gov/about/policy-manuals/child-care-subsidy-policy-manual/

@@ -2,6 +2,7 @@ description: New Hampshire provides these weekly standard rates for licensed fam
 # NOTE: Actual effective date is 2024-08-26 per MRS; using 2024-01-01 for microsimulation compatibility.
 
 metadata:
+  propagate_metadata_to_children: true
   period: week
   unit: currency-USD
   label: New Hampshire CCAP licensed family home weekly rates

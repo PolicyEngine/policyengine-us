@@ -1,0 +1,79 @@
+- name: Case 1, ICCP pays the lesser of expenses and maximum monthly benefit, less copay.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        id_iccp_maximum_monthly_benefit: 1_245
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        id_iccp_eligible: true
+        spm_unit_pre_subsidy_childcare_expenses: 20_000
+        id_iccp_copay: 20
+  output:
+    id_iccp: 1_225
+
+- name: Case 2, ICCP payment is capped by actual monthly child care expenses.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+        id_iccp_maximum_monthly_benefit: 1_245
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        id_iccp_eligible: true
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        id_iccp_copay: 20
+  output:
+    id_iccp: 980
+
+- name: Case 3, negative income does not inflate the ICCP benefit; it floors at zero.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_tax_unit_head_or_spouse: true
+        self_employment_income: -60_000_000
+      person2:
+        age: 3  # 36 months -> PRESCHOOL
+        childcare_hours_per_day: 8
+        childcare_days_per_week: 5  # 40 hours/week -> WEEKLY -> FULL_TIME
+        is_tax_unit_head_or_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ID
+        county_str: ADAMS_COUNTY_ID  # CLUSTER_1
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 120  # 10/month
+        spm_unit_fpg: 24_000
+        meets_ccdf_activity_test: true
+  output:
+    id_iccp_eligible: true
+    # self-employment loss floors to 0 -> countable income floors to 0
+    id_iccp_countable_income: 0
+    # full day/week schedule -> FULL_TIME care
+    id_iccp_time_category: [PART_TIME, FULL_TIME]
+    # full-time size-2 lowest band copay = 20
+    id_iccp_copay: 20
+    # CENTER, CLUSTER_1, FULL_TIME, PRESCHOOL max benefit = 600/month
+    id_iccp_maximum_monthly_benefit: [0, 600]
+    # capped expenses = min(10, 600) = 10; max(10 - 20, 0) floors to 0
+    id_iccp: 0

@@ -1,0 +1,37 @@
+- name: Case 1, each eligible tax unit's credit before the one-claimant limit.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        taxable_pension_income: 10_000
+        rent: 4_800
+      person2:
+        age: 70
+        taxable_pension_income: 15_000
+        rent: 7_200
+      person3:
+        age: 40
+        taxable_interest_income: 5_000
+        rent: 3_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: MT
+  output:
+    # 2024 Schedule 2EC. Line 18 = 10_000 + 15_000 + 5_000 = 30_000 for the
+    # whole household; line 20 = 17_400; line 21 = 0.05; line 22 = 870.
+    # person1: line 25 = 720; line 27 = max(720 - 870, 0) = 0.
+    # person2: line 25 = 1_080; line 27 = 1_080 - 870 = 210.
+    # person3 is under 62, so not a claimant (§ 15-30-2338(1)(a)).
+    mt_elderly_homeowner_or_renter_credit_pre_one_claimant: [0, 210, 0]
+    mt_elderly_homeowner_or_renter_credit_selected_claimant: [false, true, false]
+    mt_elderly_homeowner_or_renter_credit: [0, 210, 0]

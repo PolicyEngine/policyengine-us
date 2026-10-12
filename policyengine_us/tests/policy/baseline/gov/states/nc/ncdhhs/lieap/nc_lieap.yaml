@@ -1,0 +1,219 @@
+# Sources: EP-300 Sections 300.08-300.12 and the FY2026 benefit matrix.
+- name: Case 1, regular heating payments at the top of each published lower band.
+  # Annual incomes are 12 times the top of each lower band in the 130% chart
+  # for 1 to 15 eligible members (EP-300 pages 19-20): $848, $1,146, $1,444,
+  # $1,741 and so on to $5,019. The lower band pays $400 for 1 to 3 members
+  # and $500 for 4 or more.
+  period: 2026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    nc_lieap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    nc_lieap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    nc_lieap_income: [10_176, 13_752, 17_328, 20_892, 24_468, 28_044, 31_620, 35_196, 38_772, 42_348, 45_924, 49_500,
+      53_076, 56_652, 60_228]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+  output:
+    nc_lieap: [400, 400, 400, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500]
+- name: Case 2, regular heating payments one dollar into each published upper band.
+  # Annual incomes are 12 times the bottom of each upper band in the same
+  # chart: $849, $1,147, $1,445, $1,742 and so on to $5,020. The upper band
+  # pays $300 for 1 to 3 members and $400 for 4 or more.
+  period: 2026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    nc_lieap_eligible: [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true]
+    nc_lieap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    nc_lieap_income: [10_188, 13_764, 17_340, 20_904, 24_480, 28_056, 31_632, 35_208, 38_784, 42_360, 45_936, 49_512,
+      53_088, 56_664, 60_240]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+  output:
+    nc_lieap: [300, 300, 300, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400]
+# Cases 3 and 4 use the special-population bands for 1 to 11 eligible members
+# in the FY2026 benefit matrix (pages 2-3), which the EP-300 150% chart (page
+# 20) repeats. The sources contain typos that the expected values do not follow:
+# - EP-300 page 20 prints the size-6 lower band as "$0-$2,267". The matrix
+#   (page 3) prints $2,697, which agrees with the upper band starting at $2,698
+#   in both documents.
+# - The matrix (page 3) prints the size-10 upper band as ending at "$8,1444".
+#   The limit is $8,144 (EP-300 page 15).
+# - The matrix (page 2) describes the special population as "aged 65 or
+#   older". The manual says 60 (EP-300 page 10).
+- name: Case 3, elderly heating payments at the top of each published lower band.
+  # Annual incomes are 12 times the top of each lower band: $978, $1,322,
+  # $1,666, $2,009, $2,353, $2,697 and so on to $4,416. The lower band pays
+  # $400 for 1 to 3 members and $500 for 4 or more.
+  period: 2026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC]
+    age: [60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60]
+    nc_lieap_eligible: [true, true, true, true, true, true, true, true, true, true, true]
+    nc_lieap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    nc_lieap_income: [11_736, 15_864, 19_992, 24_108, 28_236, 32_364, 36_492, 40_608, 44_736, 48_864, 52_992]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY]
+  output:
+    nc_lieap: [400, 400, 400, 500, 500, 500, 500, 500, 500, 500, 500]
+- name: Case 4, elderly heating payments one dollar into each published upper band.
+  # Annual incomes are 12 times the bottom of each upper band: $979, $1,323,
+  # $1,667, $2,010, $2,354, $2,698 and so on to $4,417. The upper band pays
+  # $300 for 1 to 3 members and $400 for 4 or more.
+  period: 2026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC, NC, NC]
+    age: [60, 60, 60, 60, 60, 60, 60, 60, 60, 60, 60]
+    nc_lieap_eligible: [true, true, true, true, true, true, true, true, true, true, true]
+    nc_lieap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    nc_lieap_income: [11_748, 15_876, 20_004, 24_120, 28_248, 32_376, 36_504, 40_620, 44_748, 48_876, 53_004]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
+      ELECTRICITY, ELECTRICITY, ELECTRICITY]
+  output:
+    nc_lieap: [300, 300, 300, 400, 400, 400, 400, 400, 400, 400, 400]
+- name: Case 5, coal and wood households get the flat payment at any eligible income.
+  # Fourth household: age 60, 20_352 / 12 = $1,696 a month, above the $1,695
+  # regular limit but under the $1,956 special-population limit (EP-300 pages
+  # 10 and 14), so it is income eligible and receives the flat $300 (page 20).
+  period: 2026
+  input:
+    state_code: [NC, NC, NC, NC]
+    age: [40, 60, 60, 60]
+    nc_lieap_eligible: [true, true, true, true]
+    nc_lieap_household_size: [1, 1, 1, 1]
+    nc_lieap_income: [0, 0, 20_340, 20_352]
+    heating_type: [COAL, WOOD, WOOD, COAL]
+  output:
+    nc_lieap: [300, 300, 300, 300]
+- name: Case 6, other known fuels share the schedule, no heat pays nothing and an unknown fuel is paid only with heat in rent.
+  # One-person households with no income are in the lower band: $400 (EP-300
+  # page 19). An unspecified fuel is the reported value when heat is included
+  # in rent and the tenant does not know the building's fuel; the payment
+  # depends on size and income only (EP-300.12 A, page 18). Without heat in
+  # rent an unspecified fuel gets no payment.
+  period: 2026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC, NC, NC, NC]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40]
+    nc_lieap_eligible: [true, true, true, true, true, true, true, true, true]
+    nc_lieap_income: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [NATURAL_GAS, FUEL_OIL, KEROSENE, PROPANE, SOLAR, OTHER, NONE, UNSPECIFIED, UNSPECIFIED]
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false, true]
+  output:
+    nc_lieap: [400, 400, 400, 400, 400, 400, 0, 0, 400]
+
+- name: Case 7, a DAAS-disabled member gives the special payment bands and the flat coal and wood payment up to 150 percent.
+  # Special lower band ends at $978/month ($979 pays the next band). Coal and
+  # wood pay the flat $300 to every income-eligible household: the special
+  # population's limit is $1,956 (150% FPG), so $1,695 and $1,696 a month both
+  # receive it (EP-300 pages 10, 18 and 20).
+  period: 2026
+  input:
+    state_code: [NC, NC, NC, NC]
+    age: [40, 40, 40, 40]
+    nc_lieap_is_daas_disabled: [true, true, true, true]
+    nc_lieap_eligible: [true, true, true, true]
+    nc_lieap_household_size: [1, 1, 1, 1]
+    nc_lieap_income: [11_736, 11_748, 20_340, 20_352]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, WOOD, COAL]
+  output:
+    nc_lieap: [400, 300, 300, 300]
+
+- name: Case 8, coal and wood households are paid up to their own income limit and not above it.
+  # Eligibility is computed here, so the 130 or 150 percent limit is applied by
+  # nc_lieap_eligible; the payment formula itself does not test income.
+  # One-person households on the 2025 guideline of $15,650.
+  # Special population (age 62, wood): 15_650 x 1.5 = 23_475 a year;
+  #   23_475 / 12 = 1,956.25, rounded to $1,956 a month (EP-300 pages 10, 14).
+  #   23_472 / 12 = $1,956 -> eligible, flat $300 (page 20).
+  #   23_484 / 12 = $1,957 -> ineligible, $0.
+  # Regular (age 40, coal): 15_650 x 1.3 = 20_345 a year;
+  #   20_345 / 12 = 1,695.42, rounded to $1,695 a month.
+  #   20_340 / 12 = $1,695 -> eligible, flat $300.
+  #   20_352 / 12 = $1,696 -> between 130 and 150 percent with no member aged
+  #   60 or DAAS-disabled -> ineligible, $0.
+  period: 2026
+  input:
+    state_code: [NC, NC, NC, NC]
+    age: [62, 62, 40, 40]
+    nc_lieap_income: [23_472, 23_484, 20_340, 20_352]
+    nc_lieap_gross_income_person: [0, 0, 0, 0]
+    tanf: [0, 0, 0, 0]
+    heating_type: [WOOD, WOOD, COAL, COAL]
+    wood_expense: [900, 900, 0, 0]
+    coal_expense: [0, 0, 700, 700]
+  output:
+    nc_lieap_household_size: [1, 1, 1, 1]
+    nc_lieap_income_limit: [23_475, 23_475, 20_345, 20_345]
+    has_heating_expense: [true, true, true, true]
+    nc_lieap_eligible: [true, false, true, false]
+    nc_lieap: [300, 0, 300, 0]
+
+- name: Case 9, FY2027 payment band edges that fall on an exact half dollar round up.
+  # FY2027 uses the 2026 poverty guideline: $15,960 plus $5,680 per added
+  # person. The lower band ends at half of the monthly limit, and a half
+  # dollar rounds up. Published bands: EP-300, Change 04-2026 (October 1,
+  # 2026), pages 20-21; limits on pages 14-15 of that edition.
+  # Households 1 and 2, age 40, one member (130% chart, page 20):
+  #   15_960 x 1.3 = 20_748 a year, or $1,729 a month; half is $864.50,
+  #   published as "$0-$865" for $400 and "$866-$1729" for $300.
+  #   10_380 / 12 = $865 -> $400. 10_392 / 12 = $866 -> $300.
+  # Households 3 and 4, age 60, one member (150% chart, page 20):
+  #   15_960 x 1.5 = 23_940 a year, or $1,995 a month; half is $997.50,
+  #   published as "$0-$998" for $400 and "$999-$1,995" for $300.
+  #   11_976 / 12 = $998 -> $400. 11_988 / 12 = $999 -> $300.
+  # Households 5 and 6, age 60, six eligible members (150% chart, page 21):
+  #   (15_960 + 5 x 5_680) x 1.5 = 66_540 a year, or $5,545 a month; half is
+  #   $2,772.50, published as "$0-$2,773" for $500 and "$2,774-$5545" for $400.
+  #   33_276 / 12 = $2,773 -> $500. 33_288 / 12 = $2,774 -> $400.
+  period: 2027
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC]
+    age: [40, 40, 60, 60, 60, 60]
+    nc_lieap_household_size: [1, 1, 1, 1, 6, 6]
+    nc_lieap_income: [10_380, 10_392, 11_976, 11_988, 33_276, 33_288]
+    nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_500, 1_500, 1_500, 1_500, 1_500, 1_500]
+  output:
+    nc_lieap_income_limit: [20_748, 20_748, 23_940, 23_940, 66_540, 66_540]
+    nc_lieap_eligible: [true, true, true, true, true, true]
+    nc_lieap: [400, 300, 400, 300, 500, 400]
+
+- name: Case 10, households larger than the published payment charts use extrapolated bands.
+  # EP-300 publishes income limits for 1 to 26 eligible members (pages 14-15)
+  # but payment bands only for 1 to 15 members at 130% and 1 to 11 members at
+  # 150% (pages 19-20). The band edges below are extrapolated, not published:
+  # they extend the charts' rule that the lower band ends at half of the
+  # monthly limit and that households of four or more get $500 in the lower
+  # band and $400 above it. 2025 guideline: $15,650 plus $5,500 per added
+  # person.
+  # Households 1 and 2, age 40, 16 eligible members:
+  #   (15_650 + 15 x 5_500) x 1.3 = 127_595 a year; / 12 = 10,632.92, the
+  #   published $10,633 limit (page 14). Half is 5,316.46 -> $5,316.
+  #   63_792 / 12 = $5,316 -> $500. 63_804 / 12 = $5,317 -> $400.
+  # Households 3 and 4, age 60, 12 eligible members:
+  #   (15_650 + 11 x 5_500) x 1.5 = 114_225 a year; / 12 = 9,518.75, the
+  #   published $9,519 limit (page 15). Half is 4,759.38 -> $4,759.
+  #   57_108 / 12 = $4,759 -> $500. 57_120 / 12 = $4,760 -> $400.
+  # Households 5 and 6, age 40, 27 eligible members, one more than the
+  # published limits cover, so the limit is extrapolated too:
+  #   (15_650 + 26 x 5_500) x 1.3 = 206_245 a year; / 12 = 17,187.08 ->
+  #   $17,187. Half is 8,593.54 -> $8,594.
+  #   103_128 / 12 = $8,594 -> $500. 103_140 / 12 = $8,595 -> $400.
+  period: 2026
+  input:
+    state_code: [NC, NC, NC, NC, NC, NC]
+    age: [40, 40, 60, 60, 40, 40]
+    nc_lieap_household_size: [16, 16, 12, 12, 27, 27]
+    nc_lieap_income: [63_792, 63_804, 57_108, 57_120, 103_128, 103_140]
+    nc_lieap_gross_income_person: [0, 0, 0, 0, 0, 0]
+    tanf: [0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [1_500, 1_500, 1_500, 1_500, 1_500, 1_500]
+  output:
+    nc_lieap_income_limit: [127_595, 127_595, 114_225, 114_225, 206_245, 206_245]
+    nc_lieap_eligible: [true, true, true, true, true, true]
+    nc_lieap: [500, 400, 500, 400, 500, 400]

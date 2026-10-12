@@ -1,0 +1,22 @@
+description: Maine sets the standard deduction of a resident individual equal to the federal standard deduction when this is in effect.
+values:
+  # 36 M.R.S. Sec. 5124-C(1-B) and (1-C) set Maine's own basic standard
+  # deduction amounts for tax years 2025 and 2026, so Maine does not simply
+  # take the federal standard deduction in those years.
+  0000-01-01: false
+  # 36 M.R.S. Sec. 5124-C(1-D), enacted by P.L. 2025, c. 650, Pt. K, Sec. 15
+  # (L.D. 2212): "For tax years beginning on or after January 1, 2027, the
+  # standard deduction of a resident individual is equal to the federal
+  # standard deduction, subject to the phase-out under subsection 2."
+  2027-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Maine standard deduction follows the federal standard deduction
+  reference:
+    - title: P.L. 2025, c. 650, Pt. K, Sec. 15 (L.D. 2212) enacting 36 M.R.S. Sec. 5124-C, sub-Sec. 1-D
+      href: https://legislature.maine.gov/legis/bills/getPDF.asp?paper=HP1491&item=37&snum=132#page=138
+    - title: 36 M.R.S. Sec. 5124-C (Standard deduction; resident on or after January 1, 2018)
+      href: https://www.mainelegislature.org/legis/statutes/36/title36sec5124-C.html
+    - title: Maine Revenue Services 2026 Legislative Changes Summary, standard deduction for tax years beginning on or after January 1, 2027 (page 9)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/legischange26.pdf#page=9

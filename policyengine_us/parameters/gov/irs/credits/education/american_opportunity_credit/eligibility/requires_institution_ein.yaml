@@ -1,0 +1,13 @@
+description: The IRS requires the employer identification number of the educational institution to claim the American Opportunity Credit if this is true.
+values:
+  0000-01-01: false
+  2016-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: American Opportunity Credit institution EIN requirement applies
+  reference:
+    - title: 26 U.S. Code § 25A(g)(1)(B)
+      href: https://www.law.cornell.edu/uscode/text/26/25A#g_1_B
+    - title: 26 U.S. Code § 25A effective date notes
+      href: https://www.law.cornell.edu/uscode/text/26/25A#notes

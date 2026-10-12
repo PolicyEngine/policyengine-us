@@ -7,3 +7,4 @@ class phone_cost(Variable):
     label = "Phone cost"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

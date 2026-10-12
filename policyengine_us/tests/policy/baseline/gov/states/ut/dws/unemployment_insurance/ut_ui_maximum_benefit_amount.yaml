@@ -1,0 +1,48 @@
+# Tests for Utah UI maximum benefit amount.
+# Formula (§ 35A-4-401(4)(a)): MBA = WBA * duration_weeks.
+
+- name: Case 1, standard MBA equals WBA times duration weeks.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 25_000
+        ut_ui_high_quarter_wages: 10_400
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # WBA = $395; duration = 17 weeks (see ut_ui_duration_weeks Case 3).
+        # MBA = $395 * 17 = $6,715.
+        ut_ui_weekly_benefit_amount: 395
+        ut_ui_duration_weeks: 17
+        ut_ui_maximum_benefit_amount: 6_715
+
+- name: Case 2, MBA equals zero when WBA equals zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        ut_ui_base_period_wages: 5_000
+        ut_ui_high_quarter_wages: 2_000
+        ut_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    people:
+      person1:
+        # Not monetarily eligible -> WBA = 0 -> duration = 0.
+        # MBA = 0 * 0 = $0.
+        ut_ui_weekly_benefit_amount: 0
+        ut_ui_duration_weeks: 0
+        ut_ui_maximum_benefit_amount: 0

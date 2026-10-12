@@ -34,6 +34,8 @@
   reforms: policyengine_us.reforms.crfb.senior_deduction_extension.senior_deduction_extension
   input:
     gov.contrib.crfb.senior_deduction_extension.applies: true
+    gov.irs.deductions.standard.amount.JOINT: 34_450
+    gov.irs.deductions.standard.aged_or_blind.amount.JOINT: 1_750
     people:
       senior1:
         age: 67
@@ -53,7 +55,7 @@
   output:
     additional_senior_deduction: 12_000
     # Total deductions when not itemizing should include:
-    # standard_deduction: 39_000 (joint filing in 2029, includes additional standard deduction for seniors)
+    # standard_deduction: 37_950 (34_450 basic + 1_750 * 2 aged deduction)
     # qualified_business_income_deduction: 5_000
     # additional_senior_deduction: 12_000 (from extension)
     taxable_income_deductions_if_not_itemizing: 54_950
@@ -90,6 +92,8 @@
   reforms: policyengine_us.reforms.crfb.senior_deduction_extension.senior_deduction_extension
   input:
     gov.contrib.crfb.senior_deduction_extension.applies: true
+    gov.irs.deductions.standard.amount.SINGLE: 19_350
+    gov.irs.deductions.standard.aged_or_blind.amount.SINGLE: 2_450
     people:
       senior:
         age: 70
@@ -107,8 +111,8 @@
   output:
     additional_senior_deduction: 6_000
     # Total deductions should include:
-    # basic_standard_deduction: 19_900 (single filing in 2035)
-    # additional_standard_deduction: 2_500 (single senior aged deduction in 2035)
+    # basic_standard_deduction: 19_350
+    # additional_standard_deduction: 2_450
     # qualified_business_income_deduction: 2_000
     # additional_senior_deduction: 6_000 (from extension)
     taxable_income_deductions_if_not_itemizing: 29_800

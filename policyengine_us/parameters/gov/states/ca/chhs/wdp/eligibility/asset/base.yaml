@@ -1,0 +1,17 @@
+description: California limits assets to this amount for one person under the Medi-Cal 250 Percent Working Disabled Program.
+values:
+  2022-07-01: 130_000
+  2024-01-01: .inf
+  2026-01-01: 130_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: California 250 Percent Working Disabled Program one-person asset limit
+  reference:
+    - title: Working Disabled Program | Department of Health Care Services
+      href: https://www.dhcs.ca.gov/services/working-disabled-program/
+    - title: Asset Elimination for Non-MAGI Medi-Cal
+      href: https://www.dhcs.ca.gov/services/medi-cal/eligibility/Documents/Eligibility-and-Enrollment-Plan-Asset-Test-Changes-for-Non-MAGI-MC.pdf
+    - title: Medi-Cal Program Changes 2026-2028 | Department of Health Care Services
+      href: https://www.dhcs.ca.gov/medi-cal/help/medi-cal-changes/

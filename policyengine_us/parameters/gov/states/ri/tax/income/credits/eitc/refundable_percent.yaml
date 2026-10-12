@@ -1,0 +1,16 @@
+description: Rhode Island provides this share of the earned income tax credit exceeding the tax liability as a refund.
+values:
+  # Taxable years before 2015. Start date unknown. RI's refundable share was historically lower (10%) in the mid-2000s.
+  2014-01-01: 0.15
+  2015-01-01: 1
+metadata:
+  unit: /1
+  period: year
+  label: Rhode Island refundable EITC share
+  reference:
+    - title: R.I. Gen. Laws § 44-30-2.6.(c)(2)(N)(2)
+      href: https://webserver.rilegislature.gov/Statutes/TITLE44/44-30/44-I/44-30-2.6.htm
+    - title: 2014 Form RI-1040 - RI Schedule EIC
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/forms/2014/Income/2014-1040_h.pdf#page=2
+    - title: 2015 Form RI-1040 - RI Schedule EIC
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/forms/2015/Income/2015-1040_hhh.pdf#page=2

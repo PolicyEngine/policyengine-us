@@ -1,0 +1,221 @@
+# Maximum Basic Grant Levels from GRPHB Handbook Letter #7364 (Board approved
+# 12/7/2021). Six eras switch every July 1 (the first era began 6/1/2021), so
+# each January from 2022 through 2027 lands in a distinct era:
+#   AU size | 2022-01 | 2023-01 | 2024-01 | 2025-01 | 2026-01 | 2027-01
+#   1       |     332 |     365 |     402 |     442 |     486 |     504
+#   2       |     445 |     487 |     529 |     572 |     615 |     641
+#   3       |     558 |     612 |     667 |     722 |     777 |     809
+#   4       |     672 |     738 |     804 |     871 |     938 |     977
+#   5+      |     785 |     863 |     941 |   1,020 |   1,099 |   1,145
+- name: Case 1, a one-person assistance unit in the 6/1/21-6/30/22 era.
+  period: 2022-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 1
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_maximum_basic_grant: 332
+
+- name: Case 2, a two-person assistance unit in the 7/1/22-6/30/23 era.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_sbd_general_relief_assistance_unit_size: 2
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_maximum_basic_grant: 487
+
+- name: Case 3, a three-person assistance unit in the 7/1/23-6/30/24 era.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 3
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_maximum_basic_grant: 667
+
+- name: Case 4, a four-person assistance unit in the 7/1/24-6/30/25 era.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 4
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_maximum_basic_grant: 871
+
+- name: Case 5, a five-person assistance unit in the 7/1/25-6/30/26 era.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 5
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_maximum_basic_grant: 1_099
+
+- name: Case 6, a seven-person assistance unit pays the five-or-more rate in the 7/1/26-ongoing era.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 7
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Size is clipped to the table's top row of 5 or more: $1,145.
+    ca_sbd_general_relief_maximum_basic_grant: 1_145
+
+- name: Case 7, a one-person assistance unit in January 2025 draws the 7/1/24 era rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 1
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_maximum_basic_grant: 442
+
+- name: Case 8, the same one-person assistance unit in January 2026 draws the higher 7/1/25 era rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 1
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Era boundary: $442 in 2025-01 (Case 7) versus $486 in 2026-01.
+    ca_sbd_general_relief_maximum_basic_grant: 486
+
+- name: Case 9, a degenerate zero-member assistance unit is clipped up to the one-person rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # clip(0, 1, 5) = 1; eligibility separately requires an eligible adult,
+    # so no unit with zero eligible members ever receives this amount.
+    ca_sbd_general_relief_maximum_basic_grant: 486
+
+# The two cases below pin the July 1 era boundary itself (June versus July
+# of the same year). Year-defined inputs are keyed by year because
+# non-January month periods reject scalar inputs for year variables.
+- name: Case 10, June 2025 is the last month of the 7/1/24 era.
+  period: 2025-06
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 1
+    households:
+      household:
+        members: [person1]
+        in_sbd:
+          2025: true
+  output:
+    # The 7/1/24 schedule still applies through 6/30/25: $442.
+    ca_sbd_general_relief_maximum_basic_grant: 442
+
+- name: Case 11, July 2025 is the first month of the 7/1/25 era.
+  period: 2025-07
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2025: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 1
+    households:
+      household:
+        members: [person1]
+        in_sbd:
+          2025: true
+  output:
+    # The 7/1/25 schedule takes over on the boundary month: $486.
+    ca_sbd_general_relief_maximum_basic_grant: 486

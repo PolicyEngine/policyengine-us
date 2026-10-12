@@ -1,0 +1,58 @@
+- name: NC SCCA flows into the child care subsidies aggregate from 2024, summing across months
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [parent]
+        nc_scca:
+          2024-01: 450
+          2024-02: 250
+    households:
+      household:
+        members: [parent]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    nc_child_care_subsidies: 700
+    child_care_subsidies: 700
+
+- name: NC SCCA is not counted before 2024
+  period: 2023
+  input:
+    people:
+      parent:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [parent]
+        nc_scca:
+          2023-01: 450
+    households:
+      household:
+        members: [parent]
+        county_str: ALAMANCE_COUNTY_NC
+        state_code: NC
+  output:
+    child_care_subsidies: 0
+
+- name: DC CCSP flows into the child care subsidies aggregate from 2025
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [parent]
+        dc_ccsp:
+          2025-01: 500
+    households:
+      household:
+        members: [parent]
+        state_code: DC
+  output:
+    dc_child_care_subsidies: 500
+    child_care_subsidies: 500

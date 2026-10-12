@@ -1,0 +1,131 @@
+# Colorado adds back the federal overtime deduction (HB25-1296) from TY2026;
+# tips are not added back, and Colorado conformed in 2025. The federal overtime
+# deduction is set directly here to isolate the Colorado add-back.
+
+- name: Case 1, 2026 Colorado adds back the federal overtime deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    overtime_income_deduction: 3_000
+    state_code: CO
+  output:
+    co_overtime_income_addback: 3_000
+
+- name: Case 2, 2025 Colorado conforms so there is no overtime add-back.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    overtime_income_deduction: 3_000
+    state_code: CO
+  output:
+    co_overtime_income_addback: 0
+
+- name: Case 3, 2026 overtime add-back computes in a full household.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [person1]
+        overtime_income_deduction: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    co_overtime_income_addback: 3_000
+
+- name: Case 4, 2026 overtime add-back flows into Colorado additions.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    overtime_income_deduction: 3_000
+    state_code: CO
+  output:
+    co_additions: 3_000
+
+- name: Case 5, 2025 overtime is not added into Colorado additions.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    overtime_income_deduction: 3_000
+    state_code: CO
+  output:
+    co_additions: 0
+
+- name: Case 6, 2026 Colorado does not add back the federal tips deduction.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    tip_income_deduction: 5_000
+    state_code: CO
+  output:
+    co_overtime_income_addback: 0
+    co_additions: 0
+
+- name: Case 7, 2029 the add-back ends when the federal overtime deduction sunsets.
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    overtime_income_deduction: 3_000
+    state_code: CO
+  output:
+    # The federal IRC 225 deduction is dropped from the federal deduction lists
+    # at 2029, so Colorado must not add it back; in_effect is false from 2029.
+    co_overtime_income_addback: 0
+
+- name: Case 8, 2026 the add-back mirrors the capped federal deduction (joint filer above the cap).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        fsla_overtime_premium: 30_000
+      person2:
+        age: 40
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        adjusted_gross_income: 100_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    # 30,000 overtime premium capped at the $25,000 joint cap; AGI 100,000 is
+    # below the $300,000 phase-out start, so the federal deduction -- and the
+    # Colorado add-back -- is 25,000.
+    overtime_income_deduction: 25_000
+    co_overtime_income_addback: 25_000
+
+- name: Case 9, 2026 the add-back mirrors the phased-out federal deduction (single filer above the AGI threshold).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        fsla_overtime_premium: 12_500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 200_000
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    # 12,500 overtime premium at the single cap; AGI 200,000 is 50,000 over the
+    # 150,000 phase-out start, reducing the deduction by 50,000 x 10% = 5,000, to
+    # 7,500 -- which the Colorado add-back mirrors.
+    overtime_income_deduction: 7_500
+    co_overtime_income_addback: 7_500

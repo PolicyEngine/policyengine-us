@@ -1,0 +1,107 @@
+- name: Case 1, assessed property value defaults to primary residence value.
+  period: 2025
+  input:
+    primary_residence_value: 400_000
+    state_code: WA
+  output:
+    assessed_property_value: 400_000
+
+- name: Case 2, assessed property value applies the state assessment rate.
+  period: 2025
+  input:
+    primary_residence_value: 400_000
+    state_code: MI
+  output:
+    assessed_property_value: 200_000
+
+- name: Case 3, existing direct assessed property value input is still accepted.
+  period: 2025
+  input:
+    assessed_property_value: 300_000
+    primary_residence_value: 400_000
+    state_code: MI
+  output:
+    assessed_property_value: 300_000
+
+# T1a: West Virginia 0.6 statutory residential assessment ratio.
+# 100_000 market value * 0.6 = 60_000 assessed.
+- name: Case 4, West Virginia applies its 0.6 assessment ratio.
+  period: 2025
+  input:
+    primary_residence_value: 100_000
+    state_code: WV
+  output:
+    assessed_property_value: 60_000
+
+# T1b: zero-default microsim behavior. With no primary_residence_value entered,
+# the input defaults to 0, so 0 * any state rate = 0 regardless of state.
+- name: Case 5, missing primary residence value yields zero assessed value.
+  period: 2025
+  input:
+    state_code: WV
+  output:
+    assessed_property_value: 0
+
+# T1c: uprating. primary_residence_value carries uprating = gov.bls.cpi.cpi_u.
+# Enter a 2024 market value; read the derived assessed value in 2025. WA has a
+# 1.0 assessment ratio, isolating the CPI-U uprating factor.
+# CPI-U(2025-01-01) / CPI-U(2024-01-01) = 319.086 / 309.794 = 1.0299941.
+# 100_000 * 1.0299941 = 102_999.41, asserted with a $1 margin.
+- name: Case 6, primary residence value uprates by CPI-U from prior year.
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    primary_residence_value:
+      2024: 100_000
+    state_code: WA
+  output:
+    assessed_property_value: 102_999
+
+# T3: two-person household, both holding a share of the residence. The variable
+# is Person-level, so each share is assessed independently at the Michigan 0.5
+# ratio: 60_000 -> 30_000 and 40_000 -> 20_000.
+- name: Case 7, Michigan assesses each person's residence share independently.
+  period: 2025
+  input:
+    people:
+      person1:
+        primary_residence_value: 60_000
+      person2:
+        primary_residence_value: 40_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    people:
+      person1:
+        assessed_property_value: 30_000
+      person2:
+        assessed_property_value: 20_000
+
+# T2 (integration): consumer-state end-to-end proof of no ratio inflation.
+# A South Carolina homestead-eligible head enters a 200_000 market-value
+# residence. The person-level SC assessment ratio (0.04) gives assessed value
+# 200_000 * 0.04 = 8_000 -- a single application of the ratio, not a doubled one.
+# sc_homestead_exemption caps the exemption at amount * assessment_rate =
+# 50_000 * 0.04 = 2_000; min(8_000, 2_000) = 2_000.
+- name: Case 8, South Carolina primary residence flows into homestead exemption without ratio inflation.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        primary_residence_value: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    people:
+      person1:
+        assessed_property_value: 8_000
+    sc_homestead_exemption: 2_000

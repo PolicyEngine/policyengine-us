@@ -1,0 +1,6 @@
+- name: SPM unit energy subsidy uses the canonical input variable.
+  period: 2024
+  input:
+    spm_unit_energy_subsidy: 123
+  output:
+    spm_unit_energy_subsidy: 123

@@ -1,0 +1,31 @@
+description: California sets the federal poverty line thresholds for the applicable percentage brackets under the California Premium Subsidy program.
+values:
+  # 150% is untiered in the Program Design prose but sits in the 3.19% band:
+  # the Explainer labels the band "150% - At or Below 165%", and under
+  # 26 CFR 1.36B-3(g)(2) FPL-percentage truncation to 2 decimals collapses
+  # [150%, 151%) to 1.50, so 150% takes the 150-165% bracket rate.
+  2026-01-01:
+    - 1
+    - 1.5
+    - 1.65
+  # PY2027 Program Design V4 (adopted Board Res. 2026-22) widens the top band
+  # to under 200% FPL, adding a 165-200% bracket.
+  2027-01-01:
+    - 1
+    - 1.5
+    - 1.65
+    - 2.0
+
+metadata:
+  unit: /1
+  period: year
+  label: California Premium Subsidy applicable percentage bracket thresholds
+  reference:
+    - title: 2026 California Premium Subsidy Program Design, subdiv. (d)(4) and (d)(7)
+      href: https://board.coveredca.com/meetings/2025/July%2028,%202025/CoveredCA_2026_Premium_Subsidy_Program_Design_Final.pdf#page=2
+    - title: 2026 California State Premium Subsidy Policy Explainer, Table 1
+      href: https://hbex.coveredca.com/stakeholders/PDFs/2026-02_StatePremiumSub_PolicyExplainer-Final.pdf#page=2
+    - title: 2027 California Premium Subsidy Program Design V4, subdiv. (d)(4)
+      href: https://board.coveredca.com/meetings/2026/May%2021,%202026/CoveredCA_2027_Premium_Subsidy_Program_Design_V4_05-19-26.pdf#page=2
+    - title: Covered California Board Resolution 2026-22
+      href: https://board.coveredca.com/meetings/2026/June%2018,%202026/2026-22.pdf

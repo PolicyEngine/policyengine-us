@@ -1,0 +1,293 @@
+# AL CCSP top-level eligibility tests (SPMUnit, MONTH)
+# Combines: has eligible child, AL residency, income eligible (180% FPL or 200% if enrolled, AND 85% SMI),
+#           asset eligible ($1M federal floor), activity eligible OR protective services waiver.
+
+- name: Working AL family with one child age 4 is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_eligible: true
+
+- name: Working family in GA is ineligible (non-AL).
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: GA
+  output:
+    al_ccsp_eligible: false
+
+- name: Adult-only household with no children is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 25_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+  output:
+    al_ccsp_eligible: false
+
+- name: Parent at 10 hrs work non-student non-disabled is activity ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 15_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 10
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_eligible: false
+
+- name: Foster child waives activity requirement.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    # Foster -> protective services -> waives income AND activity
+    al_ccsp_eligible: true
+
+- name: Family at 190 percent FPL initial path is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 59_280  # 190% FPL fam of 4 = 4,940/mo
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 28
+        weekly_hours_worked: 40
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # 190% FPL > 180% initial limit, al_ccsp_enrolled=false -> ineligible
+    al_ccsp_eligible: false
+
+- name: Family at 190 percent FPL continuing path is eligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 59_280
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 28
+        weekly_hours_worked: 40
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # 190% FPL <= 200% continuing limit, and 4,940/mo <= 6,262/mo 85% SMI -> eligible
+    al_ccsp_eligible: true
+
+- name: Family above 85 percent SMI is ineligible even at continuing tier.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 80_000  # 6,667/mo > 6,262 (85% SMI fam of 4)
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    al_ccsp_eligible: false
+
+- name: Homeless household waives activity test via protective services.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        weekly_hours_worked: 0
+        is_full_time_student: false
+        is_disabled: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        is_homeless: true
+  output:
+    # Homeless -> protective services -> waives income AND activity
+    al_ccsp_eligible: true
+
+- name: Asset over 1 million is ineligible.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_500_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+  output:
+    al_ccsp_eligible: false

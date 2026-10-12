@@ -41,3 +41,27 @@
     ca_riv_general_relief_meets_work_requirements: true
   output:
     ca_riv_general_relief_ineligible_person: false
+
+- name: Case 5, ineligible due to reported SSI receipt.
+  period: 2024-01
+  input:
+    in_riv: true
+    ssi: 0
+    receives_ssi: true
+    ca_tanf: 0
+    ca_riv_general_relief_immigration_status_eligible: true
+    ca_riv_general_relief_meets_work_requirements: true
+  output:
+    ca_riv_general_relief_ineligible_person: true
+
+- name: Case 6, ineligible due to reported TANF receipt.
+  period: 2024-01
+  input:
+    in_riv: true
+    ssi: 0
+    ca_tanf: 0
+    receives_tanf: true
+    ca_riv_general_relief_immigration_status_eligible: true
+    ca_riv_general_relief_meets_work_requirements: true
+  output:
+    ca_riv_general_relief_ineligible_person: true

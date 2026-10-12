@@ -1,0 +1,67 @@
+# The pre_obbba_cdcc family recomputes the federal section 21 credit on the
+# rate schedule as it stood before the One Big Beautiful Bill Act (OBBBA). For
+# 2025 it must equal the live cdcc (identical schedule); for 2026 it must hold
+# the pre-OBBBA rate (max 35%, min 20%, no amended second phase-out) while the
+# live cdcc reflects the OBBBA increase (max 50%, min 35%). Read by states whose
+# income tax statically conforms to a pre-2026 IRC (KY, ME, VT).
+
+# Low-income joint family, two children, $6,000 childcare, AGI below the first
+# phase-out start so the applicable rate is at its maximum.
+- name: 2025 pre-OBBBA CDCC equals the live CDCC (identical schedule)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 25_000
+      spouse:
+        age: 35
+        employment_income: 25_000
+      child1:
+        age: 5
+      child2:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 6_000
+        premium_tax_credit: 0
+  output:
+    # $6,000 x 20% applicable rate at this AGI = $1,200 (same as live cdcc).
+    cdcc: 1_200
+    pre_obbba_cdcc_potential: 1_200
+    pre_obbba_cdcc: 1_200
+    pre_obbba_capped_cdcc: 1_200
+
+- name: 2026 pre-OBBBA CDCC holds the pre-OBBBA rate while live CDCC rises
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 25_000
+      spouse:
+        age: 35
+        employment_income: 25_000
+      child1:
+        age: 5
+      child2:
+        age: 7
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child1, child2]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 6_000
+        premium_tax_credit: 0
+  output:
+    # Live 2026 credit uses the OBBBA rate (35% here) = $2,100 potential,
+    # $1,780 after the section 26 cap for this family.
+    cdcc_potential: 2_100
+    cdcc: 1_780
+    # Pre-OBBBA credit holds the 20% pre-OBBBA rate = $1,200.
+    pre_obbba_cdcc_potential: 1_200
+    pre_obbba_cdcc: 1_200
+    pre_obbba_capped_cdcc: 1_200

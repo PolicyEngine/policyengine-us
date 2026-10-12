@@ -162,3 +162,14 @@
     # Code D triggers ssi_federal_living_arrangement = MEDICAL_TREATMENT_FACILITY.
     # MEDICAL_INSTITUTION wins over STANDARD via select() priority order.
     wa_ssp_payment_category: MEDICAL_INSTITUTION
+
+- name: Aged person with reported SSI receipt and zero computed SSI maps to STANDARD
+  period: 2024-01
+  input:
+    age: 70
+    is_ssi_eligible: true
+    ssi: 0
+    receives_ssi: true
+    state_code: WA
+  output:
+    wa_ssp_payment_category: STANDARD

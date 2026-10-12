@@ -1,0 +1,97 @@
+# ms_ccpp_countable_income is SPMUnit, MONTH. Gross income, no deductions.
+# Earned income of students under 18 is excluded (Rule 5.4); the self-employment
+# sum is floored at zero (a loss does not offset other income). SSI and Social
+# Security both count (for parent and child); child support received and EITC are
+# not countable.
+
+- name: Case 1, employment, Social Security, and SSI count; child support does not.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # YEAR -> 2,000/mo
+        social_security: 6_000  # YEAR -> 500/mo, counts
+        ssi: 400  # MONTH -> 400/mo, counts (separate from social_security)
+        child_support_received: 12_000  # YEAR, NOT countable
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # 2,000 + 500 + 400 = 2,900 (child support excluded)
+    ms_ccpp_countable_income: 2_900
+
+- name: Case 2, a self-employment loss is floored and does not reduce countable income.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # YEAR -> 2,000/mo
+        self_employment_income: -6_000  # YEAR -> -500/mo loss, floored at 0
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # 2,000 + max(-500, 0) = 2,000 (the loss does not offset wages)
+    ms_ccpp_countable_income: 2_000
+
+- name: Case 3, child's SSI and Social Security count toward family income.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 18_000  # YEAR -> 1,500/mo
+      person2:
+        age: 6
+        ssi: 300  # MONTH, child SSI counts
+        social_security: 2_400  # YEAR -> 200/mo, child SSA counts
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # 1,500 + 300 + 200 = 2,000
+    ms_ccpp_countable_income: 2_000
+
+- name: Case 4, earned income of a student under 18 is excluded; their unearned income still counts.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 24_000  # YEAR -> 2,000/mo, adult, counts
+      person2:
+        age: 16
+        employment_income: 6_000  # YEAR -> 500/mo, student under 18 -> excluded
+        ssi: 100  # MONTH, the student's unearned income still counts
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # adult 2,000 + excluded student wages 0 + student SSI 100 = 2,100
+    ms_ccpp_countable_income: 2_100

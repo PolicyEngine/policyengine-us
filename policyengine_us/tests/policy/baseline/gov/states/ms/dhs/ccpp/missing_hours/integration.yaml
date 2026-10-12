@@ -1,0 +1,132 @@
+# Missing hours use full-time pricing, with participation checked separately.
+# Benefit arithmetic follows the full-time example in ../integration.yaml.
+- name: Omitted hours select full-time pricing when care is indicated.
+  period: 2026-01
+  input:
+    state_code: MS
+    childcare_attending_days_per_month: 20
+  output:
+    ms_ccpp_time_category: FULL_TIME
+- name: Unknown and positive care hours preserve the state boundary in one population.
+  period: 2026-01
+  input:
+    people:
+      child0:
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 20
+      child1:
+        childcare_hours_per_day: 1
+        childcare_attending_days_per_month: 20
+      child2:
+        childcare_hours_per_day: 5.99
+        childcare_attending_days_per_month: 20
+      child3:
+        childcare_hours_per_day: 6
+        childcare_attending_days_per_month: 20
+      child4:
+        childcare_hours_per_day: 40
+        childcare_attending_days_per_month: 20
+    households:
+      household:
+        members:
+        - child0
+        - child1
+        - child2
+        - child3
+        - child4
+        state_code: MS
+  output:
+    ms_ccpp_time_category:
+    - FULL_TIME
+    - PART_TIME
+    - PART_TIME
+    - FULL_TIME
+    - FULL_TIME
+- name: An explicit part-time schedule remains authoritative.
+  period: 2026-01
+  input:
+    state_code: MS
+    childcare_hours_per_day: 40
+    ms_ccpp_time_category: PART_TIME
+  output:
+    ms_ccpp_time_category: PART_TIME
+- name: Billable care with omitted hours preserves the full-time benefit and copay.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        ms_ccpp_provider_type: CENTER
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 12000
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_eligible: true
+    ms_ccpp: 475
+    ms_ccpp_copay: 110
+    ms_ccpp_maximum_weekly_rate:
+    - 0
+    - 135
+- name: No care hours, days, or expenses produces no subsidy, including provider bonuses.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24000
+        weekly_hours_worked_before_lsr: 40
+        childcare_hours_per_week: 0
+        childcare_hours_per_day: 0
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 0
+        childcare_hours_per_week: 0
+        ms_ccpp_provider_type: CENTER
+        childcare_attending_days_per_month: 0
+        pre_subsidy_childcare_expenses: 0
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp: 0

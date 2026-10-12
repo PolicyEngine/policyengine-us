@@ -1,0 +1,56 @@
+# LAC 28:CLXV.505: FITAP recipients in the STEP program and foster children.
+- name: Case 1, TANF-enrolled household is categorically eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_categorically_eligible: true
+
+- name: Case 2, household with a foster child is categorically eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_categorically_eligible: true
+
+- name: Case 3, household with neither pathway is not categorically eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_categorically_eligible: false

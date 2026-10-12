@@ -27,51 +27,59 @@ brackets:
       2022-01-01: 0
     amount:
       values:
+        0000-01-01: 0
         2022-01-01: 300
         2023-01-01: 315
         2024-01-01: 325
         2025-01-01: 335
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: nearest
-          interval: 5
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 5
   - threshold:
       2022-01-01: 1
     amount:
       values:
+        0000-01-01: 0
         2022-01-01: 600
         2023-01-01: 625
         2024-01-01: 640
         2025-01-01: 660
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: nearest
-          interval: 5
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 5
   - threshold:
       2022-01-01: 2
     amount:
       values:
+        0000-01-01: 0
         2022-01-01: 900
         2023-01-01: 940
         2024-01-01: 965
         2025-01-01: 995
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: nearest
-          interval: 5
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 5
   - threshold:
       2022-01-01: 3
     amount:
       values:
+        0000-01-01: 0
         2022-01-01: 1_200
         2023-01-01: 1_255
         2024-01-01: 1_290
         2025-01-01: 1_330
       metadata:
-        uprating: gov.irs.uprating
-        rounding:
-          type: nearest
-          interval: 5
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: nearest
+            interval: 5

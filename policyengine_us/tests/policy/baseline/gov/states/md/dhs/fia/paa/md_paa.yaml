@@ -1,0 +1,213 @@
+# Tests for md_paa main benefit variable.
+# Formula (prospective SSI cascade):
+#   paa = max(combined_need - md_paa_countable_income - imputed_federal_ssi, 0)
+# REHAB residents impute the $30 federal SSI medical-facility rate.
+# 2026 federal SSI individual FBR = $994; PNA = $106.
+
+- name: Case 1, CARE_HOME_LEVEL_B with only SSI — federal SSI exceeds combined need.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 800  # gates eligibility
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # combined_need = 875 + 106 = 981. imputed SSI = 994. PAA = 0.
+    md_paa: 0
+
+- name: Case 2, REHAB_RESIDENCE with only SSI receives state-funded gap to PNA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 800
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: REHAB_RESIDENCE
+        # MDH rehab residents are SSI medical-treatment-facility recipients
+        # (federal SSI capped at $30/mo). md_paa_eligible requires both flags.
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # combined_need = 0 + 106 = 106. imputed SSI = $30. PAA = 76.
+    md_paa: 76
+
+- name: Case 3, ineligible (NONE living arrangement).
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 800
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa: 0
+
+- name: Case 4, CARE_HOME_LEVEL_C SSI-only — state fills gap above federal.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 800
+        ssi_earned_income: 0
+        ssi_unearned_income: 0
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # combined_need = 1173 + 106 = 1279. imputed SSI = 994. PAA = 285.
+    md_paa: 285
+
+- name: Case 5, negative earned income does not inflate benefit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 800
+        # Self-employment loss should not reduce countable income below zero.
+        self_employment_income: -60_000_000
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # md_paa_countable_income floors at 0 by design.
+    # imputed SSI = 994. PAA = 1279 - 994 = 285.
+    md_paa: 285
+
+- name: Case 6, out-of-state recipient is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 800
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_B
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    md_paa: 0
+
+- name: Case 7, high-income REHAB recipient — income exhausts federal then state.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 800
+        # $2,500/mo non-SSI unearned * 12 = $30,000/yr.
+        social_security: 30_000
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: REHAB_RESIDENCE
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # combined = 106. countable = 2500 - 20 = 2480.
+    # imputed SSI = 0 because countable income exceeds the $30 medical rate.
+    # PAA = max(106 - 2480, 0) = 0.
+    md_paa: 0
+
+- name: Case 8, CARE_HOME_LEVEL_D recipient gets the largest state supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 800
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_D
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # combined_need = 1376 + 106 = 1482. imputed SSI = 994. PAA = 488.
+    md_paa: 488
+
+# Partial-erosion case: countable income exceeds the imputed medical-facility
+# SSI amount but does not fully exhaust the PNA.
+- name: Case 9, REHAB recipient with $80/mo unearned — partial state erosion.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi: 800  # gates eligibility
+        social_security: 960  # $80/mo unearned (in addition to medical SSI)
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: REHAB_RESIDENCE
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # countable monthly = 80 - 20 (general exclusion) = 60.
+    # imputed SSI = max(30 - 60, 0) = 0.
+    # PAA = max(106 - 60, 0) = 46. Partial reduction (not zero).
+    md_paa: 46
+
+- name: Case 10, SSDI-only recipient with high SSDI receives no PAA.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_disabled: false
+        ssi: 0
+        social_security_disability: 30_000
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
+    md_paa_countable_income: 2_480
+    md_paa_imputed_federal_ssi: 0
+    md_paa: 0

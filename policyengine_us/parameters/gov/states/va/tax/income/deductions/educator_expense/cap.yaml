@@ -1,0 +1,17 @@
+description: Virginia caps the eligible educator expense deduction at this amount per eligible educator. The deduction did not apply for tax year 2025.
+values:
+  2021-01-01: 0
+  2022-01-01: 500
+  2025-01-01: 0
+  2026-01-01: 500
+metadata:
+  unit: currency-USD
+  period: year
+  label: Virginia eligible educator expense deduction cap
+  reference:
+    - title: Code of Virginia § 58.1-322.03.18
+      href: https://law.lis.virginia.gov/vacode/title58.1/section58.1-322.03/
+    - title: House Bill 30 (2026 Appropriation Act, Special Session I, Chapter 1), third enactment clause - reinstates the deduction for tax year 2026 and after
+      href: https://budget.lis.virginia.gov/amendment/2026/2/HB30/Introduced/CR/4-14/1c
+    - title: Virginia Department of Taxation 2026 Legislative Summary - eligible educator expenses deduction
+      href: https://www.tax.virginia.gov/sites/default/files/inline-files/2026-legislative-summary.pdf#page=10

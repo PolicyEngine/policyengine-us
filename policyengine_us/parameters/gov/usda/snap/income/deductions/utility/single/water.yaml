@@ -16,6 +16,12 @@ metadata:
     href: https://docs.google.com/spreadsheets/d/10otJJisAYUDyZ0d7XpZPn8rEql-rteVE/edit?gid=1837348310#gid=1837348310
   - title: USDA utility allowances by state spreadsheet. Extracted by build_utility_allowances (FY2025)
     href: https://www.fns.usda.gov/sites/default/files/resource-files/2024-09-30-SUA-Table-FY25-508-Update.xlsx
+  - title: USDA utility allowances by state spreadsheet (FY2026, revised May 2026; FNS labels it updated August 2026)
+    href: https://www.fna.usda.gov/sites/default/files/resource-files/2026-05-21-SUA-Table-FY26.xlsx
+  - title: Wisconsin DHS Operations Memo 25-13 (FFY 2026 standard utility allowances effective October 1, 2025)
+    href: https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2025-13.pdf#page=3
+  - title: Wisconsin DHS Operations Memo 26-30 (revised SUAs effective May 1, 2026)
+    href: https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2026-30.pdf#page=2
   - title: FY 2018 SNAP QC Technical Documentation, Table F.7
     href: https://snapqcdata.net/sites/default/files/2020-07/FY_2018_Tech_Doc.pdf#page=177
   - title: FY 2019 SNAP QC Technical Documentation, Table F.7
@@ -205,7 +211,7 @@ ID:
   2021-10-01: 135
   2022-10-01: 134
   2023-10-01: 129
-  2025-10-01: 132
+  2025-10-01: 133
 IL:
   2010-01-01: 0
   2017-10-01: 70
@@ -254,12 +260,13 @@ MA:
   2025-10-01: 0
 MD:
   # Maryland SUA is effective January 1, not the federal fiscal year.
-  # Starting FY2026 (10/1/2025), Maryland aligned with the federal cycle.
+  # The FNS FY2026 table footnotes Maryland as still effective January 1,
+  # so its FY2026 values take effect on 2026-01-01.
   2010-01-01: 0
   2019-01-01: 0
   2021-01-01: 0
   2023-01-01: 0
-  2025-10-01: 0
+  2026-01-01: 0
 ME:
   2010-01-01: 0
   2018-10-01: 0
@@ -367,7 +374,7 @@ NV:
   2022-10-01: 74
   2023-10-01: 81
   2024-10-01: 75
-  2025-10-01: 76
+  2025-10-01: 77
 NY_NAS:
   2010-01-01: 0
   2018-10-01: 0
@@ -502,7 +509,11 @@ WI:
   2022-10-01: 96
   2023-10-01: 99
   2024-10-01: 103
+  # WI DHS Ops Memo 25-13: FFY 2026 value effective 10/1/2025.
   2025-10-01: 106
+  # WI DHS Ops Memo 26-22: new FNS-approved SUA values; Ops Memo 26-30
+  # sets the effective date to 2026-05-01.
+  2026-05-01: 112
 WV:
   2010-01-01: 0
   2017-10-01: 74

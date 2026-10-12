@@ -8,7 +8,7 @@ class pa_tax_forgiveness_rate(Variable):
     label = "PA tax forgiveness on eligibility income"
     unit = "/1"
     definition_period = YEAR
-    reference = "https://www.revenue.pa.gov/FormsandPublications/FormsforIndividuals/PIT/Documents/2021/2021_pa-40in.pdf#page=39"
+    reference = "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/formsandpublications/formsforindividuals/pit/documents/2021/2021_pa-40in.pdf#page=39"
     defined_for = StateCode.PA
     """
     TAXSIM erroneously phases in tax forgiveness smoothly.

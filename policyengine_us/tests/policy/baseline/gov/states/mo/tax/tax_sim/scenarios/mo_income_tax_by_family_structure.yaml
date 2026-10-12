@@ -158,7 +158,9 @@
     income_tax: -7_940
     #taxsim output: $6,740 ("Income Tax Balance"), offset by $1,200 error.
     mo_adjusted_gross_income: [50_000, 0, 0]
-    # HoH gets $1,400 additional exemption per RSMo 143.161(2)
-    mo_taxable_income: [29_800, 0, 0]
-    #taxsim output: 30_681
+    # 50,000 - 18,800 standard deduction - 519 federal income tax deduction
+    # (15% x 3,460 Line 22 tax, undiminished by the refundable 2021 CTC).
+    # No head of household exemption: MO-1040 Line 15 first appeared on the
+    # 2022 form (issue 9093). Matches taxsim.
+    mo_taxable_income: [30_681, 0, 0]
     #taxsim output: 1_469.64

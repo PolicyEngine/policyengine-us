@@ -1,0 +1,393 @@
+- name: Case 1, fully eligible single adult in SF with zero income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+  output:
+    ca_sf_caap_eligible: true
+    ca_sf_caap_max_grant: 578
+    ca_sf_caap_countable_income: 0
+    # Fill-the-gap: 578 - 0 = 578 (GA single max).
+    ca_sf_caap: 578
+
+- name: Case 2, single recipient with earned income (5-tier disregard).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 6_000  # 500/month
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+        ca_sf_caap_is_recipient: true
+  output:
+    # Disregard on 500/month: 200 + 2/3*150 + 1/2*150 = 200 + 100 + 75 = 375.
+    ca_sf_caap_earned_income_disregard: 375
+    # Net earned: 500 - 375 = 125. Countable: 125.
+    ca_sf_caap_countable_income: 125
+    ca_sf_caap_eligible: true
+    # Benefit: 578 - 125 = 453.
+    ca_sf_caap: 453
+
+- name: Case 3, single applicant with the same earnings (no disregard).
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        employment_income: 6_000  # 500/month
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+        ca_sf_caap_is_recipient: false
+  output:
+    # Applicant gets no disregard.
+    ca_sf_caap_earned_income_disregard: 0
+    # Net earned = countable = 500.
+    ca_sf_caap_countable_income: 500
+    ca_sf_caap_eligible: true
+    # Benefit: 578 - 500 = 78 (smaller than the recipient's $453 grant).
+    ca_sf_caap: 78
+
+- name: Case 4, two-adult couple in SF with zero income uses the size-2 grant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 0
+  output:
+    # Two eligible adults -> budget unit size 2 -> size-2 grant row ($1,036).
+    ca_sf_caap_budget_unit_size: 2
+    ca_sf_caap_max_grant: 1_036
+    ca_sf_caap_eligible: true
+    # Fill-the-gap: 1,036 - 0 = 1,036.
+    ca_sf_caap: 1_036
+
+- name: Case 5, in-kind plus cash leaves under $59 cash, so the floor pays.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        social_security: 3_600  # 300/month unearned
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+        ca_sf_caap_food_provided_in_kind: true
+  output:
+    # In-kind food (size 1) = 231. Cash countable = 300 (in-kind not counted).
+    ca_sf_caap_income_in_kind: 231
+    ca_sf_caap_countable_income: 300
+    ca_sf_caap_eligible: true
+    # grant_after_income = 578 - 300 = 278; cash_grant = 278 - 231 = 47, which
+    # is below the $59 floor, so the recipient is topped up to $59 cash.
+    ca_sf_caap: 59
+
+- name: Case 6, in-kind value exceeds the grant so the $59 floor pays.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+        ca_sf_caap_housing_provided_in_kind: true
+        ca_sf_caap_utilities_provided_in_kind: true
+        ca_sf_caap_food_provided_in_kind: true
+        ca_sf_caap_clothing_provided_in_kind: true
+  output:
+    # In-kind = 422 + 89 + 231 + 70 = 812. No cash income, so the unit is
+    # income-eligible. grant_after_income = 578; cash_grant = max(578 - 812, 0)
+    # = 0; in-kind present and cash_grant < $59, so the $59 floor pays.
+    ca_sf_caap_income_in_kind: 812
+    ca_sf_caap_eligible: true
+    ca_sf_caap: 59
+
+- name: Case 7, negative self-employment does not inflate the benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        self_employment_income: -120_000  # -$10,000/month net loss
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+  output:
+    # Per-person net earned floored at 0 -> countable income 0.
+    ca_sf_caap_countable_income: 0
+    ca_sf_caap_eligible: true
+    # Benefit capped at the $578 max grant (fill-the-gap floor), NOT 10,578.
+    ca_sf_caap: 578
+
+- name: Case 8, SSI recipient is excluded from CAAP.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # Age 70 with no income -> the system computes ssi > 0, so the only
+        # member is an SSI recipient -> budget unit size 0 -> ineligible.
+        age: 70
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+  output:
+    # Only person is an SSI recipient -> budget unit size 0 -> ineligible.
+    ca_sf_caap_budget_unit_size: 0
+    ca_sf_caap_eligible: false
+    ca_sf_caap: 0
+
+- name: Case 9, otherwise-eligible unit outside San Francisco County.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        county_str: ALAMEDA_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+  output:
+    # defined_for = in_san_francisco zeroes both the benefit and eligibility.
+    ca_sf_caap_eligible: false
+    ca_sf_caap: 0
+
+- name: Case 10, three-adult unit with in-kind food falls back to the size-2 value.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 32
+        immigration_status: CITIZEN
+      person3:
+        age: 34
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1, person2, person3]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 0
+        ca_sf_caap_food_provided_in_kind: true
+  output:
+    # Size-3 grant = $1,166. In-kind food clips to the size-2 chart row = $493.
+    # cash_grant = 1,166 - 493 = 673, which is at or above $59, so no floor.
+    ca_sf_caap_budget_unit_size: 3
+    ca_sf_caap_max_grant: 1_166
+    ca_sf_caap_income_in_kind: 493
+    ca_sf_caap_eligible: true
+    ca_sf_caap: 673
+
+- name: Case 11, couple with negative self-employment caps at the size-2 grant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        self_employment_income: -120_000  # -$10,000/month net loss
+      person2:
+        age: 38
+        immigration_status: CITIZEN
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 0
+  output:
+    # Each person's net earned floors at 0, so countable income is 0; the
+    # benefit caps at the $1,036 size-2 grant (NOT 1,036 + 10,000).
+    ca_sf_caap_countable_income: 0
+    ca_sf_caap_eligible: true
+    ca_sf_caap: 1_036
+
+- name: Case 12, high cash income unit is excluded end-to-end.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        social_security: 120_000  # 10,000/month unearned
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+  output:
+    # Cash income far above the grant -> income-ineligible -> benefit $0.
+    ca_sf_caap_countable_income: 10_000
+    ca_sf_caap_income_eligible: false
+    ca_sf_caap_eligible: false
+    ca_sf_caap: 0
+
+- name: Case 13, in-kind never inflates the benefit when cash already leaves under $59.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        immigration_status: CITIZEN
+        social_security: 6_480  # 540/month unearned
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+        ca_sf_caap_food_provided_in_kind: true
+  output:
+    # End-to-end over-pay guard (SEC. 20.7-24): cash income of $540/month already
+    # leaves grant_after_income = 578 - 540 = 38, below the $59 floor. In-kind
+    # food (231) drops cash_grant to 0, but the floor is capped at the cash
+    # entitlement (min(38, 59) = 38). The benefit equals $38 (the no-in-kind
+    # amount), NOT $59 -- proving in-kind does not increase the benefit.
+    ca_sf_caap_income_in_kind: 231
+    ca_sf_caap_countable_income: 540
+    ca_sf_caap_eligible: true
+    ca_sf_caap: 38
+
+- name: Case 14, CalWORKs family is barred end-to-end.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        # Parent + child with no income -> the system computes ca_tanf > 0
+        # (CalWORKs recipient). Such a family fails the other-aid bar
+        # (SEC. 20.7-6) AND, because the unit contains a child, the adult-only
+        # age gate -- both push CAAP eligibility to false (the two bars are
+        # redundant here). ca_tanf is a computed variable derived from the
+        # parent+child scenario, not set directly.
+        age: 30
+        immigration_status: CITIZEN
+      person2:
+        age: 5
+        immigration_status: CITIZEN
+    families:
+      family:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 0
+  output:
+    # CalWORKs receipt bars CAAP (checked via ca_tanf in ca_sf_caap_eligible);
+    # the child also fails the adult-only age gate. Either alone makes
+    # ca_sf_caap_eligible false.
+    ca_sf_caap_age_eligible: false
+    ca_sf_caap_eligible: false
+    ca_sf_caap: 0

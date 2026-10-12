@@ -13,5 +13,5 @@ class co_employer_famli_contribution(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.co.tax.payroll.famli
         liable = person("employer_headcount", period) >= p.employer_headcount_threshold
-        taxable_wages = person("taxable_earnings_for_social_security", period)
+        taxable_wages = person("co_famli_taxable_wages", period)
         return where(liable, p.employer_rate * taxable_wages, 0)

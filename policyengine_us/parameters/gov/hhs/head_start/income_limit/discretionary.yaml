@@ -1,0 +1,17 @@
+description: Head Start and Early Head Start programs may enroll families with income below this share of the federal poverty guidelines under the additional-allowance provision, if the program applies it.
+
+values:
+  2021-01-01: 1.3
+
+metadata:
+  unit: /1
+  period: year
+  label: Head Start discretionary income limit as a share of the federal poverty guidelines
+  reference:
+    # A program may fill up to 35% of its enrollment with families whose
+    # income is between 100% and 130% of the poverty guidelines. The 35%
+    # slot-share cap is a program-level enrollment rule that cannot be
+    # modeled at the household level; the head_start_uses_discretionary_income_limit
+    # input records whether the family's program applies this allowance.
+    - title: 45 CFR 1302.12(d)(1) Additional allowances for programs
+      href: https://www.ecfr.gov/current/title-45/section-1302.12#p-1302.12(d)(1)

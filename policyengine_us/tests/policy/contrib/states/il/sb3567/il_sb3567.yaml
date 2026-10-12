@@ -1,0 +1,558 @@
+# Illinois SB3567 contrib reform tests.
+# Bill: https://www.ilga.gov/documents/legislation/104/SB/PDF/10400SB3567lv.pdf#page=2
+# Statute: 35 ILCS 5/244(a) and (b)  https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=003500050K244
+
+- name: SB3567 boosts phase-in filers to the maximum one-child credit
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 30
+      child:
+        age: 8
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        adjusted_gross_income: 12_000
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 200
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  # 2025 federal EITC 1-child max = 4_328; IL match = 0.20; CTC rate = 0.40.
+  # Boosted credit = 4_328 * 0.20 * 0.40 = 346.24
+  output:
+    il_ctc: 346.24
+
+- name: SB3567 preserves the 2024 flat-credit formula
+  period: 2024
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 30
+      child:
+        age: 8
+        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        adjusted_gross_income: 12_000
+        il_eitc: 200
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  # 2024 flat 20% of Section 212: il_eitc * ctc.rate = 200 * 0.20 = 40
+  output:
+    il_ctc: 40
+
+- name: SB3567 uses the three-child EITC maximum for larger dependent counts
+  # KNOWN APPROXIMATION: SB3567 cites IRC section 152 dependents (no cap);
+  # we use the federal EITC schedule which caps at 3 qualifying children.
+  # Each child is given explicit EITC-qualifying status for clarity.
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 32
+      child1:
+        age: 9
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+      child2:
+        age: 7
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+      child3:
+        age: 5
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+      child4:
+        age: 3
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1, child2, child3, child4]
+        adjusted_gross_income: 15_000
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 400
+    households:
+      household:
+        members: [filer, child1, child2, child3, child4]
+        state_code: IL
+  # 2025 federal EITC 3-child max = 8_046; IL match = 0.20; CTC rate = 0.40.
+  # 4-child request uses the federal 3-child cap: 8_046 * 0.20 * 0.40 = 643.68
+  output:
+    il_ctc: 643.68
+
+- name: SB3567 keeps plateau filers on the actual Illinois EITC amount
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 33
+      child:
+        age: 6
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        adjusted_gross_income: 18_000
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 865.6
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  # On the plateau (AGI just above 1-child phase-in end):
+  # actual_credit = 865.6 * 0.40 = 346.24
+  output:
+    il_ctc: 346.24
+
+- name: SB3567 keeps phase-out filers on 40 percent of actual Illinois EITC
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 34
+      child:
+        age: 4
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        adjusted_gross_income: 30_000
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 300
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  # Tier (3): 300 * 0.40 = 120
+  output:
+    il_ctc: 120
+
+- name: SB3567 keeps the age-under-12 eligibility gate
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 35
+      child:
+        age: 12
+        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        adjusted_gross_income: 10_000
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 200
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  output:
+    il_ctc: 0
+
+- name: SB3567 keeps the Illinois CTC refundable per 35 ILCS 5/244(b)
+  # Strengthens the prior "no refund" test: SB3567 does NOT strike
+  # subsection (b) ("the excess shall be refunded to the taxpayer"). With
+  # positive baseline il_eitc and zero IL income tax liability, the IL CTC
+  # must still refund.
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 36
+      child:
+        age: 5
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        adjusted_gross_income: 10_000
+        il_eitc: 200
+        il_income_tax_before_non_refundable_credits: 0
+        il_property_tax_credit: 0
+        il_k12_education_expense_credit: 0
+        il_pass_through_withholding: 0
+        il_pass_through_entity_tax_credit: 0
+        il_use_tax: 0
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  # AGI below 1-child phase-in threshold so the boost applies: il_ctc = 346.24.
+  # With zero IL income tax liability and il_ctc remaining refundable,
+  # il_refundable_credits include the full il_ctc amount.
+  output:
+    il_ctc: 346.24
+    # il_refundable_credits sums il_ctc (346.24, boosted by SB3567) PLUS
+    # the underlying il_eitc (200) since both remain in the IL refundable
+    # list under this reform.
+    il_refundable_credits: 546.24
+
+- name: Non-Illinois filers do not receive the reform CTC
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 30
+      child:
+        age: 8
+        ctc_qualifying_child: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        adjusted_gross_income: 12_000
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 200
+    households:
+      household:
+        members: [filer, child]
+        state_code: CA
+  output:
+    il_ctc: 0
+
+- name: SB3567 with in_effect false but force-applied via YAML directive still boosts
+  # When the YAML test uses `reforms: ...il_sb3567` it loads the module-
+  # level alias which is built with bypass=True, so the reform applies
+  # regardless of the in_effect parameter. The autoloader's in_effect gate
+  # is exercised in production via create_il_sb3567_reform (registered in
+  # reforms.py); flipping in_effect inside a YAML test that already pins
+  # the reform does not unwind the override. This test pins that behavior.
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: false
+    people:
+      filer:
+        age: 30
+      child:
+        age: 8
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        adjusted_gross_income: 12_000
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 200
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  # Reform is force-applied via the module alias; boosted credit still applies.
+  output:
+    il_ctc: 346.24
+
+- name: SB3567 boosts a two-child phase-in filer to the two-child maximum
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 31
+      child1:
+        age: 7
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+      child2:
+        age: 5
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1, child2]
+        adjusted_gross_income: 14_000
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 250
+    households:
+      household:
+        members: [filer, child1, child2]
+        state_code: IL
+  # 2025 federal EITC max for 2 children = 7_152; IL match = 0.20; CTC rate = 0.40.
+  # Boost = 7_152 * 0.20 * 0.40 = 572.16
+  output:
+    il_ctc: 572.16
+
+- name: SB3567 applies the boost at the two-child phase-in threshold
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 32
+      child1:
+        age: 6
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+      child2:
+        age: 4
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1, child2]
+        # Phase-in threshold for 2 children = 7_152 / 0.40 = 17_880
+        adjusted_gross_income: 17_880
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 1_430.4
+    households:
+      household:
+        members: [filer, child1, child2]
+        state_code: IL
+  # AGI <= threshold so boost applies; max credit = 572.16
+  output:
+    il_ctc: 572.16
+
+- name: SB3567 stops the boost above the two-child phase-in threshold
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 32
+      child1:
+        age: 6
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+      child2:
+        age: 4
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child1, child2]
+        adjusted_gross_income: 17_881
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 1_420
+    households:
+      household:
+        members: [filer, child1, child2]
+        state_code: IL
+  # AGI 1 dollar above threshold: tier (3) fall-through, 1_420 * 0.40 = 568
+  output:
+    il_ctc: 568
+
+- name: SB3567 applies the boost at the one-child phase-in threshold
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 30
+      child:
+        age: 8
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        # 1-child plateau-start = 4_328 / 0.34 ~ 12_729
+        adjusted_gross_income: 12_729
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 865.6
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  # At threshold: boost = 4_328 * 0.20 * 0.40 = 346.24
+  output:
+    il_ctc: 346.24
+
+- name: SB3567 stops the boost above the one-child phase-in threshold
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 30
+      child:
+        age: 8
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        adjusted_gross_income: 12_730
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 860
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  # AGI 1 dollar above threshold: tier (3), 860 * 0.40 = 344
+  output:
+    il_ctc: 344
+
+- name: SB3567 returns zero when AGI is above the IL EITC phase-out
+  # Tier-2 lower bound: when il_eitc is zero (filer past the IL phase-out)
+  # AND AGI is above the federal phase-in plateau, no boost applies and
+  # actual_credit = 0.
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 30
+      child:
+        age: 8
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+        adjusted_gross_income: 70_000
+        il_income_tax_before_non_refundable_credits: 3_000
+        il_eitc: 0
+    households:
+      household:
+        members: [filer, child]
+        state_code: IL
+  output:
+    il_ctc: 0
+
+- name: SB3567 returns zero for a childless EITC filer with no CTC-eligible child
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 30
+    tax_units:
+      tax_unit:
+        members: [filer]
+        adjusted_gross_income: 10_000
+        il_income_tax_before_non_refundable_credits: 500
+        il_eitc: 50
+    households:
+      household:
+        members: [filer]
+        state_code: IL
+  # No CTC-eligible child present, so il_ctc = 0 regardless of il_eitc.
+  output:
+    il_ctc: 0
+
+- name: SB3567 boosts a MFJ phase-in filer to the maximum two-child credit
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.il.sb3567.il_sb3567
+  input:
+    gov.contrib.states.il.sb3567.in_effect: true
+    people:
+      filer:
+        age: 30
+      spouse:
+        age: 28
+      child1:
+        age: 7
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+      child2:
+        age: 5
+        ctc_qualifying_child: true
+        is_qualifying_child_dependent: true
+        is_tax_unit_dependent: true
+        meets_eitc_identification_requirements: true
+    tax_units:
+      tax_unit:
+        members: [filer, spouse, child1, child2]
+        adjusted_gross_income: 12_000
+        il_income_tax_before_non_refundable_credits: 1_000
+        il_eitc: 250
+        filing_status: JOINT
+    households:
+      household:
+        members: [filer, spouse, child1, child2]
+        state_code: IL
+  # JOINT, 2-child, AGI well below plateau: boost = 7_152 * 0.20 * 0.40 = 572.16
+  output:
+    il_ctc: 572.16

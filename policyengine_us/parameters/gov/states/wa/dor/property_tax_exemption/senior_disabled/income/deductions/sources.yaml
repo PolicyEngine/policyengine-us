@@ -1,0 +1,24 @@
+description: Washington subtracts these medical expenses from combined disposable income under the Senior Citizens and Disabled Persons Property Tax Exemption program.
+values:
+  2008-01-01:
+    # RCW 84.36.383(2)(a) — prescription drugs
+    - prescription_expense
+    # RCW 84.36.383(2)(c) — Medicare premiums (Part B, net of MSP coverage). The statute authorizes Medicare premiums only, not general private health insurance, so we use medicare_part_b_premium rather than the broader medical_expense_health_insurance_premiums.
+    - medicare_part_b_premium
+    # RCW 84.36.383(2)(e) DME / prosthetics, (h) nebulizers, (j) ostomic items, (k) insulin, (l) kidney dialysis devices, (m) disposable drug-delivery devices — covered as an aggregate by other_medical_expenses.
+    - other_medical_expenses
+    # RCW 84.36.383(2)(f) — long-term care insurance premiums
+    - long_term_health_insurance_premiums
+    # Not modeled — we don't track at the moment: nursing-home/assisted-living costs (2)(b), Medigap premiums (2)(d), cost-sharing toward OOP max (2)(g), naturopathic prescribed botanicals (2)(i).
+
+metadata:
+  unit: list
+  period: year
+  label: Washington senior/disabled property tax exemption income deductions
+  reference:
+    - title: RCW 84.36.383(2)
+      href: https://app.leg.wa.gov/RCW/default.aspx?cite=84.36.383
+    - title: WAC 458-16A-120
+      href: https://app.leg.wa.gov/WAC/default.aspx?cite=458-16A-120
+    - title: Washington DOR Property Tax Exemption for Senior Citizens and People with Disabilities (PT0017)
+      href: https://dor.wa.gov/sites/default/files/2022-02/PTExemption_Senior.pdf

@@ -1,0 +1,91 @@
+- name: TDHCA ZIP 0BR uses the published payment standard
+  period: 2025
+  input:
+    zip_code: "78002"
+    bedrooms: 0
+  output:
+    zip_code_payment_standard: 12_120 # 1,010/mo * 12
+
+- name: TDHCA ZIP 6BR uses the published payment standard
+  period: 2025
+  input:
+    zip_code: "78002"
+    bedrooms: 6
+  output:
+    zip_code_payment_standard: 31_668 # 2,639/mo * 12
+
+- name: TDHCA ZIP 7BR adds 15 percent to the 6BR standard
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    zip_code: "78002"
+    bedrooms: 7
+  output:
+    zip_code_payment_standard: 36_418.2 # 2,639 * 1.15 * 12
+
+- name: Houston HHA Tier A ZIP 2BR uses the adopted payment standard
+  period: 2025
+  input:
+    zip_code: "77002"
+    bedrooms: 2
+  output:
+    zip_code_payment_standard: 19_536 # HHA Tier A-1 1,628/mo * 12
+
+- name: Houston HHA Tier D ZIP 2BR uses the lower adopted standard
+  period: 2025
+  input:
+    zip_code: "77011"
+    bedrooms: 2
+  output:
+    zip_code_payment_standard: 16_284 # HHA Tier D 1,357/mo * 12
+
+- name: Houston HHA Tier A ZIP 77407 uses its adopted standard, not the county FMR
+  period: 2025
+  input:
+    zip_code: "77407"
+    bedrooms: 2
+  output:
+    zip_code_payment_standard: 19_536 # HHA Tier A-1 1,628/mo * 12
+
+- name: Houston HHA Tier D ZIP 77587 uses its adopted standard, not the county FMR
+  period: 2025
+  input:
+    zip_code: "77587"
+    bedrooms: 2
+  output:
+    zip_code_payment_standard: 16_284 # HHA Tier D 1,357/mo * 12
+
+- name: ZIP without a published standard returns zero
+  period: 2025
+  input:
+    zip_code: "75201" # Dallas - SAFMR metro, no published adopted schedule
+    bedrooms: 2
+  output:
+    zip_code_payment_standard: 0
+
+- name: Unknown ZIP returns zero
+  period: 2025
+  input:
+    bedrooms: 2
+  output:
+    zip_code_payment_standard: 0
+
+# Only the 2025 published schedules are bundled (neither TDHCA nor Houston HHA
+# has adopted a distinct 2026 schedule as of 2026-07-06). nearest_payment_standard_year
+# therefore resolves period 2026 to the 2025 standards — an intentional
+# forward-imputation, documented in the payment-standards README.
+- name: TDHCA ZIP at period 2026 carries forward the 2025 published standard
+  period: 2026
+  input:
+    zip_code: "78002"
+    bedrooms: 0
+  output:
+    zip_code_payment_standard: 12_120 # 2025 1,010/mo * 12 (no 2026 TDHCA schedule)
+
+- name: Houston HHA Tier A ZIP at period 2026 carries forward the 2025 standard
+  period: 2026
+  input:
+    zip_code: "77002"
+    bedrooms: 2
+  output:
+    zip_code_payment_standard: 19_536 # HHA "2026" doc is Effective 01/01/2025: 1,628/mo * 12

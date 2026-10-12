@@ -1,0 +1,171 @@
+# Unit tests for Massachusetts ConnectorCare tax-unit eligibility.
+#
+# ma_connector_care_eligible (TaxUnit, YEAR, bool, defined_for StateCode.MA) is:
+#   in_effect
+#   & (aca_magi_fraction >= fpl_floor)      # fpl_floor = 1.0 for PY2026
+#   & (aca_magi_fraction <= fpl_limit)      # fpl_limit = 4.0 for PY2026
+#   & (count of ma_connector_care_member_eligible members > 0)
+#
+# ma_connector_care_member_eligible = is_aca_ptc_eligible (Person, YEAR).
+# in_effect is false before 2026-01-01, true from 2026-01-01 open-ended.
+# aca_magi_fraction is supplied directly so the income band is exact.
+
+# --- Income-band boundaries at the 100% FPL floor (>= comparison) ---
+
+- name: Case 1, one APTC-eligible member just below the 100% FPL floor is ineligible.
+  # aca_magi_fraction 0.99 < fpl_floor 1.0 -> income_eligible false.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0.99
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_eligible: false
+
+- name: Case 2, one APTC-eligible member exactly at the 100% FPL floor is eligible.
+  # aca_magi_fraction 1.0 >= fpl_floor 1.0 (inclusive) and <= 4.0 -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_eligible: true
+
+# --- Income-band boundaries at the 400% FPL limit (<= comparison) ---
+
+- name: Case 3, one APTC-eligible member exactly at the 400% FPL limit is eligible.
+  # aca_magi_fraction 4.0 <= fpl_limit 4.0 (inclusive) -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 4.0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_eligible: true
+
+- name: Case 4, one APTC-eligible member just above the 400% FPL limit is ineligible.
+  # aca_magi_fraction 4.01 > fpl_limit 4.0 -> income_eligible false.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 4.01
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_eligible: false
+
+# --- Member and residency gates ---
+
+- name: Case 5, in-band household with no APTC-eligible member is ineligible.
+  # aca_magi_fraction 2.0 is in band but has_eligible_member is false.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_eligible: false
+
+- name: Case 6, non-Massachusetts household is ineligible via defined_for.
+  # In-band, APTC-eligible member, but state_code is CA -> defined_for returns false.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ma_connector_care_eligible: false
+
+# --- in_effect timing ---
+
+- name: Case 7, program is not in effect in 2025 so the household is ineligible.
+  # in_effect is false before 2026-01-01, so an otherwise-eligible unit fails.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_eligible: false
+
+- name: Case 8, program is in effect open-ended in 2027 so the household is eligible.
+  # in_effect has no end date, so PY2027 carries the PY2026 design forward.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_connector_care_eligible: true

@@ -8,7 +8,10 @@ class sc_cdcc_potential(Variable):
     documentation = "South Carolina Child and Dependent Care Credit"
     unit = USD
     definition_period = YEAR
-    reference = "https://dor.sc.gov/forms-site/Forms/IITPacket_2022.pdf#page=22"
+    reference = (
+        "https://www.scstatehouse.gov/code/t12c006.php",  # S.C. Code § 12-6-3380
+        "https://dor.sc.gov/forms-site/Forms/IITPacket_2022.pdf#page=22",
+    )
     defined_for = StateCode.SC
 
     def formula(tax_unit, period, parameters):
@@ -24,9 +27,16 @@ class sc_cdcc_potential(Variable):
         # Get child care expenses.
         childcare_expenses = tax_unit("cdcc_relevant_expenses", period)
 
-        # Married filing separate are ineligible.
-        filing_status = tax_unit("filing_status", period)
-        eligible = filing_status != filing_status.possible_values.SEPARATE
+        # S.C. Code Ann. § 12-6-3380 computes the credit "as provided in
+        # Internal Revenue Code Section 21," importing § 21 wholesale with only
+        # the applicable-percentage (7%) and SC-source-income modifications. It
+        # adds no filing-status language of its own, so it carries the
+        # § 21(e)(2) joint-return requirement together with the § 21(e)(4)
+        # separated-taxpayer exception. A married-separate filer who lives apart
+        # while maintaining a home for a qualifying individual is therefore
+        # eligible, matching the federal treatment; an ordinary MFS filer
+        # remains ineligible.
+        eligible = tax_unit("cdcc_filing_status_eligible", period)
 
         # Number of qualifying people
         count_cdcc_eligible = min_(

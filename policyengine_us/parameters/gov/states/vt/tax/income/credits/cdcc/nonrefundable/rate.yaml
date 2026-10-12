@@ -1,0 +1,20 @@
+description: Vermont matches this fraction of the federal Child and Dependent Care Credit under its nonrefundable credit.
+values:
+  # Verified for 2021 via the pre-amendment text struck by 2022 Act 138,
+  # Sec. 2; assumed unchanged back to 2005, matching the low-income credit
+  # parameters.
+  2005-01-01: 0.24
+  # 2022 Act 138, Sec. 2 struck child and dependent care credits from the
+  # 32 V.S.A. § 5822(d)(1) match effective 2022.
+  2022-01-01: 0
+metadata:
+  unit: /1
+  period: year
+  label: Vermont nonrefundable CDCC match
+  reference:
+    - title: 2021 Vermont Statutes, Title 32 - Taxation and Finance, Chapter 151 - Income Taxes, §5822(d)(1)
+      href: https://law.justia.com/codes/vermont/2021/title-32/chapter-151/section-5822/
+    - title: 2022 Act 138, Sec. 2 (amending 32 V.S.A. § 5822(d))
+      href: https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT138/ACT138%20As%20Enacted.pdf#page=2
+    - title: 2021 Schedule IN-112, Part II
+      href: https://tax.vermont.gov/sites/tax/files/documents/IN-112-2021.pdf#page=2

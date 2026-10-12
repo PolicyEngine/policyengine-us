@@ -22,31 +22,47 @@ class spm_unit_benefits(Variable):
             "ky_ssp",  # Kentucky benefits
             "de_ssp",  # Delaware benefits
             "fl_oss",
+            "mt_ssp",
             "ks_sspp",  # Kansas benefits
             "hi_oss",
             "la_oss",  # Louisiana benefits
             "ma_state_supplement",  # Massachusetts benefits
+            "md_paa",  # Maryland benefits
             "wa_ssp",  # Washington benefits
             "mi_ssp",  # Michigan benefits
             "me_ssp",  # Maine benefits
-            "mt_ssp",  # Montana benefits
+            "mo_ssp",  # Missouri benefits
+            "mn_msa",  # Minnesota benefits
+            "ne_aabd",  # Nebraska benefits
             # California programs.
             "ca_cvrp",  # California Clean Vehicle Rebate Project.
+            # California SSI state supplement (SSP). The formula nets federal
+            # SSI and countable income out of the state payment standard, so
+            # summing it with ssi does not double-count.
+            "ca_state_supplement",
             # Colorado programs.
             "co_ccap_subsidy",
             "co_state_supplement",
             "co_oap",
+            # Washington programs.
+            "wa_child_care_subsidies",
             # New Mexico programs.
             "nm_ssi_state_supplement",
             # South Carolina programs.
             "sc_ssi_state_supplement",
             # Texas programs.
             "tx_ssi_state_supplement",
+            # West Virginia programs.
+            "wv_child_care_subsidies",
             "snap",
             "wic",
             "free_school_meals",
             "reduced_price_school_meals",
-            "spm_unit_broadband_subsidy",
+            "child_support_received",
+            "workers_compensation",
+            "educational_assistance",
+            "financial_assistance",
+            "survivor_benefits",
             "spm_unit_energy_subsidy",
             "tanf",
             # Washington (WA) cash-assistance programs. wa_sfa and wa_rca
@@ -64,6 +80,7 @@ class spm_unit_benefits(Variable):
             "ak_energy_relief",
             # Contributed.
             "basic_income",
+            "trump_dividend",
             "ny_drive_clean_rebate",
         ]
         if parameters(period).gov.contrib.ubi_center.flat_tax.deduct_ptc:

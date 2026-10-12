@@ -12,4 +12,3 @@ class social_security(Variable):
         "social_security_" + i
         for i in ["dependents", "disability", "retirement", "survivors"]
     ]
-    uprating = "calibration.gov.irs.soi.social_security"

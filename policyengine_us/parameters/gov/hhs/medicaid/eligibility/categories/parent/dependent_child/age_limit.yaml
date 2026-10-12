@@ -1,0 +1,149 @@
+description: A person qualifies as a dependent child for the Medicaid parent and other caretaker relative category while under this age.
+metadata:
+  unit: year
+  period: year
+  label: Medicaid parent category dependent child age limit
+  breakdown:
+    - state_code
+  reference:
+    - title: 42 CFR 435.4 - definition of dependent child
+      href: https://www.law.cornell.edu/cfr/text/42/435.4
+    - title: 42 CFR 435.110 - parents and other caretaker relatives
+      href: https://www.law.cornell.edu/cfr/text/42/435.110
+    - title: Georgia DFCS Medicaid Policy Manual § 2255 - Age (Family Medicaid), child under 19 for Parent/Caretaker
+      href: https://pamms.dhs.ga.gov/dfcs/medicaid/2255/
+    - title: Georgia DFCS Medicaid Policy Manual § 2162 - Parent/Caretaker with Children
+      href: https://pamms.dhs.ga.gov/dfcs/medicaid/2162/
+    - title: Kansas KFMAM § 02100 - Child in Family, "A child must be under 19 years of age"
+      href: https://khap.kdhe.ks.gov/kfmam/main.asp?tier1=02000&tier2=02100
+    - title: Ala. Admin. Code r. 560-X-25-.15(1)(c) - dependent child "under the age of 19"
+      href: https://admincode.legislature.state.al.us/api/chapter/560-X-25#page=40
+    - title: 130 CMR 505.002(C) - MassHealth Standard for a parent or caretaker relative of "a child younger than 19 years old"
+      href: https://www.law.cornell.edu/regulations/massachusetts/130-CMR-505-002
+    - title: Alabama approved state plan S25 (AL-13-0021-MM1) - under-18 base, student option unchecked (conflicts with current admin code)
+      href: https://www.medicaid.gov/State-resource-center/Medicaid-State-Plan-Amendments/Downloads/AL/AL-13-0021-MM1.pdf#page=12
+# 18 is the federal floor: 42 CFR 435.4 defines a dependent child as
+# under 18, with a separate state option for 18-year-old students
+# (student_option.yaml).
+AK:
+  2014-01-01: 18
+# Alabama's current administrative code applies a plain under-19 rule
+# with no student condition: "A 'dependent child' is defined as a child
+# who is under the age of 19" (Ala. Admin. Code r. 560-X-25-.15(1)(c),
+# chapter revised 7/15/2023). Conflict: the CMS-approved S25
+# (AL-13-0021-MM1, effective 1/1/2014) reads under-18 with the student
+# option unchecked; the operative admin code is encoded, as with
+# Kansas. If this is ever returned to 18 per the S25, no
+# student_option.yaml change is needed - Alabama's S25 box is
+# unchecked.
+AL:
+  2014-01-01: 19
+AR:
+  2014-01-01: 18
+AZ:
+  2014-01-01: 18
+CA:
+  2014-01-01: 18
+CO:
+  2014-01-01: 18
+CT:
+  2014-01-01: 18
+DC:
+  2014-01-01: 18
+DE:
+  2014-01-01: 18
+FL:
+  2014-01-01: 18
+# Georgia's manual applies a plain under-19 rule with no student
+# condition: "there must be a child in the assistance unit under the
+# age of 19" (DFCS Manual § 2255; also § 2162).
+GA:
+  2014-01-01: 19
+HI:
+  2014-01-01: 18
+IA:
+  2014-01-01: 18
+ID:
+  2014-01-01: 18
+IL:
+  2014-01-01: 18
+IN:
+  2014-01-01: 18
+# Kansas operates a plain under-19 rule: "A child must be under 19
+# years of age" (KFMAM § 02100), broader than its S25 election of the
+# 18-year-old student option (SPA KS 14-0002-MM1). If this is ever
+# returned to 18, also flip student_option.yaml to true per that
+# election.
+KS:
+  2014-01-01: 19
+KY:
+  2014-01-01: 18
+LA:
+  2014-01-01: 18
+# Massachusetts covers a "parent or caretaker relative of a child
+# younger than 19 years old" with no student condition
+# (130 CMR 505.002(C)).
+MA:
+  2014-01-01: 19
+MD:
+  2014-01-01: 18
+ME:
+  2014-01-01: 18
+MI:
+  2014-01-01: 18
+MN:
+  2014-01-01: 18
+MO:
+  2014-01-01: 18
+MS:
+  2014-01-01: 18
+MT:
+  2014-01-01: 18
+NC:
+  2014-01-01: 18
+ND:
+  2014-01-01: 18
+NE:
+  2014-01-01: 18
+NH:
+  2014-01-01: 18
+NJ:
+  2014-01-01: 18
+NM:
+  2014-01-01: 18
+NV:
+  2014-01-01: 18
+NY:
+  2014-01-01: 18
+OH:
+  2014-01-01: 18
+OK:
+  2014-01-01: 18
+OR:
+  2014-01-01: 18
+PA:
+  2014-01-01: 18
+RI:
+  2014-01-01: 18
+SC:
+  2014-01-01: 18
+SD:
+  2014-01-01: 18
+TN:
+  2014-01-01: 18
+TX:
+  2014-01-01: 18
+UT:
+  2014-01-01: 18
+VA:
+  2014-01-01: 18
+VT:
+  2014-01-01: 18
+WA:
+  2014-01-01: 18
+WI:
+  2014-01-01: 18
+WV:
+  2014-01-01: 18
+WY:
+  2014-01-01: 18

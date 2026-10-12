@@ -1,0 +1,40 @@
+description: List of USPS state codes whose income tax adopts the federal standard deduction under the state income tax program.
+metadata:
+  unit: list
+  period: year
+  label: States adopting federal standard deduction
+  reference:
+    - title: CRS § 39-22-104(2) - Colorado conformity to federal taxable income
+      href: https://leg.colorado.gov/sites/default/files/images/olls/crs2024-title-39.pdf
+    - title: Idaho Code § 63-3022(j)(1) - Idaho federal standard deduction conformity
+      href: https://legislature.idaho.gov/statutesrules/idstat/Title63/T63CH30/SECT63-3022/
+    - title: RSMo § 143.131(1) - Missouri federal standard deduction conformity
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=143.131
+    - title: N.D.C.C. § 57-38-30.3(1)(b) - North Dakota federal taxable income conformity
+      href: https://www.legis.nd.gov/cencode/t57c38.pdf#page=2
+    - title: NMSA § 7-2-7.5 - New Mexico federal standard deduction conformity
+      href: https://nmonesource.com/nmos/nmsa/en/item/4359/index.do
+    - title: S.C. Code Ann. § 12-6-50 - South Carolina conformity statute (Internal Revenue Code sections specifically not adopted; amended by H. 4216 / Act 110 of 2026 to add § 63)
+      href: https://law.justia.com/codes/south-carolina/title-12/chapter-6/section-12-6-50/
+    - title: South Carolina H. 4216 / Act 110 of 2026 - decouples from federal itemized and standard deductions effective tax year 2026
+      href: https://www.scstatehouse.gov/sess126_2025-2026/bills/4216.htm
+    - title: Conn. Gen. Stat. § 12-701 - Connecticut adjusted gross income definition (CT has no itemized/standard deduction; excluded from both federal-conformity lists)
+      href: https://www.cga.ct.gov/current/pub/chap_229.htm#sec_12-701
+    - title: Utah Code § 59-10-1018(1)(a) - Utah federal standard deduction conformity
+      href: https://le.utah.gov/xcode/Title59/Chapter10/59-10-S1018.html
+values:
+  2014-01-01:
+    - CO
+    - ID
+    - MO
+    - ND
+    - NM
+    - SC
+    - UT
+  2026-01-01:
+    - CO
+    - ID
+    - MO
+    - ND
+    - NM
+    - UT

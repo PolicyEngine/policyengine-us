@@ -1,0 +1,60 @@
+# Iowa has no general court-supervision age extension (CCDF Plan 2.2.1(c):
+# No). Child care directed in a court order (IAC 441-170.2(1)"b"(4)) is
+# provided only "in certain cases" at the department's discretion, so it is
+# not modeled and court supervision alone has no effect on Iowa CCA.
+# Authority: https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=4
+- name: Case 1, court supervision does not extend the age limit.
+  period: 2026-01
+  input:
+    state_code: [IA, IA, IA, IA, IA]
+    age: [12, 13, 17, 18, 19]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, false, false, false, false]
+    is_under_court_supervision: [true, true, true, true, true]
+  output:
+    ia_cca_eligible_child: [true, false, false, false, false]
+
+- name: Case 2, court supervision creates no income exception.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head_or_spouse: true
+        employment_income: 240_000
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_under_court_supervision: true
+        pre_subsidy_childcare_expenses: 4_800
+        childcare_hours_per_week: 40
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: false
+        ia_cca_income_eligible: false
+        ia_cca_activity_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IA
+  output:
+    ia_cca_eligible_child: [false, true]
+    ia_cca_income_exception: false
+    ia_cca_eligible: false
+    ia_cca: 0
+
+- name: Case 3, the disabled-child route is unchanged by court supervision.
+  period: 2026-01
+  input:
+    state_code: [IA, IA, IA]
+    age: [18, 18, 19]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [true, true, true]
+    is_under_court_supervision: [false, true, true]
+  output:
+    ia_cca_eligible_child: [true, true, false]

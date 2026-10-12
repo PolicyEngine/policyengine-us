@@ -33,10 +33,17 @@ def create_adjust_income_limit_and_min_children_by_filing_status() -> Reform:
         definition_period = YEAR
         defined_for = "nyc_school_tax_credit_eligible"
 
-        adds = [
-            "nyc_school_tax_credit_fixed_amount",
-            "nyc_school_tax_credit_rate_reduction_amount",
-        ]
+        def formula(tax_unit, period, parameters):
+            # Formula rather than an adds list so household output surfaces
+            # only the final credit (#8938).
+            return add(
+                tax_unit,
+                period,
+                [
+                    "nyc_school_tax_credit_fixed_amount",
+                    "nyc_school_tax_credit_rate_reduction_amount",
+                ],
+            )
 
     class reform(Reform):
         def apply(self):

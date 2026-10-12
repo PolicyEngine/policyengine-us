@@ -1,0 +1,76 @@
+- name: Case 1, reduction equals the property tax on the exempt share of value.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 8_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_homestead_property_tax_reduction: 500
+
+- name: Case 2, reduction cannot exceed property taxes.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 1_600
+        real_estate_taxes: 800
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_homestead_property_tax_reduction: 800
+
+- name: Case 3, ineligible filer gets no reduction.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 64
+        assessed_property_value: 8_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: SC
+  output:
+    sc_homestead_property_tax_reduction: 0
+
+- name: Case 4, reduction excludes non-joint adult property tax.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 1_600
+        real_estate_taxes: 800
+      person2:
+        age: 40
+        assessed_property_value: 8_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_homestead_property_tax_reduction: 800

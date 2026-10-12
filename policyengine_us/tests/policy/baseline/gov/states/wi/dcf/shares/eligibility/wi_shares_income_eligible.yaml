@@ -1,0 +1,179 @@
+# Wisconsin Shares two-tier income test: new applicants must have gross
+# monthly income at or below 200% of the federal poverty guideline; enrolled
+# assistance groups remain income eligible until gross income exceeds 85% of
+# the state median income. Wisconsin Shares Handbook (July 2026) Sections
+# 6.1.1 and 6.1.2; Wis. Stat. s. 49.155(1m)(c)1. and (1m)(c)1d.b.
+# spm_unit_fpg and hhs_smi are set explicitly so the band math is exact and
+# immune to uprating drift: FPG 24,000/year = 2,000/month (200% = 4,000);
+# SMI 96,000/year = 8,000/month (85% = 6,800).
+- name: Case 1, applicant at 150% of the poverty guideline is income eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/month = 150% FPL.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_income_eligible: true
+
+- name: Case 2, applicant just above 200% of the poverty guideline is not income eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_060  # 4,005/month > 4,000 (200% FPL).
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_income_eligible: false
+
+- name: Case 3, enrolled family with the same income stays eligible under the 85% SMI tier.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_060  # 4,005/month, above 200% FPL but below 6,800 (85% SMI).
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_wi_shares_enrolled: true
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_income_eligible: true
+
+- name: Case 4, enrolled family above 85% of the state median income is not income eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 84_000  # 7,000/month > 6,800 (85% SMI).
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_wi_shares_enrolled: true
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_income_eligible: false
+
+- name: Case 5, applicant just below 200% of the poverty guideline is income eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 47_988  # 3,999/month < 4,000 (200% FPL).
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_income_eligible: true
+
+- name: Case 6, applicant at exactly 200% of the poverty guideline is income eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # Exactly 4,000/month = 200% FPL ("at or below").
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_income_eligible: true
+
+- name: Case 7, enrolled family one dollar below 85% of the state median income is income eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 81_588  # 6,799/month, one dollar below 6,800 (85% SMI).
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_wi_shares_enrolled: true
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_income_eligible: true
+
+- name: Case 8, enrolled family one dollar above 85% of the state median income is not income eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 81_612  # 6,801/month, one dollar above 6,800 (85% SMI).
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_wi_shares_enrolled: true
+        spm_unit_fpg: 24_000
+        hhs_smi: 96_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_income_eligible: false

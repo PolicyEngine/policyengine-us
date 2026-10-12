@@ -1,0 +1,279 @@
+# Colorado Care Worker Tax Credit (CRS 39-22-566), 2026 parameters:
+# amount: joint with 2 eligible care workers = $2,400; otherwise $1,200.
+# AGI limit (agi <= limit): joint = $100,000; non-joint = $75,000.
+- name: co_care_worker_joint_2_workers_agi_at_100k_limit (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 90_000
+        # MyFriendBen sends long_term_capital_gains; gains must count toward the AGI limit.
+        long_term_capital_gains_before_response: 10_000
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: true
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: true
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    tax_units:
+      tax_unit:
+        co_eitc: 0.0
+        co_ctc: 0.0
+        # AGI = 90,000 wages + 10,000 LTCG = 100,000 = joint limit (inclusive);
+        # joint with 2 eligible care workers -> $2,400 bonus amount.
+        co_care_worker_credit: 2_400.0
+        adjusted_gross_income: 100_000.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+      spouse:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+- name: co_care_worker_joint_1_worker_base_amount (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: true
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id002
+        - head
+        - spouse
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    tax_units:
+      tax_unit:
+        co_eitc: 0.0
+        co_ctc: 0.0
+        # Joint filer but only 1 eligible care worker -> non-bonus amount $1,200
+        # (bonus $2,400 requires joint AND 2 eligible care workers).
+        co_care_worker_credit: 1_200.0
+        adjusted_gross_income: 50_000.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+      spouse:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+- name: co_care_worker_single_agi_at_75k_limit (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 75_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: true
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        co_eitc: 0.0
+        co_ctc: 0.0
+        # AGI 75,000 = non-joint limit (inclusive, agi <= 75,000) -> $1,200;
+        # $1 more would zero the credit.
+        co_care_worker_credit: 1_200.0
+        adjusted_gross_income: 75_000.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+- name: co_care_worker_joint_agi_above_100k_limit_ineligible (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 100_001
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: true
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: true
+    households:
+      household:
+        members: &id004
+        - head
+        - spouse
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    tax_units:
+      tax_unit:
+        co_eitc: 0.0
+        co_ctc: 0.0
+        # Income-route ineligibility pin: AGI 100,001 > 100,000 joint limit -> 0.
+        co_care_worker_credit: 0.0
+        adjusted_gross_income: 100_001.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0
+      spouse:
+        co_family_affordability_credit: 0.0
+        co_state_supplement: 0.0
+        co_oap: 0.0

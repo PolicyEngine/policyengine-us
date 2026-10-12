@@ -73,3 +73,35 @@
   output:
     ssi_in_kind_support_and_maintenance: 4_108
     medicaid_optional_senior_or_disabled_countable_income: 3_868
+
+# Missouri MHABD budgets in the order of DSS Manual § 0805.015.00: the
+# $65-plus-one-half earned income exemption first (§ 0805.015.25), then
+# the $20 standard exemption from the combined total, then round down to
+# the nearest whole dollar (§ 0805.015.40). Under the SSI order, the
+# unused $20 would shift to earned income before the 50-percent
+# exclusion, yielding (2,368 - 85) x 0.5 = $1,141.50 monthly instead.
+- name: Missouri applies the earned income exemption before the standard exemption.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    employment_income: 28_416
+    state_code: MO
+  output:
+    # Monthly, (2,368 - 65) x 0.5 - 20 = 1,131.50, rounded down to 1,131.
+    medicaid_optional_senior_or_disabled_countable_income: 13_572
+    # 1,131 equals the 2026 aged standard, and the standards are maxima.
+    is_optional_senior_or_disabled_income_eligible: true
+
+- name: Missouri rounds adjusted income down to the whole dollar.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    age: 70
+    ssi_marital_unearned_income: 13_821
+    state_code: MO
+  output:
+    # Monthly, 1,151.75 - 20 = 1,131.75, rounded down to 1,131. Without
+    # rounding, 1,131.75 would exceed the $1,131 standard.
+    medicaid_optional_senior_or_disabled_countable_income: 13_572
+    is_optional_senior_or_disabled_income_eligible: true

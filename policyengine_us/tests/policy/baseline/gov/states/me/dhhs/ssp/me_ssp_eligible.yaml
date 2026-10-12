@@ -104,7 +104,7 @@
         is_ssi_eligible: true
         # Income exceeds the federal SSI standard, so the person does
         # not actually receive SSI but is still categorically eligible.
-        uncapped_ssi: -2_400
+        uncapped_ssi: -200
     households:
       household:
         members: [person1]

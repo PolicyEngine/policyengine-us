@@ -1,0 +1,13 @@
+- name: Orange County is identified from the county string.
+  period: 2026
+  input:
+    county_str: ORANGE_COUNTY_CA
+  output:
+    in_oc: true
+
+- name: A different California county is not Orange County.
+  period: 2026
+  input:
+    county_str: RIVERSIDE_COUNTY_CA
+  output:
+    in_oc: false

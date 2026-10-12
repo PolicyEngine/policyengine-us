@@ -8,10 +8,10 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (1)(f)
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=17",
-        "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/4884.pdf#page=2",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30",  # (1)(f)
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/BOOK_MI-1040.pdf#page=17",
+        "https://web.archive.org/web/20250202214915/https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/4884.pdf#page=2",
     )
     defined_for = StateCode.MI
 
@@ -20,13 +20,11 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
     # retirement benefits deduction
     def formula(tax_unit, period, parameters):
         # Modeled after 2022 MICHIGAN Pension Schedule (Form 4884) Section A
-        p = parameters(
-            period
-        ).gov.states.mi.tax.income.deductions.retirement_benefits.tier_one
+        p = parameters(period).gov.states.mi.tax.income.deductions.retirement_benefits
         filing_status = tax_unit("filing_status", period)
 
         # Line 9
-        private_cap = p.amount[filing_status]
+        private_cap = p.tier_one.amount[filing_status]
         person = tax_unit.members
         # "Recipients born before 1946 may subtract all qualifying retirement and
         # pension benefits received from federal or Michigan public sources"
@@ -54,9 +52,30 @@ class mi_retirement_benefits_deduction_tier_one_amount(Variable):
             reduced_private_cap - total_public_benefit, 0
         )
         # Line 14
-        uncapped_private_benefits = (
-            person("taxable_private_pension_income", period) * is_head_or_spouse
+        p_irs = parameters(period).gov.irs.income.exemption.traditional_distribution
+        # Under MCL 206.30(1)(f)(iv)(B)(II) & (8)(a)(ii), individual retirement account
+        # distributions qualify after age 59½ or in the case of disability.
+        # Exceptions for death and IRC § 72(t)(2)(A)(iv) periodic payments are unmodeled.
+        ira_eligible = (person("age", period) >= p_irs.age_threshold) | person(
+            "is_disabled", period
         )
+        ira_sources = [
+            s
+            for s in p.private_retirement_sources
+            if s
+            in {
+                "taxable_ira_distributions",
+                "taxable_roth_conversions",
+                "taxable_sep_distributions",
+            }
+        ]
+        pension_sources = [
+            s for s in p.private_retirement_sources if s not in ira_sources
+        ]
+        uncapped_private_benefits = (
+            add(person, period, pension_sources)
+            + add(person, period, ira_sources) * ira_eligible
+        ) * is_head_or_spouse
         total_uncapped_private_benefits = tax_unit.sum(uncapped_private_benefits)
         # Line 15
         capped_private_benefits = min_(

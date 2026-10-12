@@ -14,7 +14,9 @@ class in_tanf(Variable):
     defined_for = "in_tanf_eligible"
 
     def formula(spm_unit, period, parameters):
-        payment_standard = spm_unit("in_tanf_payment_standard", period)
+        maximum_benefit = spm_unit("in_tanf_maximum_benefit", period)
         countable_income = spm_unit("in_tanf_countable_income_for_payment", period)
-        benefit = max_(payment_standard - countable_income, 0)
-        return min_(benefit, payment_standard)
+        benefit = max_(maximum_benefit - countable_income, 0)
+        # Cap at the maximum benefit so negative countable income cannot
+        # inflate the grant above the maximum.
+        return min_(benefit, maximum_benefit)

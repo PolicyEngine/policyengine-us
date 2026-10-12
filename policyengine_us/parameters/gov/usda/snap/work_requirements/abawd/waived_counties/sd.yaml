@@ -1,0 +1,21 @@
+description: Counties in South Dakota with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  2024-10-01:
+    - BENNETT_COUNTY_SD # FIPS 46007
+    - BUFFALO_COUNTY_SD # FIPS 46017
+    - CORSON_COUNTY_SD # FIPS 46031
+    - DEWEY_COUNTY_SD # FIPS 46041
+    - OGLALA_LAKOTA_COUNTY_SD # FIPS 46102
+    - TODD_COUNTY_SD # FIPS 46121
+    - ZIEBACH_COUNTY_SD # FIPS 46137
+  2025-10-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in South Dakota
+  reference:
+    - title: USDA FNS South Dakota FY 2025 ABAWD Waiver Response
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/sd-abawd-response-fy2025.pdf

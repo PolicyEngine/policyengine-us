@@ -1,19 +1,26 @@
-- name: Case 1 - MO WFTC is refundable when reform active
+# The reform makes the Missouri WFTC fully refundable. It pays the uncapped
+# potential credit (mo_wftc_potential), so these tests drive the credit from
+# the federal EITC rather than injecting the capped mo_wftc. The 2024 WFTC
+# match is 20% of the federal EITC.
+
+- name: Case 1 - MO WFTC is fully refundable (uncapped) when reform active
   period: 2024
   reforms: policyengine_us.reforms.states.mo.eitc.mo_refundable_eitc
   input:
     state_code: MO
-    mo_wftc: 500
+    eitc: 2_500
   output:
-    mo_refundable_wftc: 500
+    mo_wftc_potential: 500  # 2,500 * 0.2
+    mo_wftc: 0  # capped at zero tax liability
+    mo_refundable_wftc: 500  # full potential paid as a refund
     mo_non_refundable_wftc: 0
 
-- name: Case 2 - MO WFTC is 0 when WFTC is 0
+- name: Case 2 - MO refundable WFTC is 0 when the federal EITC is 0
   period: 2024
   reforms: policyengine_us.reforms.states.mo.eitc.mo_refundable_eitc
   input:
     state_code: MO
-    mo_wftc: 0
+    eitc: 0
   output:
     mo_refundable_wftc: 0
     mo_non_refundable_wftc: 0
@@ -23,7 +30,7 @@
   reforms: policyengine_us.reforms.states.mo.eitc.mo_refundable_eitc
   input:
     state_code: CA
-    mo_wftc: 500
+    eitc: 2_500
   output:
     mo_refundable_wftc: 0
     mo_non_refundable_wftc: 0
@@ -33,6 +40,6 @@
   reforms: policyengine_us.reforms.states.mo.eitc.mo_refundable_eitc
   input:
     state_code: MO
-    mo_wftc: 500
+    eitc: 2_500
   output:
     mo_non_refundable_credits: 0

@@ -15,10 +15,14 @@ class vt_reach_up_dependent_care_deduction(Variable):
     def formula(spm_unit, period, parameters):
         # Per Section 2252.2(c): $175/month max per participant claiming the deduction.
         # We approximate "participant" as head or spouse since they are the earners.
+        # Per Section 2252.2(a), the deduction covers care of a household
+        # member who is a disabled or seriously ill adult, so adult care
+        # expenses count alongside childcare.
         p = parameters(period).gov.states.vt.dcf.reach_up.income.deductions
         person = spm_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         num_participants = spm_unit.sum(head_or_spouse)
         max_deduction = p.dependent_care * num_participants
         childcare_expenses = spm_unit("childcare_expenses", period)
-        return min_(childcare_expenses, max_deduction)
+        adult_care_expenses = add(spm_unit, period, ["care_expenses"])
+        return min_(childcare_expenses + adult_care_expenses, max_deduction)

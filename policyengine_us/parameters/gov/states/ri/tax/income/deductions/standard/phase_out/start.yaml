@@ -5,6 +5,7 @@ values:
   2023-01-01: 233_750
   2024-01-01: 246_450
   2025-01-01: 254_250
+  2026-01-01: 261_000
 
 metadata:
   unit: currency-USD
@@ -16,6 +17,8 @@ metadata:
       type: downwards
       interval: 50
   reference:
+    - title: Rhode Island Division of Taxation Advisory ADV 2025-22
+      href: https://tax.ri.gov/sites/g/files/xkgbur541/files/2025-11/ADV_2025_22_Inflation_Adjustments.pdf#page=1
     # Legal code specifies $175,000 starting in 2011.
     - title: R.I. Gen. Laws § 44-30-2.6 (c), (3), (B), (III)
       href: https://law.justia.com/codes/rhode-island/title-44/chapter-44-30/part-i/section-44-30-2-6/

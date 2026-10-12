@@ -1,0 +1,98 @@
+# Wisconsin Shares approved activities: employment (including
+# self-employment), education, and Wisconsin Works (W-2) participation.
+# Wisconsin Shares Handbook (July 2026) Sections 4.8 and 5.1;
+# Wis. Stat. s. 49.155(1m)(a)1.-6.
+# weekly_hours_worked_before_lsr defaults to 40, so non-working cases must
+# set it to 0 explicitly.
+- name: Case 1, employed parent is in an approved activity.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 30
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_parent_in_approved_activity: true
+
+- name: Case 2, parent with no work hours and no other activity is not in an approved activity.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_parent_in_approved_activity: false
+
+- name: Case 3, full-time student parent is in an approved activity.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: true
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_parent_in_approved_activity: true
+
+- name: Case 4, W-2 participant parent is in an approved activity.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_parent_in_approved_activity: true
+
+- name: Case 5, self-employed parent with earnings but no recorded hours is in an approved activity.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        self_employment_income: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_parent_in_approved_activity: true
+
+- name: Case 6, self-employed parent with a net loss and no recorded hours is in an approved activity.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        self_employment_income: -12_000  # An active business running a loss.
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    # With zero hours and no wages, the self_employment_income != 0 arm
+    # alone treats the loss as evidence of active self-employment.
+    wi_shares_parent_in_approved_activity: true

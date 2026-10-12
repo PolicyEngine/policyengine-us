@@ -273,3 +273,212 @@
   output:
     # 5-18 yr Special Needs PT base: $174.60
     nj_ccap_maximum_weekly_benefit: 174.60
+
+# CC-230 (03/26) rates take effect April 1, 2026.
+- name: Case 15, licensed center FT base infant across the April 2026 rate change.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_maximum_weekly_benefit:
+      2026-03: 366.67
+      2026-05: 367.59
+
+- name: Case 16, licensed center PT base infant under CC-230 (03/26).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        childcare_hours_per_week: 20
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_maximum_weekly_benefit:
+      2026-05: 183.79
+
+- name: Case 17, licensed center FT 5-star toddler across the April 2026 rate change.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: STAR_5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_maximum_weekly_benefit:
+      2026-03: 356.97
+      2026-05: 357.86
+
+- name: Case 18, licensed center FT 5-star school age still gets base rate under CC-230 (03/26).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: STAR_5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_maximum_weekly_benefit:
+      2026-05: 275.64
+
+- name: Case 19, licensed center FT base special needs infant under CC-230 (03/26).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        is_disabled: true
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_maximum_weekly_benefit:
+      2026-05: 441.11
+
+- name: Case 20, ACA summer camp FT school age under CC-230 (03/26).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: ACA_SUMMER_CAMP
+        nj_ccap_grow_nj_kids_rating: NONE
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_maximum_weekly_benefit:
+      2026-05: 289.43
+
+- name: Case 21, ACA summer camp FT school age special needs under CC-230 (03/26).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 8
+        is_disabled: true
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: ACA_SUMMER_CAMP
+        nj_ccap_grow_nj_kids_rating: NONE
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_maximum_weekly_benefit:
+      2026-05: 367.57
+
+- name: Case 22, registered family FT base infant rate is unchanged by CC-230 (03/26).
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 1
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: REGISTERED_FAMILY
+        nj_ccap_grow_nj_kids_rating: NONE
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_maximum_weekly_benefit:
+      2026-05: 281.19
+
+# CC-230 (07/24), effective August 1, 2024, raised only toddler and
+# preschool licensed center rates.
+- name: Case 23, licensed center FT base toddler across the August 2024 rate change.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 2
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: NONE
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_maximum_weekly_benefit:
+      2024-07: 321.55
+      2024-08: 323.33
+
+- name: Case 24, licensed center FT 3-star preschool across the August 2024 rate change.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 35
+        nj_ccap_provider_type: LICENSED_CENTER
+        nj_ccap_grow_nj_kids_rating: STAR_3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_ccap_maximum_weekly_benefit:
+      2024-07: 300.77
+      2024-08: 302.25

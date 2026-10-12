@@ -1,0 +1,476 @@
+# Net income boundaries from the FNS Basis of Coupon/EBT Issuance table,
+# 48 States & DC, October 1, 2025 (3-person column, maximum allotment $785):
+# https://web.archive.org/web/20251101194701/https://dssmanuals.mo.gov/wp-content/uploads/2022/09/snap-basis-issuance-table.pdf#page=1
+# (Wayback capture of the Missouri DSS mirror, which is replaced in place
+# each October; FNS does not publish the full table on fns.usda.gov.)
+# FY2026 maximum allotments: https://www.fns.usda.gov/snap/allotment/cola/fy26
+# The household's only income is a reported TANF grant, so net income equals
+# the grant minus the $209 standard deduction (FY2026, 1-3 persons).
+# 7 CFR 273.10(e)(2)(ii)(A)(1): 30% of net income is rounded up to the next
+# dollar.
+
+- name: 3-person household, net income $0 (table row 0 - 0) receives $785
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2508
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # 0 - 0
+    snap_net_income: 0
+    snap_normal_allotment: 785
+    snap: 785
+
+- name: 3-person household, net income $3 (table row 1 - 3) receives $784
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2544
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # 1 - 3: 30% = 0.90 rounds up to 1
+    snap_net_income: 3
+    snap_normal_allotment: 784
+    snap: 784
+
+- name: 3-person household, net income $4 (table row 4 - 6) receives $783
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2556
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # 4 - 6: 30% = 1.20 rounds up to 2
+    snap_net_income: 4
+    snap_normal_allotment: 783
+    snap: 783
+
+- name: 3-person household, net income $6 (table row 4 - 6) receives $783
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2580
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # 4 - 6: 30% = 1.80 rounds up to 2
+    snap_net_income: 6
+    snap_normal_allotment: 783
+    snap: 783
+
+- name: 3-person household, net income $7 (table row 7 - 10) receives $782
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2592
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # 7 - 10: 30% = 2.10 rounds up to 3
+    snap_net_income: 7
+    snap_normal_allotment: 782
+    snap: 782
+
+- name: 3-person household, net income $10 (table row 7 - 10) receives $782
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2628
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # 7 - 10: 30% = 3.00 exactly. float32(10 * 0.3) is exact, so this case
+    # does not exercise the cents guard; see the net-$50 case for that.
+    snap_net_income: 10
+    snap_expected_contribution: 3
+    snap_normal_allotment: 782
+    snap: 782
+
+- name: 3-person household, net income $11 (table row 11 - 13) receives $781
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2640
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # 11 - 13: 30% = 3.30 rounds up to 4
+    snap_net_income: 11
+    snap_normal_allotment: 781
+    snap: 781
+
+- name: 3-person household, net income $13 (table row 11 - 13) receives $781
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2664
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # 11 - 13: 30% = 3.90 rounds up to 4
+    snap_net_income: 13
+    snap_normal_allotment: 781
+    snap: 781
+
+- name: 3-person household, net income $14 (table row 14 - 16) receives $780
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2676
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # 14 - 16: 30% = 4.20 rounds up to 5
+    snap_net_income: 14
+    snap_normal_allotment: 780
+    snap: 780
+
+- name: 3-person household, net income $50 (table row 47 - 50) receives $770
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 3108
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # 47 - 50: 30% = 15.00 exactly. float32(50 * 0.3) = 15.0000009..., so
+    # this is the only case in the SNAP suite that fails if the
+    # np.round(..., 2) cents guard in snap_expected_contribution is
+    # removed (an unguarded ceil would return 16 and pay $769).
+    snap_net_income: 50
+    snap_expected_contribution: 15
+    snap_normal_allotment: 770
+    snap: 770
+
+- name: 3-person household, net income $51 (table row 51 - 53) receives $769
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 3120
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # 51 - 53: 30% = 15.30 rounds up to 16
+    snap_net_income: 51
+    snap_normal_allotment: 769
+    snap: 769
+
+- name: 3-person household, net income $3.49 rounds down to $3 and receives $784
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2_549.88
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # TANF 212.49/month; net 3.49 -> 3 (1-49 cents round down); 30% = 0.90 -> 1
+    snap_net_income: 3
+    snap_expected_contribution: 1
+    snap_normal_allotment: 784
+    snap: 784
+
+- name: 3-person household, net income $3.50 rounds up to $4 and receives $783
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2_550
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # TANF 212.50/month; net 3.50 -> 4 (50-99 cents round up); 30% = 1.20 -> 2
+    snap_net_income: 4
+    snap_expected_contribution: 2
+    snap_normal_allotment: 783
+    snap: 783
+
+# The two cases below pin half-up rounding against round-half-to-even
+# (banker's rounding, np.round's default). At $3.50 both rules give $4, so
+# only an even-dollar .50 boundary that also straddles an expected-
+# contribution band can distinguish them.
+- name: 3-person household, net income $6.50 rounds up to $7 and receives $782
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2_586
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # TANF 215.50/month; net 6.50 -> 7 (50 cents round up); 30% = 2.10 -> 3.
+    # Round-half-to-even would give 6 -> 30% = 1.80 -> 2 -> $783 instead.
+    snap_net_income: 7
+    snap_expected_contribution: 3
+    snap_normal_allotment: 782
+    snap: 782
+
+- name: 3-person household, net income $10.50 rounds up to $11 and receives $781
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 35
+      child1:
+        age: 8
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        tanf: 2_634
+        housing_cost: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: MO
+  output:
+    is_snap_eligible: true
+    # TANF 219.50/month; net 10.50 -> 11 (50 cents round up); 30% = 3.30 -> 4.
+    # Round-half-to-even would give 10 -> 30% = 3.00 exactly -> 3 -> $782.
+    snap_net_income: 11
+    snap_expected_contribution: 4
+    snap_normal_allotment: 781
+    snap: 781

@@ -1,0 +1,149 @@
+# Replay fixture for the Kansas request signature observed live on
+# 2026-07-02 (sent identically to the current and frontier channels):
+# household of 3 people (age on all 3, employment_income on 2 of them),
+# household input state_name, requested output ks_tanf only.
+#
+# The live API's Simulation wrapper (policyengine_us/system.py) moves
+# employment_income inputs into employment_income_before_lsr, which is
+# what the TANF earned income sources list reads. The core YAML tester
+# does not apply that redirection, so each case mirrors the partner's
+# employment_income into employment_income_before_lsr (same convention
+# as weekly_hours_worked_before_lsr in tx.yaml).
+#
+# With no county input the household resolves to the first Kansas county
+# (Allen County, Group I), so the size-3 non-shared payment standard is
+# $386/month.
+- name: 'Case 1, ks_tanf signature (2 reqs, 2026-07-02): single parent of two with low earnings, positive ks_tanf.'
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 6_000
+        employment_income_before_lsr: 6_000
+      person2:
+        age: 16
+        employment_income: 3_600
+        employment_income_before_lsr: 3_600
+      person3:
+        age: 8
+    households:
+      household:
+        members: &id001
+        - person1
+        - person2
+        - person3
+        state_name: KS
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_person1:
+        members: &id002
+        - person1
+      mu_person2:
+        members: &id003
+        - person2
+      mu_person3:
+        members: &id004
+        - person3
+  output:
+    spm_units:
+      spm_unit:
+        # Parent earns $500/month, below the gross limit of 30% of the
+        # monthly FPG for 3 ($27,320 / 12 * 0.30 = $683.00); the working
+        # 16-year-old dependent's earnings are exempt (KEESM 6410).
+        # Countable income: ($500 - $90) * (1 - 0.60) = $164.
+        # Monthly benefit: $386 - $164 = $222 -> $2,664 per year.
+        ks_tanf: 2_664
+- name: 'Case 2, ks_tanf signature (2 reqs, 2026-07-02): parent earnings above the 30% FPG gross limit, zero ks_tanf.'
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 30_000
+        employment_income_before_lsr: 30_000
+      person2:
+        age: 16
+        employment_income: 3_600
+        employment_income_before_lsr: 3_600
+      person3:
+        age: 8
+    households:
+      household:
+        members: *id001
+        state_name: KS
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_person1:
+        members: *id002
+      mu_person2:
+        members: *id003
+      mu_person3:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        # Parent earns $2,500/month, above the gross income limit of
+        # $683.00/month (30% of the monthly FPG for 3), so the unit is
+        # ineligible.
+        ks_tanf: 0
+- name: 'Case 3, ks_tanf signature (2 reqs, 2026-07-02): only the teen works, child earnings exempt, full payment standard.'
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+        employment_income_before_lsr: 0
+      person2:
+        age: 16
+        employment_income: 4_800
+        employment_income_before_lsr: 4_800
+      person3:
+        age: 8
+    households:
+      household:
+        members: *id001
+        state_name: KS
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_person1:
+        members: *id002
+      mu_person2:
+        members: *id003
+      mu_person3:
+        members: *id004
+  output:
+    spm_units:
+      spm_unit:
+        # The 16-year-old dependent's earnings are fully exempt
+        # (KEESM 6410), so countable income is $0 and the unit receives
+        # the full $386/month payment standard -> $4,632 per year.
+        ks_tanf: 4_632

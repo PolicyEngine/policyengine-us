@@ -8,11 +8,14 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(Variable
     unit = USD
     definition_period = YEAR
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30",  # (9)(d)
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/BOOK_MI-1040.pdf#page=17",
-        "https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/4884.pdf",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/2022/2022-IIT-Forms/Form-4884-Section-C-worksheet.pdf",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30",  # (9)(d)
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/BOOK_MI-1040.pdf#page=17",
+        "https://web.archive.org/web/20250202214915/https://www.michigan.gov/taxes/iit/retirement-and-pension-benefits",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/4884.pdf",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2022/Form-4884-Section-C-worksheet.pdf",
+        # 2025 MI-1040 booklet: Form 4884 line 18 instructions (page 22) and Worksheet 3.2 (page 24)
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=22",
+        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2025/MI-1040-Book.pdf#page=24",
     )
     defined_for = "mi_retirement_benefits_deduction_tier_three_eligible"
 
@@ -26,7 +29,28 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(Variable
         )
 
         person = tax_unit.members
-        uncapped_pension_income = person("taxable_pension_income", period)
+        p_irs = parameters(period).gov.irs.income.exemption.traditional_distribution
+        # Under MCL 206.30(8)(a)(ii), individual retirement account distributions
+        # qualify if made after age 59½, or in the case of disability.
+        # Exceptions for death and IRC § 72(t)(2)(A)(iv) periodic payments are unmodeled.
+        ira_eligible = (person("age", period) >= p_irs.age_threshold) | person(
+            "is_disabled", period
+        )
+        ira_sources = [
+            s
+            for s in p.sources
+            if s
+            in {
+                "taxable_ira_distributions",
+                "taxable_roth_conversions",
+                "taxable_sep_distributions",
+            }
+        ]
+        pension_sources = [s for s in p.sources if s not in ira_sources]
+        uncapped_pension_income = (
+            add(person, period, pension_sources)
+            + add(person, period, ira_sources) * ira_eligible
+        )
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
 
         # Head and spouse both are eligible to receive an equal deduction amount
@@ -37,8 +61,11 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_not_retired(Variable
 
         # If a filer is recieving military retirement pay, the calculation includes the smaller of
         # the tier one or tier three deduction amount
+        # Worksheet 3.2 counts only military retirement pay on the filer's Schedule 1, line 11,
+        # which excludes a dependent's pay (not in the filer's AGI).
         military_retirement_pay_received = (
-            tax_unit.sum(person("military_retirement_pay", period)) > 0
+            tax_unit.sum(person("military_retirement_pay", period) * is_head_or_spouse)
+            > 0
         )
         # Line 8
         tier_one_amount = tax_unit(

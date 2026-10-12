@@ -24,3 +24,12 @@
     vt_low_income_cdcc_eligible: true
   output:
     vt_low_income_cdcc: 500
+
+- name: Vermont low-income CDCC ends after 2021, replaced by the 72 percent credit
+  period: 2022
+  input:
+    state_code: VT
+    capped_cdcc: 1_000
+    vt_low_income_cdcc_eligible: true
+  output:
+    vt_low_income_cdcc: 0

@@ -1352,11 +1352,20 @@ values:
   2025-06-01: 314.858
   2025-07-01: 315.279
   2025-08-01: 316.530
+  2025-09-01: 317.477
+  # October 2025 CPI was not published (BLS canceled the release); the
+  # September value carries forward at October instants.
+  2025-11-01: 318.419
+  2025-12-01: 319.139
+  2026-01-01: 319.434
+  2026-02-01: 320.266
+  2026-03-01: 323.698
+  2026-04-01: 325.892
+  2026-05-01: 327.694
+  2026-06-01: 325.641
   # CBO projections from CBO Feb 2026 forecast for future periods.
   # CPI-W derived from CBO CPI-U quarterly projections using ratio
   # of last actual CPI-W (316.530, Aug 2025) to CPI-U (323.364, Aug 2025).
-  2026-02-01: 321.472 # 2026Q1: 328.413 * 316.530 / 323.364
-  2026-05-01: 323.719 # 2026Q2: 330.708 * 316.530 / 323.364
   2026-08-01: 325.939 # 2026Q3: 332.976 * 316.530 / 323.364
   2026-11-01: 328.049 # 2026Q4: 335.132 * 316.530 / 323.364
   2027-02-01: 330.086 # 2027Q1: 337.213 * 316.530 / 323.364
@@ -1398,6 +1407,8 @@ metadata:
   label: CPI-W
   economy: false
   reference:
+    - title: BLS | CPI-W, U.S. city average, all items, seasonally adjusted (CWSR0000SA0), monthly values through June 2026
+      href: https://data.bls.gov/timeseries/CWSR0000SA0
     - title: CBO | Economic and Budget Projections | January 2025
       # Quarterly: Row 51
       href: https://www.cbo.gov/system/files/2025-01/51135-2025-01-Economic-Projections.xlsx

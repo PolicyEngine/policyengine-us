@@ -57,3 +57,20 @@
     state_code: ID
   output:
     id_grocery_credit_qualified_months: 12
+
+- name: Reported SNAP receipt disqualifies all months
+  period: 2022
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        receives_snap: true
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+  output:
+    id_grocery_credit_qualified_months: 0

@@ -1,7 +1,7 @@
 - name: Case 1, new applicants, income below threshold, eligible.
   period: 2024-01
   input:
-    ma_ccfa_countable_income: 6_060
+    ma_ccfa_countable_income: 6060
     spm_unit_size: 4
     ma_ccfa_enrolled: false
     state_code: MA
@@ -12,19 +12,18 @@
   period: 2024-01
   absolute_error_margin: 0.2
   input:
-    ma_ccfa_countable_income: 6_065
+    ma_ccfa_countable_income: 6065
     spm_unit_size: 4
     ma_ccfa_enrolled: false
     state_code: MA
   output:
-    hhs_smi: 12_124.25
+    hhs_smi: 12124.25
     ma_ccfa_income_eligible: false
 
 - name: Case 3, existing applicants, income below threshold, eligible.
   period: 2024-01
-  absolute_error_margin: 0.2
   input:
-    ma_ccfa_countable_income: 10_300
+    ma_ccfa_countable_income: 10300
     spm_unit_size: 4
     ma_ccfa_enrolled: true
     state_code: MA
@@ -34,9 +33,97 @@
 - name: Case 4, existing applicants, income above threshold, ineligible.
   period: 2024-01
   input:
-    ma_ccfa_countable_income: 10_310
+    ma_ccfa_countable_income: 10310
     spm_unit_size: 4
     ma_ccfa_enrolled: true
     state_code: MA
   output:
     ma_ccfa_income_eligible: false
+
+- name: Case 5, disabled child receives historical 85 percent entry limit.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 120000
+        ma_ccfa_countable_income: 84000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_income_eligible:
+      2025-01: true
+
+- name: Case 6, ordinary entry limit changes in January 2026.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 120000
+        ma_ccfa_countable_income: 84000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_income_eligible:
+      2026-01: true
+
+- name: Case 7, homeless income waiver starts October 2023.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 8
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        hhs_smi: 120000
+        ma_ccfa_countable_income: 180000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        is_homeless: true
+  output:
+    ma_ccfa_income_eligible:
+      2023-09: false
+      2023-10: true
+
+- name: Case 8, disabled child entry limit applies from the beginning of model coverage.
+  period: 2020
+  input:
+    state_code: MA
+    ma_ccfa_eligible_child: true
+    is_disabled: true
+    hhs_smi: 120000
+    ma_ccfa_countable_income: 84000
+    ma_ccfa_enrolled: false
+  output:
+    ma_ccfa_income_eligible:
+      2020-01: true

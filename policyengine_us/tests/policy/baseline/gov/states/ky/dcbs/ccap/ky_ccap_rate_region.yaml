@@ -1,0 +1,141 @@
+# KY CCAP rate region: maps county_str to one of 10 DCC-300 rate regions.
+
+- name: Case 1, Allen County maps to region 1.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        county_str: ALLEN_COUNTY_KY
+  output:
+    ky_ccap_rate_region: REGION_1
+
+- name: Case 2, Adair County maps to region 2.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        county_str: ADAIR_COUNTY_KY
+  output:
+    ky_ccap_rate_region: REGION_2
+
+- name: Case 3, Bath County maps to region 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        county_str: BATH_COUNTY_KY
+  output:
+    ky_ccap_rate_region: REGION_3
+
+- name: Case 4, Jefferson County maps to region 4 (urban).
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        county_str: JEFFERSON_COUNTY_KY
+  output:
+    ky_ccap_rate_region: REGION_4
+
+- name: Case 5, Barren County maps to region 5.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        county_str: BARREN_COUNTY_KY
+  output:
+    ky_ccap_rate_region: REGION_5
+
+- name: Case 6, Bell County maps to region 6.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        county_str: BELL_COUNTY_KY
+  output:
+    ky_ccap_rate_region: REGION_6
+
+- name: Case 7, Boyd County maps to singleton region 7.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        county_str: BOYD_COUNTY_KY
+  output:
+    ky_ccap_rate_region: REGION_7
+
+- name: Case 8, Calloway County maps to singleton region 8.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        county_str: CALLOWAY_COUNTY_KY
+  output:
+    ky_ccap_rate_region: REGION_8
+
+- name: Case 9, Campbell County maps to singleton region 9.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        county_str: CAMPBELL_COUNTY_KY
+  output:
+    ky_ccap_rate_region: REGION_9
+
+- name: Case 10, Menifee County maps to singleton region 10.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KY
+        county_str: MENIFEE_COUNTY_KY
+  output:
+    ky_ccap_rate_region: REGION_10

@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.medicaid.costs.medicaid_group import (
-    MedicaidGroup,
-)
 
 
 class medicaid_federal_share(Variable):
@@ -23,14 +20,13 @@ class medicaid_federal_share(Variable):
         p = parameters(period).gov.hhs.medicaid.cost_share
         state = person.household("state_code", period)
         regular_fmap = p.fmap[state]
-        group = person("medicaid_group", period)
+        category = person("medicaid_category", period)
+        categories = category.possible_values
         return select(
             [
-                group == MedicaidGroup.EXPANSION_ADULT,
-                group == MedicaidGroup.AGED_DISABLED,
-                group == MedicaidGroup.CHILD,
-                group == MedicaidGroup.NON_EXPANSION_ADULT,
+                category == categories.ADULT,
+                category != categories.NONE,
             ],
-            [p.expansion_fmap, regular_fmap, regular_fmap, regular_fmap],
+            [p.expansion_fmap, regular_fmap],
             default=0,
         )

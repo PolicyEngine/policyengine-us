@@ -1,0 +1,58 @@
+# Wisconsin Shares time category: an authorization of at most 20 weekly
+# hours is part time; more than 20 weekly hours is full time.
+# Wisconsin Shares Handbook (July 2026) Section 16.1.1.
+- name: Case 1, ten weekly hours is a part-time authorization.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 10
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_time_category: PART_TIME
+
+- name: Case 2, exactly twenty weekly hours is still part time.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 20
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_time_category: PART_TIME
+
+- name: Case 3, twenty-one weekly hours is a full-time authorization.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 21
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_time_category: FULL_TIME
+
+- name: Case 4, forty-five weekly hours is a full-time authorization.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4
+        childcare_hours_per_week: 45
+    households:
+      household:
+        members: [person1]
+        state_code: WI
+  output:
+    wi_shares_time_category: FULL_TIME

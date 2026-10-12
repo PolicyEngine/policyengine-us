@@ -1,0 +1,148 @@
+# Tests for nd_ccap_income_eligible (SPMUnit, MONTH, bool).
+# Initial applicants (is_nd_ccap_enrolled = false) are tested against 75% of
+# the monthly state median income; enrolled recipients (is_nd_ccap_enrolled =
+# true) are tested against 85% (400-28-25-15). Countable income is set
+# directly to isolate the two-tier comparison.
+# 2-person ND monthly SMI for 2026 = $7,361.62/mo:
+#   75% = $5,521.22/mo, 85% = $6,257.38/mo.
+# nd_ccap_countable_income is a MONTH variable, so values are monthly.
+
+- name: Case 1, applicant just below 75% SMI, income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 5_500  # below 5,521.22 (75% SMI)
+        is_nd_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_income_eligible: true
+
+- name: Case 2, applicant just above 75% SMI, not income eligible as applicant.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 5_900  # above 5,521.22 (75% SMI)
+        is_nd_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_income_eligible: false
+
+- name: Case 3, enrolled family at the same 5,900 income, eligible under 85% tier.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 5_900  # above 75% but below 6,257.38 (85% SMI)
+        is_nd_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_income_eligible: true
+
+- name: Case 4, enrolled family just above 85% SMI, not income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 6_700  # above 6,257.38 (85% SMI)
+        is_nd_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_income_eligible: false
+
+- name: Case 5, applicant at exactly 75% SMI, income eligible (at or below).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 5_521.21  # at 75% SMI (5,521.22)
+        is_nd_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_income_eligible: true
+
+- name: Case 6, enrolled family at exactly 85% SMI, income eligible (at or below).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 6_257.37  # at 85% SMI (6,257.38); <= passes
+        is_nd_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_income_eligible: true
+
+- name: Case 7, enrolled family just above 85% SMI, not income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nd_ccap_countable_income: 6_598.53  # above 85% SMI (6,257.38)
+        is_nd_ccap_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: ND
+  output:
+    nd_ccap_income_eligible: false

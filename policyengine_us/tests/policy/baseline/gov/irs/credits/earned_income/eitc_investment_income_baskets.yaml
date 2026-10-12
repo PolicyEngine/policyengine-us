@@ -1,0 +1,46 @@
+- name: Investment income baskets and the 2021 EITC eligibility boundary
+  period: 2021
+  input:
+    taxable_interest_income: [8_000, 9_000, 9_000, 9_000, 9_000, 9_000, 9_000]
+    dividend_income: [4_000, 0, 0, 0, 0, 0, 0]
+    tax_exempt_interest_income: [0, 0, 0, 0, 0, 0, 1_001]
+    passive_partnership_s_corp_income: [-50_000, 1_001, 1_000, -2_000, 2_000, 0, 0]
+    rental_income: [0, 0, 0, 3_000, -3_000, 0, 0]
+    short_term_capital_gains: [0, 0, 0, 0, 0, -2_000, 0]
+    non_sch_d_capital_gains: [0, 0, 0, 0, 0, 1_000, 0]
+  output:
+    eitc_relevant_investment_income: [12_000, 10_001, 10_000, 10_000, 9_000, 9_000, 10_001]
+    eitc_investment_income_eligible: [false, false, true, true, true, true, false]
+
+- name: Passive losses net across spouses before the investment-income floor
+  period: 2021
+  input:
+    people:
+      head:
+        age: 40
+        taxable_interest_income: 9_000
+        passive_partnership_s_corp_income: 5_000
+      spouse:
+        age: 40
+        passive_partnership_s_corp_income: -4_000
+    tax_units:
+      unit:
+        members: [head, spouse]
+  output:
+    eitc_relevant_investment_income: 10_000
+    eitc_investment_income_eligible: true
+
+- name: Passive business loss cannot create EITC eligibility with portfolio income over the limit
+  period: 2021
+  input:
+    age: 35
+    employment_income: 10_000
+    taxable_interest_income: 7_147.17
+    dividend_income: 12_442.61
+    partnership_s_corp_income: -50_000
+    passive_partnership_s_corp_income: -50_000
+  output:
+    eitc_relevant_investment_income: 19_589.78
+    eitc_investment_income_eligible: false
+    eitc: 0
+  absolute_error_margin: 0.01

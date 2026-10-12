@@ -1,0 +1,28 @@
+description: Kansas sets this benefit matrix size group based on the number of countable household members under the Low Income Energy Assistance Program.
+brackets:
+  # Household size 1-4.
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 1
+  # Household size 5 and over.
+  - threshold:
+      2024-10-01: 5
+    amount:
+      2024-10-01: 2
+
+metadata:
+  type: single_amount
+  threshold_unit: person
+  amount_unit: /1
+  period: year
+  label: Kansas LIEAP household size group
+  reference:
+    - title: Kansas LIEAP FY2026 Benefit Matrix (Household Size 1-4 and Household Size 5 and Over columns)
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/KS_BenefitMatrix_2026.pdf#page=1
+    - title: Kansas LIEAP FY2025 Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/KS_BenefitMatrix_2025.pdf#page=1
+    - title: KEESM 13330 Citizenship and Alienage Requirements, October 2024 edition (non-citizen members excluded from household size)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/keesm13300.htm
+    - title: KEESM 13330 Citizenship and Alienage Requirements, January 2026 edition (non-citizen members excluded from household size)
+      href: https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/keesm13300.htm

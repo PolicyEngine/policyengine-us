@@ -177,7 +177,10 @@
     filing_status: SINGLE
     state_code: ME
   output:
-    me_income_tax_before_credits: 89_291.6
+    # 2026 brackets (27,400 / 64,850): 5.8% x 27,400 + 6.75% x (64,850 - 27,400)
+    # + 7.15% x (1,200,000 - 64,850) = 85,280.30, plus 2% surcharge x 200,000 = 4,000.
+    # (Was 89,291.60 while the brackets were frozen at their 2025 values; #8905.)
+    me_income_tax_before_credits: 89_280.3
 
 - name: Joint filer 2026 me_income_tax_before_credits includes the surcharge.
   period: 2026

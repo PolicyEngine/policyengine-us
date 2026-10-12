@@ -1,0 +1,929 @@
+# CHIP federal contract cases, pinned to TX (separate-CHIP state, 206% FPL child
+# limit, FCEP unborn-child option at 207% FPL).
+# Key parameter math (2026, contiguous-US FPG for 3 = 15,960 + 2 x 5,680 = 27,320):
+#   TX CHIP child window: (1.38 older-child Medicaid limit, 2.06] x FPG
+#   TX per-capita separate CHIP = 522,954,572 / 359,047 = 1,456.51
+#     (calibration.gov.hhs.cms.chip spending / enrollment, 2024 entries)
+- name: chip_eligible_child_age_18_at_183_pct_fpl (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 18
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        # 50,000 / 27,320 = 1.830 FPL: above TX older-child Medicaid limit (1.38),
+        # below TX CHIP limit (2.06), age 18 < 19 -> CHIP-eligible child.
+        # chip = TX per-capita separate CHIP = 522,954,572 / 359,047 = 1,456.51.
+        chip: 1_456.51
+        chip_category: 0  # CHILD
+        is_chip_eligible: true
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 12_729.07
+        premium_tax_credit: 12_729.07
+# Age boundary pin: identical household to the previous case but the child is 19,
+# at or above the CHIP max age (19) -> demographic-route ineligibility.
+- name: chip_age_19_no_longer_chip_eligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 50_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 19
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id002
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        # Same income as the age-18 case (1.830 FPL, inside the TX CHIP income
+        # window), so age is the binding constraint: 19 >= max_age 19 -> chip 0.
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        aca_ptc: 18_840.21
+        premium_tax_credit: 18_840.21
+# Per-person gating within one household (family of 5, FPG = 15,960 + 4 x 5,680
+# = 38,680; 65,000 / 38,680 = 1.680 FPL is inside the TX CHIP window):
+#   child1: no disqualifier -> CHIP;
+#   child2: receives_medicaid (highest-traffic partner input) is in the CHIP
+#     disqualifying-coverage list -> chip 0 (categorical route);
+#   child3: UNDOCUMENTED -> chip 0 (immigration route).
+- name: chip_multi_child_medicaid_coverage_and_undocumented_gating (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 65_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child2:
+        age: 12
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+        receives_medicaid: true
+      child3:
+        age: 10
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: UNDOCUMENTED
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id003
+        - head
+        - spouse
+        - child1
+        - child2
+        - child3
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+      mu_child2:
+        members:
+        - child2
+      mu_child3:
+        members:
+        - child3
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        # 1.680 FPL in (1.38, 2.06], no disqualifying coverage
+        # -> chip = 522,954,572 / 359,047 = 1,456.51.
+        chip: 1_456.51
+        chip_category: 0  # CHILD
+        is_chip_eligible: true
+        is_aca_ptc_eligible: false
+      child2:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        # Same income/age window as child1 but receives_medicaid: true is
+        # disqualifying health coverage (42 CFR 457.310(b)(2)) -> chip 0.
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: false
+      child3:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        # Same income/age window as child1 but UNDOCUMENTED -> chip 0.
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 12_303.01
+        premium_tax_credit: 12_303.01
+# Income boundary, eligible side: 56,200 / 27,320 = 2.0571 <= 2.06 (TX limit).
+- name: chip_income_just_below_tx_206_pct_limit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 56_200
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id004
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        # 2.0571 FPL <= 2.06 -> still eligible: chip = 522,954,572 / 359,047
+        # = 1,456.51 (TX limit = 2.06 x 27,320 = 56,279.20).
+        chip: 1_456.51
+        chip_category: 0  # CHILD
+        is_chip_eligible: true
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 11_799.75
+        premium_tax_credit: 11_799.75
+# Income boundary, ineligible side: 56,400 / 27,320 = 2.0644 > 2.06 (income route).
+- name: chip_income_just_above_tx_206_pct_limit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 56_400
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id005
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id005
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        # 2.0644 FPL > 2.06 -> just above the TX limit (56,279.20): chip 0.
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        aca_ptc: 16_733.07
+        premium_tax_credit: 16_733.07
+# TX FCEP (unborn-child) option: pregnant spouse's Medicaid household size counts
+# the unborn child (couple -> size 3, FPG 27,320). Her income level
+# 56,000 / 27,320 = 2.0498 sits between the TX pregnant Medicaid limit (2.03)
+# and the TX FCEP limit (2.07) -> PREGNANT_FCEP.
+- name: chip_pregnant_fcep_unborn_child_option (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 56_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 28
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id006
+        - head
+        - spouse
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id006
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        # 2.0498 FPL in (2.03 pregnant Medicaid, 2.07 FCEP]
+        # -> chip = TX per-capita 522,954,572 / 359,047 = 1,456.51.
+        chip: 1_456.51
+        chip_category: 2  # PREGNANT_FCEP
+        is_chip_eligible: true
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 2_406.29
+        premium_tax_credit: 2_406.29
+# Robustness: single parent with negative self-employment income. The Medicaid
+# income level floors at 0.0 FPL, routing both to Medicaid (TX parent limit 0.19,
+# young-child limit 1.49), so chip stays 0 and benefits are not inflated.
+- name: chip_single_parent_negative_self_employment_income (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        self_employment_income_before_lsr: -5_000
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id007
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id007
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # Medicaid amounts are current-model calibration pins (state spending x
+        # SLCSP cost index); eligibility derives from 0.0 FPL <= 0.19 TX parent limit.
+        medicaid: 16_378.23
+        is_medicaid_eligible: true
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: false
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        # 0.0 FPL <= 1.49 TX young-child Medicaid limit -> Medicaid, not CHIP.
+        medicaid: 11_038.77
+        is_medicaid_eligible: true
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        aca_ptc: 0.0
+        premium_tax_credit: 0.0
+# 2025 FPG vintage pin: FPG(3, 2025) = 15,650 + 2 x 5,500 = 26,650, so the TX
+# limit is 2.06 x 26,650 = 54,899. Income 55,600 -> 2.0863 FPL > 2.06 -> chip 0
+# in 2025, while the same income in 2026 (FPG 27,320 -> 2.0351) would be
+# eligible. A wrong-vintage FPG regression flips this case.
+- name: chip_income_above_2025_fpg_limit (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 35
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 55_600
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      spouse:
+        age: 33
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+      child1:
+        age: 8
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        is_pregnant: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        is_medicare_eligible: false
+        ssi_countable_resources: 0
+        is_aca_eshi_eligible: false
+    households:
+      household:
+        members: &id008
+        - head
+        - spouse
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id008
+    tax_units:
+      tax_unit:
+        members: *id008
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id008
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+      mu_child1:
+        members:
+        - child1
+  output:
+    people:
+      head:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+      spouse:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+      child1:
+        ssi: 0.0
+        is_ssi_eligible: false
+        is_ssi_aged: false
+        msp: 0.0
+        msp_eligible: false
+        medicaid: 0.0
+        is_medicaid_eligible: false
+        # 55,600 / 26,650 = 2.0863 > 2.06 -> chip 0 under 2025 FPG.
+        chip: 0.0
+        chip_category: 3  # NONE
+        is_chip_eligible: false
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        aca_ptc: 12_893.15
+        premium_tax_credit: 12_893.15

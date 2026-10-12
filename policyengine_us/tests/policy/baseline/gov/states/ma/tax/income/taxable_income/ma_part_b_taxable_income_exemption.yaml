@@ -1,0 +1,45 @@
+- name: Head of household filer receives the head of household personal exemption
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        is_blind: false
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: HEAD_OF_HOUSEHOLD
+    households:
+      household:
+        state_code: MA
+        members: [head]
+  output:
+    # Head of household personal exemption 6,800; no dependents, aged, blind,
+    # or medical exemptions.
+    ma_part_b_taxable_income_exemption: 6_800
+
+- name: Surviving spouse filer receives head of household personal exemption
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+        is_blind: false
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SURVIVING_SPOUSE
+    households:
+      household:
+        state_code: MA
+        members: [head]
+  output:
+    # Federal surviving spouse maps to MA head of household, so the personal
+    # exemption is the head of household 6,800.
+    ma_part_b_taxable_income_exemption: 6_800

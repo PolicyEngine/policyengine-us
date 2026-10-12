@@ -1,0 +1,137 @@
+# Tests for oh_ccap_eligible_child (Person, MONTH).
+# Regular children are eligible while under age 13 (age < 13). A special-needs
+# child (modeled via has_developmental_delay) is eligible while under age 18.
+# Only the child's immigration status is tested; the parent's is not.
+# Rate/income parameters start in late 2025, so age-only cases use period 2026
+# for consistency with the integration tests.
+- name: Case 1, child just under age 13 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 12.99
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_eligible_child: true
+
+- name: Case 2, child at age 13 is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_eligible_child: false
+
+- name: Case 3, special-needs child at age 13 is eligible up to 18.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 13
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_eligible_child: true
+
+- name: Case 4, special-needs child just under age 18 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 17.99
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_eligible_child: true
+
+- name: Case 5, special-needs child at age 18 is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 18
+        has_developmental_delay: true
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_eligible_child: false
+
+- name: Case 6, undocumented child is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_eligible_child: false
+
+- name: Case 7, parent age is irrelevant (adult is not an eligible child).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_eligible_child: false
+
+# Edge cases.
+# A child between 13 and 18 without a developmental delay does not get the
+# special-needs age extension, so the higher limit applies only to special-needs.
+- name: Case 8, child aged 15 without special needs is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 15
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_eligible_child: false
+
+- name: Case 9, newborn citizen is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0
+        immigration_status: CITIZEN
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_ccap_eligible_child: true

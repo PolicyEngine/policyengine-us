@@ -1,0 +1,51 @@
+- name: An adult citizen not on other assistance is an eligible person.
+  period: 2026-01
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    ca_oc_general_relief_eligible_person: true
+
+- name: A person below the adult age threshold is not an eligible person.
+  period: 2026-01
+  input:
+    age: 17
+    immigration_status: CITIZEN
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    ca_oc_general_relief_eligible_person: false
+
+- name: A person at the adult age threshold is an eligible person.
+  period: 2026-01
+  input:
+    age: 18
+    immigration_status: CITIZEN
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    ca_oc_general_relief_eligible_person: true
+
+- name: An undocumented adult is not an eligible person.
+  period: 2026-01
+  input:
+    age: 30
+    immigration_status: UNDOCUMENTED
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    ca_oc_general_relief_eligible_person: false
+
+- name: A disabled adult who receives SSI is not an eligible person.
+  period: 2026-01
+  input:
+    age: 30
+    immigration_status: CITIZEN
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    county_str: ORANGE_COUNTY_CA
+    state_code: CA
+  output:
+    ca_oc_general_relief_eligible_person: false

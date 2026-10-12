@@ -1,30 +1,49 @@
 # Tests for Maryland non-refundable EITC for married/has child filers
-# Per §10-704(c)(1): credit is the LESSER of 50% of federal EITC OR state income tax
+# Per §10-704(c)(1): credit is the LESSER of 50% of federal EITC OR state income tax.
+# Childless filers use the federal EITC computed without the minimum-age test
+# (federal_eitc_without_age_minimum); with-child filers use the actual federal EITC.
 
-- name: Non-refundable EITC equals 50% of federal when tax is higher
+- name: Married childless uses the federal EITC without the minimum-age test
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    eitc: 300
-    md_income_tax_before_credits: 200  # Tax > 50% of EITC ($150)
+    eitc_child_count: 0
+    eitc: 0  # age-gated federal credit is zero for the under-25 childless
+    federal_eitc_without_age_minimum: 300
+    md_income_tax_before_credits: 200  # Tax > 50% of credit ($150)
     state_code: MD
   output:
     md_married_or_has_child_non_refundable_eitc: 150  # 50% of 300
 
-- name: Non-refundable EITC capped at tax liability when tax is lower
+- name: Married childless non-refundable capped at tax liability when tax is lower
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    eitc: 1_000
-    md_income_tax_before_credits: 100  # Tax < 50% of EITC ($500)
+    eitc_child_count: 0
+    eitc: 0
+    federal_eitc_without_age_minimum: 1_000
+    md_income_tax_before_credits: 100  # Tax < 50% of credit ($500)
     state_code: MD
   output:
     md_married_or_has_child_non_refundable_eitc: 100  # Capped at tax
 
-- name: Non-refundable EITC capped at tax for typical EITC household
+- name: With-child filer uses the actual age-gated federal EITC
+  period: 2021
+  input:
+    md_qualifies_for_unmarried_childless_eitc: false
+    eitc_child_count: 1
+    eitc: 1_000
+    federal_eitc_without_age_minimum: 0  # ignored for with-child filers
+    md_income_tax_before_credits: 800  # Tax > 50% of credit ($500)
+    state_code: MD
+  output:
+    md_married_or_has_child_non_refundable_eitc: 500  # 50% of 1000
+
+- name: Non-refundable EITC capped at tax for typical with-child EITC household
   period: 2026
   input:
     md_qualifies_for_unmarried_childless_eitc: false
+    eitc_child_count: 1
     eitc: 4_427  # Typical baseline federal EITC for $25k income family
     md_income_tax_before_credits: 353.62
     state_code: MD
@@ -35,7 +54,8 @@
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    eitc: 1_000
+    eitc_child_count: 0
+    federal_eitc_without_age_minimum: 1_000
     md_income_tax_before_credits: 0
     state_code: MD
   output:
@@ -45,7 +65,9 @@
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: true
+    eitc_child_count: 0
     eitc: 300
+    federal_eitc_without_age_minimum: 300
     md_income_tax_before_credits: 200
     state_code: MD
   output:

@@ -5,7 +5,7 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
     households:
       household:
@@ -21,7 +21,7 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
     households:
       household:
@@ -37,7 +37,7 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: ADULT_FOSTER_HOME
     households:
       household:
@@ -53,7 +53,7 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: FLAT_RATE_BOARDING_HOME
     households:
       household:
@@ -69,7 +69,7 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: ADULT_FAMILY_CARE_HOME
     households:
       household:
@@ -85,7 +85,7 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: COST_REIMBURSED_BOARDING_HOME
     households:
       household:
@@ -101,7 +101,7 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: MEDICAID_FACILITY
     households:
       household:
@@ -117,7 +117,7 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: RESIDENTIAL_CARE_FACILITY
     households:
       household:
@@ -133,7 +133,7 @@
     people:
       person1:
         is_ssi_eligible: true
-        uncapped_ssi: 12_000
+        uncapped_ssi: 1_000
         me_ssp_living_arrangement: NONE
     households:
       household:
@@ -149,8 +149,8 @@
     people:
       person1:
         is_ssi_eligible: true
-        # Annual uncapped SSI = -$2,400 -> $200/month income excess.
-        uncapped_ssi: -2_400
+        # Monthly uncapped SSI = -$200 income excess.
+        uncapped_ssi: -200
         me_ssp_living_arrangement: ADULT_FAMILY_CARE_HOME
     households:
       household:
@@ -167,9 +167,9 @@
     people:
       person1:
         is_ssi_eligible: true
-        # Annual uncapped SSI = -$12,000 -> $1,000/month income excess,
+        # Monthly uncapped SSI = -$1,000 income excess,
         # which exceeds every Maine table amount.
-        uncapped_ssi: -12_000
+        uncapped_ssi: -1_000
         me_ssp_living_arrangement: ADULT_FAMILY_CARE_HOME
     households:
       household:
@@ -186,8 +186,8 @@
     people:
       person1:
         is_ssi_eligible: true
-        # Annual uncapped SSI = -$240 -> $20/month excess.
-        uncapped_ssi: -240
+        # Monthly uncapped SSI = -$20 excess.
+        uncapped_ssi: -20
         me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
     households:
       household:
@@ -204,8 +204,8 @@
     people:
       person1:
         is_ssi_eligible: true
-        # Annual uncapped SSI = -$1,200 -> $100/month excess.
-        uncapped_ssi: -1_200
+        # Monthly uncapped SSI = -$100 excess.
+        uncapped_ssi: -100
         me_ssp_living_arrangement: LIVING_ALONE_OR_WITH_OTHERS
     households:
       household:
@@ -222,8 +222,8 @@
     people:
       person1:
         is_ssi_eligible: true
-        # Annual uncapped SSI = -$360 -> $30/month excess.
-        uncapped_ssi: -360
+        # Monthly uncapped SSI = -$30 excess.
+        uncapped_ssi: -30
         me_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
     households:
       household:
@@ -240,8 +240,8 @@
     people:
       person1:
         is_ssi_eligible: true
-        # Annual uncapped SSI = -$240 -> $20/month excess.
-        uncapped_ssi: -240
+        # Monthly uncapped SSI = -$20 excess.
+        uncapped_ssi: -20
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
     households:

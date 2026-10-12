@@ -1,0 +1,14 @@
+description: Iowa counts the net profit from these self-employment income sources under the Child Care Assistance program; a net self-employment loss cannot offset other earned or unearned income, so the formula floors their per-person total at zero.
+values:
+  2024-07-01:
+    - self_employment_income
+    - sstb_self_employment_income
+    - farm_operations_income
+
+metadata:
+  unit: list
+  period: year
+  label: Iowa CCA countable self-employment income sources
+  reference:
+    - title: IAC 441-170.2(1)"c"(1) — Net profit from self-employment; a net loss cannot be offset from other earned or unearned income
+      href: https://www.legis.iowa.gov/docs/iac/chapter/441.170.pdf#page=4

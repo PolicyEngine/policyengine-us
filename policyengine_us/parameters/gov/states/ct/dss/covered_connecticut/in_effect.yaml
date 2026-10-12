@@ -1,0 +1,20 @@
+description: Connecticut provides premium assistance when this is true under the Covered Connecticut Program.
+values:
+  # Covered Connecticut is a standing statutory obligation under June Sp. Sess.
+  # Public Act No. 21-2 (2021), Sec. 16, which is "Effective from passage." The
+  # program launched under the statute on July 1, 2021 (parents and caretaker
+  # relatives) and July 1, 2022 (all adults 18-64), and is funded on an ongoing
+  # basis with no sunset date. The 2026-01-01 toggle is the modeled
+  # verified-coverage-start floor, not the year the program became standing.
+  0000-01-01: false
+  2026-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Covered Connecticut Program in effect
+  reference:
+    - title: June Sp. Sess., Public Act No. 21-2 (2021), Sec. 16(b)(1)
+      href: https://www.cga.ct.gov/2021/act/pa/pdf/2021PA-00002-R00SB-01202SS1-PA.pdf#page=22
+    - title: Covered Connecticut Program (CT DSS)
+      href: https://portal.ct.gov/dss/health-and-home-care/covered-connecticut-program

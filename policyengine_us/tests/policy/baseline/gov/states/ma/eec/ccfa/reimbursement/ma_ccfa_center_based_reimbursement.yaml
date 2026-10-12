@@ -1,0 +1,172 @@
+- name: Case 1, region 1, infant.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    age: 0.5
+    county_str: BERKSHIRE_COUNTY_MA
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 105
+
+- name: Case 2, region 1, preschool, FY2025 rate equals the region's Head Start full-day rate.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    age: 4
+    county_str: BERKSHIRE_COUNTY_MA
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 58.09
+
+# FY2026 rates effective July 1, 2025 (advisory CCFA-26-02).
+- name: Case 3, region 1, infant, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 0.5
+    county_str: BERKSHIRE_COUNTY_MA
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 105.53
+
+- name: Case 4, region 1, preschool, FY2026 targeted increase.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 4
+    county_str: BERKSHIRE_COUNTY_MA
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 58.78
+
+- name: Case 5, region 3, toddler, FY2026 targeted increase.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 2
+    county_str: ESSEX_COUNTY_MA
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 86.96
+
+- name: Case 6, region 3, preschool, FY2026 targeted increase.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 4
+    county_str: ESSEX_COUNTY_MA
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 62.38
+
+- name: Case 7, metro region, infant, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 0.5
+    county_str: SUFFOLK_COUNTY_MA
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 121.92
+
+- name: Case 8, metro region, toddler, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 2
+    county_str: SUFFOLK_COUNTY_MA
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 110.64
+
+- name: Case 9, region 1, school age, full day.
+  period: 2025-01
+  absolute_error_margin: 0.2
+  input:
+    age: 6
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_schedule_type: FULL_DAY
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 49.69
+
+- name: Case 10, region 1, school age, full day, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 6
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_schedule_type: FULL_DAY
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 49.94
+
+- name: Case 11, region 3, school age, before and after school, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 6
+    county_str: ESSEX_COUNTY_MA
+    ma_ccfa_schedule_type: BEFORE_AND_AFTER
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 40.52
+
+- name: Case 12, metro region, school age, full day, FY2026 cost-of-living adjustment.
+  period: 2026-01
+  absolute_error_margin: 0.2
+  input:
+    age: 6
+    county_str: SUFFOLK_COUNTY_MA
+    ma_ccfa_schedule_type: FULL_DAY
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 53.07
+
+- name: Case 13, region 1, child at the school age threshold uses the school age columns.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 5
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_schedule_type: FULL_DAY
+    state_code: MA
+  output:
+    ma_ccfa_child_age_category: SCHOOL_AGE
+    ma_ccfa_center_based_reimbursement: 49.94
+
+- name: Case 14, region 1, school age, before school only.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 8
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_schedule_type: BEFORE_ONLY
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 11.8
+
+- name: Case 15, region 1, school age, after school only.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 8
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_schedule_type: AFTER_ONLY
+    state_code: MA
+  output:
+    ma_ccfa_center_based_reimbursement: 24.8
+
+# The early education columns carry no schedule dimension, so a schedule type
+# set for a child under school age does not change the rate.
+- name: Case 16, region 1, preschool rate ignores the schedule type.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 3
+    county_str: BERKSHIRE_COUNTY_MA
+    ma_ccfa_schedule_type: AFTER_ONLY
+    state_code: MA
+  output:
+    ma_ccfa_child_age_category: PRESCHOOL
+    ma_ccfa_center_based_reimbursement: 58.78

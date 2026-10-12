@@ -1,7 +1,7 @@
 - name: Eligible for TANF, payment level higher than income.
-  period: 2023
+  period: 2023-01
   input:
-    il_tanf_payment_level_for_grant_calculation: 100 
+    il_tanf_payment_level_for_grant_calculation: 100
     il_tanf_countable_income_for_grant_calculation: 80
     il_tanf_eligible: true
     state_code: IL
@@ -9,7 +9,7 @@
     il_tanf: 20
 
 - name: Eligible for TANF, payment level lower than income.
-  period: 2023
+  period: 2023-01
   input:
     il_tanf_payment_level_for_grant_calculation: 80
     il_tanf_countable_income_for_grant_calculation: 100
@@ -19,14 +19,47 @@
     il_tanf: 0
 
 - name: Ineligible for TANF.
-  period: 2023
+  period: 2023-01
   input:
-    il_tanf_payment_level_for_grant_calculation: 100 
+    il_tanf_payment_level_for_grant_calculation: 100
     il_tanf_countable_income_for_grant_calculation: 80
     il_tanf_eligible: false
     state_code: IL
   output:
     il_tanf: 0
+
+# IDHS PM 10-01-02: regular monthly TANF benefits are rounded down to the
+# nearest whole dollar.
+- name: Regular monthly benefit is rounded down to the nearest whole dollar.
+  period: 2023-01
+  input:
+    il_tanf_payment_level_for_grant_calculation: 100.75
+    il_tanf_countable_income_for_grant_calculation: 0
+    il_tanf_eligible: true
+    state_code: IL
+  output:
+    il_tanf: 100
+
+# IDHS PM 10-01-02: TANF payments of less than $1 are not made.
+- name: Benefit below one dollar is not paid.
+  period: 2023-01
+  input:
+    il_tanf_payment_level_for_grant_calculation: 100.9
+    il_tanf_countable_income_for_grant_calculation: 100
+    il_tanf_eligible: true
+    state_code: IL
+  output:
+    il_tanf: 0
+
+- name: Benefit of exactly one dollar is paid.
+  period: 2023-01
+  input:
+    il_tanf_payment_level_for_grant_calculation: 101
+    il_tanf_countable_income_for_grant_calculation: 100
+    il_tanf_eligible: true
+    state_code: IL
+  output:
+    il_tanf: 1
 
 - name: Integration test 1, all members eligible for payment.
   period: 2023-01
@@ -71,8 +104,9 @@
     il_tanf_eligible: true
     il_tanf_assistance_unit_fpg: 1_919.17
     il_tanf_payment_level_for_grant_calculation: 575.75
-    il_tanf_countable_income_for_grant_calculation: 106.25 
-    il_tanf: 469.5
+    il_tanf_countable_income_for_grant_calculation: 106.25
+    # Benefit = 575.75 - 106.25 = 469.50, rounded down to the nearest dollar.
+    il_tanf: 469
 
 - name: Integration test 2, only children eligible for payment.
   period: 2023-01
@@ -117,8 +151,9 @@
     il_tanf_eligible: true
     il_tanf_assistance_unit_fpg: 1_525.83
     il_tanf_payment_level_for_grant_calculation: 343.31
-    il_tanf_countable_income_for_grant_calculation: 106.25 
-    il_tanf: 237.06
+    il_tanf_countable_income_for_grant_calculation: 106.25
+    # Benefit = 343.31 - 106.25 = 237.06, rounded down to the nearest dollar.
+    il_tanf: 237
 
 - name: Integration test 3, only parent eligible for payment.
   period: 2023-01
@@ -198,4 +233,5 @@
     il_tanf_eligible: true
     il_tanf_payment_level_for_initial_eligibility: 439.25
     il_tanf_payment_level_for_grant_calculation: 109.81
-    il_tanf: 35
+    # Regular monthly benefit rounded down to the nearest whole dollar.
+    il_tanf: 34

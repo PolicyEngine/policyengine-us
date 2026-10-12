@@ -1,0 +1,131 @@
+# 18 NYCRR 415.3(e)(1) excepts public assistance families, families
+# experiencing homelessness, families at or below 100% of the state income
+# standard, children in foster care, children receiving child care as a
+# protective or preventive service, and child-only units.
+
+- name: Case 1, a family with none of the exceptions is not exempt.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_family_share_exempt: false
+
+- name: Case 2, a public assistance family is exempt.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        receives_tanf: true
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_family_share_exempt: true
+
+- name: Case 3, a family experiencing homelessness is exempt.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: NY
+        is_homeless: true
+  output:
+    ny_ccap_family_share_exempt: true
+
+- name: Case 4, a child in foster care is exempt.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_family_share_exempt: true
+
+- name: Case 5, a protective services case is exempt.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [child]
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_family_share_exempt: true
+
+# The exemption must zero the family share itself, including the $1 weekly
+# minimum that would otherwise apply to a family above the standard.
+- name: Case 6, an exempt family above the state income standard owes nothing.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 60_000
+        spm_unit_fpg: 25_000
+        receives_tanf: true
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_family_share_exempt: true
+    ny_ccap_family_share: 0
+  absolute_error_margin: 0.01
+
+- name: Case 7, the same family without the exception pays the income-based share.
+  period: 2025-01
+  input:
+    people:
+      child:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [child]
+        ny_ccap_countable_income: 60_000
+        spm_unit_fpg: 25_000
+    households:
+      household:
+        members: [child]
+        state_code: NY
+  output:
+    ny_ccap_family_share_exempt: false
+    ny_ccap_family_share: (60_000 - 25_000) * 0.01 / 12
+  absolute_error_margin: 0.01

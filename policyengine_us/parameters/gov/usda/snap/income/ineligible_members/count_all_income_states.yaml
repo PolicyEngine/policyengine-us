@@ -1,0 +1,23 @@
+description: These states count all rather than all but a prorated share of the income of household members who are ineligible for the Supplemental Nutrition Assistance Program based on certain immigration statuses.
+values:
+  # Elections as documented in the State Options Report, 16th Edition
+  # (current as of October 1, 2023); earlier editions not verified.
+  2018-01-01:
+    - AZ
+    - GU
+    - ID
+    - IN
+    - KS
+    - ME
+    - MA
+    - TN
+    - UT
+metadata:
+  label: SNAP ineligible member full income counting states
+  period: year
+  unit: list
+  reference:
+    - title: 7 CFR 273.11(c)(3)(i)
+      href: https://www.law.cornell.edu/cfr/text/7/273.11#c_3_i
+    - title: SNAP State Options Report, 16th Edition
+      href: https://fns-prod.azureedge.us/sites/default/files/resource-files/snap-16th-state-options-report-june24.pdf#page=15

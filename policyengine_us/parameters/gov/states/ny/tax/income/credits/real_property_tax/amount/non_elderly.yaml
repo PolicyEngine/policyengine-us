@@ -1,0 +1,28 @@
+description: New York provides this real property tax credit amount for filers with no elderly taxpayer.
+
+brackets:
+  - threshold:
+      2025-01-01: -.inf
+    amount:
+      2025-01-01: 75
+  - threshold:
+      2025-01-01: 5_000
+    amount:
+      2025-01-01: 70
+  - threshold:
+      2025-01-01: 9_000
+    amount:
+      2025-01-01: 60
+  - threshold:
+      2025-01-01: 14_000
+    amount:
+      2025-01-01: 50
+metadata:
+  type: single_amount
+  threshold_unit: currency-USD
+  threshold_period: year
+  amount_unit: currency-USD
+  label: New York real property tax credit non-elderly amount
+  reference:
+    - title: 2025 Form IT-214 Table B
+      href: https://www.tax.ny.gov/pdf/current_forms/it/it214_fill_in.pdf#page=3

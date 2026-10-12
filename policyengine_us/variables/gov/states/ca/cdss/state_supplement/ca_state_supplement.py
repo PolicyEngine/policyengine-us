@@ -6,7 +6,7 @@ class ca_state_supplement(Variable):
     entity = SPMUnit
     label = "California state supplement"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.CA
     reference = "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=WIC&sectionNum=12200"
 

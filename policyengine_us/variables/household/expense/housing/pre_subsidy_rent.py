@@ -7,3 +7,4 @@ class pre_subsidy_rent(Variable):
     label = "Pre subsidy rent"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

@@ -1,0 +1,19 @@
+description: Santa Clara County exempts one vehicle valued up to this amount under the General Assistance program.
+# The $4,650 value is verified against the current (undated) handbook Motor
+# Vehicle chapter and the GA-62 program information sheet (rev. 11/25). The
+# effective date follows the sibling personal property limit era; the county
+# publishes no dated history for the vehicle rule, so earlier values are
+# unverified.
+values:
+  2016-04-01: 4_650
+metadata:
+  label: Santa Clara County General Assistance vehicle value limit
+  unit: currency-USD
+  period: year
+  reference:
+    - title: Santa Clara County General Assistance Handbook, Motor Vehicle chapter
+      href: https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/08Property/Motor_Vehicle.htm
+    - title: Santa Clara County General Assistance Handbook, Personal Property chapter
+      href: https://stgenssa.sccgov.org/debs/program_handbooks/general_assistance/assets/08Property/Personal_Property.htm
+    - title: Santa Clara County GA-62 Program Information Sheet
+      href: https://stgenssa.sccgov.org/debs/Forms/GA_62_en.pdf#page=2

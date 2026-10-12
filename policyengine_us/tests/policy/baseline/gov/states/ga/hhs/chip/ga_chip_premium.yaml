@@ -1,4 +1,34 @@
-- name: Georgia PeachCare tier 1 tax unit with one child pays 11 dollars monthly.
+# Premiums were suspended during the COVID public health emergency and
+# resumed on 2024-10-01, so 2024 spans the boundary: September carries no
+# premium, October carries the tier 1 amount, and the calendar year is three
+# times the monthly amount.
+- name: Georgia PeachCare tier 1 tax unit pays nothing in September 2024 and 11 dollars from October 2024.
+  period: 2024
+  input:
+    people:
+      child:
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [child]
+        tax_unit_medicaid_income_level: 1.40
+    households:
+      household:
+        members: [child]
+        state_code: GA
+  output:
+    ga_chip_premium:
+      2024-01: 0
+      2024-09: 0
+      2024-10: 11
+      2024-12: 11
+      2024: 33 # 3 x 11
+
+# 2025 sits entirely within the schedule that took effect on 2024-10-01, so
+# every month carries the same premium and the calendar year is twelve times
+# the monthly amount.
+- name: Georgia PeachCare tier 1 tax unit with one child pays 11 dollars in every month of 2025.
   period: 2025
   input:
     people:
@@ -14,7 +44,11 @@
         members: [child]
         state_code: GA
   output:
-    ga_chip_premium: 132
+    ga_chip_premium:
+      2025-01: 11
+      2025-07: 11
+      2025-12: 11
+      2025: 132 # 12 x 11
 
 - name: Georgia PeachCare tier 1 tax unit with three children is capped at 16 dollars monthly.
   period: 2025
@@ -39,6 +73,32 @@
         state_code: GA
   output:
     ga_chip_premium: 192
+
+# Manual 2194 charges no premium for children under age six, so only the
+# eight-year-old is counted.
+- name: Georgia PeachCare charges only the child aged six or older.
+  period: 2025
+  input:
+    people:
+      young_child:
+        age: 5
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+      older_child:
+        age: 8
+        is_chip_eligible: true
+        is_chip_eligible_child: true
+    tax_units:
+      tax_unit:
+        members: [young_child, older_child]
+        tax_unit_medicaid_income_level: 1.40
+    households:
+      household:
+        members: [young_child, older_child]
+        state_code: GA
+  output:
+    ga_chip_premium:
+      2025-01: 11
 
 - name: Georgia PeachCare below 134 percent FPL owes no premium.
   period: 2025

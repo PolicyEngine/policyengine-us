@@ -1,0 +1,155 @@
+# Income-waived eligibility groups. Children's Protective
+# Services, Foster Care, FIP/SSI-related, and Homeless qualify without an
+# income test (BEM 703 p.14-18). The migrant farmworker group is not modeled.
+
+- name: Case 1, open protective services case is income-waived.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        receives_or_needs_protective_services: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_income_waived: true
+
+- name: Case 2, foster care child is income-waived.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_income_waived: true
+
+- name: Case 3, FIP (TANF) enrollment is income-waived.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_income_waived: true
+
+- name: Case 4, SSI receipt is income-waived.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 900  # monthly SSI
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_income_waived: true
+
+- name: Case 5, homeless family is income-waived.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+        is_homeless: true
+  output:
+    mi_ccap_income_waived: true
+
+- name: Case 6, family in none of the waived groups is not income-waived.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_income_waived: false
+
+# Edge cases.
+
+- name: Case 7, parent needing protective services waives the income test.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        receives_or_needs_protective_services: true  # flag on the parent, not the child
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # The protective-services check sums across the whole unit -> waived
+    mi_ccap_income_waived: true
+
+- name: Case 8, single adult with none of the waived conditions is not income-waived.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MI
+  output:
+    # Degenerate single-adult unit with no waived pathway -> false
+    mi_ccap_income_waived: false

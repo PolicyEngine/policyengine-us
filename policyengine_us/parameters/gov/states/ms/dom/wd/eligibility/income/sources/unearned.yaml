@@ -1,0 +1,28 @@
+description: Mississippi counts these income sources as unearned income under the Working Disabled program.
+values:
+  1999-07-01:
+    - pension_income
+    - social_security
+    - disability_benefits
+    - veterans_benefits
+    - survivor_benefits
+    - workers_compensation
+    - unemployment_compensation
+    - retirement_distributions
+    - gi_cash_assistance
+    - alimony_income
+    - child_support_received
+    - financial_assistance
+    - dividend_income
+    - interest_income
+    - rental_income
+
+metadata:
+  unit: list
+  period: year
+  label: Mississippi Working Disabled unearned income sources
+  reference:
+    - title: Mississippi Division of Medicaid Administrative Code Part 104, Income
+      href: https://www.medicaid.ms.gov/wp-content/uploads/2014/01/Admin-Code-Part-104.pdf#page=8
+    - title: Mississippi Division of Medicaid, Eligibility Policy and Procedures Manual, Chapter 400, Working Disabled
+      href: https://medicaid.ms.gov/wp-content/uploads/2025/07/Chapter-400-ABD-and-MAGI-Eligibility-Criteria-and-Budgeting.-Revised-July-2025v2.pdf#page=32

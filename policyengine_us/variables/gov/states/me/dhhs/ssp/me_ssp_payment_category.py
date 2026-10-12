@@ -20,7 +20,7 @@ class me_ssp_payment_category(Variable):
     def formula(person, period, parameters):
         # Maine adopts the federal SSI living-arrangement codes (Part 11),
         # so federally-classified arrangements override the manual input.
-        federal_arrangement = person("ssi_federal_living_arrangement", period.this_year)
+        federal_arrangement = person("ssi_federal_living_arrangement", period)
         federal_values = federal_arrangement.possible_values
         in_medical_facility = (
             federal_arrangement == federal_values.MEDICAL_TREATMENT_FACILITY

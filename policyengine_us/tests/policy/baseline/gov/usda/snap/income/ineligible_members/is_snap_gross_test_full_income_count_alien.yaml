@@ -1,0 +1,31 @@
+- name: Case 1, undocumented member in a state counting all income under the gross test.
+  period: 2026-01
+  input:
+    immigration_status: UNDOCUMENTED
+    state_code: AR
+  output:
+    is_snap_gross_test_full_income_count_alien: true
+
+- name: Case 2, undocumented member in a prorating state.
+  period: 2026-01
+  input:
+    immigration_status: UNDOCUMENTED
+    state_code: TX
+  output:
+    is_snap_gross_test_full_income_count_alien: false
+
+- name: Case 3, refugee is prorated under both tests.
+  period: 2026-01
+  input:
+    immigration_status: REFUGEE
+    state_code: AR
+  output:
+    is_snap_gross_test_full_income_count_alien: false
+
+- name: Case 4, citizen is not an ineligible alien.
+  period: 2026-01
+  input:
+    immigration_status: CITIZEN
+    state_code: AR
+  output:
+    is_snap_gross_test_full_income_count_alien: false

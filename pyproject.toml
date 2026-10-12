@@ -1,19 +1,17 @@
 [project]
 name = "policyengine-us"
-version = "1.686.0"
-description = "Add your description here."
+version = "2.40.1"
+description = "US federal and state tax-benefit microsimulation model."
 readme = "README.md"
 authors = [
     { name = "PolicyEngine", email = "hello@policyengine.org" }
 ]
-requires-python = ">=3.9,<3.15"
+requires-python = ">=3.11,<3.15"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "License :: OSI Approved :: GNU Affero General Public License v3",
     "Operating System :: POSIX",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -22,9 +20,11 @@ classifiers = [
 ]
 dependencies = [
     "microdf-python>=1.0.0",
-    "pandas>=2.0",
-    "policyengine-core>=3.26.0",
-    "spm-calculator>=0.2.0",
+    # pandas 3 copy-on-write enables the shallow-copy fast path in dataset
+    # extension and is available on every supported Python version.
+    "pandas>=3.0",
+    "policyengine-core>=3.32.8",
+    "spm-calculator>=1.0.0,<=1.0.0.post1",
     "tables>=3.9",
     "tqdm>=4.67.1",
 ]
@@ -33,7 +33,16 @@ dependencies = [
 policyengine-us = "policyengine_us:main"
 
 [build-system]
-requires = ["hatchling"]
+# Exact build requirements also constrain the isolated backend environment
+# created by python -m build; the runtime uv.lock does not pin that environment.
+requires = [
+    "hatchling==1.32.0",
+    "packaging==26.3",
+    "pathspec==1.1.1",
+    "pluggy==1.6.0",
+    "tomlkit==0.15.1",
+    "trove-classifiers==2026.6.1.19",
+]
 build-backend = "hatchling.build"
 
 [project.optional-dependencies]
@@ -45,6 +54,7 @@ dev = [
     "setuptools>=80.9.0",
     "build>=1.2.2.post1",
     "towncrier>=24.8.0",
+    "hypothesis>=6.100.0",
 ]
 
 [tool.hatch.build.targets.wheel]

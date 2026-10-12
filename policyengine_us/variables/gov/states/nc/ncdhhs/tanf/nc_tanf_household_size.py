@@ -13,8 +13,9 @@ class nc_tanf_household_size(Variable):
 
     def formula(spm_unit, period, parameters):
         ssi_income = spm_unit.members("ssi", period)
+        reported_ssi = spm_unit.members("receives_ssi", period)
 
         # Eligible members are those with no SSI income
-        eligible_members = ssi_income <= 0
+        eligible_members = (ssi_income <= 0) & ~reported_ssi
 
         return spm_unit.sum(eligible_members)

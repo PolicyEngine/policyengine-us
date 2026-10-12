@@ -1,0 +1,15 @@
+description: San Bernardino County limits the combined assessed value of real property to this amount under the General Relief program.
+# No encumbrances are deducted from the assessed value. The county's rule
+# evaluating a vehicle used as a principal residence under this limit is
+# not modeled; vehicles are always evaluated under the personal property
+# test.
+values:
+  2021-06-01: 32_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: San Bernardino County General Relief real property limit
+  reference:
+    - title: San Bernardino County GRPHB Handbook Letter 7358, Chapter A p. A-4 (property limits, real property row)
+      href: https://sanbernardino.legistar1.com/sanbernardino/attachments/9e5e1b1a-e577-4f84-92c4-86574a9ff0cf.docx

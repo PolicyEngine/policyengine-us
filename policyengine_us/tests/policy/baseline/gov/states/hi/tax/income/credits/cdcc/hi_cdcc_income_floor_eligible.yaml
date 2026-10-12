@@ -3,10 +3,12 @@
   input:
     people:
       head:
-        is_disabled: true
+        is_tax_unit_head: true
+        is_incapable_of_self_care: true
         is_full_time_student: false
       spouse:
-        is_disabled: false
+        is_tax_unit_spouse: true
+        is_incapable_of_self_care: false
         is_full_time_student: false
     tax_units:
       tax_unit:
@@ -24,10 +26,12 @@
   input:
     people:
       head:
-        is_disabled: true
+        is_tax_unit_head: true
+        is_incapable_of_self_care: true
         is_full_time_student: true
       spouse:
-        is_disabled: false
+        is_tax_unit_spouse: true
+        is_incapable_of_self_care: false
         is_full_time_student: true
     tax_units:
       tax_unit:
@@ -45,11 +49,53 @@
   input:
     people:
       head:
-        is_disabled: false
+        is_tax_unit_head: true
+        is_incapable_of_self_care: false
         is_full_time_student: false
       spouse:
-        is_disabled: false
+        is_tax_unit_spouse: true
+        is_incapable_of_self_care: false
         is_full_time_student: false
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        count_cdcc_eligible: 1
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_cdcc_income_floor_eligible: [false, false]
+
+- name: Single filer incapable of self-care is not floor eligible, HRS 235-55.6(d)(2) deems income only for a spouse.
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        is_incapable_of_self_care: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        count_cdcc_eligible: 1
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    hi_cdcc_income_floor_eligible: false
+
+- name: Disabled spouse who is capable of self-care is not floor eligible.
+  period: 2022
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+      spouse:
+        is_tax_unit_spouse: true
+        is_disabled: true
+        is_incapable_of_self_care: false
     tax_units:
       tax_unit:
         members: [head, spouse]

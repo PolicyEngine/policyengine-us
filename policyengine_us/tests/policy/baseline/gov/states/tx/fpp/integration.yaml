@@ -1,57 +1,60 @@
-- name: Single adult eligible for FPP
+- name: Case 1, single adult eligible for FPP.
   period: 2026
   input:
     people:
       person1:
         age: 35
+        employment_income: 25_000
     spm_units:
       spm_unit1:
         members: [person1]
-        spm_unit_net_income: 25_000
     households:
       household1:
         members: [person1]
         state_code: TX
   output:
+    tx_fpp_countable_income: [25_000]
     tx_fpp_age_eligible: [true]
     tx_fpp_income_eligible: [true]
     tx_fpp_eligible: [true]
     tx_fpp_benefit: [266.84]
 
-- name: Household with multiple people - both eligible
+- name: Case 2, household with multiple people, both eligible.
   period: 2026
   input:
     people:
       person1:
         age: 28
+        employment_income: 25_000
       person2:
         age: 32
+        employment_income: 20_000
     spm_units:
       spm_unit1:
         members: [person1, person2]
-        spm_unit_net_income: 45_000
     households:
       household1:
         members: [person1, person2]
         state_code: TX
   output:
+    tx_fpp_countable_income: [45_000, 45_000]
     tx_fpp_age_eligible: [true, true]
     tx_fpp_income_eligible: [true, true]
     tx_fpp_eligible: [true, true]
     tx_fpp_benefit: [266.84, 266.84]
 
-- name: Household with one age-ineligible person
+- name: Case 3, household with one age-ineligible person.
   period: 2026
   input:
     people:
       person1:
         age: 30
+        employment_income: 40_000
       person2:
         age: 70
     spm_units:
       spm_unit1:
         members: [person1, person2]
-        spm_unit_net_income: 40_000
     households:
       household1:
         members: [person1, person2]
@@ -62,12 +65,13 @@
     tx_fpp_eligible: [true, false]
     tx_fpp_benefit: [266.84, 0]
 
-- name: Household income-ineligible
+- name: Case 4, household income-ineligible.
   period: 2026
   input:
     people:
       person1:
         age: 30
+        employment_income: 80_000
       person2:
         age: 35
       person3:
@@ -75,7 +79,6 @@
     spm_units:
       spm_unit1:
         members: [person1, person2, person3]
-        spm_unit_net_income: 80_000
     households:
       household1:
         members: [person1, person2, person3]
@@ -86,14 +89,16 @@
     tx_fpp_eligible: [false, false, false]
     tx_fpp_benefit: [0, 0, 0]
 
-- name: Edge case - income exactly at limit for household of 4
+- name: Case 5, household of four below the limit.
   period: 2026
   input:
     people:
       person1:
         age: 40
+        employment_income: 40_000
       person2:
         age: 38
+        employment_income: 30_000
       person3:
         age: 10
       person4:
@@ -101,33 +106,79 @@
     spm_units:
       spm_unit1:
         members: [person1, person2, person3, person4]
-        spm_unit_net_income: 80_375  # 250% of 2025 FPG for size 4
     households:
       household1:
         members: [person1, person2, person3, person4]
         state_code: TX
   output:
+    tx_fpp_countable_income: [70_000, 70_000, 70_000, 70_000]
     tx_fpp_age_eligible: [true, true, true, true]
     tx_fpp_income_eligible: [true, true, true, true]
     tx_fpp_eligible: [true, true, true, true]
     tx_fpp_benefit: [266.84, 266.84, 266.84, 266.84]
 
-- name: Edge case - age exactly at threshold
+- name: Case 6, age exactly at the threshold.
   period: 2026
   input:
     people:
       person1:
         age: 64
+        employment_income: 30_000
     spm_units:
       spm_unit1:
         members: [person1]
-        spm_unit_net_income: 30_000
     households:
       household1:
         members: [person1]
         state_code: TX
   output:
     tx_fpp_age_eligible: [true]
+    tx_fpp_income_eligible: [true]
+    tx_fpp_eligible: [true]
+    tx_fpp_benefit: [266.84]
+
+- name: Case 7, SSI is exempt from countable income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 38_000
+        ssi: 9_600
+    spm_units:
+      spm_unit1:
+        members: [person1]
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
+  output:
+    # Countable income is 38,000 (SSI exempt), below the 39,900 limit.
+    tx_fpp_countable_income: [38_000]
+    tx_fpp_income_eligible: [true]
+    tx_fpp_eligible: [true]
+    tx_fpp_benefit: [266.84]
+
+- name: Case 8, veterans benefits are exempt from countable income.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 35_000
+        veterans_benefits: 6_000
+    spm_units:
+      spm_unit1:
+        members: [person1]
+    households:
+      household1:
+        members: [person1]
+        state_code: TX
+  output:
+    # Countable income is the 35,000 earnings; the 6,000 Veteran's
+    # Administration payment is exempt per 1 TAC 382.109(3)(M), so
+    # income stays below the 39,900 one-person limit.
+    tx_fpp_countable_income: [35_000]
     tx_fpp_income_eligible: [true]
     tx_fpp_eligible: [true]
     tx_fpp_benefit: [266.84]

@@ -12,6 +12,7 @@
     people:
       person1:
         age: 28
+        weekly_hours_worked_before_lsr: 40
         employment_income: 31_000
         immigration_status: CITIZEN
       person2:
@@ -55,7 +56,7 @@
     # Parent (age 28 = 336 mo >= 60) -> SCHOOL_AGE; Child (age 1 = 12 mo < 18) -> INFANT
     nj_ccap_age_group: [SCHOOL_AGE, INFANT]
     # Parent: 0 hrs -> PART_TIME; Child: 40 hrs -> FULL_TIME
-    nj_ccap_time_category: [PART_TIME, FULL_TIME]
+    nj_ccap_time_category: [FULL_TIME, FULL_TIME]
     # Center FT Base Infant = $366.67/wk
     nj_ccap_maximum_weekly_benefit: [0, 366.67]
 
@@ -73,6 +74,7 @@
     people:
       person1:
         age: 25
+        weekly_hours_worked_before_lsr: 40
         employment_income: 20_000
         immigration_status: CITIZEN
       person2:
@@ -120,7 +122,7 @@
     # child2 (age 7 = 84 mo): >= 60 -> SCHOOL_AGE
     nj_ccap_age_group: [SCHOOL_AGE, TODDLER, SCHOOL_AGE]
     # Parent: 0 hrs -> PT; child1: 20 hrs -> PT; child2: 15 hrs -> PT
-    nj_ccap_time_category: [PART_TIME, PART_TIME, PART_TIME]
+    nj_ccap_time_category: [FULL_TIME, PART_TIME, PART_TIME]
     # Registered family PT base toddler = $140.60; school age = $122.63
     nj_ccap_maximum_weekly_benefit: [0, 140.60, 122.63]
 
@@ -138,10 +140,12 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 70_000
         immigration_status: CITIZEN
       person2:
         age: 32
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person3:
         age: 3
@@ -198,10 +202,12 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 66_000
         immigration_status: CITIZEN
       person2:
         age: 32
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person3:
         age: 4
@@ -249,7 +255,7 @@
     # Person1 (age 35 = 420 mo >= 60) -> SCHOOL_AGE; Person2 (age 32 = 384 mo >= 60) -> SCHOOL_AGE
     # child1 (age 4 = 48 mo): PRESCHOOL; child2 (age 8 = 96 mo): SCHOOL_AGE
     nj_ccap_age_group: [SCHOOL_AGE, SCHOOL_AGE, PRESCHOOL, SCHOOL_AGE]
-    nj_ccap_time_category: [PART_TIME, PART_TIME, FULL_TIME, FULL_TIME]
+    nj_ccap_time_category: [FULL_TIME, FULL_TIME, FULL_TIME, FULL_TIME]
     # Center FT Star 4 Preschool = 312.71; Center FT Star 4 School Age = 274.96 (base)
     nj_ccap_maximum_weekly_benefit: [0, 0, 312.71, 274.96]
 
@@ -268,10 +274,12 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 79_200
         immigration_status: CITIZEN
       person2:
         age: 32
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person3:
         age: 1
@@ -316,10 +324,10 @@
 
     # === Benefit ===
     # Expenses: 22_000 / 12 = 1_833.33/mo
-    # Uncapped: 1_833.33 - 198 = 1_635.33
     # Max reimbursement: 391.32 * 52 / 12 = 1_695.72
-    # Benefit = min(1_635.33, 1_695.72) = 1_635.33
-    nj_ccap: 1_635.33
+    # Capped expenses: min(1_833.33, 1_695.72) = 1_695.72
+    # Benefit = max(1_695.72 - 198, 0) = 1_497.72
+    nj_ccap: 1_497.72
 
 - name: Case 6, enrolled family at 230% FPL continuing eligible.
   period: 2026-01
@@ -328,10 +336,12 @@
     people:
       person1:
         age: 35
+        weekly_hours_worked_before_lsr: 40
         employment_income: 62_836
         immigration_status: CITIZEN
       person2:
         age: 32
+        weekly_hours_worked_before_lsr: 40
         immigration_status: CITIZEN
       person3:
         age: 1
@@ -372,17 +382,15 @@
     # Person1 (age 35 = 420 mo >= 60) -> SCHOOL_AGE; Person2 (age 32 = 384 mo >= 60) -> SCHOOL_AGE
     # Child (age 1 = 12 mo < 18) -> INFANT
     nj_ccap_age_group: [SCHOOL_AGE, SCHOOL_AGE, INFANT]
-    nj_ccap_time_category: [PART_TIME, PART_TIME, FULL_TIME]
+    nj_ccap_time_category: [FULL_TIME, FULL_TIME, FULL_TIME]
     # Center FT Star 3 Infant = $391.32
     nj_ccap_maximum_weekly_benefit: [0, 0, 391.32]
 
     # === Benefit ===
-    # max annual = 391.32 * 52 = 20_348.64
-    # annual copay = 62_836 * 0.03 = 1_885.08
-    # uncapped = max(22_000 - 1_885.08, 0) = 20_114.92
-    # annual benefit = min(20_114.92, 20_348.64) = 20_114.92
-    # monthly = 20_114.92 / 12 = 1_676.24
-    nj_ccap: 1_676.24
+    # max annual = 391.32 * 52 = 20_348.64; monthly max = 1_695.72
+    # Monthly expenses = 22_000 / 12 = 1_833.33 > monthly max -> capped at 1_695.72
+    # Benefit = max(1_695.72 - 157.09, 0) = 1_538.63
+    nj_ccap: 1_538.63
 
 - name: Case 7, child exactly age 13 is ineligible unless special needs.
   period: 2026-01
@@ -391,6 +399,7 @@
     people:
       person1:
         age: 40
+        weekly_hours_worked_before_lsr: 40
         employment_income: 30_000
         immigration_status: CITIZEN
       person2:

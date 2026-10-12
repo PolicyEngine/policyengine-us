@@ -91,3 +91,85 @@
         state_code: CO
   output:
     co_cdcc: 0  # co_low_income_cdcc = 750
+
+# C.R.S. 39-22-119(1.7)(b): for tax years beginning on or after January 1,
+# 2026, the credit is 70% of the federal section 21 credit computed without
+# regard to the section 26 liability limitation (cdcc_potential), for filers
+# with federal AGI at or below $60,000.
+- name: In 2026, 70% of the pre-liability-limit federal credit when liability is ample.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 30_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 34
+        employment_income: 30_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child]
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2, child]
+        state_code: CO
+  output:
+    # cdcc_potential = min(6_000, 3_000 one-child cap) x 0.35 = 1_050
+    # co_cdcc = 0.70 x 1_050 = 735
+    co_cdcc: 735
+
+- name: In 2026, credit is allowed even with no federal tax liability to cap it.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 12_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 34
+        employment_income: 12_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, child]
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2, child]
+        state_code: CO
+  output:
+    # capped_cdcc = 0 (no liability) but cdcc_potential = 3_000 x 0.45 = 1_350
+    # co_cdcc = 0.70 x 1_350 = 945
+    co_cdcc: 945
+
+- name: In 2026, no credit above the $60,000 AGI limit.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 61_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, child]
+        tax_unit_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, child]
+        state_code: CO
+  output:
+    co_cdcc: 0

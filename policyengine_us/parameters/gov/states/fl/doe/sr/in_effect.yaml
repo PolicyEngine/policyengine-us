@@ -1,0 +1,18 @@
+description: Florida uses this indicator to determine whether the School Readiness program applies.
+# We model only the State Median Income percentage sliding fee scale, which the
+# Division of Early Learning issued statewide effective October 1, 2025. Earlier
+# rule eras (the pre-2025 dollar-based scale and the July 1, 2025 percentage-of-FPL
+# scale) are out of scope, so the program produces no benefit before this date.
+values:
+  1900-01-01: false
+  2025-10-01: true
+
+metadata:
+  unit: bool
+  period: month
+  label: Florida School Readiness program in effect
+  reference:
+    - title: Fla. Admin. Code 6M-4.400 Required Parent Copayment
+      href: https://flrules.elaws.us/fac/6m-4.400
+    - title: Florida Division of Early Learning, Sliding Fee Schedule for School Readiness Program (effective October 1, 2025)
+      href: https://www.elclc.org/wp-content/uploads/2025/10/2025-2026-Sliding-Fee-Schedule-for-10012025-4-and-6-Percent.pdf#page=1

@@ -1,0 +1,17 @@
+description: Colorado increases the age 55-64 pension and annuity subtraction cap to the full amount of taxable Social Security benefits for joint filers whose federal adjusted gross income is at or below this amount.
+values:
+  # No cap increase existed before tax year 2025 (HB24-1142). An AGI limit of
+  # $0 disables the increase because a taxpayer's AGI is never at or below $0
+  # when they have taxable Social Security benefits exceeding the cap.
+  2021-01-01: 0
+  2025-01-01: 95_000
+
+metadata:
+  unit: currency-USD
+  period: year
+  label: Colorado age 55-64 Social Security subtraction cap increase AGI limit (joint)
+  reference:
+    - title: HB24-1142, Section 1, amending C.R.S. 39-22-104(4)(f)(III)(A)
+      href: https://leg.colorado.gov/sites/default/files/2024a_1142_signed.pdf#page=2
+    - title: 2025 Colorado Individual Tax Filing Guide 104 Book, Subtractions Line 3
+      href: https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=18

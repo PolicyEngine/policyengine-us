@@ -1,0 +1,171 @@
+# Tests for New York UI raw (pre-clamp) weekly benefit rate (§ 590(5)).
+# This variable applies the divisor/tier formula and the $143 divisor-26
+# formula floor, BEFORE the min_amount/max_amount clamp in
+# ny_ui_weekly_benefit_rate. Parameters (2026): standard_divisor 26,
+# low_divisor 25, formula_min_amount $143, low_hq_threshold $3,575,
+# two_quarter_hq_threshold $4,000, full_base_period_quarters 4.
+# Reference: NY Lab. Law § 590(5); NYSDOL P832 (Feb 2026) p.2.
+
+- name: Case 1, 4-quarter HQ $3,576 - divisor 26, floor lifts $137 to $143.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 3_576
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 4 quarters; HQ $3,576 > $3,575 -> divisor 26.
+        # floor($3,576 / 26) = $137; max($137, $143 floor) = $143.
+        ny_ui_raw_weekly_benefit_rate: 143
+
+- name: Case 2, 4-quarter HQ $3,575 - low divisor 25 lands exactly on $143.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 3_575
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 4 quarters; HQ $3,575 > $3,575 is FALSE -> low divisor 25.
+        # floor($3,575 / 25) = $143 (no formula floor on divisor-25 path).
+        ny_ui_raw_weekly_benefit_rate: 143
+
+- name: Case 3, 4-quarter HQ $3,600 - floor uniquely responsible for $143.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 3_600
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 4 quarters; HQ $3,600 > $3,575 -> divisor 26.
+        # floor($3,600 / 26) = $138; max($138, $143 floor) = $143.
+        ny_ui_raw_weekly_benefit_rate: 143
+
+- name: Case 4, 2-quarter HQ $2,500 - tier 3 divisor 25, NO $143 floor.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 2_500
+        ny_ui_quarters_with_wages: 2
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 2 quarters; HQ $2,500 <= $3,575 low threshold -> tier 3 (divisor 25).
+        # floor($2,500 / 25) = $100; tier 3 carries no formula floor.
+        ny_ui_raw_weekly_benefit_rate: 100
+
+- name: Case 5, 2-quarter tier 1 - averaged two highest quarters.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 5_000
+        ny_ui_second_high_quarter_wages: 4_000
+        ny_ui_quarters_with_wages: 2
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 2 quarters; HQ $5,000 > $4,000 -> tier 1 (averaged, divisor 26).
+        # avg = ($5,000 + $4,000) / 2 = $4,500; floor($4,500 / 26) = $173.
+        # max($173, $143 floor) = $173.
+        ny_ui_raw_weekly_benefit_rate: 173
+
+- name: Case 6, 3-quarter tier 2 - HQ between thresholds, divisor 26.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 3_800
+        ny_ui_quarters_with_wages: 3
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 3 quarters; HQ $3,800 not > $4,000 but > $3,575 -> tier 2 (divisor 26).
+        # floor($3,800 / 26) = $146; max($146, $143 floor) = $146.
+        ny_ui_raw_weekly_benefit_rate: 146
+
+- name: Case 7, zero high quarter wages - divisor-25 path yields $0.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: 0
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 4 quarters; HQ $0 not > $3,575 -> low divisor 25.
+        # floor($0 / 25) = $0; divisor-25 path has no formula floor.
+        ny_ui_raw_weekly_benefit_rate: 0
+
+- name: Case 8, negative high quarter wages - graceful negative via divisor 25.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ny_ui_high_quarter_wages: -100
+        ny_ui_quarters_with_wages: 4
+    households:
+      household:
+        members: [person1]
+        state_code: NY
+  output:
+    people:
+      person1:
+        # 4 quarters; HQ -$100 not > $3,575 -> low divisor 25.
+        # floor(-$100 / 25) = floor(-4) = -4; no formula floor on this path.
+        # The downstream ny_ui_weekly_benefit_rate zero-gates raw <= 0 to $0,
+        # so this pathological raw value never reaches a paid benefit.
+        ny_ui_raw_weekly_benefit_rate: -4

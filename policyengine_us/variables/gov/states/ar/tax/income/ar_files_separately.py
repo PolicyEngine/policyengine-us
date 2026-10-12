@@ -7,8 +7,8 @@ class ar_files_separately(Variable):
     label = "married couple files separately on the Arkansas tax return"
     definition_period = YEAR
     reference = (
-        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_and_AR1000NR_Instructions.pdf",
-        "https://www.dfa.arkansas.gov/images/uploads/incomeTaxOffice/2023_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2023_AR1000F_and_AR1000NR_Instructions.pdf",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2023_AR1000F_FullYearResidentIndividualIncomeTaxReturn.pdf",
     )
     defined_for = StateCode.AR
 
@@ -56,5 +56,17 @@ class ar_files_separately(Variable):
         sep_credit_person = max_(p.max_amount - reduction_sep, 0)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         credit_sep = tax_unit.sum(sep_credit_person * head_or_spouse)
+        # Only a married couple can file separately on the same Arkansas
+        # return; single, head-of-household, and surviving-spouse filers
+        # always take the combined (joint) path. Without this gate an
+        # unmarried filer could be routed to the separate path and pick up
+        # the separate-path additional tax credit for qualified individuals,
+        # which reads regular individual taxable income rather than the
+        # low-income-table net taxable income.
+        statuses = filing_status.possible_values
+        married = (filing_status == statuses.JOINT) | (
+            filing_status == statuses.SEPARATE
+        )
         # Compare after filing-method-sensitive credits.
-        return (itax_indiv - credit_sep) < (itax_joint - credit_joint)
+        separate_cheaper = (itax_indiv - credit_sep) < (itax_joint - credit_joint)
+        return married & separate_cheaper

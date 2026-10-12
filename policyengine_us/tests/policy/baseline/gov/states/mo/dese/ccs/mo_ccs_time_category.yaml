@@ -1,0 +1,88 @@
+# MO CCS care time unit tests
+# mo_ccs_time_category is Person, MONTH (enum: FULL_TIME, HALF_TIME,
+# PART_TIME). From childcare_hours_per_day: part 0.5-<3, half 3-<5,
+# full 5-<12. Default (0 hours) -> PART_TIME (lowest bracket).
+
+- name: Case 1, eight hours per day is full time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_day: 8
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 8 >= 5 -> FULL_TIME.
+    mo_ccs_time_category: FULL_TIME
+
+- name: Case 2, five hours per day is full time at boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_day: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Threshold 5 (inclusive) -> FULL_TIME.
+    mo_ccs_time_category: FULL_TIME
+
+- name: Case 3, four hours per day is half time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_day: 4
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 3 <= 4 < 5 -> HALF_TIME.
+    mo_ccs_time_category: HALF_TIME
+
+- name: Case 4, three hours per day is half time at boundary.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_day: 3
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Threshold 3 (inclusive) -> HALF_TIME.
+    mo_ccs_time_category: HALF_TIME
+
+- name: Case 5, two hours per day is part time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_day: 2
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 0.5 <= 2 < 3 -> PART_TIME.
+    mo_ccs_time_category: PART_TIME
+
+- name: Case 6, zero hours defaults to part time.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_day: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Lowest bracket (threshold 0) -> PART_TIME.
+    mo_ccs_time_category: PART_TIME

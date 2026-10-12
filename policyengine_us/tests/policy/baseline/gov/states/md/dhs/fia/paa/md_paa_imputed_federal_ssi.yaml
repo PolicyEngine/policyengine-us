@@ -1,0 +1,111 @@
+# Tests for md_paa_imputed_federal_ssi.
+# Formula: max(ssi_amount_if_eligible - md_paa_countable_income, 0), gated by
+# Maryland PAA eligibility.
+
+- name: Case 1, SSI-eligible CARE Home applicant with no income imputes full individual SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    ssi_countable_income: 0
+    md_paa_imputed_federal_ssi: 994
+
+- name: Case 2, OASI income reduces imputed federal SSI dollar-for-dollar after disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security: 12_000
+        social_security_disability: 0
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    # $1,000/mo OASI - $20 general exclusion = $980 countable.
+    # Imputed federal SSI = max(994 - 980, 0) = 14.
+    ssi_countable_income: 980
+    md_paa_imputed_federal_ssi: 14
+
+- name: Case 3, income above the federal SSI amount imputes no federal SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_blind: false
+        is_disabled: true
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security_disability: 30_000
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
+    md_paa_imputed_federal_ssi: 0
+
+- name: Case 4, ineligible applicant has no imputed federal SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_blind: false
+        is_disabled: false
+        immigration_status: CITIZEN
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: NONE
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: false
+    md_paa_imputed_federal_ssi: 0
+
+- name: Case 5, SSDI-only recipient does not need a separate disability flag for imputed SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 60
+        is_disabled: false
+        ssi: 0
+        social_security_disability: 12_000
+        ssi_countable_resources: 1_000
+        md_paa_living_arrangement: CARE_HOME_LEVEL_C
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_paa_eligible: true
+    md_paa_countable_income: 980
+    md_paa_imputed_federal_ssi: 14

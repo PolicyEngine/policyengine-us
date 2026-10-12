@@ -1,0 +1,75 @@
+- name: Case 1, initial eligibility uses 175 percent of the federal poverty guideline.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        id_iccp_countable_income: 3_500
+        id_iccp_enrolled: false
+        spm_unit_fpg: 24_000
+  output:
+    id_iccp_income_eligible: true
+
+- name: Case 2, initial eligibility fails above 175 percent of the federal poverty guideline.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        id_iccp_countable_income: 3_501
+        id_iccp_enrolled: false
+        spm_unit_fpg: 24_000
+  output:
+    id_iccp_income_eligible: false
+
+- name: Case 3, continuing eligibility uses 85 percent of state median income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        id_iccp_countable_income: 4_250
+        id_iccp_enrolled: true
+        hhs_smi: 60_000
+  output:
+    id_iccp_income_eligible: true
+
+- name: Case 4, continuing eligibility fails above 85 percent of state median income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: ID
+    spm_units:
+      spm_unit:
+        members: [person1]
+        id_iccp_countable_income: 4_251
+        id_iccp_enrolled: true
+        hhs_smi: 60_000
+  output:
+    id_iccp_income_eligible: false

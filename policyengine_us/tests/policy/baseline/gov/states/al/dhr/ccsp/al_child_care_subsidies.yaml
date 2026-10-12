@@ -1,0 +1,69 @@
+# AL CCSP annual aggregator tests (SPMUnit, YEAR, USD)
+# adds = ["al_ccsp"] -- sums the monthly al_ccsp benefit over 12 months.
+
+- name: Ineligible family aggregator is zero.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 80_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    al_child_care_subsidies: 0
+
+- name: Low-income family aggregator is 12 times monthly subsidy.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+        immigration_status: CITIZEN
+        weekly_hours_worked: 30
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 35
+        al_ccsp_provider_type: CENTER
+        al_ccsp_quality_tier: BASE
+        pre_subsidy_childcare_expenses: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 10_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AL
+        county_str: JEFFERSON_COUNTY_AL
+  output:
+    # Monthly al_ccsp = $780 (BIRMINGHAM CENTER PRESCHOOL BASE $180 * 52/12)
+    # Annual = 12 * $780 = $9,360
+    al_child_care_subsidies: 9360

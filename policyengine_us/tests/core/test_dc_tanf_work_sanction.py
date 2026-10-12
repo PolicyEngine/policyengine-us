@@ -1,9 +1,6 @@
 import pytest
 
-from policyengine_us import CountryTaxBenefitSystem
-
-
-SYSTEM = CountryTaxBenefitSystem()
+from policyengine_us.system import system as SYSTEM
 
 
 def test_dc_tanf_work_sanction_rate_parameter_schedule():

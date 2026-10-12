@@ -1,20 +1,43 @@
 description: Texas counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
 values:
-  # Regulations state all income other than its defined earned income sources is counted as unearned income.
-  # We list them here to avoid a circular reference.
   2010-01-01:
+    # A-1324.16: Social Security; other survivors benefits fall under A-1320.
     - social_security
+    - survivor_benefits
+    # A-1321.2 and A-1321.4: disability insurance and workers compensation.
     - disability_benefits
     - workers_compensation
+    # A-1324.19 and A-1324.20.
     - unemployment_compensation
+    - veterans_benefits
+    # A-1326.9: pensions, including military retirement and recurring withdrawals.
+    - pension_income
+    - military_retirement_pay
     - retirement_distributions
+    # A-1324.23: railroad retirement benefits.
+    - railroad_benefits
     - alimony_income
+    # A-1325.1 and A-1326.6.
     - dividend_income
     - interest_income
-    - farm_operations_income
+    # A-1323.4.2: passive property income.
+    - rental_income
     - farm_rent_income
-    - capital_gains
+    # Active farming and Schedule J farm income are not modeled here.
+    # A-1320: recurring estate income; A-1326.21 separately names life estates.
+    - estate_income
+    # A-1326.28: lottery winnings; other gambling income falls under A-1320.
+    - gambling_winnings
+    # A-1320 catch-all for other recurring, non-exempt cash income.
+    - strike_benefits
     - miscellaneous_income
+    # A-1326.1: contributions, subject to the nonprofit exemption below.
+    - financial_assistance
+    - gi_cash_assistance
+    # A-1324: otherwise non-exempt government cash aid. RCA and Match Grant
+    # require separate concurrent-benefit rules (A-1326.12 and A-1326.13).
+    - general_assistance
+    # A-1326.2: the child support disregard is applied downstream.
     - child_support_received
 
 metadata:
@@ -23,6 +46,21 @@ metadata:
   label: Texas TANF unearned income sources
   reference:
     - title: Texas Works Handbook - A-1320 Types of Income
-      href: https://www.hhs.texas.gov/handbooks/texas-works-handbook/a-1320-types-income
-    - title: 1 Tex. Admin. Code § 372.401 (a) - Income
+      href: https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/a-1320-types-income
+    - title: Texas Works Handbook - A-1330 Types of Payments
+      href: https://fhb.hhs.texas.gov/handbooks/texas-works-handbook/a-1330-types-payments
+    - title: 1 Tex. Admin. Code § 372.401(a) - Overview of Income
       href: https://www.law.cornell.edu/regulations/texas/1-Tex-Admin-Code-SS-372-401
+  # Excluded by omission: capital gains (A-1326.19), SSI (A-1324.17),
+  # TANF (A-1324.18), educational assistance (A-1322.1), jury duty pay
+  # (A-1326.22), canceled debt (A-1326.24), and foster/adoption assistance.
+  # The available inputs do not identify these conditional exclusions:
+  # - need-based nonprofit contributions: first $300 per fiscal quarter;
+  # - ABLE and school-savings interest/dividends;
+  # - once-yearly or less frequent lump sums under A-1331;
+  # - workers compensation reimbursements, recoupments, and attorney fees;
+  # - exempt VA payment components and nonavailable trust principal.
+  # Rental management hours and production expenses are not separately
+  # reported, so rental inputs are treated as passive net income. Broad
+  # cash-aid inputs cannot identify every exempt program. These are input
+  # limitations, not a claim that every payment in these categories counts.

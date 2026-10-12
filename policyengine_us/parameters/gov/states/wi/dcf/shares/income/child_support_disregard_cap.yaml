@@ -1,0 +1,17 @@
+description: Wisconsin disregards court-ordered child and family support payments when the assistance group's total monthly amount is at or below this cap, and counts the entire amount when it exceeds the cap, under the Wisconsin Shares Child Care Subsidy Program.
+
+# This is a cliff, not a deduction: support of $1,250 or less per month is
+# fully disregarded; if the total exceeds $1,250 per month, the entire amount
+# (not just the excess) is counted.
+values:
+  2025-10-01: 1_250
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Wisconsin Shares child support disregard cap
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 6.3 Disregarded Income
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=59
+    - title: Wisconsin Shares Handbook (July 2026), Section 6.2 Counted Income
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=59

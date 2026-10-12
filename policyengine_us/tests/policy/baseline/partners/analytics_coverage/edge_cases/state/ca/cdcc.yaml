@@ -1,0 +1,223 @@
+# California CDCC (R&TC 17052.6) edge cases, 2026 parameters:
+# ca_cdcc = federal cdcc x CA match rate (50% for AGI < 40k, 43% for 40-70k,
+# 34% for 70-100k, 0% at 100k+). For 2026 the input is the federal `cdcc`
+# (liability-capped). Nonrefundable: usable only against CA liability through
+# ca_non_refundable_credits.
+- name: ca_cdcc_hoh_40000_liability_limited (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 40_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id001
+        - head
+        - child1
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id001
+        childcare_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # Federal CDCC (2026 amended structure): rate = 50% - ceil((40,000 -
+        # 15,000) / 2,000) x 1pp = 37%; expenses capped at 3,000 (1 child)
+        # -> 3,000 x 0.37 = 1,110 (below the federal liability limit).
+        cdcc: 1_110.0
+        # CA AGI 40,000 hits the 43% bracket (binding at the 40k threshold):
+        # ca_cdcc = 1,110 x 0.43 = 477.30.
+        ca_cdcc: 477.3
+        # CA HOH taxable = 40,000 - 11,670.63 = 28,329.37;
+        # tax = 1% x 22,675.50 + 2% x (28,329.37 - 22,675.50) = 226.76 + 113.08
+        # = 339.83.
+        ca_income_tax_before_credits: 339.83
+        # Exemptions (156.47 personal + 485.76 dependent) + ca_cdcc 477.30
+        # = 1,119.53 > 345.01 liability.
+        ca_non_refundable_credits: 1_119.53
+        # Credit stack exceeds liability -> capped at 0 (liability-limited).
+        ca_income_tax_before_refundable_credits: 0.0
+- name: ca_cdcc_hoh_74000_fully_usable (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 74_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id002
+        - head
+        - child1
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id002
+        childcare_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # Federal rate floors at 35% (first phase-out minimum):
+        # 3,000 x 0.35 = 1,050.
+        cdcc: 1_050.0
+        # CA AGI 74,000 -> 34% bracket: ca_cdcc = 1,050 x 0.34 = 357.00.
+        ca_cdcc: 357.0
+        # CA HOH taxable = 74,000 - 11,670.63 = 62,329.37; tax = 1% x 22,675.50
+        # + 2% x (53,720.48 - 22,675.50) + 4% x (62,329.37 - 53,720.48)
+        # = 226.76 + 620.90 + 344.36 = 1,192.01.
+        ca_income_tax_before_credits: 1_192.01
+        # Exemptions 642.23 + ca_cdcc 357.00 = 999.23 < 1,192.01 liability.
+        ca_non_refundable_credits: 999.23
+        # 1,192.01 - 999.23 = 192.78 > 0: the CDCC is fully usable.
+        ca_income_tax_before_refundable_credits: 192.78
+- name: ca_cdcc_agi_100000_zero_match_rate (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 100_000
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id003
+        - head
+        - child1
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+    spm_units:
+      spm_unit:
+        members: *id003
+        childcare_expenses: 3_000
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    tax_units:
+      tax_unit:
+        # CA AGI at the 100,000 threshold -> CA match rate 0% even though the
+        # federal CDCC is positive (income route; binding at the 100k cliff).
+        ca_cdcc: 0.0

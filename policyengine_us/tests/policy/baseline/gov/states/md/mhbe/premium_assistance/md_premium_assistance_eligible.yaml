@@ -1,0 +1,258 @@
+# Unit tests for Maryland Premium Assistance eligibility.
+# Eligible when: program in effect (PY2026-2027), household in MD, at least one
+# tax-unit member is federal-APTC-eligible, and ACA MAGI <= 400% FPL.
+# is_aca_ptc_eligible and aca_magi_fraction are provided directly so the gate
+# logic is tested in isolation from the premium-data lookup.
+
+- name: Case 1, MD APTC-eligible unit at 250% FPL in 2026 is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+
+- name: Case 2, MD unit above 400% FPL is ineligible (income cap).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 4.01
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: false
+
+- name: Case 3, exactly 400% FPL is eligible (boundary, at limit not above).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 4.00
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+
+- name: Case 4, no federal-APTC-eligible member makes the unit ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: false
+
+- name: Case 5, non-Maryland state is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: VA
+  output:
+    md_premium_assistance_eligible: false
+
+- name: Case 6, program not in effect in 2025 (before PY2026 start).
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: false
+
+- name: Case 7, program sunset in 2028 (after PY2027 end).
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: false
+
+- name: Case 8, one eligible member in a multi-person unit qualifies the unit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: false
+      person2:
+        age: 43
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        aca_magi_fraction: 3.00
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+
+# ---- Edge cases ----
+
+- name: Case 9, zero income (0% FPL) APTC-eligible MD unit is eligible.
+  # Lower bound of the income test: 0 <= 4.00 FPL limit holds.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+
+- name: Case 10, just below 400% FPL (3.99) is eligible (below the income cap).
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 3.99
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+
+- name: Case 11, direct 2027 case (second plan year) is eligible.
+  # The program is authorized for plan years 2026-2027; this confirms eligibility
+  # holds in 2027 directly (distinct from the 2028 sunset), not only via 2026.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.50
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true
+
+# ---- A12(c): raw-income 400%-FPL boundary eligibility pair ----
+# These derive aca_magi_fraction from employment_income through the federal FPL
+# chain instead of forcing it. EXPECTED TO CHANGE when the upstream federal
+# 400%/truncation fix lands (aca ptc_income_eligibility 4.00 threshold is
+# lower-bound-inclusive and zeroes [400%,401%) FPL); the masked boundary here
+# pairs with that upstream issue.
+
+- name: Case 12, raw income just below the 400% FPL cap is eligible.
+  # employment_income set so aca_magi_fraction is DERIVED; a single filer near but
+  # under 4x the 2026 FPL should be eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 60_000
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: true  # derived aca_magi_fraction < 4.00 cap
+
+- name: Case 13, raw income just above the 400% FPL cap is ineligible.
+  # employment_income set above 4x the 2026 FPL so the DERIVED aca_magi_fraction
+  # exceeds the cap; the unit should be ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 70_000
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MD
+  output:
+    md_premium_assistance_eligible: false  # derived aca_magi_fraction > 4.00 cap

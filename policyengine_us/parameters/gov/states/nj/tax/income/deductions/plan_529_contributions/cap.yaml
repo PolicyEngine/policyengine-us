@@ -9,4 +9,7 @@ metadata:
   - title: NJ-1040 Instructions 2024
     href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf
 values:
+  # P.L. 2021, c.419 § 1 applies to taxable years beginning on or after
+  # January 1, 2022; no deduction exists before then.
+  2021-01-01: 0
   2022-01-01: 10_000

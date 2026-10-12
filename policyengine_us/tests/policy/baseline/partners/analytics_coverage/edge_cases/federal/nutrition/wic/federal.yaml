@@ -1,0 +1,891 @@
+# WIC federal edge cases. WIC has no state-specific policy in the model except
+# the AK/HI federal poverty guideline groups inside wic_income_limit, so all
+# cases live in this single federal file (TX households, plus one AK case for
+# the state-group branch).
+# Benefit math (wic.py): annual wic = sum over months of
+#   (2018 package base - 2018 embedded CVB) x monthly CPI-U uprating
+#   + current CVB (gov/usda/wic/cvb/current, $48 pregnant/postpartum,
+#     $52 breastfeeding, $26 child from 2025-10-01; infants $0).
+# The 2026 CPI-U uprating factors sum to ~16.05 across the 12 months
+# (avg ~1.336x the 2018-01 base).
+# Income test (meets_wic_income_test): annual countable income <=
+# ceil(FPG x 1.85), where FPG uses the July-switchover guideline year
+# (Jan-Jun months -> prior-year guidelines, Jul-Dec -> current-year), and
+# family size is increased by current_pregnancies (number of expected
+# children). The test is monthly, so over a whole-year period the limit
+# steps up in July.
+# Income boundary cases use a CHILD rather than a pregnant woman because TX
+# Medicaid for pregnant women reaches past 185% FPG (203% FPL), which would
+# satisfy the WIC adjunct (categorical) route and mask the income boundary;
+# TX Medicaid for children ages 1-5 tops out at 149% FPL, keeping the
+# boundary sharp.
+# wic_category is asserted flat with enum NAME strings in person declaration
+# order (head first, then children): the runner only decodes enums for
+# whole-population assertions, so the nested per-person form would force raw
+# indices.
+- name: wic_pregnant_adult (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: true
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    wic_category: PREGNANT
+    people:
+      head:
+        # PREGNANT_SINGLETON package: (39.12 base - 11 embedded CVB) x ~16.05
+        # 2026 uprating sum + $48/mo current CVB x 12 = ~451.38 + 576
+        # = 1,027.38. Income 20,000 <= size-1 limit ceil(15,650 x 1.85)
+        # = 28,953 (2025 guidelines apply in January 2026).
+        wic: 1027.38
+        is_wic_eligible: true
+- name: wic_pregnant_adult_2025 (federal)
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: true
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    wic_category: PREGNANT
+    people:
+      head:
+        # 2025 regime differs from 2026 in two partner-visible ways:
+        # current CVB is $47/mo Jan-Sep and $48/mo from 2025-10-01
+        # (47 x 9 + 48 x 3 = 567), and the income limit uses 2024
+        # guidelines in January (ceil(15,060 x 1.85) = 27,861 >= 20,000).
+        # Annual: (39.12 - 11) x 15.5967 2025 uprating sum + 567 = 1,005.58.
+        wic: 1005.58
+        is_wic_eligible: true
+- name: wic_child_income_at_185pct_limit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 39_128
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+    households:
+      household:
+        members: &id003
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    wic_category: [NONE, CHILD]
+    # Size-2 limit: ceil((15,650 + 5,500) x 1.85) = ceil(39,127.5) = 39,128
+    # (2025 guidelines, binding Jan-Jun 2026; the Jul-Dec limit is higher).
+    # Income 39,128 <= 39,128 -> passes every month. TX child Medicaid
+    # (ages 1-5, 149% FPL) and SNAP both cut off below 185% FPG, so
+    # eligibility here rides on the WIC income test alone.
+    spm_units:
+      spm_unit:
+        meets_wic_income_test: true
+    people:
+      head:
+        wic: 0.0
+        is_wic_eligible: false
+      child1:
+        # CHILD_24_59_MONTHS package: (33.65 - 8) x ~16.05 + 26 x 12 = 723.73.
+        wic: 723.73
+        is_wic_eligible: true
+- name: wic_child_income_above_limit_ineligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 40_035
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+    households:
+      household:
+        members: &id004
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id004
+    tax_units:
+      tax_unit:
+        members: *id004
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id004
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    wic_category: [NONE, CHILD]
+    # Income-route ineligibility pin. The limit steps up at the July
+    # guideline switchover, so a whole-year case must clear BOTH limits:
+    # Jan-Jun ceil((15,650 + 5,500) x 1.85) = 39,128 (2025 guidelines) and
+    # Jul-Dec ceil((15,960 + 5,680) x 1.85) = 40,034 (2026 guidelines).
+    # 40,035 > 40,034 fails every month (an income of e.g. 39,129 would
+    # regain eligibility in July). No SNAP/TANF/Medicaid at this income in
+    # TX, so the adjunct route also fails. Note wic_category stays CHILD
+    # while is_wic_eligible is false: category and eligibility are
+    # decoupled outputs.
+    spm_units:
+      spm_unit:
+        meets_wic_income_test: false
+    people:
+      head:
+        wic: 0.0
+        is_wic_eligible: false
+      child1:
+        wic: 0.0
+        is_wic_eligible: false
+- name: wic_child_high_income_snap_adjunct_eligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 60_000
+      child1:
+        age: 3
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+    households:
+      household:
+        members: &id005
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id005
+        # Reported SNAP receipt (input override): 42 USC 1786(d)(2)(A)(ii)
+        # makes SNAP recipients adjunctively income-eligible for WIC.
+        snap: 3_000
+    tax_units:
+      tax_unit:
+        members: *id005
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id005
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    wic_category: [NONE, CHILD]
+    # 60,000 > size-2 limit 39,128, so the direct income test fails...
+    spm_units:
+      spm_unit:
+        meets_wic_income_test: false
+    people:
+      head:
+        wic: 0.0
+        is_wic_eligible: false
+      child1:
+        # ...but SNAP receipt in the SPM unit satisfies
+        # meets_wic_categorical_eligibility, so the child gets the full
+        # CHILD_24_59_MONTHS package: (33.65 - 8) x ~16.05 + 26 x 12
+        # = 723.73.
+        wic: 723.73
+        is_wic_eligible: true
+- name: wic_pregnant_twins_current_pregnancies_2 (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: true
+        is_breastfeeding: false
+        current_pregnancies: 2
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 45_000
+    households:
+      household:
+        members: &id006
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id006
+    tax_units:
+      tax_unit:
+        members: *id006
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id006
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    wic_category: PREGNANT
+    # Two expected children raise the WIC unit size from 1 to 3:
+    # limit = ceil((15,650 + 2 x 5,500) x 1.85) = ceil(49,302.5) = 49,303
+    # >= 45,000. With a single pregnancy the limit would be 39,128 and this
+    # income would fail the direct test.
+    spm_units:
+      spm_unit:
+        meets_wic_income_test: true
+    people:
+      head:
+        # PREGNANT_MULTIPLE_FETUSES package carries the higher $52/mo CVB:
+        # (39.12 - 11) x ~16.05 + 52 x 12 = ~451.38 + 624 = 1,075.38.
+        wic: 1075.38
+        is_wic_eligible: true
+- name: wic_pregnant_negative_self_employment_income (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: true
+        is_breastfeeding: false
+        current_pregnancies: 1
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 45_000
+        self_employment_income_before_lsr: -10_000
+    households:
+      household:
+        members: &id007
+        - head
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id007
+    tax_units:
+      tax_unit:
+        members: *id007
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id007
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    wic_category: PREGNANT
+    # wic_countable_income sums self-employment income signed: 45,000 wages
+    # - 10,000 self-employment loss = 35,000 <= pregnancy-adjusted size-2
+    # limit ceil((15,650 + 5,500) x 1.85) = 39,128. Without the loss, 45,000
+    # would fail the direct income test.
+    spm_units:
+      spm_unit:
+        meets_wic_income_test: true
+    people:
+      head:
+        # PREGNANT_SINGLETON: (39.12 - 11) x ~16.05 + 48 x 12 = 1,027.38.
+        wic: 1027.38
+        is_wic_eligible: true
+- name: wic_pregnant_alaska_income_limit (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: true
+        is_breastfeeding: false
+        current_pregnancies: 1
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 45_000
+    households:
+      household:
+        members: &id008
+        - head
+        state_code: AK
+        zip_code: '99501'
+        county_str: ANCHORAGE_MUNICIPALITY_AK
+    spm_units:
+      spm_unit:
+        members: *id008
+    tax_units:
+      tax_unit:
+        members: *id008
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id008
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    wic_category: PREGNANT
+    # AK uses its own (higher) poverty guidelines - the only geographic
+    # variation in WIC: limit = ceil((19,550 + 6,880) x 1.85)
+    # = ceil(48,895.5) = 48,896 >= 45,000. The contiguous-US limit at this
+    # size is 39,128, so this income passes only through the AK branch.
+    spm_units:
+      spm_unit:
+        meets_wic_income_test: true
+    people:
+      head:
+        # Package values do not vary by state: PREGNANT_SINGLETON
+        # (39.12 - 11) x ~16.05 + 48 x 12 = 1,027.38.
+        wic: 1027.38
+        is_wic_eligible: true
+- name: wic_breastfeeding_mother_infant (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+    households:
+      household:
+        members: &id009
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id009
+    tax_units:
+      tax_unit:
+        members: *id009
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id009
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    wic_category: [BREASTFEEDING, INFANT]
+    people:
+      head:
+        # Default (partial) breastfeeding: PARTIALLY_BREASTFEEDING package
+        # (39.12 - 11) x ~16.05 + 52 x 12 CVB = ~451.38 + 624 = 1,075.38.
+        wic: 1075.38
+        is_wic_eligible: true
+      child1:
+        # Default INFANT_AVERAGE package: 138.64 x ~16.05 uprating sum
+        # = ~2,225.4 (no CVB for infants).
+        wic: 2225.42
+        is_wic_eligible: true
+- name: wic_postpartum_mother_of_infant (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_female: true
+        own_children_in_household: 1
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 20_000
+      child1:
+        age: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+    households:
+      household:
+        members: &id010
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id010
+    tax_units:
+      tax_unit:
+        members: *id010
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id010
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    wic_category: [POSTPARTUM, INFANT]
+    people:
+      head:
+        # Non-breastfeeding mother of an infant under 6 months ->
+        # POSTPARTUM category (the previously untested enum value) with the
+        # POSTPARTUM_NON_BREASTFEEDING package:
+        # (32.27 - 11) x ~16.05 + 48 x 12 CVB = ~341.42 + 576 = ~917.42.
+        wic: 917.42
+        is_wic_eligible: true
+      child1:
+        # INFANT_AVERAGE package: 138.64 x ~16.05 = ~2,225.4.
+        wic: 2225.42
+        is_wic_eligible: true
+- name: wic_fully_breastfeeding_mother_fully_breastfed_infant (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 28
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: true
+        is_wic_fully_breastfeeding: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        wic_infant_feeding_category: FULLY_BREASTFED
+    households:
+      household:
+        members: &id011
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id011
+    tax_units:
+      tax_unit:
+        members: *id011
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id011
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    wic_category: [BREASTFEEDING, INFANT]
+    people:
+      head:
+        # FULLY_BREASTFEEDING package (7 CFR 246.10(e)(7)(i)) - the largest
+        # maternal package: (48.92 - 11) x ~16.05 + 52 x 12 CVB
+        # = ~608.68 + 624 = ~1,232.68.
+        wic: 1232.68
+        is_wic_eligible: true
+      child1:
+        # Fully breastfed infants under 6 months remain enrolled and
+        # eligible but the INFANT_0_5_FULLY_BREASTFED package carries $0
+        # food cost (mother receives the enhanced package instead) - a
+        # policy-driven zero, not an ineligibility zero.
+        wic: 0.0
+        is_wic_eligible: true
+- name: wic_formula_fed_infant_age_0 (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+        wic_infant_feeding_category: FULLY_FORMULA_FED
+    households:
+      household:
+        members: &id012
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id012
+    tax_units:
+      tax_unit:
+        members: *id012
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id012
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    wic_category: [NONE, INFANT]
+    people:
+      head:
+        # Non-mother, non-pregnant adult: no WIC category (cross-member
+        # leakage guard alongside the eligible infant).
+        wic: 0.0
+        is_wic_eligible: false
+      child1:
+        # INFANT_0_3_FULLY_FORMULA_FED package (age 0 months < 4):
+        # 175.27 x ~16.05 uprating sum = ~2,813.4 (no CVB for infants) -
+        # the most expensive package in the program.
+        wic: 2813.39
+        is_wic_eligible: true
+- name: wic_child_age_1 (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 1
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+    households:
+      household:
+        members: &id013
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id013
+    tax_units:
+      tax_unit:
+        members: *id013
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id013
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    wic_category: [NONE, CHILD]
+    people:
+      head:
+        wic: 0.0
+        is_wic_eligible: false
+      child1:
+        # First eligible child year, CHILD_12_23_MONTHS package:
+        # (33.64 - 8) x ~16.05 + 26 x 12 CVB = ~411.57 + 312 = ~723.57
+        # (differs from the age-4 CHILD_24_59_MONTHS value by the 0.01
+        # base-cost split in the 2018 package data).
+        wic: 723.57
+        is_wic_eligible: true
+- name: wic_child_age_4 (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 4
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+    households:
+      household:
+        members: &id014
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id014
+    tax_units:
+      tax_unit:
+        members: *id014
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id014
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    wic_category: [NONE, CHILD]
+    people:
+      head:
+        wic: 0.0
+        is_wic_eligible: false
+      child1:
+        # Last eligible child year, CHILD_24_59_MONTHS package:
+        # (33.65 - 8) x ~16.05 + 26 x 12 CVB = ~411.73 + 312 = ~723.73.
+        wic: 723.73
+        is_wic_eligible: true
+- name: wic_child_age_5_no_longer_eligible (federal)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: false
+        is_pregnant: false
+        is_breastfeeding: false
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+      child1:
+        age: 5
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        is_disabled: false
+    households:
+      household:
+        members: &id015
+        - head
+        - child1
+        state_code: TX
+        zip_code: '75201'
+        county_str: DALLAS_COUNTY_TX
+    spm_units:
+      spm_unit:
+        members: *id015
+    tax_units:
+      tax_unit:
+        members: *id015
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id015
+    marital_units:
+      mu_head:
+        members:
+        - head
+      mu_child1:
+        members:
+        - child1
+  output:
+    wic_category: [NONE, NONE]
+    # Demographic-route ineligibility pin: WIC child eligibility ends at the
+    # 5th birthday (42 USC 1786(b)(3)), so both members are NONE/$0 despite
+    # $0 income.
+    people:
+      head:
+        wic: 0.0
+        is_wic_eligible: false
+      child1:
+        wic: 0.0
+        is_wic_eligible: false

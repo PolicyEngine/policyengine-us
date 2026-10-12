@@ -15,6 +15,9 @@
     qualified_tuition_expenses: 4_000
     filing_status: JOINT
     tax_unit_is_joint: true
+    attends_eligible_educational_institution_for_lifetime_learning_credit: true
+    has_lifetime_learning_credit_1098_t_or_exception: true
+    has_tin: true
     is_eligible_for_american_opportunity_credit: false
   output:
     # Joint LLC phase-out in 2020: starts $118k, ends $138k.
@@ -31,6 +34,9 @@
     qualified_tuition_expenses: 5_000
     filing_status: SINGLE
     tax_unit_is_joint: false
+    attends_eligible_educational_institution_for_lifetime_learning_credit: true
+    has_lifetime_learning_credit_1098_t_or_exception: true
+    has_tin: true
     is_eligible_for_american_opportunity_credit: false
   output:
     # Single LLC phase-out in 2020: starts $59k, ends $69k.
@@ -46,6 +52,9 @@
     qualified_tuition_expenses: 4_000
     filing_status: JOINT
     tax_unit_is_joint: true
+    attends_eligible_educational_institution_for_lifetime_learning_credit: true
+    has_lifetime_learning_credit_1098_t_or_exception: true
+    has_tin: true
     is_eligible_for_american_opportunity_credit: false
   output:
     # Starting 2021, LLC and AOC share phase-out ($160k/$180k joint).

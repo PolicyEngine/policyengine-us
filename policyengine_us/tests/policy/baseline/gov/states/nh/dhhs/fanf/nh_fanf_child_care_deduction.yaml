@@ -256,3 +256,53 @@
   output:
     # Zero earnings = part-time rate ($100 for under 6)
     nh_fanf_child_care_deduction: 100
+
+- name: Case 13, incapacitated parent care expenses count toward the deduction.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month, above $377 threshold
+      person2:
+        age: 32
+        is_tax_unit_head_or_spouse: true
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Per FAM 603.05: $175/month for each incapacitated parent (full-time
+    # employment). Expenses = 1,200 / 12 = 100/month, below the cap.
+    nh_fanf_child_care_deduction: 100
+
+- name: Case 14, incapacitated non-parent adult does not count toward the deduction.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 6_000  # $500/month, above $377 threshold
+      person2:
+        age: 70
+        is_tax_unit_head_or_spouse: false
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # FAM 603.05 covers only an incapacitated PARENT; an incapacitated
+    # non-parent adult adds nothing to the cap: min(100, 0) = 0.
+    nh_fanf_child_care_deduction: 0

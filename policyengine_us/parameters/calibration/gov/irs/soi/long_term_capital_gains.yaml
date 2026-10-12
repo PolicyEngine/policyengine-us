@@ -1,11 +1,12 @@
 description: Total long-term capital gains.
 values:
-  2015-01-01: 713_598_090_000
-  2020-01-01: 1_137_020_477_000
+  2015-01-01: 733_313_255_000
+  2020-01-01: 1_063_500_316_000
+  2023-01-01: 971_279_947_000
 metadata:
   unit: currency-USD
   label: SOI long-term capital gains
   uprating: calibration.gov.cbo.income_by_source.net_capital_gain
   reference:
-    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
-      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A
+      href: https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-returns-complete-report-publication-1304-basic-tables-part-1

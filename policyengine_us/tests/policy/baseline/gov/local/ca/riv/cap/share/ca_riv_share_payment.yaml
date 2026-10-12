@@ -8,8 +8,8 @@
     ca_riv_share_electricity_emergency_payment: 0
     ca_riv_share_eligible: true
   output:
-    ca_riv_share_payment: 33.21
-    # 24 + 4.75 + 4.46 
+    ca_riv_share_payment: 31.99
+    # 24 + 4.75 + 3.24
 
 - name: Case 2, expense less than payment allowance. 
   period: 2025-01
@@ -46,8 +46,8 @@
   output:
     ca_riv_share_countable_income: 50_000 / 12 
     ca_riv_share_electricity_emergency_payment: 250 / 12
-    ca_riv_share_payment: 54.04 
-    # 33.21 + 250/12 
+    ca_riv_share_payment: 52.82
+    # 31.99 + 250/12
 
 - name: Case 4, integration, not in Riverside. 
   period: 2025-01
@@ -72,3 +72,123 @@
   output:
     ca_riv_share_electricity_emergency_payment: 0
     ca_riv_share_payment: 0 
+
+- name: Case 5, integration, utilities included in rent.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        employment_income: 50_000
+      person2:
+        employment_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+        tenant_pays_utilities: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_riv_share_eligible_for_emergency_payment: true
+        pre_subsidy_electricity_expense: 50 * 12
+        water_expense: 5 * 12
+        trash_expense: 5 * 12
+  output:
+    # The model treats a household with utilities included in rent as not
+    # holding the RPU account, so neither the monthly credits nor the
+    # emergency payment apply.
+    ca_riv_share_eligible: false
+    ca_riv_share_electricity_emergency_payment: 0
+    ca_riv_share_payment: 0
+
+- name: Case 6, credits after the July 2026 steps.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    pre_subsidy_electricity_expense: 600
+    water_expense: 120
+    trash_expense: 120
+    ca_riv_share_electricity_emergency_payment: 0
+    ca_riv_share_eligible:
+      2026-07: true
+  output:
+    ca_riv_share_payment:
+      # 28 + 5.75 + 5.75
+      2026-07: 39.5
+
+- name: Case 7, electric credit rises in January 2026 before the July water and trash steps.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    pre_subsidy_electricity_expense: 50 * 12
+    water_expense: 10 * 12
+    trash_expense: 10 * 12
+    ca_riv_share_electricity_emergency_payment: 0
+    ca_riv_share_eligible: true
+  output:
+    # 28 + 5.25 + 4.46
+    ca_riv_share_payment: 37.71
+
+- name: Case 8, no trash credit before November 2023.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    pre_subsidy_electricity_expense: 600
+    water_expense: 120
+    trash_expense: 120
+    ca_riv_share_electricity_emergency_payment: 0
+    ca_riv_share_eligible:
+      2023-07: true
+  output:
+    ca_riv_share_payment:
+      # 16 + 3.25 + 0
+      2023-07: 19.25
+
+- name: Case 9, credits in January 2024 after the electric and trash increases.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    pre_subsidy_electricity_expense: 50 * 12
+    water_expense: 10 * 12
+    trash_expense: 10 * 12
+    ca_riv_share_electricity_emergency_payment: 0
+    ca_riv_share_eligible: true
+  output:
+    # 20 + 4.25 + 1.94
+    ca_riv_share_payment: 26.19
+
+- name: Case 10, annual credits in 2027 across the July water and trash steps.
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 20_000
+    households:
+      household:
+        members: [person1]
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        pre_subsidy_electricity_expense: 1_200
+        water_expense: 120
+        trash_expense: 120
+  output:
+    # Electric 29 x 12 = 348; water 5.75 x 6 + 6.25 x 6 = 72;
+    # trash 5.75 x 6 + 7.12 x 6 = 77.22.
+    ca_riv_share_payment: 497.22
+
+- name: Case 11, credits in January 2028.
+  period: 2028-01
+  absolute_error_margin: 0.01
+  input:
+    pre_subsidy_electricity_expense: 50 * 12
+    water_expense: 10 * 12
+    trash_expense: 10 * 12
+    ca_riv_share_electricity_emergency_payment: 0
+    ca_riv_share_eligible: true
+  output:
+    # 30 + 6.25 + 7.12
+    ca_riv_share_payment: 43.37

@@ -10,14 +10,21 @@ class il_ccap_income_eligible(Variable):
     defined_for = StateCode.IL
 
     def formula(spm_unit, period, parameters):
-        p = parameters(period).gov.states.il.dhs.ccap.income.income_limit
+        p = parameters(period).gov.states.il.dhs.ccap
         countable_income = spm_unit("il_ccap_countable_income", period)
         fpg = spm_unit("spm_unit_fpg", period)
+        smi = spm_unit("hhs_smi", period)
         enrolled_in_ccap = spm_unit("il_ccap_enrolled", period)
-        fpg_limit = where(
-            enrolled_in_ccap,
-            p.redetermination_rate,
-            p.new_applicants_rate,
+        initial_income_limit = p.income.income_limit.new_applicants_rate * fpg
+        redetermination_income_limit = p.income.income_limit.redetermination_rate * fpg
+        phase_out_income_limit = p.income.income_limit.smi_rate * smi
+        continuing_income_limit = max_(
+            phase_out_income_limit,
+            redetermination_income_limit,
         )
-        income_limit = fpg_limit * fpg
+        income_limit = where(
+            enrolled_in_ccap,
+            continuing_income_limit,
+            initial_income_limit,
+        )
         return countable_income <= income_limit

@@ -1,0 +1,59 @@
+# Unit tests for dc_power_has_disqualifying_benefits
+# DC POWER disqualifies households receiving DC TANF, SSI, or unemployment compensation.
+
+- name: Household receiving SSI has disqualifying benefits.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 10_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        dc_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_power_has_disqualifying_benefits: true
+
+- name: Household reporting SSI receipt with a zero modeled payment has disqualifying benefits.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        receives_ssi: true
+        unemployment_compensation: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        dc_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_power_has_disqualifying_benefits: true
+
+- name: Household receiving none of the disqualifying benefits.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        ssi: 0
+        unemployment_compensation: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        dc_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: DC
+  output:
+    dc_power_has_disqualifying_benefits: false

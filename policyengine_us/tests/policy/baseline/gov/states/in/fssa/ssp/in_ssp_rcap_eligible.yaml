@@ -119,3 +119,21 @@
         state_code: IN
   output:
     in_ssp_rcap_eligible: true
+
+- name: Case 9, reported SSI receipt qualifies without Medicaid or computed SSI.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 45
+        is_ssi_aged_blind_disabled: true
+        in_resides_in_licensed_residential_facility: true
+        ssi: 0
+        medicaid_enrolled: false
+        receives_ssi: true
+    households:
+      household:
+        members: [person1]
+        state_code: IN
+  output:
+    in_ssp_rcap_eligible: true

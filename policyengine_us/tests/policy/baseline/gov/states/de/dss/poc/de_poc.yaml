@@ -1,5 +1,5 @@
 # de_poc: SPMUnit, float, MONTH
-# Benefit = min(actual_expenses - copay, max_reimbursement), floored at 0
+# Benefit = max(min(actual_expenses, max_reimbursement) - copay, 0)
 # max_reimbursement = sum of weekly rates for eligible children * 52 / 12
 
 - name: Case 1, basic eligible family with center care.
@@ -197,7 +197,22 @@
     # Benefit capped at max, not inflated by negative income
     de_poc: 833.33
 
-- name: Case 7, non-DE household gets zero.
+- name: Case 7, copay deducted from capped expense when expense exceeds max rate.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    de_poc_eligible: true
+    de_poc_copay: 90
+    de_poc_maximum_weekly_benefit: 150
+    spm_unit_pre_subsidy_childcare_expenses: 15_000
+    state_code: DE
+  output:
+    # Max monthly = 150 * 52 / 12 = 650
+    # Monthly expense 15_000 / 12 = 1_250 > monthly max -> capped = 650
+    # Benefit = max(650 - 90, 0) = 560
+    de_poc: 560
+
+- name: Case 8, non-DE household gets zero.
   period: 2025-01
   absolute_error_margin: 0.01
   input:

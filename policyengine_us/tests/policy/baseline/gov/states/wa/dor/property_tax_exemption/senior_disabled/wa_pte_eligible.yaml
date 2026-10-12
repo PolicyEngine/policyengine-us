@@ -1,0 +1,237 @@
+- name: Case 1, senior owner-occupant with low income is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    wa_pte_eligible: true
+
+- name: Case 2, senior renter (no real_estate_taxes) is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    wa_pte_eligible: false
+
+- name: Case 3, young owner-occupant without disability is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: false
+        real_estate_taxes: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    wa_pte_eligible: false
+
+- name: Case 4, disabled owner-occupant is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 45
+        is_disabled: true
+        real_estate_taxes: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 30_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    wa_pte_eligible: true
+
+- name: Case 5, senior owner-occupant with high income is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        adjusted_gross_income: 100_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # Income $100K > King County Tier 3 threshold $84K -> ineligible
+    wa_pte_eligible: false
+
+- name: Case 6, non-elderly single head with disabled adult dependent is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: false
+        real_estate_taxes: 6_000
+      person2:
+        age: 30
+        is_disabled: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 40_000
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # Person1 (age 50) is head; person2 is the disabled dependent. Filing
+    # SINGLE so person2 is not a joint spouse. Per RCW 84.36.381(2)-(3),
+    # the claimant must both own the residence and meet the age/disability
+    # test. Person1 doesn't meet the categorical test; person2 isn't a
+    # qualifying filer. Eligibility denied.
+    wa_pte_eligible: false
+
+- name: Case 7, senior head with young non-disabled spouse remains eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        real_estate_taxes: 6_000
+      person2:
+        age: 55
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 40_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # Head (person1) is categorically eligible (age 70 >= 61) and is the
+    # head/spouse, so the exemption is awarded. Spouse's age does not block.
+    wa_pte_eligible: true
+
+- name: Case 8, non-elderly head with senior spouse on joint return is eligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: false
+        real_estate_taxes: 6_000
+      person2:
+        age: 70
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 40_000
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # Head (person1) is not categorically eligible (age 50, not disabled),
+    # but spouse (person2) is age 70. Filing JOINT, so the spouse-and-joint
+    # guard (is_tax_unit_spouse & tax_unit_is_joint) is satisfied and the
+    # spouse is a qualifying filer. Exemption is awarded.
+    wa_pte_eligible: true
+
+- name: Case 9, non-elderly head with senior non-head adult on single return is ineligible.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 50
+        is_disabled: false
+        real_estate_taxes: 6_000
+        is_tax_unit_head: true
+      person2:
+        age: 70
+        is_disabled: false
+        is_tax_unit_head: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        adjusted_gross_income: 40_000
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WA
+        county: KING_COUNTY_WA
+  output:
+    # Counterfactual to Case 8: same household composition but the senior
+    # is a non-head adult on a non-joint (SINGLE) return rather than a
+    # joint-filing spouse. The spouse-and-joint guard requires
+    # is_tax_unit_spouse AND tax_unit_is_joint; both are false here, so
+    # only the non-elderly head is a qualifying filer, and they fail the
+    # categorical test. Eligibility denied.
+    wa_pte_eligible: false

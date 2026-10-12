@@ -33,6 +33,8 @@
   output:
     meets_snap_abawd_work_requirements: true
 
+# state_code defaults to CA, which holds a statewide waiver from
+# 2024-11-01 (see waived_states.yaml), so a non-waived state is set.
 - name: Case 4, pre-HR1 age 54 NOT exempt.
   period: 2024
   absolute_error_margin: 0.1
@@ -40,6 +42,7 @@
     age: 54
     weekly_hours_worked_before_lsr: 1
     is_disabled: false
+    state_code: TX
   output:
     meets_snap_abawd_work_requirements: false
 
@@ -56,14 +59,16 @@
 
 # --- 273.24(a)(1): Work activity — 20 hrs/week ---
 
-- name: Case 6, pre-HR1 working 19 hrs fails.
+- name: Case 6, pre-HR1 working 19 hrs meets the 80-hour monthly requirement.
   period: 2022
   input:
     age: 30
     weekly_hours_worked_before_lsr: 19
     is_disabled: false
   output:
-    meets_snap_abawd_work_requirements: false
+    # 7 CFR 273.24(a)(1)(i): 20 hours a week averaged monthly means 80
+    # hours a month. 19 * 52 / 12 = 82.3 >= 80.
+    meets_snap_abawd_work_requirements: true
 
 - name: Case 7, pre-HR1 working 20 hrs meets requirement.
   period: 2022
@@ -101,7 +106,8 @@
     people:
       person1:
         age: 30
-        weekly_hours_worked_before_lsr: 19
+        # 18 * 52 / 12 = 78 < 80 hours a month (7 CFR 273.24(a)(1)(i)).
+        weekly_hours_worked_before_lsr: 18
       person2:
         age: 30
         weekly_hours_worked_before_lsr: 20
@@ -219,9 +225,14 @@
   output:
     meets_snap_abawd_work_requirements: true
 
-# --- 2015(o)(3)(C): Parent with dependent child under 14 ---
+# --- 2015(o)(3)(C): Parent/household with child under 14 ---
+# The child-under-threshold exemption is applied in
+# meets_snap_work_requirements_person (the single source of truth), not in
+# this ABAWD variable. See meets_snap_work_requirements.yaml for the cases
+# that verify the household-wide exemption, including the non-dependent
+# under-threshold member (teen-parent) edge case.
 
-- name: Case 17, post-HR1 parent with child age 6 exempt.
+- name: Case 17, post-HR1 non-working non-age-exempt parent is not ABAWD-exempt at this layer.
   period: 2027
   absolute_error_margin: 0.1
   input:
@@ -236,7 +247,11 @@
         is_disabled: false
         is_tax_unit_dependent: true
   output:
-    meets_snap_abawd_work_requirements: [true, true]
+    # person1 (age 55, post-HR1) is not age-exempt (threshold is 65+) and is
+    # not working. The child-based exemption is handled upstream in
+    # meets_snap_work_requirements_person, so at this variable person1 is
+    # non-exempt. person2 (age 6) is age-exempt.
+    meets_snap_abawd_work_requirements: [false, true]
 
 - name: Case 18, post-HR1 parent with child age 15 NOT exempt.
   period: 2027
@@ -329,7 +344,10 @@
     weekly_hours_worked_before_lsr: 1
     is_disabled: false
     unemployment_compensation: 12_000
+    # TX has no area waiver; the default CA is statewide-waived in 2026-01.
+    state_code: TX
   output:
+    # No weeks unemployed, so the receipt covers all 12 months.
     meets_snap_abawd_work_requirements: true
 
 # --- 2015(o)(3)(E): Pregnant ---
@@ -345,9 +363,34 @@
   output:
     meets_snap_abawd_work_requirements: true
 
+# --- 2015(o)(3)(F)-(G): Indian, Urban Indian, or California Indian ---
+
+- name: Case 24, post-HR1 Indian, Urban Indian, or California Indian exempt.
+  period: 2027
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_snap_abawd_indian_exempt: true
+  output:
+    meets_snap_abawd_work_requirements: true
+
+# state_code defaults to CA, which holds a statewide waiver from
+# 2024-11-01 (see waived_states.yaml), so a non-waived state is set.
+- name: Case 25, pre-HR1 Indian exemption input does not change ABAWD rules.
+  period: 2024
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_snap_abawd_indian_exempt: true
+    state_code: TX
+  output:
+    meets_snap_abawd_work_requirements: false
+
 # --- HR1 removed exemptions: Homeless and veteran ---
 
-- name: Case 24, post-HR1 homeless NOT exempt.
+- name: Case 26, post-HR1 homeless NOT exempt.
   period: 2027
   absolute_error_margin: 0.1
   input:
@@ -358,7 +401,7 @@
   output:
     meets_snap_abawd_work_requirements: false
 
-- name: Case 25, post-HR1 veteran NOT exempt.
+- name: Case 27, post-HR1 veteran NOT exempt.
   period: 2027
   absolute_error_margin: 0.1
   input:
@@ -373,30 +416,365 @@
 # California delayed adoption — ACL 25-93
 # =====================================================
 
+# In 2026-01 the litigation-reinstated CA statewide waiver still applies
+# (through 2026-01-31), so the exempt cases below (28-30) are tested in
+# 2026-03, after it expires, to confirm the pre-HR1 personal exemptions
+# still hold on their own. The same 2026-03 period is used for the
+# non-exempt cases (31-32) so all CA delayed-adoption cases share the
+# post-statewide-waiver window.
 - name: Case 28, CA pre-HR1 age 55 still exempt.
-  period: 2026-01
+  period: 2026-03
   absolute_error_margin: 0.1
   input:
-    age: 55
-    weekly_hours_worked_before_lsr: 1
-    is_disabled: false
-    state_code: CA
+    age:
+      2026: 55
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
   output:
     meets_snap_abawd_work_requirements: true
 
 - name: Case 29, CA pre-HR1 homeless still exempt.
+  period: 2026-03
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    is_homeless:
+      2026: true
+    state_code:
+      2026: CA
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 30, CA pre-HR1 veteran still exempt.
+  period: 2026-03
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    is_veteran:
+      2026: true
+    state_code:
+      2026: CA
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 31, CA pre-HR1 non-age-exempt parent is not ABAWD-exempt at this layer after the statewide waiver expires.
+  period: 2026-03
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age:
+          2026: 30
+        weekly_hours_worked_before_lsr:
+          2026: 1
+        is_disabled:
+          2026: false
+        is_parent:
+          2026: true
+      person2:
+        age:
+          2026: 15
+        is_disabled:
+          2026: false
+        is_tax_unit_dependent:
+          2026: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code:
+          2026: CA
+  output:
+    # The child-under-18 exemption (CA pre-HR1) is applied upstream in
+    # meets_snap_work_requirements_person, not in this variable, so person1
+    # (age 30, non-working) is non-exempt here. person2 (age 15) is
+    # age-exempt (pre-HR1 threshold is under 18).
+    meets_snap_abawd_work_requirements: [false, true]
+
+- name: Case 32, CA pre-HR1 non-exempt person fails after the statewide waiver expires.
+  period: 2026-03
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: CA
+  output:
+    meets_snap_abawd_work_requirements: false
+
+# =====================================================
+# State discretionary exemptions — 7 U.S.C. 2015(o)(6),
+# 7 CFR 273.24(g). Assigned at data-construction time.
+# =====================================================
+
+- name: Case 33, discretionary-exempt noncompliant ABAWD meets requirement.
   period: 2026-01
   absolute_error_margin: 0.1
   input:
     age: 30
     weekly_hours_worked_before_lsr: 1
     is_disabled: false
-    is_homeless: true
-    state_code: CA
+    is_snap_abawd_discretionary_exempt: true
+    state_code: TX
   output:
     meets_snap_abawd_work_requirements: true
 
-- name: Case 30, CA pre-HR1 veteran still exempt.
+- name: Case 34, identical non-exempt person does NOT meet requirement.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_snap_abawd_discretionary_exempt: false
+    state_code: TX
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 35, pre-HR1 discretionary exemption also applies.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_snap_abawd_discretionary_exempt: true
+  output:
+    meets_snap_abawd_work_requirements: true
+
+# 273.24(c)(9): Former foster youth aged 24 or younger
+# (pre-HR1 only — added by FRA 2023, removed by
+# P.L. 119-21 effective 2025-07-04)
+# =====================================================
+
+- name: Case 36, pre-HR1 former foster youth aged 24 exempt.
+  period: 2025-05
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2025: 24
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    was_in_foster_care:
+      2025: true
+    state_code:
+      2025: TX
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 37, pre-HR1 former foster youth aged 25 NOT exempt.
+  period: 2025-05
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2025: 25
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    was_in_foster_care:
+      2025: true
+    state_code:
+      2025: TX
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 38, post-HR1 former foster youth aged 24 NOT exempt.
+  period: 2025-08
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2025: 24
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    was_in_foster_care:
+      2025: true
+    state_code:
+      2025: TX
+  output:
+    meets_snap_abawd_work_requirements: false
+
+# Work program and workfare participation —
+# 7 U.S.C. 2015(o)(2); 7 CFR 273.24(a)(1)
+# =====================================================
+
+# --- 273.24(a)(1)(ii): Work program participation 20+ hrs ---
+
+- name: Case 39, work program participation of 20 hrs meets requirement.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 0
+    weekly_snap_work_program_hours: 20
+    is_disabled: false
+  output:
+    meets_snap_abawd_work_requirements: true
+
+# --- 273.24(a)(1)(iii): Combination of work and work program hours ---
+
+- name: Case 40, combined work and work program hours of 20 meet requirement.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 10
+    weekly_snap_work_program_hours: 10
+    is_disabled: false
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 41, combined work and work program hours below 80 a month fail.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 10
+    weekly_snap_work_program_hours: 8
+    is_disabled: false
+  output:
+    # 7 CFR 273.24(a)(1)(i): (10 + 8) * 52 / 12 = 78 < 80 hours a month.
+    # A 19-hour combination (82.3 hours a month) would pass.
+    meets_snap_abawd_work_requirements: false
+
+# --- 273.24(a)(1)(iv): Workfare participation ---
+
+- name: Case 42, workfare participant meets requirement regardless of hours.
+  period: 2022
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 0
+    is_snap_workfare_participant: true
+    is_disabled: false
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 43, post-HR1 work program participation of 20 hrs meets requirement.
+  period: 2027
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 0
+    weekly_snap_work_program_hours: 20
+    is_disabled: false
+  output:
+    meets_snap_abawd_work_requirements: true
+
+# =====================================================
+# Alaska good-faith exemption window - 7 U.S.C. 2015(o)(7)
+# 2025-11-01 through 2026-10-31.
+# HR1 is in effect for Alaska from 2025-11-01, so during the window the
+# post-HR1 exception set (including the new Alaska Native/Indian exception)
+# applies PLUS the temporarily-retained pre-HR1 categories: ages 56-64,
+# households with children aged 14-17 (see meets_snap_work_requirements.yaml),
+# veterans, homeless individuals, and former foster youth aged 18-24.
+# These cases pin the Municipality of Anchorage (county_fips "02020"), which
+# is NOT in the area waiver, so they exercise the exemption logic rather than
+# the geographic waiver. Without county input Alaska falls back to the
+# alphabetically-first borough (Aleutians East), which IS waived and would
+# bypass this logic (Case 58 keeps that regression). Non-January month
+# periods take year-keyed inputs to avoid a period-parsing error.
+
+- name: Case 44, Anchorage age 60 exempt via the retained 56-64 band during the window.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 60
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 45, Anchorage age 60 not exempt after the window closes (post-HR1 65+ only).
+  period: 2026-11
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 60
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: AK
+    county_fips:
+      2026: "02020"
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 46, Anchorage age 60 exempt in the last month of the window (2026-10 boundary).
+  period: 2026-10
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 60
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    state_code:
+      2026: AK
+    county_fips:
+      2026: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 47, Anchorage age 55 NOT exempt during the window (retained band starts at 56).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 55
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 48, Anchorage age 56 exempt during the window (retained band floor).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 56
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 49, Anchorage healthy non-working adult age 30 NOT exempt during the window.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 50, Anchorage veteran age 30 exempt during the window (retained category).
   period: 2026-01
   absolute_error_margin: 0.1
   input:
@@ -404,38 +782,146 @@
     weekly_hours_worked_before_lsr: 1
     is_disabled: false
     is_veteran: true
-    state_code: CA
+    state_code: AK
+    county_fips: "02020"
   output:
     meets_snap_abawd_work_requirements: true
 
-- name: Case 31, CA pre-HR1 parent with child under 18 exempt.
-  period: 2026-01
+- name: Case 51, Anchorage veteran age 30 NOT exempt after the window (HR1 removed the veteran exception).
+  period: 2026-11
   absolute_error_margin: 0.1
   input:
-    people:
-      person1:
-        age: 30
-        weekly_hours_worked_before_lsr: 1
-        is_disabled: false
-        is_parent: true
-      person2:
-        age: 15
-        is_disabled: false
-        is_tax_unit_dependent: true
-    households:
-      household:
-        members: [person1, person2]
-        state_code: CA
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    is_veteran:
+      2026: true
+    state_code:
+      2026: AK
+    county_fips:
+      2026: "02020"
   output:
-    meets_snap_abawd_work_requirements: [true, true]
+    meets_snap_abawd_work_requirements: false
 
-- name: Case 32, CA pre-HR1 non-exempt person fails.
+- name: Case 52, Anchorage homeless person age 30 exempt during the window (retained category).
   period: 2026-01
   absolute_error_margin: 0.1
   input:
     age: 30
     weekly_hours_worked_before_lsr: 1
     is_disabled: false
-    state_code: CA
+    is_homeless: true
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 53, Anchorage former foster youth age 22 exempt during the window (retained category).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 22
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    was_in_foster_care: true
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 54, Anchorage former foster youth age 22 NOT exempt after the window.
+  period: 2026-11
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 22
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    was_in_foster_care:
+      2026: true
+    state_code:
+      2026: AK
+    county_fips:
+      2026: "02020"
+  output:
+    meets_snap_abawd_work_requirements: false
+
+- name: Case 55, Anchorage Alaska Native/Indian person age 30 exempt during the window.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    is_snap_abawd_indian_exempt: true
+    state_code: AK
+    county_fips: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 56, Anchorage Alaska Native/Indian person age 30 still exempt after the window (permanent HR1 exception).
+  period: 2026-11
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2026: 30
+    weekly_hours_worked_before_lsr:
+      2026: 1
+    is_disabled:
+      2026: false
+    is_snap_abawd_indian_exempt:
+      2026: true
+    state_code:
+      2026: AK
+    county_fips:
+      2026: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 57, Anchorage age 57 exempt before AK adoption (pre-HR1 55+ still applies).
+  period: 2025-10
+  absolute_error_margin: 0.1
+  input:
+    age:
+      2025: 57
+    weekly_hours_worked_before_lsr:
+      2025: 1
+    is_disabled:
+      2025: false
+    state_code:
+      2025: AK
+    county_fips:
+      2025: "02020"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+- name: Case 58, non-Anchorage waived borough healthy adult exempt via the area waiver during the window.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 30
+    weekly_hours_worked_before_lsr: 1
+    is_disabled: false
+    state_code: AK
+    county_fips: "02013"
+  output:
+    meets_snap_abawd_work_requirements: true
+
+# Hardening: a working-age, non-exempt adult with NO hours input must fail
+# the ABAWD work-hours test. Before weekly_hours_worked_before_lsr defaulted
+# to 40, this person silently cleared the 20-hour test, making the whole
+# work requirement a no-op whenever the hours column was missing.
+- name: Case 59, missing hours input fails the ABAWD work-hours test (no silent 40-hour default).
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    age: 40
+    is_disabled: false
+    state_code: TX
   output:
     meets_snap_abawd_work_requirements: false

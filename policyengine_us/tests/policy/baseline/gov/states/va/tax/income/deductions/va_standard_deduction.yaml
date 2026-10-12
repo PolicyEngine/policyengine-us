@@ -46,3 +46,115 @@
     state_code: VA
   output:
     va_standard_deduction: 8_750
+
+# 2027 tests - HB 30 (2026 Appropriation Act) raises the standard deduction
+# by $450 (single) and $900 (joint) for taxable years 2027.
+- name: VA 2027 Standard deduction if single filer
+  period: 2027
+  input:
+    filing_status: SINGLE
+    state_code: VA
+  output:
+    va_standard_deduction: 9_200
+
+- name: VA 2027 Standard deduction if married filing jointly
+  period: 2027
+  input:
+    filing_status: JOINT
+    state_code: VA
+  output:
+    va_standard_deduction: 18_400
+
+# 2028 tests - HB 30 further raises the standard deduction for TY2028-2029.
+- name: VA 2028 Standard deduction if single filer
+  period: 2028
+  input:
+    filing_status: SINGLE
+    state_code: VA
+  output:
+    va_standard_deduction: 9_300
+
+- name: VA 2028 Standard deduction if married filing jointly
+  period: 2028
+  input:
+    filing_status: JOINT
+    state_code: VA
+  output:
+    va_standard_deduction: 18_600
+
+# 2030 tests - the increased amounts sunset after TY2029 and revert to the
+# pre-2019 amounts ($3,000 single / $6,000 joint).
+- name: VA 2030 Standard deduction sunsets for single filer
+  period: 2030
+  input:
+    filing_status: SINGLE
+    state_code: VA
+  output:
+    va_standard_deduction: 3_000
+
+- name: VA 2030 Standard deduction sunsets for married filing jointly
+  period: 2030
+  input:
+    filing_status: JOINT
+    state_code: VA
+  output:
+    va_standard_deduction: 6_000
+
+# 2026 regression - HB 30 leaves TY2026 unchanged at $8,750 / $17,500.
+- name: VA 2026 Standard deduction unchanged for single filer
+  period: 2026
+  input:
+    filing_status: SINGLE
+    state_code: VA
+  output:
+    va_standard_deduction: 8_750
+
+- name: VA 2026 Standard deduction unchanged for married filing jointly
+  period: 2026
+  input:
+    filing_status: JOINT
+    state_code: VA
+  output:
+    va_standard_deduction: 17_500
+
+# 2029 - last year of the increased amounts before the TY2030 sunset.
+- name: VA 2029 Standard deduction for single filer
+  period: 2029
+  input:
+    filing_status: SINGLE
+    state_code: VA
+  output:
+    va_standard_deduction: 9_300
+
+- name: VA 2029 Standard deduction for married filing jointly
+  period: 2029
+  input:
+    filing_status: JOINT
+    state_code: VA
+  output:
+    va_standard_deduction: 18_600
+
+# 2027 - the remaining filing statuses take the single amount ($9,200).
+- name: VA 2027 Standard deduction if married filing separately
+  period: 2027
+  input:
+    filing_status: SEPARATE
+    state_code: VA
+  output:
+    va_standard_deduction: 9_200
+
+- name: VA 2027 Standard deduction if head of household
+  period: 2027
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    state_code: VA
+  output:
+    va_standard_deduction: 9_200
+
+- name: VA 2027 Standard deduction if surviving spouse
+  period: 2027
+  input:
+    filing_status: SURVIVING_SPOUSE
+    state_code: VA
+  output:
+    va_standard_deduction: 9_200

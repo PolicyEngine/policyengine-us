@@ -87,3 +87,12 @@
     weekly_hours_worked_behavioural_response_income_elasticity: 2.6666667e-05
     weekly_hours_worked_behavioural_response_substitution_elasticity: 5.3333333e-05
     weekly_hours_worked_behavioural_response: 8.0000000e-05
+
+# Hardening: when no hours input is provided, the value defaults to 0
+# (not full-time 40), so missing data fails the work-hours test loudly
+# rather than silently clearing every hours-conditioned work requirement.
+- name: Weekly hours worked defaults to zero when unspecified
+  period: 2026
+  input: {}
+  output:
+    weekly_hours_worked_before_lsr: 0

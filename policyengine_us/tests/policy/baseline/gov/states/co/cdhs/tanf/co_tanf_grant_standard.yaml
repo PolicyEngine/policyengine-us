@@ -156,3 +156,44 @@
   output:
     # Adults capped at 2: grant_standard.main[2][2] = $752/mo
     co_tanf_grant_standard: 752 * 12
+
+- name: Case 16, no caretaker and one child in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 0
+    co_tanf_count_children: 1
+  output:
+    co_tanf_grant_standard: 173 * 12
+
+- name: Case 17, one caretaker and one child in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 1
+    co_tanf_count_children: 1
+  output:
+    co_tanf_grant_standard: 488 * 12
+
+- name: Case 18, two caretakers and one child in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 2
+    co_tanf_count_children: 1
+  output:
+    co_tanf_grant_standard: 649 * 12
+
+- name: Case 19, two caretakers and twelve children in 2026.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    co_tanf_eligible: true
+    spm_unit_count_adults: 2
+    co_tanf_count_children: 12
+  output:
+    # base(2,10) = $1,707 + 2 * $90 additional_child = $1,887/mo
+    co_tanf_grant_standard: 1_887 * 12

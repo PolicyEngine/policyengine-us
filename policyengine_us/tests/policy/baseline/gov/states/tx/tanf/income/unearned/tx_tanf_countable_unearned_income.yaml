@@ -47,3 +47,46 @@
   output:
     tx_tanf_countable_unearned_income: 0
     # 0 - 0 = 0
+
+- name: Case 6, cash aid reported as financial assistance flows through to countable unearned income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        financial_assistance: 2_400
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 2,400 / 12 = 200 per month, no child support deduction
+    tx_tanf_countable_unearned_income: 200
+
+- name: Case 7, veterans benefits plus child support with the $75 deduction applied.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        veterans_benefits: 6_000
+        child_support_received: 1_200
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # 500 veterans + 100 child support - 75 deduction = 525 per month
+    tx_tanf_countable_unearned_income: 525

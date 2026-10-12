@@ -7,9 +7,9 @@ class nj_property_tax_credit_eligible(Variable):
     label = "New Jersey property tax credit eligibility"
     definition_period = YEAR
     reference = (
-        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=26"
-        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=26"
-        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=27"
+        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2021/1040i.pdf#page=26",
+        "https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=26",
+        "https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=27",
     )
     defined_for = StateCode.NJ
 

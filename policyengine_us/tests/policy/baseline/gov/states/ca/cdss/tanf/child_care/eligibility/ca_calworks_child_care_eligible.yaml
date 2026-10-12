@@ -69,7 +69,7 @@
 - name: Integration test - every person has to be eligible based on immigration status - undocumented
   period: 2023
   input:
-    people: 
+    people:
       person1:
         immigration_status: UNDOCUMENTED
         earned_income: 1_000
@@ -86,3 +86,13 @@
         state_code: CA
   output:
     ca_calworks_child_care_eligible: false
+
+- name: Reported TANF receipt qualifies when the computed CalWORKs benefit is zero.
+  period: 2023
+  input:
+    ca_tanf_eligible: false
+    receives_tanf: true
+    ca_calworks_child_care_age_eligible: true
+    ca_calworks_child_care_meets_work_requirement: true
+  output:
+    ca_calworks_child_care_eligible: true

@@ -1,0 +1,40 @@
+# Personal property limit: $600 single, $1,200 married couple (effective 2025-07-01).
+- name: Single filer limit is 600
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    families:
+      family:
+        members: [person1]
+        is_married: false
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_marin_general_relief_personal_property_limit: 600
+
+- name: Married couple limit is 1,200
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 38
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_marin_general_relief_personal_property_limit: 1_200

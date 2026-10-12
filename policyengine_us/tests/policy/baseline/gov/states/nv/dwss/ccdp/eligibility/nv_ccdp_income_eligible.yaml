@@ -1,0 +1,310 @@
+# nv_ccdp_income_eligible: SPMUnit, bool, MONTH
+# New applicants (not enrolled): monthly countable income <= 41% SMI (intake).
+# Enrolled families: monthly countable income <= 49% SMI (renewal/redetermination).
+# The 85% SMI federal mid-certification protection (45 CFR 98.21) is not modeled
+# because we don't track certification periods at the moment.
+# Family of 3, period 2025-01 -> monthly SMI = 6_721.82:
+#   intake  limit = 0.41 * 6_721.82 = 2_755.95/mo  (annual 33_071)
+#   renewal limit = 0.49 * 6_721.82 = 3_293.69/mo  (annual 39_524)
+
+- name: New applicant below the 41% intake limit is income-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 30_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 30_000 / 12 = 2_500/mo <= 2_755.95 intake limit -> eligible
+    nv_ccdp_income_eligible: true
+
+- name: New applicant above the 41% intake limit is not income-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 40_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 40_000 / 12 = 3_333/mo > 2_755.95 intake limit -> ineligible
+    nv_ccdp_income_eligible: false
+
+- name: Enrolled family between intake and renewal limits stays income-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 38_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 38_000 / 12 = 3_166.67/mo > 2_755.95 intake but <= 3_293.69 renewal
+    # ceiling -> enrolled family is still eligible (would fail as a new applicant)
+    nv_ccdp_income_eligible: true
+
+- name: Enrolled family above the 49% renewal ceiling is not income-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 42_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 42_000 / 12 = 3_500/mo > 3_293.69 renewal ceiling -> ineligible
+    nv_ccdp_income_eligible: false
+
+# Edge cases: intake (41% SMI) and renewal (49% SMI) boundaries.
+# The comparison is `monthly countable income <= limit` (inclusive <=).
+# Family of 3, period 2025-01: monthly SMI = 6_721.82.
+#   intake  limit = 0.41 * 6_721.82 = 2_755.9462/mo
+#   renewal limit = 0.49 * 6_721.82 = 3_293.6918/mo
+
+- name: New applicant just below the 41% intake limit is income-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 33_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 33_000 / 12 = 2_750.00/mo <= 2_755.9462 intake limit -> eligible
+    nv_ccdp_income_eligible: true
+
+- name: New applicant just above the 41% intake limit is not income-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 33_120
+      person2:
+        age: 30
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 33_120 / 12 = 2_760.00/mo > 2_755.9462 intake limit -> ineligible
+    nv_ccdp_income_eligible: false
+
+- name: Enrolled family just below the 49% renewal ceiling stays income-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 39_480
+      person2:
+        age: 30
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 39_480 / 12 = 3_290.00/mo <= 3_293.6918 renewal ceiling -> eligible
+    nv_ccdp_income_eligible: true
+
+- name: Enrolled family just above the 49% renewal ceiling is not income-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        employment_income: 39_540
+      person2:
+        age: 30
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 39_540 / 12 = 3_295.00/mo > 3_293.6918 renewal ceiling -> ineligible
+    nv_ccdp_income_eligible: false
+
+- name: Zero income is income-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+      person2:
+        age: 30
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # 0 <= 2_755.9462 intake limit -> eligible
+    nv_ccdp_income_eligible: true
+
+- name: Negative self-employment income with no deductions is income-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 32
+        self_employment_income: -120_000
+      person2:
+        age: 30
+      person3:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NV
+  output:
+    # countable income floors at 0: max(-120_000 - 0, 0) = 0 <= intake limit -> eligible
+    nv_ccdp_income_eligible: true
+
+- name: Maximum-size family (8) below the intake limit is income-eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 6
+      person7:
+        age: 4
+      person8:
+        age: 2
+    spm_units:
+      spm_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+          ]
+        nv_ccdp_enrolled: false
+    households:
+      household:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+          ]
+        state_code: NV
+  output:
+    # Family of 8: monthly SMI = 96_026 * 1.38 / 12 = 11_042.99.
+    # intake limit = 0.41 * 11_042.99 = 4_527.63/mo.
+    # 50_000 / 12 = 4_166.67/mo <= 4_527.63 -> eligible.
+    nv_ccdp_income_eligible: true

@@ -61,3 +61,100 @@
     co_social_security_subtraction_indv_eligible: false
   output:
     co_social_security_subtraction_indv: 0
+
+# HB24-1142 (C.R.S. 39-22-104(4)(f)(III)(A)): from tax year 2025, a filer
+# aged 55-64 whose taxable Social Security exceeds the $20,000 cap and whose
+# federal AGI is at or below $75,000 (individual) / $95,000 (joint) subtracts
+# the full taxable Social Security amount.
+
+- name: Case 6, 2025 age 55-64 single AGI below $75k with SS over cap subtracts full SS.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 64
+        taxable_social_security: 23_000
+        social_security_survivors: 0
+        employment_income: 40_000
+        co_social_security_subtraction_indv_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    # AGI = 40_000 <= 75_000 and taxable SS 23_000 > 20_000 cap -> full 23_000.
+    co_social_security_subtraction_indv: 23_000
+
+- name: Case 7, 2025 age 55-64 single AGI above $75k with SS over cap stays capped at $20k.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 64
+        taxable_social_security: 23_000
+        social_security_survivors: 0
+        employment_income: 80_000
+        co_social_security_subtraction_indv_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    # AGI = 80_000 > 75_000 individual limit -> capped at 20_000.
+    co_social_security_subtraction_indv: 20_000
+
+- name: Case 8, 2025 joint AGI between $75k and $95k with SS over cap subtracts full SS.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 64
+        taxable_social_security: 23_000
+        social_security_survivors: 0
+        employment_income: 60_000
+        co_social_security_subtraction_indv_eligible: true
+      person2:
+        age: 63
+        taxable_social_security: 0
+        social_security_survivors: 0
+        co_social_security_subtraction_indv_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CO
+  output:
+    # Joint AGI = 60_000 employment + 23_000 taxable SS = 83_000, which is
+    # above the $75_000 individual limit but at or below the $95_000 joint
+    # limit -> the increase applies only because they file jointly. person1
+    # SS 23_000 > cap -> full 23_000; person2 has no taxable SS -> 0.
+    co_social_security_subtraction_indv: [23_000, 0]
+
+- name: Case 9, 2024 age 55-64 with SS over cap is still limited to $20k (increase not yet effective).
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 64
+        taxable_social_security: 23_000
+        social_security_survivors: 0
+        employment_income: 40_000
+        co_social_security_subtraction_indv_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CO
+  output:
+    # Before 2025 the cap increase does not apply -> min(23_000, 20_000).
+    co_social_security_subtraction_indv: 20_000

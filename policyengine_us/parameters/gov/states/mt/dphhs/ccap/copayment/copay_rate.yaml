@@ -1,0 +1,88 @@
+description: Montana sets this share of gross monthly income as the copayment under the Best Beginnings Child Care Scholarship program.
+# The copayment share varies by the family's federal poverty guideline ratio.
+# Sliding fee scale rows are in 5-point % FPG steps. Per the scale footnote ("the
+# co-payments listed are minimums and correspond to the lowest level for each income
+# range"), each labeled % is the FLOOR of its rate tier: a tier applies from its named
+# step (inclusive) up to the next tier's step. For example, the 1.0% tier covers 105%
+# FPG (inclusive) up to but not including 115% FPG. PolicyEngine single_amount is "at
+# or above threshold," and the scale places a family exactly at a step into the higher
+# tier (e.g. 105% -> 1.0%), so thresholds use the named % directly with no shift. The
+# published scale's top tier (7.0%) runs through 200% FPG, but income eligibility caps
+# at 185% FPG for non-TANF families (ARM 37.80.202(2)), so the tiers above 185% are
+# unreachable for eligible families and retained only to mirror the published scale.
+#
+# (S6) The graduated-eligibility STRUCTURE dates to 2016-11-01, but these copay
+# percentages come from the 2025 Best Beginnings Sliding Fee Scale (2025 Federal
+# Register poverty guidelines). The brackets carry a 2025-07-01 effective date to
+# document that the percentages are sourced from the 2025 scale, distinct from the
+# structure's 2016-11-01 start.
+metadata:
+  type: single_amount
+  threshold_unit: /1
+  amount_unit: /1
+  period: year
+  label: Montana CCAP copayment rate by FPG ratio
+  reference:
+    # The hosted filename reads "07012023" but the document header is
+    # "Effective 07-01-2025" and its brackets use the 2025 poverty guidelines;
+    # the 2025-07-01 effective date is authoritative (filename is stale).
+    - title: Best Beginnings Child Care Sliding Fee Scale (document header "Effective 07-01-2025"; URL filename says 2023)
+      href: https://dphhs.mt.gov/assets/ecfsd/childcare/policymanual/SlidingFeeScale07012023.pdf#page=1
+
+brackets:
+  - threshold:
+      2025-07-01: 0
+    amount:
+      2025-07-01: 0.005  # Below 105% FPG
+  - threshold:
+      2025-07-01: 1.05  # 105% up to 115% FPG
+    amount:
+      2025-07-01: 0.01
+  - threshold:
+      2025-07-01: 1.15  # 115% up to 125% FPG
+    amount:
+      2025-07-01: 0.015
+  - threshold:
+      2025-07-01: 1.25  # 125% up to 135% FPG
+    amount:
+      2025-07-01: 0.02
+  - threshold:
+      2025-07-01: 1.35  # 135% up to 145% FPG
+    amount:
+      2025-07-01: 0.025
+  - threshold:
+      2025-07-01: 1.45  # 145% up to 150% FPG
+    amount:
+      2025-07-01: 0.03
+  - threshold:
+      2025-07-01: 1.5  # 150% up to 155% FPG
+    amount:
+      2025-07-01: 0.035
+  - threshold:
+      2025-07-01: 1.55  # 155% up to 160% FPG
+    amount:
+      2025-07-01: 0.04
+  - threshold:
+      2025-07-01: 1.6  # 160% up to 165% FPG
+    amount:
+      2025-07-01: 0.045
+  - threshold:
+      2025-07-01: 1.65  # 165% up to 170% FPG
+    amount:
+      2025-07-01: 0.05
+  - threshold:
+      2025-07-01: 1.7  # 170% up to 175% FPG
+    amount:
+      2025-07-01: 0.055
+  - threshold:
+      2025-07-01: 1.75  # 175% up to 180% FPG
+    amount:
+      2025-07-01: 0.06
+  - threshold:
+      2025-07-01: 1.8  # 180% up to 185% FPG
+    amount:
+      2025-07-01: 0.065
+  - threshold:
+      2025-07-01: 1.85  # 185% through 200% FPG
+    amount:
+      2025-07-01: 0.07

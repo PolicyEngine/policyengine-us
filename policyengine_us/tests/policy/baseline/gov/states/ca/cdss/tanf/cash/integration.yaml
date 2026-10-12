@@ -262,3 +262,42 @@
     ca_tanf_maximum_payment: 16_992
     # Benefit: max(16992 - 11400, 0) = 5592, all citizens so proration = 1.0
     ca_tanf: 5_592
+
+- name: Case 7, 2025 R1 family of 4 with vehicle over the limit still receives a grant.
+  period: 2025
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 18_000
+        immigration_status: CITIZEN
+      person2:
+        age: 33
+        employment_income: 12_000
+        immigration_status: CITIZEN
+      person3:
+        age: 10
+        immigration_status: CITIZEN
+      person4:
+        age: 6
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        is_tanf_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: CA
+        ca_tanf_region1: true
+        household_vehicles_value: 34_000
+  output:
+    # Vehicle excess: 34,000 - 32,968 (limit read at Jan 1, 2025) = 1,032
+    ca_tanf_countable_vehicle_value: 1_032
+    # Resources: 1,032 is below the resource limit
+    ca_tanf_resources_eligible: true
+    ca_tanf_eligible: true
+    # Same income as Case 6: recipient countable income 11400/yr
+    # Benefit: max(16992 - 11400, 0) = 5592
+    ca_tanf: 5_592

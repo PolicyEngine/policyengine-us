@@ -1,0 +1,25 @@
+description: Wisconsin sets the hourly maximum rate for certified child care providers at this share of the licensed family hourly maximum under the Wisconsin Shares Child Care Subsidy Program.
+
+# "Hourly maximums for regularly and provisionally certified providers are set
+# at 90% of the licensed family hourly maximum." The result is rounded up to
+# the cent (verified against every certified cell of the statewide table,
+# e.g., 0.9 x $7.86 = $7.074, published as $7.08). Certified providers have no
+# monthly maximum of their own; monthly subsidy payments are capped at the
+# licensed family monthly maximum. The statewide table's Certified column
+# merges regularly and provisionally certified providers. The statute caps
+# certified rates at 90% of the licensed rates; the published tables apply
+# exactly 90%.
+values:
+  2025-10-01: 0.9
+
+metadata:
+  unit: /1
+  period: year
+  label: Wisconsin Shares certified provider rate ratio
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 18.5.1 Subsidy Maximum Rates
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=156
+    - title: Wis. Stat. § 49.155(6)(b)-(c)
+      href: https://docs.legis.wisconsin.gov/statutes/statutes/49/III/155/6
+    - title: DCF 201 Child Care Subsidy Copayments and Provider Fees rulemaking (SS 002-23)
+      href: https://dcf.wisconsin.gov/files/cs/guidance-documents/pdf/dcf-201-child-care-subsidy-payments-provider-fees.pdf#page=1

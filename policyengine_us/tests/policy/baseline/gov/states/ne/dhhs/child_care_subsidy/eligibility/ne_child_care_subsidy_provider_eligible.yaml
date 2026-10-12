@@ -1,0 +1,119 @@
+- name: Case 1, a licensed home with a reported quality tier is eligible.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_eligible_child: true
+    ne_child_care_subsidy_provider_type: HOME_I_II
+    ne_child_care_subsidy_quality_tier: BASE
+    ne_child_care_subsidy_rate_unit: FULL_DAY
+    state_code: NE
+  output:
+    ne_child_care_subsidy_provider_eligible: true
+
+- name: Case 2, a licensed center with a reported quality tier is eligible.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_eligible_child: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_quality_tier: ACCREDITED_STEP_3
+    ne_child_care_subsidy_rate_unit: PARTIAL_DAY
+    state_code: NE
+  output:
+    ne_child_care_subsidy_provider_eligible: true
+
+- name: Case 3, a license-exempt family home needs no quality tier.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_eligible_child: true
+    ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_FAMILY_HOME
+    ne_child_care_subsidy_rate_unit: FULL_PLUS_PARTIAL
+    state_code: NE
+  output:
+    ne_child_care_subsidy_provider_eligible: true
+
+- name: Case 4, in-home care without a qualifying condition is ineligible.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_eligible_child: true
+    ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_IN_HOME
+    ne_child_care_subsidy_rate_unit: HOUR
+    state_code: NE
+  output:
+    ne_child_care_subsidy_provider_eligible: false
+
+- name: Case 5, a special-needs child satisfies the in-home condition.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_eligible_child: true
+    ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_IN_HOME
+    ne_child_care_subsidy_rate_unit: HOUR
+    ne_dhhs_has_special_needs: true
+    state_code: NE
+  output:
+    ne_child_care_subsidy_provider_eligible: true
+
+- name: Case 6, missing quality does not change legal provider eligibility.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_eligible_child: true
+    ne_child_care_subsidy_provider_type: CENTER
+    ne_child_care_subsidy_rate_unit: FULL_DAY
+    state_code: NE
+  output:
+    ne_child_care_subsidy_provider_eligible: true
+
+- name: Case 7, an affirmatively reported no-provider case is ineligible.
+  period: 2026-01
+  input:
+    ne_child_care_subsidy_eligible_child: true
+    ne_child_care_subsidy_provider_type: NONE
+    state_code: NE
+  output:
+    ne_child_care_subsidy_provider_eligible: false
+
+- name: Case 8, three children actually using in-home care satisfy the pathway.
+  period: 2026-01
+  input:
+    people:
+      child1:
+        ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_IN_HOME
+        ne_child_care_subsidy_rate_unit: HOUR
+      child2:
+        ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_IN_HOME
+        ne_child_care_subsidy_rate_unit: HOUR
+      child3:
+        ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_IN_HOME
+        ne_child_care_subsidy_rate_unit: HOUR
+    spm_units:
+      spm_unit:
+        members: [child1, child2, child3]
+    households:
+      household:
+        members: [child1, child2, child3]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_provider_eligible: [true, true, true]
+
+- name: Case 9, two children using in-home care fall below the three-child minimum.
+  period: 2026-01
+  input:
+    people:
+      child1:
+        ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_IN_HOME
+        ne_child_care_subsidy_rate_unit: HOUR
+      child2:
+        ne_child_care_subsidy_eligible_child: true
+        ne_child_care_subsidy_provider_type: LICENSE_EXEMPT_IN_HOME
+        ne_child_care_subsidy_rate_unit: HOUR
+    spm_units:
+      spm_unit:
+        members: [child1, child2]
+    households:
+      household:
+        members: [child1, child2]
+        state_code: NE
+  output:
+    ne_child_care_subsidy_provider_eligible: [false, false]

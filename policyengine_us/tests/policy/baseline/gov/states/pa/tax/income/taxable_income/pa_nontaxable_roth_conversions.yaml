@@ -1,0 +1,13 @@
+- name: Case 1, Roth conversions are excluded before Pennsylvania retirement age.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        taxable_roth_conversions: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    pa_nontaxable_roth_conversions: 5_000

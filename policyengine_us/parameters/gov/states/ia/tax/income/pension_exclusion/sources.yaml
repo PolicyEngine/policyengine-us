@@ -1,0 +1,19 @@
+description: Iowa excludes these retirement and pension income sources under the individual income tax pension exclusion program.
+values:
+  2021-01-01:
+    - taxable_pension_income
+    - taxable_retirement_distributions
+  2023-01-01:
+    - taxable_pension_income
+    - taxable_retirement_distributions
+    - taxable_roth_conversions
+metadata:
+  unit: list
+  period: year
+  label: Iowa pension exclusion income sources
+  reference:
+    - title: Iowa Code § 422.7(19)
+      href: https://www.legis.iowa.gov/docs/code/422.7.pdf#page=6
+    - title: Iowa Admin. Code r. 701-302.47(1)(a)(3)
+      href: https://www.legis.iowa.gov/docs/iac/rule/701.302.47.pdf#page=1
+

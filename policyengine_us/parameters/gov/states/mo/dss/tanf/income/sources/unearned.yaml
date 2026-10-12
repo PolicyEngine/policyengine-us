@@ -1,0 +1,60 @@
+description: Missouri counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
+values:
+  2010-07-01:
+    # 0210.015.05: VA, disability, workers compensation, and OASDI benefits.
+    - veterans_benefits
+    - disability_benefits
+    - workers_compensation
+    - social_security
+    - survivor_benefits
+    # Annuities, pensions, retirement payments, and railroad retirement.
+    - pension_income
+    - retirement_distributions
+    - military_retirement_pay
+    - railroad_benefits
+    # Rental income is unearned when management is less than 20 hours/week.
+    - rental_income
+    - farm_rent_income
+    # Recurring estate income is available income under 0210.015.00;
+    # 0210.015.05 also includes trust payments.
+    - estate_income
+    - child_support_received
+    - alimony_income
+    # Contributions are generally counted, subject to the exclusions below.
+    - financial_assistance
+    - gi_cash_assistance
+    - dividend_income
+    - unemployment_compensation
+    - strike_benefits
+    - gambling_winnings
+    - miscellaneous_income
+
+metadata:
+  unit: list
+  period: month
+  label: Missouri TANF unearned income sources
+  reference:
+    - title: Missouri DSS Manual 0210.015.00 - Income
+      href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-00/
+    - title: Missouri DSS Manual 0210.015.05 - Sources of Earned, Unearned, and Educational Income
+      href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-05/
+    - title: Missouri DSS Manual 0210.015.35.20 - Supplementary Assistance
+      href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-35-20/
+    - title: Missouri DSS Manual 0210.015.35.45 - Interest Income
+      href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-35-45/
+    - title: Missouri DSS Manual 0210.015.35.50 - Other Income
+      href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0210-015-35-50/
+    - title: Missouri DSS IM-67 (May 22, 2003) - Income Exclusion, Interest
+      href: https://dssmanuals.mo.gov/wp-content/themes/mogovwp_dssmanuals/public/memos/memos_03/im67_03.html
+  # Interest and General Relief are excluded; dividends remain countable.
+  # Do not add general_assistance wholesale: 0210.015.05 excludes General
+  # Relief but includes Refugee Cash Assistance. The generic input cannot
+  # distinguish them. Foster/adoption subsidies, RCA, and several other
+  # named sources also lack dedicated inputs; this list is not exhaustive.
+  # The available gift/pilot inputs do not distinguish small nonrecurring
+  # gifts, nonprofit donations, and specific-purpose supplementary aid
+  # from regular countable contributions. Those exclusions need richer
+  # inputs, as do rental management hours/expenses, education aid funding,
+  # restricted trust principal, and exempt components of veterans benefits.
+  # Retirement and estate inputs are treated as recurring cash receipts;
+  # lump sums, asset conversions and rollovers require separate treatment.

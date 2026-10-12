@@ -7,6 +7,7 @@ class ca_capi_resources(Variable):
     entity = SPMUnit
     label = "California CAPI resources"
     definition_period = YEAR
+    quantity_type = STOCK
     defined_for = StateCode.CA
     reference = "https://www.cdss.ca.gov/Portals/9/CAPI/CAPI_Regulations-Accessible.pdf"
 

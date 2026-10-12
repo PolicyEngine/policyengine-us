@@ -14,10 +14,12 @@ class tx_tanf_dependent_care_deduction(Variable):
     defined_for = StateCode.TX
 
     def formula(spm_unit, period, parameters):
-        # Actual cost of dependent child care, capped at maximum by age
-        # Per § 372.409 (a)(3): up to $200/month for children under 2, $175/month for children 2+
+        # Actual cost of dependent care, capped at maximum by age
+        # Per § 372.409(a)(3): up to $200/month for children under 2,
+        # $175/month for children 2+ or an incapacitated adult
 
         childcare_expenses = spm_unit("childcare_expenses", period)
+        adult_care_expenses = add(spm_unit, period, ["care_expenses"])
 
         # Calculate maximum deduction for dependents (children or incapacitated adults)
         person = spm_unit.members
@@ -35,4 +37,4 @@ class tx_tanf_dependent_care_deduction(Variable):
         total_max_deduction = spm_unit.sum(max_per_person)
 
         # Deduction is the lesser of actual expenses or maximum
-        return min_(childcare_expenses, total_max_deduction)
+        return min_(childcare_expenses + adult_care_expenses, total_max_deduction)

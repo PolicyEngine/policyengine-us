@@ -1,0 +1,131 @@
+# Riverside County General Relief (gov/local/ca/riv/general_relief).
+# Grant = needs standards (capped housing + food + personal needs by unit
+# size) + special needs transportation - countable income. Size-1 standards:
+# housing min(rent, $223) + food $92 + personal needs $11 = $326/month;
+# transportation special needs $30/year.
+- name: ca_riv_general_relief_full_grant_with_rent (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        # Job-search activity meets the work requirement; not derivable from
+        # income, so provided as an input.
+        ca_riv_general_relief_meets_work_requirements: true
+        # $1,000/month rent exceeds the $223 size-1 housing standard, so the
+        # housing component binds at its cap.
+        rent: 12_000
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: CA
+        zip_code: '92501'
+        county_str: RIVERSIDE_COUNTY_CA
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # (223 + 92 + 11) x 12 + 30 transportation = 3,912 + 30 = 3,942.
+        ca_riv_general_relief: 3_942
+        ca_riv_general_relief_eligible: true
+- name: ca_riv_general_relief_worker_partial_grant (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        immigration_status_str: CITIZEN
+        # $600/year earnings ($50/month) satisfy the work requirement
+        # naturally (is_working) and reduce the grant.
+        employment_income_before_lsr: 600
+        rent: 12_000
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: CA
+        zip_code: '92501'
+        county_str: RIVERSIDE_COUNTY_CA
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        # Net earned income = 600 - FICA deductions (6.2% + 1.45% = 45.90)
+        # = 554.10/year. Grant = 3,942 - 554.10 = 3,387.90.
+        ca_riv_general_relief: 3_387.9
+        ca_riv_general_relief_eligible: true
+- name: ca_riv_general_relief_fails_work_requirement (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        # Age 30 (not a work-exempt senior or student), no earnings, and no
+        # incapacity: the work-requirement formula derives false.
+        age: 30
+        is_tax_unit_head: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        rent: 12_000
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: CA
+        zip_code: '92501'
+        county_str: RIVERSIDE_COUNTY_CA
+        in_riv: true
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    spm_units:
+      spm_unit:
+        ca_riv_general_relief: 0
+        ca_riv_general_relief_eligible: false

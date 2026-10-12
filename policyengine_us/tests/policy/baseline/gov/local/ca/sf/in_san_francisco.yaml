@@ -1,0 +1,38 @@
+- name: Case 1, household in San Francisco County.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        county_str: SAN_FRANCISCO_COUNTY_CA
+  output:
+    in_san_francisco: true
+
+- name: Case 2, household in a different California county.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        county_str: ALAMEDA_COUNTY_CA
+  output:
+    in_san_francisco: false
+
+- name: Case 3, household in a county outside California.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        county_str: NEW_YORK_COUNTY_NY
+  output:
+    in_san_francisco: false

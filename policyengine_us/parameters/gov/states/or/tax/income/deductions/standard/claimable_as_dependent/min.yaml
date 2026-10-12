@@ -4,14 +4,16 @@ values:
   2022-01-01: 1_150
   2023-01-01: 1_250
   2024-01-01: 1_300
+  2025-01-01: 1_350
 metadata:
   unit: currency-USD
   period: year
   label: Oregon minimum deduction if claimable as dependent
-  uprating: gov.irs.uprating
-  rounding:
-        type: downwards
-        interval: 50  
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+          type: downwards
+          interval: 50
   reference:
     - title: 2021 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2021.pdf#page=15  
@@ -23,3 +25,5 @@ metadata:
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2023.pdf#page=15
     - title: 2024 Oregon Income Tax Form OR-40 Instructions
       href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2024.pdf#page=16
+    - title: 2025 Oregon Income Tax Form OR-40 Instructions
+      href: https://www.oregon.gov/dor/forms/FormsPubs/form-or-40-inst_101-040-1_2025.pdf#page=16

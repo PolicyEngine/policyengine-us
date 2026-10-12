@@ -72,3 +72,49 @@
         state_code: DC
   output:
     dc_tanf_childcare_deduction: [2_100, 2_100]   # min(1200, 175*12)
+
+- name: Case 5, incapacitated adult care expenses count toward the deduction.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # Per DC Code 4-205.11(a)(2): incapacitated adult care capped at
+    # $175/month. Expenses = 1,200 / 12 = 100/month, below the cap.
+    dc_tanf_childcare_deduction: 100
+
+- name: Case 6, adult care expenses without incapacity are not deducted.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_tax_unit_dependent: false
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DC
+  output:
+    # Person2 is neither a dependent nor incapacitated, so the cap is $0:
+    # min(100, 0) = 0.
+    dc_tanf_childcare_deduction: 0

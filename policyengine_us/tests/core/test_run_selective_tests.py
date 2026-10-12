@@ -1,3 +1,6 @@
+from types import SimpleNamespace
+
+from policyengine_us.tests import run_selective_tests
 from policyengine_us.tests.run_selective_tests import SelectiveTestRunner
 
 
@@ -16,6 +19,40 @@ def test_changed_yaml_tests_are_selected_directly():
         in test_paths
     )
     assert "policyengine_us/tests/run_selective_tests.py" not in test_paths
+
+
+def test_runner_unit_test_is_not_treated_as_infrastructure():
+    runner = SelectiveTestRunner()
+
+    assert runner.is_test_infrastructure_file(
+        "policyengine_us/tests/run_selective_tests.py"
+    )
+    assert not runner.is_test_infrastructure_file(
+        "policyengine_us/tests/core/test_run_selective_tests.py"
+    )
+
+
+def test_yaml_only_changes_do_not_request_python_coverage():
+    assert (
+        SelectiveTestRunner.get_changed_python_coverage_patterns(
+            {
+                "policyengine_us/parameters/gov/states/nm/tax/income/modified_gross_income.yaml",
+                "policyengine_us/tests/policy/baseline/gov/states/nm/tax/income/nm_modified_gross_income.yaml",
+            }
+        )
+        == []
+    )
+
+
+def test_changed_tests_are_not_coverage_targets():
+    assert SelectiveTestRunner.get_changed_python_coverage_patterns(
+        {
+            "policyengine_us/tests/core/test_run_selective_tests.py",
+            "policyengine_us/variables/gov/states/nm/tax/income/nm_modified_gross_income.py",
+        }
+    ) == [
+        "policyengine_us/variables/gov/states/nm/tax/income/nm_modified_gross_income.py"
+    ]
 
 
 def test_limit_test_paths_prefers_directly_changed_tests_for_broad_changes():
@@ -71,6 +108,25 @@ def test_limit_test_paths_defers_slow_ssa_baseline_directory():
     assert limited_paths == set()
 
 
+def test_limit_test_paths_defers_slow_household_directories():
+    runner = SelectiveTestRunner()
+
+    changed_files = {
+        "policyengine_us/variables/household/income/person/fsla_overtime_premium.py",
+        "policyengine_us/tests/policy/baseline/gov/irs/income/exemptions/fsla_overtime_premium.yaml",
+    }
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+
+    assert "policyengine_us/tests/microsimulation" not in limited_paths
+    assert "policyengine_us/tests/policy/baseline/household" not in limited_paths
+    assert limited_paths == {
+        "policyengine_us/tests/policy/baseline/gov/irs/income/exemptions/fsla_overtime_premium.yaml",
+    }
+
+
 def test_limit_test_paths_keeps_direct_tests_when_deferring_slow_directory():
     runner = SelectiveTestRunner()
 
@@ -90,3 +146,214 @@ def test_limit_test_paths_keeps_direct_tests_when_deferring_slow_directory():
         "policyengine_us/tests/policy/contrib/ssa",
         "policyengine_us/tests/policy/contrib/ssa/test_trustees_core_thresholds.py",
     }
+
+
+def test_limit_test_paths_defers_congress_contrib_subdirectory():
+    """A congress reform maps to its proposal directory; that batch is deferred.
+
+    Regression for PR #9497, where Quick Feedback ran
+    policy/contrib/congress/tlaib as one target and the runner died.
+    """
+    runner = SelectiveTestRunner()
+
+    reform_test = (
+        "policyengine_us/tests/policy/reform/boost_head_start_benefits_composition.yaml"
+    )
+    changed_files = {
+        "policyengine_us/reforms/congress/tlaib/end_child_poverty_act.py",
+        reform_test,
+    }
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+
+    assert "policyengine_us/tests/policy/contrib/congress/tlaib" not in limited_paths
+    assert "policyengine_us/tests/policy/reform" not in limited_paths
+    # The directly changed reform file still runs as its own target.
+    assert limited_paths == {reform_test}
+
+
+def test_is_quick_feedback_deferred_matches_directories_not_name_prefixes():
+    deferred = run_selective_tests.is_quick_feedback_deferred
+
+    assert deferred("policyengine_us/tests/policy/contrib/congress")
+    assert deferred("policyengine_us/tests/policy/contrib/congress/")
+    assert deferred("policyengine_us/tests/policy/contrib/congress/tlaib")
+    assert deferred("policyengine_us/tests/policy/reform")
+
+    assert not deferred("policyengine_us/tests/policy/contrib/states/tx")
+    # A sibling whose name merely starts with a deferred directory's name.
+    assert not deferred("policyengine_us/tests/policy/reformed")
+    # File targets are never deferred, even inside a deferred directory.
+    assert not deferred(
+        "policyengine_us/tests/policy/reform/boost_head_start_benefits_composition.yaml"
+    )
+
+
+def test_limit_test_paths_ignores_deleted_direct_tests():
+    runner = SelectiveTestRunner()
+
+    deleted_test = (
+        "policyengine_us/tests/policy/baseline/gov/ssa/social_security/"
+        "social_security_retirement_reported.yaml"
+    )
+    existing_test = (
+        "policyengine_us/tests/policy/baseline/gov/ssa/social_security/"
+        "social_security_retirement.yaml"
+    )
+    changed_files = {
+        deleted_test,
+        existing_test,
+        "policyengine_us/variables/gov/ssa/ss/social_security_retirement.py",
+    }
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+
+    assert deleted_test not in limited_paths
+    assert existing_test in limited_paths
+
+
+def _fake_pytest(returncodes):
+    def run(cmd, *args, **kwargs):
+        return SimpleNamespace(returncode=returncodes[cmd[-1]])
+
+    return run
+
+
+def test_paths_that_collect_no_tests_do_not_fail_the_run(monkeypatch):
+    """A changed support module under tests/ collects nothing; that is not a failure."""
+    runner = SelectiveTestRunner()
+    monkeypatch.setattr(
+        run_selective_tests.subprocess,
+        "run",
+        _fake_pytest({"tests/a_test.py": 0, "tests/populace_fixture.py": 5}),
+    )
+    assert runner.run_tests({"tests/a_test.py", "tests/populace_fixture.py"}) == 0
+
+
+def test_real_failures_still_fail_beside_an_empty_path(monkeypatch):
+    runner = SelectiveTestRunner()
+    monkeypatch.setattr(
+        run_selective_tests.subprocess,
+        "run",
+        _fake_pytest({"tests/a_test.py": 1, "tests/populace_fixture.py": 5}),
+    )
+    assert runner.run_tests({"tests/a_test.py", "tests/populace_fixture.py"}) == 1
+
+
+def _recording_pytest(commands):
+    def run(cmd, *args, **kwargs):
+        commands.append(cmd)
+        return SimpleNamespace(returncode=0)
+
+    return run
+
+
+def _coverage_includes(commands):
+    """The --include list of each coverage command, or None without coverage."""
+    return [
+        cmd[cmd.index("--include") + 1].split(",") if "coverage" in cmd else None
+        for cmd in commands
+    ]
+
+
+PAYROLL_TEST = (
+    "policyengine_us/tests/policy/baseline/gov/irs/payroll/employer_payroll_tax.yaml"
+)
+PAYROLL_SOURCE = "policyengine_us/variables/gov/irs/tax/payroll/employer_payroll_tax.py"
+SSA_SOURCE = "policyengine_us/variables/gov/ssa/ss/social_security_retirement.py"
+UNMAPPED_SOURCE = (
+    "policyengine_us/tools/geography/download_50_state_census_block_data.py"
+)
+
+
+def _unbounded_runner():
+    runner = SelectiveTestRunner()
+    runner.max_test_targets = 10**6
+    runner.max_test_files = 10**6
+    return runner
+
+
+def test_narrowed_scope_leaves_untested_sources_out_of_coverage(monkeypatch):
+    """A narrowed run must not report the changed sources as uncovered.
+
+    Regression for PRs #9764 and #9766: broad reference-only changes ran
+    only their directly changed tests, yet coverage measured every changed
+    variable file, so codecov/project fell to 54% and 69%.
+    """
+    runner = SelectiveTestRunner()
+    runner.max_test_targets = 1
+    runner.max_test_files = 1
+    commands = []
+    monkeypatch.setattr(
+        run_selective_tests.subprocess, "run", _recording_pytest(commands)
+    )
+    changed_files = {
+        PAYROLL_TEST,
+        PAYROLL_SOURCE,
+        "policyengine_us/variables/gov/states/ca/tax/payroll/unemployment/ca_employer_state_unemployment_tax.py",
+        "policyengine_us/variables/gov/states/tx/tax/payroll/unemployment/tx_employer_state_unemployment_tax.py",
+    }
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+
+    assert limited_paths == {PAYROLL_TEST}
+    assert (
+        runner.run_tests(limited_paths, with_coverage=True, changed_files=changed_files)
+        == 0
+    )
+    assert _coverage_includes(commands) == [None]
+
+
+def test_deferred_directory_sources_are_left_out_of_coverage(monkeypatch):
+    runner = _unbounded_runner()
+    commands = []
+    monkeypatch.setattr(
+        run_selective_tests.subprocess, "run", _recording_pytest(commands)
+    )
+    changed_files = {PAYROLL_TEST, PAYROLL_SOURCE, SSA_SOURCE}
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+    runner.run_tests(limited_paths, with_coverage=True, changed_files=changed_files)
+
+    assert "policyengine_us/tests/policy/baseline/gov/ssa" not in limited_paths
+    assert commands
+    assert all(include == [PAYROLL_SOURCE] for include in _coverage_includes(commands))
+
+
+def test_sources_with_running_or_no_mapped_tests_keep_coverage(monkeypatch):
+    runner = _unbounded_runner()
+    commands = []
+    monkeypatch.setattr(
+        run_selective_tests.subprocess, "run", _recording_pytest(commands)
+    )
+    changed_files = {PAYROLL_TEST, PAYROLL_SOURCE, UNMAPPED_SOURCE}
+
+    limited_paths = runner.limit_test_paths(
+        runner.map_files_to_tests(changed_files), changed_files
+    )
+    runner.run_tests(limited_paths, with_coverage=True, changed_files=changed_files)
+
+    assert commands
+    for include in _coverage_includes(commands):
+        assert sorted(include) == sorted([PAYROLL_SOURCE, UNMAPPED_SOURCE])
+
+
+def test_get_untested_sources_requires_some_mapped_test_to_run():
+    runner = SelectiveTestRunner()
+    sources = [PAYROLL_SOURCE, SSA_SOURCE, UNMAPPED_SOURCE]
+
+    assert runner.get_untested_sources(sources, set()) == [
+        PAYROLL_SOURCE,
+        SSA_SOURCE,
+    ]
+    assert runner.get_untested_sources(
+        sources, {"policyengine_us/tests/policy/baseline/gov/irs"}
+    ) == [SSA_SOURCE]

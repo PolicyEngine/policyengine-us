@@ -180,3 +180,162 @@
     state_code: VT
   output:
     vt_retirement_income_exemption: 500  # Partial qualified (halfway between $70k and $80k)
+
+# Integration tests: eligibility gate must use the Social Security phase-out
+# threshold (not the CSRS threshold) for Social Security filers in the 2025
+# partial band. Resolves policyengine-taxsim #999 (single) and #1000 (joint).
+- name: VT single SS filer in 2025 partial band gets partial exemption (taxsim #999)
+  absolute_error_margin: 0.1
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 74
+        employment_income: 29_333.33
+        taxable_interest_income: 3.64
+        social_security_retirement: 25_742.70
+        unemployment_compensation: 10_880
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: VT
+  output:
+    tax_unit_taxable_social_security: 20_725.08
+    vt_retirement_income_exemption_eligible: true
+    vt_retirement_income_exemption: 8_497.28
+    vt_income_tax: 1_281.20
+
+- name: VT joint SS filers in 2025 partial band get partial exemption (taxsim #1000)
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 77
+        employment_income: 52_380.95
+        taxable_interest_income: 29.15
+        social_security_retirement: 27_581.46
+      person2:
+        age: 77
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: VT
+  output:
+    vt_retirement_income_exemption_eligible: true
+- name: VT 2025 single CSRS elector in the S.51 band gets a phased exemption (Act 51 Sec. 3, pe-us 9020)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 66
+        csrs_retirement_pay: 12_000
+        employment_income: 62_000  # csrs_retirement_pay is not itself wired into AGI
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: VT
+  output:
+    # AGI 62,000 -> ratio (65,000 - 62,000) / 10,000 = 0.30
+    # exemption = min(10,000, 12,000) x 0.30 = 3,000 (0 before Act 51 thresholds)
+    vt_retirement_income_exemption: 3_000
+- name: VT 2025 joint CSRS elector fully excluded at 70k AGI under the raised full-exclusion threshold
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 67
+        csrs_retirement_pay: 10_000
+        employment_income: 70_000  # csrs_retirement_pay is not itself wired into AGI
+      spouse:
+        age: 66
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: VT
+  output:
+    # AGI 70,000 = new full-exclusion threshold (was 65,000 pre-Act 51): full 10,000
+    vt_retirement_income_exemption: 10_000
+
+# Act 51 (2025) 32 V.S.A. 5830e(d): income-based military pension exemption with
+# its own $125k-$175k phase-out. When the military exclusion is the chosen one it
+# must NOT also run through the CSRS $55k-$65k single phase-out band, and must not
+# be zeroed by the CSRS-end ($65k) AGI eligibility gate (issue pe-us #9069).
+- name: VT 2025 single military retiree fully excluded at 60k AGI (below 125k full-exemption threshold, no double-phase)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 66
+        military_retirement_pay: 30_000
+        employment_income: 60_000  # military_retirement_pay is not itself wired into AGI
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: VT
+  output:
+    # AGI 60,000 < 125,000 -> FULL military exclusion (was 30,000 x 0.50 CSRS ratio before the fix)
+    vt_military_retirement_income_based_exemption: 30_000
+    vt_retirement_income_exemption: 30_000
+
+- name: VT 2025 single military retiree fully excluded at 100k AGI (above CSRS-end gate but below 125k threshold)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 66
+        military_retirement_pay: 30_000
+        employment_income: 100_000  # military_retirement_pay is not itself wired into AGI
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: VT
+  output:
+    # AGI 100,000 > CSRS-end $65k gate but < 125,000 -> FULL military exclusion (was $0 before the fix)
+    vt_military_retirement_income_based_exemption: 30_000
+    vt_retirement_income_exemption: 30_000
+
+- name: VT 2025 single military retiree half excluded at 150k AGI (midpoint of 125k-175k phase-out band)
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      person:
+        age: 66
+        military_retirement_pay: 30_000
+        employment_income: 150_000  # military_retirement_pay is not itself wired into AGI
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: VT
+  output:
+    # AGI 150,000: ratio (175,000 - 150,000) / 50,000 = 0.50 -> 30,000 x 0.50 = 15,000
+    vt_military_retirement_income_based_exemption: 15_000
+    vt_retirement_income_exemption: 15_000

@@ -1,0 +1,28 @@
+description: San Mateo County counts these income sources under the General Assistance program.
+values:
+  2023-10-01:
+    - employment_income
+    - self_employment_income
+    - sstb_self_employment_income
+    - unemployment_compensation
+    - workers_compensation
+    - disability_benefits
+    - ca_state_disability_insurance
+    - social_security
+    - veterans_benefits
+    - pension_income
+    - retirement_distributions
+    - interest_income
+    - dividend_income
+    - rental_income
+    - child_support_received
+    - alimony_income
+metadata:
+  unit: list
+  period: year
+  label: San Mateo County General Assistance income sources
+  reference:
+    - title: San Mateo County Human Services Agency General Assistance Program Fact Sheet, Income Limits for Applicants
+      href: https://www.smcgov.org/media/153295/download?inline=#page=2
+    - title: San Mateo County Human Services Agency General Assistance, What do I need to apply?
+      href: https://www.smcgov.org/hsa/general-assistance-ga

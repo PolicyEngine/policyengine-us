@@ -7,5 +7,6 @@ class household_rental_property_value(Variable):
     label = "Rental property value"
     documentation = "Value of rental property assets held by the household."
     unit = USD
+    quantity_type = STOCK
     definition_period = YEAR
     uprating = "gov.bls.cpi.cpi_u"

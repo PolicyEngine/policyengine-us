@@ -1,0 +1,185 @@
+# Tests for sd_cca_age_group (Person, MONTH, Enum).
+# Rate-table age bands from age in months (age * 12):
+#   INFANT:     under 12 months
+#   TODDLER:    12 through 35 months (under 36)
+#   PRESCHOOL:  36 through 71 months, unless enrolled in school at 60+ months
+#   SCHOOL_AGE: 60+ months and in K-12 school, or 72+ months (default)
+# The 60-71 month overlap resolves on is_in_k12_school. is_in_k12_school
+# imputes true for ages 5-17, so the "60-71 months not in school" cases set
+# is_in_k12_school explicitly to false.
+
+- name: Case 1, 6 months old, infant.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 0.5  # 6 months
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_age_group: INFANT
+
+- name: Case 2, 11 months old, still infant.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 0.9166  # 11 months, under the 12-month infant cutoff
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_age_group: INFANT
+
+- name: Case 3, exactly 12 months, switches to toddler.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 1.0  # 12 months, infant cutoff is under 12 so this is toddler
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_age_group: TODDLER
+
+- name: Case 4, 35 months, still toddler.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 2.9166  # 35 months, under the 36-month toddler cutoff
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_age_group: TODDLER
+
+- name: Case 5, exactly 36 months, switches to preschool.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 3.0  # 36 months, toddler cutoff is under 36 so this is preschool
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_age_group: PRESCHOOL
+
+- name: Case 6, 4 years old, preschool (not yet school age).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 4.0  # under 5, so not imputed in school
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_age_group: PRESCHOOL
+
+- name: Case 7, exactly 60 months in school, school age.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 5.0  # 60 months; age 5 is imputed in K-12 school
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_age_group: SCHOOL_AGE
+
+- name: Case 8, exactly 60 months not in school, preschool.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 5.0  # 60 months
+        is_in_k12_school: false  # override the age-5+ school imputation
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # Within the 60-71 month overlap, a child not in school stays preschool.
+    sd_cca_age_group: PRESCHOOL
+
+- name: Case 9, 71 months in school, school age.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 5.9166  # 71 months, in the overlap and imputed in school
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_age_group: SCHOOL_AGE
+
+- name: Case 10, 71 months not in school, preschool.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 5.9166  # 71 months
+        is_in_k12_school: false
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_age_group: PRESCHOOL
+
+- name: Case 11, 72 months not in school, school age by default.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 6.0  # 72 months
+        is_in_k12_school: false
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    # At 72+ months the child is school age regardless of school enrollment,
+    # since preschool tops out at 71 months.
+    sd_cca_age_group: SCHOOL_AGE
+
+- name: Case 12, 10 years old in school, school age.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 10.0
+        is_in_k12_school: true
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_age_group: SCHOOL_AGE
+
+- name: Case 13, newborn, infant (minimum age).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 0  # 0 months
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+  output:
+    sd_cca_age_group: INFANT

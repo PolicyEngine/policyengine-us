@@ -1,39 +1,125 @@
 - name: Single filer
-  period: 2022
+  period: 2021
   input:
     state_code: GA
     filing_status: SINGLE
+    ga_income_tax_before_non_refundable_credits: 1_000
   output:
     ga_surplus_tax_rebate: 250
 
 - name: Joint filer
-  period: 2022
+  period: 2021
   input:
     state_code: GA
     filing_status: JOINT
+    ga_income_tax_before_non_refundable_credits: 1_000
   output:
     ga_surplus_tax_rebate: 500
 
 - name: Head of household filer
-  period: 2022
+  period: 2021
   input:
     state_code: GA
     filing_status: HEAD_OF_HOUSEHOLD
+    ga_income_tax_before_non_refundable_credits: 1_000
   output:
     ga_surplus_tax_rebate: 375
 
 - name: Surviving spouse filer
-  period: 2022
+  period: 2021
   input:
     state_code: GA
     filing_status: SURVIVING_SPOUSE
+    ga_income_tax_before_non_refundable_credits: 1_000
   output:
-    ga_surplus_tax_rebate: 500
+    ga_surplus_tax_rebate: 375
 
 - name: Separate filer
-  period: 2022
+  period: 2021
   input:
     state_code: GA
     filing_status: SEPARATE
+    ga_income_tax_before_non_refundable_credits: 1_000
   output:
     ga_surplus_tax_rebate: 250
+
+- name: Capped at Form 500 Line 16 tax when below the filing-status maximum
+  period: 2021
+  input:
+    state_code: GA
+    filing_status: HEAD_OF_HOUSEHOLD
+    ga_income_tax_before_non_refundable_credits: 200
+  output:
+    ga_surplus_tax_rebate: 200
+
+- name: Other nonrefundable credits do not reduce the rebate (taxsim issue 1103, PE-US issue 9096)
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    state_code: GA
+    filing_status: HEAD_OF_HOUSEHOLD
+    ga_income_tax_before_non_refundable_credits: 524.24
+    ga_cdcc: 287.13
+    ga_low_income_credit: 0
+  output:
+    ga_surplus_tax_rebate: 375
+    ga_non_refundable_credits: 287.13
+    ga_income_tax_before_refundable_credits: 237.11
+    ga_refundable_credits: 375
+    # The rebate pays out past the balance due (O.C.G.A. 48-7-20.2(d)).
+    ga_income_tax: -137.89
+
+- name: No rebate in 2022 (the HB 162 refund is keyed to tax year 2021 only)
+  period: 2022
+  input:
+    state_code: GA
+    filing_status: HEAD_OF_HOUSEHOLD
+    ga_income_tax_before_non_refundable_credits: 1_000
+  output:
+    ga_surplus_tax_rebate: 0
+    ga_refundable_credits: 0
+
+- name: No 2021 liability yields no rebate (min of cap and zero liability is zero)
+  period: 2021
+  input:
+    state_code: GA
+    filing_status: HEAD_OF_HOUSEHOLD
+    ga_income_tax_before_non_refundable_credits: 0
+  output:
+    ga_surplus_tax_rebate: 0
+    ga_refundable_credits: 0
+    ga_income_tax: 0
+
+- name: No rebate before 2021 (locks the 0000-01-01 zero guard against backward extrapolation)
+  period: 2020
+  input:
+    state_code: GA
+    filing_status: HEAD_OF_HOUSEHOLD
+    ga_income_tax_before_non_refundable_credits: 1_000
+  output:
+    ga_surplus_tax_rebate: 0
+    ga_refundable_credits: 0
+
+- name: Liability exactly at the filing-status cap yields the full cap
+  period: 2021
+  input:
+    state_code: GA
+    filing_status: HEAD_OF_HOUSEHOLD
+    ga_income_tax_before_non_refundable_credits: 375
+  output:
+    ga_surplus_tax_rebate: 375
+
+- name: Cap binds and refundable rebate drives liability to exactly zero
+  period: 2021
+  input:
+    state_code: GA
+    filing_status: HEAD_OF_HOUSEHOLD
+    ga_income_tax_before_non_refundable_credits: 200
+    # Zero out the low-income credit so the rebate alone drives liability to
+    # exactly zero (otherwise ga_low_income_credit reduces the pre-refundable
+    # base and the refundable rebate overshoots into a negative balance).
+    ga_low_income_credit: 0
+  output:
+    ga_surplus_tax_rebate: 200
+    ga_refundable_credits: 200
+    ga_income_tax: 0

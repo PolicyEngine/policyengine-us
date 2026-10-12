@@ -27,7 +27,7 @@
       person1:
         in_ssp_rcap_eligible: true
         ssi_claim_is_joint: false
-        uncapped_ssi: 6_000
+        uncapped_ssi: 500
         in_resides_in_licensed_residential_facility: true
     households:
       household:
@@ -35,7 +35,7 @@
         state_code: IN
   output:
     # State standard = $1,501.06
-    # uncapped_ssi monthly = 6,000/12 = $500
+    # uncapped_ssi = $500
     # federal_ssi = max(500, 0) = $500
     # supplement = max(1,501.06 - 500, 0) = $1,001.06
     in_ssp_rcap: 1_001.06
@@ -48,7 +48,7 @@
       person1:
         in_ssp_rcap_eligible: true
         ssi_claim_is_joint: false
-        uncapped_ssi: 18_012
+        uncapped_ssi: 1_501
         in_resides_in_licensed_residential_facility: true
     households:
       household:
@@ -56,7 +56,7 @@
         state_code: IN
   output:
     # State standard = $1,501.06
-    # uncapped_ssi monthly = 18,012/12 = $1,501
+    # uncapped_ssi = $1,501
     # federal_ssi = max(1,501, 0) = $1,501
     # supplement = max(1,501.06 - 1,501, 0) = $0.06
     in_ssp_rcap: 0.06
@@ -83,14 +83,14 @@
       person1:
         in_ssp_rcap_eligible: true
         ssi_claim_is_joint: false
-        uncapped_ssi: -60_000
+        uncapped_ssi: -5_000
         in_resides_in_licensed_residential_facility: true
     households:
       household:
         members: [person1]
         state_code: IN
   output:
-    # uncapped_ssi monthly = -60,000/12 = -$5,000
+    # uncapped_ssi = -$5,000
     # federal_ssi = max(-5,000, 0) = 0 (floored at zero)
     # supplement = max(1,501.06 - 0, 0) = $1,501.06
     in_ssp_rcap: 1_501.06

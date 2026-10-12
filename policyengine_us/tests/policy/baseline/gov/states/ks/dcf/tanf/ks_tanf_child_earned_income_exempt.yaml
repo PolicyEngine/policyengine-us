@@ -1,0 +1,83 @@
+# Kansas TANF child earned income exemption (KEESM 6410)
+# A child's earned income is exempt if the child is under age 18, or under
+# age 19 and working toward a high school diploma or its equivalent
+# (secondary school student). The exemption applies to children in the case
+# (dependents), not to a person acting in their own behalf (e.g., a teen
+# parent heading their own case).
+
+- name: Case 1, child under 18 is exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 10
+    is_tax_unit_dependent: true
+  output:
+    ks_tanf_child_earned_income_exempt: true
+
+- name: Case 2, 17-year-old is exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 17
+    is_tax_unit_dependent: true
+  output:
+    ks_tanf_child_earned_income_exempt: true
+
+- name: Case 3, 18-year-old not in secondary school is not exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 18
+    is_in_secondary_school: false
+    is_tax_unit_dependent: true
+  output:
+    ks_tanf_child_earned_income_exempt: false
+
+- name: Case 4, 18-year-old dependent in secondary school is exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 18
+    is_in_secondary_school: true
+    is_tax_unit_dependent: true
+  output:
+    ks_tanf_child_earned_income_exempt: true
+
+- name: Case 5, 19-year-old in secondary school is not exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 19
+    is_in_secondary_school: true
+    is_tax_unit_dependent: true
+  output:
+    ks_tanf_child_earned_income_exempt: false
+
+- name: Case 6, adult is not exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 40
+  output:
+    ks_tanf_child_earned_income_exempt: false
+
+- name: Case 7, 18-year-old student heading her own case is not exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 18
+    is_in_secondary_school: true
+    is_tax_unit_dependent: false
+  output:
+    # Meets the age/student test, but is not a dependent child in the case
+    # (acting in her own behalf per KEESM 6410), so no exemption.
+    ks_tanf_child_earned_income_exempt: false
+
+- name: Case 8, minor acting in their own behalf is not exempt.
+  period: 2025-01
+  input:
+    state_code: KS
+    age: 16
+    is_tax_unit_dependent: false
+  output:
+    ks_tanf_child_earned_income_exempt: false

@@ -8,10 +8,10 @@ class vt_renter_credit(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/"  # b
-        "https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=35"
+        "https://law.justia.com/codes/vermont/2022/title-32/chapter-154/section-6066/",  # b
+        "https://tax.vermont.gov/sites/tax/files/documents/Income%20Booklet-2022.pdf#page=35",
         # the formula used in this file is based on the excel sheet provided on the official Vermont government website
-        "https://tax.vermont.gov/individuals/renter-credit/calculator-and-credit-amounts"  # link for the excel sheet
+        "https://tax.vermont.gov/individuals/renter-credit/calculator-and-credit-amounts",  # link for the excel sheet
     )
     defined_for = StateCode.VT
 
@@ -67,5 +67,8 @@ class vt_renter_credit(Variable):
             ],
             default=0,
         )
-        unrounded = credit_value * (1 - shared_residence_reduction)
+        # The renter credit may not exceed the statutory maximum (32 V.S.A.
+        # 6066(b)(1)); 2026 Vt. Act 169 raises this for claim year 2027 only.
+        capped_credit = min_(credit_value, p.max_credit)
+        unrounded = capped_credit * (1 - shared_residence_reduction)
         return np.round(unrounded)

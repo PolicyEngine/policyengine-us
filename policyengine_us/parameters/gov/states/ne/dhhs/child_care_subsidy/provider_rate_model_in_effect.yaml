@@ -1,0 +1,14 @@
+description: Nebraska pays the Child Care Subsidy through the provider rate matrix model when this is in effect.
+values:
+  2000-01-01: false
+  2025-10-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Nebraska Child Care Subsidy provider rate model in effect
+  reference:
+    - title: Neb. Rev. Stat. § 68-1206(3), October 1 annual rate-setting rule
+      href: https://nebraskalegislature.gov/laws/statutes.php?statute=68-1206
+    - title: Nebraska Child Care Subsidy Rates 2025-2027
+      href: https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf

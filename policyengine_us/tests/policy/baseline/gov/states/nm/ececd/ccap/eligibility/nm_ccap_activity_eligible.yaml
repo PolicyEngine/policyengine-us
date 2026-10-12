@@ -1,0 +1,163 @@
+# NM CCAP activity eligibility (8.15.2.11.I, 8.15.2.7 NMAC): benefits are only
+# for families working, attending school, or in job training. Every head/spouse
+# caretaker must be working (any hours) or a full-time student. NM does not
+# impose a minimum weekly-hours floor (unlike WV's 20-hour test) -- the
+# regulation requires activity presence, not a threshold.
+
+- name: Case 1, single working parent meets the activity test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 35
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_activity_eligible: true
+
+- name: Case 2, parent with no work hours and not a student fails the test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # No work and not a student -> the caretaker is not engaged in an activity.
+    nm_ccap_activity_eligible: false
+
+- name: Case 3, full time student parent meets the activity test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 22
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_activity_eligible: true
+
+- name: Case 4, two parents both in an activity meet the test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 20
+      person2:
+        age: 28
+        weekly_hours_worked: 0
+        is_full_time_student: true
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # One parent works, the other is a full-time student -> both qualify.
+    nm_ccap_activity_eligible: true
+
+- name: Case 5, two parents one inactive fails the test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 20
+      person2:
+        age: 28
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person3:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # One caretaker is neither working nor a student -> whole unit fails.
+    nm_ccap_activity_eligible: false
+
+- name: Case 6, child only unit with no caretaker fails the test.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    # No head/spouse caretaker present -> activity test must fail, otherwise
+    # child-only units would pass on income and assets alone.
+    nm_ccap_activity_eligible: false
+
+- name: Case 7, CCDF activity fallback covers an activity not modeled here.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked: 0
+        is_full_time_student: false
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # Parent is in job training / on temporary leave -- not captured by
+        # work hours or student status, so flagged via the federal CCDF input.
+        meets_ccdf_activity_test: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Without the fallback this unit would fail (0 hours, not a student); the
+    # meets_ccdf_activity_test flag rescues it.
+    nm_ccap_activity_eligible: true

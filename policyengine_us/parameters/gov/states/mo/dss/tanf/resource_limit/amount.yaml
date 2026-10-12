@@ -1,4 +1,4 @@
-description: Missouri limits countable resources to this amount at initial application under the Temporary Assistance for Needy Families program.
+description: Missouri limits countable resources to this amount under the Temporary Assistance for Needy Families program.
 
 values:
   1991-01-01: 1_000
@@ -6,9 +6,9 @@ values:
 metadata:
   unit: currency-USD
   period: month
-  label: Missouri TANF resource limit at application
+  label: Missouri TANF resource limit
   reference:
     - title: 13 CSR 40-2.310(3)
       href: https://www.law.cornell.edu/regulations/missouri/13-CSR-40-2-310
-    - title: Missouri DSS Manual 0200.000.00
-      href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0200-000-00/
+    - title: Missouri DSS Manual 0205.005.00
+      href: https://dssmanuals.mo.gov/temporary-assistance-case-management/0205-005-00/

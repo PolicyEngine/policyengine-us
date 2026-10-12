@@ -1,0 +1,35 @@
+description: Maryland counts these income sources under the Child Care Scholarship program.
+values:
+  2022-05-01:
+    - employment_income
+    # Note: self_employment_income is handled separately in the formula
+    # with a 30% deduction per COMAR 13A.14.06.03F(8)(a)(i)
+    - social_security
+    - pension_income
+    - interest_income
+    - dividend_income
+    - rental_income
+    - alimony_income
+    - child_support_received
+    - unemployment_compensation
+    - workers_compensation
+    - veterans_benefits
+    - disability_benefits
+    - capital_gains
+    - farm_income
+    - military_retirement_pay
+    # COMAR-listed sources we don't model at the moment: commissions, tips,
+    # bonuses, annuities, estate income, military entitlements.
+    # COMAR .02B(28)(c) exclusions we don't model at the moment: child support
+    # paid for a child outside the household, and $2,500 of child support tax
+    # intercepts and arrearages.
+
+metadata:
+  unit: list
+  period: year
+  label: Maryland CCS countable income sources
+  reference:
+    - title: COMAR 13A.14.06.02B(28)(b)(x) - Gross income includes alimony and child support
+      href: https://regs.maryland.gov/us/md/exec/comar/13A.14.06.02
+    - title: COMAR 13A.14.06.03F(8)(c) - Child support received counted as gross income
+      href: https://regs.maryland.gov/us/md/exec/comar/13A.14.06.03

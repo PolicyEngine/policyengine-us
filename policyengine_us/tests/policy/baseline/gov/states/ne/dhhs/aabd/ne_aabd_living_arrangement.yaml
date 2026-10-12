@@ -1,0 +1,149 @@
+- name: Case 1, federal Code D (medical treatment facility) overrides input to LONG_TERM_CARE.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        # Federal Code D pays $30/month.
+        uncapped_ssi: 30
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        # Even with an alternate input, federal Code D wins.
+        ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_FACILITY
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_aabd_living_arrangement: LONG_TERM_CARE
+
+- name: Case 2, alternate input ASSISTED_LIVING_FACILITY is used when not in medical facility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        uncapped_ssi: 967
+        ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_FACILITY
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_aabd_living_arrangement: ASSISTED_LIVING_FACILITY
+
+- name: Case 3, default INDEPENDENT when no alternate input and not in medical facility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        uncapped_ssi: 967
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_aabd_living_arrangement: INDEPENDENT
+
+- name: Case 4, non-Nebraska resident yields NONE.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        uncapped_ssi: 967
+        ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_FACILITY
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ne_aabd_living_arrangement: NONE
+
+- name: Case 5, BOARD_AND_ROOM input passes through to living arrangement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        uncapped_ssi: 967
+        ne_aabd_alternate_living_arrangement: BOARD_AND_ROOM
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_aabd_living_arrangement: BOARD_AND_ROOM
+
+- name: Case 6, ASSISTED_LIVING_WAIVER input passes through to living arrangement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        uncapped_ssi: 967
+        ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_WAIVER
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_aabd_living_arrangement: ASSISTED_LIVING_WAIVER
+
+- name: Case 7, GROUP_HOME_CHILDREN input passes through to living arrangement.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 40
+        is_ssi_disabled: true
+        is_ssi_eligible: true
+        uncapped_ssi: 967
+        ne_aabd_alternate_living_arrangement: GROUP_HOME_CHILDREN
+    households:
+      household:
+        members: [person1]
+        state_code: NE
+  output:
+    ne_aabd_living_arrangement: GROUP_HOME_CHILDREN
+
+- name: Case 8, two-spouse household with mixed alternate-living inputs in NE.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 70
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        uncapped_ssi: 967
+        ne_aabd_alternate_living_arrangement: ASSISTED_LIVING_FACILITY
+      person2:
+        age: 68
+        is_ssi_aged: true
+        is_ssi_eligible: true
+        uncapped_ssi: 967
+        # No alternate input -> defaults to INDEPENDENT.
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NE
+  output:
+    # Each spouse's living arrangement is derived independently from their own
+    # alternate input; spouse 1 -> ALF; spouse 2 -> INDEPENDENT.
+    ne_aabd_living_arrangement: [ASSISTED_LIVING_FACILITY, INDEPENDENT]

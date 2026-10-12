@@ -1,6 +1,9 @@
 # Unit tests for Alabama TANF income eligibility
-# Reference: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=37
+# Reference: Ala. Admin. Code r. 660-2-2 (Income r. .30, effective 05/15/2022;
+# Payment Standard r. .31; Grant Computation r. .32)
+# https://admincode.legislature.state.al.us/api/chapter/660-2-2
 # Income eligible if countable income <= payment standard
+# Work expense deduction: the first 30% of gross earnings
 # Payment standards: $264 (1 person), $304 (2), $344 (3), $392 (4), $440 (5)
 
 - name: Case 1, no income - eligible.
@@ -43,19 +46,19 @@
         state_code: AL
   output:
     # Monthly employment: $250
-    # Work expense deduction (20%): $250 * 0.20 = $50
-    # Countable earned: $250 - $50 = $200
+    # Work expense deduction (30%): $250 * 0.30 = $75
+    # Countable earned: $250 - $75 = $175
     # Payment standard (2 persons): $304
-    # $200 <= $304, eligible
+    # $175 <= $304, eligible
     al_tanf_income_eligible: true
 
-- name: Case 3, income at payment standard - eligible.
+- name: Case 3, unearned income at payment standard - eligible.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 4_560  # $380/month
+        child_support_received: 3_648  # $304/month unearned (no work deduction)
       person2:
         age: 5
     spm_units:
@@ -66,11 +69,10 @@
         members: [person1, person2]
         state_code: AL
   output:
-    # Monthly employment: $380
-    # Work expense deduction (20%): $380 * 0.20 = $76
-    # Countable earned: $380 - $76 = $304
+    # Monthly unearned income: $304 (no deductions on unearned)
+    # Countable income: $304
     # Payment standard (2 persons): $304
-    # $304 <= $304, eligible
+    # $304 <= $304, eligible (tests <= boundary)
     al_tanf_income_eligible: true
 
 - name: Case 4, income exceeds payment standard - ineligible.
@@ -91,10 +93,10 @@
         state_code: AL
   output:
     # Monthly employment: $500
-    # Work expense deduction (20%): $500 * 0.20 = $100
-    # Countable earned: $500 - $100 = $400
+    # Work expense deduction (30%): $500 * 0.30 = $150
+    # Countable earned: $500 - $150 = $350
     # Payment standard (2 persons): $304
-    # $400 > $304, ineligible
+    # $350 > $304, ineligible
     al_tanf_income_eligible: false
 
 - name: Case 5, family of 3 below threshold - eligible.
@@ -117,10 +119,10 @@
         state_code: AL
   output:
     # Monthly employment: $350
-    # Work expense deduction (20%): $350 * 0.20 = $70
-    # Countable earned: $350 - $70 = $280
+    # Work expense deduction (30%): $350 * 0.30 = $105
+    # Countable earned: $350 - $105 = $245
     # Payment standard (3 persons): $344
-    # $280 <= $344, eligible
+    # $245 <= $344, eligible
     al_tanf_income_eligible: true
 
 - name: Case 6, family of 4 with childcare expenses - eligible.
@@ -146,12 +148,12 @@
         state_code: AL
   output:
     # Monthly employment: $500
-    # Work expense deduction (20%): $500 * 0.20 = $100
-    # After work expense: $400
+    # Work expense deduction (30%): $500 * 0.30 = $150
+    # After work expense: $350
     # Childcare deduction: $300
-    # Countable earned: max($400 - $300, 0) = $100
+    # Countable earned: max($350 - $300, 0) = $50
     # Payment standard (4 persons): $392
-    # $100 <= $392, eligible
+    # $50 <= $392, eligible
     al_tanf_income_eligible: true
 
 - name: Case 7, family of 5 with unearned income - ineligible.
@@ -179,12 +181,12 @@
         state_code: AL
   output:
     # Monthly employment: $500
-    # Work expense deduction (20%): $500 * 0.20 = $100
-    # Countable earned: $500 - $100 = $400
+    # Work expense deduction (30%): $500 * 0.30 = $150
+    # Countable earned: $500 - $150 = $350
     # Unearned: $100/month
-    # Countable income: $400 + $100 = $500
+    # Countable income: $350 + $100 = $450
     # Payment standard (5 persons): $440
-    # $500 > $440, ineligible
+    # $450 > $440, ineligible
     al_tanf_income_eligible: false
 
 - name: Case 8, single person household - eligible.
@@ -204,10 +206,10 @@
         state_code: AL
   output:
     # Monthly employment: $200
-    # Work expense deduction (20%): $200 * 0.20 = $40
-    # Countable earned: $200 - $40 = $160
+    # Work expense deduction (30%): $200 * 0.30 = $60
+    # Countable earned: $200 - $60 = $140
     # Payment standard (1 person): $264
-    # $160 <= $264, eligible
+    # $140 <= $264, eligible
     al_tanf_income_eligible: true
 
 # ============================================================================

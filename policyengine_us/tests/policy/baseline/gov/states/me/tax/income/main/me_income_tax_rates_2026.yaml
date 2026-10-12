@@ -1,0 +1,44 @@
+# 2026 Maine bracket thresholds, from the Maine Revenue Services 2026 Individual
+# Income Tax Rate Schedules (rev. May 5, 2026).
+# https://www.maine.gov/revenue/sites/maine.gov.revenue/files/2026-05/ind_tax_rate_sched_2026_rev.pdf
+# Expected values are the exact marginal-rate tax; the published schedule states a
+# whole-dollar base tax (e.g. $1,589 = 5.8% x 27,400 rounded), while PolicyEngine
+# integrates the exact bracket, so results differ from the printed base by cents.
+# The point of these tests is to pin the 2026 first/second bracket thresholds.
+
+# Single 2026: 0-27,400 @ 5.8%; 27,400-64,850 @ 6.75%; 64,850+ @ 7.15%.
+- name: ME 2026 single income tax before credits pins the 2026 indexed brackets
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SINGLE
+    me_taxable_income: 40_000
+    state_code: ME
+  output:
+    # 5.8% x 27,400 + 6.75% x (40,000 - 27,400) = 1,589.20 + 850.50 = 2,439.70
+    me_income_tax_before_credits: 2_439.70
+
+# Married filing jointly 2026: 0-54,850 @ 5.8%; 54,850-129,750 @ 6.75%; 129,750+ @ 7.15%.
+- name: ME 2026 joint income tax before credits pins the 2026 indexed brackets
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: JOINT
+    me_taxable_income: 140_000
+    state_code: ME
+  output:
+    # 5.8% x 54,850 + 6.75% x (129,750 - 54,850) + 7.15% x (140,000 - 129,750)
+    # = 3,181.30 + 5,055.75 + 732.875 = 8,969.925
+    me_income_tax_before_credits: 8_969.93
+
+# Head of household 2026: 0-41,100 @ 5.8%; 41,100-97,300 @ 6.75%; 97,300+ @ 7.15%.
+- name: ME 2026 head of household income tax before credits pins the 2026 indexed brackets
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    me_taxable_income: 50_000
+    state_code: ME
+  output:
+    # 5.8% x 41,100 + 6.75% x (50,000 - 41,100) = 2,383.80 + 600.75 = 2,984.55
+    me_income_tax_before_credits: 2_984.55

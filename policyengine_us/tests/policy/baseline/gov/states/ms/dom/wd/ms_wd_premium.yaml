@@ -1,0 +1,49 @@
+- name: Case 1, countable earned income at the premium threshold owes no premium.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_eligible: true
+    ms_wd_countable_earned_income: 1_995
+  output:
+    # 2026 monthly FPL: $1,330; 150% = $1,995.
+    ms_wd_premium: 0
+
+- name: Case 2, countable earned income above the threshold pays five percent rounded down.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_eligible: true
+    ms_wd_countable_earned_income: 2_000
+  output:
+    # floor($2,000 * 5%) = $100.
+    ms_wd_premium: 100
+
+- name: Case 3, ineligible person owes no premium.
+  period: 2026-01
+  input:
+    state_code: MS
+    ms_wd_eligible: false
+    ms_wd_countable_earned_income: 2_000
+  output:
+    ms_wd_premium: 0
+
+- name: Case 4, eligible couple splits one marital-unit premium across eligible spouses.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ms_wd_eligible: true
+        ms_wd_countable_earned_income: 3_000
+      person2:
+        ms_wd_eligible: true
+        ms_wd_countable_earned_income: 3_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+  output:
+    # floor($3,000 * 5%) = $150 total; $75 assigned to each eligible spouse.
+    ms_wd_premium: [75, 75]

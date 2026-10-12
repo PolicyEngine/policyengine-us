@@ -1,0 +1,13 @@
+description: Nebraska treats daily authorized care below this many hours and not treated as partial-day care as a full-day unit under the Child Care Subsidy program.
+values:
+  2023-07-01: 10
+
+metadata:
+  unit: hour
+  period: day
+  label: Nebraska Child Care Subsidy full-day hours threshold
+  reference:
+    - title: Nebraska Child Care Subsidy Rate Structure FAQ
+      href: https://dhhs.ne.gov/Child%20Care%20Documents/Rate%20Structure%20Frequently%20Asked%20Questions%20%28FAQ%29.pdf#page=1
+    - title: Nebraska Child Care Subsidy Provider Handbook, Authorized Units
+      href: https://dhhs.ne.gov/Documents/CC-Subsidy-Provider-Booklet.pdf#page=31

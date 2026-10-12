@@ -107,3 +107,49 @@
     # Total max: $375
     # Expenses ($500/mo) > max ($375), so deduction = $375
     ok_tanf_dependent_care_deduction: 375
+
+- name: Incapacitated adult care expenses count toward the deduction
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Per OAC 340:10-3-33(b)(3)(B): $175/month for an incapacitated adult.
+    # Expenses = 1,200 / 12 = 100/month, below the cap.
+    ok_tanf_dependent_care_deduction: 100
+
+- name: Adult care expenses without incapacity are not deducted
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        is_tax_unit_dependent: false
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Person2 is neither a dependent nor incapacitated, so the cap is $0:
+    # min(100, 0) = 0.
+    ok_tanf_dependent_care_deduction: 0

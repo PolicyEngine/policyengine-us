@@ -1,0 +1,12 @@
+description: Louisiana pays no Family Independence Temporary Assistance Program grant when the rounded-down deficit is below this amount, though the assistance unit remains FITAP eligible.
+values:
+  2023-01-01: 10
+metadata:
+  unit: currency-USD
+  period: month
+  label: Louisiana FITAP minimum payment
+  reference:
+    - title: Louisiana DCFS Economic Stability Manual B-640-FITAP Income Limits, B-641-1-FITAP (Determination of Eligibility and Grant Amount)
+      href: https://public.powerdms.com/LADCFS/documents/398921
+    - title: Louisiana Administrative Code Title 67, Part III, Section 1229
+      href: https://www.law.cornell.edu/regulations/louisiana/La-Admin-Code-tit-67-SS-III-1229

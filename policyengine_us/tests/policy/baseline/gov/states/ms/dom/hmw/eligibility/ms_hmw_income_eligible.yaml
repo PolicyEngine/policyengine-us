@@ -1,0 +1,88 @@
+- name: Case 1, countable income at 135 percent of poverty passes.
+  period: 2026
+  input:
+    state_code: MS
+    medicaid_optional_senior_or_disabled_countable_income: 21_546
+  output:
+    ms_hmw_income_eligible: true
+
+- name: Case 2, countable income over 135 percent of poverty fails.
+  period: 2026
+  input:
+    state_code: MS
+    medicaid_optional_senior_or_disabled_countable_income: 21_547
+  output:
+    ms_hmw_income_eligible: false
+
+- name: Case 3, couple income at 135 percent of poverty passes.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        medicaid_optional_senior_or_disabled_countable_income: 14_607
+      person2:
+        age: 66
+        medicaid_optional_senior_or_disabled_countable_income: 14_607
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    ms_hmw_income_eligible: [true, true]
+
+- name: Case 4, dependent does not increase the income limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        medicaid_optional_senior_or_disabled_countable_income: 21_547
+      person2:
+        age: 10
+        medicaid_optional_senior_or_disabled_countable_income: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+  output:
+    ms_hmw_income_eligible: [false, true]
+
+- name: Case 5, spouse in a separate tax unit counts toward the couple income limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 67
+        medicaid_optional_senior_or_disabled_countable_income: 22_000
+      person2:
+        age: 66
+        medicaid_optional_senior_or_disabled_countable_income: 7_214
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MS
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+  output:
+    ms_hmw_income_eligible: [true, true]

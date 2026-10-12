@@ -1,0 +1,43 @@
+description: Utah classifies children into these age groups for the maximum monthly child care payment table under the Child Care Assistance program.
+
+# Table 3 (effective October 1, 2024) age bands: 0 to <24 months, 2 years
+# old, 3 years old, 4 years old, 5 years old, and 6 to <13 years old. The
+# 2020 entry is placed at PolicyEngine's backdating floor. Amounts are
+# indices into the UTCCAPAgeGroup enum. The table publishes no band above
+# age 12; special needs children ages 13 to 17 (eligible under
+# R986-700-702(5)(b)) fall in the school age band.
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  period: year
+  label: Utah CCAP market rate age group thresholds
+  reference:
+    - title: Utah DWS Table 3 - Maximum Monthly Child Care Payments (effective October 1, 2024)
+      href: https://jobs.utah.gov/occ/provider/table30824.pdf
+
+brackets:
+  - threshold:
+      2020-01-01: 0
+    amount:
+      2020-01-01: 0 # UNDER_TWO (0 to <24 months)
+  - threshold:
+      2020-01-01: 2
+    amount:
+      2020-01-01: 1 # TWO_YEAR_OLD
+  - threshold:
+      2020-01-01: 3
+    amount:
+      2020-01-01: 2 # THREE_YEAR_OLD
+  - threshold:
+      2020-01-01: 4
+    amount:
+      2020-01-01: 3 # FOUR_YEAR_OLD
+  - threshold:
+      2020-01-01: 5
+    amount:
+      2020-01-01: 4 # FIVE_YEAR_OLD
+  - threshold:
+      2020-01-01: 6
+    amount:
+      2020-01-01: 5 # SCHOOL_AGE (6 to <13 years)

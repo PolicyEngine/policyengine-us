@@ -1,0 +1,258 @@
+- name: Case 1, youngest short day and full day siblings.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 2
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 5
+      person3:
+        age: 3
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+      person4:
+        age: 4
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        ma_ccfa_base_copay: 100
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MA
+  output:
+    ma_ccfa_copay_person: [0, 50, 50, 25]
+    ma_ccfa_total_copay: 125
+
+- name: Case 2, older sibling short day.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 2
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 8
+      person3:
+        age: 3
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 20
+        childcare_hours_per_day: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ma_ccfa_base_copay: 100
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    ma_ccfa_copay_person: [0, 100, 25]
+    ma_ccfa_total_copay: 125
+
+- name: Case 3, child not attending does not affect ranking.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 2
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 0
+      person3:
+        age: 3
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        ma_ccfa_base_copay: 100
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MA
+  output:
+    ma_ccfa_copay_person: [0, 0, 100]
+    ma_ccfa_total_copay: 100
+
+- name: Case 4, child fee is capped at reimbursement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 2
+        ma_ccfa_maximum_reimbursement: 50
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_ccfa_base_copay: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_copay_person: [0, 50]
+    ma_ccfa_total_copay: 50
+
+- name: Case 5, TANF eligibility alone does not waive copays.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 2
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_ccfa_base_copay: 100
+        ma_tafdc_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_total_copay: 100
+
+- name: Case 6, homeless household does not pay copays.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 2
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_ccfa_base_copay: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+        is_homeless: true
+  output:
+    ma_ccfa_total_copay: 0
+
+- name: Case 7, TANF enrollment waives copays.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 2
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_ccfa_base_copay: 100
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_total_copay: 0
+
+- name: Case 8, no children attending means no copay.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 2
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ma_ccfa_base_copay: 100
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_total_copay: 0
+
+- name: Case 9, same-age siblings take distinct ranks and a child not attending takes none.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 1
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 0
+      person3:
+        age: 3
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 20
+      person4:
+        age: 3
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 20
+      person5:
+        age: 6
+        ma_ccfa_maximum_reimbursement: 1000
+        childcare_attending_days_per_month: 20
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4, person5]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        ma_ccfa_base_copay: 100
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: MA
+  output:
+    # The twins rank youngest and second youngest, so they pay the full and
+    # half fee. The six-year-old is the third child and pays a quarter.
+    ma_ccfa_copay_person: [0, 0, 100, 50, 25]
+    ma_ccfa_total_copay: 175

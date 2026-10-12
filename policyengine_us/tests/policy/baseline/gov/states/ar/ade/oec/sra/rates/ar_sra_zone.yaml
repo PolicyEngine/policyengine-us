@@ -1,0 +1,37 @@
+# SRA rate zones: Benton and Washington Counties (Northwest Arkansas)
+# vs. STATEWIDE for every other AR county.
+
+- name: Case 1, Benton County is in the BENTON_WASHINGTON zone.
+  period: 2026-01
+  input:
+    county_str: BENTON_COUNTY_AR
+    state_code: AR
+  output:
+    ar_sra_zone: BENTON_WASHINGTON
+
+- name: Case 2, Washington County is in the BENTON_WASHINGTON zone.
+  period: 2026-01
+  input:
+    county_str: WASHINGTON_COUNTY_AR
+    state_code: AR
+  output:
+    ar_sra_zone: BENTON_WASHINGTON
+
+- name: Case 3, Pulaski County (Little Rock) is in the STATEWIDE zone.
+  period: 2026-01
+  input:
+    county_str: PULASKI_COUNTY_AR
+    state_code: AR
+  output:
+    ar_sra_zone: STATEWIDE
+
+- name: Case 4, non-AR household with a B/W county string still defaults to STATEWIDE (state-guard).
+  period: 2026-01
+  input:
+    # defined_for filters output, not the rate-table lookup; the formula's
+    # explicit state == "AR" check is what prevents non-AR rows from being
+    # classified as Benton/Washington when the county string coincides.
+    county_str: BENTON_COUNTY_AR
+    state_code: TX
+  output:
+    ar_sra_zone: STATEWIDE

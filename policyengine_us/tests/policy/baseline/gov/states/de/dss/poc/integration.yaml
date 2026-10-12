@@ -442,11 +442,10 @@
     de_poc_maximum_weekly_benefit: [0, 0, 255, 290]
 
     # === Benefit ===
-    # Max annual = (255 + 290) * 52 = 28_340
-    # Uncapped = max(30_000 - 4_620, 0) = 25_380
-    # Annual benefit = min(25_380, 28_340) = 25_380
-    # Monthly = 25_380 / 12 = 2_115
-    de_poc: 2_115
+    # Max annual = (255 + 290) * 52 = 28_340; monthly max = 28_340 / 12 = 2_361.67
+    # Monthly expenses = 30_000 / 12 = 2_500 > monthly max -> capped at 2_361.67
+    # Benefit = max(2_361.67 - 385, 0) = 1_976.67
+    de_poc: 1_976.67
 
 - name: Case 7, new applicant above 200% FPL is ineligible while enrolled would be eligible.
   period: 2025-01

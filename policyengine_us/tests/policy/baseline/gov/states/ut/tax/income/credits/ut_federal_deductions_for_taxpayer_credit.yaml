@@ -24,6 +24,8 @@
     medical_expense_deduction: 500
     casualty_loss_deduction: 500
     real_estate_taxes: 6_000
+    itemized_taxable_income_deductions: 7_000
+    state_and_local_sales_or_income_tax: 0
   output:
     ut_federal_deductions_for_taxpayer_credit: 7_000
   
@@ -38,6 +40,8 @@
     medical_expense_deduction: 500
     casualty_loss_deduction: 500
     real_estate_taxes: 12_000
+    itemized_taxable_income_deductions: 12_000
+    state_and_local_sales_or_income_tax: 0
   output:
     ut_federal_deductions_for_taxpayer_credit: 12_000
     
@@ -54,4 +58,16 @@
     real_estate_taxes: 5_000 
   output:
     ut_federal_deductions_for_taxpayer_credit: 5_000
+
+- name: "Case 5: Utah subtracts only state income or sales tax from claimed itemized deductions"
+  period: 2023
+  input:
+    filing_status: JOINT
+    state_code: UT
+    tax_unit_itemizes: true
+    itemized_taxable_income_deductions: 15_000
+    state_and_local_sales_or_income_tax: 9_000
+    standard_deduction: 0
+  output:
+    ut_federal_deductions_for_taxpayer_credit: 6_000
 

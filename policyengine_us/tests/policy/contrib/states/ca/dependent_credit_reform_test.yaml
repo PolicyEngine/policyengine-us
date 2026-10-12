@@ -1,0 +1,88 @@
+- name: CA dependent credit reform - default amount reproduces baseline (no-op)
+  period: 2025
+  reforms: policyengine_us.reforms.states.ca.dependent_credit.ca_dependent_credit_reform.ca_dependent_credit_reform
+  input:
+    gov.contrib.states.ca.dependent_credit.in_effect: true
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: CA}}
+  output: {ca_exemptions: 1_103}  # 153 personal + 2 * 475 dependent
+
+- name: CA dependent credit reform - amount zero removes only the dependent portion
+  period: 2025
+  reforms: policyengine_us.reforms.states.ca.dependent_credit.ca_dependent_credit_reform.ca_dependent_credit_reform
+  input:
+    gov.contrib.states.ca.dependent_credit.in_effect: true
+    gov.contrib.states.ca.dependent_credit.amount: 0
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: CA}}
+  output: {ca_exemptions: 153}  # 153 personal, dependent portion eliminated
+
+- name: CA dependent credit reform - age limit re-prices young and keeps baseline for older
+  period: 2025
+  reforms: policyengine_us.reforms.states.ca.dependent_credit.ca_dependent_credit_reform.ca_dependent_credit_reform
+  input:
+    gov.contrib.states.ca.dependent_credit.in_effect: true
+    gov.contrib.states.ca.dependent_credit.amount: 1_000
+    gov.contrib.states.ca.dependent_credit.age_limit.in_effect: true
+    gov.contrib.states.ca.dependent_credit.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 5, is_tax_unit_dependent: true}
+      child2: {age: 15, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1, child2], state_name: CA}}
+  output: {ca_exemptions: 1_628}  # 153 personal + 1,000 young + 475 baseline older
+
+- name: CA dependent credit reform - childless filer unaffected
+  period: 2025
+  reforms: policyengine_us.reforms.states.ca.dependent_credit.ca_dependent_credit_reform.ca_dependent_credit_reform
+  input:
+    gov.contrib.states.ca.dependent_credit.in_effect: true
+    gov.contrib.states.ca.dependent_credit.amount: 0
+    people:
+      parent: {age: 40, employment_income: 60_000}
+    tax_units: {tax_unit: {members: [parent], filing_status: SINGLE}}
+    households: {household: {members: [parent], state_name: CA}}
+  output: {ca_exemptions: 153}  # personal only, no dependents
+
+- name: CA dependent credit reform - age at limit threshold is excluded
+  period: 2025
+  reforms: policyengine_us.reforms.states.ca.dependent_credit.ca_dependent_credit_reform.ca_dependent_credit_reform
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.ca.dependent_credit.in_effect: true
+    gov.contrib.states.ca.dependent_credit.amount: 1_000
+    gov.contrib.states.ca.dependent_credit.age_limit.in_effect: true
+    gov.contrib.states.ca.dependent_credit.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 13, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: CA}}
+  # Dependent at the age limit (13 == threshold) keeps the baseline older amount.
+  output: {ca_exemptions: 628}  # 153 personal + 475 baseline older
+
+- name: CA dependent credit reform - age one below threshold is included
+  period: 2025
+  reforms: policyengine_us.reforms.states.ca.dependent_credit.ca_dependent_credit_reform.ca_dependent_credit_reform
+  absolute_error_margin: 0.01
+  input:
+    gov.contrib.states.ca.dependent_credit.in_effect: true
+    gov.contrib.states.ca.dependent_credit.amount: 1_000
+    gov.contrib.states.ca.dependent_credit.age_limit.in_effect: true
+    gov.contrib.states.ca.dependent_credit.age_limit.threshold: 13
+    people:
+      parent: {age: 40, employment_income: 60_000}
+      child1: {age: 12, is_tax_unit_dependent: true}
+    tax_units: {tax_unit: {members: [parent, child1], filing_status: SINGLE}}
+    households: {household: {members: [parent, child1], state_name: CA}}
+  # Dependent one year under the limit (12 < 13) is re-priced to the reform amount.
+  output: {ca_exemptions: 1_153}  # 153 personal + 1,000 young

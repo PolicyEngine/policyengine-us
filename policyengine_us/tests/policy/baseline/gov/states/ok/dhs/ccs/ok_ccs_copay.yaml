@@ -1,0 +1,205 @@
+# Family share copayments per OKDHS Appendix C-4 (10/1/2025).
+- name: Case 1, household of two with $2,000 adjusted monthly income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # $1,934-$2,126 band for a household of two.
+    ok_ccs_copay: 142
+
+- name: Case 2, low-income household of two pays no copayment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 14_400  # $1,200/month, below $1,453.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_copay: 0
+
+- name: Case 3, household of four with $3,000 adjusted monthly income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # $3,000/month.
+      person2:
+        age: 28
+      person3:
+        age: 4
+      person4:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: OK
+  output:
+    # $2,843-$3,126 band for a household of four.
+    ok_ccs_copay: 209
+
+- name: Case 4, TANF household is predetermined eligible with no copayment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_copay: 0
+
+- name: Case 5, SSI recipient household is predetermined eligible with no copayment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 500
+        employment_income: 24_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    ok_ccs_copay: 0
+
+- name: Case 6, income just below a band boundary rounds up into the higher band.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 17_431.2  # $1,452.60/month, rounds to $1,453.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # $1,453-$1,546 band for a household of two.
+    ok_ccs_copay: 90
+
+- name: Case 7, household of ten with $5,000 adjusted monthly income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # $5,000/month.
+      person2:
+        age: 28
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 9
+      person6:
+        age: 8
+      person7:
+        age: 7
+      person8:
+        age: 6
+      person9:
+        age: 5
+      person10:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10]
+        state_code: OK
+  output:
+    # $4,913-$5,321 band for a household of ten.
+    ok_ccs_copay: 358
+
+- name: Case 8, household of eleven uses the ten-person copayment schedule.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # $5,000/month.
+      person2:
+        age: 28
+      person3:
+        age: 12
+      person4:
+        age: 11
+      person5:
+        age: 10
+      person6:
+        age: 9
+      person7:
+        age: 8
+      person8:
+        age: 7
+      person9:
+        age: 6
+      person10:
+        age: 5
+      person11:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11]
+        state_code: OK
+  output:
+    # $4,913-$5,321 band on the ten-person schedule.
+    ok_ccs_copay: 358

@@ -4,7 +4,7 @@ values:
   2009-01-01:
     - ssi
     - is_tanf_non_cash_eligible
-    # - tanf # Currently only available in IL.
+    - tanf
 
 metadata:
   reference:
@@ -13,3 +13,5 @@ metadata:
       # Refers to 42 U.S.C. 601, which is TANF:
     - title: 42 U.S. Code Part A—Block Grants to States for Temporary Assistance for Needy Families
       href: https://www.law.cornell.edu/uscode/text/42/chapter-7/subchapter-IV/part-A
+    - title: 7 CFR 273.2(j)(2) Categorical eligibility for certain recipients
+      href: https://www.law.cornell.edu/cfr/text/7/273.2#j_2

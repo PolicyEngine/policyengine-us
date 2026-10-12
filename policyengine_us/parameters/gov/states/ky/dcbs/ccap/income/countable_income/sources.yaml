@@ -1,0 +1,49 @@
+description: Kentucky counts these income sources under the Child Care Assistance Program.
+values:
+  2019-05-31:
+    - employment_income
+    - self_employment_income
+    - farm_operations_income
+    - social_security
+    - unemployment_compensation
+    - workers_compensation
+    - pension_income
+    - alimony_income
+    - child_support_received
+    - dividend_income
+    - interest_income
+    - rental_income
+    - veterans_benefits
+    # PolicyEngine records military retirement separately from pension_income,
+    # so it is listed on its own here.
+    - military_retirement_pay
+    # Sources excluded under Section 8(4):
+    # - ssi  # §8(4)(ll) excludes Supplemental Security Income for a child;
+    #   KY (unlike WV) does not count child SSI.
+    # - tanf (K-TAP)  # §8(4)(a) excludes K-TAP child-only payments; we also
+    #   omit TANF to avoid the CCAP <-> TANF circular dependency
+    #   (ky_ccap_countable_income -> tanf -> k-tap dependent-care deduction ->
+    #   childcare_expenses -> child_care_subsidies -> ky_ccap). The
+    #   is_tanf_enrolled bypass in ky_ccap_activity_eligible already makes
+    #   Kentucky Works families categorically activity-eligible.
+    # Provisions we don't model at the moment:
+    # - §8(4)(c) educational grants/loans/scholarships/work-study,
+    #   §8(4)(d) Kentucky Works supportive services / SNAP E&T transportation,
+    #   §8(4)(e) USDA benefits incl. SNAP allotment, §8(4)(n) housing subsidies,
+    #   §8(4)(t) LIHEAP/energy assistance, §8(4)(s) foster-care payments,
+    #   §8(4)(w) EITC advance/refund — all already excluded by omission from
+    #   this positive list (PolicyEngine does not fold them into the variables
+    #   above).
+    # - §8(4)(ll) catch-all sub-categories (Aleut/Japanese-internment
+    #   reparations, Agent Orange / radiation / Nazi-persecution / crime-victim
+    #   settlements, tribal per-capita distributions, VISTA/Foster
+    #   Grandparents/RSVP/Senior Companion, WIOA earnings, Medicaid-waiver
+    #   in-home care) — no corresponding PolicyEngine variables at the moment.
+
+metadata:
+  unit: list
+  period: year
+  label: Kentucky CCAP countable income sources
+  reference:
+    - title: 922 KAR 2:160 Section 8(2), (4) — Countable and excluded income (pp.7-8)
+      href: https://apps.legislature.ky.gov/services/karmaservice/documents/10239/ToPDF?markup=false#page=7

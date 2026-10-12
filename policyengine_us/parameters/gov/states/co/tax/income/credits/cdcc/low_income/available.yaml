@@ -1,0 +1,21 @@
+description: Colorado allows the low-income child care expenses credit only for the income tax years within this statutory window.
+values:
+  # Credit first available for income tax years beginning on or after 2014-01-01.
+  2014-01-01: true
+  # Not available for income tax years beginning on or after 2017-01-01 ...
+  2017-01-01: false
+  # ... and again available for income tax years beginning on or after 2018-01-01 ...
+  2018-01-01: true
+  # ... but not for income tax years beginning on or after 2026-01-01.
+  2026-01-01: false
+metadata:
+  period: year
+  unit: bool
+  label: Colorado low-income child care expenses credit available
+  reference:
+    - title: C.R.S. 39-22-119.5(3)(a) (window narrowed to before 2026-01-01 by HB24-1134, SECTION 2)
+      href: https://leg.colorado.gov/sites/default/files/2024a_1134_signed.pdf#page=3
+    - title: "Colorado Revised Statutes 39-22-119.5(3)(a). Child care expenses tax credit"
+      href: https://law.justia.com/codes/colorado/title-39/specific-taxes/income-tax/article-22/part-1/section-39-22-119-5/
+    - title: "Income Tax Topics: Child and Dependent Care Expenses Credit (Revised January 2026)"
+      href: https://tax.colorado.gov/sites/tax/files/documents/ITT_Child_and_Dependent_Care_Expenses_Credit_Jan_2026.pdf

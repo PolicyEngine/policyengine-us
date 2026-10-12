@@ -108,9 +108,11 @@ values:
     - md_non_refundable_eitc
     - md_refundable_eitc
     - mi_eitc
+    - mt_eitc
     - ne_eitc
     - nj_eitc
     - ny_eitc
+    - ny_supplemental_eitc
     - or_eitc
     - ri_eitc
     - sc_eitc
@@ -129,9 +131,11 @@ values:
     - md_refundable_eitc
     - me_eitc
     - mi_eitc
+    - mt_eitc
     - ne_eitc
     - nj_eitc
     - ny_eitc
+    - ny_supplemental_eitc
     - oh_eitc
     - or_eitc
     - ri_eitc
@@ -160,6 +164,7 @@ values:
     - nj_eitc
     - nm_eitc
     - ny_eitc
+    - ny_supplemental_eitc
     - oh_eitc
     - ok_eitc
     - or_eitc
@@ -192,6 +197,7 @@ values:
     - nj_eitc
     - nm_eitc
     - ny_eitc
+    - ny_supplemental_eitc
     - oh_eitc
     - ok_eitc
     - or_eitc
@@ -220,13 +226,16 @@ values:
     - md_refundable_eitc
     - me_eitc
     - mi_eitc
-    - mn_wfc
+    # From 2023 Minnesota's WFC and CTC share one phase-down (Minn. Stat.
+    # 290.0661, subd. 4) and one M1REF line; the combined credit is reported here.
+    - mn_child_and_working_families_credits
     - mo_wftc
     - mt_eitc
     - ne_eitc
     - nj_eitc
     - nm_eitc
     - ny_eitc
+    - ny_supplemental_eitc
     - oh_eitc
     - ok_eitc
     - or_eitc
@@ -255,13 +264,14 @@ values:
     - md_refundable_eitc
     - me_eitc
     - mi_eitc
-    - mn_wfc
+    - mn_child_and_working_families_credits
     - mo_wftc
     - mt_eitc
     - ne_eitc
     - nj_eitc
     - nm_eitc
     - ny_eitc
+    - ny_supplemental_eitc
     - oh_eitc
     - ok_eitc
     - or_eitc

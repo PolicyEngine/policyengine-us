@@ -1,0 +1,270 @@
+# Top-level Michigan CDC eligibility. Requires an
+# eligible child, an income-waived OR income-eligible group, the asset test,
+# and a valid need reason (BEM 703 p.14).
+
+- name: Case 1, working parent and young child with low income is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000  # 2,500/mo, below size 2 entry 3,526
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_eligible: true
+
+- name: Case 2, income above the entry limit makes an applicant ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5,000/mo, above size 2 entry 3,526
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_eligible: false
+
+- name: Case 3, high income but income-waived foster care family is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 90_000  # 7,500/mo, far above any income limit
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_eligible: true
+
+- name: Case 4, no eligible child makes the family ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 14  # over 13, not disabled -> not an eligible child
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_eligible: false
+
+- name: Case 5, parent without a need reason makes the family ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_eligible: false
+
+- name: Case 6, assets above the limit make the family ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+        spm_unit_assets: 1_500_000  # above the $1,000,000 CCDF asset limit
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    mi_ccap_eligible: false
+
+- name: Case 7, non-Michigan family is not eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    mi_ccap_eligible: false
+
+# Edge cases.
+
+- name: Case 8, applicant at exactly the entry limit is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_312  # 3,526/mo, exactly the size-2 entry limit
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        mi_ccap_enrolled: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Income at exactly the entry limit passes the <= test -> eligible
+    mi_ccap_eligible: true
+
+- name: Case 9, income-waived family without an eligible child is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 15  # over 13 and not disabled -> not an eligible child
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Income-waived alone is not enough: an eligible child is still required
+    mi_ccap_eligible: false
+
+- name: Case 10, income-waived family still needs a valid activity reason.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 0
+        is_full_time_student: false
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        is_in_foster_care: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # Foster care waives the income test but the parent still needs a need
+    # reason; with none, the family is ineligible
+    mi_ccap_eligible: false

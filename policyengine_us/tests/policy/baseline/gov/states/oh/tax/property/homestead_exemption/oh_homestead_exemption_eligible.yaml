@@ -1,0 +1,278 @@
+- name: Case 1, senior homeowner under the income limit is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_homestead_exemption_total_income: 41_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: true
+
+- name: Case 2, permanently and totally disabled homeowner under age 65 is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_permanently_and_totally_disabled: true
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_homestead_exemption_total_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: true
+
+- name: Case 3, senior homeowner above the income limit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_homestead_exemption_total_income: 41_001
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: false
+
+- name: Case 4, non-senior homeowner without disability is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 64
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_homestead_exemption_total_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: false
+
+- name: Case 5, qualifying surviving spouse at the age threshold is eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 59
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+        oh_homestead_exemption_qualifying_surviving_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_homestead_exemption_total_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: true
+
+- name: Case 6, generic disability alone is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_homestead_exemption_total_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: false
+
+- name: Case 7, federal surviving spouse filing status alone is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 59
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SURVIVING_SPOUSE
+        oh_homestead_exemption_total_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: false
+
+- name: Case 8, prior-year total income controls eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_modified_agi: 0
+        oh_homestead_exemption_total_income: 41_001
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: false
+
+- name: Case 9, homeowner without property tax proxy is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 200_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_homestead_exemption_total_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: false
+
+- name: Case 10, senior filer with only non-joint adult property tax is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 40
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+        oh_homestead_exemption_total_income: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: false
+
+- name: Case 11, 2025 senior homeowner at the income limit is eligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_homestead_exemption_total_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: true
+
+- name: Case 12, 2025 senior homeowner above the income limit is ineligible.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_homestead_exemption_total_income: 40_001
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: false
+
+- name: Case 13, qualifying surviving spouse below the age threshold is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 58
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+        oh_homestead_exemption_qualifying_surviving_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        oh_homestead_exemption_total_income: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: false
+
+- name: Case 14, joint spouse property tax can satisfy ownership proxy.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_head: true
+      person2:
+        age: 65
+        is_tax_unit_spouse: true
+        assessed_property_value: 200_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        oh_homestead_exemption_total_income: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_homestead_exemption_eligible: true

@@ -1,12 +1,20 @@
 description: The Department of Health and Human Services sets this threshold for when the additional person rate applies under the State Median Income program.
 
 values:
-  2021-10-01: 6
+  1988-04-04: 6
 
 metadata:
   unit: person
   period: year
   label: HHS SMI additional person threshold
   reference:
+    - title: 45 CFR 96.85(b), Adjustment of annual median income for household size
+      href: https://www.ecfr.gov/current/title-45/subtitle-A/subchapter-A/part-96/subpart-H/section-96.85#p-96.85(b)
+    - title: 53 FR 6824, Block Grant Programs final rule (effective April 4, 1988), 45 CFR 96.85(b)
+      href: https://www.govinfo.gov/content/pkg/FR-1988-03-03/pdf/FR-1988-03-03.pdf#page=53
     - title: State Median Income (SMI) by household size FFY 2022
       href: https://www.acf.hhs.gov/sites/default/files/documents/ocs/COMM_LIHEAP_IM03%20Attachment1%20SMITable_FY2022.pdf
+
+# The 1988 rule (53 FR 6824, effective April 4, 1988) set the per-person
+# adjustment above six persons in 45 CFR 96.85(b)(7); the 1999 amendment
+# (64 FR 55858) changed only paragraph (a).

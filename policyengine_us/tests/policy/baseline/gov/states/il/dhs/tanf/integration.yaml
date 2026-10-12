@@ -563,7 +563,8 @@
     # Parent-only = 0.25 * 439.25 = 109.81
     il_tanf_assistance_unit_size: 1
     il_tanf_payment_level_for_grant_calculation: 109.81
-    il_tanf: 109.81
+    # Benefit 109.81 rounded down to the nearest whole dollar.
+    il_tanf: 109
 
 # ===================================================================
 # 12. CHILD-ONLY IN REGIONAL ERA (Group II)
@@ -736,8 +737,8 @@
     il_tanf_countable_earned_income_for_grant_calculation: 106.25
     il_tanf_countable_income_for_grant_calculation: 106.25
 
-    # Benefit = max($432 - $106.25, 0) = $325.75
-    il_tanf: 325.75
+    # Benefit = max($432 - $106.25, 0) = $325.75, rounded down to $325.
+    il_tanf: 325
 
 # ===================================================================
 # 16. FULL PIPELINE WITH EARNINGS (pre-2018, Group III child-only)
@@ -805,8 +806,8 @@
     il_tanf_countable_earned_income_for_grant_calculation: 56.25
     il_tanf_countable_income_for_grant_calculation: 56.25
 
-    # Benefit = max($108 - $56.25, 0) = $51.75
-    il_tanf: 51.75
+    # Benefit = max($108 - $56.25, 0) = $51.75, rounded down to $51.
+    il_tanf: 51
 
 # ===================================================================
 # 17. HIGH INCOME INELIGIBLE (pre-2018)

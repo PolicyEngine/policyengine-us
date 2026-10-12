@@ -6,11 +6,10 @@ class md_ctc_eligible(Variable):
     entity = TaxUnit
     label = "Eligible for the Maryland Child Tax Credit"
     definition_period = YEAR
-    reference = [
-        "https://casetext.com/statute/code-of-maryland/article-tax-general/title-10-income-tax/subtitle-7-income-tax-credits/section-10-751-effective-until-712026-tax-credit-for-qualified-child",
-        "https://law.justia.com/codes/maryland/2022/tax-general/title-10/subtitle-7/section-10-751/",
+    reference = (
+        "https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gtg&section=10-751&enactments=false",
         "https://mgaleg.maryland.gov/2025RS/Chapters_noln/CH_604_hb0352e.pdf#page=169",  # Maryland House Bill 352 - Budget Reconciliation and Financing Act of 2025
-    ]
+    )
     defined_for = StateCode.MD
 
     def formula(tax_unit, period, parameters):

@@ -10,7 +10,7 @@ class va_ccsp_countable_income(Variable):
     defined_for = StateCode.VA
     reference = (
         "https://law.lis.virginia.gov/admincode/title8/agency20/chapter790/section40/",
-        "https://doe.virginia.gov/home/showpublisheddocument/56270#page=63",
+        "https://ris.dls.virginia.gov/uploads/22VAC40/dibr/VDOE%20Child%20Care%20Program%20Guidance%20Manual%205.3.2023-20240822104447.pdf#page=57",
     )
 
     def formula(spm_unit, period, parameters):
@@ -23,7 +23,7 @@ class va_ccsp_countable_income(Variable):
         # `age` is a YEAR-defined variable; use period.this_year so the
         # monthly formula picks up the annual age rather than age/12.
         is_adult = person("age", period.this_year) >= 18
-        earned_per_person = sum(person(source, period) for source in p.earned_sources)
+        earned_per_person = add(person, period, p.earned_sources)
         adult_earned_income = spm_unit.sum(earned_per_person * is_adult)
         unearned_income = add(spm_unit, period, p.unearned_sources)
         deductions = add(spm_unit, period, p.subtracts)

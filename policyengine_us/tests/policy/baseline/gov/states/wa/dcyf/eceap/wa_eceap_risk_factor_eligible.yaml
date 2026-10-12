@@ -214,7 +214,7 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # 36% SMI family of 3 in 2026 = $44,425; 50% SMI = $61,701. $50,000 is in band.
+    # 36% SMI family of 3 in 2026 = $42,128; 50% SMI = $58,511. $50,000 is in band.
     # Only child has the dev-delay risk factor.
     wa_eceap_risk_factor_eligible: [false, true, false]
 
@@ -485,7 +485,7 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # 36% SMI family of 3 = $44,425; 50% SMI = $61,701. $50,000 in band.
+    # 36% SMI family of 3 = $42,128; 50% SMI = $58,511. $50,000 in band.
     # Only child has IEP risk factor.
     wa_eceap_risk_factor_eligible: [false, true, false]
 
@@ -530,7 +530,7 @@
     people:
       parent:
         age: 30
-        employment_income: 44_425
+        employment_income: 42_128
         is_english_proficient: true
         is_single_parent_household: false
       child:
@@ -556,7 +556,7 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # At exactly 36% SMI floor ($44,425.03), income is not strictly greater than
+    # At exactly 36% SMI floor ($42,128.25), income is not strictly greater than
     # lower bound, so not in risk-factor band (band is > 36% and <= 50%).
     wa_eceap_risk_factor_eligible: [false, false, false]
 
@@ -566,7 +566,7 @@
     people:
       parent:
         age: 30
-        employment_income: 44_426
+        employment_income: 42_129
         is_english_proficient: true
         is_single_parent_household: false
       child:
@@ -592,7 +592,7 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # $44,426 is strictly > 36% SMI ($44,425.03), within risk pathway band.
+    # $42,129 is strictly > 36% SMI ($42,128.25), within risk pathway band.
     wa_eceap_risk_factor_eligible: [false, true, false]
 
 - name: 2026 family at exactly 50% SMI upper bound with dev delay, in risk pathway band.
@@ -601,7 +601,7 @@
     people:
       parent:
         age: 30
-        employment_income: 61_701
+        employment_income: 58_511
         is_english_proficient: true
         is_single_parent_household: false
       child:
@@ -627,7 +627,7 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # 50% SMI family of 3 in 2026 ~= $61,701.43. $61,701 <= upper bound.
+    # 50% SMI family of 3 in 2026 ~= $58,511.46. $58,511 <= upper bound.
     wa_eceap_risk_factor_eligible: [false, true, false]
 
 - name: 2026 single-parent household in 36-50% SMI band, eligible via single-parent risk factor.
@@ -661,7 +661,7 @@
         members: [parent, child, sibling]
         state_code: WA
   output:
-    # 36% SMI family of 3 = $44,425; 50% SMI = $61,701. $50,000 is in band.
+    # 36% SMI family of 3 = $42,128; 50% SMI = $58,511. $50,000 is in band.
     # Single-parent flag is True only on the unmarried tax-unit head (parent),
     # but the risk factor projects to all SPM unit members so the child is
     # eligible via the single-parent path.
@@ -673,7 +673,7 @@
     people:
       parent:
         age: 30
-        employment_income: 61_702
+        employment_income: 58_512
         is_english_proficient: true
         is_single_parent_household: false
       child:
@@ -734,7 +734,7 @@
         members: [parent1, parent2, child]
         state_code: WA
   output:
-    # 36% SMI family of 3 = $44,425; 50% SMI = $61,701. $50,000 is in band.
+    # 36% SMI family of 3 = $42,128; 50% SMI = $58,511. $50,000 is in band.
     # Child welfare involvement is person-specific, so only the foster child has
     # this risk factor.
     wa_eceap_risk_factor_eligible: [false, false, true]

@@ -170,3 +170,147 @@
   output:
     medicaid_category: SENIOR_OR_DISABLED
     is_medicaid_eligible: true
+
+- name: Case 4, medically needy pathway makes a person Medicaid eligible.
+  period: 2026
+  input:
+    is_adult_for_medicaid: false
+    is_medically_needy_for_medicaid: true
+  output:
+    medicaid_category: MEDICALLY_NEEDY
+    is_medicaid_eligible: true
+
+- name: Case 5, working disabled Buy-In pathway makes a person Medicaid eligible.
+  period: 2026
+  input:
+    is_adult_for_medicaid: false
+    is_working_disabled_buy_in_for_medicaid: true
+  output:
+    medicaid_category: WORKING_DISABLED_BUY_IN
+    is_medicaid_eligible: true
+
+- name: Case 6, adult group enrollee is ineligible when work requirements apply and are unmet.
+  period: 2027
+  input:
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    is_medicaid_eligible: false
+
+- name: Case 7, parent category remains eligible when adult group work requirements apply.
+  period: 2027
+  input:
+    medicaid_category: PARENT
+    immigration_status: CITIZEN
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 8, adult group enrollee meets work requirements through the income safe harbor.
+  period: 2027
+  input:
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    employment_income: 6_960
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 9, long-term care home equity cap does not remove ordinary Medicaid eligibility.
+  period: 2028
+  input:
+    age: 65
+    medicaid_category: SENIOR_OR_DISABLED
+    receives_medicaid_long_term_care_services: true
+    home_equity: 1_000_001
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 10, senior long-term care applicant at the home equity limit remains Medicaid eligible.
+  period: 2028
+  input:
+    age: 65
+    medicaid_category: SENIOR_OR_DISABLED
+    receives_medicaid_long_term_care_services: true
+    home_equity: 1_000_000
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 11, senior long-term care applicant above the home equity limit with a resident spouse is eligible.
+  period: 2028
+  input:
+    people:
+      person1:
+        age: 65
+        medicaid_category: SENIOR_OR_DISABLED
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_001
+      person2:
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+  output:
+    is_medicaid_eligible: [true, false]
+
+- name: Case 12, Arkansas 2018 subject adult is ineligible when the historical work requirement approximation is unmet.
+  period: 2018
+  input:
+    age: 40
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    medicaid_income_level: 0.9
+    monthly_hours_worked: 0
+    state_code: AR
+  output:
+    is_medicaid_eligible: false
+
+- name: Case 13, Arkansas 2018 adult above 100 percent FPL remains eligible because the annual approximation does not subject that cohort.
+  period: 2018
+  input:
+    age: 40
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    medicaid_income_level: 1.1
+    monthly_hours_worked: 0
+    state_code: AR
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 14, Arkansas 2019 adults ages 19 to 29 remain eligible because the brief phase-in is not modeled annually.
+  period: 2019
+  input:
+    age: 25
+    medicaid_category: ADULT
+    immigration_status: CITIZEN
+    medicaid_income_level: 0.8
+    monthly_hours_worked: 0
+    state_code: AR
+  output:
+    is_medicaid_eligible: true
+
+- name: Case 15, section 1115 MEC adult is ineligible when work requirements apply and are unmet.
+  period: 2027
+  input:
+    is_adult_for_medicaid: false
+    is_medicaid_1115_mec_adult: true
+    immigration_status: CITIZEN
+    medicaid_community_engagement_pass_through_eligible: false
+  output:
+    medicaid_category: SECTION_1115_MEC_ADULT
+    is_medicaid_work_requirement_applicable_adult: true
+    is_medicaid_eligible: false
+
+- name: Case 16, section 1115 MEC adult remains eligible when meeting the income safe harbor.
+  period: 2027
+  input:
+    is_adult_for_medicaid: false
+    is_medicaid_1115_mec_adult: true
+    immigration_status: CITIZEN
+    employment_income: 6_960
+  output:
+    medicaid_category: SECTION_1115_MEC_ADULT
+    is_medicaid_work_requirement_applicable_adult: true
+    is_medicaid_eligible: true

@@ -6,21 +6,219 @@
 - name: Income up to 130% meets test
   period: 2022
   input:
-    snap_gross_income_fpg_ratio: 1.3
+    # $1,300 per month against a $1,000 monthly poverty guideline.
+    snap_gross_test_income: 15_600
+    snap_fpg: 12_000
   output:
     meets_snap_gross_income_test: true
 
 - name: Income above 130% fails test
   period: 2022
   input:
-    snap_gross_income_fpg_ratio: 1.31
+    # $1,310 per month against a $1,000 monthly poverty guideline.
+    snap_gross_test_income: 15_720
+    snap_fpg: 12_000
   output:
     meets_snap_gross_income_test: false
 
-- name: Households with elderly or disabled members are exempt.
+- name: Households with elderly or disabled unit members are exempt.
   period: 2022
   input:
-    snap_gross_income_fpg_ratio: 1.31
-    has_usda_elderly_disabled: true
+    snap_gross_test_income: 15_720
+    snap_fpg: 12_000
+    has_snap_elderly_disabled_member: true
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Monthly gross standard rounds up to the next whole dollar
+  period: 2022
+  input:
+    # $1,302 per month against a $1,000.83 monthly poverty guideline;
+    # 130% of the guideline is $1,301.08, which 7 CFR 273.9(a)(3)(i)
+    # rounds up to $1,302.
+    snap_gross_test_income: 15_624
+    snap_fpg: 12_010
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Income above the rounded monthly gross standard fails
+  period: 2022
+  input:
+    # $1,303 per month against the rounded $1,302 monthly standard.
+    snap_gross_test_income: 15_636
+    snap_fpg: 12_010
+  output:
+    meets_snap_gross_income_test: false
+
+- name: Missouri three-person household at the published FY 2026 gross limit passes
+  period: 2026-01
+  input:
+    people:
+      person1:
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        weekly_hours_worked_before_lsr: 40
+      person3:
+        weekly_hours_worked_before_lsr: 40
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        # USDA FY 2026 gross monthly income limit for a household of three:
+        # 130% of the $26,650 annual poverty guideline / 12 = $2,887.08,
+        # rounded up to $2,888.
+        snap_gross_test_income: 2_888
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Missouri three-person household just above the published FY 2026 gross limit fails
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+      person2: {}
+      person3: {}
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        snap_gross_test_income: 2_889
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MO
+  output:
+    meets_snap_gross_income_test: false
+
+- name: Ten-person Kansas household at the published FY 2026 gross limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 10
+        # 7 CFR 273.9(a)(3)(i) adds a separately rounded-up increment to
+        # the eight-person standard: 130% x $54,150 / 12 = $5,866.25,
+        # rounded up to $5,867, plus 2 x (130% x $5,500 / 12 = $595.83,
+        # rounded up to $596) gives $7,059, matching the USDA FY 2026 table.
+        # Rounding up the whole ten-person amount ($7,057.92) gives $7,058.
+        snap_gross_test_income: 7_059
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Ten-person Washington household just above the published FY 2026 gross limit fails
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 10
+        snap_gross_test_income: 7_060
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    meets_snap_gross_income_test: false
+
+- name: Twelve-person North Carolina household at the published FY 2026 gross limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 12
+        # $5,867 + 4 x $596 = $8,251 under 7 CFR 273.9(a)(3)(i); rounding
+        # up the whole twelve-person amount (130% x $76,150 / 12 =
+        # $8,249.58) would give $8,250.
+        snap_gross_test_income: 8_251
+    households:
+      household:
+        members: [person1]
+        state_code: NC
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Nine-person Alaska household at the FY 2026 gross limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 9
+        # FY 2026 uses the 2025 Alaska guidelines ($19,550 first person,
+        # $6,880 each additional). The eight-person guideline is $19,550 +
+        # 7 x $6,880 = $67,710; 130% x $67,710 / 12 = $7,335.25, rounded up
+        # to $7,336, plus 130% x $6,880 / 12 = $745.33, rounded up to $746,
+        # gives $8,082 under 7 CFR 273.9(a)(3)(i). Rounding up the whole
+        # nine-person amount (130% x $74,590 / 12 = $8,080.58) gives only
+        # $8,081.
+        snap_gross_test_income: 8_082
+    households:
+      household:
+        members: [person1]
+        state_code: AK
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Nine-person Hawaii household at the FY 2026 gross limit passes
+  period: 2026-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 9
+        # FY 2026 uses the 2025 Hawaii guidelines ($17,990 first person,
+        # $6,330 each additional). The eight-person guideline is $17,990 +
+        # 7 x $6,330 = $62,300; 130% x $62,300 / 12 = $6,749.17, rounded up
+        # to $6,750, plus 130% x $6,330 / 12 = $685.75, rounded up to $686,
+        # gives $7,436 under 7 CFR 273.9(a)(3)(i). Rounding up the whole
+        # nine-person amount (130% x $68,630 / 12 = $7,434.92) gives only
+        # $7,435.
+        snap_gross_test_income: 7_436
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    meets_snap_gross_income_test: true
+
+- name: Ten-person Pennsylvania household at the FY 2027 gross limit passes
+  period: 2027-01
+  input:
+    people:
+      person1: {}
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap_unit_size: 10
+        # FY 2027 uses the 2026 contiguous-state guidelines ($15,960 first
+        # person, $5,680 each additional). The eight-person guideline is
+        # $15,960 + 7 x $5,680 = $55,720; 130% x $55,720 / 12 = $6,036.33,
+        # rounded up to $6,037, plus 2 x (130% x $5,680 / 12 = $615.33,
+        # rounded up to $616) gives $7,269 under 7 CFR 273.9(a)(3)(i).
+        # Rounding up the whole ten-person amount (130% x $67,080 / 12 =
+        # $7,267.00) gives only $7,267.
+        snap_gross_test_income: 7_269
+    households:
+      household:
+        members: [person1]
+        state_code: PA
   output:
     meets_snap_gross_income_test: true

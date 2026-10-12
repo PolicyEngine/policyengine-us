@@ -1,0 +1,270 @@
+# Income eligibility (KEESM 7540 / Appendix F-1):
+#   countable monthly gross income must not exceed 85% of the family's monthly
+#   state median income — the F-1 "Income Limit" column, which DCF sets at 85%
+#   SMI. This is the SOLE income test. OR the family is TANF-enrolled, which per
+#   KEESM 7540 exempts the family from the financial-need (income) test.
+# Tested at 2026-01: the limit is derived from the FFY2026 (2025-10-01) state
+# median income DCF used to build the published F-1 column, so the computed
+# limits match the published dollars exactly.
+# F-1 monthly income limits: size 2 = $5,439; size 4 = $7,998.
+
+- name: Case 1, family of 2 income below the limit is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # $2,000/month <= $5,439 -> eligible.
+    ks_ccap_income_eligible: true
+
+- name: Case 2, family of 2 income above the limit is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 72_000  # $6,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # $6,000/month > $5,439 -> ineligible.
+    ks_ccap_income_eligible: false
+
+- name: Case 3, family of 2 income just below the limit is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 65_256  # $5,438/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # $5,438/month <= $5,439 limit -> eligible.
+    ks_ccap_income_eligible: true
+
+- name: Case 4, family of 4 uses the size-4 limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income: 96_000  # $8,000/month
+      person2:
+        age: 33
+      person3:
+        age: 5
+      person4:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: KS
+  output:
+    # $8,000/month > $7,998 size-4 limit -> ineligible.
+    ks_ccap_income_eligible: false
+
+- name: Case 5, TANF-enrolled family is categorically eligible despite high income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 120_000  # $10,000/month, above the size-2 limit
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_tanf_enrolled: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # TANF bypass applies regardless of the income limit.
+    ks_ccap_income_eligible: true
+
+# Edge case: income exactly at the size-2 limit. KEESM uses "at or below" (the
+# formula is countable_income <= income_limit), so a family at exactly $5,439 is
+# eligible.
+- name: Case 6, family of 2 at exactly the income limit is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 65_268  # $5,439/month exactly = size-2 limit
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # $5,439/month == $5,439 limit -> eligible (<=).
+    ks_ccap_income_eligible: true
+
+# Edge case: income one dollar above the limit is ineligible.
+- name: Case 7, family of 2 one dollar above the limit is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 65_280  # $5,440/month = limit + $1
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # $5,440/month > $5,439 limit -> ineligible.
+    ks_ccap_income_eligible: false
+
+# Edge case: zero income is comfortably within the limit.
+- name: Case 8, zero-income family is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # $0 <= $5,439 limit -> eligible.
+    ks_ccap_income_eligible: true
+
+# Edge case: negative countable income (self-employment loss) stays below the
+# limit and is handled gracefully (no crash, eligible).
+- name: Case 9, self-employment loss yields negative income and stays eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -24_000  # -$2,000/month
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # -$2,000/month <= $5,439 limit -> eligible.
+    ks_ccap_income_eligible: true
+
+# Edge case: beyond-max family size. A family of 12 uses the size-11 income
+# limit ($11,758). $6,000/month is well within it.
+- name: Case 10, family of 12 uses the size-11 income limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 72_000  # $6,000/month
+      person2:
+        age: 38
+      person3:
+        age: 1
+      person4:
+        age: 2
+      person5:
+        age: 3
+      person6:
+        age: 4
+      person7:
+        age: 5
+      person8:
+        age: 6
+      person9:
+        age: 7
+      person10:
+        age: 8
+      person11:
+        age: 9
+      person12:
+        age: 10
+    spm_units:
+      spm_unit:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+            person12,
+          ]
+    households:
+      household:
+        members:
+          [
+            person1,
+            person2,
+            person3,
+            person4,
+            person5,
+            person6,
+            person7,
+            person8,
+            person9,
+            person10,
+            person11,
+            person12,
+          ]
+        state_code: KS
+  output:
+    # Size 12 clamps to the size-11 limit; $6,000/month <= $11,758 -> eligible.
+    ks_ccap_income_eligible: true

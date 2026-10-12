@@ -10,7 +10,7 @@
   output:
     ma_tafdc_financial_eligible: true
 
-- name: Income eligible
+- name: Income above the Need Standard, ineligible
   period: 2023
   input:
     ma_tcap_gross_earned_income: 500
@@ -18,6 +18,33 @@
     ma_tafdc_dependent_care_deduction: 170
     ma_tafdc_countable_unearned_income: 0
     ma_tafdc_payment_standard: 120
+    state_code: MA
+  output:
+    ma_tafdc_financial_eligible: false
+
+# 106 CMR 704.260: countable income that "does not exceed" (equals) the
+# applicable Need Standard is financially eligible (inclusive boundary).
+# Countable income here is 500 - 200 - 170 = 130, plus 0 unearned.
+- name: Countable income exactly equal to the Need Standard is eligible
+  period: 2023
+  input:
+    ma_tcap_gross_earned_income: 500
+    ma_tafdc_work_related_expense_deduction: 200
+    ma_tafdc_dependent_care_deduction: 170
+    ma_tafdc_countable_unearned_income: 0
+    ma_tafdc_payment_standard: 130
+    state_code: MA
+  output:
+    ma_tafdc_financial_eligible: true
+
+- name: Countable income one dollar above the Need Standard is ineligible
+  period: 2023
+  input:
+    ma_tcap_gross_earned_income: 500
+    ma_tafdc_work_related_expense_deduction: 200
+    ma_tafdc_dependent_care_deduction: 170
+    ma_tafdc_countable_unearned_income: 0
+    ma_tafdc_payment_standard: 129
     state_code: MA
   output:
     ma_tafdc_financial_eligible: false

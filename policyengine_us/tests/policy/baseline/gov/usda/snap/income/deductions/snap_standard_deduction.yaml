@@ -3,6 +3,7 @@
   input:
     spm_unit_size: 4
     state_group: CONTIGUOUS_US
+    weekly_hours_worked_before_lsr: 40
   output:
     snap_standard_deduction: 184
 
@@ -56,3 +57,22 @@
     state_group: HI
   output:
     snap_standard_deduction: 250
+
+- name: FY2027 standard deduction uses the published COLA value.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 4
+    state_group: CONTIGUOUS_US
+    weekly_hours_worked_before_lsr: 40
+  output:
+    snap_standard_deduction: 229
+
+- name: FY2027 standard deduction for a one-person household.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size: 1
+    state_group: CONTIGUOUS_US
+  output:
+    snap_standard_deduction: 217

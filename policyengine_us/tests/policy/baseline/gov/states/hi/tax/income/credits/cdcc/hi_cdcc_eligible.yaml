@@ -13,3 +13,34 @@
     state_code: HI
   output:
     hi_cdcc_eligible: true
+
+- name: Separate filer with a qualifying individual is not eligible, HRS 235-55.6(e)(2)
+  period: 2022
+  input:
+    count_cdcc_eligible: 1
+    filing_status: SEPARATE
+    state_code: HI
+  output:
+    hi_cdcc_eligible: false
+
+- name: Separated filer maintaining a home for a qualifying individual is eligible, HRS 235-55.6(e)(4)
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        is_separated: true
+      person2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SEPARATE
+        count_cdcc_eligible: 1
+    households:
+      household:
+        members: [person1, person2]
+        state_code: HI
+  output:
+    hi_cdcc_eligible: true

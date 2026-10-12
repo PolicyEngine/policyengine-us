@@ -1,0 +1,29 @@
+description: Oregon allows these weekly child care hours based on the caretaker's allowable child care need under the Employment Related Day Care program.
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: hour
+  period: week
+  label: Oregon ERDC weekly authorized hours
+  reference:
+    - title: OAR 414-175-0023(5)(a)
+      href: https://secure.sos.state.or.us/oard/view.action?ruleNumber=414-175-0023
+
+brackets:
+  # 20 or fewer need hours -> 20; more than 20 up to 40 -> 40; more than 40 -> up to 75
+  - threshold:
+      2023-07-01: 0
+    amount:
+      2023-07-01: 0
+  - threshold:
+      2023-07-01: 0.0001
+    amount:
+      2023-07-01: 20
+  - threshold:
+      2023-07-01: 20.0001
+    amount:
+      2023-07-01: 40
+  - threshold:
+      2023-07-01: 40.0001
+    amount:
+      2023-07-01: 75

@@ -3,15 +3,15 @@
   input:
     people:
       person:
-        medicaid: 0
+        medicaid_enrolled: false
         ssi: 0
+        wic: 0
     tax_unit:
       pell_grant_primary_income: 49_999
     spm_unit:
       snap: 0
       school_meal_net_subsidy: 0
       tanf: 0
-      spm_unit_wic: 0
   output:
     pell_grant_simplified_formula_applies: false
 
@@ -20,15 +20,15 @@
   input:
     people:
       person:
-        medicaid: 1
+        medicaid_enrolled: true
         ssi: 0
+        wic: 0
     tax_unit:
       pell_grant_primary_income: 49_999
     spm_unit:
       snap: 0
       school_meal_net_subsidy: 0
       tanf: 0
-      spm_unit_wic: 0
   output:
     pell_grant_simplified_formula_applies: true
 
@@ -37,15 +37,15 @@
   input:
     people:
       person:
-        medicaid: 0
+        medicaid_enrolled: false
         ssi: 1
+        wic: 0
     tax_unit:
       pell_grant_primary_income: 49_999
     spm_unit:
       snap: 0
       school_meal_net_subsidy: 0
       tanf: 0
-      spm_unit_wic: 0
   output:
     pell_grant_simplified_formula_applies: true
 
@@ -54,15 +54,15 @@
   input:
     people:
       person:
-        medicaid: 0
+        medicaid_enrolled: false
         ssi: 0
+        wic: 1
     tax_unit:
       pell_grant_primary_income: 49_999
     spm_unit:
       snap: 0
       school_meal_net_subsidy: 0
       tanf: 0
-      spm_unit_wic: 1
   output:
     pell_grant_simplified_formula_applies: true
 
@@ -71,15 +71,15 @@
   input:
     people:
       person:
-        medicaid: 0
+        medicaid_enrolled: false
         ssi: 0
+        wic: 0
     tax_unit:
       pell_grant_primary_income: 49_999
     spm_unit:
       snap: 1
       school_meal_net_subsidy: 0
       tanf: 0
-      spm_unit_wic: 0
   output:
     pell_grant_simplified_formula_applies: true
 
@@ -88,15 +88,15 @@
   input:
     people:
       person:
-        medicaid: 0
+        medicaid_enrolled: false
         ssi: 0
+        wic: 0
     tax_unit:
       pell_grant_primary_income: 49_999
     spm_unit:
       snap: 0
       school_meal_net_subsidy: 1
       tanf: 0
-      spm_unit_wic: 0
   output:
     pell_grant_simplified_formula_applies: true
 
@@ -105,15 +105,15 @@
   input:
     people:
       person:
-        medicaid: 0
+        medicaid_enrolled: false
         ssi: 0
+        wic: 0
     tax_unit:
       pell_grant_primary_income: 49_999
     spm_unit:
       snap: 0
       school_meal_net_subsidy: 0
       tanf: 1
-      spm_unit_wic: 0
   output:
     pell_grant_simplified_formula_applies: true
 
@@ -122,18 +122,19 @@
   input:
     people:
       main:
-        medicaid: 0
+        medicaid_enrolled: false
         ssi: 0
+        wic: 0
       other:
-        medicaid: 1
+        medicaid_enrolled: true
         ssi: 0
+        wic: 0
     tax_unit:
       pell_grant_primary_income: 49_999
     spm_unit:
       snap: 0
       school_meal_net_subsidy: 0
       tanf: 0
-      spm_unit_wic: 0
   output:
     pell_grant_simplified_formula_applies: [false, true]  # main has no benefits, other has medicaid
 
@@ -142,14 +143,86 @@
   input:
     people:
       person:
-        medicaid: 1
+        medicaid_enrolled: true
         ssi: 1
+        wic: 1
     tax_unit:
       pell_grant_primary_income: 50_000
     spm_unit:
       snap: 1
       school_meal_net_subsidy: 0
       tanf: 1
-      spm_unit_wic: 1
   output:
     pell_grant_simplified_formula_applies: false
+
+- name: Reports SNAP receipt with a zero modeled allotment
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid_enrolled: false
+        ssi: 0
+        wic: 0
+    tax_unit:
+      pell_grant_primary_income: 49_999
+    spm_unit:
+      snap: 0
+      receives_snap: true
+      school_meal_net_subsidy: 0
+      tanf: 0
+  output:
+    pell_grant_simplified_formula_applies: true
+
+- name: Reports WIC receipt with a zero modeled benefit
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid_enrolled: false
+        ssi: 0
+        wic: 0
+        receives_wic: true
+    tax_unit:
+      pell_grant_primary_income: 49_999
+    spm_unit:
+      snap: 0
+      school_meal_net_subsidy: 0
+      tanf: 0
+  output:
+    pell_grant_simplified_formula_applies: true
+
+- name: Reports TANF receipt with a zero modeled benefit
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid_enrolled: false
+        ssi: 0
+        wic: 0
+    tax_unit:
+      pell_grant_primary_income: 49_999
+    spm_unit:
+      snap: 0
+      school_meal_net_subsidy: 0
+      tanf: 0
+      receives_tanf: true
+  output:
+    pell_grant_simplified_formula_applies: true
+
+- name: Reports SSI receipt with a zero modeled payment
+  period: 2023
+  input:
+    people:
+      person:
+        medicaid_enrolled: false
+        ssi: 0
+        receives_ssi: true
+        wic: 0
+    tax_unit:
+      pell_grant_primary_income: 49_999
+    spm_unit:
+      snap: 0
+      school_meal_net_subsidy: 0
+      tanf: 0
+  output:
+    pell_grant_simplified_formula_applies: true

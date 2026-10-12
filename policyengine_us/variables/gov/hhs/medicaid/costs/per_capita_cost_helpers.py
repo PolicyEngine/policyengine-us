@@ -2,7 +2,6 @@
 
 This module provides shared logic for calculating per capita costs that is
 used by:
-- medicaid_cost_if_enrolled (for federal Medicaid)
 - or_healthier_oregon_cost_if_enrolled (for Oregon Healthier Oregon)
 - wa_apple_health_cost_if_enrolled (for Washington Apple Health)
 - Other state Medicaid-like programs

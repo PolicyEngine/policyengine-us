@@ -1,16 +1,36 @@
 - name: Capped SALT deduction
   period: 2023
   input:
-    reported_salt: 100_000
-    filing_status: SINGLE
+    people:
+      person:
+        real_estate_taxes: 100_000
+    households:
+      household:
+        members: [person]
+        state_code: DE
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SINGLE
+        adjusted_gross_income: 200_000
   output:
     salt_deduction: 10_000
 
 - name: Cap does not apply
   period: 2023
   input:
-    reported_salt: 4_000
-    filing_status: SINGLE
+    people:
+      person:
+        real_estate_taxes: 4_000
+    households:
+      household:
+        members: [person]
+        state_code: DE
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SINGLE
+        adjusted_gross_income: 200_000
   output:
     salt_deduction: 4_000
 
@@ -42,7 +62,9 @@
         adjusted_gross_income: 290_000
         state_and_local_sales_or_income_tax: 1_000
   output:
-    salt_deduction: 8_000
+    # 26 USC 164(b)(6)(B), (7)(B): (40,000 - 30% x 40,000) / 2 = 14,000.
+    salt_cap: 14_000
+    salt_deduction: 11_000
 
 - name: Fully phased out, floor applies
   period: 2026
@@ -91,3 +113,20 @@
         state_and_local_sales_or_income_tax: 0
   output:
     salt_deduction: 11_000
+
+- name: Income excluded under section 911 counts toward the cap phase-down
+  period: 2025
+  input:
+    people:
+      person1:
+        real_estate_taxes: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 490_000
+        foreign_earned_income_exclusion: 20_000
+  output:
+    # 26 U.S.C. 164(b)(7)(B)(iv): modified AGI 510,000; 40,000 - 30% x 10,000.
+    salt_cap: 37_000
+    salt_deduction: 37_000

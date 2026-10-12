@@ -15,8 +15,21 @@ class nj_ccap(Variable):
 
     def formula(spm_unit, period, parameters):
         copay = spm_unit("nj_ccap_copay", period)
-        maximum_weekly_benefit = add(
-            spm_unit, period, ["nj_ccap_maximum_weekly_benefit"]
+        person = spm_unit.members
+        # Reported care days or hours establish participation independently
+        # of the missing-hours pricing fallback.
+        weekly_hours = person("childcare_hours_per_week", period.this_year)
+        daily_hours = person("childcare_hours_per_day", period.this_year)
+        monthly_days = person("childcare_attending_days_per_month", period.this_year)
+        weekly_days = person("childcare_days_per_week", period.this_year)
+        in_care = (
+            (weekly_hours > 0)
+            | (daily_hours > 0)
+            | (monthly_days > 0)
+            | (weekly_days > 0)
+        )
+        maximum_weekly_benefit = spm_unit.sum(
+            person("nj_ccap_maximum_weekly_benefit", period) * in_care
         )
         maximum_monthly_benefit = maximum_weekly_benefit * (
             WEEKS_IN_YEAR / MONTHS_IN_YEAR
@@ -24,5 +37,5 @@ class nj_ccap(Variable):
         pre_subsidy_childcare_expenses = spm_unit(
             "spm_unit_pre_subsidy_childcare_expenses", period
         )
-        uncapped = max_(pre_subsidy_childcare_expenses - copay, 0)
-        return min_(uncapped, maximum_monthly_benefit)
+        capped_expenses = min_(pre_subsidy_childcare_expenses, maximum_monthly_benefit)
+        return max_(capped_expenses - copay, 0)

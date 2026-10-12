@@ -1,0 +1,23 @@
+description: Maryland provides state premium assistance under the State-Based Health Insurance Subsidies Program when this is true.
+values:
+  # Program authorized only for plan years 2026-2027, so in effect is false
+  # at 2028-01-01. Abrogation trigger: COMAR 14.35.21.01B and Ch.468 of 2025 §2
+  # abrogate the program "with no further action" if the federal enhanced APTC
+  # is extended for plan years 2026-2027.
+  0000-01-01: false
+  2026-01-01: true
+  2028-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Maryland Premium Assistance in effect
+  reference:
+    - title: Md. Insurance Article § 31-125(D)
+      href: https://mgaleg.maryland.gov/mgawebsite/Laws/StatuteText?article=gin&section=31-125&enactments=false
+    - title: MHBE State-Based Subsidy Parameters and Regulations (Board 5-19-25)
+      href: https://www.marylandhbe.com/wp-content/uploads/2025/05/State-Based-Subsidy-Parameters-and-Regulations-Board-5.19.25.pdf#page=22
+    - title: COMAR 14.35.21.04D (State-Based Subsidies; Board parameter-setting deadline)
+      href: https://regs.maryland.gov/us/md/exec/comar/14.35.21
+    - title: Ch.468 of 2025 §2 (program abrogation if federal enhanced APTC is extended)
+      href: https://mgaleg.maryland.gov/2025RS/chapters_noln/Ch_468_hb1082T.pdf#page=7

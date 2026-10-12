@@ -1,0 +1,135 @@
+# Missouri limits the WFTC to filers allowed a federal EITC (RSMo 143.177.2;
+# Form MO-WFTC, Qualifications, Line 1), to filing statuses other than married
+# filing separately (RSMo 143.177.2), from 2024 to filers not claimed as a
+# dependent on another return (Form MO-WFTC, Qualifications, Line 2), and to
+# filers whose investment income does not exceed a Missouri-specific limit
+# reflecting IRC Section 32(i) as of January 1, 2021 (RSMo 143.177.3(1);
+# Form MO-WFTC, Qualifications, Line 3).
+- name: Filer without a federal EITC is ineligible
+  period: 2023
+  input:
+    state_code: MO
+    filing_status: SINGLE
+    eitc: 0
+  output:
+    mo_wftc_eligible: false
+- name: Head of household filer with a federal EITC is eligible
+  period: 2023
+  input:
+    state_code: MO
+    filing_status: HEAD_OF_HOUSEHOLD
+    eitc: 100
+  output:
+    mo_wftc_eligible: true
+- name: Married filing combined filer with a federal EITC is eligible
+  period: 2023
+  input:
+    state_code: MO
+    filing_status: JOINT
+    eitc: 100
+  output:
+    mo_wftc_eligible: true
+- name: Widowed filer with a federal EITC is eligible
+  period: 2023
+  input:
+    state_code: MO
+    filing_status: SURVIVING_SPOUSE
+    eitc: 100
+  output:
+    mo_wftc_eligible: true
+- name: Married filing separately filers are ineligible
+  period: 2023
+  input:
+    state_code: MO
+    filing_status: SEPARATE
+    eitc: 100
+  output:
+    mo_wftc_eligible: false
+- name: Single filer with a federal EITC and no investment income is eligible
+  period: 2023
+  input:
+    state_code: MO
+    filing_status: SINGLE
+    eitc: 100
+  output:
+    mo_wftc_eligible: true
+- name: Filer claimed as a dependent remains eligible in 2023
+  period: 2023
+  input:
+    state_code: MO
+    filing_status: SINGLE
+    eitc: 100
+    claimed_as_dependent_on_another_return: true
+  output:
+    # The claimed-as-a-dependent stop first appears on the 2024 form.
+    mo_wftc_eligible: true
+- name: Filer claimed as a dependent is ineligible from 2024
+  period: 2024
+  input:
+    state_code: MO
+    filing_status: SINGLE
+    eitc: 100
+    claimed_as_dependent_on_another_return: true
+  output:
+    mo_wftc_eligible: false
+- name: Investment income exactly at the 2023 limit remains eligible
+  period: 2023
+  input:
+    state_code: MO
+    filing_status: SINGLE
+    eitc: 100
+    eitc_relevant_investment_income: 4_050
+  output:
+    # The statutorily referenced pre-ARPA IRC Section 32(i) disqualifies only
+    # income exceeding the limit; the 2023 form's checklist and its Line 3
+    # instructions both say "equal to or greater than", conflicting with the
+    # statute and the form's own information page ("cannot exceed"), so the
+    # strict statutory reading applies.
+    mo_wftc_eligible: true
+- name: Investment income above the 2023 limit is disqualifying
+  period: 2023
+  input:
+    state_code: MO
+    filing_status: SINGLE
+    eitc: 100
+    eitc_relevant_investment_income: 4_051
+  output:
+    mo_wftc_eligible: false
+- name: Investment income exactly at the 2024 limit remains eligible
+  period: 2024
+  input:
+    state_code: MO
+    filing_status: SINGLE
+    eitc: 100
+    eitc_relevant_investment_income: 4_300
+  output:
+    mo_wftc_eligible: true
+- name: Investment income above the 2024 limit is disqualifying
+  period: 2024
+  input:
+    state_code: MO
+    filing_status: SINGLE
+    eitc: 100
+    eitc_relevant_investment_income: 4_301
+  output:
+    mo_wftc_eligible: false
+- name: Investment income exactly at the 2025 limit remains eligible
+  period: 2025
+  input:
+    state_code: MO
+    filing_status: SINGLE
+    eitc: 100
+    eitc_relevant_investment_income: 4_400
+  output:
+    mo_wftc_eligible: true
+- name: Investment income above the 2025 limit is disqualifying
+  period: 2025
+  input:
+    state_code: MO
+    filing_status: SINGLE
+    eitc: 100
+    eitc_relevant_investment_income: 4_401
+  output:
+    # $4,401 is below the federal EITC investment income limit ($11,950 in
+    # 2025) but above Missouri's $4,400 limit.
+    mo_wftc_eligible: false

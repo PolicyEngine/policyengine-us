@@ -1,0 +1,32 @@
+- name: Low-income renters are eligible for housing assistance.
+  period: 2024
+  input:
+    county_fips: "06037"
+    hud_annual_income: 50_000
+    spm_unit_size: 4
+    spm_unit_tenure_type: RENTER
+  output:
+    hud_income_level: VERY_LOW
+    is_eligible_for_housing_assistance: true
+
+- name: Low-income homeowners are not in the modeled rental-assistance pool.
+  period: 2024
+  input:
+    county_fips: "06037"
+    hud_annual_income: 50_000
+    spm_unit_size: 4
+    spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+  output:
+    hud_income_level: VERY_LOW
+    is_eligible_for_housing_assistance: false
+
+- name: Reported recipients remain eligible even outside the modeled pool.
+  period: 2024
+  input:
+    county_fips: "99999"
+    hud_annual_income: 200_000
+    spm_unit_tenure_type: OWNER_WITHOUT_MORTGAGE
+    receives_housing_assistance: true
+  output:
+    hud_income_level: ABOVE_MODERATE
+    is_eligible_for_housing_assistance: true

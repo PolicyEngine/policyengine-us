@@ -1,0 +1,11 @@
+- name: Taxable Roth conversions default to zero.
+  period: 2022
+  output:
+    taxable_roth_conversions: 0
+
+- name: Taxable Roth conversions can be provided directly.
+  period: 2022
+  input:
+    taxable_roth_conversions: 1_000
+  output:
+    taxable_roth_conversions: 1_000

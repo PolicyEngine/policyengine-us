@@ -1,0 +1,13 @@
+description: Oregon limits the group size used for income and copay calculations to this threshold under the Employment Related Day Care program.
+# Pre-2026-03 vintages of this limit are not encoded; the model applies this
+# value to earlier periods through parameter backdating.
+values:
+  2026-03-01: 8
+
+metadata:
+  unit: person
+  period: year
+  label: Oregon ERDC maximum group size
+  reference:
+    - title: OAR 414-175-0050(1)(b)
+      href: https://secure.sos.state.or.us/oard/view.action?ruleNumber=414-175-0050

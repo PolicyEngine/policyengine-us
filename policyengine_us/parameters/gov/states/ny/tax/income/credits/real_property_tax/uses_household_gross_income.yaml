@@ -1,0 +1,13 @@
+description: New York bases real property tax credit eligibility and amount on IT-214 household gross income through 2024; from 2025 it uses federal adjusted gross income, under Part RR of Chapter 59 of the Laws of 2025.
+values:
+  2000-01-01: true
+  2025-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: New York real property tax credit uses household gross income
+  reference:
+    - title: Tax Law Section 606(e)
+      href: https://www.nysenate.gov/legislation/laws/TAX/606
+    - title: NY DTF 2025 personal income tax changes (Part RR of Chapter 59 of the Laws of 2025)
+      href: https://www.tax.ny.gov/legal/2025/pit-corp-changes.htm

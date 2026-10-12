@@ -1,0 +1,60 @@
+description: Georgia sets these counties as Zone 2 for reimbursement rate purposes under the Childcare and Parent Services program.
+values:
+  2026-03-02:
+    - BALDWIN_COUNTY_GA
+    - BARROW_COUNTY_GA
+    - BARTOW_COUNTY_GA
+    - BIBB_COUNTY_GA
+    # BRYAN_COUNTY_GA and DAWSON_COUNTY_GA are Zone 2 per Appendix C, but are not
+    # in PolicyEngine's County enum yet, so residents fall to the Zone 3 default
+    # rate. Re-enable both once they are added to the County enum.
+    # - BRYAN_COUNTY_GA
+    - BULLOCH_COUNTY_GA
+    - BUTTS_COUNTY_GA
+    - CATOOSA_COUNTY_GA
+    - CHATHAM_COUNTY_GA
+    - CLARKE_COUNTY_GA
+    - COLUMBIA_COUNTY_GA
+    - COWETA_COUNTY_GA
+    # - DAWSON_COUNTY_GA  # see BRYAN_COUNTY_GA note above (not in County enum yet)
+    - DOUGHERTY_COUNTY_GA
+    - EFFINGHAM_COUNTY_GA
+    - FLOYD_COUNTY_GA
+    - GLYNN_COUNTY_GA
+    - GORDON_COUNTY_GA
+    - HARRIS_COUNTY_GA
+    - HART_COUNTY_GA
+    - HOUSTON_COUNTY_GA
+    - JACKSON_COUNTY_GA
+    - JONES_COUNTY_GA
+    - LAMAR_COUNTY_GA
+    - LEE_COUNTY_GA
+    - LIBERTY_COUNTY_GA
+    - LOWNDES_COUNTY_GA
+    - LUMPKIN_COUNTY_GA
+    - MADISON_COUNTY_GA
+    - MCDUFFIE_COUNTY_GA
+    - MERIWETHER_COUNTY_GA
+    - MORGAN_COUNTY_GA
+    - MURRAY_COUNTY_GA
+    - MUSCOGEE_COUNTY_GA
+    - NEWTON_COUNTY_GA
+    - OCONEE_COUNTY_GA
+    - PEACH_COUNTY_GA
+    - PIKE_COUNTY_GA
+    - PULASKI_COUNTY_GA
+    - PUTNAM_COUNTY_GA
+    - RICHMOND_COUNTY_GA
+    - SPALDING_COUNTY_GA
+    - TIFT_COUNTY_GA
+    - TROUP_COUNTY_GA
+    - WALTON_COUNTY_GA
+    - WHITFIELD_COUNTY_GA
+
+metadata:
+  unit: list
+  period: year
+  label: Georgia CAPS Zone 2 counties
+  reference:
+    - title: Georgia CAPS Appendix C - Reimbursement Rates, Zone Map (effective March 2, 2026)
+      href: https://caps.decal.ga.gov/assets/downloads/CAPS/AppendixC-CAPS%20Reimbursement%20Rates.pdf#page=2

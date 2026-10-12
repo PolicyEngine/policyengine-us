@@ -1,0 +1,70 @@
+- name: Case 1, childcare expenses only.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 2_400
+  output:
+    # 2,400 / 12 = 200 per month
+    snap_dependent_care_deduction: 200
+
+- name: Case 2, disabled adult care expenses only.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 25
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # 1,200 / 12 = 100 per month
+    snap_dependent_care_deduction: 100
+
+- name: Case 3, both childcare and disabled adult care expenses.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+      person3:
+        age: 25
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 2_400
+  output:
+    # 2,400 / 12 + 1,200 / 12 = 200 + 100 = 300 per month
+    snap_dependent_care_deduction: 300
+
+- name: Case 4, no care expenses.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    snap_dependent_care_deduction: 0

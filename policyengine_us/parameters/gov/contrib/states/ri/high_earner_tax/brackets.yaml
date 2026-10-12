@@ -17,10 +17,11 @@ brackets:
   - threshold:
       values:
         2026-01-01: 640_000
-      uprating:
-        parameter: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 50
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 50
     rate:
       2027-01-01: 0.03

@@ -1,0 +1,15 @@
+description: Rhode Island sets this taxable income threshold under the high-income surtax.
+values:
+  2027-01-01: 1_000_000 # 2027 value is not indexed; uprating applies from 2028.
+metadata:
+  unit: currency-USD
+  period: year
+  label: Rhode Island high-income surtax threshold
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  reference:
+    - title: 2026 R.I. H 7127 Substitute A as amended, Article 6, Section 5, § 44-30-2.6(c)(3)(A)(I)(2)
+      href: https://webserver.rilegislature.gov/BillText/BillText26/HouseText26/H7127Aaa.html#:~:text=Rhode%20Island%20taxable%20income%20over%20one%20million%20dollars

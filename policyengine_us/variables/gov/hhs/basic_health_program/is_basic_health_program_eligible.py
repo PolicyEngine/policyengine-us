@@ -7,6 +7,7 @@ class is_basic_health_program_eligible(Variable):
     label = "Eligible for Basic Health Program coverage"
     definition_period = YEAR
     reference = (
+        "https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title42-section18051&num=0&edition=prelim",
         "https://www.medicaid.gov/basic-health-program",
         "https://mn.gov/dhs/people-we-serve/adults/health-care/health-care-programs/programs-and-services/minnesotacare.jsp",
         "https://info.nystateofhealth.ny.gov/EssentialPlan",
@@ -37,7 +38,13 @@ class is_basic_health_program_eligible(Variable):
         chip_eligible = person("is_chip_eligible", period)
         esi_eligible = person("is_aca_eshi_eligible", period)
         medicare_eligible = person("is_medicare_eligible", period)
-        immigration_eligible = person("is_aca_ptc_immigration_status_eligible", period)
+        healthier_oregon_eligible = person("or_healthier_oregon_eligible", period)
+        immigration_eligible = person(
+            "is_basic_health_program_immigration_status_eligible", period
+        )
+        medicaid_immigration_status_eligible = person(
+            "is_medicaid_immigration_status_eligible", period
+        )
 
         income_level = person("medicaid_income_level", period)
         expanded_limit_state = np.isin(state, p.expanded_income_limit_states)
@@ -46,14 +53,16 @@ class is_basic_health_program_eligible(Variable):
             p.expanded_income_limit,
             p.income_limit,
         )
-        # 42 USC 18051(b)(2)(B): BHP covers income above 133% FPL. The
-        # ~medicaid_eligible guard alone is insufficient for non-expansion
-        # states (where Medicaid may cut off below 133% FPL), so enforce
-        # the statutory floor explicitly. Citizens below 133% are in
-        # Medicaid in expansion states or the coverage gap otherwise.
-        in_income_range = (income_level >= p.income_floor) & (
+        # 42 USC 18051(e)(1)(B): standard BHP covers income above 133% FPL.
+        # Lawfully present immigrants below that floor also qualify when
+        # Medicaid-ineligible by alien status.
+        standard_income_range = (income_level >= p.income_floor) & (
             income_level <= income_limit
         )
+        alien_status_income_range = (income_level < p.income_floor) & (
+            ~medicaid_immigration_status_eligible
+        )
+        in_income_range = standard_income_range | alien_status_income_range
 
         return (
             in_effect
@@ -63,5 +72,6 @@ class is_basic_health_program_eligible(Variable):
             & ~chip_eligible
             & ~esi_eligible
             & ~medicare_eligible
+            & ~healthier_oregon_eligible
             & in_income_range
         )

@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
-from policyengine_core.periods import instant
+from policyengine_us.tools.pinned_tbs import (
+    CREDIT_DEPENDENT_VARIABLES,
+    get_pre_tcja_ctc_tbs,
+)
 
 
 class ny_ctc_pre_2024(Variable):
@@ -26,24 +29,19 @@ class ny_ctc_pre_2024(Variable):
             gov = parameters(period).gov
             qualifies_for_federal_ctc = person("ctc_qualifying_child", period)
         else:
-            # Initialize pre-TCJA CTC branch and parameters.
+            # Initialize pre-TCJA CTC branch with cached pinned parameters
+            # (one clone per process; see tools/pinned_tbs.py, issue #8114).
             simulation = tax_unit.simulation
-            pre_tcja_ctc = simulation.get_branch("pre_tcja_ctc")
-            pre_tcja_ctc.tax_benefit_system = simulation.tax_benefit_system.clone()
+            pre_tcja_ctc = get_branch_for_period(simulation, "pre_tcja_ctc", period)
+            pre_tcja_ctc.tax_benefit_system = get_pre_tcja_ctc_tbs(
+                simulation.tax_benefit_system
+            )
             branch_parameters = pre_tcja_ctc.tax_benefit_system.parameters
-            # Update parameters to pre-TCJA values.
-            for (
-                ctc_parameter
-            ) in branch_parameters.gov.irs.credits.ctc.get_descendants():
-                if isinstance(ctc_parameter, Parameter):
-                    ctc_parameter.update(
-                        start=instant("2017-01-01"),
-                        stop=instant("2035-01-01"),
-                        value=ctc_parameter("2017-01-01"),
-                    )
             # Delete all arrays from pre-TCJA CTC branch.
             for variable in pre_tcja_ctc.tax_benefit_system.variables:
-                if "ctc" in variable:
+                if "ctc" in variable or any(
+                    name in variable for name in CREDIT_DEPENDENT_VARIABLES
+                ):
                     pre_tcja_ctc.delete_arrays(variable)
             # Calculate pre-TCJA CTC.
             maximum_ctc = pre_tcja_ctc.calculate("ctc_child_individual_maximum", period)

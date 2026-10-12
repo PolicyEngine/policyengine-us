@@ -8,7 +8,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         entity = TaxUnit
         label = "Hawaii regular exemptions"
         unit = USD
-        documentation = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
+        reference = "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=20"
         definition_period = YEAR
         defined_for = StateCode.HI
 
@@ -47,7 +47,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "http://legislature.mi.gov/doc.aspx?mcl-206-30",
+            "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30",
             "https://www.legislature.mi.gov/Publications/TaxpayerGuide.pdf",
         )
 
@@ -69,8 +69,8 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_1040n_booklet.pdf"
-            "https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf"
+            "https://revenue.nebraska.gov/files/doc/tax-forms/2021/f_1040n_booklet.pdf",
+            "https://revenue.nebraska.gov/files/doc/2022_Ne_Individual_Income_Tax_Booklet_8-307-2022_final_5.pdf",
         )
         defined_for = StateCode.NE
 
@@ -105,15 +105,20 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf"
-            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf"
+            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf",
+            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf",
         )
         defined_for = StateCode.OK
 
         def formula(tax_unit, period, parameters):
             p = parameters(period).gov.states.ok.tax.income.exemptions
-            # special exemption AGI eligibility
-            fagi = tax_unit("adjusted_gross_income", period)
+            # special exemption AGI eligibility (excluding Roth conversion income included in federal AGI per Form 511 instructions)
+            person = tax_unit.members
+            is_not_dependent = ~person("is_tax_unit_dependent", period)
+            roth_conversions = tax_unit.sum(
+                person("taxable_roth_conversions", period) * is_not_dependent
+            )
+            fagi = tax_unit("adjusted_gross_income", period) - roth_conversions
             filing_status = tax_unit("filing_status", period)
             agi_eligible = fagi <= p.special_agi_limit[filing_status]
             # head exemptions
@@ -287,8 +292,8 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://revenue.iowa.gov/sites/default/files/2021-12/IA6251%2841131%29.pdf"
-            "https://revenue.iowa.gov/sites/default/files/2023-01/IA6251%2841131%29.pdf"
+            "https://revenue.iowa.gov/sites/default/files/2021-12/IA6251%2841131%29.pdf",
+            "https://revenue.iowa.gov/sites/default/files/2023-01/IA6251%2841131%29.pdf",
         )
         defined_for = StateCode.IA
 
@@ -359,7 +364,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         defined_for = StateCode.MA
 
         def formula(tax_unit, period, parameters):
-            filing_status = tax_unit("filing_status", period)
+            filing_status = tax_unit("ma_filing_status", period)
             tax = parameters(period).gov.states.ma.tax.income
             exempt_status = tax.exempt_status.limit
             personal_exemptions_added = (
@@ -376,11 +381,11 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf"
-            "https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf"
-            "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf"
-            "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf"
-            "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf"
+            "https://www.revenue.wi.gov/TaxForms2021/2021-Form1f.pdf",
+            "https://www.revenue.wi.gov/TaxForms2021/2021-Form1-Inst.pdf",
+            "https://www.revenue.wi.gov/TaxForms2022/2022-Form1f.pdf",
+            "https://www.revenue.wi.gov/TaxForms2022/2022-Form1-Inst.pdf",
+            "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2023/0002_individual_income_tax_informational_paper_2.pdf",
         )
         defined_for = StateCode.WI
 
@@ -403,17 +408,15 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             head_spouse_count = tax_unit("head_spouse_count", period)
             return p.personal_credits.personal * head_spouse_count
 
-    class ky_family_size_tax_credit_rate(Variable):
+    class ky_family_size_tax_credit_threshold(Variable):
         value_type = float
         entity = TaxUnit
-        label = "Kentucky family size tax credit rate"
-        unit = "/1"
+        label = "Kentucky family size tax credit threshold amount"
+        unit = USD
         definition_period = YEAR
         reference = "https://apps.legislature.ky.gov/law/statutes/statute.aspx?id=49188"
-        defined_for = StateCode.KY
 
         def formula(tax_unit, period, parameters):
-            income = tax_unit("ky_modified_agi", period)
             fpg = parameters(period).gov.hhs.fpg
             # This will be CONTIGUOUS_US for Kentucky.
             state_group = tax_unit.household("state_group_str", period)
@@ -423,9 +426,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             # No more than 4 people are accounted for in the credit
             p = parameters(period).gov.states.ky.tax.income.credits.family_size
             capped_family_size = min_(family_size, p.family_size_cap)
-            poverty_index = p1 + padd * (capped_family_size - 1)
-            share = income / poverty_index
-            return p.rate.calc(share, right=True)
+            return p1 + padd * (capped_family_size - 1)
 
     class ok_child_care_child_tax_credit(Variable):
         value_type = float
@@ -434,8 +435,8 @@ def create_repeal_state_dependent_exemptions() -> Reform:
         unit = USD
         definition_period = YEAR
         reference = (
-            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf"
-            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf"
+            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/past-year/2021/511-Pkt-2021.pdf",
+            "https://oklahoma.gov/content/dam/ok/en/tax/documents/forms/individuals/current/511-Pkt.pdf",
         )
         defined_for = StateCode.OK
 
@@ -494,7 +495,7 @@ def create_repeal_state_dependent_exemptions() -> Reform:
             self.update_variable(wi_base_exemption)
             self.update_variable(ia_exemption_credit)
             self.update_variable(de_personal_credit)
-            self.update_variable(ky_family_size_tax_credit_rate)
+            self.update_variable(ky_family_size_tax_credit_threshold)
             self.update_variable(ok_child_care_child_tax_credit)
 
     return reform

@@ -1,0 +1,74 @@
+# ms_ccpp_facility_location is a Household enum derived from county_str.
+# Households in one of the 17 Mississippi metropolitan counties (OMB Feb-2013
+# MSA delineation) are METRO; every other Mississippi county is NON_METRO.
+# We use the household's county as a proxy for the child care facility location.
+
+- name: Case 1, Hinds County (Jackson MSA) is metro.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+        county: HINDS_COUNTY_MS
+  output:
+    ms_ccpp_facility_location: METRO
+
+- name: Case 2, DeSoto County (Memphis MSA portion) is metro.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+        county: DESOTO_COUNTY_MS
+  output:
+    ms_ccpp_facility_location: METRO
+
+- name: Case 3, Lauderdale County (Meridian, micropolitan) is non-metro.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+        county: LAUDERDALE_COUNTY_MS
+  output:
+    ms_ccpp_facility_location: NON_METRO
+
+- name: Case 4, Bolivar County (rural) is non-metro.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+        county: BOLIVAR_COUNTY_MS
+  output:
+    ms_ccpp_facility_location: NON_METRO
+
+- name: Case 5, George County (not in Feb-2013 Gulfport MSA) is non-metro.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+        county: GEORGE_COUNTY_MS
+  output:
+    ms_ccpp_facility_location: NON_METRO

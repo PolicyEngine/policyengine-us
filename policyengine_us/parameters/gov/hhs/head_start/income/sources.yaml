@@ -1,0 +1,30 @@
+description: The Administration for Children and Families counts these income sources as gross income when determining Head Start and Early Head Start income eligibility.
+
+values:
+  2021-01-01:
+    # Wages.
+    - employment_income
+    # Business income.
+    - self_employment_income
+    - unemployment_compensation
+    # Pension or annuity payments.
+    - pension_income
+    # Military income. The exclusions for hostile fire or imminent danger
+    # pay (37 U.S.C. 310) and the basic allowance for housing (37 U.S.C. 403)
+    # are not separately modeled.
+    - military_service_income
+
+metadata:
+  unit: list
+  period: year
+  label: Head Start gross income sources
+  reference:
+    # "Income means gross income and only includes wages, business income,
+    # unemployment compensation, pension or annuity payments, gifts that
+    # exceed the threshold for taxable income, and military income ... it
+    # does not include refundable tax credits nor any forms of public
+    # assistance." Gifts above the taxable threshold have no model variable.
+    - title: 45 CFR 1305.2 Terms (Income)
+      href: https://www.ecfr.gov/current/title-45/section-1305.2
+    - title: 45 CFR 1302.12(i)(1)(i) Verifying eligibility
+      href: https://www.ecfr.gov/current/title-45/section-1302.12#p-1302.12(i)(1)(i)

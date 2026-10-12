@@ -1,0 +1,103 @@
+# unemployment_compensation_months: months of unemployment compensation
+# receipt for the SNAP work registration exemption of 7 CFR 273.7(b)(1)(v).
+# months = ceil(min(weeks unemployed, 52) x 12 / 52) when weeks are reported,
+# 12 when unemployment compensation is positive but weeks are 0, and 0
+# without unemployment compensation.
+
+- name: Case 1, 13 weeks unemployed is 3 months.
+  period: 2026
+  input:
+    unemployment_compensation: 5_000
+    weeks_unemployed: 13
+  output:
+    # ceil(13 x 12 / 52) = ceil(3.0) = 3 (an exact multiple does not round up)
+    unemployment_compensation_months: 3
+
+- name: Case 2, 14 weeks unemployed rounds up to 4 months.
+  period: 2026
+  input:
+    unemployment_compensation: 5_000
+    weeks_unemployed: 14
+  output:
+    # ceil(14 x 12 / 52) = ceil(3.23) = 4
+    unemployment_compensation_months: 4
+
+- name: Case 3, one week unemployed is one month.
+  period: 2026
+  input:
+    unemployment_compensation: 5_000
+    weeks_unemployed: 1
+  output:
+    # ceil(1 x 12 / 52) = ceil(0.23) = 1
+    unemployment_compensation_months: 1
+
+- name: Case 4, weeks above 52 are capped at 12 months.
+  period: 2026
+  input:
+    unemployment_compensation: 5_000
+    weeks_unemployed: 60
+  output:
+    # ceil(min(60, 52) x 12 / 52) = ceil(12.0) = 12
+    unemployment_compensation_months: 12
+
+- name: Case 5, UI with no weeks unemployed keeps all 12 months.
+  period: 2026
+  input:
+    unemployment_compensation: 5_000
+  output:
+    # weeks_unemployed = 0 -> inert fallback of 12 months
+    unemployment_compensation_months: 12
+
+- name: Case 6, weeks unemployed without UI is zero months.
+  period: 2026
+  input:
+    unemployment_compensation: 0
+    weeks_unemployed: 13
+  output:
+    # No receipt -> 0
+    unemployment_compensation_months: 0
+
+- name: Case 7, four weeks unemployed is the longest spell that still gives one month.
+  period: 2026
+  input:
+    unemployment_compensation: 2_000
+    weeks_unemployed: 4
+  output:
+    # ceil(4 x 12 / 52) = ceil(0.92) = 1
+    unemployment_compensation_months: 1
+
+- name: Case 8, five weeks unemployed rounds up to two months.
+  period: 2026
+  input:
+    unemployment_compensation: 2_000
+    weeks_unemployed: 5
+  output:
+    # ceil(5 x 12 / 52) = ceil(1.15) = 2
+    unemployment_compensation_months: 2
+
+- name: Case 9, 47 weeks unemployed is 11 months.
+  period: 2026
+  input:
+    unemployment_compensation: 15_000
+    weeks_unemployed: 47
+  output:
+    # ceil(47 x 12 / 52) = ceil(10.85) = 11
+    unemployment_compensation_months: 11
+
+- name: Case 10, 48 weeks unemployed is the shortest spell that gives 12 months.
+  period: 2026
+  input:
+    unemployment_compensation: 15_000
+    weeks_unemployed: 48
+  output:
+    # ceil(48 x 12 / 52) = ceil(11.08) = 12
+    unemployment_compensation_months: 12
+
+- name: Case 11, a full 52 weeks unemployed is exactly 12 months.
+  period: 2026
+  input:
+    unemployment_compensation: 15_000
+    weeks_unemployed: 52
+  output:
+    # ceil(52 x 12 / 52) = ceil(12.0) = 12
+    unemployment_compensation_months: 12

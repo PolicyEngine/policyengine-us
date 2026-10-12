@@ -31,10 +31,10 @@
     # Combined income: $100K + $50K = $150K < $500K limit
     # At least one person age 68 >= 65
     # min($10,000 * 50%, $6,500) = min($5,000, $6,500) = $5,000
-    # ANCHOR = $1,750 (senior, income $150K <= $150K)
-    # max($5,000 - $1,750 - $0, 0) = $3,250
+    # ANCHOR = $1,500 (senior homeowner, income <= $150K; no senior bonus from 2025)
+    # max($5,000 - $1,500 - $0, 0) = $3,500
     nj_staynj_eligible: true
-    nj_staynj: 3_250
+    nj_staynj: 3_500
 
 - name: Case 2, wealthy senior homeowner capped at maximum.
   period: 2026
@@ -86,10 +86,10 @@
   output:
     # Income: $36K (Social Security) < $500K
     # min($8,000 * 50%, $6,500) = min($4,000, $6,500) = $4,000
-    # ANCHOR = $1,750 (senior, income $36K <= $150K)
-    # max($4,000 - $1,750 - $0, 0) = $2,250
+    # ANCHOR = $1,500 (senior homeowner, income <= $150K; no senior bonus from 2025)
+    # max($4,000 - $1,500 - $0, 0) = $2,500
     nj_staynj_eligible: true
-    nj_staynj: 2_250
+    nj_staynj: 2_500
 
 - name: Case 4, non-senior homeowner is ineligible.
   period: 2026
@@ -193,7 +193,39 @@
     # At least one spouse (person1) is 65+
     # Combined income: $80K + $70K = $150K < $500K
     # min($11,000 * 50%, $6,500) = min($5,500, $6,500) = $5,500
-    # ANCHOR = $1,750 (senior, income $150K <= $150K)
-    # max($5,500 - $1,750 - $0, 0) = $3,750
+    # ANCHOR = $1,500 (senior homeowner, income <= $150K; no senior bonus from 2025)
+    # max($5,500 - $1,500 - $0, 0) = $4,000
     nj_staynj_eligible: true
-    nj_staynj: 3_750
+    nj_staynj: 4_000
+
+- name: Case 8, 2027 tiered regime with ANCHOR and Senior Freeze all derived and netting.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 120_000
+        real_estate_taxes: 20_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        nj_senior_freeze: 1_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_tenure_type: OWNER_WITH_MORTGAGE
+    households:
+      household:
+        members: [person1]
+        state_fips: 34
+  output:
+    # 2027 tier for $120K income -> $5,000 cap; target = min($10,000, $5,000) = $5,000
+    # ANCHOR = $1,500 (senior homeowner <= $150K, no bonus); Senior Freeze = $1,000
+    # Stay NJ = max($5,000 - $1,500 - $1,000, 0) = $2,500
+    # Total relief = $1,500 + $1,000 + $2,500 = $5,000
+    nj_anchor: 1_500
+    nj_capped_senior_freeze: 1_000
+    nj_staynj: 2_500
+    nj_property_tax_relief: 5_000
+    household_state_benefits: 5_000

@@ -1,0 +1,1003 @@
+# Maryland's CCDF plans elect court-supervised children through age 18
+# (FFY 2022-2024 plan 3.1.1(c); FFY 2025-2027 plan 2.2.1(c)). The route is
+# modeled from 2021-10-01, the FFY 2022-2024 plan start. The FFY 2019-2021 plan
+# elected No, so before then the court threshold equals the ordinary child
+# ceiling of 13.
+
+- name: Case 1, Maryland court age boundaries include 18 and exclude 19 and adults.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age:
+          2025: 12
+        is_ccdf_immigration_eligible_child:
+          2025: true
+        is_under_court_supervision:
+          2025: true
+      person2:
+        age:
+          2025: 13
+        is_ccdf_immigration_eligible_child:
+          2025: true
+        is_under_court_supervision:
+          2025: true
+      person3:
+        age:
+          2025: 17
+        is_ccdf_immigration_eligible_child:
+          2025: true
+        is_under_court_supervision:
+          2025: true
+      person4:
+        age:
+          2025: 18
+        is_ccdf_immigration_eligible_child:
+          2025: true
+        is_under_court_supervision:
+          2025: true
+      person5:
+        age:
+          2025: 19
+        is_ccdf_immigration_eligible_child:
+          2025: true
+        is_under_court_supervision:
+          2025: true
+      person6:
+        age:
+          2025: 40
+        is_ccdf_immigration_eligible_child:
+          2025: true
+        is_under_court_supervision:
+          2025: true
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        - person6
+        state_code:
+          2025: MD
+  output:
+    md_ccs_eligible_child:
+    - true
+    - true
+    - true
+    - true
+    - false
+    - false
+- name: Case 2, Maryland ordinary age boundary is unchanged.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age:
+          2025: 12
+        is_ccdf_immigration_eligible_child:
+          2025: true
+        is_under_court_supervision:
+          2025: false
+      person2:
+        age:
+          2025: 13
+        is_ccdf_immigration_eligible_child:
+          2025: true
+        is_under_court_supervision:
+          2025: false
+      person3:
+        age:
+          2025: 18
+        is_ccdf_immigration_eligible_child:
+          2025: true
+        is_under_court_supervision:
+          2025: false
+      person4:
+        age:
+          2025: 19
+        is_ccdf_immigration_eligible_child:
+          2025: true
+        is_under_court_supervision:
+          2025: false
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code:
+          2025: MD
+  output:
+    md_ccs_eligible_child:
+    - true
+    - false
+    - false
+    - false
+- name: Case 3, Maryland does not infer court supervision.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age:
+          2025: 18
+        is_ccdf_immigration_eligible_child:
+          2025: true
+    households:
+      household:
+        members:
+        - person1
+        state_code:
+          2025: MD
+  output:
+    md_ccs_eligible_child: false
+- name: Case 4, Maryland disability route remains available without court supervision.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age:
+          2025: 18
+        is_ccdf_immigration_eligible_child:
+          2025: true
+        is_under_court_supervision:
+          2025: false
+        is_disabled:
+          2025: true
+      person2:
+        age:
+          2025: 19
+        is_ccdf_immigration_eligible_child:
+          2025: true
+        is_under_court_supervision:
+          2025: false
+        is_disabled:
+          2025: true
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code:
+          2025: MD
+  output:
+    md_ccs_eligible_child:
+    - true
+    - false
+- name: Case 5, Maryland court supervision does not waive immigration eligibility.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age:
+          2025: 18
+        is_ccdf_immigration_eligible_child:
+          2025: false
+        is_under_court_supervision:
+          2025: true
+    households:
+      household:
+        members:
+        - person1
+        state_code:
+          2025: MD
+  output:
+    md_ccs_eligible_child: false
+- name: Case 6, Maryland court extension does not apply outside Maryland.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age:
+          2025: 18
+        is_ccdf_immigration_eligible_child:
+          2025: true
+        is_under_court_supervision:
+          2025: true
+    households:
+      household:
+        members:
+        - person1
+        state_code:
+          2025: VA
+  output:
+    md_ccs_eligible_child: false
+- name: Case 7, Maryland court route is inert in September 2021, before the FFY 2022-2024 plan period.
+  period: 2021-09
+  input:
+    people:
+      person1:
+        age:
+          2021: 18
+        is_ccdf_immigration_eligible_child:
+          2021: true
+        is_under_court_supervision:
+          2021: true
+    households:
+      household:
+        members:
+        - person1
+        state_code:
+          2021: MD
+  output:
+    # 2021-09-01: court threshold 13 (FFY 2019-2021 plan elected No);
+    # 18 >= max(13, 13) -> false
+    md_ccs_eligible_child: false
+- name: Case 8, Maryland court route includes age 18 and excludes 19 from October 2021.
+  period: 2021-10
+  input:
+    people:
+      person1:
+        age:
+          2021: 18
+        is_ccdf_immigration_eligible_child:
+          2021: true
+        is_under_court_supervision:
+          2021: true
+      person2:
+        age:
+          2021: 19
+        is_ccdf_immigration_eligible_child:
+          2021: true
+        is_under_court_supervision:
+          2021: true
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code:
+          2021: MD
+  output:
+    # 2021-10-01: court threshold 19 (FFY 2022-2024 plan);
+    # 18 < 19 -> true; 19 >= 19 -> false
+    md_ccs_eligible_child:
+    - true
+    - false
+- name: Case 9, Maryland court-supervised child receives ordinary rates and pays the ordinary copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 18
+        is_under_court_supervision: true
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 4_800
+        receives_snap: false
+        is_tanf_enrolled: false
+        meets_ccdf_activity_test: false
+    households:
+      unit:
+        members:
+        - person1
+        - person2
+        state_code: MD
+        county: ALLEGANY_COUNTY_MD
+  output:
+    md_ccs_eligible_child:
+    - false
+    - true
+    md_ccs_eligible: true
+    # One eligible child at 8 hours/day (3 units): $3/week. The 7% federal
+    # cap (50_000 / 52 * 0.07 = 67.31) does not bind.
+    md_ccs_weekly_copay: 3
+    # Allegany County is Region Z; licensed center, regular age, 3 units.
+    md_ccs_payment_rate:
+    - 0
+    - 183
+    # (4_800 - 3 * 52) / 12 = 4_644 / 12 = 387,
+    # below the cap of 183 * 52 / 12 = 793.
+    md_ccs: 387
+- name: Case 10, Maryland court-supervised child payment remains capped at the ordinary rate.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 18
+        is_under_court_supervision: true
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+        receives_snap: false
+        is_tanf_enrolled: false
+        meets_ccdf_activity_test: false
+    households:
+      unit:
+        members:
+        - person1
+        - person2
+        state_code: MD
+        county: ALLEGANY_COUNTY_MD
+  output:
+    md_ccs_eligible_child:
+    - false
+    - true
+    md_ccs_eligible: true
+    # One eligible child at 3 units: $3/week.
+    md_ccs_weekly_copay: 3
+    # Region Z licensed center, regular age, 3 units.
+    md_ccs_payment_rate:
+    - 0
+    - 183
+    # 12_000 - 3 * 52 = 11_844 exceeds the cap of 183 * 52 = 9_516;
+    # 9_516 / 12 = 793.
+    md_ccs: 793
+- name: Case 11, Maryland court supervision does not waive income requirements.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 300_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 18
+        is_under_court_supervision: true
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 4_800
+        receives_snap: false
+        is_tanf_enrolled: false
+        meets_ccdf_activity_test: false
+    households:
+      unit:
+        members:
+        - person1
+        - person2
+        state_code: MD
+        county: ALLEGANY_COUNTY_MD
+  output:
+    # person2: court-supervised, 18 < 19 -> eligible child.
+    md_ccs_eligible_child:
+    - false
+    - true
+    # person1, the only head or spouse, works 40 hours a week.
+    md_ccs_activity_eligible: true
+    # 300_000 / 12 = 25_000 exceeds 75% of SMI for 2 people:
+    # 149_249 * (0.52 + 0.16) * 0.75 / 12 = 6_343.08.
+    md_ccs_income_eligible: false
+    md_ccs_eligible: false
+    md_ccs: 0
+- name: Case 12, Maryland court supervision does not waive activity requirements.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        weekly_hours_worked: 0
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 18
+        is_under_court_supervision: true
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 4_800
+        receives_snap: false
+        is_tanf_enrolled: false
+        meets_ccdf_activity_test: false
+    households:
+      unit:
+        members:
+        - person1
+        - person2
+        state_code: MD
+        county: ALLEGANY_COUNTY_MD
+  output:
+    # person2: court-supervised, 18 < 19 -> eligible child.
+    md_ccs_eligible_child:
+    - false
+    - true
+    # 50_000 / 12 = 4_166.67 is within 75% of SMI for 2 people:
+    # 149_249 * (0.52 + 0.16) * 0.75 / 12 = 6_343.08.
+    md_ccs_income_eligible: true
+    # person1 works 0 hours and is not a student.
+    md_ccs_activity_eligible: false
+    md_ccs_eligible: false
+    md_ccs: 0
+- name: Case 13, Maryland supervised parent does not qualify an over-age unsupervised child.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+        is_under_court_supervision: true
+      person2:
+        age: 18
+        is_under_court_supervision: false
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 4_800
+        receives_snap: false
+        is_tanf_enrolled: false
+        meets_ccdf_activity_test: false
+    households:
+      unit:
+        members:
+        - person1
+        - person2
+        state_code: MD
+        county: ALLEGANY_COUNTY_MD
+  output:
+    md_ccs_eligible_child:
+    - false
+    - false
+    md_ccs_eligible: false
+    md_ccs: 0
+- name: Case 14, Maryland court supervision does not pay benefits without childcare expenses.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 18
+        is_under_court_supervision: true
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 0
+        receives_snap: false
+        is_tanf_enrolled: false
+        meets_ccdf_activity_test: false
+    households:
+      unit:
+        members:
+        - person1
+        - person2
+        state_code: MD
+        county: ALLEGANY_COUNTY_MD
+  output:
+    md_ccs_eligible: true
+    md_ccs: 0
+- name: Case 15, Maryland unsupervised older sibling does not add payment or copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 18
+        is_under_court_supervision: true
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person3:
+        age: 18
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      unit:
+        members:
+        - person1
+        - person2
+        - person3
+    spm_units:
+      unit:
+        members:
+        - person1
+        - person2
+        - person3
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+        receives_snap: false
+        is_tanf_enrolled: false
+        meets_ccdf_activity_test: false
+    households:
+      unit:
+        members:
+        - person1
+        - person2
+        - person3
+        state_code: MD
+        county: ALLEGANY_COUNTY_MD
+  output:
+    # person3: not court-supervised, 18 >= 13 -> not an eligible child.
+    md_ccs_eligible_child:
+    - false
+    - true
+    - false
+    md_ccs_payment_rate:
+    - 0
+    - 183
+    - 0
+    # Only person2 is charged: $3/week.
+    md_ccs_weekly_copay: 3
+    # 24_000 - 3 * 52 = 23_844 exceeds the cap of 183 * 52 = 9_516;
+    # 9_516 / 12 = 793.
+    md_ccs: 793
+- name: Case 16, Maryland mixed siblings retain ordinary and court age boundaries.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 18
+        is_under_court_supervision: true
+        is_tax_unit_dependent: false
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person3:
+        age: 12
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person4:
+        age: 19
+        is_under_court_supervision: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+    spm_units:
+      unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+        receives_snap: false
+        is_tanf_enrolled: false
+        meets_ccdf_activity_test: false
+    households:
+      unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        state_code: MD
+        county: ALLEGANY_COUNTY_MD
+  output:
+    md_ccs_eligible_child:
+    - false
+    - true
+    - true
+    - false
+    # Two eligible children at 3 units: 2 * 3 = $6/week.
+    md_ccs_weekly_copay: 6
+    md_ccs_payment_rate:
+    - 0
+    - 183
+    - 183
+    - 0
+    # 24_000 - 6 * 52 = 23_688 exceeds the cap of 2 * 183 * 52 = 19_032;
+    # 19_032 / 12 = 1_586.
+    md_ccs: 1_586
+- name: Case 17, Maryland court route is inert in January 2020 while the disability route applies.
+  period: 2020-01
+  input:
+    people:
+      person1:
+        age:
+          2020: 18
+        is_ccdf_immigration_eligible_child:
+          2020: true
+        is_under_court_supervision:
+          2020: true
+      person2:
+        age:
+          2020: 18
+        is_ccdf_immigration_eligible_child:
+          2020: true
+        is_under_court_supervision:
+          2020: true
+        is_disabled:
+          2020: true
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code:
+          2020: MD
+  output:
+    # 2020-01-01: court threshold 13, disabled threshold 19.
+    # person1: court only -> 18 >= max(13, 13) -> false
+    # person2: disabled and court -> 18 < max(19, 13) = 19 -> true
+    md_ccs_eligible_child:
+    - false
+    - true
+- name: Case 18, Maryland court route excludes age 18 in October 2018 under the FFY 2019-2021 plan's No election.
+  period: 2018-10
+  input:
+    people:
+      person1:
+        age:
+          2018: 18
+        is_ccdf_immigration_eligible_child:
+          2018: true
+        is_under_court_supervision:
+          2018: true
+    households:
+      household:
+        members:
+        - person1
+        state_code:
+          2018: MD
+  output:
+    # FFY 2019-2021 plan 3.1.1(c) elected No: court threshold stays 13;
+    # 18 >= 13 -> false
+    md_ccs_eligible_child: false
+- name: Case 19, Maryland court-supervised 17-year-old head of unit counts as an eligible child with their own infant.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 12_000
+        weekly_hours_worked: 20
+        is_tax_unit_head_or_spouse: true
+        is_under_court_supervision: true
+        immigration_status: CITIZEN
+      person2:
+        age: 1
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+        receives_snap: false
+        is_tanf_enrolled: false
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: MD
+        county: ALLEGANY_COUNTY_MD
+  output:
+    # Pins current behavior: the model has no head-or-spouse gate on
+    # md_ccs_eligible_child, so the court-supervised teen head (17 < 19)
+    # is an eligible child, as is the infant (1 < 13).
+    md_ccs_eligible_child:
+    - true
+    - true
+    # person1, the only head or spouse, works 20 hours a week.
+    md_ccs_activity_eligible: true
+    # 12_000 / 12 = 1_000 is within 75% of SMI for 2 people:
+    # 149_249 * (0.52 + 0.16) * 0.75 / 12 = 6_343.08.
+    md_ccs_income_eligible: true
+    md_ccs_eligible: true
+    # Region Z licensed center (default provider type).
+    # person1: regular age, 0 care hours -> 1 unit: 183 * 1 / 3 = 61.
+    # person2: infant (12 months < 24), 8 hours -> 3 units: 262.
+    md_ccs_payment_rate:
+    - 61
+    - 262
+    # 1 unit ($1) + 3 units ($3) = $4/week. The 7% federal cap
+    # (1_000 * 12 / 52 * 0.07 = 16.15) does not bind.
+    md_ccs_weekly_copay: 4
+    # 6_000 - 4 * 52 = 5_792, below the cap of (61 + 262) * 52 = 16_796;
+    # 5_792 / 12 = 482.67.
+    md_ccs: 482.67
+- name: Case 20, Maryland disabled and court-supervised child keeps the age 19 ceiling after October 2021.
+  period: 2022-01
+  input:
+    people:
+      person1:
+        age:
+          2022: 18
+        is_ccdf_immigration_eligible_child:
+          2022: true
+        is_under_court_supervision:
+          2022: true
+        is_disabled:
+          2022: true
+      person2:
+        age:
+          2022: 19
+        is_ccdf_immigration_eligible_child:
+          2022: true
+        is_under_court_supervision:
+          2022: true
+        is_disabled:
+          2022: true
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code:
+          2022: MD
+  output:
+    # Both routes give 19: max(19, 19) = 19, not a combined higher ceiling.
+    # person1: 18 < 19 -> true; person2: 19 >= 19 -> false
+    md_ccs_eligible_child:
+    - true
+    - false
+- name: Case 21, Maryland court-supervised teens count toward the three-child copay limit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 50_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 18
+        is_under_court_supervision: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person3:
+        age: 17
+        is_under_court_supervision: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person4:
+        age: 5
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+      person5:
+        age: 3
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        spm_unit_pre_subsidy_childcare_expenses: 24_000
+        receives_snap: false
+        is_tanf_enrolled: false
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        - person3
+        - person4
+        - person5
+        state_code: MD
+        county: ALLEGANY_COUNTY_MD
+  output:
+    # person2 (18) and person3 (17) qualify only through court supervision.
+    md_ccs_eligible_child:
+    - false
+    - true
+    - true
+    - true
+    - true
+    # 50_000 / 12 = 4_166.67 is within 75% of SMI for 5 people:
+    # 149_249 * (0.52 + 0.16 * 4) * 0.75 / 12 = 10_820.55.
+    md_ccs_income_eligible: true
+    md_ccs_eligible: true
+    # Region Z licensed center, regular age (all 36+ months), 3 units.
+    md_ccs_payment_rate:
+    - 0
+    - 183
+    - 183
+    - 183
+    - 183
+    # Four eligible children at $3/week = $12, scaled to the three-child
+    # limit: 12 * 3 / 4 = 9. The 7% federal cap (67.31) does not bind.
+    md_ccs_weekly_copay: 9
+    # 24_000 - 9 * 52 = 23_532, below the cap of 4 * 183 * 52 = 38_064;
+    # 23_532 / 12 = 1_961.
+    md_ccs: 1_961
+- name: Case 22, Maryland court-supervised child immigration eligibility follows immigration status.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age:
+          2025: 18
+        immigration_status:
+          2025: LEGAL_PERMANENT_RESIDENT
+        is_under_court_supervision:
+          2025: true
+      person2:
+        age:
+          2025: 18
+        immigration_status:
+          2025: UNDOCUMENTED
+        is_under_court_supervision:
+          2025: true
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code:
+          2025: MD
+  output:
+    # is_ccdf_immigration_eligible_child is derived, not input.
+    # person1: legal permanent resident is a qualified noncitizen -> true
+    # person2: undocumented is not -> false, despite 18 < 19
+    md_ccs_eligible_child:
+    - true
+    - false
+- name: Case 23, Maryland TCA household with a court-supervised child has the income test waived and pays no copay.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 100_000
+        weekly_hours_worked: 40
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 18
+        is_under_court_supervision: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 8
+        md_ccs_provider_type: LICENSED_CENTER
+    tax_units:
+      tax_unit:
+        members:
+        - person1
+        - person2
+    spm_units:
+      spm_unit:
+        members:
+        - person1
+        - person2
+        spm_unit_pre_subsidy_childcare_expenses: 4_800
+        receives_snap: false
+        is_tanf_enrolled: true
+        meets_ccdf_activity_test: false
+    households:
+      household:
+        members:
+        - person1
+        - person2
+        state_code: MD
+        county: ALLEGANY_COUNTY_MD
+  output:
+    md_ccs_eligible_child:
+    - false
+    - true
+    # 100_000 / 12 = 8_333.33 exceeds 75% of SMI for 2 people:
+    # 149_249 * (0.52 + 0.16) * 0.75 / 12 = 6_343.08.
+    md_ccs_income_eligible: false
+    # TCA enrollment waives the income test.
+    md_ccs_eligible: true
+    # TCA households are exempt from the copay.
+    md_ccs_weekly_copay: 0
+    # 4_800 - 0 * 52 = 4_800, below the cap of 183 * 52 = 9_516;
+    # 4_800 / 12 = 400.
+    md_ccs: 400

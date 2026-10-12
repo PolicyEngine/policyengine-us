@@ -1,0 +1,58 @@
+- name: Case 1, general assistance is counted monthly and the federal baseline is unchanged.
+  period: 2026-01
+  input:
+    state_code: MN
+    general_assistance: 2_400
+  output:
+    mn_mfip_gross_unearned_income: 200
+    tanf_gross_unearned_income: 0
+
+- name: Case 2, existing unearned sources are preserved without general assistance.
+  period: 2026-01
+  input:
+    state_code: MN
+    general_assistance: 0
+    social_security: 3_600
+    child_support_received: 1_200
+    financial_assistance: 600
+  output:
+    mn_mfip_gross_unearned_income: 450
+    tanf_gross_unearned_income: 450
+
+- name: Case 3, earnings and SSI are excluded from gross unearned income.
+  period: 2026-01
+  input:
+    state_code: MN
+    employment_income_before_lsr: 12_000
+    ssi: 6_000
+    general_assistance: 2_400
+  output:
+    mn_mfip_gross_unearned_income: 200
+
+- name: Case 4, state gross unearned income is zero outside the state.
+  period: 2026-01
+  input:
+    state_code: ME
+    general_assistance: 2_400
+  output:
+    mn_mfip_gross_unearned_income: 0
+
+- name: Workers compensation is countable unearned income.
+  period: 2026-01
+  input:
+    state_code: MN
+    workers_compensation: 2400
+  output:
+    mn_mfip_gross_unearned_income: 200
+
+- name: Workers compensation adds to general assistance, interest, and dividends.
+  period: 2026-01
+  input:
+    state_code: MN
+    workers_compensation: 2400
+    general_assistance: 1200
+    taxable_interest_income: 600
+    tax_exempt_interest_income: 600
+    dividend_income: 1200
+  output:
+    mn_mfip_gross_unearned_income: 500

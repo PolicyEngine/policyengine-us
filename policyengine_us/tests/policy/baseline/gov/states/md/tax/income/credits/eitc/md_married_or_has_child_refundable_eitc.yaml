@@ -1,28 +1,51 @@
-- name: 45% of the federal EITC, minus MD tax before credits.
+# Tests for Maryland refundable EITC for married/has child filers.
+# Per §10-704(c)(2)(ii): 45% of federal EITC minus MD tax before credits.
+# Childless filers use the federal EITC computed without the minimum-age test
+# (federal_eitc_without_age_minimum); with-child filers use the actual federal EITC.
+
+- name: Married childless uses the federal EITC without the minimum-age test
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    eitc: 1_000
+    eitc_child_count: 0
+    eitc: 0  # age-gated federal credit is zero for the under-25 childless
+    federal_eitc_without_age_minimum: 1_000
     md_income_tax_before_credits: 100
     state_code: MD
   output:
-    md_married_or_has_child_refundable_eitc: 350 # 1000*0.45 - 100
+    md_married_or_has_child_refundable_eitc: 350  # 1000*0.45 - 100
 
-- name: Zero if MD refundable EITC allowed is less than tax before credits.
+- name: Zero if MD refundable EITC allowed is less than tax before credits
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: false
-    eitc: 1_000
+    eitc_child_count: 0
+    eitc: 0
+    federal_eitc_without_age_minimum: 1_000
     md_income_tax_before_credits: 500
     state_code: MD
   output:
-    md_married_or_has_child_refundable_eitc: 0 # max(0, 1000*0.45 - 500)
+    md_married_or_has_child_refundable_eitc: 0  # max(0, 1000*0.45 - 500)
 
-- name: Zero if single and childless (they receive a different variable).
+- name: With-child filer uses the actual age-gated federal EITC
+  period: 2021
+  input:
+    md_qualifies_for_unmarried_childless_eitc: false
+    eitc_child_count: 1
+    eitc: 1_000
+    federal_eitc_without_age_minimum: 0  # ignored for with-child filers
+    md_income_tax_before_credits: 100
+    state_code: MD
+  output:
+    md_married_or_has_child_refundable_eitc: 350  # 1000*0.45 - 100
+
+- name: Zero if single and childless (they receive a different variable)
   period: 2021
   input:
     md_qualifies_for_unmarried_childless_eitc: true
+    eitc_child_count: 0
     eitc: 1_000
+    federal_eitc_without_age_minimum: 1_000
     md_income_tax_before_credits: 100
     state_code: MD
   output:

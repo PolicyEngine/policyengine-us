@@ -5,7 +5,11 @@ class employment_income(Variable):
     value_type = float
     entity = Person
     label = "employment income"
-    documentation = "Wages and salaries, including tips and commissions."
+    documentation = (
+        "Gross wages and salaries, including tips and commissions, before "
+        "pre-tax payroll deductions such as traditional elective retirement "
+        "deferrals. Federal taxable wages are irs_employment_income."
+    )
     unit = USD
     definition_period = YEAR
     adds = [
@@ -13,4 +17,3 @@ class employment_income(Variable):
         "employment_income_behavioral_response",
     ]
     reference = "https://www.law.cornell.edu/uscode/text/26/3401#a"
-    uprating = "calibration.gov.irs.soi.employment_income"

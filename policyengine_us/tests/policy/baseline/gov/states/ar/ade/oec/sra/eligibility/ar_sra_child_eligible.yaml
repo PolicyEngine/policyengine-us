@@ -1,0 +1,81 @@
+# Eligible-child test: age < 13 AND immigration-eligible.
+
+- name: Case 1, citizen child age 5 who is a dependent is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_child_eligible: [false, true]
+
+- name: Case 2, child age 13 is not age-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+      person2:
+        age: 13
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_child_eligible: [false, false]
+
+- name: Case 3, undocumented child is not immigration-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_child_eligible: [false, false]
+
+- name: Case 4, refugee child age 4 is eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 28
+      person2:
+        age: 4
+        is_tax_unit_dependent: true
+        immigration_status: REFUGEE
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    is_ar_sra_child_eligible: [false, true]

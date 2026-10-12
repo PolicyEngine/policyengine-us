@@ -1,0 +1,299 @@
+# A tax unit dependent's losses belong on the dependent's own return, not the
+# filer's. 26 USC 1(g)(7) moves only a child's interest and dividend gross
+# income to a parent's return, and Form 8814 has no line for a loss.
+#
+# Expected AGI (all cases but the last) is the NBER taxsimtest binary's federal
+# AGI (v10) for the filer's own return, build cd2026081819. The dependent's
+# items are left off that record, since TAXSIM has no input for a dependent's
+# income. The 461(l) case follows 26 USC 461(l)(3)(A) and Rev. Proc. 2023-34
+# sec. 3.32 because TAXSIM does not apply 461(l).
+
+- name: Dependent's rental loss does not offset the filer's rental income
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 20_000
+        taxable_interest_income: 9_000
+        rental_income: 4_000
+      child1:
+        age: 15
+        rental_income: -4_000
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    is_tax_unit_dependent: [false, true, true]
+    loss_ald: 0
+    # TAXSIM v10 for wages 20,000 + interest 9,000 + rent 4,000.
+    adjusted_gross_income: 33_000
+
+- name: Dependent's capital loss does not offset the filer's capital gain
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 20_000
+        taxable_interest_income: 9_000
+        long_term_capital_gains: 4_000
+      child1:
+        age: 15
+        short_term_capital_gains: -4_000
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    limited_capital_loss: 0
+    loss_ald: 0
+    # TAXSIM v10 for wages 20,000 + interest 9,000 + LTCG 4,000.
+    adjusted_gross_income: 33_000
+
+- name: Dependent's capital loss is not deducted on the filer's return
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 50_000
+      child1:
+        age: 15
+        long_term_capital_gains: -10_000
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    limited_capital_loss: 0
+    # TAXSIM v10 for wages 50,000.
+    adjusted_gross_income: 50_000
+
+- name: Dependent's partnership or S corporation loss is not deducted
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 40_000
+      child1:
+        age: 15
+        partnership_s_corp_income: -5_000
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    loss_ald: 0
+    # TAXSIM v10 for wages 40,000.
+    adjusted_gross_income: 40_000
+
+- name: Dependent's Schedule C loss is not deducted
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 40_000
+      child1:
+        age: 15
+        self_employment_income: -3_000
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    loss_ald: 0
+    # TAXSIM v10 for wages 40,000.
+    adjusted_gross_income: 40_000
+
+- name: Dependent's Schedule F loss is not deducted
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 40_000
+      child1:
+        age: 15
+        farm_operations_income: -3_000
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    loss_ald: 0
+    # TAXSIM v10 for wages 40,000.
+    adjusted_gross_income: 40_000
+
+- name: Dependent's farm rental loss is not deducted
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 40_000
+      child1:
+        age: 15
+        farm_rent_income: -3_000
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    loss_ald: 0
+    # TAXSIM v10 for wages 40,000.
+    adjusted_gross_income: 40_000
+
+- name: Dependent's estate or trust loss is not deducted
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 40_000
+      child1:
+        age: 15
+        estate_income: -3_000
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    loss_ald: 0
+    # TAXSIM v10 for wages 40,000.
+    adjusted_gross_income: 40_000
+
+- name: Spouse's rental loss stays on the joint return
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        rental_income: 4_000
+      spouse:
+        age: 40
+        rental_income: -4_000
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    filing_status: JOINT
+    loss_ald: 4_000
+    # TAXSIM v10 for a joint return with wages 40,000 and net rent 0.
+    adjusted_gross_income: 40_000
+
+- name: Filer's own capital loss is still limited and deducted
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 50_000
+        long_term_capital_gains: -5_000
+      child1:
+        age: 15
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    limited_capital_loss: 3_000
+    # TAXSIM v10 for wages 50,000 and LTCG -5,000.
+    adjusted_gross_income: 47_000
+
+- name: Dependent's rental income does not raise the filer's 461(l) limit
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 35
+        employment_income: 500_000
+        self_employment_income: -400_000
+      child1:
+        age: 15
+        rental_income: 50_000
+      child2:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: TX
+  output:
+    # 461(l)(3)(A): the filer's business deductions (400,000) exceed the
+    # filer's business income (0) plus the 2024 threshold (305,000,
+    # Rev. Proc. 2023-34 sec. 3.32), so 305,000 is allowed.
+    loss_ald: 305_000
+    # 500,000 - 305,000.
+    adjusted_gross_income: 195_000

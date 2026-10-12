@@ -47,41 +47,26 @@ def create_aca_ptc_700_fpl_cliff() -> Reform:
         definition_period = YEAR
 
         def formula(person, period, parameters):
-            # determine status eligibility for ACA PTC
+            # Reuse baseline status, coverage, and premium-paying eligibility
+            # so that all minimum-essential-coverage exclusions encoded in
+            # gov.aca.ineligible_coverage (Basic Health Program, Oregon
+            # Healthier Oregon, VA/CHAMPVA/TRICARE, Medicaid work-requirement,
+            # etc.) continue to block the reform, and married-filing-separately
+            # remains ineligible.
             fstatus = person.tax_unit("filing_status", period)
             separate = fstatus == fstatus.possible_values.SEPARATE
-            immigration_eligible = person(
-                "is_aca_ptc_immigration_status_eligible", period
-            )
-            taxpayer_has_tin = person.tax_unit("taxpayer_has_tin", period)
-            is_status_eligible = taxpayer_has_tin & ~separate & immigration_eligible
 
-            # determine coverage eligibility for ACA plan
-            INELIGIBLE_COVERAGE = [
-                "is_medicaid_eligible",
-                "is_chip_eligible",
-                "is_aca_eshi_eligible",
-                "is_medicare_eligible",
-            ]
-            is_coverage_eligible = add(person, period, INELIGIBLE_COVERAGE) == 0
-
-            # determine income eligibility for ACA PTC (using reform parameter)
+            # Override only income eligibility to use the reform's 700% FPL
+            # bracket, preserving the baseline below-FPL immigration exception.
             p = parameters(period).gov.contrib.aca.ptc_700_fpl_cliff
             magi_frac = person.tax_unit("aca_magi_fraction", period)
-            is_income_eligible = p.income_eligibility.calc(magi_frac)
-
-            # determine which people pay an age-based ACA plan premium
-            p_aca = parameters(period).gov.aca
-            is_aca_adult = person("age", period) > p_aca.slcsp.max_child_age
-            child_pays = person("aca_child_index", period) <= p_aca.max_child_count
-            pays_aca_premium = is_aca_adult | child_pays
-
-            return (
-                is_status_eligible
-                & is_coverage_eligible
-                & is_income_eligible
-                & pays_aca_premium
+            standard_income_eligible = p.income_eligibility.calc(magi_frac)
+            below_fpl_exception = person.tax_unit(
+                "aca_ptc_below_fpl_immigration_exception", period
             )
+            is_income_eligible = standard_income_eligible | below_fpl_exception
+
+            return person("pays_aca_premium", period) & ~separate & is_income_eligible
 
     class reform(Reform):
         def apply(self):

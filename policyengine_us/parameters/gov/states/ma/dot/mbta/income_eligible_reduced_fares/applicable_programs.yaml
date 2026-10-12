@@ -4,9 +4,10 @@ values:
     - ma_eaedc
     - ma_tafdc
     - snap
+    - receives_snap # Reported SNAP receipt, for households the model gives a $0 allotment.
     # Medicaid includes MassHealth CarePlus, MassHealth Family Assistance,
     # MassHealth Limited, and MassHealth Standard
-    - medicaid
+    - medicaid_enrolled
 metadata:
   unit: list
   label: Massachusetts Bay Transportation Authority (MBTA) reduced fare program categorical eligibility applicable programs

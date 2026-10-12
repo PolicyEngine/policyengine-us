@@ -1,0 +1,698 @@
+# ia_cca_income_eligible: SPMUnit, bool, MONTH.
+# Three income tiers selected by the ia_cca_enrolled boolean input:
+#   - Applicants (not enrolled): initial limit = 160% FPL basic / 200% FPL special-needs.
+#   - Enrolled (ongoing): CCA Exit 250% FPL basic / 275% FPL special-needs.
+# Each initial limit is capped at 85% of Iowa median family income when lower
+# (smi_rate.yaml = 0.85); for the small families below the FPL limit always binds
+# (85% MFI is far higher), so these cases test the FPL boundary directly.
+# The comparison is MONTHLY: ia_cca_countable_income (employment_income / 12) is
+# compared to spm_unit_fpg (auto-divided to monthly) * rate. Because both sides
+# are divided by 12, an annual employment_income of (annual FPG * rate) lands
+# exactly on the monthly limit, so the annual figures below equal the FPL band.
+# 2025 FPG (CONTIGUOUS_US): first_person 15_650, additional_person 5_500.
+#   Family of 2 FPG = 21_150; 160% = 33_840.
+#   Family of 3 FPG = 26_650; 160% = 42_640; 200% = 53_300; 225% = 59_962.50;
+#     250% = 66_625; 275% = 73_287.50.
+# A family with a non-disabled child uses the basic limits; a family with a
+# special-needs (disabled) child uses the special-needs limits. Only one parent
+# earns, so countable income is that parent's employment income alone.
+
+# === Tier 1: initial applicant, basic 160% FPL ===
+
+- name: Applicant family of two above 160 percent FPL is not income eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 42_000
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent, child]
+        state_code: IA
+  output:
+    # Family of 2; 160% FPL = 33_840 (annual basis); 42_000 > 33_840 -> ineligible
+    ia_cca_income_eligible: false
+
+- name: Applicant family of three below 160 percent FPL is income eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 42_000
+      parent2:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # Family of 3; 160% FPL = 42_640; 42_000 < 42_640 -> eligible
+    ia_cca_income_eligible: true
+
+- name: Applicant family of three just below 160 percent FPL is income eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 42_600
+      parent2:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 42_600 < 42_640 (160% FPL) -> eligible (boundary, just below)
+    ia_cca_income_eligible: true
+
+- name: Applicant family of three just above 160 percent FPL is not income eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 42_700
+      parent2:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 42_700 > 42_640 (160% FPL) -> ineligible (not enrolled, basic child)
+    ia_cca_income_eligible: false
+
+# === Tier 1b: initial applicant, special-needs 200% FPL ===
+
+- name: Applicant family with special-needs child uses the 200 percent FPL limit.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 53_000
+      parent2:
+        age: 30
+      child:
+        age: 2
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # Family of 3 special-needs; 200% FPL = 53_300; 53_000 < 53_300 -> eligible
+    # (would be ineligible under the 160% basic limit of 42_640)
+    ia_cca_income_eligible: true
+
+- name: Applicant family with special-needs child above 200 percent FPL is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 53_500
+      parent2:
+        age: 30
+      child:
+        age: 2
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 53_500 > 53_300 (200% FPL) -> ineligible
+    ia_cca_income_eligible: false
+
+# === Tier 2: enrolled (CCA Exit ceiling), basic 250% FPL ===
+# The enrolled income test uses the CCA Exit ceiling (250% basic). The CCA Plus
+# (225%) vs CCA Exit (250%) distinction governs which COPAY mechanism applies, not
+# income eligibility; see ia_cca_in_exit_tier and the copay tests.
+
+- name: Enrolled family above the initial limit but below 250 percent FPL stays eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 59_000
+      parent2:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # Enrolled basic; 250% FPL = 66_625; 59_000 < 66_625 -> eligible
+    # (would be ineligible as an applicant under 160% = 42_640)
+    ia_cca_income_eligible: true
+
+- name: Applicant at the same income above 160 percent FPL is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 59_000
+      parent2:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # Same 59_000 income but NOT enrolled -> initial 160% limit -> ineligible
+    ia_cca_income_eligible: false
+
+- name: Enrolled basic family just below 250 percent FPL stays eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 66_500
+      parent2:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 66_500 < 66_625 (250% FPL) -> eligible (boundary, just below)
+    ia_cca_income_eligible: true
+
+- name: Enrolled basic family above 250 percent FPL is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 67_000
+      parent2:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 67_000 > 66_625 (250% FPL) -> ineligible even when enrolled (basic care)
+    ia_cca_income_eligible: false
+
+# === Tier 3: enrolled special-needs, 275% FPL ===
+
+- name: Enrolled special-needs family above 250 percent but below 275 percent FPL stays eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 72_000
+      parent2:
+        age: 30
+      child:
+        age: 2
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # Enrolled special-needs; 275% FPL = 73_287.50; 72_000 < 73_287.50 -> eligible
+    # (would be ineligible under the 250% basic limit of 66_625)
+    ia_cca_income_eligible: true
+
+- name: Enrolled special-needs family above 275 percent FPL is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 74_000
+      parent2:
+        age: 30
+      child:
+        age: 2
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 74_000 > 73_287.50 (275% FPL) -> ineligible
+    ia_cca_income_eligible: false
+
+# === 85% MFI cap binds for the initial limit on a higher-income family ===
+
+- name: Applicant family above the 85 percent MFI cap is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 130_000
+      parent2:
+        age: 40
+      child1:
+        age: 2
+      child2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child1, child2]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent1, parent2, child1, child2]
+        state_code: IA
+  output:
+    # Family of 4; initial limit = min(160% FPL = 51_440, 85% MFI = 100_138).
+    # 130_000 exceeds both -> ineligible. Confirms the min(FPL, 85% MFI) cap is
+    # applied on the initial limit.
+    ia_cca_income_eligible: false
+
+# === Edge cases ===
+# Boundary tests use the MODEL's own monthly FPG (printed above). The income test
+# compares monthly countable income (annual employment_income / 12) to monthly FPG
+# (auto-divided) * rate. At EXACTLY the boundary the float32 round-trip
+# (annual -> /12 income vs annual FPG -> /12 limit) drifts by a few thousandths,
+# and the drift direction is value-dependent, so we never assert at the exact
+# boundary; we bracket it +-12 to +-13/yr (about +-$1/mo) instead. The existing
+# +-100/yr cases above are loose; these tighten the band to the smallest reliable
+# offset.
+
+- name: Applicant family of three 12 dollars below 160 percent FPL is eligible (tight boundary).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 42_628
+      parent2:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 160% FPL annual = 42_640; 42_628 (-$1/mo) -> just below -> eligible
+    ia_cca_income_eligible: true
+
+- name: Applicant family of three 12 dollars above 160 percent FPL is not eligible (tight boundary).
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 42_652
+      parent2:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 42_652 (+$1/mo over the 42_640 limit) -> just above -> ineligible
+    ia_cca_income_eligible: false
+
+- name: Applicant family of three with zero income is income eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 0
+      parent2:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 0 income is below every limit -> eligible (degenerate low boundary)
+    ia_cca_countable_income: 0
+    ia_cca_income_eligible: true
+
+- name: Applicant family with very high income is not eligible under any tier.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 500_000
+      parent2:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 500_000/yr far exceeds the 160% FPL initial limit -> ineligible (degenerate
+    # high boundary; even the enrolled 250% ceiling could not reach this income)
+    ia_cca_income_eligible: false
+
+# Special-needs 200% FPL boundary (family of 3; 200% annual = 53_300), tight +-12/yr.
+- name: Applicant special-needs family 12 dollars below 200 percent FPL is eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 53_288
+      parent2:
+        age: 30
+      child:
+        age: 2
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 200% FPL annual = 53_300; 53_288 (-$1/mo) -> eligible
+    ia_cca_income_eligible: true
+
+- name: Applicant special-needs family 12 dollars above 200 percent FPL is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 53_312
+      parent2:
+        age: 30
+      child:
+        age: 2
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 53_312 (+$1/mo over 53_300) -> ineligible
+    ia_cca_income_eligible: false
+
+# Enrolled basic 250% FPL boundary (family of 3; 250% annual = 66_625), tight +-13/yr.
+- name: Enrolled basic family 13 dollars below 250 percent FPL is eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 66_612
+      parent2:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 250% FPL annual = 66_625; 66_612 (-$13/yr) -> just below -> eligible
+    ia_cca_income_eligible: true
+
+- name: Enrolled basic family 13 dollars above 250 percent FPL is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 66_638
+      parent2:
+        age: 30
+      child:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 66_638 (+$13/yr over 66_625) -> just above -> ineligible even when enrolled
+    ia_cca_income_eligible: false
+
+# Enrolled special-needs 275% FPL boundary (family of 3; 275% annual = 73_287.50).
+- name: Enrolled special-needs family 12.50 dollars below 275 percent FPL is eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 73_275
+      parent2:
+        age: 30
+      child:
+        age: 2
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 275% FPL annual = 73_287.50; 73_275 (-$12.50/yr) -> just below -> eligible
+    ia_cca_income_eligible: true
+
+- name: Enrolled special-needs family above 275 percent FPL is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income: 73_300
+      parent2:
+        age: 30
+      child:
+        age: 2
+        is_disabled: true
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        ia_cca_enrolled: true
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: IA
+  output:
+    # 73_300 (+$12.50/yr over 73_287.50) -> ineligible
+    ia_cca_income_eligible: false
+
+# === 85% MFI cap genuinely binds (only for very large families) ===
+# The federal SMI household-size adjustment caps at 6 persons, so 85% MFI plateaus
+# while 160% FPL keeps rising. The cap therefore binds only at family size 16+. A
+# 20-person unit puts 85% MFI ($13,994.91/mo) below 160% FPL ($16,020/mo), so income
+# in that window fails the initial test even though it is below 160% FPL. (The
+# existing family-of-4 case above never reaches the cap because its income exceeds
+# both limits; these two cases exercise the min(FPL, 85% MFI) selection directly.)
+
+- name: Applicant large family between 85 percent MFI and 160 percent FPL is not eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 180_000
+      c1: {age: 4}
+      c2: {age: 4}
+      c3: {age: 4}
+      c4: {age: 4}
+      c5: {age: 4}
+      c6: {age: 4}
+      c7: {age: 4}
+      c8: {age: 4}
+      c9: {age: 4}
+      c10: {age: 4}
+      c11: {age: 4}
+      c12: {age: 4}
+      c13: {age: 4}
+      c14: {age: 4}
+      c15: {age: 4}
+      c16: {age: 4}
+      c17: {age: 4}
+      c18: {age: 4}
+      c19: {age: 4}
+    spm_units:
+      spm_unit:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19]
+        state_code: IA
+  output:
+    # Family of 20; 15_000/mo income > 85% MFI (13_994.91/mo) but < 160% FPL
+    # (16_020/mo). initial limit = min(160% FPL, 85% MFI) = 85% MFI -> ineligible.
+    ia_cca_income_eligible: false
+
+- name: Applicant large family below the 85 percent MFI cap is eligible.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 150_000
+      c1: {age: 4}
+      c2: {age: 4}
+      c3: {age: 4}
+      c4: {age: 4}
+      c5: {age: 4}
+      c6: {age: 4}
+      c7: {age: 4}
+      c8: {age: 4}
+      c9: {age: 4}
+      c10: {age: 4}
+      c11: {age: 4}
+      c12: {age: 4}
+      c13: {age: 4}
+      c14: {age: 4}
+      c15: {age: 4}
+      c16: {age: 4}
+      c17: {age: 4}
+      c18: {age: 4}
+      c19: {age: 4}
+    spm_units:
+      spm_unit:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19]
+        ia_cca_enrolled: false
+    households:
+      household:
+        members: [parent, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19]
+        state_code: IA
+  output:
+    # 12_500/mo income < 85% MFI (13_994.91/mo) -> below the binding cap -> eligible
+    ia_cca_income_eligible: true

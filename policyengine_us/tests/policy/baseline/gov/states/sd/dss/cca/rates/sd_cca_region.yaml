@@ -1,0 +1,117 @@
+# Tests for sd_cca_region (Household, MONTH, Enum).
+# The provider rate region is Urban (4 counties: Lincoln, Meade, Minnehaha,
+# Pennington), Suburban (15 named counties), or Rural (all remaining counties,
+# the default), effective 2026-08-03. Tests run in 2027 (fully inside the
+# weekly rate era). county_str is a YEAR string read in the monthly formula.
+
+- name: Case 1, Minnehaha County is urban.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: MINNEHAHA_COUNTY_SD
+  output:
+    sd_cca_region: URBAN
+
+- name: Case 2, Pennington County is urban.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: PENNINGTON_COUNTY_SD
+  output:
+    sd_cca_region: URBAN
+
+- name: Case 3, Brookings County is suburban.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: BROOKINGS_COUNTY_SD
+  output:
+    sd_cca_region: SUBURBAN
+
+- name: Case 4, Yankton County is suburban.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: YANKTON_COUNTY_SD
+  output:
+    sd_cca_region: SUBURBAN
+
+- name: Case 5, Aurora County is rural (default region).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: AURORA_COUNTY_SD
+  output:
+    sd_cca_region: RURAL
+
+- name: Case 6, Butte County is rural (default region).
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: BUTTE_COUNTY_SD
+  output:
+    sd_cca_region: RURAL
+
+- name: Case 7, Lincoln County is urban.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: LINCOLN_COUNTY_SD
+  output:
+    sd_cca_region: URBAN
+
+- name: Case 8, Meade County is urban.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county_str: MEADE_COUNTY_SD
+  output:
+    sd_cca_region: URBAN

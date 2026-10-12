@@ -138,7 +138,7 @@
   period: 2024-01
   input:
     in_tanf_eligible: true
-    in_tanf_payment_standard: 320
+    in_tanf_maximum_benefit: 320
     in_tanf_countable_income_for_payment: 319
     state_code: IN
   output:
@@ -164,4 +164,4 @@
         state_code: IN
   output:
     in_tanf: 255
-    # Capped at payment standard for family of 2 ($255), not inflated
+    # Capped at the maximum benefit for family of 2 ($255), not inflated

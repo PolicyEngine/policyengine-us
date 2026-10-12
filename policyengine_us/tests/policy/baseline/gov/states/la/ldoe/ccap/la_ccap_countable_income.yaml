@@ -1,0 +1,146 @@
+# LAC 28:CLXV.509.A.3: gross earnings of head of household and spouse plus
+# enumerated recurring unearned income of all household members.
+- name: Case 1, head of household earnings count.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # $3,000/month.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_countable_income: 3_000
+
+- name: Case 2, a dependent teenager's earnings are excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # $3,000/month.
+      person2:
+        age: 16
+        employment_income: 12_000  # Excluded - not head or spouse.
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_countable_income: 3_000
+
+- name: Case 3, a child's SSI counts as unearned income of all members.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month.
+      person2:
+        age: 4
+        ssi: 800  # Monthly input for a MONTH-defined variable.
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_countable_income: 2_800
+
+- name: Case 4, child support counts before the April 2025 repeal.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month.
+        child_support_received: 6_000  # $500/month, countable until 2025-04-20.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_countable_income: 2_500
+
+- name: Case 5, child support no longer counts in 2026.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # $2,000/month.
+        child_support_received: 6_000  # Repealed from countable income by LR 51:529.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_countable_income: 2_000
+
+- name: Case 6, a self-employment loss does not offset gross wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # $5,000/month gross wages.
+        self_employment_income: -60_000  # Loss floors at zero, no offset.
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_countable_income: 5_000
+
+- name: Case 7, a loss-only earner has zero countable earned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: -60_000
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: LA
+  output:
+    la_ccap_countable_income: 0

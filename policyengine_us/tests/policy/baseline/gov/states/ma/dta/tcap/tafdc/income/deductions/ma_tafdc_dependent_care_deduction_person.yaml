@@ -58,3 +58,50 @@
         state_code: MA
   output:
     ma_tafdc_dependent_care_deduction_person: [0, 2_100]
+
+- name: Incapacitated adult care expenses count toward the deduction.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 25
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    # Per 106 CMR 704.275(A): incapacitated individual at the older tier,
+    # $175/month at 40 weekly hours. Expenses = 1,200 / 12 = 100/month.
+    ma_tafdc_dependent_care_deduction_person: [0, 100]
+
+- name: Adult care expenses without incapacity are not deducted.
+  period: 2023-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        weekly_hours_worked_before_lsr: 40
+      person2:
+        age: 25
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    # Person2 is neither an eligible dependent nor incapacitated, so the
+    # per-person cap is $0: min(0, 100) = 0.
+    ma_tafdc_dependent_care_deduction_person: [0, 0]

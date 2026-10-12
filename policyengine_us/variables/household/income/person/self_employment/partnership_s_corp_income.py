@@ -6,5 +6,6 @@ class partnership_s_corp_income(Variable):
     entity = Person
     label = "partnership/S-corp income"
     unit = USD
+    documentation = "Combined partnership and S-corporation income."
     definition_period = YEAR
-    uprating = "calibration.gov.irs.soi.partnership_s_corp_income"
+    adds = ["partnership_income", "s_corp_income"]

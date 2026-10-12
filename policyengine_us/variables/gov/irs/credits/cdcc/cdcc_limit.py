@@ -12,4 +12,10 @@ class cdcc_limit(Variable):
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.credits.cdcc
         capped_count_cdcc_eligible = tax_unit("capped_count_cdcc_eligible", period)
-        return p.max * capped_count_cdcc_eligible
+        dollar_limit = p.max * capped_count_cdcc_eligible
+        # IRC section 21(c) flush language: the $3,000 / $6,000 dollar limit
+        # "shall be reduced by the aggregate amount excludable from gross
+        # income under section 129 for the taxable year." This is the Form
+        # 2441 Part III -> Part II reconciliation (line 27 minus line 28).
+        exclusion = tax_unit("dependent_care_assistance_exclusion", period)
+        return max_(dollar_limit - exclusion, 0)

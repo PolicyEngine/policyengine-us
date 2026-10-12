@@ -1,0 +1,28 @@
+# FNS approved Alaska's good-faith-effort exemption under
+# 7 U.S.C. 2015(o)(7) effective 2025-11-01 through 2026-10-31. During this
+# window Alaska is approved to temporarily retain a specified set of
+# pre-HR1 ABAWD exceptions (see the good_faith_exemption parameters and
+# meets_snap_abawd_work_requirements) on top of the post-HR1 exception set,
+# while HR1's new Alaska Native/Indian exception remains in effect. This
+# toggle is TRUE only during that window; the waived geography for the 29
+# non-Anchorage boroughs and census areas (20 under the FNS area waiver,
+# nine under the good-faith exemption only) is carried separately by
+# waived_counties.
+description: Alaska temporarily retains the approved pre-HR1 Able-Bodied Adult Without Dependents exceptions under its Supplemental Nutrition Assistance Program good-faith-effort exemption when this is true.
+
+values:
+  0000-01-01: false
+  2025-11-01: true
+  2026-11-01: false
+
+metadata:
+  unit: bool
+  period: month
+  label: Alaska SNAP ABAWD good-faith exemption window in effect
+  reference:
+    - title: Alaska Division of Public Assistance, SNAP - Frequently Asked Questions (Good Faith Exemption waiver, November 1, 2025 through October 31, 2026, and the groups it retains)
+      href: https://health.alaska.gov/en/services/division-of-public-assistance-dpa-services/snap-nutrition-assistance/#faqs
+    - title: 7 U.S.C. 2015(o)(7) - Good faith exemptions for Alaska and Hawaii
+      href: https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title7-section2015&num=0&edition=prelim
+    - title: USDA FNS, SNAP - OBBB ABAWD Exceptions Implementation
+      href: https://www.fns.usda.gov/snap/obbb-abawd-exemptions-implementation

@@ -1,0 +1,164 @@
+- name: Case 1, an enrolled school-age part-day child qualifies from September through May.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_day: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IL
+  output:
+    il_ccap_table_b_applies:
+      2026-01: true
+      2026-05: true
+      2026-06: false
+      2026-08: false
+      2026-09: true
+
+- name: Case 2, a full-day sibling in care keeps the family on Table A.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child1:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_day: 4
+      child2:
+        age: 2
+        is_tax_unit_dependent: true
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: IL
+  output:
+    il_ccap_table_b_applies:
+      2026-10: false
+
+- name: Case 3, an enrolled part-day child below school age keeps the family on Table A.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_day: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IL
+  output:
+    il_ccap_table_b_applies:
+      2026-10: false
+
+- name: Case 4, a family with no child in care does not use Table B.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_day: 0
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IL
+  output:
+    il_ccap_table_b_applies:
+      2026-10: false
+
+- name: Case 5, an enrolled school-age child in full-day care keeps the family on Table A.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_k12_school: true
+        childcare_hours_per_day: 8
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IL
+  output:
+    il_ccap_table_b_applies:
+      2026-10: false
+
+- name: Case 6, a school-age part-day child not enrolled in school keeps the family on Table A.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        is_in_k12_school: false
+        childcare_hours_per_day: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IL
+  output:
+    il_ccap_table_b_applies:
+      2026-10: false
+
+- name: Case 7, an enrolled special-needs teenager above the school-age limit keeps the family on Table A.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 15
+        is_tax_unit_dependent: true
+        is_disabled: true
+        is_in_k12_school: true
+        childcare_hours_per_day: 4
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: IL
+  output:
+    il_ccap_eligible_child:
+      2026-10: [false, true]
+    il_ccap_table_b_applies:
+      2026-10: false

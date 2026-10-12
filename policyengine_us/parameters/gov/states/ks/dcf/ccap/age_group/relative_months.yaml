@@ -1,0 +1,23 @@
+description: Kansas assigns children to out-of-home relative care age groups by age in months under the Child Care Assistance Program.
+
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Kansas CCAP out-of-home relative age group by months
+  reference:
+    - title: KEESM Appendix C-18 — Maximum Hourly Child Care Benefit/Provider Rate Schedule (out-of-home relative age columns)
+      href: https://content.dcf.ks.gov/ees/keesm/appendix/c-18_providerratecht.pdf#page=8
+
+brackets:
+  # 18 months and less
+  - threshold:
+      2024-10-01: 0
+    amount:
+      2024-10-01: 0
+  # over 18 months (a child at exactly 18 months stays in the lower group)
+  - threshold:
+      2024-10-01: 18.0001
+    amount:
+      2024-10-01: 1

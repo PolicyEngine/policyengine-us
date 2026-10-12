@@ -1,0 +1,99 @@
+# Wisconsin Shares liquid asset test: the assistance group's liquid assets
+# must be at or below $25,000. Only liquid assets are included in the asset
+# test. Wisconsin Shares Handbook (July 2026) Section 6.5;
+# Wis. Stat. s. 49.155(1m)(cm).
+- name: Case 1, family below the liquid asset limit is asset eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 20_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_asset_eligible: true
+
+- name: Case 2, family at exactly the $25,000 limit is asset eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 25_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_asset_eligible: true
+
+- name: Case 3, family just above the $25,000 limit is not asset eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 25_001
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_asset_eligible: false
+
+- name: Case 4, family caring for a foster child is exempt from the asset test.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+        is_in_foster_care: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 30_000  # Above the limit, but foster families are exempt.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_asset_eligible: true
+
+- name: Case 5, family one dollar below the $25,000 limit is asset eligible.
+  period: 2027-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 24_999
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_shares_asset_eligible: true

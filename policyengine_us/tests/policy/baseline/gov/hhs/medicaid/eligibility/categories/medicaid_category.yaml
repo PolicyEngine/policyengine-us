@@ -1,0 +1,163 @@
+- name: Case 1, medically needy category.
+  period: 2026
+  input:
+    is_adult_for_medicaid: false
+    is_medically_needy_for_medicaid: true
+  output:
+    medicaid_category: MEDICALLY_NEEDY
+
+- name: Case 2, working disabled Buy-In category.
+  period: 2026
+  input:
+    is_adult_for_medicaid: false
+    is_working_disabled_buy_in_for_medicaid: true
+  output:
+    medicaid_category: WORKING_DISABLED_BUY_IN
+
+- name: Case 3, mandatory adult category takes priority over Buy-In.
+  period: 2026
+  input:
+    is_adult_for_medicaid: true
+    is_working_disabled_buy_in_for_medicaid: true
+  output:
+    medicaid_category: ADULT
+
+- name: Case 4, Connecticut SSI recipient passing 209(b) rules is in SSI category.
+  period: 2026
+  input:
+    state_code: CT
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: true
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    medicaid_category: SSI_RECIPIENT
+
+- name: Case 5, Illinois SSI recipient qualifying through 209(b) spenddown is in SSI category.
+  period: 2026
+  input:
+    state_code: IL
+    ssi: 12_000
+    is_optional_senior_or_disabled_income_eligible: false
+    medicaid_optional_senior_or_disabled_countable_income: 30_000
+    # 30,000 - 15,000 = 15,000, within Illinois' 100% FPL individual
+    # standard of 15,960 in 2026.
+    medicaid_medically_needy_medical_expenses: 15_000
+    is_optional_senior_or_disabled_asset_eligible: true
+  output:
+    medicaid_category: SSI_RECIPIENT
+
+- name: Case 6, section 1115 MEC adult category.
+  period: 2027
+  input:
+    is_adult_for_medicaid: false
+    is_medicaid_1115_mec_adult: true
+  output:
+    medicaid_category: SECTION_1115_MEC_ADULT
+
+- name: Case 7, adult group takes priority over section 1115 MEC adult.
+  period: 2027
+  input:
+    is_adult_for_medicaid: true
+    is_medicaid_1115_mec_adult: true
+  output:
+    medicaid_category: ADULT
+
+# Montana, 2026: the SSI rate is $994 a month ($11,928 a year), and so is
+# the categorically needy income standard for aged people who do not
+# receive SSI (DPHHS Medicaid manual ABD 008). Countable income is Social
+# Security less the $20 a month general exclusion ($240 a year).
+- name: Case 8, aged Montanan one dollar a month under the SSI rate is an SSI recipient.
+  period: 2026
+  input:
+    age: 70
+    state_code: MT
+    social_security_retirement: 12_156
+  output:
+    ssi: 12
+    medicaid_category: SSI_RECIPIENT
+    is_medicaid_eligible: true
+
+- name: Case 9, aged Montanan exactly at the SSI rate gets no SSI but is categorically needy.
+  period: 2026
+  input:
+    age: 70
+    state_code: MT
+    social_security_retirement: 12_168
+  output:
+    ssi: 0
+    medicaid_category: SENIOR_OR_DISABLED
+    is_medicaid_eligible: true
+
+- name: Case 10, aged Montanan two dollars a month over the SSI rate is not categorically needy.
+  period: 2026
+  input:
+    age: 70
+    state_code: MT
+    # Countable income 11,952: over 11,928 but under 75% of the poverty
+    # guideline (11,970).
+    social_security_retirement: 12_192
+  output:
+    ssi: 0
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_category: NONE
+    is_medicaid_eligible: false
+
+# Oregon, 2026: the standard is also the SSI rate, $1,491 a month ($17,892 a
+# year) for a couple, but income must be "below the standard" (OAR
+# 461-155-0250(3)). Countable income is the couple's Social Security less
+# one $20 a month general exclusion ($240 a year).
+- name: Case 11, aged Oregon couple exactly at the SSI couple rate gets neither SSI nor the pathway.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 9_066
+      person2:
+        age: 70
+        social_security_retirement: 9_066
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # Countable income 18,132 - 240 = 17,892, equal to the standard.
+    ssi: [0, 0]
+    is_optional_senior_or_disabled_for_medicaid: [false, false]
+    medicaid_category: [NONE, NONE]
+    is_medicaid_eligible: [false, false]
+
+- name: Case 12, aged Oregon couple who do not take up SSI, one dollar under the couple rate, are covered by the pathway.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 9_066
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 70
+        social_security_retirement: 9_065
+        takes_up_ssi_if_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # Countable income 18,131 - 240 = 17,891, under the standard.
+    ssi: [0, 0]
+    is_optional_senior_or_disabled_for_medicaid: [true, true]
+    medicaid_category: [SENIOR_OR_DISABLED, SENIOR_OR_DISABLED]
+    is_medicaid_eligible: [true, true]

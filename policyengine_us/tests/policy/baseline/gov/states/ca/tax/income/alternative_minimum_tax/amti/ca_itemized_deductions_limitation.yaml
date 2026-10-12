@@ -1,0 +1,22 @@
+# Schedule P (540) Part I, line 18: the amount of itemized deductions
+# disallowed for regular tax under the California high-AGI limitation, which
+# is restored for AMT.
+# https://www.ftb.ca.gov/forms/2024/2024-540-p.pdf#page=1
+
+- name: No limitation when pre and post limitation deductions are equal
+  period: 2026
+  input:
+    state_code: CA
+    ca_itemized_deductions_pre_limitation: 45_000
+    ca_itemized_deductions: 45_000
+  output:
+    ca_itemized_deductions_limitation: 0
+
+- name: Limitation equals the reduction in itemized deductions
+  period: 2026
+  input:
+    state_code: CA
+    ca_itemized_deductions_pre_limitation: 58_000
+    ca_itemized_deductions: 49_132.18
+  output:
+    ca_itemized_deductions_limitation: 8_867.82

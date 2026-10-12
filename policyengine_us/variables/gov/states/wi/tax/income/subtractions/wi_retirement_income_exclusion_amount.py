@@ -15,20 +15,18 @@ class wi_retirement_income_exclusion_amount(Variable):
 
     def formula(tax_unit, period, parameters):
         # Schedule SB Line 16: qualifying retirement income, capped.
-        # This is NOT subtracted from income directly — instead it
-        # feeds into wi_retirement_income_exclusion_tax_reduction,
-        # which compares tax computed two ways (with vs without the
-        # exclusion) because claiming Line 16 forfeits all credits.
-        p = parameters(
+        # Compute both paths before electing the subtraction: claiming Line
+        # 16 restricts credits, so the exclusion can increase net tax.
+        psri = parameters(
             period
-        ).gov.states.wi.tax.income.subtractions.retirement_income.exclusion
+        ).gov.states.wi.tax.income.subtractions.retirement_income
+        p = psri.exclusion
         person = tax_unit.members
         age = person("age", period)
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         eligible = (age >= p.min_age) * head_or_spouse
-        pension = person("taxable_pension_income", period)
-        ira = person("taxable_ira_distributions", period)
-        person_ret_income = (pension + ira) * eligible
+        retirement_income = add(person, period, psri.sources)
+        person_ret_income = retirement_income * eligible
 
         filing_status = tax_unit("filing_status", period)
         is_joint = filing_status == filing_status.possible_values.JOINT

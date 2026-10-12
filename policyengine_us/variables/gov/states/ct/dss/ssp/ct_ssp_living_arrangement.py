@@ -16,7 +16,7 @@ class ct_ssp_living_arrangement(Variable):
     value_type = Enum
     entity = Person
     label = "Connecticut SSP living arrangement"
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = StateCode.CT
     possible_values = CTSSPLivingArrangement
     default_value = CTSSPLivingArrangement.COMMUNITY_ALONE

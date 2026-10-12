@@ -1,0 +1,48 @@
+- name: Case 1, ACA adult group is subject to Medicaid work requirements.
+  period: 2027
+  input:
+    medicaid_category: ADULT
+  output:
+    is_medicaid_work_requirement_applicable_adult: true
+
+- name: Case 2, section 1115 MEC adult is subject to Medicaid work requirements.
+  period: 2027
+  input:
+    medicaid_category: SECTION_1115_MEC_ADULT
+  output:
+    is_medicaid_work_requirement_applicable_adult: true
+
+- name: Case 3, parent category is not subject to Medicaid work requirements.
+  period: 2027
+  input:
+    medicaid_category: PARENT
+  output:
+    is_medicaid_work_requirement_applicable_adult: false
+
+- name: Case 4, child category is not subject to Medicaid work requirements.
+  period: 2027
+  input:
+    medicaid_category: OLDER_CHILD
+  output:
+    is_medicaid_work_requirement_applicable_adult: false
+
+- name: Case 5, pregnant category is not subject to Medicaid work requirements.
+  period: 2027
+  input:
+    medicaid_category: PREGNANT
+  output:
+    is_medicaid_work_requirement_applicable_adult: false
+
+- name: Case 6, SSI recipient category is not subject to Medicaid work requirements.
+  period: 2027
+  input:
+    medicaid_category: SSI_RECIPIENT
+  output:
+    is_medicaid_work_requirement_applicable_adult: false
+
+- name: Case 7, senior or disabled category is not subject to Medicaid work requirements.
+  period: 2027
+  input:
+    medicaid_category: SENIOR_OR_DISABLED
+  output:
+    is_medicaid_work_requirement_applicable_adult: false

@@ -1,0 +1,138 @@
+description: States begin applying the current calendar year's federal poverty guidelines to their SNAP broad-based categorical eligibility income standards in this month.
+
+AL:
+  2015-10-01: 10
+AK:
+  2015-10-01: 10
+AZ:
+  2015-10-01: 10
+AR:
+  2015-10-01: 10
+CA:
+  2015-10-01: 10
+CO:
+  2015-10-01: 10
+CT:
+  2015-10-01: 10
+DE:
+  2015-10-01: 10
+DC:
+  2015-10-01: 10
+FL:
+  2015-10-01: 10
+GA:
+  2015-10-01: 10
+GU:
+  2015-10-01: 10
+HI:
+  2015-10-01: 10
+ID:
+  2015-10-01: 10
+IL:
+  2015-10-01: 10
+IN:
+  2015-10-01: 10
+IA:
+  2015-10-01: 10
+KS:
+  2015-10-01: 10
+KY:
+  2015-10-01: 10
+LA:
+  2015-10-01: 10
+ME:
+  # 10-144 CMR Ch. 301 Sec. 999-3 Chart 4: the 200% test re-bases when
+  # HHS publishes the new guidelines (mid-January each year; eras began
+  # 1/13/21, 1/12/22, 1/19/23, 1/11/24, 1/17/25, 1/13/26). Modeled as
+  # January.
+  2015-10-01: 1
+MD:
+  2015-10-01: 10
+MA:
+  # DTA Helpful Charts and Figures: the 200% categorical eligibility
+  # column re-bases each February 1 (chart marked 'Effective 2/1/2026'
+  # beside federal columns marked 'Effective 10/1/2025').
+  2015-10-01: 2
+MI:
+  2015-10-01: 10
+MN:
+  2015-10-01: 10
+MS:
+  2015-10-01: 10
+MO:
+  2015-10-01: 10
+MT:
+  2015-10-01: 10
+NE:
+  2015-10-01: 10
+NV:
+  2015-10-01: 10
+NH:
+  2015-10-01: 10
+NJ:
+  2015-10-01: 10
+NM:
+  2015-10-01: 10
+NY:
+  2015-10-01: 10
+NC:
+  2015-10-01: 10
+ND:
+  2015-10-01: 10
+OH:
+  2015-10-01: 10
+OK:
+  2015-10-01: 10
+OR:
+  # OAR 461-155-0180(6): the 200% standard is 'updated every March',
+  # unlike the same rule's 100%/130%/165% SNAP standards, which are
+  # updated every October.
+  2015-10-01: 3
+PA:
+  2015-10-01: 10
+RI:
+  2015-10-01: 10
+SC:
+  2015-10-01: 10
+SD:
+  2015-10-01: 10
+TN:
+  2015-10-01: 10
+TX:
+  2015-10-01: 10
+UT:
+  2015-10-01: 10
+VT:
+  2015-10-01: 10
+VI:
+  2015-10-01: 10
+VA:
+  2015-10-01: 10
+WA:
+  # WAC 388-414-0001(2)(a)(ii): Washington re-bases its 200% standard on
+  # the current-year guidelines each April 1.
+  2015-10-01: 4
+WV:
+  2015-10-01: 10
+WI:
+  2015-10-01: 10
+WY:
+  2015-10-01: 10
+
+metadata:
+  unit: month
+  period: year
+  label: SNAP BBCE poverty guideline year start month
+  reference:
+    - title: SNAP FY 2026 Cost-of-Living Adjustments (federal October schedule)
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-cola-fy26memo.pdf#page=3
+    - title: WAC 388-414-0001(2)(a)(ii) (Washington April re-basing)
+      href: https://app.leg.wa.gov/WAC/default.aspx?cite=388-414-0001
+    - title: Massachusetts DTA Helpful Charts and Figures (February re-basing)
+      href: https://eohhs.ehs.state.ma.us/DTA/PolicyOnline/olg%20docs/guides/Helpful%20Charts%20and%20Figures.pdf#page=1
+    - title: Maine 10-144 CMR Ch. 301 Sec. 999-3 Chart 4 (January re-basing)
+      href: https://www.maine.gov/dhhs/sites/maine.gov.dhhs/files/rule-2026-02/SNAP%20244P%20Rule%20Pages%20%28TC%29.pdf#page=5
+    - title: OAR 461-155-0180(6) (Oregon March re-basing)
+      href: https://ch461rules.odhs.oregon.gov/rules/461-155-0180.pdf#page=2
+  breakdown:
+  - state_code

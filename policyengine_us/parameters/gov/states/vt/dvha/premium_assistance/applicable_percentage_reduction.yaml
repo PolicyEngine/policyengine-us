@@ -1,0 +1,20 @@
+description: Vermont reduces the federal section 36B applicable percentage by this many percentage points under the Vermont Premium Assistance program.
+values:
+  2026-01-01: 0.015
+
+# Statute 33 V.S.A. § 1812(a)(2) says the State "shall reduce the premium
+# contribution ... by 1.5 percent" and defers the applicable-percentage table
+# to federal section 36B. DVHA operationalizes this as a flat 1.5
+# percentage-point cut to that federal applicable percentage (not a
+# proportional scaling): "VPA lowers your monthly health insurance bill by
+# 1.5% of your household income." Stored here as 0.015 percentage points off
+# aca_required_contribution_percentage.
+metadata:
+  unit: /1
+  period: year
+  label: Vermont Premium Assistance applicable percentage reduction
+  reference:
+    - title: 33 V.S.A. § 1812(a)(2)
+      href: https://legislature.vermont.gov/statutes/section/33/018/01812
+    - title: Vermont Health Connect — VPA lowers your bill by 1.5% of household income
+      href: https://info.healthconnect.vermont.gov/financial-help

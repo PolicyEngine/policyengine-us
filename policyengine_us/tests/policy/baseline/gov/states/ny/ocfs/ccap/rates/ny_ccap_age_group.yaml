@@ -1,0 +1,130 @@
+- name: Case 1, center care below 18 months uses the infant rate.
+  period: 2025-01
+  input:
+    age: 1.49
+    childcare_provider_type_group: DCC_SACC
+    state_code: NY
+  output:
+    ny_ccap_age_group: INFANT
+
+- name: Case 2, center care at 18 months uses the toddler rate.
+  period: 2025-01
+  input:
+    age: 1.5
+    childcare_provider_type_group: DCC_SACC
+    state_code: NY
+  output:
+    ny_ccap_age_group: TODDLER
+
+- name: Case 3, legally exempt group care uses center age groups.
+  period: 2025-01
+  input:
+    age: 2
+    childcare_provider_type_group: LE_GC
+    state_code: NY
+  output:
+    ny_ccap_age_group: TODDLER
+
+- name: Case 4, family day care below age two uses the infant rate.
+  period: 2025-01
+  input:
+    age: 1.99
+    childcare_provider_type_group: FDC_GFDC
+    state_code: NY
+  output:
+    ny_ccap_age_group: INFANT
+
+- name: Case 5, standard informal care at age two uses the toddler rate.
+  period: 2025-01
+  input:
+    age: 2
+    childcare_provider_type_group: LE_STD
+    state_code: NY
+  output:
+    ny_ccap_age_group: TODDLER
+
+- name: Case 6, enhanced informal care at age three uses the preschool rate.
+  period: 2025-01
+  input:
+    age: 3
+    childcare_provider_type_group: LE_ENH
+    state_code: NY
+  output:
+    ny_ccap_age_group: PRESCHOOLER
+
+- name: Case 7, child at age six uses the school-age rate.
+  period: 2025-01
+  input:
+    age: 6
+    childcare_provider_type_group: DCC_SACC
+    state_code: NY
+  output:
+    ny_ccap_age_group: SCHOOL_AGE
+
+# 24-OCFS-LCM-22 §III.3 puts legally exempt group child care on the
+# center-based age bands, where the infant ceiling is 1.5 years, while
+# family day care uses the home-based bands with a 2-year ceiling. At age
+# 1.75 the two sets disagree, so these paired cases make the LE_GC branch
+# functional: removing it from ny_ccap_age_group flips Case 8.
+- name: Case 8, legally exempt group care uses the center infant ceiling.
+  period: 2025-01
+  input:
+    age: 1.75
+    childcare_provider_type_group: LE_GC
+    state_code: NY
+  output:
+    ny_ccap_age_group: TODDLER
+
+- name: Case 9, day care centers use the center infant ceiling.
+  period: 2025-01
+  input:
+    age: 1.75
+    childcare_provider_type_group: DCC_SACC
+    state_code: NY
+  output:
+    ny_ccap_age_group: TODDLER
+
+- name: Case 10, family day care uses the home infant ceiling at the same age.
+  period: 2025-01
+  input:
+    age: 1.75
+    childcare_provider_type_group: FDC_GFDC
+    state_code: NY
+  output:
+    ny_ccap_age_group: INFANT
+
+- name: Case 11, legally exempt standard care uses the home infant ceiling.
+  period: 2025-01
+  input:
+    age: 1.75
+    childcare_provider_type_group: LE_STD
+    state_code: NY
+  output:
+    ny_ccap_age_group: INFANT
+
+- name: Case 12, a newborn is an infant under both provider ladders.
+  period: 2025-01
+  input:
+    age: 0
+    childcare_provider_type_group: DCC_SACC
+    state_code: NY
+  output:
+    ny_ccap_age_group: INFANT
+
+- name: Case 13, a child just below three is a toddler.
+  period: 2025-01
+  input:
+    age: 2.99
+    childcare_provider_type_group: DCC_SACC
+    state_code: NY
+  output:
+    ny_ccap_age_group: TODDLER
+
+- name: Case 14, a child just below six is a preschooler.
+  period: 2025-01
+  input:
+    age: 5.99
+    childcare_provider_type_group: DCC_SACC
+    state_code: NY
+  output:
+    ny_ccap_age_group: PRESCHOOLER

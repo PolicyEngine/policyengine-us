@@ -240,3 +240,51 @@
     # 1 child * $100 = $100 cap
     # Expenses = $300/month, min($300, $100) = $100
     md_tca_childcare_deduction: 100
+
+- name: Case 12, incapacitated adult care expenses count toward the deduction.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 120
+      person2:
+        age: 35
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Per COMAR 07.03.03.13.E(3)(c): care of an incapacitated adult living
+    # in the home, capped at $200/month (100+ work hours).
+    # Expenses = 1,200 / 12 = 100/month, below the cap.
+    md_tca_childcare_deduction: 100
+
+- name: Case 13, adult care expenses without incapacity are not deducted.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        monthly_hours_worked: 120
+      person2:
+        age: 35
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # Person2 is neither a child nor incapacitated, so there are no care
+    # recipients: min(100, 0) = 0.
+    md_tca_childcare_deduction: 0

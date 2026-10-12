@@ -1,0 +1,98 @@
+# Tests for md_ccs_countable_income
+# Countable income = adds sources + self_employment_income * (1 - 0.30)
+# Child support received is excluded since 2022.
+# COMAR 13A.14.06.03(F)(3)-(8)
+
+- name: Case 1, employment income only.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # employment_income is in sources list
+    # 30,000 / 12 = 2,500
+    md_ccs_countable_income: 2_500
+
+- name: Case 2, self-employment income with 30 percent deduction.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        self_employment_income: 20_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # self_employment_income 20,000 * (1 - 0.30) = 14,000
+    # 14,000 / 12 = 1,166.67
+    md_ccs_countable_income: 1_166.67
+
+- name: Case 3, mixed employment and self-employment income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        self_employment_income: 20_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # employment_income: 30,000
+    # self_employment_income: 20,000 * (1 - 0.30) = 14,000
+    # total annual: 30,000 + 14,000 = 44,000
+    # monthly: 44,000 / 12 = 3,666.67
+    md_ccs_countable_income: 3_666.67
+
+- name: Case 4, child support received is counted as income.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 30_000
+        child_support_received: 6_000
+      person2:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MD
+  output:
+    # employment_income: 30,000 (counted)
+    # child_support_received: 6,000 (counted per COMAR .02B(28)(b)(x) and .03F(8)(c))
+    # total annual: 36,000
+    # monthly: 36,000 / 12 = 3,000
+    md_ccs_countable_income: 3_000

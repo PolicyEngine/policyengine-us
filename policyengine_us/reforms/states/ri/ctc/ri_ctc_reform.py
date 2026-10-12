@@ -84,11 +84,11 @@ def create_ri_ctc() -> Reform:
             maximum = tax_unit("ri_ctc_maximum", period)
 
             # Check if stepped phaseout is active (non-zero increment)
-            stepped_increment = p.stepped_phaseout.increment
+            stepped_increment = p.stepped_phaseout.increment[filing_status]
             stepped_active = stepped_increment > 0
 
             # Stepped phaseout calculation
-            stepped_threshold = p.stepped_phaseout.threshold
+            stepped_threshold = p.stepped_phaseout.threshold[filing_status]
             rate_per_step = p.stepped_phaseout.rate_per_step
             stepped_excess = max_(agi - stepped_threshold, 0)
             # Number of steps (ceiling of excess / increment, avoiding div by zero)

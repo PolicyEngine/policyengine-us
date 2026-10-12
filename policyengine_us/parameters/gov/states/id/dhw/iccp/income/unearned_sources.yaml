@@ -1,0 +1,30 @@
+description: Idaho counts these unearned income sources under the Idaho Child Care Program.
+values:
+  2022-03-17:
+    # social_security already includes retirement, disability, survivors, and dependents components.
+    - social_security
+    - ssi
+    - pension_income
+    - military_retirement_pay
+    - unemployment_compensation
+    - workers_compensation
+    - veterans_benefits
+    - child_support_received
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - rental_income
+    # Excluded by IDAPA 16.06.12.072 but not all have direct variables:
+    # educational funds, need-specific assistance, non-recurring lump sums,
+    # loans, TAFI, AABD, foster care payments, AmeriCorps/VISTA allowances,
+    # income tax refunds and EITC, work travel reimbursements, tribal income
+    # other than direct wages, adoption assistance, temporary Census income,
+    # ORR assistance, and WIA/WIOA benefits.
+
+metadata:
+  unit: list
+  period: year
+  label: Idaho Child Care Program countable unearned income sources
+  reference:
+    - title: IDAPA 16.06.12.071-072, Countable Income (p. 7) and Excluded Income (p. 8)
+      href: https://adminrules.idaho.gov/rules/current/16/160612.pdf#page=7

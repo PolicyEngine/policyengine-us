@@ -1,0 +1,15 @@
+description: Missouri property tax credit upper income limit for single homestead owners.
+values:
+  2008-08-28: 30_000
+  # Indexed annually for inflation (national CPI-U) from 2027-01-01;
+  # update when DOR publishes adjusted amounts.
+  2026-01-01: 42_200
+metadata:
+  unit: currency-USD
+  period: year
+  label: Missouri property tax credit upper income limit for single homestead owners
+  reference:
+    - title: MO Rev Stat § 135.030.1(1)
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=135.030&bid=6439
+    - title: MO Rev Stat § 135.030.1(1)(b), effective 2026-01-01
+      href: https://revisor.mo.gov/main/OneSection.aspx?section=135.030&bid=57542

@@ -34,3 +34,13 @@
     state_code: MT
   output:
     mt_tanf_payment_eligible_requirements: false
+
+- name: Case 5, reported SSI receipt makes the person payment ineligible.
+  period: 2022-01
+  input:
+    mt_tanf_immigration_status_eligible_person: true
+    ssi: 0
+    receives_ssi: true
+    state_code: MT
+  output:
+    mt_tanf_payment_eligible_requirements: false

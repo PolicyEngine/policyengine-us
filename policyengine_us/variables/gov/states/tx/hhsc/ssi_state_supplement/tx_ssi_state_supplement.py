@@ -6,7 +6,7 @@ class tx_ssi_state_supplement(Variable):
     entity = Person
     label = "Texas SSI State Supplement"
     unit = USD
-    definition_period = YEAR
+    definition_period = MONTH
     defined_for = "tx_ssi_state_supplement_eligible"
     reference = (
         "https://statutes.capitol.texas.gov/Docs/HR/htm/HR.32.htm",
@@ -18,4 +18,4 @@ class tx_ssi_state_supplement(Variable):
         p = parameters(period).gov.states.tx.hhsc.ssi_state_supplement
         pna = p.personal_needs_allowance
         federal_reduced = parameters(period).gov.ssa.ssi.amount.institutional.individual
-        return max_(pna - federal_reduced, 0) * MONTHS_IN_YEAR
+        return max_(pna - federal_reduced, 0)

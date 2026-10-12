@@ -1,53 +1,69 @@
-- name: Reported state income tax sim false
+- name: Household state income tax subtracts refundable credits
   period: 2021
   input:
-    simulation.reported_state_income_tax: false
     co_income_tax_before_refundable_credits: 3_000
     ne_income_tax_before_refundable_credits: 2_000
-    pa_income_tax: 100
+    pa_income_tax_before_refundable_credits: 100
     hi_refundable_credits: 300
     ok_refundable_credits: 500
     ut_refundable_credits: 400
   output:
     household_state_income_tax: 3_900
 
-- name: Reported state income tax sim, one head
-  period: 2021
-  input:
-    simulation.reported_state_income_tax: true
-    people:
-      person1:
-        is_tax_unit_head: true
-    spm_units:
-      spm_unit:
-        members: [person1]
-        spm_unit_state_tax_reported: 1_000
-  output:
-    household_state_income_tax: 1_000
-
-- name: Reported state income tax sim, one head
-  period: 2021
-  input:
-    simulation.reported_state_income_tax: true
-    people:
-      person1:
-        is_tax_unit_head: true
-      person2:
-        is_tax_unit_head: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_state_tax_reported: 1_000
-  output:
-    household_state_income_tax: 500
-
-- name: Wisconsin household state income tax follows the lower exclusion path
+- name: Wisconsin household state income tax follows the lower elected exclusion path
   period: 2025
+  # 2025 Schedule SB instructions, p. 7, line 16: the exclusion forfeits
+  # Form 1 credits on lines 13-20 and 30-35, including the earned income credit.
+  # https://www.revenue.wi.gov/TaxForms2025/2025-ScheduleSB-Inst.pdf#page=7
+  # Form 1, p. 2, lines 12, 21-22, and 30: standard net tax is
+  # 5_000 - 500 - 200 = 4_300; elected exclusion tax is 3_000 with no credits.
+  # https://www.revenue.wi.gov/TaxForms2025/2025-Form1.pdf#page=2
   input:
     state_code: WI
     wi_income_tax_before_credits: 5_000
     wi_non_refundable_credits: 500
+    wi_retirement_income_exclusion_amount: 24_000
     wi_retirement_income_exclusion_tax: 3_000
-    wi_refundable_credits: 200
+    wi_earned_income_credit: 200
+    wi_homestead_credit: 0
+    # Isolate Wisconsin tax in household net income, preserving its aggregation.
+    household_market_income: 10_000
+    household_benefits: 0
+    household_health_costs: 0
+    income_tax_before_refundable_credits: 0
+    income_tax_refundable_credits: 0
+    employee_payroll_tax: 0
+    self_employment_tax: 0
+    flat_tax: 0
+    local_income_tax_before_refundable_credits: 0
+    local_occupational_tax: 0
+    state_use_tax: 0
   output:
+    wi_retirement_income_exclusion_elected: true
+    wi_income_tax_before_refundable_credits: 3_000
+    wi_refundable_credits: 0
+    wi_income_tax: 3_000
     household_state_income_tax: 3_000
+    household_net_income: 7_000  # 10_000 - 3_000, with no refundable credits.
+
+- name: Case 3, New Jersey household state income tax uses filing-threshold zero-out.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        taxable_interest_income: 9_611.82
+        short_term_capital_gains: 42.93
+        long_term_capital_gains: 314.91
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
+  output:
+    nj_income_tax: 0
+    household_state_income_tax: 0

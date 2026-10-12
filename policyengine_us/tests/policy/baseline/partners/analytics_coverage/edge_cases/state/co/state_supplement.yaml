@@ -1,0 +1,199 @@
+# YAML regression-test fixture (policyengine-us partner edge cases).
+# CO AND-CS state supplement (9 CCR 2503-5 Section 3.546), 2026 parameters:
+# ages 0-59, blind/disabled SSI-eligible; benefit = 994/month grant standard (2026)
+# minus (SSI received + SSI-countable income). The 2026 single SSI FBR
+# (994/mo) exceeds 967, so singles on full SSI get 0; members of an SSI
+# couple (couple FBR 1,491/mo -> 745.50 each) get a positive supplement.
+- name: co_state_supplement_disabled_ssi_couple_positive (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 50
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+      spouse:
+        age: 52
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id001
+        - head
+        - spouse
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id001
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: true
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_couple:
+        members:
+        - head
+        - spouse
+  output:
+    tax_units:
+      tax_unit:
+        co_eitc: 0.0
+        co_ctc: 0.0
+        co_care_worker_credit: 0.0
+        adjusted_gross_income: 0.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        # Each member of the SSI couple receives 1,491 / 2 = 745.50/mo SSI;
+        # supplement = (994 - 745.50) x 12 = 248.50 x 12 = 2,982/yr.
+        # The model pays it only to the SSI "eligible individual" (the head):
+        # co_state_supplement_eligible checks is_ssi_eligible_individual,
+        # which is false for the designated "eligible spouse".
+        co_state_supplement: 2_982.0
+        co_oap: 0.0
+      spouse:
+        co_family_affordability_credit: 0.0
+        # The tax-unit spouse is the SSI "eligible spouse", not an "eligible
+        # individual", so the current model pays them no AND-CS supplement.
+        co_state_supplement: 0.0
+        co_oap: 0.0
+- name: co_state_supplement_single_disabled_fully_offset_by_ssi (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 59
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id002
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        co_eitc: 0.0
+        co_ctc: 0.0
+        co_care_worker_credit: 0.0
+        adjusted_gross_income: 0.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        # Benefit-standard offset pin: the 2026 grant standard (994/mo) exactly
+        # equals the single SSI FBR -> max(0, 994 - 994) = 0 despite full
+        # AND-CS eligibility; a standard increase above the FBR flips this.
+        co_state_supplement: 0.0
+        co_oap: 0.0
+- name: co_state_supplement_age_60_handoff_to_oap (co)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 60
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        immigration_status_str: CITIZEN
+        employment_income_before_lsr: 0
+        long_term_capital_gains_before_response: 0
+        rent: 0
+        was_in_foster_care: false
+        is_full_time_student: false
+        ssi_countable_resources: 0
+        co_care_worker_credit_eligible_care_worker: false
+    households:
+      household:
+        members: &id003
+        - head
+        state_code: CO
+        zip_code: '80014'
+        county_str: ARAPAHOE_COUNTY_CO
+    spm_units:
+      spm_unit:
+        members: *id003
+    tax_units:
+      tax_unit:
+        members: *id003
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id003
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    tax_units:
+      tax_unit:
+        co_eitc: 0.0
+        co_ctc: 0.0
+        co_care_worker_credit: 0.0
+        adjusted_gross_income: 0.0
+    people:
+      head:
+        co_family_affordability_credit: 0.0
+        # Age 60 exits the AND-CS 0-59 age range (demographic-route zero)...
+        co_state_supplement: 0.0
+        # ...and enters OAP: disabled -> SSI 994 x 12 = 11,928;
+        # OAP = 12,384 - 11,928 = 456.
+        co_oap: 456.0

@@ -64,3 +64,37 @@
     # $1,000 - $90 = $910
     # $910 × 0.58 = $527.80
     ny_tanf_countable_earned_income: 527.8
+
+# Issue #8835: annual June-1 earned income disregard increases
+# (62% from 2023-06-01, 63% from 2024-06-01, 64% from 2025-06-01).
+# Tested at January periods, which are in effect for each rate:
+# 2024-01 -> 62%, 2025-01 -> 63%, 2026-01 -> 64%.
+- name: Case 7, earned income disregard is 62% (effective 2023-06-01).
+  period: 2024-01
+  input:
+    state_code: NY
+    tanf_gross_earned_income: 500
+  output:
+    # $500 × (1 - 0.62) = $190
+    # $190 - $150 = $40
+    ny_tanf_countable_earned_income: 40
+
+- name: Case 8, earned income disregard is 63% (effective 2024-06-01).
+  period: 2025-01
+  input:
+    state_code: NY
+    tanf_gross_earned_income: 1_000
+  output:
+    # $1,000 × (1 - 0.63) = $370
+    # $370 - $150 = $220
+    ny_tanf_countable_earned_income: 220
+
+- name: Case 9, earned income disregard is 64% (effective 2025-06-01).
+  period: 2026-01
+  input:
+    state_code: NY
+    tanf_gross_earned_income: 1_000
+  output:
+    # $1,000 × (1 - 0.64) = $360
+    # $360 - $150 = $210
+    ny_tanf_countable_earned_income: 210

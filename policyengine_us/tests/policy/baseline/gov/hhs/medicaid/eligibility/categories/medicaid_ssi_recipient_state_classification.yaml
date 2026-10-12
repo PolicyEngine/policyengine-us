@@ -1,0 +1,27 @@
+- name: Case 1, California is a Section 1634 state.
+  period: 2026
+  input:
+    state_code: CA
+  output:
+    medicaid_ssi_recipient_state_classification: SECTION_1634
+
+- name: Case 2, Alaska is an SSI-criteria state.
+  period: 2026
+  input:
+    state_code: AK
+  output:
+    medicaid_ssi_recipient_state_classification: SSI_CRITERIA
+
+- name: Case 3, Oklahoma is an SSI-criteria state.
+  period: 2026
+  input:
+    state_code: OK
+  output:
+    medicaid_ssi_recipient_state_classification: SSI_CRITERIA
+
+- name: Case 4, Connecticut is a Section 209(b) state.
+  period: 2026
+  input:
+    state_code: CT
+  output:
+    medicaid_ssi_recipient_state_classification: SECTION_209B

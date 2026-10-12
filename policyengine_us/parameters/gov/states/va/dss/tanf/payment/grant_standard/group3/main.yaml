@@ -1,6 +1,7 @@
 description: Virginia provides up to this amount to families living in group III localities under the Temporary Assistance for Needy Families program.
 
 metadata:
+  propagate_metadata_to_children: true
   unit: currency-USD
   period: month
   breakdown:
@@ -8,7 +9,7 @@ metadata:
   label: Virginia TANF assistance for group III localities
   reference:
     - title: Virginia TANF Manual Section 302 - Grant Standards
-      href: https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=26
+      href: https://web.archive.org/web/20210719231146/https://www.dss.virginia.gov/files/division/bp/tanf/manual/300_11-20.pdf#page=26
 
 1: 
   2020-07-01: 316

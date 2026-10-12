@@ -1,0 +1,16 @@
+description: Missouri deducts this share of gross earned income as the personal standard for work expenses under the Supplemental Aid to the Blind program.
+values:
+  # SAB began on January 1, 1974 (SSA, State Assistance Programs for SSI
+  # Recipients, January 2011); the manual section is undated.
+  1974-01-01: 0.1
+metadata:
+  unit: /1
+  period: year
+  label: Missouri SAB personal standard rate
+  reference:
+    - title: 13 CSR 40-2.120(8) — Standard Earned Income Exemption Table
+      href: https://www.sos.mo.gov/cmsimages/adrules/csr/current/13csr/13c40-2.pdf#page=16
+    - title: MO DSS Supplemental Aid to the Blind Manual § 0410.015.05.20 — Standard Earned Income Exemption Table
+      href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0410-000-00/0410-015-00/0410-015-05/0410-015-05-20/
+    - title: MO DSS Supplemental Aid to the Blind Manual § 0410.015.05.25 — Other Expenses of Producing Income
+      href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0410-000-00/0410-015-00/0410-015-05/0410-015-05-25/

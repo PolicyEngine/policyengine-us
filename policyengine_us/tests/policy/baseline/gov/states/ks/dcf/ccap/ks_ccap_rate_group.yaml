@@ -1,0 +1,77 @@
+# Rate groups (Appendix C-18 footer):
+#   Group 1 = Johnson county only.
+#   Group 2 = Butler, Douglas, Ellis, Geary, Greeley, Harvey, Jefferson,
+#     Leavenworth, Miami, Pottawatomie, Riley, Rush, Scott, Sedgwick, Seward,
+#     Shawnee, Wyandotte.
+#   Group 3 = all other counties (default, statewide base rates).
+
+- name: Case 1, Johnson county is Group 1.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+        county: JOHNSON_COUNTY_KS
+  output:
+    ks_ccap_rate_group: GROUP_1
+
+- name: Case 2, Sedgwick county is Group 2.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+        county: SEDGWICK_COUNTY_KS
+  output:
+    ks_ccap_rate_group: GROUP_2
+
+- name: Case 3, Wyandotte county is Group 2.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+        county: WYANDOTTE_COUNTY_KS
+  output:
+    ks_ccap_rate_group: GROUP_2
+
+- name: Case 4, county not in Group 1 or 2 falls to Group 3.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+        county: FINNEY_COUNTY_KS
+  output:
+    # Finney is not listed in Group 1 or Group 2 -> statewide base (Group 3).
+    ks_ccap_rate_group: GROUP_3
+
+- name: Case 5, non-Kansas household falls to Group 3 default.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+    households:
+      household:
+        members: [person1]
+        # A Missouri household: the Kansas mask prevents a stray county match.
+        state_code: MO
+  output:
+    ks_ccap_rate_group: GROUP_3

@@ -1,0 +1,330 @@
+# Unit tests for Washington Cascade Care Savings tax-unit eligibility.
+#
+# wa_cascade_care_savings_eligible (TaxUnit, bool) is true when:
+#   in_effect (2026+) AND aca_magi_fraction <= 2.5 (fpl_limit) AND the tax unit
+#   has at least one member in Group 1 or Group 3.
+#     Group 1: is_aca_ptc_eligible (federally subsidized enrollee).
+#     Group 3: immigration_status == UNDOCUMENTED AND NOT
+#              wa_apple_health_expansion_eligible (undocumented, but not covered
+#              by the Apple Health Expansion Medicaid proxy).
+# All person-level gates and aca_magi_fraction are supplied directly so each
+# expected value is hand-verifiable.
+
+# --- Income limit boundary at 250% FPL (Group 1 member present) ---
+
+- name: Case 1, income just below 250% FPL with a Group 1 member is eligible.
+  # aca_magi_fraction 2.49 <= 2.5 and person1 is Group 1 -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.49
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: true
+
+- name: Case 2, income exactly at 250% FPL with a Group 1 member is eligible.
+  # aca_magi_fraction 2.5 <= 2.5 (inclusive "up to 250%") -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.5
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: true
+
+- name: Case 3, income just above 250% FPL is ineligible.
+  # aca_magi_fraction 2.51 > 2.5 -> income-ineligible even with a Group 1 member.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.51
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: false
+
+# --- Group membership paths ---
+
+- name: Case 4, undocumented member not Apple-Health-eligible is Group 3, eligible.
+  # immigration_status UNDOCUMENTED and wa_apple_health_expansion_eligible false
+  # -> Group 3. Income 2.0 <= 2.5 -> eligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: true
+
+- name: Case 5, undocumented member who IS Apple-Health-eligible is not Group 3.
+  # wa_apple_health_expansion_eligible true excludes the member from Group 3
+  # (avoids double counting the Medicaid proxy); no other eligible member ->
+  # tax unit is ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: false
+
+- name: Case 6, no Group 1 or Group 3 member is ineligible.
+  # person1 is not APTC-eligible and is a citizen (not undocumented) -> neither
+  # group -> ineligible despite income within limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.5
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: false
+
+# --- Geographic and time gates ---
+
+- name: Case 7, non-Washington household is ineligible.
+  # defined_for StateCode.WA -> a Group 1 member in Oregon is still ineligible.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    wa_cascade_care_savings_eligible: false
+
+- name: Case 8, program not in effect in 2025 is ineligible.
+  # in_effect is false before 2026-01-01 -> a Group 1 member is ineligible in 2025.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: false
+
+# --- Larger mixed household and open-ended in_effect ---
+
+- name: Case 9, larger household eligible via a Group 1 member with mixed members.
+  # person1 Group 1; person2 undocumented, Apple-Health-eligible (excluded from
+  # Group 3); person3 citizen, not APTC-eligible (neither group). At least one
+  # eligible member (person1) + income 1.6 <= 2.5 -> eligible. Confirms the
+  # has_eligible_member add() > 0 gate fires with only a partial-membership mix.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 45
+        is_aca_ptc_eligible: true
+      person2:
+        age: 30
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: true
+      person3:
+        age: 10
+        is_aca_ptc_eligible: false
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        aca_magi_fraction: 1.6
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: true
+
+# --- Group 3 gate hardening: Apple-Health-for-Kids child, mutual exclusivity,
+#     and above-limit ineligibility with a Group-3 member ---
+
+- name: Case 9b, sole undocumented Apple-Health-for-Kids child is NOT eligible.
+  # person1: age 10, UNDOCUMENTED, wa_apple_health_kids_income_eligible true ->
+  # under 19 and income-eligible so wa_apple_health_kids_eligible is true. Under
+  # the post-C1 gate Group 3 excludes Apple-Health-for-Kids children, so this
+  # child is NOT a Group 3 member. With no other member, the tax unit has no
+  # Group 1 or Group 3 member -> ineligible despite income within the limit.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        is_aca_ptc_eligible: false
+        wa_apple_health_kids_income_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: false
+
+- name: Case 9c, undocumented child above the kids income limit is a Group 3 member.
+  # person1: age 10, UNDOCUMENTED, wa_apple_health_kids_income_eligible false ->
+  # NOT Apple-Health-for-Kids eligible, and children cannot get expansion
+  # (age < 19) -> the child IS a Group 3 member. Income 1.4 <= 2.5 -> the tax unit
+  # is eligible on the strength of the child alone. Companion to Case 9b: only the
+  # kids income eligibility differs and it toggles eligibility.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 10
+        immigration_status: UNDOCUMENTED
+        is_aca_ptc_eligible: false
+        wa_apple_health_kids_income_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: true
+
+- name: Case 9d, member flagged both APTC-eligible AND undocumented stays eligible.
+  # Mutual-exclusivity pin: is_aca_ptc_eligible true AND UNDOCUMENTED with
+  # wa_apple_health_expansion_eligible false. Under the post-fix gate the person
+  # is Group 1 only (Group 3 adds ~is_aca_ptc_eligible), but the tax unit still
+  # has an eligible member -> eligible. The dollar contract ($55 not $305) is
+  # pinned in wa_cascade_care_savings.yaml Case 19.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 1.4
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: true
+
+- name: Case 9e, income above 250% FPL with a Group-3 member is ineligible.
+  # Closes the matrix: prior above-limit cases (Case 3) used a Group 1 member.
+  # Here the sole member is Group 3 (UNDOCUMENTED, not Apple-Health-eligible),
+  # is_aca_ptc_eligible false explicitly. aca_magi_fraction 2.51 > 2.5 (fpl_limit)
+  # -> income-ineligible despite the Group 3 member.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: false
+        immigration_status: UNDOCUMENTED
+        wa_apple_health_expansion_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.51
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: false
+
+- name: Case 10, program still in effect in 2027 (open-ended in_effect).
+  # in_effect has no end date, so a Group 1 member within the income limit is
+  # eligible in 2027 just as in 2026.
+  period: 2027
+  input:
+    people:
+      person1:
+        age: 40
+        is_aca_ptc_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        aca_magi_fraction: 2.0
+    households:
+      household:
+        members: [person1]
+        state_code: WA
+  output:
+    wa_cascade_care_savings_eligible: true

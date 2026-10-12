@@ -1,0 +1,30 @@
+description: Maine counts these income sources as unearned income under the Temporary Assistance for Needy Families program.
+values:
+  2013-11-01:
+    - veterans_benefits
+    - survivor_benefits
+    - rental_income
+    # Chapter III, Section B(2)(a) excludes the first $50 of child support
+    # per month; the exclusion is applied downstream
+    - child_support_received
+    - alimony_income
+    # Chapter III, Section B(2)(k) excludes gifts of money up to $150 per
+    # household in three months; the exclusion is not modeled
+    - financial_assistance
+    - dividend_income
+    - interest_income
+    - miscellaneous_income
+    - pension_income
+    - unemployment_compensation
+    - gi_cash_assistance
+    - social_security
+    # Chapter III, Section B(2)(d) excludes General Assistance, so
+    # general_assistance is not counted
+
+metadata:
+  unit: list
+  period: year
+  label: Maine TANF unearned income sources
+  reference:
+    - title: 10-144 C.M.R. Chapter 331, Chapter III - Eligibility Requirements (Financial), Section B
+      href: https://www.law.cornell.edu/regulations/maine/C-M-R-10-144-ch-331-III

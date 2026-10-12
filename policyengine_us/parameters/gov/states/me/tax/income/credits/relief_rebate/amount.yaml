@@ -1,10 +1,18 @@
-description: Maine provides a relief rebate of this amount to each spouse in the household.
+description: Maine provides this amount to each eligible head and spouse under the Maine Relief Payment program.
 values:
+  # The $850 relief payment was a one-time payment based on the 2021 Maine
+  # individual income tax return and mailed in 2022, so it is booked to 2021.
+  # Joint filers receive 2 x $850 = $1,700. The explicit zeros keep it out of
+  # other years. Without the 2020 zero, backdating would copy the 2021 value
+  # into 2015-2020, where the backdated 2021 refundable credits list would pay
+  # it.
+  2020-01-01: 0
   2021-01-01: 850
+  2022-01-01: 0
 metadata:
   unit: currency-USD
   period: year
   label: Maine Relief Rebate amount
   reference:
-    - title: State of Maine, Office of Governor Mills, Relief Checks
+    - title: State of Maine, Office of Governor Mills, Relief Checks, Who Is Eligible for $850 and When Will I Receive My $850
       href: https://www.maine.gov/governor/mills/relief-checks

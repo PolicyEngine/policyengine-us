@@ -1,0 +1,202 @@
+# Tests for ut_ccap_eligible (SPMUnit, MONTH, bool).
+# The unit must contain at least one eligible child (R986-700-702), have
+# countable income at or below 85% of the state median income
+# (R986-700-710(6)(b)), pass the CCDF asset test (45 CFR 98.20), meet the
+# work-hour requirements (R986-700-709), and have a copayment no larger
+# than the cost of care (R986-700-707). Parents are identified with
+# own_children_in_household and given 40 weekly hours explicitly, so
+# the parent passes the activity test. Each case sets
+# billed child care expenses above the copayment so the targeted gate is
+# the one that fails.
+
+- name: Case 1, working single parent with an eligible child qualifies.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000  # 3,000/mo
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Countable income: 3,000 - 100 - 100 = 2,800, below the size 2
+    # dynamic ceiling (85% of the state median income), and the group 5
+    # copayment of 109 is below the 1,000 monthly cost of care.
+    ut_ccap_eligible: true
+
+- name: Case 2, no eligible child in the unit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 14
+        is_disabled: false  # over the age 13 limit, not special needs
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_eligible: false
+
+- name: Case 3, countable income above 85 percent of the state median income.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 240_000  # 20,000/mo
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Countable income of 19,800 far exceeds the size 2 ceiling.
+    ut_ccap_income_eligible: false
+    ut_ccap_eligible: false
+
+- name: Case 4, assets above the CCDF limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_assets: 1_500_000  # above the 1,000,000 CCDF limit
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_eligible: false
+
+- name: Case 5, single parent below the 15-hour work requirement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        weekly_hours_worked_before_lsr: 10
+        own_children_in_household: 1
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    ut_ccap_activity_eligible: false
+    ut_ccap_eligible: false
+
+- name: Case 6, out-of-state household is ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 36_000
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: CA
+  output:
+    ut_ccap_eligible: false
+
+- name: Case 7, copayment exceeding the cost of care makes the family ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5,000/mo
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 2_400  # 200/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Countable income: 5,000 - 100 - 100 = 4,800 -> size 2 group 13 ->
+    # copay 280, which exceeds the 200 monthly cost of care
+    # (R986-700-707). Income itself stays below the 85% SMI ceiling.
+    ut_ccap_income_eligible: true
+    ut_ccap_eligible: false
+
+- name: Case 8, copayment exactly equal to the cost of care stays eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 5,000/mo
+        weekly_hours_worked_before_lsr: 40
+        own_children_in_household: 1
+      person2:
+        age: 3
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_pre_subsidy_childcare_expenses: 3_360  # 280/mo
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Same income as Case 7 (size 2 group 13 -> copay 280), but the cost
+    # of care equals the copayment: only a copayment exceeding the cost of
+    # care disqualifies the family (R986-700-707), so the boundary stays
+    # eligible.
+    ut_ccap_eligible: true

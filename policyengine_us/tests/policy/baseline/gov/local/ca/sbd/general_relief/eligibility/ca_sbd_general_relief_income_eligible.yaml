@@ -1,0 +1,98 @@
+# A unit is income-eligible when countable income is strictly below the
+# maximum basic grant for its size; income exactly at the grant would yield
+# a zero payment, so it is treated as not in need. Size-1 grant at 2026-01
+# (7/1/25 era) is $486.
+- name: Case 1, zero countable income is income-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 1
+        ca_sbd_general_relief_countable_income: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_income_eligible: true
+
+- name: Case 2, countable income one dollar below the grant is income-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 1
+        ca_sbd_general_relief_countable_income: 485
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 485 < 486.
+    ca_sbd_general_relief_income_eligible: true
+
+- name: Case 3, countable income exactly at the grant is not income-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 1
+        ca_sbd_general_relief_countable_income: 486
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The comparison is strict at the cent-rounded value: 486 < 486 is
+    # false.
+    ca_sbd_general_relief_income_eligible: false
+
+- name: Case 4, countable income one dollar above the grant is not income-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 1
+        ca_sbd_general_relief_countable_income: 487
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_income_eligible: false
+
+- name: Case 5, negative countable income is income-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_sbd_general_relief_assistance_unit_size: 1
+        ca_sbd_general_relief_countable_income: -100
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # A net loss (e.g., rental) can push countable income negative; the
+    # benefit formula separately floors income at zero.
+    ca_sbd_general_relief_income_eligible: true

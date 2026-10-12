@@ -73,3 +73,87 @@
       state_code: MI
   output: # 20000 - 1000 - (500 > 100) - 2000 < 20000
     mi_standard_deduction_tier_three: 20_000
+
+- name: 2025 tier 3 standard deduction is reduced by taxable Social Security
+  period: 2025
+  input:
+    people:
+      person1:
+        taxable_social_security: 9_260
+        military_service_income: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_standard_deduction_tier_three_eligible: true
+        mi_personal_exemptions: 5_950
+        mi_expanded_retirement_benefits_deduction: 0
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    mi_standard_deduction_tier_three: 4_790
+
+- name: 2026 PA 24 removes the taxable Social Security reduction
+  period: 2026
+  input:
+    people:
+      person1:
+        taxable_social_security: 9_260
+        military_service_income: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_standard_deduction_tier_three_eligible: true
+        mi_personal_exemptions: 5_950
+        mi_expanded_retirement_benefits_deduction: 0
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    mi_standard_deduction_tier_three: 14_050
+
+- name: 2026 PA 24 does not remove the military service income reduction
+  period: 2026
+  input:
+    people:
+      person1:
+        taxable_social_security: 9_260
+        military_service_income: 500
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_standard_deduction_tier_three_eligible: true
+        mi_personal_exemptions: 5_950
+        mi_expanded_retirement_benefits_deduction: 0
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    mi_standard_deduction_tier_three: 13_550
+
+- name: 2029 tier 3 standard deduction is again reduced by taxable Social Security
+  period: 2029
+  input:
+    people:
+      person1:
+        taxable_social_security: 9_260
+        military_service_income: 0
+        is_tax_unit_head_or_spouse: true
+    tax_units:
+      tax_unit:
+        mi_standard_deduction_tier_three_eligible: true
+        mi_personal_exemptions: 5_950
+        mi_expanded_retirement_benefits_deduction: 0
+        members: [person1]
+        filing_status: SINGLE
+    household:
+      members: [person1]
+      state_code: MI
+  output:
+    mi_standard_deduction_tier_three: 4_790

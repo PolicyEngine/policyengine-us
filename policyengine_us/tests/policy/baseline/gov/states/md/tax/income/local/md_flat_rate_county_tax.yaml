@@ -1,0 +1,23 @@
+- name: Allegany County MD flat rate county tax baseline (2025)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code_str: MD
+    county_str: ALLEGANY_COUNTY_MD
+    md_taxable_income: 30_000
+  output:
+    # 3.03% Allegany rate * 30,000 = 909
+    md_flat_rate_county_tax: 909
+
+- name: Unknown county in an MD household falls back to Allegany County (issue #8975)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code_str: MD
+    county_str: UNKNOWN
+    md_taxable_income: 30_000
+  output:
+    # gov.local.md.flat_rate has no UNKNOWN key; the formula falls back to
+    # ALLEGANY_COUNTY_MD, so this must equal the Allegany baseline above.
+    # Before the fix this raised ParameterNotFoundError instead of computing.
+    md_flat_rate_county_tax: 909

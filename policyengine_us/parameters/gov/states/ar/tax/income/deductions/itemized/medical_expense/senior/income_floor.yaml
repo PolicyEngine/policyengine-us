@@ -1,0 +1,34 @@
+description: Arkansas deducts medical and dental expenses exceeding this share of Arkansas adjusted gross income when the filer or spouse is at or above the senior age threshold.
+values:
+  2011-01-01: 0.075
+  # The adopted 26 U.S.C. § 213(f) senior rule covers only 2013 through 2016.
+  2017-01-01: 0.1
+metadata:
+  unit: /1
+  period: year
+  label: Arkansas medical expense deduction senior income floor
+  reference:
+    - title: Ark. Code § 26-51-423(a)(2), as amended by Act 787 of 2011, § 21 (adopts 26 U.S.C. § 213 as in effect on January 1, 2011)
+      href: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2011R%2FPublic%2F&file=787.pdf&ddBienniumSession=2011%2F2011R#page=10
+    - title: Ark. Code § 26-51-423(a)(1)(B), as renumbered by Act 614 of 2025, § 4
+      href: https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2025R%2FPublic%2F&file=614.pdf&ddBienniumSession=2025%2F2025R#page=2
+    - title: 26 U.S.C. § 213, 2010 edition (as in effect on January 1, 2011; the 10% floor and subsection (f) appear in the Pub. L. 111-148 amendment note)
+      href: https://www.govinfo.gov/content/pkg/USCODE-2010-title26/html/USCODE-2010-title26-subtitleA-chap1-subchapB-partVII-sec213.htm
+    - title: Pub. L. 111-148, § 9013 (raises the 26 U.S.C. § 213(a) floor to 10% and adds the age 65 rule in § 213(f), for taxable years beginning after December 31, 2012)
+      href: https://www.govinfo.gov/content/pkg/PLAW-111publ148/pdf/PLAW-111publ148.pdf#page=750
+    - title: 26 U.S.C. § 213(a) and (f), 2012 edition
+      href: https://www.govinfo.gov/content/pkg/USCODE-2012-title26/html/USCODE-2012-title26-subtitleA-chap1-subchapB-partVII-sec213.htm
+    - title: Arkansas 2011 Form AR3, Line 3 (7.5%)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/AR3_2011_FI.pdf#page=1
+    - title: Arkansas 2012 Form AR3, Line 3 (7.5%)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/AR3_2012_RE.pdf#page=1
+    - title: Arkansas 2013 Form AR3, Line 3B (7.5% if you or your spouse were 65 or over)
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/AR3_2013_RE.pdf#page=1
+    - title: 2014 Arkansas Individual Income Tax Instructions, Form AR3 Line 3B
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2014.pdf#page=18
+    - title: 2015 Arkansas Individual Income Tax Instructions, Form AR3 Line 3B
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2015.pdf#page=42
+    - title: 2016 Arkansas Individual Income Tax Instructions, Form AR3 Line 3B
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/LongBookwTaxTables_2016.pdf#page=38
+    - title: 2017 Arkansas Individual Income Tax Instructions, Form AR3 Line 3
+      href: https://www.dfa.arkansas.gov/wp-content/uploads/AR1000FandAR1000NRInstructions.pdf#page=38

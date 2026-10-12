@@ -6,18 +6,29 @@ metadata:
   period: year
   label: Massachusetts CCFA reimbursement rates amount ratio
   reference:
+    - title: FY 2026 Child Care Financial Assistance Daily Reimbursement Rates
+      href: https://www.mass.gov/doc/eecfy26-rate-increase-chart/download#page=1
     - title: FY 2025 Child Care Financial Assistance Daily Reimbursement Rates
-      href: https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download
-    - title: FY 2024 Child Care Financial Assistance Daily Reimbursement Rates
-      href: https://www.mass.gov/doc/fiscal-year-2024-child-care-financial-assistance-daily-reimbursement-rates/download
+      href: https://www.mass.gov/doc/fiscal-year-2025-child-care-financial-assistance-daily-reimbursement-rates/download#page=1
+    - title: FY 2024 Child Care Financial Assistance Daily Reimbursement Rates (revised July 1, 2024)
+      href: https://www.mass.gov/doc/fiscal-year-2024-child-care-financial-assistance-daily-reimbursement-rates/download#page=1
+    - title: Financial Assistance Policy Guide, Rates
+      href: https://www.mass.gov/doc/eecs-financial-assistance-policy-guide-february-1-2022/download#page=124
 
+# The second threshold is the part-time hour boundary: 6 or fewer hours under
+# the 2022 guide and the FY2024 rate sheet, 5 or fewer from the FY2025 rate
+# sheet. Keep it in step with copay/maximum_part_time_daily_hours.yaml. The
+# ratio formula assumes full-time care when daily hours are unreported, unless
+# a school-age family child care before/after schedule establishes part-day care.
+# Before and after school rate columns already incorporate partial-day pricing
+# and do not receive a second reduction.
 brackets:
   - threshold:
-      2023-07-01: 0 
+      2023-07-01: -.inf
     amount:
       2023-07-01: 0.6
   - threshold:
-      2023-07-01: 7
-      2024-07-01: 6
+      2023-07-01: 6
+      2024-07-01: 5
     amount:
       2023-07-01: 1

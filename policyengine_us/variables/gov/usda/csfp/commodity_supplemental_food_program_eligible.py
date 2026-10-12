@@ -19,5 +19,24 @@ class commodity_supplemental_food_program_eligible(Variable):
         tx_income_eligible = person("tx_dta_csfp_income_eligible", period)
         state_code = person.household("state_code", period)
         in_tx = state_code == StateCode.TX
+        in_ks = state_code == StateCode.KS
+        in_ma = state_code == StateCode.MA
+        in_il = state_code == StateCode.IL
         income_eligible = where(in_tx, tx_income_eligible, federal_income_eligible)
-        return age_eligible & income_eligible
+        # Kansas CSFP State Plan (effective 2025-04-11), page 4, under the
+        # 7 CFR 247.9(b)(1) state option: participation in a listed program
+        # bypasses the income limit only. The helper is monthly; reading it at
+        # the year period takes the December value, so a person eligible
+        # earlier in the year but not in December is not counted here.
+        income_eligible = income_eligible | person(
+            "ks_dcf_csfp_categorically_eligible", period
+        )
+        ks_county_eligible = person.household("ks_dcf_csfp_county_eligible", period)
+        ma_county_eligible = person.household("ma_dese_csfp_county_eligible", period)
+        il_county_eligible = person.household("il_dhs_csfp_county_eligible", period)
+        county_eligible = select(
+            [in_ks, in_ma, in_il],
+            [ks_county_eligible, ma_county_eligible, il_county_eligible],
+            default=True,
+        )
+        return age_eligible & income_eligible & county_eligible

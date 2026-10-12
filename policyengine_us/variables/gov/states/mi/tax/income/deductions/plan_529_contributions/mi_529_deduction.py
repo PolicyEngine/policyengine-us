@@ -8,7 +8,7 @@ class mi_529_deduction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "http://legislature.mi.gov/doc.aspx?mcl-206-30",
+        "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-206-30",
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/Forms/IIT/TY2024/MI-1040-Instructions.pdf#page=13",
     )
     defined_for = StateCode.MI

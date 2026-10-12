@@ -1,0 +1,41 @@
+# 2026 Nebraska bracket thresholds, from the DOR 2026 Nebraska Estimated Income Tax
+# Rate Schedule (Form 1040N-ES, 8-014-2025 Rev. 11-2025), page 5.
+# https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_1040N-ES.pdf#page=5
+# Single 2026 schedule: 0-4,130 @ 2.46%; 4,130-24,760 @ 3.51% (base 101.60);
+# 24,760-39,900 @ 4.55% (base 825.71); 39,900+ @ 4.55% (base 1,514.58).
+- name: NE 2026 single income tax before credits pins the 2026 indexed brackets
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SINGLE
+    ne_taxable_income: 30_000
+    state_code: NE
+  output:
+    # 825.71 + 4.55% x (30,000 - 24,760) = 1,064.13
+    ne_income_tax_before_credits: 1_064.13
+
+# Married filing jointly 2026 schedule: 0-8,250 @ 2.46%; 8,250-49,530 @ 3.51%
+# (base 202.95); 49,530-79,800 @ 4.55% (base 1,651.88); 79,800+ @ 4.55%.
+- name: NE 2026 joint income tax before credits pins the 2026 indexed brackets
+  absolute_error_margin: 0.02
+  period: 2026
+  input:
+    filing_status: JOINT
+    ne_taxable_income: 60_000
+    state_code: NE
+  output:
+    # 1,651.88 + 4.55% x (60,000 - 49,530) = 2,128.27
+    ne_income_tax_before_credits: 2_128.27
+
+# Head of household 2026 schedule: 0-7,700 @ 2.46%; 7,700-39,620 @ 3.51%
+# (base 189.42); 39,620-59,160 @ 4.55% (base 1,309.81); 59,160+ @ 4.55%.
+- name: NE 2026 head of household income tax before credits pins the 2026 indexed brackets
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    ne_taxable_income: 50_000
+    state_code: NE
+  output:
+    # 1,309.81 + 4.55% x (50,000 - 39,620) = 1,782.10
+    ne_income_tax_before_credits: 1_782.10

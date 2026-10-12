@@ -21,3 +21,30 @@
     state_code: MA
   output:
     ma_ccfa_immigration_status_eligible: false
+
+- name: Case 4, conditional entrant child qualifies with undocumented parent.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        immigration_status: UNDOCUMENTED
+        weekly_hours_worked_before_lsr: 30
+      person2:
+        age: 4
+        immigration_status: CONDITIONAL_ENTRANT
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    ma_ccfa_immigration_status_eligible:
+    - false
+    - true
+    ma_ccfa_eligible: true

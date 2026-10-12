@@ -1,47 +1,37 @@
-- name: Reported state income tax sim false
+- name: State income tax subtracts refundable credits
   period: 2021
   input:
-    simulation.reported_state_income_tax: false
     state_income_tax_before_refundable_credits: 1_000
     state_refundable_credits: 300
   output:
     state_income_tax: 700
 
-- name: Reported state income tax sim false, negative amount
+- name: State income tax can be negative after refundable credits
   period: 2021
   input:
-    simulation.reported_state_income_tax: false
     state_income_tax_before_refundable_credits: 0
     state_refundable_credits: 300
   output:
     state_income_tax: -300
 
-- name: Reported state income tax sim, one head
-  period: 2021
+- name: Case 3, New Jersey income tax uses filing-threshold zero-out.
+  period: 2025
+  absolute_error_margin: 0.01
   input:
-    simulation.reported_state_income_tax: true
     people:
       person1:
+        age: 40
+        taxable_interest_income: 9_611.82
+        short_term_capital_gains: 42.93
+        long_term_capital_gains: 314.91
         is_tax_unit_head: true
-    spm_units:
-      spm_unit:
+    tax_units:
+      tax_unit:
         members: [person1]
-        spm_unit_state_tax_reported: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: NJ
   output:
-    state_income_tax: 1_000
-
-- name: Reported state income tax sim, one head
-  period: 2021
-  input:
-    simulation.reported_state_income_tax: true
-    people:
-      person1:
-        is_tax_unit_head: true
-      person2:
-        is_tax_unit_head: true
-    spm_units:
-      spm_unit:
-        members: [person1, person2]
-        spm_unit_state_tax_reported: 1_000
-  output:
-    state_income_tax: 500
+    nj_income_tax: 0
+    state_income_tax: 0

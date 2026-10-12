@@ -8,8 +8,8 @@ class mn_cdcc_dependent_count(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf"
-        "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_22_0.pdf"
+        "https://www.revenue.state.mn.us/sites/default/files/2023-02/m1cd_21.pdf",
+        "https://www.revenue.state.mn.us/sites/default/files/2023-01/m1cd_22_0.pdf",
     )
     defined_for = "mn_cdcc_eligible"
 

@@ -45,3 +45,27 @@
     ri_agi: 400_000
   output:
     ri_standard_deduction_applicable_percentage: 0
+
+- name: RI 2026 standard deduction is fully allowed at the phase-out start
+  period: 2026
+  input:
+    state_code: RI
+    ri_agi: 261_000
+  output:
+    ri_standard_deduction_applicable_percentage: 1
+
+- name: RI 2026 standard deduction begins phasing out above the start
+  period: 2026
+  input:
+    state_code: RI
+    ri_agi: 261_001
+  output:
+    ri_standard_deduction_applicable_percentage: 0.8
+
+- name: RI 2026 standard deduction is fully phased out above the published range
+  period: 2026
+  input:
+    state_code: RI
+    ri_agi: 290_801
+  output:
+    ri_standard_deduction_applicable_percentage: 0

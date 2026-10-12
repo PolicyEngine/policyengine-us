@@ -111,3 +111,32 @@
     # 2 participants = $350 max
     # min($500, $350) = $350 (capped)
     vt_reach_up_dependent_care_deduction: 350
+
+- name: Case 6, disabled adult care expenses count toward the deduction.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 35
+        # Describe the legal scenario (Rule 2252.2(a) covers a disabled or
+        # seriously ill adult); the formula pools care_expenses without a
+        # disability filter and caps per participant, symmetric with the
+        # childcare side.
+        is_disabled: true
+        is_incapable_of_self_care: true
+        care_expenses: 1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Per Reach Up rule 2252.2(a): care of a disabled or seriously ill
+    # adult household member, capped at $175/month per participant.
+    # Expenses = 1,200 / 12 = 100/month, below the cap.
+    vt_reach_up_dependent_care_deduction: 100

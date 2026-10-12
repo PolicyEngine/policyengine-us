@@ -5,7 +5,7 @@
   output:
     state_sales_tax_income_bracket: 1
 
-- name: Interest in second income bracket
+- name: Tax-exempt interest of $45,000 is in the $40,000-$50,000 row
   period: 2023
   input:
     tax_exempt_interest_income: 45_000
@@ -23,5 +23,65 @@
   period: 2023
   input:
     workers_compensation: 320_000
+  output:
+    state_sales_tax_income_bracket: 19
+
+# IRS rows run from "At least" one threshold to "But less than" the next,
+# with a top row of "$300,000 or more" (2018-2025 Optional State Sales Tax
+# Tables, Instructions for Schedule A (Form 1040)).
+
+- name: Income just below $20,000 is in the $0-$20,000 row
+  period: 2022
+  input:
+    adjusted_gross_income: 19_999
+  output:
+    state_sales_tax_income_bracket: 1
+
+- name: Income of exactly $20,000 is in the $20,000-$30,000 row
+  period: 2022
+  input:
+    adjusted_gross_income: 20_000
+  output:
+    state_sales_tax_income_bracket: 2
+
+- name: Income of exactly $200,000 is in the $200,000-$225,000 row
+  period: 2024
+  input:
+    adjusted_gross_income: 200_000
+  output:
+    state_sales_tax_income_bracket: 15
+
+- name: Income just below $300,000 is in the $275,000-$300,000 row
+  period: 2025
+  input:
+    adjusted_gross_income: 299_999
+  output:
+    state_sales_tax_income_bracket: 18
+
+- name: Income of exactly $300,000 is in the $300,000 or more row
+  period: 2025
+  input:
+    adjusted_gross_income: 300_000
+  output:
+    state_sales_tax_income_bracket: 19
+
+- name: Income just below $100,000 is in the $90,000-$100,000 row, 2018
+  period: 2018
+  input:
+    adjusted_gross_income: 99_999
+  output:
+    state_sales_tax_income_bracket: 9
+
+- name: Income of exactly $100,000 is in the $100,000-$120,000 row, 2019
+  period: 2019
+  input:
+    adjusted_gross_income: 100_000
+  output:
+    state_sales_tax_income_bracket: 10
+
+- name: Income of exactly $300,000 is in the $300,000 or more row, 2021
+  period: 2021
+  input:
+    adjusted_gross_income: 300_000
   output:
     state_sales_tax_income_bracket: 19

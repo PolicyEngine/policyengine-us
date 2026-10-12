@@ -1,0 +1,48 @@
+# Michigan qualified overtime deduction (PA 24 of 2025), in effect TY2026-2028.
+# The federal overtime deduction is set directly here to isolate the Michigan
+# gating.
+
+- name: 2026 Michigan overtime deduction mirrors the federal overtime deduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    overtime_income_deduction: 3_000
+    state_code: MI
+  output:
+    mi_qualified_overtime_deduction: 3_000
+
+- name: 2027 Michigan overtime deduction still applies
+  period: 2027
+  absolute_error_margin: 0.01
+  input:
+    overtime_income_deduction: 3_000
+    state_code: MI
+  output:
+    mi_qualified_overtime_deduction: 3_000
+
+- name: 2028 Michigan overtime deduction applies (final eligible year)
+  period: 2028
+  absolute_error_margin: 0.01
+  input:
+    overtime_income_deduction: 3_000
+    state_code: MI
+  output:
+    mi_qualified_overtime_deduction: 3_000
+
+- name: 2025 Michigan overtime deduction is not yet available
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    overtime_income_deduction: 3_000
+    state_code: MI
+  output:
+    mi_qualified_overtime_deduction: 0
+
+- name: 2029 Michigan overtime deduction has sunset
+  period: 2029
+  absolute_error_margin: 0.01
+  input:
+    overtime_income_deduction: 3_000
+    state_code: MI
+  output:
+    mi_qualified_overtime_deduction: 0

@@ -76,3 +76,29 @@
     # disable test:
     #mo_taxable_income: [74_860.5, 0, 0]
     age: [32, 32, 5]
+
+- name: Taxsim issue 1104 record - 2021 HoH, one child, 70,512.51 wages
+  period: 2021
+  absolute_error_margin: 0.05
+  input:
+    people:
+      person1:
+        age: 37
+        employment_income: 70_512.51
+        is_tax_unit_head: true
+      person2:
+        age: 10
+    tax_units:
+      tax_unit:
+        aca_ptc: 0
+        members: [person1, person2]
+    household:
+      members: [person1, person2]
+      state_code: MO
+  output:
+    # 2021 MO-1040 (TaxAct return in policyengine-taxsim#1104): AGI 70,512.51
+    # - 18,800 standard deduction
+    # - 888.23 federal income tax deduction (15% x 5,921.50 Line 22 tax,
+    #   undiminished by the fully refundable 2021 CTC)
+    # - no head of household exemption (no line on the 2021 form)
+    mo_taxable_income: [50_824.28, 0]

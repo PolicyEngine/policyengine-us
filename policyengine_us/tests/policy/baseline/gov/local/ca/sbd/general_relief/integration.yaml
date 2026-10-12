@@ -1,0 +1,489 @@
+# End-to-end scenarios for San Bernardino County General Relief.
+# Grant = maximum basic grant for the assistance unit size minus countable
+# income (earned income gets the $10 + 20% exemption; unearned counts in
+# full), floored at zero. Grant table eras switch every July 1.
+- name: Case 1, a parent and child with 200 dollars of monthly earnings in January 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # $2,400 per year is $200 per month of wages.
+        employment_income: 2_400
+        ssi: 0
+      person2:
+        age: 8
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # The unit does not receive CalWORKs, which would otherwise bar all
+        # members from General Relief.
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        county_str: SAN_BERNARDINO_COUNTY_CA
+        state_code: CA
+  output:
+    in_sbd: true
+    # Parent is an employable non-student adult; child links through the
+    # cooperating parent (under 16).
+    ca_sbd_general_relief_eligible_person: [true, true]
+    ca_sbd_general_relief_assistance_unit_size: 2
+    # Two-person grant in the 7/1/24-6/30/25 era.
+    ca_sbd_general_relief_maximum_basic_grant: 572
+    ca_sbd_general_relief_gross_earned_income: [200, 0]
+    # Earned exemption: (200 - 10) x (1 - 0.20) = 190 x 0.8 = 152.
+    ca_sbd_general_relief_countable_income: 152
+    # 152 < 572.
+    ca_sbd_general_relief_income_eligible: true
+    ca_sbd_general_relief_resources_eligible: true
+    ca_sbd_general_relief_eligible: true
+    # 572 - 152 = 420.
+    ca_sbd_general_relief: 420
+
+- name: Case 2, an SSI recipient in the family is excluded from the unit and their SSI does not count.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 32
+        ssi: 0
+      person3:
+        age: 60
+        # $500 of monthly SSI bars this member from the assistance unit.
+        ssi: 500
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_sbd: true
+  output:
+    # The SSI recipient is out of the unit count, and a barred member is
+    # supported by the other program's budget: their income is excluded
+    # from AU income entirely.
+    ca_sbd_general_relief_eligible_person: [true, true, false]
+    ca_sbd_general_relief_assistance_unit_size: 2
+    # Two-person grant in the 7/1/25-6/30/26 era.
+    ca_sbd_general_relief_maximum_basic_grant: 615
+    ca_sbd_general_relief_countable_income: 0
+    ca_sbd_general_relief_income_eligible: true
+    ca_sbd_general_relief_eligible: true
+    ca_sbd_general_relief: 615
+
+- name: Case 3, a CalWORKs family is barred from General Relief entirely.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 5
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $3,600 per year is $300 per month of TANF (CalWORKs).
+        tanf: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # CalWORKs receipt is unit-level and bars every member: General Relief
+    # does not subsidize other cash-assistance programs.
+    ca_sbd_general_relief_receives_other_cash_assistance: [true, true]
+    ca_sbd_general_relief_assistance_unit_size: 0
+    ca_sbd_general_relief_eligible: false
+    ca_sbd_general_relief: 0
+
+- name: Case 4, unearned income of 450 dollars exceeds the size-1 grant in January 2025.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        # $5,400 per year is $450 per month of Social Security.
+        social_security: 5_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+        # Pin the CA state supplement off: state_code defaults to CA, so it
+        # would otherwise self-compute for the aged member and bar them,
+        # excluding their income and leaving an empty unit.
+        ca_state_supplement: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Size-1 grant in the 7/1/24-6/30/25 era is $442; countable unearned
+    # 450 >= 442, so the unit is not in need.
+    ca_sbd_general_relief_maximum_basic_grant: 442
+    ca_sbd_general_relief_countable_income: 450
+    ca_sbd_general_relief_income_eligible: false
+    ca_sbd_general_relief_eligible: false
+    ca_sbd_general_relief: 0
+
+- name: Case 5, the same person becomes eligible in January 2026 after the July 2025 grant increase.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        social_security: 5_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+        # Pin the CA state supplement off (see Case 4).
+        ca_state_supplement: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # The size-1 grant rises to $486 on 7/1/2025, so the same $450 of
+    # income now leaves a payable gap: 486 - 450 = 36.
+    ca_sbd_general_relief_maximum_basic_grant: 486
+    ca_sbd_general_relief_countable_income: 450
+    ca_sbd_general_relief_income_eligible: true
+    ca_sbd_general_relief_eligible: true
+    ca_sbd_general_relief: 36
+
+- name: Case 6, an otherwise eligible adult outside San Bernardino County gets nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        county_str: LOS_ANGELES_COUNTY_CA
+        state_code: CA
+  output:
+    # The county locator gates every program variable.
+    in_sbd: false
+    ca_sbd_general_relief_eligible: false
+    ca_sbd_general_relief: 0
+
+- name: Case 7, a seven-person family with no income receives the five-or-more grant.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 28
+        ssi: 0
+      person3:
+        age: 12
+      person4:
+        age: 10
+      person5:
+        age: 8
+      person6:
+        age: 6
+      person7:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_assistance_unit_size: 7
+    # The grant table tops out at the 5+ row: $1,145 in the 7/1/26 era.
+    ca_sbd_general_relief_maximum_basic_grant: 1_145
+    ca_sbd_general_relief_eligible: true
+    ca_sbd_general_relief: 1_145
+
+- name: Case 8, an enormous self-employment loss does not inflate the grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        self_employment_income: -60_000_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Self-employment does not bar linkage (the employability screen is
+    # not modeled), and the loss cannot inflate the grant.
+    ca_sbd_general_relief_meets_linkage_requirements: true
+    # -60,000,000 / 12 = -5,000,000 per month.
+    ca_sbd_general_relief_gross_earned_income: -5_000_000
+    # max(-5,000,000 - 10, 0) x 0.8 = 0.
+    ca_sbd_general_relief_countable_income: 0
+    ca_sbd_general_relief_eligible: true
+    # The benefit stays at the size-1 grant, not millions: 486 - 0 = 486.
+    ca_sbd_general_relief: 486
+
+- name: Case 9, a rental loss leaves the benefit capped at the full grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        rental_income: -2_400
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Unearned -200 flows through countable income as a negative amount.
+    ca_sbd_general_relief_countable_income: -200
+    ca_sbd_general_relief_income_eligible: true
+    ca_sbd_general_relief_eligible: true
+    # The benefit formula floors countable income at zero:
+    # 486 - max(-200, 0) = 486, not 686.
+    ca_sbd_general_relief: 486
+
+- name: Case 10, a barred SSI recipient's wages and SSI are both excluded from the family's income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 28
+        ssi: 0
+      person3:
+        age: 60
+        # $300 of monthly SSI bars this member from the assistance unit.
+        ssi: 300
+        # $2,400 per year is $200 per month of wages.
+        employment_income: 2_400
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        in_sbd: true
+  output:
+    # The SSI recipient is out of the unit count...
+    ca_sbd_general_relief_eligible_person: [true, true, false]
+    ca_sbd_general_relief_assistance_unit_size: 2
+    # Two-person grant in the 7/1/25-6/30/26 era.
+    ca_sbd_general_relief_maximum_basic_grant: 615
+    # ...and while their person-level gross income is still reported,
+    ca_sbd_general_relief_gross_earned_income: [0, 0, 200]
+    # a barred member's wages and SSI are both excluded at the unit
+    # level: SSI budgets their income to their own needs.
+    ca_sbd_general_relief_countable_income: 0
+    ca_sbd_general_relief_income_eligible: true
+    ca_sbd_general_relief_eligible: true
+    ca_sbd_general_relief: 615
+
+- name: Case 11, a whole-year 2021 period pins the June 1, 2021 program start.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # January through May 2021 predate the modeled flat-grant design
+    # (in_effect false); June through December pay the size-1 grant of
+    # $332: 7 x 332 = 2,324.
+    ca_sbd_general_relief: 2_324
+
+- name: Case 12, a whole-year 2026 period spans the July 1, 2026 era boundary.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # January through June 2026 pay the 7/1/25 era size-1 grant of $486;
+    # July through December pay the 7/1/26 era grant of $504:
+    # 6 x 486 + 6 x 504 = 2,916 + 3,024 = 5,940.
+    ca_sbd_general_relief: 5_940
+
+- name: Case 13, an SSP-only recipient is excluded from the unit and the supplement does not count.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 68
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $200 per month of state supplement with no federal SSI (an
+        # SSP-only case).
+        ca_state_supplement: 200
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+        state_code: CA
+  output:
+    # The aged SSP recipient is barred like an SSI recipient, and a barred
+    # member's income — including the unit-level supplement that serves
+    # them — is excluded from AU income entirely.
+    ca_sbd_general_relief_receives_other_cash_assistance: [false, true]
+    ca_sbd_general_relief_eligible_person: [true, false]
+    ca_sbd_general_relief_assistance_unit_size: 1
+    # One-person grant in the 7/1/25-6/30/26 era.
+    ca_sbd_general_relief_maximum_basic_grant: 486
+    ca_sbd_general_relief_countable_income: 0
+    ca_sbd_general_relief_income_eligible: true
+    ca_sbd_general_relief_eligible: true
+    ca_sbd_general_relief: 486
+
+- name: Case 14, a family with a child not enrolled in CalWORKs receives the family General Relief grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        age: 8
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # The unit does not take up CalWORKs, so the take-up-gated tanf
+        # aggregator computes $0 and the CalWORKs receipt bar never fires
+        # — the handbook bars receiving other assistance, not qualifying
+        # for it.
+        takes_up_tanf_if_eligible: false
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+        state_code: CA
+  output:
+    tanf: 0
+    # Both members qualify: the parent as an employable non-student adult,
+    # the child through the under-16 parent linkage.
+    ca_sbd_general_relief_eligible_person: [true, true]
+    ca_sbd_general_relief_assistance_unit_size: 2
+    # Two-person grant in the 7/1/25-6/30/26 era, with no countable income.
+    ca_sbd_general_relief: 615
+
+- name: Case 15, a CAPI recipient is excluded from the unit and the CAPI cash does not count.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+      person2:
+        # An aged legal permanent resident without 40 qualifying work
+        # quarters (the input defaults to 40) is CAPI-eligible — barred
+        # from federal SSI by immigration status.
+        age: 68
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 0
+        ssi: 0
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # $2,400 per year is $200 per month of CAPI.
+        ca_capi: 2_400
+        # Pin the CA state supplement off so only CAPI is in play.
+        ca_state_supplement: 0
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+        state_code: CA
+  output:
+    # The aged CAPI recipient is barred like an SSI recipient, and a
+    # barred member's income — including the unit-level CAPI cash that
+    # serves them — is excluded from AU income entirely.
+    ca_sbd_general_relief_receives_other_cash_assistance: [false, true]
+    ca_sbd_general_relief_eligible_person: [true, false]
+    ca_sbd_general_relief_assistance_unit_size: 1
+    # One-person grant in the 7/1/25-6/30/26 era.
+    ca_sbd_general_relief_maximum_basic_grant: 486
+    ca_sbd_general_relief_countable_income: 0
+    ca_sbd_general_relief_income_eligible: true
+    ca_sbd_general_relief_eligible: true
+    ca_sbd_general_relief: 486

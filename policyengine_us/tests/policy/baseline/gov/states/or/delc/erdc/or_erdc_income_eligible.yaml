@@ -1,0 +1,83 @@
+# Tested at 2026-01, where the FPG (size 2 contiguous: 21,640/yr) and Oregon SMI
+# (123,027 four-person base) are the published values, so limits are exact.
+# Initial limit (size 2) = ceil(21,640 / 12 * 2) = 3,607.
+# Ongoing limit (size 2) = max(ceil(1,803.33 * 2.5), ceil(6,971.53 * 0.85))
+#                        = max(4,509, 5,926) = 5,926, so the 85% SMI term binds.
+
+- name: Initial applicant just below the 200% FPL limit is income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        or_erdc_countable_income: 3_606
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_erdc_income_eligible: true
+
+- name: Initial applicant at the 200% FPL limit is income ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        or_erdc_countable_income: 3_607
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_erdc_income_eligible: false
+
+- name: Enrolled family just below the binding 85% SMI limit is income eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: true
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        or_erdc_countable_income: 5_925
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_erdc_income_eligible: true
+
+- name: Enrolled family at the binding 85% SMI limit is income ineligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_enrolled_in_ccdf: true
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        or_erdc_countable_income: 5_926
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    or_erdc_income_eligible: false

@@ -24,3 +24,32 @@
     state_code: MA
   output:
     ma_ccfa_fpg: 2_600
+
+# The fiscal year turns over on October 1: the FY2025 chart (2024
+# guidelines) covers October 2024 through September 2025, and the FY2026
+# chart (2025 guidelines) starts in October 2025. Non-January periods need
+# year-keyed inputs.
+
+- name: Case 4, September 2025 is still on the FY2025 chart's 2024 guidelines.
+  period: 2025-09
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size:
+      2025: 2
+    state_code:
+      2025: MA
+  output:
+    # 2024 guidelines: 15,060 + 5,380 = 20,440 / 12 = 1,703.33
+    ma_ccfa_fpg: 1_703.33
+
+- name: Case 5, October 2025 starts the FY2026 chart on the 2025 guidelines.
+  period: 2025-10
+  absolute_error_margin: 0.01
+  input:
+    spm_unit_size:
+      2025: 2
+    state_code:
+      2025: MA
+  output:
+    # 2025 guidelines: 15,650 + 5,500 = 21,150 / 12 = 1,762.50
+    ma_ccfa_fpg: 1_762.5

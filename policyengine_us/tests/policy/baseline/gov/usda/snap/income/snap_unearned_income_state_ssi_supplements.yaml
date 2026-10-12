@@ -1,0 +1,95 @@
+# 7 CFR 273.9(b)(2)(i) counts assistance payments from federally aided public
+# assistance programs such as SSI, which includes state SSI supplements.
+- name: California state supplement counts as SNAP unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_name: CA
+  output:
+    ssi: 994
+    ca_state_supplement: 341.81
+    # Without the supplement the household's SNAP unearned income would be the
+    # $994 federal SSI benefit alone, and SNAP would be $143.
+    snap_unearned_income: 1_335.81
+    snap: 24
+
+- name: Massachusetts state supplement counts as SNAP unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_name: MA
+  output:
+    ssi: 994
+    ma_state_supplement: 128.82
+    # Without the supplement SNAP unearned income would be $994 and SNAP $218.
+    snap_unearned_income: 1_122.82
+    snap: 160
+
+# The California supplement is an SPM unit variable, so it is counted once for
+# the unit rather than projected onto each member.
+- name: California state supplement is counted once in a two-person SPM unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: CA
+  output:
+    ca_state_supplement: 341.81
+    snap_unearned_income: 1_335.81
+
+# Indiana pays its Residential Care Assistance Program supplement to the
+# facility as a per diem. 273.9(b)(2)(i) counts assistance "even if provided in
+# the form of a vendor payment" unless 273.9(c)(1) exempts it, and a
+# residential-care per diem is not one of the exempt categories, so the whole
+# Indiana supplement counts.
+- name: Indiana residential care supplement counts as SNAP unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 70
+        in_resides_in_licensed_residential_facility: true
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_name: IN
+  output:
+    ssi: 994
+    in_ssp_sapn: 0
+    in_ssp_rcap: 507.06
+    in_ssp: 507.06
+    # Without the supplement SNAP unearned income would be $994 and SNAP $62.
+    snap_unearned_income: 1_501.06
+    snap: 24

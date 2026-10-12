@@ -1,0 +1,25 @@
+description: The Department of Agriculture excludes lawful permanent residents with this threshold of qualifying quarters from the waiting period under the Supplemental Nutrition Assistance Program.
+
+# Applies only to lawful permanent residents (7 CFR 273.4(a)(6)(ii)(A)). The
+# count includes the alien's own quarters, a parent's quarters before the alien
+# turned 18, and a spouse's quarters during the marriage if the couple is still
+# married or the spouse is deceased (8 USC 1645; 7 CFR 273.4(a)(6)(ii)(A)).
+# Quarters after December 31, 1996, in which the alien, parent or spouse actually
+# received any Federal means-tested public benefit or SNAP do not count
+# (7 CFR 273.4(a)(6)(ii)(A)(2)).
+values:
+  1996-08-22: 40
+
+metadata:
+  unit: quarters
+  period: year
+  label: SNAP qualified alien waiting period qualifying quarters threshold
+  reference:
+    - title: 8 USC 1612(a)(2)(B) - Certain permanent resident aliens
+      href: https://www.law.cornell.edu/uscode/text/8/1612#a_2_B
+    - title: 8 USC 1645(1)-(2) - Qualifying quarters
+      href: https://www.law.cornell.edu/uscode/text/8/1645
+    - title: 7 CFR 273.4(a)(6)(ii)(A) - Lawful permanent residents with 40 qualifying quarters
+      href: https://www.law.cornell.edu/cfr/text/7/273.4#a_6_ii_A
+    - title: USDA FNS, Alien SNAP Eligibility - Question and Answer #1 REVISED (December 9, 2025), Question 5 exceptions
+      href: https://www.usda.gov/sites/default/files/guidance-documents/fns.snap-obbb-alien-eligibility-qas1.pdf#page=4

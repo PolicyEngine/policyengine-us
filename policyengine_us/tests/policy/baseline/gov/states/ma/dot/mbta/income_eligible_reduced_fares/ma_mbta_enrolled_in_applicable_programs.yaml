@@ -1,0 +1,82 @@
+- name: Person in an SPM unit receiving SNAP is enrolled in an applicable program
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 200
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_mbta_enrolled_in_applicable_programs: true
+
+- name: Person reporting SNAP receipt with a zero modeled allotment is enrolled in an applicable program
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_enrolled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        receives_snap: true
+        ma_eaedc: 0
+        ma_tafdc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_mbta_enrolled_in_applicable_programs: true
+
+- name: SNAP receipt reported at the SPM unit enrolls every member of a multi-person unit
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_enrolled: false
+      person2:
+        age: 28
+        medicaid_enrolled: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        snap: 0
+        receives_snap: true
+        ma_eaedc: 0
+        ma_tafdc: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    # receives_snap is SPM-unit-level, so it projects to both members.
+    ma_mbta_enrolled_in_applicable_programs: [true, true]
+
+- name: Person in none of the applicable programs is not enrolled
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 30
+        medicaid_enrolled: false
+    spm_units:
+      spm_unit:
+        members: [person1]
+        snap: 0
+        ma_eaedc: 0
+        ma_tafdc: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MA
+  output:
+    ma_mbta_enrolled_in_applicable_programs: false

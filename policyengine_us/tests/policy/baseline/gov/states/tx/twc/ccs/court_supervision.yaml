@@ -1,0 +1,30 @@
+# Texas's approved CCDF Plan 2.2.1(c) elects the court-supervision option
+# through 18 and lists court supervision as protective, but 40 TAC 809.41(a)
+# and 809.49(a)(2) deliver it only through DFPS-authorized protective child
+# care, an agency authorization that is not modeled. So
+# is_under_court_supervision alone has no effect on Texas CCS.
+# Authority: https://www.twc.texas.gov/sites/default/files/ccel/docs/tx-ccdf-state-plan-ffy2025-2027-approved.pdf#page=20
+# Authority: https://www.twc.texas.gov/sites/default/files/ogc/docs/rules-chapter-809-child-care-services-twc.pdf#page=30
+- name: Case 1, court supervision does not extend the age limit.
+  period: 2026-01
+  input:
+    state_code: [TX, TX, TX, TX, TX]
+    age: [12, 13, 17, 18, 19]
+    is_tax_unit_dependent: [true, true, true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [false, false, false, false, false]
+    is_under_court_supervision: [true, true, true, true, true]
+  output:
+    tx_ccs_eligible_child: [true, false, false, false, false]
+
+- name: Case 2, the disabled-child route is unchanged by court supervision.
+  period: 2026-01
+  input:
+    state_code: [TX, TX, TX]
+    age: [18, 18, 19]
+    is_tax_unit_dependent: [true, true, true]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN]
+    is_disabled: [true, true, true]
+    is_under_court_supervision: [false, true, true]
+  output:
+    tx_ccs_eligible_child: [true, true, false]

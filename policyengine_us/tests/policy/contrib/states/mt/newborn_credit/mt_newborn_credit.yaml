@@ -28,8 +28,8 @@
         state_code: MT
   output:
     mt_newborn_credit: [1_000, 0]
-    # Refundable credit reduces tax liability (baseline ~$696, minus $1,000 credit)
-    mt_income_tax: -304
+    # Refundable credit reduces tax liability (baseline ~$691, minus $1,000 credit)
+    mt_income_tax: -309
 
 - name: Case 2, MFJ with newborn under income threshold.
   period: 2027
@@ -63,8 +63,8 @@
   output:
     # AGI $100k < $120k threshold for MFJ
     mt_newborn_credit: [1_000, 0, 0]
-    # Baseline mt_income_tax ~$3,147 minus $1,000 refundable credit
-    mt_income_tax: 2_147
+    # Baseline mt_income_tax ~$3,142 minus $1,000 refundable credit
+    mt_income_tax: 2_142
 
 - name: Case 3, two newborns double credit.
   period: 2027

@@ -1,0 +1,128 @@
+# Tests the MN CCAP rate-unit selection (manual section 9.9, verified p.312).
+# Default rule for a single licensed/exempt provider:
+#   WEEKLY  if authorized > 35 hours/week
+#   FULL_DAY if <= 35 hrs/week AND > 5 hrs/day
+#   HOURLY  if <= 35 hrs/week AND <= 5 hrs/day
+# Legal non-licensed (LNL) providers are HOURLY only.
+- name: Case 1, more than 35 hours per week selects weekly rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 40
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_ccap_rate_unit: WEEKLY
+
+- name: Case 2, exactly 35 hours per week is not weekly (strict > 35), long days select full day.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 35
+        # 35 hours per week with > 5 hours per day -> full-day rate.
+        childcare_hours_per_day: 8
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_ccap_rate_unit: FULL_DAY
+
+- name: Case 3, low weekly hours with short days selects hourly rate.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        # 10 hrs/week over many short days (<= 5 hrs/day) -> hourly rate.
+        childcare_hours_per_week: 10
+        childcare_attending_days_per_month: 20
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_ccap_rate_unit: HOURLY
+
+- name: Case 4, legal non-licensed provider forced to hourly even with high weekly hours.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: LEGAL_NON_LICENSED
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    # LNL is hourly-only regardless of the >35 hr/week weekly trigger.
+    mn_ccap_rate_unit: LNL_HOURLY
+
+# Edge cases. Weekly threshold is strict > 35 hrs/week; full-day vs hourly
+# threshold is strict > 5 hrs/day.
+- name: Case 5, exactly 36 hours per week selects weekly (just over the 35 threshold).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 36  # > 35 -> weekly
+        childcare_hours_per_day: 8
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_ccap_rate_unit: WEEKLY
+
+- name: Case 6, exactly 35 hours per week with long days selects full day (not weekly).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 35  # not > 35 -> not weekly
+        childcare_hours_per_day: 8  # > 5 -> full day
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_ccap_rate_unit: FULL_DAY
+
+- name: Case 7, exactly 5 hours per day with low weekly hours selects hourly (not full day).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 30  # <= 35
+        childcare_hours_per_day: 5  # not > 5 -> hourly, not full day
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_ccap_rate_unit: HOURLY
+
+- name: Case 8, exactly 6 hours per day with low weekly hours selects full day (just over the 5 threshold).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        childcare_hours_per_week: 30  # <= 35
+        childcare_hours_per_day: 6  # > 5 -> full day
+        mn_ccap_provider_type: CHILD_CARE_CENTER
+    households:
+      household:
+        members: [person1]
+        state_code: MN
+  output:
+    mn_ccap_rate_unit: FULL_DAY

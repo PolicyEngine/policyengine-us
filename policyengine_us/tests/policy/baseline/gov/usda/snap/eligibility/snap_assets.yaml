@@ -57,3 +57,17 @@
         members: [person1, person2]
   output:
     snap_assets: 2_000
+
+- name: Monthly SNAP asset requests preserve annual asset stocks
+  period: 2024-01
+  input:
+    people:
+      person:
+        bank_account_assets: 1_200
+        stock_assets: 600
+        bond_assets: 300
+    spm_units:
+      spm_unit:
+        members: [person]
+  output:
+    snap_assets: 2_100

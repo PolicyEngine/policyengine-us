@@ -1,0 +1,18 @@
+description: Utah uses this multiple of high-quarter wages as the minimum total base-period wages under the Unemployment Insurance program.
+
+# § 35A-4-403(1)(f)(ii) provides an alternative to this 1.5x ratio test —
+# wages in insured work for at least 20 weeks in the base period. That
+# alternative sunset on or before Jan 1, 2011, so only the ratio test is
+# modeled.
+values:
+  2024-01-01: 1.5
+
+metadata:
+  unit: /1
+  period: year
+  label: Utah UI base period to high quarter wage ratio
+  reference:
+    - title: Utah Code § 35A-4-403(1)(f)(i)
+      href: https://le.utah.gov/xcode/Title35A/Chapter4/35A-4-S403.html
+    - title: Utah Admin Code R994-401-201
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R994-401-201

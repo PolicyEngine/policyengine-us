@@ -1,0 +1,244 @@
+# Wisconsin Shares per-child subsidy: the lesser of the hourly maximum times
+# the fixed monthly subsidized hours (131 part time / 153 full time), the
+# provider's monthly price, and the monthly maximum rate; plus the
+# above-full-time weekly add-on for care needs over 50 hours (up to 75);
+# minus the child's share of the assistance group copayment, floored at $0.
+# Wisconsin Shares Handbook (July 2026) Sections 16.1.1, 18.2, and 18.5;
+# Appendix II "Assuming the Full Cost of Care" examples (Ebony and Sarafina).
+# Incomes are ratio-derived with spm_unit_fpg set explicitly (21,650/year =
+# 1,804.17/month for the two-person examples).
+- name: Case 1, copayment exceeding the subsidy pays nothing (Appendix II, Ebony).
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 57_372.50  # 4,781.04/month = 265% of the 21,650 FPG.
+      person2:
+        age: 4
+        childcare_hours_per_week: 10
+        wi_shares_provider_type: CERTIFIED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_wi_shares_enrolled: true
+        spm_unit_fpg: 21_650  # 1,804.17/month; 200% = 3,608.33/month.
+        hhs_smi: 96_000  # 85% = 6,800/month, above the family's income.
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/month provider price.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        county_str: ASHLAND_COUNTY_WI
+  output:
+    # Subsidy: certified hourly 3.99 x 131 part-time hours = 522.69.
+    # Copay: 2.34/hour x 131 = 306.54, plus exit addition
+    # floor((4,781.04 - 3,608.33) / 5) = floor(234.54) = 234; total 540.54.
+    # 540.54 exceeds 522.69, so no subsidy is paid.
+    wi_shares_child_subsidy: [0, 0]
+
+- name: Case 2, small subsidy remains after the copayment (Appendix II, Sarafina).
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 58_455  # 4,871.25/month = 270% of the 21,650 FPG.
+      person2:
+        age: 6
+        childcare_hours_per_week: 10
+        wi_shares_provider_type: CERTIFIED
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        is_wi_shares_enrolled: true
+        spm_unit_fpg: 21_650  # 1,804.17/month; 200% = 3,608.33/month.
+        hhs_smi: 96_000
+        spm_unit_pre_subsidy_childcare_expenses: 12_000  # 1,000/month provider price.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        county_str: WASHBURN_COUNTY_WI
+  output:
+    # Subsidy: certified hourly 4.38 x 131 part-time hours = 573.78.
+    # Copay: 2.34/hour x 131 = 306.54, plus exit addition
+    # floor((4,871.25 - 3,608.33) / 5) = floor(252.58) = 252; total 558.54.
+    # 573.78 - 558.54 = 15.24.
+    wi_shares_child_subsidy: [0, 15.24]
+
+- name: Case 3, a provider price below the maximum rate caps the subsidy.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month = 100% FPL, no copayment.
+      person2:
+        age: 3
+        childcare_hours_per_week: 15
+        wi_shares_provider_type: LICENSED_GROUP
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        spm_unit_pre_subsidy_childcare_expenses: 6_000  # 500/month provider price.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # min(9.72 x 131 = 1,273.32, 500 provider price, 1,273.32 monthly max)
+    # = 500; no copayment at 100% FPL.
+    wi_shares_child_subsidy: [0, 500]
+
+- name: Case 4, sixty weekly hours add the above-full-time weekly add-on.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month = 100% FPL, no copayment.
+      person2:
+        age: 0
+        childcare_hours_per_week: 60
+        wi_shares_provider_type: LICENSED_GROUP
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        spm_unit_pre_subsidy_childcare_expenses: 36_000  # 3,000/month provider price.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # Full-time subsidy: min(11.15 x 153 = 1,705.95, 3,000, 1,695.77 full-time
+    # monthly cell) = 1,695.77.
+    # Add-on for hours above 50: ceil((60 - 50) x 4.348125) =
+    # ceil(43.48) = 44 monthly hours x 11.15 = 490.60,
+    # added after the capped comparison.
+    # 1,695.77 + 490.60 = 2,186.37.
+    wi_shares_child_subsidy: [0, 2_186.37]
+
+- name: Case 5, the above-full-time add-on stops at 75 weekly hours.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month = 100% FPL, no copayment.
+      person2:
+        age: 0
+        childcare_hours_per_week: 80
+        wi_shares_provider_type: LICENSED_GROUP
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        spm_unit_pre_subsidy_childcare_expenses: 36_000  # 3,000/month provider price.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # Add-on hours capped at 75 - 50 = 25 weekly hours:
+    # ceil(25 x 4.348125) = ceil(108.70) = 109 monthly hours x 11.15 = 1,215.35.
+    # 1,695.77 + 1,215.35 = 2,911.12.
+    wi_shares_child_subsidy: [0, 2_911.12]
+
+- name: Case 6, mixed part-time and full-time siblings split the copayment by their copay hours.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 27_600  # 2,300/month = 115% FPL.
+      person2:
+        age: 3
+        childcare_hours_per_week: 15  # Part time.
+      person3:
+        age: 5
+        childcare_hours_per_week: 40  # Full time.
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_fpg: 24_000
+        spm_unit_pre_subsidy_childcare_expenses: 48_000  # 2,000/month per child.
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # Copay: 0.65/hour (two children at 115% FPL) x (131 + 152) = 183.95.
+    wi_shares_copay: 183.95
+    # Copay shares are proportional to copay hours:
+    # person2: 183.95 x 131 / 283 = 85.15; person3: 183.95 x 152 / 283 = 98.80.
+    # person2 (age 3, part time): 9.72 x 131 = 1,273.32 - 85.15 = 1,188.17.
+    # person3 (age 5, full time): min(8.72 x 153 = 1,334.16, 2,000, 1,326.18
+    # full-time cell) = 1,326.18 - 98.80 = 1,227.38.
+    wi_shares_child_subsidy: [0, 1_188.17, 1_227.38]
+
+- name: Case 7, exactly fifty weekly hours receive no above-full-time add-on.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month = 100% FPL, no copayment.
+      person2:
+        age: 0
+        childcare_hours_per_week: 50
+        wi_shares_provider_type: LICENSED_GROUP
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        spm_unit_pre_subsidy_childcare_expenses: 36_000  # 3,000/month provider price.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # The add-on starts above 50 weekly hours, so 50 hours receive only the
+    # full-time subsidy: min(11.15 x 153 = 1,705.95, 3,000, 1,695.77
+    # full-time cell) = 1,695.77.
+    wi_shares_child_subsidy: [0, 1_695.77]
+
+- name: Case 8, a provider price of zero pays no subsidy.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 2,000/month = 100% FPL, no copayment.
+      person2:
+        age: 3
+        childcare_hours_per_week: 40
+        wi_shares_provider_type: LICENSED_GROUP
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_fpg: 24_000
+        spm_unit_pre_subsidy_childcare_expenses: 0  # Free care.
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+        county_str: MILWAUKEE_COUNTY_WI
+  output:
+    # min(9.72 x 153 = 1,487.16, 0 provider price, 1,478.37) = 0.
+    wi_shares_child_subsidy: [0, 0]

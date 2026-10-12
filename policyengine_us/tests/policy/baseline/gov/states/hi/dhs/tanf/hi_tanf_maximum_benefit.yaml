@@ -1,6 +1,8 @@
 # Hawaii TANF maximum benefit reflects the steady-state mandatory-work
-# Standard of Assistance: SON × SOA rate (0.48) × (1 - mandatory-work
-# reduction (0.20)). This matches the figure reported by CBPP and the
+# Standard of Assistance: SON × SOA rate × (1 - mandatory-work
+# reduction (0.20)). The SOA rate is 0.48 through February 2025 and
+# 0.62 from March 1, 2025 (DHS BESSD § 346-51.5 HRS report). This
+# matches the figure reported by CBPP and the
 # Urban Welfare Rules Database (CBPP "Continued Increases in TANF
 # Benefit Levels", May 2024 / Feb 2025) and Hawaii TANF State Plan
 # 11.1, footnote 4.
@@ -241,3 +243,24 @@
   output:
     # 3872 × 0.48 × 0.80 = 1486.848 (caps at size 10)
     hi_tanf_maximum_benefit: 1_486.848
+
+- name: Case 10, family of 3 after the March 1 2025 rate increase (48% to 62%).
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+      person3:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    # 1590 × 0.62 × 0.80 = 788.64 (DHS worked example: $610 -> $789)
+    hi_tanf_maximum_benefit: 788.64

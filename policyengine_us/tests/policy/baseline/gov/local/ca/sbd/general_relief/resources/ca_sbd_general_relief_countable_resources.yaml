@@ -1,0 +1,61 @@
+# Countable resources sum liquid assets, other personal property, and the
+# non-exempt portion of vehicle value toward the $500 limit.
+- name: Case 1, cash and personal property are summed.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        personal_property: 100
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 40
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 40 + 100 = 140.
+    ca_sbd_general_relief_countable_resources: 140
+
+- name: Case 2, non-exempt vehicle value joins cash and personal property.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        personal_property: 200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 50
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 5_000
+  output:
+    # 50 cash + 200 personal property + (5,000 - 3,000) vehicle = 2,250.
+    ca_sbd_general_relief_countable_resources: 2_250
+
+- name: Case 3, a unit with no resources has zero countable resources.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_countable_resources: 0

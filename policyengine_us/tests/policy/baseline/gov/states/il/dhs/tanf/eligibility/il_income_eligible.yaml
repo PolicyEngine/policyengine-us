@@ -1,5 +1,8 @@
-- name: Income lower than payment level, eligible.
-  period: 2023
+# IDHS PM 10-01-02: a family qualifies only if nonexempt income is at least $1
+# less than the payment level. Income equal to or above the payment level is
+# ineligible.
+- name: Income more than one dollar below payment level, eligible.
+  period: 2023-01
   input:
     il_tanf_countable_income_for_initial_eligibility: 100
     il_tanf_payment_level_for_initial_eligibility: 120
@@ -8,10 +11,37 @@
     il_tanf_income_eligible: true
 
 - name: Income higher than payment level, ineligible.
-  period: 2023
+  period: 2023-01
   input:
     il_tanf_countable_income_for_initial_eligibility: 100
     il_tanf_payment_level_for_initial_eligibility: 80
+    state_code: IL
+  output:
+    il_tanf_income_eligible: false
+
+- name: Income exactly one dollar below payment level, eligible.
+  period: 2023-01
+  input:
+    il_tanf_countable_income_for_initial_eligibility: 119
+    il_tanf_payment_level_for_initial_eligibility: 120
+    state_code: IL
+  output:
+    il_tanf_income_eligible: true
+
+- name: Income exactly equal to payment level, ineligible.
+  period: 2023-01
+  input:
+    il_tanf_countable_income_for_initial_eligibility: 120
+    il_tanf_payment_level_for_initial_eligibility: 120
+    state_code: IL
+  output:
+    il_tanf_income_eligible: false
+
+- name: Income less than one dollar below payment level, ineligible.
+  period: 2023-01
+  input:
+    il_tanf_countable_income_for_initial_eligibility: 119.5
+    il_tanf_payment_level_for_initial_eligibility: 120
     state_code: IL
   output:
     il_tanf_income_eligible: false

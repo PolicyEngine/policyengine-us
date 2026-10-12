@@ -1,0 +1,19 @@
+description: Indiana applies its static-conformity-to-Internal-Revenue-Code branch for the Earned Income Tax Credit if this indicator is true. The applicable snapshot is January 1, 2023 for tax years 2023-2025, and January 1, 2026 for tax years 2026 onward per Indiana SEA 243 of 2025.
+
+values:
+  2010-01-01: false
+  2023-01-01: true
+
+metadata:
+  unit: bool
+  period: year
+  label: Indiana EITC static conformity in effect
+  reference:
+    - title: IC 6-3-1-11 - Indiana definition of Internal Revenue Code, fixing the federal-law reference date
+      href: https://iga.in.gov/laws/2024/ic/titles/6#6-3-1-11
+    - title: IC 6-3.1-21 - Indiana Earned Income Tax Credit chapter
+      href: https://iga.in.gov/laws/2024/ic/titles/6#6-3.1-21
+    - title: Indiana SEA 243 (2025) - Advances IRC conformity to January 1, 2026
+      href: https://iga.in.gov/legislative/2025/bills/senate/243
+    - title: 2023 IT-40 Individual Income Tax Booklet (Indiana EITC discussion)
+      href: https://forms.in.gov/Download.aspx?id=15792#page=9

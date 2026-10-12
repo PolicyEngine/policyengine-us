@@ -1,0 +1,678 @@
+# NM CCAP integration tests — full pipeline from eligibility through benefit.
+#
+# Subsidy per child = min(monthly provider rate, pre-subsidy monthly charge)
+# minus copay. Copayments are $0 for all modeled periods (fully waived
+# 2022-05-01 to 2023-06-30 and again from 2025-11-01; the >200% FPL copay
+# reinstated 2023-07-01 uses an unencoded schedule and is approximated as $0),
+# so the benefit is simply sum over children of min(rate, monthly charge).
+#
+# Rates effective 2023-08-01 (full-time monthly base), used for 2024-2025 cases:
+#   Center: 2-Star Infant 1_075, Toddler 775, Preschool 700, School Age 500; 5-Star Infant 1_925
+#   Family Home: 2-Star Preschool 870
+#   Registered Home: Infant 425
+# Rates effective 2025-11-04 (used for 2026 cases; 8.9.3.17 NMAC amendment):
+#   Center: 2-Star Preschool 735; Registered Home: Infant 750
+# Service-unit fraction: FT 1.0, PT1 0.75, PT2 0.50, PT3 0.25.
+# Non-traditional-hours supplement: +5% (1-10 hrs), +10% (11-20), +15% (21+).
+#
+# Income eligibility uses the OPERATIVE ceilings (LFC brief): 400% initial /
+# 425% continuation from 2022-05-01, and no income limit from 2025-11-01. The
+# codified NMAC 200% / 250% ceilings applied only before 2022-05-01.
+# 2025 FPG (CONTIGUOUS_US): family of 2 = 21_150/yr; operative 400% = 84_600/yr,
+#   425% = 89_887.50/yr. Family of 3 = 26_650/yr; 400% = 106_600/yr.
+# 2026 FPG: family of 2 = 21_640/yr (income limit removed under UCC).
+# Childcare expenses are set at the SPM-unit level via the annual
+# spm_unit_pre_subsidy_childcare_expenses input (the per-child variable
+# apportions from this aggregate); monthly charge = annual / 12.
+
+# ============================================================
+# Case 1: basic eligible family, full-time center care, positive subsidy.
+# ============================================================
+- name: Case 1, eligible family with full time center care receives a positive subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 3  # 36 months -> PRESCHOOL
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME (fraction 1.0)
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 5_000
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Eligible: child 3 < 13 and citizen; 24_000 well below the operative 400%
+    # initial cap (84_600); assets ok; parent works.
+    nm_ccap_eligible: true
+    # Age 3 = 36 months -> PRESCHOOL. Center 2-Star Preschool = 700 in January
+    # 2025 (2023-08-01 schedule; the 2025-11-04 amendment raises it to 735).
+    nm_ccap_age_group: [SCHOOL_AGE, PRESCHOOL]
+    nm_ccap_monthly_rate: [0, 700]
+    # Monthly charge = 12_000/12 = 1_000. Subsidy = min(700, 1_000) = 700; copay $0.
+    nm_ccap: 700
+    # The annual aggregation (nm_child_care_subsidies) is exercised in Case 11,
+    # where the December 2025 rate bump to 735 makes the yearly sum 8_435.
+
+# ============================================================
+# Case 2: subsidy capped at actual (low) childcare charge.
+# ============================================================
+- name: Case 2, subsidy capped at the pre-subsidy childcare charge.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 6_000
+        weekly_hours_worked: 35
+        immigration_status: CITIZEN
+      person2:
+        age: 1  # 12 months -> INFANT
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: FIVE_STAR
+        # Low charge: 3_600/yr -> 300/month, below the 1_925 rate.
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 2_000
+        spm_unit_pre_subsidy_childcare_expenses: 3_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible: true
+    # Center 5-Star Infant = 1_925 (full-time).
+    nm_ccap_monthly_rate: [0, 1_925]
+    # Monthly charge = 3_600/12 = 300. Subsidy = min(1_925, 300) = 300.
+    nm_ccap: 300
+
+# ============================================================
+# Case 3: enrolled recipient well within the operative 425% cap stays eligible.
+# ============================================================
+- name: Case 3, enrolled recipient with family home care stays income eligible.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # 45_000/yr is below the operative 425% continuation cap (89_887.50).
+        employment_income: 45_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 4  # 48 months -> PRESCHOOL
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: FAMILY_HOME
+        nm_ccap_focus_level: TWO_STAR
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: true  # continuing recipient -> 425% operative cap
+        spm_unit_assets: 10_000
+        spm_unit_pre_subsidy_childcare_expenses: 9_600
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Enrolled, 45_000 < operative 425% FPL -> eligible.
+    nm_ccap_income_eligible: true
+    nm_ccap_eligible: true
+    # Family Home 2-Star Preschool = 870 (full-time).
+    nm_ccap_monthly_rate: [0, 870]
+    # Monthly charge = 9_600/12 = 800. Subsidy = min(870, 800) = 800.
+    nm_ccap: 800
+
+# ============================================================
+# Case 4: TANF Priority 2 bypass — high income but TANF-enrolled.
+# ============================================================
+- name: Case 4, TANF enrolled family bypasses the income test and gets a subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # TANF enrollment bypasses the income test regardless of the ceiling.
+        employment_income: 80_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 2  # 24 months -> TODDLER
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        is_tanf_enrolled: true
+        spm_unit_assets: 1_000
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_income_eligible: true
+    nm_ccap_eligible: true
+    # Age 2 = 24 months -> TODDLER. Center 2-Star Toddler = 775 (full-time).
+    nm_ccap_age_group: [SCHOOL_AGE, TODDLER]
+    nm_ccap_monthly_rate: [0, 775]
+    # Monthly charge = 18_000/12 = 1_500. Subsidy = min(775, 1_500) = 775.
+    nm_ccap: 775
+
+# ============================================================
+# Case 5: part-time care with non-traditional-hours supplement.
+# ============================================================
+- name: Case 5, part time one care with a non traditional hours supplement.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 18_000
+        weekly_hours_worked: 25
+        immigration_status: CITIZEN
+      person2:
+        age: 7  # 84 months -> SCHOOL_AGE
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        # 20 hours/week of care -> PART_TIME_1 (0.75 fraction).
+        childcare_hours_per_week: 20
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+        # 15 non-traditional hours/week -> +10% supplement (11-20 hr tier).
+        nm_ccap_non_traditional_hours: 15
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 3_000
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible: true
+    # person1 (adult) has no care hours -> 0 hrs -> PART_TIME_3 (not an
+    # eligible child, so its rate is 0 regardless). person2 has 20 care hours
+    # -> PART_TIME_1.
+    nm_ccap_service_unit: [PART_TIME_3, PART_TIME_1]
+    # Center 2-Star School Age base = 500. PART_TIME_1 fraction 0.75 -> 375.
+    # Non-traditional supplement +10% -> 375 x 1.10 = 412.50.
+    nm_ccap_monthly_rate: [0, 412.5]
+    # Monthly charge = 1_000 > 412.50. Subsidy = min(412.50, 1_000) = 412.50.
+    nm_ccap: 412.5
+
+# ============================================================
+# Case 6: Universal Child Care — high income, no income limit (2026).
+# ============================================================
+- name: Case 6, after UCC a high income family is eligible with no income limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        # Far above any FPL threshold; UCC (2025-11-01) removed the income limit.
+        employment_income: 250_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 0.5  # 6 months -> INFANT
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: REGISTERED_HOME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 50_000
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # No income limit in 2026 -> income eligible despite 250k earnings.
+    nm_ccap_income_eligible: true
+    nm_ccap_eligible: true
+    # Registered Home Infant = 750 on the 2025-11-04 schedule (no FOCUS levels,
+    # full-time; up from 425 on the 2023-08-01 schedule).
+    nm_ccap_monthly_rate: [0, 750]
+    # Monthly charge = 6_000/12 = 500. Subsidy = min(750, 500) = 500 (capped at
+    # the charge).
+    nm_ccap: 500
+
+# ============================================================
+# Case 7: ineligible — non-NM household gets zero.
+# ============================================================
+- name: Case 7, non New Mexico family receives zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 5_000
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        # Colorado, not New Mexico -> defined_for zeroes the benefit.
+        state_code: CO
+  output:
+    nm_ccap: 0
+    nm_child_care_subsidies: 0
+
+# ============================================================
+# Case 8: degenerate — single adult, no eligible child.
+# ============================================================
+- name: Case 8, single adult with no child receives zero benefit.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 12_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+    spm_units:
+      spm_unit:
+        members: [person1]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 1_000
+    households:
+      household:
+        members: [person1]
+        state_code: NM
+  output:
+    nm_ccap_eligible: false
+    nm_ccap: 0
+
+# ============================================================
+# Case 9: edge — zero childcare expenses yields zero subsidy.
+# ============================================================
+- name: Case 9, eligible family with zero childcare expenses gets zero subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 5_000
+        spm_unit_pre_subsidy_childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible: true
+    # Subsidy = min(rate, 0) = 0 -> capped at actual expenses.
+    nm_ccap: 0
+
+# ============================================================
+# Case 10: edge — negative income does not inflate the subsidy.
+# ============================================================
+- name: Case 10, negative income family subsidy stays capped at the charge.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        # Large business loss -> negative countable income.
+        self_employment_income: -600_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 1_000
+        spm_unit_pre_subsidy_childcare_expenses: 6_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Negative income still passes the income test (below any FPL ceiling).
+    nm_ccap_income_eligible: true
+    nm_ccap_eligible: true
+    # Center 2-Star Preschool = 700. Monthly charge = 500.
+    # Subsidy = min(700, 500) = 500 — capped at the charge, NOT inflated by the loss.
+    nm_ccap: 500
+
+# ============================================================
+# Case 11: whole-year period — annual aggregator sums 12 months.
+# The 2025-11-04 rate amendment falls mid-year, so the monthly Center 2-Star
+# Preschool rate is 700 for Jan-Nov 2025 (the parameter value at the start of
+# each month; November reads its 2025-11-01 value, still 700) and 735 for
+# December 2025 (its 2025-12-01 value is on the new schedule).
+# ============================================================
+- name: Case 11, annual child care subsidies sum twelve monthly benefits across the rate change.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 3  # 36 months -> PRESCHOOL
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 5_000
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # Monthly nm_ccap = min(rate, 1_000): 700 for Jan-Nov, 735 for December.
+    # The YEAR aggregator sums 12 months: 700 x 11 + 735 = 8_435.
+    nm_child_care_subsidies: 8_435
+
+# ============================================================
+# Case 12: edge — a moderate-income initial applicant (family of 3) within the
+# operative 400% cap stays eligible and a positive subsidy flows through the
+# pipeline.
+# 2025 FPG family of 3 = 26_650/yr; operative 400% = 106_600/yr.
+# ============================================================
+- name: Case 12, moderate income initial applicant family of three receives a subsidy.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        # 53_300/yr is well below the operative 400% cap (106_600/yr).
+        employment_income: 53_300
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 30
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person3:
+        age: 1  # 12 months -> INFANT
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+        pre_subsidy_childcare_expenses: 18_000  # 1_500/month
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nm_ccap_enrolled: false  # initial applicant -> 200% cap
+        spm_unit_assets: 8_000
+        spm_unit_pre_subsidy_childcare_expenses: 18_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    # 53_300/yr well below the operative 400% cap -> eligible.
+    nm_ccap_income_eligible: true
+    nm_ccap_eligible: true
+    # Center 2-Star Infant = 1_075 (full-time). Monthly charge = 1_500.
+    nm_ccap_monthly_rate: [0, 0, 1_075]
+    # Subsidy = min(1_075, 1_500) = 1_075; copay $0.
+    nm_ccap: 1_075
+
+# ============================================================
+# Case 13: edge — two eligible children sum their per-child subsidies.
+# ============================================================
+- name: Case 13, two eligible children sum their per child subsidies.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 1  # 12 months -> INFANT
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+        pre_subsidy_childcare_expenses: 18_000  # 1_500/month, above the rate
+      person3:
+        age: 7  # 84 months -> SCHOOL_AGE
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+        pre_subsidy_childcare_expenses: 12_000  # 1_000/month, above the rate
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 5_000
+        # Family total = 18_000 + 12_000 = 30_000/yr -> 2_500/month.
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    nm_ccap_eligible: true
+    # Center 2-Star Infant = 1_075; Center 2-Star School Age = 500.
+    nm_ccap_monthly_rate: [0, 1_075, 500]
+    # max_reimbursement summed = 1_075 + 500 = 1_575; family charge = 2_500.
+    # Subsidy = min(1_575, 2_500) - 0 = 1_575.
+    nm_ccap: 1_575
+
+# ============================================================
+# 2026 cases: Universal Child Care era on the 2025-11-04 rate schedule.
+# No income limit and $0 copay for every family.
+# ============================================================
+
+# ============================================================
+# Case 14: 2026 high-income family, new-schedule 5-Star center infant rate.
+# ============================================================
+- name: Case 14, high income family in 2026 gets the new schedule five star infant rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        # 250k earnings; UCC removed the income limit from 2025-11-01.
+        employment_income: 250_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 0.5  # 6 months -> INFANT
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: FIVE_STAR
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 40_000
+        # Charge 30_000/yr -> 2_500/month, above the rate.
+        spm_unit_pre_subsidy_childcare_expenses: 30_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    # No income limit in 2026 -> eligible despite 250k earnings.
+    nm_ccap_income_eligible: true
+    nm_ccap_eligible: true
+    # Copay is $0 under Universal Child Care.
+    nm_ccap_copay: 0
+    # Center 5-Star Infant = 2_175 on the 2025-11-04 schedule (up from 1_925).
+    nm_ccap_monthly_rate: [0, 2_175]
+    # Monthly charge = 2_500 > 2_175. Subsidy = min(2_175, 2_500) - 0 = 2_175.
+    nm_ccap: 2_175
+
+# ============================================================
+# Case 15: 2026 two-child family sums per-child new-schedule rates.
+# ============================================================
+- name: Case 15, two children in 2026 sum their new schedule rates.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 3  # 36 months -> PRESCHOOL
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: TWO_STAR
+        pre_subsidy_childcare_expenses: 12_000  # 1_000/month, above the rate
+      person3:
+        age: 2  # 24 months -> TODDLER
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: CENTER
+        nm_ccap_focus_level: FOUR_STAR
+        pre_subsidy_childcare_expenses: 24_000  # 2_000/month, above the rate
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 5_000
+        # Family total = 12_000 + 24_000 = 36_000/yr -> 3_000/month.
+        spm_unit_pre_subsidy_childcare_expenses: 36_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NM
+  output:
+    nm_ccap_eligible: true
+    # 2025-11-04 schedule: Center 2-Star Preschool = 735; Center 4-Star Toddler = 1_250.
+    nm_ccap_monthly_rate: [0, 735, 1_250]
+    # max_reimbursement summed = 735 + 1_250 = 1_985; family charge = 3_000.
+    # Subsidy = min(1_985, 3_000) - 0 = 1_985.
+    nm_ccap: 1_985
+
+# ============================================================
+# Case 16: 2026 registered-home infant at the raised single rate.
+# ============================================================
+- name: Case 16, registered home infant in 2026 uses the raised single rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 28
+        employment_income: 18_000
+        weekly_hours_worked: 40
+        immigration_status: CITIZEN
+      person2:
+        age: 0.5  # 6 months -> INFANT
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_week: 40  # FULL_TIME
+        nm_ccap_provider_type: REGISTERED_HOME
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        nm_ccap_enrolled: false
+        spm_unit_assets: 2_000
+        # Charge 12_000/yr -> 1_000/month, above the rate.
+        spm_unit_pre_subsidy_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NM
+  output:
+    nm_ccap_eligible: true
+    nm_ccap_copay: 0
+    # Registered Home Infant = 750 on the 2025-11-04 schedule (up from 425).
+    nm_ccap_monthly_rate: [0, 750]
+    # Monthly charge = 1_000 > 750. Subsidy = min(750, 1_000) - 0 = 750.
+    nm_ccap: 750

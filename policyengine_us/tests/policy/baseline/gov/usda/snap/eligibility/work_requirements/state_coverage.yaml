@@ -1,0 +1,53 @@
+# State-by-state coverage of HR1 (P.L. 119-21) ABAWD effective dates.
+# See policyengine_us/parameters/gov/usda/snap/work_requirements/README.md
+# for the full coverage table.
+# Federal effective date: 2025-07-04; CA delays to 2026-06-01 per ACL 25-93.
+# HI and AK delay adoption to 2025-11-01
+# (gov.states.{hi.dhs,ak.dpa}.snap.work_requirements.abawd.hr1_in_effect);
+# their cases are asserted in is_snap_abawd_hr1_in_effect.yaml.
+# AK borough-level waivers are modeled in
+# gov.usda.snap.work_requirements.abawd.waived_counties.ak and tested in
+# is_in_snap_abawd_waived_area.yaml; known list gaps are tracked in
+# https://github.com/PolicyEngine/policyengine-us/issues/9659.
+# state_code is a yearly variable, so non-January test months key it to the
+# calendar year explicitly.
+
+- name: Default-rule state (TX), month before federal HR1 effective date, HR1 not in effect.
+  period: 2025-06
+  input:
+    state_code:
+      2025: TX
+  output:
+    is_snap_abawd_hr1_in_effect: false
+
+- name: Default-rule state (TX), first full month after federal HR1 effective date, HR1 in effect.
+  period: 2025-08
+  input:
+    state_code:
+      2025: TX
+  output:
+    is_snap_abawd_hr1_in_effect: true
+
+- name: Second default-rule state (NY), first full month after federal HR1 effective date, HR1 in effect.
+  period: 2025-08
+  input:
+    state_code:
+      2025: NY
+  output:
+    is_snap_abawd_hr1_in_effect: true
+
+- name: CA, month before state adoption date, HR1 not in effect despite federal date having passed.
+  period: 2026-05
+  input:
+    state_code:
+      2026: CA
+  output:
+    is_snap_abawd_hr1_in_effect: false
+
+- name: CA, at state adoption date of 2026-06-01, HR1 in effect.
+  period: 2026-06
+  input:
+    state_code:
+      2026: CA
+  output:
+    is_snap_abawd_hr1_in_effect: true

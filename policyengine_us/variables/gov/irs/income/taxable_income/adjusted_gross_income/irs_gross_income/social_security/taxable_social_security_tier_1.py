@@ -12,7 +12,7 @@ class taxable_social_security_tier_1(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.irs.social_security.taxability
-        gross_ss = tax_unit("tax_unit_social_security", period)
+        gross_ss = tax_unit("tax_unit_social_security_for_taxability", period)
         combined_income = tax_unit(
             "tax_unit_combined_income_for_social_security_taxability", period
         )

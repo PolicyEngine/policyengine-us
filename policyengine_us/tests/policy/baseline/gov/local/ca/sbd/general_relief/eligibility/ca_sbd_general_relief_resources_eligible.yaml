@@ -1,0 +1,250 @@
+# Resource limits from GRPHB Handbook Letter #7358: real property assessed
+# value at or below $32,000; total non-exempt personal property at or below
+# $500; liquid assets at or below $50 per assistance unit.
+- name: Case 1, a unit with no resources is resource-eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_resources_eligible: true
+
+- name: Case 2, liquid assets exactly at the 50 dollar limit pass.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 50
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 50 <= 50, and countable resources 50 <= 500.
+    ca_sbd_general_relief_resources_eligible: true
+
+- name: Case 3, liquid assets one dollar over the limit fail.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 51
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # 51 > 50 fails the liquid-asset test even though 51 <= 500.
+    ca_sbd_general_relief_resources_eligible: false
+
+- name: Case 4, personal property exactly at the 500 dollar limit passes.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        personal_property: 500
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_resources_eligible: true
+
+- name: Case 5, personal property one dollar over the limit fails.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        personal_property: 501
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_resources_eligible: false
+
+- name: Case 6, real property exactly at the 32,000 dollar limit passes.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        assessed_property_value: 32_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_resources_eligible: true
+
+- name: Case 6b, assessed values sum across members under the limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        assessed_property_value: 20_000
+      person2:
+        age: 32
+        assessed_property_value: 11_000
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # 20,000 + 11,000 = 31,000 <= 32,000.
+    ca_sbd_general_relief_resources_eligible: true
+
+- name: Case 7, real property one dollar over the limit fails.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        assessed_property_value: 32_001
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    ca_sbd_general_relief_resources_eligible: false
+
+- name: Case 8, non-exempt vehicle value over the personal property limit fails.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 3_501
+  output:
+    # 3,501 - 3,000 exemption = 501 countable > 500.
+    ca_sbd_general_relief_resources_eligible: false
+
+- name: Case 9, a vehicle fully inside the 3,000 dollar exemption passes.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+        household_vehicles_owned: 1
+        household_vehicles_value: 3_000
+  output:
+    # 3,000 - 3,000 = 0 countable.
+    ca_sbd_general_relief_resources_eligible: true
+
+- name: Case 10, cash and personal property together exceed the 500 dollar limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        personal_property: 451
+    spm_units:
+      spm_unit:
+        members: [person1]
+        spm_unit_cash_assets: 50
+    households:
+      household:
+        members: [person1]
+        in_sbd: true
+  output:
+    # Liquid assets pass alone (50 <= 50) but count within the personal
+    # property total: 50 + 451 = 501 > 500.
+    ca_sbd_general_relief_resources_eligible: false
+
+- name: Case 11, a two-person unit shares the flat 50 dollar liquid asset limit.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 80
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # The $50 limit is flat per assistance unit: 80 > 50 fails, though a
+    # per-person reading would have allowed up to 100.
+    ca_sbd_general_relief_resources_eligible: false
+
+- name: Case 12, a two-person unit exactly at the 50 dollar liquid asset limit passes.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+      person2:
+        age: 28
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 50
+    households:
+      household:
+        members: [person1, person2]
+        in_sbd: true
+  output:
+    # 50 <= 50 regardless of unit size.
+    ca_sbd_general_relief_resources_eligible: true

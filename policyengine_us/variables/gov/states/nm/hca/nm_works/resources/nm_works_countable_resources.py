@@ -7,6 +7,7 @@ class nm_works_countable_resources(Variable):
     label = "New Mexico Works countable resources"
     unit = USD
     definition_period = MONTH
+    quantity_type = STOCK
     reference = "https://www.srca.nm.gov/parts/title08/08.102.0510.html"
     defined_for = StateCode.NM
 

@@ -1,6 +1,13 @@
 from policyengine_core.model_api import *
 from policyengine_core import periods
 
+# The earliest year the model computes. CountryTaxBenefitSystem backdates every
+# parameter to the start of this year and no further, so a parameter first
+# dated later has no value for an earlier period. A formula that reads an
+# earlier period (for example, income from a prior year) must not reach before
+# this year.
+FIRST_MODELED_YEAR = 2015
+
 
 def str_to_instant(s):
     return periods.Instant(tuple(map(lambda s: int(s), s.split("-"))))

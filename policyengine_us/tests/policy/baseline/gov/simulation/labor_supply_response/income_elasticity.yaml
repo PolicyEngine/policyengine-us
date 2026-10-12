@@ -5,9 +5,22 @@
   output:
     income_elasticity: 0
 
-- name: Custom income elasticity value
+- name: Custom income elasticity value under threshold
   period: 2023
   input:
+    age: 50
     gov.simulation.labor_supply_responses.elasticities.income: -0.2
+    gov.simulation.labor_supply_responses.elasticities.income_age_threshold: 65
+    gov.simulation.labor_supply_responses.elasticities.income_age_multiplier_over_threshold: 2.0
   output:
     income_elasticity: -0.2
+
+- name: Income elasticity for people at or above threshold applies multiplier
+  period: 2023
+  input:
+    age: 70
+    gov.simulation.labor_supply_responses.elasticities.income: -0.2
+    gov.simulation.labor_supply_responses.elasticities.income_age_threshold: 65
+    gov.simulation.labor_supply_responses.elasticities.income_age_multiplier_over_threshold: 2.0
+  output:
+    income_elasticity: -0.4

@@ -37,3 +37,11 @@
     age: 60
   output:
     commodity_supplemental_food_program: 601
+
+- name: Case 6, eligible in 2026 with updated amount.
+  period: 2026
+  input:
+    school_meal_fpg_ratio: 1.50
+    age: 60
+  output:
+    commodity_supplemental_food_program: 651

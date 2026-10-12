@@ -1,6 +1,9 @@
 # Unit tests for Alabama TANF benefit amount
-# Reference: https://dhr.alabama.gov/wp-content/uploads/2022/04/Appendix-N-Sec-2-Public-Assistance-Payment-Manual.pdf#page=37
+# Reference: Ala. Admin. Code r. 660-2-2 (Income r. .30, effective 05/15/2022;
+# Payment Standard r. .31; Grant Computation r. .32)
+# https://admincode.legislature.state.al.us/api/chapter/660-2-2
 # Benefit = max(payment_standard - countable_income, 0)
+# Work expense deduction: the first 30% of gross earnings
 # Payment standards: $264 (1), $304 (2), $344 (3), $392 (4), $440 (5), $488 (6), etc.
 
 - name: Case 1, no income - full benefit.
@@ -43,11 +46,11 @@
         state_code: AL
   output:
     # Monthly employment: $200
-    # Work expense deduction (20%): $200 * 0.20 = $40
-    # Countable earned: $200 - $40 = $160
+    # Work expense deduction (30%): $200 * 0.30 = $60
+    # Countable earned: $200 - $60 = $140
     # Payment standard (2 persons): $304
-    # Benefit: $304 - $160 = $144
-    al_tanf: 144
+    # Benefit: $304 - $140 = $164
+    al_tanf: 164
 
 - name: Case 3, income exceeds threshold - zero benefit.
   period: 2024-01
@@ -67,8 +70,8 @@
         state_code: AL
   output:
     # Monthly employment: $1,000
-    # Work expense deduction (20%): $1,000 * 0.20 = $200
-    # Countable earned: $1,000 - $200 = $800
+    # Work expense deduction (30%): $1,000 * 0.30 = $300
+    # Countable earned: $1,000 - $300 = $700
     # Payment standard (2 persons): $304
     # Ineligible: countable > payment standard
     # Benefit: $0
@@ -94,11 +97,11 @@
         state_code: AL
   output:
     # Monthly employment: $250
-    # Work expense deduction (20%): $250 * 0.20 = $50
-    # Countable earned: $250 - $50 = $200
+    # Work expense deduction (30%): $250 * 0.30 = $75
+    # Countable earned: $250 - $75 = $175
     # Payment standard (3 persons): $344
-    # Benefit: $344 - $200 = $144
-    al_tanf: 144
+    # Benefit: $344 - $175 = $169
+    al_tanf: 169
 
 - name: Case 5, family of 4 full benefit.
   period: 2024-01
@@ -149,11 +152,11 @@
         state_code: AL
   output:
     # Monthly employment: $300
-    # Work expense deduction (20%): $300 * 0.20 = $60
-    # Countable earned: $300 - $60 = $240
+    # Work expense deduction (30%): $300 * 0.30 = $90
+    # Countable earned: $300 - $90 = $210
     # Payment standard (5 persons): $440
-    # Benefit: $440 - $240 = $200
-    al_tanf: 200
+    # Benefit: $440 - $210 = $230
+    al_tanf: 230
 
 - name: Case 7, self-employment income.
   period: 2024-01
@@ -173,11 +176,11 @@
         state_code: AL
   output:
     # Monthly self-employment: $300
-    # Work expense deduction (20%): $300 * 0.20 = $60
-    # Countable earned: $300 - $60 = $240
+    # Work expense deduction (30%): $300 * 0.30 = $90
+    # Countable earned: $300 - $90 = $210
     # Payment standard (2 persons): $304
-    # Benefit: $304 - $240 = $64
-    al_tanf: 64
+    # Benefit: $304 - $210 = $94
+    al_tanf: 94
 
 - name: Case 8, unearned income.
   period: 2024-01
@@ -222,13 +225,13 @@
         state_code: AL
   output:
     # Monthly employment: $500
-    # Work expense deduction (20%): $500 * 0.20 = $100
-    # After work expense: $400
+    # Work expense deduction (30%): $500 * 0.30 = $150
+    # After work expense: $350
     # Childcare deduction: $300
-    # Countable earned: max($400 - $300, 0) = $100
+    # Countable earned: max($350 - $300, 0) = $50
     # Payment standard (2 persons): $304
-    # Benefit: $304 - $100 = $204
-    al_tanf: 204
+    # Benefit: $304 - $50 = $254
+    al_tanf: 254
 
 - name: Case 10, single pregnant person full benefit.
   period: 2024-01
@@ -273,21 +276,21 @@
         state_code: AL
   output:
     # Monthly employment: $450
-    # Work expense deduction (20%): $450 * 0.20 = $90
-    # After work expense: $450 - $90 = $360
+    # Work expense deduction (30%): $450 * 0.30 = $135
+    # After work expense: $450 - $135 = $315
     # Childcare deduction: $200
-    # Countable earned: max($360 - $200, 0) = $160
+    # Countable earned: max($315 - $200, 0) = $115
     # Payment standard (2 persons): $304
-    # Benefit: $304 - $160 = $144
-    al_tanf: 144
+    # Benefit: $304 - $115 = $189
+    al_tanf: 189
 
-- name: Edge Case 2, eligible with zero benefit.
+- name: Edge Case 2, unearned income at payment standard - zero benefit.
   period: 2024-01
   input:
     people:
       person1:
         age: 30
-        employment_income_before_lsr: 4_560  # $380/month
+        child_support_received: 3_648  # $304/month unearned (no work deduction)
       person2:
         age: 5
     spm_units:
@@ -299,9 +302,7 @@
         state_code: AL
   output:
     # Family of 2: payment standard = $304
-    # Monthly employment: $380
-    # Work expense deduction (20%): $380 * 0.20 = $76
-    # Countable earned: $380 - $76 = $304
+    # Monthly unearned income: $304 (no deductions on unearned)
     # Countable income: $304
     # $304 <= $304, eligible (tests <= boundary)
     # Benefit: $304 - $304 = $0

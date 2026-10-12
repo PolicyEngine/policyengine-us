@@ -10,7 +10,7 @@ class va_ccsp(Variable):
     defined_for = "va_ccsp_eligible"
     reference = (
         "https://law.lis.virginia.gov/admincode/title8/agency20/chapter790/section40/",
-        "https://doe.virginia.gov/home/showpublisheddocument/56270#page=92",
+        "https://ris.dls.virginia.gov/uploads/22VAC40/dibr/VDOE%20Child%20Care%20Program%20Guidance%20Manual%205.3.2023-20240822104447.pdf#page=86",
     )
 
     def formula(spm_unit, period, parameters):
@@ -20,4 +20,5 @@ class va_ccsp(Variable):
         daily_mrr = person("va_ccsp_daily_mrr", period)
         attending_days = person("childcare_attending_days_per_month", period.this_year)
         monthly_mrr = spm_unit.sum(daily_mrr * attending_days)
-        return min_(max_(expenses - copay, 0), monthly_mrr)
+        capped_expenses = min_(expenses, monthly_mrr)
+        return max_(capped_expenses - copay, 0)

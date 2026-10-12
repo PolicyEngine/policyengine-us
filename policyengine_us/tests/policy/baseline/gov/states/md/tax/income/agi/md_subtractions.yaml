@@ -146,10 +146,11 @@
         members: [person1, person2, person3]
         state_code: MD
   output:
-    tax_unit_taxable_social_security: 34_000
+    tax_unit_social_security: 40_000
+    tax_unit_taxable_social_security: 17_000
     md_pension_subtraction_amount: 0
-    md_socsec_subtraction: 34_000
-    md_socsec_subtraction_amount: [25_500, 8_500, 0]
+    md_socsec_subtraction: 17_000
+    md_socsec_subtraction_amount: [8_500, 8_500, 0]
 
 - name: Test 1 for MD two-income AGI subtraction variable formula
   absolute_error_margin: 0.01

@@ -1,0 +1,416 @@
+# AL CCSP weekly per-child parental fee tests (SPMUnit, MONTH).
+# Unified 11-band fee schedule indexed by FPL ratio (0-200% FPL).
+# Initial applicants must be at or below 180% FPL; continuing recipients may
+# remain enrolled up to 200% FPL. Both tiers use the same fee schedule.
+#
+# AL uses the prior year's HHS FPG (Fact Sheet 2024 -> 2023 FPG).
+# 2023 FPG (Contiguous US), family of 4: $30,000/yr = $2,500/mo.
+#   80%  FPL fam of 4 = $24,000/yr ($2,000/mo)
+#   150% FPL fam of 4 = $45,000/yr ($3,750/mo)
+#   185% FPL fam of 4 = $55,500/yr ($4,625/mo)
+#   195% FPL fam of 4 = $58,500/yr ($4,875/mo)
+
+- name: Family at 150 percent FPL has $30 weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 45_000  # 150% FPL fam of 4 = 45,000/yr
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 3,750 / 2,500 = 1.5 -> band [1.4001, 1.5001) -> $30/wk
+    al_ccsp_weekly_copay_per_child: 30
+
+- name: Family at 80 percent FPL has zero weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 24_000  # 80% FPL fam of 4
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 2,000 / 2,500 = 0.8 -> band [0, 1.0001) -> $0/wk
+    al_ccsp_weekly_copay_per_child: 0
+
+- name: Enrolled family at 185 percent FPL has $42 weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 55_500  # 185% FPL fam of 4
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 4,625 / 2,500 = 1.85 -> band [1.8001, 1.9001) -> $42/wk
+    al_ccsp_weekly_copay_per_child: 42
+
+- name: Enrolled family at 195 percent FPL has $45 weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 58_500  # 195% FPL fam of 4
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 4,875 / 2,500 = 1.95 -> band [1.9001, ...) -> $45/wk
+    al_ccsp_weekly_copay_per_child: 45
+
+- name: Family at 130 percent FPL has $24 weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 39_000  # 130% FPL fam of 4 = 3,250/mo
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 3,250 / 2,500 = 1.30 -> band [1.2001, 1.3001) -> $24/wk
+    al_ccsp_weekly_copay_per_child: 24
+
+- name: Family at 140 percent FPL has $27 weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 42_000  # 140% FPL fam of 4 = 3,500/mo
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 3,500 / 2,500 = 1.40 -> band [1.3001, 1.4001) -> $27/wk
+    al_ccsp_weekly_copay_per_child: 27
+
+- name: Family at 160 percent FPL has $33 weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 48_000  # 160% FPL fam of 4 = 4,000/mo
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 4,000 / 2,500 = 1.60 -> band [1.5001, 1.6001) -> $33/wk
+    al_ccsp_weekly_copay_per_child: 33
+
+- name: Family at 170 percent FPL has $36 weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 51_000  # 170% FPL fam of 4 = 4,250/mo
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 4,250 / 2,500 = 1.70 -> band [1.6001, 1.7001) -> $36/wk
+    al_ccsp_weekly_copay_per_child: 36
+
+- name: Enrolled family at exactly 200 percent FPL has $45 weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 60_000  # 200% FPL fam of 4 = 5,000/mo
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: true
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 5,000 / 2,500 = 2.00 -> band [1.9001, inf) -> $45/wk
+    al_ccsp_weekly_copay_per_child: 45
+
+- name: Family just above 100 percent FPL enters the $18 band.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_500  # 105% FPL fam of 4 = 2,625/mo
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 2,625 / 2,500 = 1.05 -> band [1.0001, 1.1001) -> $18/wk
+    al_ccsp_weekly_copay_per_child: 18
+
+- name: Family at 115 percent FPL has $21 weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 34_500  # 115% FPL fam of 4 = 2,875/mo
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 2,875 / 2,500 = 1.15 -> band [1.1001, 1.2001) -> $21/wk
+    al_ccsp_weekly_copay_per_child: 21
+
+- name: Family at 175 percent FPL has $39 weekly per-child fee.
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 52_500  # 175% FPL fam of 4 = 4,375/mo
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+  output:
+    # FPL ratio = 4,375 / 2,500 = 1.75 -> band [1.7001, 1.8001) -> $39/wk
+    al_ccsp_weekly_copay_per_child: 39
+
+- name: Homeless-only family pays the standard FPL-band fee (not waived).
+  period: 2024-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 31_500  # 105% FPL fam of 4 = 2,625/mo
+      person2:
+        age: 28
+      person3:
+        age: 4
+        is_tax_unit_dependent: true
+      person4:
+        age: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4]
+        al_ccsp_enrolled: false
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: AL
+        is_homeless: true
+  output:
+    # Homeless is NOT a §3.3.1 copay-waiver category (§3.3.1(iii)
+    # unchecked); 105% FPL -> band [1.0001, 1.1001) -> $18/wk, not $0.
+    al_ccsp_weekly_copay_per_child: 18

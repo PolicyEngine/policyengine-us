@@ -59,7 +59,7 @@
     is_veteran: false
     is_full_time_student: false
     snap: 0
-    medicaid: 0
+    medicaid_enrolled: false
     chip: 0
     tanf: 0
     wic: 0
@@ -73,7 +73,7 @@
     state_code: TX
     age: 3
     snap: 0
-    medicaid: 0
+    medicaid_enrolled: false
     chip: 0
     tanf: 0
     wic: 0
@@ -89,28 +89,28 @@
         age: 35
         is_veteran: true
         is_medicare_eligible: false
-        medicaid: 0
+        medicaid_enrolled: false
         chip: 0
         wic: 0
       spouse:
         age: 33
         is_veteran: false
         is_medicare_eligible: false
-        medicaid: 0
+        medicaid_enrolled: false
         chip: 0
         wic: 0
       child:
         age: 12
         is_veteran: false
         is_medicare_eligible: false
-        medicaid: 0
+        medicaid_enrolled: false
         chip: 0
         wic: 0
       senior:
         age: 68
         is_veteran: false
         is_medicare_eligible: false
-        medicaid: 0
+        medicaid_enrolled: false
         chip: 0
         wic: 0
     spm_units:

@@ -7,9 +7,7 @@ class ma_scb_total_income(Variable):
     label = "Total income for the MA Senior Circuit Breaker"
     unit = USD
     definition_period = YEAR
-    reference = (
-        "https://www.mass.gov/info-details/mass-general-laws-c62-ss-6"  # Part (k)
-    )
+    reference = "https://malegislature.gov/Laws/GeneralLaws/PartI/TitleIX/Chapter62/Section6"  # Subsection (k)(1)
     defined_for = StateCode.MA
 
     def formula(tax_unit, period, parameters):
@@ -17,7 +15,12 @@ class ma_scb_total_income(Variable):
             "ma_gross_income", period
         )  # The law specifies to start at AGI and re-add deducted capital losses. We instead start from gross income, on an equivalent path.
         scb = parameters(period).gov.states.ma.tax.income.credits.senior_circuit_breaker
-        disallowed_deductions = add(tax_unit, period, scb.income.disallowed_deductions)
+        # c.62 s.6(k)(1) adds back amounts excluded or subtracted from the
+        # taxpayer's AGI. Dependents' income is never in that AGI, so count
+        # only the head's and spouse's person-level amounts.
+        disallowed_deductions = tax_unit_non_dep_add(
+            tax_unit, period, scb.income.disallowed_deductions
+        )
 
         # Re-add some exemptions
         person = tax_unit.members

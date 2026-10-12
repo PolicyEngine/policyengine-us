@@ -39,3 +39,15 @@
     investment_in_529_plan: 0
   output:
     ma_529_deduction: 0
+
+- name: Case 5, surviving spouse filer receives the head of household cap.
+  period: 2024
+  absolute_error_margin: 0.1
+  input:
+    state_code: MA
+    filing_status: SURVIVING_SPOUSE
+    investment_in_529_plan: 5_000
+  output:
+    # Massachusetts has no surviving spouse filing status; the filer receives
+    # the head of household cap of $1,000, not the joint cap of $2,000.
+    ma_529_deduction: 1_000

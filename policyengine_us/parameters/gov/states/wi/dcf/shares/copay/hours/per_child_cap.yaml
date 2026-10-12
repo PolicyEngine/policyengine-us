@@ -1,0 +1,20 @@
+description: Wisconsin caps each child's monthly copayment hours at this amount under the Wisconsin Shares Child Care Subsidy Program.
+
+# Each child contributes up to 152 hours to the assistance group's copayment
+# hours, even if the child attends multiple providers (Section 18.2 and
+# Appendix II). Part-time authorizations contribute
+# 131 hours (30 weekly hours x 4.348125, rounded up), below this cap;
+# full-time authorizations contribute 152 hours (the 153rd subsidized hour
+# is not charged a copayment).
+values:
+  2026-02-01: 152
+
+metadata:
+  unit: hour
+  period: month
+  label: Wisconsin Shares per-child monthly copayment hours cap
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 18.2 Copayments
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=150
+    - title: Wisconsin Shares Copayment Schedule, effective February 1, 2026
+      href: https://dcf.wisconsin.gov/files/wishares/pdf/wishares-copay-schedule.pdf

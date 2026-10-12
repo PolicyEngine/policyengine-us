@@ -1,0 +1,40 @@
+# Integration test for issue #8934: a married childless couple who fail only the
+# federal EITC minimum-age test may still claim the Maryland EITC on a pro forma
+# federal credit computed as if the minimum-age requirement did not apply.
+# MD, MFJ, ages 23/24, no dependents, $10,476 combined wages.
+# TaxAct return shows Line 22 = $325 (worksheet 50% of federal), Line 44 refundable.
+
+- name: MD married childless couple under 25 claims the age-disregarded EITC
+  period: 2025
+  input:
+    people:
+      head:
+        age: 23
+        employment_income: 5_238
+      spouse:
+        age: 24
+        employment_income: 5_238
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    families:
+      family:
+        members: [head, spouse]
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MD
+  output:
+    eitc: 0  # age-gated federal credit denied to the under-25 childless
+    federal_eitc_without_age_minimum: 649
+    # 45% of $649 refundable, less MD tax before credits ($0 for this household).
+    md_refundable_eitc: 292.05
+    # Total MD EITC is the 45% refundable amount regardless of how it splits
+    # between the tax-limited non-refundable and refundable portions.
+    md_eitc: 292.05

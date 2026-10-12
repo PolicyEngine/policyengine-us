@@ -81,38 +81,53 @@ programs:
     notes: Nationwide rules
     state_implementations:
       - state: CA
+        status: complete
         name: California universal meals
         effective: 2022-07-01
         reference: AB 130 (2021); Cal. Educ. Code § 49501.5
       - state: CO
+        status: complete
         name: Colorado Healthy School Meals for All
         effective: 2023-07-01
-        reference: HB 22-1414 / Proposition FF (2022); C.R.S. § 22-82.9-101 et seq.
+        reference: HB 22-1414 / Proposition FF (2022); C.R.S. § 22-82.9-201 et seq.
       - state: MA
+        status: complete
         name: Massachusetts universal meals
         effective: 2023-07-01
         reference: FY2024 Budget — Ch. 28 of the Acts of 2023, Outside Sections
       - state: ME
+        status: complete
         name: Maine School Meals for All
         effective: 2022-07-01
         reference: LD 1679 / PL 2021 c.719 (enacted May 2022); 20-A M.R.S. § 6602
       - state: MI
+        status: complete
         name: Michigan School Meals
         effective: 2023-07-01
-        reference: PA 103 of 2023 (SB 0173); MCL 388.1631aa
+        reference: PA 103 of 2023 (SB 0173); MCL 388.1630d
       - state: MN
+        status: complete
         name: Minnesota Free School Meals for Kids
         effective: 2023-07-01
         reference: HF 5 (2023); Minn. Stat. § 124D.111
+      - state: NC
+        status: complete
+        name: North Carolina reduced-price meal copay coverage
+        effective: 2020-07-01
+        notes: Both-meal copay coverage in SY2020-21 and from SY2022-23 onward; the SY2021-22 state provision covers breakfast only. Assumes a covered school participating in both meal programs.
+        reference: G.S. 115C-264(a1) (S.L. 2025-89 § 2A.8); S.L. 2023-134 § 7.58; S.L. 2022-74 § 7.3; S.L. 2020-80 § 2.3.(b); S.L. 2011-342 § 1
       - state: NM
+        status: complete
         name: New Mexico Healthy Universal School Meals
         effective: 2023-07-01
-        reference: SB 4 (2023), Chapter 30; N.M. Stat. § 22-13D-3
+        reference: SB 4 (2023), Chapter 30, § 3; N.M. Stat. § 22-13C-4(A)
       - state: NY
+        status: complete
         name: New York Universal Free School Meals
         effective: 2025-07-01
         reference: Chapter 56 of the Laws of 2025 (S3006C/A3006C, FY26 ELFA Article VII); NY Education Law § 915-a
       - state: VT
+        status: complete
         name: Vermont Universal School Meals
         effective: 2023-07-01
         reference: Act 64 / H.165 (2023); 16 V.S.A. § 4017
@@ -135,7 +150,7 @@ programs:
     variable: csfp
     parameter_prefix: gov.usda.csfp
     verified_start_year: 2024
-    verified_end_year: 2025
+    verified_end_year: 2026
     notes: Nutritious foods for low-income pregnant/postpartum women, infants, children, and seniors
 
   - id: fdpir
@@ -175,6 +190,7 @@ programs:
     parameter_prefix: gov.hhs.chip
     verified_start_year: 2022
     verified_end_year: 2024
+    notes: Includes California's County Children's Health Initiative Program (CCHIP) for children in San Francisco, San Mateo, and Santa Clara counties
 
   - id: aca_subsidies
     name: ACA subsidies
@@ -460,8 +476,33 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: CA, CO, CT, DE, DC, IL, MA, MD, ME, NC, NH, NJ, PA, RI, SC, TX, VA, VT, WV
+    coverage: US
+    notes: Every state and DC has a child care subsidy implementation; the program stays partial while New York's listed gaps remain
     state_implementations:
+      - state: AK
+        status: complete
+        name: CCAP
+        full_name: Alaska Child Care Assistance Program
+        variable: ak_ccap
+        notes: Modeled as PASS II/III; PASS I (ATAP-bundled) and PASS IV (OCS protective services) not modeled
+      - state: AR
+        status: complete
+        name: Arkansas SRA
+        full_name: Arkansas School Readiness Assistance
+        variable: ar_sra
+        parameter_prefix: gov.states.ar.ade.oec.sra
+      - state: AL
+        status: complete
+        name: Alabama CCSP
+        full_name: Alabama Child Care Subsidy Program
+        variable: al_ccsp
+        parameter_prefix: gov.states.al.dhr.ccsp
+      - state: AZ
+        status: complete
+        name: CCAP
+        full_name: Arizona Child Care Assistance Program
+        variable: az_ccap
+        parameter_prefix: gov.states.az.hhs.ccap
       - state: CA
         status: complete
         name: CalWORKs childcare
@@ -474,38 +515,147 @@ programs:
         variable: co_ccap_subsidy
         notes: CCCAP
       - state: CT
-        status: in_progress
+        status: complete
         name: Care 4 Kids
         full_name: Connecticut Care 4 Kids
+        variable: ct_c4k
+        parameter_prefix: gov.states.ct.oec.c4k
+      - state: FL
+        status: complete
+        name: School Readiness
+        full_name: Florida School Readiness Program
+        variable: fl_sr
+        parameter_prefix: gov.states.fl.doe.sr
+      - state: HI
+        status: complete
+        name: Hawaii Child Care Subsidy
+        full_name: Hawaii Child Care Subsidy
+        variable: hi_ccap
+        parameter_prefix: gov.states.hi.bessd.ccap
       - state: IL
         status: complete
         name: CCAP
         full_name: Child Care Assistance Program (Illinois)
-        variable: il_ccap_eligible
-        notes: Only includes eligibility rules
+        variable: il_ccap
+        parameter_prefix: gov.states.il.dhs.ccap
+      - state: ID
+        status: complete
+        name: ICCP
+        full_name: Idaho Child Care Program
+        variable: id_iccp
+        parameter_prefix: gov.states.id.dhw.iccp
+      - state: IN
+        status: complete
+        name: Indiana CCDF
+        full_name: Indiana Child Care and Development Fund Voucher Program
+        variable: in_ccdf
+        parameter_prefix: gov.states.in.fssa.ccdf
+      - state: KS
+        status: complete
+        name: Kansas CCAP
+        full_name: Kansas Child Care Assistance Program
+        variable: ks_child_care_subsidies
+        parameter_prefix: gov.states.ks.dcf.ccap
+      - state: KY
+        status: complete
+        name: CCAP
+        full_name: Kentucky Child Care Assistance Program
+        variable: ky_ccap
+        parameter_prefix: gov.states.ky.dcbs.ccap
+      - state: LA
+        status: complete
+        name: Louisiana CCAP
+        full_name: Louisiana Child Care Assistance Program
+        variable: la_ccap
+        parameter_prefix: gov.states.la.ldoe.ccap
       - state: MA
         status: complete
         name: Massachusetts CCFA
         full_name: Massachusetts Child Care Financial Assistance
         variable: ma_ccfa
       - state: MD
-        status: in_progress
+        status: complete
         name: Maryland CCS
         full_name: Maryland Child Care Scholarship
+        variable: md_child_care_subsidies
       - state: ME
         status: complete
         name: Maine CCAP
         full_name: Maine Child Care Affordability Program
         variable: me_ccap
+      - state: MO
+        status: complete
+        name: Missouri CCS
+        full_name: Missouri Child Care Subsidy
+        variable: mo_ccs
+        parameter_prefix: gov.states.mo.dese.ccs
+      - state: MI
+        status: complete
+        name: Michigan CDC
+        full_name: Michigan Child Development and Care Program
+        variable: mi_child_care_subsidies
+        parameter_prefix: gov.states.mi.mdhhs.ccap
+      - state: MS
+        status: complete
+        name: CCPP
+        full_name: Mississippi Child Care Payment Program
+        variable: ms_ccpp
+        parameter_prefix: gov.states.ms.dhs.ccpp
+      - state: MT
+        status: complete
+        name: Montana BBCCS
+        full_name: Montana Best Beginnings Child Care Scholarship
+        variable: mt_child_care_subsidies
+        parameter_prefix: gov.states.mt.dphhs.ccap
+      - state: IA
+        status: complete
+        name: Iowa CCA
+        full_name: Iowa Child Care Assistance
+        variable: ia_cca
+        parameter_prefix: gov.states.ia.hhs.cca
+      - state: MN
+        status: complete
+        name: Minnesota CCAP
+        full_name: Minnesota Child Care Assistance Program
+        variable: mn_ccap
+        parameter_prefix: gov.states.mn.dcyf.ccap
+      - state: NE
+        status: complete
+        name: Nebraska CCS
+        full_name: Nebraska Child Care Subsidy
+        variable: ne_child_care_subsidy
+        parameter_prefix: gov.states.ne.dhhs.child_care_subsidy
       - state: NH
         status: complete
         name: New Hampshire CCAP
         full_name: New Hampshire Child Care Scholarship Program
         variable: nh_ccap
       - state: NJ
-        status: in_progress
+        status: complete
         name: New Jersey CCAP
         full_name: New Jersey Child Care Assistance Program
+        variable: nj_ccap
+        parameter_prefix: gov.states.nj.njdhs.ccap
+      - state: NV
+        status: complete
+        name: CCDP
+        full_name: Nevada Child Care and Development Program
+        variable: nv_ccdp
+        parameter_prefix: gov.states.nv.dwss.ccdp
+      - state: NY
+        status: partial
+        name: CCAP
+        full_name: New York Child Care Assistance Program
+        variable: ny_ccap
+        parameter_prefix: gov.states.ny.ocfs.ccap
+        notes: Models New York income eligibility, market rates, and the family share, including the foster-care and child-protective-services categorical routes, the 18 NYCRR 415.1(b) age extensions for a child with special needs, and the statutory family-share exceptions. Excess periods for a sixth or seventh day of care and for each day of care at or above the daily maximum hours are priced at the applicable daily or part-day rate under 415.9(d). Household county proxies for provider county and unknown counties default to group 3, the lowest-rate group, which understates rates for the New York City and downstate groups that hold most of the state's children. The benefit requires childcare_hours_per_day and childcare_days_per_week as well as expenses, because the market rate is priced by duration of care; expenses alone yield no benefit. The pre-2022 hourly rate tier no longer exists - 18 NYCRR 415.9 and 24-OCFS-LCM-22 Attachment A define weekly, daily and part-day rates only. The SPM unit stands in for the 18 NYCRR 415.1(l) child care services unit, which draws cohabiting adults, 18-to-20-year-olds and child-only units differently. Not modeled - the mandatory non-traditional-hours and homelessness payment differentials required by 18 NYCRR 415.9(f)(2)-(3) and the discretionary accreditation differential, the special-needs substituted market rate under 415.9(h)(4), the separate school-age child care rate table, safety net assistance as public assistance for the family-share exception, preventive services as distinct from protective services, public assistance in countable income (omitted to avoid a circular dependency through the TANF dependent care deduction), the required-work-activity condition on the 415.2(a)(1) guarantee of care to public-assistance families (public assistance enrollment alone satisfies the reason-for-care test), a child under court supervision, the 12-month eligibility period, the child-only assistance unit exception to the family share, and waitlist rationing when funds are unavailable
+      - state: OR
+        status: complete
+        name: Oregon ERDC
+        full_name: Oregon Employment Related Day Care
+        variable: or_erdc
+        parameter_prefix: gov.states.or.delc.erdc
+        notes: Provider rate area is an input; automatic provider ZIP mapping is deferred
       - state: DC
         status: complete
         name: DC CCSP
@@ -521,6 +671,12 @@ programs:
         name: Delaware POC
         full_name: Delaware Purchase of Care
         variable: de_poc
+      - state: OH
+        status: complete
+        name: Ohio Publicly Funded Child Care
+        full_name: Ohio Child Care Assistance Program (Publicly Funded Child Care)
+        variable: oh_child_care_subsidies
+        parameter_prefix: gov.states.oh.dcy.ccap
       - state: PA
         status: complete
         name: Pennsylvania CCW
@@ -532,27 +688,94 @@ programs:
         full_name: Rhode Island Child Care Assistance Program
         variable: ri_ccap
       - state: SC
-        status: in_progress
+        status: complete
         name: South Carolina CCAP
         full_name: South Carolina Child Care Assistance Program
+        variable: sc_ccap
+        parameter_prefix: gov.states.sc.dss.ccap
       - state: TX
         status: complete
         name: Texas CCS
         full_name: Texas Child Care Services
         variable: tx_ccs
       - state: VA
-        status: in_progress
+        status: complete
         name: Virginia CCSP
         full_name: Virginia Child Care Subsidy Program
+        variable: va_ccsp
+        parameter_prefix: gov.states.va.dss.ccsp
       - state: VT
         status: complete
         name: Vermont CCFAP
         full_name: Vermont Child Care Financial Assistance Program
         variable: vt_ccfap
+      - state: WA
+        status: complete
+        name: Washington WCCC
+        full_name: Washington Working Connections Child Care
+        variable: wa_wccc
+      - state: WI
+        status: complete
+        name: Wisconsin Shares
+        full_name: Wisconsin Shares Child Care Subsidy Program
+        variable: wi_shares
+        parameter_prefix: gov.states.wi.dcf.shares
       - state: WV
-        status: in_progress
+        status: complete
         name: West Virginia CCAP
         full_name: West Virginia Child Care Assistance Program
+        variable: wv_ccap
+        parameter_prefix: gov.states.wv.dhhr.ccap
+      - state: GA
+        status: complete
+        name: Georgia CAPS
+        full_name: Georgia Childcare and Parent Services
+        variable: ga_caps
+        parameter_prefix: gov.states.ga.decal.caps
+      - state: ND
+        status: partial
+        name: North Dakota CCAP
+        full_name: North Dakota Child Care Assistance Program
+        variable: nd_ccap
+        parameter_prefix: gov.states.nd.dhs.ccap
+        notes: Models the initial (75% of SMI) and continuing (85% of SMI) income limits, the SMI-band co-payment schedule with the 30%-of-SMI and TANF waivers, and the federal family-share ceiling. Not modeled - the CCAP Workforce Benefit income-limit and co-payment waiver for early-childhood workforce families, and the Diversion and Crossroads co-payment waivers
+      - state: NM
+        status: complete
+        name: New Mexico CCAP
+        full_name: New Mexico Child Care Assistance Program
+        variable: nm_ccap
+        parameter_prefix: gov.states.nm.ececd.ccap
+      - state: OK
+        status: complete
+        name: Oklahoma Child Care Subsidy
+        full_name: Oklahoma Child Care Subsidy Program
+        variable: ok_ccs
+        parameter_prefix: gov.states.ok.dhs.ccs
+      - state: SD
+        status: partial
+        name: South Dakota CCA
+        full_name: South Dakota Child Care Assistance
+        variable: sd_cca
+        parameter_prefix: gov.states.sd.dss.cca
+        notes: Models the weekly region-based rate schedule effective 2026-08-03 with the billed-expense cap and co-payment, the income and asset tests, the citizen or lawful-permanent-resident child test, and the reason-for-care test. The benefit is zero before August 2026 because the earlier hourly county-based schedule is not implemented. Not modeled - the court-supervision eligibility pathway for a child
+      - state: UT
+        status: complete
+        name: Utah CCAP
+        full_name: Utah Child Care Assistance Program
+        variable: ut_ccap
+        parameter_prefix: gov.states.ut.dwf.ccap
+      - state: TN
+        status: complete
+        name: Tennessee CCAP
+        full_name: Tennessee Child Care Certificate Program (Smart Steps)
+        variable: tn_ccap
+        parameter_prefix: gov.states.tn.dhs.ccap
+      - state: WY
+        status: complete
+        name: Wyoming CCAP
+        full_name: Wyoming Child Care, Purchase of Service
+        variable: wy_ccap
+        parameter_prefix: gov.states.wy.dfs.ccap
 
   - id: head_start
     name: Head Start
@@ -585,31 +808,113 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: OR, DC, Riverside County, MA, IL, TX
+    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OR, TX
     state_implementations:
-      - state: OR
-        status: in_progress
-        name: LIHEAP
-        full_name: Low Income Home Energy Assistance Program (Oregon)
       - state: DC
         status: complete
         name: DC LIHEAP
         full_name: DC Low Income Home Energy Assistance Program
-        variable: dc_liheap
+        variable: dc_liheap_payment
+        parameter_prefix: gov.states.dc.doee.liheap
       - state: MA
         status: complete
         name: Massachusetts LIHEAP
         full_name: Massachusetts Low Income Home Energy Assistance Program
         variable: ma_liheap
+        parameter_prefix: gov.states.ma.doer.liheap
       - state: IL
         status: complete
         name: Illinois LIHEAP
         full_name: Illinois Low Income Home Energy Assistance Program
         variable: il_liheap
+        parameter_prefix: gov.states.il.dceo.liheap
+      - state: IN
+        status: partial
+        name: Indiana EAP
+        full_name: Indiana Energy Assistance Program
+        variable: in_eap
+        parameter_prefix: gov.states.in.ihcda.eap
+        verified_years: "2026"
+        notes: PY2026 regular heating and the winter electric allowance only. Crisis, cooling and weatherization assistance are out of scope.
+      - state: KS
+        status: partial
+        name: Kansas LIEAP
+        full_name: Kansas Low Income Energy Assistance Program
+        variable: ks_liheap
+        parameter_prefix: gov.states.ks.dcf.liheap
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular heating only. The FY2026 $130 minimum comes from the plan's estimated benefit levels; crisis, cooling and weatherization assistance are out of scope.
+      - state: KY
+        status: partial
+        name: Kentucky LIHEAP
+        full_name: Kentucky Low Income Home Energy Assistance Program
+        variable: ky_liheap
+        parameter_prefix: gov.states.ky.dcbs.liheap
+        verified_years: "2025-2026"
+        notes: FY2025-FY2026 regular heating only, from the published benefit workbooks. Crisis and cooling assistance are out of scope.
+      - state: MD
+        status: partial
+        name: Maryland MEAP
+        full_name: Maryland Energy Assistance Program
+        variable: md_meap
+        parameter_prefix: gov.states.md.dhs.meap
+        verified_years: "2025-2027"
+        notes: FY25-FY27 regular heating only, with the fuel tables, the Garrett County multiplier and the subsidized and nominal levels. The SNAP nominal payment, cooling, EUSP, arrearage, crisis and equipment benefits are out of scope.
+      - state: MS
+        status: partial
+        name: Mississippi LIHEAP
+        full_name: Mississippi Low Income Home Energy Assistance Program
+        variable: ms_liheap
+        parameter_prefix: gov.states.ms.mdhs.liheap
+        verified_years: "2026"
+        notes: FY2026 regular assistance for heating fuel and electric bills, using the published matrix as printed. Crisis assistance and energy equipment are out of scope.
+      - state: NC
+        status: partial
+        name: North Carolina LIEAP
+        full_name: North Carolina Low Income Energy Assistance Program
+        variable: nc_lieap
+        parameter_prefix: gov.states.nc.ncdhhs.lieap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating only, with the dated resource waiver. Crisis, cooling and weatherization assistance are out of scope.
+      - state: NE
+        status: partial
+        name: Nebraska LIHEAP
+        full_name: Nebraska Low Income Home Energy Assistance Program
+        variable: ne_liheap
+        parameter_prefix: gov.states.ne.dhhs.liheap
+        verified_years: "2026"
+        notes: FY2026 regular heating only, with the single-family and multifamily schedules and the earned-income disregard. Crisis, cooling and weatherization assistance are out of scope.
+      - state: NJ
+        status: partial
+        name: New Jersey LIHEAP
+        full_name: New Jersey Low Income Home Energy Assistance Program
+        variable: nj_liheap
+        parameter_prefix: gov.states.nj.dca.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid, including the one renters cell that changes in FY2027; the program is not modeled before FY2022. Crisis, cooling and equipment assistance are out of scope.
+      - state: NY
+        status: partial
+        name: New York HEAP
+        full_name: New York Home Energy Assistance Program
+        variable: ny_heap
+        parameter_prefix: gov.states.ny.otda.heap
+        verified_years: "2024-2026"
+        notes: FY2024-FY2026 regular heating only, with the fuel base amounts, the Tier I and vulnerable supplements and the heat-included levels. Crisis, cooling, HERR and clean-and-tune assistance are out of scope.
+      - state: OR
+        status: partial
+        name: Oregon LIHEAP
+        full_name: Oregon Low Income Home Energy Assistance Program
+        variable: or_liheap
+        parameter_prefix: gov.states.or.ohcs.liheap
+        verified_years: "2025-2027"
+        notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
       - state: TX
-        status: in_progress
+        status: partial
         name: Texas CEAP
         full_name: Texas Comprehensive Energy Assistance Program
+        variable: tx_ceap
+        parameter_prefix: gov.states.tx.tdhca.ceap
+        notes: Models the 150% FPG income limit, the alternative 60% SMI limit from the FY2024 state plan (applied through 2024), benefit amounts, and categorical eligibility through TANF enrollment, SNAP eligibility, and SSI receipt. Not modeled - net rather than gross gambling winnings, the Medicare premium deduction from counted Social Security, and the exclusion of means-tested veterans' pensions from counted income (10 TAC 6.4(c))
 
   # --- SSA programs ---
   - id: ssi
@@ -679,9 +984,11 @@ programs:
         full_name: Georgia State Supplementary Payment
         variable: ga_ssp
       - state: HI
-        status: in_progress
+        status: complete
         name: Hawaii OSS
         full_name: Hawaii Optional State Supplementation
+        variable: hi_oss
+        parameter_prefix: gov.states.hi.dhs.oss
       - state: IA
         status: in_progress
         name: Iowa SSP
@@ -701,23 +1008,42 @@ programs:
         name: Massachusetts SSP
         full_name: Massachusetts State Supplementary Payment
         variable: ma_state_supplement
+      - state: MD
+        status: complete
+        name: Maryland PAA
+        full_name: Maryland Public Assistance to Adults
+        variable: md_paa
+        parameter_prefix: gov.states.md.dhs.fia.paa
       - state: MI
         status: complete
         name: Michigan SSP
         full_name: Michigan State Supplementary Payment
         variable: mi_ssp
         parameter_prefix: gov.states.mi.mdhhs.ssp
-      - state: MT
-        status: complete
-        name: Montana SSP
-        full_name: Montana State Supplementation
-        variable: mt_ssp
-        parameter_prefix: gov.states.mt.dphhs.ssp
       - state: ME
         status: complete
         name: Maine SSP
         full_name: Maine State Supplemental Income Program
         variable: me_ssp
+      - state: MO
+        status: complete
+        name: Missouri SSP
+        full_name: Missouri State Supplementary Payment
+        variable: mo_ssp
+        parameter_prefix: gov.states.mo.dss.ssp
+        verified_years: "2023-2026"
+      - state: MN
+        status: complete
+        name: Minnesota MSA
+        full_name: Minnesota Supplemental Aid
+        variable: mn_msa
+        parameter_prefix: gov.states.mn.dhs.msa
+      - state: NE
+        status: complete
+        name: Nebraska AABD
+        full_name: Nebraska Aid to the Aged, Blind, or Disabled
+        variable: ne_aabd
+        parameter_prefix: gov.states.ne.dhhs.aabd
       - state: KS
         status: complete
         name: Kansas SSPP
@@ -764,6 +1090,17 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: MT
+        status: partial
+        name: Montana SSP
+        full_name: Montana State Supplementary Payment
+        variable: mt_ssp
+        parameter_prefix: gov.states.mt.dphhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models optional supplements for state-certified care settings,
+          including the out-of-state legal-custody exception and section 1619
+          exclusion. Mandatory grandfathered supplementation is not modeled.
 
   - id: social_security
     name: Social Security
@@ -786,7 +1123,10 @@ programs:
     variable: is_medicare_eligible
     parameter_prefix: gov.hhs.medicare
     verified_start_year: 2024
-    notes: Includes Part A (hospital) and Part B (medical) premiums with IRMAA adjustments
+    notes: >-
+      Includes Part A (hospital) and Part B (medical) premiums with IRMAA
+      adjustments; gross Part B premium calibration should use the
+      enrollment-gated gross_medicare_part_b_premium_if_enrolled variable.
 
   # --- HUD programs ---
   - id: section_8
@@ -797,7 +1137,7 @@ programs:
     status: in_progress
     variable: hud_hap
     parameter_prefix: gov.hud
-    notes: "National rules; only have AMI for Los Angeles County and Colorado. Illinois, Massachusetts in progress"
+    notes: "National rules with county-level income limits and fair market rents; utility allowance schedules encoded for Los Angeles County, the Texas TDHCA service area (28 counties), and four Kansas PHAs (Sedgwick, Shawnee, Wyandotte, and Johnson counties)"
 
   # --- FCC programs ---
   - id: lifeline
@@ -912,6 +1252,17 @@ programs:
     verified_start_year: 2023
 
   # --- State programs ---
+  - id: al_ui
+    name: Alabama UI
+    full_name: Alabama Unemployment Compensation
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: AL
+    variable: al_ui
+    parameter_prefix: gov.states.al.dol.unemployment_insurance
+    verified_years: "2024"
+
   - id: co_oap
     name: Colorado OAP
     full_name: Colorado Old Age Pension
@@ -944,6 +1295,45 @@ programs:
     variable: co_omnisalud
     parameter_prefix: gov.states.co.hcpf.omnisalud
 
+  - id: co_premium_assistance
+    name: Colorado Premium Assistance
+    full_name: Colorado Premium Assistance (Health Insurance Affordability Enterprise premium wrap)
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: CO
+    variable: co_premium_assistance
+    parameter_prefix: gov.states.co.doi.premium_assistance
+    verified_years: "2026-2027"
+    notes: PY2026 and PY2027 verified against Amended Regulation 4-2-78 (3 CCR 702-4) and enrolled HB25B-1006; re-verify after the DOI fall-2026 Regulation 4-2-78 amendment cycle. The per-member premium wrap is approximated as a pooled tax-unit amount, member counts use federal ACA PTC eligibility rather than the regulation's subject-to-a-premium test, and full-year enrollment is assumed. Not modeled - a tax unit that mixes OmniSalud and Colorado Premium Assistance members, which the two programs value independently.
+
+  - id: ct_covered_connecticut
+    name: Covered Connecticut
+    full_name: Covered Connecticut Program
+    category: Healthcare
+    agency: State
+    status: partial
+    coverage: CT
+    variable: ct_covered_connecticut
+    parameter_prefix: gov.states.ct.dss.covered_connecticut
+    verified_start_year: 2026
+    notes: Premium axis only; cost-sharing, dental, and NEMT not modeled
+
+  - id: nm_premium_assistance
+    name: New Mexico Premium Assistance
+    full_name: Health Insurance Marketplace Affordability Program
+    category: Healthcare
+    # Base Premium Assistance and the Middle Income Household component are
+    # modeled. Two sub-programs are NOT yet modeled: Puente Health (esp. the
+    # PY2027 up-to-400% FPL lawfully-present non-citizen population) and the
+    # Native American Table 2 rates plus the Premium Buy-down.
+    agency: State
+    status: partial
+    coverage: NM
+    variable: nm_premium_assistance
+    parameter_prefix: gov.states.nm.hca.premium_assistance
+    verified_years: "2026-2027"
+
   - id: dc_power
     name: DC Power
     full_name: DC Program on Work, Employment, and Responsibility
@@ -963,6 +1353,29 @@ programs:
     coverage: DC
     variable: dc_gac
     parameter_prefix: gov.states.dc.dhc.gac
+
+  - id: md_premium_assistance
+    name: Maryland Premium Assistance
+    full_name: Maryland State-Based Health Insurance Subsidies Program
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: MD
+    variable: md_premium_assistance
+    parameter_prefix: gov.states.md.mhbe.premium_assistance
+    verified_years: "2026-2027"
+    notes: The permanent Young Adult Subsidy (Insurance Article Section 31-122) is modeled only inside the 2026-2027 window; 2022-2025 and 2028-onward Young Adult Subsidy years are unmodeled. Cost-sharing and non-essential-health-benefit premium components and the enrollment-cap limits are not modeled.
+
+  - id: ca_premium_subsidy
+    name: California Premium Subsidy
+    full_name: California Premium Subsidy (Individual Market Assistance)
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: CA
+    variable: ca_premium_subsidy
+    parameter_prefix: gov.states.ca.hbex.premium_subsidy
+    verified_years: "2026-2027"
 
   - id: ca_cvrp
     name: California CVRP
@@ -1037,6 +1450,17 @@ programs:
     parameter_prefix: gov.states.il.hfs.hbwd
     notes: Medicaid buy-in program for workers with disabilities
 
+  - id: ms_wd
+    name: Mississippi WD
+    full_name: Mississippi Working Disabled
+    category: Healthcare
+    agency: State
+    status: complete
+    coverage: MS
+    variable: ms_wd_eligible
+    parameter_prefix: gov.states.ms.dom.wd
+    notes: Medicaid buy-in program for workers with disabilities
+
   - id: il_ihwap
     name: Illinois IHWAP
     full_name: Illinois Home Weatherization Assistance Program
@@ -1091,15 +1515,16 @@ programs:
     variable: il_cta_benefit
     parameter_prefix: gov.states.il.rta.cta
 
-  - id: ne_childcare
-    name: Nebraska child care subsidy
-    full_name: Nebraska Child Care Subsidy
+  - id: ne_aabd
+    name: Nebraska AABD
+    full_name: Nebraska Aid to the Aged, Blind, or Disabled
     category: Benefits
-    agency: State
+    agency: DHHS
     status: complete
     coverage: NE
-    variable: ne_child_care_subsidy
-    parameter_prefix: gov.states.ne.dhhs.child_care_subsidy
+    variable: ne_aabd
+    parameter_prefix: gov.states.ne.dhhs.aabd
+    verified_years: "2015-2025"
 
   - id: mbta_reduced_fare
     name: MBTA reduced fare
@@ -1122,6 +1547,40 @@ programs:
     variable: ma_eaedc
     parameter_prefix: gov.states.ma.dta.tcap.eaedc
 
+  - id: ma_connector_care
+    name: ConnectorCare
+    full_name: Massachusetts ConnectorCare
+    category: Healthcare
+    agency: State
+    status: partial
+    coverage: MA
+    variable: ma_connector_care
+    parameter_prefix: gov.states.ma.hic.connector_care
+    verified_start_year: 2026
+    notes: Models the premium-assistance axis only; cost-sharing reductions, dental, and non-emergency medical transportation are out of scope.
+
+  - id: nj_njhps
+    name: NJ Health Plan Savings
+    full_name: New Jersey Health Plan Savings (NJHPS)
+    category: Healthcare
+    agency: DOBI (Get Covered New Jersey)
+    status: complete
+    coverage: NJ
+    variable: nj_njhps
+    parameter_prefix: gov.states.nj.dobi.njhps
+    verified_start_year: 2026
+
+  - id: nj_unemployment_insurance
+    name: New Jersey Unemployment Insurance
+    full_name: New Jersey Unemployment Insurance
+    category: Benefits
+    agency: NJ Department of Labor and Workforce Development
+    status: complete
+    coverage: NJ
+    variable: nj_unemployment_insurance
+    parameter_prefix: gov.states.nj.dol.unemployment_insurance
+    verified_years: "2024-2026"
+
   - id: ny_drive_clean_rebate
     name: NY Drive Clean Rebate
     full_name: New York Drive Clean Rebate
@@ -1131,6 +1590,39 @@ programs:
     coverage: NY
     variable: ny_drive_clean_rebate
     parameter_prefix: gov.states.ny.nyserda.drive_clean
+
+  - id: ny_ui
+    name: New York Unemployment Insurance
+    full_name: New York Unemployment Insurance
+    category: Benefits
+    agency: New York State Department of Labor
+    status: partial
+    coverage: NY
+    variable: ny_ui
+    parameter_prefix: gov.states.ny.dol.unemployment_insurance
+    verified_years: "2025-2026"
+
+  - id: ok_ui
+    name: Oklahoma UI
+    full_name: Oklahoma Unemployment Insurance
+    category: Benefits
+    agency: Oklahoma Employment Security Commission
+    status: complete
+    coverage: OK
+    variable: ok_ui
+    parameter_prefix: gov.states.ok.oesc.unemployment_insurance
+    verified_years: "2022-2026"
+
+  - id: ut_ui
+    name: Utah UI
+    full_name: Utah Unemployment Insurance
+    category: Benefits
+    agency: State
+    status: complete
+    coverage: UT
+    verified_years: "2024-2026"
+    variable: ut_ui
+    parameter_prefix: gov.states.ut.dws.unemployment_insurance
 
   - id: tx_fpp_benefit
     name: Texas FPP
@@ -1173,10 +1665,32 @@ programs:
     variable: tx_harris_rides_subsidy
     parameter_prefix: gov.local.tx.harris.rides
 
+  - id: vt_premium_assistance
+    name: Vermont Premium Assistance
+    full_name: Vermont Premium Assistance
+    category: Healthcare
+    agency: DVHA (Vermont Health Connect)
+    status: complete
+    coverage: VT
+    variable: vt_premium_assistance
+    parameter_prefix: gov.states.vt.dvha.premium_assistance
+    verified_start_year: 2026
+
+  - id: wa_cascade_care_savings
+    name: Cascade Care Savings
+    full_name: Washington Cascade Care Savings (State Premium Assistance Program)
+    category: Healthcare
+    agency: WAHBE
+    status: complete
+    coverage: WA
+    variable: wa_cascade_care_savings
+    parameter_prefix: gov.states.wa.wahbe.cascade_care_savings
+    verified_start_year: 2026
+
   # --- Local programs ---
   - id: ez_save
-    name: Los Angeles County EZ Save
-    full_name: Los Angeles County EZ Save
+    name: Los Angeles EZ-SAVE
+    full_name: Los Angeles Department of Water and Power EZ-SAVE Program
     category: Energy
     agency: Local
     status: complete
@@ -1214,6 +1728,26 @@ programs:
     variable: la_general_relief
     parameter_prefix: gov.local.ca.la.general_relief
 
+  - id: ca_marin_general_relief
+    name: Marin County General Relief
+    full_name: Marin County General Relief
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Marin County
+    variable: ca_marin_general_relief
+    parameter_prefix: gov.local.ca.marin.general_relief
+  - id: ca_oc_general_relief
+    name: Orange County General Relief
+    full_name: Orange County General Relief
+    category: Benefits
+    agency: Local
+    status: partial
+    coverage: Orange County
+    variable: ca_oc_general_relief
+    parameter_prefix: gov.local.ca.oc.general_relief
+    notes: Monthly maximum aid payment for the number of eligible persons in the economic unit and shared-housing situation (April 2015 / October 2016 schedule) net of countable income; component-value deductions for in-kind aid and administrative-history rules are not modeled
+
   - id: ca_riv_general_relief
     name: Riverside County General Relief
     full_name: Riverside County General Relief
@@ -1232,18 +1766,29 @@ programs:
     status: complete
     coverage: Riverside County
     variable: ca_riv_liheap_eligible
-    parameter_prefix: gov.local.ca.riv.liheap
+    parameter_prefix: gov.local.ca.riv.cap.liheap
     notes: Only includes eligibility rules
 
   - id: share
-    name: Riverside County SHARE
-    full_name: Riverside County Sharing Households Assist Riverside Energy program
+    name: Riverside SHARE
+    full_name: Riverside Public Utilities Sharing Households Assist Riverside's Energy Program
     category: Energy
     agency: Local
     status: complete
     coverage: Riverside County
     variable: ca_riv_share_payment
-    parameter_prefix: gov.local.ca.riv.share
+    parameter_prefix: gov.local.ca.riv.cap.share
+
+  - id: ca_sbd_general_relief
+    name: San Bernardino County General Relief
+    full_name: San Bernardino County General Relief
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: San Bernardino County
+    variable: ca_sbd_general_relief
+    parameter_prefix: gov.local.ca.sbd.general_relief
+    notes: Flat maximum basic grant by assistance unit size (June 2021 design onward) net of countable income; the pre-June-2021 needs-based design, employability screening (100-hour rule and self-employment bar), employable time limits, vehicle-as-residence real-property treatment, and loan repayment are not modeled
 
   - id: ca_ala_general_assistance
     name: Alameda County General Assistance
@@ -1253,7 +1798,61 @@ programs:
     status: complete
     coverage: Alameda County
     variable: ca_ala_general_assistance
-    parameter_prefix: gov.local.ca.ala.ga
+    parameter_prefix: gov.local.ca.ala.general_assistance
+
+  - id: ca_smc_general_assistance
+    name: San Mateo County General Assistance
+    full_name: San Mateo County General Assistance
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: San Mateo County
+    variable: ca_smc_general_assistance
+    parameter_prefix: gov.local.ca.smc.general_assistance
+    verified_start_year: 2025
+
+  - id: ca_scc_general_assistance
+    name: Santa Clara County General Assistance
+    full_name: Santa Clara County General Assistance
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Santa Clara County
+    variable: ca_scc_general_assistance
+    parameter_prefix: gov.local.ca.scc.general_assistance
+
+  - id: ca_cc_general_assistance
+    name: Contra Costa County General Assistance
+    full_name: Contra Costa County General Assistance
+    category: Benefits
+    agency: Local
+    status: complete
+    coverage: Contra Costa County
+    variable: ca_cc_general_assistance
+    parameter_prefix: gov.local.ca.cc.general_assistance
+
+  - id: ca_sf_caap
+    name: San Francisco County Adult Assistance Programs
+    full_name: San Francisco County Adult Assistance Programs (CAAP)
+    category: Benefits
+    agency: Local
+    status: partial
+    coverage: San Francisco County
+    variable: ca_sf_caap
+    parameter_prefix: gov.local.ca.sf.caap
+    notes: General Assistance and PAES grant tiers modeled; CALM/SSIP tiers and activity-qualification gates not yet modeled
+
+  - id: md_local_income_tax
+    name: MD local income tax
+    full_name: Maryland County and Baltimore City Income Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Maryland
+    variable: md_local_income_tax_before_refundable_credits
+    parameter_prefix: gov.local.md
+    verified_start_year: 2021
+    notes: County piggyback income tax on Maryland taxable income, less the local earned income credit and local poverty level credit; optional county refundable local EITCs are not modeled (Montgomery County's match is modeled separately as md_montgomery_eitc)
 
   - id: nyc_income_tax
     name: NYC income tax
@@ -1265,7 +1864,157 @@ programs:
     variable: nyc_income_tax
     parameter_prefix: gov.local.ny.nyc.tax.income
     verified_start_year: 2022
-    notes: Local income tax for NYC residents
+    notes: Local income tax for NYC residents, including the household credit, NYC earned income credit, NYC child and dependent care credit, school tax credit, and, from 2025, the income tax elimination credit (Tax Law § 1310(h)); the unincorporated business tax credit is an input
+
+  - id: philadelphia_wage_tax
+    name: Philadelphia wage tax
+    full_name: Philadelphia Wage Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Philadelphia, PA
+    variable: pa_philadelphia_wage_tax
+    parameter_prefix: gov.local.pa.philadelphia.tax.income
+    verified_start_year: 2022
+    notes: Resident, nonresident, and reduced-rate wage tax (input-driven)
+
+  - id: kansas_city_earnings_tax
+    name: Kansas City earnings tax
+    full_name: Kansas City Earnings Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Kansas City, MO
+    variable: mo_kansas_city_earnings_tax
+    parameter_prefix: gov.local.mo.kansas_city.tax.income
+    notes: 1% earnings tax on wages and net profits (input-driven)
+
+  - id: st_louis_earnings_tax
+    name: St. Louis earnings tax
+    full_name: St. Louis Earnings Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: St. Louis, MO
+    variable: mo_st_louis_earnings_tax
+    parameter_prefix: gov.local.mo.st_louis.tax.income
+    notes: 1% earnings tax on wages and net profits (input-driven)
+
+  - id: in_county_income_tax
+    name: Indiana county income tax
+    full_name: Indiana County Local Income Tax (LIT)
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: All 92 Indiana counties
+    variable: in_county_tax
+    parameter_prefix: gov.states.in.tax.income
+    verified_start_year: 2021
+    notes: Residence-based county income tax assigned via county
+
+  - id: multnomah_pfa
+    name: Multnomah County Preschool for All tax
+    full_name: Multnomah County Preschool for All Personal Income Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Multnomah County, OR
+    variable: or_multnomah_pfa_tax
+    parameter_prefix: gov.local.or.multnomah_county.tax.income.pfa
+    verified_start_year: 2021
+    notes: High-income personal income tax assigned via county
+
+  - id: co_denver_occupational_privilege_tax
+    name: Denver occupational privilege tax
+    full_name: Denver Occupational Privilege Tax (employee)
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Denver, CO
+    variable: co_denver_employee_occupational_privilege_tax
+    parameter_prefix: gov.local.co.denver.tax.payroll.occupational_privilege
+    notes: Flat per-month employee occupational privilege tax (input-driven)
+
+  - id: co_glendale_occupational_privilege_tax
+    name: Glendale occupational privilege tax
+    full_name: Glendale Occupational Privilege Tax (employee)
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Glendale, CO
+    variable: co_glendale_employee_occupational_privilege_tax
+    parameter_prefix: gov.local.co.glendale.tax.payroll.occupational_privilege
+    notes: Flat per-month employee occupational privilege tax (input-driven)
+
+  - id: co_greenwood_village_occupational_privilege_tax
+    name: Greenwood Village occupational privilege tax
+    full_name: Greenwood Village Occupational Privilege Tax (employee)
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Greenwood Village, CO
+    variable: co_greenwood_village_employee_occupational_privilege_tax
+    parameter_prefix: gov.local.co.greenwood_village.tax.payroll.occupational_privilege
+    notes: Flat per-month employee occupational privilege tax (input-driven)
+
+  - id: co_sheridan_occupational_privilege_tax
+    name: Sheridan occupational privilege tax
+    full_name: Sheridan Occupational Privilege Tax (employee)
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Sheridan, CO
+    variable: co_sheridan_employee_occupational_privilege_tax
+    parameter_prefix: gov.local.co.sheridan.tax.payroll.occupational_privilege
+    notes: Flat per-month employee occupational privilege tax (input-driven)
+
+  - id: ky_jefferson_occupational_tax
+    name: Louisville/Jefferson County occupational tax
+    full_name: Louisville Metro Occupational License Fee
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Louisville/Jefferson County, KY
+    variable: ky_jefferson_occupational_tax
+    parameter_prefix: gov.local.ky.jefferson.tax.income.occupational
+    verified_start_year: 2021
+    notes: Occupational license fee assigned via county; modeled residence-based at the 2.20% resident rate (1.25% Metro + 0.20% TARC + 0.75% JCPS school board included). The JCPS 0.75% wage cap is not modeled.
+
+  - id: ky_fayette_occupational_tax
+    name: Lexington/Fayette County occupational tax
+    full_name: Lexington-Fayette Occupational License Fee
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Lexington/Fayette County, KY
+    variable: ky_fayette_occupational_tax
+    parameter_prefix: gov.local.ky.fayette.tax.income.occupational
+    verified_start_year: 2021
+    notes: Occupational license fee assigned via county; modeled residence-based. FCPS school occupational tax not yet modeled.
+
+  - id: yonkers_income_tax
+    name: Yonkers income tax
+    full_name: Yonkers Resident Surcharge and Nonresident Earnings Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Yonkers, NY
+    variable: ny_yonkers_income_tax
+    parameter_prefix: gov.local.ny.yonkers.tax.income
+    verified_start_year: 2021
+    notes: Resident surcharge on NY State tax plus nonresident earnings tax (input-driven)
+
+  - id: wilmington_earned_income_tax
+    name: Wilmington earned income tax
+    full_name: Wilmington Earned Income (Wage) Tax
+    category: Taxes
+    agency: Local
+    status: complete
+    coverage: Wilmington, DE
+    variable: de_wilmington_earned_income_tax
+    parameter_prefix: gov.local.de.wilmington.tax.income
+    verified_start_year: 2021
+    notes: 1.25% earned income tax on residents and nonresident Wilmington-source earnings (input-driven)
 
   - id: sf_wftc
     name: San Francisco WFTC

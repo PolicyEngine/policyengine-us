@@ -33,10 +33,12 @@
     workers_compensation: 1_000
   output:
     cbo_household_market_income: 49_102
-    medicare_gross_cost: 14_500
-    cbo_household_social_insurance_benefits: 29_500
-    cbo_household_income_before_transfers_and_taxes: 78_602
-    cbo_household_income: 78_602
+    # CMS Medicare spending per enrollee, 2025.
+    medicare_gross_cost: 17_751
+    # $12,000 + $17,751 + $2,000 + $1,000.
+    cbo_household_social_insurance_benefits: 32_751
+    cbo_household_income_before_transfers_and_taxes: 81_853
+    cbo_household_income: 81_853
 
 - name: CBO means-tested transfers include only the listed programs
   period: 2026
@@ -44,7 +46,8 @@
     medicaid: 10
     chip: 5
     snap: 7
-    spm_unit_capped_housing_subsidy: 8
+    housing_assistance: 8
+    spm_unit_capped_housing_subsidy: 1
     ssi: 4
     tanf: 3
     free_school_meals: 2

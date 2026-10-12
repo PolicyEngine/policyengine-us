@@ -1,0 +1,13 @@
+description: Ohio multiplies the maximum reimbursement rate by this factor for children with approved special accommodations under the Publicly Funded Child Care program.
+values:
+  2025-11-01: 2
+
+metadata:
+  unit: /1
+  period: year
+  label: Ohio PFCC special needs accommodations rate multiplier
+  # 5180:6-1-10 (G)(2): programs making special accommodations may receive
+  # twice the applicable payment rate if approved pursuant to rule 5180:2-16-09.
+  reference:
+    - title: OAC 5180:6-1-10 (G)(2) — Special accommodations payment rate
+      href: https://codes.ohio.gov/ohio-administrative-code/rule-5180:6-1-10

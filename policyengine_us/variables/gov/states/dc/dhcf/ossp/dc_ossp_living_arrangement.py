@@ -25,12 +25,12 @@ class dc_ossp_living_arrangement(Variable):
     )
 
     def formula(person, period, parameters):
-        federal_la = person("ssi_federal_living_arrangement", period.this_year)
+        federal_la = person("ssi_federal_living_arrangement", period)
         in_medical_facility = (
             federal_la == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY
         )
-        in_afc = person("dc_ossp_in_adult_foster_care", period.this_year)
-        facility_size = person("dc_ossp_facility_size", period.this_year)
+        in_afc = person("dc_ossp_in_adult_foster_care", period)
+        facility_size = person("dc_ossp_facility_size", period)
         p = parameters(period).gov.states.dc.dhcf.ossp
         small_facility = facility_size <= p.facility_size_threshold
 

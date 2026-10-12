@@ -15,6 +15,8 @@ from typing import Dict, List, Set
 
 SOURCE_FILE_SUFFIXES = (".py", ".yaml", ".yml")
 TEST_INFRASTRUCTURE_FILES = ("run_selective_tests.py", "test_batched.py")
+# pytest exits 5 when a path collects no tests (see pytest.ExitCode).
+PYTEST_NO_TESTS_COLLECTED = 5
 CRITICAL_TEST_TRIGGER_FILES = ("pyproject.toml", "requirements", "Makefile")
 STOP_TEST_DIRS = frozenset(
     {
@@ -24,12 +26,36 @@ STOP_TEST_DIRS = frozenset(
         Path("policyengine_us/tests"),
     }
 )
+# Directory targets that Quick Feedback leaves to the sharded full-suite jobs.
+# A target is deferred when it is one of these directories or lies under one:
+# the full suite runs policy/contrib/congress one proposal per subprocess with
+# --workers 1 because a single proposal batch (tlaib) peaks around 15 GB, which
+# is more than the 16 GB Quick Feedback runner survives (PR #9497, run
+# 35042783076, "The runner has received a shutdown signal").
 QUICK_FEEDBACK_DEFERRED_DIRS = frozenset(
     {
+        "policyengine_us/tests/microsimulation",
+        "policyengine_us/tests/policy/baseline/household",
         "policyengine_us/tests/policy/baseline/gov/ssa",
+        "policyengine_us/tests/policy/contrib/congress",
         "policyengine_us/tests/policy/reform",
     }
 )
+
+
+def is_quick_feedback_deferred(test_path: str) -> bool:
+    """True for a directory target that is a deferred directory or sits inside one.
+
+    File targets are never deferred: a directly changed test file runs in its
+    own subprocess, which is exactly the bound the deferral protects.
+    """
+    if Path(test_path).is_file():
+        return False
+    normalized = test_path.rstrip("/")
+    return any(
+        normalized == deferred or normalized.startswith(deferred + "/")
+        for deferred in QUICK_FEEDBACK_DEFERRED_DIRS
+    )
 
 
 class SelectiveTestRunner:
@@ -37,6 +63,14 @@ class SelectiveTestRunner:
         self.base_branch = base_branch
         self.max_test_targets = int(os.environ.get("SELECTIVE_TEST_MAX_TARGETS", "25"))
         self.max_test_files = int(os.environ.get("SELECTIVE_TEST_MAX_FILES", "250"))
+        # Cap on the direct-file fallback: each YAML test file loads the full
+        # tax-benefit system inside ONE coverage-instrumented process, so a
+        # broad PR (e.g. 13 contrib suites) accumulates memory until the
+        # GitHub runner dies. Beyond this many direct files, defer to the
+        # sharded full-suite jobs instead.
+        self.max_direct_test_files = int(
+            os.environ.get("SELECTIVE_TEST_MAX_DIRECT_FILES", "8")
+        )
 
         # Define regex patterns for matching files to tests
         # Paths that contain only aggregation lists and should not
@@ -175,13 +209,15 @@ class SelectiveTestRunner:
 
     @staticmethod
     def is_test_infrastructure_file(path: str) -> bool:
-        return path.endswith(TEST_INFRASTRUCTURE_FILES)
+        return Path(path).name in TEST_INFRASTRUCTURE_FILES
 
     def get_direct_changed_tests(self, changed_files: Set[str]) -> Set[str]:
         return {
             file
             for file in changed_files
-            if self.is_test_file(file) and not self.is_test_infrastructure_file(file)
+            if self.is_test_file(file)
+            and not self.is_test_infrastructure_file(file)
+            and Path(file).exists()
         }
 
     def get_diff_files(self, base_ref: str):
@@ -272,7 +308,7 @@ class SelectiveTestRunner:
         for file in changed_files:
             # Changed test files are already the most precise signal.
             if self.is_test_file(file):
-                if not self.is_test_infrastructure_file(file):
+                if not self.is_test_infrastructure_file(file) and Path(file).exists():
                     test_paths.add(file)
                 continue
 
@@ -336,10 +372,36 @@ class SelectiveTestRunner:
                 )
         return total
 
+    @staticmethod
+    def get_changed_python_coverage_patterns(changed_files: Set[str]) -> List[str]:
+        return [
+            file
+            for file in changed_files
+            if file.endswith(".py") and "/tests/" not in file
+        ]
+
+    def get_untested_sources(
+        self, source_files: List[str], test_paths: Set[str]
+    ) -> List[str]:
+        """Source files that map to tests, none of which are in this run.
+
+        limit_test_paths defers slow directories and narrows broad changes
+        to their directly changed tests, so some files' tests run only in
+        the full suite. Coverage of those files here would count their
+        untouched lines as uncovered.
+        """
+        return [
+            file
+            for file in source_files
+            if (mapped := self.map_files_to_tests({file})) and not mapped & test_paths
+        ]
+
     def limit_test_paths(
         self, test_paths: Set[str], changed_files: Set[str]
     ) -> Set[str]:
-        deferred_paths = test_paths & QUICK_FEEDBACK_DEFERRED_DIRS
+        deferred_paths = {
+            path for path in test_paths if is_quick_feedback_deferred(path)
+        }
         if deferred_paths:
             deferred_list = ", ".join(sorted(deferred_paths))
             print(
@@ -364,6 +426,14 @@ class SelectiveTestRunner:
             "\nSelective test scope is too broad for quick feedback "
             f"({len(test_paths)} targets / ~{total_test_files} test files)."
         )
+        if len(bounded_test_paths) > self.max_direct_test_files:
+            print(
+                f"Even the directly changed tests are too many for one "
+                f"quick-feedback process ({len(bounded_test_paths)} files > "
+                f"{self.max_direct_test_files}); deferring to the sharded "
+                "full suite jobs, which run them all."
+            )
+            return set()
         if bounded_test_paths:
             print(
                 "Running only directly changed tests and explicit file targets; "
@@ -395,6 +465,40 @@ class SelectiveTestRunner:
 
         # Construct pytest command
         if with_coverage:
+            # Only track coverage for the specific files that changed in the PR
+            include_patterns = []
+            if changed_files:
+                # Only include Python files that were actually changed (excluding test directories)
+                changed_py_files = self.get_changed_python_coverage_patterns(
+                    changed_files
+                )
+                untested = self.get_untested_sources(changed_py_files, test_paths)
+                if untested:
+                    print(
+                        f"Leaving {len(untested)} changed source file(s) out of "
+                        "coverage; their tests run only in the full suite:"
+                    )
+                    for file in sorted(untested):
+                        print(f"  - {file}")
+                tested_py_files = [
+                    file for file in changed_py_files if file not in untested
+                ]
+                if tested_py_files:
+                    include_patterns = tested_py_files
+                elif untested:
+                    print(
+                        "No changed source file is tested in this run; running "
+                        "tests without coverage."
+                    )
+                    with_coverage = False
+                else:
+                    print(
+                        "No changed Python source files; running tests without "
+                        "coverage."
+                    )
+                    with_coverage = False
+
+        if with_coverage:
             # Use coverage to run the tests
             # First check if coverage is importable
             try:
@@ -406,16 +510,7 @@ class SelectiveTestRunner:
                 print("Please ensure coverage is installed: pip install coverage")
                 return 1
 
-            # Only track coverage for the specific files that changed in the PR
-            include_patterns = []
-            if changed_files:
-                # Only include Python files that were actually changed (excluding test directories)
-                changed_py_files = [
-                    f for f in changed_files if f.endswith(".py") and "/tests/" not in f
-                ]
-                if changed_py_files:
-                    include_patterns = changed_py_files
-            else:
+            if not changed_files:
                 # Fallback to directory-based patterns if no changed files provided
                 for test_path in test_paths:
                     base_test_path = test_path
@@ -439,7 +534,8 @@ class SelectiveTestRunner:
                             "policyengine_us/parameters/contrib/*.py"
                         )
 
-            pytest_args = [
+        if with_coverage:
+            base_cmd = [
                 sys.executable,
                 "-m",
                 "coverage",
@@ -451,9 +547,9 @@ class SelectiveTestRunner:
             # Add --include flag to only track relevant files
             if include_patterns:
                 include_pattern = ",".join(include_patterns)
-                pytest_args.extend(["--include", include_pattern])
+                base_cmd.extend(["--include", include_pattern])
 
-            pytest_args.extend(
+            base_cmd.extend(
                 [
                     "-m",
                     "policyengine_core.scripts.policyengine_command",
@@ -463,7 +559,7 @@ class SelectiveTestRunner:
                 ]
             )
         else:
-            pytest_args = [
+            base_cmd = [
                 sys.executable,
                 "-m",
                 "policyengine_core.scripts.policyengine_command",
@@ -472,15 +568,25 @@ class SelectiveTestRunner:
                 "policyengine_us",
             ]
 
-        # Add test paths
-        pytest_args.extend(sorted(test_paths))
+        # Run each location in its own subprocess: reformed tax-benefit
+        # systems and per-case simulations accumulate for the life of a
+        # process, so a single process running every selected location can
+        # exceed runner memory even when each location alone is fine.
+        # Coverage's -a flag appends results across the invocations.
+        worst_returncode = 0
+        for test_path in sorted(test_paths):
+            cmd = base_cmd + [test_path]
+            print(f"\nRunning command: {' '.join(cmd)}")
+            result = subprocess.run(cmd)
+            if result.returncode == PYTEST_NO_TESTS_COLLECTED:
+                # A changed file under tests/ with nothing to collect is a
+                # support module (a fixture or helper), not a failing test.
+                print(f"No tests collected in {test_path}; nothing to run there.")
+                continue
+            if result.returncode != 0:
+                worst_returncode = result.returncode
 
-        print(f"\nRunning command: {' '.join(pytest_args)}")
-
-        # Run pytest
-        result = subprocess.run(pytest_args)
-
-        return result.returncode
+        return worst_returncode
 
     def run_all_tests(self) -> int:
         """Run all tests (fallback option)."""

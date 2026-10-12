@@ -16,6 +16,7 @@ class snap_assets(Variable):
     )
     label = "SNAP assets"
     unit = USD
+    quantity_type = STOCK
     reference = (
         "https://www.law.cornell.edu/uscode/text/7/2014#g",
         "https://www.law.cornell.edu/cfr/text/7/273.8",

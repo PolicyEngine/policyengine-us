@@ -1,0 +1,67 @@
+- name: RI CTC - stepped phaseout uses single filer threshold.
+  absolute_error_margin: 0.1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 330
+    gov.contrib.states.ri.ctc.age_limit: 19
+    gov.contrib.states.ri.ctc.refundability.cap: 999_999
+    gov.contrib.states.ri.ctc.stepped_phaseout.threshold.SINGLE: 88_500
+    gov.contrib.states.ri.ctc.stepped_phaseout.increment.SINGLE: 2_875
+    gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.2
+    people:
+      person1:
+        age: 35
+        employment_income: 100_000
+      person2:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1, person2]
+        state_name: RI
+  output:
+    ri_ctc_eligible_children: 1
+    ri_ctc_maximum: 330
+    ri_ctc_phaseout: 264
+    ri_total_ctc: 66
+
+- name: RI CTC - stepped phaseout uses joint filer threshold and increment.
+  absolute_error_margin: 0.1
+  period: 2027
+  reforms: policyengine_us.reforms.states.ri.ctc.ri_ctc_reform.ri_ctc
+  input:
+    gov.contrib.states.ri.ctc.in_effect: true
+    gov.contrib.states.ri.ctc.amount: 330
+    gov.contrib.states.ri.ctc.age_limit: 19
+    gov.contrib.states.ri.ctc.refundability.cap: 999_999
+    gov.contrib.states.ri.ctc.stepped_phaseout.threshold.JOINT: 110_640
+    gov.contrib.states.ri.ctc.stepped_phaseout.increment.JOINT: 3_590
+    gov.contrib.states.ri.ctc.stepped_phaseout.rate_per_step: 0.2
+    people:
+      person1:
+        age: 35
+        employment_income: 117_640
+      person2:
+        age: 35
+      person3:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: RI
+  output:
+    ri_ctc_eligible_children: 1
+    ri_ctc_maximum: 330
+    ri_ctc_phaseout: 132
+    ri_total_ctc: 198

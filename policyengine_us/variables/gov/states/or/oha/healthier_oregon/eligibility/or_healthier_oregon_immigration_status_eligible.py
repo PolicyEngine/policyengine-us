@@ -17,7 +17,13 @@ class or_healthier_oregon_immigration_status_eligible(Variable):
         p = parameters(period).gov.states["or"].oha.healthier_oregon.eligibility
         immigration_status = person("immigration_status", period)
         immigration_status_str = immigration_status.decode_to_str()
-        return np.isin(
+        explicitly_covered_status = np.isin(
             immigration_status_str,
             p.qualified_immigration_statuses,
         )
+        non_citizen = immigration_status != immigration_status.possible_values.CITIZEN
+        federally_medicaid_status_eligible = person(
+            "is_medicaid_immigration_status_eligible", period
+        )
+        federally_barred_non_citizen = non_citizen & ~federally_medicaid_status_eligible
+        return explicitly_covered_status | federally_barred_non_citizen

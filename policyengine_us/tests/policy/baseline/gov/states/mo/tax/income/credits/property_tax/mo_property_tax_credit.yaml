@@ -82,8 +82,11 @@
     household:
       members: [person1]
       state_code: MO
-  output:  # expected results from TAXSIM35 12/24/22 version
-    mo_property_tax_credit: 721.87
+  output:
+    # 2025 DOR credit chart, row 14,901-15,200, column 726-750: payment
+    # midpoint 738 less ceil(3 x 0.0625% x 15,050) = 29 gives 709. TAXSIM35
+    # approximates the table with a continuous formula (721.87).
+    mo_property_tax_credit: 709
 
 - name: TAXSIM35 test S3
   period: 2021
@@ -110,8 +113,11 @@
     household:
       members: [person1]
       state_code: MO
-  output:  # expected results from TAXSIM35 12/24/22 version
-    mo_property_tax_credit: 187.50
+  output:
+    # 2025 DOR credit chart, row 24,801-25,100, column 726-750: payment
+    # midpoint 738 less ceil(36 x 0.0625% x 24,950) = 562 gives 176. TAXSIM35
+    # approximates the table with a continuous formula (187.50).
+    mo_property_tax_credit: 176
 
 - name: TAXSIM35 integration test, 16k income, 12k real estate taxes
   period: 2021
@@ -145,4 +151,463 @@
       members: [person1, person2]
       state_code: MO
   output:  # expected results from TAXSIM35 12/08/22 version
+    mo_property_tax_credit: 1_100
+
+- name: 2021 chart final clipped row, homestead owner near the 30,000 limit
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 68
+        real_estate_taxes: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 29_950
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # DOR credit chart row 29,901-30,000 (clipped at the limit), column
+    # 1,076-1,100: 1,088 less ceil(53 x 0.0625% x 29,950) = 993 gives 95.
+    mo_property_tax_credit: 95
+
+- name: 2021 homestead owner above the 30,000 income limit gets nothing
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 68
+        real_estate_taxes: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 30_300
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_property_tax_credit: 0
+
+- name: 2026 single owner on the 2% plateau, RSMo 135.030(3)(1)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_800
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 42_100
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 57 increments of 495 above 14,300 accumulate past the 2% cap; final
+    # bracket 42,021-42,515 is clipped at the 42,200 limit, midpoint 42,110;
+    # 1,538 payment midpoint less ceil(2% x 42,110) = 843 gives 695.
+    mo_property_tax_credit: 695
+
+- name: 2026 married full-year owners below the minimum base get the full credit
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 2_200
+      person2:
+        is_tax_unit_spouse: true
+        age: 64
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+        # 19,200 gross less the 5,800 owner offset is 13,400 net income,
+        # below the 14,300 minimum base
+        mo_ptc_gross_income: 19_200
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MO
+  output:
+    mo_property_tax_credit: 1_550
+
+- name: 2026 single renter just above the minimum base uses table midpoints
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_400
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Rent equivalent 1,200 capped at 1,055, increment 1,031-1,055 midpoint
+    # 1,043; one 495 increment, bracket 14,301-14,795 midpoint 14,547.5;
+    # 1,043 less ceil(0.0625% x 14,547.5) = 10 gives 1,033.
+    mo_property_tax_credit: 1_033
+
+- name: 2026 single renter at the 38,200 income limit keeps a plateau credit
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 38_200
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # 49 increments cap the rate at 2%; final bracket 38,061-38,555 is
+    # clipped at the 38,200 limit, midpoint 38,130; 1,043 payment midpoint
+    # less ceil(2% x 38,130) = 763 gives 280.
+    mo_property_tax_credit: 280
+
+- name: 2026 single renter above the 38,200 income limit gets nothing
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 38_300
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_property_tax_credit: 0
+
+- name: 2026 mixed rent and property tax combine under the owner cap
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 3_000
+        real_estate_taxes: 500
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 20_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Payment 600 rent equivalent plus 500 property tax is 1,100; increment
+    # 1,076-1,100 midpoint 1,088; 12 increments give a 0.75% rate on bracket
+    # 19,746-20,240 midpoint 19,992.5; 1,088 less ceil(149.95) = 150 is 938.
+    mo_property_tax_credit: 938
+
+- name: 2025 payment rounds down before selecting a table column
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_075.49
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_400
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Line 11 rounds to 1,075, selecting the 1,051-1,075 column. Its 1,063
+    # midpoint less the first-row phaseout of 10 produces a 1,053 credit.
+    mo_property_tax_credit: 1_053
+
+- name: 2025 payment rounds up before selecting a table column
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_075.50
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_400
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Line 11 rounds to 1,076, selecting the 1,076-1,100 column. Its 1,088
+    # midpoint less the first-row phaseout of 10 produces a 1,078 credit.
+    mo_property_tax_credit: 1_078
+
+- name: 2025 income rounds down before selecting a table row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_100
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_600.49
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Line 8 rounds to 14,600, selecting the 14,301-14,600 row.
+    mo_property_tax_credit: 1_078
+
+- name: 2025 income rounds up before selecting a table row
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_100
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_600.50
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Line 8 rounds to 14,601, selecting the 14,601-14,900 row.
+    mo_property_tax_credit: 1_069
+
+- name: 2025 below-base payment rounds to the nearest whole dollar
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 500.50
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_property_tax_credit: 501
+
+- name: 2026 income rounds down to the upper eligibility limit
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 38_200.49
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: true
+    mo_property_tax_credit: 280
+
+- name: 2026 income rounds above the upper eligibility limit
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 38_200.50
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    mo_ptc_taxunit_eligible: false
+    mo_property_tax_credit: 0
+
+- name: 2026 eligible owner fully phased out through the formula floor
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 30
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 42_200
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Eligible (income at the 42,200 homestead limit), but the 38 payment
+    # midpoint is below the 843 phase-out, so the formula floors at zero.
+    mo_ptc_taxunit_eligible: true
+    mo_property_tax_credit: 0
+
+- name: 2026 renter at the minimum base receives the actual capped payment
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_300
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # At the base there is no table lookup: 20% of 6,000 capped at 1,055.
+    mo_property_tax_credit: 1_055
+
+- name: 2026 renter one dollar over the minimum base switches to the table
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 14_301
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # First increment: payment midpoint 1,043 less ceil(0.0625% x 14,547.5)
+    # = 10 gives 1,033.
+    mo_property_tax_credit: 1_033
+
+- name: 2025 DOR chart cell, row 14,901-15,200, column 726-750
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Payment midpoint 738 less ceil(3 x 0.0625% x 15,050) = 29 gives 709.
+    mo_property_tax_credit: 709
+
+- name: 2025 DOR chart cell, row 24,801-25,100, column 726-750
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        rent: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        mo_ptc_gross_income: 25_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
+    # Payment midpoint 738 less ceil(36 x 0.0625% x 24,950) = 562 gives 176.
+    mo_property_tax_credit: 176
+
+- name: Negative gross income floors net income at zero and pays in full
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 66
+        real_estate_taxes: 1_200
+    tax_units:
+      tax_unit:
+        members: [person1]
+        # Nonbusiness losses can push PTC gross income negative; net income
+        # floors at zero, below the base, so the capped payment is paid.
+        mo_ptc_gross_income: -5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MO
+  output:
     mo_property_tax_credit: 1_100

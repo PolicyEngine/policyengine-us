@@ -22,6 +22,8 @@ metadata:
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/ind_tax_rate_sched_2024.pdf
     - title: Maine 2025 Individual Income Tax Rate Schedules
       href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/ind_tax_rate_sched_2025.pdf
+    - title: Maine 2026 Individual Income Tax Rate Schedules (Maine Revenue Services, rev. May 5, 2026)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/2026-05/ind_tax_rate_sched_2026_rev.pdf#page=1
 brackets:
   - threshold:
       2017-01-01: 0
@@ -35,11 +37,13 @@ brackets:
         2023-01-01: 24_500
         2024-01-01: 26_050
         2025-01-01: 26_800
-      uprating:
-        parameter: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 50
+        2026-01-01: 27_400
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 50
     rate:
       2017-01-01: 0.0675
   - threshold:
@@ -50,10 +54,12 @@ brackets:
         2023-01-01: 58_050
         2024-01-01: 61_600
         2025-01-01: 63_450
-      uprating:
-        parameter: gov.irs.uprating
-        rounding:
-          type: downwards
-          interval: 50
+        2026-01-01: 64_850
+      metadata:
+        uprating:
+          parameter: gov.irs.uprating
+          rounding:
+            type: downwards
+            interval: 50
     rate:
       2017-01-01: 0.0715

@@ -8,3 +8,4 @@ class hourly_wage(Variable):
     documentation = "Reported hourly wage, imputed from CPS ORG donors."
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.employment_income"

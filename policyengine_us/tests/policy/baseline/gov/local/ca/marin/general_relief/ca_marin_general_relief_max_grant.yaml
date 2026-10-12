@@ -1,0 +1,68 @@
+# Max grant: $387 single, $636 married couple (NOT 2 x 387 = 774).
+# The couple rate applies only when the unit is married AND both members are
+# immigration-eligible; otherwise the single rate applies.
+- name: Single unmarried person receives the single grant
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ca_marin_general_relief_immigration_status_eligible_person: true
+    families:
+      family:
+        members: [person1]
+        is_married: false
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    ca_marin_general_relief_max_grant: 387
+
+- name: Married couple both immigration-eligible receives the couple grant
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        ca_marin_general_relief_immigration_status_eligible_person: true
+      person2:
+        age: 38
+        ca_marin_general_relief_immigration_status_eligible_person: true
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_marin_general_relief_max_grant: 636
+
+- name: Married couple with one immigration-ineligible falls back to the single grant
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        ca_marin_general_relief_immigration_status_eligible_person: true
+      person2:
+        age: 38
+        ca_marin_general_relief_immigration_status_eligible_person: false
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    ca_marin_general_relief_max_grant: 387

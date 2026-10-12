@@ -17,12 +17,14 @@ class ks_sspp_eligible(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ks.kdhe.sspp.eligibility
-        receives_ssi = person("ssi", period) > 0
-        federal_la = person("ssi_federal_living_arrangement", period.this_year)
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
+        federal_la = person("ssi_federal_living_arrangement", period)
         in_medical_facility = (
             federal_la == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY
         )
-        on_medicaid = person("medicaid_enrolled", period.this_year)
+        on_medicaid = person(
+            "medicaid_enrolled_for_ssi_state_supplement", period.this_year
+        )
         age = person("age", period.this_year)
         return (
             receives_ssi & in_medical_facility & on_medicaid & (age >= p.age_threshold)

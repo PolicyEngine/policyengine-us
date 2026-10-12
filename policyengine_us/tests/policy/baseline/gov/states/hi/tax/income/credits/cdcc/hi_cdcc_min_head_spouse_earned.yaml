@@ -113,18 +113,18 @@
   output:
     hi_cdcc_min_head_spouse_earned: 10_000
 
-- name: single, one eligible, one child, income below floor
+- name: single, one child, income below floor, HRS 235-55.6(d)(2) floor never applies to a single filer
   period: 2022
   input:
     people:
       head:
-        is_tax_unit_head_or_spouse: true
+        is_tax_unit_head: true
+        age: 30
         earned_income: 200
-        hi_cdcc_income_floor_eligible: 2_400
+        is_incapable_of_self_care: true
       child:
-        is_tax_unit_head_or_spouse: false
+        age: 10
         earned_income: 100
-        hi_cdcc_income_floor_eligible: 2_400
     tax_units:
       tax_unit:
         members: [head, child]
@@ -133,7 +133,8 @@
         members: [head, child]
         state_code: HI
   output:
-    hi_cdcc_min_head_spouse_earned: 2_400
+    hi_cdcc_income_floor_eligible: [false, false]
+    hi_cdcc_min_head_spouse_earned: 200
 
 - name: married, one eligible, both income below floor
   period: 2022

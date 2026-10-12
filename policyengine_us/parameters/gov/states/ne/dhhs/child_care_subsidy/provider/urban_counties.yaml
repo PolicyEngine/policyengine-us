@@ -1,0 +1,17 @@
+description: Nebraska treats these counties as urban when setting maximum rates under the Child Care Subsidy program.
+values:
+  2025-10-01:
+    - DAKOTA_COUNTY_NE
+    - DOUGLAS_COUNTY_NE
+    - LANCASTER_COUNTY_NE
+    - SARPY_COUNTY_NE
+
+metadata:
+  unit: list
+  period: year
+  label: Nebraska Child Care Subsidy urban counties
+  reference:
+    - title: Nebraska 2025-2027 Child Care Subsidy Rates
+      href: https://dhhs.ne.gov/Child%20Care%20Documents/Subsidy-Rates.pdf
+    - title: Neb. Rev. Stat. § 68-1206(3), annual October 1 rate schedule
+      href: https://nebraskalegislature.gov/laws/statutes.php?statute=68-1206

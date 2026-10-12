@@ -156,3 +156,50 @@
     # person3: age 14 >= 13, not disabled => false
     # person4: age 15, disabled, 15 < 19 => true
     vt_ccfap_eligible_child: [false, true, false, true]
+
+- name: Case 11, undocumented child becomes eligible when the citizenship requirement ends June 30, 2024.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child:
+      2024-06: [false]
+      2024-07: [true]
+
+- name: Case 12, undocumented dependent child is eligible under current law.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: true
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child: [true]
+
+- name: Case 13, non-dependent undocumented child stays ineligible after the citizenship requirement ends.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 5
+        is_tax_unit_dependent: false
+        immigration_status: UNDOCUMENTED
+    households:
+      household:
+        members: [person1]
+        state_code: VT
+  output:
+    vt_ccfap_eligible_child: [false]

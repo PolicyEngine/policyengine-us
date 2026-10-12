@@ -1,0 +1,79 @@
+description: Wisconsin counts income from these sources under the Wisconsin Shares Child Care Subsidy Program.
+
+values:
+  2025-10-01:
+    # Earned income
+    - employment_income
+    # Net self-employment income reported to the IRS; the handbook's add-backs
+    # (depreciation, personal business expenses, personal transportation,
+    # capital equipment purchases, and loan principal payments) have no
+    # PolicyEngine inputs (Sections 6.2 and 6.4.4).
+    - self_employment_income
+    # Specified service trade or business earnings; self_employment_income
+    # is non-SSTB only.
+    - sstb_self_employment_income
+    # Farm self-employment (Schedule F); self_employment_income is non-farm
+    # only.
+    - farm_operations_income
+    # Partnership and S corporation net earnings reported to the IRS.
+    - partnership_s_corp_income
+    # Unearned income
+    - dividend_income
+    # interest_income is an umbrella that already adds taxable_interest_income
+    # and tax_exempt_interest_income.
+    - interest_income
+    # Net rental income and royalties; farm rental is tracked separately from
+    # rental_income.
+    - rental_income
+    - farm_rent_income
+    # Income from estates or trusts.
+    - estate_income
+    # social_security is an umbrella that already includes the old age,
+    # survivorship, disability, and dependents components.
+    - social_security
+    # Pensions and annuities, including veteran pensions.
+    - pension_income
+    - unemployment_compensation
+    - workers_compensation
+    # Alimony and other maintenance payments.
+    - alimony_income
+    # Broader than the handbook's "veteran pensions" line: VA disability
+    # compensation also counts under the Section 6.2 catch-all since it is
+    # not in the Section 6.3 disregard list.
+    - veterans_benefits
+    # Capital gains income from selling securities and other property.
+    - capital_gains
+
+    # Handled at the formula level (not listed here):
+    # - Supplemental Security Income of adults in the assistance group is
+    #   counted; SSI of minor dependents is disregarded (Section 6.3).
+    # - Child or family support is counted only if the assistance group's total
+    #   exceeds $1,250 per month, in which case the entire amount counts
+    #   (see child_support_disregard_cap.yaml).
+    # - Earned income of minor dependents is disregarded (Section 6.3).
+    #
+    # No PolicyEngine variable exists for these counted sources:
+    # - Student financial aid not used for tuition and books
+    #
+    # Disregarded by Section 6.3 (deliberately not listed):
+    # - Wisconsin Works (W-2) payments (CSJ, W-2 T, CMC, ARP, TSP, CMF+);
+    #   also avoids the child care to TANF circular dependency
+    # - Emergency Assistance and Wisconsin Shares subsidies
+    # - Foster care, Kinship Care, subsidized guardianship, and adoption
+    #   assistance payments
+    # - State and federal tax refunds
+    # - Educational aid, and scholarships or grants used for tuition and books
+    # - Work study income
+    # - Loans, reimbursements, gifts, and earmarked funds
+    # - Refugee Cash Assistance
+    # - The wage subsidy portion of TEMP/TMJ/TJ placements
+
+metadata:
+  unit: list
+  period: year
+  label: Wisconsin Shares countable income sources
+  reference:
+    - title: Wisconsin Shares Handbook (July 2026), Section 6.2 Counted Income
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=58
+    - title: Wisconsin Shares Handbook (July 2026), Section 6.3 Disregarded Income
+      href: https://dcf.wisconsin.gov/wisconsin-shares/wisconsin-shares-handbook-july-2026#page=59

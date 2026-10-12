@@ -1,0 +1,183 @@
+# Texas $1,500 rebate check ("Money in Your Pocket" proposal)
+# One-time $1,500 per household, no income limit, TX residents, 2027.
+# Source: Hinojosa campaign press release, July 13, 2026.
+
+- name: Case 1, Texas household receives the rebate.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
+  input:
+    gov.contrib.states.tx.rebate.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_rebate: 1_500
+
+- name: Case 2, non-Texas household gets no rebate.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
+  input:
+    gov.contrib.states.tx.rebate.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    tx_rebate: 0
+
+- name: Case 3, rebate flows into household benefits and net income.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
+  input:
+    gov.contrib.states.tx.rebate.in_effect: true
+    people:
+      person1:
+        age: 35
+        # High income so no other benefits fire; only the rebate remains.
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # tx_rebate is appended to household_state_benefits, which household_benefits
+    # adds; household_net_income adds household_benefits, so net income rises by
+    # exactly 1,500. Assert the two benefit aggregates (robust to tax churn).
+    tx_rebate: 1_500
+    household_state_benefits: 1_500
+    household_benefits: 1_500
+
+- name: Case 4, rebate is included in spm_unit_benefits.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
+  input:
+    gov.contrib.states.tx.rebate.in_effect: true
+    people:
+      person1:
+        age: 35
+        # High income so baseline SPM benefits are 0; only the rebate remains.
+        employment_income: 500_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_rebate: 1_500
+    spm_unit_benefits: 1_500
+
+- name: Case 5, zero-income Texas household still receives the rebate.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
+  input:
+    gov.contrib.states.tx.rebate.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_rebate: 1_500
+
+- name: Case 6, high-income Texas household still receives the rebate.
+  period: 2027
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
+  input:
+    gov.contrib.states.tx.rebate.in_effect: true
+    people:
+      person1:
+        age: 35
+        # $1M income confirms there is no income limit on the rebate.
+        employment_income: 1_000_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    tx_rebate: 1_500
+
+- name: Case 7, before the 2027 effective date the rebate is zero.
+  period: 2026
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
+  input:
+    gov.contrib.states.tx.rebate.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # amount parameter is 0 before 2027-01-01, so the rebate is 0 in 2026
+    # even with in_effect true.
+    tx_rebate: 0
+
+- name: Case 8, after the one-time 2027 payment the rebate does not recur.
+  period: 2028
+  absolute_error_margin: 1
+  reforms: policyengine_us.reforms.states.tx.rebate.tx_rebate.tx_rebate
+  input:
+    gov.contrib.states.tx.rebate.in_effect: true
+    people:
+      person1:
+        age: 35
+        employment_income: 50_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # amount parameter reverts to 0 at 2028-01-01, so the one-time payment does
+    # not recur -- neither directly nor through the spm_unit_benefits path.
+    tx_rebate: 0
+    spm_unit_benefits: 0

@@ -1,0 +1,12 @@
+description: Indiana applies its state-specific decoupled childless Earned Income Tax Credit parameters when this indicator is true.
+values:
+  2010-01-01: false
+  2021-01-01: true
+  2022-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Indiana EITC childless decoupled parameters in effect
+  reference:
+    - title: IC 6-3.1-21 - Indiana Earned Income Tax Credit (2021 childless override)
+      href: https://iga.in.gov/laws/2021/ic/titles/6#6-3.1-21

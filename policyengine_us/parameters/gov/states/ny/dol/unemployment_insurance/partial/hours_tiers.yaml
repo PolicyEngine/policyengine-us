@@ -1,0 +1,44 @@
+description: New York pays this share of the weekly benefit rate based on hours worked in a week under the Unemployment Insurance program.
+
+# The hours-based partial-benefit tier system took effect 2021-08-16 (Ch. 277
+# of the Laws of 2021 § 31, as added by Ch. 305 of the Laws of 2021 § 14);
+# bracket start dates reflect that. Values verified for 2025-2026.
+# For periods before 2021-08-16 the earliest bracket set back-extends, so the
+# partial-benefit calculation applies the hours-tier system as an approximation;
+# the pre-reform day/earnings-based reduction is not separately modeled.
+brackets:
+  - threshold:
+      2021-08-16: 0
+    amount:
+      2021-08-16: 1
+  - threshold:
+      2021-08-16: 11
+    amount:
+      2021-08-16: 0.75
+  - threshold:
+      2021-08-16: 17
+    amount:
+      2021-08-16: 0.5
+  - threshold:
+      2021-08-16: 22
+    amount:
+      2021-08-16: 0.25
+  - threshold:
+      2021-08-16: 31
+    amount:
+      2021-08-16: 0
+
+metadata:
+  type: single_amount
+  threshold_unit: hour
+  amount_unit: /1
+  threshold_period: week
+  period: week
+  label: New York UI partial benefit hours tier rates
+  reference:
+    - title: NYSDOL P803 (Oct 2025), Partial Unemployment FAQs
+      href: https://dol.ny.gov/system/files/documents/2025/10/p803-partial-ui-faqs-10-3-25.pdf#page=1
+    - title: Ch. 277 of the Laws of 2021 § 31, as added by Ch. 305 of the Laws of 2021 § 14 — Partial unemployment hours-tier system
+      href: https://assembly.state.ny.us/leg/?default_fld=&leg_video=&bn=S7148&term=2021&Text=Y
+    - title: NY Labor Law § 590(5)(c) — Benefit for partial unemployment
+      href: https://www.nysenate.gov/legislation/laws/LAB/590

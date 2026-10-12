@@ -1,0 +1,18 @@
+description: Retirement account distributions that Pennsylvania excludes from compensation once the recipient reaches the qualifying retirement age. 61 Pa. Code Sec. 101.6 treats IRAs, SEPs, Keogh plans, and federally qualified employee pension plans (including 401(k) and 403(b) plans) alike.
+values:
+  2021-01-01:
+    - taxable_ira_distributions
+    - taxable_401k_distributions
+    - taxable_403b_distributions
+    - taxable_sep_distributions
+    - keogh_distributions
+metadata:
+  unit: currency-USD
+  label: PA nontaxable retirement distribution sources
+  reference:
+    - title: 61 Pa. Code Sec. 101.6 - Compensation (old age or retirement benefit plans include IRA, SEP, Keogh, and federally qualified employee pension plans)
+      href: https://www.pacodeandbulletin.gov/Display/pacode?file=/secure/pacode/data/061/chapter101/s101.6.html
+    - title: PA Personal Income Tax Guide - Gross Compensation (old age or retirement benefits paid after reaching a specific age or a stated period of employment)
+      href: https://www.pa.gov/agencies/revenue/forms-and-publications/pa-personal-income-tax-guide/gross-compensation.html
+    - title: PA DOR 1099-R FAQ (a_id 1470) - Code 7 normal distribution from an eligible Pennsylvania retirement plan is not taxable once plan retirement requirements are met
+      href: https://revenue-pa.custhelp.com/app/answers/detail/a_id/1470/

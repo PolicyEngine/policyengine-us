@@ -1,0 +1,268 @@
+# Tests for Oklahoma UI maximum benefit amount (40 O.S. §2-106).
+# MBA = min(WBA * max_weeks, statewide max benefit amount, base-period wages share cap).
+# max_weeks: 26 before 2023-01-01, 16 from 2023-01-01.
+# Reference: 40 O.S. §2-106; HB 1933 (2022).
+
+- name: Case 1, 2024 - WBA $400 yields MBA $6,400 over 16 weeks.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $9,200 -> floor($9,200 / 23) = $400 (within 2024 [$16, $519] range).
+        ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: 30_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 400
+        # 2024 max_weeks = 16; MBA = $400 * 16 = $6,400.
+        ok_ui_maximum_benefit_amount: 6_400
+
+- name: Case 2, pre-2023 - WBA $300 yields MBA $7,800 over 26 weeks.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $6,900 -> floor($6,900 / 23) = $300.
+        ok_ui_high_quarter_taxable_wages: 6_900
+        ok_ui_base_period_total_wages: 20_700
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 300
+        # Pre-2023 max_weeks = 26; MBA = $300 * 26 = $7,800.
+        ok_ui_maximum_benefit_amount: 7_800
+
+- name: Case 3, 2025 - base-period wages share caps marginal Test A claimant.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $10,000 -> floor($10,000 / 23) = $434.
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_total_wages: 15_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 434
+        # Lesser of $434 * 16 = $6,944, statewide $8,656, and 40% * $15,000 = $6,000.
+        ok_ui_maximum_benefit_amount: 6_000
+
+# --- max_weeks transition cases redistributed from edge_cases.yaml (§2-106). ---
+
+- name: Case 4, year 2022 - pre-2023 max_weeks of 26.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $6,900 -> floor($6,900 / 23) = $300.
+        ok_ui_high_quarter_taxable_wages: 6_900
+        ok_ui_base_period_taxable_wages: 6_900
+        ok_ui_base_period_total_wages: 20_700
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 300
+        # 2022: min(min($300 * 26 = $7,800, $9,900 max_amount), 0.4 * $20,700 = $8,280) = $7,800.
+        ok_ui_maximum_benefit_amount: 7_800
+
+- name: Case 5, year 2024 - post-2023 max_weeks of 16.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # Same HQW as Case 4 to isolate the max_weeks change.
+        ok_ui_high_quarter_taxable_wages: 6_900
+        ok_ui_base_period_taxable_wages: 6_900
+        ok_ui_base_period_total_wages: 20_700
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 300
+        # 2024: min(min($300 * 16 = $4,800, $8,304 max_amount), 0.4 * $20,700 = $8,280) = $4,800.
+        ok_ui_maximum_benefit_amount: 4_800
+
+# --- Item 17: 2022 base-period-wages-share (0.4) binding band. Confirms the
+# restored 2022=0.4 share can be the binding cap under the 26-week regime. ---
+
+- name: Case 6, 2022 - 0.4 share binds under the 26-week regime.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $6,900 -> floor($6,900 / 23) = $300.
+        ok_ui_high_quarter_taxable_wages: 6_900
+        ok_ui_base_period_taxable_wages: 6_900
+        ok_ui_base_period_total_wages: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 300
+        # 26-week product $300 * 26 = $7,800 < $9,900 max_amount, but
+        # 0.4 * $12,000 = $4,800 share cap is the lesser -> MBA $4,800.
+        ok_ui_maximum_benefit_amount: 4_800
+
+# --- Item 18(c): 2025 statewide max_amount binding vs the share cap. ---
+
+- name: Case 7, 2025 - statewide max amount binds against a large share cap.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $20,000 -> floor($20,000 / 23) = $869 -> clamped to $541 (2025 max WBA).
+        ok_ui_high_quarter_taxable_wages: 20_000
+        ok_ui_base_period_taxable_wages: 20_000
+        ok_ui_base_period_total_wages: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 541
+        # min(min($541 * 16 = $8,656, $8,656 max_amount), 0.4 * $100,000 = $40,000) = $8,656.
+        ok_ui_maximum_benefit_amount: 8_656
+
+# --- Item 18(d): 2026 share of 0.475 binding. ---
+
+- name: Case 8, 2026 - 0.475 share cap binds.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $10,000 -> floor($10,000 / 23) = $434 (within 2026 [$16, $649]).
+        ok_ui_high_quarter_taxable_wages: 10_000
+        ok_ui_base_period_taxable_wages: 10_000
+        ok_ui_base_period_total_wages: 12_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 434
+        # min(min($434 * 16 = $6,944, $10,384 max_amount), 0.475 * $12,000 = $5,700) = $5,700.
+        ok_ui_maximum_benefit_amount: 5_700
+
+# --- Item 18(f): 2023 16-week seam (first year at 16 weeks, share not binding). ---
+
+- name: Case 9, 2023 - first year at 16 weeks with non-binding share cap.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $6,900 -> floor($6,900 / 23) = $300.
+        ok_ui_high_quarter_taxable_wages: 6_900
+        ok_ui_base_period_taxable_wages: 6_900
+        ok_ui_base_period_total_wages: 50_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 300
+        # min(min($300 * 16 = $4,800, $7,888 max_amount), 0.4 * $50,000 = $20,000) = $4,800.
+        # Contrast Case 4 (2022, 26 weeks) -> $7,800: confirms the 16-week seam.
+        ok_ui_maximum_benefit_amount: 4_800
+
+# --- Item 19: negative base-period wages exercise the max_(..., 0) guard so the
+# share cap cannot drive MBA below zero. ---
+
+- name: Case 10, negative base-period total wages - share cap guarded to zero.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $9,200 -> WBA $400 (positive), but negative base-period total wages.
+        ok_ui_high_quarter_taxable_wages: 9_200
+        ok_ui_base_period_taxable_wages: 9_200
+        ok_ui_base_period_total_wages: -5_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 400
+        # Guard: max(-$5,000, 0) = $0; share cap = 0.4 * $0 = $0.
+        # min(min($400 * 16 = $6,400, $8,656), $0) = $0 (not negative).
+        ok_ui_maximum_benefit_amount: 0
+
+# --- C3: statewide max_amount ($9,900) actually BINDS in 2022 under the 26-week
+# regime. Because the 2023-2026 max_amount values are published as 16 x maximum
+# WBA, WBR*max_weeks can never exceed max_amount once max_weeks = 16, so
+# max_amount is structurally unfalsifiable after 2022. 2022 is the only year the
+# suite can demonstrate it binding, since 26 weeks lets WBR*max_weeks overshoot. ---
+
+- name: Case 11, 2022 - statewide max_amount $9,900 binds under the 26-week regime.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        # HQW $20,000 -> floor($20,000 / 23) = $869 -> clamped to $476 (2022 max WBA).
+        ok_ui_high_quarter_taxable_wages: 20_000
+        ok_ui_base_period_taxable_wages: 20_000
+        ok_ui_base_period_total_wages: 100_000
+    households:
+      household:
+        members: [person1]
+        state_code: OK
+  output:
+    people:
+      person1:
+        ok_ui_weekly_benefit_rate: 476
+        # 26-week product $476 * 26 = $12,376 exceeds the $9,900 max_amount, and
+        # the share cap 0.4 * $100,000 = $40,000 is larger still, so the
+        # statewide $9,900 max_amount is the binding constraint.
+        ok_ui_maximum_benefit_amount: 9_900

@@ -1,0 +1,14 @@
+description: Maine allows filers without a qualifying child who are at least this age to claim the earned income tax credit, lowering the federal minimum age floor.
+values:
+  2020-01-01: 18
+metadata:
+  unit: year
+  period: year
+  label: Maine EITC minimum childless age
+  reference:
+    - title: 36 M.R.S. § 5219-S(6) - "eligible individual" also includes an individual without a qualifying child who is at least 18 and has not attained 25 years of age
+      href: https://legislature.maine.gov/statutes/36/title36sec5219-S.html
+    - title: 36 M.R.S. § 5219-S(5) - credit for a childless individual under 25 is calculated as if the individual were eligible for a federal earned income credit
+      href: https://legislature.maine.gov/statutes/36/title36sec5219-S.html
+    - title: 2025 Instructions for Form 1040ME - Schedule A, Line 2 (Maine EIC Worksheet)
+      href: https://www.maine.gov/revenue/sites/maine.gov.revenue/files/inline-files/25_1040me_gen_instr_w_cover_pg.pdf#page=10

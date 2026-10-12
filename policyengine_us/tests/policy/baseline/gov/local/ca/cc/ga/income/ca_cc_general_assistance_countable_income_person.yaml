@@ -1,0 +1,32 @@
+# Per-person countable income sums the income sources in countable_income/sources.yaml,
+# only for tax-unit heads or spouses. Sources are annual; the monthly variable
+# auto-divides by 12.
+- name: Head/spouse employment income counts at the monthly level.
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    employment_income: 1_200 * 12  # $1,200/month
+    county: CONTRA_COSTA_COUNTY_CA
+  output:
+    ca_cc_general_assistance_countable_income_person: 1_200
+
+- name: Non-head/spouse income is excluded.
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: false
+    employment_income: 1_200 * 12
+    county: CONTRA_COSTA_COUNTY_CA
+  output:
+    ca_cc_general_assistance_countable_income_person: 0
+
+- name: Negative self-employment income produces negative countable income.
+  period: 2024-01
+  input:
+    age: 30
+    is_tax_unit_head_or_spouse: true
+    self_employment_income: -6_000 * 12  # -$6,000/month business loss
+    county: CONTRA_COSTA_COUNTY_CA
+  output:
+    ca_cc_general_assistance_countable_income_person: -6_000

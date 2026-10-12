@@ -9,6 +9,9 @@
   period: 2020
   input:
     qualified_tuition_expenses: 1_000
+    attends_eligible_educational_institution_for_lifetime_learning_credit: true
+    has_lifetime_learning_credit_1098_t_or_exception: true
+    has_tin: true
   output:
     lifetime_learning_credit_potential: 200
 
@@ -16,6 +19,9 @@
   period: 2020
   input:
     qualified_tuition_expenses: 1_000
+    attends_eligible_educational_institution_for_lifetime_learning_credit: true
+    has_lifetime_learning_credit_1098_t_or_exception: true
+    has_tin: true
     is_eligible_for_american_opportunity_credit: true
   output:
     lifetime_learning_credit_potential: 0
@@ -24,6 +30,9 @@
   period: 2020
   input:
     qualified_tuition_expenses: 1_000
+    attends_eligible_educational_institution_for_lifetime_learning_credit: true
+    has_lifetime_learning_credit_1098_t_or_exception: true
+    has_tin: true
     adjusted_gross_income: 90_000
   output:
     lifetime_learning_credit_potential: 0

@@ -129,7 +129,7 @@
     people:
       person1:
         in_ssp_rcap_eligible: true
-        uncapped_ssi: -60_000
+        uncapped_ssi: -5_000
         in_resides_in_licensed_residential_facility: true
     households:
       household:
@@ -147,14 +147,14 @@
     people:
       person1:
         in_ssp_rcap_eligible: true
-        uncapped_ssi: 120_000
+        uncapped_ssi: 10_000
         in_resides_in_licensed_residential_facility: true
     households:
       household:
         members: [person1]
         state_code: IN
   output:
-    # uncapped_ssi monthly = 120,000/12 = 10,000
+    # uncapped_ssi = 10,000
     # supplement = max(1,501.06 - 10,000, 0) = 0
     in_ssp_rcap: 0
 
@@ -165,16 +165,15 @@
     people:
       person1:
         in_ssp_rcap_eligible: true
-        # Annual uncapped_ssi = licensed_state_standard * 12
-        # = (49.35 * 365/12) * 12 = 49.35 * 365 = 18,012.75
-        uncapped_ssi: 18_012.75
+        # Monthly uncapped SSI equals licensed state standard.
+        uncapped_ssi: 1_501.0625
         in_resides_in_licensed_residential_facility: true
     households:
       household:
         members: [person1]
         state_code: IN
   output:
-    # monthly = 18,012.75 / 12 = 1,501.0625
+    # monthly uncapped_ssi = 1,501.0625
     # supplement = max(1,501.0625 - 1,501.0625, 0) = 0
     in_ssp_rcap: 0
 
@@ -185,15 +184,15 @@
     people:
       person1:
         in_ssp_rcap_eligible: true
-        # Annual = (licensed_ss - 1) * 12 = (1,501.0625 - 1) * 12 = 18,000.75
-        uncapped_ssi: 18_000.75
+        # Monthly uncapped SSI is one dollar below the licensed state standard.
+        uncapped_ssi: 1_500.0625
         in_resides_in_licensed_residential_facility: true
     households:
       household:
         members: [person1]
         state_code: IN
   output:
-    # monthly = 18,000.75 / 12 = 1,500.0625
+    # monthly uncapped_ssi = 1,500.0625
     # supplement = max(1,501.0625 - 1,500.0625, 0) = 1.00
     in_ssp_rcap: 1
 
@@ -204,15 +203,15 @@
     people:
       person1:
         in_ssp_rcap_eligible: true
-        # Annual = (licensed_ss + 1) * 12 = (1,501.0625 + 1) * 12 = 18,024.75
-        uncapped_ssi: 18_024.75
+        # Monthly uncapped SSI is one dollar above the licensed state standard.
+        uncapped_ssi: 1_502.0625
         in_resides_in_licensed_residential_facility: true
     households:
       household:
         members: [person1]
         state_code: IN
   output:
-    # monthly = 18,024.75 / 12 = 1,502.0625
+    # monthly uncapped_ssi = 1,502.0625
     # supplement = max(1,501.0625 - 1,502.0625, 0) = 0 (floored)
     in_ssp_rcap: 0
 
@@ -358,7 +357,7 @@
         is_ssi_aged_blind_disabled: true
         is_medicaid_eligible: false
         ssi_claim_is_joint: false
-        uncapped_ssi: 6_000
+        uncapped_ssi: 500
         in_resides_in_licensed_residential_facility: true
     households:
       household:
@@ -492,7 +491,7 @@
     people:
       person1:
         in_ssp_rcap_eligible: true
-        uncapped_ssi: 14_000
+        uncapped_ssi: 1_166.67
         in_resides_in_unlicensed_residential_facility: true
     households:
       household:
@@ -500,7 +499,7 @@
         state_code: IN
   output:
     # State standard = $1,125.42
-    # uncapped_ssi monthly = 14,000/12 = $1,166.67
+    # uncapped_ssi = $1,166.67
     # supplement = max(1,125.42 - 1,166.67, 0) = 0
     in_ssp_rcap: 0
 
@@ -515,14 +514,14 @@
     people:
       person1:
         in_ssp_rcap_eligible: true
-        uncapped_ssi: 6_000
+        uncapped_ssi: 500
         in_resides_in_licensed_residential_facility: true
     households:
       household:
         members: [person1]
         state_code: IN
   output:
-    # uncapped_ssi monthly = 6,000/12 = $500
+    # uncapped_ssi = $500
     # supplement = max(1,501.06 - 500, 0) = $1,001.06
     in_ssp_rcap: 1_001.06
 

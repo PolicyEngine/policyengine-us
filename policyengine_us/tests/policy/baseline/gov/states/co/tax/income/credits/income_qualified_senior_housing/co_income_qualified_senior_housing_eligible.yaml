@@ -101,3 +101,41 @@
     co_property_tax_exemption: 10
   output:
     co_income_qualified_senior_housing_credit_eligible: False
+
+# in_effect gate (issue #5573): the credit is authorized only for TY2022 and TY2024.
+# An otherwise-eligible senior is ineligible in the off years (2023, 2025) because
+# co_income_qualified_senior_housing_credit_eligible ANDs in the in_effect parameter,
+# and remains eligible in the in-effect year 2024. These FAIL if the gate is removed.
+
+- name: SINGLE senior otherwise-eligible is ineligible in off-year 2023
+  period: 2023
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    age_head: 65
+    adjusted_gross_income: 25_000
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit_eligible: False
+
+- name: SINGLE senior otherwise-eligible is ineligible in off-year 2025
+  period: 2025
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    age_head: 65
+    adjusted_gross_income: 25_000
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit_eligible: False
+
+- name: SINGLE senior otherwise-eligible is eligible in in-effect year 2024
+  period: 2024
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    age_head: 65
+    adjusted_gross_income: 25_000
+    co_property_tax_exemption: 0
+  output:
+    co_income_qualified_senior_housing_credit_eligible: True

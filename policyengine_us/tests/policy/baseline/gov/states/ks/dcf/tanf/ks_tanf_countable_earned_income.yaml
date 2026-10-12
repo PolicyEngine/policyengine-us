@@ -1,6 +1,6 @@
 # Kansas TANF countable earned income test
 # Sums person-level earned income after deductions,
-# then subtracts dependent care (no cap per KEESM 7224)
+# then subtracts dependent care (no cap per KEESM 7211)
 
 - name: Case 1, no earned income.
   period: 2025-01
@@ -49,3 +49,146 @@
   output:
     # $400 - $300 = $100
     ks_tanf_countable_earned_income: 100
+
+- name: Case 6, SSI member's earned income excluded.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        ks_tanf_earned_income_after_deductions: 200
+      person2:
+        ks_tanf_earned_income_after_deductions: 150
+        ssi: 9_000  # SSI recipient, excluded from the assistance unit
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # person2's 150 is masked out; only person1's 200 counts
+    ks_tanf_countable_earned_income: 200
+
+- name: Case 7, child's earned income excluded.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        ks_tanf_earned_income_after_deductions: 200
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        ks_tanf_earned_income_after_deductions: 150
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # person2 (age 10) is a child; earned income exempt (KEESM 6410)
+    ks_tanf_countable_earned_income: 200
+
+- name: Case 8, 18-year-old secondary school student's earned income excluded.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        ks_tanf_earned_income_after_deductions: 200
+      person2:
+        age: 18
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+        ks_tanf_earned_income_after_deductions: 150
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # person2 (18, in secondary school) is a child; earnings exempt (KEESM 6410)
+    ks_tanf_countable_earned_income: 200
+
+- name: Case 9, 18-year-old not in school has earned income counted.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        ks_tanf_earned_income_after_deductions: 200
+      person2:
+        age: 18
+        is_in_secondary_school: false
+        ks_tanf_earned_income_after_deductions: 150
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # person2 (18, not in school) is not a child; earnings counted: 200 + 150
+    ks_tanf_countable_earned_income: 350
+
+- name: Case 10, incapacitated person care expense deduction.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        ks_tanf_earned_income_after_deductions: 400
+      person2:  # disabled adult dependent receiving the care
+        age: 60
+        is_disabled: true
+        care_expenses: 1_200  # $100/month for the care of an incapacitated person
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KS
+  output:
+    # K.A.R. 30-4-111(b)(3): $400 - $100 care expense = $300 (no cap)
+    ks_tanf_countable_earned_income: 300
+
+- name: Case 11, exempt child earner and care deduction combine.
+  period: 2025-01
+  input:
+    people:
+      person1:
+        age: 30
+        ks_tanf_earned_income_after_deductions: 400
+      person2:
+        age: 10
+        is_tax_unit_dependent: true
+        ks_tanf_earned_income_after_deductions: 150
+      person3:  # disabled adult dependent receiving the care
+        age: 60
+        is_disabled: true
+        care_expenses: 1_200  # $100/month for care of an incapacitated person
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        childcare_expenses: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: KS
+  output:
+    # person2 (age 10) is a child; earnings exempt (KEESM 6410). person1's
+    # $400 counts, less the $100 care expense for person3
+    # (K.A.R. 30-4-111(b)(3)) = $300.
+    ks_tanf_countable_earned_income: 300

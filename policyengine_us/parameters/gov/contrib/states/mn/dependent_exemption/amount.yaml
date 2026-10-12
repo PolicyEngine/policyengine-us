@@ -1,0 +1,19 @@
+description: Minnesota provides this dependent exemption amount per eligible dependent under the contributed reform. Defaults to the baseline current-law amount, so activating the reform at the default is a no-op.
+values:
+  2021-01-01: 4_350
+  2022-01-01: 4_450
+  2023-01-01: 4_800
+  2024-01-01: 5_050
+  2025-01-01: 5_200
+metadata:
+  period: year
+  unit: currency-USD
+  label: Minnesota dependent exemption reform amount per dependent
+  uprating:
+    parameter: gov.irs.uprating
+    rounding:
+      type: downwards
+      interval: 50
+  reference:
+  - title: Minnesota Statutes 290.0121 DEPENDENT EXEMPTION. Subd. 1. Exemption amount.
+    href: https://www.revisor.mn.gov/statutes/cite/290.0121#stat.290.0121.1

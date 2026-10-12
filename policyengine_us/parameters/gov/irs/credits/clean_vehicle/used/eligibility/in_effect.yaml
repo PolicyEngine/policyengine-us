@@ -1,0 +1,20 @@
+description: The IRS provides the used clean vehicle credit when this is true.
+values:
+  2023-01-01: true
+  # The statute terminates the credit for vehicles acquired after
+  # September 30, 2025 (an intra-year date). PolicyEngine models annual
+  # periods, so this cutoff is approximated as the credit ending for tax
+  # years after 2025 (2026-01-01), rather than mid-2025. This is not exact:
+  # vehicles acquired in Q4 2025 are treated as eligible here even though
+  # they are not under current law.
+  2026-01-01: false
+
+metadata:
+  unit: bool
+  period: year
+  label: Used clean vehicle credit in effect
+  reference:
+    - title: 26 U.S.C. § 25E(g)
+      href: https://www.law.cornell.edu/uscode/text/26/25E#g
+    - title: One Big Beautiful Bill Act, Pub. L. No. 119-21, § 70501 (2025) # Terminates the credit for vehicles acquired after September 30, 2025.
+      href: https://www.congress.gov/bill/119th-congress/house-bill/1

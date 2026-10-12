@@ -85,3 +85,26 @@
         state_code: ID
   output:
     id_pbf_liable: false
+
+- name: Not required due to reported TANF receipt
+  period: 2021
+  input:
+    people:
+      p1: {}
+    tax_units:
+      tax_unit:
+        members: [p1]
+        id_income_tax_liable: true
+        blind_head: false
+        blind_spouse: false
+    spm_units:
+      spm_unit:
+        tanf: 0
+        receives_tanf: true
+        members: [p1]
+    households:
+      household:
+        members: [p1]
+        state_code: ID
+  output:
+    id_pbf_liable: false

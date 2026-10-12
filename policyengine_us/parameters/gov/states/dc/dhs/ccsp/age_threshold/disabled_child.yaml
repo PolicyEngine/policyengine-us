@@ -1,11 +1,14 @@
-description: The District of Columbia limits the Child Care Subsidy Program to applicants with disabled children younger than this age.
+description: The District of Columbia limits the Child Care Subsidy Program to children younger than this age who are disabled or under court supervision.
+# CCDF Plan 2.2.1(b)-(c) sets the same upper age of 18 (under 19) for both routes.
 values:
   2020-01-01: 19
   
 metadata:
   unit: year
   period: year
-  label: DC CCSP disabled child age threshold
+  label: DC CCSP special needs or court supervision child age threshold
   reference:
     - title: DC Child Care Subsidy Program Policy Manual
       href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/DC%20Child%20Care%20Subsidy%20Program%20Policy%20Manual.pdf#page=8
+    - title: DC CCDF Plan FFY 2025-2027, Section 2.2.1(b)-(c), upper age 18.00
+      href: https://osse.dc.gov/sites/default/files/dc/sites/osse/publication/attachments/CCDF%20FFY%202025-2027%20For%20District%20of%20Columbia.pdf#page=18

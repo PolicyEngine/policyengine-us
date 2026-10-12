@@ -1,0 +1,60 @@
+description: Maryland reduces the young adult target contribution percentage by this share under the State-Based Health Insurance Subsidies Program.
+metadata:
+  type: single_amount
+  threshold_unit: year
+  amount_unit: /1
+  period: year
+  label: Maryland Premium Assistance young adult contribution percentage reduction by age
+  reference:
+    - title: MHBE Final 2026 State Subsidy and Reinsurance Parameters (Board 7-21-25), young adult expected contribution table
+      href: https://www.marylandhbe.com/wp-content/uploads/2025/07/Final-2026-State-Subsidy-and-Reinsurance-Parameters-Board-7-21-25-1.pdf#page=14
+    - title: MHBE Final 2026 State Subsidy and Reinsurance Parameters (Board 7-21-25), young adult subsidy adoption slide
+      href: https://www.marylandhbe.com/wp-content/uploads/2025/07/Final-2026-State-Subsidy-and-Reinsurance-Parameters-Board-7-21-25-1.pdf#page=24
+    - title: COMAR 14.35.21.04D (State-Based Subsidies; payment parameters delegated to the MHBE Board)
+      href: https://regs.maryland.gov/us/md/exec/comar/14.35.21
+brackets:
+  # Reduction (in percentage points, as a share) applied at or above each age.
+  # Ages under 18: 0; 18-33: 2.5pp; then taper 0.5pp/year: 34 -> 2.0pp,
+  # 35 -> 1.5pp, 36 -> 1.0pp, 37 -> 0.5pp; 38 and older: 0.
+  - threshold:
+      0000-01-01: 0
+      2026-01-01: 0
+    amount:
+      0000-01-01: 0
+      2026-01-01: 0
+  - threshold:
+      0000-01-01: 18
+      2026-01-01: 18
+    amount:
+      0000-01-01: 0
+      2026-01-01: 0.025
+  - threshold:
+      0000-01-01: 34
+      2026-01-01: 34
+    amount:
+      0000-01-01: 0
+      2026-01-01: 0.02
+  - threshold:
+      0000-01-01: 35
+      2026-01-01: 35
+    amount:
+      0000-01-01: 0
+      2026-01-01: 0.015
+  - threshold:
+      0000-01-01: 36
+      2026-01-01: 36
+    amount:
+      0000-01-01: 0
+      2026-01-01: 0.01
+  - threshold:
+      0000-01-01: 37
+      2026-01-01: 37
+    amount:
+      0000-01-01: 0
+      2026-01-01: 0.005
+  - threshold:
+      0000-01-01: 38
+      2026-01-01: 38
+    amount:
+      0000-01-01: 0
+      2026-01-01: 0

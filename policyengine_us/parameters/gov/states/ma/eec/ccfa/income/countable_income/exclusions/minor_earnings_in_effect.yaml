@@ -1,0 +1,11 @@
+description: Massachusetts excludes the earned income of any minor, including a minor parent, under the Child Care Financial Assistance program when this is in effect.
+values:
+  2020-01-01: false
+  2026-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Massachusetts CCFA minor earnings exclusion in effect
+  reference:
+    - title: EEC CCFA FY25 Regulatory Changes Policy and Procedure Information Sessions, December 2025, income changes effective January 1, 2026
+      href: https://www.mass.gov/doc/december-2025-ccfa-policy-and-procedure-slides/download#page=7

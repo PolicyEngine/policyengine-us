@@ -1,0 +1,13 @@
+description: Whether Colorado bases its child and dependent care credit on the federal credit allowed under IRC section 21 before the section 26 tax-liability limitation. Before 2026 the credit is based on the federal credit the taxpayer actually claimed and was allowed (after the liability limitation); beginning in 2026 it is based on the full federal credit the taxpayer was eligible for.
+values:
+  2018-01-01: false
+  2026-01-01: true
+metadata:
+  period: year
+  unit: bool
+  label: Colorado child and dependent care credit uses pre-liability-limitation federal base
+  reference:
+    - title: C.R.S. 39-22-119(1.7)(b) (as amended by HB24-1134, SECTION 1) - "seventy percent of the federal credit allowed pursuant to section 21 ... calculated without regard to the limitation imposed by section 26"
+      href: https://leg.colorado.gov/sites/default/files/2024a_1134_signed.pdf#page=3
+    - title: "Income Tax Topics: Child and Dependent Care Expenses Credit (Revised January 2026) - Credit calculation"
+      href: https://tax.colorado.gov/sites/tax/files/documents/ITT_Child_and_Dependent_Care_Expenses_Credit_Jan_2026.pdf

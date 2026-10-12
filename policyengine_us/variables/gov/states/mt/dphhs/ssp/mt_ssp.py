@@ -1,33 +1,28 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.ssa.ssi._ssi_state_supplement import (
+    ssi_state_supplement,
+)
 
 
 class mt_ssp(Variable):
     value_type = float
-    entity = SPMUnit
-    label = "Montana State Supplementation"
+    entity = Person
+    label = "Montana State Supplementary Payment"
     unit = USD
     definition_period = MONTH
-    defined_for = StateCode.MT
     reference = (
-        "https://www.law.cornell.edu/regulations/montana/ARM-37-43-101",
-        "https://www.law.cornell.edu/regulations/montana/ARM-37-43-102",
-        "https://www.law.cornell.edu/regulations/montana/ARM-37-43-103",
-        "https://www.law.cornell.edu/regulations/montana/ARM-37-43-104",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501415058#h",
         "https://secure.ssa.gov/poms.nsf/lnx/0501415010DEN",
-        "https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/mt.html",
-        "https://leg.mt.gov/bills/mca/title_0520/chapter_0010/part_0010/section_0040/0520-0010-0010-0040.html",
+        "https://www.ssa.gov/OP_Home/cfr20/416/416-2025.htm",
     )
 
-    def formula(spm_unit, period, parameters):
-        person = spm_unit.members
-        eligible = person("mt_ssp_eligible", period)
-        couple_per_spouse = person("mt_ssp_couple_per_spouse", period)
-        individual = person("mt_ssp_individual", period)
-        couple_active = couple_per_spouse > 0
-        base_amount = where(couple_active, couple_per_spouse, individual)
-        # Residual countable income (federal SSI exhausted) spills onto
-        # the state supplement.
-        uncapped_ssi = person("uncapped_ssi", period)
-        reduction = max_(0, -uncapped_ssi)
-        per_person = max_(0, base_amount - reduction) * eligible
-        return spm_unit.sum(per_person)
+    def formula(person, period, parameters):
+        state = person.household("state_code", period.this_year)
+        resident = (state == StateCode.MT) | person("mt_ssp_in_state_custody", period)
+        excluded = person("mt_ssp_receives_section_1619_benefits", period)
+        category = person("mt_ssp_payment_category", period)
+        p = parameters(period).gov.states.mt.dphhs.ssp.amount
+        payment = ssi_state_supplement(
+            person, period, parameters, p.individual[category], p.couple[category]
+        )
+        return resident * ~excluded * payment

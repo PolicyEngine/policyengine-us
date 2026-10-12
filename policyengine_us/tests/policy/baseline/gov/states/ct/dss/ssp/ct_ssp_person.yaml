@@ -11,7 +11,7 @@
         ssi_countable_resources: 500
 
         ct_ssp_has_therapeutic_diet: false
-        ssi: 11_928  # $994/mo
+        ssi: 994  # monthly SSI
         employment_income: 0
         rent: 12_000
     marital_units:
@@ -45,7 +45,7 @@
         ssi_countable_resources: 500
 
         ct_ssp_has_therapeutic_diet: false
-        ssi: 11_928
+        ssi: 994
         employment_income: 6_000  # $500/mo
         rent: 12_000
     marital_units:
@@ -81,7 +81,7 @@
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
         ct_ssp_has_therapeutic_diet: false
-        ssi: 360  # $30/mo reduced SSI
+        ssi: 30  # monthly reduced SSI
         employment_income: 0
         rent: 0
     marital_units:
@@ -154,7 +154,7 @@
         # Disregard = $65 + 0.5 * (earned - 65)
         # 0.5*(earned - 65) = 165.35
         # earned - 65 = 330.70 -> earned = $395.70
-        ssi: 11_928  # $994/mo
+        ssi: 994  # monthly SSI
         employment_income: 4_748.40  # $395.70/mo
         rent: 12_000
     marital_units:

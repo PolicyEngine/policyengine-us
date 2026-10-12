@@ -10,7 +10,7 @@ class non_refundable_american_opportunity_credit_credit_limit(Variable):
         "Value of the non-refundable portion of the American Opportunity Credit"
     )
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/uscode/text/26/25A#i"
+    reference = "https://uscode.house.gov/view.xhtml?edition=prelim&num=0&req=granuleid%3AUSC-prelim-title26-section25A"
 
     def formula(tax_unit, period, parameters):
         income_tax_before_credits = tax_unit("income_tax_before_credits", period)

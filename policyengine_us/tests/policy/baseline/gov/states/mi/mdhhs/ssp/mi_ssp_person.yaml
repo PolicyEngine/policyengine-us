@@ -35,14 +35,14 @@
   input:
     people:
       person1:
-        # $707/mo SSI = $8,484/yr couple half
-        ssi: 8_484
+        # $707/mo SSI couple half
+        ssi: 707
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
       person2:
-        # $707/mo SSI = $8,484/yr couple half
-        ssi: 8_484
+        # $707/mo SSI couple half
+        ssi: 707
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
@@ -66,14 +66,14 @@
   input:
     people:
       person1:
-        # $707/mo SSI = $8,484/yr couple half
-        ssi: 8_484
+        # $707/mo SSI couple half
+        ssi: 707
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING
       person2:
-        # $707/mo SSI = $8,484/yr couple half
-        ssi: 8_484
+        # $707/mo SSI couple half
+        ssi: 707
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
@@ -98,8 +98,8 @@
   input:
     people:
       person1:
-        # $943/mo SSI = $11,316/yr individual FBR
-        ssi: 11_316
+        # $943/mo SSI individual FBR
+        ssi: 943
         is_ssi_aged_blind_disabled: true
         is_tax_unit_head_or_spouse: true
         mi_ssp_living_arrangement: INDEPENDENT_LIVING

@@ -63,3 +63,45 @@
         state_fips: 20
   output:
     ks_income_tax: 1_223
+
+- name: Zero-tax threshold applies to taxable income, not AGI (issue 9172, taxsim issue 1115)
+  period: 2021
+  input:
+    filing_status: JOINT
+    ks_taxable_income: 4_440
+    ks_agi: 18_340
+    state_code: KS
+  output:
+    # 2021 tax table, married filing joint column: 0 through $5,000 of
+    # line 7 taxable income.
+    ks_income_tax_before_credits: 0
+
+- name: Tax resumes above the joint taxable-income threshold
+  period: 2021
+  input:
+    filing_status: JOINT
+    ks_taxable_income: 5_100
+    ks_agi: 18_340
+    state_code: KS
+  output:
+    ks_income_tax_before_credits: 0.031 * 5_100
+
+- name: Single filer threshold is 2,500 of taxable income
+  period: 2021
+  input:
+    filing_status: SINGLE
+    ks_taxable_income: 2_500
+    ks_agi: 20_000
+    state_code: KS
+  output:
+    ks_income_tax_before_credits: 0
+
+- name: 2024 AGI-based minimum filing requirement still zeroes the tax
+  period: 2024
+  input:
+    filing_status: JOINT
+    ks_taxable_income: 3_000
+    ks_agi: 25_000
+    state_code: KS
+  output:
+    ks_income_tax_before_credits: 0

@@ -1,0 +1,84 @@
+# LADWP EZ Save electricity discount (gov/local/ca/la/dwp/ez_save).
+# Households with countable income <= 200% of FPG (household size floored at
+# 2) receive min(monthly electricity expense, $8.17) each month.
+- name: ca_la_ez_save_low_income_full_discount (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        immigration_status_str: CITIZEN
+        # $3,000/month vs monthly limits of 2 x FPG(2)/12: Jan-Jun (2025 FPG)
+        # 2 x 21,150/12 = 3,525; Jul-Dec (2026 FPG) 2 x 21,640/12 = 3,606.67.
+        employment_income_before_lsr: 36_000
+    households:
+      household:
+        members: &id001
+        - head
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+        in_la: true
+    spm_units:
+      spm_unit:
+        members: *id001
+        # $50/month electricity, above the $8.17 monthly discount cap.
+        pre_subsidy_electricity_expense: 600
+    tax_units:
+      tax_unit:
+        members: *id001
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id001
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    households:
+      household:
+        # 8.17 x 12 = 98.04.
+        ca_la_ez_save: 98.04
+        ca_la_ez_save_eligible: true
+- name: ca_la_ez_save_income_above_200pct_fpg (ca)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        immigration_status_str: CITIZEN
+        # $4,000/month exceeds both half-year limits (3,525 and 3,606.67).
+        employment_income_before_lsr: 48_000
+    households:
+      household:
+        members: &id002
+        - head
+        state_code: CA
+        zip_code: '90001'
+        county_str: LOS_ANGELES_COUNTY_CA
+        in_la: true
+    spm_units:
+      spm_unit:
+        members: *id002
+        pre_subsidy_electricity_expense: 600
+    tax_units:
+      tax_unit:
+        members: *id002
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: *id002
+    marital_units:
+      mu_head:
+        members:
+        - head
+  output:
+    households:
+      household:
+        ca_la_ez_save: 0
+        ca_la_ez_save_eligible: false

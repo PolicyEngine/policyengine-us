@@ -186,3 +186,33 @@
     # Even with hugely negative income, OSS is capped at max.
     # Max OSS (Redesign, I) = $184.40/month.
     fl_oss: [184.40]
+
+- name: Case 8, matches manual 2640.0131.04 single-individual computation.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        fl_oss_community_care_type: ALF
+        fl_oss_program_track: REDESIGN
+        age: 70
+        is_ssi_eligible: true
+        ssi_claim_is_joint: false
+        uncapped_ssi: 1  # > 0 -> Group 1 (receives SSI)
+        # $1,050/month countable income = $12,600/year.
+        ssi_countable_income: 12_600
+    households:
+      household:
+        members: [person1]
+        state_code: FL
+  output:
+    # Hand-worked per DCF ESS Program Policy Manual 2640.0131.04:
+    #   Recognized cost of care (Redesign provider rate, Jan 2025) = $991.40.
+    #   Personal needs allowance = $160.
+    #   Step 1: income available for cost of care = income - PNA
+    #           = $1,050 - $160 = $890.
+    #   Step 2: deficit = cost of care - available = $991.40 - $890 = $101.40.
+    #   Deficit ($101.40) is below the Max OSS Payment ($184.40), so it is not
+    #   capped. This equals PE's (provider_rate + PNA) - countable_income
+    #   = ($991.40 + $160) - $1,050 = $101.40.
+    fl_oss: [101.40]

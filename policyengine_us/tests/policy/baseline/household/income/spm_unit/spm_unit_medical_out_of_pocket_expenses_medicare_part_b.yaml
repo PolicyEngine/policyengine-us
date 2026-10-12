@@ -43,3 +43,55 @@
   output:
     spm_unit_health_insurance_premiums: 5_528
     spm_unit_medical_out_of_pocket_expenses: 5_528
+
+- name: SPM unit MOOP includes paid Part A premium and Part D IRMAA.
+  period: 2026
+  input:
+    people:
+      retiree:
+        age: 70
+        medicare_enrolled: true
+        other_health_insurance_premiums: 500
+        base_part_a_premium: 6_780
+        msp_part_a_premium_coverage: 0
+        medicare_part_b_premium: 4_654.80
+        income_adjusted_part_d_premium_surcharge: 423.60
+    tax_units:
+      tax_unit:
+        members: [retiree]
+    spm_units:
+      spm_unit:
+        members: [retiree]
+    households:
+      household:
+        members: [retiree]
+        state_code: CA
+  output:
+    medicare_part_a_premium: 6_780
+    spm_unit_health_insurance_premiums: 12_358.40
+    spm_unit_medical_out_of_pocket_expenses: 12_358.40
+
+- name: SPM unit MOOP excludes QMB-covered Part A premium.
+  period: 2026
+  input:
+    people:
+      retiree:
+        age: 70
+        medicare_enrolled: true
+        base_part_a_premium: 6_780
+        msp_part_a_premium_coverage: 6_780
+        medicare_part_b_premium: 2_434.80
+    tax_units:
+      tax_unit:
+        members: [retiree]
+    spm_units:
+      spm_unit:
+        members: [retiree]
+    households:
+      household:
+        members: [retiree]
+        state_code: CA
+  output:
+    medicare_part_a_premium: 0
+    spm_unit_health_insurance_premiums: 2_434.80
+    spm_unit_medical_out_of_pocket_expenses: 2_434.80

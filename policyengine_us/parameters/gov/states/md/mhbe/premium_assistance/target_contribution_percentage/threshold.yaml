@@ -1,0 +1,26 @@
+description: Maryland sets the federal poverty line thresholds for the target contribution percentage brackets under the State-Based Health Insurance Subsidies Program.
+values:
+  0000-01-01:
+    - 0       # program not in effect before 2026
+    - 0
+    - 0
+    - 0
+    - 0
+    - 0
+  2026-01-01:
+    - 0
+    - 1.5
+    - 2
+    - 2.5
+    - 3
+    - 4
+
+metadata:
+  unit: /1
+  period: year
+  label: Maryland Premium Assistance target contribution percentage bracket thresholds
+  reference:
+    - title: COMAR 14.35.21.04B-C (State-Based Subsidies; basis of calculation)
+      href: https://regs.maryland.gov/us/md/exec/comar/14.35.21
+    - title: HGO Combined MHBE and MIA briefing to HGO and Finance (10-16-2025), state subsidy design table
+      href: https://mgaleg.maryland.gov/meeting_material/2025/hgo%20-%20134051066649659653%20-%20Combined%20MHBE.MIA%20slides_10.16.2025%20briefing%20to%20HGO&Finance.pdf#page=58

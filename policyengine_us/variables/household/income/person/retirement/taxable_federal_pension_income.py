@@ -7,3 +7,4 @@ class taxable_federal_pension_income(Variable):
     label = "Taxable federal pension income"
     unit = USD
     definition_period = YEAR
+    uprating = "calibration.gov.irs.soi.taxable_pension_income"

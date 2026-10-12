@@ -1,0 +1,125 @@
+# Tests for ut_ccap_age_group (Person, MONTH, Enum).
+# Table 3 (effective October 1, 2024) age bands: 0 to <24 months, 2 years
+# old, 3 years old, 4 years old, 5 years old, and 6 to <13 years old.
+# Special needs children ages 13 to 17 (eligible under R986-700-702(5)(b))
+# fall in the school age band since the table publishes no band above 12.
+
+- name: Case 1, newborn, under two.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 0
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_age_group: UNDER_TWO
+
+- name: Case 2, 23 months, still under two.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 1.9  # 23 months, below the 24-month cutoff
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_age_group: UNDER_TWO
+
+- name: Case 3, exactly age 2, two year old band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 2
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_age_group: TWO_YEAR_OLD
+
+- name: Case 4, age 3, three year old band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 3
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_age_group: THREE_YEAR_OLD
+
+- name: Case 5, age 4, four year old band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 4
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_age_group: FOUR_YEAR_OLD
+
+- name: Case 6, age 5, five year old band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 5
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_age_group: FIVE_YEAR_OLD
+
+- name: Case 7, age 6, school age band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 6
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_age_group: SCHOOL_AGE
+
+- name: Case 8, age 12, still school age.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 12
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    ut_ccap_age_group: SCHOOL_AGE
+
+- name: Case 9, disabled 15-year-old, school age band.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 15
+        is_disabled: true  # special needs child, eligible under age 18
+    households:
+      household:
+        members: [person1]
+        state_code: UT
+  output:
+    # Table 3 publishes no band above age 12; special needs children ages
+    # 13 to 17 fall in the school age band.
+    ut_ccap_age_group: SCHOOL_AGE

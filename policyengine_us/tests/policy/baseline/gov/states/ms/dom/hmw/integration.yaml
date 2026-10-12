@@ -1,0 +1,119 @@
+- name: Case 1, disabled non-Medicare adult above standard ABD resource limit qualifies through HMW.
+  period: 2026
+  input:
+    age: 45
+    state_code: MS
+    is_ssi_disabled: true
+    is_pregnant: false
+    is_in_medicaid_facility: false
+    medicaid_optional_senior_or_disabled_countable_income: 21_546
+    ssi_countable_resources: 3_999
+  output:
+    ms_hmw_eligible: true
+    medicaid_category: HEALTHIER_MISSISSIPPI_WAIVER
+    is_medicaid_eligible: true
+    medicaid_group: AGED_DISABLED
+
+- name: Case 2, individual at the resource limit does not qualify through HMW.
+  period: 2026
+  input:
+    age: 45
+    state_code: MS
+    is_ssi_disabled: true
+    is_pregnant: false
+    is_in_medicaid_facility: false
+    medicaid_optional_senior_or_disabled_countable_income: 21_546
+    ssi_countable_resources: 4_000
+  output:
+    ms_hmw_eligible: false
+
+- name: Case 3, income above 135 percent of poverty does not qualify through HMW.
+  period: 2026
+  input:
+    age: 45
+    state_code: MS
+    is_ssi_disabled: true
+    is_pregnant: false
+    is_in_medicaid_facility: false
+    medicaid_optional_senior_or_disabled_countable_income: 21_547
+    ssi_countable_resources: 3_999
+  output:
+    ms_hmw_eligible: false
+
+- name: Case 4, Medicare-eligible person does not qualify through HMW.
+  period: 2026
+  input:
+    age: 67
+    state_code: MS
+    is_ssi_disabled: true
+    is_pregnant: false
+    is_in_medicaid_facility: false
+    medicaid_optional_senior_or_disabled_countable_income: 13_500
+    ssi_countable_resources: 3_999
+  output:
+    ms_hmw_eligible: false
+
+- name: Case 5, Medicare-eligible senior still fails HMW when not enrolled.
+  period: 2026
+  input:
+    age: 67
+    state_code: MS
+    takes_up_medicare_if_eligible: false
+    is_pregnant: false
+    is_in_medicaid_facility: false
+    medicaid_optional_senior_or_disabled_countable_income: 13_500
+    ssi_countable_resources: 3_999
+  output:
+    ms_hmw_eligible: false
+
+- name: Case 6, pregnant disabled adult does not qualify through HMW.
+  period: 2026
+  input:
+    age: 45
+    state_code: MS
+    is_ssi_disabled: true
+    is_pregnant: true
+    is_in_medicaid_facility: false
+    medicaid_optional_senior_or_disabled_countable_income: 13_500
+    ssi_countable_resources: 3_999
+  output:
+    ms_hmw_eligible: false
+
+- name: Case 7, person eligible under standard optional ABD Medicaid does not use HMW.
+  period: 2026
+  input:
+    age: 45
+    state_code: MS
+    is_ssi_disabled: true
+    is_pregnant: false
+    is_in_medicaid_facility: false
+    medicaid_optional_senior_or_disabled_countable_income: 5_000
+    ssi_countable_resources: 1_500
+  output:
+    ms_hmw_eligible: false
+    ms_hmw_other_coverage_ineligible: false
+
+# Mississippi made no lawfully residing election under 42 USC 1396b(v)(4) or
+# 1397gg(e)(1)(Q), so an LPR child two years after entry is in the five-year
+# bar (8 USC 1613) for both Medicaid and separate CHIP. She is not otherwise
+# eligible for Medicaid or CHIP, so she meets the HMW category. Her status
+# still bars full Medicaid, leaving emergency Medicaid under 42 USC 1396b(v)(2).
+- name: Case 8, blind LPR child in the five-year bar fails CHIP and falls to HMW for emergency Medicaid.
+  period: 2025
+  input:
+    age: 10
+    state_code: MS
+    is_blind: true
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 2
+    social_security_survivors: 17_000
+    medicaid_income_level: 1.8
+    has_emergency_medical_condition: true
+  output:
+    is_chip_immigration_status_eligible: false
+    is_chip_eligible_child: false
+    ms_hmw_other_coverage_ineligible: true
+    ms_hmw_eligible: true
+    medicaid_category: HEALTHIER_MISSISSIPPI_WAIVER
+    is_medicaid_eligible: false
+    is_emergency_medicaid_eligible: true

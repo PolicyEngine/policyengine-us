@@ -1,0 +1,53 @@
+description: Utah counts these unearned income sources as countable income under the Child Care Assistance program.
+
+# R986-700-710(2)(a) determines what is counted as income under rule
+# R986-200. Countable unearned income includes pensions and annuities such
+# as Social Security, Railroad Retirement, and Civil Service
+# (R986-200-235(2)(a)), disability benefits such as workers' compensation
+# (R986-200-235(2)(b)), unemployment insurance (R986-200-235(2)(c)), VA
+# allotments and GI Bill income (R986-200-235(2)(e)-(f)), payments of
+# interest from stocks, bonds, savings, loans, insurance, a sales
+# contract, or mortgage (R986-200-235(2)(i)), and rental income managed by
+# another individual or company (R986-200-235(2)(n); owner-managed rental
+# income is earned under R986-200-236(2)(g), a distinction PolicyEngine's
+# single rental income variable cannot draw). Alimony received is income
+# for which no service is performed (R986-200-235(1)); R986-700-710(5)(b)
+# contemplates it by deducting alimony paid out. Child support paid
+# directly to the client is counted as unearned income of the child
+# (R986-700-710(4)(d)(i)). Only the income of the eligible child's
+# parent(s) and children is counted (R986-700-710(4)(a)); the member
+# scoping is applied in the gross income formula.
+#
+# Exclusions handled outside this list:
+#   - The SSI benefit of an SSI recipient is not counted
+#     (R986-700-710(4)(e)), so ssi is omitted here.
+#   - Independent living grants paid by DHHS to a minor parent are not
+#     counted (R986-700-710(4)(g)); no PolicyEngine income variable
+#     exists.
+#   - Family Employment Program (FEP) cash assistance is omitted to avoid
+#     the child care to Temporary Assistance for Needy Families circular
+#     dependency through the dependent care deduction; FEP recipients
+#     receive FEP CC rather than Employment Support CC (R986-700-708).
+values:
+  2020-01-01:
+    - social_security
+    - pension_income
+    - unemployment_compensation
+    - workers_compensation
+    - veterans_benefits
+    - rental_income
+    - interest_income
+    - alimony_income
+    - child_support_received
+
+metadata:
+  unit: list
+  period: year
+  label: Utah CCAP countable unearned income sources
+  reference:
+    - title: Utah Admin. Code R986-700-710(4)
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-700-710
+    - title: Utah Admin. Code R986-200-235(2)
+      href: https://www.law.cornell.edu/regulations/utah/Utah-Admin-Code-R986-200-235
+    - title: Utah DWS Office of Child Care subsidy fact sheet (OCC_2_09/24/25)
+      href: https://jobs.utah.gov/customereducation/services/childcare/occsubsidyfact.pdf#page=2

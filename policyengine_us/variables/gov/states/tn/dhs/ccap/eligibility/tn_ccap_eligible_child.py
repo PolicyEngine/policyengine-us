@@ -1,0 +1,30 @@
+from policyengine_us.model_api import *
+
+
+class tn_ccap_eligible_child(Variable):
+    value_type = bool
+    entity = Person
+    label = "Eligible child for Tennessee CCAP"
+    definition_period = MONTH
+    defined_for = StateCode.TN
+    reference = (
+        "https://www.tn.gov/content/dam/tn/human-services/documents/CCDF%20State%20Plan%20FFY%202025-2027%20Tennessee.pdf#page=23",
+        "https://www.tn.gov/content/dam/tn/human-services/documents/CCDF%20State%20Plan%20FFY%202025-2027%20Tennessee.pdf#page=24",
+    )
+
+    def formula(person, period, parameters):
+        p = parameters(period).gov.states.tn.dhs.ccap.eligibility
+        age = person("age", period.this_year)
+        is_disabled = person("is_disabled", period.this_year)
+        # State Plan 2.2.1(b)-(c) sets the upper age at 18 for both
+        # incapacity and court supervision: children qualify through age 18.
+        under_court_supervision = person("is_under_court_supervision", period.this_year)
+        age_eligible = where(
+            is_disabled | under_court_supervision,
+            age <= p.special_needs_age_limit,
+            age < p.child_age_limit,
+        )
+        immigration_eligible = person(
+            "is_ccdf_immigration_eligible_child", period.this_year
+        )
+        return age_eligible & immigration_eligible

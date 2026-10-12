@@ -1,0 +1,38 @@
+description: Arkansas sets these age thresholds in months for age categories under the School Readiness Assistance program.
+# Boundaries follow the 2020 AR Min Licensing Requirements for Child Care Centers
+# (Infant Center: birth to 18 months; Toddler Center: 18 to 36 months; School-Age
+# Care: kindergarten and above per Ark. Code 6-18-207, age 5 by Aug 1 of the
+# school year). Preschool fills the gap (36-71 months); the school-aged 72-month
+# boundary uses typical kindergarten entry rather than the strict 60-month minimum.
+
+brackets:
+  - threshold:
+      2025-10-01: 0
+    amount:
+      2025-10-01: 0  # INFANT (0-17 months)
+  - threshold:
+      2025-10-01: 18
+    amount:
+      2025-10-01: 1  # TODDLER (18-35 months)
+  - threshold:
+      2025-10-01: 36
+    amount:
+      2025-10-01: 2  # PRESCHOOL (36-71 months)
+  - threshold:
+      2025-10-01: 72
+    amount:
+      2025-10-01: 3  # SCHOOL_AGED (72+ months)
+
+metadata:
+  type: single_amount
+  threshold_unit: month
+  amount_unit: /1
+  period: year
+  label: Arkansas SRA age category month thresholds
+  reference:
+    - title: SRA Sliding Fee Scale with Rates and Copays - Statewide Full Time (Nov 1, 2025) - age category labels
+      href: https://dese.ade.arkansas.gov/Files/SRA_Sliding_Fee_Scale_with_Rates_&_Copays--Statewide_Full_Time_20251101_OEC.pdf
+    - title: AR Minimum Licensing Requirements for Child Care Centers (DCCECE, 2020) - Infant Center (item 13), Toddler Center (item 21), School Age Care (item 22)
+      href: https://humanservices.arkansas.gov/wp-content/uploads/2020-Child-Care-centers.pdf#page=45
+    - title: Arkansas Code Annotated § 6-18-207 (Compulsory school age, kindergarten by Aug 1)
+      href: https://law.justia.com/codes/arkansas/title-6/subtitle-2/chapter-18/subchapter-2/section-6-18-207/

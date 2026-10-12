@@ -1,0 +1,22 @@
+description: Counties in Wisconsin with an approved USDA FNS waiver of the SNAP ABAWD time limit.
+
+values:
+  2018-01-01: []
+  2024-10-01:
+    - ADAMS_COUNTY_WI # FIPS 55001
+    - BAYFIELD_COUNTY_WI # FIPS 55007
+    - DOUGLAS_COUNTY_WI # FIPS 55031
+    - FLORENCE_COUNTY_WI # FIPS 55037
+    - FOREST_COUNTY_WI # FIPS 55041
+    - IRON_COUNTY_WI # FIPS 55051
+    - MARQUETTE_COUNTY_WI # FIPS 55077
+    - MENOMINEE_COUNTY_WI # FIPS 55078
+  2025-10-01: []
+
+metadata:
+  unit: list
+  period: month
+  label: SNAP ABAWD waived counties in Wisconsin
+  reference:
+    - title: USDA FNS Wisconsin FY 2025 ABAWD Waiver Response
+      href: https://www.fns.usda.gov/sites/default/files/resource-files/wi-abawd-response-fy2025.pdf

@@ -7,3 +7,4 @@ class cooking_fuel_expense(Variable):
     label = "Cooking fuel expense"
     unit = USD
     definition_period = YEAR
+    uprating = "gov.bls.cpi.cpi_u"

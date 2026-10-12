@@ -3,7 +3,20 @@ metadata:
   unit: list
   period: year
   label: Connecticut refundable credits
-
+  reference:
+    - title: House Bill No. 5506 Public Act No. 22-118 Sec. 411(b)(1)
+      href: https://cga.ct.gov/2022/ACT/PA/PDF/2022PA-00118-R00HB-05506-PA.PDF#page=548
+    - title: House Bill No. 5506 Public Act No. 22-118 Sec. 411(b)(4)
+      href: https://cga.ct.gov/2022/ACT/PA/PDF/2022PA-00118-R00HB-05506-PA.PDF#page=549
 values:
+  # The child tax rebate (PA 22-118 Sec. 411) is a refundable rebate keyed to the
+  # 2021 return, booked in the eligibility year like other prior-year rebates
+  # (cf. ri_child_tax_rebate, nm_2021_income_rebate). TSSB 2022-5 Q5 states the
+  # rebate "is not a credit"; booking it as a refundable credit follows the RI/NM
+  # convention and is the correct cash treatment (it raises household_net_income
+  # and does not touch SALT or ct_withheld_income_tax).
   2021-01-01:
+    - ct_eitc
+    - ct_child_tax_rebate
+  2022-01-01:
     - ct_eitc

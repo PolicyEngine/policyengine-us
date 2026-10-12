@@ -8,14 +8,14 @@ class ssi_couple_computation_applies(Variable):
     value_type = bool
     entity = Person
     label = "SSI couple computation applies"
-    definition_period = YEAR
+    definition_period = MONTH
     reference = (
         "https://www.law.cornell.edu/cfr/text/20/416.414",
         "https://secure.ssa.gov/poms.nsf/lnx/0500501154",
     )
 
     def formula(person, period, parameters):
-        joint_claim = person("ssi_claim_is_joint", period)
+        joint_claim = person("ssi_claim_is_joint", period.this_year)
 
         # 20 CFR 416.414(b)(2): Both in facility → couple computation
         # still applies ($60/month = $30 each).

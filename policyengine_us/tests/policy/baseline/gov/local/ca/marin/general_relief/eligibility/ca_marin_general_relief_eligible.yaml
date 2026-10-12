@@ -1,0 +1,177 @@
+# Top-level eligibility ANDs all sub-tests and excludes SSI recipients.
+# Immigration eligibility is the per-person check (head/spouse), aggregated with
+# any() inside the top-level formula, so it is provided on the person.
+- name: All requirements met is eligible
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ssi: 0
+        ca_marin_general_relief_immigration_status_eligible_person: true
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_marin_general_relief_age_eligible: true
+        ca_marin_general_relief_liquid_asset_eligible: true
+        ca_marin_general_relief_personal_property_eligible: true
+        ca_marin_general_relief_income_eligible: true
+  output:
+    ca_marin_general_relief_eligible: true
+
+- name: Age ineligible fails
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ssi: 0
+        ca_marin_general_relief_immigration_status_eligible_person: true
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_marin_general_relief_age_eligible: false
+        ca_marin_general_relief_liquid_asset_eligible: true
+        ca_marin_general_relief_personal_property_eligible: true
+        ca_marin_general_relief_income_eligible: true
+  output:
+    ca_marin_general_relief_eligible: false
+
+- name: Immigration ineligible fails
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ssi: 0
+        ca_marin_general_relief_immigration_status_eligible_person: false
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_marin_general_relief_age_eligible: true
+        ca_marin_general_relief_liquid_asset_eligible: true
+        ca_marin_general_relief_personal_property_eligible: true
+        ca_marin_general_relief_income_eligible: true
+  output:
+    ca_marin_general_relief_eligible: false
+
+- name: Liquid asset ineligible fails
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ssi: 0
+        ca_marin_general_relief_immigration_status_eligible_person: true
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_marin_general_relief_age_eligible: true
+        ca_marin_general_relief_liquid_asset_eligible: false
+        ca_marin_general_relief_personal_property_eligible: true
+        ca_marin_general_relief_income_eligible: true
+  output:
+    ca_marin_general_relief_eligible: false
+
+- name: Personal property ineligible fails
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ssi: 0
+        ca_marin_general_relief_immigration_status_eligible_person: true
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_marin_general_relief_age_eligible: true
+        ca_marin_general_relief_liquid_asset_eligible: true
+        ca_marin_general_relief_personal_property_eligible: false
+        ca_marin_general_relief_income_eligible: true
+  output:
+    ca_marin_general_relief_eligible: false
+
+- name: Income ineligible fails
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ssi: 0
+        ca_marin_general_relief_immigration_status_eligible_person: true
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_marin_general_relief_age_eligible: true
+        ca_marin_general_relief_liquid_asset_eligible: true
+        ca_marin_general_relief_personal_property_eligible: true
+        ca_marin_general_relief_income_eligible: false
+  output:
+    ca_marin_general_relief_eligible: false
+
+- name: SSI recipient is ineligible even when all sub-tests pass
+  period: 2026-01
+  input:
+    people:
+      person1:
+        ssi: 500
+        ca_marin_general_relief_immigration_status_eligible_person: true
+    households:
+      household:
+        members: [person1]
+        in_marin: true
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ca_marin_general_relief_age_eligible: true
+        ca_marin_general_relief_liquid_asset_eligible: true
+        ca_marin_general_relief_personal_property_eligible: true
+        ca_marin_general_relief_income_eligible: true
+  output:
+    ca_marin_general_relief_eligible: false
+
+- name: Unit with a dependent child is ineligible
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 40
+        ca_marin_general_relief_immigration_status_eligible_person: true
+      person2:
+        age: 5
+    households:
+      household:
+        members: [person1, person2]
+        in_marin: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        ca_marin_general_relief_age_eligible: true
+        ca_marin_general_relief_liquid_asset_eligible: true
+        ca_marin_general_relief_personal_property_eligible: true
+        ca_marin_general_relief_income_eligible: true
+  output:
+    # person2 is a dependent child (age 5, tax-unit dependent), so the unit is
+    # ineligible even though every other sub-check passes.
+    ca_marin_general_relief_eligible: false

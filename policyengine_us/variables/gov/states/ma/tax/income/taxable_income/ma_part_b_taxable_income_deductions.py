@@ -33,7 +33,7 @@ class ma_part_b_taxable_income_deductions(Variable):
         )
         fica = tax_unit.sum(fica_head) + tax_unit.sum(fica_spouse)
         # Bank interest deduction.
-        filing_status = tax_unit("filing_status", period)
+        filing_status = tax_unit("ma_filing_status", period)
         if tax.exemptions.interest.in_effect:
             bank_interest = add(tax_unit, period, ["taxable_interest_income"])
             bank_interest_deduction = min_(

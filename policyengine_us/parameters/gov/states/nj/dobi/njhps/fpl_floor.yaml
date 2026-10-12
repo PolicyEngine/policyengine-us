@@ -1,0 +1,16 @@
+description: New Jersey sets this share of the federal poverty line as the income eligibility floor under the New Jersey Health Plan Savings program.
+values:
+  # NJHPS covers households at or above 138% FPL, applied as a ">=" comparison.
+  # Households below 138% FPL are routed to NJ FamilyCare/Medicaid and do not
+  # qualify for NJHPS premium assistance.
+  2026-01-01: 1.38
+
+metadata:
+  unit: /1
+  period: year
+  label: New Jersey Health Plan Savings income floor as a share of the federal poverty line
+  reference:
+    - title: Treasury Office of Tax Analysis Section 1332 methodology addendum, Table 2 (Enhanced subsidy schedule, 138% FPL floor)
+      href: https://www.cms.gov/files/document/1332-ota-methodology-addendum-nj-pass-through.pdf#page=12
+    - title: Get Covered NJ - New Jersey Health Plan Savings
+      href: https://www.nj.gov/getcoverednj/financialhelp/premiums/

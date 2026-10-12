@@ -39,3 +39,18 @@
     state_code: MO
   output:
     mo_net_state_income_taxes: 6_666.67  # = 10_000 * 2/3
+
+# High earner whose federal SALT deduction has phased down to the $10,000
+# floor under OBBBA: the add-back must be limited to the SALT actually
+# deducted federally, not recomputed against the static $40,000 base cap.
+- name: state-income-tax add-back respects the OBBBA SALT cap phase-down
+  period: 2025
+  absolute_error_margin: 1
+  input:
+    people:
+      head: {age: 45, taxable_interest_income: 789_125.13, deductible_mortgage_interest: 50_000}
+      spouse: {age: 45}
+    tax_units: {tax_unit: {members: [head, spouse]}}
+    households: {household: {members: [head, spouse], state_code: MO}}
+  output:
+    mo_net_state_income_taxes: 10_000

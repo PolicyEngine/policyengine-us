@@ -6,4 +6,3 @@ class current_pregnancy_month(Variable):
     entity = Person
     label = "Current pregnancy month"
     definition_period = MONTH
-    defined_for = "is_pregnant"

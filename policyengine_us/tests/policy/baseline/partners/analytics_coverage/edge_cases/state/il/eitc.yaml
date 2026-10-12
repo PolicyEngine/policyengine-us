@@ -1,0 +1,114 @@
+# IL EITC — 20% federal match (2023+), with a state-specific expansion:
+# childless filers qualify from age 18 (35 ILCS 5/212, P.A. 102-0700)
+# versus the federal age-25 minimum.
+- name: il_eitc_childless_filer_phase_out (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 15_000
+    households:
+      household:
+        members: [head]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    tax_units:
+      tax_unit:
+        # 2026 federal childless EITC at $15,000 = $347.29 (phase-out);
+        # IL EITC = 20% x 347.29 = 69.46.
+        il_eitc: 69.46
+        adjusted_gross_income: 15_000.0
+- name: il_eitc_age_20_state_young_adult_expansion (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 20
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 15_000
+    households:
+      household:
+        members: [head]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    tax_units:
+      tax_unit:
+        # State-specific divergence: a 20-year-old childless worker gets no
+        # federal EITC (federal minimum age 25) but IL grants the credit from
+        # age 18: IL recomputes the EITC-like amount = $347.29 x 20% = 69.46.
+        eitc: 0.0
+        il_eitc: 69.46
+- name: il_eitc_childless_income_above_phase_out (il)
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 30
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        employment_income_before_lsr: 25_000
+    households:
+      household:
+        members: [head]
+        state_code: IL
+        zip_code: '60601'
+        county_str: COOK_COUNTY_IL
+    spm_units:
+      spm_unit:
+        members: [head]
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_is_joint: false
+    families:
+      family:
+        members: [head]
+    marital_units:
+      mu_head:
+        members: [head]
+  output:
+    tax_units:
+      tax_unit:
+        # Income-route ineligible: $25,000 exceeds the 2026 childless single
+        # phase-out end (~$20,200), so the federal base and IL match are $0.
+        il_eitc: 0.0

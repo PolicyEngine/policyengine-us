@@ -1,6 +1,5 @@
 - name: Family of 4, no member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2022
-  absolute_error_margin: 0.01 # Floating point issue.
   input:
     people:
       person_1:
@@ -19,18 +18,18 @@
         snap_net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
         snap_excess_shelter_expense_deduction: 586 * 12
         housing_cost: 1700 * 12
-        has_usda_elderly_disabled: false
+        has_snap_elderly_disabled_member: false
         members: [person_1, person_2, person_3, person_4]
         snap_net_income: 833 * 12
     households:
       household:
         state_group: CONTIGUOUS_US
   output:
-    snap_expected_contribution: (833 * 0.3) * 12
+    # 30% of the $833 rounded net income is $249.90, rounded up to $250.
+    snap_expected_contribution: 250 * 12
 
 - name: Family of 4, member(s) with disabilities, income of 24k/year (Standard Test)
   period: 2022
-  absolute_error_margin: 0.01 # Floating point issue.
   input:
     people:
       person_1:
@@ -50,11 +49,13 @@
         snap_net_income_pre_shelter: (2000 - (2000 * 0.2) - 181) * 12
         snap_excess_shelter_expense_deduction: (1700 - (1419 * 0.5)) * 12
         housing_cost: 1700 * 12
-        has_usda_elderly_disabled: true
+        has_snap_elderly_disabled_member: true
         members: [person_1, person_2, person_3, person_4]
         snap_net_income: 428.5 * 12
     households:
       household:
         state_group: CONTIGUOUS_US
   output:
-    snap_expected_contribution: (428 * 0.3) * 12 # Net income is rounded down each month
+    # Net income of $428.50 rounds half-up to $429 each month; 30% is
+    # $128.70, rounded up to $129.
+    snap_expected_contribution: 129 * 12
