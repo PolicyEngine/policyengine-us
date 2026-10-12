@@ -33,21 +33,12 @@ class ssi_federal_living_arrangement(Variable):
             "ssi_lives_in_medical_treatment_facility", period
         ) & person("ssi_medicaid_pays_majority_of_care", period)
 
-        # 20 CFR § 416.1165: Child under 18 with ineligible parent
-        # in the tax unit. Under-22 students are excluded because
-        # is_ssi_ineligible_parent keys off is_child (age < 18);
-        # extending to under-22 students requires updating the
-        # deeming framework.
-        has_ineligible_parent = (
-            person.tax_unit.sum(
-                person.tax_unit.members("is_ssi_ineligible_parent", period)
-            )
-            > 0
-        )
-        is_child_in_parental = (
-            ~is_medical_facility
-            & person("is_child", period.this_year)
-            & has_ineligible_parent
+        # 20 CFR § 416.1165: an eligible child under 18 who lives with an
+        # ineligible parent, so that parental deeming applies. Deeming ends
+        # in the month after the child turns 18 (416.1165(g)(7)), so
+        # under-22 students are not included.
+        is_child_in_parental = ~is_medical_facility & person(
+            "is_ssi_income_deeming_child", period.this_year
         )
 
         # 20 CFR § 416.1131–1133: In another person's household

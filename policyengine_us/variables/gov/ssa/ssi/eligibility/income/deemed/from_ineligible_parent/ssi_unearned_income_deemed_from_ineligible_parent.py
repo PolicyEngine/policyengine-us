@@ -2,71 +2,55 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
+from policyengine_us.variables.gov.ssa.ssi.eligibility.income.deemed.from_ineligible_parent._ssi_parental_deeming import (
+    ssi_ineligible_parents,
+    ssi_parental_deeming_children,
+    ssi_parental_income,
+)
 
 
 class ssi_unearned_income_deemed_from_ineligible_parent(Variable):
     value_type = float
     entity = Person
     label = "SSI unearned income (deemed from ineligible parent)"
+    documentation = (
+        "The income of this child's ineligible parents that SSI deems to "
+        "them, after the allocations for ineligible children and parents and "
+        "the general and earned income exclusions, divided equally among the "
+        "eligible children who share those parents."
+    )
     unit = USD
     definition_period = YEAR
-    reference = "https://www.law.cornell.edu/cfr/text/20/416.1165"
+    reference = (
+        "https://www.ecfr.gov/current/title-20/section-416.1165",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501320500",
+    )
 
     def formula(person, period, parameters):
-        eligible_child = person("is_ssi_aged_blind_disabled", period) & person(
-            "is_child", period
+        rows, ineligible, pool = ssi_ineligible_parents(person, period)
+        applies = person("is_ssi_income_deeming_child", period)
+        # 416.1165(a): the ineligible parents' income.
+        earned = ssi_parental_income(
+            person, period, "ssi_earned_income", rows, ineligible
         )
-        ineligible_parent = person("is_ssi_ineligible_parent", period)
-        tax_unit = person.tax_unit
-
-        prereduction_parental_earned_income = eligible_child * tax_unit.sum(
-            person("ssi_earned_income", period) * ineligible_parent
+        unearned = ssi_parental_income(
+            person, period, "ssi_unearned_income", rows, ineligible
         )
-        blind_disabled_working_student_income = person(
-            "ssi_blind_or_disabled_working_student_exclusion", period
-        )
-        parental_earned_income = max_(
-            prereduction_parental_earned_income - blind_disabled_working_student_income,
+        # 416.1165(b) and 416.1163(b)(3): allocations for ineligible children
+        # come out of unearned income first, then earned income (416.1165(h),
+        # Example 4).
+        child_allocations = person("ssi_parental_deeming_child_allocations", period)
+        remaining_child_allocations = max_(0, child_allocations - unearned)
+        unearned = max_(0, unearned - child_allocations)
+        earned = max_(0, earned - remaining_child_allocations)
+        # 416.1165(d)(1)-(3): the $20 and earned income exclusions, then the
+        # living allowance for the parents.
+        net = max_(
             0,
+            _apply_ssi_exclusions(earned, unearned, parameters, period)
+            - person("ssi_parental_deeming_parent_allocation", period),
         )
-
-        parental_unearned_income = eligible_child * tax_unit.sum(
-            person("ssi_unearned_income", period) * ineligible_parent
-        )
-
-        child_allocations = eligible_child * add(
-            tax_unit, period, ["ssi_ineligible_child_allocation"]
-        )
-        parental_allocations = eligible_child * add(
-            tax_unit, period, ["ssi_ineligible_parent_allocation"]
-        )
-
-        # To understand this ordering of operations, see Example 4 of
-        # https://www.law.cornell.edu/cfr/text/20/416.1165#h.
-
-        parental_unearned_income -= child_allocations
-        remaining_child_allocations = max_(0, -parental_unearned_income)
-        parental_unearned_income = max_(0, parental_unearned_income)
-        parental_earned_income = max_(
-            0, parental_earned_income - remaining_child_allocations
-        )
-
-        net_parental_deemed_income = _apply_ssi_exclusions(
-            parental_earned_income,
-            parental_unearned_income,
-            parameters,
-            period,
-        )
-
-        net_parental_deemed_income = max_(
-            0, net_parental_deemed_income - parental_allocations
-        )
-
-        count_eligible_children = tax_unit.sum(eligible_child)
-        # avoid array divide-by-zero warnings by not using where() function
-        # see the following GitHub issue for more details:
-        # https://github.com/PolicyEngine/policyengine-us/issues/2494
-        income = np.zeros_like(count_eligible_children)
-        mask = count_eligible_children > 0
-        income[mask] = net_parental_deemed_income[mask] / count_eligible_children[mask]
-        return income
+        # 416.1165(e)(2): divide equally among the eligible children who share
+        # these parents.
+        children = ssi_parental_deeming_children(pool, applies)
+        return where(applies, net / max_(1, children), 0)

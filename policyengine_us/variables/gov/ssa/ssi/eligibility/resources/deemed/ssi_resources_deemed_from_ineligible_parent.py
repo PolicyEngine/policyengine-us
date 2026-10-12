@@ -1,95 +1,19 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_established_spouse_indices,
+from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_parents import (
+    ssi_parental_deemors,
 )
-from policyengine_us.variables.household.demographic.person._parent_links import (
-    co_resident_parent_indices,
-    has_parent_ids,
-    unlinked_parent,
-)
-
-
-def _ssi_unlinked_parental_resource_pool(person, resources, parent, spouse):
-    """Return tax-unit/household proxy resources, count and exact pool keys.
-
-    The deemors are the child's co-resident tax-unit members who are unlinked
-    parents or a parent's spouse, and the spouse of each of those, wherever
-    that spouse files (416.1202(b)(1): a parent and the parent's spouse).
-    With no parent ids, is_parent cannot distinguish a grandparent or an
-    unrelated parent from the child's parent: this is a data limitation.
-    Keys hold every deemor's row, sorted, so children share a pool exactly
-    when they share a deemor set.
-    """
-    parent = parent | ((spouse >= 0) & parent[np.maximum(spouse, 0)])
-    group = person.tax_unit
-    indices = np.arange(person.count)
-    households = person.household.reference_entity.members_entity_id
-    tax_units = group.reference_entity.members_entity_id
-    positions = range(
-        int(np.max(group.reference_entity.members_position, initial=-1)) + 1
-    )
-
-    def deemors():
-        for position in positions:
-            member = group.value_nth_person(position, indices, default=-1)
-            safe = np.maximum(member, 0)
-            selected = (member >= 0) & (households[safe] == households) & parent[safe]
-            yield member, selected
-            # Members of this tax unit are scanned above; add spouses who
-            # file elsewhere. Each person has at most one spouse.
-            partner = np.where(selected, spouse[safe], -1)
-            outside = (partner >= 0) & (tax_units[np.maximum(partner, 0)] != tax_units)
-            yield partner, outside
-
-    count = np.zeros(person.count, dtype=int)
-    for _, selected in deemors():
-        count += selected
-    keys = np.full((person.count, max(4, int(np.max(count, initial=0)))), -1)
-    total = np.zeros(person.count)
-    filled = np.zeros(person.count, dtype=int)
-    for rows, selected in deemors():
-        keys[indices[selected], filled[selected]] = rows[selected]
-        total += np.where(selected, resources[np.maximum(rows, 0)], 0)
-        filled += selected
-    return total, count, keys
 
 
 def _ssi_parental_resource_pool(person, period, resources):
-    """Resolve relationships first and identify children sharing deemors.
+    """Total and count each child's parental deemors' resources.
 
-    416.1202(b)(1) includes named co-resident natural, adoptive or step
-    parents, wherever their tax units, and an established co-resident spouse
-    of each parent. Duplicate named/inferred parents count once. Without
-    ids, use only unlinked_parent in the tax-unit proxy, as the parent-link
-    contract requires. SI 01330.200 B divides the excess among children of
-    the same parent(s), so allocation groups are exact deemor sets rather
-    than tax units, including when linked and unlinked children share a set.
+    The deemors and pools come from ssi_parental_deemors: named co-resident
+    parents and their spouses, or the tax-unit proxy without ids.
     """
-    first, second = co_resident_parent_indices(person, period)
-    spouse = _ssi_established_spouse_indices(person, period, first, second)
-    total, count, keys = _ssi_unlinked_parental_resource_pool(
-        person, resources, unlinked_parent(person, period), spouse
-    )
-    linked = has_parent_ids(person, period)
-    if np.any(linked):
-        first_spouse = np.where(first >= 0, spouse[first], -1)
-        second_spouse = np.where(second >= 0, spouse[second], -1)
-        named = np.column_stack((first, second, first_spouse, second_spouse))
-        named.sort(axis=1)
-        # Deduplicate before sorting again to give every identical set the
-        # same key, independently of input parent slot or household order.
-        named[:, 1:] = np.where(named[:, 1:] == named[:, :-1], -1, named[:, 1:])
-        named.sort(axis=1)
-        linked_total = np.sum(np.where(named >= 0, resources[named], 0), axis=1)
-        linked_count = np.sum(named >= 0, axis=1)
-        total = np.where(linked, linked_total, total)
-        count = np.where(linked, linked_count, count)
-        keys[linked] = -1
-        keys[linked, :4] = named[linked]
-    # Sorted rows make equal deemor sets equal keys, linked or not.
-    keys.sort(axis=1)
-    _, pool = np.unique(keys, axis=0, return_inverse=True)
-    return total, count, pool
+    rows, pool = ssi_parental_deemors(person, period)
+    present = rows >= 0
+    total = np.sum(np.where(present, resources[np.maximum(rows, 0)], 0), axis=1)
+    return total, np.sum(present, axis=1), pool
 
 
 class ssi_resources_deemed_from_ineligible_parent(Variable):

@@ -85,3 +85,215 @@
     # the parents' living allowance (1,491 x 12 = 17,892, the couple SSI
     # federal benefit rate) -> 19,098, split equally -> 9,549 each.
     medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [9_549, 9_549, 0, 0]
+
+# DSS Manual 0805.020.15 Example #1 (2022 SSI maximums: $841 for one,
+# $1,261 for two). Mrs. Boulanger applies for MHDC for Marie; Jane has no
+# income.
+- name: Case 4, Missouri manual Example 1, the Boulangers.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mrs_boulanger:
+        age: 40
+        own_children_in_household: 2
+        ssi_unearned_income: 441 * 12
+        ssi_earned_income: 2_297 * 12
+      marie:
+        age: 12
+        is_ssi_disabled: true
+        ssi_unearned_income: 140 * 12
+      jane:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [mrs_boulanger, marie, jane]
+    marital_units:
+      mrs_boulanger_alone:
+        members: [mrs_boulanger]
+      marie_alone:
+        members: [marie]
+      jane_alone:
+        members: [jane]
+    households:
+      household:
+        members: [mrs_boulanger, marie, jane]
+        state_code: MO
+  output:
+    # $441 - $420 for Jane = $21; - $20 = $1. $2,297 - $65 = $2,232; half =
+    # $1,116; + $1 = $1,117; less $841 = $276 deemed to Marie.
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 3_312, 0]
+
+# DSS Manual 0805.020.15 Example #2 (2022). Cindy has $258 of OASDI;
+# Denise has no income.
+- name: Case 5, Missouri manual Example 2, the Johnsons.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mr_johnson:
+        age: 42
+        person_id: 1
+        ssi_unearned_income: 452 * 12
+      mrs_johnson:
+        age: 40
+        person_id: 2
+        ssi_earned_income: 2_382 * 12
+      kay:
+        age: 12
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+      cindy:
+        age: 10
+        person_id: 4
+        parent_1_id: 1
+        parent_2_id: 2
+        ssi_unearned_income: 258 * 12
+      denise:
+        age: 8
+        person_id: 5
+        parent_1_id: 1
+        parent_2_id: 2
+    tax_units:
+      tax_unit:
+        members: [mr_johnson, mrs_johnson, kay, cindy, denise]
+    marital_units:
+      parents:
+        members: [mr_johnson, mrs_johnson]
+      kay_alone:
+        members: [kay]
+      cindy_alone:
+        members: [cindy]
+      denise_alone:
+        members: [denise]
+    households:
+      household:
+        members: [mr_johnson, mrs_johnson, kay, cindy, denise]
+        state_code: MO
+  output:
+    # Allocations $162 + $420 = $582 exceed the $452 unearned income by $130.
+    # $2,382 - $130 = $2,252; - $20 - $65 = $2,167; half = $1,083.50, below
+    # the $1,261 allowance for two parents: nothing is deemed.
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 0, 0, 0, 0]
+
+# 0805.020.15: 'Do not deem the income of any other persons in the home,
+# including a stepparent.' The child's id names his mother; she is married
+# to his stepfather. Federal SSI deeming includes the stepparent
+# (20 CFR 416.1160(d)).
+- name: Case 6, Missouri deems the mother but not her husband when parent ids are set.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 10
+        is_ssi_disabled: true
+        person_id: 1
+        parent_1_id: 2
+        parent_2_id: 99
+      mother:
+        age: 35
+        person_id: 2
+        ssi_earned_income: 48_000
+      stepfather:
+        age: 38
+        person_id: 3
+        ssi_earned_income: 120_000
+    tax_units:
+      tax_unit:
+        members: [child, mother, stepfather]
+    marital_units:
+      child_alone:
+        members: [child]
+      couple:
+        members: [mother, stepfather]
+    households:
+      household:
+        members: [child, mother, stepfather]
+        state_code: MO
+  output:
+    # Mother only: ($4,000 - $20 - $65) / 2 = $1,957.50, less $994 =
+    # $963.50 a month.
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [11_562, 0, 0]
+    # SSI: ($14,000 - $85) / 2 = $6,957.50, less the $1,491 couple rate =
+    # $5,466.50 a month.
+    ssi_unearned_income_deemed_from_ineligible_parent: [65_598, 0, 0]
+
+- name: Case 7, the same family in the District of Columbia deems both as SSI does.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      child:
+        age: 10
+        is_ssi_disabled: true
+        person_id: 1
+        parent_1_id: 2
+        parent_2_id: 99
+      mother:
+        age: 35
+        person_id: 2
+        ssi_earned_income: 48_000
+      stepfather:
+        age: 38
+        person_id: 3
+        ssi_earned_income: 120_000
+    tax_units:
+      tax_unit:
+        members: [child, mother, stepfather]
+    marital_units:
+      child_alone:
+        members: [child]
+      couple:
+        members: [mother, stepfather]
+    households:
+      household:
+        members: [child, mother, stepfather]
+        state_code: DC
+  output:
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [65_598, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [65_598, 0, 0]
+
+# 0805.020.15 step 1 allocates for 'each minor child (under age 18) who is
+# living in the home and who is not applying for MA', not only siblings.
+# Federal SSI allocates only for the child's siblings (20 CFR 416.1160(d)).
+- name: Case 8, Missouri allocates for a cousin under 18 in the home.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 35
+        person_id: 1
+        ssi_earned_income: 3_000 * 12
+      child:
+        age: 8
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+      cousin:
+        age: 10
+        person_id: 3
+        parent_1_id: 50
+    tax_units:
+      tax_unit:
+        members: [mother, child, cousin]
+    marital_units:
+      mother_alone:
+        members: [mother]
+      child_alone:
+        members: [child]
+      cousin_alone:
+        members: [cousin]
+    households:
+      household:
+        members: [mother, child, cousin]
+        state_code: MO
+  output:
+    # $3,000 - $497 = $2,503; - $85 = $2,418; half = $1,209; less $994 =
+    # $215 a month.
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 2_580, 0]
+    # SSI: $3,000 - $85 = $2,915; half = $1,457.50; less $994 = $463.50.
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 5_562, 0]
