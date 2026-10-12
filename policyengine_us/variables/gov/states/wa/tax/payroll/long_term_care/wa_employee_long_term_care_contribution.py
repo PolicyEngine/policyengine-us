@@ -5,11 +5,21 @@ class wa_employee_long_term_care_contribution(Variable):
     value_type = float
     entity = Person
     label = "Washington employee long-term care contribution"
-    documentation = "Employee-side Washington WA Cares Fund contribution."
+    documentation = (
+        "Employee-side Washington WA Cares Fund contribution. Premiums began "
+        "July 1, 2023, so the annual rate averages the rate in effect in each "
+        "month, assuming wages accrue evenly over the year."
+    )
     definition_period = YEAR
     unit = USD
     defined_for = StateCode.WA
 
     def formula(person, period, parameters):
-        rate = parameters(period).gov.states.wa.tax.payroll.long_term_care.employee_rate
+        rate = (
+            sum(
+                parameters(month).gov.states.wa.tax.payroll.long_term_care.employee_rate
+                for month in period.get_subperiods(MONTH)
+            )
+            / MONTHS_IN_YEAR
+        )
         return rate * person("wa_long_term_care_taxable_wages", period)

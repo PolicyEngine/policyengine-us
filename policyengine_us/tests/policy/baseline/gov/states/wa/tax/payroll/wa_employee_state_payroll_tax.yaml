@@ -1,0 +1,84 @@
+# Washington Paid Family and Medical Leave premiums begin January 1, 2019
+# (Laws of 2017, 3rd sp.s., ch. 5, sec. 8). Total premium rate and employee
+# share by year (ESD Employer Toolkit v25.1, Historical premium rates; ESD
+# news release of October 25, 2023): 2021 0.4% x 63.33%, 2022 0.6% x 73.22%,
+# 2023 0.8% x 72.76%, 2024 0.74% x 71.43%, 2025 0.92% x 71.52%.
+# WA Cares premiums of 0.58% of wages begin July 1, 2023 (RCW 50B.04.080
+# (1)), so 2023 applies the rate to half of the year's wages.
+
+- name: Washington employee payroll tax in 2021 is Paid Leave only.
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: WA
+  output:
+    # 50,000 * 0.4% * 63.33% = 126.66
+    wa_employee_paid_leave_contribution: 126.66
+    # 50,000 * 0.4% * 36.67% = 73.34
+    wa_employer_paid_leave_contribution: 73.34
+    wa_employee_long_term_care_contribution: 0
+    wa_employee_state_payroll_tax: 126.66
+    employee_state_payroll_tax: 126.66
+
+- name: Washington employee payroll tax in 2022 is Paid Leave only.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: WA
+  output:
+    # 50,000 * 0.6% * 73.22% = 219.66
+    wa_employee_paid_leave_contribution: 219.66
+    # 50,000 * 0.6% * 26.78% = 80.34
+    wa_employer_paid_leave_contribution: 80.34
+    wa_employee_long_term_care_contribution: 0
+    wa_employee_state_payroll_tax: 219.66
+    employee_state_payroll_tax: 219.66
+
+- name: WA Cares premiums apply from July 1, 2023, half of the 2023 year.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: WA
+  output:
+    # 50,000 * 0.8% * 72.76% = 291.04
+    wa_employee_paid_leave_contribution: 291.04
+    # 50,000 * 0.8% * 27.24% = 108.96
+    wa_employer_paid_leave_contribution: 108.96
+    # 50,000 * 0.58% * 6 / 12 = 145
+    wa_employee_long_term_care_contribution: 145
+    wa_employee_state_payroll_tax: 436.04
+    employee_state_payroll_tax: 436.04
+
+- name: Washington Paid Leave and WA Cares in 2024.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: WA
+  output:
+    # 50,000 * 0.74% * 71.43% = 264.291
+    wa_employee_paid_leave_contribution: 264.291
+    # 50,000 * 0.74% * 28.57% = 105.709
+    wa_employer_paid_leave_contribution: 105.709
+    # 50,000 * 0.58% = 290
+    wa_employee_long_term_care_contribution: 290
+    wa_employee_state_payroll_tax: 554.291
+    employee_state_payroll_tax: 554.291
+
+- name: Washington Paid Leave and WA Cares in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 50_000
+    state_code: WA
+  output:
+    # 50,000 * 0.92% * 71.52% = 328.992
+    wa_employee_paid_leave_contribution: 328.992
+    # 50,000 * 0.92% * 28.48% = 131.008
+    wa_employer_paid_leave_contribution: 131.008
+    wa_employee_long_term_care_contribution: 290
+    wa_employee_state_payroll_tax: 618.992
+    employee_state_payroll_tax: 618.992
