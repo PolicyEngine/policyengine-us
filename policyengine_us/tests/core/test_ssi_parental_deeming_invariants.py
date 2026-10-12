@@ -87,7 +87,9 @@ CHILD = st.fixed_dictionaries(
         "unearned": st.sampled_from((0, 150, 600)),
         # About one in five lives in another household.
         "away": st.sampled_from((False, False, False, False, True)),
-        "tax_unit": st.sampled_from(("family", "father", "aunt", "grandparent", "own")),
+        "tax_unit": st.sampled_from(
+            ("family", "father", "stepparent", "aunt", "grandparent", "own")
+        ),
         "has_ids": st.booleans(),
     }
 )
@@ -160,6 +162,53 @@ def _blended(ids, stepmother, father_joins_family=False):
     )
 
 
+def _absent_stepparent(ids):
+    """The mother's husband lives elsewhere and files alone; his children
+    stay with her and her disabled daughter (POMS SI 00501.010 B.2.d)."""
+    return dict(
+        mother=_adult(earned=3_000),
+        father=_adult(),
+        father_status="absent",
+        stepparent=_adult(earned=2_000),
+        stepparent_files_separately=True,
+        stepparent_away=True,
+        stepmother=None,
+        aunt=None,
+        grandparent=None,
+        children=[
+            _child("maternal", disabled=True),
+            _child("step", age=9),
+            _child("step", age=6, tax_unit="stepparent"),
+            _child("half_step", age=3, unearned=150),
+        ],
+        ids=ids,
+        report_own_children=True,
+    )
+
+
+def _mixed_status():
+    """Two disabled sisters, one without qualifying immigration status: an
+    ineligible child for SSI, a sharer of the deemed income for Medicaid."""
+    return dict(
+        mother=_adult(earned=3_000, unearned=900),
+        father=_adult(),
+        father_status="absent",
+        stepparent=None,
+        stepparent_files_separately=False,
+        stepparent_away=False,
+        stepmother=None,
+        aunt=None,
+        grandparent=None,
+        children=[
+            _child("maternal", disabled=True),
+            _child("maternal", disabled=True, age=5, citizen=False),
+            _child("maternal", age=12),
+        ],
+        ids="all",
+        report_own_children=True,
+    )
+
+
 # Fixed households in every batch, so the rarer structures are always
 # exercised: three and four deemors, with and without ids.
 FIXED_HOUSEHOLDS = [
@@ -170,6 +219,13 @@ FIXED_HOUSEHOLDS = [
     # Without ids the proxy finds three deemors only when the father files
     # in the mother's tax unit.
     _blended("none", stepmother=False, father_joins_family=True),
+    # Each of these appears twice so that one copy lands in each state.
+    _absent_stepparent("all"),
+    _absent_stepparent("none"),
+    _absent_stepparent("none"),
+    _absent_stepparent("all"),
+    _mixed_status(),
+    _mixed_status(),
 ]
 BATCH = st.lists(
     HOUSEHOLD, min_size=HOUSEHOLDS_PER_EXAMPLE, max_size=HOUSEHOLDS_PER_EXAMPLE
