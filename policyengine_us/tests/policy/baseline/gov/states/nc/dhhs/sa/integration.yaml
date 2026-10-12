@@ -1,0 +1,139 @@
+- name: Case 1, two in home recipients.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        nc_sa_care_setting: IN_HOME
+      second:
+        age: 65
+        nc_sa_care_setting: IN_HOME
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: NC
+  output:
+    nc_sa:
+    - 722
+    - 722
+- name: Case 2, one in home recipient with spouse income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        nc_sa_care_setting: IN_HOME
+      second:
+        age: 65
+        social_security_retirement: 14400
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: NC
+  output:
+    nc_sa:
+    - 1312
+    - 0
+- name: Case 3, ineligible spouse income is not directly counted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        nc_sa_care_setting: IN_HOME
+      second:
+        age: 40
+        social_security_retirement: 60000
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: NC
+  output:
+    nc_sa:
+    - 1467
+    - 0
+- name: Case 4, annual in home benefit and SNAP income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME
+  output:
+    nc_sa: 5676
+    household_state_benefits: 5676
+    snap_unearned_income: 17604
+- name: Case 5, in home household reduction exception.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    nc_sa: 804
+- name: Case 6, individual facility budget restores the federal rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    nc_sa: 473
+- name: North Carolina in-home assistance counts for SNAP and is excluded for HUD
+  period: '2026'
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME
+  output:
+    nc_sa: 5676
+    snap_unearned_income: 17604
+    hud_unearned_income: 11928

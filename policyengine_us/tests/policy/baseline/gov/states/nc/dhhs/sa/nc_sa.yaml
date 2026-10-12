@@ -1,0 +1,360 @@
+- name: Case 1, basic facility with full SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    nc_sa: 473
+- name: Case 2, enhanced special care unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+  output:
+    nc_sa: 868
+- name: Case 3, basic in home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME
+  output:
+    nc_sa: 473
+- name: Case 4, enhanced in home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME_ENHANCED
+  output:
+    nc_sa: 868
+- name: Case 5, income above federal SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    social_security_retirement: 15600
+  output:
+    nc_sa: 187
+- name: Case 6, SSI and other income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    social_security_retirement: 12000
+  output:
+    nc_sa: 473
+- name: Case 7, earned income with SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    employment_income: 7200
+  output:
+    nc_sa: 473
+- name: Case 8, basic half dollar rounds up.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_countable_income: 1466.5
+  output:
+    nc_sa: 1
+- name: Case 9, basic forty nine cents rounds down.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_countable_income: 1466.51
+  output:
+    nc_sa: 0
+- name: Case 10, enhanced half dollar rounds up.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+    nc_sa_countable_income: 1861.5
+  output:
+    nc_sa: 1
+- name: Case 11, enhanced forty nine cents rounds down.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+    nc_sa_countable_income: 1861.51
+  output:
+    nc_sa: 0
+- name: Case 12, lower contracted facility rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_facility_rate: 1000
+  output:
+    nc_sa: 76
+- name: Case 13, no qualifying care setting.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: NONE
+  output:
+    nc_sa: 0
+- name: Case 14, out of state.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    nc_sa: 0
+- name: Case 15, disabled child is not eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 17
+    nc_sa_care_setting: ADULT_CARE_HOME
+    meets_ssi_disability_criteria: true
+  output:
+    nc_sa: 0
+- name: Case 16, blind child in certified specialized center.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 17
+    nc_sa_care_setting: ADULT_CARE_HOME
+    is_blind: true
+  output:
+    nc_sa: 473
+- name: Case 17, blind child cannot receive in home program.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 17
+    nc_sa_care_setting: IN_HOME
+    is_blind: true
+  output:
+    nc_sa: 0
+- name: Case 18, adult disabled applicant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 18
+    nc_sa_care_setting: ADULT_CARE_HOME
+    meets_ssi_disability_criteria: true
+  output:
+    nc_sa: 473
+- name: Case 19, not aged blind disabled.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 64
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    nc_sa: 0
+- name: Case 20, resource boundary.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    ssi_countable_resources: 2000
+  output:
+    nc_sa: 473
+- name: Case 21, excess resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    ssi_countable_resources: 2001
+  output:
+    nc_sa: 0
+- name: Case 22, first month twenty seven days ignores income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_days_eligible: 27
+    social_security_retirement: 15600
+  output:
+    nc_sa: 1287
+- name: Case 23, first month twenty days in home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME
+    nc_sa_days_eligible: 20
+  output:
+    nc_sa: 971
+- name: Case 24, first month fourteen days enhanced in home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: IN_HOME_ENHANCED
+    nc_sa_days_eligible: 14
+  output:
+    nc_sa: 879
+- name: Case 25, zero days.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_days_eligible: 0
+  output:
+    nc_sa: 0
+- name: Case 26, SSI opt out.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    nc_sa_care_setting: ADULT_CARE_HOME
+    takes_up_ssi_if_eligible: false
+  output:
+    nc_sa: 0
+
+# SA-3220 II.E and IV.A: strict countable-income ceilings apply before initial-month payment.
+# Gross monthly Social Security less the $20 disregard gives the tested limits.
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=207
+- name: Case 27, income-ineligible basic entrant receives no partial-month grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    social_security_retirement: 36000
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_days_eligible: 15
+  output:
+    nc_sa: 0
+- name: Case 28, income-ineligible basic entrant receives no full-month grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    social_security_retirement: 36000
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_days_eligible: 31
+  output:
+    nc_sa: 0
+- name: Case 29, basic last eligible cent retains the partial-month grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    social_security_retirement: 17838
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_days_eligible: 15
+  output:
+    nc_sa: 746
+- name: Case 30, basic exact exclusive income limit prevents partial payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    social_security_retirement: 17838.12
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_days_eligible: 15
+  output:
+    nc_sa: 0
+- name: Case 31, enhanced last eligible cent retains the partial-month grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    social_security_retirement: 22578
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+    nc_sa_days_eligible: 15
+  output:
+    nc_sa: 937
+- name: Case 32, enhanced exact exclusive income limit prevents partial payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    social_security_retirement: 22578.12
+    nc_sa_care_setting: SPECIAL_CARE_UNIT
+    nc_sa_days_eligible: 15
+  output:
+    nc_sa: 0
+- name: Case 33, enhanced in-home exact income limit also prevents partial payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    social_security_retirement: 22578.12
+    nc_sa_care_setting: IN_HOME_ENHANCED
+    nc_sa_days_eligible: 15
+  output:
+    nc_sa: 0
+- name: Case 34, last eligible cent yields one dollar for a full basic month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    social_security_retirement: 17838
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_days_eligible: 31
+  output:
+    nc_sa: 1
+
+# The earned-income exclusion halves the remaining amount; preserve fractional cents.
+# Monthly earnings 3018.01 less 20 and 65, divided by 2, give 1466.505 < 1466.51.
+- name: Case 35, a half-cent countable earned-income amount below the limit remains eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    employment_income: 36216.12
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_days_eligible: 15
+  output:
+    nc_sa: 746

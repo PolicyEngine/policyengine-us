@@ -1090,6 +1090,18 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: NC
+        status: partial
+        name: North Carolina SA
+        full_name: North Carolina State and County Special Assistance
+        variable: nc_sa
+        parameter_prefix: gov.states.nc.dhhs.sa
+        verified_years: '2026'
+        notes: Models basic and enhanced facility and in-home payments, lower contracted rates
+          and first-month proration. Certified settings include the residency waiting period,
+          approved care, and benefit-pursuit conditions. Separate SSI claims, agency income adjustments,
+          specialized exclusions and discharge settlements require explicit inputs or further
+          implementation.
 
   - id: social_security
     name: Social Security
