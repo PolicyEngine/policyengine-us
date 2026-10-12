@@ -615,6 +615,11 @@ def adjust_home_equity_limit_for_inflation(
     return float(thousands * 1_000)
 
 
+# P.L. 119-21 section 71108(c): the $1,000,000 cap on non-agricultural homes
+# applies beginning January 1, 2028.
+HOME_EQUITY_NON_AGRICULTURAL_CAP_START_YEAR = 2028
+
+
 def extend_medicaid_home_equity_limits(
     parameters: ParameterNode, end_year: int
 ) -> None:
@@ -625,10 +630,10 @@ def extend_medicaid_home_equity_limits(
     CPI-U percentage (see ``get_cms_cpi_u_percentage_increase``), rounded to
     the nearest $1,000, effective January 1. Before P.L. 119-21 section 71108
     caps other homes at $1,000,000 beginning in 2028, the agricultural and
-    non-agricultural limits are the same indexed maximum. So the
-    non-agricultural limit takes the agricultural projection for each year
-    between its last published value and its final value, the statutory
-    cap. Amounts encoded in the YAML take precedence for their own years.
+    non-agricultural limits are the same indexed maximum, so each year before
+    the cap with no non-agricultural value in the YAML takes the agricultural
+    projection. Amounts encoded in the YAML take precedence for their own
+    years.
 
     Like the other projections in this module, the values are fixed when the
     parameter tree is built.
@@ -652,13 +657,17 @@ def extend_medicaid_home_equity_limits(
         value=agricultural(f"{end_year}-01-01"),
     )
     non_agricultural = home_equity.limit
-    years = sorted(int(value.instant_str[:4]) for value in non_agricultural.values_list)
-    cap_year, last_published_year = years[-1], years[-2]
-    for year in range(last_published_year + 1, cap_year):
-        non_agricultural.update(
-            period=f"year:{year}-01-01:1",
-            value=agricultural(f"{year}-01-01"),
-        )
+    encoded_years = {
+        int(value.instant_str[:4]) for value in non_agricultural.values_list
+    }
+    for year in range(
+        first_projected_year, HOME_EQUITY_NON_AGRICULTURAL_CAP_START_YEAR
+    ):
+        if year not in encoded_years:
+            non_agricultural.update(
+                period=f"year:{year}-01-01:1",
+                value=agricultural(f"{year}-01-01"),
+            )
 
 
 def extend_wa_millionaires_standard_deduction(

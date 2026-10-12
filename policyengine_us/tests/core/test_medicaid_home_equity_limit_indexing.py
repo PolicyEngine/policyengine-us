@@ -10,8 +10,11 @@ Published figures (CMS SSI and spousal impoverishment bulletins, chart page):
 2025 cib05282025 p.2, 2026 cib04272026 p.2.
 """
 
+from types import SimpleNamespace
+
 import pytest
 
+from policyengine_us import Simulation
 from policyengine_us.parameters.uprating_extensions import (
     adjust_home_equity_limit_for_inflation,
     get_cms_cpi_u_percentage_increase,
@@ -52,11 +55,24 @@ def test_year_to_year_increases_reproduce_cms_limits(start, end, bound):
     assert limit == PUBLISHED_LIMITS[end][bound]
 
 
-def test_a_falling_index_is_not_an_increase():
-    # The not seasonally adjusted CPI-U fell from September 2014 to
-    # September 2015.
-    assert CPI.cpi_u("2015-09-01") < CPI.cpi_u("2014-09-01")
-    assert get_cms_cpi_u_percentage_increase(CPI, 2016) == 0
+class _Series:
+    """A minimal stand-in for a dated CPI parameter."""
+
+    def __init__(self, values):
+        self.values = values
+        self.values_list = [SimpleNamespace(instant_str=date) for date in values]
+
+    def __call__(self, date):
+        return self.values[date]
+
+
+@pytest.mark.parametrize("current, percentage", [(99.0, 0), (101.0, 1.0)])
+def test_a_falling_index_is_not_an_increase(current, percentage):
+    cpi = SimpleNamespace(
+        cpi_u_nsa_september=_Series({"2030-09-01": 100.0, "2031-09-01": current}),
+        cpi_u=None,
+    )
+    assert get_cms_cpi_u_percentage_increase(cpi, 2032) == percentage
 
 
 def test_published_limits_are_parameter_values():
@@ -86,3 +102,29 @@ def test_non_agricultural_limit_is_the_indexed_maximum_until_the_2028_cap():
     for year in range(2028, 2041):
         assert HOME_EQUITY.limit(f"{year}-01-01") == 1_000_000
         assert HOME_EQUITY.agricultural_limit(f"{year}-01-01") > 1_000_000
+
+
+def test_chassis_screen_reads_each_years_agricultural_limit():
+    # The projected limits move with the CPI-U forecast, so the boundaries are
+    # read from the parameters rather than written into a YAML case.
+    limit_2028 = HOME_EQUITY.agricultural_limit("2028-01-01")
+    limit_2029 = HOME_EQUITY.agricultural_limit("2029-01-01")
+    assert limit_2029 > limit_2028
+    equity = {"above_2028_limit": limit_2028 + 1, "at_limit": limit_2029}
+    equity["above_limit"] = limit_2029 + 1
+    people = {
+        name: {
+            "receives_medicaid_long_term_care_services": {"2029": True},
+            "home_is_on_agricultural_land": {"2029": True},
+            "home_equity": {"2029": value},
+        }
+        for name, value in equity.items()
+    }
+    situation = {"people": people}
+    for group in ["tax_units", "spm_units", "families", "marital_units", "households"]:
+        situation[group] = {f"{name}_{group}": {"members": [name]} for name in people}
+    simulation = Simulation(situation=situation)
+    eligible = simulation.calculate(
+        "is_medicaid_long_term_care_home_equity_eligible", 2029
+    )
+    assert eligible.tolist() == [True, True, False]
