@@ -1,0 +1,130 @@
+# RI: 218-RICR-20-00-5. PA: 55 Pa. Code 299; POMS SI 01415.058.
+- name: Case 1, independent living.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+  output:
+    pa_ssp: 22.1
+- name: Case 2, living in household of another.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    pa_ssp: 25.53
+- name: Case 3, certified domiciliary care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    pa_ssp_living_arrangement: DOMICILIARY_CARE
+  output:
+    pa_ssp: 634.3
+- name: Case 4, certified personal care home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    pa_ssp_living_arrangement: PERSONAL_CARE
+  output:
+    pa_ssp: 639.3
+- name: Case 5, care category requires adulthood.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 17
+    meets_ssi_disability_criteria: true
+    pa_ssp_living_arrangement: PERSONAL_CARE
+  output:
+    pa_ssp: 0
+- name: Case 6, medical institution.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    pa_ssp: 22.1
+- name: Case 7, SSI exhausted but state payment remains.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    social_security_retirement: 12360
+  output:
+    pa_ssp: 6.100000000000001
+- name: Case 8, state administered payment below a dollar.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    social_security_retirement: 12433.08
+  output:
+    pa_ssp: 0.01
+- name: Case 9, combined income cutoff.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    social_security_retirement: 12433.2
+  output:
+    pa_ssp: 0
+- name: Case 10, excess resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    ssi_countable_resources: 2001
+  output:
+    pa_ssp: 0
+- name: Case 11, not aged blind or disabled.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 30
+  output:
+    pa_ssp: 0
+- name: Case 12, nonresident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OH
+    age: 65
+  output:
+    pa_ssp: 0
+- name: Case 13, declines required SSI application.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    takes_up_ssi_if_eligible: false
+  output:
+    pa_ssp: 0
+- name: Case 14, institutional payment requires SSI receipt.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    social_security_retirement: 600
+  output:
+    pa_ssp: 0

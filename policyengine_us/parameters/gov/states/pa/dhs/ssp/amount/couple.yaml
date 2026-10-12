@@ -1,0 +1,27 @@
+# Institutional per-person rates are doubled solely for joint computation.
+description: Pennsylvania provides these monthly state supplementary payment rates for an eligible couple.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Pennsylvania SSP couple amount
+  breakdown:
+  - pa_ssp_living_arrangement
+  reference:
+  - title: Pennsylvania SSP eligibility and state-administered payment schedule
+    href: https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter299/chap299toc.html
+  - title: POMS SI 01415.058 K, Federally administered January 2026 payment levels
+    href: https://secure.ssa.gov/poms.nsf/lnx/0501415058#k
+  - title: Pennsylvania Long-Term Care Handbook 450.2, Supplement for Personal Needs
+    href: https://services.dpw.state.pa.us/oimpolicymanuals/ltc/450_Income/450_2_Countable_Income.htm
+INDEPENDENT:
+  2026-01-01: 33.3
+HOUSEHOLD_OF_ANOTHER:
+  2026-01-01: 38.44
+DOMICILIARY_CARE:
+  2026-01-01: 1347.4
+PERSONAL_CARE:
+  2026-01-01: 1357.4
+MEDICAID_INSTITUTION:
+  2026-01-01: 44.2
+NONE:
+  2026-01-01: 0
