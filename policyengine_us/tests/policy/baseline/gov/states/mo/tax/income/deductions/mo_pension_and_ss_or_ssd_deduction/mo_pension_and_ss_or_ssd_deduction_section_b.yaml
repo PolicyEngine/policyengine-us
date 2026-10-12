@@ -130,3 +130,140 @@
   output:
     mo_pension_and_ss_or_ssd_deduction_section_b: 6_000
 
+# Form MO-A Part 3 Section B, Line 6 takes the taxable private pension of the
+# filer and spouse from their federal return (Form 1040, Lines 4b and 5b). A
+# tax-unit dependent's pension is not in the filer's federal AGI
+# (RSMo 143.124.13); the dependent reports it on their own return.
+
+- name: A dependent child's private pension is not deducted on the parent's return
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 15_000
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        taxable_private_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction: 0
+
+- name: A dependent child's IRA distributions are not deducted on the parent's return
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 15_000
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        taxable_ira_distributions: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    mo_pension_and_ss_or_ssd_deduction_section_b: [0, 0]
+    mo_pension_and_ss_or_ssd_deduction: 0
+
+- name: Only the head's and spouse's private pensions count, each capped at 6,000, not a dependent's
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 67
+        is_tax_unit_head: true
+        taxable_private_pension_income: 8_000
+      spouse:
+        age: 65
+        is_tax_unit_spouse: true
+        taxable_401k_distributions: 4_000
+      child:
+        age: 16
+        is_tax_unit_dependent: true
+        taxable_private_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MO
+  output:
+    # Line 5: MO AGI of 12,000 is below the 32,000 joint allowance, so 0.
+    # Line 7: min(8,000, 6,000) = 6,000 for the head; 4,000 for the spouse.
+    # Line 9: 10,000 - 0, split by each spouse's Line 7 share.
+    mo_pension_and_ss_or_ssd_deduction_section_b: [6_000, 4_000, 0]
+    mo_pension_and_ss_or_ssd_deduction: 10_000
+
+- name: A dependent's private pension does not raise the head's deduction when the income phase-down applies
+  period: 2026
+  absolute_error_margin: 0
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 22_000
+        is_tax_unit_head: true
+        taxable_private_pension_income: 6_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        taxable_private_pension_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        filing_status: HEAD_OF_HOUSEHOLD
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: MO
+  output:
+    # Line 1: MO AGI is the head's 22,000 wages + 6,000 pension.
+    mo_adjusted_gross_income: [28_000, 0]
+    # Line 5: 28,000 - 0 - 25,000 head of household allowance = 3,000.
+    # Line 8: min(6,000, 6,000) = 6,000 for the head only.
+    # Line 9: 6,000 - 3,000 = 3,000.
+    mo_pension_and_ss_or_ssd_deduction_section_b: [3_000, 0]
+    mo_pension_and_ss_or_ssd_deduction: 3_000

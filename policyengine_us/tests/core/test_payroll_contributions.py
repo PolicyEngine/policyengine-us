@@ -335,8 +335,10 @@ def make_employer_total_simulation(
             {
                 "nj_employee_temporary_disability_insurance_contribution": 190,
                 "nj_employee_family_leave_insurance_contribution": 230,
-                "nj_employee_state_payroll_tax": 420,
-                "employee_state_payroll_tax": 420,
+                "nj_employee_unemployment_insurance_contribution": 171.36,
+                "nj_employee_workforce_fund_contribution": 19.04,
+                "nj_employee_state_payroll_tax": 610.40,
+                "employee_state_payroll_tax": 610.40,
             },
             id="NJ",
         ),

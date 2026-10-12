@@ -354,24 +354,24 @@
 
 - name: KY HB 13 - end-to-end high earner through ky_income_tax
   period: 2027
-  absolute_error_margin: 1
+  absolute_error_margin: 0.01
   reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
   input:
     gov.contrib.states.ky.hb13.in_effect: true
     people:
       person1:
         age: 45
-        ky_taxable_income_indiv: 500_000
-        ky_taxable_income_joint: 500_000
+        # The 0.5% charitable floor leaves $10,000 of itemized deductions:
+        # 12,550 - (510,000 x 0.005) = 10,000.
+        employment_income: 510_000
+        charitable_cash_donations: 12_550
       person2:
         age: 43
-        ky_taxable_income_indiv: 0
-        ky_taxable_income_joint: 0
+        employment_income: 0
     tax_units:
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        adjusted_gross_income: 500_000
     households:
       household:
         members: [person1, person2]
@@ -381,7 +381,12 @@
     ky_income_tax_before_non_refundable_credits_joint:
       - 30000
       - 0
+    ky_taxable_income_indiv: [500_000, 0]
+    ky_taxable_income_joint: [500_000, 0]
+    ky_income_tax_before_non_refundable_credits_unit: 30_000
     # High earner: family size credit rate is 0%, so no credit reduction
+    ky_family_size_tax_credit_rate_if_joint: 0
+    ky_family_size_tax_credit_rate_if_separate: 0
     # Verify reform flows through to final ky_income_tax
     ky_income_tax: 30000
 
@@ -394,21 +399,17 @@
     people:
       person1:
         age: 45
-        ky_taxable_income_indiv: 280_000
-        ky_taxable_income_joint: 300_000
+        # 16,575 - (315,000 x 0.005) = 15,000 itemized deductions,
+        # allocated 14:1 with wages, leaving taxable income 280,000/20,000.
+        employment_income: 294_000
+        charitable_cash_donations: 16_575
       person2:
         age: 43
-        ky_taxable_income_indiv: 20_000
-        ky_taxable_income_joint: 0
+        employment_income: 21_000
     tax_units:
       tax_unit:
         members: [person1, person2]
         filing_status: JOINT
-        # These high earners have no family size tax credit. Income is supplied
-        # directly as Kentucky taxable income, leaving modelled gross income at
-        # $0, which would otherwise give a spurious 100% family-size credit rate
-        # and zero the tax on both filing paths.
-        ky_family_size_tax_credit_rate: 0
     households:
       household:
         members: [person1, person2]
@@ -418,8 +419,56 @@
     # Separate: p1=250k*3.5%+30k*6%=10550, p2=20k*3.5%=700, total=11250
     # Joint: p1=250k*3.5%+50k*6%=11750, p2=0, total=11750
     # ky_files_separately = (11250 < 11750) = True
+    ky_taxable_income_indiv: [280_000, 20_000]
+    ky_taxable_income_joint: [300_000, 0]
+    ky_income_tax_before_non_refundable_credits_unit: 11_250
     ky_files_separately: true
-    # No non-refundable credits apply (FSTC rate forced to 0, high earners have no
+    ky_family_size_tax_credit_rate_if_joint: 0
+    ky_family_size_tax_credit_rate_if_separate: 0
+    # No non-refundable credits apply (high earners have no family size or
     # personal credit), so ky_income_tax equals the elected separate total.
-    # CI-RISK: hand-derived; pin the CI actual if it differs.
     ky_income_tax: 11_250
+
+- name: KY HB 13 - negative spouse income retains path-specific family size credits
+  period: 2027
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.states.ky.graduated_income_tax.ky_graduated_income_tax_reform.ky_graduated_income_tax
+  input:
+    gov.contrib.states.ky.hb13.in_effect: true
+    # Pin the 2027 standard deduction so the arithmetic below doesn't move with CPI projections.
+    gov.states.ky.tax.income.deductions.standard: 3_443.77
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        employment_income: 40_000
+      person2:
+        age: 43
+        is_tax_unit_spouse: true
+        self_employment_income: -30_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person1, person2]
+        state_code: KY
+  output:
+    # KRS 141.066(4): only the separate path floors the spouse's loss.
+    ky_modified_agi_if_joint: 10_000
+    ky_modified_agi_if_separate: 40_000
+    ky_family_size_tax_credit_rate_if_joint: 1
+    ky_family_size_tax_credit_rate_if_separate: 0
+    # The 2027 standard deduction is pinned at $3,443.77 above. HB 13 Section 1:
+    # (40,000 - 3,443.77) x 3.5% = 1,279.47 on the separate path;
+    # (10,000 - 3,443.77) x 3.5% = 229.47 on the joint path.
+    ky_taxable_income_indiv: [36_556.23, 0]
+    ky_taxable_income_joint: [6_556.23, 0]
+    ky_income_tax_before_non_refundable_credits_indiv: [1_279.47, 0]
+    ky_income_tax_before_non_refundable_credits_joint: [229.47, 0]
+    ky_income_tax_before_refundable_credits_if_joint: 0
+    ky_income_tax_before_refundable_credits_if_separate: 1_279.47
+    ky_files_separately: false
+    ky_income_tax_before_refundable_credits: 0
+    ky_income_tax: 0
