@@ -1,0 +1,12 @@
+description: The Social Security Administration pays at least this monthly amount to each recipient of a positive federally administered optional state supplement.
+values:
+  2026-01-01: 1
+metadata:
+  unit: currency-USD
+  period: month
+  label: SSI optional state supplement minimum payment
+  reference:
+    - title: 20 CFR 416.2020(c) - Minimum federally administered supplementary payment
+      href: https://www.ssa.gov/OP_Home/cfr20/416/416-2020.htm
+    - title: POMS SI 02001.005 A.2 and B.2 - Minimum benefit for individuals and members of couples
+      href: https://secure.ssa.gov/poms.nsf/lnx/0502001005

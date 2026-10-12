@@ -1090,6 +1090,19 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: NY
+        status: partial
+        name: New York SSP
+        full_name: New York State Supplement Program
+        variable: ny_ssp
+        parameter_prefix: gov.states.ny.otda.ssp
+        verified_years: '2026'
+        notes: Models the 2026 individual and couple rates, downstate care premiums, income taper,
+          minimum payment, and institutional personal-needs allowance. Certified care, separate-food
+          household exceptions and separate institutional SSI claims require explicit inputs.
+          Regular student status accepts an explicit regular-attendance determination,
+          with full-time student status as the fallback. Grandfathered mandatory payments
+          are not modeled.
 
   - id: social_security
     name: Social Security

@@ -1,0 +1,198 @@
+- name: Case 1, couple living alone.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+      second:
+        age: 65
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: NY
+        county: ALBANY_COUNTY_NY
+  output:
+    ny_ssp:
+    - 52
+    - 52
+- name: Case 2, family care couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        ny_ssp_living_arrangement: FAMILY_CARE
+      second:
+        age: 65
+        ny_ssp_living_arrangement: FAMILY_CARE
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: NY
+        county: NEW_YORK_COUNTY_NY
+  output:
+    ny_ssp:
+    - 514.98
+    - 514.98
+- name: Case 3, residential care couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        ny_ssp_living_arrangement: RESIDENTIAL_CARE
+      second:
+        age: 65
+        ny_ssp_living_arrangement: RESIDENTIAL_CARE
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: NY
+        county: ALBANY_COUNTY_NY
+  output:
+    ny_ssp:
+    - 653.5
+    - 653.5
+- name: Case 4, enhanced residential care couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
+      second:
+        age: 65
+        ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: NY
+        county: ALBANY_COUNTY_NY
+  output:
+    ny_ssp:
+    - 942.5
+    - 942.5
+- name: Case 5, ineligible spouse uses living with others.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+      second:
+        age: 40
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: NY
+        county: ALBANY_COUNTY_NY
+  output:
+    ny_ssp:
+    - 23
+    - 0
+- name: Case 6, spouse deemed income reduces state payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+      second:
+        age: 40
+        social_security_retirement: 18408
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: NY
+        county: ALBANY_COUNTY_NY
+  output:
+    ny_ssp:
+    - 23
+    - 0
+- name: Case 7, annual benefit and SNAP income.
+  period: '2026'
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    age: 65
+  output:
+    ny_ssp: 1044
+    household_state_benefits: 1044
+    snap_unearned_income: 12972
+    hud_unearned_income: 12972
