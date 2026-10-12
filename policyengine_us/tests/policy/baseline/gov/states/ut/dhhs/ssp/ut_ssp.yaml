@@ -1,0 +1,117 @@
+# Utah Medicaid Manual 661: $15 when institutional SSI is $1 through $30.
+- name: Case 1, Medicaid institutional recipient receives the fixed supplement.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ssi: 30
+    ut_ssp: 15
+
+- name: Case 2, one dollar institutional SSI still qualifies for the full payment.
+  # $49 other income less $20 = $29 countable; $30 - $29 = $1 SSI.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    social_security_retirement: 588
+  output:
+    ssi: 1
+    ut_ssp: 15
+
+- name: Case 3, no federal SSI means no state payment.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    social_security_retirement: 600
+  output:
+    ssi: 0
+    ut_ssp: 0
+
+- name: Case 4, Medicaid approval is required.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: false
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ut_ssp: 0
+
+- name: Case 5, independent living does not receive an institutional supplement.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+  output:
+    ssi: 994
+    ut_ssp: 0
+
+- name: Case 6, Utah supplement is not payable outside Utah.
+  period: 2026-01
+  input:
+    state_code: WY
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ut_ssp: 0
+
+- name: Case 7, medical care without majority Medicaid funding does not qualify.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: false
+  output:
+    ut_ssp: 0
+
+- name: Case 8, declining SSI leaves no qualifying receipt.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    takes_up_ssi_if_eligible: false
+  output:
+    ut_ssp: 0
+
+- name: Case 9, negative earnings cannot increase the fixed supplement.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    self_employment_income: -12_000
+  output:
+    ut_ssp: 15
+
+- name: Case 10, year total includes twelve monthly payments.
+  period: 2026
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ut_ssp: 180

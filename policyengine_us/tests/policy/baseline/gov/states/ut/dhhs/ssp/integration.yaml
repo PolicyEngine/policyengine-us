@@ -1,0 +1,23 @@
+- name: Case 1, Utah supplement enters state benefit and SNAP income totals.
+  period: 2026
+  input:
+    state_code: UT
+    age: 65
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ut_ssp: 180
+    snap_unearned_income: 540
+    household_state_benefits: 180
+    hud_unearned_income: 540
+- name: Case 2, endogenous Medicaid eligibility does not create a SNAP dependency cycle.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ut_ssp: 15
+    snap_unearned_income: 45

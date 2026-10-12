@@ -14,7 +14,7 @@ class medicaid_enrolled_for_ssi_state_supplement(Variable):
     )
     documentation = (
         "Medicaid enrollment condition for SSI/aged/blind/disabled state "
-        "supplement candidates only (Indiana SAPN/RCAP and Kansas SSPP). "
+        "supplement candidates only (Indiana, Kansas and Utah). "
         "SSI recipients and aged, blind, or disabled RCAP candidates do not "
         "need the SNAP/TANF community-engagement exclusion. Other consumers "
         "must use medicaid_enrolled, which retains that exclusion."
@@ -22,30 +22,37 @@ class medicaid_enrolled_for_ssi_state_supplement(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicaid.eligibility.work_requirements
-        if not p.applies:
-            return person("medicaid_enrolled", period)
-
         simulation = person.simulation
         enrolled = simulation.get_array("medicaid_enrolled", period)
         if enrolled is not None:
             return enrolled
 
-        # SNAP counts these state supplements as income, so asking for receipt
-        # status here would recurse. SSP candidates qualify through SSI or
-        # age/blindness/disability independently of SNAP/TANF. Keep all other
-        # Medicaid conditions, take-up and supplied inputs in a private branch.
+        # SNAP counts supplements as income, so its work-requirement
+        # exemption cannot determine Medicaid for SSI/ABD supplement candidates.
+        # HUD also counts supplements. Medicaid's optional tax-filing check can
+        # reach HUD through rent-related tax deductions. While determining
+        # enrollment, withhold the supplements that require that enrollment;
+        # evaluate their actual grants only in the original simulation. SSI/ABD
+        # Medicaid eligibility does not depend on those housing tax deductions.
+        # Preserve all other Medicaid conditions, take-up and supplied inputs.
         branch_name = f"{simulation.branch_name}_ssi_state_supplement_medicaid_{period}"
+        overrides = {
+            "medicaid_enrolled_for_ssi_state_supplement": (
+                period,
+                np.zeros(person.count, dtype=bool),
+            )
+        }
+        if p.applies:
+            overrides["medicaid_community_engagement_pass_through_eligible"] = (
+                period.first_month,
+                np.zeros(person.count, dtype=bool),
+            )
         try:
             branch = get_override_branch(
                 simulation,
                 branch_name,
                 period,
-                {
-                    "medicaid_community_engagement_pass_through_eligible": (
-                        period.first_month,
-                        np.zeros(person.count, dtype=bool),
-                    )
-                },
+                overrides,
             )
             return branch.calculate("medicaid_enrolled", period)
         finally:
