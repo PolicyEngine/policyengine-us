@@ -8,7 +8,6 @@
     wi_works_resources_eligible: true
   output:
     wi_works_eligible: true
-
 - name: Case 2, not eligible due to demographic.
   period: 2025-01
   input:
@@ -19,7 +18,6 @@
     wi_works_resources_eligible: true
   output:
     wi_works_eligible: false
-
 - name: Case 3, not eligible due to citizenship.
   period: 2025-01
   input:
@@ -30,7 +28,6 @@
     wi_works_resources_eligible: true
   output:
     wi_works_eligible: false
-
 - name: Case 4, not eligible due to income.
   period: 2025-01
   input:
@@ -41,7 +38,6 @@
     wi_works_resources_eligible: true
   output:
     wi_works_eligible: false
-
 - name: Case 5, not eligible due to resources.
   period: 2025-01
   input:
@@ -52,10 +48,124 @@
     wi_works_resources_eligible: false
   output:
     wi_works_eligible: false
-
 - name: Case 6, non-Wisconsin state.
   period: 2025-01
   input:
     state_code: CA
   output:
     wi_works_eligible: false
+- name: SSI parent cannot receive W-2 for the same month
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        ssi: 994
+        person_id: 1
+      child:
+        age: 8
+        ssi: 0
+        person_id: 2
+        parent_1_id: 1
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members:
+        - parent
+        - child
+        state_code: WI
+    marital_units:
+      parent:
+        members:
+        - parent
+      child:
+        members:
+        - child
+  output:
+    wi_works_eligible: false
+- name: Child SSI does not exclude a non-SSI W-2 parent
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        ssi: 0
+        person_id: 1
+      child:
+        age: 8
+        ssi: 994
+        person_id: 2
+        parent_1_id: 1
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members:
+        - parent
+        - child
+        state_code: WI
+    marital_units:
+      parent:
+        members:
+        - parent
+      child:
+        members:
+        - child
+  output:
+    wi_works_eligible: true
+- name: SSI parent does not exclude a non-SSI co-parent from W-2
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 35
+        ssi: 994
+        person_id: 1
+      child:
+        age: 8
+        ssi: 0
+        person_id: 2
+        parent_1_id: 1
+        parent_2_id: 3
+      coparent:
+        person_id: 3
+        age: 35
+        ssi: 0
+    spm_units:
+      unit:
+        members:
+        - parent
+        - child
+        - coparent
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members:
+        - parent
+        - child
+        - coparent
+        state_code: WI
+    marital_units:
+      parent:
+        members:
+        - parent
+      child:
+        members:
+        - child
+      coparent:
+        members:
+        - coparent
+  output:
+    wi_works_eligible: true

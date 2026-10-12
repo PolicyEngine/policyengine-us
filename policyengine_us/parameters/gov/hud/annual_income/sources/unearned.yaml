@@ -19,6 +19,8 @@ values:
     - strike_benefits
     - social_security
     - ssi
+    # Exclude only SSI-E meeting the assisted-home care conditions.
+    - wi_ssp_countable_for_hud
     - general_assistance
     - unemployment_compensation
     - child_support_received
@@ -34,5 +36,11 @@ metadata:
   period: year
   label: HUD unearned income sources
   reference:
-    - title: 24 CFR § 5.609(a)(1), (a)(2)
+    - title: 24 CFR § 5.609(a)(1), (a)(2), (b)(6), (b)(19)
       href: https://www.law.cornell.edu/cfr/text/24/5.609
+    - title: Wisconsin SSI-E Handbook, 4.1.1 Subsidized Housing
+      href: https://www.dhs.wisconsin.gov/publications/p20679-26-01.pdf#page=24
+    - title: HUD Notice PIH 2023-27, Attachment G.11, Income Received for the Care of Family Members with Disabilities
+      href: https://www.hud.gov/sites/dfiles/OCHCO/documents/2023-27pihn.pdf#page=81
+    - title: 'HUD Notice PIH 2024-38, IV.B.1, Mandatory Deductions and Exclusions #page 3-4'
+      href: https://www.hud.gov/sites/dfiles/OCHCO/documents/2024-38pihn.pdf#page=3

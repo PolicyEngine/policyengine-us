@@ -1,0 +1,60 @@
+description: Wisconsin sets these Caretaker Supplement gross pregnant income limits for Area 1.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Wisconsin CTS Area 1 gross_pregnant limits
+  type: single_amount
+  threshold_unit: person
+  amount_unit: currency-USD
+  reference:
+  - title: Caretaker Supplement Handbook, 5.2
+    href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf
+brackets:
+- threshold:
+    '2026-01-01': 1
+  amount:
+    '2026-01-01': 707
+- threshold:
+    '2026-01-01': 2
+  amount:
+    '2026-01-01': 1149
+- threshold:
+    '2026-01-01': 3
+  amount:
+    '2026-01-01': 1329
+- threshold:
+    '2026-01-01': 4
+  amount:
+    '2026-01-01': 1560
+- threshold:
+    '2026-01-01': 5
+  amount:
+    '2026-01-01': 1771
+- threshold:
+    '2026-01-01': 6
+  amount:
+    '2026-01-01': 1904
+- threshold:
+    '2026-01-01': 7
+  amount:
+    '2026-01-01': 2050
+- threshold:
+    '2026-01-01': 8
+  amount:
+    '2026-01-01': 2165
+- threshold:
+    '2026-01-01': 9
+  amount:
+    '2026-01-01': 2261
+- threshold:
+    '2026-01-01': 10
+  amount:
+    '2026-01-01': 2313
+- threshold:
+    '2026-01-01': 11
+  amount:
+    '2026-01-01': 2359
+- threshold:
+    '2026-01-01': 12
+  amount:
+    '2026-01-01': 2405
