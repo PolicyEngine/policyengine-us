@@ -35,12 +35,11 @@ The implementation follows these steps according to the regulations:
    - The deemed amount is the difference between the combined countable income and the individual's countable income
 
 6. **Limit the benefit to the amount without deeming** (§416.1163(e)(2))
-   - The benefit is the lesser of the couple computation and the individual Federal benefit rate less only the individual's own countable income (`uncapped_ssi_without_spousal_deeming`), applied in `ssi_if_takes_up`
-   - While the $30 medical facility rate applies, no spousal income is deemed (§416.1163(f)(5))
+   - The benefit is the lesser of the couple computation and the individual Federal benefit rate less only the individual's own countable income (`uncapped_ssi_without_spousal_deeming`), applied in `uncapped_ssi` before the zero floor
 
 ## Who is an ineligible spouse
 
-An ineligible spouse is "someone who lives with you as your husband or wife and is not eligible for SSI benefits" (§416.1160(d)). The spouse is found by the co-resident spouse test in `eligibility/resources/deemed/_ssi_spouses.py`, which resource deeming and joint claims also use, not by tax-unit head and spouse roles. A spouse who is aged, blind or disabled but fails the citizenship or qualified-noncitizen condition is an ineligible spouse.
+An ineligible spouse is "someone who lives with you as your husband or wife and is not eligible for SSI benefits" (§416.1160(d)). The spouse is found by the co-resident spouse test in `eligibility/resources/deemed/_ssi_spouses.py`, which resource deeming and joint claims also use, not by tax-unit head and spouse roles. For income, eligibility here means aged, blind or disabled status: a spouse who is aged, blind or disabled but fails the citizenship or qualified-noncitizen condition is still treated as part of a joint claim, because state supplements and Medicaid read the joint claim as the SSI couple methodology. The resource test treats that spouse as an ineligible spouse (`_ssi_resource_couple`).
 
 ## Exclusions Applied
 

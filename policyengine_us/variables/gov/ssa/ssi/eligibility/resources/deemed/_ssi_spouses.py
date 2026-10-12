@@ -72,15 +72,27 @@ def _ssi_spouse_index(person, period):
 def _ssi_eligible_apart_from_means(person, period):
     """Aged, blind or disabled and meeting SSI's citizenship condition.
 
-    416.1801(c) makes an eligible spouse someone 'who is eligible for SSI',
-    and 416.1160(d) makes an ineligible spouse one who 'is not eligible for
-    SSI benefits'. Couples are classified before the income and resource
-    tests, which depend on the classification, so this tests the conditions
-    that do not: aged, blind or disabled status, and citizenship or
-    qualified-noncitizen status (as is_ssi_eligible requires).
+    416.1160(d) makes an ineligible spouse one who 'is not eligible for SSI
+    benefits'. The resource test runs before eligibility is known, so this
+    tests the conditions that do not depend on it: aged, blind or disabled
+    status, and citizenship or qualified-noncitizen status (as is_ssi_eligible
+    requires).
     """
     immigration_status = person("immigration_status", period)
     is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
     return person("is_ssi_aged_blind_disabled", period) & (
         is_citizen | person("is_ssi_qualified_noncitizen", period)
     )
+
+
+def _ssi_resource_couple(person, period):
+    """Whether 416.1205(b) combines a joint claim's resources.
+
+    A joint claim pairs two aged, blind or disabled spouses. When one of them
+    fails the citizenship condition, they are not an eligible couple
+    (416.1801(c)), so the other's resources are tested with the spouse's
+    deemed under 416.1202(a), with the ineligible-spouse exclusions.
+    """
+    eligible = _ssi_eligible_apart_from_means(person, period)
+    spouse = np.maximum(_ssi_spouse_index(person, period), 0)
+    return person("ssi_claim_is_joint", period) & eligible & eligible[spouse]

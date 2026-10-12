@@ -76,8 +76,8 @@
     # Couple computation: $1,491 - $990.50 = $500.50.
     # Without deeming: $994 - ($743 - $20) = $271.
     ssi_countable_income: [990.50, 0]
-    uncapped_ssi: [500.50, 0]
     uncapped_ssi_without_spousal_deeming: [271, 0]
+    uncapped_ssi: [271, 0]
     ssi: [271, 0]
 
 - name: Case 6, the same couple with lower income and no deeming gets more SSI than Case 5.
@@ -141,17 +141,17 @@
     uncapped_ssi_without_spousal_deeming: [282.67, 0]
     ssi: [282.67, 0]
 
-- name: Case 8, no spousal income is deemed while the 30 dollar medical facility rate applies.
+- name: Case 8, a claimant whose own income exceeds the individual rate gets no SSI under deeming.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       claimant:
         age: 70
-        ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+        social_security_retirement: 1_100 * 12
       spouse:
         age: 60
-        employment_income: 2_000 * 12
+        employment_income: 600 * 12
     tax_units:
       tax_unit:
         members: [claimant, spouse]
@@ -163,11 +163,13 @@
         members: [claimant, spouse]
         state_code: FL
   output:
-    # 416.1163(f)(5): 'If you become a resident of a medical care facility
-    # and the $30 Federal benefit rate applies, we do not deem your
-    # ineligible spouse's income to you'. The claimant has no income of
-    # their own, so SSI is the full $30.
-    ssi: [30, 0]
+    # Couple computation: $1,491 - ($1,080 + ($600 - $65) / 2) = $143.50.
+    # Without deeming: $994 - $1,080 = -$86, so the lesser is -$86 and the
+    # benefit is $0 (416.1163(e)(2)). Programs that read uncapped_ssi see
+    # the same shortfall.
+    uncapped_ssi_without_spousal_deeming: [-86, 0]
+    uncapped_ssi: [-86, 0]
+    ssi: [0, 0]
 
 # 416.1163(g) Examples 3 and 2 (1986: individual rate $336, couple rate $504,
 # deeming threshold $168). The examples stop at eligibility; the benefit
@@ -200,8 +202,8 @@
     # income of $148.' Couple computation $504 - $148 = $356; without
     # deeming $336 - $80 = $256; the lesser is $256.
     ssi_countable_income: [1_776, 0]  # $148 a month
-    uncapped_ssi: [4_272, 0]  # $356 a month
     uncapped_ssi_without_spousal_deeming: [3_072, 0]  # $256 a month
+    uncapped_ssi: [3_072, 0]  # $256 a month
     ssi: [3_072, 0]  # $256 a month
 
 - name: Case 10, 416.1163(g) Example 2 (Mr. Jones) keeps the couple computation when it is lower.

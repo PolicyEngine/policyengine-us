@@ -18,7 +18,7 @@ class ssi_amount_if_eligible(Variable):
         # 20 CFR 416.414(b): Benefit rate depends on couple computation:
         # 1. Couple computation applies → couple rate / 2 per person
         # 2. No couple computation, deeming → couple rate (limited by
-        #    416.1163(e)(2) in ssi_if_takes_up)
+        #    416.1163(e)(2) in uncapped_ssi)
         # 3. No couple computation, no deeming → individual rate
         #
         # ssi_couple_computation_applies is false when only one spouse

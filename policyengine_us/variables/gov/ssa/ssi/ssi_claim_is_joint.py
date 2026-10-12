@@ -1,6 +1,5 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.resources.deemed._ssi_spouses import (
-    _ssi_eligible_apart_from_means,
     _ssi_spouse_index,
 )
 
@@ -18,13 +17,14 @@ class ssi_claim_is_joint(Variable):
     )
 
     def formula(person, period, parameters):
-        # 416.1801(c): an eligible spouse is eligible for SSI, is the spouse
-        # of another person eligible for SSI, and lives in the same household
-        # with that person. Spouses are found by the test resource deeming
-        # uses (416.1806: husband or wife, living together), not by tax-unit
-        # head and spouse roles, which go to the two oldest adults of a tax
-        # unit when roles are not supplied. A spouse who fails the
-        # citizenship condition is an ineligible spouse (416.1160(d)).
-        eligible = _ssi_eligible_apart_from_means(person, period)
+        # 416.1801(c): an eligible spouse is the spouse of another person
+        # eligible for SSI who lives in the same household with that person.
+        # Spouses are found by the test resource deeming uses (416.1806:
+        # husband or wife, living together), not by tax-unit head and spouse
+        # roles, which go to the two oldest adults of a tax unit when roles
+        # are not supplied. Both must be aged, blind or disabled. The
+        # citizenship condition is not applied here: state supplements and
+        # Medicaid read this as the SSI couple methodology.
+        abd = person("is_ssi_aged_blind_disabled", period)
         spouse = _ssi_spouse_index(person, period)
-        return eligible & (spouse >= 0) & eligible[np.maximum(spouse, 0)]
+        return abd & (spouse >= 0) & abd[np.maximum(spouse, 0)]
