@@ -48,27 +48,30 @@
     people:
       person1:
         age: 80
+        is_tax_unit_head: true
         tax_exempt_interest_income: 500
-      person2: 
+      person2:
         age: 64
+        is_tax_unit_dependent: true
         tax_exempt_interest_income: 500
       person3:
         age: 80
+        is_tax_unit_dependent: true
         tax_exempt_interest_income: 500
     tax_units:
       tax_unit:
-        members: [person1, person2,person3]
+        members: [person1, person2, person3]
         ut_total_income: 30_000
         filing_status: SINGLE
     households:
       household:
-        members: [person1, person2]
+        members: [person1, person2, person3]
         state_code: UT
-  output:  
-    # person1 is the head, person3 the spouse and person2 a dependent, whose
-    # tax-exempt interest is on their own return. Phase-out reduction:
-    # 900 - (30_000 + 2 * 500 - 25_000) * 0.025 = 750.
-    ut_retirement_credit_max: 750
+  output:
+    # Only the head is a claimant, and only the head's tax-exempt interest
+    # counts; the dependents' is on their own returns (Utah Code 59-10-1019).
+    # 450 - (30_000 + 500 - 25_000) * 0.025 = 312.5.
+    ut_retirement_credit_max: 312.5
 
 - name: UT retirement credit max unit test 4
   period: 2022

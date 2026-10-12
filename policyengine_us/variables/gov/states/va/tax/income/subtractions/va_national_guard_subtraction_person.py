@@ -14,7 +14,12 @@ class va_national_guard_subtraction_person(Variable):
         # The subtraction caps the household's military service income, so
         # allocate the capped tax-unit amount by each person's share.
         total = person.tax_unit("va_national_guard_subtraction", period)
-        military_service_income = person("military_service_income", period)
+        # Shares of the head's and spouse's pay, as va_national_guard_subtraction
+        # leaves out a tax unit dependent's.
+        head_or_spouse = ~person("is_tax_unit_dependent", period)
+        military_service_income = (
+            person("military_service_income", period) * head_or_spouse
+        )
         total_military_service_income = person.tax_unit.sum(military_service_income)
         share = where(
             total_military_service_income > 0,

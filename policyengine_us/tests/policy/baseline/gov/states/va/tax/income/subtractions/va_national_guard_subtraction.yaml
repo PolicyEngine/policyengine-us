@@ -29,3 +29,23 @@
     state_code: VA
   output:
     va_national_guard_subtraction: 5_500
+
+- name: A dependent's Guard pay neither uses up the cap nor shares in it
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 30
+        employment_income: 50_000
+        military_service_income: 5_500
+      student:
+        age: 20
+        is_tax_unit_dependent: true
+        military_service_income: 5_500
+    household:
+      state_code: VA
+  output:
+    va_national_guard_subtraction: 5_500
+    va_national_guard_subtraction_person: [5_500, 0]
+    va_subtractions: 5_500

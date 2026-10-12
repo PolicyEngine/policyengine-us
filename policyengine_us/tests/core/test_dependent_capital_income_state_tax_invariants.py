@@ -34,17 +34,9 @@ and Vermont-eligible long-term gains):
    up to the cap, vt_additions is the filers' tax-exempt interest, and
    us_govt_interest is the filers' U.S. government interest.
 
-Two restrictions keep effects that are outside this check out of the draws:
-
-- The filers earn at least $80,000, so no earned income tax credit is at
-  stake. Vermont's is a share of the federal credit, whose investment income
-  test (eitc_relevant_investment_income) is not changed here.
-- Vermont filers have at least $50,000 of their own long-term gain and no
-  short-term loss, and Vermont dependents have gains, not losses. Until
-  PolicyEngine/policyengine-us#9855 is merged, the $5,000 flat part of
-  vt_capital_gains_exclusion reads the federal adjusted net capital gain,
-  which on main still counts a dependent's gains and losses. With these
-  amounts the flat part is at its cap either way.
+The filers earn at least $80,000, so no earned income tax credit is at
+stake: Vermont's is a share of the federal credit, whose investment income
+test (eitc_relevant_investment_income) is not changed here.
 
 Amounts are whole dollars of at most $400,000, so every sum is exact in single
 precision and twins are compared to the cent.
@@ -91,25 +83,17 @@ def amount(low, high):
 
 
 @st.composite
-def capital_income(draw, vermont, filer):
+def capital_income(draw):
     """One person's capital income. U.S. government interest is part of
     taxable interest, and Vermont-eligible gains are part of long-term
     gains."""
-    if vermont and filer:
-        long_term = draw(amount(50_000, 300_000))
-        short_term = draw(amount(0, 20_000))
-    elif vermont:
-        long_term = draw(amount(0, 300_000))
-        short_term = draw(amount(0, 50_000))
-    else:
-        long_term = draw(amount(-30_000, 300_000))
-        short_term = draw(amount(-20_000, 50_000))
+    long_term = draw(amount(-30_000, 300_000))
     taxable_interest = draw(amount(0, 50_000))
     return {
         "qualified_dividend_income": draw(amount(0, 50_000)),
         "non_qualified_dividend_income": draw(amount(0, 20_000)),
         "long_term_capital_gains": long_term,
-        "short_term_capital_gains": short_term,
+        "short_term_capital_gains": draw(amount(-20_000, 50_000)),
         "non_sch_d_capital_gains": draw(amount(0, 20_000)),
         "taxable_interest_income": taxable_interest,
         "us_govt_interest_person": draw(amount(0, int(taxable_interest))),
@@ -123,20 +107,19 @@ def capital_income(draw, vermont, filer):
 @st.composite
 def tax_units(draw):
     state = draw(st.sampled_from(["ND", "VT"]))
-    vermont = state == "VT"
     n_filers = draw(st.integers(1, 2))
     filers = [
         {
             "age": draw(st.integers(30, 64)),
             "employment_income": draw(amount(80_000, 400_000)) if i == 0 else 0.0,
-            **draw(capital_income(vermont, filer=True)),
+            **draw(capital_income()),
         }
         for i in range(n_filers)
     ]
     dependents = [
         {
             "age": draw(st.integers(1, 17)),
-            **draw(capital_income(vermont, filer=False)),
+            **draw(capital_income()),
         }
         for _ in range(draw(st.integers(1, 2)))
     ]
