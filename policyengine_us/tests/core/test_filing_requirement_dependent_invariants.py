@@ -73,12 +73,18 @@ Intended exceptions, each from the law rather than the code:
   instructions, Chart A) but it does reduce the earned income that sets the
   limited standard deduction, so a smaller loss raises the threshold and not
   the income. `test_smaller_loss_can_end_the_requirement` pins the case.
-- Property 7 leaves out blind filers. The model counts the additional
-  standard deduction for blindness in every filer's threshold. Chart A does
-  not (only age), while Table 2 does, so on the charts a blind filer under 65
-  with wages between the two amounts must file only if nobody can claim them.
-  The property holds in the model today, and leaving blind filers out keeps it
-  true under either reading.
+- Property 7 leaves out blind filers. Chart A does not count blindness (only
+  age), while Table 2 does, so on the charts a blind filer under 65 with
+  wages between the two amounts must file only if nobody can claim them. From
+  2026 the model follows Chart A here: section 6012(a)(1)(B) raises the
+  threshold of a filer nobody can claim for age only, while a filer who can
+  be claimed keeps the standard deduction test (decision d1395).
+- From 2026, property 7 also fails at one dollar: gross income equal to the
+  threshold of a sighted filer nobody can claim. Section 6012(a)(1)(A)
+  excuses that filer only if gross income is "less than" the threshold, while
+  a filer who can be claimed is tested with "in excess of" (d1395). The
+  property skips those units, and
+  `test_claimability_can_end_the_requirement_at_the_threshold` pins the case.
 - Properties 1, 2 and 9 use wages as the only earned income. Earned income for
   the limited deduction is net of the deductible part of self-employment tax
   on the IRS worksheet, which Table 2 does not spell out.
@@ -126,8 +132,8 @@ def table_2_single_dependent(earned, unearned, aged, blind):
     return unearned_test | earned_test | gross_test
 
 
-def simulate(units):
-    """One simulation of independent tax units.
+def simulate(units, **options):
+    """One simulation of independent tax units; options go to Simulation.
 
     Each unit is {"filing_status": name, "adults": [...], "children": [...]},
     with one dict of person inputs per member. Every unit states its filing
@@ -165,7 +171,8 @@ def simulate(units):
             "tax_units": tax_units,
             "households": households,
             **groups,
-        }
+        },
+        **options,
     )
 
 
@@ -187,6 +194,13 @@ def single_filer(age, blind, claimed, wages, interest):
 
 def head_values(units, name):
     return np.array([unit["adults"][0].get(name, 0) for unit in units])
+
+
+def unit_totals(simulation, units, variable, year):
+    """A person variable summed over the members of each unit."""
+    values = np.asarray(simulation.calculate(variable, year))
+    sizes = [len(unit["adults"]) + len(unit["children"]) for unit in units]
+    return np.add.reduceat(values, np.cumsum([0] + sizes[:-1]))
 
 
 def head_medicaid_requirement(simulation, units, year):
@@ -477,9 +491,18 @@ def test_filing_requirement_properties(anchors, drawn):
             f"{year}: more income ended the requirement"
         )
         assert required["base"].any() and not required["base"].all()
-        # Property 7.
+        # Property 7, except at the 2026 threshold (see the docstring).
         sighted = ~anyone_blind[:, 0]
-        assert not (required["base"] & ~required["claimed"])[sighted].any(), (
+        ended = required["base"] & ~required["claimed"]
+        if year >= 2026:
+            gross_income = unit_totals(
+                simulation, units, "irs_gross_income", year
+            ).reshape(-1, len(VARIANTS))[:, 0]
+            standard_deduction = np.asarray(
+                simulation.calculate("standard_deduction", year)
+            ).reshape(-1, len(VARIANTS))[:, 0]
+            ended &= ~(nobody_claimable & (gross_income == standard_deduction))
+        assert not ended[sighted].any(), (
             f"{year}: being claimable ended the requirement"
         )
         # Property 8.
@@ -519,4 +542,15 @@ def test_smaller_loss_can_end_the_requirement():
     units[0]["adults"][0]["self_employment_income"] = -5_000
     units[1]["adults"][0]["self_employment_income"] = -100
     required = simulate(units).calculate("tax_unit_is_required_to_file", 2025)
+    assert required.tolist() == [True, False]
+
+
+def test_claimability_can_end_the_requirement_at_the_threshold():
+    # Intended exception to property 7 from 2026. Nobody can claim the first
+    # filer, whose $16,100 of wages equals the threshold of section
+    # 6012(a)(1)(A)(i), so a return is due. The second filer can be claimed;
+    # $16,100 does not exceed their standard deduction of $16,100
+    # ((a)(1)(C)(i)(II) and Chart B), so no return is due (decision d1395).
+    units = [single_filer(40, False, claimed, 16_100, 0) for claimed in (0, 1)]
+    required = simulate(units).calculate("tax_unit_is_required_to_file", 2026)
     assert required.tolist() == [True, False]

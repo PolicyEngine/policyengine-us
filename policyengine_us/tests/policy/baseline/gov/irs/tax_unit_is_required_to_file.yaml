@@ -290,7 +290,7 @@
     taxable_interest_income: 15_750
   output:
     # (f)(1): gross income does not exceed the standard deduction. Chart A of
-    # the 2025 instructions says "at least" $15,750 (decision DECISION_ID).
+    # the 2025 instructions says "at least" $15,750 (decision d1403).
     tax_unit_is_required_to_file: false
 
 - name: Case 21, 2025, single filer under 65 with gross income of $15,751.
@@ -311,7 +311,7 @@
     employment_income: 17_750
   output:
     # (f)(1): the standard deduction is $15,750 + $2,000 for blindness.
-    # Chart A of the 2025 instructions lists only age (decision DECISION_ID).
+    # Chart A of the 2025 instructions lists only age (decision d1403).
     tax_unit_is_required_to_file: false
 
 - name: Case 23, 2025, blind single filer under 65 with gross income of $17,751.
