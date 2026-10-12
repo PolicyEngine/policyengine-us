@@ -10,9 +10,11 @@ class mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation
     documentation = (
         "Unemployment compensation a household member received that neither "
         "federal adjusted gross income nor a dependent's own gross income "
-        "counts, such as the part excluded from 2020 federal gross income "
-        "under IRC 85(c). It counts in gross household income as nontaxable "
-        "income."
+        "counts. For a filer this is the part excluded from 2020 federal "
+        "gross income under IRC 85(c), which gross household income counts as "
+        "nontaxable income. For a person recorded as both a dependent and the "
+        "head or spouse, whom neither income path counts, it is all of their "
+        "compensation."
     )
     unit = USD
     definition_period = YEAR

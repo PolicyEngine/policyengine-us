@@ -188,3 +188,25 @@
     adjusted_gross_income_person: 0
     dependent_gross_income: 0
     mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: 5_000
+    # The 2023 list carries it into gross household income.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 5_000
+
+- name: Case 9, the same person in 2016 under the 2009 list.
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        is_tax_unit_dependent: true
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_nontaxable_unemployment_compensation: 5_000
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 5_000

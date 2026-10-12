@@ -160,8 +160,9 @@
         members: [person1]
         state_name: MT
   output:
-    # Line 5 pensions 16_000; line 1 (if taxable, reported as wages) or line
-    # 15 (if not) disability benefits 6_000; line 18 = 22_000.
+    # Line 5 pensions 16_000; disability benefits 6_000 on line 1 if taxable
+    # and reported as wages, line 5 if a disability pension after minimum
+    # retirement age, line 15 if nontaxable; line 18 = 22_000 either way.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: 22_000
     # Line 19 12_600; line 20 = 9_400; line 21 = 0.042; line 22 = 394.80.
     mt_elderly_homeowner_or_renter_credit_net_household_income: 394.80

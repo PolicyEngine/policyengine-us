@@ -69,10 +69,11 @@ values:
     # Disability benefits from employment other than workers' compensation
     # (2014-2023 instructions: "Disability benefits including, but not
     # limited to, veteran's disability, SSI payments, and workers'
-    # compensation"; from 2024, Schedule 2EC line 1 when taxable, as IRS
-    # Pub. 525 reports them as wages, otherwise line 15). The model leaves
-    # them out of federal AGI (irs_gross_income) and dependent_gross_income,
-    # so all of them count here, once.
+    # compensation"; from 2024, Schedule 2EC line 1 for taxable sick pay and
+    # disability pay reported as wages, line 5 for a disability pension after
+    # minimum retirement age (IRS Pub. 525), otherwise line 15). The model
+    # leaves them out of federal AGI (irs_gross_income) and
+    # dependent_gross_income, so all of them count here, once.
     - disability_benefits
     # Unemployment compensation outside federal AGI, such as the 2020 IRC
     # 85(c) exclusion (2020 line 8, "all items of income ... not reported on
