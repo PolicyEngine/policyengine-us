@@ -736,3 +736,49 @@
         state_name: MT
   output:
     mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 10_000]
+
+- name: A dependent's long-term gain counts when another person's capital_gains is supplied
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        capital_gains: 0
+      person2:
+        age: 16
+        long_term_capital_gains: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # capital_gains is an input for person1, so person2 holds its default of
+    # zero rather than the sum of their parts. The parts decide: line 17
+    # counts the dependent's 10_000 gain.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 10_000]
+
+- name: The long-term and short-term parts decide the gains when capital_gains disagrees with them
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        long_term_capital_gains: 10_000
+        short_term_capital_gains: -4_000
+        capital_gains: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # The parts show a 10_000 gain and a 4_000 loss; line 7 counts 10_000,
+    # not the inconsistent 20_000 net: 30_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 30_000
