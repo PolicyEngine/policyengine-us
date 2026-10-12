@@ -1,0 +1,15 @@
+description: The IRS reduces the SALT cap of married individuals filing separately by this fraction of the phase-down, since they deduct this fraction of the applicable limitation amount after it is phased down.
+values:
+  2025-01-01: 0.5
+
+metadata:
+  unit: /1
+  period: year
+  label: SALT cap phase-down fraction for married filing separately
+  reference:
+    - title: 26 U.S. Code § 164(b)(6)(B)
+      href: https://www.law.cornell.edu/uscode/text/26/164#b_6_B
+    - title: P.L. 119-21, sec. 70120(a), 139 Stat. 169
+      href: https://www.congress.gov/119/plaws/publ21/PLAW-119publ21.pdf#page=99
+    - title: 2025 Instructions for Schedule A, State and Local Tax Deduction Worksheet, line 10
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=7
