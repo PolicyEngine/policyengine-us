@@ -14,7 +14,12 @@ class wi_unemployment_compensation_subtraction(Variable):
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
-        us_tuc = add(tax_unit, period, ["taxable_unemployment_compensation"])
+        # Worksheet line 1 is the unemployment compensation in the filers'
+        # federal AGI, which leaves out a tax unit dependent's; the dependent
+        # reports their own on their own return.
+        us_tuc = tax_unit_non_dep_add(
+            tax_unit, period, ["taxable_unemployment_compensation"]
+        )
         us_agi = tax_unit("adjusted_gross_income", period)
         wi = parameters(period).gov.states.wi.tax.income
         p = wi.subtractions.unemployment_compensation.income_phase_out
