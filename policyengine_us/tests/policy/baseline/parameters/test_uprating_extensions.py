@@ -39,6 +39,11 @@ def test_all_uprating_factors_extend_to_2100():
         ("CPI-U", parameters.gov.bls.cpi.cpi_u, "-02-01"),
         ("Chained CPI-U", parameters.gov.bls.cpi.c_cpi_u, "-02-01"),
         ("CPI-W", parameters.gov.bls.cpi.cpi_w, "-02-01"),
+        (
+            "CMS Medicare spending per enrollee",
+            parameters.calibration.gov.hhs.medicare.per_capita_cost,
+            "-01-01",
+        ),
     ]
 
     for name, param, date_suffix in uprating_params:

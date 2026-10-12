@@ -1,0 +1,74 @@
+# 2021 Maryland resident booklet, line 9: the subtraction is the smaller of
+# federal Form 2441 line 6 or $3,000 ($6,000 for two or more). Form 502CR Part
+# B takes the federal credit from Form 2441. In 2021, Form 2441 caps excluded
+# benefits at $10,500 (line 21) and reduces the $8,000 / $16,000 limit by them
+# (lines 27-31), and Maryland did not decouple from either change.
+- name: The 2021 $10,500 exclusion removes the Form 2441 line 6 base
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 60_000
+        dependent_care_employer_benefits: 9_000
+      person2:
+        is_tax_unit_spouse: true
+        age: 35
+        employment_income: 40_000
+      person3:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 12_000
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MD
+  output:
+    # min($9,000, $10,500, $40,000) = $9,000; max($8,000 - $9,000, 0) = $0.
+    dependent_care_assistance_exclusion: 9_000
+    cdcc_relevant_expenses: 0
+    md_dependent_care_subtraction: 0
+    md_cdcc_potential: 0
+
+- name: The 2021 subtraction and credit use Form 2441 line 6 after a $10,500 exclusion
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 35
+        employment_income: 60_000
+        dependent_care_employer_benefits: 10_500
+      person2:
+        is_tax_unit_spouse: true
+        age: 35
+        employment_income: 40_000
+      person3:
+        age: 5
+      person4:
+        age: 3
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3, person4]
+        filing_status: JOINT
+        tax_unit_childcare_expenses: 20_000
+    households:
+      household:
+        members: [person1, person2, person3, person4]
+        state_code: MD
+  output:
+    dependent_care_assistance_exclusion: 10_500
+    # $16,000 - $10,500 = $5,500 (Form 2441 line 6).
+    cdcc_relevant_expenses: 5_500
+    # min($6,000, $5,500) = $5,500.
+    md_dependent_care_subtraction: 5_500
+    # $5,500 x 50% (AGI $100,000) = $2,750.
+    cdcc: 2_750
+    # Form 502CR Part B: $2,750 x 32% x (1 - 17 x 1%) = $730.40.
+    md_cdcc_potential: 730.4
