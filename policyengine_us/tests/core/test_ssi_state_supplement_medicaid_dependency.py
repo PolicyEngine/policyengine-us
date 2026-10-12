@@ -36,7 +36,10 @@ def situation(year, state="IN"):
 
 
 @pytest.mark.parametrize("year", [2027, 2030, 2035])
-@pytest.mark.parametrize("state,benefit", [("IN", "in_ssp"), ("KS", "ks_sspp")])
+@pytest.mark.parametrize(
+    "state,benefit",
+    [("IN", "in_ssp"), ("KS", "ks_sspp"), ("CO", "co_state_supplement")],
+)
 def test_ssp_snap_medicaid_calculation_order(year, state, benefit):
     """YAML cannot express repeated calculations in different orders."""
     variables = (benefit, "snap", "medicaid_enrolled")
@@ -54,7 +57,9 @@ def test_ssp_snap_medicaid_calculation_order(year, state, benefit):
     assert results[0]["snap"][1] > 0
     # Kansas does not cover this childless adult through Medicaid expansion;
     # SNAP pass-through does not replace Medicaid's category requirement.
-    assert results[0]["medicaid_enrolled"].tolist() == [True, state == "IN"]
+    # Colorado AND-CS reads Medicaid enrollment for its deeming exemption
+    # (9 CCR 2503-5 3.549(F)).
+    assert results[0]["medicaid_enrolled"].tolist() == [True, state != "KS"]
 
 
 @pytest.mark.parametrize(

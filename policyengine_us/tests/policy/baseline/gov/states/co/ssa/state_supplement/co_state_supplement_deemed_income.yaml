@@ -244,3 +244,40 @@
         state_code: CO
   output:
     co_state_supplement_deemed_income: [0, 5_760]
+
+- name: Case 8, the couple's combined $20 is not offered again after the client applies it to earnings.
+  # The married client reports SSI receipt with no payment this month and has
+  # $10 of interest and $200 of earnings. Their $10 share covers the interest
+  # (3.549(A)(2)(c)(1)); gross unearned income is under $20, so the other $10
+  # reduces their earnings (3.549(A)(2)(f)): (200 - 65 - 10) / 2 = 62.50.
+  # That leaves none of the couple's combined $20 for the spouse's $50
+  # pension (3.549(D)(2)), so all $50 is deemed.
+  period: 2026-01
+  input:
+    people:
+      head:
+        age: 40
+        is_ssi_disabled: true
+        receives_ssi: true
+        ssi: 0
+        interest_income: 120
+        employment_income: 2_400
+        is_tax_unit_head: true
+      spouse:
+        age: 45
+        pension_income: 600
+        medicaid_enrolled_for_ssi_state_supplement: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_own_countable_income: [62.5, 0]
+    co_state_supplement_deemed_income: [50, 0]
