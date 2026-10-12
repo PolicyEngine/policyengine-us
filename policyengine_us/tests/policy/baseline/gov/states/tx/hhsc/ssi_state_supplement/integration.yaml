@@ -362,3 +362,30 @@
     ssi: 0
     tx_ssi_state_supplement_eligible: false
     tx_ssi_state_supplement: 0
+
+- name: Scenario 13, facility resident outside the SSI facility living arrangement with income at the full federal rate.
+  # Only is_in_medicaid_facility is set, so SSI uses the $943 own-household
+  # rate. A $963/month pension gives $943 of countable income: SSI is $0, and
+  # the income is far above the $30 reduced standard that H-6000 applies to a
+  # facility resident, so there is no supplement.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 80
+        pension_income: 11_556
+        is_in_medicaid_facility: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ssi: 0
+    tx_ssi_state_supplement_eligible: false
+    tx_ssi_state_supplement: 0

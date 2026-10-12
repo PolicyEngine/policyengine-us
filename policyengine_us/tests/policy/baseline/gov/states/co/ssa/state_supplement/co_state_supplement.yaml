@@ -298,3 +298,41 @@
     ssi: [7_701, 7_701]
     co_state_supplement_countable_income: [2_610, 0]
     co_state_supplement: [1_617, 4_227]
+
+- name: Case 19, a disabled SSI couple receiving outside shelter support.
+  # No cash income. In-kind support and maintenance for a couple is one
+  # presumed maximum value: 1,491 / 3 + 20 = 517/month (20 CFR 416.1140), so
+  # couple countable income is 517 - 20 = 497 and the couple payment is
+  # 1,491 - 497 = 994, or 497 each. Each spouse counts half the couple's
+  # in-kind support, 258.50, less their 10 share of the disregard: 248.50.
+  # Grant 994 - 497 - 248.50 = 248.50/month (2,982/year) each.
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_outside_shelter_support: true
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_receives_outside_shelter_support: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [5_964, 5_964]
+    co_state_supplement_countable_income: [2_982, 2_982]
+    co_state_supplement: [2_982, 2_982]
