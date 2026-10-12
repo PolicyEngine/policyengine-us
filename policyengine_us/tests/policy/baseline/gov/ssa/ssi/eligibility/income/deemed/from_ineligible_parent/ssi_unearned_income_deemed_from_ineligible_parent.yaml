@@ -1,0 +1,1370 @@
+# 20 CFR 416.1165 deems the income of an eligible child's ineligible parents
+# to the child. An ineligible parent is 'a natural or adoptive parent, or the
+# spouse ... of a natural or adoptive parent, who lives with you and is not
+# eligible for SSI benefits' (416.1160(d)). The steps (416.1165(a)-(e), POMS
+# SI 01320.500 C):
+# 1. Deduct an allocation for each ineligible child: 'the natural or adopted
+#    child of your parent or of your parent's spouse ... who lives in the
+#    same household with you, and is not eligible for SSI benefits'
+#    (416.1160(d), 416.1165(b)), from unearned income first, then earned.
+# 2. Apply the $20 general exclusion, then $65 and one-half of the rest of
+#    earned income (416.1165(d)(1)-(2)).
+# 3. Subtract the living allowance: the couple rate for two parents, the
+#    individual rate for one, and both rates for two natural parents and a
+#    stepparent (416.1165(d)(3), POMS SI 01320.500 B.4).
+# 4. Divide equally among the parents' eligible children under 18 in the
+#    household (416.1165(e)(2)).
+# Federal benefit rates: 2025 individual $967, couple $1,450, so the
+# ineligible child allocation is $483 a month.
+
+- name: POMS SI 01320.500 F.1, Bill Sanders, parents with only earned income
+  # Earnest earns $4,500 in January 2025; Bill has two ineligible siblings.
+  # $4,500 - 2 x $483 = $3,534; - $85 = $3,449; half = $1,724.50; less the
+  # $1,450 couple allowance = $274.50 deemed a month. The POMS text then
+  # calls Bill ineligible, which does not follow from its own figures: $274.50
+  # less $20 is $254.50, below the $967 rate.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      earnest:
+        age: 40
+        person_id: 1
+        ssi_earned_income: 4_500 * 12
+      sarah:
+        age: 38
+        person_id: 2
+      bill:
+        age: 10
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+      first_sibling:
+        age: 8
+        person_id: 4
+        parent_1_id: 1
+        parent_2_id: 2
+      second_sibling:
+        age: 6
+        person_id: 5
+        parent_1_id: 1
+        parent_2_id: 2
+    tax_units:
+      tax_unit:
+        members: [earnest, sarah, bill, first_sibling, second_sibling]
+    marital_units:
+      parents:
+        members: [earnest, sarah]
+      bill_alone:
+        members: [bill]
+      first_sibling_alone:
+        members: [first_sibling]
+      second_sibling_alone:
+        members: [second_sibling]
+    households:
+      household:
+        members: [earnest, sarah, bill, first_sibling, second_sibling]
+        state_code: TX
+  output:
+    is_ssi_income_deeming_child: [false, false, true, false, false]
+    is_ssi_ineligible_parent: [true, true, false, false, false]
+    ssi_parental_deeming_child_allocations: [0, 0, 11_592, 0, 0] # 2 x $483 x 12
+    ssi_parental_deeming_parent_allocation: [0, 0, 17_400, 0, 0] # $1,450 x 12
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 3_294, 0, 0] # $274.50 x 12
+    ssi_countable_income: [0, 0, 3_054, 0, 0] # ($274.50 - $20) x 12
+
+- name: POMS SI 01320.500 F.2, Nancy Weaver, parents with only unearned income
+  # $1,000 + $1,124 = $2,124; less $483 for her brother = $1,641; - $20 =
+  # $1,621; less $1,450 = $171 deemed a month; $151 countable.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      chris:
+        age: 45
+        person_id: 1
+        ssi_unearned_income: 1_000 * 12
+      deanna:
+        age: 44
+        person_id: 2
+        ssi_unearned_income: 1_124 * 12
+      nancy:
+        age: 12
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+      brother:
+        age: 10
+        person_id: 4
+        parent_1_id: 1
+        parent_2_id: 2
+    tax_units:
+      tax_unit:
+        members: [chris, deanna, nancy, brother]
+    marital_units:
+      parents:
+        members: [chris, deanna]
+      nancy_alone:
+        members: [nancy]
+      brother_alone:
+        members: [brother]
+    households:
+      household:
+        members: [chris, deanna, nancy, brother]
+        state_code: TX
+  output:
+    ssi_parental_deeming_child_allocations: [0, 0, 5_796, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 2_052, 0] # $171 x 12
+    ssi_countable_income: [0, 0, 1_812, 0] # $151 x 12
+
+- name: POMS SI 01320.500 F.3, James and Janet Johnson, two eligible children
+  # Lucille's $1,295 - $20 = $1,275; less $967 = $308, divided by 2 = $154
+  # each; $134 countable each.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      lucille:
+        age: 35
+        person_id: 1
+        ssi_unearned_income: 1_295 * 12
+      james:
+        age: 9
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+      janet:
+        age: 7
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+    tax_units:
+      tax_unit:
+        members: [lucille, james, janet]
+    marital_units:
+      lucille_alone:
+        members: [lucille]
+      james_alone:
+        members: [james]
+      janet_alone:
+        members: [janet]
+    households:
+      household:
+        members: [lucille, james, janet]
+        state_code: TX
+  output:
+    ssi_parental_deeming_parent_allocation: [0, 11_604, 11_604] # $967 x 12
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 1_848, 1_848] # $154 x 12
+    ssi_countable_income: [0, 1_608, 1_608] # $134 x 12
+
+- name: A Johnson family where Janet is a disabled child who is not a qualified noncitizen
+  # Lucille has $2,000 of unearned income. Janet 'is not eligible for SSI
+  # benefits', so she is an ineligible child (416.1160(d)): she takes a $483
+  # allocation and no share of the deemed income (416.1165(e)(2)). $2,000 -
+  # $483 = $1,517; - $20 = $1,497; less $967 = $530, all deemed to James.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      lucille:
+        age: 35
+        person_id: 1
+        ssi_unearned_income: 2_000 * 12
+      james:
+        age: 9
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+      janet:
+        age: 7
+        is_ssi_disabled: true
+        immigration_status: UNDOCUMENTED
+        person_id: 3
+        parent_1_id: 1
+    tax_units:
+      tax_unit:
+        members: [lucille, james, janet]
+    marital_units:
+      lucille_alone:
+        members: [lucille]
+      james_alone:
+        members: [james]
+      janet_alone:
+        members: [janet]
+    households:
+      household:
+        members: [lucille, james, janet]
+        state_code: TX
+  output:
+    is_ssi_income_deeming_child: [false, true, false]
+    is_ssi_ineligible_child: [false, false, true]
+    ssi_parental_deeming_child_allocations: [0, 5_796, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 6_360, 0] # $530 x 12
+
+- name: POMS SI 01320.500 F.5, Tommy Robinson, two natural parents and a stepparent
+  # Tommy and his parent Willie live in the household of Tommy's other
+  # parent, Jasmine, her husband Jacob and the Craigs' two children.
+  # Willie's $1,242 less 2 x $483 = $276; - $20 = $256. The Craigs' $4,474
+  # earned - $65 = $4,409; half = $2,204.50. $2,460.50 less the couple rate
+  # plus the individual rate ($1,450 + $967 = $2,417) = $43.50 deemed a
+  # month; $23.50 countable.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      willie:
+        age: 40
+        person_id: 1
+        ssi_unearned_income: 1_242 * 12
+      tommy:
+        age: 11
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+      jasmine:
+        age: 38
+        person_id: 2
+        ssi_earned_income: 2_274 * 12
+      jacob:
+        age: 39
+        person_id: 4
+        ssi_earned_income: 2_200 * 12
+      first_craig_child:
+        age: 6
+        person_id: 5
+        parent_1_id: 2
+        parent_2_id: 4
+      second_craig_child:
+        age: 4
+        person_id: 6
+        parent_1_id: 2
+        parent_2_id: 4
+    tax_units:
+      robinsons:
+        members: [willie, tommy]
+      craigs:
+        members: [jasmine, jacob, first_craig_child, second_craig_child]
+    marital_units:
+      willie_alone:
+        members: [willie]
+      tommy_alone:
+        members: [tommy]
+      craigs:
+        members: [jasmine, jacob]
+      first_craig_child_alone:
+        members: [first_craig_child]
+      second_craig_child_alone:
+        members: [second_craig_child]
+    households:
+      household:
+        members:
+          [willie, tommy, jasmine, jacob, first_craig_child, second_craig_child]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [true, false, true, true, false, false]
+    ssi_parental_deeming_child_allocations: [0, 11_592, 0, 0, 0, 0]
+    ssi_parental_deeming_parent_allocation: [0, 29_004, 0, 0, 0, 0] # ($1,450 + $967) x 12
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 522, 0, 0, 0, 0] # $43.50 x 12
+    ssi_countable_income: [0, 282, 0, 0, 0, 0] # $23.50 x 12
+
+- name: POMS SI 01320.550 D.3, Henry Walden, in the month his mother died
+  # Nicolas's $1,368 pension - $20 = $1,348; Theresa's $329 wages - $65 =
+  # $264, half = $132; $1,480 less $1,450 = $30 deemed; $10 countable.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      nicolas:
+        age: 50
+        person_id: 1
+        ssi_unearned_income: 1_368 * 12
+      theresa:
+        age: 48
+        person_id: 2
+        ssi_earned_income: 329 * 12
+      henry:
+        age: 14
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+    tax_units:
+      tax_unit:
+        members: [nicolas, theresa, henry]
+    marital_units:
+      parents:
+        members: [nicolas, theresa]
+      henry_alone:
+        members: [henry]
+    households:
+      household:
+        members: [nicolas, theresa, henry]
+        state_code: TX
+  output:
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 360] # $30 x 12
+    ssi_countable_income: [0, 0, 120] # $10 x 12
+
+- name: POMS SI 01320.550 D.3, Henry Walden, after his mother's death
+  # 'Use only the surviving parent's income ... and give one parental
+  # allocation': $1,378 - $20 = $1,358; less $967 = $391 deemed; $371
+  # countable.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      nicolas:
+        age: 50
+        person_id: 1
+        ssi_unearned_income: 1_378 * 12
+      henry:
+        age: 14
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+    tax_units:
+      tax_unit:
+        members: [nicolas, henry]
+    marital_units:
+      nicolas_alone:
+        members: [nicolas]
+      henry_alone:
+        members: [henry]
+    households:
+      household:
+        members: [nicolas, henry]
+        state_code: TX
+  output:
+    ssi_parental_deeming_parent_allocation: [0, 11_604]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 4_692] # $391 x 12
+    ssi_countable_income: [0, 4_452] # $371 x 12
+
+- name: POMS SI 01320.550 D.7, Ben deems only from his mother Kay before the adoption
+  # Kay, an unmarried 15-year-old, lives with her parents and her SSI-eligible
+  # son Ben. Before Kay's parents adopt Ben, they are not his parents, so
+  # only Kay's income (none) is deemed. Treating the household's tax unit as
+  # Ben's parents would deem $766 a month of his grandfather's wages.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      grandfather:
+        age: 45
+        person_id: 1
+        ssi_earned_income: 5_000 * 12
+      grandmother:
+        age: 43
+        person_id: 2
+      kay:
+        age: 15
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+      ben:
+        age: 0
+        is_ssi_disabled: true
+        person_id: 4
+        parent_1_id: 3
+    tax_units:
+      tax_unit:
+        members: [grandfather, grandmother, kay, ben]
+    marital_units:
+      grandparents:
+        members: [grandfather, grandmother]
+      kay_alone:
+        members: [kay]
+      ben_alone:
+        members: [ben]
+    households:
+      household:
+        members: [grandfather, grandmother, kay, ben]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [false, false, true, false]
+    is_ssi_income_deeming_child: [false, false, false, true]
+    # Kay is Ben's parent, not his sister.
+    ssi_parental_deeming_child_allocations: [0, 0, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0, 0]
+
+- name: POMS SI 01320.550 D.7, Ben after his grandparents adopt him
+  # 'the amount of income deemed from Kay's parents to Ben is reduced due to
+  # an ineligible child allocation for another child in the household
+  # (Kay)': $5,000 - $483 = $4,517; - $85 = $4,432; half = $2,216; less
+  # $1,450 = $766 deemed a month.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      grandfather:
+        age: 45
+        person_id: 1
+        ssi_earned_income: 5_000 * 12
+      grandmother:
+        age: 43
+        person_id: 2
+      kay:
+        age: 15
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+      ben:
+        age: 0
+        is_ssi_disabled: true
+        person_id: 4
+        parent_1_id: 1
+        parent_2_id: 2
+    tax_units:
+      tax_unit:
+        members: [grandfather, grandmother, kay, ben]
+    marital_units:
+      grandparents:
+        members: [grandfather, grandmother]
+      kay_alone:
+        members: [kay]
+      ben_alone:
+        members: [ben]
+    households:
+      household:
+        members: [grandfather, grandmother, kay, ben]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [true, true, false, false]
+    ssi_parental_deeming_child_allocations: [0, 0, 0, 5_796]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0, 9_192] # $766 x 12
+
+- name: A cousin in the parent's tax unit is not an ineligible child
+  # Only 'the natural or adopted child of your parent or of your parent's
+  # spouse' is allocated (416.1160(d)). The cousin's ids name an aunt who
+  # lives elsewhere. $2,500 - $85 = $2,415; half = $1,207.50; less $967 =
+  # $240.50 deemed. Allocating for the cousin would leave nothing to deem.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 35
+        person_id: 1
+        ssi_earned_income: 2_500 * 12
+      child:
+        age: 8
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+        parent_2_id: 99
+      cousin:
+        age: 10
+        person_id: 3
+        parent_1_id: 50
+    tax_units:
+      tax_unit:
+        members: [mother, child, cousin]
+    marital_units:
+      mother_alone:
+        members: [mother]
+      child_alone:
+        members: [child]
+      cousin_alone:
+        members: [cousin]
+    households:
+      household:
+        members: [mother, child, cousin]
+        state_code: TX
+  output:
+    ssi_parental_deeming_child_allocations: [0, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 2_886, 0] # $240.50 x 12
+
+- name: A half-sibling claimed by a co-resident grandmother is an ineligible child
+  # The child lives with his father, his stepmother and their son, whom the
+  # grandmother claims. Both are ineligible parents (couple rate), and their
+  # son is allocated wherever he files. $4,000 - $483 = $3,517; - $85 =
+  # $3,432; half = $1,716; less $1,450 = $266 deemed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      father:
+        age: 40
+        person_id: 1
+        ssi_earned_income: 4_000 * 12
+      stepmother:
+        age: 36
+        person_id: 2
+      child:
+        age: 9
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 99
+      half_brother:
+        age: 3
+        person_id: 4
+        parent_1_id: 1
+        parent_2_id: 2
+      grandmother:
+        age: 65
+        person_id: 5
+    tax_units:
+      parents:
+        members: [father, stepmother, child]
+      grandmother:
+        members: [grandmother, half_brother]
+    marital_units:
+      couple:
+        members: [father, stepmother]
+      child_alone:
+        members: [child]
+      half_brother_alone:
+        members: [half_brother]
+      grandmother_alone:
+        members: [grandmother]
+    households:
+      household:
+        members: [father, stepmother, child, half_brother, grandmother]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [true, true, false, false, false]
+    ssi_parental_deeming_child_allocations: [0, 0, 5_796, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 3_192, 0, 0] # $266 x 12
+
+- name: Without parent ids a stepparent married to the child's parent deems
+  # 416.1160(d) includes 'the spouse ... of a natural or adoptive parent, who
+  # lives with you'. The mother reports her child; her husband does not.
+  # $1,500 + $2,500 = $4,000; - $85 = $3,915; half = $1,957.50; less $1,450
+  # = $507.50 deemed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 35
+        own_children_in_household: 1
+        ssi_earned_income: 1_500 * 12
+      stepfather:
+        age: 37
+        ssi_earned_income: 2_500 * 12
+      child:
+        age: 9
+        is_ssi_disabled: true
+    tax_units:
+      tax_unit:
+        members: [mother, stepfather, child]
+    marital_units:
+      couple:
+        members: [mother, stepfather]
+      child_alone:
+        members: [child]
+    households:
+      household:
+        members: [mother, stepfather, child]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [true, true, false]
+    ssi_parental_deeming_parent_allocation: [0, 0, 17_400]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 6_090] # $507.50 x 12
+
+- name: A stepparent does not deem once the natural parent has left the household
+  # POMS SI 01320.500 A.1: a stepparent's income is deemed 'only when the
+  # natural or adoptive parent also lives in the household'; SI 01320.550
+  # B.8. The child's id names his mother, who lives elsewhere; the
+  # stepfather reports him as his own child.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      stepfather:
+        age: 37
+        person_id: 1
+        own_children_in_household: 1
+        ssi_earned_income: 3_000 * 12
+      child:
+        age: 9
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 99
+    tax_units:
+      tax_unit:
+        members: [stepfather, child]
+    marital_units:
+      stepfather_alone:
+        members: [stepfather]
+      child_alone:
+        members: [child]
+    households:
+      household:
+        members: [stepfather, child]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [false, false]
+    is_ssi_income_deeming_child: [false, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0]
+
+- name: A parent who claims the child but lives elsewhere does not deem
+  # 416.1160(d): an ineligible parent 'lives with you'. Without ids, the
+  # father who claims the child is in her tax unit but another household;
+  # her mother, who has no income, is the only ineligible parent.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 33
+        own_children_in_household: 1
+      father:
+        age: 35
+        own_children_in_household: 1
+        ssi_earned_income: 4_000 * 12
+      child:
+        age: 9
+        is_ssi_disabled: true
+    tax_units:
+      tax_unit:
+        members: [father, child, mother]
+    marital_units:
+      mother_alone:
+        members: [mother]
+      father_alone:
+        members: [father]
+      child_alone:
+        members: [child]
+    households:
+      home:
+        members: [mother, child]
+        state_code: TX
+      elsewhere:
+        members: [father]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [true, false, false]
+    ssi_parental_deeming_parent_allocation: [0, 0, 11_604]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
+
+- name: A disabled parent who is not a qualified noncitizen is an ineligible parent
+  # She is not eligible for SSI, so her income is deemed (416.1160(d)).
+  # $1,500 - $20 = $1,480; less $967 = $513 deemed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 40
+        is_ssi_disabled: true
+        immigration_status: UNDOCUMENTED
+        person_id: 1
+        ssi_unearned_income: 1_500 * 12
+      child:
+        age: 9
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+    tax_units:
+      tax_unit:
+        members: [mother, child]
+    marital_units:
+      mother_alone:
+        members: [mother]
+      child_alone:
+        members: [child]
+    households:
+      household:
+        members: [mother, child]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [true, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 6_156] # $513 x 12
+
+- name: A married 17-year-old is not a child for parental deeming
+  # POMS SI 01310.115 A.2: an eligible child for deeming 'is not married'
+  # (416.1856). She and her husband live with her parents, who claim both.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 45
+        person_id: 1
+        ssi_earned_income: 5_000 * 12
+      father:
+        age: 46
+        person_id: 2
+      daughter:
+        age: 17
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+      husband:
+        age: 18
+        person_id: 4
+    tax_units:
+      tax_unit:
+        members: [mother, father, daughter, husband]
+    marital_units:
+      parents:
+        members: [mother, father]
+      couple:
+        members: [daughter, husband]
+    households:
+      household:
+        members: [mother, father, daughter, husband]
+        state_code: TX
+  output:
+    is_ssi_income_deeming_child: [false, false, false, false]
+    is_ssi_ineligible_parent: [false, false, false, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0, 0]
+
+- name: A working student child's exclusion does not reduce the parent's earnings
+  # The student earned income exclusion applies to the child's own wages
+  # (416.1112(c)(3)); 416.1161(a) does not exclude it from a parent's income.
+  # Mother: $3,000 - $85 = $2,915; half = $1,457.50; less $967 = $490.50.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 40
+        person_id: 1
+        ssi_earned_income: 3_000 * 12
+      child:
+        age: 16
+        is_ssi_disabled: true
+        meets_ssi_disability_criteria: true
+        is_in_k12_school: true
+        person_id: 2
+        parent_1_id: 1
+        ssi_earned_income: 500 * 12
+    tax_units:
+      tax_unit:
+        members: [mother, child]
+    marital_units:
+      mother_alone:
+        members: [mother]
+      child_alone:
+        members: [child]
+    households:
+      household:
+        members: [mother, child]
+        state_code: TX
+  output:
+    ssi_blind_or_disabled_working_student_exclusion: [0, 6_000]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 5_886] # $490.50 x 12
+
+- name: Each family's deemed income is divided among its own eligible children
+  # Two sisters share a home, each with a disabled son. 416.1165(e)(2)
+  # divides 'among those eligible children' of the same parents. Ann: $3,000
+  # - $85 = $2,915; half = $1,457.50; less $967 = $490.50. Beth: $1,200 -
+  # $20 = $1,180; less $967 = $213.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      ann:
+        age: 34
+        person_id: 1
+        ssi_earned_income: 3_000 * 12
+      ann_son:
+        age: 8
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+      beth:
+        age: 30
+        person_id: 3
+        ssi_unearned_income: 1_200 * 12
+      beth_son:
+        age: 6
+        is_ssi_disabled: true
+        person_id: 4
+        parent_1_id: 3
+    tax_units:
+      ann:
+        members: [ann, ann_son, beth, beth_son]
+    marital_units:
+      ann_alone:
+        members: [ann]
+      ann_son_alone:
+        members: [ann_son]
+      beth_alone:
+        members: [beth]
+      beth_son_alone:
+        members: [beth_son]
+    households:
+      household:
+        members: [ann, ann_son, beth, beth_son]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [true, false, true, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 5_886, 0, 2_556] # $490.50, $213 x 12
+
+- name: Without parent ids a disabled teen mother deems from her parents, not herself
+  # Kay of POMS SI 01320.550 D.7 is herself an eligible child: 16, disabled,
+  # with her baby and a disabled 12-year-old brother, all claimed by her
+  # parents. Only her parents deem, and she shares their income with her
+  # brother (416.1165(e)(2)); her baby is 'your natural child' (416.1160(d)),
+  # an ineligible child. 2026: $4,000 - $497 = $3,503; - $85 = $3,418; half
+  # = $1,709; less the $1,491 couple rate = $218, or $109 each.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      father:
+        age: 45
+        own_children_in_household: 2
+        ssi_earned_income: 4_000 * 12
+      mother:
+        age: 43
+        own_children_in_household: 2
+      kay:
+        age: 16
+        is_ssi_disabled: true
+        own_children_in_household: 1
+        ssi_unearned_income: 300 * 12
+      brother:
+        age: 12
+        is_ssi_disabled: true
+      baby:
+        age: 0
+    tax_units:
+      tax_unit:
+        members: [father, mother, kay, brother, baby]
+    marital_units:
+      parents:
+        members: [father, mother]
+      kay_alone:
+        members: [kay]
+      brother_alone:
+        members: [brother]
+      baby_alone:
+        members: [baby]
+    households:
+      household:
+        members: [father, mother, kay, brother, baby]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [true, true, false, false, false]
+    ssi_parental_deeming_child_allocations: [0, 0, 5_964, 5_964, 0] # $497 x 12
+    ssi_parental_deeming_parent_allocation: [0, 0, 17_892, 17_892, 0] # $1,491 x 12
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 1_308, 1_308, 0] # $109 x 12
+
+- name: Without parent ids a teen mother who deems is not also allocated as an ineligible child
+  # Ben, disabled, lives with his mother Kay, 15, and her parents, who claim
+  # both. Without ids, the tax-unit proxy also presumes Kay's parents deem to
+  # Ben, because they report her as their child (a documented data
+  # limitation; the D.7 case with ids above has only Kay deem). Kay is one of
+  # his parents, so she is not his sibling and takes no allocation. 2026:
+  # $8,000 - $85 = $7,915; half = $3,957.50; less the couple rate plus the
+  # individual rate for three deemors ($1,491 + $994) = $1,472.50.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      grandfather:
+        age: 45
+        own_children_in_household: 1
+        ssi_earned_income: 8_000 * 12
+      grandmother:
+        age: 43
+        own_children_in_household: 1
+      kay:
+        age: 15
+        own_children_in_household: 1
+      ben:
+        age: 1
+        is_ssi_disabled: true
+    tax_units:
+      tax_unit:
+        members: [grandfather, grandmother, kay, ben]
+    marital_units:
+      grandparents:
+        members: [grandfather, grandmother]
+      kay_alone:
+        members: [kay]
+      ben_alone:
+        members: [ben]
+    households:
+      household:
+        members: [grandfather, grandmother, kay, ben]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [true, true, true, false]
+    ssi_parental_deeming_child_allocations: [0, 0, 0, 0]
+    ssi_parental_deeming_parent_allocation: [0, 0, 0, 29_820] # ($1,491 + $994) x 12
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0, 17_670] # $1,472.50 x 12
+
+- name: 416.1165(h) Example 1, Henry, with parent ids
+  # 1992 rates: $422 individual, $633 couple, so a $211 allocation. $365 -
+  # $211 = $154; - $20 = $134. $1,165 - $65 = $1,100; half = $550. $684 less
+  # $633 = $51 deemed; $31 countable.
+  period: 1992
+  absolute_error_margin: 0
+  input:
+    people:
+      henry:
+        age: 12
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+      henrys_brother:
+        age: 12
+        person_id: 4
+        parent_1_id: 1
+        parent_2_id: 2
+      henrys_mother:
+        person_id: 1
+        age: 40
+        pension_income: 365 * 12
+      henrys_father:
+        person_id: 2
+        age: 42
+        employment_income: 1_165 * 12
+    tax_units:
+      tax_unit:
+        members: [henry, henrys_brother, henrys_mother, henrys_father]
+    marital_units:
+      parents:
+        members: [henrys_mother, henrys_father]
+      henry_alone:
+        members: [henry]
+      brother_alone:
+        members: [henrys_brother]
+    households:
+      household:
+        members: [henry, henrys_brother, henrys_mother, henrys_father]
+        state_code: TX
+  output:
+    ssi_parental_deeming_child_allocations: [2_532, 0, 0, 0] # $211 x 12
+    ssi_unearned_income_deemed_from_ineligible_parent: [612, 0, 0, 0] # $51 x 12
+    ssi_countable_income: [372, 0, 0, 0] # $31 x 12
+
+- name: 416.1165(h) Example 4, Jack, with parent ids
+  # Allocations of $422 for two brothers exceed the $350 pension by $72,
+  # which comes off the $1,525 earnings: $1,453; - $85 = $1,368; half =
+  # $684; less $633 = $51 deemed; $31 countable.
+  period: 1992
+  absolute_error_margin: 0
+  input:
+    people:
+      jack:
+        age: 12
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+      jacks_first_brother:
+        age: 12
+        person_id: 4
+        parent_1_id: 1
+        parent_2_id: 2
+      jacks_second_brother:
+        age: 10
+        person_id: 5
+        parent_1_id: 1
+        parent_2_id: 2
+      jacks_mother:
+        person_id: 1
+        age: 40
+        pension_income: 350 * 12
+      jacks_father:
+        person_id: 2
+        age: 42
+        employment_income: 1_525 * 12
+    tax_units:
+      tax_unit:
+        members: [jack, jacks_first_brother, jacks_second_brother, jacks_mother, jacks_father]
+    marital_units:
+      parents:
+        members: [jacks_mother, jacks_father]
+      jack_alone:
+        members: [jack]
+      first_brother_alone:
+        members: [jacks_first_brother]
+      second_brother_alone:
+        members: [jacks_second_brother]
+    households:
+      household:
+        members: [jack, jacks_first_brother, jacks_second_brother, jacks_mother, jacks_father]
+        state_code: TX
+  output:
+    ssi_parental_deeming_child_allocations: [5_064, 0, 0, 0, 0] # 2 x $211 x 12
+    ssi_unearned_income_deemed_from_ineligible_parent: [612, 0, 0, 0, 0] # $51 x 12
+    ssi_countable_income: [372, 0, 0, 0, 0] # $31 x 12
+
+- name: A stepparent who has left still has an allocation for his child at home
+  # POMS SI 00501.010 B.2.d: 'If an SSI eligible child's stepparent has
+  # permanently left the household, we continue to provide the ineligible
+  # child allocation for each of the stepparent's children remaining in the
+  # eligible child's household.' The mother's husband lives elsewhere; his son
+  # stays with her and her disabled daughter. He does not deem (SI 01320.500
+  # A.1). $4,000 - $483 = $3,517; - $85 = $3,432; half = $1,716; less $967 =
+  # $749 deemed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 38
+        person_id: 1
+        ssi_earned_income: 4_000 * 12
+      daughter:
+        age: 10
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+      stepson:
+        age: 12
+        person_id: 3
+        parent_1_id: 4
+      stepfather:
+        age: 40
+        person_id: 4
+    tax_units:
+      mother:
+        members: [mother, daughter, stepson]
+      stepfather:
+        members: [stepfather]
+    marital_units:
+      couple:
+        members: [mother, stepfather]
+      daughter_alone:
+        members: [daughter]
+      stepson_alone:
+        members: [stepson]
+    households:
+      home:
+        members: [mother, daughter, stepson]
+        state_code: TX
+      elsewhere:
+        members: [stepfather]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [true, false, false, false]
+    ssi_parental_deeming_child_allocations: [0, 5_796, 0, 0]
+    ssi_parental_deeming_parent_allocation: [0, 11_604, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 8_988, 0, 0] # $749 x 12
+
+- name: An id that repeats the other parent id is not read as an absent stepparent
+  # The mother's husband lives elsewhere and shares person_id 4 with the aunt
+  # at home, which the id contract allows (no tax unit spans households).
+  # The cousin's ids both name the aunt, so the cousin is not the
+  # stepfather's child and takes no allocation. $4,000 - $85 = $3,915; half
+  # = $1,957.50; less $967 = $990.50 deemed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 38
+        person_id: 1
+        ssi_earned_income: 4_000 * 12
+      daughter:
+        age: 10
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+      aunt:
+        age: 35
+        person_id: 4
+      cousin:
+        age: 9
+        person_id: 5
+        parent_1_id: 4
+        parent_2_id: 4
+      stepfather:
+        age: 40
+        person_id: 4
+    tax_units:
+      mother:
+        members: [mother, daughter]
+      aunt:
+        members: [aunt, cousin]
+      stepfather:
+        members: [stepfather]
+    marital_units:
+      couple:
+        members: [mother, stepfather]
+      daughter_alone:
+        members: [daughter]
+      aunt_alone:
+        members: [aunt]
+      cousin_alone:
+        members: [cousin]
+    households:
+      home:
+        members: [mother, daughter, aunt, cousin]
+        state_code: TX
+      elsewhere:
+        members: [stepfather]
+        state_code: TX
+  output:
+    ssi_parental_deeming_child_allocations: [0, 0, 0, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 11_886, 0, 0, 0] # $990.50 x 12
+
+- name: Without ids an absent stepfather's child in his tax unit is allocated in a linked household
+  # The daughter's id names her mother. The mother's husband lives elsewhere
+  # and is a parent; his son, who has no ids, lives with the mother and is in
+  # his tax unit. The proxy may presume the son is his child because he is a
+  # parent some of whose children no id names. $4,000 - $483 = $3,517; -
+  # $85 = $3,432; half = $1,716; less $967 = $749 deemed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 38
+        person_id: 1
+        own_children_in_household: 1
+        ssi_earned_income: 4_000 * 12
+      daughter:
+        age: 10
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+      stepson:
+        age: 12
+        person_id: 3
+      stepfather:
+        age: 40
+        person_id: 4
+        is_parent: true
+    tax_units:
+      mother:
+        members: [mother, daughter]
+      stepfather:
+        members: [stepfather, stepson]
+    marital_units:
+      couple:
+        members: [mother, stepfather]
+      daughter_alone:
+        members: [daughter]
+      stepson_alone:
+        members: [stepson]
+    households:
+      home:
+        members: [mother, daughter, stepson]
+        state_code: TX
+      elsewhere:
+        members: [stepfather]
+        state_code: TX
+  output:
+    ssi_parental_deeming_child_allocations: [0, 5_796, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 8_988, 0, 0] # $749 x 12
+
+- name: An absent stepfather lends the proxy only his own tax unit
+  # As above, with an aunt and her son, who has no ids, at home; the mother
+  # claims the cousin. The stepfather being a parent lets the proxy presume
+  # his tax unit's child is his, not the cousin in the mother's tax unit
+  # (416.1160(d) does not reach cousins). $4,000 - $483 = $3,517; - $85 =
+  # $3,432; half = $1,716; less $967 = $749 deemed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 38
+        person_id: 1
+        own_children_in_household: 1
+        ssi_earned_income: 4_000 * 12
+      daughter:
+        age: 10
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+      stepson:
+        age: 12
+        person_id: 3
+      aunt:
+        age: 35
+        person_id: 5
+      cousin:
+        age: 8
+        person_id: 6
+      stepfather:
+        age: 40
+        person_id: 4
+        is_parent: true
+    tax_units:
+      mother:
+        members: [mother, daughter, cousin]
+      aunt:
+        members: [aunt]
+      stepfather:
+        members: [stepfather, stepson]
+    marital_units:
+      couple:
+        members: [mother, stepfather]
+      daughter_alone:
+        members: [daughter]
+      stepson_alone:
+        members: [stepson]
+      aunt_alone:
+        members: [aunt]
+      cousin_alone:
+        members: [cousin]
+    households:
+      home:
+        members: [mother, daughter, stepson, aunt, cousin]
+        state_code: TX
+      elsewhere:
+        members: [stepfather]
+        state_code: TX
+  output:
+    ssi_parental_deeming_child_allocations: [0, 5_796, 0, 0, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 8_988, 0, 0, 0, 0] # $749 x 12
+
+- name: A 17-year-old married to a husband who lives elsewhere is not a child for parental deeming
+  # 416.1856(b): a child is 'not married'; 416.1806 recognizes the marriage
+  # wherever the spouses live. Her brother is the only eligible child.
+  # $4,000 - $85 = $3,915; half = $1,957.50; less $967 = $990.50 deemed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 42
+        person_id: 1
+        ssi_earned_income: 4_000 * 12
+      daughter:
+        age: 17
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+      son:
+        age: 9
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+      husband:
+        age: 19
+        person_id: 4
+    tax_units:
+      mother:
+        members: [mother, daughter, son]
+      husband:
+        members: [husband]
+    marital_units:
+      mother_alone:
+        members: [mother]
+      couple:
+        members: [daughter, husband]
+      son_alone:
+        members: [son]
+    households:
+      home:
+        members: [mother, daughter, son]
+        state_code: TX
+      elsewhere:
+        members: [husband]
+        state_code: TX
+  output:
+    is_ssi_income_deeming_child: [false, false, true, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 11_886, 0] # $990.50 x 12
+
+- name: Half-siblings with the same ineligible parent share her income when one also lives with an SSI-eligible father
+  # 416.1165(e)(2) divides 'the parental income to be deemed' among the
+  # eligible children. The mother is the only ineligible parent of both
+  # boys; the older boy's father, who lives with them unmarried to her, is
+  # disabled and eligible, so his income is not deemed (416.1165(g)(1)).
+  # $3,000 - $85 = $2,915; half = $1,457.50; less $967 = $490.50, or
+  # $245.25 each.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 36
+        person_id: 1
+        ssi_earned_income: 3_000 * 12
+      father:
+        age: 40
+        is_ssi_disabled: true
+        person_id: 2
+      older:
+        age: 10
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+      younger:
+        age: 6
+        is_ssi_disabled: true
+        person_id: 4
+        parent_1_id: 1
+    tax_units:
+      tax_unit:
+        members: [mother, father, older, younger]
+    marital_units:
+      mother_alone:
+        members: [mother]
+      father_alone:
+        members: [father]
+      older_alone:
+        members: [older]
+      younger_alone:
+        members: [younger]
+    households:
+      household:
+        members: [mother, father, older, younger]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [true, false, false, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 2_943, 2_943] # $245.25 x 12
+
+- name: Children who share an ineligible parent share one set of allocations
+  # As above, with the father's 8-year-old daughter, who is not disabled,
+  # also at home. She is the older boy's sister (416.1160(d)) and a child of
+  # a parent in the deeming household (POMS SI 01310.140 A), so her
+  # allocation comes off the mother's income once, before it is divided
+  # between the boys (SI 01320.500 C, steps 1 and 9). $3,000 - $483 =
+  # $2,517; - $85 = $2,432; half = $1,216; less $967 = $249, or $124.50
+  # each.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 36
+        person_id: 1
+        ssi_earned_income: 3_000 * 12
+      father:
+        age: 40
+        is_ssi_disabled: true
+        person_id: 2
+      older:
+        age: 10
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+      younger:
+        age: 6
+        is_ssi_disabled: true
+        person_id: 4
+        parent_1_id: 1
+      half_sister:
+        age: 8
+        person_id: 5
+        parent_1_id: 2
+    tax_units:
+      tax_unit:
+        members: [mother, father, older, younger, half_sister]
+    marital_units:
+      mother_alone:
+        members: [mother]
+      father_alone:
+        members: [father]
+      older_alone:
+        members: [older]
+      younger_alone:
+        members: [younger]
+      half_sister_alone:
+        members: [half_sister]
+    households:
+      household:
+        members: [mother, father, older, younger, half_sister]
+        state_code: TX
+  output:
+    ssi_parental_deeming_child_allocations: [0, 0, 5_796, 5_796, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 1_494, 1_494, 0] # $124.50 x 12
