@@ -8,6 +8,9 @@
         child_support_received: 3_000
         strike_benefits: 2_000
         general_assistance: 1_000
+        # These amounts would make the model compute SSI, which also counts;
+        # its own cases are in the government assistance test file.
+        ssi: 0
     tax_units:
       tax_unit:
         members: [person1]
@@ -117,6 +120,8 @@
     people:
       person1:
         age: 70
+        # No SSI for the claimant, so the case isolates the dependent's income.
+        ssi: 0
       person2:
         age: 17
         employment_income: 25_000
@@ -144,6 +149,8 @@
     people:
       person1:
         age: 70
+        # No SSI for the claimant, so the case isolates the dependent's income.
+        ssi: 0
       person2:
         age: 16
         employment_income: 10_000
