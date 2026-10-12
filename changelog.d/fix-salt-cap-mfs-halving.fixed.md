@@ -1,0 +1,1 @@
+Halve the married-filing-separately SALT cap after the 2025-2029 phase-down and $10,000 floor rather than before, as 26 USC 164(b)(6)(B) and (7)(B) and the 2025 Schedule A worksheet require, and stop the floor from raising a reformed cap that starts below it.

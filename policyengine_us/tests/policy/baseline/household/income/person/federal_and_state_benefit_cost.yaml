@@ -84,5 +84,7 @@
     base_part_a_premium: 0
     base_part_b_premium: 2_434.8
   output:
-    federal_benefit_cost: 2_667.4
-    state_benefit_cost: 2_667.4
+    # MSP cost: $2,434.80 Part B premium + 20% of $18,983 CMS Medicare
+    # spending per enrollee (2026) = $6,231.40, split at CA's 50% FMAP.
+    federal_benefit_cost: 3_115.7
+    state_benefit_cost: 3_115.7
