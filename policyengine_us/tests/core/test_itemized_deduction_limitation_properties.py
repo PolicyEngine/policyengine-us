@@ -54,9 +54,11 @@ deduction's taxable income without regard to section 68. The tests check:
     itemized deductions before section 68, and the reduction nets it out of
     leg (2), whether the itemization choice is set or calculated.
 
-Gambling losses are deducted outside total_itemized_taxable_income_deductions
-(wagering_losses_deduction), so they never enter the limited base; they are
-not generated here.
+PolicyEngine deducts gambling losses outside
+total_itemized_taxable_income_deductions (wagering_losses_deduction), so they
+never enter the limited base here; that is a model limitation, not the law
+from 2026 (#10070). They are not generated, except that test 9 checks they
+leave section 68(a)(2)'s taxable income unchanged.
 """
 
 from functools import cache
@@ -463,10 +465,12 @@ def test_2026_reduction_responds_to_each_deduction_and_income():
         assert np.all(reduction >= base_reduction - step * 2 / 37 - _slack(scale)), name
         assert np.any(reduction < base_reduction - 1), name
 
-    for name in ALL_COMPONENTS:
-        raised = dict(units, **{name: units[name] + step})
-        allowed = _simulate_2026(raised)["itemized_taxable_income_deductions"]
-        assert np.all(allowed >= base_allowed - _slack(scale)), name
+    # The 2026 reduction depends on the itemized deductions only through
+    # their total (test 6), so one component stands for all of them.
+    raised = dict(units, charitable_deduction=units["charitable_deduction"] + step)
+    allowed = _simulate_2026(raised)["itemized_taxable_income_deductions"]
+    assert np.all(allowed >= base_allowed - _slack(scale))
+    assert np.all(allowed <= base_allowed + step + _slack(scale))
 
     richer = dict(units, adjusted_gross_income=units["adjusted_gross_income"] + 10_000)
     richer_reduction = _simulate_2026(richer)[
