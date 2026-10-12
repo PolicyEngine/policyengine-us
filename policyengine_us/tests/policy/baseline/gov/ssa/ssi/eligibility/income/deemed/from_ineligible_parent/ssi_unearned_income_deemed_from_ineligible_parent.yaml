@@ -1311,3 +1311,60 @@
   output:
     is_ssi_ineligible_parent: [true, false, false, false]
     ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 2_943, 2_943] # $245.25 x 12
+
+- name: Children who share an ineligible parent share one set of allocations
+  # As above, with the father's 8-year-old daughter, who is not disabled,
+  # also at home. She is the older boy's sister (416.1160(d)) and a child of
+  # a parent in the deeming household (POMS SI 01310.140 A), so her
+  # allocation comes off the mother's income once, before it is divided
+  # between the boys (SI 01320.500 C, steps 1 and 9). $3,000 - $483 =
+  # $2,517; - $85 = $2,432; half = $1,216; less $967 = $249, or $124.50
+  # each.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 36
+        person_id: 1
+        ssi_earned_income: 3_000 * 12
+      father:
+        age: 40
+        is_ssi_disabled: true
+        person_id: 2
+      older:
+        age: 10
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+      younger:
+        age: 6
+        is_ssi_disabled: true
+        person_id: 4
+        parent_1_id: 1
+      half_sister:
+        age: 8
+        person_id: 5
+        parent_1_id: 2
+    tax_units:
+      tax_unit:
+        members: [mother, father, older, younger, half_sister]
+    marital_units:
+      mother_alone:
+        members: [mother]
+      father_alone:
+        members: [father]
+      older_alone:
+        members: [older]
+      younger_alone:
+        members: [younger]
+      half_sister_alone:
+        members: [half_sister]
+    households:
+      household:
+        members: [mother, father, older, younger, half_sister]
+        state_code: TX
+  output:
+    ssi_parental_deeming_child_allocations: [0, 0, 5_796, 5_796, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 1_494, 1_494, 0] # $124.50 x 12

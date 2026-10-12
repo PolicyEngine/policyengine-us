@@ -212,6 +212,30 @@ def _mixed_status():
     )
 
 
+def _eligible_father():
+    """An SSI-eligible father lives with the ineligible mother, unmarried:
+    their son and her son share her income (416.1165(e)(2)), and his
+    daughter, the first son's sister, is allocated for both."""
+    return dict(
+        mother=_adult(earned=3_000),
+        father=_adult(disabled=True),
+        father_status="unmarried",
+        stepparent=None,
+        stepparent_files_separately=False,
+        stepparent_away=False,
+        stepmother=None,
+        aunt=None,
+        grandparent=None,
+        children=[
+            _child("full", disabled=True),
+            _child("maternal", disabled=True, age=6),
+            _child("paternal", age=8),
+        ],
+        ids="all",
+        report_own_children=True,
+    )
+
+
 # Fixed households in every batch, so the rarer structures are always
 # exercised: three and four deemors, with and without ids.
 FIXED_HOUSEHOLDS = [
@@ -229,6 +253,8 @@ FIXED_HOUSEHOLDS = [
     _absent_stepparent("all"),
     _mixed_status(),
     _mixed_status(),
+    _eligible_father(),
+    _eligible_father(),
 ]
 BATCH = st.lists(
     HOUSEHOLD, min_size=HOUSEHOLDS_PER_EXAMPLE, max_size=HOUSEHOLDS_PER_EXAMPLE
