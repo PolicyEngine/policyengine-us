@@ -32,7 +32,7 @@ the households are in Missouri, half in the District of Columbia. It checks:
    exclusions match SSI's, it equals the SSI variable wherever everyone at
    home is a citizen.
 3. Conservation: the shares deemed to the eligible children of one set of
-   parents add up to the parents' net deemable income.
+   ineligible parents add up to those parents' net deemable income.
 4. Order: listing each household's people in reverse gives the same values.
 5. Monotonicity: more income for every child never lowers deemed income
    (allocations shrink, 416.1163(b)(2)); more income for every adult never
@@ -574,15 +574,34 @@ def _oracle(facts, medicaid=False):
             applies=applies,
             missouri=missouri,
         )
+
+    # 416.1165(e)(2) divides the ineligible parents' income among the
+    # eligible children who share those parents, and the allocations are for
+    # every ineligible child of that deeming household.
+    def pool(person):
+        return [
+            other
+            for other, r in rows.items()
+            if r["applies"]
+            and r["ineligible"] == rows[person]["ineligible"]
+            and facts[other]["household"] == facts[person]["household"]
+        ]
+
     for person, row in rows.items():
-        parents, ineligible = row["parents"], row["ineligible"]
+        ineligible = row["ineligible"]
         if not row["applies"]:
             row.update(child_allocations=0, parent_allocation=0, net=0)
             continue
+        allocated = set().union(
+            *(
+                siblings(member, rows[member]["parents"], rows[member]["missouri"])
+                for member in pool(person)
+            )
+        )
         child_allocations = sum(
             allocation(s)
-            for s in siblings(person, parents, every_minor=row["missouri"])
-            if not (medicaid and rows[s]["applies"])
+            for s in allocated
+            if s != person and not (medicaid and rows[s]["applies"])
         )
         n = len(ineligible)
         parent_allocation = COUPLE * (n // 2) + INDIVIDUAL * (n % 2)
@@ -601,14 +620,7 @@ def _oracle(facts, medicaid=False):
             gross=unearned + earned,
         )
     for person, row in rows.items():
-        pool = [
-            other
-            for other, r in rows.items()
-            if r["applies"]
-            and r["parents"] == row["parents"]
-            and facts[other]["household"] == facts[person]["household"]
-        ]
-        row["deemed"] = row["net"] / len(pool) if row["applies"] else 0
+        row["deemed"] = row["net"] / len(pool(person)) if row["applies"] else 0
     for person in names:
         rows[person]["ineligible_parent"] = any(
             r["applies"] and person in r["ineligible"] for r in rows.values()
@@ -682,7 +694,7 @@ def test_parental_deeming_matches_oracle_and_invariants(households):
     pools = {}
     for name, row in oracle.items():
         if row["applies"]:
-            key = (facts[name]["household"], row["parents"])
+            key = (facts[name]["household"], frozenset(row["ineligible"]))
             pools.setdefault(key, []).append(name)
     for members in pools.values():
         total = sum(deemed[name] for name in members)

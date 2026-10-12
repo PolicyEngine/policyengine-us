@@ -64,7 +64,13 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
         child_allocations = where(
             np.any(ineligible, axis=1),
             ssi_parental_deeming_child_allocation_total(
-                person, period, rows, every_minor=missouri, exclude=applies
+                person,
+                period,
+                rows,
+                pool,
+                applies,
+                every_minor=missouri,
+                exclude=applies,
             ),
             0,
         )

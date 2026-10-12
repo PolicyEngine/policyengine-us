@@ -38,19 +38,24 @@ def ssi_ineligible_parents(person, period, with_spouses=True):
     those who meet the SSI eligibility status (416.1165(g)(1)).
 
     Returns rows (the person's parents and parents' spouses, -1 padded), the
-    mask of rows that are ineligible parents, and the pool of children who
-    share the same parents. The tax-unit proxy keeps a person who is an
-    unlinked parent in their own set, so that siblings keep one pool, but a
-    person is never their own ineligible parent: deeming counts another
-    person's income (416.1160(a)).
+    mask of rows that are ineligible parents, and a pool id equal for people
+    with the same ineligible parents. 416.1165(e)(2) divides 'the parental
+    income to be deemed' among the eligible children, so children whose
+    ineligible parents are the same share one pool even when one of them
+    also lives with an SSI-eligible parent. A person is never their own
+    ineligible parent, although the tax-unit proxy keeps an unlinked parent
+    in their own set: deeming counts another person's income (416.1160(a)).
     """
-    rows, pool = ssi_parental_deemors(person, period, with_spouses)
+    rows, _ = ssi_parental_deemors(person, period, with_spouses)
     eligible = ssi_meets_eligibility_status(person, period)
     own_index = np.arange(person.count)
     ineligible = (
         (rows >= 0) & (rows != own_index[:, None]) & ~eligible[np.maximum(rows, 0)]
     )
-    return rows, ineligible, pool
+    keys = np.where(ineligible, rows, -1)
+    keys.sort(axis=1)
+    _, pool = np.unique(keys, axis=0, return_inverse=True)
+    return rows, ineligible, pool.reshape(-1)
 
 
 def _spouse_elsewhere(person):
@@ -111,7 +116,7 @@ def _absent_spouses(person, rows):
 
 
 def ssi_parental_deeming_child_allocation_total(
-    person, period, rows, every_minor=False, exclude=None
+    person, period, rows, pool, applies, every_minor=False, exclude=None
 ):
     """Sum the ineligible child allocations deducted for each person.
 
@@ -135,12 +140,17 @@ def ssi_parental_deeming_child_allocation_total(
     id names), or in the tax unit of such an absent spouse (in a household
     with links, only when that spouse is a parent some of whose children no
     id names), as the parent-link contract in _parent_links.py allows. The
-    parents themselves never count. every_minor (a bool or a per-person array) instead counts
+    parents themselves never count. A child counts for every eligible child
+    (applies) in a pool when they count for any of them, so the children who
+    share their parents' income share one set of allocations: 'an allocation
+    for each ineligible child in the household' (416.1165(b)) of the
+    deeming household of SI 01310.140 A. every_minor (a bool or a per-person array) instead counts
     every co-resident child under 18 other than the person and their
     parents, as Missouri's MHDC budget does (DSS Manual 0805.020.15). People
     flagged in exclude never count.
     """
     every_minor = np.broadcast_to(every_minor, (person.count,))
+    pool_count = int(np.max(pool, initial=-1)) + 1
     exclude = (
         np.zeros(person.count, dtype=bool)
         if exclude is None
@@ -215,6 +225,10 @@ def ssi_parental_deeming_child_allocation_total(
                 where(linked[safe], named, presumed),
             )
         )
+        # The eligible children of one pool share a household, so this
+        # position holds the same person for all of them.
+        hit = np.bincount(pool[applies & counts], minlength=pool_count) > 0
+        counts = where(applies, hit[pool], counts)
         total += where(counts, allocation[safe], 0)
     return total
 

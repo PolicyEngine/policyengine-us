@@ -34,5 +34,8 @@ class ssi_parental_deeming_child_allocations(Variable):
     )
 
     def formula(person, period, parameters):
-        rows, _, _ = ssi_ineligible_parents(person, period)
-        return ssi_parental_deeming_child_allocation_total(person, period, rows)
+        rows, _, pool = ssi_ineligible_parents(person, period)
+        applies = person("is_ssi_income_deeming_child", period)
+        return ssi_parental_deeming_child_allocation_total(
+            person, period, rows, pool, applies
+        )

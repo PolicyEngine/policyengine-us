@@ -1261,3 +1261,53 @@
   output:
     is_ssi_income_deeming_child: [false, false, true, false]
     ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 11_886, 0] # $990.50 x 12
+
+- name: Half-siblings with the same ineligible parent share her income when one also lives with an SSI-eligible father
+  # 416.1165(e)(2) divides 'the parental income to be deemed' among the
+  # eligible children. The mother is the only ineligible parent of both
+  # boys; the older boy's father, who lives with them unmarried to her, is
+  # disabled and eligible, so his income is not deemed (416.1165(g)(1)).
+  # $3,000 - $85 = $2,915; half = $1,457.50; less $967 = $490.50, or
+  # $245.25 each.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 36
+        person_id: 1
+        ssi_earned_income: 3_000 * 12
+      father:
+        age: 40
+        is_ssi_disabled: true
+        person_id: 2
+      older:
+        age: 10
+        is_ssi_disabled: true
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+      younger:
+        age: 6
+        is_ssi_disabled: true
+        person_id: 4
+        parent_1_id: 1
+    tax_units:
+      tax_unit:
+        members: [mother, father, older, younger]
+    marital_units:
+      mother_alone:
+        members: [mother]
+      father_alone:
+        members: [father]
+      older_alone:
+        members: [older]
+      younger_alone:
+        members: [younger]
+    households:
+      household:
+        members: [mother, father, older, younger]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [true, false, false, false]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 2_943, 2_943] # $245.25 x 12
