@@ -305,3 +305,60 @@
     ssi: 0
     tx_ssi_state_supplement_eligible: false
     tx_ssi_state_supplement: 0
+
+- name: Scenario 11, facility resident whose countable income equals the $30 reduced standard.
+  # A $50/month pension less the $20 general exclusion is $30 of countable
+  # income, so the federal payment is $30 - $30 = $0. H-6000: the resident
+  # "remains eligible for SSI if their countable income does not exceed the
+  # SSI reduced standard payment amount", and HHSC pays the $45 supplement.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 80
+        pension_income: 600
+        is_in_medicaid_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ssi: 0
+    tx_ssi_state_supplement_eligible: true
+    # ($75 - $30) * 12 = $540/year
+    tx_ssi_state_supplement: 540
+
+- name: Scenario 12, facility resident whose countable income exceeds the $30 reduced standard.
+  # A $51/month pension gives $31 of countable income, above the reduced
+  # standard, so the resident is not eligible for SSI or the supplement.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 80
+        pension_income: 612
+        is_in_medicaid_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ssi: 0
+    tx_ssi_state_supplement_eligible: false
+    tx_ssi_state_supplement: 0

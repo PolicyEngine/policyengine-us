@@ -7,10 +7,8 @@ class co_state_supplement_eligible(Variable):
     label = "Colorado State Supplement Eligible"
     definition_period = MONTH
     defined_for = StateCode.CO
-    reference = (
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=91",
-        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=92",
-    )
+    # PDF pages 91-92
+    reference = "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=91"
 
     def formula(person, period, parameters):
         # 9 CCR 2503-5 3.546 and 3.547(A), (D): AND-CS is for clients

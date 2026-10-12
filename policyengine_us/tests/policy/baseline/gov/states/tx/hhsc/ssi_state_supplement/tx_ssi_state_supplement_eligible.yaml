@@ -1,14 +1,19 @@
 # Unit tests for Texas SSI State Supplement eligibility
-# Eligible if: SSI recipient AND residing in a Medicaid-funded facility
-# AND in Texas
+# Eligible if: eligible for SSI with countable income not over the payment
+# standard (a $0 federal payment at the limit included) and takes up SSI, or
+# reported to receive SSI; AND residing in a Medicaid-funded facility; AND in
+# Texas
 # Reference: Texas Human Resources Code Section 32.024(w); HHSC MEPD Handbook
 # H-1500 ("SSI recipients who live in an institutional setting and receive the
-# $30 reduced federal benefit receive a state supplement")
+# $30 reduced federal benefit receive a state supplement") and H-6000 (an SSI
+# recipient in a facility "remains eligible for SSI if their countable income
+# does not exceed the SSI reduced standard payment amount")
 
 - name: Case 1, SSI recipient and in Medicaid facility in Texas.
   period: 2024
   input:
-    ssi: 360
+    is_ssi_eligible: true
+    uncapped_ssi: 360
     is_in_medicaid_facility: true
     state_code: TX
   output:
@@ -17,36 +22,68 @@
 - name: Case 2, SSI recipient but not in Medicaid facility.
   period: 2024
   input:
-    ssi: 360
+    is_ssi_eligible: true
+    uncapped_ssi: 360
     is_in_medicaid_facility: false
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: false
 
-- name: Case 3, not SSI recipient but in Medicaid facility.
+- name: Case 3, not SSI eligible but in Medicaid facility.
   period: 2024
   input:
-    ssi: 0
+    is_ssi_eligible: false
     is_in_medicaid_facility: true
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: false
 
-- name: Case 4, neither SSI recipient nor in Medicaid facility.
+- name: Case 4, neither SSI eligible nor in Medicaid facility.
   period: 2024
   input:
-    ssi: 0
+    is_ssi_eligible: false
     is_in_medicaid_facility: false
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: false
 
-- name: Case 5, reported SSI receipt qualifies a facility resident with zero computed SSI.
+- name: Case 5, reported SSI receipt qualifies a facility resident.
   period: 2024-01
   input:
-    ssi: 0
+    is_ssi_eligible: false
     receives_ssi: true
     is_in_medicaid_facility: true
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: true
+
+- name: Case 6, countable income equal to the reduced standard leaves a $0 federal payment and stays eligible.
+  period: 2024-01
+  input:
+    is_ssi_eligible: true
+    uncapped_ssi: 0
+    is_in_medicaid_facility: true
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: true
+
+- name: Case 7, countable income above the reduced standard is not eligible.
+  period: 2024-01
+  input:
+    is_ssi_eligible: true
+    uncapped_ssi: -1
+    is_in_medicaid_facility: true
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: false
+
+- name: Case 8, a facility resident who does not take up SSI is not eligible.
+  period: 2024-01
+  input:
+    is_ssi_eligible: true
+    uncapped_ssi: 30
+    takes_up_ssi_if_eligible: false
+    is_in_medicaid_facility: true
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: false
