@@ -316,3 +316,26 @@
         state_code: TX
   output:
     income_based_repayment_payment: [0, 0]
+
+- name: Case 14, a borrower with a loan made on or after July 1, 2026 can't use the plan.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        federal_student_loan_balance: 30_000
+        federal_student_loan_interest_rate: 0.06
+        has_federal_student_loan_made_on_or_after_2026_07_01: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 34 CFR 685.209(d)(5); 20 U.S.C. 1087e(d)(6)-(7).
+    income_based_repayment_payment: 0
