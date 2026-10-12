@@ -1,0 +1,1 @@
+Fixed the 2020 unemployment compensation exclusion: the $150,000 test no longer subtracts the compensation twice, each spouse on a joint return excludes up to $10,200 of their own compensation, and a dependent's compensation is excluded on the dependent's own return instead of using the filers' exclusion.
