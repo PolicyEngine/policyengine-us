@@ -4,7 +4,11 @@
 # 26 U.S.C. 6012(a)(1)(C)(i) and (f), 26 U.S.C. 63(c)(5), and Chart A and
 # Chart B of the Form 1040 instructions (Tables 1 and 2 of Publication 501).
 # Section 6012(f) governs 2018 to 2025 and section 6012(a)(1) governs 2026.
-# For an unmarried filer who can be claimed, both give Chart B's result.
+# For an unmarried filer who can be claimed, section 6012(f)(1) gives Chart
+# B's result. Where the statute and the charts differ (decision d1395: the
+# age and blindness addition in the 2018-2025 joint test, a dependent filing
+# separately, and in 2026 blindness and the exact dollar), the cases stay
+# clear of the difference.
 # 2025 amounts (Chart B, page 10 of
 # https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf):
 #   Single dependents, under 65 and not blind, must file if
@@ -15,7 +19,8 @@
 #   65 or older or blind: $3,350, $17,750, and the larger of $3,350 or earned
 #     income (up to $15,300) plus $2,450. 65 or older and blind: $5,350,
 #     $19,750, and the larger of $5,350 or earned income plus $4,450.
-#   Married dependents, 65 or older or blind: unearned income over $2,950.
+#   Married dependents, 65 or older or blind: unearned income over $2,950
+#     (section 6012(f)(2)(D): over $1,350, with no addition).
 
 # Filers nobody can claim: gross income only. The cases stay a dollar away
 # from the threshold itself, where Chart A ("at least") and section 6012(f)(1)
@@ -395,28 +400,9 @@
     # Worksheet for Dependents gives when a spouse can be claimed.
     tax_unit_is_required_to_file: false
 
-- name: 2025, joint return whose spouse aged 65 can be claimed, unearned income of $2,950
-  period: 2025
-  input:
-    people:
-      head:
-        age: 40
-      spouse:
-        age: 65
-        claimed_as_dependent_on_another_return: true
-        taxable_interest_income: 2_950
-    tax_units:
-      tax_unit:
-        members: [head, spouse]
-    households:
-      household:
-        members: [head, spouse]
-        state_code: TX
-  output:
-    # Chart B, married dependents, 65 or older or blind: $1,350 + $1,600.
-    tax_unit_is_required_to_file: false
-
 - name: 2025, joint return whose spouse aged 65 can be claimed, unearned income over $2,950
+  # Required under both readings: over $1,350 + $1,600 (Chart B) and over
+  # $1,350 (section 6012(f)(2)(D)). At $2,950 or less they differ (d1395).
   period: 2025
   input:
     people:
@@ -453,18 +439,6 @@
       household:
         members: [head, spouse]
         state_code: TX
-  output:
-    tax_unit_is_required_to_file: true
-
-# Married filing separately: any gross income requires a return, as before.
-
-- name: 2025, a separate filer who can be claimed must file with any gross income
-  period: 2025
-  input:
-    filing_status: SEPARATE
-    age: 19
-    claimed_as_dependent_on_another_return: true
-    employment_income: 100
   output:
     tax_unit_is_required_to_file: true
 

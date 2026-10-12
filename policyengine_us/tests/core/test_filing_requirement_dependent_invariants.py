@@ -9,6 +9,11 @@ the limited section 63(c)(5) deduction for these filers. Nobody else has an
 unearned income test. YAML cases pin the published amounts one case at a time;
 these tests check what must hold for every input, which YAML cannot state.
 
+Where the statute and the IRS charts differ (decision d1395: the age and
+blindness addition in the 2018-2025 joint test, a dependent filing
+separately, and in 2026 blindness and the exact dollar), the tests below
+assert nothing that depends on the difference.
+
 `test_table_2_boundary_grid` runs one simulation of single filers on a grid of
 earned and unearned income at every Table 2 threshold, a dollar under and a
 dollar over, for each combination of age 65 and blindness:
@@ -16,20 +21,26 @@ dollar over, for each combination of age 65 and blindness:
 1. Differential: for a filer who can be claimed, the result equals Table 2's
    three tests computed directly from its published 2025 amounts. This is the
    check that the two tests with no code of their own are still applied.
-2. Differential: it also equals `medicaid_person_is_required_to_file`, the
-   other Table 2 implementation, which serves Medicaid and ACA household
-   income for dependents inside a tax unit.
+2. Differential: in 2025 it also equals `medicaid_person_is_required_to_file`,
+   the other Table 2 implementation, which serves Medicaid and ACA household
+   income for dependents inside a tax unit. In 2026 the rule is section
+   6012(a)(1), whose treatment of blindness and the exact dollar is open, so
+   the two are not compared there.
 3. For a filer nobody can claim, the result depends on gross income alone: it
    is the same however that income is split between wages and interest.
-4. On a joint return with no other income, where one spouse can be claimed,
-   the result is Table 2's unearned income test for a married dependent, with
-   that spouse's own age and blindness and not the other spouse's.
+4. On a 2025 joint return with no other income, where the spouse who can be
+   claimed is under 65 and not blind, the result is the unearned income test
+   (over $1,350), whatever the other spouse's age and blindness. (For a
+   claimed spouse who is 65 or older or blind, section 6012(f)(2)(D) and
+   Table 2 differ; that is d1395.)
 
 `test_filing_requirement_properties` draws batches of tax units with
 Hypothesis (single, head of household, surviving spouse, separate and joint;
 any mix of age, blindness, claimability, wages, self-employment income or
 loss, interest and dividends) and runs each batch, with four variants of every
-unit, as one simulation for 2025 and 2026:
+unit, as one simulation for 2025 and 2026. Every batch starts with two fixed
+units, one that must file and one that need not, so that each property below
+has rows to check and both answers occur; the test asserts that it does.
 
 5. Split invariance: moving a filer's wages into interest, or interest into
    wages, never changes the result for a tax unit whose head and spouse cannot
@@ -43,9 +54,17 @@ unit, as one simulation for 2025 and 2026:
    income belongs on the dependent's own return.
 9. Table 2 and the Medicaid implementation, as in 1 and 2, on the drawn
    single filers who can be claimed and have no self-employment income.
-10. Lower bound: on a single, separate or joint return, a head or spouse who
-    can be claimed and whose interest and dividends are over Table 2's
-    unearned income amount for them always makes the return required.
+10. Lower bound (2025): on a single, separate or joint return, a head or
+    spouse who can be claimed and whose interest and dividends are over
+    Table 2's unearned income amount for them always makes the return
+    required. Table 2's amount is never below the statute's, so this holds
+    under either reading of d1395.
+
+`test_earned_income_sources_are_gross_income_sources`:
+
+11. Every earned income source of the unearned income test is a gross income
+    source. Otherwise a renamed earned source would silently count as
+    unearned income.
 
 Intended exceptions, each from the law rather than the code:
 
@@ -70,6 +89,7 @@ from hypothesis import HealthCheck, given, settings
 from hypothesis import strategies as st
 
 from policyengine_us import Simulation
+from policyengine_us.system import system as SYSTEM
 
 YEARS = (2025, 2026)
 
@@ -202,16 +222,16 @@ def unearned_test_met(units):
 
 
 def assert_table_2(simulation, units, required, rows, year):
-    """Properties 1 and 2 (and 9) on the given rows of single claimable filers."""
-    if not rows.any():
+    """Properties 1 and 2 (and 9) on the given rows of single claimable filers,
+    in 2025."""
+    assert rows.any(), "no single claimable filer to compare"
+    if year != 2025:
         return
     np.testing.assert_array_equal(
         required[rows],
         head_medicaid_requirement(simulation, units, year)[rows],
         err_msg=f"{year}: differs from medicaid_person_is_required_to_file",
     )
-    if year != 2025:
-        return
     expected = table_2_single_dependent(
         earned=head_values(units, "employment_income"),
         unearned=head_values(units, "taxable_interest_income")
@@ -254,7 +274,8 @@ def test_table_2_boundary_grid():
         single_filer(age, blind, False, wages, gross - wages)
         for age, blind, gross, wages in splits
     ]
-    # Joint returns whose younger spouse can be claimed and has only interest.
+    # Joint returns whose younger spouse, under 65 and not blind, can be
+    # claimed and has only interest.
     joint = [
         {
             "filing_status": "JOINT",
@@ -266,17 +287,16 @@ def test_table_2_boundary_grid():
                     "taxable_interest_income": 0,
                 },
                 {
-                    "age": spouse_age,
-                    "is_blind": spouse_blind,
+                    "age": 40,
+                    "is_blind": False,
                     "claimed_as_dependent_on_another_return": True,
                     "taxable_interest_income": interest,
                 },
             ],
             "children": [],
         }
-        for head_age, spouse_age in ((45, 40), (70, 40), (70, 65), (80, 65))
+        for head_age in (45, 70, 80)
         for head_blind in (False, True)
-        for spouse_blind in (False, True)
         for interest in UNEARNED_GRID
     ]
     units = claimable + unclaimable + joint
@@ -290,9 +310,9 @@ def test_table_2_boundary_grid():
         )
         if year == 2025:
             # Property 4.
-            np.testing.assert_array_equal(
-                required[is_joint], unearned_test_met(units)[is_joint]
-            )
+            expected = unearned_test_met(units)[is_joint]
+            np.testing.assert_array_equal(required[is_joint], expected)
+            assert expected.any() and not expected.all()
         # Properties 1 and 2.
         assert_table_2(simulation, units, required, is_claimable, year)
         # Property 3: one answer for each gross income, whatever the split.
@@ -322,19 +342,33 @@ def adults(draw):
     }
 
 
+# Fixed units at the start of every batch: a single filer who can be claimed
+# with $5,000 of interest (must file; meets every property's row filter) and a
+# single filer nobody can claim with $600 of interest (need not file).
+ANCHORS = [
+    single_filer(19, False, True, 0, 5_000),
+    single_filer(40, False, False, 0, 600),
+]
+for anchor in ANCHORS:
+    anchor["adults"][0].update(self_employment_income=0, qualified_dividend_income=0)
+
+
 @st.composite
-def unit_variants(draw):
-    """A drawn tax unit and its four variants, in VARIANTS order."""
-    status = draw(
-        st.sampled_from(
-            ["SINGLE", "HEAD_OF_HOUSEHOLD", "SURVIVING_SPOUSE", "SEPARATE", "JOINT"]
+def unit_variants(draw, fixed=None):
+    """A tax unit (drawn, or `fixed`) and its four variants, in VARIANTS order."""
+    if fixed is None:
+        status = draw(
+            st.sampled_from(
+                ["SINGLE", "HEAD_OF_HOUSEHOLD", "SURVIVING_SPOUSE", "SEPARATE", "JOINT"]
+            )
         )
-    )
-    base = {
-        "filing_status": status,
-        "adults": [draw(adults()) for _ in range(2 if status == "JOINT" else 1)],
-        "children": [],
-    }
+        base = {
+            "filing_status": status,
+            "adults": [draw(adults()) for _ in range(2 if status == "JOINT" else 1)],
+            "children": [],
+        }
+    else:
+        base = {**fixed, "adults": [dict(adult) for adult in fixed["adults"]]}
 
     def variant(change):
         copy = {**base, "adults": [dict(adult) for adult in base["adults"]]}
@@ -401,9 +435,12 @@ def unit_variants(draw):
     derandomize=True,
     suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
 )
-@given(st.lists(unit_variants(), min_size=8, max_size=24))
-def test_filing_requirement_properties(drawn):
-    units = [unit for variants in drawn for unit in variants]
+@given(
+    st.tuples(*(unit_variants(fixed=anchor) for anchor in ANCHORS)),
+    st.lists(unit_variants(), min_size=6, max_size=22),
+)
+def test_filing_requirement_properties(anchors, drawn):
+    units = [unit for variants in [*anchors, *drawn] for unit in variants]
     simulation = simulate(units)
     anyone_claimable = np.array(
         [
@@ -434,10 +471,12 @@ def test_filing_requirement_properties(drawn):
             required["base"][nobody_claimable],
             err_msg=f"{year}: the earned/unearned split changed the result",
         )
+        assert nobody_claimable.any()
         # Property 6.
         assert not (required["base"] & ~required["raised"]).any(), (
             f"{year}: more income ended the requirement"
         )
+        assert required["base"].any() and not required["base"].all()
         # Property 7.
         sighted = ~anyone_blind[:, 0]
         assert not (required["base"] & ~required["claimed"])[sighted].any(), (
@@ -453,9 +492,22 @@ def test_filing_requirement_properties(drawn):
         assert_table_2(simulation, units, flat, table_2_rows, year)
         # Property 10.
         if year == 2025:
-            assert flat[unearned_test_met(units)].all(), (
+            met = unearned_test_met(units)
+            assert met.any()
+            assert flat[met].all(), (
                 "2025: a claimable filer over the unearned income amount need not file"
             )
+
+
+def test_earned_income_sources_are_gross_income_sources():
+    # Property 11.
+    for year in YEARS:
+        parameters = SYSTEM.parameters(f"{year}-01-01").gov.irs
+        earned = list(
+            parameters.income.filing_requirement.dependent.earned_income_sources
+        )
+        gross = list(parameters.gross_income.sources)
+        assert earned and set(earned) <= set(gross), set(earned) - set(gross)
 
 
 def test_smaller_loss_can_end_the_requirement():

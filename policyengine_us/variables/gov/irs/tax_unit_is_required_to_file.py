@@ -14,9 +14,9 @@ class tax_unit_is_required_to_file(Variable):
     reference = (
         "https://www.law.cornell.edu/uscode/text/26/6012",
         # A filer who can be claimed as a dependent: section 6012(a)(1)(C)(i)
-        # and (f)(2)(D), the section 63(c)(5) limited standard deduction, and
-        # Publication 501, Table 2 (Chart B of the Form 1040 instructions).
-        "https://www.law.cornell.edu/uscode/text/26/6012#a_1_C",
+        # and (f)(2)(D) (the section above), the section 63(c)(5) limited
+        # standard deduction, and Publication 501, Table 2 (Chart B of the
+        # Form 1040 instructions).
         "https://www.law.cornell.edu/uscode/text/26/63#c_5",
         "https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=4",
         # Gross income counts amounts excluded under section 911.
@@ -53,8 +53,8 @@ class tax_unit_is_required_to_file(Variable):
         # On a joint return the test applies to each spouse who can be claimed.
         # Section 6012(f)(2)(D), which governs joint returns for 2018 to 2025,
         # names the section 63(c)(5)(A) amount alone; Table 2 adds the
-        # additional standard deduction, and this follows Table 2. Nobody else
-        # has an unearned income test.
+        # additional standard deduction, and this follows Table 2 (open as
+        # decision d1395). Nobody else has an unearned income test.
         #
         # Table 2's other two tests need no code here. The standard deduction
         # in the threshold above is already the limited one for these filers
@@ -73,13 +73,12 @@ class tax_unit_is_required_to_file(Variable):
             & tax_unit.project(spouse_can_be_claimed)
         )
         # Income other than earned income: every gross income source except
-        # wages and self-employment income, the items in earned_income. As in
-        # irs_gross_income, a loss in one source does not reduce the total.
-        earned_income_sources = [
-            "irs_employment_income",
-            "self_employment_income",
-            "sstb_self_employment_income",
-        ]
+        # the earned income sources of the IRS dependent worksheet (wages,
+        # business income and farm income). As in irs_gross_income, a loss in
+        # one source does not reduce the total.
+        earned_income_sources = parameters(
+            period
+        ).gov.irs.income.filing_requirement.dependent.earned_income_sources
         unearned_income = 0
         for source in parameters(period).gov.irs.gross_income.sources:
             if source not in earned_income_sources:
