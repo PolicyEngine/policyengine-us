@@ -60,13 +60,13 @@ ACCOUNT_YEARS = range(FIRST_YEAR, FIRST_PROJECTED_YEAR)
 # Health expense inputs that uprate by this series, as listed in
 # docs-quarto/methodology/spm-poverty.qmd. Pre-tax health insurance premiums
 # also use it today; PR #10083 moves them to the ESI premium series, so they
-# are left out here.
+# are left out here. HSA payroll contributions follow the family HSA
+# contribution limit since #10097.
 HEALTH_INPUTS = {
     "ambulance_expense",
     "er_visit_expense",
     "health_insurance_premiums",
     "health_insurance_premiums_without_medicare_part_b",
-    "health_savings_account_payroll_contributions",
     "imaging_expense",
     "inpatient_expense",
     "lab_expense",
