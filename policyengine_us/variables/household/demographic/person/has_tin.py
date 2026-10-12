@@ -11,17 +11,21 @@ class has_tin(Variable):
     def formula(person, period, parameters):
         simulation = person.simulation
 
+        # Read inputs as this simulation sees them: in a branch, its own
+        # value, then its ancestors', then the default branch's.
+        branch_name = simulation.branch_name
+
         # Canonical path: allow direct `has_tin` inputs to override the formula.
         holder = simulation.get_holder("has_tin")
         if period in holder.get_known_periods():
-            array = holder.get_array(period)
+            array = holder.get_array(period, branch_name)
             if array is not None:
                 return array
 
         # Temporary migration path: honor legacy `has_itin` inputs until callers move.
         legacy_holder = simulation.get_holder("has_itin")
         if period in legacy_holder.get_known_periods():
-            array = legacy_holder.get_array(period)
+            array = legacy_holder.get_array(period, branch_name)
             if array is not None:
                 return array
 

@@ -24,7 +24,9 @@ class savers_credit_person(Variable):
             qualified_contributions, p.contributions_cap
         )
 
-        agi = person.tax_unit("adjusted_gross_income", period)
+        # 26 U.S.C. 25B(e): adjusted gross income is determined without
+        # regard to sections 911, 931 and 933.
+        agi = person.tax_unit("agi_plus_section_911_931_933_exclusions", period)
 
         # AGI threshold for the rate
         filing_status = person.tax_unit("filing_status", period)

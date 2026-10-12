@@ -26,6 +26,7 @@ MICRODATA_UPRATING_OVERRIDES = {
     "employment_income": "calibration.gov.irs.soi.employment_income",
     "employment_income_last_year": "calibration.gov.irs.soi.employment_income",
     "energy_efficient_home_improvement_credit": DEFAULT_MICRODATA_UPRATING,
+    "foreign_earned_income_exclusion": DEFAULT_MICRODATA_UPRATING,
     "foreign_tax_credit": DEFAULT_MICRODATA_UPRATING,
     "interest_deduction": DEFAULT_MICRODATA_UPRATING,
     "long_term_capital_gains": "calibration.gov.irs.soi.long_term_capital_gains",

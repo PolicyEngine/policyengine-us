@@ -6,8 +6,11 @@ values:
     - alimony_expense # Line 4
     - early_withdrawal_penalty # Line 5
     - self_employed_health_insurance_ald # Line 7
+    # Alabama AGI counts dependents' income, so their deductions too.
+    - dependents_self_employed_health_insurance_ald
     - health_savings_account_ald # Line 8
     - self_employed_pension_contribution_ald # Line 9
+    - dependents_self_employed_pension_contribution_ald
     - us_govt_interest
     - taxable_public_pension_income
   2023-01-01:
@@ -16,8 +19,11 @@ values:
     - alimony_expense # Line 4
     - early_withdrawal_penalty # Line 5
     - self_employed_health_insurance_ald # Line 7
+    # Alabama AGI counts dependents' income, so their deductions too.
+    - dependents_self_employed_health_insurance_ald
     - health_savings_account_ald # Line 8
     - self_employed_pension_contribution_ald # Line 9
+    - dependents_self_employed_pension_contribution_ald
     - us_govt_interest
     - al_retirement_exemption #Schedule RS Line 10
     - taxable_public_pension_income

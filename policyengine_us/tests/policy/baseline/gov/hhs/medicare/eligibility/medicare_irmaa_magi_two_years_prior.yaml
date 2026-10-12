@@ -73,3 +73,212 @@
     medicare_enrolled: true
   output:
     income_adjusted_part_d_premium_surcharge: 0
+
+- name: Amounts excluded under IRC sections 135, 911, 931 and 933 are added back.
+  period: 2026
+  input:
+    age: 66
+    adjusted_gross_income:
+      2024: 100_000
+    tax_exempt_interest_income:
+      2024: 2_000
+    us_bonds_for_higher_ed:
+      2024: 1_000
+    foreign_earned_income_exclusion:
+      2024: 10_000
+    specified_possession_income:
+      2024: 3_000
+    puerto_rico_income:
+      2024: 4_000
+  output:
+    # 42 U.S.C. 1395r(i)(4)(A): 100,000 + 2,000 + 1,000 + 10,000 + 3,000 + 4,000.
+    medicare_irmaa_magi_two_years_prior: 120_000
+
+- name: Excluded amounts provided for an unmodeled lag year are added back too.
+  period: 2016
+  input:
+    age: 66
+    adjusted_gross_income:
+      2014: 100_000
+    us_bonds_for_higher_ed:
+      2014: 1_000
+      2016: 0
+    foreign_earned_income_exclusion:
+      2014: 10_000
+    puerto_rico_income:
+      2014: 4_000
+  output:
+    medicare_irmaa_magi_two_years_prior: 115_000
+
+- name: Section 911 adds back Form 2555 lines 45 and 50, before disallowed deductions.
+  period: 2026
+  input:
+    age: 66
+    adjusted_gross_income:
+      2024: 100_000
+    section_911_excluded_income:
+      2024: 25_000
+    # The rate stacking amount after 10,000 of disallowed deductions.
+    foreign_earned_income_exclusion:
+      2024: 15_000
+  output:
+    medicare_irmaa_magi_two_years_prior: 125_000
+
+- name: Form 2555 amounts provided for an unmodeled lag year are added back in full.
+  period: 2016
+  input:
+    age: 66
+    adjusted_gross_income:
+      2014: 100_000
+    section_911_excluded_income:
+      2014: 25_000
+    foreign_earned_income_exclusion:
+      2014: 15_000
+  output:
+    medicare_irmaa_magi_two_years_prior: 125_000
+
+- name: A section 135 exclusion recorded on a dependent is added back, as AGI deducts it.
+  period: 2026
+  input:
+    people:
+      parent:
+        age:
+          2024: 64
+          2026: 66
+        employment_income:
+          2024: 100_000
+          2026: 0
+      child:
+        age:
+          2024: 13
+          2026: 15
+        # The parent's bond, cashed for the child's tuition: a bond issued
+        # in the name of a child under 24 does not qualify (Form 8815).
+        us_bonds_for_higher_ed:
+          2024: 1_000
+          2026: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    # 2024 AGI 99,000 deducts the 1,000; IRMAA MAGI is AGI without it.
+    medicare_irmaa_magi_two_years_prior: 100_000
+
+- name: Every member's section 135 exclusion is added back to a provided AGI.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 66
+        us_bonds_for_higher_ed:
+          2024: 1_000
+      spouse:
+        age: 64
+        us_bonds_for_higher_ed:
+          2024: 2_000
+      child:
+        age: 15
+        us_bonds_for_higher_ed:
+          2024: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+        adjusted_gross_income:
+          2024: 100_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+  output:
+    # The 4,000 recorded on the child is the couple's exclusion too
+    # (gov.irs.ald.filer_amounts_recorded_on_dependents).
+    medicare_irmaa_magi_two_years_prior: 107_000
+
+- name: A dependent's tax-exempt interest is on the dependent's own return.
+  period: 2026
+  input:
+    people:
+      parent:
+        age:
+          2024: 64
+          2026: 66
+        employment_income:
+          2024: 100_000
+          2026: 0
+        tax_exempt_interest_income:
+          2024: 3_000
+          2026: 0
+      child:
+        age:
+          2024: 13
+          2026: 15
+        tax_exempt_interest_income:
+          2024: 2_000
+          2026: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    # 2024 AGI 100,000 leaves out the child's income; only the parent's
+    # 3,000 of tax-exempt interest is added.
+    medicare_irmaa_magi_two_years_prior: 103_000
+
+- name: A dependent's tax-exempt interest provided for an unmodeled lag year is not added.
+  period: 2016
+  input:
+    people:
+      parent:
+        age: 66
+        tax_exempt_interest_income:
+          2014: 3_000
+          2016: 0
+      child:
+        age: 15
+        tax_exempt_interest_income:
+          2014: 2_000
+          2016: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income:
+          2014: 100_000
+    households:
+      household:
+        members: [parent, child]
+  output:
+    medicare_irmaa_magi_two_years_prior: 103_000
+
+- name: Every member's section 135 exclusion for an unmodeled lag year is added back.
+  period: 2016
+  input:
+    people:
+      parent:
+        age: 66
+        us_bonds_for_higher_ed:
+          2014: 1_000
+          2016: 0
+      child:
+        age: 15
+        us_bonds_for_higher_ed:
+          2014: 4_000
+          2016: 0
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+        adjusted_gross_income:
+          2014: 100_000
+    households:
+      household:
+        members: [parent, child]
+  output:
+    medicare_irmaa_magi_two_years_prior: 105_000

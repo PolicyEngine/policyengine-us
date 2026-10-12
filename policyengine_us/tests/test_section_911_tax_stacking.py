@@ -17,35 +17,40 @@ Two kinds of test:
   (Foreign Earned Income Tax Worksheet, Qualified Dividends and Capital
   Gain Tax Worksheet, and Form 6251 with its own Foreign Earned Income Tax
   Worksheet and Part III) and compared with the model, household by
-  household. The model reaches the same tax by a different route: the
-  section 1(h) formulas in `capital_gains_excluded_from_taxable_income`,
-  `income_tax_main_rates` and `capital_gains_tax`.
+  household. A household with 28-percent rate gain or unrecaptured section
+  1250 gain uses the Schedule D Tax Worksheet and the Form 6251 Part III
+  lines it feeds, transcribed in test_form_6251_part_iii.py, with the four
+  modifications of the Foreign Earned Income Tax Worksheet footnote and the
+  AMT capital gain excess. The model reaches the same tax by a different
+  route: the section 1(h) formulas in
+  `capital_gains_excluded_from_taxable_income`, `income_tax_main_rates` and
+  `capital_gains_tax`.
 - Properties that hold for every household: with nothing excluded, every
   amount that section 911(f) replaces is unchanged, bit for bit; the stacked
   tax is never below the unstacked tax; zero taxable income gives zero
   regular tax; and the tax never falls as the excluded amount rises.
 
-Households live in Texas; some itemize.
-
-Two limits of the model set the scope of these tests, and neither comes
-from section 911:
-
-- `capital_gains_tax` omits the section 1(h)(1) cap at the tax on all
-  taxable income at ordinary rates (worksheet line 25, "the smaller of line
-  23 or line 24"). The cap binds only where the 15% rate applies inside the
-  12% bracket, a band of $100 to $250 of income. The model is therefore
-  compared with worksheet line 23, and checked to be within $7.50 of line
-  25.
-- `capital_gains_tax` taxes 28-percent rate gain in full even when it
-  exceeds taxable income, so the households here have no 28-percent rate
-  or unrecaptured section 1250 gain. YAML unit tests cover how the capital
-  gain excess reduces those two amounts.
+Households live in Texas; some itemize. The model is compared with the
+worksheets' final lines (line 25 of the capital gains worksheet, line 47 of
+the Schedule D Tax Worksheet), which take the smaller of the section 1(h) sum
+and the tax on all of line 1 (26 U.S.C. 1(h)(1), "shall not exceed"). The
+cap binds only where the 15% rate applies inside the 12% bracket, a band of
+$100 to $250 of income in 2025, so line 25 is checked to be within $7.50 of
+line 23. The Schedule D Tax Worksheet transcription takes Schedule D lines
+18 and 19 as entered, without the short-term loss netting of the 28% Rate
+Gain and Unrecaptured Section 1250 Gain Worksheets (1(h)(4)(B), 1(h)(6)), so
+households with either gain have no short-term loss in the worksheet
+comparisons.
 """
 
 import numpy as np
 import pytest
 
 from policyengine_us import Simulation
+from policyengine_us.tests.test_form_6251_part_iii import (
+    form_6251_part_iii_2025,
+    schedule_d_tax_worksheet_lines_2025,
+)
 
 # Hypothesis is a dev extra; skip rather than fail collection without it.
 hypothesis = pytest.importorskip("hypothesis")
@@ -167,9 +172,10 @@ def foreign_earned_income_tax_worksheet(
 ):
     """2025 Form 1040 instructions, page 37.
 
-    Returns line 6 figured with line 23 of the capital gains worksheet (what
-    the model computes), line 6 figured with its line 25 (what the form
-    says), and line 5 of the capital gains worksheet, which Form 6251 needs.
+    Returns line 6 figured with line 23 of the capital gains worksheet (the
+    section 1(h) sum), line 6 figured with its line 25 (the smaller of that
+    sum and the tax on all of line 1, which is the form's and the model's
+    tax), and line 5 of the capital gains worksheet, which Form 6251 needs.
     A filer with no exclusion gets the ordinary line 16 tax.
     """
     line_1 = taxable_income
@@ -259,6 +265,95 @@ def form_6251_line_7(
         line_4 = form_6251_part_iii(line_3, dividends + gain, line_20, status)
     else:
         line_4 = amt_rates(line_3, status)
+    line_5 = amt_rates(line_2c, status)
+    return max(0, line_4 - line_5)
+
+
+def schedule_d_worksheet_items(household):
+    """Schedule D Tax Worksheet amounts other than line 1, for a household
+    with no short-term loss (so Schedule D lines 18 and 19 are the gains as
+    entered) and no Form 4952 election."""
+    long_term = household["long_term_gains"]
+    return dict(
+        qualified_dividends=household["qualified_dividends"],
+        form_4952_line_4g=0,
+        form_4952_line_4e=0,
+        schedule_d_line_15=long_term,
+        schedule_d_line_16=long_term + household["short_term_gains"],
+        schedule_d_line_18=household.get("collectibles_gains", 0),
+        schedule_d_line_19=household.get("unrecaptured_section_1250_gain", 0),
+    )
+
+
+def uses_schedule_d_tax_worksheet(household):
+    return bool(
+        household.get("collectibles_gains", 0)
+        or household.get("unrecaptured_section_1250_gain", 0)
+    )
+
+
+def foreign_earned_income_tax_worksheet_schedule_d(
+    taxable_income, excluded, items, status
+):
+    """2025 Form 1040 instructions, page 37, with the Schedule D Tax
+    Worksheet (`items` as schedule_d_worksheet_items returns them).
+
+    The worksheet is completed through line 10 on line 3; the capital gain
+    excess is line 10 less taxable income; a second worksheet applies the
+    footnote's four modifications. Returns line 6 and the worksheet behind
+    line 4, whose lines 14 and 21 are Form 6251 lines 20 and 27 "as figured
+    for the regular tax" (they "take into account your regular tax capital
+    gain excess"). A filer with no exclusion gets the ordinary line 16 tax.
+    """
+    line_1 = taxable_income
+    line_2c = max(0, excluded)
+    line_3 = line_1 + line_2c
+    worksheet = schedule_d_tax_worksheet_lines_2025(line_3, status=status, **items)
+    excess = max(0, worksheet[10] - line_1) if line_2c > 0 else 0
+    if excess > 0:
+        worksheet = schedule_d_tax_worksheet_lines_2025(
+            line_3, status=status, capital_gain_excess=excess, **items
+        )
+    # "If Form 1040 or 1040-SR, line 15, is zero, don't complete this
+    # worksheet."
+    if line_1 <= 0:
+        return 0.0, worksheet
+    line_5 = tax_rate_schedule(line_2c, status)
+    return max(0, worksheet[47] - line_5), worksheet
+
+
+def form_6251_line_7_schedule_d(
+    taxable_excess, excluded, items, regular_worksheet, status
+):
+    """Form 6251 line 7 through its Foreign Earned Income Tax Worksheet, for
+    a household that uses the Schedule D Tax Worksheet.
+
+    2025 Form 6251 instructions, pages 10 and 13. With no AMT adjustments
+    the AMT Schedule D Tax Worksheet is the regular one; the AMT capital gain
+    excess is its line 10 less Form 6251 line 6, and the four modifications
+    apply to it for lines 13 to 15 of Part III. Lines 20 and 27 come from
+    `regular_worksheet`, the worksheet figured for the regular tax.
+    """
+    if taxable_excess <= 0:
+        return 0.0
+    line_1 = taxable_excess
+    line_2c = max(0, excluded)
+    line_3 = line_1 + line_2c
+    amt_worksheet = schedule_d_tax_worksheet_lines_2025(line_3, status=status, **items)
+    excess = max(0, amt_worksheet[10] - line_1) if line_2c > 0 else 0
+    if excess > 0:
+        amt_worksheet = schedule_d_tax_worksheet_lines_2025(
+            line_3, status=status, capital_gain_excess=excess, **items
+        )
+    _, _, _, line_4 = form_6251_part_iii_2025(
+        line_3,
+        amt_worksheet[13],
+        regular_worksheet[14],
+        status,
+        line_14=amt_worksheet["schedule_d_19"],
+        worksheet_line_10=amt_worksheet[10],
+        line_27=regular_worksheet[21],
+    )
     line_5 = amt_rates(line_2c, status)
     return max(0, line_4 - line_5)
 
@@ -382,34 +477,52 @@ def tolerance(*amounts):
 
 def assert_matches_worksheets(households, law):
     """The 2025 model against the transcribed 2025 worksheets."""
-    cap_gaps = []
     for i, h in enumerate(households):
         status = law["filing_status"][i]
         assert status == h["status"], (i, status)
         taxable_income = float(law["taxable_income"][i])
         gain = net_gain(h)
         dividends = h["qualified_dividends"]
-        line_6, line_6_capped, ordinary_income = foreign_earned_income_tax_worksheet(
-            taxable_income, h["exclusion"], dividends, gain, status
-        )
+        taxable_excess = float(law["amt_income_less_exemptions"][i])
+        if uses_schedule_d_tax_worksheet(h):
+            # See the module docstring.
+            assert h["short_term_gains"] >= 0, h
+            items = schedule_d_worksheet_items(h)
+            line_6, worksheet = foreign_earned_income_tax_worksheet_schedule_d(
+                taxable_income, h["exclusion"], items, status
+            )
+            line_7 = form_6251_line_7_schedule_d(
+                taxable_excess, h["exclusion"], items, worksheet, status
+            )
+        else:
+            line_6_uncapped, line_6, ordinary_income = (
+                foreign_earned_income_tax_worksheet(
+                    taxable_income, h["exclusion"], dividends, gain, status
+                )
+            )
+            # The form's line 25 cap takes at most $7.50 off line 23.
+            cap_gap = line_6_uncapped - line_6
+            slack = tolerance(taxable_income + h["exclusion"])
+            assert -slack <= cap_gap <= 7.5 + slack, (i, h)
+            line_7 = form_6251_line_7(
+                taxable_excess,
+                h["exclusion"],
+                dividends,
+                gain,
+                ordinary_income,
+                status,
+            )
         regular_tax = float(law["regular_tax"][i])
         stacked_income = taxable_income + h["exclusion"]
+        assert float(law["regular_tax_before_credits"][i]) == pytest.approx(
+            regular_tax, abs=tolerance(stacked_income)
+        ), (i, h)
+        # Line 6 with line 25 of the capital gains worksheet or line 47 of
+        # the Schedule D Tax Worksheet.
         assert regular_tax == pytest.approx(line_6, abs=tolerance(stacked_income)), (
             i,
             h,
         )
-        # The form's line 25 cap, which the model's section 1(h) formulas omit.
-        cap_gaps.append(regular_tax - line_6_capped)
-        line_7 = form_6251_line_7(
-            float(law["amt_income_less_exemptions"][i]),
-            h["exclusion"],
-            dividends,
-            gain,
-            ordinary_income,
-            status,
-        )
-        assert -tolerance(stacked_income) <= cap_gaps[-1], (i, h)
-        assert cap_gaps[-1] <= 7.5 + tolerance(stacked_income), (i, h)
         # Form 6251 lines 9 to 11 with no foreign tax credit.
         amt = max(0, line_7 - line_6)
         taxable_excess = float(
@@ -495,18 +608,29 @@ GRID = [
         "qualified_dividends": dividends,
         "long_term_gains": long_term,
         "short_term_gains": short_term,
+        "collectibles_gains": collectibles,
+        "unrecaptured_section_1250_gain": section_1250,
         "exclusion": exclusion,
     }
     for status in STATUSES
     for wages in (0, 20_000, 59_975, 140_000, 700_000)
-    for dividends, long_term, short_term in (
-        (0, 0, 0),
-        (3_000, 0, 0),
-        (0, 50_000, 0),
-        (10_000, 40_000, -15_000),
-        (0, 30_000, 20_000),
-        (25_000, 900_000, 0),
-        (0, -8_000, 5_000),
+    for dividends, long_term, short_term, collectibles, section_1250 in (
+        (0, 0, 0, 0, 0),
+        (3_000, 0, 0, 0, 0),
+        (0, 50_000, 0, 0, 0),
+        (10_000, 40_000, -15_000, 0, 0),
+        (0, 30_000, 20_000, 0, 0),
+        (25_000, 900_000, 0, 0, 0),
+        (0, -8_000, 5_000, 0, 0),
+        # 28-percent rate gain and unrecaptured section 1250 gain.
+        (0, 30_000, 0, 30_000, 0),
+        (5_000, 80_000, 10_000, 20_000, 15_000),
+        (0, 200_000, 0, 100_000, 100_000),
+        (20_000, 600_000, 40_000, 0, 100_000),
+        # With no wages the excess (15,750 single, more for other statuses)
+        # is more than the 28-percent rate gain, so modification 4 lowers
+        # Schedule D line 19, and line 12 with it.
+        (0, 50_000, 0, 10_000, 30_000),
     )
     for exclusion in (0, 1, 40_025, 130_000, 260_000)
 ]
@@ -522,6 +646,23 @@ def test_grid_matches_the_2025_worksheets():
     assert (excludes & (law["capital_gains_tax"] > 0)).any()
     assert (excludes & (law["alternative_minimum_tax"] > 0)).any()
     assert (excludes & (law["taxable_income"] == 0)).any()
+    # And, with 28-percent rate gain or unrecaptured section 1250 gain, an
+    # excess that reaches each of them, and the AMT.
+    rate_gain = np.array([h["collectibles_gains"] > 0 for h in GRID])
+    section_1250 = np.array([h["unrecaptured_section_1250_gain"] > 0 for h in GRID])
+    excess = law["section_911_capital_gain_excess"]
+    collectibles = np.array([h["collectibles_gains"] for h in GRID])
+    assert (rate_gain & (excess > 0)).any()
+    # Modification 4 changes worksheet line 12: the excess is beyond the
+    # 28-percent rate gain, and line 9 after modification 1 is above the
+    # unrecaptured section 1250 gain after modification 4.
+    unrecaptured = np.array([h["unrecaptured_section_1250_gain"] for h in GRID])
+    line_9 = np.array([net_gain(h) for h in GRID]) - excess
+    reduced_1250 = np.maximum(0, unrecaptured - (excess - collectibles))
+    assert (section_1250 & (excess > collectibles) & (line_9 > reduced_1250)).sum() >= 2
+    assert (
+        (rate_gain | section_1250) & excludes & (law["alternative_minimum_tax"] > 0)
+    ).any()
 
 
 @pytest.mark.parametrize("year", [2018, 2022, 2025, 2026])
@@ -686,8 +827,10 @@ def test_nothing_excluded_changes_nothing():
             "section_911_28_percent_rate_gain": get(
                 "capital_gains_28_percent_rate_gain"
             ),
+            # Schedule D line 19, net of the losses the 28 percent rate gain
+            # does not absorb.
             "section_911_unrecaptured_section_1250_gain": get(
-                "unrecaptured_section_1250_gain"
+                "schedule_d_unrecaptured_section_1250_gain"
             ),
             "section_911_adjusted_net_capital_gain": get("adjusted_net_capital_gain"),
         }
@@ -719,7 +862,10 @@ def test_nothing_excluded_changes_nothing():
             ("line_9", "dwks09"),
             ("line_10", "dwks10"),
             ("line_13", "dwks13"),
-            ("unrecaptured_section_1250_gain", "unrecaptured_section_1250_gain"),
+            (
+                "unrecaptured_section_1250_gain",
+                "schedule_d_unrecaptured_section_1250_gain",
+            ),
         ]:
             assert np.array_equal(
                 np.asarray(getattr(worksheet, line))[no_excess],
@@ -751,6 +897,28 @@ household_strategy = st.fixed_dictionaries(
     }
 )
 
+# Adds 28-percent rate gain (collectibles) and unrecaptured section 1250 gain,
+# up to the long-term gain, to households with no short-term loss (see the
+# module docstring).
+schedule_d_household_strategy = st.builds(
+    lambda h, collectibles, section_1250: {
+        **h,
+        "collectibles_gains": (
+            min(collectibles, max(0, h["long_term_gains"]))
+            if h["short_term_gains"] >= 0
+            else 0
+        ),
+        "unrecaptured_section_1250_gain": (
+            min(section_1250, max(0, h["long_term_gains"]))
+            if h["short_term_gains"] >= 0
+            else 0
+        ),
+    },
+    household_strategy,
+    st.one_of(st.just(0), st.integers(1, 400_000)),
+    st.one_of(st.just(0), st.integers(1, 400_000)),
+)
+
 # Fixed examples, so CI on an unrelated pull request draws the same households.
 SETTINGS = dict(
     max_examples=10,
@@ -765,7 +933,7 @@ SETTINGS = dict(
 
 @hypothesis.settings(**SETTINGS)
 @hypothesis.given(
-    st.lists(household_strategy, min_size=1, max_size=25),
+    st.lists(schedule_d_household_strategy, min_size=1, max_size=25),
     st.sampled_from([2018, 2022, 2025, 2026]),
 )
 def test_random_households_keep_the_invariants(households, year):
@@ -773,6 +941,6 @@ def test_random_households_keep_the_invariants(households, year):
 
 
 @hypothesis.settings(**SETTINGS)
-@hypothesis.given(st.lists(household_strategy, min_size=1, max_size=25))
+@hypothesis.given(st.lists(schedule_d_household_strategy, min_size=1, max_size=25))
 def test_random_households_match_the_2025_worksheets(households):
     assert_matches_worksheets(households, calculate(households, 2025))

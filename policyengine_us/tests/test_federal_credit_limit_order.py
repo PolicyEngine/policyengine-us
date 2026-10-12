@@ -17,8 +17,7 @@ from the model's parameters):
 
 These tests check that the parameters encode that order, and that the model's
 credits match a direct sequential application of 26 U.S.C. 26(a) in that
-order. The households take the standard deduction, so the CTC limit's no-SALT
-liability equals actual liability.
+order. The households take the standard deduction.
 """
 
 import numpy as np
@@ -134,8 +133,11 @@ def test_2020_irc_pin_keeps_the_order_in_2021(baseline_system):
         (non_refundable_ss_credit_reform(), "non_refundable_ctc"),
     ],
 )
-def test_reforms_order_the_ctc_and_25d_lists(reform, credit_before_25d):
-    credits = reform(CountryTaxBenefitSystem()).parameters.gov.irs.credits
+def test_reforms_order_the_ctc_and_25d_lists(
+    baseline_system, reform, credit_before_25d
+):
+    # Each reform clones the baseline's parameters and variable registry.
+    credits = reform(baseline_system).parameters.gov.irs.credits
     date = "2026-06-01"
     non_refundable = list(credits.non_refundable(date))
     assert non_refundable[0] == "foreign_tax_credit"

@@ -53,7 +53,7 @@ def schedule_d_tax_worksheet_after_capital_gain_excess(tax_unit, period, taxable
         excludes_income, max_(0, line_10 - max_(0, taxable_base)), 0
     )
     has_excess = capital_gain_excess > 0
-    unrecaptured_gain = tax_unit("unrecaptured_section_1250_gain", period)
+    unrecaptured_gain = tax_unit("schedule_d_unrecaptured_section_1250_gain", period)
     rate_gain = tax_unit("capital_gains_28_percent_rate_gain", period)
     # Modifications 1 and 2.
     reduced_line_9 = max_(0, line_9 - capital_gain_excess)
@@ -64,6 +64,9 @@ def schedule_d_tax_worksheet_after_capital_gain_excess(tax_unit, period, taxable
     # Modifications 3 and 4. section_911_28_percent_rate_gain and
     # section_911_unrecaptured_section_1250_gain apply the regular tax excess;
     # this helper also runs with the AMT excess, so it applies them itself.
+    # Schedule D lines 18 and 19 are already net of the worksheets' losses, so
+    # reducing line 18 by the excess and line 19 by the part line 18 does not
+    # absorb is the same as adding the excess to those losses.
     reduced_rate_gain = max_(0, rate_gain - capital_gain_excess)
     reduced_unrecaptured_gain = max_(
         0, unrecaptured_gain - max_(0, capital_gain_excess - rate_gain)
