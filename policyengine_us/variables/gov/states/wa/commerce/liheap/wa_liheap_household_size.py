@@ -13,7 +13,7 @@ class wa_liheap_household_size(Variable):
         "The SPM unit approximates the household sharing heating responsibility."
     )
     reference = (
-        "https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=36"
+        "https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=37"
     )
     defined_for = StateCode.WA
     adds = ["is_citizen_or_legal_immigrant"]

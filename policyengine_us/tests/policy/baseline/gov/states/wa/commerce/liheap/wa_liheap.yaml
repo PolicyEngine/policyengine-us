@@ -881,3 +881,45 @@
     - 590
     - 100
     - 0
+
+- name: Case 72, one cent below the adjusted-income rounding tie retains the lower quotient.
+  period: 2026
+  input:
+    age: 40
+    immigration_status: CITIZEN
+    state_code: WA
+    self_employment_income: 3479.21
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_000
+  output:
+    # At the tie, 3,479.22 / 12 = 289.935 rounds to 289.94.
+    # The next quotient rounds to .44, giving (1.30 - .44) * 1,000.
+    wa_liheap: 870
+
+- name: Case 73, an exact adjusted-income half-cent tie rounds upward.
+  period: 2026
+  input:
+    age: 40
+    immigration_status: CITIZEN
+    state_code: WA
+    self_employment_income: 3479.22
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_000
+  output:
+    # At the tie, 3,479.22 / 12 = 289.935 rounds to 289.94.
+    # The next quotient rounds to .44, giving (1.30 - .44) * 1,000.
+    wa_liheap: 860
+
+- name: Case 74, one cent above the adjusted-income rounding tie retains the upper quotient.
+  period: 2026
+  input:
+    age: 40
+    immigration_status: CITIZEN
+    state_code: WA
+    self_employment_income: 3479.23
+    heating_type: ELECTRICITY
+    pre_subsidy_electricity_expense: 1_000
+  output:
+    # At the tie, 3,479.22 / 12 = 289.935 rounds to 289.94.
+    # The next quotient rounds to .44, giving (1.30 - .44) * 1,000.
+    wa_liheap: 860

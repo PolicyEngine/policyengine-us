@@ -21,9 +21,9 @@ class wa_liheap(Variable):
         "Years outside FY2026 are unverified estimates."
     )
     reference = (
-        # Physical pages 1-2, printed worksheet pages 10-11.
+        # PDF pages 1-2 (printed worksheet pages 10-11).
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/WA_BenefitMatrix_2026.pdf#page=1",
-        # Section 2.6, physical page 10.
+        # Section 2.6.
         "https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=10",
     )
     defined_for = "wa_liheap_eligible"
@@ -35,11 +35,12 @@ class wa_liheap(Variable):
         # Do not extrapolate the worksheet beyond its last published size.
         supported_size = size <= p.household_adjuster.thresholds[-1]
         income = max_(spm_unit("wa_liheap_countable_income", period), 0)
-        monthly_income = income.astype(np.float64) / MONTHS_IN_YEAR
         increment = p.intermediate_rounding_increment
-        adjusted_income = (
-            np.floor(monthly_income / max_(adjuster, 1) / increment + 0.5) * increment
-        )
+        annual_increment = MONTHS_IN_YEAR * max_(adjuster, 1) * increment
+        lower_units = np.floor(income.astype(np.float64) / annual_increment)
+        # Compare half-cent ties at the precision of the stored annual income.
+        midpoint = ((lower_units + 0.5) * annual_increment).astype(income.dtype)
+        adjusted_income = (lower_units + (income >= midpoint)) * increment
         denominator = p.income_constant - adjusted_income
         # Defensive handling for unsupported future-year extrapolations.
         quotient = np.divide(

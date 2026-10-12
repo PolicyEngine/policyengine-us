@@ -20,12 +20,12 @@ class wa_liheap_countable_income(Variable):
         "when the detailed program amount is known."
     )
     reference = (
-        # Section 1.9, physical pages 5-7.
-        "https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=6",
-        # FY2025-26 application, physical pages 1-2 and 13.
-        "https://drive.google.com/file/d/18fvR5CL8UKpTj4Vsm7KlkitKUJclAvkR/view",
-        # Policy 1.1.2, physical pages 14-15, incorporates LIHEAP income rules.
-        "https://deptofcommerce.app.box.com/s/5a32797ex8tz2blo8nwtifecokpya37j",
+        # Section 1.9, PDF pages 5-7.
+        "https://liheapch.acf.gov/docs/2026/state-plans/WA_Plan_2026.pdf#page=5",
+        # FY2025-26 application, PDF pages 1-2,13.
+        "https://drive.google.com/file/d/18fvR5CL8UKpTj4Vsm7KlkitKUJclAvkR/view#page=1",
+        # Policy 1.1.2 incorporates LIHEAP income rules, PDF pages 14-15.
+        "https://deptofcommerce.app.box.com/s/5a32797ex8tz2blo8nwtifecokpya37j#page=14",
         "https://www.liheapcalendar.com/CACLMT/FAQ",
     )
     defined_for = StateCode.WA
