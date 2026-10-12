@@ -1,40 +1,52 @@
 # Unit tests for Texas SSI State Supplement eligibility
-# Eligible if: SSI eligible individual AND residing in a Medicaid-funded facility
+# Eligible if: SSI recipient AND residing in a Medicaid-funded facility
 # AND in Texas
-# Reference: Texas Human Resources Code Section 32.024(w)
+# Reference: Texas Human Resources Code Section 32.024(w); HHSC MEPD Handbook
+# H-1500 ("SSI recipients who live in an institutional setting and receive the
+# $30 reduced federal benefit receive a state supplement")
 
-- name: Case 1, SSI eligible and in Medicaid facility in Texas.
+- name: Case 1, SSI recipient and in Medicaid facility in Texas.
   period: 2024
   input:
-    is_ssi_eligible_individual: true
+    ssi: 360
     is_in_medicaid_facility: true
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: true
 
-- name: Case 2, SSI eligible but not in Medicaid facility.
+- name: Case 2, SSI recipient but not in Medicaid facility.
   period: 2024
   input:
-    is_ssi_eligible_individual: true
+    ssi: 360
     is_in_medicaid_facility: false
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: false
 
-- name: Case 3, not SSI eligible but in Medicaid facility.
+- name: Case 3, not SSI recipient but in Medicaid facility.
   period: 2024
   input:
-    is_ssi_eligible_individual: false
+    ssi: 0
     is_in_medicaid_facility: true
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: false
 
-- name: Case 4, neither SSI eligible nor in Medicaid facility.
+- name: Case 4, neither SSI recipient nor in Medicaid facility.
   period: 2024
   input:
-    is_ssi_eligible_individual: false
+    ssi: 0
     is_in_medicaid_facility: false
     state_code: TX
   output:
     tx_ssi_state_supplement_eligible: false
+
+- name: Case 5, reported SSI receipt qualifies a facility resident with zero computed SSI.
+  period: 2024-01
+  input:
+    ssi: 0
+    receives_ssi: true
+    is_in_medicaid_facility: true
+    state_code: TX
+  output:
+    tx_ssi_state_supplement_eligible: true
