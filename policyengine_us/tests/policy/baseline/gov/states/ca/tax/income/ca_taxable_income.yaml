@@ -15,3 +15,14 @@
     state_code: CA
   output:
     ca_taxable_income: 10_000 - 4_900
+
+- name: Military retirement pay flows into CA taxable income via federal AGI
+  period: 2024
+  input:
+    military_retirement_pay: 50_000
+    ca_deductions: 5_363
+    state_code: CA
+  output:
+    ca_agi: 50_000
+    ca_taxable_income: 50_000 - 5_363
+
