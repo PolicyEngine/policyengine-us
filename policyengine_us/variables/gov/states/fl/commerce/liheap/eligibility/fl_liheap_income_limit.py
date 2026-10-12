@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.hhs.hhs_smi import smi
+from policyengine_us.variables.gov.hhs.hhs_smi import liheap_smi_limit, smi
 from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 
 
@@ -22,18 +22,13 @@ class fl_liheap_income_limit(Variable):
         p = parameters(period).gov.states.fl.commerce.liheap.eligibility
         size = spm_unit("fl_liheap_household_size", period)
         state = spm_unit.household("state_code_str", period)
-        size_smi = smi(size, state, period, parameters)
         if p.truncates_smi_limit:
-            four_person_smi = parameters(period).gov.hhs.smi.amount[state]
-            size_share = size_smi / four_person_smi
-            # This floor order reconciles all FY2026 matrix rows for sizes 1-12;
-            # the sources do not expressly prescribe the rounding order.
-            four_person_limit = np.floor(four_person_smi * p.smi_rate)
-            smi_limit = np.floor(four_person_limit * size_share)
+            # The HHS floor order reconciles all FY2026 matrix rows, sizes 1-12.
+            smi_limit = liheap_smi_limit(size, state, p.smi_rate, period, parameters)
         else:
             # The FY2025 matrix rounds this unrounded amount, and each band
             # cutoff derived from it, to the nearest dollar.
-            smi_limit = size_smi * p.smi_rate
+            smi_limit = smi(size, state, period, parameters) * p.smi_rate
         # Source conflict: manual 900.01D (page 39) sets 60% of SMI for sizes
         # 1-8 and 150% of the poverty guideline for 9 or more, while 1100.03D
         # (page 47) and 1200.01A (page 49) set 150% of the guideline for every
