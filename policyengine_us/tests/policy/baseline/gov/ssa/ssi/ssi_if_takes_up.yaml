@@ -168,3 +168,71 @@
     # ineligible spouse's income to you'. The claimant has no income of
     # their own, so SSI is the full $30.
     ssi: [30, 0]
+
+# 416.1163(g) Examples 3 and 2 (1986: individual rate $336, couple rate $504,
+# deeming threshold $168). The examples stop at eligibility; the benefit
+# follows from (e)(2). The examples deem July income for September
+# (416.1163(e)(1)); with constant income the amounts are the same. Annual
+# amounts are twelve times the monthly ones.
+- name: Case 9, 416.1163(g) Example 3 (Mr. Smith) pays the lesser amount under 416.1163(e)(2).
+  period: 1986
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mr_smith:
+        age: 50
+        is_ssi_disabled: true
+        pension_income: 100 * 12
+      mrs_smith:
+        age: 50
+        employment_income: 201 * 12
+    tax_units:
+      tax_unit:
+        members: [mr_smith, mrs_smith]
+    marital_units:
+      marital_unit:
+        members: [mr_smith, mrs_smith]
+    households:
+      household:
+        members: [mr_smith, mrs_smith]
+  output:
+    # Example 3: '$80 ... leaving $68. This gives the couple total countable
+    # income of $148.' Couple computation $504 - $148 = $356; without
+    # deeming $336 - $80 = $256; the lesser is $256.
+    ssi_countable_income: [1_776, 0]  # $148 a month
+    uncapped_ssi: [4_272, 0]  # $356 a month
+    uncapped_ssi_without_spousal_deeming: [3_072, 0]  # $256 a month
+    ssi: [3_072, 0]  # $256 a month
+
+- name: Case 10, 416.1163(g) Example 2 (Mr. Jones) keeps the couple computation when it is lower.
+  period: 1986
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mr_jones:
+        age: 50
+        is_ssi_disabled: true
+      mrs_jones:
+        age: 48
+        employment_income: 401 * 12
+        pension_income: 252 * 12
+      christine:
+        age: 10
+    tax_units:
+      tax_unit:
+        members: [mr_jones, mrs_jones, christine]
+    marital_units:
+      marital_unit:
+        members: [mr_jones, mrs_jones]
+      child_unit:
+        members: [christine]
+    households:
+      household:
+        members: [mr_jones, mrs_jones, christine]
+  output:
+    # Example 2: allocation $168 for Christine, leaving $84 unearned;
+    # '$64 countable unearned income and $168 countable earned income ...
+    # ($232)'. Couple computation $504 - $232 = $272; without deeming
+    # $336 - $0 = $336; the lesser is $272.
+    ssi_countable_income: [2_784, 0, 0]  # $232 a month
+    ssi: [3_264, 0, 0]  # $272 a month
