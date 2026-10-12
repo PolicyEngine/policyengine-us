@@ -70,3 +70,37 @@
     # Total raw: 12000 (positive, so no limit applied)
     # Return person's raw amounts unchanged
     loss_limited_net_capital_gains_person: [-3000, 15000]
+
+- name: The filer-only allocation leaves a dependent's loss out
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 45
+        long_term_capital_gains: 5_000
+      child:
+        age: 15
+        short_term_capital_gains: -10_000
+  output:
+    # The pooled allocation shares the 3,000 limited loss; the filer-only one
+    # keeps the head's 5,000 gain.
+    filer_loss_limited_net_capital_gains_person: [5_000, 0]
+
+- name: The filer-only allocation limits a filers' net loss
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 45
+        long_term_capital_gains: -8_000
+      spouse:
+        is_tax_unit_spouse: true
+        age: 45
+        long_term_capital_gains: -2_000
+      child:
+        age: 15
+        long_term_capital_gains: 50_000
+  output:
+    filer_loss_limited_net_capital_gains_person: [-2_400, -600, 0]

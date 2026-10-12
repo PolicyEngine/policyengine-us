@@ -12,9 +12,24 @@ class va_national_guard_subtraction_person(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.va.tax.income.subtractions.national_guard_pay
-        # Va. Code 58.1-322.02(8) subtracts "the wages or salaries received by
-        # any person" for Guard service, up to the cap for each person. A tax
-        # unit dependent's pay is on the dependent's own return.
+        # Each filer's own pay up to the per-person cap, as in
+        # va_national_guard_subtraction, sets the shares of the unit amount,
+        # so a supplied unit amount is allocated too. A tax unit dependent's
+        # pay is on the dependent's own return; with no filer pay, the head
+        # takes a supplied amount.
         head_or_spouse = ~person("is_tax_unit_dependent", period)
-        pay = person("military_service_income", period) * head_or_spouse
-        return min_(pay, p.cap)
+        capped_pay = min_(
+            person("military_service_income", period) * head_or_spouse, p.cap
+        )
+        total_capped_pay = person.tax_unit.sum(capped_pay)
+        share = where(
+            total_capped_pay > 0,
+            np.divide(
+                capped_pay,
+                total_capped_pay,
+                out=np.zeros_like(capped_pay),
+                where=total_capped_pay > 0,
+            ),
+            person("is_tax_unit_head", period),
+        )
+        return person.tax_unit("va_national_guard_subtraction", period) * share

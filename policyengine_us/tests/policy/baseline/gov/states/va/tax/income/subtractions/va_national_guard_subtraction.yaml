@@ -69,3 +69,22 @@
   output:
     va_national_guard_subtraction: 11_000
     va_national_guard_subtraction_person: [5_500, 5_500]
+
+- name: A supplied tax unit amount is allocated by capped pay
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 30
+        military_service_income: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        va_national_guard_subtraction: 3_000
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    va_national_guard_subtraction_person: 3_000

@@ -120,3 +120,22 @@
       state_code: VT
   output:
     vt_percentage_capital_gains_exclusion: 2_400
+
+- name: The Form 4952 election share on gains comes off the eligible gains
+  # Schedule IN-153 line 7 = 100,000 x 100,000 / (100,000 + 100,000) = 50,000;
+  # line 17 = 100,000 - 50,000; 40% = 20,000.
+  period: 2024
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 50
+        employment_income: 80_000
+        long_term_capital_gains: 100_000
+        long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 100_000
+        qualified_dividend_income: 100_000
+        investment_income_elected_form_4952: 100_000
+    household:
+      state_code: VT
+  output:
+    vt_percentage_capital_gains_exclusion: 20_000
