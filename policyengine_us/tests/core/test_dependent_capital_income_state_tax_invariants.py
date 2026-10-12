@@ -30,9 +30,11 @@ and Vermont-eligible long-term gains):
 2. nd_qdiv_subtraction is 40% of the filers' qualified dividends, and
    nd_ltcg_subtraction is 40% of max(0, min(line 15, line 16)) of the filers'
    own Schedule D, with capital gain distributions on line 15.
-3. vt_percentage_capital_gains_exclusion is 40% of the filers' eligible gains,
-   up to the cap, vt_additions is the filers' tax-exempt interest, and
-   us_govt_interest is the filers' U.S. government interest.
+3. vt_percentage_capital_gains_exclusion is 40% of the filers' eligible gains
+   netted against their own Schedule D (no more than max(0, min(line 15,
+   line 16)), Schedule IN-153 line 15), up to the cap. vt_additions is the
+   filers' tax-exempt interest, and us_govt_interest is the filers' U.S.
+   government interest.
 
 The filers earn at least $80,000, so no earned income tax credit is at
 stake: Vermont's is a share of the federal credit, whose investment income
@@ -210,15 +212,19 @@ def check(units):
         "nd_ltcg_subtraction": nd.ltcg_fraction
         * np.maximum(0, np.minimum(long_term, long_term + short_term)),
         # 3. Vermont, from the filers' own amounts.
+        # Schedule IN-153 line 15: eligible gains after netting, no more than
+        # the filers' net gain (the draws have no collectibles or section 1250
+        # gain, so Part I line 4 is max(0, min(line 15, line 16))).
         "vt_percentage_capital_gains_exclusion": np.minimum(
             vt.rate
-            * np.array(
+            * np.minimum(
                 [
                     filer_total(
                         u, "long_term_capital_gains_on_assets_eligible_for_vt_exclusion"
                     )
                     for u in units
-                ]
+                ],
+                np.maximum(0, np.minimum(long_term, long_term + short_term)),
             ),
             vt.cap,
         ),

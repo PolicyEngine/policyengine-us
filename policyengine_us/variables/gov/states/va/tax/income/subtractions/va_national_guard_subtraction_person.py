@@ -4,26 +4,17 @@ from policyengine_us.model_api import *
 class va_national_guard_subtraction_person(Variable):
     value_type = float
     entity = Person
-    label = "Virginia National Guard pay subtraction allocated to each person"
+    label = "Virginia National Guard pay subtraction for each person"
     defined_for = StateCode.VA
     unit = USD
     definition_period = YEAR
     reference = "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
 
     def formula(person, period, parameters):
-        # The subtraction caps the household's military service income, so
-        # allocate the capped tax-unit amount by each person's share.
-        total = person.tax_unit("va_national_guard_subtraction", period)
-        # Shares of the head's and spouse's pay, as va_national_guard_subtraction
-        # leaves out a tax unit dependent's.
+        p = parameters(period).gov.states.va.tax.income.subtractions.national_guard_pay
+        # Va. Code 58.1-322.02(8) subtracts "the wages or salaries received by
+        # any person" for Guard service, up to the cap for each person. A tax
+        # unit dependent's pay is on the dependent's own return.
         head_or_spouse = ~person("is_tax_unit_dependent", period)
-        military_service_income = (
-            person("military_service_income", period) * head_or_spouse
-        )
-        total_military_service_income = person.tax_unit.sum(military_service_income)
-        share = where(
-            total_military_service_income > 0,
-            military_service_income / total_military_service_income,
-            0,
-        )
-        return total * share
+        pay = person("military_service_income", period) * head_or_spouse
+        return min_(pay, p.cap)

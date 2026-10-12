@@ -23,6 +23,7 @@
   period: 2022
   input:
     state_code: VT
+    long_term_capital_gains: 1_000  # The eligible gains are part of these.
     long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 1_000
   output:
     vt_percentage_capital_gains_exclusion: 400
@@ -31,6 +32,7 @@
   period: 2022
   input:
     state_code: VT
+    long_term_capital_gains: 900_000  # The eligible gains are part of these.
     long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 900_000
   output:
     vt_percentage_capital_gains_exclusion: 350_000
@@ -83,3 +85,38 @@
     vt_capital_gains_exclusion: 5_000
     adjusted_gross_income: 160_000
     vt_income_tax: 6_623.2
+
+- name: Eligible gains are netted against a short-term loss first
+  # Schedule IN-153 Part II starts from Part I line 4, the smaller of
+  # Schedule D lines 15 and 16: min(10,000, 10,000 - 20,000) is a loss.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 80_000
+        long_term_capital_gains: 10_000
+        long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 10_000
+        short_term_capital_gains: -20_000
+    household:
+      state_code: VT
+  output:
+    vt_percentage_capital_gains_exclusion: 0
+
+- name: Eligible gains are limited to the net gain
+  # Line 15 is no more than the 6,000 net gain: 40% x 6,000.
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 80_000
+        long_term_capital_gains: 10_000
+        long_term_capital_gains_on_assets_eligible_for_vt_exclusion: 10_000
+        short_term_capital_gains: -4_000
+    household:
+      state_code: VT
+  output:
+    vt_percentage_capital_gains_exclusion: 2_400

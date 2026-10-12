@@ -10,12 +10,5 @@ class va_national_guard_subtraction(Variable):
     definition_period = YEAR
     reference = "https://law.lis.virginia.gov/vacodefull/title58.1/chapter3/article2/"
 
-    def formula(tax_unit, period, parameters):
-        p = parameters(period).gov.states.va.tax.income.subtractions.national_guard_pay
-        # The head's and spouse's pay: a tax unit dependent's is on the
-        # dependent's own return, as federal adjusted gross income leaves it
-        # out, so it neither uses up the cap nor shares in the subtraction.
-        national_guard_pay = tax_unit_non_dep_add(
-            tax_unit, period, ["military_service_income"]
-        )
-        return min_(national_guard_pay, p.cap)
+    # The sum of each filer's own capped pay (va_national_guard_subtraction_person).
+    adds = ["va_national_guard_subtraction_person"]

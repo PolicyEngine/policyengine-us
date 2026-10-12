@@ -28,6 +28,16 @@ class vt_percentage_capital_gains_exclusion(Variable):
             period,
             ["long_term_capital_gains_on_assets_eligible_for_vt_exclusion"],
         )
+        # Schedule IN-153 line 15: eligible gains after netting, so no more
+        # than the filers' adjusted net capital gain less qualified dividends
+        # (Part I line 4, from Schedule D lines 15, 16, 18 and 19), as in
+        # vt_capital_gains_exclusion.
+        net_gain = max_(
+            tax_unit("adjusted_net_capital_gain", period)
+            - tax_unit_non_dep_add(tax_unit, period, ["qualified_dividend_income"]),
+            0,
+        )
+        eligible_gains = max_(0, min_(eligible_gains, net_gain))
         p = parameters(period).gov.states.vt.tax.income.agi.exclusions.capital_gain
         percentage_exclusion = eligible_gains * p.percentage.rate
         return min_(percentage_exclusion, p.percentage.cap)
