@@ -10,6 +10,11 @@ class ca_agi_subtractions(Variable):
     reference = (
         "https://www.ftb.ca.gov/forms/2021/2021-540-ca-instructions.html",
         "https://www.ftb.ca.gov/forms/2022/2022-540-ca-instructions.html",
+        # Column A takes the amounts on the filers' own federal return.
+        "https://www.ftb.ca.gov/forms/2024/2024-540-ca-instructions.html",
+        # PDF pages 4, 13: a dependent's own filing requirement and
+        # standard deduction worksheet.
+        "https://www.ftb.ca.gov/forms/2024/2024-540-booklet.pdf#page=4",
     )
     defined_for = StateCode.CA
 

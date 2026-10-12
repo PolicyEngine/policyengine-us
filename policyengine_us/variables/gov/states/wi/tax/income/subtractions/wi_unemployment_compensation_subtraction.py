@@ -8,8 +8,12 @@ class wi_unemployment_compensation_subtraction(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
+        "https://docs.legis.wisconsin.gov/statutes/statutes/71/i/05/6/b/8",
         "https://www.revenue.wi.gov/TaxForms2021/2021-ScheduleSB-inst.pdf#page=2",
         "https://www.revenue.wi.gov/TaxForms2022/2022-ScheduleSB-Inst.pdf#page=1",
+        "https://www.revenue.wi.gov/TaxForms2024/2024-ScheduleSB-Inst.pdf#page=2",
+        # A dependent's own filing requirement
+        "https://www.revenue.wi.gov/TaxForms2024/2024-Form1-Inst.pdf#page=3",
     )
     defined_for = StateCode.WI
 
