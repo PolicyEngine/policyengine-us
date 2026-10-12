@@ -141,6 +141,46 @@ sim = Microsimulation(dataset=single_year_dataset, dataset_end_year=2024)
 paths. It does not apply to an existing `USMultiYearDataset` or to the legacy
 variable-centric HDF5 format.
 
+### Tax-unit roles
+
+A population file can supply the tax units its constructor built, not just
+their membership, through `tax_unit_role_input` (person): `HEAD`, `SPOUSE` or
+`DEPENDENT`. The certified Populace build supplies it. When every member of a
+tax unit has a supplied role, `is_tax_unit_head` and `is_tax_unit_spouse`
+follow it and `is_tax_unit_dependent` covers everyone else. Explicitly set
+`is_tax_unit_head`, `is_tax_unit_spouse` or `is_tax_unit_dependent` inputs
+still take precedence.
+
+Without supplied roles, a unit falls back to age ordering. The oldest adult is
+the head, skipping adults input as tax-unit dependents unless every adult in
+the unit is one. The next-oldest such adult is the spouse, unless any member of
+the unit is separated. Without dependent inputs, that pairs an adult student
+with a parent as joint filers and leaves a minor living without a parent with
+no head.
+
+The Populace build carries its constructor's filing status in a
+`filing_status_input` column. No variable has that name, so the column is
+ignored. By default, `filing_status` is computed from the unit's members,
+including any supplied roles, and the filing rules. Reforms to those rules
+apply when the formula computes the status. A direct `filing_status` input
+supplied by a caller still overrides the formula.
+
+Supplied roles fail closed rather than falling back. Each of these raises a
+`ValueError`:
+
+- roles supplied for only some members of a unit;
+- a unit without exactly one `HEAD`, or with more than one `SPOUSE`.
+
+Two consequences follow from honoring supplied roles. First, a dependent's
+income is left out of the return they are claimed on, because
+`irs_gross_income` excludes tax-unit dependents, and so are their
+above-the-line deductions. The model does not yet compute a dependent's own
+return ([#9618](https://github.com/PolicyEngine/policyengine-us/issues/9618)),
+so an adult dependent's earnings leave the income tax base. Second, a minor can
+head a return, which programs that identify minor parents as a tax-unit head or
+spouse under 18 will treat as a minor parent
+([#9619](https://github.com/PolicyEngine/policyengine-us/issues/9619)).
+
 ### Filtering by geography
 
 The microdata includes geographic identifiers that can be used for state-level analysis:

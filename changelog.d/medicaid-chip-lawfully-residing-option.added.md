@@ -1,1 +1,0 @@
-Add the CHIPRA section 214 option for lawfully residing children and pregnant individuals to Medicaid and CHIP, and apply the five-year bar, qualified-alien limit and H.R.1 section 71109 status limits to CHIP.

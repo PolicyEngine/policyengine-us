@@ -27,3 +27,53 @@
     state_code: WI
   output:
     wi_income_tax_before_credits: 22_232.83  # same as for SINGLE filing unit
+
+- name: WI 2025 single tax matches the Tax Computation Worksheet
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    wi_taxable_income: 150_000
+    state_code: WI
+  output:
+    wi_income_tax_before_credits: 7_363.56  # = 150_000 x 5.3% - 586.44
+
+- name: WI 2025 head of household tax matches the Tax Computation Worksheet
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: HEAD_OF_HOUSEHOLD
+    wi_taxable_income: 150_000
+    state_code: WI
+  output:
+    wi_income_tax_before_credits: 7_363.56  # = 150_000 x 5.3% - 586.44
+
+- name: WI 2025 joint tax matches the Tax Computation Worksheet
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: JOINT
+    wi_taxable_income: 150_000
+    state_code: WI
+  output:
+    wi_income_tax_before_credits: 7_168.08  # = 150_000 x 5.3% - 781.92
+
+- name: WI 2025 married filing separately tax matches the Tax Computation Worksheet
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    wi_taxable_income: 100_000
+    state_code: WI
+  output:
+    wi_income_tax_before_credits: 4_909.04  # = 100_000 x 5.3% - 390.96
+
+- name: WI 2025 single tax in the 5.3% bracket below $100,000 matches the tax table
+  absolute_error_margin: 1
+  period: 2025
+  input:
+    filing_status: SINGLE
+    wi_taxable_income: 61_750
+    state_code: WI
+  output:
+    wi_income_tax_before_credits: 2_686  # 2025 tax table, 61,700-61,800, single

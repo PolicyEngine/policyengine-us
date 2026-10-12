@@ -28,8 +28,8 @@
   output:
     amt_section_911_capital_gain_excess: 0
 
-# Synthetic inputs: on a real return worksheet line 10 and net capital gain
-# are the same amount. They are set apart here only to show which one the
+# Synthetic inputs: on a real return, and in the model for the same inputs,
+# worksheet line 10 and net capital gain are the same amount. They are set apart here only to show which one the
 # AMT excess reads.
 - name: The AMT excess reads worksheet line 10, not net_capital_gain
   period: 2025

@@ -1,0 +1,53 @@
+# Dental, vision and health insurance premiums the taxpayer paid, for
+# worksheet lines 1 and 3 (2025 instructions, p. 41), to the extent not
+# otherwise deducted or excluded in computing federal AGI
+# (R.C. 5747.01(A)(10)(a)-(b)).
+
+- name: Direct premium input
+  period: 2025
+  input:
+    state_code: OH
+    health_insurance_premiums: 3_000
+  output:
+    oh_medical_care_insurance_premiums: 3_000
+
+- name: Non-Medicare premiums are counted once, not with the SPM component
+  period: 2025
+  input:
+    state_code: OH
+    age: 40
+    health_insurance_premiums_without_medicare_part_b: 6_500
+    other_health_insurance_premiums: 6_500
+    employer_sponsored_insurance_premiums: 20_000
+  output:
+    oh_medical_care_insurance_premiums: 6_500
+
+- name: Premiums paid through pre-tax payroll deductions are left out
+  period: 2025
+  input:
+    state_code: OH
+    employment_income: 50_000
+    pre_tax_health_insurance_premiums: 2_000
+  output:
+    oh_medical_care_insurance_premiums: 0
+
+- name: Premiums deducted as self-employed health insurance are left out
+  period: 2025
+  input:
+    state_code: OH
+    is_self_employed: true
+    self_employment_income: 3_000
+    health_insurance_premiums: 5_000
+  output:
+    # 5,000 - min(3,000, 5,000).
+    oh_medical_care_insurance_premiums: 2_000
+
+- name: The self-employed deduction cannot make premiums negative
+  period: 2025
+  input:
+    state_code: OH
+    is_self_employed: true
+    self_employment_income: 80_000
+    health_insurance_premiums: 5_000
+  output:
+    oh_medical_care_insurance_premiums: 0

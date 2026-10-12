@@ -22,6 +22,16 @@
   output:
     amt_base_tax: 52_000
 
+- name: Married filing separately above the separate breakpoint
+  period: 2025
+  input:
+    filing_status: SEPARATE
+    amt_income_less_exemptions: 136_000
+  output:
+    # Form 6251 (2025) line 7 "All others" (and line 39): $136,000 is more
+    # than $119,550, so 28% * $136,000 - $2,391 = $35,689.
+    amt_base_tax: 35_689
+
 - name: A Form 2555 filer's tax on line 3 of the Form 6251 Foreign Earned Income Tax Worksheet
   period: 2025
   input:

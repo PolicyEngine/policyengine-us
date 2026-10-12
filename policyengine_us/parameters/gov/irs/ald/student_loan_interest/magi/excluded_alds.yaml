@@ -5,10 +5,37 @@ metadata:
   period: year
   label: Student loan interest deduction excluded above the line deductions
   reference:
-    - title: 26 U.S. Code § 221 - Interest on education loans (b)(2)(C)
-      href: https://www.law.cornell.edu/uscode/text/26/221
+    # (i) "without regard to this section and sections 85(c), 911, 931, and
+    # 933". Sections 931 (specified_possession_income) and 933
+    # (puerto_rico_income) are above-the-line deductions in this model;
+    # section 911 is added back in the formula. Section 222 was struck for
+    # taxable years beginning after 2020 (Pub. L. 116-260, div. EE,
+    # § 104(b)(2)(G)); section 199 was inserted for taxable years beginning
+    # after 2004 (Pub. L. 108-357, § 102) and struck for taxable years
+    # beginning after 2017 (Pub. L. 115-97, § 13305(b)(1)).
+    - title: 26 U.S. Code § 221(b)(2)(C) - Interest on education loans, modified adjusted gross income
+      href: https://www.law.cornell.edu/uscode/text/26/221#b_2_C
+    - title: IRS Publication 970 (2024), Worksheet 4-1, lines 3, 7 and 8
+      href: https://www.irs.gov/pub/irs-prior/p970--2024.pdf#page=36
 
 values:
   2002-01-01:
     - student_loan_interest_ald
+    - capped_qualified_tuition_expenses_ald
+    - specified_possession_income
+    - puerto_rico_income
+  2005-01-01:
+    - student_loan_interest_ald
+    - capped_qualified_tuition_expenses_ald
+    - domestic_production_ald
+    - specified_possession_income
+    - puerto_rico_income
+  2018-01-01:
+    - student_loan_interest_ald
+    - capped_qualified_tuition_expenses_ald
+    - specified_possession_income
+    - puerto_rico_income
+  2021-01-01:
+    - student_loan_interest_ald
+    - specified_possession_income
     - puerto_rico_income
