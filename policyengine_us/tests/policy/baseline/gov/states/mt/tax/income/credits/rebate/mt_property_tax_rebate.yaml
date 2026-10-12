@@ -21,3 +21,29 @@
     state_code: MT
   output:
     mt_property_tax_rebate: 675
+
+- name: The tax year 2024 rebate is 400
+  period: 2024
+  input:
+    real_estate_taxes: 2_000
+    state_code: MT
+  output:
+    # Ch. 767, L. 2025 (SB 542), sec. 3(1): "$400 or the amount of total
+    # property taxes paid, whichever is less, for tax year 2024".
+    mt_property_tax_rebate: 400
+
+- name: The tax year 2024 rebate is the property tax when that is less than 400
+  period: 2024
+  input:
+    real_estate_taxes: 300
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 300
+
+- name: No rebate for tax year 2025
+  period: 2025
+  input:
+    real_estate_taxes: 2_000
+    state_code: MT
+  output:
+    mt_property_tax_rebate: 0

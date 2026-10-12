@@ -33,7 +33,8 @@
     state_withheld_income_tax: 28.15 # computed by PE US
     employee_social_security_tax: [49.6, 0] # computed by PE US
     il_aabd_child_care_expense_exemption: [0, 0]
-    il_aabd_expense_exemption_person: [77.75, 28.15] # 28.15 + 49.6 
+    il_withheld_income_tax: [28.15, 0] # (9,600 - 2,775) x 0.0495 / 12; the child has no wages
+    il_aabd_expense_exemption_person: [77.75, 0] # own withholding 28.15 + own Social Security tax 49.6
     il_aabd_gross_earned_income: [800, 0]
     il_aabd_countable_unearned_income: [560.5, 0] # computed by PE US (ssi)
     il_aabd_earned_income_after_exemption_person: [318.625, 0] 
@@ -84,7 +85,8 @@
     state_withheld_income_tax: 28.15 # computed by PE US
     employee_social_security_tax: [49.6, 0] # computed by PE US
     il_aabd_child_care_expense_exemption: [0, 0]
-    il_aabd_expense_exemption_person: [77.75, 28.15] # 28.15 + 49.6 
+    il_withheld_income_tax: [28.15, 0] # (9,600 - 2,775) x 0.0495 / 12; the child has no wages
+    il_aabd_expense_exemption_person: [77.75, 0] # own withholding 28.15 + own Social Security tax 49.6
     il_aabd_gross_earned_income: [800, 0]
     social_security: [0, 0]
     ssi: [585.5, 943] # computed by PE US
@@ -419,3 +421,114 @@
     il_aabd_eligible_person: [true, true]  # Both eligible for AABD
     il_aabd_person: [441.45, 822.15]  # Both get AABD
     il_aabd: 1_263.6  # Total household AABD
+
+- name: Integration 6, married couple both disabled with wages, each deducts only their own withholding.
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        employment_income: 9_600 # $800 monthly
+        takes_up_ssi_if_eligible: false
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+      person2:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        employment_income: 9_600 # $800 monthly
+        takes_up_ssi_if_eligible: false
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_aabd_countable_assets: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    # (9,600 - 2,775) x 0.0495 / 12 = 28.15 each
+    il_withheld_income_tax: [28.15, 28.15]
+    employee_social_security_tax: [49.6, 49.6] # 800 x 0.062
+    # Each deducts their own 28.15 + 49.6, not the couple's 56.31 withholding
+    il_aabd_expense_exemption_person: [77.75, 77.75]
+    il_aabd_gross_earned_income: [800, 800]
+    il_aabd_countable_unearned_income: [0, 0] # SSI not taken up
+    # 800 - 77.75 = 722.25; minus the 25 flat exemption = 697.25;
+    # minus 20 + 0.5 x 60 = 50 gives 647.25
+    il_aabd_earned_income_after_exemption_person: [647.25, 647.25]
+    il_aabd_countable_income: [647.25, 647.25]
+    il_aabd_need_standard_person: [822.15, 822.15] # 764.9 + 57.25
+    il_aabd_non_financial_eligible_person: [true, true]
+    il_aabd_financial_eligible_person: [true, true]
+    il_aabd_eligible_person: [true, true]
+    il_aabd_person: [174.9, 174.9] # 822.15 - 647.25
+    il_aabd: 349.81
+
+- name: Integration 7, a disabled adult dependent's eligibility does not use the parent's withholding.
+  period: 2024-01
+  absolute_error_margin: 0.2
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 80_000
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+      person2:
+        age: 25
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_dependent: true
+        employment_income: 14_400 # $1,200 monthly, below the SGA amount
+        takes_up_ssi_if_eligible: false
+        immigration_status: CITIZEN
+        il_aabd_is_bedfast: false
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        il_aabd_countable_assets: 0
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      person1_marital_unit:
+        members: [person1]
+      person2_marital_unit:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: IL
+        county_str: COOK_COUNTY_IL
+  output:
+    # person1: (80,000 - 2,775) x 0.0495 / 12 = 318.55
+    # person2 is a tax unit dependent; the withholding estimate starts from
+    # adjusted_gross_income_person, which leaves their income to their own return.
+    il_withheld_income_tax: [318.55, 0]
+    employee_social_security_tax: [413.33, 74.4] # 6.2% of monthly wages
+    # person2 deducts only their own 74.40, not the parent's 318.55 withholding
+    il_aabd_expense_exemption_person: [731.89, 74.4]
+    il_aabd_gross_earned_income: [6_666.67, 1_200]
+    # person2: 1,200 - 74.40 = 1,125.60; minus 25 flat = 1,100.60; minus 50 = 1,050.60
+    il_aabd_countable_income: [0, 1_050.6]
+    il_aabd_need_standard_person: [0, 822.15] # 764.9 + 57.25
+    il_aabd_non_financial_eligible_person: [false, true]
+    # 1,050.60 exceeds the 822.15 need standard. Deducting the parent's
+    # withholding as well would leave 732.05 and a 90.10 benefit.
+    il_aabd_financial_eligible_person: [true, false]
+    il_aabd_eligible_person: [false, false]
+    il_aabd_person: [0, 0]
+    il_aabd: 0
