@@ -1,0 +1,120 @@
+# 26 U.S.C. 6012(c): for the filing requirement, gross income is computed
+# without regard to the section 911 exclusion. With Form 2555 leaf inputs,
+# that is Form 2555 line 43 (the line 36 housing exclusion plus the line 42
+# foreign earned income exclusion), not the Foreign Earned Income Tax
+# Worksheet line 2c stacking amount. Line 2c is net of the line 44 deductions
+# and worksheet line 2b, and it includes the line 50 housing deduction, which
+# is a deduction rather than an exclusion. The 2025 single threshold is the
+# $15,750 standard deduction (Form 1040 instructions, Chart A).
+
+- name: Housing exclusion offset by allocable deductions still counts toward the threshold
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 10_000
+    foreign_housing_exclusion: 10_000
+    foreign_earned_income_exclusion_allocable_deductions: 10_000
+  output:
+    # Line 2c is max(0, 10,000 - 10,000) = 0, but line 43 is 10,000.
+    foreign_earned_income_exclusion: 0
+    foreign_earned_income_exclusion_gross: 10_000
+    # $20,000 of gross income, over $15,750.
+    tax_unit_is_required_to_file: true
+
+- name: Worksheet line 2b disallowed deductions do not reduce filing gross income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 10_000
+    foreign_earned_income_exclusion_amount: 10_000
+    foreign_earned_income_exclusion_disallowed_deductions: 10_000
+  output:
+    foreign_earned_income_exclusion: 0
+    # $20,000 of gross income, over $15,750.
+    tax_unit_is_required_to_file: true
+
+- name: The line 50 housing deduction is not an excluded amount
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 10_000
+    foreign_earned_income_exclusion_amount: 5_000
+    foreign_housing_deduction: 5_000
+  output:
+    # Line 2c adds the deduction (10,000); line 43 does not (5,000).
+    foreign_earned_income_exclusion: 10_000
+    foreign_earned_income_exclusion_gross: 5_000
+    # $15,000 of gross income, under $15,750.
+    tax_unit_is_required_to_file: false
+
+- name: Supplied leaves replace an explicit zero legacy amount
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 10_000
+    foreign_earned_income_exclusion: 0
+    foreign_housing_exclusion: 10_000
+  output:
+    # $20,000 of gross income, over $15,750.
+    tax_unit_is_required_to_file: true
+
+- name: Without leaf inputs the legacy amount is the fallback
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 10_000
+    foreign_earned_income_exclusion: 10_000
+  output:
+    # $20,000 of gross income, over $15,750.
+    tax_unit_is_required_to_file: true
+
+- name: A negative legacy amount does not lower filing gross income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    employment_income: 18_000
+    foreign_earned_income_exclusion: -5_000
+  output:
+    # An exclusion cannot be negative (worksheet line 2c is floored at zero),
+    # so gross income stays $18,000, over $15,750.
+    tax_unit_is_required_to_file: true
+
+- name: Joint filers add line 43 from both spouses' forms
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 20_000
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        foreign_housing_exclusion: 12_000
+        foreign_earned_income_exclusion_allocable_deductions: 12_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    foreign_earned_income_exclusion: 0
+    # $32,000 of gross income, over the $31,500 joint threshold.
+    tax_unit_is_required_to_file: true
+
+- name: Excluded amounts from leaves do not count as unearned income
+  period: 2025
+  input:
+    filing_status: SINGLE
+    age_head: 40
+    foreign_housing_exclusion: 10_000
+    foreign_earned_income_exclusion_allocable_deductions: 10_000
+  output:
+    # $10,000 of gross income, under $15,750, and none of it is unearned.
+    tax_unit_is_required_to_file: false

@@ -1,0 +1,1 @@
+From 2026, the section 68 limitation on itemized deductions measures taxable income net of the deductions other than itemized deductions, such as the qualified business income deduction, and the qualified business income deduction's taxable income ignores section 68.
