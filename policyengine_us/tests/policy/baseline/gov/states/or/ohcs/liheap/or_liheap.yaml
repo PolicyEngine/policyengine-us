@@ -1,0 +1,600 @@
+# Page numbers in the comments are those of the FY2026 Oregon Energy Assistance
+# Intake, Operations and Policy Manual (income limits on page 77, Region 1
+# matrix on pages 78-79, Region 2 matrix on pages 80-81, payment types on
+# pages 61-62, energy burden table on pages 93-94); the manual is linked in
+# the comment above Case 19.
+#
+# Cases 1 to 10 sweep the published payment matrices for the even household
+# sizes 2, 4, 6, 8, 10 and 12; Cases 12 and 21 test the odd sizes 1, 3 and 5
+# at their printed band tops. Each size is tested at the first dollar of its four
+# printed income rows, in this order:
+#   size 2:  "$0", "$12,550", "$25,099", "$37,647"   (pages 78 and 80)
+#   size 4:  "$0", "$18,455", "$36,909", "$55,363"   (pages 78 and 80)
+#   size 6:  "$0", "$24,361", "$48,720", "$73,079"   (pages 78 and 80)
+#   size 8:  "$0", "$25,468", "$50,934", "$76,401"   (pages 79 and 81)
+#   size 10: "$0", "$26,575", "$53,149", "$79,722"   (pages 79 and 81)
+#   size 12: "$0", "$27,682", "$55,363", "$83,044"   (pages 79 and 81)
+# Multnomah County is in the Region 1 list (page 78) and Deschutes County in
+# the Region 2 list (page 80).
+- name: Case 1, Region 1 electricity payments for even household sizes at every income band.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR]
+    county: [MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR]
+    spm_unit_size: [2, 2, 2, 2, 4, 4, 4, 4, 6, 6, 6, 6, 8, 8, 8, 8, 10, 10, 10, 10, 12, 12, 12, 12]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    # About $125 a month for electric heat.
+    pre_subsidy_electricity_expense: [1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500]
+    or_liheap_countable_income: [0, 12_550, 25_099, 37_647, 0, 18_455, 36_909, 55_363, 0, 24_361, 48_720, 73_079, 0, 25_468, 50_934, 76_401, 0, 26_575, 53_149, 79_722, 0, 27_682, 55_363, 83_044]
+  output:
+    # Region 1 matrix, Electricity column, four rows per size:
+    #   size 2 (page 78):  $595, $465, $385, $275
+    #   size 4 (page 78):  $690, $540, $450, $320
+    #   size 6 (page 78):  $750, $590, $490, $350
+    #   size 8 (page 79):  $750, $590, $490, $350
+    #   size 10 (page 79): $750, $590, $490, $350
+    #   size 12 (page 79): $750, $590, $490, $350
+    or_liheap: [595, 465, 385, 275, 690, 540, 450, 320, 750, 590, 490, 350, 750, 590, 490, 350, 750, 590, 490, 350, 750, 590, 490, 350]
+
+- name: Case 2, Region 1 heating oil payments for even household sizes at every income band.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR]
+    county: [MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR]
+    spm_unit_size: [2, 2, 2, 2, 4, 4, 4, 4, 6, 6, 6, 6, 8, 8, 8, 8, 10, 10, 10, 10, 12, 12, 12, 12]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    # About 600 gallons of heating oil a year.
+    fuel_oil_expense: [2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400]
+    or_liheap_countable_income: [0, 12_550, 25_099, 37_647, 0, 18_455, 36_909, 55_363, 0, 24_361, 48_720, 73_079, 0, 25_468, 50_934, 76_401, 0, 26_575, 53_149, 79_722, 0, 27_682, 55_363, 83_044]
+  output:
+    # Region 1 matrix, Heating Oil column, four rows per size:
+    #   size 2 (page 78):  $750, $750, $640, $460
+    #   size 4 (page 78):  $750, $750, $700, $505
+    #   size 6 (page 78):  $750, $750, $740, $535
+    #   size 8 (page 79):  $750, $750, $740, $535
+    #   size 10 (page 79): $750, $750, $740, $535
+    #   size 12 (page 79): $750, $750, $740, $535
+    or_liheap: [750, 750, 640, 460, 750, 750, 700, 505, 750, 750, 740, 535, 750, 750, 740, 535, 750, 750, 740, 535, 750, 750, 740, 535]
+
+- name: Case 3, Region 1 propane payments for even household sizes at every income band.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR]
+    county: [MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR]
+    spm_unit_size: [2, 2, 2, 2, 4, 4, 4, 4, 6, 6, 6, 6, 8, 8, 8, 8, 10, 10, 10, 10, 12, 12, 12, 12]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    # About $150 a month for propane heat.
+    bottled_gas_expense: [1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800]
+    or_liheap_countable_income: [0, 12_550, 25_099, 37_647, 0, 18_455, 36_909, 55_363, 0, 24_361, 48_720, 73_079, 0, 25_468, 50_934, 76_401, 0, 26_575, 53_149, 79_722, 0, 27_682, 55_363, 83_044]
+  output:
+    # Region 1 matrix, Liquid Gas (propane) column, four rows per size:
+    #   size 2 (page 78):  $750, $655, $545, $390
+    #   size 4 (page 78):  $750, $725, $605, $435
+    #   size 6 (page 78):  $750, $750, $645, $460
+    #   size 8 (page 79):  $750, $750, $645, $460
+    #   size 10 (page 79): $750, $750, $645, $460
+    #   size 12 (page 79): $750, $750, $645, $460
+    or_liheap: [750, 655, 545, 390, 750, 725, 605, 435, 750, 750, 645, 460, 750, 750, 645, 460, 750, 750, 645, 460, 750, 750, 645, 460]
+
+- name: Case 4, Region 1 natural gas payments for even household sizes at every income band.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR]
+    county: [MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR]
+    spm_unit_size: [2, 2, 2, 2, 4, 4, 4, 4, 6, 6, 6, 6, 8, 8, 8, 8, 10, 10, 10, 10, 12, 12, 12, 12]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    # About $80 a month for gas heat.
+    gas_expense: [960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960]
+    or_liheap_countable_income: [0, 12_550, 25_099, 37_647, 0, 18_455, 36_909, 55_363, 0, 24_361, 48_720, 73_079, 0, 25_468, 50_934, 76_401, 0, 26_575, 53_149, 79_722, 0, 27_682, 55_363, 83_044]
+  output:
+    # Region 1 matrix, Natural Gas column, four rows per size:
+    #   size 2 (page 78):  $750, $605, $505, $360
+    #   size 4 (page 78):  $750, $670, $555, $400
+    #   size 6 (page 78):  $750, $710, $590, $425
+    #   size 8 (page 79):  $750, $710, $590, $425
+    #   size 10 (page 79): $750, $710, $590, $425
+    #   size 12 (page 79): $750, $710, $590, $425
+    or_liheap: [750, 605, 505, 360, 750, 670, 555, 400, 750, 710, 590, 425, 750, 710, 590, 425, 750, 710, 590, 425, 750, 710, 590, 425]
+
+- name: Case 5, Region 1 wood payments for even household sizes at every income band.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR]
+    county: [MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR]
+    spm_unit_size: [2, 2, 2, 2, 4, 4, 4, 4, 6, 6, 6, 6, 8, 8, 8, 8, 10, 10, 10, 10, 12, 12, 12, 12]
+    heating_type: [WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD]
+    # About three cords of firewood a year.
+    wood_expense: [900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900]
+    or_liheap_countable_income: [0, 12_550, 25_099, 37_647, 0, 18_455, 36_909, 55_363, 0, 24_361, 48_720, 73_079, 0, 25_468, 50_934, 76_401, 0, 26_575, 53_149, 79_722, 0, 27_682, 55_363, 83_044]
+  output:
+    # Region 1 matrix, Wood/Pellets column, four rows per size:
+    #   size 2 (page 78):  $750, $655, $545, $390
+    #   size 4 (page 78):  $750, $725, $605, $435
+    #   size 6 (page 78):  $750, $750, $645, $460
+    #   size 8 (page 79):  $750, $750, $645, $460
+    #   size 10 (page 79): $750, $750, $645, $460
+    #   size 12 (page 79): $750, $750, $645, $460
+    or_liheap: [750, 655, 545, 390, 750, 725, 605, 435, 750, 750, 645, 460, 750, 750, 645, 460, 750, 750, 645, 460, 750, 750, 645, 460]
+
+- name: Case 6, Region 2 electricity payments for even household sizes at every income band.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR]
+    county: [DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR]
+    spm_unit_size: [2, 2, 2, 2, 4, 4, 4, 4, 6, 6, 6, 6, 8, 8, 8, 8, 10, 10, 10, 10, 12, 12, 12, 12]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    # About $125 a month for electric heat.
+    pre_subsidy_electricity_expense: [1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500, 1_500]
+    or_liheap_countable_income: [0, 12_550, 25_099, 37_647, 0, 18_455, 36_909, 55_363, 0, 24_361, 48_720, 73_079, 0, 25_468, 50_934, 76_401, 0, 26_575, 53_149, 79_722, 0, 27_682, 55_363, 83_044]
+  output:
+    # Region 2 matrix, Electricity column, four rows per size:
+    #   size 2 (page 80):  $645, $505, $420, $300
+    #   size 4 (page 80):  $740, $580, $480, $345
+    #   size 6 (page 80):  $750, $630, $525, $375
+    #   size 8 (page 81):  $750, $630, $525, $375
+    #   size 10 (page 81): $750, $630, $525, $375
+    #   size 12 (page 81): $750, $630, $525, $375
+    or_liheap: [645, 505, 420, 300, 740, 580, 480, 345, 750, 630, 525, 375, 750, 630, 525, 375, 750, 630, 525, 375, 750, 630, 525, 375]
+
+- name: Case 7, Region 2 heating oil payments for even household sizes at every income band.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR]
+    county: [DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR]
+    spm_unit_size: [2, 2, 2, 2, 4, 4, 4, 4, 6, 6, 6, 6, 8, 8, 8, 8, 10, 10, 10, 10, 12, 12, 12, 12]
+    heating_type: [FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL, FUEL_OIL]
+    # About 600 gallons of heating oil a year.
+    fuel_oil_expense: [2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400, 2_400]
+    or_liheap_countable_income: [0, 12_550, 25_099, 37_647, 0, 18_455, 36_909, 55_363, 0, 24_361, 48_720, 73_079, 0, 25_468, 50_934, 76_401, 0, 26_575, 53_149, 79_722, 0, 27_682, 55_363, 83_044]
+  output:
+    # Region 2 matrix, Heating Oil column, four rows per size:
+    #   size 2 (page 80):  $750, $750, $640, $460
+    #   size 4 (page 80):  $750, $750, $700, $505
+    #   size 6 (page 80):  $750, $750, $740, $535
+    #   size 8 (page 81):  $750, $750, $740, $535
+    #   size 10 (page 81): $750, $750, $740, $535
+    #   size 12 (page 81): $750, $750, $740, $535
+    or_liheap: [750, 750, 640, 460, 750, 750, 700, 505, 750, 750, 740, 535, 750, 750, 740, 535, 750, 750, 740, 535, 750, 750, 740, 535]
+
+- name: Case 8, Region 2 propane payments for even household sizes at every income band.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR]
+    county: [DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR]
+    spm_unit_size: [2, 2, 2, 2, 4, 4, 4, 4, 6, 6, 6, 6, 8, 8, 8, 8, 10, 10, 10, 10, 12, 12, 12, 12]
+    heating_type: [PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE, PROPANE]
+    # About $150 a month for propane heat.
+    bottled_gas_expense: [1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800, 1_800]
+    or_liheap_countable_income: [0, 12_550, 25_099, 37_647, 0, 18_455, 36_909, 55_363, 0, 24_361, 48_720, 73_079, 0, 25_468, 50_934, 76_401, 0, 26_575, 53_149, 79_722, 0, 27_682, 55_363, 83_044]
+  output:
+    # Region 2 matrix, Liquid Gas (propane) column, four rows per size:
+    #   size 2 (page 80):  $750, $655, $545, $390
+    #   size 4 (page 80):  $750, $725, $605, $435
+    #   size 6 (page 80):  $750, $750, $645, $460
+    #   size 8 (page 81):  $750, $750, $645, $460
+    #   size 10 (page 81): $750, $750, $645, $460
+    #   size 12 (page 81): $750, $750, $645, $460
+    or_liheap: [750, 655, 545, 390, 750, 725, 605, 435, 750, 750, 645, 460, 750, 750, 645, 460, 750, 750, 645, 460, 750, 750, 645, 460]
+
+- name: Case 9, Region 2 natural gas payments for even household sizes at every income band.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR]
+    county: [DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR]
+    spm_unit_size: [2, 2, 2, 2, 4, 4, 4, 4, 6, 6, 6, 6, 8, 8, 8, 8, 10, 10, 10, 10, 12, 12, 12, 12]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    # About $80 a month for gas heat.
+    gas_expense: [960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960]
+    or_liheap_countable_income: [0, 12_550, 25_099, 37_647, 0, 18_455, 36_909, 55_363, 0, 24_361, 48_720, 73_079, 0, 25_468, 50_934, 76_401, 0, 26_575, 53_149, 79_722, 0, 27_682, 55_363, 83_044]
+  output:
+    # Region 2 matrix, Natural Gas column, four rows per size:
+    #   size 2 (page 80):  $670, $520, $435, $310
+    #   size 4 (page 80):  $750, $585, $485, $350
+    #   size 6 (page 80):  $750, $630, $525, $375
+    #   size 8 (page 81):  $750, $630, $525, $375
+    #   size 10 (page 81): $750, $630, $525, $375
+    #   size 12 (page 81): $750, $630, $525, $375
+    or_liheap: [670, 520, 435, 310, 750, 585, 485, 350, 750, 630, 525, 375, 750, 630, 525, 375, 750, 630, 525, 375, 750, 630, 525, 375]
+
+- name: Case 10, Region 2 wood payments for even household sizes at every income band.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR]
+    county: [DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR]
+    spm_unit_size: [2, 2, 2, 2, 4, 4, 4, 4, 6, 6, 6, 6, 8, 8, 8, 8, 10, 10, 10, 10, 12, 12, 12, 12]
+    heating_type: [WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD]
+    # About three cords of firewood a year.
+    wood_expense: [900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900, 900]
+    or_liheap_countable_income: [0, 12_550, 25_099, 37_647, 0, 18_455, 36_909, 55_363, 0, 24_361, 48_720, 73_079, 0, 25_468, 50_934, 76_401, 0, 26_575, 53_149, 79_722, 0, 27_682, 55_363, 83_044]
+  output:
+    # Region 2 matrix, Wood/Pellets column, four rows per size:
+    #   size 2 (page 80):  $750, $655, $545, $390
+    #   size 4 (page 80):  $750, $725, $605, $435
+    #   size 6 (page 80):  $750, $750, $645, $460
+    #   size 8 (page 81):  $750, $750, $645, $460
+    #   size 10 (page 81): $750, $750, $645, $460
+    #   size 12 (page 81): $750, $750, $645, $460
+    or_liheap: [750, 655, 545, 390, 750, 725, 605, 435, 750, 750, 645, 460, 750, 750, 645, 460, 750, 750, 645, 460, 750, 750, 645, 460]
+
+- name: Case 11, the published income limit includes the dollar above the last matrix row.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR]
+    county: [MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR]
+    spm_unit_size: [2, 2, 2]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    # About $125 a month for electric heat.
+    pre_subsidy_electricity_expense: [1_500, 1_500, 1_500]
+    # The last size 2 matrix row ends at $50,195 (page 78) while the size 2
+    # income limit is $50,196 (page 77): the top of the row, the limit itself
+    # and one dollar above the limit.
+    or_liheap_countable_income: [50_195, 50_196, 50_197]
+  output:
+    # Size 2 limit $50,196 (page 77): $50,195 and $50,196 are within it,
+    # $50,197 is not.
+    or_liheap_eligible: [true, true, false]
+    # Region 1, size 2, "$37,647 $50,195", Electricity $275 (page 78). The
+    # eligible household at exactly $50,196 is paid from that same last row.
+    # The ineligible household receives $0.
+    or_liheap: [275, 275, 0]
+
+- name: Case 12, income bands include their printed tops and change at the next dollar.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR]
+    county: [MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    # About $80 a month for gas heat.
+    gas_expense: [960, 960, 960, 960, 960, 960, 960]
+    # Size 1 rows (page 78): "$0 $9,597", "$9,598 $19,193", "$19,194 $28,789",
+    # "$28,790 $38,385". Tested at $0, at each printed row top and at the
+    # first dollar of the following row.
+    or_liheap_countable_income: [0, 9_597, 9_598, 19_193, 19_194, 28_789, 28_790]
+  output:
+    # Region 1, size 1, Natural Gas column (page 78): $670 for "$0 $9,597",
+    # $520 for "$9,598 $19,193", $435 for "$19,194 $28,789" and $310 for
+    # "$28,790 $38,385".
+    or_liheap: [670, 670, 520, 520, 435, 435, 310]
+
+- name: Case 13, supported and unsupported heating fuels.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR]
+    county: [DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR]
+    heating_type: [ELECTRICITY, FUEL_OIL, PROPANE, NATURAL_GAS, WOOD, KEROSENE, COAL, SOLAR, OTHER, UNSPECIFIED, NONE]
+    # Each household pays the bill of its own fuel. Kerosene is billed as
+    # heating oil and a grid-tied solar home pays an electricity bill.
+    pre_subsidy_electricity_expense: [1_500, 0, 0, 0, 0, 0, 0, 1_200, 0, 0, 0]
+    fuel_oil_expense: [0, 2_400, 0, 0, 0, 1_200, 0, 0, 0, 0, 0]
+    bottled_gas_expense: [0, 0, 1_800, 0, 0, 0, 0, 0, 0, 0, 0]
+    gas_expense: [0, 0, 0, 960, 0, 0, 0, 0, 0, 0, 0]
+    wood_expense: [0, 0, 0, 0, 900, 0, 0, 0, 0, 0, 0]
+    coal_expense: [0, 0, 0, 0, 0, 0, 800, 0, 0, 0, 0]
+    other_heating_fuel_expense: [0, 0, 0, 0, 0, 0, 0, 0, 1_000, 0, 0]
+    # The household that did not report its fuel has heat included in rent;
+    # the last household has no heating at all.
+    heat_expense_included_in_rent: [false, false, false, false, false, false, false, false, false, true, false]
+    or_liheap_countable_income: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  output:
+    # Paying a vendor directly or having energy costs included in
+    # non-subsidized rent is an energy burden (page 93), and $0 is within the
+    # size 1 limit of $38,385 (page 77). A home with no heating has no
+    # energy burden to demonstrate (page 61).
+    or_liheap_eligible: [true, true, true, true, true, true, true, true, true, true, false]
+    # Region 2, size 1, "$0 $9,597" (page 80): Electricity $515, Heating Oil
+    # $750, Liquid Gas $715, Natural Gas $560, Wood/Pellets $715. The program
+    # is fuel blind (page 5), so kerosene is paid from the Heating Oil column,
+    # $750, and a grid-tied solar home from the Electricity column, $515. Coal
+    # and other fuels have no matrix column, $0, a coverage gap rather than a
+    # denial. An unspecified fuel pays $0 even with heat included in rent
+    # because the amount depends on the fuel column; the UNSPECIFIED default
+    # is tracked in issue 9754. No heating, ineligible, $0.
+    or_liheap: [515, 750, 715, 560, 715, 750, 0, 515, 0, 0, 0]
+
+- name: Case 14, a roomer applying separately with heat in rent receives half the regular payment.
+  period: 2026
+  input:
+    state_code: OR
+    county: MULTNOMAH_COUNTY_OR
+    age: 28
+    # About 10 hours a week near the Portland-metro minimum wage ($16.80 an
+    # hour from July 2026).
+    employment_income: 8_600
+    ssi: 0
+    tanf: 0
+    # The rented room is heated by the building's electric heat.
+    heating_type: ELECTRICITY
+    heat_expense_included_in_rent: true
+    or_liheap_dwelling_type: ROOMER_BOARDER_OWNER
+  output:
+    # Wages are the only income (page 39).
+    or_liheap_countable_income: 8_600
+    # Size 1, first row "$0 $9,597" (page 78).
+    or_liheap_income_band: 1
+    # Energy costs included in non-subsidized rent are an energy burden
+    # (page 93) and 8,600 is within the size 1 limit of $38,385 (page 77).
+    or_liheap_eligible: true
+    # Region 1, size 1, "$0 $9,597", Electricity $465 (page 78). A roomer or
+    # boarder who applies separately as an individual household receives
+    # "50% of a regular payment based on the Benefit Matrix" (pages 61-62):
+    # $465 x 0.5 = $232.50.
+    or_liheap: 232.5
+
+- name: Case 15, an unknown county and a household above the published size range are unsupported.
+  period: 2026
+  input:
+    state_code: [OR, OR]
+    county: [UNKNOWN, MULTNOMAH_COUNTY_OR]
+    spm_unit_size: [1, 13]
+    age: [40, 40]
+    employment_income: [30_000, 40_000]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    # About $125 a month for electric heat.
+    pre_subsidy_electricity_expense: [1_500, 1_500]
+  output:
+    # Both pay an electric heating bill (page 93). 30,000 is within the
+    # size 1 limit of $38,385 (page 77). 40,000 is far within the size 13
+    # limit: page 77 gives $110,725 for size 12 plus an increment for each
+    # additional member (printed as $2,115, while the table's own steps above
+    # size 6 are $2,214), so the limit is about $112,900 either way.
+    or_liheap_eligible: [true, true]
+    # A county reported as UNKNOWN is in neither region list (pages 78 and
+    # 80), and the matrices end at size 12 (pages 79 and 81), so the model has
+    # no published amount to pay: $0 in both cases, a coverage gap rather than
+    # a denial. A household that omits the county input is Case 22.
+    or_liheap: [0, 0]
+
+- name: Case 16, a small gas bill does not cap the standard payment.
+  period: 2026
+  input:
+    state_code: OR
+    county: MULTNOMAH_COUNTY_OR
+    age: 35
+    # About 9 hours a week near the Portland-metro minimum wage ($16.80 an
+    # hour from July 2026).
+    employment_income: 8_000
+    ssi: 0
+    tanf: 0
+    heating_type: NATURAL_GAS
+    # About $25 a month of gas in a small, well-insulated apartment.
+    gas_expense: 300
+  output:
+    # Wages are the only income (page 39).
+    or_liheap_countable_income: 8_000
+    # Size 1, first row "$0 $9,597" (page 78).
+    or_liheap_income_band: 1
+    # Pays a vendor directly (page 93) and 8,000 is within the size 1 limit
+    # of $38,385 (page 77).
+    or_liheap_eligible: true
+    # Region 1, size 1, "$0 $9,597", Natural Gas $670 (page 78). The standard
+    # payment is "determined by the LIHEAP/OEAP Benefits Matrix" (page 61)
+    # and is not limited to the household's $300 bill.
+    or_liheap: 670
+
+- name: Case 17, a Washington household receives no Oregon benefit.
+  period: 2026
+  input:
+    state_code: WA
+    age: 40
+    employment_income: 30_000
+    ssi: 0
+    tanf: 0
+    heating_type: NATURAL_GAS
+    # About $80 a month for gas heat.
+    gas_expense: 960
+  output:
+    # The manual governs the Oregon program administered by OHCS (page 1), so
+    # a household outside Oregon receives nothing and every Oregon variable
+    # keeps its default.
+    or_liheap: 0
+
+- name: Case 18, one simulation with an Oregon household and a Washington household pays only the Oregon household.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 30
+        # Full-time work near the Portland-metro minimum wage ($16.80 an hour from July 2026).
+        employment_income: 34_500
+        ssi: 0
+      person2:
+        age: 45
+        employment_income: 30_000
+        ssi: 0
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        # About $80 a month for gas heat.
+        gas_expense: 960
+        tanf: 0
+      spm_unit2:
+        members: [person2]
+        heating_type: ELECTRICITY
+        # About $125 a month for electric heat.
+        pre_subsidy_electricity_expense: 1_500
+        tanf: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: OR
+        county: MULTNOMAH_COUNTY_OR
+      household2:
+        members: [person2]
+        state_code: WA
+  output:
+    # Unit 1: wages are the only income and earned income is counted (page 39).
+    # Unit 2 is outside Oregon, so every Oregon variable keeps its default.
+    or_liheap_countable_income: [34_500, 0]
+    # Unit 1: size 1, fourth row "$28,790 $38,385" (page 78).
+    # Unit 2: default 0, which the payment lookup must tolerate.
+    or_liheap_income_band: [4, 0]
+    # Unit 1: pays a gas bill and 34,500 is within the size 1 limit of
+    # $38,385 (page 77). Unit 2: not an Oregon household.
+    or_liheap_eligible: [true, false]
+    # Unit 1: Region 1 (Multnomah, page 78), size 1, "$28,790 $38,385",
+    # Natural Gas $310 (page 78). Unit 2: no Oregon benefit.
+    or_liheap: [310, 0]
+
+# PY2026 manual, page 44: rental-property income and pensions paid to surviving
+# dependents count separately from wages. Page 77 gives the $38,385 size-one limit.
+# https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=44
+- name: Case 19, farm rental income puts a gas-heating household over the income limit.
+  period: 2026
+  input:
+    state_code: OR
+    county: MULTNOMAH_COUNTY_OR
+    age: 45
+    employment_income: 30_000
+    farm_rent_income: 10_000
+    rental_income: 0
+    ssi: 0
+    tanf: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    # $30,000 wages + $10,000 farm rents exceeds $38,385.
+    or_liheap_countable_income: 40_000
+    or_liheap_income_limit: 38_385
+    or_liheap_eligible: false
+    or_liheap: 0
+
+- name: Case 20, survivor pension income puts a gas-heating household over the income limit.
+  period: 2026
+  input:
+    state_code: OR
+    county: MULTNOMAH_COUNTY_OR
+    age: 45
+    employment_income: 30_000
+    survivor_benefits: 10_000
+    pension_income: 0
+    ssi: 0
+    tanf: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    # $30,000 wages + $10,000 survivor pension exceeds $38,385.
+    or_liheap_countable_income: 40_000
+    or_liheap_income_limit: 38_385
+    or_liheap_eligible: false
+    or_liheap: 0
+
+- name: Case 21, odd household sizes change band at the printed tops, and wood differs from propane only in the last size 1 row.
+  period: 2026
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR, OR]
+    county: [MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR]
+    spm_unit_size: [3, 3, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 1, 1]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, PROPANE, WOOD]
+    # About $80 a month for gas heat, $150 a month for propane heat and three
+    # cords of firewood a year.
+    gas_expense: [960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 0, 0]
+    bottled_gas_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1_800, 0]
+    wood_expense: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 900]
+    # Size 3 rows (page 78): "$0 $15,502", "$15,503 $31,003", "$31,004 $46,504",
+    # "$46,505 $62,006"; size 5 rows (page 78): "$0 $21,407", "$21,408 $42,814",
+    # "$42,815 $64,220", "$64,221 $85,627". Each printed top and the next
+    # dollar, then size 1 at $30,000 in its last row "$28,790 $38,385".
+    or_liheap_countable_income: [15_502, 15_503, 31_003, 31_004, 46_504, 46_505, 21_407, 21_408, 42_814, 42_815, 64_220, 64_221, 30_000, 30_000]
+  output:
+    or_liheap_income_band: [1, 2, 2, 3, 3, 4, 1, 2, 2, 3, 3, 4, 4, 4]
+    # Region 1 Natural Gas column (page 78): size 3 $750, $640, $535, $385;
+    # size 5 $750, $690, $575, $415. Size 1, last row (page 78): Liquid Gas
+    # $335, Wood/Pellets $350.
+    or_liheap: [750, 640, 640, 535, 535, 385, 750, 690, 690, 575, 575, 415, 335, 350]
+
+- name: Case 22, a household without a county input is placed in Baker County and paid Region 2 rates.
+  period: 2026
+  input:
+    state_code: [OR, OR]
+    spm_unit_size: [1, 1]
+    heating_type: [ELECTRICITY, NATURAL_GAS]
+    # About $125 a month for electric heat and $80 a month for gas heat.
+    pre_subsidy_electricity_expense: [1_500, 0]
+    gas_expense: [0, 960]
+    or_liheap_countable_income: [0, 0]
+  output:
+    # With no county input the model falls back to the first Oregon county in
+    # the enum, Baker County, which is in the Region 2 list (page 80).
+    or_liheap_region: [2, 2]
+    # Region 2, size 1, "$0 $9,597" (page 80): Electricity $515, Natural Gas
+    # $560.
+    or_liheap: [515, 560]
+
+# PY2025 manual (effective October 1, 2024), income limits on PDF page 57 and
+# matrices on pages 58-59:
+# https://www.oregon.gov/ohcs/energy-weatherization/Documents/PY25%20EA%20Operations%20%20Policy%20Manual-%20FINAL%209-27-24.pdf#page=58
+- name: Case 23, program year 2025 pays the PY2025 matrix, whose heating oil column differs by region.
+  period: 2025
+  input:
+    state_code: [OR, OR, OR, OR]
+    county: [MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, DESCHUTES_COUNTY_OR]
+    spm_unit_size: [1, 1, 1, 1]
+    heating_type: [ELECTRICITY, NATURAL_GAS, FUEL_OIL, FUEL_OIL]
+    # About $125 a month for electric heat, $80 a month for gas heat and 600
+    # gallons of heating oil a year.
+    pre_subsidy_electricity_expense: [1_500, 0, 0, 0]
+    gas_expense: [0, 960, 0, 0]
+    fuel_oil_expense: [0, 0, 2_400, 2_400]
+    or_liheap_countable_income: [9_400, 0, 20_000, 20_000]
+  output:
+    # PY2025 size 1 limit $36,811 (page 57).
+    or_liheap_income_limit: [36_811, 36_811, 36_811, 36_811]
+    # PY2025 size 1 rows "$0 $9,203", "$9,204 $18,406", "$18,407 $27,609"
+    # (page 58).
+    or_liheap_income_band: [2, 1, 3, 3]
+    # Region 1 (page 58): Electricity $295 in the second row, Natural Gas $500
+    # in the first row, Heating Oil $680 in the third row. Region 2 (page 59):
+    # Heating Oil $745 in the third row.
+    or_liheap: [295, 500, 680, 745]
+
+# PY2027 manual (effective October 1, 2026), income limits on PDF page 71 and
+# matrices on pages 72-75:
+# https://www.oregon.gov/ohcs/energy-weatherization/Documents/manuals/09-23-2027-PY-2027-EA-Operations-Policy-Manual.pdf#page=72
+- name: Case 24, program year 2027 pays the PY2027 matrix with its new band tops.
+  period: 2027
+  input:
+    state_code: [OR, OR, OR, OR]
+    county: [MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, MULTNOMAH_COUNTY_OR, DESCHUTES_COUNTY_OR]
+    spm_unit_size: [1, 1, 1, 1]
+    heating_type: [ELECTRICITY, ELECTRICITY, NATURAL_GAS, ELECTRICITY]
+    # About $125 a month for electric heat and $80 a month for gas heat.
+    pre_subsidy_electricity_expense: [1_500, 1_500, 0, 1_500]
+    gas_expense: [0, 0, 960, 0]
+    # The first PY2027 size 1 row ends at $10,082 (page 72).
+    or_liheap_countable_income: [10_000, 10_083, 0, 10_000]
+  output:
+    # PY2027 size 1 limit $40,326 (page 71).
+    or_liheap_income_limit: [40_326, 40_326, 40_326, 40_326]
+    # PY2027 size 1 rows "$0 $10,082", "$10,083 $20,163" (page 72).
+    or_liheap_income_band: [1, 2, 1, 1]
+    # Region 1 (page 72): Electricity $475 then $370, Natural Gas $660.
+    # Region 2 (page 74): Electricity $510.
+    or_liheap: [475, 370, 660, 510]
+
+- name: Case 25, program year 2027 pays the size 12 rows of the Region 2 matrix.
+  period: 2027
+  input:
+    state_code: [OR, OR, OR, OR, OR, OR]
+    county: [DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR, DESCHUTES_COUNTY_OR]
+    spm_unit_size: [12, 12, 12, 12, 12, 12]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, NATURAL_GAS, FUEL_OIL]
+    # About $125 a month for electric heat, $80 a month for gas heat and 600
+    # gallons of heating oil a year.
+    pre_subsidy_electricity_expense: [1_500, 1_500, 1_500, 1_500, 0, 0]
+    gas_expense: [0, 0, 0, 0, 960, 0]
+    fuel_oil_expense: [0, 0, 0, 0, 0, 2_400]
+    # PY2027 size 12 rows (page 75): "$0 $29,082", "$29,083 $58,163",
+    # "$58,164 $87,244", "$87,245 $116,325": the first dollar of each row, then
+    # the last row for gas and oil.
+    or_liheap_countable_income: [0, 29_083, 58_164, 87_245, 87_245, 87_245]
+  output:
+    # PY2027 size 12 limit $116,325 (page 71).
+    or_liheap_income_limit: [116_325, 116_325, 116_325, 116_325, 116_325, 116_325]
+    or_liheap_income_band: [1, 2, 3, 4, 4, 4]
+    # Region 2, size 12 (page 75): Electricity $750, $615, $515, $370; Natural
+    # Gas $380 and Heating Oil $535 in the last row. Sizes 7 to 12 print the
+    # size 6 amounts.
+    or_liheap: [750, 615, 515, 370, 380, 535]

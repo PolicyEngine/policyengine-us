@@ -1,4 +1,6 @@
 from policyengine_core.model_api import *
+from policyengine_core.periods import period as to_period
+from policyengine_core.projectors import Projector
 from policyengine_us.entities import *
 from policyengine_us.tools.branched_simulation import BranchedSimulation
 from policyengine_us.tools.period_branch import (
@@ -10,6 +12,71 @@ import pandas as pd
 from policyengine_us.typing import Formula
 
 USD = "currency-USD"
+
+
+def has_input_for_period(simulation, variable, period):
+    """Whether the visible array for this exact period was set as an input.
+
+    A nearer branch's stored value shadows its ancestors. Inputs from sibling
+    branches or other periods do not apply. Only finite definition periods
+    are supported.
+
+    Core versions before 3.32.27 can retain an input key after deletion. If
+    that value has already been recalculated, this read-only check cannot
+    distinguish it from a supplied value. Core 3.32.27 fixes this in #561.
+    """
+    period = to_period(period)
+    holder = simulation.get_holder(variable)
+    if holder.variable.definition_period == ETERNITY:
+        raise ValueError("has_input_for_period does not support eternal variables.")
+    if holder.variable.is_neutralized:
+        return False
+    stored_keys = set(holder.get_known_branch_periods())
+    input_keys = getattr(simulation, "_user_input_keys", set())
+    for branch_name in simulation._get_visible_branch_names():
+        if (branch_name, period) in stored_keys:
+            return (variable, branch_name, period) in input_keys
+    return False
+
+
+def earliest_input_year(simulation):
+    """The earliest year for which the simulation holds a supplied input.
+
+    Supplied inputs are the values ``set_input`` stored, from a dataset, a
+    situation, or a branch this simulation reads, and still stores. Core
+    records them apart from the values formulas calculate, so the answer does
+    not depend on what has been calculated. Inputs for an eternal variable
+    have no year and are skipped. Returns None when there are none.
+
+    Before this year every input reads as its default: a variable is carried
+    over or uprated only from a period it is known in, never back from a
+    later one.
+
+    Inputs of a variable the tax-benefit system no longer has, or has
+    neutralized, are skipped: they are never read. As with
+    ``has_input_for_period``, core versions before 3.32.27 can keep
+    an input key after the input is deleted, and a value recalculated for
+    that period then still counts. Formulas that read this cache their
+    result, so inputs set after they have run do not change it.
+    """
+    visible_branches = set(simulation._get_visible_branch_names())
+    variables = simulation.tax_benefit_system.variables
+    periods_by_variable = {}
+    for variable, branch_name, period in getattr(simulation, "_user_input_keys", ()):
+        if (
+            branch_name in visible_branches
+            and period.unit != ETERNITY
+            and variable in variables
+            and not variables[variable].is_neutralized
+        ):
+            periods_by_variable.setdefault(variable, set()).add((branch_name, period))
+    years = [
+        period.start.year
+        for variable, input_keys in periods_by_variable.items()
+        for branch_name, period in input_keys
+        & set(simulation.get_holder(variable).get_known_branch_periods())
+    ]
+    return min(years, default=None)
 
 
 def tax_unit_non_dep_sum(var, tax_unit, period):
@@ -24,19 +91,30 @@ def tax_unit_non_dep_add(tax_unit, period, variables, include_dependents=()):
     Add variables over a tax unit's head and spouse, leaving out dependents.
 
     Like `add`, but a person-level variable is summed only over members who
-    are not tax unit dependents, whose items belong on their own returns. A
-    tax-unit-level variable is added as is, so it must already describe the
-    filer's own return. Person-level variables named in `include_dependents`
-    are summed over every member: they are the filer's amounts even when
-    recorded on a dependent. Variables are added in the order given.
+    are not tax unit dependents, whose items belong on their own returns
+    (irs_gross_income leaves them out of the filer's federal AGI the same
+    way). Person-level variables named in `include_dependents` are summed
+    over every member: they are the filer's amounts even when recorded on a
+    dependent. A variable of any other entity falls back to `add`, so a
+    tax-unit-level variable is added as is and must already describe the
+    filer's own return. Variables are added in the order given.
     """
-    total = 0
+    if tax_unit.entity.key != "tax_unit":
+        raise ValueError(
+            f"tax_unit_non_dep_add needs a tax unit, not a {tax_unit.entity.key}."
+        )
+    # float32 like the model's values, so the sum rounds as `add`'s does.
+    total = np.zeros(tax_unit.count, dtype=np.float32)
+    # A person.tax_unit projector reports the underlying tax-unit count,
+    # but its calculations and sums return one value per person.
+    if isinstance(tax_unit, Projector):
+        total = tax_unit.transform_and_bubble_up(total)
     for variable in variables:
         variable_entity = tax_unit.entity.get_variable(
             variable, check_existence=True
         ).entity
         if not variable_entity.is_person:
-            total = total + tax_unit(variable, period)
+            total = total + add(tax_unit, period, [variable])
         elif variable in include_dependents:
             total = total + tax_unit.sum(tax_unit.members(variable, period))
         else:

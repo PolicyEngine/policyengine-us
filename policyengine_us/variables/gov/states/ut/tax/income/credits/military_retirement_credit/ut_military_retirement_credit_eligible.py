@@ -10,8 +10,11 @@ class ut_military_retirement_credit_eligible(Variable):
     defined_for = StateCode.UT
 
     def formula(tax_unit, period, parameters):
-        # Has military retirement pay
-        military_retirement_pay = add(tax_unit, period, ["military_retirement_pay"])
+        # Has military retirement pay included in federal AGI, which excludes
+        # dependents' income; dependents report it on their own return.
+        military_retirement_pay = tax_unit_non_dep_sum(
+            "military_retirement_pay", tax_unit, period
+        )
         has_military_retirement_pay = military_retirement_pay > 0
         # Cannot claim if claiming the retirement credit (code 18)
         claims_retirement_credit = tax_unit("ut_claims_retirement_credit", period)

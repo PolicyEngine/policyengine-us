@@ -28,3 +28,32 @@
   output:
     taxable_income: 584_250
     capital_gains_tax: 69_346
+
+# 26 U.S.C. 1(h)(1), "shall not exceed": as in the baseline, the regular tax
+# is at most the tax on all taxable income at the regular rates. 2025,
+# single, $64,100 of wages and $125 of long-term gain: taxable income
+# $48,475, of which $48,350 is ordinary income (tax $5,563.50). The gain
+# lies above the $48,350 0% amount and is taxed at 15% ($18.75), but the tax
+# on all $48,475 is $5,578.50, so the capital gains tax is $15.
+- name: Reform active, the regular tax is limited to the tax on all taxable income
+  period: 2025
+  absolute_error_margin: 0.01
+  reforms: policyengine_us.reforms.biden.budget_2025.capital_gains_tax_increase.capital_gains_tax_increase
+  input:
+    gov.contrib.biden.budget_2025.capital_gains.active: true
+    people:
+      head:
+        age: 45
+        employment_income: 64_100
+        long_term_capital_gains: 125
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    taxable_income: 48_475
+    income_tax_main_rates: 5_563.50
+    capital_gains_tax: 15

@@ -15,6 +15,7 @@ class dependent_care_assistance_exclusion(Variable):
     reference = (
         # Exclusion and its two limits.
         "https://www.law.cornell.edu/uscode/text/26/129#a_2",  # Dollar cap.
+        "https://www.law.cornell.edu/uscode/text/26/129#a_2_C",  # Marital status.
         "https://www.law.cornell.edu/uscode/text/26/129#b",  # Earned income limit.
         # Form 2441 Part III lines 12-26 compute the excluded benefit.
         "https://www.irs.gov/instructions/i2441",
@@ -27,8 +28,16 @@ class dependent_care_assistance_exclusion(Variable):
         p = parameters(period).gov.irs.gross_income.dependent_care_assistance_programs
         # Section 129(a)(2)(A) dollar cap by filing status (Form 2441 line 21;
         # $5,000, $2,500 MFS, raised to $7,500 / $3,750 after 2025 by OBBBA).
+        # Section 129(a)(2)(C) determines marital status under section
+        # 21(e)(3) and (4), so a separate filer treated as unmarried under
+        # 21(e)(4) takes the unmarried cap, not the MFS half.
         filing_status = tax_unit("filing_status", period)
-        dollar_cap = p.reduction_amount[filing_status]
+        treated_as_unmarried = tax_unit("cdcc_treated_as_unmarried", period)
+        dollar_cap = where(
+            treated_as_unmarried,
+            p.reduction_amount["SINGLE"],
+            p.reduction_amount[filing_status],
+        )
         # Section 129(b) earned-income limitation: the exclusion cannot exceed
         # the taxpayer's earned income, or, for a married taxpayer, the lesser
         # of the taxpayer's and spouse's earned income (Form 2441 lines 18-19).

@@ -1,6 +1,8 @@
 """Each dollar input follows the series closest to what it measures: its own
 national series, the income source it is part of, prices for consumption
-expenses and debts, CMS per-capita spending for health costs."""
+expenses and debts, CMS per-capita spending for health costs, CMS premiums
+per enrollee for employer plan premiums and the statutory limit for capped
+contributions."""
 
 from pathlib import Path
 
@@ -18,8 +20,12 @@ ALIMONY = per_capita_path("calibration.gov.irs.soi.alimony_income")
 UNEMPLOYMENT = per_capita_path("calibration.gov.irs.soi.unemployment_compensation")
 DEFAULT = per_capita_path("calibration.gov.cbo.income_by_source.adjusted_gross_income")
 CMS = "calibration.gov.hhs.cms.moop_per_capita"
+ESI = "calibration.gov.hhs.cms.esi_premium_per_enrollee"
 CPI_U = "gov.bls.cpi.cpi_u"
 COLA = "gov.ssa.uprating"
+HSA_FAMILY_LIMIT = (
+    "gov.irs.gross_income.health_savings_account_contributions.limit.family"
+)
 
 EXPECTED = {
     # Pay, and amounts set as a share of pay.
@@ -60,6 +66,13 @@ EXPECTED = {
     "unemployment_compensation": UNEMPLOYMENT,
     # Health costs.
     "health_insurance_premiums": CMS,
+    # Employer plan premiums: the employer's share and the employee's pre-tax
+    # share.
+    "employer_sponsored_insurance_premiums": ESI,
+    "pre_tax_health_insurance_premiums": ESI,
+    # Contributions under a cap that 26 U.S.C. 223(g) indexes to chained
+    # CPI-U.
+    "health_savings_account_payroll_contributions": HSA_FAMILY_LIMIT,
     # Benefits adjusted by the Social Security cost-of-living index.
     "veterans_benefits": COLA,
     # Consumption expenses, and the interest on debts, follow prices. The
