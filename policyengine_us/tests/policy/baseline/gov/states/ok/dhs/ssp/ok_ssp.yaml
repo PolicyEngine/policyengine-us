@@ -1,0 +1,170 @@
+- name: Case 1, full SSI gets maximum supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+  output:
+    ok_ssp: 40
+- name: Case 2, small cash income gets maximum supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    social_security_retirement: 240
+  output:
+    ok_ssp: 40
+- name: Case 3, state only payment above SSI limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    social_security_retirement: 12240
+  output:
+    ok_ssp: 34
+- name: Case 4, income at state need standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    social_security_retirement: 12648
+  output:
+    ok_ssp: 0
+- name: Case 5, earnings without special blind exclusion.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    employment_income: 30000
+  output:
+    ok_ssp: 0
+- name: Case 6, extra five hundred dollar exclusion for blind earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    employment_income: 30000
+    is_blind: true
+  output:
+    ok_ssp: 40
+- name: Case 7, income sources round before exclusions.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    social_security_retirement: 12245.88
+  output:
+    ok_ssp: 34
+- name: Case 8, half dollar source rounds upward.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    social_security_retirement: 12246
+  output:
+    ok_ssp: 33
+- name: Case 9, interest from resources is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    social_security_retirement: 12240
+    interest_income: 1200
+  output:
+    ok_ssp: 34
+- name: Case 10, countable resources at limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    ssi_countable_resources: 2000
+  output:
+    ok_ssp: 40
+- name: Case 11, excess countable resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    ssi_countable_resources: 2001
+  output:
+    ok_ssp: 0
+- name: Case 12, blind child is eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 10
+    is_blind: true
+  output:
+    ok_ssp: 40
+- name: Case 13, nonresident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: TX
+    age: 65
+  output:
+    ok_ssp: 0
+- name: Case 14, not aged blind or disabled.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 40
+  output:
+    ok_ssp: 0
+- name: Case 15, opt out.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    takes_up_ssi_if_eligible: false
+  output:
+    ok_ssp: 0
+- name: Case 16, TANF member cannot also get SSP.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    ok_ssp_is_in_tanf_unit: true
+  output:
+    ok_ssp: 0
+- name: Case 17, excluded facility or sanction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    ok_ssp_is_excluded: true
+  output:
+    ok_ssp: 0
+- name: Case 18, institutional SSI is outside optional community program.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+  output:
+    ok_ssp: 0
+- name: Case 19, VTR does not increase the forty dollar maximum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    ssi_federal_living_arrangement: ANOTHER_PERSONS_HOUSEHOLD
+  output:
+    ok_ssp: 40

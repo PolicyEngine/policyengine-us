@@ -1,0 +1,298 @@
+- name: Case 1, eligible couple maximum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+      second:
+        age: 65
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    families:
+      family:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: OK
+  output:
+    ok_ssp:
+    - 40
+    - 40
+- name: Case 2, odd dollar couple grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        social_security_retirement: 18600
+      second:
+        age: 65
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    families:
+      family:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: OK
+  output:
+    ok_ssp:
+    - 20
+    - 21
+- name: Case 3, ineligible spouse income leaves partial grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+      second:
+        age: 40
+        social_security_retirement: 18480
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    families:
+      family:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: OK
+  output:
+    ok_ssp:
+    - 12
+    - 0
+- name: Case 4, own income test is separate from combined test.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        social_security_retirement: 12720
+      second:
+        age: 40
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    families:
+      family:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: OK
+  output:
+    ok_ssp:
+    - 0
+    - 0
+- name: Case 5, essential spouse uses combined test.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        social_security_retirement: 12720
+        ok_ssp_has_essential_spouse: true
+      second:
+        age: 40
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    families:
+      family:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: OK
+  output:
+    ok_ssp:
+    - 40
+    - 0
+- name: Case 6, spouse on TANF income is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+      second:
+        age: 40
+        social_security_retirement: 60000
+        ok_ssp_is_in_tanf_unit: true
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    families:
+      family:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: OK
+  output:
+    ok_ssp:
+    - 40
+    - 0
+- name: Case 7, spouse child allocation supports recipient.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+      second:
+        age: 40
+        social_security_retirement: 21600
+      child:
+        age: 10
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+      child:
+        members:
+        - child
+    families:
+      family:
+        members:
+        - first
+        - second
+        - child
+    households:
+      hh:
+        members:
+        - first
+        - second
+        - child
+        state_code: OK
+  output:
+    ok_ssp:
+    - 40
+    - 0
+    - 0
+- name: Case 8, child income reduces spouse allocation.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+      second:
+        age: 40
+        social_security_retirement: 21600
+      child:
+        age: 10
+        social_security_survivors: 4800
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+      child:
+        members:
+        - child
+    families:
+      family:
+        members:
+        - first
+        - second
+        - child
+    households:
+      hh:
+        members:
+        - first
+        - second
+        - child
+        state_code: OK
+  output:
+    ok_ssp:
+    - 0
+    - 0
+    - 0
+- name: Case 9, resources of ineligible spouse count.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+      second:
+        age: 40
+        ssi_countable_resources: 3001
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    families:
+      family:
+        members:
+        - first
+        - second
+    households:
+      hh:
+        members:
+        - first
+        - second
+        state_code: OK
+  output:
+    ok_ssp:
+    - 0
+    - 0
+- name: Case 10, annual supplement and SNAP income.
+  period: '2026'
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+  output:
+    ok_ssp: 480
+    snap_unearned_income: 12408
+    hud_unearned_income: 12408

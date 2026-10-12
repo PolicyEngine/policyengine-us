@@ -1090,6 +1090,18 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: OK
+        status: partial
+        name: Oklahoma SSP
+        full_name: Oklahoma State Supplemental Payment
+        variable: ok_ssp
+        parameter_prefix: gov.states.ok.dhs.ssp
+        verified_years: '2026'
+        notes: Optional community SSP, including the distinct ineligible/essential spouse tests,
+          blind earnings exclusion and child allocations. Procedural exclusions and individual
+          TANF membership require inputs. Override countable income for specialized work expenses,
+          sponsor deeming or state-specific parental deeming; grandfathered institutional payments
+          are excluded.
 
   - id: social_security
     name: Social Security
