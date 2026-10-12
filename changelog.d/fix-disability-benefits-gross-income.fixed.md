@@ -1,0 +1,1 @@
+Count the taxable part of employment disability benefits in federal gross income (IRC 105(a)), with a new tax_exempt_disability_benefits input for benefits from plans the recipient paid for (IRC 104(a)(3)), and limit state disability subtractions to the taxable part.
