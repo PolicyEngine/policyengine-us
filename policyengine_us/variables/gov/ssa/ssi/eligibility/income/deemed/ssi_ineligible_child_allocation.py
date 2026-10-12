@@ -16,6 +16,7 @@ class ssi_ineligible_child_allocation(Variable):
         "https://www.ecfr.gov/current/title-20/section-416.1163#p-416.1163(b)",
         "https://www.ecfr.gov/current/title-20/section-416.1161#p-416.1161(c)",
         "https://www.ecfr.gov/current/title-20/section-416.1165#p-416.1165(b)",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501320185",
     )
 
     def formula(person, period, parameters):
@@ -29,7 +30,8 @@ class ssi_ineligible_child_allocation(Variable):
         allocation = (p.amount.couple - p.amount.individual) * MONTHS_IN_YEAR
         # 416.1163(b)(2) reduces it by the child's income as described in
         # 416.1161(c), which excludes a student's earned income up to the
-        # amounts in 416.1112(c)(3).
+        # amounts in 416.1112(c)(3), whether or not the child is blind or
+        # disabled (POMS SI 01320.185). No $20 or $65 exclusion applies.
         student = p.income.exclusions.blind_or_disabled_working_student
         earned = person("ssi_earned_income", period)
         is_student = person("is_full_time_student", period) & (

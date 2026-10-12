@@ -25,21 +25,29 @@ class ssi_spousal_deeming_child_allocations(Variable):
         "or of their spouse; in a household with parent links, only when "
         "this person or their spouse is a parent some of whose children no "
         "id names. Without ids, a grandchild or other relative in that tax "
-        "unit cannot be told apart from a child, so supply parent ids."
+        "unit cannot be told apart from a child, so supply parent ids. Enter "
+        "a child who is only temporarily absent, such as a child away at "
+        "school who is still under parental control, in the household they "
+        "remain a member of (416.1167, POMS SI 01310.165)."
     )
     unit = USD
     definition_period = YEAR
     reference = (
         "https://www.ecfr.gov/current/title-20/section-416.1163#p-416.1163(b)",
         "https://www.ecfr.gov/current/title-20/section-416.1160#p-416.1160(d)",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501310115",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501310140",
     )
 
     def formula(person, period, parameters):
         allocation = person("ssi_ineligible_child_allocation", period)
         # 416.1160(d): 'your natural child or adopted child, or the natural
         # or adopted child of your spouse ... who lives in the same household
-        # with you'. Parent ids resolve among household members, so a child
-        # who lives elsewhere names no co-resident parent.
+        # with you'. Its other clause, the child 'of your parent or of your
+        # parent's spouse', serves parent-to-child deeming: POMS SI 01310.115
+        # A.3 and SI 01310.140 A give spouse-to-spouse deeming the children of
+        # either member of the couple. Parent ids resolve among household
+        # members, so a child who lives elsewhere names no co-resident parent.
         first, second = co_resident_parent_indices(person, period)
         spouse = _ssi_established_spouse_indices(person, period, first, second)
         has_spouse = spouse >= 0

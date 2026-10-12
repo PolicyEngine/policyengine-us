@@ -589,3 +589,49 @@
     is_ssi_spousal_deeming_applies: [true, false, false, false]
     # $706 less the $20 general and $65 earned exclusions, halved: $310.50.
     ssi_income_deemed_from_ineligible_spouse: [3_726, 0, 0, 0]
+
+- name: POMS SI 01320.400 D.2, Jack, August 2024
+  # $472 allocation ($1,415 - $943). The spouse's $662 of unearned income
+  # less $472 leaves $190; with $715 of earnings that is more than $472.
+  # Countable: $190 - $20 = $170 unearned, ($715 - $65) / 2 = $325 earned,
+  # $495 in all. The same income is used in every month of the year.
+  period: 2024
+  absolute_error_margin: 0
+  input:
+    people:
+      jack:
+        age: 50
+        is_ssi_disabled: true
+        person_id: 1
+        is_tax_unit_head: true
+      spouse:
+        age: 48
+        person_id: 2
+        is_tax_unit_spouse: true
+        ssi_earned_income: 715 * 12
+        ssi_unearned_income: 662 * 12
+      child:
+        age: 9
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [jack, spouse, child]
+    marital_units:
+      couple:
+        members: [jack, spouse]
+      child_alone:
+        members: [child]
+    households:
+      household:
+        members: [jack, spouse, child]
+        state_code: TX
+  output:
+    ssi_spousal_deeming_child_allocations: [5_664, 5_664, 0] # $472 * 12
+    ssi_unearned_income_deemed_from_ineligible_spouse: [2_280, 0, 0] # $190 * 12
+    ssi_earned_income_deemed_from_ineligible_spouse: [8_580, 0, 0] # $715 * 12
+    is_ssi_spousal_deeming_applies: [true, false, false]
+    ssi_income_deemed_from_ineligible_spouse: [5_940, 0, 0] # $495 * 12
+    ssi: [11_040, 0, 0] # ($1,415 - $495) * 12
