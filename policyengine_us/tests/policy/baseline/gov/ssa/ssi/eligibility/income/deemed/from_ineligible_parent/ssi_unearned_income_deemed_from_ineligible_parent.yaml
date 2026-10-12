@@ -991,3 +991,56 @@
     ssi_parental_deeming_child_allocations: [5_064, 0, 0, 0, 0] # 2 x $211 x 12
     ssi_unearned_income_deemed_from_ineligible_parent: [612, 0, 0, 0, 0] # $51 x 12
     ssi_countable_income: [372, 0, 0, 0, 0] # $31 x 12
+
+- name: A stepparent who has left still has an allocation for his child at home
+  # POMS SI 00501.010 B.2.d: 'If an SSI eligible child's stepparent has
+  # permanently left the household, we continue to provide the ineligible
+  # child allocation for each of the stepparent's children remaining in the
+  # eligible child's household.' The mother's husband lives elsewhere; his son
+  # stays with her and her disabled daughter. He does not deem (SI 01320.500
+  # A.1). $4,000 - $483 = $3,517; - $85 = $3,432; half = $1,716; less $967 =
+  # $749 deemed.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 38
+        person_id: 1
+        ssi_earned_income: 4_000 * 12
+      daughter:
+        age: 10
+        is_ssi_disabled: true
+        person_id: 2
+        parent_1_id: 1
+      stepson:
+        age: 12
+        person_id: 3
+        parent_1_id: 4
+      stepfather:
+        age: 40
+        person_id: 4
+    tax_units:
+      mother:
+        members: [mother, daughter, stepson]
+      stepfather:
+        members: [stepfather]
+    marital_units:
+      couple:
+        members: [mother, stepfather]
+      daughter_alone:
+        members: [daughter]
+      stepson_alone:
+        members: [stepson]
+    households:
+      home:
+        members: [mother, daughter, stepson]
+        state_code: TX
+      elsewhere:
+        members: [stepfather]
+        state_code: TX
+  output:
+    is_ssi_ineligible_parent: [true, false, false, false]
+    ssi_parental_deeming_child_allocations: [0, 5_796, 0, 0]
+    ssi_parental_deeming_parent_allocation: [0, 11_604, 0, 0]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 8_988, 0, 0] # $749 x 12

@@ -44,7 +44,11 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
         rows, ineligible, pool = ssi_ineligible_parents(
             person, period, with_spouses=~missouri
         )
-        applies = ssi_parental_deeming_child(person, period, ineligible)
+        # Medicaid applies its own immigration rules, so a disabled child
+        # need not meet the SSI citizenship or qualified-noncitizen condition.
+        applies = ssi_parental_deeming_child(
+            person, period, ineligible, ssi_status=False
+        )
         earned = ssi_parental_income(
             person, period, "ssi_earned_income", rows, ineligible
         )
@@ -52,11 +56,12 @@ class medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligibl
             person, period, "ssi_unearned_income", rows, ineligible
         )
         # Missouri allocates for 'each child under 18 living in the home who
-        # is not applying for MA' (0805.020.15 step 1).
+        # is not applying for MA' (0805.020.15 step 1). A disabled child who
+        # shares the deemed income takes no allocation.
         child_allocations = where(
             np.any(ineligible, axis=1),
             ssi_parental_deeming_child_allocation_total(
-                person, period, rows, every_minor=missouri
+                person, period, rows, every_minor=missouri, exclude=applies
             ),
             0,
         )

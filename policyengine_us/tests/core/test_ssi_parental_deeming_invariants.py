@@ -98,6 +98,9 @@ HOUSEHOLD = st.fixed_dictionaries(
         "father_status": st.sampled_from(("married", "unmarried", "away", "absent")),
         "stepparent": st.one_of(st.none(), ADULT),
         "stepparent_files_separately": st.booleans(),
+        # A stepparent who has left still has an allocation for his children
+        # at home (POMS SI 00501.010 B.2.d).
+        "stepparent_away": st.sampled_from((False, False, True)),
         # The wife of a father who is not married to the mother.
         "stepmother": st.one_of(st.none(), ADULT),
         "aunt": st.one_of(st.none(), ADULT),
@@ -129,7 +132,7 @@ def _child(kind, disabled=False, age=8, has_ids=True, tax_unit="family", **facts
     return child
 
 
-def _blended(ids, stepmother):
+def _blended(ids, stepmother, father_joins_family=False):
     """Two natural parents at home, the mother's husband and maybe the
     father's wife: three or four deemors for their child (POMS SI 01320.500
     B.4, Example F.5), and different deemor sets for half siblings."""
@@ -139,7 +142,9 @@ def _blended(ids, stepmother):
         father_status="unmarried",
         stepparent=_adult(earned=1_200),
         stepparent_files_separately=False,
+        stepparent_away=False,
         stepmother=_adult(earned=3_000) if stepmother else None,
+        father_joins_family=father_joins_family,
         aunt=None,
         grandparent=None,
         children=[
@@ -162,6 +167,9 @@ FIXED_HOUSEHOLDS = [
     _blended("all", stepmother=True),
     _blended("some", stepmother=True),
     _blended("none", stepmother=False),
+    # Without ids the proxy finds three deemors only when the father files
+    # in the mother's tax unit.
+    _blended("none", stepmother=False, father_joins_family=True),
 ]
 BATCH = st.lists(
     HOUSEHOLD, min_size=HOUSEHOLDS_PER_EXAMPLE, max_size=HOUSEHOLDS_PER_EXAMPLE
@@ -209,12 +217,13 @@ def _people(index, household):
             name("father") if married else (name("stepparent") if stepparent else None)
         ),
     )
+    joins = household.get("father_joins_family", False)
     if father_present:
         adult(
             "father",
             household["father"],
-            "family" if married else "father",
-            "spouse" if married else "head",
+            "family" if married or joins else "father",
+            "spouse" if married else ("dependent" if joins else "head"),
             away=status == "away",
             spouse=(
                 name("mother")
@@ -237,6 +246,7 @@ def _people(index, household):
             stepparent,
             "stepparent" if separate else "family",
             "head" if separate else "spouse",
+            away=household["stepparent_away"],
             spouse=name("mother"),
         )
     if household["aunt"]:
@@ -384,11 +394,14 @@ def _countable(earned, unearned):
     return unearned - general + earned_left / 2
 
 
-def _oracle(facts, missouri_rules=False):
+def _oracle(facts, medicaid=False):
     """Every person's outputs from true relationships and the id contract.
 
-    missouri_rules applies DSS Manual 0805.020.15 to Missouri households:
-    natural or adoptive parents only, and an allocation for every minor.
+    medicaid gives the Medicaid copy: a disabled child need not meet the SSI
+    immigration condition, a disabled child who shares the deemed income
+    takes no allocation, and Missouri households follow DSS Manual
+    0805.020.15 (natural or adoptive parents only, an allocation for every
+    minor).
     """
     names = list(facts)
 
@@ -457,7 +470,14 @@ def _oracle(facts, missouri_rules=False):
     def siblings(person, parents, every_minor):
         relatives = parents | {person}
         presume = not household_linked(person) or any(map(unlinked, relatives))
-        units = {facts[r]["tax_unit_key"] for r in relatives}
+        # The parents' spouses who live elsewhere: their children at home
+        # are still allocated (POMS SI 00501.010 B.2.d).
+        absent = {
+            facts[p]["spouse"]
+            for p in parents
+            if facts[p]["spouse"] and not co_resident(p, facts[p]["spouse"])
+        }
+        units = {facts[r]["tax_unit_key"] for r in relatives | absent}
         found = set()
         for other in names:
             if other == person or other in parents or not co_resident(other, person):
@@ -465,7 +485,9 @@ def _oracle(facts, missouri_rules=False):
             if every_minor:
                 counts = facts[other]["age"] < CHILD_AGE
             elif facts[other]["has_ids"]:
-                counts = bool(named_parents(other) & relatives)
+                counts = bool(named_parents(other) & relatives) or bool(
+                    set(facts[other]["parents"]) & absent
+                )
             else:
                 counts = presume and facts[other]["tax_unit_key"] in units
             if counts:
@@ -474,20 +496,26 @@ def _oracle(facts, missouri_rules=False):
 
     rows = {}
     for person in names:
-        missouri = missouri_rules and facts[person]["state"] == "MO"
+        missouri = medicaid and facts[person]["state"] == "MO"
         parents = deemors(person, with_spouses=not missouri)
         ineligible = {p for p in parents if not eligible(p)}
-        applies = (
-            facts[person]["age"] < CHILD_AGE and eligible(person) and bool(ineligible)
+        status = facts[person]["disabled"] if medicaid else eligible(person)
+        applies = facts[person]["age"] < CHILD_AGE and status and bool(ineligible)
+        rows[person] = dict(
+            parents=frozenset(parents),
+            ineligible=ineligible,
+            applies=applies,
+            missouri=missouri,
         )
-        rows[person] = dict(parents=frozenset(parents), ineligible=ineligible)
-        if not applies:
-            rows[person].update(
-                applies=False, child_allocations=0, parent_allocation=0, net=0
-            )
+    for person, row in rows.items():
+        parents, ineligible = row["parents"], row["ineligible"]
+        if not row["applies"]:
+            row.update(child_allocations=0, parent_allocation=0, net=0)
             continue
         child_allocations = sum(
-            allocation(s) for s in siblings(person, parents, every_minor=missouri)
+            allocation(s)
+            for s in siblings(person, parents, every_minor=row["missouri"])
+            if not (medicaid and rows[s]["applies"])
         )
         n = len(ineligible)
         parent_allocation = COUPLE * (n // 2) + INDIVIDUAL * (n % 2)
@@ -499,8 +527,7 @@ def _oracle(facts, missouri_rules=False):
             _countable(max(0, earned - left), max(0, unearned - child_allocations))
             - parent_allocation,
         )
-        rows[person].update(
-            applies=True,
+        row.update(
             child_allocations=child_allocations,
             parent_allocation=parent_allocation,
             net=net,
@@ -553,7 +580,7 @@ def test_parental_deeming_matches_oracle_and_invariants(households):
     situation, facts = _situation(households)
     results = _calculate(situation, SSI_VARIABLES + (MEDICAID,))
     oracle = _oracle(facts)
-    missouri_oracle = _oracle(facts, missouri_rules=True)
+    medicaid_oracle = _oracle(facts, medicaid=True)
     deemed = results["ssi_unearned_income_deemed_from_ineligible_parent"]
 
     for name, row in oracle.items():
@@ -571,11 +598,13 @@ def test_parental_deeming_matches_oracle_and_invariants(households):
             12 * row["parent_allocation"],
         ), name
         assert _close(deemed[name], 12 * row["deemed"]), name
-        # 2. The Medicaid copy: Missouri's rules in Missouri, SSI's in DC.
-        assert _close(results[MEDICAID][name], 12 * missouri_oracle[name]["deemed"]), (
+        # 2. The Medicaid copy: Missouri's rules in Missouri, SSI's in DC,
+        # where it equals SSI deeming whenever everyone at home is a citizen.
+        assert _close(results[MEDICAID][name], 12 * medicaid_oracle[name]["deemed"]), (
             name
         )
-        if facts[name]["state"] == "DC":
+        home = [n for n in facts if facts[n]["home"] == facts[name]["home"]]
+        if facts[name]["state"] == "DC" and all(facts[n]["citizen"] for n in home):
             assert _close(results[MEDICAID][name], deemed[name]), name
         # 6. Bounds.
         assert deemed[name] >= 0

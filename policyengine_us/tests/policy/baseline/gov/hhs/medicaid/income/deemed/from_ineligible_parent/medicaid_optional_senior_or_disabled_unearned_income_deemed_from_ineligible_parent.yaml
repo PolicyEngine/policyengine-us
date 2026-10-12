@@ -297,3 +297,41 @@
     medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 2_580, 0]
     # SSI: $3,000 - $85 = $2,915; half = $1,457.50; less $994 = $463.50.
     ssi_unearned_income_deemed_from_ineligible_parent: [0, 5_562, 0]
+
+# Medicaid applies its own immigration rules, and states may cover lawfully
+# residing children (42 U.S.C. 1396b(v)(4)). A disabled child who is a lawful
+# permanent resident without 40 qualifying quarters fails the SSI
+# qualified-noncitizen condition, so SSI deems nothing to him, but his
+# parent's income still counts toward Medicaid's SSI-methodology budget.
+- name: Case 9, a lawful permanent resident child who fails the SSI immigration condition.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        person_id: 1
+        ssi_earned_income: 48_000
+      child:
+        age: 10
+        is_ssi_disabled: true
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        ssi_qualifying_quarters_earnings: 0
+        person_id: 2
+        parent_1_id: 1
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent_alone:
+        members: [parent]
+      child_alone:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: DC
+  output:
+    # ($4,000 - $20 - $65) / 2 = $1,957.50, less $994 = $963.50 a month.
+    medicaid_optional_senior_or_disabled_unearned_income_deemed_from_ineligible_parent: [0, 11_562]
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0]
