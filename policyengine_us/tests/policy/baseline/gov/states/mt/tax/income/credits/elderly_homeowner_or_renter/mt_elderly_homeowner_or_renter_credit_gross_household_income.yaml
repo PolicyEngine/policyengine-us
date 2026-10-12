@@ -671,3 +671,68 @@
     is_tax_unit_head: [true, true, false]
     is_tax_unit_spouse: [false, false, true]
     mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 60_000, 60_000]
+
+- name: A carryover with a net capital loss supplied directly counts no gain
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 30_000
+        # A net amount supplied directly, without long-term and short-term
+        # parts; with the 5_000 carryover added back, the year's net is zero.
+        capital_gains: -5_000
+        long_term_capital_loss_carryover: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Federal AGI 30_000 - 3_000 (§ 1211(b)); the 3_000 is added back. No
+    # gain this year, so line 7 is zero: 30_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 30_000
+
+- name: A carryover with a net capital gain supplied directly restores the year's gain
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        capital_gains: 6_000
+        long_term_capital_loss_carryover: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # The year's net gain is 6_000 + 4_000 = 10_000: 30_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 30_000
+
+- name: A dependent's carryover with a net capital loss supplied directly counts no gain
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+      person2:
+        age: 16
+        employment_income: 10_000
+        capital_gains: -5_000
+        long_term_capital_loss_carryover: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 10_000]

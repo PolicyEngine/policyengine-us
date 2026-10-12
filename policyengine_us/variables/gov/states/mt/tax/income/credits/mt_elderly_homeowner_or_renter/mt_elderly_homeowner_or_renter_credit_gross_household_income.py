@@ -85,15 +85,22 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         #   line 15 does. Adding it back gives the year's own long-term gain
         #   (as az_property_tax_credit_capital_gains does); only the gain it
         #   hid is restored, never the unused loss.
-        # Taking the larger of the floored parts and the net keeps a
-        # capital_gains value supplied directly as an input.
+        # The year's net gain is capital_gains plus the carryover. Netting
+        # between the year's long-term and short-term amounts adds
+        # max(0, a) + max(0, b) - max(0, a + b) on top of it. When the parts
+        # are supplied this leaves the floored parts. When capital_gains is
+        # supplied directly as a net amount, without parts, the netting term
+        # is zero, so the carryover is not counted as a gain the parts never
+        # showed.
         carryover = max_(0, person("long_term_capital_loss_carryover", period))
-        long_term_gains = max_(0, person("long_term_capital_gains", period) + carryover)
-        short_term_gains = max_(0, person("short_term_capital_gains", period))
+        long_term = person("long_term_capital_gains", period) + carryover
+        short_term = person("short_term_capital_gains", period)
+        short_term_gains = max_(0, short_term)
         capital_gains = person("capital_gains", period)
-        gains_without_losses = max_(
-            long_term_gains + short_term_gains, capital_gains + carryover
+        netted_between_terms = (
+            max_(0, long_term) + short_term_gains - max_(0, long_term + short_term)
         )
+        gains_without_losses = max_(0, capital_gains + carryover) + netted_between_terms
         # The gains each income path already counted: irs_gross_income
         # floors the net, dependent_gross_income floors each part. A person
         # input as both a dependent and the head is counted by neither path,
