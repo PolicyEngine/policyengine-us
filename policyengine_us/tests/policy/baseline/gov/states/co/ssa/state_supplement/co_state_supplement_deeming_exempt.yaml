@@ -1,0 +1,82 @@
+- name: Case 1, an SSI recipient's income is not deemed.
+  # 9 CCR 2503-5 3.549(F).
+  period: 2026-01
+  input:
+    ssi: 500
+    state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: true
+
+- name: Case 2, reported SSI receipt is enough.
+  period: 2026-01
+  input:
+    ssi: 0
+    receives_ssi: true
+    state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: true
+
+- name: Case 3, a Medicaid enrollee with no income is exempt.
+  period: 2026-01
+  input:
+    medicaid_enrolled_for_ssi_state_supplement: true
+    state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: true
+
+- name: Case 4, an Old Age Pension recipient with no other income is exempt.
+  period: 2026-01
+  input:
+    co_oap: 1_200
+    state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: true
+
+- name: Case 5, a Medicaid enrollee at the SSI limit is exempt.
+  # Earnings of $2,073/month: SSI countable income (2,073 - 20 - 65) / 2 =
+  # 994, no greater than the $994 individual benefit rate.
+  period: 2026-01
+  input:
+    medicaid_enrolled_for_ssi_state_supplement: true
+    employment_income: 24_876
+    state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: true
+
+- name: Case 6, a Medicaid enrollee above the SSI limit is not exempt.
+  # Earnings of $2,074/month: (2,074 - 85) / 2 = 994.50 exceeds $994.
+  period: 2026-01
+  input:
+    medicaid_enrolled_for_ssi_state_supplement: true
+    employment_income: 24_888
+    state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: false
+
+- name: Case 7, someone on none of the programs is not exempt.
+  period: 2026-01
+  input:
+    medicaid_enrolled_for_ssi_state_supplement: false
+    co_oap: 0
+    ssi: 0
+    state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: false
+
+- name: Case 8, before March 2020 a Medicaid enrollee's income was deemed.
+  # 3.545(F) (effective January 1, 2020) excluded only the income from those
+  # benefits; 3.549(F) took effect March 1, 2020.
+  period: 2020-02
+  input:
+    medicaid_enrolled_for_ssi_state_supplement: true
+    state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: false
+
+- name: Case 9, from March 2020 a Medicaid enrollee within the SSI limit is exempt.
+  period: 2020-03
+  input:
+    medicaid_enrolled_for_ssi_state_supplement: true
+    state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: true

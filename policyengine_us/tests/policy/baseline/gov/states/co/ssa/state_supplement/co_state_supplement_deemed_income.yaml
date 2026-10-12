@@ -1,0 +1,246 @@
+- name: Case 1, an ineligible spouse's earnings are deemed below SSI's deeming threshold.
+  # The client receives SSI only. The spouse is not disabled, earns
+  # $300/month and does not take up Medicaid. SSI deems nothing: 300 is under
+  # the $497 difference between the couple and individual rates (20 CFR
+  # 416.1163). 9 CCR 2503-5 3.549(C) has no threshold:
+  # (300 - 65) / 2 = 117.50/month, or 1,410/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 42
+        employment_income: 3_600
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]
+    ssi: [11_928, 0]
+    co_state_supplement_deeming_exempt: [true, false]
+    co_state_supplement_deemed_income: [1_410, 0]
+
+- name: Case 2, an ineligible spouse's unearned income is reduced by the rest of the couple's $20.
+  # The client has $300/month of SSDI and uses their $10 share of the $20
+  # (3.549(A)(2)(c)(1)). The spouse's $400/month pension is reduced by the
+  # remaining $10 (3.549(D)(2)): 390/month, or 4,680/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        social_security_disability: 3_600
+        is_tax_unit_head: true
+      spouse:
+        age: 45
+        pension_income: 4_800
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_own_countable_income: [3_480, 0]
+    co_state_supplement_deemed_income: [4_680, 0]
+    co_state_supplement_countable_income: [8_160, 0]
+
+- name: Case 3, a spouse enrolled in Medicaid with income within the SSI limit has nothing deemed.
+  # Same couple as Case 2, but the spouse takes up Medicaid. Their SSI
+  # countable income, 400 - 20 = 380/month, is within the $994 individual
+  # rate, so 3.549(F) deems none of it.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        social_security_disability: 3_600
+        is_tax_unit_head: true
+      spouse:
+        age: 45
+        pension_income: 4_800
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    medicaid_enrolled_for_ssi_state_supplement: [true, true]
+    co_state_supplement_deeming_exempt: [true, true]
+    co_state_supplement_deemed_income: [0, 0]
+
+- name: Case 4, the members of an SSI couple deem nothing to each other.
+  # Both spouses receive SSI, so 3.549(F) deems neither's income to the
+  # other; each counts their own pension (see co_state_supplement Case 17).
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 4_800
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 2_400
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    co_state_supplement_deemed_income: [0, 0]
+
+- name: Case 5, parents' income is deemed to a disabled child using the spouse calculation.
+  # A disabled child aged 10 receives SSI. One parent earns $2,000/month, the
+  # other has no income, and neither takes up Medicaid. 3.549(E) deems the
+  # parents' income "using the same calculations as a spouse":
+  # (2,000 - 65) / 2 = 967.50/month, or 11,610/year. SSI's parental
+  # allocation (the $1,491 couple rate) leaves nothing to deem:
+  # (2,000 - 85) / 2 = 957.50 < 1,491.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 24_000
+        own_children_in_household: 1
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_head: true
+      parent2:
+        age: 38
+        own_children_in_household: 1
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    marital_units:
+      parents:
+        members: [parent1, parent2]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: CO
+  output:
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0, 0]
+    ssi: [0, 0, 11_928]
+    co_state_supplement_deemed_income: [0, 0, 11_610]
+
+- name: Case 6, a parent enrolled in Medicaid within the SSI limit has nothing deemed.
+  # Same family as Case 5, but the earning parent takes up Medicaid. Their SSI
+  # countable income, (2,000 - 85) / 2 = 957.50/month, is within the $994
+  # individual rate, so 3.549(F) deems none of it.
+  period: 2026
+  input:
+    people:
+      parent1:
+        age: 40
+        employment_income: 24_000
+        own_children_in_household: 1
+        medicaid_enrolled_for_ssi_state_supplement: true
+        is_tax_unit_head: true
+      parent2:
+        age: 38
+        own_children_in_household: 1
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent1, parent2, child]
+    marital_units:
+      parents:
+        members: [parent1, parent2]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: CO
+  output:
+    co_state_supplement_deeming_exempt: [true, false, true]
+    co_state_supplement_deemed_income: [0, 0, 0]
+
+- name: Case 7, a parent's unearned income is reduced by the child's unused $20.
+  # A disabled child aged 10 with no income other than SSI; the only parent
+  # has a $500/month pension and does not take up Medicaid. The child uses
+  # none of the $20 (3.549(A)(2)(c)(2)), so the parent's pension is reduced by
+  # the full $20 (3.549(D)(2)): 480/month, or 5,760/year.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 40
+        pension_income: 6_000
+        own_children_in_household: 1
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_head: true
+      child:
+        age: 10
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    marital_units:
+      parent:
+        members: [parent]
+      child:
+        members: [child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_state_supplement_deemed_income: [0, 5_760]

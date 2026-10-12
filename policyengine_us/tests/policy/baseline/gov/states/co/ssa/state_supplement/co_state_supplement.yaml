@@ -3,7 +3,7 @@
   period: 2023
   input:
     co_state_supplement_eligible: true
-    ssi_countable_income: 1_000
+    co_state_supplement_countable_income: 1_000
     ssi: 0
   output:
     co_state_supplement: 9_968
@@ -13,7 +13,7 @@
   period: 2023
   input:
     co_state_supplement_eligible: true
-    ssi_countable_income: 0
+    co_state_supplement_countable_income: 0
     ssi: 2_000
   output:
     co_state_supplement: 8_968
@@ -23,7 +23,7 @@
   period: 2023
   input:
     co_state_supplement_eligible: true
-    ssi_countable_income: 6_000
+    co_state_supplement_countable_income: 6_000
     ssi: 6_000
   output:
     co_state_supplement: 0
@@ -33,7 +33,7 @@
   period: 2023
   input:
     co_state_supplement_eligible: true
-    ssi_countable_income: 0
+    co_state_supplement_countable_income: 0
     ssi: 10_968
   output:
     co_state_supplement: 0
@@ -43,7 +43,7 @@
   period: 2002
   input:
     co_state_supplement_eligible: true
-    ssi_countable_income: 500
+    co_state_supplement_countable_income: 500
     ssi: 0
   output:
     co_state_supplement: 6_484
@@ -53,7 +53,7 @@
   period: 2005
   input:
     co_state_supplement_eligible: true
-    ssi_countable_income: 0
+    co_state_supplement_countable_income: 0
     ssi: 6_000
   output:
     co_state_supplement: 1_248
@@ -63,7 +63,7 @@
   period: 2009
   input:
     co_state_supplement_eligible: true
-    ssi_countable_income: 0
+    co_state_supplement_countable_income: 0
     ssi: 8_388
   output:
     co_state_supplement: 0
@@ -73,7 +73,7 @@
   period: 2012
   input:
     co_state_supplement_eligible: true
-    ssi_countable_income: 1_000
+    co_state_supplement_countable_income: 1_000
     ssi: 0
   output:
     co_state_supplement: 7_376
@@ -83,7 +83,7 @@
   period: 2014
   input:
     co_state_supplement_eligible: true
-    ssi_countable_income: 0
+    co_state_supplement_countable_income: 0
     ssi: 5_000
   output:
     co_state_supplement: 3_652
@@ -93,7 +93,7 @@
   period: 2023
   input:
     co_state_supplement_eligible: false
-    ssi_countable_income: 0
+    co_state_supplement_countable_income: 0
     ssi: 0
   output:
     co_state_supplement: 0
@@ -103,7 +103,7 @@
   period: 2024
   input:
     co_state_supplement_eligible: true
-    ssi_countable_income: 0
+    co_state_supplement_countable_income: 0
     ssi: 10_000
   output:
     co_state_supplement: 1_316
@@ -113,7 +113,7 @@
   period: 2025
   input:
     co_state_supplement_eligible: true
-    ssi_countable_income: 2_000
+    co_state_supplement_countable_income: 2_000
     ssi: 5_000
   output:
     co_state_supplement: 4_604
@@ -123,7 +123,7 @@
   period: 2026
   input:
     co_state_supplement_eligible: true
-    ssi_countable_income: 0
+    co_state_supplement_countable_income: 0
     ssi: 0
   output:
     co_state_supplement: 11_928
@@ -336,3 +336,236 @@
     ssi: [5_964, 5_964]
     co_state_supplement_countable_income: [2_982, 2_982]
     co_state_supplement: [2_982, 2_982]
+
+- name: Case 20, the 2026 payment floor raises a grant below $13.
+  # 9 CCR 2503-5 3.549(B): 994 - 985 = 9, raised to the $13 payment floor
+  # standard (3.546(E)) by a state supplementary payment.
+  period: 2026-01
+  input:
+    co_state_supplement_eligible: true
+    co_state_supplement_countable_income: 0
+    ssi: 985
+  output:
+    co_state_supplement: 13
+
+- name: Case 21, there was no payment floor in 2025.
+  # 967 - 958 = 9. Colorado met the pass-along requirement by total
+  # expenditures until the 2026 rule.
+  period: 2025-01
+  input:
+    co_state_supplement_eligible: true
+    co_state_supplement_countable_income: 0
+    ssi: 958
+  output:
+    co_state_supplement: 9
+
+- name: Case 22, a grant at the floor is unchanged.
+  period: 2026-01
+  input:
+    co_state_supplement_eligible: true
+    co_state_supplement_countable_income: 0
+    ssi: 981
+  output:
+    co_state_supplement: 13
+
+- name: Case 23, a grant of a fraction of a dollar is raised to the floor.
+  # 994 - 993.50 = 0.50: countable income is below the grant standard, so the
+  # client is eligible (3.520.781(A)) and the floor applies.
+  period: 2026-01
+  input:
+    co_state_supplement_eligible: true
+    co_state_supplement_countable_income: 3.5
+    ssi: 990
+  output:
+    co_state_supplement: 13
+
+- name: Case 24, a client whose countable income equals the grant standard gets no floor payment.
+  # 3.520.781(A): total countable income that "equals or exceeds" the grant
+  # standard makes the client ineligible, so no grant exists to raise.
+  period: 2026-01
+  input:
+    co_state_supplement_eligible: true
+    co_state_supplement_countable_income: 200
+    ssi: 794
+  output:
+    co_state_supplement: 0
+
+- name: Case 25, the floor applies to one member of an SSI couple.
+  # The head has a $487/month pension and the spouse has no income. Federal
+  # SSI: 487 - 20 = 467 couple countable income; couple payment
+  # 1,491 - 467 = 1,024, or 512 each (6,144/year). 3.549(A)(2): the head's own
+  # countable income is 487 - 10 = 477, so their grant is
+  # 994 - 512 - 477 = 5/month, raised to the $13 floor (156/year). The
+  # spouse's grant is 994 - 512 = 482/month (5,784/year).
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 5_844
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [6_144, 6_144]
+    co_state_supplement_countable_income: [5_724, 0]
+    co_state_supplement: [156, 5_784]
+
+- name: Case 26, a couple member whose countable income reaches the grant standard gets nothing.
+  # A $497/month pension: couple payment 1,491 - 477 = 1,014, or 507 each.
+  # The head's total countable income is 507 + 487 = 994, equal to the grant
+  # standard, so they are not eligible (3.520.781(A)) and get no floor
+  # payment. The spouse's grant is 994 - 507 = 487/month (5,844/year).
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 5_964
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [6_084, 6_084]
+    co_state_supplement: [0, 5_844]
+
+- name: Case 27, a single client with a disability benefit gets nothing.
+  # $300/month of SSDI: SSI 994 - 280 = 714. 3.549(A)(2) counts the same
+  # 280, so total countable income equals the $994 standard and the client is
+  # not eligible (3.520.781(A)); no floor payment is made.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        social_security_disability: 3_600
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 8_568
+    co_state_supplement: 0
+
+- name: Case 28, a single SSI recipient in another person's household.
+  # SSI pays two-thirds of the $994 rate, 662.67/month (20 CFR 416.1131).
+  # With no countable income, the grant is 994 - 662.67 = 331.33/month, or
+  # 3,976/year. SSA's Colorado tables describe the supplement as increased to
+  # offset the reduced federal payment.
+  absolute_error_margin: 0.1
+  period: 2026
+  input:
+    people:
+      person:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    ssi: 7_952
+    co_state_supplement: 3_976
+
+- name: Case 29, a client whose working spouse is on Medicaid.
+  # The client has no income; the spouse is not disabled, earns $1,500/month
+  # and is enrolled in Medicaid. SSI deems (1,500 - 85) / 2 = 707.50 and pays
+  # 1,491 - 707.50 = 783.50/month (9,402/year). The spouse's SSI countable
+  # income, 707.50, is within the $994 individual rate, so 3.549(F) deems
+  # none of it to the client: grant 994 - 783.50 = 210.50/month
+  # (2,526/year).
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 42
+        employment_income: 18_000
+        medicaid_enrolled_for_ssi_state_supplement: true
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [9_402, 0]
+    co_state_supplement_deemed_income: [0, 0]
+    co_state_supplement: [2_526, 0]
+
+- name: Case 30, a client whose working spouse is on no assistance program.
+  # Same couple as Case 29, but the spouse is not enrolled in Medicaid.
+  # 3.549(C) deems (1,500 - 65) / 2 = 717.50/month, so total countable income
+  # is 783.50 + 717.50 = 1,501, above the $994 standard.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 42
+        employment_income: 18_000
+        medicaid_enrolled_for_ssi_state_supplement: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [9_402, 0]
+    co_state_supplement_deemed_income: [8_610, 0]
+    co_state_supplement: [0, 0]
