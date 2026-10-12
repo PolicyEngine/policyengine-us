@@ -1090,6 +1090,22 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: NH
+        status: partial
+        name: New Hampshire SSP
+        full_name: New Hampshire State Supplement Program
+        variable: nh_ssp
+        parameter_prefix: gov.states.nh.dhhs.ssp
+        verified_years: '2026'
+        notes: Models the 2026 individual and couple need standards, certified community care,
+          state income disregards, resource limit, rounding and grant reduction. State medical
+          decisions, specialized deductions, care placement and no-SNAP grant reductions require
+          explicit inputs. Blind children include full co-resident parental resource
+          excess; certified exceptions and eighteenth-birthday month treatment require
+          a deemed-resource input. Needy essential-person groups use a certified caregiver income/resource
+          budget. The three-person 2026 need standard is derived under He-W 658.03(e)
+          from the published 2025 standard and SSI COLA increases. Conditional resources,
+          sanctions and grandfathered benefits are not modeled.
 
   - id: social_security
     name: Social Security

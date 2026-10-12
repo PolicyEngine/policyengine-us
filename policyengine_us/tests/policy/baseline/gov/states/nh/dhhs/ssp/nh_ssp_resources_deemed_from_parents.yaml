@@ -1,0 +1,71 @@
+# Resource balances and certified budgets are stocks. Annual demographic and asset inputs are explicit.
+- name: Annual asset balances remain undivided in January and July
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent1:
+        age:
+          '2026': 40
+        person_id:
+          '2026': 1
+        bank_account_assets:
+          '2026': 10000
+      child1:
+        age:
+          '2026': 10
+        person_id:
+          '2026': 3
+        parent_1_id:
+          '2026': 1
+        is_blind:
+          '2026': true
+    marital_units:
+      parent1:
+        members:
+        - parent1
+      child1:
+        members:
+        - child1
+    tax_units:
+      parent1:
+        members:
+        - parent1
+      child1:
+        members:
+        - child1
+    families:
+      family:
+        members:
+        - parent1
+        - child1
+    spm_units:
+      unit:
+        members:
+        - parent1
+        - child1
+    households:
+      home:
+        members:
+        - parent1
+        - child1
+        state_code:
+          '2026': NH
+  output:
+    nh_ssp_resources_deemed_from_parents:
+      2026-01:
+      - 0
+      - 8000
+      2026-07:
+      - 0
+      - 8000
+- name: Annual agency-certified resource budget remains a monthly stock
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    nh_ssp_resources_deemed_from_parents: 2500
+  output:
+    nh_ssp_resources_deemed_from_parents:
+      2026-01: 2500
+      2026-07: 2500
