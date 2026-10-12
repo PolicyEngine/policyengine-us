@@ -17,14 +17,14 @@ class tax_unit_is_required_to_file(Variable):
     """
     definition_period = YEAR
     reference = (
+        # Section 6012(f) for 2018 to 2025, and 6012(a)(1)(A) and (B) in other
+        # years.
         "https://www.law.cornell.edu/uscode/text/26/6012",
-        # From 2026 (and before 2018): section 6012(a)(1)(A) and (B), and
-        # Chart A of the Form 1040 instructions for 2017, the last year it
-        # governed.
-        "https://www.law.cornell.edu/uscode/text/26/6012#a_1",
+        # Chart A of the Form 1040 instructions for 2017, the last year
+        # section 6012(a)(1) governed.
         "https://www.irs.gov/pub/irs-prior/i1040gi--2017.pdf#page=8",
-        # 2018 to 2025: section 6012(f).
-        "https://www.law.cornell.edu/uscode/text/26/6012#f",
+        # Separate filers with a zero exemption amount, and the IRS's $5.
+        "https://www.taxpayeradvocate.irs.gov/news/nta-blog/ntablog-irs-publication-error-may-have-caused-certain-married-taxpayers-filing-separately-to-fail-to-file-required-tax-returns/2019/12/",
         # A filer who can be claimed as a dependent: section 6012(a)(1)(C)(i)
         # and (f)(2)(D) (the section above), the section 63(c)(5) limited
         # standard deduction, and Publication 501, Table 2 (Chart B of the
@@ -67,10 +67,16 @@ class tax_unit_is_required_to_file(Variable):
         # each spouse plus the basic standard deduction, raised by one
         # additional standard deduction for each spouse aged 65 or older
         # (section 63(f)(1)). Blindness does not raise it, and gross income
-        # equal to it requires a return. A married individual filing
-        # separately has no exception. The WFTCA contributed reform's bonus
+        # equal to it requires a return. The WFTCA contributed reform's bonus
         # guaranteed deduction is an increase to the basic standard deduction
         # (zero unless that reform is on).
+        #
+        # A married individual filing separately has no exception. With an
+        # exemption amount of zero, (A) read literally reaches even an
+        # individual with no gross income; the National Taxpayer Advocate read
+        # the 2018 to 2025 rule that way, and the IRS set $5 as relief. As for
+        # 2018 to 2025, the model requires a return only for positive gross
+        # income (decision d1403).
         aged_count = tax_unit("aged_head", period).astype(int) + tax_unit(
             "aged_spouse", period
         ).astype(int)

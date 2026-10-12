@@ -280,6 +280,10 @@
     filing_status: SEPARATE
     age: 40
   output:
+    # With a zero exemption amount, (a)(1)(A) read literally reaches even
+    # $0 of gross income; the IRS set $5 for 2018 to 2025. The model, as
+    # before, requires a return only for positive gross income (decision
+    # d1403).
     tax_unit_is_required_to_file: false
 
 - name: Case 20, 2025, single filer under 65 with gross income of exactly $15,750.

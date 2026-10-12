@@ -34,7 +34,11 @@ each batch, with two variants of every unit, as one simulation:
 3. Differentials 1 and 2 on every drawn unit nobody can claim.
 4. Blindness: for a unit nobody can claim, it never changes the 2026 result.
    For every other unit and year, more blindness never adds a requirement.
-5. Age: reaching 65 never adds a requirement, for any unit or year.
+5. Age: reaching 65 never adds a requirement, for any unit or year. Every
+   unit supplies its roles (the first adult heads it), so a variant cannot
+   change who is head: with roles left to age order, raising both spouses to
+   65 can make a claimable spouse the head, which limits the joint standard
+   deduction for a reason that has nothing to do with age.
 6. Inclusion: in 2026, the model never excuses a unit nobody can claim that
    6012(f), with the 2026 amounts, would require to file.
 7. Claimable units keep one rule in both years: for a unit whose head or
@@ -166,6 +170,13 @@ def adult(age, blind, claimed=False, **income):
     }
 
 
+def tax_unit(status, adults):
+    """A tax unit whose first adult is the head and second the spouse."""
+    for n, person in enumerate(adults):
+        person["tax_unit_role_input"] = "SPOUSE" if n else "HEAD"
+    return {"filing_status": status, "adults": adults, "children": []}
+
+
 def with_gross_income(status, ages, blindness, income):
     """A unit nobody can claim, its gross income split between the adults."""
     adults = [adult(age, blind) for age, blind in zip(ages, blindness)]
@@ -173,7 +184,7 @@ def with_gross_income(status, ages, blindness, income):
     adults[-1]["taxable_interest_income"] = (
         adults[-1].get("taxable_interest_income", 0) + income - income // 2
     )
-    return {"filing_status": status, "adults": adults, "children": []}
+    return tax_unit(status, adults)
 
 
 def test_threshold_grid():
@@ -256,7 +267,7 @@ def units(draw):
     loser = draw(st.integers(0, size))
     if loser < size and adults[loser]["self_employment_income"] == 0:
         adults[loser]["self_employment_income"] = -draw(st.integers(1, 20_000))
-    return {"filing_status": status, "adults": adults, "children": []}
+    return tax_unit(status, adults)
 
 
 def variants_of(base):
@@ -283,21 +294,23 @@ def unit_variants(draw):
 
 
 # Every example holds a unit nobody can claim, at the 2026 threshold of a blind
-# filer, and a unit whose head can be claimed, over the unearned income test.
+# filer; a unit whose head can be claimed, over the unearned income test; and
+# a joint unit headed by a younger, claimable adult. Were roles left to age
+# order, that adult would head the unit only once both are 65 (the case that
+# needs the roles fixed).
 ANCHORS = [
+    variants_of(tax_unit("SINGLE", [adult(40, True, employment_income=16_100)])),
     variants_of(
-        {
-            "filing_status": "SINGLE",
-            "adults": [adult(40, True, employment_income=16_100)],
-            "children": [],
-        }
+        tax_unit("SINGLE", [adult(19, False, True, taxable_interest_income=2_000)])
     ),
     variants_of(
-        {
-            "filing_status": "SINGLE",
-            "adults": [adult(19, False, True, taxable_interest_income=2_000)],
-            "children": [],
-        }
+        tax_unit(
+            "JOINT",
+            [
+                adult(19, False, True),
+                adult(40, False, taxable_interest_income=10_000),
+            ],
+        )
     ),
 ]
 
