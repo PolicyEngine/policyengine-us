@@ -1,0 +1,1 @@
+Define the Texas SSI supplement's personal needs allowance before September 1999 ($30, no supplement), so Texas simulations for 1999 and earlier no longer fail, and document the supplement's sources from 1999 to 2026.

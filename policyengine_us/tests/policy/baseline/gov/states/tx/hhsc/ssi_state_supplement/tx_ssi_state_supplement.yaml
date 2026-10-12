@@ -1,6 +1,14 @@
 # Unit tests for Texas SSI State Supplement benefit amount
-# Supplement = max(0, (PNA - Federal institutional SSI rate) * 12)
-# For 2024: ($75 - $30) * 12 = $45/month * 12 = $540/year
+# Monthly supplement = max(0, PNA - federal reduced SSI benefit of $30).
+# Annual periods sum the months, so years with a September 1 change mix
+# two amounts.
+# PNA history (HHSC MEPD Handbook H-1500):
+#   $30 before Sept. 1, 1999 (no supplement)
+#   $45 Sept. 1, 1999 - Aug. 31, 2001 ($15 supplement)
+#   $60 Sept. 1, 2001 - Aug. 31, 2003 ($30 supplement)
+#   $45 Sept. 1, 2003 - Dec. 31, 2005 ($15 supplement)
+#   $60 Jan. 1, 2006 - Dec. 31, 2023 ($30 supplement)
+#   $75 from Jan. 1, 2024 ($45 supplement)
 # Reference: Texas Human Resources Code Section 32.024(w)
 
 - name: Case 1, eligible individual receives full supplement.
@@ -26,4 +34,188 @@
   output:
     # PNA = $60/month (2006-2023), Federal reduced SSI = $30/month
     # Supplement = ($60 - $30) * 12 = $360/year
+    tx_ssi_state_supplement: 360
+
+- name: Case 4, 1998, before the supplement began.
+  period: 1998
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # H-1500: before Sept. 1, 1999 the PNA was $30, equal to the reduced
+    # federal benefit, so there was no supplement.
+    tx_ssi_state_supplement: 0
+
+- name: Case 5, 1999, supplement starts September 1.
+  period: 1999
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # Jan.-Aug.: $30 - $30 = $0; Sept.-Dec.: $45 - $30 = $15
+    # 4 * $15 = $60/year
+    tx_ssi_state_supplement: 60
+
+- name: Case 6, 2000, $45 PNA all year.
+  period: 2000
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # SSA, State Assistance Programs for SSI Recipients, January 2002 (Texas):
+    # combined federal and state $45, state-supplemented portion $15.
+    # $15 * 12 = $180/year
+    tx_ssi_state_supplement: 180
+
+- name: Case 7, 2001, supplement rises to $30 on September 1.
+  period: 2001
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # DHS Revision Notice 02-1: PNA $60 effective Sept. 1, 2001; "the state
+    # will supplement their incomes by $30 per month".
+    # 8 * $15 + 4 * $30 = $240/year
+    tx_ssi_state_supplement: 240
+
+- name: Case 8, 2002, $60 PNA all year.
+  period: 2002
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # DHS Medicaid Eligibility Handbook Item 3231 (40 TAC 15.450(h)):
+    # "the state supplements their incomes by $30 per month".
+    # $30 * 12 = $360/year
+    tx_ssi_state_supplement: 360
+
+- name: Case 9, 2003, supplement falls to $15 on September 1.
+  period: 2003
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # H.B. 2292 (2003) Section 2.207 and Item 3231 (Revision 03-7): PNA $45
+    # from Sept. 1, 2003.
+    # 8 * $30 + 4 * $15 = $300/year
+    tx_ssi_state_supplement: 300
+
+- name: Case 10, 2005, $45 PNA all year.
+  period: 2005
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # SSA January 2005 (Texas): combined $45, state $15.
+    # $15 * 12 = $180/year
+    tx_ssi_state_supplement: 180
+
+- name: Case 11, 2006, PNA restored to $60 on January 1.
+  period: 2006
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # SSA January 2006 (Texas): combined $60, state $30.
+    # $30 * 12 = $360/year
+    tx_ssi_state_supplement: 360
+
+- name: Case 12, 2011, $30 supplement despite SSA's $60 listing.
+  period: 2011
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # SSA's January 2007-2011 Texas tables list a $60 state supplement
+    # ($90 combined). HHSC's own handbook for the same years (MEPD H-6000,
+    # Revision 09-4 of Dec. 2009 and Revision 11-2 of June 2011) says "HHSC
+    # supplements the reduced SSI payment standard by $30 per month so that
+    # SSI persons also have a $60 personal needs allowance."
+    # $30 * 12 = $360/year
+    tx_ssi_state_supplement: 360
+
+- name: Case 13, 2026, $75 PNA.
+  period: 2026
+  input:
+    tx_ssi_state_supplement_eligible: true
+  output:
+    # H-6000 (Revision 26-1): "HHSC supplements the reduced SSI payment
+    # standard by $45 per month".
+    # $45 * 12 = $540/year
+    tx_ssi_state_supplement: 540
+
+- name: Case 14, facility resident with a pension gets the full supplement.
+  # A $40/month pension less the $20 general exclusion is $20 of countable
+  # income, so SSI pays $30 - $20 = $10/month. The supplement is still $45:
+  # it is added to the reduced standard, and the pension is counted in the
+  # facility co-payment instead (H-6000).
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 80
+        pension_income: 480
+        is_in_medicaid_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ssi_countable_income: 240
+    ssi: 120
+    tx_ssi_state_supplement_eligible: true
+    # ($75 - $30) * 12 = $540/year
+    tx_ssi_state_supplement: 540
+
+- name: Case 15, facility resident with earnings gets the full supplement.
+  # $100/month of earnings less the $20 general and $65 earned income
+  # exclusions, halved, is $7.50 of countable income, so SSI pays
+  # $30 - $7.50 = $22.50/month.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        employment_income: 1_200
+        is_in_medicaid_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ssi_countable_income: 90
+    ssi: 270
+    tx_ssi_state_supplement_eligible: true
+    tx_ssi_state_supplement: 540
+
+- name: Case 16, 2011 facility resident with no other income.
+  # Federal SSI is the $30 reduced benefit; HHSC adds $30 for a $60 PNA.
+  period: 2011
+  input:
+    people:
+      person1:
+        age: 80
+        is_in_medicaid_facility: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    tax_units:
+      tax_unit:
+        members: [person1]
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    ssi: 360
+    tx_ssi_state_supplement_eligible: true
     tx_ssi_state_supplement: 360
