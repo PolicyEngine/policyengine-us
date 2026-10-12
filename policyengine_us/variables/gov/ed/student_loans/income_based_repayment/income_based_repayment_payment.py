@@ -13,9 +13,9 @@ class income_based_repayment_payment(Variable):
         "uses the current balance, not the balance when the borrower entered "
         "the plan. Prorating before capping each spouse at their own standard "
         "payment matches capping the couple at their combined standard "
-        "payment when both spouses' loans carry the same interest rate. The "
-        "bar on borrowers with a loan made on or after July 1, 2026 is not "
-        "modeled."
+        "payment when both spouses' loans carry the same interest rate. A "
+        "borrower with a Direct Loan made on or after July 1, 2026 cannot use "
+        "the plan and owes nothing under it."
     )
     unit = USD
     definition_period = MONTH
@@ -25,6 +25,7 @@ class income_based_repayment_payment(Variable):
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(f)(2)",
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(f)(3)",
         "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(g)(1)",
+        "https://www.ecfr.gov/current/title-34/section-685.209#p-685.209(d)(5)",
     )
 
     def formula(person, period, parameters):
@@ -53,4 +54,10 @@ class income_based_repayment_payment(Variable):
             max_(capped_payment, small_payment.minimum),
         )
         balance = person("federal_student_loan_balance", period.this_year)
-        return min_(adjusted_payment, balance)
+        payment = min_(adjusted_payment, balance)
+        # 20 U.S.C. 1087e(d)(6)-(7) and 34 CFR 685.209(d)(5) limit the plan to
+        # borrowers with no Direct Loan made on or after July 1, 2026.
+        has_new_loan = person(
+            "has_federal_student_loan_made_on_or_after_2026_07_01", period.this_year
+        )
+        return where(has_new_loan, 0, payment)
