@@ -7,20 +7,12 @@ metadata:
   unit: currency-USD
   period: year
   label: Medicaid long-term care agricultural home equity limit
-  # 42 USC 1396p(f)(1)(C) increases the limit from year to year by CPI-U,
-  # rounded to the nearest $1,000. CMS applies the September-to-September
-  # change each January 1, which reproduces the published 2026 value from
-  # 2025. P.L. 119-21 section 71108 exempts this limit from the $1,000,000
-  # cap that applies to other homes from 2028.
-  uprating:
-    parameter: gov.bls.cpi.cpi_u
-    at_defined_interval:
-      start: "0001-09-01"
-      end: "0002-09-01"
-      enactment: "0003-01-01"
-    rounding:
-      type: nearest
-      interval: 1_000
+  # Years after the last CMS-published value are projected in
+  # parameters/uprating_extensions.py (extend_medicaid_home_equity_limits) by
+  # CMS's method under 42 USC 1396p(f)(1)(C): the prior year's limit times the
+  # September-to-September CPI-U increase rounded to 0.1%, then rounded to the
+  # nearest $1,000, effective January 1. P.L. 119-21 section 71108 exempts this
+  # limit from the $1,000,000 cap on other homes from 2028.
   reference:
     - title: Updated 2025 SSI and Spousal Impoverishment Standards, CMCS Informational Bulletin, May 28, 2025
       href: https://www.medicaid.gov/federal-policy-guidance/downloads/cib05282025.pdf#page=2

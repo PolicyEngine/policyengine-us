@@ -278,7 +278,7 @@
   output:
     is_medicaid_long_term_care_home_equity_eligible: false
 
-- name: Case 17, agricultural home equity limit continues to uprate after 2028.
+- name: Case 17, agricultural home above the non-agricultural cap remains eligible after 2028.
   period: 2029
   input:
     receives_medicaid_long_term_care_services: true
@@ -355,3 +355,29 @@
   output:
     medicaid_home_equity_limit_family_exception: [false, false]
     is_medicaid_long_term_care_home_equity_eligible: [false, true]
+
+- name: Case 21, agricultural and non-agricultural homes bracket their own limits after 2028.
+  period: 2029
+  input:
+    gov.hhs.medicaid.eligibility.long_term_care.home_equity.agricultural_limit: 1_200_000
+    people:
+      agricultural_at_limit:
+        receives_medicaid_long_term_care_services: true
+        home_is_on_agricultural_land: true
+        home_equity: 1_200_000
+      agricultural_above_limit:
+        receives_medicaid_long_term_care_services: true
+        home_is_on_agricultural_land: true
+        home_equity: 1_200_001
+      other_at_cap:
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_000
+      other_above_cap:
+        receives_medicaid_long_term_care_services: true
+        home_equity: 1_000_001
+    households:
+      household:
+        members:
+          [agricultural_at_limit, agricultural_above_limit, other_at_cap, other_above_cap]
+  output:
+    is_medicaid_long_term_care_home_equity_eligible: [true, false, true, false]
