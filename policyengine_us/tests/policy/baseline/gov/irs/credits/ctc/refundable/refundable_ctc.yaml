@@ -81,3 +81,128 @@
     ctc_limiting_tax_liability: 4_000
   output:
     refundable_ctc: 0
+
+# Section 24(d)(3): no refundable CTC for a filer who elects to exclude any
+# amount from gross income under section 911 (2025 Schedule 8812
+# instructions, Part II-A: "If you file Form 2555, you cannot claim the
+# additional child tax credit.").
+- name: Section 911 exclusion denies the refundable credit
+  period: 2025
+  input:
+    ctc_refundable_maximum: 3_400
+    ctc: 4_400
+    ctc_phase_out: 0
+    ctc_phase_in: 10_000
+    ctc_limiting_tax_liability: 0
+    foreign_earned_income_exclusion: 1
+  output:
+    # Without the exclusion: min(3,400, min(4,400, 0 + 10,000) - 0) = 3,400.
+    refundable_ctc: 0
+
+- name: Section 911 exclusion denies the refundable credit from social security taxes
+  period: 2025
+  input:
+    # Three children and no earnings over the threshold: the phase-in amount
+    # is social security taxes less the EITC (section 24(d)(1)(B)(ii)), which
+    # section 24(d)(3) also switches off.
+    ctc_qualifying_children: 3
+    ctc_phase_in_relevant_earnings: 0
+    ctc_social_security_tax: 4_000
+    eitc: 0
+    ctc_refundable_maximum: 5_100
+    ctc: 6_600
+    ctc_phase_out: 0
+    ctc_limiting_tax_liability: 1_000
+    foreign_earned_income_exclusion: 30_000
+  output:
+    ctc_phase_in: 4_000
+    refundable_ctc: 0
+
+- name: No section 911 exclusion keeps the refundable credit from social security taxes
+  period: 2025
+  input:
+    ctc_qualifying_children: 3
+    ctc_phase_in_relevant_earnings: 0
+    ctc_social_security_tax: 4_000
+    eitc: 0
+    ctc_refundable_maximum: 5_100
+    ctc: 6_600
+    ctc_phase_out: 0
+    ctc_limiting_tax_liability: 1_000
+    foreign_earned_income_exclusion: 0
+  output:
+    ctc_phase_in: 4_000
+    # min(5,100, min(6,600, 1,000 + 4,000) - min(6,600, 1,000)) = 4,000.
+    refundable_ctc: 4_000
+
+- name: Section 911 exclusion bar can be switched off
+  period: 2025
+  input:
+    gov.irs.credits.ctc.refundable.foreign_earned_income_exclusion_bar_applies: false
+    ctc_refundable_maximum: 5_100
+    ctc: 6_600
+    ctc_phase_out: 0
+    ctc_phase_in: 4_000
+    ctc_limiting_tax_liability: 1_000
+    foreign_earned_income_exclusion: 30_000
+  output:
+    refundable_ctc: 4_000
+
+- name: Section 911 exclusion did not deny the refundable credit before 2015
+  period: 2014
+  input:
+    # Public Law 114-27, section 807, applies to taxable years beginning
+    # after December 31, 2014.
+    ctc_refundable_maximum: 2_000
+    ctc: 2_000
+    ctc_phase_out: 0
+    ctc_phase_in: 1_500
+    ctc_limiting_tax_liability: 0
+    foreign_earned_income_exclusion: 30_000
+  output:
+    refundable_ctc: 1_500
+
+- name: Section 911 exclusion denies the refundable credit from 2015
+  period: 2015
+  input:
+    ctc_refundable_maximum: 2_000
+    ctc: 2_000
+    ctc_phase_out: 0
+    ctc_phase_in: 1_500
+    ctc_limiting_tax_liability: 0
+    foreign_earned_income_exclusion: 30_000
+  output:
+    refundable_ctc: 0
+
+- name: In 2021, the fully refundable credit ignores the section 911 exclusion
+  period: 2021
+  input:
+    # Section 24(i)(1)(A): subsection (d), including the section 911 bar,
+    # does not apply to a filer whose principal place of abode was in the
+    # United States for more than half of 2021 (Schedule 8812 Part I-B,
+    # which has no Form 2555 condition). The model assumes that test is met.
+    ctc_refundable_maximum: 6_000
+    ctc: 6_000
+    ctc_phase_out: 0
+    ctc_phase_in: 0
+    ctc_limiting_tax_liability: 0
+    foreign_earned_income_exclusion: 30_000
+  output:
+    refundable_ctc: 6_000
+
+- name: Housing-only leaf election denies an otherwise positive refundable credit with zero aggregates
+  period: 2025
+  input:
+    ctc_refundable_maximum: 3_400
+    ctc: 4_400
+    ctc_phase_out: 0
+    ctc_phase_in: 10_000
+    ctc_limiting_tax_liability: 0
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    # Without the section 911 bar, the same phase-in gives a $3,400 refund.
+    refundable_ctc: 0

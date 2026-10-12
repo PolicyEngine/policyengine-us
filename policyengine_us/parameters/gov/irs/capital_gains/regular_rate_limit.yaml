@@ -1,0 +1,13 @@
+description: The IRS taxes capital gain at the regular rates on taxable income that the regular rate schedule taxes below this rate, up to taxable income less adjusted net capital gain.
+values:
+  # Pub. L. 107-16, section 101(c)(2)(A), substituted "25 percent" for
+  # "28 percent".
+  2001-01-01: 0.25
+metadata:
+  unit: /1
+  label: Capital gains regular rate limit
+  reference:
+    - title: 26 U.S.C. § 1(h)(1)(A)(ii)(I)
+      href: https://www.law.cornell.edu/uscode/text/26/1#h_1_A_ii_I
+    - title: 2025 Instructions for Schedule D (Form 1040), Schedule D Tax Worksheet, line 19
+      href: https://www.irs.gov/pub/irs-pdf/i1040sd.pdf#page=15

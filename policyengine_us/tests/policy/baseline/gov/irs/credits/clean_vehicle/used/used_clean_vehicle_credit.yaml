@@ -1,33 +1,19 @@
-- name: No credit if no sale price.
-  period: 2022
+- name: Limited by tax after preceding credits; the unused credit is lost (Form 8936, lines 16-18).
+  period: 2025
   input:
     used_clean_vehicle_credit_eligible: true
-    used_clean_vehicle_sale_price: 0
+    used_clean_vehicle_credit_potential: 4_000
+    income_tax_before_credits: 3_000
+    elderly_disabled_credit: 500
   output:
-    used_clean_vehicle_credit: 0
+    used_clean_vehicle_credit_credit_limit: 2_500
+    used_clean_vehicle_credit: 2_500
 
-- name: 30% of sale price up to $4,000.
-  period: 2023
-  absolute_error_margin: 0.01
+- name: Potential below the limit.
+  period: 2025
   input:
     used_clean_vehicle_credit_eligible: true
-    used_clean_vehicle_sale_price: 100
+    used_clean_vehicle_credit_potential: 1_000
+    income_tax_before_credits: 3_000
   output:
-    used_clean_vehicle_credit: 30
-
-- name: 30% up to just below the cap.
-  period: 2023
-  absolute_error_margin: 0.01
-  input:
-    used_clean_vehicle_credit_eligible: true
-    used_clean_vehicle_sale_price: 13_333
-  output:
-    used_clean_vehicle_credit: 3_999.9
-
-- name: Capped at $4,000.
-  period: 2023
-  input:
-    used_clean_vehicle_credit_eligible: true
-    used_clean_vehicle_sale_price: 13_334
-  output:
-    used_clean_vehicle_credit: 4_000
+    used_clean_vehicle_credit: 1_000

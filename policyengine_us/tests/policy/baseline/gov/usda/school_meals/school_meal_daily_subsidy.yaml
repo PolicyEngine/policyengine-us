@@ -12,10 +12,49 @@
   output:
     school_meal_daily_subsidy: 3.66 + 1.97
 
-# Test 2025 values (effective January 1, 2025)
+# Calendar 2025 reads the SY 2024-25 rates in force on January 1.
 - name: Contiguous US - 2025 FREE tier
   period: 2025
   input:
     school_meal_tier: FREE
   output:
-    school_meal_daily_subsidy: 7.06  # NSLP 4.60 + SBP 2.46
+    school_meal_daily_subsidy: 6.80  # NSLP 4.43 + SBP 2.37 (SY 2024-25 rates)
+
+# Annual periods read the rates in force at their start, so calendar 2026 uses
+# SY 2025-26 and calendar 2027 uses SY 2026-27. Keep calendar-year test periods
+# for compatibility with the annual variable and the core cache.
+# NSLP under-60% rates plus SBP non-severe-need rates:
+# https://www.govinfo.gov/content/pkg/FR-2025-07-24/pdf/2025-13879.pdf
+# https://www.govinfo.gov/content/pkg/FR-2026-07-16/pdf/2026-14252.pdf
+- name: Published SY 2025-26 rates apply in calendar 2026 across regions and tiers.
+  period: 2026
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NC, NC, NC, AK, AK, AK, HI, HI, HI]
+    school_meal_tier: [FREE, REDUCED, PAID, FREE, REDUCED, PAID, FREE, REDUCED, PAID]
+  output:
+    school_meal_daily_subsidy: [7.06, 6.36, 0.84, 11.40, 10.70, 1.33, 9.16, 8.46, 1.08]
+
+- name: Published SY 2026-27 rates stay fixed in calendar 2027.
+  period: 2027
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NC, NC, NC, AK, AK, AK, HI, HI, HI]
+    school_meal_tier: [FREE, REDUCED, PAID, FREE, REDUCED, PAID, FREE, REDUCED, PAID]
+  output:
+    school_meal_daily_subsidy: [7.30, 6.60, 0.87, 11.81, 11.11, 1.38, 9.48, 8.78, 1.11]
+
+# The standard uprater first projects rates on July 1, 2027, so calendar 2028
+# uses the CPI-U proxy ratio 340.3 / 333.979. Round each meal and tier down
+# separately to cents. These are model projections, not published USDA rates.
+# Contiguous FREE: floor(4.76 * ratio * 100) / 100 +
+# floor(2.54 * ratio * 100) / 100 = 4.85 + 2.58 = 7.43.
+# Contiguous REDUCED: 4.44 + 2.28 = 6.72; PAID: 0.45 + 0.42 = 0.87.
+- name: Calendar 2028 uses standard CPI-U projections rounded down by meal and tier.
+  period: 2028
+  absolute_error_margin: 0.001
+  input:
+    state_code: [NC, NC, NC, AK, AK, AK, HI, HI, HI]
+    school_meal_tier: [FREE, REDUCED, PAID, FREE, REDUCED, PAID, FREE, REDUCED, PAID]
+  output:
+    school_meal_daily_subsidy: [7.43, 6.72, 0.87, 12.02, 11.31, 1.40, 9.65, 8.93, 1.12]
