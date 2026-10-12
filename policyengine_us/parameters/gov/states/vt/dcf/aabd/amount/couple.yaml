@@ -1,0 +1,24 @@
+description: Vermont provides these monthly optional AABD state supplement rates for an eligible couple.
+metadata:
+  unit: currency-USD
+  period: month
+  label: Vermont AABD couple payment rate
+  breakdown:
+  - vt_aabd_living_arrangement
+  reference:
+  - title: POMS SI 01415.058 M.2, Vermont January 2026 payment levels
+    href: https://secure.ssa.gov/poms.nsf/lnx/0501415058#m
+INDEPENDENT:
+  2026-01-01: 105.8
+HOUSEHOLD_OF_ANOTHER:
+  2026-01-01: 51.69
+RESIDENTIAL_CARE_LEVEL_III:
+  2026-01-01: 103.54
+RESIDENTIAL_CARE_LEVEL_IV:
+  2026-01-01: 601.4
+CUSTODIAL_CARE:
+  2026-01-01: 356.12
+MEDICAID_INSTITUTION:
+  2026-01-01: 99.85
+NONE:
+  2026-01-01: 0

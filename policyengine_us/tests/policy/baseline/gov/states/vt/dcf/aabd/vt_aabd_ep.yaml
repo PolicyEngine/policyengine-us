@@ -1,0 +1,202 @@
+- name: Full essential-person payment supplements existing SSI and AABD
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 994
+    vt_aabd_federal: 55.68
+    vt_aabd_ep_level: FULL
+  output:
+    vt_aabd_ep: 547
+- name: Sixty-seven percent care level
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 994
+    vt_aabd_federal: 55.68
+    vt_aabd_ep_level: PARTIAL_67
+  output:
+    vt_aabd_ep: 366
+- name: Thirty-four percent care level
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 994
+    vt_aabd_federal: 55.68
+    vt_aabd_ep_level: PARTIAL_34
+  output:
+    vt_aabd_ep: 186
+- name: No certified essential-person arrangement
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 994
+    vt_aabd_federal: 55.68
+    vt_aabd_ep_level: NONE
+  output:
+    vt_aabd_ep: 0
+- name: An ineligible spouse cannot qualify at the 34 percent service level
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 994
+    vt_aabd_federal: 55.68
+    vt_aabd_ep_level: PARTIAL_34
+    vt_aabd_ep_is_spouse: true
+  output:
+    vt_aabd_ep: 0
+- name: Prorated nonspouse essential-person net income counts
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 994
+    vt_aabd_federal: 55.68
+    vt_aabd_ep_level: FULL
+    vt_aabd_ep_additional_countable_income: 100
+  output:
+    vt_aabd_ep: 447
+- name: Income at payment maximum
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 994
+    vt_aabd_federal: 55.68
+    vt_aabd_ep_level: FULL
+    vt_aabd_ep_countable_income: 1596.8
+  output:
+    vt_aabd_ep: 0
+- name: Countable-income override applies to specialized dependent allocations
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 994
+    vt_aabd_federal: 55.68
+    vt_aabd_ep_level: FULL
+    vt_aabd_ep_countable_income: 1000
+  output:
+    vt_aabd_ep: 596
+- name: A certified half-month grant is truncated after proration
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 994
+    vt_aabd_federal: 55.68
+    vt_aabd_ep_level: FULL
+    vt_aabd_ep_proration: 0.5
+  output:
+    vt_aabd_ep: 273
+- name: Essential-person coverage does not extend to residential care
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 994
+    vt_aabd_federal: 55.68
+    vt_aabd_ep_level: FULL
+    vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_III
+  output:
+    vt_aabd_ep: 0
+- name: Nonspouse essential person cannot qualify in another household
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 994
+    vt_aabd_federal: 55.68
+    vt_aabd_ep_level: FULL
+    vt_aabd_living_arrangement: HOUSEHOLD_OF_ANOTHER
+  output:
+    vt_aabd_ep: 0
+- name: Ineligible spouse qualifies in another household
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 662.67
+    vt_aabd_federal: 42.05
+    vt_aabd_ep_level: FULL
+    vt_aabd_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    vt_aabd_ep_is_spouse: true
+  output:
+    vt_aabd_ep: 344
+- name: Non-SSI recipient requires verified resource eligibility
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 0
+    vt_aabd_federal: 0
+    vt_aabd_ep_level: FULL
+  output:
+    vt_aabd_ep: 0
+- name: State-only essential-person grant with verified resources
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 0
+    vt_aabd_federal: 0
+    vt_aabd_ep_level: FULL
+    vt_aabd_ep_resources_eligible: true
+    social_security_retirement: 12000
+  output:
+    vt_aabd_ep: 616
+- name: A worker receives the state employment-expense deduction
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 0
+    vt_aabd_federal: 0
+    vt_aabd_ep_level: FULL
+    vt_aabd_ep_resources_eligible: true
+    employment_income: 24000
+  output:
+    vt_aabd_ep: 684
+- name: Needs-based veterans pension does not get the general exclusion
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    ssi: 0
+    vt_aabd_federal: 0
+    vt_aabd_ep_level: FULL
+    vt_aabd_ep_resources_eligible: true
+    veterans_benefits: 12000
+  output:
+    vt_aabd_ep: 596
+- name: Out of state
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NH
+    age: 70
+    ssi: 994
+    vt_aabd_federal: 55.68
+    vt_aabd_ep_level: FULL
+  output:
+    vt_aabd_ep: 0

@@ -1,0 +1,293 @@
+- name: Case 1, independent couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        vt_aabd_living_arrangement: INDEPENDENT
+      second:
+        age: 65
+        vt_aabd_living_arrangement: INDEPENDENT
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: VT
+  output:
+    vt_aabd:
+    - 52.9
+    - 52.9
+- name: Case 2, residential_care_level_iii couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_III
+      second:
+        age: 65
+        vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_III
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: VT
+  output:
+    vt_aabd:
+    - 51.77
+    - 51.77
+- name: Case 3, residential_care_level_iv couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_IV
+      second:
+        age: 65
+        vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_IV
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: VT
+  output:
+    vt_aabd:
+    - 300.7
+    - 300.7
+- name: Case 4, custodial_care couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        vt_aabd_living_arrangement: CUSTODIAL_CARE
+      second:
+        age: 65
+        vt_aabd_living_arrangement: CUSTODIAL_CARE
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: VT
+  output:
+    vt_aabd:
+    - 178.06
+    - 178.06
+- name: Case 5, household_of_another couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        vt_aabd_living_arrangement: HOUSEHOLD_OF_ANOTHER
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      second:
+        age: 65
+        vt_aabd_living_arrangement: HOUSEHOLD_OF_ANOTHER
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: VT
+  output:
+    vt_aabd:
+    - 25.85
+    - 25.85
+- name: Case 6, medicaid_institution couple.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        vt_aabd_living_arrangement: MEDICAID_INSTITUTION
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      second:
+        age: 65
+        vt_aabd_living_arrangement: MEDICAID_INSTITUTION
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: VT
+  output:
+    vt_aabd:
+    - 49.93
+    - 49.93
+- name: Case 7, annual benefits and SNAP income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 65
+  output:
+    vt_aabd: 668.16
+    household_state_benefits: 668.16
+    snap_unearned_income: 12596.16
+- name: Essential-person grant enters the annual Vermont benefit total
+  period: '2026'
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 70
+    vt_aabd_ep_level:
+      '2026': FULL
+  output:
+    ssi: 11928
+    vt_aabd_federal: 668.16
+    vt_aabd_ep: 6564
+    vt_aabd: 7232.16
+    snap_unearned_income: 19160.16
+- name: Two eligible spouses share one essential-person grant
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      a:
+        age: 70
+        vt_aabd_ep_level: FULL
+      b:
+        age: 70
+        vt_aabd_ep_level: FULL
+    marital_units:
+      couple:
+        members:
+        - a
+        - b
+    households:
+      home:
+        members:
+        - a
+        - b
+        state_code: VT
+  output:
+    vt_aabd_ep:
+    - 91.5
+    - 91.5
+    vt_aabd:
+    - 144.4
+    - 144.4
+- name: Ineligible spouse earnings do not get the ABD half-earnings deduction
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      a:
+        age: 70
+        vt_aabd_ep_level: FULL
+        vt_aabd_ep_is_spouse: true
+        vt_aabd_ep_resources_eligible: true
+      b:
+        age: 40
+        employment_income: 6000
+    marital_units:
+      couple:
+        members:
+        - a
+        - b
+    households:
+      home:
+        members:
+        - a
+        - b
+        state_code: VT
+  output:
+    vt_aabd_ep_countable_income:
+    - 1439.68
+    - 1439.68
+    vt_aabd_ep:
+    - 157
+    - 0
+- name: Vermont essential care for a disabled member is excluded for HUD
+  period: '2026'
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 40
+    meets_ssi_disability_criteria: true
+    is_disabled: true
+    vt_aabd_ep_level: FULL
+  output:
+    vt_aabd: 7232.16
+    snap_unearned_income: 19160.16
+    hud_unearned_income: 12596.16
