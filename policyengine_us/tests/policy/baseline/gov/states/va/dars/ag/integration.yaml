@@ -1,0 +1,144 @@
+- name: Case 1, separate institutional SSI claims.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        va_ag_certified: true
+        ssi_claim_is_joint: false
+      second:
+        age: 65
+        ssi_claim_is_joint: false
+        va_ag_certified: true
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: VA
+  output:
+    va_ag:
+    - 1223
+    - 1223
+- name: Case 2, initial couple computation.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+      second:
+        age: 65
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: VA
+  output:
+    va_ag:
+    - 1472
+    - 1472
+- name: Case 3, non SSI spouse income is not deemed in ongoing care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        va_ag_certified: true
+      second:
+        age: 40
+        social_security_retirement: 60000
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: VA
+  output:
+    va_ag:
+    - 2217
+    - 0
+- name: Case 4, initial couple resource limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      first:
+        age: 65
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+        ssi_countable_resources: 1500
+      second:
+        age: 65
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+        ssi_countable_resources: 1501
+    marital_units:
+      couple:
+        members:
+        - first
+        - second
+    tax_units:
+      unit:
+        members:
+        - first
+        - second
+    households:
+      household:
+        members:
+        - first
+        - second
+        state_code: VA
+  output:
+    va_ag:
+    - 0
+    - 0
+- name: Case 5, annual grant and SNAP income.
+  period: '2026'
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+  output:
+    va_ag: 14676
+    household_state_benefits: 14676
+    snap_unearned_income: 26604
+    hud_unearned_income: 26604

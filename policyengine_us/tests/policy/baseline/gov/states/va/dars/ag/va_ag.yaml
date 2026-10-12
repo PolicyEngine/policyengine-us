@@ -1,0 +1,208 @@
+- name: Case 1, full SSI with standard care rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+  output:
+    va_ag: 1223
+- name: Case 2, Northern Virginia facility.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    county: FAIRFAX_COUNTY_VA
+  output:
+    va_ag: 1543
+- name: Case 3, Northern Virginia independent city.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    county: MANASSAS_PARK_CITY_VA
+  output:
+    va_ag: 1543
+- name: Case 4, state only grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    social_security_retirement: 24000
+  output:
+    va_ag: 237
+- name: Case 5, earned income while receiving SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    employment_income: 7200
+  output:
+    va_ag: 1223
+- name: Case 6, benefit rounds a half dollar up.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    va_ag_countable_income: 2216.5
+  output:
+    va_ag: 1
+- name: Case 7, deficiency below fifty cents does not pay.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    va_ag_countable_income: 2216.51
+  output:
+    va_ag: 0
+- name: Case 8, income at need standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    va_ag_countable_income: 2217
+  output:
+    va_ag: 0
+- name: Case 9, resources at limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    ssi_countable_resources: 2000
+  output:
+    va_ag: 1223
+- name: Case 10, excess resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    ssi_countable_resources: 2001
+  output:
+    va_ag: 0
+- name: Case 11, no approved care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: false
+  output:
+    va_ag: 0
+- name: Case 12, nonresident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 65
+    va_ag_certified: true
+  output:
+    va_ag: 0
+- name: Case 13, not aged blind or disabled.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 40
+    va_ag_certified: true
+  output:
+    va_ag: 0
+- name: Case 14, certified disabled adult.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 18
+    va_ag_certified: true
+    meets_ssi_disability_criteria: true
+  output:
+    va_ag: 1223
+- name: Case 15, child does not qualify for adult care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 17
+    va_ag_certified: true
+    is_blind: true
+  output:
+    va_ag: 0
+- name: Case 16, first month fifteen days of care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    va_ag_days_eligible: 15
+  output:
+    va_ag: 158
+- name: Case 17, zero eligible days.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    va_ag_days_eligible: 0
+  output:
+    va_ag: 0
+- name: Case 18, first month community expenses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    va_ag_days_eligible: 15
+    va_ag_allowable_income_exclusions: 400
+  output:
+    va_ag: 558
+- name: Case 19, guardianship fee increases grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    va_ag_allowable_income_exclusions: 10
+  output:
+    va_ag: 1233
+- name: Case 20, actual approved rate below maximum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    va_ag_care_rate: 1500
+  output:
+    va_ag: 593
+- name: Case 21, non SSI interest is countable under the AG manual.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    social_security_retirement: 24000
+    interest_income: 1200
+  output:
+    va_ag: 137
