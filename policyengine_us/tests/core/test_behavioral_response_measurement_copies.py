@@ -32,6 +32,7 @@ import pytest
 from hypothesis import example, given, settings
 from hypothesis import strategies as st
 from policyengine_core.periods import ETERNITY, YEAR as YEAR_PERIOD
+from policyengine_core.periods import period as to_period
 from policyengine_core.reforms import Reform
 from policyengine_core.variables import Variable
 
@@ -126,23 +127,99 @@ def set_wages(simulation, wages, period=YEAR):
 @example(
     kind="clone", after_source_measured=True, source_wages=50_000, copy_wages=100_000
 )
-def test_a_copy_reports_the_response_of_a_new_simulation_with_its_inputs(
+@example(
+    kind="branch", after_source_measured=True, source_wages=50_000, copy_wages=100_000
+)
+def test_a_copy_reports_the_response_for_its_inputs_and_measurement_state(
     kind, after_source_measured, source_wages, copy_wages
 ):
-    if kind == "branch" and after_source_measured and copy_wages != source_wages:
-        # Invariant 3: such a branch keeps its source's measurements.
-        copy_wages = source_wages
     source = make_simulation(situation=household(source_wages), reform=LSR_REFORM)
     if after_source_measured:
-        response(source)
+        source_response = response(source)
+        measured = {
+            name: values.copy()
+            for name, values in source.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR][
+                str(YEAR)
+            ].items()
+        }
     copy = source.clone() if kind == "clone" else source.get_branch("copy")
     if copy_wages != source_wages:
         set_wages(copy, copy_wages)
-    np.testing.assert_allclose(response(copy), fresh_response(copy_wages), atol=1e-3)
+    copy_response = response(copy)
+    if kind == "branch" and after_source_measured:
+        # d1021: perturbed wages use the household's measured relative changes.
+        # With this reform's uniform elasticities, the response scales with wages.
+        np.testing.assert_allclose(
+            copy_response, source_response * copy_wages / source_wages, atol=1e-3
+        )
+        copied_measurements = copy.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR][str(YEAR)]
+        assert copied_measurements.keys() == measured.keys()
+        for name, values in measured.items():
+            np.testing.assert_array_equal(copied_measurements[name], values)
+    else:
+        np.testing.assert_allclose(copy_response, fresh_response(copy_wages), atol=1e-3)
     if after_source_measured:
         np.testing.assert_allclose(
             response(source), fresh_response(source_wages), atol=1e-3
         )
+
+
+def test_migrated_input_records_are_private_and_explicit_overrides_survive():
+    migrated_inputs = {
+        "employment_income": ("employment_income_before_lsr", 50_000),
+        "self_employment_income": ("self_employment_income_before_lsr", 5_000),
+        "sstb_self_employment_income": (
+            "sstb_self_employment_income_before_lsr",
+            2_000,
+        ),
+        "weekly_hours_worked": ("weekly_hours_worked_before_lsr", 40),
+        "long_term_capital_gains": (
+            "long_term_capital_gains_before_response",
+            1_000,
+        ),
+    }
+    situation = household(50_000)
+    situation["people"]["you"].update(
+        {name: {YEAR: value} for name, (_, value) in migrated_inputs.items()}
+    )
+    source = make_simulation(situation=situation, reform=LSR_REFORM)
+    period = to_period(YEAR)
+    for original, (migrated, value) in migrated_inputs.items():
+        assert (migrated, source.branch_name, period) in source._user_input_keys
+        assert (original, source.branch_name, period) not in source._user_input_keys
+        # Baseline was copied before migration and must retain its raw inputs.
+        assert (
+            original,
+            source.branch_name,
+            period,
+        ) in source.baseline._user_input_keys
+        np.testing.assert_array_equal(
+            source.baseline.calculate(original, YEAR), [value]
+        )
+    source_input_keys = set(source._user_input_keys)
+    baseline_input_keys = set(source.baseline._user_input_keys)
+
+    clone = source.clone()
+    override_period = to_period(YEAR + 1)
+    override = np.array([123_456.0])
+    clone.set_input("employment_income", override_period, override)
+    override_key = ("employment_income", clone.branch_name, override_period)
+    drop_inherited_values(clone)
+    assert override_key in clone._user_input_keys
+    np.testing.assert_array_equal(
+        clone.get_holder("employment_income").get_array(
+            override_period, clone.branch_name
+        ),
+        override,
+    )
+    assert source._user_input_keys == source_input_keys
+    assert source.baseline._user_input_keys == baseline_input_keys
+    assert (
+        source.get_holder("employment_income").get_array(
+            override_period, source.branch_name
+        )
+        is None
+    )
 
 
 def test_a_branch_measures_a_new_period_without_touching_its_parent():
