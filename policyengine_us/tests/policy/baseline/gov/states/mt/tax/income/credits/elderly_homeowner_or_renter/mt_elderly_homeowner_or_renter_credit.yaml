@@ -665,3 +665,27 @@
     # minor's wages twice would give 40_000, line 22 = 1_370 and a credit of
     # (2_000 - 1_370) x 30% = 189.
     mt_elderly_homeowner_or_renter_credit: [1_130, 0]
+
+- name: 2024 Schedule 2EC, a capital loss carryover does not raise the credit
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        long_term_capital_gains: 6_000
+        long_term_capital_loss_carryover: 4_000
+        real_estate_taxes: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Line 5 = 20_000; line 7 = the year's 10_000 gain; line 18 = 30_000;
+    # line 22 = 870; line 30 = 1_130. Counting the 6_000 net would give line
+    # 18 = 26_000, line 22 = 670 and the 1_150 cap.
+    mt_elderly_homeowner_or_renter_credit: 1_130

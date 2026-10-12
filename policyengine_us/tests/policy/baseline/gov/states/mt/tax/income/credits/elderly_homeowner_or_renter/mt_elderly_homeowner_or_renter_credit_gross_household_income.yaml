@@ -509,3 +509,165 @@
     # 647.98 = 35_502.81. The grandchild is her dependent; their 3_000 of
     # wages count through the dependent path.
     mt_elderly_homeowner_or_renter_credit_gross_household_income: [15_000, 35_502.81, 0, 3_000]
+
+- name: A prior-year capital loss carryover does not reduce the year's gain
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        # A 10_000 gain this year less a 4_000 carryover (Schedule D line 15).
+        long_term_capital_gains: 6_000
+        long_term_capital_loss_carryover: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Line 7 counts the year's gain, 10_000, without the carried loss.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 30_000
+
+- name: A carryover larger than the year's gain leaves the gain counted and the rest unused
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        # A 2_000 gain this year less a 10_000 carryover.
+        long_term_capital_gains: -8_000
+        long_term_capital_loss_carryover: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # 20_000 + the year's 2_000 gain; the unused 8_000 of carryover counts
+    # neither as income nor as a loss.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 22_000
+
+- name: A carryover with no gain this year adds nothing
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        long_term_capital_gains: -5_000
+        long_term_capital_loss_carryover: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 20_000
+
+- name: A dependent's capital loss carryover does not reduce their gain
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+      person2:
+        age: 16
+        long_term_capital_gains: 6_000
+        long_term_capital_loss_carryover: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_name: MT
+  output:
+    # Line 17: the dependent's 10_000 gain this year, as on a filer's return.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 10_000]
+
+- name: A long-term loss netted against a short-term gain does not reduce gross household income
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        long_term_capital_gains: -4_000
+        short_term_capital_gains: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 30_000
+
+- name: A gain is counted when the person's capital losses exceed it
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        long_term_capital_gains: -10_000
+        short_term_capital_gains: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_name: MT
+  output:
+    # Federal AGI 20_000 - 3_000 (the § 1211(b) limit); the 3_000 is added
+    # back and the 4_000 short-term gain counts: 24_000.
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: 24_000
+
+- name: Social Security counts in full for a spouse who is also input as a dependent
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 70
+        taxable_pension_income: 20_000
+        is_tax_unit_dependent: false
+      person2:
+        age: 50
+        social_security_retirement: 60_000
+        is_tax_unit_dependent: true
+      person3:
+        age: 45
+        social_security_retirement: 60_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_name: MT
+  output:
+    # Both adults of tax_unit2 are input as dependents, so they stay head and
+    # spouse as well. § 15-30-2337(9)(a)(viii) counts all of each one's
+    # benefits.
+    is_tax_unit_head: [true, true, false]
+    is_tax_unit_spouse: [false, false, true]
+    mt_elderly_homeowner_or_renter_credit_gross_household_income: [20_000, 60_000, 60_000]

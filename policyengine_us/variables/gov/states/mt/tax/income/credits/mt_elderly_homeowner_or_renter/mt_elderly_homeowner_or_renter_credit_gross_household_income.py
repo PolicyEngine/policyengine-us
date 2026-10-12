@@ -74,24 +74,45 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         # losses."). The return's losses are added once, to the head.
         head = person("is_tax_unit_head", period)
         losses = head * person.tax_unit("loss_ald", period)
-        # loss_ald holds only the capital loss deducted in AGI. A filer's
-        # short-term loss netted against their own long-term gain (or the
-        # reverse) never reaches it, so restore that loss here: count each
-        # gain without its losses, as the dependent path does and as 2024
-        # Schedule 2EC line 7 requires ("do not include any capital
-        # losses"). Taking the larger of the floored parts and the net keeps
-        # a capital_gains value supplied directly as an input.
-        long_term_gains = max_(0, person("long_term_capital_gains", period))
+        # Count each person's capital gains without losses, as 2024 Schedule
+        # 2EC line 7 requires ("do not include any capital losses"). Two
+        # losses reduce the gains the income paths count without reaching
+        # loss_ald, which holds only the capital loss deducted in AGI:
+        # - a short-term loss netted against the same person's long-term gain
+        #   (or the reverse) inside capital_gains;
+        # - the prior-year long-term capital loss carryover, which
+        #   long_term_capital_gains already includes as a loss, as Schedule D
+        #   line 15 does. Adding it back gives the year's own long-term gain
+        #   (as az_property_tax_credit_capital_gains does); only the gain it
+        #   hid is restored, never the unused loss.
+        # Taking the larger of the floored parts and the net keeps a
+        # capital_gains value supplied directly as an input.
+        carryover = max_(0, person("long_term_capital_loss_carryover", period))
+        long_term_gains = max_(0, person("long_term_capital_gains", period) + carryover)
         short_term_gains = max_(0, person("short_term_capital_gains", period))
         capital_gains = person("capital_gains", period)
-        gains_without_losses = max_(long_term_gains + short_term_gains, capital_gains)
-        netted_capital_loss = ~is_dependent * (
-            gains_without_losses - max_(0, capital_gains)
+        gains_without_losses = max_(
+            long_term_gains + short_term_gains, capital_gains + carryover
         )
+        # The gains each income path already counted: irs_gross_income
+        # floors the net, dependent_gross_income floors each part. A person
+        # input as both a dependent and the head is counted by neither path,
+        # so nothing is restored for them.
+        counted_gains = where(
+            is_dependent,
+            ~head_or_spouse
+            * max_(
+                max_(0, person("long_term_capital_gains", period)) + short_term_gains,
+                capital_gains,
+            ),
+            max_(0, capital_gains),
+        )
+        counted_by_a_path = ~(is_dependent & head_or_spouse)
+        lost_capital_gains = counted_by_a_path * (gains_without_losses - counted_gains)
         return (
             sources
             + dependent_income
             + untaxed_social_security
             + losses
-            + netted_capital_loss
+            + lost_capital_gains
         )
