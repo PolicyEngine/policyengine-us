@@ -22,13 +22,16 @@ it:
 - ``long_term_health_insurance_premiums``: no dataset fills it, and CMS's
   health expenditure projections have no long-term care insurance premium
   series. 26 U.S.C. 213(d)(10)(B) indexes the deductible limits on these
-  premiums by the chained CPI-U medical care component for August, which
-  nobody projects, so the input follows CBO's projection of the CPI-U medical
-  care component by calendar year as a proxy.
+  premiums by the chained CPI-U medical care component for August of the
+  preceding year. CBO and CMS do not project that index, so the input
+  follows CBO's projection of the CPI-U medical care component by calendar
+  year as a proxy.
 - ``medicare_part_b_premiums_reported`` follows the Part B standard premium:
   within an income tier, a premium with its income-related adjustment is a
   fixed multiple of the standard premium before rounding (42 U.S.C.
-  1395r(i)(3)).
+  1395r(i)(3)). The series is a growth proxy, not a forecast of each
+  person's premium: hold-harmless limits and Medicare Advantage premium
+  reductions move some premiums differently.
 
 These tests read only the parameter tree. Engine uprating of the inputs is
 covered in ``tests/microsimulation/test_premium_input_microsim_uprating.py``.
