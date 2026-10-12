@@ -35,14 +35,29 @@
   output:
     ssi_ineligible_child_allocation: 5_964 # $497 * 12
 
-- name: A student child's wages above the annual student exclusion reduce it
-  # $12,000 of wages less the $9,730 annual cap leaves $2,270.
+- name: Once the student exclusion's yearly limit is used up, wages reduce it
+  # $1,000 a month is excluded in full for nine months ($9,000), leaving
+  # $730 of the $9,730 yearly limit. In month 10, $270 counts: $497 - $270 =
+  # $227. In months 11 and 12, $1,000 counts and the allocation is zero;
+  # the excess does not reduce other months (416.1163(b)(2), monthly).
   period: 2026
   input:
     age: 16
     employment_income: 1_000 * 12
   output:
-    ssi_ineligible_child_allocation: 3_694 # 5,964 - 2,270
+    ssi_ineligible_child_allocation: 4_700 # 9 * 497 + 227
+
+- name: Student wages above the monthly exclusion reduce each month separately
+  # $2,600 a month: $2,410 is excluded in months 1-4 ($9,640), leaving $190
+  # counted and a $307 allocation each month. In month 5 only the last $90
+  # of the yearly limit is excluded, so $2,510 counts and the allocation is
+  # zero, as in months 6-12.
+  period: 2026
+  input:
+    age: 17
+    employment_income: 2_600 * 12
+  output:
+    ssi_ineligible_child_allocation: 1_228 # 4 * 307
 
 - name: A child who is not a student has no wage exclusion
   period: 2026

@@ -24,6 +24,12 @@ on everyone, no one or some people) and checks:
 5. Deemed unearned income is the spouse's unearned income less the total,
    floored at zero (416.1163(b)(3)).
 
+A second test checks each child's own allocation against a month-by-month
+oracle of 416.1163(b)(1)-(2) and 416.1161(c): the student earned income
+exclusion runs month by month until its yearly limit is used up, and each
+month's allocation is floored at zero. It also checks the bounds and that
+more income never raises an allocation.
+
 YAML covers the worked cases. This file routes to the Rest/core group.
 """
 
@@ -40,6 +46,9 @@ CHILD_AGE = 18  # 416.1856(a)(1)
 STUDENT_AGE = 22  # 416.1856(a)(2)
 ABSENT_PARENT_ID = 999_999
 HOUSEHOLDS_PER_EXAMPLE = 30
+# 416.1112(c)(3) student earned income exclusion in 2026 (POMS SI 00820.510).
+STUDENT_MONTHLY_EXCLUSION = 2_410
+STUDENT_YEARLY_EXCLUSION = 9_730
 
 CHILD_KINDS = ("claimant", "spouse", "both", "grandchild", "unrelated")
 OTHER = st.fixed_dictionaries(
@@ -356,3 +365,75 @@ def test_allocations_match_oracle_and_invariants(households):
         richer_situation, ("ssi_spousal_deeming_child_allocations",)
     )["ssi_spousal_deeming_child_allocations"]
     assert all(richer_totals[name] <= totals[name] for name in totals)
+
+
+CHILD = st.fixed_dictionaries(
+    {
+        "age": st.integers(0, 23),
+        "in_school": st.booleans(),
+        "in_college": st.booleans(),
+        "monthly_earned": st.sampled_from((0, 300, 497, 800, 1_000, 2_410, 2_600)),
+        "monthly_unearned": st.sampled_from((0, 100, 497, 600)),
+        "public_income_maintenance": st.sampled_from((False, False, False, True)),
+    }
+)
+
+
+def _child_situation(children, rise=0):
+    people = {}
+    for index, child in enumerate(children):
+        people[f"c{index}"] = {
+            "age": {YEAR: child["age"]},
+            "is_ssi_disabled": {YEAR: False},
+            "is_in_k12_school": {YEAR: child["in_school"]},
+            "is_full_time_college_student": {YEAR: child["in_college"]},
+            "ssi_earned_income": {YEAR: 12 * (child["monthly_earned"] + rise)},
+            "ssi_unearned_income": {YEAR: 12 * (child["monthly_unearned"] + rise)},
+            "ssi_receives_public_income_maintenance": {
+                YEAR: child["public_income_maintenance"]
+            },
+        }
+    situation = {"people": people}
+    for plural in (
+        "tax_units",
+        "households",
+        "marital_units",
+        "families",
+        "spm_units",
+    ):
+        situation[plural] = {f"u{name}": {"members": [name]} for name in people}
+    for household in situation["households"].values():
+        household["state_code"] = {YEAR: "TX"}
+    return situation
+
+
+def _monthly_allocation_oracle(child):
+    """Sum over months of 416.1163(b)(2) with the 416.1161(c) exclusion."""
+    student = child["in_school"] or child["in_college"]
+    is_child = child["age"] < CHILD_AGE or (child["age"] < STUDENT_AGE and student)
+    if not is_child or child["public_income_maintenance"]:
+        return 0
+    left = STUDENT_YEARLY_EXCLUSION if student and child["age"] < STUDENT_AGE else 0
+    total = 0
+    for _ in range(12):
+        exclusion = min(STUDENT_MONTHLY_EXCLUSION, child["monthly_earned"], left)
+        left -= exclusion
+        income = child["monthly_earned"] - exclusion + child["monthly_unearned"]
+        total += max(0, MONTHLY_ALLOCATION - income)
+    return total
+
+
+@settings(max_examples=3, derandomize=True, deadline=None)
+@given(st.lists(CHILD, min_size=60, max_size=60))
+def test_child_allocation_matches_monthly_oracle(children):
+    allocation = Simulation(situation=_child_situation(children)).calculate(
+        "ssi_ineligible_child_allocation", YEAR
+    )
+    expected = [_monthly_allocation_oracle(child) for child in children]
+    np.testing.assert_allclose(allocation, expected, atol=1e-6)
+    assert np.all(allocation >= 0)
+    assert np.all(allocation <= 12 * MONTHLY_ALLOCATION)
+    richer = Simulation(situation=_child_situation(children, rise=100)).calculate(
+        "ssi_ineligible_child_allocation", YEAR
+    )
+    assert np.all(richer <= allocation + 1e-6)
