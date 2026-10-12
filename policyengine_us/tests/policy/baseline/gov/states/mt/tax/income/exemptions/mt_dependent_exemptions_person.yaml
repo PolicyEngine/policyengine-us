@@ -355,8 +355,12 @@
     # Montana gross income = 3,000 - 3,000 unemployment compensation = 0
     # <= 2,710, so one exemption of 2,710.
     mt_dependent_exemptions_person: [0, 2_710]
-    # Without the exemption the tax is 1,712.07; 1,712.07 - 182.92 = 1,529.15.
-    mt_income_tax: 1_529.15
+    # The dependent's unemployment compensation is not on the filer's return,
+    # so Montana AGI is 50,000 and the standard deduction is 20% of it, 10,000.
+    # Taxable income = 50,000 - 10,000 - 2 x 2,710 exemptions = 34,580.
+    # Without the dependent's exemption the tax is 1,914.58;
+    # 1,914.58 - 2,710 x 6.75% (182.93) = 1,731.65.
+    mt_income_tax: 1_731.65
 
 - name: Adult dependent with unemployment compensation and wages exactly at the 2022 exemption amount is eligible
   period: 2022
