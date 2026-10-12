@@ -1,0 +1,170 @@
+# Printed bounds do not follow one reproducible rounding rule. The last band
+# extends through the separate eligibility limit, including its $1 discrepancy.
+description: Oregon divides countable income into payment bands with these inclusive annual upper bounds by household size under the Low Income Home Energy Assistance Program.
+1:
+  1:
+    2024-10-01: 9_203
+    2025-10-09: 9_597
+    2026-10-01: 10_082
+  2:
+    2024-10-01: 12_035
+    2025-10-09: 12_549
+    2026-10-01: 13_184
+  3:
+    2024-10-01: 14_866
+    2025-10-09: 15_502
+    2026-10-01: 16_286
+  4:
+    2024-10-01: 17_698
+    2025-10-09: 18_454
+    2026-10-01: 19_388
+  5:
+    2024-10-01: 20_530
+    2025-10-09: 21_407
+    2026-10-01: 22_490
+  6:
+    2024-10-01: 23_361
+    2025-10-09: 24_360
+    2026-10-01: 25_592
+  7:
+    2024-10-01: 23_892
+    2025-10-09: 24_913
+    2026-10-01: 26_174
+  8:
+    2024-10-01: 24_423
+    2025-10-09: 25_467
+    2026-10-01: 26_755
+  9:
+    2024-10-01: 24_954
+    2025-10-09: 26_020
+    2026-10-01: 27_337
+  10:
+    2024-10-01: 25_485
+    2025-10-09: 26_574
+    2026-10-01: 27_918
+  11:
+    2024-10-01: 26_016
+    2025-10-09: 27_128
+    2026-10-01: 28_500
+  12:
+    2024-10-01: 26_547
+    2025-10-09: 27_681
+    2026-10-01: 29_082
+2:
+  1:
+    2024-10-01: 18_406
+    2025-10-09: 19_193
+    2026-10-01: 20_163
+  2:
+    2024-10-01: 24_069
+    2025-10-09: 25_098
+    2026-10-01: 26_367
+  3:
+    2024-10-01: 29_732
+    2025-10-09: 31_003
+    2026-10-01: 32_571
+  4:
+    2024-10-01: 35_395
+    2025-10-09: 36_908
+    2026-10-01: 38_775
+  5:
+    2024-10-01: 41_059
+    2025-10-09: 42_814
+    2026-10-01: 44_979
+  6:
+    2024-10-01: 46_722
+    2025-10-09: 48_719
+    2026-10-01: 51_183
+  7:
+    2024-10-01: 47_784
+    2025-10-09: 49_826
+    2026-10-01: 52_347
+  8:
+    2024-10-01: 48_845
+    2025-10-09: 50_933
+    2026-10-01: 53_510
+  9:
+    2024-10-01: 49_907
+    2025-10-09: 52_040
+    2026-10-01: 54_673
+  10:
+    2024-10-01: 50_969
+    2025-10-09: 53_148
+    2026-10-01: 55_836
+  11:
+    2024-10-01: 52_031
+    2025-10-09: 54_255
+    2026-10-01: 57_000
+  12:
+    2024-10-01: 53_093
+    2025-10-09: 55_362
+    2026-10-01: 58_163
+3:
+  1:
+    2024-10-01: 27_609
+    2025-10-09: 28_789
+    2026-10-01: 30_245
+  2:
+    2024-10-01: 36_103
+    2025-10-09: 37_646
+    2026-10-01: 39_551
+  3:
+    2024-10-01: 44_598
+    2025-10-09: 46_504
+    2026-10-01: 48_857
+  4:
+    2024-10-01: 53_093
+    2025-10-09: 55_362
+    2026-10-01: 58_163
+  5:
+    2024-10-01: 61_588
+    2025-10-09: 64_220
+    2026-10-01: 67_469
+  6:
+    2024-10-01: 70_082
+    2025-10-09: 73_078
+    2026-10-01: 76_775
+  7:
+    2024-10-01: 71_675
+    2025-10-09: 74_739
+    2026-10-01: 78_520
+  8:
+    2024-10-01: 73_268
+    2025-10-09: 76_400
+    2026-10-01: 80_265
+  9:
+    2024-10-01: 74_861
+    2025-10-09: 78_060
+    2026-10-01: 82_010
+  10:
+    2024-10-01: 76_453
+    2025-10-09: 79_721
+    2026-10-01: 83_754
+  11:
+    2024-10-01: 78_046
+    2025-10-09: 81_382
+    2026-10-01: 85_499
+  12:
+    2024-10-01: 79_639
+    2025-10-09: 83_043
+    2026-10-01: 87_244
+metadata:
+  unit: currency-USD
+  period: year
+  label: Oregon LIHEAP annual income band upper bounds
+  breakdown:
+  - range(1, 4)
+  - range(1, 13)
+  reference:
+  - title: PY2025 Energy Assistance Intake Operations and Policy Manual, standard payment income bands
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/PY25%20EA%20Operations%20%20Policy%20Manual-%20FINAL%209-27-24.pdf#page=58
+  - title: PY2026 Energy Assistance Intake Operations and Policy Manual, standard payment income bands, household sizes 1 to 7
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=78
+  - title: PY2026 Energy Assistance Intake Operations and Policy Manual, standard payment income bands, household sizes 7 to 12
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/2026%20Final%20Energy%20Assistance%20Intake%20Operations%20%26%20Policy%20Manual.pdf#page=79
+  - title: OHCS 44-2025 temporary order correcting the PY2026 payment matrices, effective October 9, 2025
+    href: https://secure.sos.state.or.us/oard/viewReceiptPDF.action?filingRsn=60695
+  - title: PY2027 Energy Assistance Intake Operations and Policy Manual, standard payment income bands, household sizes 1 to 9
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/manuals/09-23-2027-PY-2027-EA-Operations-Policy-Manual.pdf#page=72
+  - title: PY2027 Energy Assistance Intake Operations and Policy Manual, standard payment income bands, household sizes 9 to 12
+    href: https://www.oregon.gov/ohcs/energy-weatherization/Documents/manuals/09-23-2027-PY-2027-EA-Operations-Policy-Manual.pdf#page=73

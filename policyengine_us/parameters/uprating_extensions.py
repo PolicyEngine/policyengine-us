@@ -210,6 +210,121 @@ def extend_educator_expense_cap(parameters: ParameterNode, end_year: int) -> Non
     )
 
 
+def get_average_for_12_months_ending_march(cpi: Parameter, year: int) -> float:
+    """Average a monthly price index over the 12 months ending March 31.
+
+    Covers April of ``year - 1`` through March of ``year``: the calendar-year
+    index for the HSA amounts, which 26 U.S.C. 223(g)(1) obtains by applying
+    1(f)(4) "by substituting 'March 31' for 'August 31'". Observed months
+    are read as published; unobserved months are interpolated toward the
+    index's calendar-year projection points by
+    ``get_projected_cpi_u_for_month``, so a window that straddles the last
+    observation is neither held flat nor read from a point centred months
+    away from it.
+    """
+    end = instant(f"{year}-03-01")
+    return (
+        sum(
+            get_projected_cpi_u_for_month(cpi, end.offset(-month, MONTH))
+            for month in range(MONTHS_IN_YEAR)
+        )
+        / MONTHS_IN_YEAR
+    )
+
+
+# 26 U.S.C. 223(b)(2) dollar amounts by coverage (parameter name, amount) and
+# the base year 223(g)(1)(B)(i) substitutes for calendar year 2016.
+HSA_CONTRIBUTION_LIMIT_STATUTORY_BASES = (
+    ("self_only", 2_250),  # 223(b)(2)(A)
+    ("family", 4_500),  # 223(b)(2)(B)
+)
+HSA_CONTRIBUTION_LIMIT_BASE_YEAR = 1997
+
+
+def get_hsa_cola_denominator(parameters: ParameterNode) -> float:
+    """Denominator of the 26 U.S.C. 223(g)(1) cost-of-living adjustment.
+
+    The CPI for 1997, the base year 223(g)(1)(B)(i) substitutes for calendar
+    year 2016, averaged over the 12 months ending March 31 as 223(g)(1)
+    applies 1(f)(4), times the 1(f)(3)(B) ratio of the C-CPI-U to the CPI for
+    calendar year 2016. That ratio keeps its 12 months ending August 31, as
+    for every other 1(f)(3) amount; see ``get_hsa_cola``.
+    """
+    cpi = parameters.gov.bls.cpi
+    ratio_2016 = get_average_for_12_months_ending_august(
+        cpi.c_cpi_u, 2016
+    ) / get_average_for_12_months_ending_august(cpi.cpi_u, 2016)
+    return (
+        get_average_for_12_months_ending_march(
+            cpi.cpi_u, HSA_CONTRIBUTION_LIMIT_BASE_YEAR
+        )
+        * ratio_2016
+    )
+
+
+def get_hsa_cola(
+    parameters: ParameterNode,
+    tax_year: int,
+    denominator: Optional[float] = None,
+) -> float:
+    """The 26 U.S.C. 223(g)(1) cost-of-living adjustment for ``tax_year``.
+
+    The 1(f)(3) adjustment with calendar year 1997 in place of 2016, and with
+    1(f)(4) applied by substituting March 31 for August 31: the percentage
+    (if any) by which the C-CPI-U for the calendar year before ``tax_year``,
+    averaged over the 12 months ending March 31, exceeds
+    ``get_hsa_cola_denominator``. These windows reproduce every self-only and
+    family limit the IRS published for 2019 through 2027, and Rev. Proc.
+    2018-18's limits for 2018, from the BLS series in ``gov.bls.cpi``
+    (``tests/core/test_hsa_contribution_limits.py``). Taking the 2016 ratio
+    over the 12 months ending March 31 as well misses 3 of the 18 values for
+    2019 to 2027. ``denominator`` lets a caller computing many years pass it
+    once.
+    """
+    if denominator is None:
+        denominator = get_hsa_cola_denominator(parameters)
+    chained = get_average_for_12_months_ending_march(
+        parameters.gov.bls.cpi.c_cpi_u, tax_year - 1
+    )
+    return max(chained / denominator - 1, 0)
+
+
+def extend_hsa_contribution_limits(parameters: ParameterNode, end_year: int) -> None:
+    """Project the HSA contribution limits for self-only and family coverage.
+
+    26 U.S.C. 223(g) increases the 223(b)(2) amounts ($2,250 self-only and
+    $4,500 family) by the cost-of-living adjustment in ``get_hsa_cola`` and
+    rounds each increase to the nearest multiple of $50. Each year is
+    computed from the statutory base rather than chained from the last
+    rounded value; IRS values encoded in the YAML take precedence for their
+    own years.
+    """
+    ROUNDING_INTERVAL = 50
+    limit = parameters.gov.irs.gross_income.health_savings_account_contributions.limit
+    denominator = get_hsa_cola_denominator(parameters)
+    colas = {}
+    for name, base in HSA_CONTRIBUTION_LIMIT_STATUTORY_BASES:
+        parameter = getattr(limit, name)
+        first_projected_year = 1 + max(
+            int(value.instant_str[:4]) for value in parameter.values_list
+        )
+        for year in range(first_projected_year, end_year + 1):
+            if year not in colas:
+                colas[year] = get_hsa_cola(parameters, year, denominator)
+            # Nearest multiple of $50; an exact half rounds up.
+            increase = (
+                math.floor(base * colas[year] / ROUNDING_INTERVAL + 0.5)
+                * ROUNDING_INTERVAL
+            )
+            parameter.update(
+                period=f"year:{year}-01-01:1", value=float(base + increase)
+            )
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
+
+
 def extend_or_ctc_parameters(parameters: ParameterNode, end_year: int) -> None:
     """Project the Oregon Kids' Credit amount and phase-out start.
 
@@ -849,6 +964,17 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
+    # CMS employer-sponsored insurance premium per enrollee (January values,
+    # last projection year 2034). Employer and pre-tax employee premium
+    # inputs use this as their uprater.
+    extend_parameter_values(
+        parameters.calibration.gov.hhs.cms.esi_premium_per_enrollee,
+        last_projected_year=2034,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
     # Gross Social Security benefit inputs should age with gross Social
     # Security benefits, not taxable Social Security income.
     extend_parameter_values(
@@ -903,6 +1029,12 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     # schedule, computed from the statutory $250 and 2014 base year. Must run
     # after the Chained CPI-U extension above.
     extend_educator_expense_cap(parameters, end_year=END_YEAR)
+
+    # The HSA contribution limits follow 26 U.S.C. 223(g)'s chained CPI-U
+    # schedule (12 months ending March 31), computed from the statutory
+    # $2,250 and $4,500 and the 1997 base year. Must run after the Chained
+    # CPI-U and CPI-U extensions above so projected windows are available.
+    extend_hsa_contribution_limits(parameters, end_year=END_YEAR)
 
     # NYC income tax elimination credit thresholds follow the Tax Law
     # § 1310(h)(1)(B)(iii) schedule (CPI-U for the 12 months ending August 31
