@@ -27,10 +27,9 @@ class nc_itemized_deductions(Variable):
 
         # North Carolina specifies a state and local tax deduction cap which is currently not modeled in PolicyEngine
 
-        other_deductions = add(
-            tax_unit,
-            period,
-            ["charitable_deduction", "medical_expense_deduction"],
-        )
+        # Charitable contributions, medical and dental expenses, and the
+        # other items in G.S. 105-153.5(a)(2), none subject to the cap.
+        p = parameters(period).gov.states.nc.tax.income.deductions.itemized
+        other_deductions = add(tax_unit, period, p.other_sources)
 
         return capped_mortage_and_property_taxes + other_deductions

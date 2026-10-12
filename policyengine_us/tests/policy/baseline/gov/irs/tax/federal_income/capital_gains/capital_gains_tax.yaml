@@ -91,3 +91,121 @@
     foreign_earned_income_exclusion: 130_000
   output:
     capital_gains_tax: 0
+
+# 26 U.S.C. 1(h)(4) and 1(h)(6): losses net against 28 percent rate gain, then
+# unrecaptured section 1250 gain, before the 2025 Schedule D Tax Worksheet
+# uses them (lines 11 to 13). 2025 single rates: 22 percent to 103,350, 24
+# percent to 197,300, 32 percent to 250,525, 35 percent to 626,350; the 15
+# percent capital gains rate starts at 48,350.
+- name: A short-term loss moves collectibles gain to the 15 percent rate
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    state_code: TX
+    employment_income: 100_000
+    long_term_capital_gains: 50_000
+    collectibles_gain_or_loss: 10_000
+    short_term_capital_gains: -8_000
+  output:
+    # Taxable income 142,000 - 15,750 = 126,250; line 10 = 42,000; Schedule
+    # D line 18 = 2,000 (not 10,000); line 13 = 40,000; line 14 = 86,250;
+    # line 18 = 84,250; line 20 = 86,250 = line 21. Tax on 86,250 at the
+    # rate schedule is 1,192.50 + 4,386 + 8,310.50 = 13,889 (the model uses
+    # the schedule; line 44's Tax Table row gives 13,895); 40,000 at 15% =
+    # 6,000. Without the netting line 21 is 94,250 and the tax 15,649 +
+    # 4,800.
+    capital_gains_28_percent_rate_gain: 2_000
+    adjusted_net_capital_gain: 40_000
+    dwks13: 40_000
+    income_tax_main_rates: 13_889
+    capital_gains_tax: 6_000
+
+- name: A short-term loss reduces unrecaptured section 1250 gain
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    state_code: TX
+    employment_income: 100_000
+    long_term_capital_gains: 50_000
+    unrecaptured_section_1250_gain_before_losses: 20_000
+    short_term_capital_gains: -6_000
+  output:
+    # Taxable income 128,250; line 10 = 44,000; Schedule D line 19 = 14,000;
+    # line 13 = 30,000; line 21 = line 14 = 98,250, which takes the 1250
+    # gain at the regular rates (below the top of the 24% bracket). Tax on
+    # 98,250 at the rate schedule = 13,889 + 2,640 = 16,529 (Tax Table row:
+    # 16,535); 30,000 at 15% = 4,500.
+    schedule_d_unrecaptured_section_1250_gain: 14_000
+    adjusted_net_capital_gain: 30_000
+    income_tax_main_rates: 16_529
+    capital_gains_tax: 4_500
+
+- name: A short-term loss halves the gain taxed at 28 percent
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    state_code: TX
+    employment_income: 300_000
+    long_term_capital_gains: 50_000
+    collectibles_gain_or_loss: 20_000
+    short_term_capital_gains: -10_000
+  output:
+    # Taxable income 340,000 - 15,750 = 324,250; net capital gain 40,000;
+    # Schedule D line 18 = 10,000 (not 20,000); line 13 = 30,000. Line 21 =
+    # 284,250, above the top of the 24% bracket. 30,000 at 15% = 4,500 and
+    # 10,000 at 28% = 2,800. Without the netting: 20,000 at 15% and 20,000
+    # at 28%, 8,600.
+    capital_gains_28_percent_rate_gain: 10_000
+    adjusted_net_capital_gain: 30_000
+    dwks13: 30_000
+    capital_gains_tax: 7_300
+
+- name: Above the 24 percent bracket losses move gain from 28 and 25 percent
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    filing_status: SINGLE
+    state_code: TX
+    employment_income: 300_000
+    long_term_capital_gains: 100_000
+    collectibles_gain_or_loss: 30_000
+    unrecaptured_section_1250_gain_before_losses: 40_000
+    short_term_capital_gains: -35_000
+  output:
+    # Taxable income 349,250; line 10 = 65,000. Schedule D line 18 = 0 and
+    # line 19 = 40,000 - 5,000 = 35,000; line 13 = 30,000; line 21 =
+    # 284,250. 30,000 at 15% = 4,500; 35,000 at 25% = 8,750; nothing at
+    # 28%. Tax on 284,250 = 57,231 + 11,803.75 = 69,034.75. Without the
+    # netting the gains tax is 10,000 at 25% and 7,000 at 28%, 17,000.
+    capital_gains_28_percent_rate_gain: 0
+    schedule_d_unrecaptured_section_1250_gain: 35_000
+    adjusted_net_capital_gain: 30_000
+    income_tax_main_rates: 69_034.75
+    capital_gains_tax: 13_250
+
+- name: 2026, losses move gain from 28 and 25 percent (Axiom companion N10)
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SINGLE
+    state_code: TX
+    taxable_income: 349_250
+    long_term_capital_gains: 100_000
+    collectibles_gain_or_loss: 30_000
+    unrecaptured_section_1250_gain_before_losses: 40_000
+    short_term_capital_gains: -35_000
+  output:
+    # Net capital gain 65,000; 28 percent rate gain 0; unrecaptured section
+    # 1250 gain 35,000; adjusted net capital gain 30,000. Section 1(h)(1):
+    # (A) = max(284,250, min(201,775, 319,250)) = 284,250 (Rev. Proc.
+    # 2025-32 section 4.01, single); (C) 15% x 30,000 = 4,500 (below the
+    # 545,500 maximum 15-percent rate amount, section 4.03); (E) 25% x 35,000
+    # = 8,750; (F) 0.
+    capital_gains_28_percent_rate_gain: 0
+    schedule_d_unrecaptured_section_1250_gain: 35_000
+    adjusted_net_capital_gain: 30_000
+    capital_gains_excluded_from_taxable_income: 65_000
+    capital_gains_tax: 13_250

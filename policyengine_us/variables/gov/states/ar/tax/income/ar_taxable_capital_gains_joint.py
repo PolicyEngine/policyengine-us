@@ -8,7 +8,7 @@ class ar_taxable_capital_gains_joint(Variable):
     unit = USD
     reference = (
         "https://codes.findlaw.com/ar/title-26-taxation/ar-code-sect-26-51-815.html",
-        "https://www.taxformfinder.org/forms/2023/2023-arkansas-form-ar1000d.pdf#page=1",
+        "https://www.dfa.arkansas.gov/wp-content/uploads/2023_AR1000D_CapitalGains.pdf#page=1",
     )
     definition_period = YEAR
     defined_for = StateCode.AR

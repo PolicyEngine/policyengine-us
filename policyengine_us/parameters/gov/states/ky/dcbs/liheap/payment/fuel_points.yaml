@@ -1,0 +1,34 @@
+description: Kentucky sets these heating payment points by primary heating fuel under the Low Income Home Energy Assistance Program.
+UNSPECIFIED:
+  2024-10-01: 0
+ELECTRICITY:
+  2024-10-01: 6
+NATURAL_GAS:
+  2024-10-01: 3
+FUEL_OIL:
+  2024-10-01: 4
+KEROSENE:
+  2024-10-01: 4
+PROPANE:
+  2024-10-01: 5
+WOOD:
+  2024-10-01: 1
+COAL:
+  2024-10-01: 2
+SOLAR:
+  2024-10-01: 0
+OTHER:
+  2024-10-01: 0
+NONE:
+  2024-10-01: 0
+metadata:
+  unit: /1
+  period: year
+  label: Kentucky LIHEAP heating fuel points
+  breakdown:
+    - heating_type
+  reference:
+    - title: Kentucky FY2026 benefit workbook, Points Description worksheet, cells J2-J7
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/KY_BenefitMatrix_Heat-Cool_2026.xlsx
+    - title: Kentucky FY2025 benefit workbook, points worksheet, cells J2-J7
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/KY_BenefitMatrix_2025.xlsx

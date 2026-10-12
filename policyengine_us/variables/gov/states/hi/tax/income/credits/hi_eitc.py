@@ -11,7 +11,7 @@ class hi_eitc(Variable):
     defined_for = StateCode.HI
     unit = USD
     definition_period = YEAR
-    reference = "https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0055_0075.htm"
+    reference = "https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0055_0007_0005.htm"
 
     def formula(tax_unit, period, parameters):
         if period.start.year >= 2023:

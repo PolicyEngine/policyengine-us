@@ -35,9 +35,12 @@ def schedule_d_tax_worksheet_after_capital_gain_excess(tax_unit, period, taxable
 
     The excess is measured as the worksheets measure it, from line 10. The
     section 1(h) formulas use section_911_capital_gain_excess, measured from
-    net_capital_gain. On a return the two are the same amount; in the model
-    dwks10 and net_capital_gain are separate formulas that can disagree (they
-    read different Form 4952 inputs).
+    net_capital_gain. On a return the two are the same amount, and in the
+    model dwks10 equals net_capital_gain for the same inputs: both apply the
+    Form 4952 line 4g election, first to the gain and then to qualified
+    dividends. With amounts in cents they can differ by single-precision
+    rounding, because worksheet lines 6 and 9 are stored before dwks10 adds
+    them.
 
     Returns the excess, worksheet lines 9, 10 and 13 and Schedule D line 19.
     Without an excess these are the first worksheet's amounts, unchanged.
@@ -50,7 +53,7 @@ def schedule_d_tax_worksheet_after_capital_gain_excess(tax_unit, period, taxable
         excludes_income, max_(0, line_10 - max_(0, taxable_base)), 0
     )
     has_excess = capital_gain_excess > 0
-    unrecaptured_gain = tax_unit("unrecaptured_section_1250_gain", period)
+    unrecaptured_gain = tax_unit("schedule_d_unrecaptured_section_1250_gain", period)
     rate_gain = tax_unit("capital_gains_28_percent_rate_gain", period)
     # Modifications 1 and 2.
     reduced_line_9 = max_(0, line_9 - capital_gain_excess)
@@ -61,6 +64,9 @@ def schedule_d_tax_worksheet_after_capital_gain_excess(tax_unit, period, taxable
     # Modifications 3 and 4. section_911_28_percent_rate_gain and
     # section_911_unrecaptured_section_1250_gain apply the regular tax excess;
     # this helper also runs with the AMT excess, so it applies them itself.
+    # Schedule D lines 18 and 19 are already net of the worksheets' losses, so
+    # reducing line 18 by the excess and line 19 by the part line 18 does not
+    # absorb is the same as adding the excess to those losses.
     reduced_rate_gain = max_(0, rate_gain - capital_gain_excess)
     reduced_unrecaptured_gain = max_(
         0, unrecaptured_gain - max_(0, capital_gain_excess - rate_gain)
