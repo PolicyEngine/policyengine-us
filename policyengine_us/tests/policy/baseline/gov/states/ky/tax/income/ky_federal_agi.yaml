@@ -1,0 +1,273 @@
+# KRS 141.016(3): allocate income and business deductions to their owner.
+# Federal joint AGI and the already-limited deduction totals are preserved.
+
+- name: A spouse's business loss does not reduce the wage earner's Kentucky AGI
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 40_000
+      spouse:
+        age: 43
+        self_employment_income: -30_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    adjusted_gross_income_person: [25_000, -15_000]
+    adjusted_gross_income: 10_000
+    ky_federal_agi: [40_000, -30_000]
+    ky_agi: [40_000, -30_000]
+    ky_modified_agi_if_joint: 10_000
+    ky_modified_agi_if_separate: 40_000
+    ky_family_size_tax_credit_rate_if_joint: 1
+    ky_family_size_tax_credit_rate_if_separate: 0
+    ky_income_tax_before_refundable_credits_if_separate: 1_473.60
+
+- name: Loss ownership follows the spouse rather than the head role
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        rental_income: -30_000
+      spouse:
+        age: 43
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    ky_federal_agi: [-30_000, 40_000]
+    ky_agi: [-30_000, 40_000]
+    ky_modified_agi_if_joint: 10_000
+    ky_modified_agi_if_separate: 40_000
+
+- name: Business and net capital loss caps are allocated independently
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 40_000
+        short_term_capital_gains: -10_000
+      spouse:
+        age: 43
+        rental_income: -30_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    loss_ald: 33_000
+    ky_federal_agi: [37_000, -30_000]
+    ky_agi: [37_000, -30_000]
+    ky_modified_agi_if_joint: 7_000
+    ky_modified_agi_if_separate: 37_000
+
+- name: The joint business loss cap is preserved when assigning the owner
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 40_000
+      spouse:
+        age: 43
+        self_employment_income: -1_000_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    loss_ald: 610_000
+    ky_federal_agi: [40_000, -610_000]
+    ky_agi: [40_000, -610_000]
+    ky_modified_agi_if_joint: -570_000
+    ky_modified_agi_if_separate: 40_000
+
+- name: A capped business deduction is proportional to both owners' losses
+  period: 2024
+  absolute_error_margin: 0.05
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 40_000
+        self_employment_income: -600_000
+      spouse:
+        age: 43
+        rental_income: -400_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    loss_ald: 610_000
+    ky_federal_agi: [-326_000, -244_000]
+    ky_agi: [-326_000, -244_000]
+    ky_modified_agi_if_joint: -570_000
+    ky_modified_agi_if_separate: 0
+
+- name: Dependent losses do not enter the parents' allocation
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 40_000
+      spouse:
+        age: 43
+        employment_income: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+        rental_income: -30_000
+        short_term_capital_gains: -10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: KY
+  output:
+    loss_ald: 0
+    ky_federal_agi: [40_000, 10_000, 0]
+    ky_agi: [40_000, 10_000, 0]
+    ky_modified_agi_if_separate: 50_000
+
+- name: A reform removing loss deductions does not restore them through allocation
+  period: 2024
+  input:
+    gov.irs.ald.deductions: []
+    people:
+      head:
+        age: 45
+        employment_income: 40_000
+      spouse:
+        age: 43
+        self_employment_income: -30_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    adjusted_gross_income_person: [40_000, 0]
+    ky_federal_agi: [40_000, 0]
+    ky_agi: [40_000, 0]
+    ky_modified_agi_if_joint: 40_000
+
+- name: An explicit total loss override bounds any derived capital pool
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 40_000
+      spouse:
+        age: 43
+        short_term_capital_gains: -10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        loss_ald: 0
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    # Explicit intermediate input tests deduction conservation under override.
+    ky_federal_agi: [40_000, 0]
+    ky_agi: [40_000, 0]
+    ky_modified_agi_if_joint: 40_000
+
+- name: Explicit unit losses without owner inputs retain their allocation
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 40_000
+      spouse:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        loss_ald: 10_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    ky_federal_agi: [35_000, -5_000]
+    ky_agi: [35_000, -5_000]
+    ky_modified_agi_if_joint: 30_000
+
+- name: A unit-level other business loss retains its unknown ownership
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 40_000
+      spouse:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        other_net_gain: -10_000
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    ky_federal_agi: [35_000, -5_000]
+    ky_agi: [35_000, -5_000]
+    ky_modified_agi_if_joint: 30_000
+
+- name: Capital losses allowed against gains stay with their owner too
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        employment_income: 40_000
+        short_term_capital_gains: 10_000
+      spouse:
+        age: 43
+        short_term_capital_gains: -20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    loss_ald: 13_000
+    ky_federal_agi: [50_000, -13_000]
+    ky_agi: [50_000, -13_000]
+    ky_modified_agi_if_joint: 37_000
+    ky_modified_agi_if_separate: 50_000
