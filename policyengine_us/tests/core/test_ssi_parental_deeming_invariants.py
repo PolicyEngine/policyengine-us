@@ -73,6 +73,7 @@ CHILD_KINDS = (
     "paternal",
     "step",
     "half_step",
+    "paternal_step",
     "cousin",
     "unrelated",
 )
@@ -97,6 +98,8 @@ HOUSEHOLD = st.fixed_dictionaries(
         "father_status": st.sampled_from(("married", "unmarried", "away", "absent")),
         "stepparent": st.one_of(st.none(), ADULT),
         "stepparent_files_separately": st.booleans(),
+        # The wife of a father who is not married to the mother.
+        "stepmother": st.one_of(st.none(), ADULT),
         "aunt": st.one_of(st.none(), ADULT),
         "grandparent": st.one_of(st.none(), ADULT),
         "children": st.lists(CHILD, min_size=1, max_size=5),
@@ -104,9 +107,65 @@ HOUSEHOLD = st.fixed_dictionaries(
         "report_own_children": st.booleans(),
     }
 )
+
+
+def _adult(earned=0, unearned=0, disabled=False, citizen=True):
+    return dict(earned=earned, unearned=unearned, disabled=disabled, citizen=citizen)
+
+
+def _child(kind, disabled=False, age=8, has_ids=True, tax_unit="family", **facts):
+    child = dict(
+        kind=kind,
+        age=age,
+        disabled=disabled,
+        citizen=True,
+        student=False,
+        unearned=0,
+        away=False,
+        tax_unit=tax_unit,
+        has_ids=has_ids,
+    )
+    child.update(facts)
+    return child
+
+
+def _blended(ids, stepmother):
+    """Two natural parents at home, the mother's husband and maybe the
+    father's wife: three or four deemors for their child (POMS SI 01320.500
+    B.4, Example F.5), and different deemor sets for half siblings."""
+    return dict(
+        mother=_adult(earned=3_000),
+        father=_adult(earned=3_000, unearned=900),
+        father_status="unmarried",
+        stepparent=_adult(earned=1_200),
+        stepparent_files_separately=False,
+        stepmother=_adult(earned=3_000) if stepmother else None,
+        aunt=None,
+        grandparent=None,
+        children=[
+            _child("full", disabled=True),
+            _child("full", disabled=True, age=5),
+            _child("maternal", disabled=True, age=12),
+            _child("half_step", age=3, unearned=150),
+            _child("paternal_step", age=2, tax_unit="father"),
+            _child("cousin", age=10),
+        ],
+        ids=ids,
+        report_own_children=True,
+    )
+
+
+# Fixed households in every batch, so the rarer structures are always
+# exercised: three and four deemors, with and without ids.
+FIXED_HOUSEHOLDS = [
+    _blended("all", stepmother=False),
+    _blended("all", stepmother=True),
+    _blended("some", stepmother=True),
+    _blended("none", stepmother=False),
+]
 BATCH = st.lists(
     HOUSEHOLD, min_size=HOUSEHOLDS_PER_EXAMPLE, max_size=HOUSEHOLDS_PER_EXAMPLE
-)
+).map(lambda households: households + FIXED_HOUSEHOLDS)
 
 
 def _people(index, household):
@@ -119,6 +178,7 @@ def _people(index, household):
     father_present = status != "absent"
     married = status == "married"
     stepparent = household["stepparent"] if not married else None
+    stepmother = household["stepmother"] if status == "unmarried" else None
     people = []
 
     def adult(role, facts, tax_unit, role_in_unit, away=False, spouse=None):
@@ -156,7 +216,19 @@ def _people(index, household):
             "family" if married else "father",
             "spouse" if married else "head",
             away=status == "away",
-            spouse=name("mother") if married else None,
+            spouse=(
+                name("mother")
+                if married
+                else (name("stepmother") if stepmother else None)
+            ),
+        )
+    if stepmother:
+        adult(
+            "stepmother",
+            stepmother,
+            "father",
+            "spouse",
+            spouse=name("father"),
         )
     if stepparent:
         separate = household["stepparent_files_separately"]
@@ -184,6 +256,7 @@ def _people(index, household):
             "paternal": (parent("father"),),
             "step": (parent("stepparent"),),
             "half_step": (parent("mother"), parent("stepparent")),
+            "paternal_step": (parent("father"), parent("stepmother")),
             "cousin": (parent("aunt"),),
             "unrelated": (None,),
         }[child["kind"]]
