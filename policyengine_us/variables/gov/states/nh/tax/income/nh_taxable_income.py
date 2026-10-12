@@ -9,7 +9,7 @@ class nh_taxable_income(Variable):
     definition_period = YEAR
     reference = (
         "https://gc.nh.gov/rsa/html/V/77/77-mrg.htm",
-        "https://www.revenue.nh.gov/forms/2023/documents/dp-10-2022-print.pdf",
+        "https://www.revenue.nh.gov/sites/g/files/ehbemt736/files/documents/dp-10-2022-print.pdf",
     )
     defined_for = StateCode.NH
 

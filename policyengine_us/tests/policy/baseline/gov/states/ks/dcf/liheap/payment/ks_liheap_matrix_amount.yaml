@@ -1,0 +1,620 @@
+# Kansas LIEAP benefit matrix lookup (KEESM 13410; KS LIHEAP State Plan FY2026
+# 2.5, pages 8-9). Dimensions: primary fuel table (natural gas p.1,
+# electricity p.2, propane p.3, other p.4 of KS_BenefitMatrix_2026.pdf),
+# one-month income band, utility range tier A-J (no tier on the Other table),
+# dwelling type (House/Modular/Mobile, Duplex, Apt, Trailer/Other) and
+# household size group (1-4, 5 and over). FY2026 (period 2026) pays the
+# right-hand "Benefit Adjustment @ 80%" values; FY2025 (period 2025) pays the
+# KS_BenefitMatrix_2025.pdf values at 100%. Raw cell values: the $130 minimum
+# benefit floor is applied in ks_liheap, not here. Inputs are annual; monthly
+# income = annual / 12. Defaults: tier E, dwelling House/Modular/Mobile.
+# KEESM sections refer to the October 2024 and January 2026 editions:
+# https://content.dcf.ks.gov/ees/KEESM/Robo10-24/Robo_10_01_24/ and
+# https://content.dcf.ks.gov/ees/KEESM/Robo01-26/Robo_01_01_26/ (keesm<section>.htm).
+
+- name: Case 1, natural gas, band 1, default tier E and house, size 1.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 9,600 / 12 = 800 -> 0-899; matrix p.1 (80%) tier E, House, size 1-4 = 709
+    ks_liheap_matrix_amount: 709
+
+- name: Case 2, natural gas, band 1, tier E, duplex.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: DUPLEX
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # matrix p.1 (80%) 0-899 tier E, Duplex, size 1-4 = 532
+    ks_liheap_matrix_amount: 532
+
+- name: Case 3, natural gas, band 1, tier E, apartment.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: APARTMENT
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # matrix p.1 (80%) 0-899 tier E, Apt, size 1-4 = 354
+    ks_liheap_matrix_amount: 354
+
+- name: Case 4, natural gas, band 1, tier E, trailer.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: TRAILER_OTHER
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # matrix p.1 (80%) 0-899 tier E, Trailer/Other, size 1-4 = 177
+    ks_liheap_matrix_amount: 177
+
+- name: Case 5, natural gas, band 1, lowest tier A, house.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        ks_liheap_utility_rate_tier: A
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # matrix p.1 (80%) 0-899 tier A, House, size 1-4 = 482
+    ks_liheap_matrix_amount: 482
+
+- name: Case 6, natural gas, band 1, highest tier J, house.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        ks_liheap_utility_rate_tier: J
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # matrix p.1 (80%) 0-899 tier J, House, size 1-4 = 1,136
+    ks_liheap_matrix_amount: 1_136
+
+- name: Case 7, natural gas, band 1, tier E, house, family of five uses the 5+ column.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+      person2:
+        age: 38
+      person3:
+        age: 10
+      person4:
+        age: 6
+      person5:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        ks_tanf: 0
+        heating_type: NATURAL_GAS
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+  output:
+    # size 5 -> "Household Size 5 and Over": matrix p.1 (80%) 0-899 tier E,
+    # House = 810
+    ks_liheap_matrix_amount: 810
+
+- name: Case 8, natural gas, band 2, tier E, house.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 13_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 13,200 / 12 = 1,100 -> 900-1,199; matrix p.1 (80%) tier E, House = 638
+    ks_liheap_matrix_amount: 638
+
+- name: Case 9, natural gas, band 3, tier E, house.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 18,000 / 12 = 1,500 -> 1,200-1,699; matrix p.1 (80%) tier E, House = 567
+    ks_liheap_matrix_amount: 567
+
+- name: Case 10, natural gas, band 4, tier E, house.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 21_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 21,600 / 12 = 1,800 -> 1,700 & over; matrix p.1 (80%) tier E, House = 496
+    ks_liheap_matrix_amount: 496
+
+- name: Case 11, natural gas, band 2, tier G, duplex, size 5+.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 13_200
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 9
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        ks_tanf: 0
+        heating_type: NATURAL_GAS
+        ks_liheap_utility_rate_tier: G
+        ks_liheap_dwelling_type: DUPLEX
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+  output:
+    # 1,100/mo -> 900-1,199; matrix p.1 (80%) tier G, Duplex, size 5+ = 585
+    ks_liheap_matrix_amount: 585
+
+- name: Case 12, electricity, band 1, tier E, house.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # matrix p.2 electricity (80%) 0-899 tier E, House, size 1-4 = 1,043
+    ks_liheap_matrix_amount: 1_043
+
+- name: Case 13, electricity, band 4, tier E, apartment, size 5+.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 9
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        ks_tanf: 0
+        heating_type: ELECTRICITY
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: APARTMENT
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+  output:
+    # 30,000 / 12 = 2,500 -> 1,700 & over; matrix p.2 (80%) tier E, Apt,
+    # size 5+ = 417
+    ks_liheap_matrix_amount: 417
+
+- name: Case 14, electricity, band 3, tier H, trailer.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        ks_liheap_utility_rate_tier: H
+        ks_liheap_dwelling_type: TRAILER_OTHER
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 1,500/mo -> 1,200-1,699; matrix p.2 (80%) tier H, Trailer/Other,
+    # size 1-4 = 232
+    ks_liheap_matrix_amount: 232
+
+- name: Case 15, propane, band 1, tier E, house.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # matrix p.3 propane (80%) 0-899 tier E, House, size 1-4 = 553
+    ks_liheap_matrix_amount: 553
+
+- name: Case 16, propane, band 4, tier A, trailer returns the raw cell below the floor.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 21_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        ks_liheap_utility_rate_tier: A
+        ks_liheap_dwelling_type: TRAILER_OTHER
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 1,800/mo -> 1,700 & over; matrix p.3 (80%) tier A, Trailer/Other,
+    # size 1-4 = 75 (the $130 floor is applied in ks_liheap)
+    ks_liheap_matrix_amount: 75
+
+- name: Case 17, propane, band 3, tier C, apartment, size 5+.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 18_000
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 9
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        ks_tanf: 0
+        heating_type: PROPANE
+        ks_liheap_utility_rate_tier: C
+        ks_liheap_dwelling_type: APARTMENT
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+  output:
+    # 1,500/mo -> 1,200-1,699; matrix p.3 (80%) tier C, Apt, size 5+ = 233
+    ks_liheap_matrix_amount: 233
+
+- name: Case 18, wood heat uses the other table, band 1, house.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: WOOD
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # matrix p.4 other (80%) 0-899, House, size 1-4 = 639 (no tier)
+    ks_liheap_matrix_amount: 639
+
+- name: Case 19, fuel oil on the other table ignores the utility tier.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: FUEL_OIL
+        ks_liheap_utility_rate_tier: J
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # matrix p.4 other (80%) 0-899, House, size 1-4 = 639 regardless of tier J
+    ks_liheap_matrix_amount: 639
+
+- name: Case 20, other fuel, band 4, trailer, size 5+.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 9
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        ks_tanf: 0
+        heating_type: OTHER
+        ks_liheap_dwelling_type: TRAILER_OTHER
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+  output:
+    # 2,500/mo -> 1,700 & over; matrix p.4 other (80%), Trailer/Other,
+    # size 5+ = 128
+    ks_liheap_matrix_amount: 128
+
+- name: Case 21, zero income lands in band 1.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 0/mo -> 0-899; matrix p.1 (80%) tier E, House, size 1-4 = 709
+    ks_liheap_matrix_amount: 709
+
+- name: Case 22, FY2025 season pays the 100 percent natural gas value for the Case 1 household.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # KS_BenefitMatrix_2025.pdf p.1 (100%) 0-899 tier E, House, size 1-4 = 941
+    # (vs 709 at 80% in FY2026, Case 1)
+    ks_liheap_matrix_amount: 941
+
+- name: Case 23, FY2025 electricity, band 1, tier E, house, size 5+.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 9_600
+      person2:
+        age: 38
+      person3:
+        age: 12
+      person4:
+        age: 9
+      person5:
+        age: 4
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5]
+        ks_tanf: 0
+        heating_type: ELECTRICITY
+        ks_liheap_utility_rate_tier: E
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5]
+        state_code: KS
+  output:
+    # KS_BenefitMatrix_2025.pdf p.1 (100%) 0-899 tier E, House, size 5+ = 1,584
+    ks_liheap_matrix_amount: 1_584
+
+- name: Case 24, FY2025 propane, band 2, tier J, duplex.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 13_200
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        ks_liheap_utility_rate_tier: J
+        ks_liheap_dwelling_type: DUPLEX
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 1,100/mo -> 900-1,199; KS_BenefitMatrix_2025.pdf p.2 (100%) tier J,
+    # Duplex, size 1-4 = 868
+    ks_liheap_matrix_amount: 868
+
+- name: Case 25, FY2025 other fuel, band 4, house.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 21_600
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: KEROSENE
+        ks_liheap_dwelling_type: HOUSE_MODULAR_MOBILE
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    # 1,800/mo -> 1,700 & over; KS_BenefitMatrix_2025.pdf p.3 (100%) other,
+    # House, size 1-4 = 594
+    ks_liheap_matrix_amount: 594

@@ -6,13 +6,14 @@ class local_income_tax_before_refundable_credits(Variable):
     entity = TaxUnit
     definition_period = YEAR
     label = "Local income tax before refundable credits"
-    documentation = (
-        "Local income, wage, and earnings taxes not already included in the "
-        "state-income-tax-before-refunds aggregate."
-    )
+    documentation = "Local income, wage, and earnings taxes before refundable credits."
     unit = USD
 
     adds = [
+        "nyc_income_tax_before_refundable_credits",
+        "md_local_income_tax_before_refundable_credits",
+        "in_county_tax",
+        "or_multnomah_pfa_tax",
         "pa_philadelphia_wage_tax",
         "mo_kansas_city_earnings_tax",
         "mo_st_louis_earnings_tax",

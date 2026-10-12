@@ -1,6 +1,7 @@
 - name: Tax over credits
   period: 2017
   input:
+    is_deceased: true
     estate_tax_before_credits: 10_000_000
     estate_tax_credit: 5_000_000
   output:
@@ -9,7 +10,104 @@
 - name: Tax not over credits
   period: 2025
   input:
+    is_deceased: true
     estate_tax_before_credits: 5_000_000
     estate_tax_credit: 10_000_000
   output:
     estate_tax: 0
+
+- name: Living person owes no estate tax
+  period: 2024
+  input:
+    is_deceased: false
+    taxable_estate_value: 20_000_000
+  output:
+    estate_tax_credit: 0
+    estate_tax: 0
+
+- name: 2024 taxable estate of $20 million
+  period: 2024
+  input:
+    is_deceased: true
+    taxable_estate_value: 20_000_000
+  output:
+    # Tentative tax: 345,800 + 0.40 * (20,000,000 - 1,000,000) = 7,945,800
+    estate_tax_before_credits: 7_945_800
+    # Credit: 345,800 + 0.40 * (13,610,000 - 1,000,000) = 5,389,800
+    estate_tax_credit: 5_389_800
+    # 7,945,800 - 5,389,800 = 2,556,000 = 0.40 * (20,000,000 - 13,610,000)
+    estate_tax: 2_556_000
+
+- name: 2024 taxable estate of $10 million is below the basic exclusion amount
+  period: 2024
+  input:
+    is_deceased: true
+    taxable_estate_value: 10_000_000
+  output:
+    estate_tax_before_credits: 3_945_800
+    estate_tax_credit: 5_389_800
+    estate_tax: 0
+
+- name: 2024 taxable estate equal to the basic exclusion amount
+  period: 2024
+  input:
+    is_deceased: true
+    taxable_estate_value: 13_610_000
+  output:
+    estate_tax: 0
+
+- name: 2024 taxable estate $10,000 over the basic exclusion amount
+  period: 2024
+  input:
+    is_deceased: true
+    taxable_estate_value: 13_620_000
+  output:
+    # 0.40 * 10,000 = 4,000
+    estate_tax: 4_000
+
+- name: 2024 taxable estate of $20 million with a deceased spousal unused exclusion amount
+  period: 2024
+  input:
+    is_deceased: true
+    taxable_estate_value: 20_000_000
+    deceased_spousal_unused_exclusion_amount: 5_000_000
+  output:
+    # Credit: 345,800 + 0.40 * (18,610,000 - 1,000,000) = 7,389,800
+    estate_tax_credit: 7_389_800
+    # 7,945,800 - 7,389,800 = 556,000 = 0.40 * (20,000,000 - 18,610,000)
+    estate_tax: 556_000
+
+- name: 2026 taxable estate equal to the basic exclusion amount
+  period: 2026
+  input:
+    is_deceased: true
+    taxable_estate_value: 15_000_000
+  output:
+    # Tentative tax: 345,800 + 0.40 * (15,000,000 - 1,000,000) = 5,945,800
+    estate_tax_before_credits: 5_945_800
+    # The credit is the same tentative tax on the $15,000,000 exclusion.
+    estate_tax_credit: 5_945_800
+    estate_tax: 0
+
+- name: 2026 taxable estate of $20 million
+  period: 2026
+  input:
+    is_deceased: true
+    taxable_estate_value: 20_000_000
+  output:
+    # Basic exclusion amount is $15,000,000 in 2026.
+    # 0.40 * (20,000,000 - 15,000,000) = 2,000,000
+    estate_tax: 2_000_000
+
+- name: 2011 taxable estate of $10 million
+  period: 2011
+  input:
+    is_deceased: true
+    taxable_estate_value: 10_000_000
+  output:
+    # Tentative tax: 155,800 + 0.35 * (10,000,000 - 500,000) = 3,480,800
+    estate_tax_before_credits: 3_480_800
+    # Credit: 155,800 + 0.35 * (5,000,000 - 500,000) = 1,730,800
+    estate_tax_credit: 1_730_800
+    # 0.35 * (10,000,000 - 5,000,000) = 1,750,000
+    estate_tax: 1_750_000

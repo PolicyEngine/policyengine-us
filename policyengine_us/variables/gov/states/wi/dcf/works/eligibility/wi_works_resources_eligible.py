@@ -8,7 +8,7 @@ class wi_works_resources_eligible(Variable):
     definition_period = YEAR
     reference = (
         "https://dcf.wisconsin.gov/manuals/w-2-manual/Production/03/03.3.4_COUNTING_ASSETS.htm",
-        "https://docs.legis.wisconsin.gov/code/admin_code/dcf/101_199/101/09/3/b",
+        "https://docs.legis.wisconsin.gov/code/register/2021/790b/insert/dcf101.pdf#page=5",
     )
     defined_for = StateCode.WI
 

@@ -84,3 +84,20 @@
         members: [person]
   output:
     household_market_income: 50_000
+
+- name: Estate and trust income is market income for every member
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 45
+        employment_income: 50_000
+        estate_income: 20_000
+      child:
+        age: 10
+        estate_income: 5_000
+    households:
+      household:
+        members: [parent, child]
+  output:
+    household_market_income: 75_000

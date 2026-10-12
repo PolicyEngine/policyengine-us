@@ -1,11 +1,21 @@
 description: Yonkers levies a resident income tax surcharge at this fraction of New York State net tax liability.
 values:
   2021-01-01: 0.1675
+  # Tax Law § 1321 authorizes the surcharge only for taxable years beginning
+  # before 2028 (as last extended by Chapter 159 of 2025), so it lapses in
+  # 2028 absent a further extension.
+  2028-01-01: 0
 metadata:
   unit: /1
   period: year
   label: Yonkers resident income tax surcharge rate
   reference:
+    - title: NY Tax Law § 1321(a), (c)(i)-(ii) (city income tax surcharge authorized for taxable years beginning before 2028)
+      href: https://www.nysenate.gov/legislation/laws/TAX/1321
+    - title: NY Laws of 2025, Chapter 159 (A.5318), §§ 1-2 (extends Tax Law § 1321 to taxable years beginning before 2028)
+      href: https://legislation.nysenate.gov/pdf/bills/2025/A5318#page=1
+    - title: NY DTF Form IT-201-I (2025), line 55 Yonkers worksheet, line n (Yonkers resident tax rate 16.75%)
+      href: https://www.tax.ny.gov/pdf/2025/inc/it201i_2025.pdf#page=17
     - title: NY DTF Form IT-201-I (2024), Yonkers resident income tax surcharge worksheet (line 55, rate 16.75%)
       href: https://www.tax.ny.gov/forms/html-instructions/2024/it/it201i-2024.htm
     - title: New York DTF Form IT-360.1-I, Instructions for Form IT-360.1 — Part 5 computes the part-year Yonkers resident income tax surcharge (supporting reference; the rate is shown on IT-201-I above)

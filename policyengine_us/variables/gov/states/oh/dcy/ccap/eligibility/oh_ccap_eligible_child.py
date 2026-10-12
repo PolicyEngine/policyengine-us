@@ -8,7 +8,7 @@ class oh_ccap_eligible_child(Variable):
     definition_period = MONTH
     defined_for = StateCode.OH
     reference = (
-        "https://codes.ohio.gov/ohio-administrative-code/rule-5180:2-16-01",
+        "https://codes.ohio.gov/assets/laws/administrative-code/authenticated/5180/2/16/5180$2-16-01_20221211.pdf",
         "https://codes.ohio.gov/ohio-administrative-code/rule-5180:6-1-02",
     )
 

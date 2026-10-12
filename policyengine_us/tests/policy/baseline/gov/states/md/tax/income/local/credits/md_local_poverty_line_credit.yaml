@@ -39,3 +39,60 @@
     md_local_income_tax_before_credits: 400
   output:
     md_local_poverty_line_credit: 0
+
+# The cases below compute earned income from income inputs. TAXSIM has no
+# county poverty credit, so these expectations are derived: the Baltimore
+# City rate (.0320, Form 502 local tax rate chart) times the § 32(c)(2)
+# earned income implied by TAXSIM's State credit for the same record (builds
+# cdate-20260521 and cd2026090910), per § 10-709(d)(2).
+- name: Self-employment loss gives no local credit instead of a negative one (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        self_employment_income: -10_000
+        taxable_interest_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code_str: MD
+        county_str: BALTIMORE_CITY_MD
+  output:
+    # TAXSIM's State credit is 0.00 on this record, so earned income is 0.
+    is_eligible_md_poverty_line_credit: true
+    md_local_poverty_line_credit: 0
+    # 3.2% x 5,000 MD taxable income (TAXSIM v36), with no local credits.
+    md_local_income_tax_before_refundable_credits: 160
+
+- name: Local credit uses self-employment earnings net of the section 164(f) deduction (2024)
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        self_employment_income: 3_000
+        taxable_interest_income: 11_700
+    tax_units:
+      tax_unit:
+        members: [person]
+    spm_units:
+      spm_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code_str: MD
+        county_str: BALTIMORE_CITY_MD
+  output:
+    # TAXSIM's State credit is 139.40 = 5% x 2,788.06; 0.032 x 2,788.06.
+    # Worksheet 19C would use 18B line 2 (3,000) and give 96.00.
+    md_local_poverty_line_credit: 89.22

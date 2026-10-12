@@ -1,0 +1,48 @@
+description: Missouri uses these sources of unearned income under the Supplemental Aid to the Blind program.
+values:
+  # SAB began on January 1, 1974 (SSA, State Assistance Programs for SSI
+  # Recipients, January 2011); the manual section is undated. SSI is not
+  # income for the need test (§ 0410.020.00). Child support received is
+  # added in mo_sab_countable_income only when no child is in the home
+  # (§ 0410.015.10). Veterans benefits count in full because the excluded
+  # Aid and Attendance portion (§ 0410.015.15) is not separable. Rent from
+  # property the claimant actively manages is earned income under 13 CSR
+  # 40-2.050(1)(C) but is counted here as unearned. Military retirement
+  # is listed separately because pension_income excludes it. Partnership
+  # and S corporation income is counted here as a passive return on
+  # investment; an active owner's share is earned income under 13 CSR
+  # 40-2.050(1), where the $85-plus-half exemption would apply instead.
+  1974-01-01:
+    - pension_income
+    - military_retirement_pay
+    - social_security
+    - disability_benefits
+    - veterans_benefits
+    - survivor_benefits
+    - workers_compensation
+    - unemployment_compensation
+    - retirement_distributions
+    - railroad_benefits
+    - strike_benefits
+    - gi_cash_assistance
+    - financial_assistance
+    - alimony_income
+    - dividend_income
+    - interest_income
+    - rental_income
+    - farm_rent_income
+    - estate_income
+    - partnership_s_corp_income
+    - general_assistance
+    - gambling_winnings
+metadata:
+  unit: list
+  period: year
+  label: Missouri SAB unearned income sources
+  reference:
+    - title: MO DSS Supplemental Aid to the Blind Manual § 0410.015.10 — Unearned Income
+      href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0410-000-00/0410-015-00/0410-015-10/
+    - title: MO DSS Supplemental Aid to the Blind Manual § 0410.015.15 — Excluded Income
+      href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0410-000-00/0410-015-00/0410-015-15/
+    - title: MO DSS Supplemental Aid to the Blind Manual § 0410.020.00 — Need Determination
+      href: https://dssmanuals.mo.gov/supplemental-aid-to-the-blind/0410-000-00/0410-020-00/

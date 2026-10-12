@@ -1,0 +1,30 @@
+description: Mississippi counts these unearned income sources under the Low Income Home Energy Assistance Program.
+values:
+  2025-10-01:
+    - unemployment_compensation
+    - social_security
+    # Rule 6.11 F(3) lists Railroad Retirement benefits.
+    - railroad_benefits
+    - ssi
+    - pension_income
+    - retirement_distributions
+    - alimony_income
+    - veterans_benefits
+    - workers_compensation
+    - disability_benefits
+    # FY2026 state plan section 1.9 leaves cash gifts, rental income, and
+    # interest, dividends, or royalties unchecked, while manual Rule 6.11 C(13),
+    # F(7)-(8) and K(1) count them; the model follows the manual.
+    - financial_assistance
+    - ordinary_dividend_income
+    - interest_income
+    - rental_income
+metadata:
+  unit: list
+  period: year
+  label: Mississippi LIHEAP unearned income sources
+  reference:
+    - title: Mississippi LIHEAP Policy Manual, Rule 6.11 C, D, F, J and K, pages 29-33
+      href: https://www.sos.ms.gov/adminsearch/ACCode/00000693c.pdf#page=29
+    - title: Mississippi FY2026 LIHEAP State Plan, Section 1.9, pages 5-6
+      href: https://liheapch.acf.gov/docs/2026/state-plans/MS_Plan_2026.pdf#page=5

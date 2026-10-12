@@ -1,8 +1,9 @@
 # Riverside County SHARE utility payment (gov/local/ca/riv/share).
-# Eligible when countable income <= 250% of the poverty line; monthly payment
-# = min(electricity, $24) + min(water, $5.25/$5.75) + min(trash, $4.46), plus
-# a $250 emergency electricity payment (not triggered here; requires a
-# disconnection notice input).
+# Eligible when countable income <= 250% of the poverty line; 2026 monthly
+# payment = min(electricity, $28) + min(water, $5.25 Jan-Jun / $5.75 Jul-Dec)
+# + min(trash, $4.46 Jan-Jun / $5.75 Jul-Dec), plus a $250 emergency
+# electricity payment (not triggered here; requires a disconnection notice
+# input).
 - name: ca_riv_share_low_income_capped_payments (ca)
   period: 2026
   absolute_error_margin: 0.1
@@ -25,9 +26,9 @@
     spm_units:
       spm_unit:
         members: *id001
-        # Electricity $20/month (below the $24 cap) and water $4/month (below
+        # Electricity $20/month (below the $28 cap) and water $4/month (below
         # the $5.25/$5.75 cap) pay out in full; trash $10/month binds at the
-        # $4.46 cap.
+        # $4.46 cap for January-June and the $5.75 cap for July-December.
         pre_subsidy_electricity_expense: 240
         water_expense: 48
         trash_expense: 120
@@ -45,8 +46,8 @@
   output:
     spm_units:
       spm_unit:
-        # 240 + 48 + 4.46 x 12 = 240 + 48 + 53.52 = 341.52.
-        ca_riv_share_payment: 341.52
+        # 240 + 48 + 4.46 x 6 + 5.75 x 6 = 240 + 48 + 26.76 + 34.50 = 349.26.
+        ca_riv_share_payment: 349.26
         ca_riv_share_eligible: true
 - name: ca_riv_share_income_above_250pct_fpg (ca)
   period: 2026

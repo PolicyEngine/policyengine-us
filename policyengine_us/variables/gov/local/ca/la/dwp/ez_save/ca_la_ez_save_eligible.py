@@ -5,7 +5,7 @@ class ca_la_ez_save_eligible(Variable):
     value_type = bool
     entity = Household
     definition_period = MONTH
-    label = "Eligible for the Los Angeles County EZ Save program"
+    label = "Eligible for the Los Angeles EZ-SAVE program"
     defined_for = "in_la"
     reference = (
         "https://www.ladwp.com/residential-services/assistance-programs/ez-save-program",

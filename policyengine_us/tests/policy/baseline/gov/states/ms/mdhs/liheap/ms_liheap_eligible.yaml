@@ -1,0 +1,66 @@
+- name: Case 1, income at and one dollar above the one-person limit.
+  period: 2026
+  input:
+    state_code: [MS, MS]
+    age: [40, 40]
+    ms_liheap_income: [26_740, 26_741]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    heating_expense: [1_000, 1_000]
+  output:
+    # Rule 6.1 C (manual PDF page 22): income at or below the 60% state median
+    # income guideline, which is 26,740 for one person (page 58).
+    ms_liheap_eligible: [true, false]
+- name: Case 2, subsidized heat in rent, energy responsibility and applicant age.
+  period: 2026
+  input:
+    state_code: [MS, MS, MS, MS, MS]
+    age: [40, 40, 40, 40, 17]
+    ms_liheap_income: [0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    heating_expense: [0, 0, 0, 1_000, 1_000]
+    heat_expense_included_in_rent: [false, true, true, false, false]
+    receives_housing_assistance: [false, false, true, true, false]
+  output:
+    # Rule 6.1 A and D (manual PDF page 22).
+    # Household 1 has no energy bill and no heat in rent: not eligible.
+    # Household 2 has heat included in rent and no housing subsidy: eligible.
+    # Household 3 receives housing assistance and its heat is in the rent, so
+    # energy is not billed separately: not eligible.
+    # Household 4 receives housing assistance and pays its own heating bill:
+    # eligible.
+    # Household 5 has a 17-year-old as its only member: not eligible.
+    ms_liheap_eligible: [false, true, false, true, false]
+- name: Case 3, an electric bill alone establishes energy responsibility.
+  period: 2026
+  input:
+    state_code: [MS, MS]
+    age: [40, 40]
+    ms_liheap_income: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [0, 0]
+    pre_subsidy_electricity_expense: [900, 0]
+  output:
+    # Rule 6.1 A (manual PDF page 22): an obligation to pay an energy bill.
+    # Household 1 heats with natural gas, has no gas bill and pays an electric
+    # bill: eligible. Household 2 has no energy bill: not eligible.
+    ms_liheap_eligible: [true, false]
+- name: Case 4, public housing residents need separately billed energy.
+  period: 2026
+  input:
+    state_code: [MS, MS]
+    age: [40, 40]
+    ms_liheap_income: [0, 0]
+    heating_type: [NATURAL_GAS, UNSPECIFIED]
+    gas_expense: [720, 0]
+    heat_expense_included_in_rent: [false, true]
+    is_in_public_housing: [true, true]
+  output:
+    # Rule 6.1 A (manual PDF page 22) accepts "subsidized housing where the
+    # energy cost is billed separate from rent"; the FY2026 plan (page 9) names
+    # public or subsidized housing residents whose rent includes utilities and
+    # who are not billed separately for energy.
+    # Household 1 lives in public housing and pays its own gas bill of 60 a
+    # month: eligible.
+    # Household 2 lives in public housing with heat included in the rent and no
+    # energy bill of its own: not eligible.
+    ms_liheap_eligible: [true, false]

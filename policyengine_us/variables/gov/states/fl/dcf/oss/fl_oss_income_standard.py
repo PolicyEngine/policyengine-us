@@ -8,7 +8,7 @@ class fl_oss_income_standard(Variable):
     unit = USD
     definition_period = MONTH
     defined_for = StateCode.FL
-    reference = "https://www.myflfamilies.com/sites/default/files/2025-05/Appendix%20A-12%20-%20State%20Funded%20Programs%20Eligibility%20Standards.pdf"
+    reference = "https://web.archive.org/web/20251030232040/https://www.myflfamilies.com/sites/default/files/2025-05/Appendix%20A-12%20-%20State%20Funded%20Programs%20Eligibility%20Standards.pdf"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.fl.dcf.oss

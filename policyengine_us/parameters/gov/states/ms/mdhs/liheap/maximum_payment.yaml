@@ -1,0 +1,34 @@
+description: Mississippi sets these first-income-band heating caps by primary heating fuel under the Low Income Home Energy Assistance Program.
+UNSPECIFIED:
+  2025-10-01: 0
+ELECTRICITY:
+  2025-10-01: 1_500
+NATURAL_GAS:
+  2025-10-01: 700
+FUEL_OIL:
+  2025-10-01: 400
+KEROSENE:
+  2025-10-01: 400
+PROPANE:
+  2025-10-01: 800
+WOOD:
+  2025-10-01: 400
+COAL:
+  2025-10-01: 400
+# The matrix has no column for solar or no heating. These homes receive the
+# Electric column only.
+SOLAR:
+  2025-10-01: 0
+OTHER:
+  2025-10-01: 400
+NONE:
+  2025-10-01: 0
+metadata:
+  unit: currency-USD
+  period: year
+  label: Mississippi LIHEAP first income band heating cap
+  breakdown:
+    - heating_type
+  reference:
+    - title: Mississippi FY2026 benefit matrix, Propane, Natural Gas, Wood/Other Fuel and Total Electric columns, pages 1-6
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/MS_BenefitMatrix_Heat-Cool_2026.pdf#page=1

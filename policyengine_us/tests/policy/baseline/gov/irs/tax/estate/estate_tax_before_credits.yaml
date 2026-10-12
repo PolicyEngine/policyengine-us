@@ -32,3 +32,27 @@
     taxable_estate_value: 2_000_000
   output:
     estate_tax_before_credits: 745_800
+
+- name: Over $1,000,000 in 2012, when the top rate was 35% above $500,000
+  period: 2012
+  input:
+    taxable_estate_value: 2_000_000
+  output:
+    # 155,800 + 0.35 * (2,000,000 - 500,000) = 680,800
+    estate_tax_before_credits: 680_800
+
+- name: Over $1,000,000 in 2013, after the top rate rose to 40%
+  period: 2013
+  input:
+    taxable_estate_value: 2_000_000
+  output:
+    # 345,800 + 0.40 * (2,000,000 - 1,000,000) = 745,800
+    estate_tax_before_credits: 745_800
+
+- name: Over $750,000 but not over $1,000,000 in 2013
+  period: 2013
+  input:
+    taxable_estate_value: 800_000
+  output:
+    # 248,300 + 0.39 * (800,000 - 750,000) = 267,800
+    estate_tax_before_credits: 267_800
