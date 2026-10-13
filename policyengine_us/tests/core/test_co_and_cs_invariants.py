@@ -27,8 +27,12 @@ between arrangements in which the client is one. For 2026:
    SSI's exclusions (20 CFR 416.1112, 416.1124) count the same income.
 3. Exemption: Medicaid enrollment of a spouse within the SSI limit can only
    lower the client's countable income and raise the supplement.
-4. Monotonicity: more earnings for a non-exempt spouse never lower the
-   client's countable income or raise the supplement.
+4. Monotonicity: for a client without in-kind support, more earnings for a
+   non-exempt spouse never lower the client's countable income or raise the
+   supplement. (In-kind support is excluded: 3.520.79(B)(6) charges a client
+   the ISM SSA charges, and SSA's presumed maximum value halves once spousal
+   deeming starts, so crossing SSI's deeming threshold lowers the client's
+   ISM by about as much as the deemed earnings rise.)
 5. Role invariance: the client's countable income and supplement do not
    depend on which spouse is the tax-unit head.
 
@@ -156,10 +160,11 @@ def assert_properties(cases):
             assert countable[a] <= countable[b] + TOLERANCE, c
         assert supplement[a] >= supplement[b] - TOLERANCE, c
         # 4. More non-exempt spousal earnings never lower countable income,
-        # for a client who stays one.
-        if eligible[b] and eligible[c_]:
-            assert countable[c_] >= countable[b] - TOLERANCE, c
-        assert supplement[c_] <= supplement[b] + TOLERANCE, c
+        # for a client who stays one and has no in-kind support.
+        if not c["shelter_support"]:
+            if eligible[b] and eligible[c_]:
+                assert countable[c_] >= countable[b] - TOLERANCE, c
+            assert supplement[c_] <= supplement[b] + TOLERANCE, c
         # 5. Roles.
         assert countable[d] == pytest.approx(countable[b], abs=TOLERANCE), c
         assert supplement[d] == pytest.approx(supplement[b], abs=TOLERANCE), c
@@ -223,6 +228,32 @@ def test_clients_who_leave_ssi():
     assert results["ssi"]["client_C1"] == 0
     assert results["ssi"]["client_B1"] > 0
     assert_properties([single, married])
+
+
+def test_ism_basis_switch_at_ssi_deeming_threshold():
+    """Found by Hypothesis: a client with outside shelter support whose
+    spouse's income crosses SSI's spousal deeming threshold. SSA's presumed
+    maximum value drops from 994 / 3 + 20 = 351.33 to (1,491 / 3 + 20) / 2 =
+    258.50, and 3.520.79(B)(6) charges the client that ISM. The spouse's
+    deemed earnings rise by (250.58 - 65) / 2 = 92.79, so countable income
+    falls by $0.04 a month: no breach of 3.549, which deems every dollar."""
+    case = {
+        "client_age": 18,
+        "client_pension": 0,
+        "client_interest": 0,
+        "client_earnings": 0,
+        "shelter_support": True,
+        "married": True,
+        "spouse_age": 18,
+        "spouse_earnings": 1,
+        "spouse_pension": 2_958,
+        "extra_spouse_earnings": 3_006,
+    }
+    results, _, _ = calculate([case])
+    countable = results["co_state_supplement_countable_income"]
+    assert countable["client_B0"] == pytest.approx(6_934, abs=1)
+    assert countable["client_C0"] < countable["client_B0"]
+    assert_properties([case])
 
 
 try:
