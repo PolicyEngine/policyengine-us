@@ -43,7 +43,7 @@
 # 2026: federal SSI is $994 (individual) and $1,491 (couple); the California
 # payment standard is $1,233.94 (individual) and $2,098.83 (couple), per CDSS,
 # SSI Total Monthly Payment Amounts 2026, and SSA POMS SI 01415.058.
-- name: 2026 aged individual living independently with no income
+- name: Case 4, 2026 aged individual living independently with no income.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -65,7 +65,7 @@
     ca_state_supplement_payment_standard: 14_807.28 # 1,233.94 * 12
     ca_state_supplement: 2_879.28 # (1,233.94 - 994) * 12
 
-- name: 2026 aged couple living independently with no income
+- name: Case 5, 2026 aged couple living independently with no income.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -97,7 +97,7 @@
     ca_state_supplement_payment_standard: 25_185.96 # 2,098.83 * 12
     ca_state_supplement: 7_293.96 # (2,098.83 - 1,491) * 12
 
-- name: 2026 aged individual with Social Security below the federal benefit rate
+- name: Case 6, 2026 aged individual with Social Security below the federal benefit rate.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -121,7 +121,7 @@
     # The supplement is 1,233.94 - 514 - 480 = 239.94 a month.
     ca_state_supplement: 2_879.28 # 239.94 * 12
 
-- name: 2026 aged individual with Social Security above the federal benefit rate
+- name: Case 7, 2026 aged individual with Social Security above the federal benefit rate.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -144,3 +144,214 @@
     # benefit rate, so SSI is 0 and the supplement is 1,233.94 - 1,080 = 153.94.
     ssi: 0
     ca_state_supplement: 1_847.28 # 153.94 * 12
+
+# Boundary points at the federal benefit rate and the payment standards. The
+# no-cooking standards are $1,362.81 (individual) and $2,356.57 (couple), per
+# CDSS, SSI Total Monthly Payment Amounts 2026, and SSA POMS SI 01415.058.
+- name: Case 8, 2026 aged individuals at the federal benefit rate and payment standard boundaries.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 12_156 # 1,013 a month
+      person2:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 12_168 # 1,014 a month
+      person3:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 12_180 # 1,015 a month
+      person4:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 15_047.28 # 1,253.94 a month
+      person5:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 12_180 # 1,015 a month
+      person6:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 16_593.72 # 1,382.81 a month
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+      tax_unit3:
+        members: [person3]
+      tax_unit4:
+        members: [person4]
+      tax_unit5:
+        members: [person5]
+      tax_unit6:
+        members: [person6]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+      marital_unit3:
+        members: [person3]
+      marital_unit4:
+        members: [person4]
+      marital_unit5:
+        members: [person5]
+      marital_unit6:
+        members: [person6]
+    spm_units:
+      spm_unit1:
+        members: [person1]
+      spm_unit2:
+        members: [person2]
+      spm_unit3:
+        members: [person3]
+      spm_unit4:
+        members: [person4]
+      spm_unit5:
+        members: [person5]
+      spm_unit6:
+        members: [person6]
+    households:
+      household1:
+        members: [person1]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+      household2:
+        members: [person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+      household3:
+        members: [person3]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+      household4:
+        members: [person4]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+      household5:
+        members: [person5]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+      household6:
+        members: [person6]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # Countable income is Social Security less $20: 993, 994, 995, 1,233.94,
+    # 995 and 1,362.81 a month. SSI is 994 - 993 = 1 a month for person1 and 0
+    # for the rest.
+    ssi: [12, 0, 0, 0, 0, 0]
+    ca_state_supplement_payment_standard:
+      [14_807.28, 14_807.28, 14_807.28, 14_807.28, 16_353.72, 16_353.72]
+    # The supplement is the standard less SSI and countable income:
+    # 1,233.94 - 1 - 993 = 239.94; 1,233.94 - 994 = 239.94; 1,233.94 - 995 =
+    # 238.94; 1,233.94 - 1,233.94 = 0; 1,362.81 - 995 = 367.81;
+    # 1,362.81 - 1,362.81 = 0. Annual amounts are 12 times these.
+    ca_state_supplement: [2_879.28, 2_879.28, 2_867.28, 0, 4_413.72, 0]
+
+- name: Case 9, 2026 aged couples at the federal benefit rate and payment standard boundaries.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 18_132 # 1,511 a month
+      person2:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: CITIZEN
+      person3:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 25_425.96 # 2,118.83 a month
+      person4:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: CITIZEN
+      person5:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 25_425.96 # 2,118.83 a month
+      person6:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: CITIZEN
+      person7:
+        age: 70
+        is_tax_unit_head: true
+        immigration_status: CITIZEN
+        social_security_retirement: 28_518.84 # 2,376.57 a month
+      person8:
+        age: 68
+        is_tax_unit_spouse: true
+        immigration_status: CITIZEN
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+      tax_unit3:
+        members: [person5, person6]
+      tax_unit4:
+        members: [person7, person8]
+    marital_units:
+      marital_unit1:
+        members: [person1, person2]
+      marital_unit2:
+        members: [person3, person4]
+      marital_unit3:
+        members: [person5, person6]
+      marital_unit4:
+        members: [person7, person8]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+      spm_unit3:
+        members: [person5, person6]
+      spm_unit4:
+        members: [person7, person8]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+      household2:
+        members: [person3, person4]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: true
+      household3:
+        members: [person5, person6]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+      household4:
+        members: [person7, person8]
+        state_code: CA
+        living_arrangements_allow_for_food_preparation: false
+  output:
+    # The couple's countable income is 1,491, 2,098.83, 2,098.83 and 2,356.57
+    # a month, each at or above the 1,491 couple federal benefit rate, so SSI
+    # is 0.
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0]
+    ca_state_supplement_payment_standard: [25_185.96, 25_185.96, 28_278.84, 28_278.84]
+    # The supplement is the standard less countable income:
+    # 2,098.83 - 1,491 = 607.83; 2,098.83 - 2,098.83 = 0;
+    # 2,356.57 - 2,098.83 = 257.74; 2,356.57 - 2,356.57 = 0.
+    ca_state_supplement: [7_293.96, 0, 3_092.88, 0]
