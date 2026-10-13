@@ -3,142 +3,114 @@
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         va_ag_certified: true
         ssi_claim_is_joint: false
-      second:
+      person2:
         age: 65
         ssi_claim_is_joint: false
         va_ag_certified: true
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: VA
   output:
-    va_ag:
-    - 1223
-    - 1223
+    va_ag: [1_223, 1_223]
+
 - name: Case 2, initial couple computation.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         va_ag_certified: true
         va_ag_is_joint_initial_month: true
-      second:
+      person2:
         age: 65
         va_ag_certified: true
         va_ag_is_joint_initial_month: true
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: VA
   output:
-    va_ag:
-    - 1472
-    - 1472
+    va_ag: [1_472, 1_472]
+
 - name: Case 3, non SSI spouse income is not deemed in ongoing care.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         va_ag_certified: true
-      second:
+      person2:
         age: 40
-        social_security_retirement: 60000
+        social_security_retirement: 60_000
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: VA
   output:
-    va_ag:
-    - 2217
-    - 0
+    va_ag: [2_217, 0]
+
 - name: Case 4, initial couple resource limit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         va_ag_certified: true
         va_ag_is_joint_initial_month: true
-        ssi_countable_resources: 1500
-      second:
+        ssi_countable_resources: 1_500
+      person2:
         age: 65
         va_ag_certified: true
         va_ag_is_joint_initial_month: true
-        ssi_countable_resources: 1501
+        ssi_countable_resources: 1_501
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: VA
   output:
-    va_ag:
-    - 0
-    - 0
+    va_ag: [0, 0]
+
 - name: Case 5, annual grant and SNAP income.
-  period: '2026'
+  period: 2026
   absolute_error_margin: 0.01
   input:
     state_code: VA
     age: 65
     va_ag_certified: true
   output:
-    va_ag: 14676
-    household_state_benefits: 14676
-    snap_unearned_income: 26604
-    hud_unearned_income: 26604
+    va_ag: 14_676
+    household_state_benefits: 14_676
+    snap_unearned_income: 26_604
+    hud_unearned_income: 26_604
