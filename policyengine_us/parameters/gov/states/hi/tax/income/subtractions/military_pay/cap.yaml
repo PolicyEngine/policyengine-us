@@ -1,8 +1,16 @@
 description: Hawaii caps the military reserve or Hawaii national guard duty pay exclusion at this amount.
-values: 
-  2021-01-01: 7_345
+values:
+  2015-01-01: 6_198
+  2016-01-01: 6_279
+  2017-01-01: 6_410
+  2018-01-01: 6_564
+  2019-01-01: 6_735
+  2020-01-01: 6_943
+  2021-01-01: 7_152
+  2022-01-01: 7_345
   2023-01-01: 7_683
   2024-01-01: 8_082
+  2025-01-01: 8_636
 
 metadata:
   uprating: gov.irs.uprating
@@ -10,21 +18,29 @@ metadata:
   period: year
   unit: currency-USD
   reference:
-  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2022 
-    href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=13
-  - title: Hawaii 2022 Individual Income Tax Return N-11 From Rev.2022
-    href: https://files.hawaii.gov/tax/forms/2022/n11_i.pdf#page=2
-  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2021 
+  # The value of the subtraction is derived from compensation for
+  # performance of duty, equivalent to pay received for forty-eight drills
+  - title: Hawaii Income Tax Law, Chapter 235, Section 235-7, (a) (7)
+    href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=22
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2015, Line 15
+    href: https://web.archive.org/web/20160207173809/http://files.hawaii.gov/tax/forms/2015/n11ins.pdf#page=14
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2016, Line 15
+    href: https://web.archive.org/web/20170214234012/http://files.hawaii.gov/tax/forms/2016/n11ins.pdf#page=15
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2017, Line 15
+    href: https://web.archive.org/web/20180417023253/http://files.hawaii.gov/tax/forms/2017/n11ins.pdf#page=15
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2018, Line 15
+    href: https://files.hawaii.gov/tax/forms/2018/n11ins.pdf#page=15
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2019, Line 15
+    href: https://files.hawaii.gov/tax/forms/2019/n11ins.pdf#page=15
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2020, Line 15
+    href: https://files.hawaii.gov/tax/forms/2020/n11ins.pdf#page=15
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2021, Line 15
     href: https://files.hawaii.gov/tax/forms/2021/n11ins.pdf#page=13
-  - title: Hawaii 2021 Individual Income Tax Return N-11 From Rev.2021
-    href: https://files.hawaii.gov/tax/forms/2021/n11_i.pdf#page=2  
-  # The value of the subtraction is derived from compensation for  
-  # performance of duty, equivalent to pay received for forty-eight drills 
-  - title: Hawaii Income Tax Law, Chapter 235, Section 235-7, (a) (7)  
-    href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=22 
-  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2023
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2022, Line 15
+    href: https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=13
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2023, Line 15
     href: https://files.hawaii.gov/tax/forms/2023/n11ins.pdf#page=13
-  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2024
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2024, Line 15
     href: https://files.hawaii.gov/tax/forms/2024/n11ins.pdf#page=13
-  - title: 2025 Hawaii N-11 Instructions Military Pay Exclusion
-    href: https://files.hawaii.gov/tax/forms/current/n11ins.pdf#page=13
+  - title: Hawaii Resident Income Tax Instructions N-11 Rev.2025, Line 15
+    href: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=13

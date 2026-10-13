@@ -15,8 +15,14 @@ brackets:
   - threshold:
       2021-01-01: -.inf
     amount:
+      # Model years start in 2015. Act 115 paid a one-time refund to filers
+      # of a 2021 Form N-11.
+      2000-01-01: 0
       2021-01-01: 300
+      2022-01-01: 0
   - threshold:
       2021-01-01: 200_000
     amount:
+      2000-01-01: 0
       2021-01-01: 100
+      2022-01-01: 0
