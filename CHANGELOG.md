@@ -1,3 +1,12 @@
+## [2.41.4] - 2026-10-13
+
+### Fixed
+
+- Count Indiana's 2020 automatic taxpayer refund in Indiana refundable credits, so it now reaches Indiana income tax and household net income, by reading the refundable-credit list parameter in `in_refundable_credits`.
+- Count employment disability benefits and unemployment compensation excluded from federal AGI (the 2020 IRC 85(c) exclusion) in Montana's elderly homeowner/renter credit gross household income.
+- Add California's 2026 SSI/SSP payment standards (effective January 1, 2026) so 2026 no longer reuses the 2025 amounts.
+
+
 ## [2.41.3] - 2026-10-13
 
 ### Fixed
