@@ -1,0 +1,1 @@
+Leave a tax unit dependent's income, such as a child's Social Security, SSI or unemployment compensation, out of Wisconsin homestead credit household income, and count only the claimant's and spouse's earnings toward its earned income test.

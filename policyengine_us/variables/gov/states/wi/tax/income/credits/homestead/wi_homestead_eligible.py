@@ -6,7 +6,12 @@ class wi_homestead_eligible(Variable):
     entity = TaxUnit
     label = "Wisconsin homestead credit eligibility status"
     definition_period = YEAR
-    reference = "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2021/0013_homestead_tax_credit_informational_paper_13.pdf#page=7"
+    reference = (
+        "https://docs.legis.wisconsin.gov/misc/lfb/informational_papers/january_2021/0013_homestead_tax_credit_informational_paper_13.pdf#page=7",
+        # PDF pages 4, 10: the claimant or the claimant's spouse must have
+        # earned income.
+        "https://www.revenue.wi.gov/TaxForms2024/2024-ScheduleH-inst.pdf#page=4",
+    )
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
@@ -17,7 +22,10 @@ class wi_homestead_eligible(Variable):
         min_age = p.homestead.eligible.min_age
         age_eligible = (head_age >= min_age) | (spouse_age >= min_age)
         # earnings eligibility
-        earnings = add(tax_unit, period, p.homestead.eligible.earnings_sources)
+        # Only the claimant's or spouse's earnings qualify, not a dependent's.
+        earnings = tax_unit_non_dep_add(
+            tax_unit, period, p.homestead.eligible.earnings_sources
+        )
         has_positive_earnings = earnings > 0
         min_elderly_age = p.homestead.eligible.min_elderly_age
         head_is_elderly = head_age >= min_elderly_age
