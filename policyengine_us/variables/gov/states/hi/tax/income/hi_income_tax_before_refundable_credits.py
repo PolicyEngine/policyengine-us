@@ -13,6 +13,7 @@ class hi_income_tax_before_refundable_credits(Variable):
         income_tax = tax_unit("hi_income_tax_before_non_refundable_credits", period)
         # Nonrefundable credits are already limited to the tax left after
         # refundable credits (Form N-11, line 34), so subtracting refundable
-        # credits from this amount gives the balance on line 36.
+        # credits from this amount gives the balance on line 36 (less the
+        # 2021 Act 115 refund, which was paid apart from the return).
         non_refundable_credits = tax_unit("hi_non_refundable_credits", period)
         return max_(income_tax - non_refundable_credits, 0)

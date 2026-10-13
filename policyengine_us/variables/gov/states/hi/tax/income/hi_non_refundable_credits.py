@@ -17,8 +17,10 @@ class hi_non_refundable_credits(Variable):
         "https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0091_0005.htm",
         # Form N-11 applies refundable credits first (line 33) and limits
         # nonrefundable credits (line 35) to the adjusted tax on line 34.
-        "https://files.hawaii.gov/tax/forms/2025/n11_i.pdf#page=3",
-        "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=21",
+        "https://files.hawaii.gov/tax/forms/2018/n11_i.pdf#page=3",
+        "https://files.hawaii.gov/tax/forms/2018/n11ins.pdf#page=25",
+        "https://files.hawaii.gov/tax/forms/2022/n11_i.pdf#page=3",
+        "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=21",
     )
 
     def formula(tax_unit, period, parameters):

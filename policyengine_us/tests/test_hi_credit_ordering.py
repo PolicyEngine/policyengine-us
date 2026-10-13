@@ -78,9 +78,8 @@ def calculate(units, year):
             "members": [f"p{i}"],
             "hi_income_tax_before_non_refundable_credits": {year: unit["tax"]},
             "hi_refundable_credits": {year: unit["refundable"]},
-            # The refund is paid only in 2021. (The model's 2021 refundable
-            # list also reaches back to 2015-2020; a zero refund keeps those
-            # years to the law.)
+            # The refund is paid only in 2021; a zero refund in other years
+            # keeps the reference to the law whatever the parameters list.
             "hi_act_115_rebate": {year: act_115_paid(unit, year)},
             "eitc": {year: unit["eitc"]},
         }
@@ -111,8 +110,12 @@ def check(units, year):
     np.testing.assert_allclose(result["hi_adjusted_tax_liability"], line_34, atol=tol)
     # 2. Line 35.
     np.testing.assert_allclose(result["hi_non_refundable_credits"], line_35, atol=tol)
-    # 3. Line 36, less the Act 115 refund, and the household identity.
+    # 3. Line 36, less the Act 115 refund. This also shows that the floor in
+    # hi_income_tax_before_refundable_credits never binds.
     np.testing.assert_allclose(income_tax, line_34 - line_35 - act_115, atol=tol)
+    # The identities the household-level lists rely on. They hold by the
+    # current definitions of hi_income_tax and state_income_tax; these
+    # guard them against a later change to either.
     np.testing.assert_allclose(
         income_tax,
         result["hi_income_tax_before_refundable_credits"] - refundable,
@@ -299,3 +302,48 @@ def test_computed_credits_follow_form_n11(households, year):
         r["hi_income_tax"], line_34 - line_35 - act_115, atol=tol
     )
     np.testing.assert_allclose(r["state_income_tax"], r["hi_income_tax"], atol=tol)
+
+
+def test_credit_lists_do_not_overlap():
+    # A credit in both lists would make hi_non_refundable_credits depend on
+    # itself through line 34 (hi_adjusted_tax_liability).
+    from policyengine_us.system import system
+
+    for year in range(2015, 2036):
+        credits = system.parameters(f"{year}-01-01").gov.states.hi.tax.income.credits
+        overlap = set(credits.refundable) & set(credits.non_refundable)
+        assert not overlap, (year, overlap)
+
+
+@pytest.mark.parametrize("year", [2021, 2022])
+def test_computed_wage_ladder_reaches_the_line_34_limit(year):
+    # Single filers and married filers with two children, $0 to $40,000 of
+    # wages in $500 steps: low earners have refundable credits above the tax,
+    # then the nonrefundable credit is cut to line 34, then used in full.
+    households = [
+        {
+            "married": married,
+            "children": 2 if married else 0,
+            "wages": wages,
+            "spouse_wages": 0,
+            "rent": 0,
+        }
+        for married in (False, True)
+        for wages in range(0, 40_001, 500)
+    ]
+    r = calculate_households(households, year)
+    tax = r["hi_income_tax_before_non_refundable_credits"]
+    refundable = r["hi_refundable_credits"]
+    act_115 = r["hi_act_115_rebate"] if year == ACT_115_YEAR else 0 * tax
+    potential = r["hi_eitc_potential"]
+    line_34 = tax - (refundable - act_115)
+    line_35 = np.minimum(potential, np.maximum(line_34, 0))
+    tol = tolerance(tax, refundable)
+    np.testing.assert_allclose(r["hi_non_refundable_credits"], line_35, atol=tol)
+    np.testing.assert_allclose(
+        r["hi_income_tax"], line_34 - line_35 - act_115, atol=tol
+    )
+    applies = potential > 0
+    assert (applies & (line_34 <= 0)).any()
+    assert (applies & (line_34 > 0) & (line_35 < potential - tol)).any()
+    assert (applies & (line_35 >= potential - tol)).any()
