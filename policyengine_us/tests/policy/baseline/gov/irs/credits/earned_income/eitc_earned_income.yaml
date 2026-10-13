@@ -382,3 +382,26 @@
   output:
     filer_adjusted_earnings: 8000
     amt_exemption: 18200
+
+- name: A disability pension before minimum retirement age is earned income for the EITC
+  # Pub. 596 (2024), file page 8: taxable benefits from an employer's
+  # disability retirement plan are earned income until minimum retirement age.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        disability_benefits: 10_000
+        disability_benefits_before_minimum_retirement_age: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    eitc_earned_income: 10_000
+    # No qualifying children: 7.65% x $8,260 = $632, and the $10,000 of AGI
+    # is under the $10,330 phase-out threshold.
+    eitc: 632

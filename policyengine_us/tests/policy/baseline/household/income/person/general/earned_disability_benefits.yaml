@@ -1,0 +1,28 @@
+- name: Only the taxable part of disability benefits can be earned income.
+  period: 2024
+  input:
+    disability_benefits: 10_000
+    # Benefits bought with the person's own after-tax premiums are not in
+    # gross income, so they cannot be earned income either.
+    tax_exempt_disability_benefits: 4_000
+    disability_benefits_before_minimum_retirement_age: 10_000
+  output:
+    taxable_disability_benefits: 6_000
+    earned_disability_benefits: 6_000
+
+- name: Disability benefits after minimum retirement age are not earned income.
+  period: 2024
+  input:
+    disability_benefits: 10_000
+    disability_benefits_before_minimum_retirement_age: 0
+  output:
+    earned_disability_benefits: 0
+
+- name: Disability pay reported as wages is earned income for the child and dependent care credit.
+  # Pub. 503 (2024), file page 4.
+  period: 2024
+  input:
+    disability_benefits: 12_000
+    disability_benefits_before_minimum_retirement_age: 12_000
+  output:
+    adjusted_earnings: 12_000

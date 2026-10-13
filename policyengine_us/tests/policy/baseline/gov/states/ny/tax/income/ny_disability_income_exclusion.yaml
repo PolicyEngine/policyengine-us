@@ -1,0 +1,106 @@
+# 2024 Instructions for Form IT-221.
+
+- name: IT-221 Example 5, spouses share the exclusion in proportion to their disability pay.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 60
+        is_tax_unit_head: true
+        retired_on_total_disability: true
+        disability_benefits: 6_000
+      spouse:
+        age: 58
+        is_tax_unit_spouse: true
+        retired_on_total_disability: true
+        disability_benefits: 4_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NY
+  output:
+    # Line 10: min(6,000, 5,200) + min(4,000, 5,200) = 9,200, with federal
+    # AGI of 10,000 under $15,000. Line 11: 6,000 / 10,000 x 9,200 = 5,520
+    # and 4,000 / 10,000 x 9,200 = 3,680.
+    ny_disability_income_exclusion: [5_520, 3_680]
+
+- name: Exclusion reduced by federal AGI above $15,000.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 50
+        retired_on_total_disability: true
+        disability_benefits: 10_000
+        taxable_interest_income: 7_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    # 5,200 - (17,000 - 15,000) = 3,200.
+    ny_disability_income_exclusion: 3_200
+
+- name: A married person filing separately who lived with their spouse cannot take the exclusion.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 50
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SEPARATE
+        cohabitating_spouses: true
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    ny_disability_income_exclusion: 0
+
+- name: A married person filing separately who lived apart all year can take the exclusion.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 50
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+    tax_units:
+      tax_unit:
+        members: [person]
+        filing_status: SEPARATE
+        cohabitating_spouses: false
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    ny_disability_income_exclusion: 5_000
+
+- name: No exclusion at age 65.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 65
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: NY
+  output:
+    ny_disability_income_exclusion: 0
