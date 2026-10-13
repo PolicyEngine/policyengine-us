@@ -8,6 +8,6 @@ class or_ssp_spousal_diversion_difference(Variable):
     definition_period = MONTH
     unit = USD
     reference = (
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0700.pdf",
+        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0700.pdf#page=2",
     )
     documentation = "State-calculated excess of permitted nursing-facility diversion over community-care diversion, using 461-160-0620 liability rules. Requires an approved request under 461-155-0700(1)(d)."

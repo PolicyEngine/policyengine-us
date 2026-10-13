@@ -1,0 +1,15 @@
+description: Oregon excludes these income sources from countable income under the State Supplemental Payment program.
+values:
+  2018-04-01:
+    - interest_income
+    - dividend_income
+
+metadata:
+  unit: list
+  period: year
+  label: Oregon SSP excluded income sources
+  reference:
+    - title: OAR 461-145-0030(4)
+      href: https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-145-0030.pdf#page=2
+    - title: OAR 461-145-0108(1)(a)
+      href: https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-145-0108.pdf#page=1

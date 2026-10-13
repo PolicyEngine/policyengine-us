@@ -8,9 +8,12 @@ class or_ssp(Variable):
     definition_period = MONTH
     unit = USD
     reference = (
+        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0250.pdf#page=1",
         "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0575.pdf",
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0630.pdf",
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0700.pdf",
+        # PDF pages 1-3
+        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0630.pdf#page=1",
+        # PDF pages 1-3
+        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0700.pdf#page=1",
         "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-160-0070.pdf",
     )
     defined_for = StateCode.OR
@@ -18,12 +21,17 @@ class or_ssp(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states["or"].odhs.ssp
         federal = parameters(period).gov.ssa.ssi.amount
+        # The OSIPM one-person adjusted income standard in OAR 461-155-0250(3)
+        # currently equals the SSI federal benefit rate ($994 in 2026).
         standard = federal.individual
         category = person("or_ssp_category", period)
         c = category.possible_values
         income = person("or_ssp_countable_income", period)
         ssi = person("ssi", period)
-        in_home = (category == c.IN_HOME) & (ssi > 0) & (income == ssi)
+        receives_ssi = (ssi > 0) | person("receives_ssi", period)
+        in_home = (category == c.IN_HOME) & receives_ssi & (income == ssi)
+        # Community care and SSI restoration amounts depend on the SSI payment,
+        # so those paths require modeled SSI rather than reported receipt.
         care = (category == c.COMMUNITY_CARE) & (ssi > 0)
         couple = person.marital_unit.sum(care) == 2
         own_excess = max_(income - standard, 0)
@@ -41,7 +49,7 @@ class or_ssp(Variable):
             & (veterans > 0)
             & (veterans <= p.reduced_va_pension)
         )
-        suspended = (category == c.SUSPENDED_SSI) & (ssi == 0)
+        suspended = (category == c.SUSPENDED_SSI) & ~receives_ssi
         diversion = max_(person("or_ssp_spousal_diversion_difference", period), 0)
         available = max_(person("or_ssp_available_room_board_income", period), 0)
         room_board = (category == c.ROOM_BOARD_ABSENCE) | (

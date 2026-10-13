@@ -27,13 +27,11 @@
       person1:
         age: 65
         or_ssp_category: COMMUNITY_CARE
-        ssi: 700
-        or_ssp_countable_income: 1_100
+        # $1,200 a month.
+        social_security_retirement: 14_400
       person2:
         age: 65
         or_ssp_category: COMMUNITY_CARE
-        ssi: 700
-        or_ssp_countable_income: 700
     marital_units:
       couple:
         members: [person1, person2]
@@ -42,7 +40,15 @@
         members: [person1, person2]
         state_code: OR
   output:
-    or_ssp: [0, 188]
+    # Couple computation: 1,491 / 2 = 745.50 each.
+    ssi_amount_if_eligible: [745.5, 745.5]
+    # Couple SSI: 1,491 - (1,200 - 20) = 311, or 155.50 each.
+    ssi: [155.5, 155.5]
+    # person1: 1,200 + 155.50 = 1,355.50; person2: 155.50.
+    or_ssp_countable_income: [1_355.5, 155.5]
+    # person1: 994 - 1,355.50 < 0, so 0; excess 1,355.50 - 994 = 361.50.
+    # person2: 994 - 155.50 - 361.50 = 477.
+    or_ssp: [0, 477]
 
 - name: Case 3, both spouses must receive SSI.
   period: 2026-01
@@ -98,3 +104,55 @@
     or_ssp: 264
     snap_unearned_income: 11_928
     hud_unearned_income: 11_928
+
+- name: Case 6, community care payment counts as SNAP and HUD unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        or_ssp_category: COMMUNITY_CARE
+        # $1,200 a month.
+        social_security_retirement: 14_400
+      person2:
+        age: 65
+        or_ssp_category: COMMUNITY_CARE
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # Case 2 monthly amounts for 12 months: SSI 155.50 * 12 = 1,866 each.
+    ssi: [1_866, 1_866]
+    # person2: 477 * 12 = 5,724.
+    or_ssp: [0, 5_724]
+    # Community care is not the in-home reimbursement, so the full payment counts.
+    or_ssp_excluding_in_home_supplement: [0, 5_724]
+    # 12 * (1,200 Social Security + 311 SSI + 477 SSP) = 12 * 1,988 = 23,856.
+    snap_unearned_income: 23_856
+    # person1: 14,400 Social Security + 1,866 SSI = 16,266.
+    # person2: 1,866 SSI + 5,724 SSP = 7,590.
+    hud_unearned_income: [16_266, 7_590]
+
+- name: Case 7, temporary absence counts all countable income as available by default.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    age: 65
+    state_code: OR
+    or_ssp_category: ROOM_BOARD_ABSENCE
+    # $500 a month.
+    social_security_retirement: 6_000
+  output:
+    # SSI: 994 - (500 - 20) = 514.
+    ssi: 514
+    # 514 SSI + 500 Social Security = 1,014.
+    or_ssp_countable_income: 1_014
+    # No liability override, so available income equals countable income.
+    or_ssp_available_room_board_income: 1_014
+    # 773 room and board standard - 1,014 < 0, so no payment.
+    or_ssp: 0

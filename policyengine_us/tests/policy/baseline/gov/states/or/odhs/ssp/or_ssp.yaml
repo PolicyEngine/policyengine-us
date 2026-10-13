@@ -21,7 +21,7 @@
   output:
     or_ssp: 22
 
-- name: Case 3, ten dollars other cash income disqualifies before deductions.
+- name: Case 3, Social Security income disqualifies the in-home supplement.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -30,11 +30,14 @@
     age:
       2026: 65
     or_ssp_category: IN_HOME
-    social_security_retirement: 120
+    # $500 a month.
+    social_security_retirement: 6_000
   output:
+    # SSI: 994 - (500 - 20) = 514; countable income 514 + 500 = 1,014.
+    # 1,014 is not SSI alone, so no in-home supplement.
     or_ssp: 0
 
-- name: Case 4, small earnings disqualify before deductions.
+- name: Case 4, part-time earnings disqualify the in-home supplement.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -43,8 +46,12 @@
     age:
       2026: 65
     or_ssp_category: IN_HOME
-    employment_income: 120
+    # 10 hours a week at Oregon's $15.05 standard minimum wage (July 2025):
+    # 15.05 * 10 * 52 = 7,826 a year, or 652.17 a month.
+    employment_income: 7_826
   output:
+    # SSI: 994 - (652.17 - 20 - 65) * 0.5 = 994 - 283.58 = 710.42.
+    # Countable income 710.42 + 652.17 = 1,362.58 is not SSI alone, so 0.
     or_ssp: 0
 
 - name: Case 5, excluded bank interest does not disqualify.
@@ -79,7 +86,8 @@
   input:
     state_code:
       2026: OR
-    age: 40
+    age:
+      2026: 40
     or_ssp_category: DISABILITY_INTERIM
     ssi: 0
   output:
@@ -303,9 +311,41 @@
   period: 2026-01
   absolute_error_margin: 0.01
   input:
-    state_code: WA
+    state_code:
+      2026: WA
     age:
       2026: 65
     or_ssp_category: IN_HOME
   output:
+    or_ssp: 0
+
+- name: Case 25, reported SSI receipt qualifies for the in-home supplement when modeled SSI is zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: IN_HOME
+    ssi: 0
+    receives_ssi: true
+  output:
+    # Reported receipt meets the SSI condition; countable income 0 equals SSI 0.
+    or_ssp: 22
+
+- name: Case 26, reported SSI receipt is not a suspended SSI payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: SUSPENDED_SSI
+    ssi: 0
+    receives_ssi: true
+  output:
+    # SSI is reported as received, so it is not suspended and the 773
+    # room and board allowance (Case 13) does not apply.
     or_ssp: 0

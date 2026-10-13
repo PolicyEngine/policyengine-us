@@ -2,7 +2,6 @@ from policyengine_us.model_api import *
 
 
 class ORSSPCategory(Enum):
-    NONE = "No approved OSIPM special need"
     IN_HOME = "Approved SSI-only in-home services"
     COMMUNITY_CARE = "Approved licensed community care with an SSI spouse"
     DISABILITY_INTERIM = (
@@ -20,6 +19,7 @@ class ORSSPCategory(Enum):
         "Approved inaccessible-income case pending representative appointment"
     )
     INITIAL_ROOM_BOARD = "Approved initial placement room and board"
+    NONE = "No approved OSIPM special need"
 
 
 class or_ssp_category(Variable):
@@ -31,8 +31,10 @@ class or_ssp_category(Variable):
     default_value = ORSSPCategory.NONE
     reference = (
         "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0575.pdf",
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0630.pdf",
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0700.pdf",
+        # PDF pages 1-3
+        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0630.pdf#page=1",
+        # PDF pages 1-3
+        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0700.pdf#page=1",
     )
     documentation = """
     Select only after OSIPM financial eligibility, placement/service authorization,

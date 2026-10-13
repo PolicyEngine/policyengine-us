@@ -8,7 +8,8 @@ class or_ssp_available_room_board_income(Variable):
     definition_period = MONTH
     unit = USD
     reference = (
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0630.pdf",
+        # PDF pages 1-3
+        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0630.pdf#page=1",
     )
     documentation = "Override with accessible income remaining after an assessed care liability during a certified absence, or accessible income in an approved incapacity case."
 
