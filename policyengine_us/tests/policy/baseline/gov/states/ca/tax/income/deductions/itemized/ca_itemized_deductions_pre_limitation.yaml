@@ -382,9 +382,9 @@
         auto_loan_interest: 1575.0
         household_vehicles_value: 21964.705078125
   output:
-    # Also includes #10032's IRA 219(g) phase-out, since this is a two-cause
-    # CA + IRA cell.
-    state_income_tax_before_refundable_credits: 4441.45
+    # Also includes #10032's IRA 219(g) phase-out.
+    # FTB Schedule CA (540), Section C, line 11: $337.50 educator addback x 8% = $27 (R&TC 17072(b)).
+    state_income_tax_before_refundable_credits: 4468.45
 
 # 2024 Schedule CA (540) instructions, line 15 (Form 540 booklet, PDF p. 66):
 # "California law does not conform" to the federal limit of personal casualty

@@ -1,0 +1,1 @@
+Match the Vermont Department of Taxes' published renter credit base amounts for Franklin and Grand Isle in 2022, 2023 and 2025, and round both the base amount before the income phase-out and the final credit half up to whole dollars, including exact 50-cent ties.

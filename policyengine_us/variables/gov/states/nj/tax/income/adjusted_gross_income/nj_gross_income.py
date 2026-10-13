@@ -24,6 +24,7 @@ class nj_gross_income(Variable):
         total = total + max_(add(person, period, cats.category_b), 0)
         total = total + max_(add(person, period, cats.category_c), 0)
         total = total + max_(add(person, period, cats.category_d), 0)
+        total = total + max_(add(person, period, cats.category_h), 0)
         total = total + max_(add(person, period, cats.category_k_p), 0)
         # A claim of right repayment offsets income of its own category,
         # not below zero (N.J.S.A. 54A:5-2).
