@@ -3,7 +3,7 @@
   input:
     real_estate_taxes: 8
     salt_deduction: 10
-    interest_deduction: 9
+    deductible_mortgage_interest_tax_unit: 9
     medical_expense_deduction: 2
     state_code: KS
   output:
@@ -14,8 +14,79 @@
   input:
     real_estate_taxes: 12
     salt_deduction: 10
-    interest_deduction: 9
+    deductible_mortgage_interest_tax_unit: 9
     medical_expense_deduction: 2
     state_code: KS
   output:
     ks_itemized_deductions: 12 + 9 + 2
+
+# K.S.A. 79-32,120(a)(5): from 2020, 100% of charitable contributions, medical
+# care, qualified residence interest and real and personal property taxes.
+# Investment interest and casualty losses are not Kansas itemized deductions.
+- name: Case 3, 2025 only the four Kansas categories count.
+  period: 2025
+  input:
+    state_code: KS
+    charitable_deduction: 3_000
+    medical_expense_deduction: 2_000
+    deductible_mortgage_interest_tax_unit: 9_000
+    interest_deduction: 13_000
+    casualty_loss_deduction: 1_000
+    real_estate_taxes: 5_000
+  output:
+    # 3,000 + 2,000 + 9,000 + 5,000; not the 4,000 of investment interest in
+    # interest_deduction or the 1,000 casualty loss.
+    ks_itemized_deductions: 19_000
+
+# K.S.A. 79-32,120(a)(4): 2019 allows 100% of charity and 75% of the other
+# three categories.
+- name: Case 4, 2019 shares.
+  period: 2019
+  input:
+    state_code: KS
+    charitable_deduction: 1_000
+    medical_expense_deduction: 2_000
+    deductible_mortgage_interest_tax_unit: 8_000
+    real_estate_taxes: 4_000
+  output:
+    # 1,000 + 0.75 * (2,000 + 8,000 + 4,000)
+    ks_itemized_deductions: 11_500
+
+# K.S.A. 79-32,120(a)(3): 2018 allows 100% of charity and 50% of the other
+# three categories.
+- name: Case 5, 2018 shares.
+  period: 2018
+  input:
+    state_code: KS
+    charitable_deduction: 1_000
+    medical_expense_deduction: 2_000
+    deductible_mortgage_interest_tax_unit: 8_000
+    real_estate_taxes: 4_000
+  output:
+    # 1,000 + 0.5 * (2,000 + 8,000 + 4,000)
+    ks_itemized_deductions: 8_000
+
+# K.S.A. 79-32,120(a)(2): 2015 to 2017 allow 100% of charity, 50% of qualified
+# residence interest and property taxes, and no medical care (2017 Schedule S,
+# Part C).
+- name: Case 6, 2017 shares, no medical expenses.
+  period: 2017
+  input:
+    state_code: KS
+    charitable_deduction: 1_000
+    medical_expense_deduction: 2_000
+    deductible_mortgage_interest_tax_unit: 8_000
+    real_estate_taxes: 4_000
+  output:
+    # 1,000 + 0.5 * (8,000 + 4,000)
+    ks_itemized_deductions: 7_000
+
+- name: Case 7, 2021 federal deduction for non-itemizers' charitable gifts is not a Kansas itemized deduction.
+  period: 2021
+  input:
+    state_code: KS
+    charitable_deduction: 2_000
+    charitable_deduction_for_non_itemizers: 300
+    real_estate_taxes: 4_000
+  output:
+    ks_itemized_deductions: 6_000
