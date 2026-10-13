@@ -152,7 +152,8 @@
     oh_rss: 9_672
     household_state_benefits: 9_672
     snap_unearned_income: 21_600
-    hud_unearned_income: 21_600
+    # HUD income excludes RSS (see oh_rss): SSI 994 * 12 = 11_928.
+    hud_unearned_income: 11_928
 
 - name: Case 7, partial month daily amount rounded upward.
   period: 2026-04

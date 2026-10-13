@@ -12,6 +12,9 @@ class oh_rss(Variable):
         "https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01",
         "https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-05.1",
     )
+    # NOTE: Not in the HUD income list. RSS is paid to the person (5122-36-04(A)(7)),
+    # but recipients live in licensed residential care (5122-36-02(A)(5)), and HUD
+    # income would make the Medicaid condition circular via rent tax deductions.
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.oh.dbh.rss
