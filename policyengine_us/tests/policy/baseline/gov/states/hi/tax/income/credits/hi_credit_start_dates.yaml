@@ -1,0 +1,146 @@
+# A single filer, age 30, with $8,000 of wages in each year around the
+# credits' start dates. The federal EITC is on its plateau in each year
+# tested (single, no qualifying child), and the Hawaii food/excise credit is
+# $100 for federal AGI of $5,000 to $10,000 (Form N-311, 2017-2022).
+# Hawaii's EITC applies to taxable years beginning after December 31, 2017
+# (Act 107, SLH 2017; 2018 Form N-356 instructions, p.2). Act 115 (SLH 2022)
+# refunds went only to filers of a 2021 Form N-11 (DOTAX Announcement
+# 2022-03, p.2).
+- name: Case 1, no Hawaii EITC or Act 115 refund in 2017.
+  period: 2017
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    eitc: 510
+    hi_eitc_potential: 0
+    hi_non_refundable_credits: 0
+    hi_act_115_rebate: 0
+    hi_food_excise_credit: 100
+    hi_refundable_credits: 100
+    # Taxable income: 8,000 - 2,200 standard deduction - 1,144 exemption
+    # = 4,656. Tax: 1.4% * 2,400 + 3.2% * 2,256 = 105.792.
+    # 105.792 - 0 nonrefundable - 100 refundable = 5.792.
+    hi_income_tax: 5.792
+  absolute_error_margin: 0.01
+
+- name: Case 2, Hawaii EITC starts in 2018 and no Act 115 refund.
+  period: 2018
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    eitc: 519
+    # 20% * 519
+    hi_eitc_potential: 103.8
+    hi_act_115_rebate: 0
+    hi_refundable_credits: 100
+  absolute_error_margin: 0.01
+
+- name: Case 3, Hawaii EITC and no Act 115 refund in 2020.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    eitc: 538
+    # 20% * 538
+    hi_eitc_potential: 107.6
+    hi_act_115_rebate: 0
+    hi_refundable_credits: 100
+  absolute_error_margin: 0.01
+
+- name: Case 4, Act 115 refund for 2021.
+  period: 2021
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    # 15.3% * 8,000 under the 2021 phase-in.
+    eitc: 1_224
+    # 20% * 1,224
+    hi_eitc_potential: 244.8
+    # One exemption * $300 for federal AGI under $100,000.
+    hi_act_115_rebate: 300
+    # 100 food/excise + 300 Act 115
+    hi_refundable_credits: 400
+  absolute_error_margin: 0.01
+
+- name: Case 5, no Act 115 refund for 2022.
+  period: 2022
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    eitc: 560
+    # 20% * 560
+    hi_eitc_potential: 112
+    hi_act_115_rebate: 0
+    hi_refundable_credits: 100
+  absolute_error_margin: 0.01
+
+- name: Case 6, no Hawaii EITC or Act 115 refund in 2016.
+  period: 2016
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: HI
+  output:
+    hi_eitc_potential: 0
+    hi_non_refundable_credits: 0
+    hi_act_115_rebate: 0
+    hi_refundable_credits: 100
+  absolute_error_margin: 0.01

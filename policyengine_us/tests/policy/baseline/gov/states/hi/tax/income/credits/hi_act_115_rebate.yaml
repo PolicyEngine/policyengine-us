@@ -162,3 +162,52 @@
         state_code: HI
   output:
     hi_act_115_rebate: 0
+
+# Act 115 refunds went only to filers of a 2021 Form N-11 (DOTAX
+# Announcement 2022-03, p.2).
+- name: No refund for 2017
+  period: 2017
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    hi_act_115_rebate: 0
+
+- name: No refund for 2020
+  period: 2020
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    hi_act_115_rebate: 0
+
+- name: No refund for 2022
+  period: 2022
+  input:
+    adjusted_gross_income: 50_000
+    filing_status: SINGLE
+    state_code: HI
+  output:
+    hi_act_115_rebate: 0
+
+- name: No refund for joint filers for 2020
+  period: 2020
+  input:
+    people:
+      head:
+        age: 40
+      spouse:
+        age: 40
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 60_000
+        filing_status: JOINT
+    households:
+      household:
+        members: [head, spouse]
+        state_code: HI
+  output:
+    hi_act_115_rebate: 0

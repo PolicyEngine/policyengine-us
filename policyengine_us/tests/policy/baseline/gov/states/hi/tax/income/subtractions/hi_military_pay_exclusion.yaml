@@ -14,4 +14,50 @@
     is_tax_unit_head_or_spouse: true
     state_code: HI
   output:
+    # 2021 N-11 instructions, line 15: $7,152.
+    hi_military_pay_exclusion: 7_152
+
+- name: The 2015 cap is $6,198
+  period: 2015
+  input:
+    military_service_income: 8_000
+    is_tax_unit_head_or_spouse: true
+    state_code: HI
+  output:
+    hi_military_pay_exclusion: 6_198
+
+- name: The 2018 cap is $6,564
+  period: 2018
+  input:
+    military_service_income: 8_000
+    is_tax_unit_head_or_spouse: true
+    state_code: HI
+  output:
+    hi_military_pay_exclusion: 6_564
+
+- name: The 2020 cap is $6,943
+  period: 2020
+  input:
+    military_service_income: 8_000
+    is_tax_unit_head_or_spouse: true
+    state_code: HI
+  output:
+    hi_military_pay_exclusion: 6_943
+
+- name: The 2022 cap is $7,345
+  period: 2022
+  input:
+    military_service_income: 8_000
+    is_tax_unit_head_or_spouse: true
+    state_code: HI
+  output:
     hi_military_pay_exclusion: 7_345
+
+- name: The 2025 cap is $8,636
+  period: 2025
+  input:
+    military_service_income: 9_000
+    is_tax_unit_head_or_spouse: true
+    state_code: HI
+  output:
+    hi_military_pay_exclusion: 8_636

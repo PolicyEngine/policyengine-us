@@ -43,3 +43,62 @@
     state_code: HI
   output:
     hi_eitc: 400
+
+# Act 107 (SLH 2017) created the credit for taxable years beginning after
+# December 31, 2017 (2018 Form N-356 instructions, p.2).
+- name: No Hawaii EITC in 2016
+  period: 2016
+  input:
+    eitc: 506
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    hi_eitc_potential: 0
+    hi_eitc: 0
+    hi_non_refundable_credits: 0
+
+- name: No Hawaii EITC in 2017
+  period: 2017
+  input:
+    eitc: 510
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    hi_eitc_potential: 0
+    hi_eitc: 0
+    hi_non_refundable_credits: 0
+
+- name: 20% nonrefundable match in 2018, the first year
+  period: 2018
+  input:
+    eitc: 519
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    # 20% * 519
+    hi_eitc_potential: 103.8
+    hi_eitc: 103.8
+    hi_non_refundable_credits: 103.8
+
+- name: 20% nonrefundable match in 2020
+  period: 2020
+  input:
+    eitc: 538
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    # 20% * 538
+    hi_eitc_potential: 107.6
+    hi_eitc: 107.6
+    hi_non_refundable_credits: 107.6
+
+- name: 20% nonrefundable match in 2021
+  period: 2021
+  input:
+    eitc: 1_000
+    state_code: HI
+    hi_income_tax_before_non_refundable_credits: 1_000_000
+  output:
+    hi_eitc_potential: 200
+    hi_eitc: 200
+    hi_non_refundable_credits: 200
