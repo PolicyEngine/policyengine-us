@@ -271,3 +271,30 @@
     ky_agi: [50_000, -13_000]
     ky_modified_agi_if_joint: 37_000
     ky_modified_agi_if_separate: 50_000
+
+- name: A spouse's non-SSTB Schedule C loss offsets the same spouse's SSTB Schedule C profit
+  # 2025 Form 740 instructions, page 13, line 9: "Each spouse must claim his
+  # or her own income and deductions. The total of line 5, Columns A and B,
+  # must equal the combined federal adjusted gross income." The head's two
+  # Schedules C (line 31 of (5,000) and 5,000) net to 0 on Schedule 1 line 3,
+  # so the head's line 5 is 0 and the spouse's is the 40,000 of wages.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 45
+        self_employment_income: -5_000
+        sstb_self_employment_income: 5_000
+      spouse:
+        age: 43
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: KY
+  output:
+    adjusted_gross_income: 40_000
+    ky_federal_agi: [0, 40_000]

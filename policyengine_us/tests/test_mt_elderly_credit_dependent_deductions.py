@@ -31,6 +31,8 @@ def build_situation(cases, year):
                 "age": {year: 70},
                 "taxable_pension_income": {year: case["pension"]},
                 "early_withdrawal_penalty": {year: case["parent_penalty"]},
+                # No computed SSI; it has its own tests (government assistance).
+                "ssi": {year: 0},
                 "is_tax_unit_dependent": {year: False},
                 "mt_refundable_credits_before_renter_credit": {year: 0},
                 "mt_elderly_homeowner_or_renter_credit_received": {year: 0},
