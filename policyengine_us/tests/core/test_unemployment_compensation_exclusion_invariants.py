@@ -21,8 +21,11 @@ that the exclusion ends. For every person and tax unit:
    unit's `taxable_uc_agi` is under $150,000, a dependent's only when their
    own `dependent_taxable_uc_agi` is, and then each person's exempt part is
    the lesser of their own compensation and $10,200.
-3. Differential: `taxable_uc_agi` equals adjusted gross income less the
-   taxable compensation on the return, floored at zero. The model figures
+3. Differential, for compensation that is not negative (the draws never
+   are): `taxable_uc_agi` equals adjusted gross income less the taxable
+   compensation on the return, floored at zero. A net repayment is
+   different: `irs_gross_income` floors each person's negative taxable
+   compensation at zero, so it never reduces AGI. The model figures
    AGI without the compensation once from gross income sources and once,
    here, from AGI itself; the two must agree, so the compensation is left
    out exactly once.

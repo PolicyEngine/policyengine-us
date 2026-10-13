@@ -170,3 +170,30 @@
         state_code: TX
   output:
     dependent_taxable_ss_magi: [0, 24_000]
+
+- name: A dependent's own estate or trust loss reduces their modified AGI
+  # Schedule E Part III carries the loss to Schedule 1 line 5, which AGI
+  # includes (Pub. 915 Worksheet 1 line 3): 20,000 of wages less a 2,000
+  # loss gives modified AGI of 18,000.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 50
+        employment_income: 80_000
+        is_tax_unit_head: true
+      student:
+        age: 20
+        is_full_time_student: true
+        is_tax_unit_dependent: true
+        employment_income: 20_000
+        estate_income: -2_000
+    tax_units:
+      tax_unit:
+        members: [parent, student]
+    households:
+      household:
+        members: [parent, student]
+        state_code: TX
+  output:
+    dependent_taxable_ss_magi: [0, 18_000]

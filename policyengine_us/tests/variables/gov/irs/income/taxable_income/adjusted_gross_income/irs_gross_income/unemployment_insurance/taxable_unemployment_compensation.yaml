@@ -111,7 +111,7 @@
         members: [person1]
         state_code: MT
   output:
-    # Worksheet line 1: Form 1040 line 4b pensions, 150,000; lines 2, 3 and
+    # Worksheet line 1: Form 1040 line 5b pensions, 150,000; lines 2, 3 and
     # 5: 0; line 6: 150,000. Line 7: 150,000 or more, so nothing is
     # excluded. The compensation is not subtracted from line 6 again.
     taxable_uc_agi: 150_000
@@ -360,7 +360,7 @@
         members: [person1]
         state_code: TX
   output:
-    # Line 4: 150,400. Line 5: Schedule 1 line 15 penalty on early
+    # Line 4: 150,400. Line 5: Schedule 1 line 17 penalty on early
     # withdrawal of savings, 500. Line 6: 149,900, under 150,000. Line 8:
     # 5,000.
     taxable_uc_agi: 149_900

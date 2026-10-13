@@ -11,6 +11,8 @@ BUSINESS_LOSS_SOURCES = [
     "farm_operations_income",
     "farm_rent_income",
     "rental_income",
+    # Schedule E Part III estate and trust losses (limited_business_loss).
+    "estate_income",
 ]
 
 # Above-the-line deductions the model can attribute to one person, keyed by

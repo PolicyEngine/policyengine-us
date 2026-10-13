@@ -2,7 +2,8 @@ description: List of California AGI subtractions.
 values:
   2021-01-01:
     - taxable_social_security
-    - taxable_unemployment_compensation
+    # The compensation in the filers' federal AGI; a dependent's is on their own return.
+    - tax_unit_taxable_unemployment_compensation
     - us_govt_interest
     - salt_refund_income
 

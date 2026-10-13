@@ -3,10 +3,12 @@ description: Rhode Island adds these items on federal adjusted gross income when
 values:
   2021-01-01:
     - investment_in_529_plan # RIGL §44-30-12(4)
-    - tax_exempt_unemployment_compensation # RIGL §44-30-12(b)(6)
+    # The compensation on the filers' return; a dependent's is on their own.
+    - tax_unit_tax_exempt_unemployment_compensation # RIGL §44-30-12(b)(6)
   2025-01-01:
     - investment_in_529_plan # RIGL §44-30-12(4)
-    - tax_exempt_unemployment_compensation # RIGL §44-30-12(b)(6)
+    # The compensation on the filers' return; a dependent's is on their own.
+    - tax_unit_tax_exempt_unemployment_compensation # RIGL §44-30-12(b)(6)
     - ri_section_179_expense_add_back # P.L. 119-21, H.R.1 (2025) - RI Schedule HR1
 
 metadata:

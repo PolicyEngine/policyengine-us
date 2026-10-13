@@ -1,0 +1,70 @@
+# RIGL 44-30-12(b)(6): Rhode Island counts all unemployment compensation as
+# income, so the filers add back what IRC 85(c) excluded from their 2020
+# federal AGI (RI Division of Taxation, Advisory 2021-28). A dependent's
+# compensation is on the dependent's own return.
+- name: Case 1, the filer's federally excluded 2020 compensation is added back.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        unemployment_compensation: 8_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: RI
+  output:
+    tax_exempt_unemployment_compensation: [8_000]
+    ri_additions: 8_000
+
+- name: Case 2, a dependent's excluded compensation is not added to the filers' return.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 30_000
+        is_tax_unit_head: true
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # The dependent excludes the 5,000 on their own return; it was never in
+    # the filer's federal AGI.
+    tax_exempt_unemployment_compensation: [0, 5_000]
+    ri_additions: 0
+
+- name: Case 3, a dependent's excluded compensation stays off a return over the federal cutoff.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 160_000
+        is_tax_unit_head: true
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        unemployment_compensation: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    tax_exempt_unemployment_compensation: [0, 5_000]
+    ri_additions: 0
