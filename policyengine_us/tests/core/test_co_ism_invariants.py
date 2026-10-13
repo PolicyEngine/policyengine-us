@@ -21,8 +21,10 @@ without SSI, receiving shelter support of a drawn value.
 2. Bounds: ISM is non-negative, and an SSI recipient's is no more than the
    presumed maximum value, one-third of the benefit rate plus $20.
 3. No backfill: receiving in-kind support lowers SSI plus AND-CS by at least
-   SSA's ISM less the client's share of the $20 disregard (3.549(A)(2)), so
-   AND-CS never restores more of SSA's reduction than that disregard.
+   SSA's ISM less the client's share of the $20 disregard (3.549(A)(2)) and
+   less any state supplementary payment that raises a grant to the $13
+   floor (3.549(B)), so AND-CS restores no more of SSA's reduction than
+   those.
 4. Payment, not value: a client without SSI who receives shelter from
    others, and so pays none (3.520.79(C)(3)), is counted the $351 maximum
    whatever the shelter is worth.
@@ -102,6 +104,7 @@ def calculate(cases, values):
     for variable in (
         "co_ssa_in_kind_support_and_maintenance",
         "co_state_supplement",
+        "co_state_supplement_countable_income",
         "ssi",
         "ssi_amount_if_eligible",
         "ssi_in_kind_support_and_maintenance",
@@ -124,7 +127,9 @@ def assert_properties(cases, values):
     rate = results["ssi_amount_if_eligible"]
     maximum = p.gov.states.co.ssa.ism.maximum
     individual_pmv = p.gov.ssa.ssi.amount.individual / 3 + 20
-    disregard = p.gov.states.co.ssa.state_supplement.income.disregards.unearned
+    and_cs = p.gov.states.co.ssa.state_supplement
+    disregard = and_cs.income.disregards.unearned
+    countable = results["co_state_supplement_countable_income"]
     for i, c in enumerate(cases):
         roles = ("client", "spouse") if c["married"] else ("client",)
         for role in roles:
@@ -144,8 +149,10 @@ def assert_properties(cases, values):
             assert ism[s] == pytest.approx(expected, abs=TOLERANCE), c
             # 3. No backfill.
             share = disregard / 2 if c["married"] else disregard
+            grant = max(0, and_cs.grant_standard - ssi[s] - countable[s])
+            floor_top_up = supplement[s] - grant if supplement[s] > 0 else 0
             drop = ssi[n] + supplement[n] - ssi[s] - supplement[s]
-            assert drop >= ism[s] - share - TOLERANCE, c
+            assert drop >= ism[s] - share - floor_top_up - TOLERANCE, c
     for j, value in enumerate(values):
         # 4. Payment, not value.
         assert ism[f"older_{j}"] == pytest.approx(maximum, abs=TOLERANCE), value
@@ -210,7 +217,22 @@ if hypothesis is not None:
             "support_value": draw(amount(500)),
         }
 
+    # Review counterexample: the supported spouse's $10 grant is raised to
+    # the $13 floor.
+    FLOOR_CASE = {
+        "married": True,
+        "client_age": 18,
+        "client_ssdi": 0,
+        "client_earnings": 1_145,
+        "spouse_age": 18,
+        "spouse_ssdi": 0,
+        "spouse_earnings": 106,
+        "arrangement": "another_household",
+        "support_value": 0,
+    }
+
     @hypothesis.settings(max_examples=15, deadline=None, suppress_health_check=SLOW)
+    @hypothesis.example(cases=[FLOOR_CASE], values=[0])
     @hypothesis.given(
         st.lists(case(), min_size=1, max_size=8),
         st.lists(amount(500), min_size=1, max_size=6),

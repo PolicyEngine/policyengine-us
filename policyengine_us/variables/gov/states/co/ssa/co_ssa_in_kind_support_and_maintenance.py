@@ -8,9 +8,12 @@ from policyengine_us.variables.household.expense.housing.tenure_type import (
 
 
 def _ism_exempt(person, period):
-    """9 CCR 2503-5 3.520.79(B)(1)-(3) (9 CCR 2503-1 3.250.22(A), (B), (G)
-    before 2014): no ISM for a client who resides in and owns their home,
-    receives subsidized housing or is homeless."""
+    """No ISM for a client who resides in and owns their home, receives
+    subsidized housing or is homeless (9 CCR 2503-5 3.520.79(B)(1)-(3);
+    9 CCR 2503-1 3.250.22(A), (B), (G) before 2014), or whose room and board
+    is furnished during medical confinement: exempt income when a third
+    party pays, and not in-kind support when the client does (3.520.786(B);
+    3.250.32 before 2014)."""
     tenure = person.household("tenure_type", period.this_year)
     owned = (tenure == TenureType.OWNED_OUTRIGHT) | (
         tenure == TenureType.OWNED_WITH_MORTGAGE
@@ -19,7 +22,8 @@ def _ism_exempt(person, period):
     owns_home = owned & ~in_another_household
     subsidized = person.spm_unit("receives_housing_assistance", period.this_year)
     homeless = person.household("is_homeless", period.this_year)
-    return owns_home | subsidized | homeless
+    medical_confinement = person("ssi_lives_in_medical_treatment_facility", period)
+    return owns_home | subsidized | homeless | medical_confinement
 
 
 def _colorado_shelter_ism(person, period, maximum):
@@ -78,17 +82,23 @@ class co_ssa_in_kind_support_and_maintenance(Variable):
         # 3.520.71(E), PDF page 44; 3.520.79, PDF pages 72-74
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=72",
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=44",
-        # 3.250.22, 3.250.222 before 2014
+        # 3.520.786(B), PDF page 71
+        "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=71",
+        # 3.250.22, 3.250.222, 3.250.32 before 2014
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-2&ruleVersionId=4793#page=30",
         "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-4&ruleVersionId=4795#page=13",
     )
 
-    def formula_2002(person, period, parameters):
+    def formula_2007(person, period, parameters):
         # 9 CCR 2503-1 3.250.22 (9 CCR 2503-2 from September 2012): ISM for
         # shelter is capped at the shelter and utility component of the
         # grant standard, and 3.250.222 counts food supplied in full at its
         # component (3.460.43, 3.460.45). PolicyEngine models OAP only from
-        # 2023, so the AND-CS standard's components are used.
+        # 2023, so the AND-CS standard's components are used. The rule
+        # counted ISM before 2007 too, but the table effective January 1,
+        # 2004 prints a $513 AND/SSI-CS maximum grant where the grant
+        # standard is $601, so the base for 2002-2006 is unsettled and those
+        # years are not modeled.
         p = parameters(period).gov.states.co.ssa
         standard = p.state_supplement.grant_standard
         share = p.ism.component_share

@@ -351,11 +351,11 @@
   output:
     co_ssa_in_kind_support_and_maintenance: 255.47
 
-- name: Case 17, the 2004 components apply before 2007.
-  # Shelter and utilities 37.0% and food 20.5% of the $604 standard:
-  # 223.48 + 123.82 = 347.30.
+- name: Case 17, the 2007 components.
+  # Shelter and utilities 36.6% and food 20.5% of the $648 standard
+  # (components effective January 1, 2007): 237.17 + 132.84 = 370.01.
   absolute_error_margin: 0.01
-  period: 2005-01
+  period: 2007-01
   input:
     people:
       person:
@@ -370,4 +370,24 @@
         members: [person]
         state_code: CO
   output:
-    co_ssa_in_kind_support_and_maintenance: 347.3
+    co_ssa_in_kind_support_and_maintenance: 370.01
+
+- name: Case 18, room and board during medical confinement is not counted.
+  # A client without SSI in a hospital whose room and board Medicaid pays.
+  # 3.520.786(B) exempts "room and board furnished during medical
+  # confinement and paid for by a third party".
+  period: 2026-01
+  input:
+    people:
+      person:
+        age: 62
+        pension_income: 6_000
+        ssi_receives_outside_shelter_support: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_ssa_in_kind_support_and_maintenance: 0
