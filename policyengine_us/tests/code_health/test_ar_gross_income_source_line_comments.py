@@ -77,6 +77,7 @@ TY2018_ON = {
     "farm_rent_income": "19",
     "farm_operations_income": "20",
     "unemployment_compensation": "21",
+    "total_unemployment_compensation": "21",
     "gambling_winnings": "22",
 }
 
