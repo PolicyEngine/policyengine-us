@@ -24,7 +24,7 @@
     sc_tanf: 435.28
     # tanf_fpg for size 3 (2025-01, uses 2024-10 FPG) = 2151.67/month
     # need_standard = 2151.67 * 0.5 = 1075.83
-    # benefit = 1075.83 * 0.4046 = 435.49
+    # benefit = 1075.83 * 0.4046 = 435.28
 
 - name: Case 2, single parent with earned income.
   absolute_error_margin: 0.1
@@ -260,3 +260,66 @@
     # tanf_fpg for size 3 = 2151.67; need standard = 1075.83
     # gross income limit = 1075.83 * 1.85 = 1990.29; 750 passes
     # benefit = (1075.83 - 750) * 0.4046 = 131.83
+
+- name: Case 10, an SSI child and the child's income are excluded from the benefit group.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 9
+        is_child_dependent: true
+        receives_ssi: true
+        taxable_private_pension_income: 3_600
+      person3:
+        age: 6
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_tanf_benefit_group_size: 2
+    sc_tanf_gross_income: 0
+    sc_tanf_need_standard: 851.67
+    sc_tanf: 344.58
+    # SC DSS TANF Policy Manual (Volume 67), Section 3.6 (page 56) and
+    # Section 7.7 (page 117): exclude the SSI recipient, his/her income and
+    # resources. The benefit group is the parent and the other child.
+    # FPG for 2 = 1703.33; need standard = 851.67
+    # benefit = 851.67 * 0.4046 = 344.58
+
+- name: Case 11, when the only child receives SSI, the parent is the only benefit group member.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+      person2:
+        age: 9
+        is_child_dependent: true
+        receives_ssi: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        spm_unit_cash_assets: 500
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_tanf_benefit_group_size: 1
+    sc_tanf: 253.89
+    # Section 3.6 (page 56): "If an SSI child is the only child in the home,
+    # include the parent(s) as the only BG member."
+    # FPG for 1 = 1255; need standard = 627.50
+    # benefit = 627.50 * 0.4046 = 253.89

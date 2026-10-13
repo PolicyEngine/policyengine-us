@@ -1,13 +1,14 @@
-description: South Carolina applies the interest, dividend and royalty exclusion to these income sources under the Temporary Assistance for Needy Families program.
+description: South Carolina counts these income sources as unearned income after the interest, dividend and royalty exclusion under the Temporary Assistance for Needy Families program.
 values:
   1996-07-01:
     - interest_income
-    - ordinary_dividend_income
-    # Royalties are included in rental income and are not separately excluded.
+    - dividend_income
+    # Royalties are included in rental income, which has no separate
+    # royalty input, so they are counted without this exclusion.
 metadata:
   unit: list
   period: year
-  label: South Carolina TANF interest and dividend exclusion sources
+  label: South Carolina TANF interest and dividend sources
   reference:
     - title: SC DSS TANF Policy Manual (Volume 67), Section 7.7
       href: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=113

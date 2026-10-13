@@ -15,17 +15,15 @@ class sc_tanf_gross_unearned_income(Variable):
         p = parameters(period).gov.states.sc.tanf.income.unearned
         # Section 7.7 excludes the income of SSI recipients.
         counted = ~person("sc_tanf_ssi_recipient", period)
-        unearned = add(person, period, p.sources) * counted
+        other_sources = add(person, period, p.sources) * counted
         # Section 7.7 excludes up to $400 of interest, dividends and royalties
         # per benefit group each year and averages the rest over 12 months.
         # Each member's exclusion is proportional to their share of that income.
-        p_exclusion = p.interest_and_dividends
-        interest_and_dividends = (
-            max_(add(person, period, p_exclusion.sources), 0) * counted
-        )
+        p_idr = p.interest_and_dividends
+        interest_and_dividends = max_(add(person, period, p_idr.sources), 0) * counted
         unit_interest_and_dividends = person.spm_unit.sum(interest_and_dividends)
         unit_exclusion = min_(
-            unit_interest_and_dividends, p_exclusion.exclusion / MONTHS_IN_YEAR
+            unit_interest_and_dividends, p_idr.exclusion / MONTHS_IN_YEAR
         )
         share = np.divide(
             interest_and_dividends,
@@ -33,4 +31,4 @@ class sc_tanf_gross_unearned_income(Variable):
             out=np.zeros_like(interest_and_dividends),
             where=unit_interest_and_dividends > 0,
         )
-        return unearned - unit_exclusion * share
+        return other_sources + interest_and_dividends - unit_exclusion * share
