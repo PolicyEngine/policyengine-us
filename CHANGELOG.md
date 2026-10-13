@@ -1,3 +1,10 @@
+## [2.41.2] - 2026-10-13
+
+### Fixed
+
+- The alternative minimum tax no longer applies the IRC 59(j) child exemption limitation from 2018, as required by IRC 55(d)(4)(A)(iii). From 2018, taxable excess also uses alternative minimum taxable income instead of the legacy substitution of regular taxable income for young filers.
+
+
 ## [2.41.1] - 2026-10-13
 
 ### Changed
