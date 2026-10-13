@@ -12,7 +12,7 @@
     household_state_benefits: 180
     hud_unearned_income: 540
 
-- name: Case 2, endogenous Medicaid eligibility does not create a SNAP dependency cycle.
+- name: Case 2, endogenous Medicaid enrollment counts the supplement in HUD and SNAP income without a dependency cycle.
   period: 2026-01
   input:
     state_code: UT
@@ -22,3 +22,5 @@
   output:
     ut_ssp: 15
     snap_unearned_income: 45
+    # Annual $360 SSI + $180 supplement = $540; $540 / 12 = $45 per month.
+    hud_unearned_income: 45

@@ -12,7 +12,6 @@
     ut_ssp: 15
 
 - name: Case 2, one dollar institutional SSI still qualifies for the full payment.
-# $49 other income less $20 = $29 countable; $30 - $29 = $1 SSI.
   period: 2026-01
   input:
     state_code: UT
@@ -20,12 +19,13 @@
     medicaid_enrolled: true
     ssi_lives_in_medical_treatment_facility: true
     ssi_medicaid_pays_majority_of_care: true
-    social_security_retirement: 588
-  output:
     ssi: 1
+  output:
+    # $1 SSI >= $1 minimum federal SSI payment, so the $15 payment applies.
+    ut_ssp_eligible: true
     ut_ssp: 15
 
-- name: Case 3, no federal SSI means no state payment.
+- name: Case 3, institutional SSI below one dollar does not qualify.
   period: 2026-01
   input:
     state_code: UT
@@ -33,9 +33,10 @@
     medicaid_enrolled: true
     ssi_lives_in_medical_treatment_facility: true
     ssi_medicaid_pays_majority_of_care: true
-    social_security_retirement: 600
+    ssi: 0.50
   output:
-    ssi: 0
+    # $0.50 SSI < $1 minimum federal SSI payment and no reported receipt.
+    ut_ssp_eligible: false
     ut_ssp: 0
 
 - name: Case 4, Medicaid approval is required.
@@ -115,3 +116,83 @@
     ssi_medicaid_pays_majority_of_care: true
   output:
     ut_ssp: 180
+
+- name: Case 11, reported SSI receipt qualifies without a computed SSI payment.
+  period: 2026-01
+  input:
+    state_code: UT
+    age: 50
+    receives_ssi: true
+    medicaid_enrolled: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    # Age 50 with no disability inputs is not aged, blind or disabled: SSI $0.
+    ssi: 0
+    # Reported SSI receipt meets the SSI condition: $15.
+    ut_ssp: 15
+
+- name: Case 12, couple both in a Medicaid facility each receive the supplement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        medicaid_enrolled: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        medicaid_enrolled: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # Both in a facility: couple computation, $60 / 2 = $30 each with
+    # no income (20 CFR 416.414(b)(2)).
+    ssi: [30, 30]
+    # $30 SSI >= $1 minimum for each spouse: $15 each.
+    ut_ssp: [15, 15]
+
+- name: Case 13, couple with one spouse in a Medicaid facility pays only that spouse.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 72
+        is_tax_unit_head: true
+        medicaid_enrolled: true
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+      person2:
+        age: 70
+        is_tax_unit_spouse: true
+        medicaid_enrolled: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    # One spouse in a facility: separate computation (20 CFR 416.414(b)(3)).
+    # person1 gets the $30 facility rate; person2 at home gets the $994
+    # individual FBR. Both are eligible, so no deeming; no income.
+    ssi: [30, 994]
+    # Only person1 lives in a medical treatment facility: [$15, $0].
+    ut_ssp: [15, 0]

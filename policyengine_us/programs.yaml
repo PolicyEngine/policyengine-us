@@ -1097,7 +1097,7 @@ programs:
         variable: ut_ssp
         parameter_prefix: gov.states.ut.dhhs.ssp
         verified_years: "2026"
-        notes: Models the fixed payment to qualifying Medicaid institution residents.
+        notes: Models the 2026 $15 monthly payment to SSI recipients in Medicaid-funded medical institutions. Utah's former federally administered optional supplement is not modeled.
 
   - id: social_security
     name: Social Security
