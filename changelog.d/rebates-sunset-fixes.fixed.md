@@ -1,1 +1,0 @@
-Stop the one-time Colorado TABOR cash back, Montana property tax rebate, Delaware relief rebate and Indiana automatic taxpayer refund amounts from carrying into years outside their programs, which removes a phantom Colorado refundable credit from 2015-2020 Colorado income tax and a phantom Montana property tax rebate before 2022.

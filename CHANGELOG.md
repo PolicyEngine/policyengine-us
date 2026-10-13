@@ -1,3 +1,17 @@
+## [2.41.1] - 2026-10-13
+
+### Changed
+
+- - Publish to PyPI with trusted publishing instead of the organisation-wide PyPI token.
+- Update CMS out-of-pocket health spending per capita, the uprater for health expense inputs, to the NHE projections 2025-2034 release (2018-2034 from Table 3, 2015-2017 from the historical accounts), and extend it from 2034 at the 2033-2034 growth rate instead of hand-extended 2033-2035 values.
+
+### Fixed
+
+- Montana's elderly homeowner/renter credit now counts SSI, TANF, workers' compensation and guaranteed income payments received by household members in gross household income (MCA 15-30-2337(9)(a); Schedule 2EC line 16).
+- Stop the one-time Colorado TABOR cash back, Montana property tax rebate, Delaware relief rebate and Indiana automatic taxpayer refund amounts from carrying into years outside their programs, which removes a phantom Colorado refundable credit from 2015-2020 Colorado income tax and a phantom Montana property tax rebate before 2022.
+- Run selectively chosen contributed reform test folders one file per process to bound CI memory while preserving coverage.
+
+
 ## [2.41.0] - 2026-10-12
 
 ### Added

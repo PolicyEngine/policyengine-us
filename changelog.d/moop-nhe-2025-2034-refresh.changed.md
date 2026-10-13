@@ -1,1 +1,0 @@
-Update CMS out-of-pocket health spending per capita, the uprater for health expense inputs, to the NHE projections 2025-2034 release (2018-2034 from Table 3, 2015-2017 from the historical accounts), and extend it from 2034 at the 2033-2034 growth rate instead of hand-extended 2033-2035 values.
