@@ -116,8 +116,10 @@
   # End-to-end: with the default (no-op) amount, the personal credit (head 29 +
   # 2 deps * 29 = 87) is consumed via `adds` into ar_personal_credits and reduces
   # AR income tax. This proves the shared-base-redirect dependent credit is wired
-  # through to the actual tax, not just the credit aggregate.
-  output: {ar_income_tax: 1346.67}
+  # through to the actual tax, not just the credit aggregate. Net taxable
+  # income 50,000 - 2,470 = 47,530 falls in the 2025 Regular Income Tax Table
+  # row $47,500-$47,600: $1,434 (AR1000F instructions p.32); 1,434 - 87 = 1,347.
+  output: {ar_income_tax: 1347}
 
 - name: AR dependent credit reform - amount zero raises income tax (downstream end-to-end)
   period: 2025
@@ -133,9 +135,9 @@
     tax_units: {tax_unit: {members: [parent, child1, child2], filing_status: SINGLE}}
     households: {household: {members: [parent, child1, child2], state_name: AR}}
   # End-to-end: removing the dependent portion (amount 0) drops the personal
-  # credit from 87 to 29, raising AR income tax by exactly 58 (1346.67 -> 1404.67).
+  # credit from 87 to 29, raising AR income tax by exactly 58 (1347 -> 1405).
   # Confirms the dependent-credit -> tax wiring under the shared-base-redirect pattern.
-  output: {ar_income_tax: 1404.67}
+  output: {ar_income_tax: 1405}
 
 - name: AR dependent credit reform - age limit excludes dependents at or over the age
   period: 2025
