@@ -1,0 +1,20 @@
+- name: Default ca_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: CA
+    employment_income: 50_000
+  output:
+    ca_other_subtractions: 0
+    ca_agi_subtractions: 0
+    ca_agi: 50_000
+
+- name: ca_other_subtractions reduces CA AGI
+  period: 2024
+  input:
+    state_code: CA
+    employment_income: 50_000
+    ca_other_subtractions: 2_000
+  output:
+    ca_other_subtractions: 2_000
+    ca_agi_subtractions: 2_000
+    ca_agi: 48_000

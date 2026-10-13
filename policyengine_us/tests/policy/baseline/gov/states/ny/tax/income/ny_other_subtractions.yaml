@@ -1,0 +1,20 @@
+- name: Default ny_other_subtractions is zero
+  period: 2024
+  input:
+    state_code: NY
+    employment_income: 50_000
+  output:
+    ny_other_subtractions: 0
+    ny_agi_subtractions: 0
+    ny_agi: 50_000
+
+- name: ny_other_subtractions reduces NY AGI
+  period: 2024
+  input:
+    state_code: NY
+    employment_income: 50_000
+    ny_other_subtractions: 2_500
+  output:
+    ny_other_subtractions: 2_500
+    ny_agi_subtractions: 2_500
+    ny_agi: 47_500

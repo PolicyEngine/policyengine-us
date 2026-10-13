@@ -1,0 +1,18 @@
+- name: Default co_other_additions is zero
+  period: 2024
+  input:
+    state_code: CO
+    taxable_income: 30_000
+  output:
+    co_other_additions: 0
+    co_taxable_income: 30_000
+
+- name: co_other_additions increases CO taxable income
+  period: 2024
+  input:
+    state_code: CO
+    taxable_income: 30_000
+    co_other_additions: 1_200
+  output:
+    co_other_additions: 1_200
+    co_taxable_income: 31_200

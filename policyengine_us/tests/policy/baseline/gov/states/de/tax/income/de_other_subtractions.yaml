@@ -1,0 +1,32 @@
+- name: Default de_other_subtractions is zero
+  period: 2022
+  input:
+    people:
+      head:
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [head]
+        state_code: DE
+  output:
+    de_other_subtractions: 0
+    de_subtractions: 0
+
+- name: de_other_subtractions increases de_subtractions for person
+  period: 2022
+  input:
+    people:
+      head:
+        employment_income: 50_000
+        de_other_subtractions: 2_000
+        is_tax_unit_head: true
+        is_tax_unit_dependent: false
+    households:
+      household:
+        members: [head]
+        state_code: DE
+  output:
+    de_other_subtractions: 2_000
+    de_subtractions: 2_000
