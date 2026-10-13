@@ -45,8 +45,10 @@ class ky_federal_agi(Variable):
         business_loss = max_(loss - capital_loss, 0)
         not_dependent = ~person("is_tax_unit_dependent", period)
         owned_business_loss = 0
+        # Each Schedule C category's loss counts on its own, as in loss_ald.
         for source in (
-            "total_self_employment_income",
+            "self_employment_income",
+            "sstb_self_employment_income",
             "farm_operations_income",
             "rental_income",
             "farm_rent_income",
