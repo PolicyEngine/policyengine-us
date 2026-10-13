@@ -10,9 +10,10 @@
     ut_ssp: 180
     snap_unearned_income: 540
     household_state_benefits: 180
-    hud_unearned_income: 540
+    # HUD income excludes the supplement (see ut_ssp): SSI 30 * 12 = 360.
+    hud_unearned_income: 360
 
-- name: Case 2, endogenous Medicaid enrollment counts the supplement in HUD and SNAP income without a dependency cycle.
+- name: Case 2, endogenous Medicaid enrollment counts the supplement in SNAP income without a dependency cycle.
   period: 2026-01
   input:
     state_code: UT
@@ -21,6 +22,5 @@
     ssi_medicaid_pays_majority_of_care: true
   output:
     ut_ssp: 15
+    # $30 SSI + $15 supplement = $45 for the month.
     snap_unearned_income: 45
-    # Annual $360 SSI + $180 supplement = $540; $540 / 12 = $45 per month.
-    hud_unearned_income: 45
