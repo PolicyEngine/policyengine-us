@@ -113,11 +113,30 @@
   period: 2026-01
   absolute_error_margin: 0.01
   input:
-    state_code: OK
-    age: 10
-    is_blind: true
+    people:
+      person1:
+        age: 34
+        person_id: 1
+        employment_income: 15_080
+      person2:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_blind: true
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: OK
   output:
-    ok_ssp: 40
+    # Parent works full time at 7.25 an hour: (1_256.67 - 85) / 2 = 585.83
+    # is below the 994 parent allocation, so nothing is deemed.
+    # Child SSI 994; min(1_034 - 994, 40) = 40.
+    ok_ssp: [0, 40]
 
 - name: Case 13, nonresident.
   period: 2026-01
@@ -147,14 +166,15 @@
   output:
     ok_ssp: 0
 
-- name: Case 16, TANF member cannot also get SSP.
+- name: Case 16, incarcerated person cannot get SSP.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: OK
     age: 65
-    ok_ssp_is_in_tanf_unit: true
+    is_incarcerated: true
   output:
+    # Incarceration fails ok_ssp_eligible.
     ok_ssp: 0
 
 - name: Case 17, excluded facility or sanction.
@@ -173,8 +193,10 @@
   input:
     state_code: OK
     age: 65
-    ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
   output:
+    # Living in a medical treatment facility fails ok_ssp_eligible.
     ok_ssp: 0
 
 - name: Case 19, VTR does not increase the forty dollar maximum.
@@ -186,3 +208,19 @@
     ssi_federal_living_arrangement: ANOTHER_PERSONS_HOUSEHOLD
   output:
     ok_ssp: 40
+
+- name: Case 20, facility living arrangement alone bars SSP.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+  output:
+    # Aged, 0 resources <= 2_000, citizen: otherwise SSI-eligible.
+    is_ssi_eligible: true
+    # The facility booleans stay false, but the arrangement is
+    # MEDICAL_TREATMENT_FACILITY, so in_facility is true.
+    ok_ssp_eligible: false
+    # defined_for ok_ssp_eligible, so 0.
+    ok_ssp: 0

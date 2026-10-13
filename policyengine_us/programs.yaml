@@ -1097,11 +1097,9 @@ programs:
         variable: ok_ssp
         parameter_prefix: gov.states.ok.dhs.ssp
         verified_years: '2026'
-        notes: Optional community SSP, including the distinct ineligible/essential spouse tests,
-          blind earnings exclusion and child allocations. Procedural exclusions and individual
-          TANF membership require inputs. Override countable income for specialized work expenses,
-          sponsor deeming or state-specific parental deeming; grandfathered institutional payments
-          are excluded.
+        notes: Models the 2026 community supplement for individuals, couples and individuals with
+          an ineligible spouse. Essential spouses, persons in a TANF case and grandfathered
+          institutional payments are not modeled.
 
   - id: social_security
     name: Social Security

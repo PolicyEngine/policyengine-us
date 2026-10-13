@@ -4,19 +4,17 @@ from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusi
 )
 
 
-def ok_ssp_income(person, period, parameters, combined):
+def ok_ssp_income(person, period, parameters, *, combined):
     p = parameters(period).gov.states.ok.dhs.ssp
     ssi = parameters(period).gov.ssa.ssi
     # 317:35-5-42(i) rounds each monthly source before applying exclusions.
-    earned = sum(
-        np.floor(max_(person(source, period), 0) + 0.5)
-        for source in ssi.income.sources.earned
-    )
-    unearned = sum(
-        np.floor(max_(person(source, period), 0) + 0.5)
-        for source in ssi.income.sources.unearned
-        if source not in ("interest_income", "dividend_income")
-    )
+    earned = 0
+    for source in ssi.income.sources.earned:
+        earned = earned + np.floor(max_(person(source, period), 0) + 0.5)
+    unearned = 0
+    for source in ssi.income.sources.unearned:
+        if source not in p.excluded_unearned_sources:
+            unearned = unearned + np.floor(max_(person(source, period), 0) + 0.5)
     child = person("is_child", period.this_year)
     unearned = max_(
         unearned
@@ -51,11 +49,12 @@ def ok_ssp_income(person, period, parameters, combined):
         allocation = ~eligible * person("ok_ssp_spouse_child_allocation", period)
         earned = max_(earned - max_(allocation - unearned, 0), 0)
         unearned = max_(unearned - allocation, 0)
-        included = ~person("ok_ssp_is_in_tanf_unit", period)
-        earned = person.marital_unit.sum(earned * included)
-        unearned = person.marital_unit.sum(unearned * included)
-        benefit = person.marital_unit.sum(benefit * included)
-        shelter = person.marital_unit.sum(shelter * included)
+        earned = person.marital_unit.sum(earned)
+        unearned = person.marital_unit.sum(unearned)
+        benefit = person.marital_unit.sum(benefit)
+        # 317:35-5-42(b)(8)(A) counts the one-third value once, for the
+        # individual or the eligible couple, never for an ineligible spouse.
+        shelter = person.marital_unit.sum(shelter * eligible)
     countable = (
         _apply_ssi_exclusions(
             earned * MONTHS_IN_YEAR, unearned * MONTHS_IN_YEAR, parameters, period

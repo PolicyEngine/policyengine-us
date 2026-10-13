@@ -51,7 +51,7 @@
       person1:
         age: 65
       person2:
-        age: 40
+        age: 63
         social_security_retirement: 18_480
     marital_units:
       couple:
@@ -89,17 +89,18 @@
   output:
     ok_ssp: [0, 0]
 
-- name: Case 5, essential spouse uses combined test.
+- name: Case 5, aged spouse who declines SSI leaves the claimant on the individual test.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        age: 65
-        social_security_retirement: 12_720
-        ok_ssp_has_essential_spouse: true
+        age: 68
+        social_security_retirement: 6_000
       person2:
-        age: 40
+        age: 66
+        social_security_retirement: 18_000
+        takes_up_ssi_if_eligible: false
     marital_units:
       couple:
         members: [person1, person2]
@@ -111,19 +112,26 @@
         members: [person1, person2]
         state_code: OK
   output:
+    # person2 does not take up, so only person1 is SSP-eligible.
+    ok_ssp_eligible: [true, false]
+    # An aged spouse is not an ineligible spouse, so person1 is tested alone.
+    # Federal couple SSI: (500 + 1_500 - 20) / 2 = 990 > 745.5, so 0.
+    # Own income 500 - 20 = 480 + 0 SSI; min(1_034 - 480, 40) = 40.
     ok_ssp: [40, 0]
 
-- name: Case 6, spouse on TANF income is excluded.
+- name: Case 6, disabled spouse barred from SSP leaves the claimant on the individual test.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
-        age: 65
+        age: 68
+        social_security_retirement: 6_000
       person2:
-        age: 40
-        social_security_retirement: 60_000
-        ok_ssp_is_in_tanf_unit: true
+        age: 55
+        meets_ssi_disability_criteria: true
+        social_security_disability: 18_000
+        ok_ssp_is_excluded: true
     marital_units:
       couple:
         members: [person1, person2]
@@ -135,6 +143,11 @@
         members: [person1, person2]
         state_code: OK
   output:
+    # person2 is disabled but excluded, so only person1 is SSP-eligible.
+    ok_ssp_eligible: [true, false]
+    # A disabled spouse is not an ineligible spouse; the 1_500 SSDI is not
+    # combined. Federal couple SSI: (500 + 1_500 - 20) / 2 = 990 > 745.5, so 0.
+    # Own income 480 + 0 SSI; min(1_034 - 480, 40) = 40.
     ok_ssp: [40, 0]
 
 - name: Case 7, spouse child allocation supports recipient.
@@ -146,7 +159,7 @@
         age: 65
       person2:
         age: 40
-        social_security_retirement: 21_600
+        employment_income: 41_600
       person3:
         age: 10
     marital_units:
@@ -162,6 +175,10 @@
         members: [person1, person2, person3]
         state_code: OK
   output:
+    # Federal: 41_600 - 5_964 child allocation = 35_636 deemed earnings;
+    # 1_491 - (2_969.67 - 85) / 2 = 48.67 SSI.
+    # Combined: 3_466.67 rounds to 3_467; (3_467 - 498 - 85) / 2 = 1_442
+    # + 48.67 = 1_490.67 < 1_532; min(41.33, 40) = 40.
     ok_ssp: [40, 0, 0]
 
 - name: Case 8, child income reduces spouse allocation.
@@ -173,7 +190,7 @@
         age: 65
       person2:
         age: 40
-        social_security_retirement: 21_600
+        employment_income: 41_600
       person3:
         age: 10
         social_security_survivors: 4_800
@@ -190,6 +207,9 @@
         members: [person1, person2, person3]
         state_code: OK
   output:
+    # Federal: 41_600 - (5_964 - 4_800) = 40_436 deemed earnings;
+    # (3_369.67 - 85) / 2 = 1_642.33 > 1_491, so SSI is 0.
+    # Allocation 498 - 400 = 98; (3_467 - 98 - 85) / 2 = 1_642 >= 1_532.
     ok_ssp: [0, 0, 0]
 
 - name: Case 9, resources of ineligible spouse count.
@@ -225,3 +245,204 @@
     ok_ssp: 480
     snap_unearned_income: 12_408
     hud_unearned_income: 12_408
+
+- name: Case 11, parents' savings over the deeming allowance bar a blind child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        employment_income: 45_000
+        bank_account_assets: 9_000
+      person2:
+        age: 38
+        person_id: 2
+      person3:
+        age: 8
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 2
+        is_blind: true
+    marital_units:
+      parents:
+        members: [person1, person2]
+      child:
+        members: [person3]
+    families:
+      family:
+        members: [person1, person2, person3]
+    households:
+      hh:
+        members: [person1, person2, person3]
+        state_code: OK
+  output:
+    # 9_000 parental savings - 3_000 two-parent allowance = 6_000 deemed.
+    ssi_resources_deemed_from_ineligible_parent: [0, 0, 6_000]
+    # Child: 0 own + 6_000 deemed > 2_000 limit; parents are not aged,
+    # blind or disabled.
+    is_ssi_eligible: [false, false, false]
+    ok_ssp_eligible: [false, false, false]
+    # Father: (3_750 - 85) / 2 = 1_832.5. Child: deemed parental income
+    # (3_750 - 85) / 2 - 2 * 745.5 = 341.5, less 20 = 321.5, with no SSI.
+    ok_ssp_own_countable_income: [1_832.5, 0, 321.5]
+    # 321.5 < 1_034, so only the resource test bars the payment.
+    ok_ssp: [0, 0, 0]
+
+- name: Case 12, one-third value counts once for an SSI husband with an ineligible wife in their daughter's home.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 62
+        social_security_retirement: 4_800
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Wife's 400 is below the 1_491 - 994 = 497 deeming threshold.
+    # Husband: 994 * (1 - 1/3) = 662.67 reduced federal rate.
+    ssi: [662.67, 0]
+    ok_ssp_eligible: [true, false]
+    # Husband: 662.67 SSI + 994 / 3 = 331.33 one-third value = 994.
+    # Wife: 400 - 20 = 380 + 331.33 = 711.33 (not used).
+    ok_ssp_own_countable_income: [994, 711.33]
+    # 380 + 662.67 + 331.33 for the husband only = 1_374.
+    ok_ssp_countable_income: [1_374, 1_374]
+    # Own 994 < 1_034; min(1_532 - 1_374, 40) = 40.
+    ok_ssp: [40, 0]
+
+- name: Case 13, aged spouse in a medical facility leaves the community spouse on the individual test.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 68
+        social_security_retirement: 7_200
+      person2:
+        age: 66
+        social_security_retirement: 7_200
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Separate computation: 994 - (600 - 20) = 414; facility rate 30 - 580 < 0.
+    ssi: [414, 0]
+    ok_ssp_eligible: [true, false]
+    # Community spouse: 580 + 414 = 994. Facility spouse: 600 - 20 = 580.
+    ok_ssp_own_countable_income: [994, 580]
+    # 1_200 - 20 + 414 = 1_594 (not used).
+    ok_ssp_countable_income: [1_594, 1_594]
+    # min(1_034 - 994, 40) = 40.
+    ok_ssp: [40, 0]
+
+- name: Case 14, one-third of child support is excluded for a disabled child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 32
+        person_id: 1
+        employment_income: 31_200
+      person2:
+        age: 9
+        person_id: 2
+        parent_1_id: 1
+        meets_ssi_disability_criteria: true
+        child_support_received: 4_800
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    families:
+      family:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # (2_600 - 85) / 2 = 1_257.5 - 994 parent allocation = 263.5.
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 263.5]
+    # Federal SSI counts all child support: 994 - (400 + 263.5 - 20) = 350.5.
+    ssi: [0, 350.5]
+    ok_ssp_eligible: [false, true]
+    # Mother: (2_600 - 85) / 2 = 1_257.5.
+    # Child: 400 - 400 / 3 = 266.67 + 263.5 - 20 = 510.17 + 350.5 = 860.67.
+    ok_ssp_own_countable_income: [1_257.5, 860.67]
+    ok_ssp_countable_income: [1_257.5, 860.67]
+    # min(1_034 - 860.67, 40) = 40.
+    ok_ssp: [0, 40]
+
+- name: Case 15, children's allocation is summed and reduced by a teen's earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        meets_ssi_disability_criteria: true
+      person2:
+        age: 43
+        employment_income: 41_600
+      person3:
+        age: 16
+        employment_income: 3_600
+      person4:
+        age: 9
+    marital_units:
+      couple:
+        members: [person1, person2]
+      teen:
+        members: [person3]
+      child:
+        members: [person4]
+    families:
+      family:
+        members: [person1, person2, person3, person4]
+    households:
+      hh:
+        members: [person1, person2, person3, person4]
+        state_code: OK
+  output:
+    # (498 - 300) + 498 = 696.
+    ok_ssp_spouse_child_allocation: [696, 696, 696, 696]
+    # Federal: 41_600 - (5_964 - 3_600) - 5_964 = 33_272 deemed earnings;
+    # (2_772.67 - 85) / 2 = 1_343.83; 1_491 - 1_343.83 = 147.17.
+    ssi: [147.17, 0, 0, 0]
+    ok_ssp_eligible: [true, false, false, false]
+    # Claimant: 147.17 SSI. Wife: (3_467 - 85) / 2 = 1_691.
+    # Teen: (300 - 85) / 2 = 107.5.
+    ok_ssp_own_countable_income: [147.17, 1_691, 107.5, 0]
+    # Combined: (3_467 - 696 - 85) / 2 = 1_343 + 147.17 = 1_490.17;
+    # min(1_532 - 1_490.17, 40) = 40.
+    ok_ssp: [40, 0, 0, 0]

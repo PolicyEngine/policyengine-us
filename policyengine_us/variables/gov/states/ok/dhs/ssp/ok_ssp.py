@@ -17,27 +17,31 @@ class ok_ssp(Variable):
         couple_standard = ssi.couple + 2 * p.maximum_payment
         recipients = person.marital_unit.sum(person("ok_ssp_eligible", period))
         joint = recipients == 2
-        has_spouse = person.marital_unit.nb_persons() == 2
-        spouse_tanf = (
-            person.marital_unit.sum(person("ok_ssp_is_in_tanf_unit", period)) > 0
+        # OAC 340:15-1-2: an ineligible spouse lives with the individual and is
+        # not aged, blind or disabled. With any other spouse the claimant is an
+        # individual. Essential spouses (in the case before 1974) are not
+        # modeled separately.
+        abd = person("is_ssi_aged_blind_disabled", period.this_year)
+        arrangement = person("ssi_federal_living_arrangement", period)
+        in_facility = person("ssi_lives_in_medical_treatment_facility", period) | (
+            arrangement == arrangement.possible_values.MEDICAL_TREATMENT_FACILITY
         )
-        with_spouse = has_spouse & ~spouse_tanf
+        apart = in_facility | person("is_incarcerated", period)
+        ineligible_spouse = person.marital_unit.sum(~abd & ~apart) > 0
         own = person("ok_ssp_own_countable_income", period)
         combined = person("ok_ssp_countable_income", period)
         standard = where(
             joint,
             couple_standard,
-            where(with_spouse, p.ineligible_spouse_standard, individual_standard),
+            where(ineligible_spouse, p.ineligible_spouse_standard, individual_standard),
         )
-        income = where(with_spouse, combined, own)
+        income = where(joint | ineligible_spouse, combined, own)
         gap = max_(standard - income, 0)
-        # Assign an indivisible dollar to the second member of the couple.
+        # OAC 340:15-1-5(c)(1)(B) and Appendix C-1 Schedule VIII.A give one
+        # spouse the odd dollar without naming which, so person-level amounts
+        # follow member order while the couple total does not.
         first_share = np.floor(gap / 2)
         first = person.marital_unit.reference_entity.members_position == 0
         payment = where(joint, where(first, first_share, gap - first_share), gap)
-        own_test = (
-            joint
-            | person("ok_ssp_has_essential_spouse", period)
-            | (own < individual_standard)
-        )
+        own_test = joint | (own < individual_standard)
         return own_test * min_(payment, p.maximum_payment)

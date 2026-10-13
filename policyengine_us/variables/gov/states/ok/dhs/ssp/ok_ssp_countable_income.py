@@ -11,4 +11,4 @@ class ok_ssp_countable_income(Variable):
     reference = "https://www.oklahoma.gov/ohca/policies-and-rules/xpolicy/medical-assistance-for-adults-and-children-eligibility/eligibility-and-countable-income/countable-income-and-resources/determination-of-countable-income-for-individuals-categorically-.html"
 
     def formula(person, period, parameters):
-        return ok_ssp_income(person, period, parameters, True)
+        return ok_ssp_income(person, period, parameters, combined=True)
