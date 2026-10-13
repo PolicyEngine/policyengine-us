@@ -3,425 +3,459 @@
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
   output:
     ia_ssa: 0
+
 - name: Case 2, ordinary blind supplement.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     is_blind: true
   output:
     ia_ssa: 22
+
 - name: Case 3, blind state-only income gap.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     is_blind: true
-    social_security_retirement: 12240
+    social_security_retirement: 12_240
   output:
     ia_ssa: 16
+
 - name: Case 4, dependent-person supplement.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: DEPENDENT_PERSON
   output:
     ia_ssa: 518
+
 - name: Case 5, blind dependent-person recipient.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: DEPENDENT_PERSON
     is_blind: true
   output:
     ia_ssa: 540
+
 - name: Case 6, dependent income at limit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: DEPENDENT_PERSON
     ia_ssa_dependent_countable_income: 518
   output:
     ia_ssa: 0
+
 - name: Case 7, dependent income is an eligibility gate not a grant deduction.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: DEPENDENT_PERSON
     ia_ssa_dependent_countable_income: 100
   output:
     ia_ssa: 518
+
 - name: Case 8, total dependent group income exceeds standard.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: DEPENDENT_PERSON
-    social_security_retirement: 18000
+    social_security_retirement: 18_000
     ia_ssa_dependent_countable_income: 40
   output:
     ia_ssa: 0
+
 - name: Case 9, family life home SSI-only top up.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: FAMILY_LIFE_HOME
   output:
     ia_ssa: 162
+
 - name: Case 10, blind family-life home stacks blind supplement.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: FAMILY_LIFE_HOME
     is_blind: true
   output:
     ia_ssa: 184
+
 - name: Case 11, family-life home with other unearned income.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: FAMILY_LIFE_HOME
-    social_security_retirement: 1200
+    social_security_retirement: 1_200
   output:
     ia_ssa: 142
+
 - name: Case 12, family-life home earnings do not qualify for SSI-only top up.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: FAMILY_LIFE_HOME
-    employment_income: 1200
+    employment_income: 1_200
   output:
     ia_ssa: 142
+
 - name: Case 13, state-only family-life payment.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: FAMILY_LIFE_HOME
-    social_security_retirement: 13200
+    social_security_retirement: 13_200
   output:
     ia_ssa: 56
+
 - name: Case 14, RCF actual January cost less participation.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: RESIDENTIAL_CARE
     ia_ssa_rcf_daily_rate: 38.47
   output:
     ia_ssa: 328.57
+
 - name: Case 15, RCF February uses actual days not eligibility multiplier.
   period: 2026-02
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: RESIDENTIAL_CARE
     ia_ssa_rcf_daily_rate: 38.47
   output:
     ia_ssa: 213.16
+
 - name: Case 16, blind RCF resident also gets blind supplement.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: RESIDENTIAL_CARE
     ia_ssa_rcf_daily_rate: 38.47
     is_blind: true
   output:
     ia_ssa: 350.57
+
 - name: Case 17, RCF no general income disregard.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: RESIDENTIAL_CARE
     ia_ssa_rcf_daily_rate: 38.47
-    social_security_retirement: 6516
+    social_security_retirement: 6_516
   output:
     ia_ssa: 308.57
+
 - name: Case 18, RCF verified medical and family deductions.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: RESIDENTIAL_CARE
     ia_ssa_rcf_daily_rate: 38.47
     ia_ssa_care_additional_deductions: 50
   output:
     ia_ssa: 378.57
+
 - name: Case 19, RCF approved daily rate is capped.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: RESIDENTIAL_CARE
     ia_ssa_rcf_daily_rate: 100
   output:
     ia_ssa: 328.57
+
 - name: Case 20, RCF requires a facility rate.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: RESIDENTIAL_CARE
   output:
     ia_ssa: 0
+
 - name: Case 21, in-home care at approved cost.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: IN_HOME_CARE
     ia_ssa_ihhrc_monthly_cost: 400
   output:
     ia_ssa: 400
+
 - name: Case 22, in-home care cost at ceiling.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: IN_HOME_CARE
     ia_ssa_ihhrc_monthly_cost: 480.55
   output:
     ia_ssa: 480.55
+
 - name: Case 23, in-home cost over ceiling makes care ineligible.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: IN_HOME_CARE
     ia_ssa_ihhrc_monthly_cost: 480.56
   output:
     ia_ssa: 0
+
 - name: Case 24, manual IHHRC example with social security and SSI.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: IN_HOME_CARE
     ia_ssa_ihhrc_monthly_cost: 400
-    social_security_retirement: 6516
+    social_security_retirement: 6_516
   output:
     ia_ssa: 380
+
 - name: Case 25, IHHRC medical deductions reduce participation.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: IN_HOME_CARE
     ia_ssa_ihhrc_monthly_cost: 400
-    social_security_retirement: 16800
+    social_security_retirement: 16_800
     ia_ssa_care_additional_deductions: 100
   output:
     ia_ssa: 94
+
 - name: Case 26, first partial in-home month has no participation.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: IN_HOME_CARE
     ia_ssa_ihhrc_monthly_cost: 400
-    social_security_retirement: 16800
+    social_security_retirement: 16_800
     ia_ssa_care_days: 16
     ia_ssa_ihhrc_initial_partial_month: true
   output:
     ia_ssa: 206.4516129032258
+
 - name: Case 27, blind allowance coexists with in-home care.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: IN_HOME_CARE
     ia_ssa_ihhrc_monthly_cost: 400
     is_blind: true
   output:
     ia_ssa: 422
+
 - name: Case 28, excess resources.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     is_blind: true
-    ssi_countable_resources: 2001
+    ssi_countable_resources: 2_001
   output:
     ia_ssa: 0
+
 - name: Case 29, nonresident.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NE
     age:
-      '2026': 65
+      2026: 65
     is_blind: true
   output:
     ia_ssa: 0
+
 - name: Case 30, opt out.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     is_blind: true
     takes_up_ssi_if_eligible: false
   output:
     ia_ssa: 0
+
 - name: Case 31, medical facility has no ordinary blind supplement.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     is_blind: true
     ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
   output:
     ia_ssa: 0
+
 - name: Case 32, SMME requires full Medicaid and Part B.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: SMME
     ia_ssa_smme_coverage_eligible: true
-    ia_ssa_smme_countable_income: 2000
+    ia_ssa_smme_countable_income: 2_000
   output:
     ia_ssa: 1
+
 - name: Case 33, SMME missing coverage.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: SMME
-    ia_ssa_smme_countable_income: 2000
+    ia_ssa_smme_countable_income: 2_000
   output:
     ia_ssa: 0
+
 - name: Case 34, SMME income below 120 percent poverty.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: SMME
     ia_ssa_smme_coverage_eligible: true
-    ia_ssa_smme_countable_income: 1000
+    ia_ssa_smme_countable_income: 1_000
   output:
     ia_ssa: 0
+
 - name: Case 35, SMME cannot stack with blind payment.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': IA
+      2026: IA
     age:
-      '2026': 65
+      2026: 65
     ia_ssa_category: SMME
     ia_ssa_smme_coverage_eligible: true
-    ia_ssa_smme_countable_income: 2000
+    ia_ssa_smme_countable_income: 2_000
     is_blind: true
   output:
     ia_ssa: 22
@@ -434,587 +468,468 @@
   absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 1
+          2026: 1
         bank_account_assets:
-          '2026': 10000
-      child1:
+          2026: 10_000
+      person2:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 3
+          2026: 3
         parent_1_id:
-          '2026': 1
+          2026: 1
         ia_ssa_category: IN_HOME_CARE
         ia_ssa_ihhrc_monthly_cost: 400
         is_disabled:
-          '2026': true
+          2026: true
         meets_ssi_disability_criteria:
-          '2026': true
+          2026: true
     marital_units:
       parent1:
-        members:
-        - parent1
+        members: [person1]
       child1:
-        members:
-        - child1
-    tax_units:
-      parent1:
-        members:
-        - parent1
-      child1:
-        members:
-        - child1
+        members: [person2]
     families:
       family:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
     spm_units:
       unit:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
     households:
       home:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
         state_code:
-          '2026': IA
+          2026: IA
   output:
-    ia_ssa:
-    - 0
-    - 0
+    ia_ssa: [0, 0]
+
 - name: Case 37, one-parent allowance and child ceiling are inclusive.
   period: 2026-06
   absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 1
+          2026: 1
         bank_account_assets:
-          '2026': 4000
-      child1:
+          2026: 4_000
+      person2:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 3
+          2026: 3
         parent_1_id:
-          '2026': 1
+          2026: 1
         ia_ssa_category: IN_HOME_CARE
         ia_ssa_ihhrc_monthly_cost: 400
         is_disabled:
-          '2026': true
+          2026: true
         meets_ssi_disability_criteria:
-          '2026': true
+          2026: true
     marital_units:
       parent1:
-        members:
-        - parent1
+        members: [person1]
       child1:
-        members:
-        - child1
-    tax_units:
-      parent1:
-        members:
-        - parent1
-      child1:
-        members:
-        - child1
+        members: [person2]
     families:
       family:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
     spm_units:
       unit:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
     households:
       home:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
         state_code:
-          '2026': IA
+          2026: IA
   output:
-    ia_ssa:
-    - 0
-    - 400
+    ia_ssa: [0, 400]
+
 - name: Case 38, one cent above the combined allowances defeats eligibility.
   period: 2026-06
   absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 1
+          2026: 1
         bank_account_assets:
-          '2026': 4000.01
-      child1:
+          2026: 4_000.01
+      person2:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 3
+          2026: 3
         parent_1_id:
-          '2026': 1
+          2026: 1
         ia_ssa_category: IN_HOME_CARE
         ia_ssa_ihhrc_monthly_cost: 400
         is_disabled:
-          '2026': true
+          2026: true
         meets_ssi_disability_criteria:
-          '2026': true
+          2026: true
     marital_units:
       parent1:
-        members:
-        - parent1
+        members: [person1]
       child1:
-        members:
-        - child1
-    tax_units:
-      parent1:
-        members:
-        - parent1
-      child1:
-        members:
-        - child1
+        members: [person2]
     families:
       family:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
     spm_units:
       unit:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
     households:
       home:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
         state_code:
-          '2026': IA
+          2026: IA
   output:
-    ia_ssa:
-    - 0
-    - 0
+    ia_ssa: [0, 0]
+
 - name: Case 39, an adult child does not receive deemed parental resources.
   period: 2026-06
   absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 1
+          2026: 1
         bank_account_assets:
-          '2026': 10000
-      child1:
+          2026: 10_000
+      person2:
         age:
-          '2026': 19
+          2026: 19
         person_id:
-          '2026': 3
+          2026: 3
         parent_1_id:
-          '2026': 1
+          2026: 1
         ia_ssa_category: IN_HOME_CARE
         ia_ssa_ihhrc_monthly_cost: 400
         is_disabled:
-          '2026': true
+          2026: true
         meets_ssi_disability_criteria:
-          '2026': true
+          2026: true
     marital_units:
       parent1:
-        members:
-        - parent1
+        members: [person1]
       child1:
-        members:
-        - child1
-    tax_units:
-      parent1:
-        members:
-        - parent1
-      child1:
-        members:
-        - child1
+        members: [person2]
     families:
       family:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
     spm_units:
       unit:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
     households:
       home:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
         state_code:
-          '2026': IA
+          2026: IA
   output:
-    ia_ssa:
-    - 0
-    - 400
+    ia_ssa: [0, 400]
+
 - name: Case 40, co-residence alone does not deem an unrelated adult resource balance.
   period: 2026-06
   absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 1
+          2026: 1
         bank_account_assets:
-          '2026': 0
-      child1:
+          2026: 0
+      person2:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 3
+          2026: 3
         parent_1_id:
-          '2026': 1
+          2026: 1
         ia_ssa_category: IN_HOME_CARE
         ia_ssa_ihhrc_monthly_cost: 400
         is_disabled:
-          '2026': true
+          2026: true
         meets_ssi_disability_criteria:
-          '2026': true
-      unrelated:
+          2026: true
+      person3:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 4
+          2026: 4
         bank_account_assets:
-          '2026': 10000
+          2026: 10_000
     marital_units:
       parent1:
-        members:
-        - parent1
+        members: [person1]
       child1:
-        members:
-        - child1
+        members: [person2]
       unrelated:
-        members:
-        - unrelated
-    tax_units:
-      parent1:
-        members:
-        - parent1
-      child1:
-        members:
-        - child1
-      unrelated:
-        members:
-        - unrelated
+        members: [person3]
     families:
       family:
-        members:
-        - parent1
-        - child1
-        - unrelated
+        members: [person1, person2, person3]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+      unrelated:
+        members: [person3]
     spm_units:
       unit:
-        members:
-        - parent1
-        - child1
-        - unrelated
+        members: [person1, person2, person3]
     households:
       home:
-        members:
-        - parent1
-        - child1
-        - unrelated
+        members: [person1, person2, person3]
         state_code:
-          '2026': IA
+          2026: IA
   output:
-    ia_ssa:
-    - 0
-    - 400
-    - 0
+    ia_ssa: [0, 400, 0]
+
 - name: Case 41, two eligible siblings share the same two-parent excess.
   period: 2026-06
   absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 1
+          2026: 1
         bank_account_assets:
-          '2026': 5500
-      parent2:
+          2026: 5_500
+      person2:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 2
-      child1:
+          2026: 2
+      person3:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 3
+          2026: 3
         parent_1_id:
-          '2026': 1
+          2026: 1
         parent_2_id:
-          '2026': 2
+          2026: 2
         ia_ssa_category: IN_HOME_CARE
         ia_ssa_ihhrc_monthly_cost: 400
         is_disabled:
-          '2026': true
+          2026: true
         meets_ssi_disability_criteria:
-          '2026': true
-      child2:
+          2026: true
+      person4:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 4
+          2026: 4
         parent_1_id:
-          '2026': 1
+          2026: 1
         parent_2_id:
-          '2026': 2
+          2026: 2
         ia_ssa_category: IN_HOME_CARE
         ia_ssa_ihhrc_monthly_cost: 400
         bank_account_assets:
-          '2026': 0
+          2026: 0
         is_disabled:
-          '2026': true
+          2026: true
         meets_ssi_disability_criteria:
-          '2026': true
+          2026: true
     marital_units:
       parent1:
-        members:
-        - parent1
+        members: [person1]
       parent2:
-        members:
-        - parent2
+        members: [person2]
       child1:
-        members:
-        - child1
+        members: [person3]
       child2:
-        members:
-        - child2
-    tax_units:
-      parent1:
-        members:
-        - parent1
-      parent2:
-        members:
-        - parent2
-      child1:
-        members:
-        - child1
-      child2:
-        members:
-        - child2
+        members: [person4]
     families:
       family:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
+        members: [person1, person2, person3, person4]
+    tax_units:
+      parent1:
+        members: [person1]
+      parent2:
+        members: [person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
     spm_units:
       unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
+        members: [person1, person2, person3, person4]
     households:
       home:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
+        members: [person1, person2, person3, person4]
         state_code:
-          '2026': IA
+          2026: IA
   output:
-    ia_ssa:
-    - 0
-    - 0
-    - 400
-    - 400
+    ia_ssa: [0, 0, 400, 400]
+
 - name: Case 42, an own-resource failure removes that sibling and reallocates the excess.
   period: 2026-06
   absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 1
+          2026: 1
         bank_account_assets:
-          '2026': 5500
-      parent2:
+          2026: 5_500
+      person2:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 2
-      child1:
+          2026: 2
+      person3:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 3
+          2026: 3
         parent_1_id:
-          '2026': 1
+          2026: 1
         parent_2_id:
-          '2026': 2
+          2026: 2
         ia_ssa_category: IN_HOME_CARE
         ia_ssa_ihhrc_monthly_cost: 400
         is_disabled:
-          '2026': true
+          2026: true
         meets_ssi_disability_criteria:
-          '2026': true
-      child2:
+          2026: true
+      person4:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 4
+          2026: 4
         parent_1_id:
-          '2026': 1
+          2026: 1
         parent_2_id:
-          '2026': 2
+          2026: 2
         ia_ssa_category: IN_HOME_CARE
         ia_ssa_ihhrc_monthly_cost: 400
         bank_account_assets:
-          '2026': 1500
+          2026: 1_500
         is_disabled:
-          '2026': true
+          2026: true
         meets_ssi_disability_criteria:
-          '2026': true
+          2026: true
     marital_units:
       parent1:
-        members:
-        - parent1
+        members: [person1]
       parent2:
-        members:
-        - parent2
+        members: [person2]
       child1:
-        members:
-        - child1
+        members: [person3]
       child2:
-        members:
-        - child2
-    tax_units:
-      parent1:
-        members:
-        - parent1
-      parent2:
-        members:
-        - parent2
-      child1:
-        members:
-        - child1
-      child2:
-        members:
-        - child2
+        members: [person4]
     families:
       family:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
+        members: [person1, person2, person3, person4]
+    tax_units:
+      parent1:
+        members: [person1]
+      parent2:
+        members: [person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
     spm_units:
       unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
+        members: [person1, person2, person3, person4]
     households:
       home:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
+        members: [person1, person2, person3, person4]
         state_code:
-          '2026': IA
+          2026: IA
   output:
-    ia_ssa:
-    - 0
-    - 0
-    - 0
-    - 0
+    ia_ssa: [0, 0, 0, 0]
+
 - name: Case 43, a linked parent outside the household is not a resource deemor.
   period: 2026-06
   absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 1
+          2026: 1
         bank_account_assets:
-          '2026': 10000
-      child1:
+          2026: 10_000
+      person2:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 3
+          2026: 3
         parent_1_id:
-          '2026': 1
+          2026: 1
         ia_ssa_category: IN_HOME_CARE
         ia_ssa_ihhrc_monthly_cost: 400
         is_disabled:
-          '2026': true
+          2026: true
         meets_ssi_disability_criteria:
-          '2026': true
+          2026: true
     marital_units:
       parent1:
-        members:
-        - parent1
+        members: [person1]
       child1:
-        members:
-        - child1
-    tax_units:
-      parent1:
-        members:
-        - parent1
-      child1:
-        members:
-        - child1
+        members: [person2]
     families:
       family:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
     spm_units:
       unit:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
     households:
       parent_home:
-        members:
-        - parent1
+        members: [person1]
         state_code:
-          '2026': IA
+          2026: IA
       child_home:
-        members:
-        - child1
+        members: [person2]
         state_code:
-          '2026': IA
+          2026: IA
   output:
-    ia_ssa:
-    - 0
-    - 400
+    ia_ssa: [0, 400]
