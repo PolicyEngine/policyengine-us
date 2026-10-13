@@ -1,0 +1,21 @@
+# Checks the PR description's axiom: line (PolicyEngine/.github CONTRIBUTING,
+# "Mirror policy changes in Axiom") and suggests one. Warn-only for now: it
+# reports what would fail in the job summary and never blocks merging.
+name: Axiom parity
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  axiom-parity:
+    uses: PolicyEngine/.github/.github/workflows/axiom-parity.yml@axiom-parity-check
+    with:
+      mode: warn
+      tooling-ref: axiom-parity-check
+    permissions:
+      contents: read
+      pull-requests: write
