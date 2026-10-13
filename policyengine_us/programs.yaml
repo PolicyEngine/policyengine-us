@@ -1098,10 +1098,11 @@ programs:
         parameter_prefix: gov.states.pa.dhs.ssp
         verified_years: "2026"
         notes: >-
-          Models optional living-arrangement supplements and institutional
-          personal-needs payments. Care certification and separate individual
-          SSI claims require explicit inputs. Mandatory grandfathered payments
-          and ancillary facility subsidies are outside this component.
+          Models 2026 optional supplements for independent living, the
+          household of another and certified domiciliary and personal care
+          homes, plus the institutional Supplement for Personal Needs.
+          Mandatory grandfathered and essential-person supplements and
+          ancillary facility subsidies are not modeled.
 
   - id: social_security
     name: Social Security

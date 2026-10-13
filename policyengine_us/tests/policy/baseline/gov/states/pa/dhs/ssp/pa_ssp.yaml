@@ -1,4 +1,4 @@
-# RI: 218-RICR-20-00-5. PA: 55 Pa. Code 299; POMS SI 01415.058.
+# 55 Pa. Code Chapter 299; POMS SI 01415.058.
 - name: Case 1, independent living.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -70,7 +70,9 @@
     age: 65
     social_security_retirement: 12_360
   output:
-    pa_ssp: 6.100000000000001
+    # 12,360 / 12 = 1,030; countable 1,030 - 20 = 1,010 exceeds the 994 FBR
+    # by 16, so 22.10 - 16 = 6.10.
+    pa_ssp: 6.1
 
 - name: Case 8, state administered payment below a dollar.
   period: 2026-01
@@ -78,18 +80,23 @@
   input:
     state_code: PA
     age: 65
-    social_security_retirement: 12_433.08
+    social_security_retirement: 12_432
   output:
-    pa_ssp: 0.01
+    # 12,432 / 12 = 1,036; countable 1,036 - 20 = 1,016 exceeds the 994 FBR
+    # by 22, so 22.10 - 22 = 0.10. The state-administered payment gets no $1
+    # federal minimum.
+    pa_ssp: 0.1
 
-- name: Case 9, combined income cutoff.
+- name: Case 9, income above the combined income cutoff.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: PA
     age: 65
-    social_security_retirement: 12_433.2
+    social_security_retirement: 12_444
   output:
+    # 12,444 / 12 = 1,037; countable 1,037 - 20 = 1,017 exceeds the 994 FBR
+    # by 23, more than the 22.10 supplement, so 0.
     pa_ssp: 0
 
 - name: Case 10, excess resources.
@@ -141,3 +148,50 @@
     social_security_retirement: 600
   output:
     pa_ssp: 0
+
+- name: Case 15, federally administered care payment rises to the one dollar minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    pa_ssp_living_arrangement: PERSONAL_CARE
+    social_security_retirement: 19_836
+  output:
+    # 19,836 / 12 = 1,653; countable 1,653 - 20 = 1,633 exceeds the 994 FBR.
+    ssi: 0
+    # Excess 1,633 - 994 = 639, so 639.30 - 639 = 0.30; SSA administers the
+    # personal care home rate and pays the $1 federal minimum.
+    pa_ssp: 1
+
+- name: Case 16, earned income exclusions keep the full independent payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    # Pennsylvania minimum wage, 7.25 per hour x 40 hours x 52 weeks.
+    employment_income: 15_080
+  output:
+    # 15,080 / 12 = 1,256.67; countable (1,256.67 - 20 - 65) / 2 = 585.83;
+    # 994 - 585.83 = 408.17.
+    ssi: 408.17
+    # Countable 585.83 is below the 994 FBR, so no reduction: 22.10.
+    pa_ssp: 22.1
+
+- name: Case 17, reported SSI receipt qualifies an institution resident without modeled SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    takes_up_ssi_if_eligible: false
+    receives_ssi: true
+  output:
+    # No modeled take-up, so the modeled federal payment is 0.
+    ssi: 0
+    # Reported receipt meets the SSI gate; the state-issued Supplement for
+    # Personal Needs is the individual MEDICAID_INSTITUTION rate, 22.10.
+    pa_ssp: 22.1
