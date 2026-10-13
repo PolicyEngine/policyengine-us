@@ -1,5 +1,5 @@
 # Resource balances and certified budgets are stocks. Annual demographic and asset inputs are explicit.
-- name: Case 1, Annual asset balances remain undivided in January and July.
+- name: Case 1, annual asset balances remain undivided in January and July.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -46,7 +46,7 @@
       2026-01: [0, 8_000]
       2026-07: [0, 8_000]
 
-- name: Case 2, Annual agency-certified resource budget remains a monthly stock.
+- name: Case 2, annual agency-certified resource budget remains a monthly stock.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -56,3 +56,57 @@
     nh_ssp_resources_deemed_from_parents:
       2026-01: 2_500
       2026-07: 2_500
+
+# He-W 601.06(b) counts a stepparent as a parent, so the federal pool adds the
+# named mother's co-resident spouse.
+- name: Case 3, stepparent resources are deemed with the named parent's resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age:
+          2026: 38
+        person_id:
+          2026: 1
+        bank_account_assets:
+          2026: 2_000
+      person2:
+        age:
+          2026: 40
+        person_id:
+          2026: 2
+        bank_account_assets:
+          2026: 2_000
+      person3:
+        age:
+          2026: 10
+        person_id:
+          2026: 3
+        parent_1_id:
+          2026: 1
+        is_blind:
+          2026: true
+        bank_account_assets:
+          2026: 600
+    marital_units:
+      parents:
+        members: [person1, person2]
+      child:
+        members: [person3]
+    tax_units:
+      unit:
+        members: [person1, person2, person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code:
+          2026: NH
+  output:
+    # Mother 2,000 + stepfather 2,000 = 4,000 - 3,000 two-parent allowance = 1,000.
+    nh_ssp_resources_deemed_from_parents: [0, 0, 1_000]
+    # Federal SSI: 600 + 1,000 = 1,600 <= 2,000, so the child receives 994.
+    ssi: [0, 0, 994]
+    # NH: 600 + 1,000 = 1,600 > 1,500 resource limit.
+    nh_ssp_eligible: [false, false, false]
+    nh_ssp: [0, 0, 0]

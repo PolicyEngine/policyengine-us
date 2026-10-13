@@ -1,0 +1,18 @@
+description: New Hampshire excludes these immigration statuses from the qualified alien waiting period under the adult category financial assistance program.
+values:
+  # Amerasian immigrants, COFA migrants, qualifying military noncitizens,
+  # certain Native Americans and trafficking victims are also eligible without
+  # restriction but have no immigration_status value.
+  2026-01-01:
+    - REFUGEE
+    - ASYLEE
+    - CUBAN_HAITIAN_ENTRANT
+    - DEPORTATION_WITHHELD
+
+metadata:
+  unit: list
+  period: year
+  label: New Hampshire SSP immigration statuses without a waiting period
+  reference:
+    - title: NH DHHS Adult Assistance Manual 305.11, Qualified Aliens Eligible Without Restriction
+      href: https://dhhs.nh.gov/aam_htm/html/305_11_qualified_aliens_eligible_without_restriction_aam.htm

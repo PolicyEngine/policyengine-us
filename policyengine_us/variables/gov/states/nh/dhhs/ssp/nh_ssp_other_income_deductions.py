@@ -8,4 +8,6 @@ class nh_ssp_other_income_deductions(Variable):
     definition_period = MONTH
     unit = USD
     reference = "https://gc.nh.gov/rules/state_agencies/he-w600.html"
-    documentation = """Verified court-ordered payments, garnishments, qualifying training expenses and dependent allocations under He-W 654.20 and 654.21. Include any approved additional ANB employment-plan disregard under He-W 654.15(c)."""
+    documentation = """Court-ordered child support and alimony payments deducted under He-W 654.20(a)(1)."""
+    # NOTE: Other He-W 654.20-654.21 and 654.15(c) deductions are not derived.
+    adds = ["child_support_expense", "alimony_expense"]

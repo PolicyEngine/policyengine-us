@@ -18,6 +18,12 @@
         members: [person1, person2]
         state_code: NH
   output:
+    # Joint claim: 1,491 couple rate / 2 = 745.5 each.
+    ssi: [745.5, 745.5]
+    nh_ssp_eligible: [true, true]
+    # 745.5 + 745.5 - 20 two-person disregard = 1,471.
+    nh_ssp_countable_income: [1_471, 1_471]
+    # 1,492 - 1,471 = 21, split between two recipients.
     nh_ssp: [10.5, 10.5]
 
 - name: Case 2, nonapplicant spouse is included in needs.
@@ -40,6 +46,12 @@
         members: [person1, person2]
         state_code: NH
   output:
+    # The spouse has no income to deem, so person1 receives the individual rate.
+    ssi: [994, 0]
+    nh_ssp_eligible: [true, false]
+    # 994 - 20 two-person disregard = 974.
+    nh_ssp_countable_income: [974, 974]
+    # 1,492 two-person standard - 974 = 518.
     nh_ssp: [518, 0]
 
 - name: Case 3, independent couple combined resources exceed limit.
@@ -64,6 +76,10 @@
         members: [person1, person2]
         state_code: NH
   output:
+    # 750 + 751 = 1,501 <= 3,000 federal couple limit.
+    ssi: [745.5, 745.5]
+    # 1,501 > 1,500 state limit.
+    nh_ssp_eligible: [false, false]
     nh_ssp: [0, 0]
 
 - name: Case 4, care spouses are individual assistance groups.
@@ -90,6 +106,11 @@
         members: [person1, person2]
         state_code: NH
   output:
+    # Separate claims: individual rate each.
+    ssi: [994, 994]
+    # 994 - 13 one-person disregard = 981.
+    nh_ssp_countable_income: [981, 981]
+    # 1,188 residential care standard - 981 = 207.
     nh_ssp: [207, 207]
 
 - name: Case 5, two aged applicants receive separate earned disregards.
@@ -114,6 +135,13 @@
         members: [person1, person2]
         state_code: NH
   output:
+    # Couple earnings 200: (200 - 85) * 0.5 / 2 = 28.75; 745.5 - 28.75 = 716.75.
+    ssi: [716.75, 716.75]
+    # FICA 1,200 * 0.0765 / 12 = 7.65, below the $18 minimum.
+    nh_ssp_employment_expenses: [7.65, 7.65]
+    # Each 100 - 20 - 30 - 18 = 32; 32 + 32 + 716.75 + 716.75 - 20 = 1,477.5.
+    nh_ssp_countable_income: [1_477.5, 1_477.5]
+    # 1,492 - 1,477.5 = 14.5, rounded to 15 and split.
     nh_ssp: [7.5, 7.5]
 
 - name: Case 6, annual independent grant and SNAP income.
@@ -123,12 +151,18 @@
     state_code: NH
     age: 65
   output:
+    # 994 * 12 = 11,928.
+    ssi: 11_928
+    # (994 - 13) * 12 = 11,772.
+    nh_ssp_countable_income: 11_772
+    # (1,008 - 981) * 12 = 324.
     nh_ssp: 324
     household_state_benefits: 324
+    # 11,928 SSI + 324 state supplement = 12,252.
     snap_unearned_income: 12_252
     hud_unearned_income: 12_252
 
-- name: Case 7, Eligible couple and essential person share a three-person grant.
+- name: Case 7, eligible couple and essential person share a three-person grant.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -146,10 +180,13 @@
         members: [person1, person2]
         state_code: NH
   output:
+    ssi: [745.5, 745.5]
+    # 1,989 three-person standard - 1,466 = 523, split between two recipients.
     nh_ssp: [261.5, 261.5]
+    # 745.5 + 745.5 - 25 three-person disregard = 1,466.
     nh_ssp_countable_income: [1_466, 1_466]
 
-- name: Case 8, Three-person grant with a non-applicant spouse.
+- name: Case 8, three-person grant with a non-applicant spouse.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -167,4 +204,82 @@
         members: [person1, person2]
         state_code: NH
   output:
+    ssi: [994, 0]
+    # 994 - 25 three-person disregard = 969.
+    nh_ssp_countable_income: [969, 969]
+    # 1,989 three-person standard - 969 = 1,020.
     nh_ssp: [1_020, 0]
+
+- name: Case 9, nonapplicant spouse's part-time earnings are combined with the applicant's.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 67
+      person2:
+        age: 60
+        # 20 hours a week at the $14.56 New Hampshire median wage for
+        # cashiers (BLS OEWS, May 2023): 20 * 52 * 14.56 = 15,142.40.
+        employment_income: 15_142.4
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # Spousal deeming: (1,261.87 - 85) * 0.5 = 588.43; 1,491 - 588.43 = 902.57.
+    ssi: [902.57, 0]
+    # FICA: 15,142.40 * 0.0765 / 12 = 96.53.
+    nh_ssp_employment_expenses: [0, 96.53]
+    nh_ssp_eligible: [true, false]
+    # He-W 654.02(d): combined earnings 1,261.87 - 20 - 30 - 96.53 = 1,115.33;
+    # 1,115.33 + 902.57 SSI - 20 two-person disregard = 1,997.90.
+    nh_ssp_countable_income: [1_997.9, 1_997.9]
+    # 1,997.90 exceeds the 1,492 two-person standard.
+    nh_ssp: [0, 0]
+
+- name: Case 10, parental income deemed to a blind child counts as unearned income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        person_id: 1
+        # Full time at the $22.23 New Hampshire median wage for general
+        # office clerks (BLS OEWS, May 2023): 2,080 * 22.23 = 46,238.40.
+        employment_income: 46_238.4
+      person2:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_blind: true
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NH
+  output:
+    # (3,853.20 - 85) * 0.5 = 1,884.10 - 994 parent allocation = 890.10.
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 890.1]
+    # 994 - (890.10 - 20) = 123.90.
+    ssi: [0, 123.9]
+    nh_ssp_eligible: [false, true]
+    # person1: 3,853.20 - 20 - 30 - 294.77 FICA - 13 = 3,495.43.
+    # person2, He-W 652.03(f)-(g): 890.10 + 123.90 - 13 = 1,001.
+    nh_ssp_countable_income: [3_495.43, 1_001]
+    # 1,008 - 1,001 = 7.
+    nh_ssp: [0, 7]

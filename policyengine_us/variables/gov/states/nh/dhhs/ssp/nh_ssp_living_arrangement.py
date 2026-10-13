@@ -17,7 +17,8 @@ class nh_ssp_living_arrangement(Variable):
     definition_period = MONTH
     possible_values = NHSSPLivingArrangement
     default_value = NHSSPLivingArrangement.INDEPENDENT
-    reference = "https://www.medicaid.gov/medicaid/spa/downloads/NH-26-0001.pdf"
+    # PDF pages 14-16
+    reference = "https://www.medicaid.gov/medicaid/spa/downloads/NH-26-0001.pdf#page=14"
     documentation = """
     Care categories require state approval. Care recipients are individual
     assistance groups, including married residents. Reflect separate federal
