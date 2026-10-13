@@ -12,6 +12,9 @@ class hi_non_refundable_credits(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
     reference = (
+        # HRS 235-91.5: refundable credits are used first, followed by
+        # nonrefundable credits.
+        "https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0091_0005.htm",
         # Form N-11 applies refundable credits first (line 33) and limits
         # nonrefundable credits (line 35) to the adjusted tax on line 34.
         "https://files.hawaii.gov/tax/forms/2025/n11_i.pdf#page=3",

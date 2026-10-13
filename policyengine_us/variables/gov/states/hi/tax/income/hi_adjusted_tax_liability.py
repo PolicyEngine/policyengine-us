@@ -9,6 +9,9 @@ class hi_adjusted_tax_liability(Variable):
     definition_period = YEAR
     defined_for = StateCode.HI
     reference = (
+        # HRS 235-91.5: refundable credits are used first, followed by
+        # nonrefundable credits.
+        "https://www.capitol.hawaii.gov/hrscurrent/Vol04_Ch0201-0257/HRS0235/HRS_0235-0091_0005.htm",
         # Form N-11, line 34: line 27 (tax) minus line 33 (total refundable
         # credits). The result can be negative.
         "https://files.hawaii.gov/tax/forms/2018/n11_i.pdf#page=3",
