@@ -291,3 +291,64 @@
     # the phase-out: (52,850 - 33,000) / (52,850 - 24,400) x 1,324 = 923.78.
     # Applying the phase-out to the unrounded 1,323.60 gave 923.
     vt_renter_credit: 924
+
+# The 2025 department calculator's Calculator!G17 uses ROUND(..., 0).
+# Exact 50-cent ties round up for these full-year, unshared, unsubsidized claims:
+# https://tax.vermont.gov/sites/tax/files/documents/2025%20Renter%20Credit%20Website%20Calculator.xlsx
+- name: Franklin, 1 person, 2025, final partial-credit tie rounds half up
+  period: 2025
+  input:
+    vt_renter_credit_income: 36_065
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # (49,340 - 36,065) / (49,340 - 22,790) x 1,269 = 634.50.
+    vt_renter_credit: 635
+
+- name: Lamoille, 1 person, 2025, final partial-credit tie rounds half up
+  period: 2025
+  input:
+    vt_renter_credit_income: 34_495
+    county: LAMOILLE_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # (47,190 - 34,495) / (47,190 - 21,800) x 1,169 = 584.50.
+    vt_renter_credit: 585
+
+- name: Addison, 1 person, 2027, full-credit base tie rounds half up
+  period: 2027
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # 1,103 x 12 x the temporary 12.5% rate = 1,654.50.
+    vt_renter_credit: 1_655
+
+# The 2022 calculator's Calculator!G16 rounds this non-midpoint tie up:
+# https://tax.vermont.gov/sites/tax/files/documents/2022%20Renter%20Credit%20Website%20Calculator_1.xlsx
+- name: Caledonia, 1 person, 2022, final tie preserves precision during phase-out
+  period: 2022
+  input:
+    vt_renter_credit_income: 23_500
+    county: CALEDONIA_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # 924 x (30,000 - 23,500) / (30,000 - 18,000) = 500.50.
+    vt_renter_credit: 501

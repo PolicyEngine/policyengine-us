@@ -15,8 +15,8 @@ year 2021-2025 (12 months rented, not shared, not subsidized) and check:
 - at every other income, the credit equals the department's formula applied
   to the table, and it never rises with income.
 
-PE rounds the final credit half to even and the department half up, so the
-few incomes where the phased-out amount ends in exactly 50 cents are left out.
+Final credits round half up, including exact 50-cent ties: Calculator!G16 in
+2021-2022 and Calculator!G17 in 2023-2025 use ROUND(..., 0).
 """
 
 from fractions import Fraction
@@ -200,9 +200,11 @@ def test_full_credit_equals_department_table(year):
 
 
 def _incomes(full, partial):
-    """Both limits, a dollar either side, and 19 incomes in between. The $37
-    offset keeps the inner incomes off simple fractions of the phase-out band,
-    which would make many phased-out amounts end in exactly 50 cents."""
+    """Both limits, a dollar either side, and 19 incomes in between.
+
+    The $37 offset varies the fractional phase-out amounts sampled by the grid.
+    Explicit tie examples are covered in vt_renter_credit.yaml.
+    """
     step = Fraction(partial - full, 20)
     inside = [int(full + k * step) + 37 for k in range(1, 20)]
     return [full - 1, full, full + 1, *inside, partial - 1, partial, partial + 1]
@@ -211,16 +213,12 @@ def _incomes(full, partial):
 @pytest.mark.parametrize("year", YEARS)
 def test_partial_credit_follows_department_formula(year):
     households, expected = [], []
-    ties = 0
     for county in COUNTIES:
         for size in SIZES:
             amount = _department_amount(year, county, size)
             full, partial = _limits(year, county, size)
             for income in _incomes(full, partial):
                 credit = _department_credit(amount, income, full, partial)
-                if credit - int(credit) == Fraction(1, 2):
-                    ties += 1
-                    continue
                 households.append((county, size, income))
                 expected.append(int(credit + Fraction(1, 2)))
     credits = _calculate(year, households)
@@ -230,8 +228,6 @@ def test_partial_credit_follows_department_formula(year):
         if credit != want
     ]
     assert mismatches == []
-    # Exact 50-cent ties are rare; a grid made mostly of them tests nothing.
-    assert ties < len(households) // 100
     # The credit never rises with income for a given county and size.
     by_unit = {}
     for (county, size, income), credit in zip(households, credits):
@@ -262,9 +258,6 @@ def test_random_incomes_follow_department_formula(year, draws):
         credit = _department_credit(
             _department_amount(year, county, size), income, full, partial
         )
-        if credit - int(credit) == Fraction(1, 2):
-            continue
         households.append((county, size, income))
         expected.append(int(credit + Fraction(1, 2)))
-    hypothesis.assume(households)
     assert list(_calculate(year, households)) == expected

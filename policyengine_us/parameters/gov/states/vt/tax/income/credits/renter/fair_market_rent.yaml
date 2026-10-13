@@ -50,18 +50,19 @@ metadata:
 # the credit amount (2,500 / 1.2 = 2,083.33).
 #
 # Franklin and Grand Isle use the average of the fair market rents for the State
-# (32 V.S.A. § 6061(7)(C)). The department averages Vermont's 12 HUD fair market
-# rent areas (the 11 nonmetropolitan counties and the Burlington-South Burlington
-# MSA, which also holds Franklin and Grand Isle). Its spreadsheet differs by year,
-# and the values below are the department's averages, to the cent, that
-# reproduce every amount it published:
+# (32 V.S.A. § 6061(7)(C)). The following historical reconstructions use Vermont's
+# 12 HUD fair market rent areas (the 11 nonmetropolitan counties and the
+# Burlington-South Burlington MSA, which also holds Franklin and Grand Isle).
+# They reproduce the published credit amounts; they are not department rules.
+# The 2022-2025 calculators hard-code their credit tables, so they do not establish
+# the averaging methods used to obtain those amounts:
 # - 2021 and 2024: the average rounded to whole dollars (the 2021 calculator's
 #   fair market rent table holds 810, 1,000, 1,291 and 1,419).
-# - 2022: the average of 11 areas, without Addison County (all 12 give
-#   1,010, 1,251, 1,611 and 1,777, not the published 1,006, 1,242, 1,602 and
-#   1,773).
-# - 2023: the average with the Burlington four-bedroom rent (2,170) held to
-#   2,083.33 (all 12 unadjusted give 1,913, not the published 1,904).
+# - 2022 reconstruction: the average of 11 areas, without Addison County
+#   (all 12 give 1,010, 1,251, 1,611 and 1,777, not the published 1,006,
+#   1,242, 1,602 and 1,773).
+# - 2023 reconstruction: the average with the Burlington four-bedroom rent
+#   (2,170) held to 2,083.33 (all 12 unadjusted give 1,913, not the published 1,904).
 # - 2025: the unrounded average (1,057.75 x 1.2 = 1,269.3, published 1,269).
 1:
   ADDISON_COUNTY_VT:
