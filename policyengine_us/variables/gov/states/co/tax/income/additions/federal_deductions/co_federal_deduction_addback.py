@@ -17,6 +17,12 @@ class co_federal_deduction_addback(Variable):
         "https://tax.colorado.gov/sites/tax/files/documents/DR_104_Book_2022.pdf#page=5",
         # Individual Income Tax Guide - Part 3 Additions to Taxable Income - Federal itemized or standard deductions
         "https://tax.colorado.gov/individual-income-tax-guide",
+        # 1 CCR 201-2, Rule 39-22-104(3)(p)(3): coordination with other addbacks.
+        "https://www.law.cornell.edu/regulations/colorado/39-22-104(3-parens-p)",
+        # DR 0104 line 4 instructions, 2023 to 2025.
+        "https://tax.colorado.gov/sites/tax/files/documents/Book0104_2023.pdf#page=6",
+        "https://tax.colorado.gov/sites/tax/files/documents/DR0104_book_2024.pdf#page=9",
+        "https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=9",
     )
     defined_for = "co_federal_deduction_addback_required"
 
@@ -32,4 +38,9 @@ class co_federal_deduction_addback(Variable):
             )
         filing_status = tax_unit("filing_status", period)
         exemption = p.exemption[filing_status]
-        return max_(deductions - exemption, 0)
+        # Rule 39-22-104(3)(p)(3)(a)(i) reduces this addition by the state
+        # income tax already added back under C.R.S. 39-22-104(3)(d)(I)
+        # (DR 0104 line 2), but not by a share of state income tax deducted by a
+        # partnership or S corporation, which co_state_addback does not include.
+        state_income_tax_addback = tax_unit("co_state_addback", period)
+        return max_(deductions - exemption - state_income_tax_addback, 0)
