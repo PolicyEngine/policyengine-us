@@ -372,3 +372,72 @@
     ssi: 886.5
     # min(2_200, 2_391.96) - (300 + 886.50) = 1_013.50.
     sd_ssp: 1_013.5
+
+- name: Case 28, care resident who is not an SSI qualified noncitizen.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    ssi_qualifying_quarters_earnings: 0
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+  output:
+    # A permanent resident with 0 of the 40 required qualifying quarters is
+    # not an SSI qualified noncitizen, so SSI is also 0.
+    ssi: 0
+    # Fails the citizenship gate; otherwise
+    # min(2_200, 31 x 77.16 = 2_391.96) - 0 income = 2_200.
+    sd_ssp_care: 0
+    sd_ssp: 0
+
+- name: Case 29, incarcerated care resident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    is_incarcerated: true
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+  output:
+    # Fails the incarceration gate; otherwise, as in Case 9,
+    # min(2_200, 31 x 77.16 = 2_391.96) - SSI 994 = 1_206.
+    sd_ssp_care: 0
+    sd_ssp: 0
+
+- name: Case 30, part-time college student is excluded from the supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 24
+    meets_ssi_disability_criteria: true
+    is_part_time_college_student: true
+  output:
+    # Disabled with no other income: SSI = 994.
+    ssi: 994
+    # Part-time college enrollment is a student under the exclusion.
+    sd_ssp: 0
+
+- name: Case 31, same disabled adult who is not a student receives the supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 24
+    meets_ssi_disability_criteria: true
+  output:
+    # Disabled with no other income: SSI = 994.
+    ssi: 994
+    # Not a student and no other cash income: individual amount 15.
+    sd_ssp: 15

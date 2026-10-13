@@ -37,6 +37,9 @@ class sd_ssp_independent(Variable):
         # NOTE: ARSD 67:12:14 and POMS DEN01415.011 B.5 are silent on a
         # married recipient whose spouse does not qualify; that recipient is
         # treated as an individual, with no spousal income pooling.
+        # NOTE: the couple split requires ssi_claim_is_joint, so a couple
+        # whose SSI receipt is given only by receives_ssi needs both spouses'
+        # aged, blind or disabled inputs to be paid as a couple.
         couple = person("ssi_claim_is_joint", period.this_year) & (
             person.marital_unit.sum(qualifies) > 1
         )

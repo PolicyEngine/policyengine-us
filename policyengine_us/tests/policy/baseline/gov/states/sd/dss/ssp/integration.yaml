@@ -147,3 +147,78 @@
     # less own income: 2_200 - 14_400 / 12 = 1_000; 2_200 - 9_600 / 12 = 1_400.
     sd_ssp_care: [1_000, 1_400]
     sd_ssp: [1_000, 1_400]
+
+- name: Case 7, joint entry within the pooled limit qualifies both spouses.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        social_security_retirement: 14_400
+        ssi_countable_resources: 2_100
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+        sd_ssp_care_joint_entry: true
+      person2:
+        age: 65
+        social_security_retirement: 9_600
+        ssi_countable_resources: 800
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+        sd_ssp_care_joint_entry: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # SSI couple resources 2_100 + 800 = 2_900 <= 3_000 pass.
+    meets_ssi_resource_test: [true, true]
+    # Couple countable income (1_200 + 800 - 20) / 2 = 990
+    # > 1_491 / 2 = 745.50, so SSI is 0.
+    ssi: [0, 0]
+    sd_ssp_independent: [0, 0]
+    # Pooled 2_100 + 800 = 2_900 <= 3_000 joint entry limit;
+    # min(2_200, 31 x 77.16 = 2_391.96) less own income:
+    # 2_200 - 14_400 / 12 = 1_000; 2_200 - 9_600 / 12 = 1_400.
+    sd_ssp_care: [1_000, 1_400]
+    sd_ssp: [1_000, 1_400]
+
+- name: Case 8, same couple without joint entry faces the individual limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        social_security_retirement: 14_400
+        ssi_countable_resources: 2_100
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+      person2:
+        age: 65
+        social_security_retirement: 9_600
+        ssi_countable_resources: 800
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # SSI still pools the couple: 2_100 + 800 = 2_900 <= 3_000.
+    meets_ssi_resource_test: [true, true]
+    # Couple countable income (1_200 + 800 - 20) / 2 = 990
+    # > 1_491 / 2 = 745.50, so SSI is 0.
+    ssi: [0, 0]
+    sd_ssp_independent: [0, 0]
+    # Individual 2_000 limit: person1 2_100 > 2_000 is ineligible;
+    # person2 800 <= 2_000: min(2_200, 2_391.96) - 9_600 / 12 = 1_400.
+    sd_ssp_care: [0, 1_400]
+    sd_ssp: [0, 1_400]

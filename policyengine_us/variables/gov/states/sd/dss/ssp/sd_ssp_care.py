@@ -33,6 +33,9 @@ class sd_ssp_care(Variable):
         cost = where(foster, cost, min_(cost, days * p.assisted_living_daily_rate))
         # Care uses gross income, including SSI, before state-approved
         # deductions. Federal SSI's $20/$65 exclusions are not applied.
+        # NOTE: this counts SSI actually received. Certification assumes an
+        # SSI-eligible resident has applied for SSI, because ARSD
+        # 67:46:04:13(2) requires the department to refer them to apply.
         income = (
             max_(person("ssi_earned_income", period), 0)
             + max_(person("ssi_unearned_income", period), 0)
