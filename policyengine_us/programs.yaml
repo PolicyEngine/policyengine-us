@@ -1098,9 +1098,8 @@ programs:
         parameter_prefix: gov.states.wy.health.ssp
         verified_years: "2026"
         notes: >-
-          Models the flat payment and sole-income test using the model's SSI
-          cash-income sources. Noncash support and income sources absent from
-          the federal SSI income model are not separately evaluated.
+          Models the 2026 flat payment for Wyoming residents who receive SSI
+          and have no other income.
 
   - id: social_security
     name: Social Security

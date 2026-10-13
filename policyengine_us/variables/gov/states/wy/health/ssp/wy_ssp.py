@@ -9,6 +9,7 @@ class wy_ssp(Variable):
     unit = USD
     defined_for = "wy_ssp_eligible"
     reference = (
-        "https://ecom.wyo.gov/m1800-other-programs/m1804-state-supplemental-payments"
+        "https://ecom.wyo.gov/m1800-other-programs/m1804-state-supplemental-payments",
+        "https://wyoleg.gov/statutes/compress/title42.pdf#page=7",
     )
     adds = ["gov.states.wy.health.ssp.amount"]

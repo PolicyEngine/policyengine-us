@@ -22,7 +22,7 @@ class spm_unit_benefits(Variable):
             "ky_ssp",  # Kentucky benefits
             "de_ssp",  # Delaware benefits
             "fl_oss",
-            "wy_ssp",
+            "wy_ssp",  # Wyoming benefits
             "ks_sspp",  # Kansas benefits
             "hi_oss",
             "la_oss",  # Louisiana benefits
