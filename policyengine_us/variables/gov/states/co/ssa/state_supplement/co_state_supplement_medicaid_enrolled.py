@@ -13,19 +13,21 @@ class co_state_supplement_medicaid_enrolled(Variable):
         "9 CCR 2503-5 3.549(F) deeming exemption. Under the Medicaid community "
         "engagement requirement, enrollment can turn on membership of a "
         "household receiving SNAP (42 CFR 435.554(c)(7)), and SNAP counts "
-        "AND-CS as income, so enrollment is computed with that year's January "
-        "AND-CS, the month the requirement reads SNAP, set to zero."
+        "AND-CS as income. Enrollment is therefore computed in a private "
+        "branch where this variable is false for everyone, so AND-CS deems "
+        "every Medicaid spouse's or parent's income and is no higher than "
+        "its final value, and SNAP is no lower."
     )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.hhs.medicaid.eligibility.work_requirements
         if not p.applies:
             return person("medicaid_enrolled", period)
-        # A private branch keeps the SNAP route to enrollment and gives the
-        # same result whichever of SNAP, Medicaid and AND-CS is calculated
-        # first. get_override_branch drops inherited values when the parent
-        # already holds January's AND-CS, so no enrollment computed with it
-        # carries over.
+        # The branch keeps the SNAP route to enrollment, and AND-CS inside it
+        # reads this variable as an input, so nothing recurses. The parent
+        # cannot hold this variable before computing it, so the branch
+        # always shares the parent's cache, and the result does not depend
+        # on whether SNAP, Medicaid or AND-CS is calculated first.
         simulation = person.simulation
         branch_name = f"{simulation.branch_name}_co_state_supplement_medicaid_{period}"
         try:
@@ -34,9 +36,8 @@ class co_state_supplement_medicaid_enrolled(Variable):
                 branch_name,
                 period,
                 {
-                    "co_state_supplement": (
-                        period.first_month,
-                        np.zeros(person.count),
+                    "co_state_supplement_medicaid_enrolled": np.zeros(
+                        person.count, dtype=bool
                     )
                 },
             )
