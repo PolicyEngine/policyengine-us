@@ -13,6 +13,7 @@ class wa_employee_long_term_care_contribution(Variable):
     definition_period = YEAR
     unit = USD
     defined_for = StateCode.WA
+    reference = "https://app.leg.wa.gov/RCW/default.aspx?cite=50B.04.080"
 
     def formula(person, period, parameters):
         rate = (
