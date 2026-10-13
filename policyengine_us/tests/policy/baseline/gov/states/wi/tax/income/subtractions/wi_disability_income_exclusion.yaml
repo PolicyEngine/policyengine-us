@@ -9,6 +9,7 @@
         age: 45
         retired_on_total_disability: true
         disability_benefits: 5_000
+        total_disability_payments: 5_000
         taxable_interest_income: 10_000
     tax_units:
       tax_unit:
@@ -31,6 +32,7 @@
         age: 50
         retired_on_total_disability: true
         disability_benefits: 8_000
+        total_disability_payments: 8_000
         taxable_interest_income: 10_000
     tax_units:
       tax_unit:
@@ -52,11 +54,13 @@
         is_tax_unit_head: true
         retired_on_total_disability: true
         disability_benefits: 6_000
+        total_disability_payments: 6_000
       spouse:
         age: 58
         is_tax_unit_spouse: true
         retired_on_total_disability: true
         disability_benefits: 4_000
+        total_disability_payments: 4_000
         taxable_interest_income: 12_000
     tax_units:
       tax_unit:
@@ -77,6 +81,7 @@
         age: 65
         retired_on_total_disability: true
         disability_benefits: 5_000
+        total_disability_payments: 5_000
     tax_units:
       tax_unit:
         members: [person]
@@ -95,6 +100,7 @@
         age: 45
         retired_on_total_disability: false
         disability_benefits: 5_000
+        total_disability_payments: 5_000
     tax_units:
       tax_unit:
         members: [person]
@@ -113,6 +119,7 @@
         age: 45
         retired_on_total_disability: true
         disability_benefits: 5_000
+        total_disability_payments: 5_000
     tax_units:
       tax_unit:
         members: [person]
@@ -132,6 +139,7 @@
         age: 45
         retired_on_total_disability: true
         disability_benefits: 5_000
+        total_disability_payments: 5_000
         tax_exempt_disability_benefits: 5_000
     tax_units:
       tax_unit:
@@ -142,3 +150,52 @@
         state_code: WI
   output:
     wi_disability_income_exclusion: 0
+
+- name: A separated spouse filing as head of household is still married and cannot take the exclusion.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_separated: true
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+        total_disability_payments: 5_000
+        taxable_interest_income: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    wi_disability_income_exclusion: 0
+
+- name: An unmarried head of household can take the exclusion.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+        total_disability_payments: 5_000
+        taxable_interest_income: 10_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: WI
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
+    wi_disability_income_exclusion: 5_000

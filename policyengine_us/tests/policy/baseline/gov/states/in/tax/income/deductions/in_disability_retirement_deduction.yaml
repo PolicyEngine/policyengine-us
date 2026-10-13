@@ -9,6 +9,7 @@
         age: 67
         retired_on_total_disability: true
         disability_benefits: 10_000
+        total_disability_payments: 10_000
         taxable_interest_income: 8_000
     tax_units:
       tax_unit:
@@ -29,6 +30,7 @@
         age: 50
         retired_on_total_disability: true
         disability_benefits: 6_000
+        total_disability_payments: 6_000
         taxable_interest_income: 3_000
     tax_units:
       tax_unit:
@@ -51,11 +53,13 @@
         is_tax_unit_head: true
         retired_on_total_disability: true
         disability_benefits: 6_000
+        total_disability_payments: 6_000
       spouse:
         age: 58
         is_tax_unit_spouse: true
         retired_on_total_disability: true
         disability_benefits: 4_000
+        total_disability_payments: 4_000
         taxable_interest_income: 6_000
     tax_units:
       tax_unit:
@@ -77,6 +81,7 @@
         age: 50
         retired_on_total_disability: false
         disability_benefits: 5_000
+        total_disability_payments: 5_000
     tax_units:
       tax_unit:
         members: [person]

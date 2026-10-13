@@ -26,3 +26,13 @@
     disability_benefits_before_minimum_retirement_age: 12_000
   output:
     adjusted_earnings: 12_000
+
+- name: Disability pay treated as wages is compensation for IRA contributions.
+  # Pub. 4491 (Rev. 10-2025), file page 144.
+  period: 2024
+  input:
+    age: 40
+    disability_benefits: 20_000
+    disability_benefits_before_minimum_retirement_age: 20_000
+  output:
+    ira_compensation: 20_000

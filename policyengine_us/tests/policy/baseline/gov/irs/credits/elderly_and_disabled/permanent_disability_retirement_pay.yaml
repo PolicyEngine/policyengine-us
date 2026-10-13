@@ -1,22 +1,22 @@
-- name: Taxable disability benefits of someone retired on permanent and total disability.
+- name: Disability income of someone retired on permanent and total disability.
   period: 2024
   input:
     retired_on_total_disability: true
     disability_benefits: 8_000
     tax_exempt_disability_benefits: 3_000
+    total_disability_payments: 5_000
   output:
     permanent_disability_retirement_pay: 5_000
 
-- name: Disability pay entered as total disability payments is not counted twice.
+- name: Disability benefits alone do not show the plan provides for disability retirement.
   period: 2024
   input:
     retired_on_total_disability: true
     disability_benefits: 8_000
-    total_disability_payments: 8_000
   output:
-    permanent_disability_retirement_pay: 8_000
+    permanent_disability_retirement_pay: 0
 
-- name: Disability pay paid as wages and entered as total disability payments.
+- name: Disability pay paid as wages.
   period: 2024
   input:
     retired_on_total_disability: true
@@ -25,10 +25,22 @@
   output:
     permanent_disability_retirement_pay: 6_000
 
+- name: Limited to disability pay included in federal AGI.
+  period: 2024
+  input:
+    retired_on_total_disability: true
+    disability_benefits: 9_000
+    tax_exempt_disability_benefits: 5_000
+    total_disability_payments: 9_000
+  output:
+    # Only 9,000 - 5,000 = 4,000 is in federal AGI.
+    permanent_disability_retirement_pay: 4_000
+
 - name: Someone who did not retire on disability has none.
   period: 2024
   input:
     retired_on_total_disability: false
     disability_benefits: 8_000
+    total_disability_payments: 8_000
   output:
     permanent_disability_retirement_pay: 0

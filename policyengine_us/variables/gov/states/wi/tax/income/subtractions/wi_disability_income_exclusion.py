@@ -12,11 +12,8 @@ class wi_disability_income_exclusion(Variable):
         "total disability. The weekly $100 limit is applied as an annual cap; "
         "the employer's mandatory retirement age is not modelled."
     )
-    reference = (
-        "https://www.revenue.wi.gov/TaxForms2024/2024-Schedule2440Wf.pdf#page=1",
-        "https://www.revenue.wi.gov/TaxForms2024/2024-Schedule2440Wf.pdf#page=2",
-        "https://www.revenue.wi.gov/TaxForms2024/2024-Schedule2440Wf.pdf#page=3",
-    )
+    # PDF pages 1-3
+    reference = "https://www.revenue.wi.gov/TaxForms2024/2024-Schedule2440Wf.pdf#page=1"
     defined_for = StateCode.WI
 
     def formula(tax_unit, period, parameters):
@@ -32,7 +29,16 @@ class wi_disability_income_exclusion(Variable):
         agi = tax_unit("adjusted_gross_income", period)
         reduction = max_(0, agi - p.reduction_threshold)
         exclusion = max_(0, excludable - reduction)
-        # A married claimant must file a joint return.
+        # A claimant married at the end of the year must file a joint
+        # return: no separate return, and no head of household return by a
+        # spouse who is separated but still married.
         filing_status = tax_unit("filing_status", period)
-        separate = filing_status == filing_status.possible_values.SEPARATE
-        return where(separate, 0, exclusion)
+        status = filing_status.possible_values
+        separated = tax_unit.any(
+            person("is_tax_unit_head_or_spouse", period)
+            & person("is_separated", period)
+        )
+        married_not_joint = (filing_status == status.SEPARATE) | (
+            (filing_status != status.JOINT) & separated
+        )
+        return where(married_not_joint, 0, exclusion)

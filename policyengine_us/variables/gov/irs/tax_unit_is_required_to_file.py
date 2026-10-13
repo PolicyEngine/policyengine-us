@@ -55,9 +55,12 @@ class tax_unit_is_required_to_file(Variable):
             "additional_standard_deduction", period
         )
         # The section 911 exclusion covers earned income only.
+        # Disability pensions reported as wages before minimum retirement
+        # age are earned income.
         unearned_income = (
             gross_income
             - add(tax_unit, period, ["earned_income"])
+            - tax_unit_non_dep_sum("earned_disability_benefits", tax_unit, period)
             - section_911_exclusion
         )
         unearned_income_over_threshold = unearned_income > unearned_income_threshold

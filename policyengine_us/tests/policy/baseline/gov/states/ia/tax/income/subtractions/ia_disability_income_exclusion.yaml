@@ -9,6 +9,7 @@
         age: 50
         retired_on_total_disability: true
         disability_benefits: 10_000
+        total_disability_payments: 10_000
         taxable_interest_income: 7_000
     tax_units:
       tax_unit:
@@ -30,6 +31,7 @@
         age: 50
         retired_on_total_disability: true
         disability_benefits: 5_000
+        total_disability_payments: 5_000
     tax_units:
       tax_unit:
         members: [person]
@@ -50,6 +52,7 @@
         age: 65
         retired_on_total_disability: true
         disability_benefits: 5_000
+        total_disability_payments: 5_000
     tax_units:
       tax_unit:
         members: [person]
@@ -58,4 +61,29 @@
         members: [person]
         state_code: IA
   output:
+    ia_disability_income_exclusion: 0
+
+- name: A separated spouse filing as head of household who lived with their spouse cannot take the exclusion.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 45
+        is_separated: true
+        retired_on_total_disability: true
+        disability_benefits: 5_000
+        total_disability_payments: 5_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+        cohabitating_spouses: true
+    households:
+      household:
+        members: [head, child]
+        state_code: IA
+  output:
+    filing_status: HEAD_OF_HOUSEHOLD
     ia_disability_income_exclusion: 0

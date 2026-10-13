@@ -50,8 +50,8 @@ class ny_disability_income_exclusion(Variable):
             out=np.zeros_like(total_pay),
             where=total_pay > 0,
         )
-        # IT-221 also limits each person's disability plus pension exclusion
-        # to $20,000. It cannot bind: excluded pensions are in federal AGI,
-        # and this exclusion falls dollar for dollar with federal AGI above
-        # $15,000, so the two together stay under $15,000.
-        return exclusion * share
+        # Each person's disability and pension exclusions together are
+        # limited to $20,000; an unused part of a spouse's limit can't be used.
+        pension_exclusion = person("ny_pension_exclusion", period)
+        room = max_(0, p.combined_limit - pension_exclusion)
+        return min_(exclusion * share, room)
