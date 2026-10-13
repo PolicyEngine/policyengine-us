@@ -116,11 +116,12 @@
     wv_agi: 30_000
     wv_taxable_income: 28_000
 
-# Age 70, wages $9,000, repays $4,000. Schedule M line 47: box (c), income not
-# included in lines 35 to 46, is $9,000 - $4,000 = $5,000, under the $8,000
-# cap; box (d) is zero, so the senior modification is $5,000 (it would be
-# $8,000 without the repayment). Total decreasing modifications $9,000.
-- name: Case 7, the repayment line is outside the senior citizen modification's base.
+# Age 70, wages $9,000, repays $4,000. Schedule M line 47, box (c), is "all
+# income ... not reported on lines 35 through 48": the $9,000 of wages, capped
+# at $8,000; W. Va. Code 11-21-12(c)(9) counts income included in federal AGI.
+# The repayment is not income, so it does not reduce box (c). Total decreasing
+# modifications $4,000 + $8,000 = $12,000.
+- name: Case 7, the repayment does not reduce the senior citizen modification's base.
   period: 2025
   input:
     people:
@@ -137,5 +138,64 @@
         state_code: WV
   output:
     wv_claim_of_right_subtraction: 4_000
-    wv_senior_citizen_disability_deduction_person: 5_000
-    wv_subtractions: 9_000
+    wv_senior_citizen_disability_deduction_person: 8_000
+    wv_subtractions: 12_000
+
+- name: Case 8, West Virginia taxable income is $28,000 under the federal credit method.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head]
+        state_code: WV
+  output:
+    wv_taxable_income: 28_000
+
+- name: Case 9, West Virginia taxable income is $28,000 under the federal deduction method on a return that itemizes.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: false
+        tax_unit_itemizes: true
+    households:
+      household:
+        members: [head]
+        state_code: WV
+  output:
+    wv_taxable_income: 28_000
+
+- name: Case 10, West Virginia taxable income is $28,000 under the federal deduction method on a return taking the standard deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: false
+        tax_unit_itemizes: false
+    households:
+      household:
+        members: [head]
+        state_code: WV
+  output:
+    wv_taxable_income: 28_000

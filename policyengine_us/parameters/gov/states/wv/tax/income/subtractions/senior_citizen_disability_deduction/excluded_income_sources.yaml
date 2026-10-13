@@ -12,13 +12,6 @@ values:
     # removes income within the form's excluded range. Use the contributor's
     # own amount rather than projecting the tax-unit 529 deduction to spouses.
     - investment_in_529_plan_indv # Line 39
-  2017-01-01:
-    - military_service_income # Line 36
-    - salt_refund_income # Line 38
-    - investment_in_529_plan_indv # Line 39
-    # The IRC 1341 repayments line is inside the excluded range from 2017
-    # (line 50 of lines 39-51 in 2017; line 42 of lines 35-46 in 2025).
-    - wv_claim_of_right_subtraction # Line 42
 
 metadata:
   unit: list
@@ -29,11 +22,7 @@ metadata:
       href: https://tax.wv.gov/Documents/PIT/2025/it140.PersonalIncomeTaxFormsAndInstructions.2025.pdf#page=5
     - title: "West Virginia Personal Income Tax Forms and Instructions 2024, Schedule M line 49 #page 5-6,29"
       href: https://tax.wv.gov/Documents/PIT/2024/it140.PersonalIncomeTaxFormsAndInstructions.2024.pdf#page=5
-    - title: West Virginia Personal Income Tax Forms and Instructions 2021, Schedule M lines 40 and 45
-      href: https://tax.wv.gov/Documents/TaxForms/2021/it140.booklet.pdf#page=5
     - title: West Virginia Personal Income Tax Forms and Instructions 2018, Schedule M lines 46-47
       href: https://tax.wv.gov/Documents/TaxForms/2018/it140.booklet.pdf#page=5
-    - title: West Virginia Personal Income Tax Forms and Instructions 2017, Schedule M lines 50 and 52
-      href: https://tax.wv.gov/Documents/TaxForms/2017/it140.booklet.pdf#page=9
     - title: West Virginia Personal Income Tax Forms and Instructions 2014, Schedule M line 52
       href: https://tax.wv.gov/Documents/TaxForms/2014/it140.booklet.pdf#page=9

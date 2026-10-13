@@ -9,11 +9,12 @@ class wv_claim_of_right_subtraction(Variable):
     documentation = (
         "West Virginia decreasing modification for repaying income received "
         "in an earlier year under a claim of right (Schedule M, IRC 1341 "
-        "Repayments). The amount repaid must be more than $3,000, which the "
-        "model applies to the return's total as section 1341 does. Schedule M "
-        "has a column for each spouse; the model puts each spouse's own "
-        "repayment in their column. The instructions do not depend on the "
-        "federal method."
+        "Repayments). The amount repaid must be more than $3,000; the "
+        "instructions point to IRS Publication 525, which counts the total "
+        "repaid on the return, so the model tests the head's and spouse's "
+        "total. Schedule M has a column for each spouse; the model puts each "
+        "spouse's own repayment in their column. The instructions do not "
+        "depend on the federal method."
     )
     definition_period = YEAR
     reference = (
@@ -27,8 +28,9 @@ class wv_claim_of_right_subtraction(Variable):
     defined_for = StateCode.WV
 
     def formula(person, period, parameters):
-        eligible = person.tax_unit("claim_of_right_section_1341_eligible", period)
+        p = parameters(period).gov.states.wv.tax.income.subtractions.claim_of_right
+        total = person.tax_unit("tax_unit_claim_of_right_repayment", period)
         repayment = person("claim_of_right_repayment", period)
         # Dependents' repayments belong on their own returns.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        return where(eligible & head_or_spouse, repayment, 0)
+        return where((total > p.threshold) & head_or_spouse, repayment, 0)
