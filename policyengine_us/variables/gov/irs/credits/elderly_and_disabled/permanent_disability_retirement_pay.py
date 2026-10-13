@@ -7,16 +7,14 @@ class permanent_disability_retirement_pay(Variable):
     label = "permanent disability retirement pay"
     unit = USD
     documentation = (
-        "Disability income included in federal adjusted gross income of a "
-        "person who retired on disability and was permanently and totally "
-        "disabled when they retired: total_disability_payments, the wages or "
-        "payments in lieu of wages from an employer's accident or health plan "
-        "or pension plan that provides for disability retirement. Payments "
-        "from a plan without disability retirement are not disability income, "
-        "so taxable_disability_benefits alone does not qualify. Limited to the "
-        "wages and taxable disability benefits in federal AGI. State "
-        "disability income exclusions modelled on former IRC 105(d) apply to "
-        "it."
+        "Disability income of a person who retired on disability and was "
+        "permanently and totally disabled when they retired: "
+        "total_disability_payments, the taxable wages or payments in lieu of "
+        "wages from an employer's plan that provides for disability "
+        "retirement. Payments from a plan without disability retirement are "
+        "not disability income, so taxable_disability_benefits alone does not "
+        "qualify. State disability income exclusions modelled on former IRC "
+        "105(d) apply to it."
     )
     definition_period = YEAR
     reference = (
@@ -27,8 +25,9 @@ class permanent_disability_retirement_pay(Variable):
     def formula(person, period, parameters):
         retired_on_total_disability = person("retired_on_total_disability", period)
         disability_income = person("total_disability_payments", period)
-        # Line 1 of the state schedules: disability pay included in federal
-        # AGI, reported as wages or as taxable disability benefits.
+        # total_disability_payments is already the taxable amount; as a
+        # consistency check it cannot exceed the wages and taxable
+        # disability benefits it is reported in.
         included_in_agi = add(
             person, period, ["irs_employment_income", "taxable_disability_benefits"]
         )
