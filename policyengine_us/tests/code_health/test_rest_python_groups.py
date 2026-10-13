@@ -1,18 +1,21 @@
-"""Each remaining Python test file runs in exactly one Rest group.
+"""Each remaining Python test file runs in exactly one Rest group and shard.
 
 The Rest CI job used to run every Python test outside contrib, microsimulation
 and the SPM files in one pytest process. That process peaked at 15.7 GB RSS on
 the 16 GB runner (CI run 37198184683), and later runs lost the runner partway
 through the step. `make test-other-python-rest` now runs the same files as one
-pytest process per group in REST_PYTHON_GROUPS.
+pytest process per group in REST_PYTHON_GROUPS. CI assigns those groups to
+parallel Python shards, with the variables YAML in a separate job.
 
 Paths and --ignore flags can drop a file, or run it twice, while every test
-still passes. So this guard takes each command from `make -n`, asks pytest
-which files it collects, and checks that the groups together collect each file
-of the old single command exactly once. A new test file lands in core or
-policy when it sits under those folders and in remaining otherwise; the check
-fails if a change to the groups leaves one out. Running the target with a stub
-pytest checks that every group runs and that any failure fails the target.
+still passes. So this guard expands the workflows' matrix commands through
+`make -n`, asks pytest which files each group collects, and checks that each
+file of the old single command runs exactly once. A new test file lands in
+core or policy when it sits under those folders and in remaining otherwise;
+the check fails if a change to the groups or shards leaves one out. Running
+the target with a stub pytest checks that every group runs and that any
+failure fails the target. The original Rest check aggregates all shard
+results, and must fail on failed, cancelled or skipped jobs.
 
 pytest lists the files here through its own discovery (paths, --ignore,
 python_files), but nothing is imported: running this file as a script swaps
@@ -42,14 +45,20 @@ TESTS = REPO / "policyengine_us" / "tests"
 WORKFLOWS = [
     REPO / ".github" / "workflows" / name for name in ("python-tests.yaml", "push.yaml")
 ]
-# CI runs this file under `make test-other-python-rest REST_REPORT_DIR=.`, and
-# that make exports these. Passed on, they would carry its flags and report
-# directory into the make runs below, and the stub run would overwrite the
-# CI groups' GNU time reports.
-PARENT_MAKE_VARIABLES = ("MAKEFLAGS", "MFLAGS", "MAKELEVEL", "REST_REPORT_DIR")
+# CI runs this file under a shard of `make test-other-python-rest`, and that
+# make exports these. Passed on, they would restrict the guard's reference to
+# one shard, or carry its report directory into the stub run and overwrite
+# the CI groups' GNU time reports.
+PARENT_MAKE_VARIABLES = (
+    "MAKEFLAGS",
+    "MFLAGS",
+    "MAKELEVEL",
+    "REST_REPORT_DIR",
+    "REST_PYTHON_SHARD",
+)
 
 
-def dry_run(target, *overrides):
+def dry_run(target, *overrides, prefixes=("pytest ", "/usr/bin/time ")):
     """The commands `make <target>` runs, each split into its arguments."""
     if shutil.which("make") is None:
         pytest.skip("make is not installed")
@@ -65,7 +74,7 @@ def dry_run(target, *overrides):
     return [
         shlex.split(line)
         for line in result.stdout.splitlines()
-        if line.startswith(("pytest ", "/usr/bin/time "))
+        if line.startswith(prefixes)
     ]
 
 
@@ -113,41 +122,89 @@ def partition_problems(reference, groups):
     return problems
 
 
-def rest_steps(workflow):
-    return yaml.safe_load(workflow.read_text())["jobs"]["Rest"]["steps"]
+def workflow_jobs(workflow):
+    return yaml.safe_load(workflow.read_text())["jobs"]
 
 
-def ci_report_dir(workflow):
-    """The REST_REPORT_DIR a workflow's Rest job passes to the groups."""
+def rest_steps(workflow, job="RestPython"):
+    return workflow_jobs(workflow)[job]["steps"]
+
+
+def expanded_matrix(text, entry):
+    """Resolve the matrix fields GitHub substitutes before running a step."""
+    return re.sub(
+        r"\$\{\{\s*matrix\.(\w+)\s*\}\}",
+        lambda match: str(entry[match.group(1)]),
+        text,
+    )
+
+
+def ci_python_shards(workflow):
+    """The real Make overrides and artifact configuration of every shard."""
+    jobs = workflow_jobs(workflow)
+    calls = [
+        name
+        for name, config in jobs.items()
+        for step in config.get("steps", [])
+        if "make test-other-python-rest" in step.get("run", "")
+    ]
+    assert calls == ["RestPython"], (workflow.name, calls)
+    job = jobs["RestPython"]
+    matrix = job["strategy"]["matrix"]
+    assert set(matrix) == {"include"}, matrix
+    assert job["strategy"]["fail-fast"] is False
     runs = [
         step["run"]
-        for step in rest_steps(workflow)
+        for step in job["steps"]
         if "make test-other-python-rest" in step.get("run", "")
     ]
     assert len(runs) == 1, f"{workflow.name}: {len(runs)} steps run the groups"
-    match = re.search(r"REST_REPORT_DIR=(\S+)", runs[0])
-    assert match, f"{workflow.name} runs the groups without REST_REPORT_DIR"
-    return match.group(1)
-
-
-def ci_uploaded_patterns(workflow):
-    """The artifact paths a workflow's Rest job uploads."""
-    uploads = [
+    (upload,) = [
         step
-        for step in rest_steps(workflow)
+        for step in job["steps"]
         if step.get("uses", "").startswith("actions/upload-artifact")
     ]
-    assert len(uploads) == 1, f"{workflow.name}: {len(uploads)} upload steps"
-    return uploads[0]["with"]["path"].split()
+    shards = {}
+    for entry in matrix["include"]:
+        name = entry["group"]
+        assert name not in shards, f"{workflow.name}: {name} runs twice"
+        argv = shlex.split(expanded_matrix(runs[0], entry))
+        assert argv[:5] == ["uv", "run", "--no-sync", "make", "test-other-python-rest"]
+        assert any(arg.startswith("REST_PYTHON_SHARD=") for arg in argv[5:]), argv
+        assert all(arg.startswith("REST_") and "=" in arg for arg in argv[5:]), argv
+        shards[name] = {
+            "overrides": argv[5:],
+            "artifact": expanded_matrix(upload["with"]["name"], entry),
+            "patterns": upload["with"]["path"].split(),
+        }
+    assert shards, f"{workflow.name} has no Python shards"
+    return shards
 
 
-def reported_groups(report_dir):
+def ci_report_dir(workflow):
+    """The REST_REPORT_DIR each workflow shard passes to the groups."""
+    dirs = []
+    for shard in ci_python_shards(workflow).values():
+        values = [
+            arg.removeprefix("REST_REPORT_DIR=")
+            for arg in shard["overrides"]
+            if arg.startswith("REST_REPORT_DIR=")
+        ]
+        assert len(values) == 1, f"{workflow.name} runs without one REST_REPORT_DIR"
+        dirs.extend(values)
+    assert len(set(dirs)) == 1, dirs
+    return dirs[0]
+
+
+def reported_groups(report_dir, *overrides):
     """Each group's pytest arguments and report files, in run order.
 
     The group name comes from the JUnit file, rest-python-<group>.xml.
     """
     groups = {}
-    for argv in dry_run("test-other-python-rest", f"REST_REPORT_DIR={report_dir}"):
+    for argv in dry_run(
+        "test-other-python-rest", f"REST_REPORT_DIR={report_dir}", *overrides
+    ):
         assert argv[:3] == ["/usr/bin/time", "-v", "-o"], argv
         assert argv[4] == "pytest", argv
         junit = [arg for arg in argv[5:] if arg.startswith("--junitxml=")]
@@ -195,35 +252,173 @@ def reference(old_command):
     return collected_files(old_command)
 
 
-def test_groups_collect_each_file_of_the_old_single_process_once(groups, reference):
+@pytest.fixture(scope="module")
+def group_files(groups):
+    return {group: collected_files(spec["args"]) for group, spec in groups.items()}
+
+
+def test_groups_collect_each_file_of_the_old_single_process_once(
+    group_files, reference
+):
     # The reference is a real collection: it holds this file.
     assert Path(__file__).relative_to(REPO).as_posix() in reference
-    collected = {group: collected_files(spec["args"]) for group, spec in groups.items()}
-    problems = partition_problems(reference, collected)
+    problems = partition_problems(reference, group_files)
     assert not problems, "\n".join(problems)
 
 
-def test_each_group_writes_reports_the_rest_job_uploads(groups, report_dir):
-    reports = [report for spec in groups.values() for report in spec["reports"]]
-    assert len(set(reports)) == len(reports), reports
-    for workflow in WORKFLOWS:
-        patterns = [os.path.normpath(p) for p in ci_uploaded_patterns(workflow)]
+@pytest.mark.parametrize("workflow", WORKFLOWS, ids=lambda path: path.name)
+def test_ci_shards_run_each_group_and_each_python_file_once(
+    workflow, groups, group_files, reference, report_dir
+):
+    selected = {}
+    for shard, config in ci_python_shards(workflow).items():
+        shard_groups = reported_groups(report_dir, *config["overrides"])
+        assert shard_groups, f"{workflow.name}: {shard} runs no groups"
+        for group, spec in shard_groups.items():
+            assert group in groups, f"{workflow.name}: unknown group {group}"
+            assert spec == groups[group], (workflow.name, shard, group, spec)
+            selected[f"{shard}/{group}"] = group_files[group]
+    problems = partition_problems(reference, selected)
+    assert not problems, f"{workflow.name}:\n" + "\n".join(problems)
+
+
+@pytest.mark.parametrize("workflow", WORKFLOWS, ids=lambda path: path.name)
+def test_each_group_writes_reports_its_ci_shard_uploads(workflow, report_dir):
+    artifacts = []
+    reports = []
+    for config in ci_python_shards(workflow).values():
+        artifacts.append(config["artifact"])
+        shard_reports = [
+            report
+            for spec in reported_groups(report_dir, *config["overrides"]).values()
+            for report in spec["reports"]
+        ]
+        reports.extend(shard_reports)
+        patterns = [os.path.normpath(p) for p in config["patterns"]]
         missing = [
             report
-            for report in reports
+            for report in shard_reports
             if not any(fnmatch(os.path.normpath(report), p) for p in patterns)
         ]
         assert not missing, f"{workflow.name} does not upload {missing}"
-        steps = yaml.safe_load(workflow.read_text())["jobs"]["Rest"]["steps"]
-        for name in ("Run remaining Python tests", "Run tests/variables YAML tests"):
-            (step,) = [step for step in steps if step.get("name") == name]
-            assert step["if"] == "${{ !cancelled() }}"
+    assert len(set(reports)) == len(reports), reports
+    variable_uploads = [
+        step
+        for step in rest_steps(workflow, "RestVariables")
+        if step.get("uses", "").startswith("actions/upload-artifact")
+    ]
+    assert len(variable_uploads) == 1
+    artifacts.append(variable_uploads[0]["with"]["name"])
+    assert len(set(artifacts)) == len(artifacts), artifacts
+    for job in ("RestPython", "RestVariables"):
+        steps = rest_steps(workflow, job)
+        target = {
+            "RestPython": "test-other-python-rest",
+            "RestVariables": "test-yaml-variables",
+        }[job]
+        (run,) = [step for step in steps if f"make {target}" in step.get("run", "")]
+        assert run["if"] == "${{ !cancelled() }}"
         (upload,) = [
             step
             for step in steps
             if step.get("uses", "").startswith("actions/upload-artifact")
         ]
         assert upload["if"] == "always()"
+        assert not any(step.get("continue-on-error", False) for step in steps)
+
+
+@pytest.mark.parametrize("workflow", WORKFLOWS, ids=lambda path: path.name)
+def test_variable_yaml_selection_runs_once_in_its_own_job(workflow):
+    jobs = workflow_jobs(workflow)
+    calls = [
+        (job, step)
+        for job, config in jobs.items()
+        for step in config.get("steps", [])
+        if "make test-yaml-variables" in step.get("run", "")
+    ]
+    assert len(calls) == 1, (workflow.name, calls)
+    job, step = calls[0]
+    assert job == "RestVariables"
+    assert "strategy" not in jobs[job], "variables YAML must run exactly once"
+    assert shlex.split(step["run"]) == [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "rest-variables-resources.txt",
+        "uv",
+        "run",
+        "--no-sync",
+        "make",
+        "test-yaml-variables",
+    ]
+    (command,) = dry_run("test-yaml-variables", prefixes=("python ",))
+    assert command == [
+        "python",
+        "policyengine_us/tests/test_batched.py",
+        "policyengine_us/tests/variables",
+        "--batches",
+        "1",
+    ]
+    assert not any(
+        "make test-other-python" in candidate.get("run", "")
+        for candidate in jobs[job]["steps"]
+    )
+    assert not any(
+        "make test-yaml-variables" in candidate.get("run", "")
+        for candidate in rest_steps(workflow)
+    )
+    (upload,) = [
+        candidate
+        for candidate in jobs[job]["steps"]
+        if candidate.get("uses", "").startswith("actions/upload-artifact")
+    ]
+    junit = [
+        arg.removeprefix("--junitxml=")
+        for arg in shlex.split(step["env"]["PYTEST_ADDOPTS"])
+        if arg.startswith("--junitxml=")
+    ]
+    assert junit == ["rest-variables.xml"]
+    patterns = upload["with"]["path"].split()
+    assert all(
+        any(fnmatch(report, pattern) for pattern in patterns)
+        for report in [junit[0], "rest-variables-resources.txt"]
+    )
+
+
+@pytest.mark.parametrize("workflow", WORKFLOWS, ids=lambda path: path.name)
+def test_original_rest_check_aggregates_all_shards_without_hiding_failure(workflow):
+    jobs = workflow_jobs(workflow)
+    summary = jobs["Rest"]
+    assert summary["name"] == "Full Suite - Rest (Python + variables)"
+    assert set(summary["needs"]) == {"RestPython", "RestVariables"}
+    assert "always()" in summary["if"]
+    assert "strategy" not in summary
+    assert not summary.get("continue-on-error", False)
+    if workflow.name == "push.yaml":
+        assert "Rest" in jobs["Publish"]["needs"]
+    assert len(summary["steps"]) == 1
+    (step,) = summary["steps"]
+    assert step["env"] == {
+        "PYTHON_RESULT": "${{ needs.RestPython.result }}",
+        "VARIABLES_RESULT": "${{ needs.RestVariables.result }}",
+    }
+    assert not step.get("continue-on-error", False)
+    for python in ("success", "failure", "cancelled", "skipped"):
+        for variables in ("success", "failure", "cancelled", "skipped"):
+            env = dict(os.environ, PYTHON_RESULT=python, VARIABLES_RESULT=variables)
+            result = subprocess.run(
+                ["bash", "-e", "-c", step["run"]],
+                cwd=REPO,
+                env=env,
+                capture_output=True,
+                text=True,
+            )
+            assert (result.returncode == 0) == (python == variables == "success"), (
+                workflow.name,
+                python,
+                variables,
+                result.stdout + result.stderr,
+            )
 
 
 @pytest.mark.parametrize("workflow", WORKFLOWS, ids=lambda path: path.name)
@@ -276,6 +471,29 @@ def test_groups_run_as_plain_pytest_without_a_report_dir(groups):
     plain = dry_run("test-other-python-rest")
     assert [argv[0] for argv in plain] == ["pytest"] * len(groups)
     assert [argv[1:] for argv in plain] == [spec["args"] for spec in groups.values()]
+
+
+def test_inherited_ci_shard_does_not_restrict_the_reference(monkeypatch, groups):
+    monkeypatch.setenv("REST_PYTHON_SHARD", "2")
+    monkeypatch.setenv("REST_REPORT_DIR", "inherited-reports")
+    plain = dry_run("test-other-python-rest")
+    assert [argv[1:] for argv in plain] == [spec["args"] for spec in groups.values()]
+
+
+@pytest.mark.parametrize("shard", ["0", "4", "unknown"])
+def test_invalid_shard_cannot_pass_without_running_any_groups(shard):
+    if shutil.which("make") is None:
+        pytest.skip("make is not installed")
+    env = {k: v for k, v in os.environ.items() if k not in PARENT_MAKE_VARIABLES}
+    result = subprocess.run(
+        ["make", "-n", "test-other-python-rest", f"REST_PYTHON_SHARD={shard}"],
+        cwd=REPO,
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode != 0
+    assert "REST_PYTHON_SHARD must be 1, 2 or 3" in result.stderr
 
 
 def import_name(file):

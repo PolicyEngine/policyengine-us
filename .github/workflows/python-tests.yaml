@@ -1,19 +1,32 @@
 name: Python tests
 on:
   workflow_call:
-# Group these jobs in the Actions view while retaining two independent runners.
+# Keep each Python shard and the variables suite on independent runners.
 # Only the guarded PR workflow calls this file; it has no automatic triggers.
 jobs:
-  Rest:
-    name: Full Suite - Rest (Python + variables)
+  RestPython:
+    name: Full Suite - Rest (Python, ${{ matrix.group }})
     runs-on: ubuntu-latest
-    # Passing runs on 2026-10-04 took 42-55 minutes (#9653, #9766, #9769,
-    # #9777, #9784), so a 60-minute limit cancels PRs that add a few
-    # minutes of tests (#9695 was cancelled at 60 minutes twice).
-    timeout-minutes: 90
+    # Existing group timings predict 20-32 minutes per shard plus setup.
+    timeout-minutes: 60
     env:
       PYTHONUNBUFFERED: 1
-      PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+      MKL_NUM_THREADS: 4
+      VECLIB_MAXIMUM_THREADS: 4
+      NUMEXPR_NUM_THREADS: 4
+      OMP_WAIT_POLICY: PASSIVE
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - group: shard-1
+            shard: 1
+          - group: shard-2
+            shard: 2
+          - group: shard-3
+            shard: 3
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -32,30 +45,83 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      # Each Rest group runs in a separate process to release its heap.
-      # SPM simulation/API contracts run in the Microsimulation job instead.
+      # Each group remains a separate, sequential process on its runner.
+      # SPM simulation/API contracts stay in the Microsimulation job.
       - name: Run remaining Python tests
-        # Continue after failures, but stop when the workflow is cancelled.
         if: ${{ !cancelled() }}
         env:
           PYTEST_ADDOPTS: "--durations=0 -v -p no:unraisableexception -p no:threadexception"
-        run: uv run --no-sync make test-other-python-rest REST_REPORT_DIR=.
+        run: uv run --no-sync make test-other-python-rest REST_PYTHON_SHARD=${{ matrix.shard }} REST_REPORT_DIR=.
+      - name: Upload Rest Python timing and memory reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rest-python-test-timings-${{ matrix.group }}
+          path: |
+            rest-python-*.xml
+            rest-python-*-resources.txt
+  RestVariables:
+    name: Full Suite - Rest (variables YAML)
+    runs-on: ubuntu-latest
+    # Recent runs took 47-66 seconds, so this suite needs no further shards.
+    timeout-minutes: 30
+    env:
+      PYTHONUNBUFFERED: 1
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+      MKL_NUM_THREADS: 4
+      VECLIB_MAXIMUM_THREADS: 4
+      NUMEXPR_NUM_THREADS: 4
+      OMP_WAIT_POLICY: PASSIVE
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+        with:
+          version: "0.12.13"
+      - name: Resolve latest compatible PolicyEngine Core
+        run: uv lock --upgrade-package policyengine-core
+      - name: Install dependencies
+        run: uv sync --locked --extra dev
+      - name: Turn off default branching
+        shell: bash
+        run: bash ./update_itemization.sh
       - name: Run tests/variables YAML tests
-        # Continue after failures, but stop when the workflow is cancelled.
         if: ${{ !cancelled() }}
         env:
           PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
         run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
-      - name: Upload Rest timing and memory reports
+      - name: Upload Rest variables timing and memory reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: rest-test-timings
+          name: rest-variables-test-timings
           path: |
-            rest-python-*.xml
             rest-variables.xml
-            rest-python-*-resources.txt
             rest-variables-resources.txt
+  Rest:
+    # Retain the old check name and the release Publish dependency.
+    name: Full Suite - Rest (Python + variables)
+    needs: [RestPython, RestVariables]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check all Rest jobs succeeded
+        shell: bash
+        env:
+          PYTHON_RESULT: ${{ needs.RestPython.result }}
+          VARIABLES_RESULT: ${{ needs.RestVariables.result }}
+        run: |
+          if [[ "$PYTHON_RESULT" != "success" || "$VARIABLES_RESULT" != "success" ]]; then
+            echo "::error::Rest jobs did not all succeed: Python=$PYTHON_RESULT, variables=$VARIABLES_RESULT"
+            exit 1
+          fi
   Microsimulation:
     name: Full Suite - Microsimulation
     runs-on: ubuntu-latest
