@@ -574,3 +574,75 @@
     ssi: [264, 264]
     co_oap_deemed_income: [2_382, 0]
     co_oap: [6_756, 0]
+
+- name: Case 19, an 18-year-old in secondary school is a dependent child.
+  # As Case 5, with the child 18 and in secondary school. The rule does not
+  # define "dependent child"; TANF's ages (under 19 for a secondary school
+  # student) apply, so 2,000 - 1,032 - 497 = 471/month is deemed, or
+  # 5,652/year. The client: 1,032 - 471 = 561/month, or 6,732/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 24_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+      child:
+        age: 18
+        is_in_secondary_school: true
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [5_652, 0, 0]
+    co_oap: [6_732, 0, 0]
+
+- name: Case 20, a child's rental loss does not offset the child's other income.
+  # As Case 5, with the child receiving $600/month of survivor benefits and a
+  # $300/month rental loss. The loss counts as zero, so the allocation is
+  # max(0, 497 - 600) = 0 and 968/month is deemed, or 11,616/year.
+  period: 2026
+  input:
+    people:
+      head:
+        age: 62
+        is_tax_unit_head: true
+      spouse:
+        age: 50
+        pension_income: 24_000
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_spouse: true
+      child:
+        age: 10
+        social_security_survivors: 7_200
+        rental_income: -3_600
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: CO
+  output:
+    co_oap_deemed_income: [11_616, 0, 0]
+    co_oap: [2_268, 0, 0]

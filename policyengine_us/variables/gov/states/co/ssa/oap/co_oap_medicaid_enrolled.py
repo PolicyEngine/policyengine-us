@@ -23,17 +23,19 @@ class co_oap_medicaid_enrolled(Variable):
         # SNAP counts OAP as income, and Medicaid's SNAP pass-through from the
         # community engagement requirement (42 CFR 435.554(c)(7)) reads SNAP
         # receipt, so OAP, a spouse's Medicaid enrollment and SNAP depend on
-        # each other. Medicaid is computed in a private branch where no
-        # spouse's Medicaid exempts their income from OAP deeming: enrollment
-        # is decided on the SNAP the household receives while the spouse's
-        # income is still deemed, before the exemption raises OAP. OAP there
-        # is never higher than the final OAP, so SNAP there is never lower,
-        # and the spouse keeps every Medicaid route, supplied inputs included.
-        # Higher OAP can only lower SNAP, so at most one outcome is
-        # self-consistent, and this finds it when it exists. When none exists
-        # (the exemption's higher OAP would end the SNAP receipt that gave the
-        # spouse Medicaid), this treats the spouse as enrolled. The result does
-        # not depend on calculation order.
+        # each other. Medicaid is computed in a private branch where only
+        # reported coverage exempts a spouse's income from OAP deeming:
+        # enrollment is decided on the SNAP the household receives while the
+        # other spouses' income is still deemed, before an exemption raises
+        # OAP. The spouse keeps every Medicaid route, supplied inputs
+        # included, and the result does not depend on calculation order.
+        # In a SNAP unit with one spouse whose exemption turns on this, higher
+        # OAP can only lower SNAP, so at most one outcome is self-consistent,
+        # and this finds it when it exists; when none exists (the exemption's
+        # higher OAP would end the SNAP receipt that gave the spouse Medicaid),
+        # it treats the spouse as enrolled. With several such spouses in one
+        # SNAP unit, enrollment is decided with all of their income deemed,
+        # which need not be self-consistent.
         simulation = person.simulation
         branch_name = f"{simulation.branch_name}_co_oap_medicaid_{period}"
         try:
@@ -41,7 +43,7 @@ class co_oap_medicaid_enrolled(Variable):
                 simulation,
                 branch_name,
                 period,
-                {"co_oap_medicaid_enrolled": np.zeros(person.count, dtype=bool)},
+                {"co_oap_medicaid_enrolled": np.asarray(reported, dtype=bool)},
             )
             return branch.calculate("medicaid_enrolled", period) | reported
         finally:

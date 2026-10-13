@@ -38,17 +38,28 @@ class co_oap_deemed_income(Variable):
 
         # 3.534(B)(3): for each dependent child in the spouse's household,
         # half the SSI benefit standard for an individual less the child's own
-        # income. 3.520.786's exemptions apply to the client, spouse and
-        # sponsor, not the child, so the child's gross income counts, child
-        # support and SSI included.
+        # income. The rule does not define "dependent child"; an Adult
+        # Financial client with one must apply for Colorado Works (3.520.71(F)),
+        # so we use TANF's ages: under 18, or under 19 in secondary school.
+        # 3.520.786's exemptions apply to the client, spouse and sponsor, not
+        # the child, so the child's gross income counts, child support and SSI
+        # included, with no source below zero.
         year = period.this_year
-        dependent_child = person("is_tax_unit_dependent", year) & person(
-            "is_child", year
+        tanf_age = parameters(period).gov.hhs.tanf.cash.eligibility.age_limit
+        age_limit = where(
+            person("is_in_secondary_school", period),
+            tanf_age.student,
+            tanf_age.non_student,
         )
-        child_income = max_(
-            0,
-            add(person, period, ["ssi_earned_income", "ssi_unearned_income"]) + ssi,
+        dependent_child = person("is_tax_unit_dependent", year) & (
+            person("age", year) < age_limit
         )
+        ssi_sources = parameters(period).gov.ssa.ssi.income.sources
+        child_sources = [
+            max_(0, person(source, period))
+            for source in ["ssi_earned_income", *ssi_sources.unearned]
+        ]
+        child_income = sum(child_sources) + ssi
         fbr = parameters(period).gov.ssa.ssi.amount.individual
         child_allocation = dependent_child * max_(
             0, fbr * p.income.deeming.child_allocation_share - child_income

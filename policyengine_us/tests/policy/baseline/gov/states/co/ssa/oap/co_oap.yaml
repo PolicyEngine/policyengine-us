@@ -414,3 +414,36 @@
   output:
     co_oap_own_countable_income: 5_958
     co_oap: 6_420
+
+- name: Case 28, monthly income is recorded in cents.
+  # $12,623.99/year of rent averages to $1,051.9992/month (3.520.781(G)), a
+  # monthly income of $1,052.00 in cents. Less the $20 disregard that is
+  # 1,032, equal to the standard: denied (3.533).
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        rental_income: 12_623.99
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 0
+
+- name: Case 29, a grant from income recorded in cents drops its cents.
+  # $6,192.01/year of rent is $516.00/month in cents: 516 - 20 = 496;
+  # 1,032 - 496 = 536/month, or 6,432/year.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        rental_income: 6_192.01
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 6_432

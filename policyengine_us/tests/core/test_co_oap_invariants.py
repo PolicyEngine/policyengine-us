@@ -150,12 +150,12 @@ def assert_properties(cases, calculated=None):
             total = (ssi[client] + countable[client]) / 12
             paid = oap[client] / 12
             # 1. Payment rule and bounds. Payments not reduced by SSI drop
-            # cents (3.581(E)). Within a fifth of a cent of the standard,
-            # float32 sums can fall either way; YAML pins those.
+            # cents (3.581(E)). Within half a cent of the standard, the
+            # model's quarter-cent precision decides; YAML pins those.
             grant = standard - total
             if not eligible[client]:
                 assert paid == 0, c
-            elif grant > 0.002:
+            elif grant > 0.005:
                 expected = max(grant, floor)
                 if ssi[client] > 0:
                     assert paid == pytest.approx(expected, abs=0.05), c
@@ -163,7 +163,7 @@ def assert_properties(cases, calculated=None):
                     assert abs(paid - round(paid)) < 0.01, c
                     assert expected - 1 < paid <= expected + 0.01, c
                 assert floor - TOLERANCE <= paid <= standard + TOLERANCE, c
-            elif grant < -0.002:
+            elif grant < -0.005:
                 assert paid == 0, c
         client = f"client_A{i}"
         if not c["married"]:
