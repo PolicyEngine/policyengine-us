@@ -100,10 +100,33 @@
   output:
     ar_claim_of_right_deduction: 0
 
+# $10,000 repaid, $2,000 of it never taxed by Arkansas: the $8,000 Arkansas
+# taxed is more than $3,000 and is the deduction. Miscellaneous deductions:
+# $8,000 - 2% x $60,000 = $6,800.
+- name: Case 6, income Arkansas did not tax is left out of the deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        claim_of_right_repayment: 10_000
+        ar_claim_of_right_repayment_excluded_from_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AR
+  output:
+    ar_claim_of_right_deduction: 8_000
+    ar_misc_deduction_joint: 6_800
+
 # Head $2,000 and spouse $2,500: $4,500 restored on the return is more than
 # $3,000 although neither repayment is. The dependent's $5,000 belongs on the
 # dependent's own return.
-- name: Case 6, a joint return counts both spouses' repayments but not a dependent's.
+- name: Case 7, a joint return counts both spouses' repayments but not a dependent's.
   period: 2025
   input:
     people:
@@ -127,7 +150,7 @@
   output:
     ar_claim_of_right_deduction: 4_500
 
-- name: Case 7, outside Arkansas.
+- name: Case 8, outside Arkansas.
   period: 2025
   input:
     people:
@@ -148,7 +171,7 @@
 # Wages $60,000, repays $10,000. AR3: $10,000 - 2% x $60,000 = $8,800 of
 # miscellaneous deductions, above the $2,470 standard deduction, so the return
 # itemizes: net taxable income $60,000 - $8,800 = $51,200.
-- name: Case 8, the deduction counts toward the 2% floor and makes the return itemize.
+- name: Case 9, the deduction counts toward the 2% floor and makes the return itemize.
   period: 2025
   input:
     people:
@@ -171,7 +194,7 @@
 
 # Wages $60,000, repays $3,001: $3,001 - $1,200 = $1,801 of miscellaneous
 # deductions, below the $2,470 standard deduction, which the return keeps.
-- name: Case 9, a deduction below the standard deduction after the floor leaves taxable income unchanged.
+- name: Case 10, a deduction below the standard deduction after the floor leaves taxable income unchanged.
   period: 2025
   input:
     people:
@@ -194,7 +217,7 @@
 # Wages $100,000, charity $20,000, repays $10,000: miscellaneous $10,000 -
 # 2% x $100,000 = $8,000; itemized $20,000 + $8,000 = $28,000; net taxable
 # income $72,000.
-- name: Case 10, the floored deduction adds to other itemized deductions.
+- name: Case 11, the floored deduction adds to other itemized deductions.
   period: 2025
   input:
     people:

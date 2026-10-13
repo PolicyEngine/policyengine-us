@@ -13,9 +13,9 @@ class ar_claim_of_right_deduction(Variable):
         "U.S.C. § 1341(a)(1)-(3) but not the federal choice of a credit, so "
         "the deduction applies whichever federal method governs. Ark. Code "
         "§ 26-51-437(b) does not list it among the itemized deductions that "
-        "are not miscellaneous, so it counts toward the 2% floor. Not "
-        "modeled: repayments of $3,000 or less, which § 26-51-457 does not "
-        "reach."
+        "are not miscellaneous, so the model counts it toward the 2% floor. "
+        "Not modeled: repayments of $3,000 or less, which § 26-51-457 does "
+        "not reach; whether another provision allows them is unresolved."
     )
     definition_period = YEAR
     reference = (
