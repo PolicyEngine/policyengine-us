@@ -6,6 +6,8 @@ description: Montana counts these sources as miscellaneous deductions.
 values:
   2021-01-01:
     - casualty_loss_deduction
+  # From 2024 the federal itemized deductions replace the Itemized Deductions
+  # Schedule (mt_adjusted_federal_itemized_deductions).
   2024-01-01: []
     
 metadata:

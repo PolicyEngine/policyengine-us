@@ -1,0 +1,243 @@
+# From 2024 Montana taxable income starts from federal taxable income (MCA
+# 15-30-2120(1)). Form 2 line 2 takes the federal itemized deductions (2024
+# Worksheet A line 1: "Enter your total federal itemized deductions from Form
+# 1040, line 12") and removes the state income tax "only to the extent that it
+# does not reduce your deduction below your federal standard deduction". MCA
+# 15-30-2120(2)(j) adds back the state income tax deduction claimed, "not to
+# exceed the amount required to reduce the federal itemized amount ... to the
+# amount of the federal standard deduction". The 2025 Schedule I Worksheet B
+# finds the state income tax within a capped SALT deduction as line 5e less
+# local income, real estate and personal property taxes.
+#
+# The 2024 federal standard deduction is $14,600 single and $29,200 joint; the
+# SALT cap is $10,000.
+
+- name: Case 1, state income tax is removed only down to the federal standard deduction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        real_estate_taxes: 4_000
+        deductible_mortgage_interest: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        state_withheld_income_tax: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # SALT: min(10,000, 3,000 + 4,000) = 7,000.
+    salt_deduction: 7_000
+    # Worksheet A line 1: 9,000 + 7,000 = 16,000.
+    itemized_taxable_income_deductions: 16_000
+    # Line 3: 16,000 - 3,000 = 13,000. Line 5: greater of 13,000 and the
+    # 14,600 standard deduction.
+    mt_adjusted_federal_itemized_deductions: 14_600
+    mt_itemized_deductions_joint: 14_600
+
+- name: Case 2, all of the state income tax is removed when the total stays above the standard deduction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        real_estate_taxes: 4_000
+        deductible_mortgage_interest: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        state_withheld_income_tax: 3_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    itemized_taxable_income_deductions: 22_000
+    # 22,000 - 3,000 = 19,000, above 14,600.
+    mt_adjusted_federal_itemized_deductions: 19_000
+
+- name: Case 3, under the SALT cap only the state income tax left after real estate taxes is removed.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        real_estate_taxes: 8_000
+        deductible_mortgage_interest: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        state_withheld_income_tax: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # SALT: min(10,000, 5,000 + 8,000) = 10,000.
+    salt_deduction: 10_000
+    itemized_taxable_income_deductions: 25_000
+    # Worksheet B line 5: 10,000 - 8,000 = 2,000 of state income tax.
+    # 25,000 - 2,000 = 23,000.
+    mt_adjusted_federal_itemized_deductions: 23_000
+
+- name: Case 4, no state income tax is removed when real estate taxes fill the SALT cap.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        real_estate_taxes: 12_000
+        deductible_mortgage_interest: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        state_withheld_income_tax: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    salt_deduction: 10_000
+    # Worksheet B line 5: 10,000 - 12,000 is below zero, so 0.
+    mt_adjusted_federal_itemized_deductions: 25_000
+
+- name: Case 5, a filer who deducts sales tax instead of income tax keeps the whole federal total.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 100_000
+        real_estate_taxes: 4_000
+        deductible_mortgage_interest: 15_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        state_withheld_income_tax: 1_000
+        state_sales_tax: 4_000
+        local_sales_tax: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Schedule A line 5a takes the 4,000 of sales tax over the 1,000 of
+    # income tax: SALT = 4,000 + 4,000 = 8,000. No state income tax is
+    # deducted, so MCA 15-30-2120(2)(j) adds nothing back.
+    salt_deduction: 8_000
+    itemized_taxable_income_deductions: 23_000
+    mt_adjusted_federal_itemized_deductions: 23_000
+
+- name: Case 6, a joint return's real estate taxes share one SALT cap.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+        real_estate_taxes: 6_000
+        deductible_mortgage_interest: 25_000
+      person2:
+        age: 44
+        employment_income: 40_000
+        real_estate_taxes: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        state_withheld_income_tax: 4_000
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # SALT: min(10,000, 4,000 + 12,000) = 10,000, with no state income tax
+    # left after the 12,000 of real estate taxes.
+    salt_deduction: 10_000
+    itemized_taxable_income_deductions: 35_000
+    mt_adjusted_federal_itemized_deductions: 35_000
+    # Only the head carries the return's amount.
+    mt_itemized_deductions_joint: [35_000, 0]
+    mt_itemized_deductions_for_federal_itemization_joint: [35_000, 0]
+
+- name: Case 7, a federal casualty loss reaches Montana once per return.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    # The federal deduction for personal casualty losses outside federally
+    # declared disasters is suspended from 2018; switch it on to show the
+    # federal amount passes through.
+    gov.irs.deductions.itemized.casualty.active: true
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+        casualty_loss: 30_000
+        deductible_mortgage_interest: 15_000
+      person2:
+        age: 44
+        employment_income: 40_000
+      person3:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        state_withheld_income_tax: 0
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    # 30,000 - 10% x 100,000 of AGI = 20,000.
+    casualty_loss_deduction: 20_000
+    # 15,000 + 20,000 = 35,000.
+    itemized_taxable_income_deductions: 35_000
+    mt_adjusted_federal_itemized_deductions: 35_000
+    mt_itemized_deductions_joint: [35_000, 0, 0]
+    mt_itemized_deductions: 35_000
+
+- name: Case 8, from 2026 Montana takes the federal itemized deductions after the section 68 limitation.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 1_000_000
+        real_estate_taxes: 5_000
+        deductible_mortgage_interest: 20_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        state_withheld_income_tax: 30_000
+        charitable_deduction: 40_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # The SALT cap phases down to the 10,000 floor at 1,000,000 of income.
+    salt_deduction: 10_000
+    # 40,000 + 20,000 + 10,000 = 70,000 before the limitation.
+    total_itemized_taxable_income_deductions: 70_000
+    # Section 68 as amended by P.L. 119-21: 2/37 of the lesser of 70,000 and
+    # taxable income over the 640,600 start of the 37% bracket (1,000,000 -
+    # 640,600 = 359,400), using the 0.05405405 rate: 3,783.78.
+    itemized_taxable_income_deductions_reduction: 3_783.78
+    itemized_taxable_income_deductions: 66_216.22
+    # State income tax within SALT: 10,000 - 5,000 = 5,000, below 66,216.22 -
+    # 16,100. 66,216.22 - 5,000 = 61,216.22.
+    mt_adjusted_federal_itemized_deductions: 61_216.22
