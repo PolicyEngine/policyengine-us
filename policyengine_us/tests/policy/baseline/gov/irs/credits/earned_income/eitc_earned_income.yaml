@@ -360,8 +360,8 @@
     eitc_earned_income: 8500
     filer_adjusted_earnings: 8500
 
-- name: AMT kiddie-tax exemption retains its original gross earnings cap
-  period: 2022
+- name: AMT kiddie-tax exemption retains its pre-2018 gross earnings cap
+  period: 2017
   absolute_error_margin: 0.01
   input:
     people:
@@ -370,6 +370,8 @@
         is_tax_unit_head: true
         employment_income: 10000
         traditional_401k_contributions_desired: 2000
+        # Retirement-limit parameters start in 2018; keep this deferral unscaled.
+        elective_deferral_contribution_scale: 1
     tax_units:
       tax_unit:
         members: [head]
@@ -381,7 +383,37 @@
         state_code: TX
   output:
     filer_adjusted_earnings: 8000
-    amt_exemption: 18200
+    # Ordinary exemption = 54,300 - 0.25 * (200,000 - 120,700) = 34,475.
+    # Historical cap uses gross earnings: 10,000 + 7,500 = 17,500.
+    # amt_exemption = min(34,475, 17,500) = 17,500.
+    amt_exemption: 17500
+
+- name: AMT kiddie-tax exemption has no gross earnings cap from 2018
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 20
+        is_tax_unit_head: true
+        employment_income: 10000
+        traditional_401k_contributions_desired: 2000
+        # Match the pre-2018 case's unscaled deferral.
+        elective_deferral_contribution_scale: 1
+    tax_units:
+      tax_unit:
+        members: [head]
+        amt_kiddie_tax_applies: true
+        amt_income: 200000
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    filer_adjusted_earnings: 8000
+    # No child cap from 2018; AMTI is below the 2022 phase-out start of 539,900.
+    # amt_exemption = 75,900 - 0.25 * max(0, 200,000 - 539,900) = 75,900.
+    amt_exemption: 75900
 
 - name: A disability pension before minimum retirement age is earned income for the EITC
   # Pub. 596 (2024), file page 8: taxable benefits from an employer's
