@@ -487,8 +487,8 @@
   # only unearned income is SSI, so (1,291 - 65) / 2 = 613, and 613 + 419 =
   # 1,032 equals the standard: denied. The spouse is on SSI within the limit
   # ((100.03 - 65) / 2 + 419 = 436.515), so nothing is deemed either way;
-  # the spouse's grant, 1,032 - 436.515 = 595.485, is reduced by SSI and
-  # keeps its cents: 7,145.82/year.
+  # the spouse's grant, 1,032 - 436.515 = 595.485, is reduced by SSI, so it
+  # keeps its cents and is paid to the cent: 595.49, or 7,145.88/year.
   period: 2026
   absolute_error_margin: 0.1
   input:
@@ -513,4 +513,24 @@
         state_code: CO
   output:
     ssi: [5_027.91, 5_027.91]
-    co_oap: [0, 7_145.82]
+    co_oap: [0, 7_145.88]
+
+- name: Case 33, float residue just under the standard is no grant.
+  # 12,383.9988 / 12 = 1,031.9999, the residue of an income of 1,032.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 12_383.9988
+    ssi: 0
+  output:
+    co_oap: 0
+
+- name: Case 34, a half-cent grant from countable income is a grant.
+  # 12,383.94 / 12 = 1,031.995 leaves a grant of 0.005, raised to 189.
+  period: 2026
+  input:
+    co_oap_eligible: true
+    co_oap_countable_income: 12_383.94
+    ssi: 0
+  output:
+    co_oap: 2_268

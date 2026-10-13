@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.co.ssa.oap._precision import (
     PRECISION,
+    cents,
     ssi_paid,
 )
 
@@ -21,6 +22,8 @@ class co_oap(Variable):
             p = parameters(month).gov.states.co.ssa.oap
             # 9 CCR 2503-5 3.532(B), 3.533(B): the grant is the grant standard
             # less total countable income, SSI included (3.533(A)(2)(d)).
+            # PE-US's SSI counts interest that 20 CFR 416.1124(c)(22)
+            # excludes (#10079); OAP, which adds SSI back, offsets it.
             ssi = ssi_paid(person("ssi", month))
             income = ssi + person("co_oap_countable_income", month)
             grant = p.grant_standard - income
@@ -31,7 +34,7 @@ class co_oap(Variable):
             # supplementary payment, month by month.
             payment = where(grant > PRECISION, max_(grant, p.payment_floor), 0)
             # 3.581(E): payments drop any cents, "except in cases where SSI
-            # income reduces the grant".
-            payment = where(ssi > 0, payment, np.floor(payment + PRECISION))
+            # income reduces the grant"; those are paid to the cent.
+            payment = where(ssi > 0, cents(payment), np.floor(payment + PRECISION))
             total = total + payment
         return total

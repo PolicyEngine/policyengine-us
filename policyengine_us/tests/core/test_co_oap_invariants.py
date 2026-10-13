@@ -50,6 +50,7 @@ import numpy as np
 import pytest
 
 from policyengine_us import Simulation
+from policyengine_us.variables.gov.states.co.ssa.oap._precision import ssi_paid
 from policyengine_us.variables.gov.ssa.ssi.eligibility.income._apply_ssi_exclusions import (
     _apply_ssi_exclusions,
 )
@@ -147,7 +148,8 @@ def assert_properties(cases, calculated=None):
             client = f"client_{arrangement}{i}"
             # Monthly amounts: the inputs and the program are constant
             # within the year.
-            total = (ssi[client] + countable[client]) / 12
+            # SSI as SSA pays it, as the model counts it.
+            total = float(ssi_paid(ssi[client] / 12)) + countable[client] / 12
             paid = oap[client] / 12
             # 1. Payment rule and bounds. Payments not reduced by SSI drop
             # cents (3.581(E)). Within half a cent of the standard, the

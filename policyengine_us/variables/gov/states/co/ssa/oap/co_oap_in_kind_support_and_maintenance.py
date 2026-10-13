@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.co.ssa.oap._precision import cents
+from policyengine_us.variables.gov.states.co.ssa.oap._precision import (
+    cents,
+    ssi_paid,
+)
 
 
 class co_oap_in_kind_support_and_maintenance(Variable):
@@ -20,5 +23,6 @@ class co_oap_in_kind_support_and_maintenance(Variable):
         # on SSI (3.520.79(C)), are not modeled.
         ism = person("ssi_in_kind_support_and_maintenance", period)
         couple_computation = person("ssi_couple_computation_applies", period)
-        ism = where(couple_computation, ism / 2, ism) * (person("ssi", period) > 0)
+        receives_ssi = ssi_paid(person("ssi", period)) > 0
+        ism = where(couple_computation, ism / 2, ism) * receives_ssi
         return cents(ism)
