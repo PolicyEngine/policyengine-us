@@ -150,6 +150,8 @@
       person2:
         age: 63
         social_security_retirement: 19_200
+        # Set explicitly: an input for one member gives the others the NONE default.
+        ri_ssp_living_arrangement: INDEPENDENT
     marital_units:
       couple:
         members: [person1, person2]

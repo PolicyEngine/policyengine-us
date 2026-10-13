@@ -159,6 +159,8 @@
     people:
       person1:
         age: 72
+        # Set explicitly: an input for one member gives the others the NONE default.
+        ri_ssp_living_arrangement: INDEPENDENT
       person2:
         age: 72
         ri_ssp_living_arrangement: RESIDENTIAL_CARE
