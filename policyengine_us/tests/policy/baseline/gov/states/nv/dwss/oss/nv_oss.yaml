@@ -386,7 +386,7 @@
   output:
     nv_oss: [35.6, 0]
 
-- name: Case 27, spousal deeming cannot exceed the payment on the claimants own income.
+- name: Case 27, spousal deeming cannot exceed the payment on the claimant's own income.
   period: 2026-01
   absolute_error_margin: 0.001
   input:
@@ -584,3 +584,75 @@
   output:
     nv_oss_payment_standard: [109.3, 112.265, 112.265, 0]
     nv_oss: [109.3, 17.77, 17.77, 0]
+
+- name: Case 34, an eligible person who does not take up SSI receives no supplement.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    state_code: NV
+    age: 65
+    takes_up_ssi_if_eligible: false
+  output:
+    # Aged citizen with no resources meets the categorical and resource tests.
+    is_ssi_eligible: true
+    # $994 federal benefit rate - $0 countable income = $994 if taken up.
+    ssi_if_takes_up: 994
+    # SI 01415.058 I.2.a aged independent living rate.
+    nv_oss_payment_standard: 36.4
+    # SSI is defined only for people who take it up.
+    ssi: 0
+    # SSA pays the supplement through the SSI claim, so no take-up means $0.
+    nv_oss: 0
+
+- name: Case 35, spousal deeming in another person's household caps the payment with the reduced federal rate.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 40
+        is_blind: true
+        # $750 monthly Social Security disability benefit.
+        social_security_disability: 9_000
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 40
+        # 20 hours a week at the $12.00 Nevada minimum wage (NRS 608.250):
+        # $12 * 20 * 52 = $12,480 a year, $1,040 a month.
+        employment_income: 12_480
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NV
+  output:
+    # Shelter from others and all meals paid by others: one-third reduction.
+    ssi_federal_living_arrangement: [ANOTHER_PERSONS_HOUSEHOLD, ANOTHER_PERSONS_HOUSEHOLD]
+    nv_oss_living_arrangement: [HOUSEHOLD_OF_ANOTHER, HOUSEHOLD_OF_ANOTHER]
+    # Not a joint claim: person1 gets the blind household-of-another
+    # individual rate; person2 has no SSI category.
+    nv_oss_payment_standard: [213.96, 0]
+    # Spouse earnings $1,040 > $1,491 - $994 = $497, so deeming applies.
+    # Deemed: ($1,040 - $65) / 2 = $487.50.
+    ssi_income_deemed_from_ineligible_spouse: [487.5, 0]
+    # Own $750 - $20 = $730; $730 + $487.50 = $1,217.50.
+    ssi_countable_income: [1_217.5, 0]
+    # $1,491 couple rate * 2/3 = $994 - $1,217.50 < 0.
+    ssi: [0, 0]
+    # Couple path: $531.94 - ($1,217.50 - $994) = $308.44.
+    # Own-income cap: $213.96 - ($730 - $994 * 2/3 = $662.67) = $146.63
+    # after rounding up to cents. min($146.63, $308.44) = $146.63.
+    nv_oss: [146.63, 0]

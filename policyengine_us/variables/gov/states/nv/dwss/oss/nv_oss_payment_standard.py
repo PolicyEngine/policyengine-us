@@ -10,7 +10,7 @@ class nv_oss_payment_standard(Variable):
     defined_for = StateCode.NV
     reference = (
         "https://secure.ssa.gov/poms.nsf/lnx/0501415058#i",
-        "https://secure.ssa.gov/poms.nsf/lnx/0502005030#G",
+        "https://secure.ssa.gov/poms.nsf/lnx/0502005030#g",
     )
 
     def formula(person, period, parameters):
@@ -21,5 +21,7 @@ class nv_oss_payment_standard(Variable):
         # Half of each member's same-category couple rate reproduces all
         # mixed-category totals in SI 01415.058 I.2.b. SI 02005.030 G.1
         # divides the joint payment equally, including aged/disabled couples.
+        # NOTE: couples living apart in different Nevada arrangements cannot
+        # be modeled, because the federal framework has no living-apart status.
         couple_total = person.marital_unit.sum(p.couple[arrangement][category] / 2)
         return where(couple, couple_total / 2, p.individual[arrangement][category])
