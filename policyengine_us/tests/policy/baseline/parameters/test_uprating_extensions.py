@@ -143,16 +143,23 @@ def test_cms_moop_per_capita_extends_to_2100():
     assert parameter("2100-01-01") > parameter("2036-01-01")
 
 
-def test_cms_esi_premium_per_enrollee_holds_last_projected_growth_rate():
+def test_cms_esi_premium_per_enrollee_glides_to_long_range_growth():
     """Employer plan premium inputs keep growing after CMS's 2034 projection,
-    at the 2033-2034 growth rate."""
+    gliding from the 2033-2034 growth rate to the Medicare Trustees'
+    long-range per capita health spending rates."""
     parameter = PARAMETERS.calibration.gov.hhs.cms.esi_premium_per_enrollee
-    last_growth = parameter("2034-01-01") / parameter("2033-01-01")
+    last_growth = parameter("2034-01-01") / parameter("2033-01-01") - 1
+
+    def growth(year):
+        return parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01") - 1
 
     assert parameter("2034-01-01") == 13_124
-    for year in [2035, 2036, 2050, 2100]:
-        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
-        assert growth == pytest.approx(last_growth, rel=1e-12)
+    # 2035 is one sixteenth of the way from the 2034 rate to 4.3% in 2050.
+    assert growth(2035) == pytest.approx(
+        last_growth + (0.043 - last_growth) / 16, rel=1e-12
+    )
+    assert growth(2050) == pytest.approx(0.043, rel=1e-12)
+    assert growth(2100) == pytest.approx(0.041, rel=1e-12)
     assert parameter("2150-01-01") == parameter("2100-01-01")
 
 

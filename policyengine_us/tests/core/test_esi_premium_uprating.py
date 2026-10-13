@@ -5,8 +5,9 @@ CMS's National Health Expenditure projections (Table 17, 2025-2034 release)
 report ESI spending, ESI enrollment and ESI spending per enrollee for 2013 to
 2034. ESI spending is premiums paid by employers and employees (NHEA
 methodology paper, file page 29), so spending per enrollee is the premium per
-covered person. The parameter holds that row; 2035 to 2100 grow at its
-2033-2034 rate.
+covered person. The parameter holds that row; from 2035 its growth glides
+from the 2033-2034 rate to the Medicare Trustees' long-range per capita health
+spending rates (``tests/core/test_long_range_health_growth.py``).
 
 These tests read only the parameter tree. Engine uprating of the inputs (a
 household simulation and dataset extension) is covered in
@@ -23,7 +24,8 @@ Invariants:
 3. Bounds and order: the index is positive in every year and strictly
    increasing, as CMS's series is in every year from 2013 to 2034; the
    extension keeps both through 2100.
-4. Extension rule: each year from 2035 to 2100 grows by 13,124 / 12,559.
+4. Extension rule: growth in 2035 starts from 13,124 / 12,559 and reaches
+   the Trustees' 4.3 percent in 2050 and 4.1 percent in 2100.
 """
 
 import pytest
@@ -130,10 +132,15 @@ def test_index_is_positive_and_strictly_increasing(year, gap):
 
 
 @given(st.integers(LAST_PROJECTED_YEAR + 1, END_YEAR))
-def test_extension_holds_the_last_projected_growth_rate(year):
-    last_growth = _index(LAST_PROJECTED_YEAR) / _index(LAST_PROJECTED_YEAR - 1)
-    assert last_growth == pytest.approx(13_124 / 12_559, rel=1e-12)
-    assert _index(year) / _index(year - 1) == pytest.approx(last_growth, rel=1e-12)
+def test_extension_glides_from_the_last_projected_growth_rate(year):
+    last_growth = _index(LAST_PROJECTED_YEAR) / _index(LAST_PROJECTED_YEAR - 1) - 1
+    assert last_growth == pytest.approx(13_124 / 12_559 - 1, rel=1e-12)
+    if year <= 2050:
+        share = (year - LAST_PROJECTED_YEAR) / (2050 - LAST_PROJECTED_YEAR)
+        expected = last_growth + share * (0.043 - last_growth)
+    else:
+        expected = 0.043 + (year - 2050) / 50 * (0.041 - 0.043)
+    assert _index(year) / _index(year - 1) - 1 == pytest.approx(expected, rel=1e-12)
 
 
 @pytest.mark.parametrize("variable", PREMIUM_INPUTS)
