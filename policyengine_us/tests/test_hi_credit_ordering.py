@@ -305,8 +305,9 @@ def test_computed_credits_follow_form_n11(households, year):
 
 
 def test_credit_lists_do_not_overlap():
-    # A credit in both lists would make hi_non_refundable_credits depend on
-    # itself through line 34 (hi_adjusted_tax_liability).
+    # A credit in both lists would be counted twice or create a cycle: the
+    # nonrefundable Hawaii EITC reads line 34 (hi_adjusted_tax_liability),
+    # which reads the refundable credits.
     from policyengine_us.system import system
 
     for year in range(2015, 2036):

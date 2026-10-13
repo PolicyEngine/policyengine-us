@@ -16,8 +16,8 @@ class hi_eitc(Variable):
         # Form N-356, lines 10 to 13: the nonrefundable credit is limited to
         # the adjusted tax liability, "the amount from Form N-11, line 34"
         # (2018-2019 wording; 2020-2022 forms name the line "Adjusted Tax
-        # Liability"). The 2018 form is no longer on files.hawaii.gov.
-        "https://web.archive.org/web/20190819110547/https://files.hawaii.gov/tax/forms/2018/n356_i.pdf#page=1",
+        # Liability"). files.hawaii.gov no longer serves the 2018-2021 forms.
+        "https://web.archive.org/web/20201129163620/https://files.hawaii.gov/tax/forms/2019/n356_i.pdf#page=1",
         "https://files.hawaii.gov/tax/forms/2022/n356_i.pdf#page=1",
     )
 
