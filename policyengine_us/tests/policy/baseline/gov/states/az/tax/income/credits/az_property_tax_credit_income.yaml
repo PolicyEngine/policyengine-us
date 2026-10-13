@@ -1033,3 +1033,146 @@
     # Line 11b: Schedule 2, 3,851 - 4,000 -> 279.
     # Line 13: 750. Line 15: smaller of 279 and 750.
     az_property_tax_credit: 279
+
+# The carryover memos are sums of leaf inputs: the person's own carryover and
+# one from a terminated estate or trust. Entering the leaves gives the same
+# line D as entering their sum.
+- name: A terminating trust capital loss entered as its own input remains a carryover
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        # Own gains 4,000 less the trust's 3,000 loss transferred in 2025.
+        long_term_capital_gains: 1_000
+        # Final Form 1041 K-1 box 11 code D; d1107 keeps it a carryover.
+        estate_or_trust_long_term_capital_loss_carryover: 3_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    adjusted_gross_income: 1_000
+    long_term_capital_loss_carryover: [3_000]
+    az_property_tax_credit_capital_gains: [4_000]
+    az_property_tax_credit_agi: 4_000
+    az_property_tax_credit_income: 4_000
+    az_property_tax_credit: 0
+
+- name: Own and terminating trust long-term carryovers are both added back
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        # The year's long-term gain 4,000, net of a 1,000 own carryover and a
+        # 2,000 carryover from a terminated trust.
+        long_term_capital_gains: 1_000
+        own_long_term_capital_loss_carryover: 1_000
+        estate_or_trust_long_term_capital_loss_carryover: 2_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    adjusted_gross_income: 1_000
+    # Line D: the year's gain 4,000. Line J: 4,000.
+    az_property_tax_credit_capital_gains: [4_000]
+    az_property_tax_credit_income: 4_000
+    az_property_tax_credit: 0
+
+# ITR 12-1 item (7) bars any prior-year carryover, short-term as well as
+# long-term. short_term_capital_gains is Schedule D line 7, net of the
+# short-term carryover on line 6 (own) or line 5 (Schedule K-1 (Form 1041),
+# box 11, code C), so line D adds the memo back.
+- name: A short-term capital loss carryover does not reduce line D
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        # The year's short-term gain is 4,000; a 3,000 carryover nets it to
+        # 1,000 on Schedule D line 7.
+        short_term_capital_gains: 1_000
+        own_short_term_capital_loss_carryover: 3_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Federal AGI uses the carryover: 1,000.
+    adjusted_gross_income: 1_000
+    # Line D: the year's gain 4,000. Line J: 4,000.
+    short_term_capital_loss_carryover: [3_000]
+    az_property_tax_credit_capital_gains: [4_000]
+    az_property_tax_credit_income: 4_000
+    # Line 11a: Schedule 1 pays nothing at 3,751 or more.
+    az_property_tax_credit: 0
+
+- name: A terminating trust short-term loss remains a carryover for line D
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        long_term_capital_gains: 4_000
+        # Final Form 1041 K-1 box 11 code C, on Schedule D line 5: the year's
+        # short-term result is that 3,000 loss alone.
+        short_term_capital_gains: -3_000
+        estate_or_trust_short_term_capital_loss_carryover: 3_000
+        rent: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: AZ
+  output:
+    # Federal AGI: 4,000 - 3,000 = 1,000.
+    adjusted_gross_income: 1_000
+    # Line D: 4,000 - 3,000 + 3,000 = 4,000. Line J: 4,000.
+    az_property_tax_credit_capital_gains: [4_000]
+    az_property_tax_credit_income: 4_000
+    az_property_tax_credit: 0
+
+- name: A dependent's short-term carryover is not a line D loss
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        long_term_capital_gains: 4_000
+        rent: 5_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        short_term_capital_gains: -3_000
+        own_short_term_capital_loss_carryover: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: AZ
+  output:
+    # Line D: column 1 gain 4,000; column 3 the year's net 0. Line J: 4,000.
+    az_property_tax_credit_capital_gains: [4_000, 0]
+    az_property_tax_credit_dependent_income: 0
+    az_property_tax_credit_income: 4_000
+    # Line 11b: Schedule 2, 3,851 - 4,000 -> 279.
+    # Line 13: 750. Line 15: smaller of 279 and 750.
+    az_property_tax_credit: 279

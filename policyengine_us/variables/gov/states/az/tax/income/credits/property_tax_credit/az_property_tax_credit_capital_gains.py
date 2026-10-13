@@ -12,11 +12,10 @@ class az_property_tax_credit_capital_gains(Variable):
         "property for the Arizona property tax credit (Form 140PTC Part 1 line D): "
         "the year's gains and losses combined, including capital gain "
         "distributions, with a net loss counted only up to the per-member limit. "
-        "No prior-year capital loss carryover is used: the long-term carryover "
-        "that long_term_capital_gains nets is added back, including unused "
-        "losses transferred by a terminating estate or trust. Short-term inputs "
-        "must contain only the current year's net gains and losses, without "
-        "Schedule D line 6 carryovers; no short-term carryover memo is modeled."
+        "No prior-year capital loss carryover is used: the long-term and "
+        "short-term carryovers that long_term_capital_gains and "
+        "short_term_capital_gains net are added back, including unused losses "
+        "transferred by a terminating estate or trust."
     )
     reference = [
         "https://www.law.cornell.edu/regulations/arizona/Ariz-Admin-Code-SS-R15-2C-502",
@@ -38,13 +37,18 @@ class az_property_tax_credit_capital_gains(Variable):
         # capital gains (26 U.S.C. 852(b)(3)(B)), so they are combined with the
         # member's other gains and losses before the limit.
         # ITR 12-1 item (7): a prior-year capital loss carryover cannot reduce
-        # the year's gains. long_term_capital_gains includes the long-term
-        # carryover (26 U.S.C. 1212(b)(1)(B)) as a loss, as Schedule D line 15
-        # does, so it is added back to give the year's own net gain or loss.
-        # Reg. 1.642(h)-1(a) transfers a terminating estate/trust's unused
-        # capital loss as a carryover. Max's d1107 ruling (2026-10-09) keeps
-        # final Form 1041 K-1 box 11 code D losses in this addback.
-        carryover = max_(0, person("long_term_capital_loss_carryover", period))
+        # the year's gains. long_term_capital_gains and short_term_capital_gains
+        # include the carryovers (26 U.S.C. 1212(b)(1)) as losses, as Schedule
+        # D lines 15 and 7 do, so they are added back to give the year's own
+        # net gain or loss. Reg. 1.642(h)-1(a) transfers a terminating
+        # estate/trust's unused capital loss as a carryover. Max's d1107 ruling
+        # (2026-10-09) keeps final Form 1041 K-1 box 11 code D losses in this
+        # addback, and code C, the short-term counterpart under the same
+        # regulation, is treated the same. The estate_or_trust_* leaves hold
+        # those losses apart from the person's own carryovers.
+        carryover = max_(0, person("long_term_capital_loss_carryover", period)) + max_(
+            0, person("short_term_capital_loss_carryover", period)
+        )
         net_capital_gain = (
             add(person, period, ["capital_gains", "non_sch_d_capital_gains"])
             + carryover
