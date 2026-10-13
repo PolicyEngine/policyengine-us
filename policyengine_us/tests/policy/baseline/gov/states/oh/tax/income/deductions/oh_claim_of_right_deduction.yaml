@@ -147,3 +147,35 @@
     oh_claim_of_right_deduction: 10_000
     oh_agi: 30_000
     oh_taxable_income: 27_600
+
+# Joint return: head wages $100,000; spouse wages $3,500, of which the spouse
+# repays $3,100; earlier-year federal decrease $500, so federal tax uses the
+# credit. The deduction leaves the spouse $400 of Ohio AGI. The joint filing
+# credit needs $500 of qualifying income for each spouse, and "Amounts deducted
+# on the Ohio Schedule of Adjustments are not included in Ohio AGI, and thus
+# are not 'qualifying income'" (2025 instructions, line 12, PDF p. 29). So the
+# couple loses the credit and Ohio tax rises.
+- name: Case 8, the deduction can take a spouse below the joint filing credit's $500 test.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 100_000
+      spouse:
+        age: 40
+        employment_income: 3_500
+        claim_of_right_repayment: 3_100
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        claim_of_right_prior_year_tax_decrease: 500
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+  output:
+    claim_of_right_credit_applies: true
+    oh_claim_of_right_deduction: [0, 3_100]
+    oh_joint_filing_credit_qualifying_income: [100_000, 400]
+    oh_joint_filing_credit: 0

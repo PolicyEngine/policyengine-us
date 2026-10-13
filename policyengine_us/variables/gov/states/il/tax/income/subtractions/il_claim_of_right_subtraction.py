@@ -32,8 +32,9 @@ class il_claim_of_right_subtraction(Variable):
         # repayment that would otherwise have been deductible" (86 Ill. Adm.
         # Code 100.2465(b)); under the deduction method, the itemized
         # deduction taken. Either way it is the whole repayment. From 2026 the
-        # federal section 68 limit reduces total itemized deductions, not
-        # this one, so the deduction taken is still the whole repayment.
+        # federal section 68 limit reduces total itemized deductions and has
+        # no rule allocating the reduction to one deduction; the model reads
+        # "the itemized deduction taken" as the whole Schedule A amount.
         claimed = tax_unit("claim_of_right_relief_claimed", period)
         repayment = tax_unit("tax_unit_claim_of_right_repayment", period)
         return where(claimed, repayment, 0)
