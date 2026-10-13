@@ -6,32 +6,25 @@
   output:
     wy_ssp_eligible: true
     wy_ssp: 20
-    snap_unearned_income: 1014
+    snap_unearned_income: 1_014
     household_state_benefits: 20
+
 - name: Case 2, eligible couple receives twenty dollars each.
   period: 2026-01
   input:
     people:
-      first:
+      person1:
         age: 65
-      second:
+      person2:
         age: 65
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: WY
   output:
-    ssi:
-    - 745.5
-    - 745.5
-    wy_ssp:
-    - 20
-    - 20
+    ssi: [745.5, 745.5]
+    wy_ssp: [20, 20]
     household_state_benefits: 40
