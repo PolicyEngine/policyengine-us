@@ -178,11 +178,11 @@ def assert_properties(cases, calculated=None):
                 and c["client_child_support"] == 0
                 and c["client_rental"] >= 0
             )
+            # OAP takes each monthly source in cents; SSI does not, so the
+            # comparisons allow $0.30/year of rounding.
             if ssi[client] > 0:
                 if plain:
-                    assert own >= results["ssi_countable_income"][client] - (
-                        TOLERANCE
-                    ), c
+                    assert own >= results["ssi_countable_income"][client] - 0.3, c
             elif not c["shelter_support"]:
                 unearned = (
                     c["client_pension"]
@@ -196,7 +196,6 @@ def assert_properties(cases, calculated=None):
                         parameters,
                         YEAR,
                     )[0]
-                    # OAP takes each monthly source in cents; SSI does not.
                     assert own == pytest.approx(expected, abs=0.3), c
             continue
         a, b, c_, d = (f"client_{x}{i}" for x in ARRANGEMENTS)
