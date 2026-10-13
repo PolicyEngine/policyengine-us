@@ -45,21 +45,21 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # (8.1 GB including the pending capital-gains MTR change). These groups remain
 # sequential subprocesses within each Rest Python shard.
 REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy core policy-parameters policy remaining-heavy remaining
-# CI runs three shards of these existing isolated processes. Across seven
+# CI runs two shards of these existing isolated processes. Across seven
 # recent runs (including 38326922385 and 38289790999), their summed group
-# times were 23-32, 20-30 and 22-29 minutes; the old serial job hit 90 minutes.
+# times were 32-45 and 32-46 minutes; variables adds about a minute to shard 1.
+# Both stay near 45 minutes, while the old serial job hit its 90-minute limit.
 # No shard runs more than one Python group at a time. Locally, leaving
 # REST_PYTHON_SHARD unset still runs every group in the original order.
-REST_PYTHON_SHARD_1_GROUPS := cached-arrays core-heavy core
-REST_PYTHON_SHARD_2_GROUPS := heavy-a policy-parameters remaining
-REST_PYTHON_SHARD_3_GROUPS := heavy-b policy remaining-heavy
+REST_PYTHON_SHARD_1_GROUPS := cached-arrays core-heavy policy-parameters remaining-heavy remaining
+REST_PYTHON_SHARD_2_GROUPS := heavy-a heavy-b core policy
 REST_PYTHON_SHARD ?=
 ifeq ($(REST_PYTHON_SHARD),)
 REST_PYTHON_SELECTED_GROUPS := $(REST_PYTHON_GROUPS)
 else
 REST_PYTHON_SELECTED_GROUPS := $(REST_PYTHON_SHARD_$(REST_PYTHON_SHARD)_GROUPS)
 ifeq ($(strip $(REST_PYTHON_SELECTED_GROUPS)),)
-$(error REST_PYTHON_SHARD must be 1, 2 or 3)
+$(error REST_PYTHON_SHARD must be 1 or 2)
 endif
 endif
 REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py

@@ -43,13 +43,17 @@ def test_pr_runner_budget_keeps_the_heavy_suites_separate():
             counts[name] = len(matrix["include"])
         else:
             counts[name] = math.prod(len(values) for values in matrix.values())
-    assert sum(counts.values()) == 26
+    # Rest hit the 90-minute timeout on #10024, #9913, #10139 and #10029
+    # in October 2026. One extra runner buys about 45 minutes of headroom:
+    # two tested shards share variables and the legacy summary check.
+    assert sum(counts.values()) == 27
     assert {
         name: counts[name]
-        for name in ("Baseline", "Contrib", "Rest", "Microsimulation")
+        for name in ("Baseline", "Contrib", "RestPython", "Rest", "Microsimulation")
     } == {
         "Baseline": 11,
         "Contrib": 9,
+        "RestPython": 1,
         "Rest": 1,
         "Microsimulation": 1,
     }
@@ -71,16 +75,21 @@ def test_suite_groups_have_no_extra_runners_or_triggers():
         # PyYAML parses the bare `on` key as True. No push/PR trigger here:
         # the draft guard must control the only route to these runners.
         assert GROUP_WORKFLOWS[name][True] == {"workflow_call": None}
-    assert set(PYTHON_JOBS) == {"Rest", "Microsimulation"}
+    assert set(PYTHON_JOBS) == {"RestPython", "Rest", "Microsimulation"}
     assert {name: job["timeout-minutes"] for name, job in PYTHON_JOBS.items()} == {
-        "Rest": 90,
+        "RestPython": 60,
+        "Rest": 60,
         "Microsimulation": 60,
     }
-    for job in PYTHON_JOBS.values():
+    for name, job in PYTHON_JOBS.items():
         assert job["runs-on"] == "ubuntu-latest"
-        assert not job.get("needs")
+        assert job.get("needs", []) == (["RestPython"] if name == "Rest" else [])
         assert not job.get("strategy")
         assert not job.get("continue-on-error")
+    # The second tested runner also checks the first runner's result. There
+    # is no third runner just for the summary, or a variables-only runner.
+    assert PYTHON_JOBS["Rest"]["if"] == "${{ always() }}"
+    assert PYTHON_JOBS["Rest"]["name"] == "Full Suite - Rest (Python + variables)"
 
 
 def test_sequential_variants_preserve_failures_and_allow_later_results():

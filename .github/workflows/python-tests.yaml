@@ -1,13 +1,14 @@
 name: Python tests
 on:
   workflow_call:
-# Keep each Python shard and the variables suite on independent runners.
+# Two sequential Rest runners keep each shard below its timeout.
+# Shard 1 includes variables; shard 2 also supplies the legacy summary check.
 # Only the guarded PR workflow calls this file; it has no automatic triggers.
 jobs:
   RestPython:
-    name: Full Suite - Rest (Python, ${{ matrix.group }})
+    name: Full Suite - Rest (Python, shard-1 + variables)
     runs-on: ubuntu-latest
-    # Existing group timings predict 20-32 minutes per shard plus setup.
+    # Historical group times, including variables: 33-46 minutes plus setup.
     timeout-minutes: 60
     env:
       PYTHONUNBUFFERED: 1
@@ -17,16 +18,6 @@ jobs:
       VECLIB_MAXIMUM_THREADS: 4
       NUMEXPR_NUM_THREADS: 4
       OMP_WAIT_POLICY: PASSIVE
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - group: shard-1
-            shard: 1
-          - group: shard-2
-            shard: 2
-          - group: shard-3
-            shard: 3
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -51,20 +42,36 @@ jobs:
         if: ${{ !cancelled() }}
         env:
           PYTEST_ADDOPTS: "--durations=0 -v -p no:unraisableexception -p no:threadexception"
-        run: uv run --no-sync make test-other-python-rest REST_PYTHON_SHARD=${{ matrix.shard }} REST_REPORT_DIR=.
+        run: uv run --no-sync make test-other-python-rest REST_PYTHON_SHARD=1 REST_REPORT_DIR=.
       - name: Upload Rest Python timing and memory reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: rest-python-test-timings-${{ matrix.group }}
+          name: rest-python-test-timings-shard-1
           path: |
             rest-python-*.xml
             rest-python-*-resources.txt
-  RestVariables:
-    name: Full Suite - Rest (variables YAML)
+      - name: Run tests/variables YAML tests
+        if: ${{ !cancelled() }}
+        env:
+          PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
+        run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
+      - name: Upload Rest variables timing and memory reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rest-variables-test-timings
+          path: |
+            rest-variables.xml
+            rest-variables-resources.txt
+  Rest:
+    needs: [RestPython]
+    if: ${{ always() }}
+    name: Full Suite - Rest (Python + variables)
     runs-on: ubuntu-latest
-    # Recent runs took 47-66 seconds, so this suite needs no further shards.
-    timeout-minutes: 30
+    # Historical group times: 32-46 minutes plus setup.
+    # This runner also retains the legacy summary check, keeping PRs at 27 runners.
+    timeout-minutes: 60
     env:
       PYTHONUNBUFFERED: 1
       OMP_NUM_THREADS: 4
@@ -91,35 +98,31 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run tests/variables YAML tests
+      # Each group remains a separate, sequential process on its runner.
+      # SPM simulation/API contracts stay in the Microsimulation job.
+      - name: Run remaining Python tests
+        id: python_tests
         if: ${{ !cancelled() }}
         env:
-          PYTEST_ADDOPTS: "--durations=0 --junitxml=rest-variables.xml -p no:unraisableexception -p no:threadexception"
-        run: /usr/bin/time -v -o rest-variables-resources.txt uv run --no-sync make test-yaml-variables
-      - name: Upload Rest variables timing and memory reports
+          PYTEST_ADDOPTS: "--durations=0 -v -p no:unraisableexception -p no:threadexception"
+        run: uv run --no-sync make test-other-python-rest REST_PYTHON_SHARD=2 REST_REPORT_DIR=.
+      - name: Upload Rest Python timing and memory reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: rest-variables-test-timings
+          name: rest-python-test-timings-shard-2
           path: |
-            rest-variables.xml
-            rest-variables-resources.txt
-  Rest:
-    # Retain the old check name and the release Publish dependency.
-    name: Full Suite - Rest (Python + variables)
-    needs: [RestPython, RestVariables]
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
+            rest-python-*.xml
+            rest-python-*-resources.txt
       - name: Check all Rest jobs succeeded
+        if: always()
         shell: bash
         env:
           PYTHON_RESULT: ${{ needs.RestPython.result }}
-          VARIABLES_RESULT: ${{ needs.RestVariables.result }}
+          SHARD_RESULT: ${{ steps.python_tests.outcome }}
         run: |
-          if [[ "$PYTHON_RESULT" != "success" || "$VARIABLES_RESULT" != "success" ]]; then
-            echo "::error::Rest jobs did not all succeed: Python=$PYTHON_RESULT, variables=$VARIABLES_RESULT"
+          if [[ "$PYTHON_RESULT" != "success" || "$SHARD_RESULT" != "success" ]]; then
+            echo "::error::Rest shards did not all succeed: shard-1=$PYTHON_RESULT, shard-2=$SHARD_RESULT"
             exit 1
           fi
   Microsimulation:
