@@ -9,7 +9,7 @@ jobs:
     name: Full Suite - Rest (Python, shard-1 + variables)
     runs-on: ubuntu-latest
     # Historical group times, including variables: 33-46 minutes plus setup.
-    timeout-minutes: 60
+    timeout-minutes: 90
     env:
       PYTHONUNBUFFERED: 1
       OMP_NUM_THREADS: 4
@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     # Historical group times: 32-46 minutes plus setup.
     # This runner also retains the legacy summary check, keeping PRs at 27 runners.
-    timeout-minutes: 60
+    timeout-minutes: 90
     env:
       PYTHONUNBUFFERED: 1
       OMP_NUM_THREADS: 4

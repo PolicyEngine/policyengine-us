@@ -387,7 +387,7 @@ def test_original_rest_check_aggregates_all_shards_without_hiding_failure(workfl
     assert summary["needs"] == ["RestPython"]
     assert "always()" in summary["if"]
     assert "strategy" not in summary
-    assert summary["timeout-minutes"] == 60
+    assert summary["timeout-minutes"] == 90
     assert not summary.get("continue-on-error", False)
     assert not jobs["RestPython"].get("continue-on-error", False)
     if workflow.name == "push.yaml":
