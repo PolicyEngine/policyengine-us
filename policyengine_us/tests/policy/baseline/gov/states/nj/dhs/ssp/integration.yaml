@@ -3,183 +3,147 @@
   absolute_error_margin: 0.001
   input:
     people:
-      first:
+      person1:
         age: 65
-      second:
+      person2:
         age: 65
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members: &id001
-        - first
-        - second
+        members: &id001 [person1, person2]
     households:
       household:
         members: *id001
         state_code: NJ
   output:
-    nj_ssp:
-    - 12.68
-    - 12.68
+    nj_ssp: [12.68, 12.68]
+
 - name: Case 2, congregate care couple.
   period: 2026-01
   absolute_error_margin: 0.001
   input:
     people:
-      first:
+      person1:
         age: 65
         nj_ssp_care_setting: CONGREGATE_CARE
-      second:
+      person2:
         age: 65
         nj_ssp_care_setting: CONGREGATE_CARE
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members: &id002
-        - first
-        - second
+        members: &id002 [person1, person2]
     households:
       household:
         members: *id002
         state_code: NJ
   output:
-    nj_ssp:
-    - 309.18
-    - 309.18
+    nj_ssp: [309.18, 309.18]
+
 - name: Case 3, special rate with only an ineligible spouse.
   period: 2026-01
   absolute_error_margin: 0.001
   input:
     people:
-      first:
+      person1:
         age: 65
-      second:
+      person2:
         age: 40
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members: &id003
-        - first
-        - second
+        members: &id003 [person1, person2]
     households:
       household:
         members: *id003
         state_code: NJ
   output:
-    nj_ssp:
-    - 152.99
-    - 0
+    nj_ssp: [152.99, 0]
+
 - name: Case 4, deeming uses higher individual special rate.
   period: 2026-01
   absolute_error_margin: 0.001
   input:
     people:
-      first:
+      person1:
         age: 65
-      second:
+      person2:
         age: 40
-        social_security_retirement: 19800
+        social_security_retirement: 19_800
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members: &id004
-        - first
-        - second
+        members: &id004 [person1, person2]
     households:
       household:
         members: *id004
         state_code: NJ
   output:
-    nj_ssp:
-    - 13.99
-    - 0
+    nj_ssp: [13.99, 0]
+
 - name: Case 5, special rate ends when a child shares the household.
   period: 2026-01
   absolute_error_margin: 0.001
   input:
     people:
-      first:
+      person1:
         age: 65
-      second:
+      person2:
         age: 40
-      child:
+      person3:
         age: 12
         is_tax_unit_dependent: true
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
       child:
-        members:
-        - child
+        members: [person3]
     tax_units:
       unit:
-        members: &id005
-        - first
-        - second
-        - child
+        members: &id005 [person1, person2, person3]
     households:
       household:
         members: *id005
         state_code: NJ
   output:
-    nj_ssp:
-    - 31.25
-    - 0
-    - 0
+    nj_ssp: [31.25, 0, 0]
+
 - name: Case 6, explicit separate food household state determination.
   period: 2026-01
   absolute_error_margin: 0.001
   input:
     people:
-      first:
+      person1:
         age: 65
         nj_ssp_living_arrangement: LIVING_ONLY_WITH_INELIGIBLE_SPOUSE
-      second:
+      person2:
         age: 40
-      child:
+      person3:
         age: 12
         is_tax_unit_dependent: true
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
       child:
-        members:
-        - child
+        members: [person3]
     tax_units:
       unit:
-        members: &id006
-        - first
-        - second
-        - child
+        members: &id006 [person1, person2, person3]
     households:
       household:
         members: *id006
         state_code: NJ
   output:
-    nj_ssp:
-    - 152.99
-    - 0
-    - 0
+    nj_ssp: [152.99, 0, 0]
+
 - name: Case 7, annual state benefits and SNAP income.
   period: 2026
   absolute_error_margin: 0.01
@@ -189,5 +153,5 @@
   output:
     nj_ssp: 375
     household_state_benefits: 375
-    snap_unearned_income: 12303
-    hud_unearned_income: 12303
+    snap_unearned_income: 12_303
+    hud_unearned_income: 12_303

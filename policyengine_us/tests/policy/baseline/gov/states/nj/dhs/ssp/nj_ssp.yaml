@@ -7,6 +7,7 @@
     age: 65
   output:
     nj_ssp: 31.25
+
 - name: Case 2, certified congregate care.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -16,6 +17,7 @@
     nj_ssp_care_setting: CONGREGATE_CARE
   output:
     nj_ssp: 150.05
+
 - name: Case 3, certified residential health care.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -25,6 +27,7 @@
     nj_ssp_care_setting: RESIDENTIAL_HEALTH_CARE
   output:
     nj_ssp: 210.05
+
 - name: Case 4, excluded setting.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -34,6 +37,7 @@
     nj_ssp_care_setting: EXCLUDED
   output:
     nj_ssp: 0
+
 - name: Case 5, Medicaid institutional payment.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -45,6 +49,7 @@
   output:
     ssi: 30
     nj_ssp: 20
+
 - name: Case 6, non Medicaid medical institution.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -54,6 +59,7 @@
     ssi_lives_in_medical_treatment_facility: true
   output:
     nj_ssp: 0
+
 - name: Case 7, household of another.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -65,43 +71,48 @@
     ssi_others_pay_all_meals: true
   output:
     nj_ssp: 44.31
+
 - name: Case 8, state only payment.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NJ
     age: 65
-    social_security_retirement: 12360
+    social_security_retirement: 12_360
   output:
     ssi: 0
     nj_ssp: 15.25
+
 - name: Case 9, positive sub dollar amount receives minimum.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NJ
     age: 65
-    social_security_retirement: 12542.88
+    social_security_retirement: 12_542.88
   output:
     nj_ssp: 1
+
 - name: Case 10, combined income cutoff.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NJ
     age: 65
-    social_security_retirement: 12543
+    social_security_retirement: 12_543
   output:
     nj_ssp: 0
+
 - name: Case 11, resource cutoff.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NJ
     age: 65
-    ssi_countable_resources: 2001
+    ssi_countable_resources: 2_001
   output:
     nj_ssp: 0
+
 - name: Case 12, no aged blind or disabled category.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -110,6 +121,7 @@
     age: 30
   output:
     nj_ssp: 0
+
 - name: Case 13, disabled child.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -119,6 +131,7 @@
     meets_ssi_disability_criteria: true
   output:
     nj_ssp: 31.25
+
 - name: Case 14, out of state.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -127,6 +140,7 @@
     age: 65
   output:
     nj_ssp: 0
+
 - name: Case 15, declining SSI application.
   period: 2026-01
   absolute_error_margin: 0.01
