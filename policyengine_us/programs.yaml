@@ -1098,10 +1098,9 @@ programs:
         parameter_prefix: gov.states.nj.dhs.ssp
         verified_years: "2026"
         notes: >-
-          Models optional living-arrangement payments, including the special
-          ineligible-spouse rate. Separate food households, certified settings
-          and post-institutionalization individual claims require explicit
-          inputs. Mandatory grandfathered supplementation is not modeled.
+          Models 2026 New Jersey optional supplement rates by living
+          arrangement, including the ineligible-spouse variation. Mandatory
+          grandfathered supplementation is not modeled.
 
   - id: social_security
     name: Social Security

@@ -2,10 +2,10 @@ from policyengine_us.model_api import *
 
 
 class NJSSPCareSetting(Enum):
-    NONE = "No certified care setting"
     CONGREGATE_CARE = "New Jersey certified congregate care"
     RESIDENTIAL_HEALTH_CARE = "New Jersey certified residential health care"
     EXCLUDED = "Setting excluded from New Jersey supplementation"
+    NONE = "No certified care setting"
 
 
 class nj_ssp_care_setting(Variable):

@@ -89,8 +89,10 @@
   input:
     state_code: NJ
     age: 65
-    social_security_retirement: 12_542.88
+    social_security_retirement: 12_540
   output:
+    # 12_540 / 12 = 1_045 - 20 = 1_025 countable, 31 above the 994 FBR.
+    # 31.25 - 31 = 0.25, raised to the 1 dollar minimum.
     nj_ssp: 1
 
 - name: Case 10, combined income cutoff.
@@ -150,3 +152,31 @@
     takes_up_ssi_if_eligible: false
   output:
     nj_ssp: 0
+
+- name: Case 16, couple with Social Security receives a state only payment.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        social_security_retirement: 18_240
+      person2:
+        age: 65
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    # 18_240 / 12 = 1_520 - 20 = 1_500 couple countable, 750 per spouse.
+    ssi_countable_income: [750, 750]
+    # 750 - 1_491 / 2 = 4.50 above each spouse's federal amount, so no SSI.
+    ssi: [0, 0]
+    # 25.35 / 2 = 12.675 - 4.50 = 8.175, rounded up to 8.18 per spouse.
+    nj_ssp: [8.18, 8.18]

@@ -10,11 +10,15 @@ metadata:
     - title: POMS SI 01415.058 J.2, New Jersey January 2026 payment levels
       href: https://secure.ssa.gov/poms.nsf/lnx/0501415058#j
     - title: POMS SI 01320.430 D, Ineligible spouse uses corresponding couple rate or higher individual rate
-      href: https://secure.ssa.gov/poms.nsf/lnx/0501320430#D
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501320430#d
 
 LIVING_ALONE_OR_WITH_OTHERS:
   2026-01-01: 25.35
 
+# SSA publishes no couple rate for code C (SI 01415.058 J.1). This placeholder
+# repeats the B couple rate and never affects results: a claimant with an
+# ineligible spouse is paid as an individual or, under deeming, at the higher
+# individual rate (SI 01320.430 D.2.c).
 LIVING_ONLY_WITH_INELIGIBLE_SPOUSE:
   2026-01-01: 25.35
 

@@ -74,7 +74,7 @@
       person1:
         age: 65
       person2:
-        age: 40
+        age: 63
         social_security_retirement: 19_800
     marital_units:
       couple:
@@ -87,6 +87,23 @@
         members: *id004
         state_code: NJ
   output:
+    # person2 is 63, below the SSI aged threshold of 65, and not blind or disabled.
+    is_ssi_ineligible_spouse: [false, true]
+    # Spouse income 19_800 per year > (1_491 - 994) * 12 = 5_964, so deeming applies.
+    is_ssi_spousal_deeming_applies: [true, false]
+    # Deemed: 19_800 / 12 = 1_650 - 20 general exclusion = 1_630 per month.
+    ssi_income_deemed_from_ineligible_spouse: [1_630, 0]
+    # person1 has no own income: 0 + 1_630 deemed = 1_630.
+    ssi_countable_income: [1_630, 0]
+    # Deeming uses the couple FBR for person1; person2's 994 is not used.
+    ssi_amount_if_eligible: [1_491, 994]
+    # 1_491 - 1_630 = -139, so no federal SSI.
+    uncapped_ssi: [-139, 0]
+    ssi: [0, 0]
+    # Only the ineligible spouse shares the household: code C.
+    nj_ssp_living_arrangement: [LIVING_ONLY_WITH_INELIGIBLE_SPOUSE, LIVING_ONLY_WITH_INELIGIBLE_SPOUSE]
+    # Deemed: max(25.35, 152.99) - (1_630 - 1_491) = 152.99 - 139 = 13.99.
+    # Own: 152.99 - max(0 - 994, 0) = 152.99; the lower amount, 13.99, is paid.
     nj_ssp: [13.99, 0]
 
 - name: Case 5, special rate ends when a child shares the household.
