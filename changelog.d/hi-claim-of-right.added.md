@@ -1,0 +1,1 @@
+Model Hawaii's claim of right relief: from 2022 the section 1341 lesser-of computed on Hawaii tax with the Form N-364 refundable credit, and repayments as 2% miscellaneous itemized deductions otherwise (through 2025).

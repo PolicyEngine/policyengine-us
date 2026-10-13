@@ -1,0 +1,15 @@
+description: Hawaii allows miscellaneous itemized deductions above two percent of Hawaii adjusted gross income, if this is true.
+values:
+  2018-01-01: true
+  2026-01-01: false
+metadata:
+  unit: bool
+  period: year
+  label: Hawaii miscellaneous itemized deductions allowed
+  reference:
+    - title: HRS 235-2.4(b) before 2026 (section 67 operative; the suspension in section 67(g) not operative)
+      href: https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=11
+    - title: "Act 35, SLH 2026 (HB2329 CD1), striking that exception; taxable years beginning after December 31, 2025 #page 17-18,34"
+      href: https://data.capitol.hawaii.gov/sessions/session2026/bills/HB2329_CD1_.pdf#page=17
+    - title: "2025 Form N-11 instructions, line 21f and Worksheet A-6 #page 19,34"
+      href: https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=19
