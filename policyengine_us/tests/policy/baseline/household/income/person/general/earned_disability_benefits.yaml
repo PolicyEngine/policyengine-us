@@ -36,3 +36,20 @@
     disability_benefits_before_minimum_retirement_age: 20_000
   output:
     ira_compensation: 20_000
+
+- name: Disability pay treated as wages is filer earned income for federal-style credits.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 40
+        disability_benefits: 10_000
+        disability_benefits_before_minimum_retirement_age: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+  output:
+    filer_adjusted_earnings: 10_000
