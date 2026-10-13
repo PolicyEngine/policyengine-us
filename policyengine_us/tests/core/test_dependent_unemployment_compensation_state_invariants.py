@@ -11,8 +11,9 @@ not move them.
 The tests draw a seeded random population of tax units, each single or
 joint, with wages, unemployment compensation and state tax refunds for the
 head and spouse, and zero to two dependent children with unemployment
-compensation and, in California, state tax refunds. Every unit is placed in each of the three states, and each
-scenario runs as one vectorized simulation. TY2020 is the only year with a
+compensation and, in California, state tax refunds. Every unit is placed
+in each of the three states, and each scenario runs as one vectorized
+simulation. TY2020 is the only year with a
 federal exclusion (IRC 85(c)), so Rhode Island's add-back is non-zero only
 then; TY2024 checks California and Wisconsin in a year without it. In 2020
 each person's taxable compensation is an input (their compensation less a
