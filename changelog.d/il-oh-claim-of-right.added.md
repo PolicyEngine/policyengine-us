@@ -1,0 +1,1 @@
+Add Illinois's subtraction (35 ILCS 5/203(a)(2)(P)) and Ohio's deduction (R.C. 5747.01(A)(12)) for repaying income held under a claim of right, which apply when the federal return claims section 1341 relief.
