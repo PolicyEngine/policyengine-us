@@ -20,7 +20,7 @@
   output:
     ny_itemizes: false
 
-- name: Case 3, not itemzies. 
+- name: Case 3, not itemizing federally does not stop New York itemizing from 2018.
   period: 2021
   absolute_error_margin: 0
   input:
@@ -29,4 +29,34 @@
     ny_itemized_deductions: 500
     state_code: NY
   output:
+    # 2018 IT-196 instructions: "you can choose to itemize your deductions for
+    # New York State income tax purposes whether or not you itemized your
+    # deductions on your federal income tax return."
+    ny_itemizes: true
+
+# N.Y. Tax Law 615(a) before 2018; 2017 IT-201 instructions, line 34: "If you
+# took the standard deduction on your federal return ... you must take the New
+# York standard deduction."
+- name: Case 4, 2017 federal standard deduction filer takes the New York standard deduction.
+  period: 2017
+  absolute_error_margin: 0
+  input:
+    tax_unit_itemizes: false
+    ny_standard_deduction: 300
+    ny_itemized_deductions: 500
+    state_code: NY
+  output:
     ny_itemizes: false
+    ny_deductions: 300
+
+- name: Case 5, 2017 federal itemizer takes the larger New York itemized deduction.
+  period: 2017
+  absolute_error_margin: 0
+  input:
+    tax_unit_itemizes: true
+    ny_standard_deduction: 300
+    ny_itemized_deductions: 500
+    state_code: NY
+  output:
+    ny_itemizes: true
+    ny_deductions: 500
