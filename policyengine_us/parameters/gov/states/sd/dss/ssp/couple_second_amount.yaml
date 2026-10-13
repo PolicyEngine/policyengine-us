@@ -1,10 +1,11 @@
 description: South Dakota pays this amount as its second member independent supplement.
 values:
-  '1978-07-01': 7
+  1978-07-01: 7
+
 metadata:
   unit: currency-USD
+  period: month
   label: South Dakota SSP second member independent supplement
   reference:
-  - title: SSA POMS SI DEN01415.011 B.5
-    href: https://secure.ssa.gov/poms.nsf/lnx/0501415011DEN
-  period: month
+    - title: SSA POMS SI DEN01415.011 B.5
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501415011DEN

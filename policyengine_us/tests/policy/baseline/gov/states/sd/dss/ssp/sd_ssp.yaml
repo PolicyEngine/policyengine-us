@@ -3,229 +3,248 @@
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
   output:
     sd_ssp: 15
+
 - name: Case 2, other cash income below SSI disregard still disqualifies.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     social_security_retirement: 120
   output:
     sd_ssp: 0
+
 - name: Case 3, in-kind support does not disqualify.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     ssi_federal_living_arrangement: ANOTHER_PERSONS_HOUSEHOLD
   output:
     sd_ssp: 15
+
 - name: Case 4, child is not eligible for independent supplement.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age: 17
     is_blind: true
   output:
     sd_ssp: 0
+
 - name: Case 5, student is not eligible for independent supplement.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     is_full_time_student: true
   output:
     sd_ssp: 0
+
 - name: Case 6, institutional resident is excluded.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
   output:
     sd_ssp: 0
+
 - name: Case 7, no SSI payment.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     ssi: 0
   output:
     sd_ssp: 0
+
 - name: Case 8, nonresident.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: WY
     age:
-      '2026': 65
+      2026: 65
   output:
     sd_ssp: 0
+
 - name: Case 9, care payment uses approved monthly care bill less income.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     sd_ssp_care_certified: true
-    sd_ssp_approved_care_cost: 2200
+    sd_ssp_approved_care_cost: 2_200
   output:
-    sd_ssp: 1206
+    sd_ssp: 1_206
+
 - name: Case 10, actual care bill capped at January daily reimbursement.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     sd_ssp_care_certified: true
-    sd_ssp_approved_care_cost: 3000
+    sd_ssp_approved_care_cost: 3_000
   output:
-    sd_ssp: 1397.96
+    sd_ssp: 1_397.96
+
 - name: Case 11, July retains the January daily reimbursement cap.
   period: 2026-07
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     sd_ssp_care_certified: true
-    sd_ssp_approved_care_cost: 3000
+    sd_ssp_approved_care_cost: 3_000
   output:
-    sd_ssp: 1397.96
+    sd_ssp: 1_397.96
+
 - name: Case 12, February has twenty eight billable days.
   period: 2026-02
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     sd_ssp_care_certified: true
-    sd_ssp_approved_care_cost: 3000
+    sd_ssp_approved_care_cost: 3_000
   output:
-    sd_ssp: 1166.48
+    sd_ssp: 1_166.48
+
 - name: Case 13, state approved deductions reduce cost share.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     sd_ssp_care_certified: true
-    sd_ssp_approved_care_cost: 2200
+    sd_ssp_approved_care_cost: 2_200
     sd_ssp_care_income_deductions: 100
   output:
-    sd_ssp: 1306
+    sd_ssp: 1_306
+
 - name: Case 14, no automatic twenty dollar SSI disregard for care.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     sd_ssp_care_certified: true
-    sd_ssp_approved_care_cost: 2200
-    social_security_retirement: 24000
+    sd_ssp_approved_care_cost: 2_200
+    social_security_retirement: 24_000
   output:
     sd_ssp: 200
+
 - name: Case 15, excess resources.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     sd_ssp_care_certified: true
-    sd_ssp_approved_care_cost: 2200
-    ssi_countable_resources: 2001
+    sd_ssp_approved_care_cost: 2_200
+    ssi_countable_resources: 2_001
   output:
     sd_ssp: 0
+
 - name: Case 16, certified partial month without income contribution.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     sd_ssp_care_certified: true
-    sd_ssp_approved_care_cost: 1500
+    sd_ssp_approved_care_cost: 1_500
     sd_ssp_care_days: 10
     sd_ssp_care_income_not_applied: true
   output:
     sd_ssp: 771.6
+
 - name: Case 17, adult foster care needs its approved cost.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     sd_ssp_care_certified: true
     sd_ssp_is_adult_foster_care: true
-    sd_ssp_approved_care_cost: 1500
+    sd_ssp_approved_care_cost: 1_500
   output:
     sd_ssp: 506
+
 - name: Case 18, no care payment without approved cost.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     sd_ssp_care_certified: true
   output:
     sd_ssp: 0
+
 - name: Case 19, care needs certified medical eligibility.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age: 40
     sd_ssp_care_certified: true
-    sd_ssp_approved_care_cost: 2200
+    sd_ssp_approved_care_cost: 2_200
   output:
     sd_ssp: 0
+
 - name: Case 20, SSI opt out.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': SD
+      2026: SD
     age:
-      '2026': 65
+      2026: 65
     takes_up_ssi_if_eligible: false
   output:
     sd_ssp: 0
@@ -242,9 +261,9 @@
       2026-06: true
       2026-07: true
     sd_ssp_approved_care_cost:
-      2026-06: 3000
-      2026-07: 3000
+      2026-06: 3_000
+      2026-07: 3_000
   output:
     sd_ssp:
-      2026-06: 1320.8
-      2026-07: 1397.96
+      2026-06: 1_320.8
+      2026-07: 1_397.96
