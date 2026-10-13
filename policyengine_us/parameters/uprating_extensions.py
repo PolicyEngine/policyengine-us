@@ -937,6 +937,17 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         period_day=1,
     )
 
+    # CPI-U medical care (calendar-year values, last CBO projection year
+    # 2036). Long-term care insurance premium inputs use this as their
+    # uprater.
+    extend_parameter_values(
+        parameters.gov.bls.cpi.cpi_u_medical_care,
+        last_projected_year=2036,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
     # Washington's millionaires tax deduction uses an odd-year October
     # adjustment schedule. Must run after the CPI-W extension above so the
     # determination dates are available through the projection horizon.
@@ -967,11 +978,33 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     )
 
     # CMS employer-sponsored insurance premium per enrollee (January values,
-    # last projection year 2034). Employer and pre-tax employee premium
-    # inputs use this as their uprater.
+    # last projection year 2034). Employer and employee premium inputs use
+    # this as their uprater.
     extend_parameter_values(
         parameters.calibration.gov.hhs.cms.esi_premium_per_enrollee,
         last_projected_year=2034,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
+    # CMS direct purchase insurance premium per enrollee (January values, last
+    # projection year 2034). Premiums for plans bought directly use this as
+    # their uprater.
+    extend_parameter_values(
+        parameters.calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee,
+        last_projected_year=2034,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+    )
+
+    # Medicare Part B standard monthly premium (January values, last Trustees
+    # projection year 2035). Reported Part B premium inputs use this as their
+    # uprater.
+    extend_parameter_values(
+        parameters.calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee,
+        last_projected_year=2035,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
