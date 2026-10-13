@@ -1,0 +1,1 @@
+Split the Rest CI suite into two sequential Python shards, folding variables YAML and the legacy aggregate check into those runners to avoid the 90-minute timeout while increasing the PR runner budget from 26 to 27. Retain isolated test processes and timing reports.

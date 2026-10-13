@@ -43,8 +43,25 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # in its grid fixture. Core reached 13.3 GB in CI run 38141803955 after this
 # and three smaller modules arrived; isolate SSI rather than filling heavy-a
 # (8.1 GB including the pending capital-gains MTR change). These groups remain
-# sequential subprocesses on the existing Rest runner.
+# sequential subprocesses within each Rest Python shard.
 REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy core policy-parameters policy remaining-heavy remaining
+# CI runs two shards of these existing isolated processes. Across seven
+# recent runs (including 38326922385 and 38289790999), their summed group
+# times were 32-45 and 32-46 minutes; variables adds about a minute to shard 1.
+# Both stay near 45 minutes, while the old serial job hit its 90-minute limit.
+# No shard runs more than one Python group at a time. Locally, leaving
+# REST_PYTHON_SHARD unset still runs every group in the original order.
+REST_PYTHON_SHARD_1_GROUPS := cached-arrays core-heavy policy-parameters remaining-heavy remaining
+REST_PYTHON_SHARD_2_GROUPS := heavy-a heavy-b core policy
+REST_PYTHON_SHARD ?=
+ifeq ($(REST_PYTHON_SHARD),)
+REST_PYTHON_SELECTED_GROUPS := $(REST_PYTHON_GROUPS)
+else
+REST_PYTHON_SELECTED_GROUPS := $(REST_PYTHON_SHARD_$(REST_PYTHON_SHARD)_GROUPS)
+ifeq ($(strip $(REST_PYTHON_SELECTED_GROUPS)),)
+$(error REST_PYTHON_SHARD must be 1 or 2)
+endif
+endif
 REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py
 REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
 	$(TESTS)/core/test_ald_determinism.py \
@@ -281,7 +298,7 @@ test-other-python-spm:
 	pytest $(REST_SPM_TESTS) --maxfail=0
 # Every group runs even after one fails; the target fails if any group did.
 test-other-python-rest:
-	@failed=""; for group in $(REST_PYTHON_GROUPS); do \
+	@failed=""; for group in $(REST_PYTHON_SELECTED_GROUPS); do \
 		echo "=== Rest Python group: $$group ==="; \
 		$(MAKE) --no-print-directory test-other-python-rest-$$group || failed="$$failed $$group"; \
 	done; \
