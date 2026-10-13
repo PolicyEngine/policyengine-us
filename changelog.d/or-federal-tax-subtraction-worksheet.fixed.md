@@ -1,0 +1,1 @@
+Reduce Oregon's federal tax liability subtraction by the premium tax credit and only the other refundable credits on the Publication OR-17 federal tax worksheet, and leave out the net investment income tax.
