@@ -490,7 +490,7 @@
   # the spouse's grant, 1,032 - 436.515 = 595.485, is reduced by SSI, so it
   # keeps its cents and is paid to the cent: 595.49, or 7,145.88/year.
   period: 2026
-  absolute_error_margin: 0.1
+  absolute_error_margin: 0.01
   input:
     people:
       head:

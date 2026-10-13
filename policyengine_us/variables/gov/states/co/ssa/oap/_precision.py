@@ -11,10 +11,12 @@ PRECISION = 0.001
 
 # Annual amounts in cents average to multiples of 1/1,200 of a dollar, so an
 # average is either exactly a half cent past a whole cent or at least $0.00083
-# away from one. Storing the annual amount in float32 and dividing it by 12
-# can leave about $0.0001 of residue near $1,000 a month, so $0.0004 of slack,
-# about halfway between, keeps a true half cent from rounding down without
-# moving any other average across a tie.
+# away from one. Storing the annual amount in float32 and then dividing it by
+# 12 in float32 leaves about $0.0001 of residue near $1,000 a month, so $0.0004
+# of slack, about halfway between, keeps a true half cent from rounding down
+# without moving any other average across a tie. That holds for a monthly
+# amount from one source below about $4,000; above that, float32 cannot
+# resolve the 1/1,200 grid, and a tie can round either way.
 _TIE_SLACK = 0.0004
 
 
