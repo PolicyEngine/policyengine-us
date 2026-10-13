@@ -51,6 +51,7 @@ class ny_disability_income_exclusion(Variable):
             where=total_pay > 0,
         )
         # IT-221 also limits each person's disability plus pension exclusion
-        # to $20,000. It cannot bind: both exclude only income in federal
-        # AGI, and this exclusion is gone once that AGI reaches $20,200.
+        # to $20,000. It cannot bind: excluded pensions are in federal AGI,
+        # and this exclusion falls dollar for dollar with federal AGI above
+        # $15,000, so the two together stay under $15,000.
         return exclusion * share
