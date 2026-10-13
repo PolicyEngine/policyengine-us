@@ -69,3 +69,54 @@
     filing_status: SURVIVING_SPOUSE
   output:
     co_tabor_cash_back: 750
+
+- name: No cash back before the one-time 2021 program
+  period: 2020
+  input:
+    state_code: CO
+    filing_status: SINGLE
+  output:
+    co_tabor_cash_back: 0
+
+- name: No cash back after the one-time 2021 program
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: JOINT
+  output:
+    co_tabor_cash_back: 0
+
+- name: Cash back does not reach Colorado refundable credits or income tax in 2020
+  period: 2020
+  input:
+    state_code: CO
+    filing_status: SINGLE
+    co_cdcc: 0
+    co_low_income_cdcc: 0
+    co_eitc: 0
+    co_sales_tax_refund: 0
+    co_income_tax_before_refundable_credits: 1_000
+    co_amt: 0
+  output:
+    co_tabor_cash_back: 0
+    # Backdated 2021 list: 0 cdcc + 0 low-income cdcc + 0 eitc
+    # + 0 sales tax refund + 0 cash back = 0.
+    co_refundable_credits: 0
+    # 1,000 before refundable credits + 0 AMT - 0 refundable credits.
+    co_income_tax: 1_000
+
+- name: No joint cash back before the one-time 2021 program
+  period: 2020
+  input:
+    state_code: CO
+    filing_status: JOINT
+  output:
+    co_tabor_cash_back: 0
+
+- name: No single cash back after the one-time 2021 program
+  period: 2022
+  input:
+    state_code: CO
+    filing_status: SINGLE
+  output:
+    co_tabor_cash_back: 0
