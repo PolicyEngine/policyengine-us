@@ -9,7 +9,7 @@
   output:
     sd_ssp: 15
 
-- name: Case 2, other cash income below SSI disregard still disqualifies.
+- name: Case 2, small Social Security benefit disqualifies despite an SSI payment.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -17,8 +17,11 @@
       2026: SD
     age:
       2026: 65
-    social_security_retirement: 120
+    social_security_retirement: 6_000
   output:
+    # 6_000 / 12 = 500 per month; SSI = 994 - (500 - 20) = 514.
+    ssi: 514
+    # Other cash income of 500 > 0 disqualifies.
     sd_ssp: 0
 
 - name: Case 3, in-kind support does not disqualify.
@@ -195,8 +198,9 @@
     sd_ssp_care_certified: true
     sd_ssp_approved_care_cost: 1_500
     sd_ssp_care_days: 10
-    sd_ssp_care_income_not_applied: true
   output:
+    # 10 < 31 days, so income is not applied by default;
+    # min(1_500, 10 x 77.16 = 771.60) - 0 = 771.60.
     sd_ssp: 771.6
 
 - name: Case 17, adult foster care needs its approved cost.
@@ -267,3 +271,104 @@
     sd_ssp:
       2026-06: 1_320.8
       2026-07: 1_397.96
+
+- name: Case 22, death or transfer partial month applies income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 1_800
+    sd_ssp_care_days: 20
+    sd_ssp_care_income_not_applied: false
+  output:
+    # min(1_800, 20 x 77.16 = 1_543.20) - SSI 994 = 549.20.
+    sd_ssp: 549.2
+
+- name: Case 23, care payment does not require SSI takeup.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    social_security_retirement: 18_000
+    takes_up_ssi_if_eligible: false
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+  output:
+    # 18_000 / 12 = 1_500 per month; (1_500 - 20) > 994 leaves no SSI.
+    ssi: 0
+    # min(2_200, 31 x 77.16 = 2_391.96) - 1_500 = 700.
+    sd_ssp: 700
+
+- name: Case 24, reported SSI receipt qualifies when modeled SSI is zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 50
+    receives_ssi: true
+  output:
+    # Age 50 with no modeled disability is not aged, blind or disabled.
+    ssi: 0
+    # Reported receipt meets the SSI gate; no other cash income.
+    sd_ssp: 15
+
+- name: Case 25, care days above the month length are capped at the month.
+  period: 2026-02
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 3_000
+    sd_ssp_care_days: 31
+  output:
+    # Days clip to 28; 31 < 28 is false, so income applies;
+    # min(3_000, 28 x 77.16 = 2_160.48) - SSI 994 = 1_166.48.
+    sd_ssp: 1_166.48
+
+- name: Case 26, no covered care days pays nothing.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 65
+    sd_ssp_care_certified: true
+    sd_ssp_is_adult_foster_care: true
+    sd_ssp_approved_care_cost: 1_500
+    sd_ssp_care_days: 0
+  output:
+    # 0 days fails days > 0, although the uncapped foster care bill
+    # is 1_500 and 0 < 31 means no income contribution.
+    sd_ssp: 0
+
+- name: Case 27, earned income and SSI both count toward the care contribution.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: SD
+    age:
+      2026: 45
+    meets_ssi_disability_criteria: true
+    employment_income: 3_600
+    sd_ssp_care_certified: true
+    sd_ssp_approved_care_cost: 2_200
+  output:
+    # 3_600 / 12 = 300 per month; countable (300 - 20 - 65) x 0.5 = 107.50;
+    # SSI = 994 - 107.50 = 886.50.
+    ssi: 886.5
+    # min(2_200, 2_391.96) - (300 + 886.50) = 1_013.50.
+    sd_ssp: 1_013.5

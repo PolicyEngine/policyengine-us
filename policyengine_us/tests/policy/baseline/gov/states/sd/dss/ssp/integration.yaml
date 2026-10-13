@@ -37,7 +37,7 @@
         age: 65
       person2:
         age: 65
-        social_security_retirement: 120
+        social_security_retirement: 6_000
     marital_units:
       couple:
         members: [person1, person2]
@@ -46,4 +46,104 @@
         members: [person1, person2]
         state_code: SD
   output:
+    # Couple countable (6_000 / 12 - 20) / 2 = 240 each;
+    # SSI = 1_491 / 2 - 240 = 505.50 each.
+    ssi: [505.5, 505.5]
+    # Both qualify, so pooled other income of 500 > 0 excludes both.
     sd_ssp: [0, 0]
+
+- name: Case 4, lone qualifying spouse listed second receives the individual amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        immigration_status: UNDOCUMENTED
+      person2:
+        age: 65
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Both are aged, so the SSI claim is joint, but only person2 (citizen)
+    # receives SSI; person1 has no SSI and no reported receipt.
+    # One qualifier: individual 15, not the 7 second couple amount.
+    sd_ssp_independent: [0, 15]
+    sd_ssp_care: [0, 0]
+    sd_ssp: [0, 15]
+
+- name: Case 5, joint entry pools spouses' resources against the joint limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        social_security_retirement: 14_400
+        ssi_countable_resources: 1_800
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+        sd_ssp_care_joint_entry: true
+      person2:
+        age: 65
+        social_security_retirement: 9_600
+        ssi_countable_resources: 1_400
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+        sd_ssp_care_joint_entry: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # SSI is 0 on either ground: couple countable income
+    # (1_200 + 800 - 20) / 2 = 990 > 1_491 / 2 = 745.50, and pooled
+    # resources 1_800 + 1_400 = 3_200 > 3_000 SSI couple resource limit.
+    ssi: [0, 0]
+    sd_ssp_independent: [0, 0]
+    # Pooled 1_800 + 1_400 = 3_200 > 3_000 joint entry limit.
+    sd_ssp_care: [0, 0]
+    sd_ssp: [0, 0]
+
+- name: Case 6, without joint entry each spouse meets the individual limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        social_security_retirement: 14_400
+        ssi_countable_resources: 1_800
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+      person2:
+        age: 65
+        social_security_retirement: 9_600
+        ssi_countable_resources: 1_400
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # SSI is 0 on either ground: couple countable income
+    # (1_200 + 800 - 20) / 2 = 990 > 1_491 / 2 = 745.50, and pooled
+    # resources 1_800 + 1_400 = 3_200 > 3_000 SSI couple resource limit.
+    ssi: [0, 0]
+    sd_ssp_independent: [0, 0]
+    # 1_800 and 1_400 are each <= 2_000; min(2_200, 31 x 77.16 = 2_391.96)
+    # less own income: 2_200 - 14_400 / 12 = 1_000; 2_200 - 9_600 / 12 = 1_400.
+    sd_ssp_care: [1_000, 1_400]
+    sd_ssp: [1_000, 1_400]

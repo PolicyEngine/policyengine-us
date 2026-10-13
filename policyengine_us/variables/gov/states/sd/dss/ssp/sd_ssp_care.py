@@ -26,7 +26,6 @@ class sd_ssp_care(Variable):
             & citizenship
             & (resources <= limit)
             & ~person("is_incarcerated", period)
-            & person("takes_up_ssi_if_eligible", period)
         )
         days = clip(person("sd_ssp_care_days", period), 0, period.days)
         cost = max_(person("sd_ssp_approved_care_cost", period), 0)
