@@ -140,6 +140,9 @@
     wv_claim_of_right_subtraction: 4_000
     wv_senior_citizen_disability_deduction_person: 8_000
     wv_subtractions: 12_000
+    # $9,000 - $12,000; taxable income does not go below zero.
+    wv_agi: -3_000
+    wv_taxable_income: 0
 
 - name: Case 8, West Virginia taxable income is $28,000 under the federal credit method.
   period: 2025

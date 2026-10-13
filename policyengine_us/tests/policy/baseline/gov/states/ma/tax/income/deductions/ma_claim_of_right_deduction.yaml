@@ -183,3 +183,24 @@
         state_code: MA
   output:
     ma_part_b_taxable_income: 43_600
+
+# Wages $60,000, repays $60,000: Part B income $60,000 - ($2,000 + $60,000)
+# is negative, so Part B income before the exemption is zero.
+- name: Case 10, the deduction lowers Part B income only to zero.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        claim_of_right_repayment: 60_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    ma_claim_of_right_deduction: 60_000
+    ma_part_b_taxable_income_before_exemption: 0
