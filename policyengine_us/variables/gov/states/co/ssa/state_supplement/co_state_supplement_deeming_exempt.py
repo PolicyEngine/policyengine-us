@@ -13,6 +13,13 @@ class co_state_supplement_deeming_exempt(Variable):
     reference = "https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=95"
 
     def formula(person, period, parameters):
+        p = parameters(period).gov.states.co.ssa.state_supplement.income.deeming
+        if not p.assistance_exemption_applies:
+            # Before March 2020, 3.545(F) excluded only "the income from those
+            # benefits" (public assistance, SSI or medical assistance), which
+            # the deemed income sources do not include. The recipient's other
+            # income was deemed.
+            return np.zeros(person.count, dtype=bool)
         # 9 CCR 2503-5 3.549(F): a spouse or parent who receives Adult
         # Financial grant payments, SSI or Medicaid "and has income no greater
         # than the SSI limit" has no income deemed to the AND-CS client.
@@ -21,16 +28,11 @@ class co_state_supplement_deeming_exempt(Variable):
         # Each spouse of an SSI couple is then a client on their own income,
         # as 3.548(A) requires.
         receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
-        p = parameters(period).gov.states.co.ssa.state_supplement.income.deeming
-        if not p.assistance_exemption_applies:
-            # Before March 2020, 3.545(F) excluded only the income from those
-            # benefits, which the deemed income sources do not include.
-            return receives_ssi
         # Old Age Pension is the Adult Financial program modeled for someone
         # who is not on SSI; AND-CS requires SSI.
         year = period.this_year
         adult_financial = person("co_oap", year) > 0
-        medicaid = person("medicaid_enrolled_for_ssi_state_supplement", year)
+        medicaid = person("co_state_supplement_medicaid_enrolled", year)
         # The rule does not define the SSI limit. We read it as SSI's income
         # test for an individual: countable income, after SSI's exclusions,
         # no greater than the individual federal benefit rate.

@@ -25,8 +25,12 @@ class co_state_supplement(Variable):
         # exceeds the grant standard is not eligible. Since 2012 the standard
         # has equaled the SSI benefit standard for an individual, so this
         # also excludes those "receiving the full SSI benefit standard"
-        # (3.546).
+        # (3.546). A single client whose 3.549(A) income equals SSI's
+        # countable income has SSI plus that income exactly at the standard,
+        # so the test is on the grant in cents: single-precision arithmetic
+        # must not turn a $0 grant into a positive one.
+        eligible = np.round(grant, 2) > 0
         # 3.546(C)(2), (E), 3.549(B): an eligible client's grant below the
         # payment floor standard is raised to it by a state supplementary
         # payment.
-        return where(grant > 0, max_(grant, p.payment_floor), 0)
+        return where(eligible, max_(grant, p.payment_floor), 0)

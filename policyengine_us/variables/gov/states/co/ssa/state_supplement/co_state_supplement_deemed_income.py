@@ -2,6 +2,11 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.co.ssa.state_supplement._and_cs_client_income import (
     and_cs_client_income,
 )
+from policyengine_us.variables.household.demographic.person._parent_links import (
+    co_resident_parent_indices,
+    has_parent_ids,
+    unlinked_parent,
+)
 
 
 class co_state_supplement_deemed_income(Variable):
@@ -50,13 +55,37 @@ class co_state_supplement_deemed_income(Variable):
 
         # 3.549(E): for an unemancipated child under 18, "the parents' income
         # shall be deemed using the same calculations as a spouse". The
-        # parents' income is deemed in full to each child who is a client.
+        # parents' combined income is deemed in full to each child who is a
+        # client. The parents are those the child's parent ids name in the
+        # household, whatever their age; without ids, the tax unit's other
+        # members who are parents of a child no id names, as the parent-link
+        # contract requires (this cannot tell a grandparent from a parent).
         year = period.this_year
-        child = person("is_child", year)
-        parent = person("is_parent", year) & ~child
+        first, second = co_resident_parent_indices(person, year)
+
+        def from_named_parents(values):
+            return sum(
+                np.where(rows >= 0, values[np.maximum(rows, 0)], 0)
+                for rows in (first, second)
+            )
+
+        parent = unlinked_parent(person, year)
         tax_unit = person.tax_unit
-        parents_deemed = child * deem(
-            tax_unit.sum(gross_earned * parent),
-            tax_unit.sum(gross_unearned * parent),
+
+        def from_tax_unit_parents(values):
+            return tax_unit.sum(values * parent) - values * parent
+
+        linked = has_parent_ids(person, year)
+        parents_deemed = person("is_child", year) * deem(
+            where(
+                linked,
+                from_named_parents(gross_earned),
+                from_tax_unit_parents(gross_earned),
+            ),
+            where(
+                linked,
+                from_named_parents(gross_unearned),
+                from_tax_unit_parents(gross_unearned),
+            ),
         )
         return spouse_deemed + parents_deemed

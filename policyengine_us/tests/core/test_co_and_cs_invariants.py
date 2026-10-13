@@ -7,20 +7,22 @@ limit; 3.520.781(A) makes a client whose total countable income (SSI
 included) equals or exceeds the grant standard ineligible; and 3.546(E),
 3.549(B) raise a grant below the $13 payment floor standard to it.
 
-Each case is a disabled client aged 18-59 receiving SSI, in their own
-household, with pension, interest and earnings, optionally receiving outside
-shelter support, and either single or married to a spouse who is not
-disabled and has earnings and a pension. Each married case appears four
-times: (A) the spouse is enrolled in Medicaid, (B) the spouse is not,
-(C) as B with extra spousal earnings, and (D) as B with the tax-unit roles
-swapped. For 2026:
+Each case is a disabled client aged 18-59 in their own household, with
+pension, interest and earnings, optionally receiving outside shelter
+support, and either single or married to a spouse who is not disabled and
+has earnings and a pension. Each married case appears four times: (A) the
+spouse is enrolled in Medicaid, (B) the spouse is not, (C) as B with extra
+spousal earnings, and (D) as B with the tax-unit roles swapped. Income can
+be high enough that the client gets no SSI; 3.546 then makes them no AND-CS
+client, and countable income, defined only for clients, is compared only
+between arrangements in which the client is one. For 2026:
 
 1. Payment: the supplement is the grant standard less total countable income
    when that is positive, raised to the floor if below it, and zero otherwise;
    so it is zero or between the floor and the standard.
 2. Singles: since 2012 the grant standard has equaled the SSI individual
-   benefit rate, and 3.549(A) never counts less than SSI does, so a single
-   client in their own household is never paid. Where the client has no
+   benefit rate, and for a client 3.549(A) never counts less than SSI does,
+   so a single client in their own household is never paid. Where the client has no
    earnings or at least $20 of unearned income other than SSI, 3.549(A) and
    SSI's exclusions (20 CFR 416.1112, 416.1124) count the same income.
 3. Exemption: Medicaid enrollment of a spouse within the SSI limit can only
@@ -72,7 +74,7 @@ def build_situation(cases):
                 "ssi_receives_outside_shelter_support": {YEAR: c["shelter_support"]},
                 # Set for everyone: an input for some people gives the others
                 # its default (false), not its formula.
-                "medicaid_enrolled_for_ssi_state_supplement": {YEAR: True},
+                "co_state_supplement_medicaid_enrolled": {YEAR: True},
             }
             members = [client]
             if c["married"]:
@@ -81,9 +83,7 @@ def build_situation(cases):
                     "age": {YEAR: c["spouse_age"]},
                     "employment_income": {YEAR: c["spouse_earnings"] + extra},
                     "pension_income": {YEAR: c["spouse_pension"]},
-                    "medicaid_enrolled_for_ssi_state_supplement": {
-                        YEAR: arrangement == "A"
-                    },
+                    "co_state_supplement_medicaid_enrolled": {YEAR: arrangement == "A"},
                 }
                 members = [spouse, client] if arrangement == "D" else [client, spouse]
                 head, partner = members
@@ -139,23 +139,26 @@ def assert_properties(cases):
         client = f"client_A{i}"
         if not c["married"]:
             # 2. Singles.
-            if ssi[client] > 0:
-                assert supplement[client] == 0, c
-            assert countable[client] >= results["ssi_countable_income"][client] - (
-                TOLERANCE
-            ), c
-            other_unearned = c["client_pension"] + c["client_interest"]
-            if c["client_earnings"] == 0 or other_unearned >= 20 * 12:
-                assert countable[client] == pytest.approx(
-                    results["ssi_countable_income"][client], abs=TOLERANCE
-                ), c
+            assert supplement[client] == 0, c
+            if eligible[client]:
+                federal = results["ssi_countable_income"][client]
+                assert countable[client] >= federal - TOLERANCE, c
+                other_unearned = c["client_pension"] + c["client_interest"]
+                if c["client_earnings"] == 0 or other_unearned >= 20 * 12:
+                    assert countable[client] == pytest.approx(federal, abs=TOLERANCE), c
             continue
         a, b, c_, d = (f"client_{x}{i}" for x in ARRANGEMENTS)
+        # The spouse's Medicaid and the head role do not change the client's
+        # SSI, so A, B and D have the same clients.
+        assert eligible[a] == eligible[b] == eligible[d], c
         # 3. The Medicaid exemption only lowers countable income.
-        assert countable[a] <= countable[b] + TOLERANCE, c
+        if eligible[b]:
+            assert countable[a] <= countable[b] + TOLERANCE, c
         assert supplement[a] >= supplement[b] - TOLERANCE, c
-        # 4. More non-exempt spousal earnings never lower countable income.
-        assert countable[c_] >= countable[b] - TOLERANCE, c
+        # 4. More non-exempt spousal earnings never lower countable income,
+        # for a client who stays one.
+        if eligible[b] and eligible[c_]:
+            assert countable[c_] >= countable[b] - TOLERANCE, c
         assert supplement[c_] <= supplement[b] + TOLERANCE, c
         # 5. Roles.
         assert countable[d] == pytest.approx(countable[b], abs=TOLERANCE), c
@@ -188,6 +191,38 @@ def test_worked_example():
     assert supplement["client_B0"] == 0
     assert countable["client_B0"] == pytest.approx(8_610, abs=TOLERANCE)
     assert_properties([case])
+
+
+def test_clients_who_leave_ssi():
+    """Review counterexamples: a single client whose $1,025/month of
+    unearned income ends SSI, and a married client whose spouse's extra
+    earnings end SSI. Neither is then an AND-CS client, so neither has
+    countable income to compare."""
+    single = {
+        "client_age": 40,
+        "client_pension": 12_000,
+        "client_interest": 300,
+        "client_earnings": 0,
+        "shelter_support": False,
+        "married": False,
+        "spouse_age": 40,
+        "spouse_earnings": 0,
+        "spouse_pension": 0,
+        "extra_spouse_earnings": 1,
+    }
+    married = {
+        **single,
+        "client_pension": 0,
+        "client_interest": 0,
+        "married": True,
+        "spouse_earnings": 30_000,
+        "extra_spouse_earnings": 12_000,
+    }
+    results, _, _ = calculate([single, married])
+    assert results["ssi"]["client_A0"] == 0
+    assert results["ssi"]["client_C1"] == 0
+    assert results["ssi"]["client_B1"] > 0
+    assert_properties([single, married])
 
 
 try:

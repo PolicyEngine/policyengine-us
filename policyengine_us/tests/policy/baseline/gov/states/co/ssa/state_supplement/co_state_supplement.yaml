@@ -521,7 +521,7 @@
       spouse:
         age: 42
         employment_income: 18_000
-        medicaid_enrolled_for_ssi_state_supplement: true
+        co_state_supplement_medicaid_enrolled: true
         is_tax_unit_spouse: true
     tax_units:
       tax_unit:
@@ -553,7 +553,7 @@
       spouse:
         age: 42
         employment_income: 18_000
-        medicaid_enrolled_for_ssi_state_supplement: false
+        co_state_supplement_medicaid_enrolled: false
         is_tax_unit_spouse: true
     tax_units:
       tax_unit:
@@ -569,3 +569,64 @@
     ssi: [9_402, 0]
     co_state_supplement_deemed_income: [8_610, 0]
     co_state_supplement: [0, 0]
+
+- name: Case 31, in 2019 the members of an SSI couple deemed each other's pensions.
+  # The spouse has a $100/month pension. Federal SSI: couple countable income
+  # 100 - 20 = 80; couple payment 1,157 - 80 = 1,077, or 538.50 each. Before
+  # March 2020, 3.545(F) excluded only the SSI itself, so 3.545(C) deems the
+  # spouse's pension to the head, less the $20 the head (SSI only) did not
+  # use: 100 - 20 = 80. Head grant 771 - 538.50 - 80 = 152.50/month
+  # (1,830/year). The spouse counts 100 - 10 = 90 of their own and nothing
+  # from the head: 771 - 538.50 - 90 = 142.50/month (1,710/year).
+  period: 2019
+  input:
+    people:
+      head:
+        age: 50
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        is_tax_unit_head: true
+      spouse:
+        age: 52
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 1_200
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [6_462, 6_462]
+    co_state_supplement_deemed_income: [960, 0]
+    co_state_supplement: [1_830, 1_710]
+
+- name: Case 32, a single client whose income sits exactly at the standard gets no floor payment.
+  # A $7,174/year pension (597.83/month) and outside shelter support, counted
+  # at SSI's presumed maximum value of 351.33 (994 / 3 + 20). SSI counts
+  # 597.83 + 351.33 - 20 = 929.17 and pays 994 - 929.17 = 64.83. 3.549(A)
+  # counts the same 929.17, so total countable income is exactly the $994
+  # standard and the client is not eligible (3.520.781(A)). Found by the
+  # property test: single precision left a grant of $0.00006, which the floor
+  # raised to $13.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 18
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        pension_income: 7_174
+        ssi_receives_outside_shelter_support: true
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_state_supplement: 0

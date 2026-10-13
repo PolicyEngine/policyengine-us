@@ -94,7 +94,7 @@
         members: [head, spouse]
         state_code: CO
   output:
-    medicaid_enrolled_for_ssi_state_supplement: [true, true]
+    co_state_supplement_medicaid_enrolled: [true, true]
     co_state_supplement_deeming_exempt: [true, true]
     co_state_supplement_deemed_income: [0, 0]
 
@@ -183,7 +183,7 @@
         age: 40
         employment_income: 24_000
         own_children_in_household: 1
-        medicaid_enrolled_for_ssi_state_supplement: true
+        co_state_supplement_medicaid_enrolled: true
         is_tax_unit_head: true
       parent2:
         age: 38
@@ -266,7 +266,7 @@
       spouse:
         age: 45
         pension_income: 600
-        medicaid_enrolled_for_ssi_state_supplement: false
+        co_state_supplement_medicaid_enrolled: false
         is_tax_unit_spouse: true
     tax_units:
       tax_unit:
@@ -281,3 +281,85 @@
   output:
     co_state_supplement_own_countable_income: [62.5, 0]
     co_state_supplement_deemed_income: [50, 0]
+
+- name: Case 9, a grandparent's income is not deemed to a grandchild.
+  # The infant's parent id names the mother, who has no income; the
+  # grandfather (named as the mother's parent) earns $865/month. 3.549(E)
+  # deems "the child's parents" income, so nothing is deemed: grant
+  # 994 - 500 = 494/month, or 5,928/year.
+  period: 2026
+  input:
+    people:
+      grandfather:
+        age: 50
+        person_id: 1
+        employment_income: 10_380
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_head: true
+      mother:
+        age: 20
+        person_id: 2
+        parent_1_id: 1
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_dependent: true
+      infant:
+        age: 1
+        person_id: 3
+        parent_1_id: 2
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi: 6_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [grandfather, mother, infant]
+    marital_units:
+      grandfather:
+        members: [grandfather]
+      mother:
+        members: [mother]
+      infant:
+        members: [infant]
+    households:
+      household:
+        members: [grandfather, mother, infant]
+        state_code: CO
+  output:
+    co_state_supplement_deemed_income: [0, 0, 0]
+    co_state_supplement: [0, 0, 5_928]
+
+- name: Case 10, a parent under 18 has income deemed to their child.
+  # A 17-year-old earns $865/month and does not take up Medicaid; their
+  # disabled infant receives $500/month of SSI. 3.549(E)'s age limit applies
+  # to the client, not the parent: (865 - 65) / 2 = 400/month deemed, or
+  # 4,800/year; grant 994 - 500 - 400 = 94/month, or 1,128/year.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 17
+        employment_income: 10_380
+        own_children_in_household: 1
+        takes_up_medicaid_if_eligible: false
+        is_tax_unit_head: true
+      infant:
+        age: 1
+        is_disabled: true
+        meets_ssi_disability_criteria: true
+        ssi: 6_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, infant]
+    marital_units:
+      parent:
+        members: [parent]
+      infant:
+        members: [infant]
+    households:
+      household:
+        members: [parent, infant]
+        state_code: CO
+  output:
+    co_state_supplement_deemed_income: [0, 4_800]
+    co_state_supplement: [0, 1_128]

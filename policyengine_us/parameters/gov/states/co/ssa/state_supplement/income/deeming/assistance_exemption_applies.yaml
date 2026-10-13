@@ -1,14 +1,14 @@
-description: Colorado does not deem income to an Aid to the Needy Disabled-Colorado Supplement client from a spouse or parent who receives Adult Financial grant payments or Medicaid with income no greater than the SSI limit, if this is true.
+description: Colorado does not deem income to an Aid to the Needy Disabled-Colorado Supplement client from a spouse or parent who receives Adult Financial grant payments, SSI or Medicaid with income no greater than the SSI limit, if this is true.
 
 values:
-  # Before March 2020, 3.545(F) excluded only the income from those benefits,
-  # not the recipient's other income.
+  # Before March 2020, 3.545(F) excluded only the income from those benefits;
+  # the recipient's other income was deemed.
   2002-01-01: false
   2020-03-01: true
 
 metadata:
   unit: bool
-  label: Colorado AND-CS deeming exemption for Adult Financial and Medicaid recipients
+  label: Colorado AND-CS deeming exemption for assistance recipients
   reference:
     - title: 9 CCR 2503-5, Section 3.549(F)
       href: https://www.sos.state.co.us/CCR/GenerateRulePdf.do?fileName=9+CCR+2503-5&ruleVersionId=12428#page=95

@@ -62,6 +62,64 @@ def test_ssp_snap_medicaid_calculation_order(year, state, benefit):
     assert results[0]["medicaid_enrolled"].tolist() == [True, state != "KS"]
 
 
+def co_couple(year, snap_input):
+    """A disabled AND-CS client and a spouse with an $800/month pension whose
+    Medicaid community engagement exemption is SNAP receipt."""
+    unit = {"members": ["client", "spouse"]}
+    spm_unit = dict(unit)
+    if snap_input:
+        spm_unit["snap"] = {year: 1_200}
+    return {
+        "people": {
+            "client": {
+                "age": {year: 45},
+                "is_disabled": {year: True},
+                "meets_ssi_disability_criteria": {year: True},
+            },
+            "spouse": {
+                "age": {year: 40},
+                "pension_income": {year: 9_600},
+                # Subject to SNAP's work requirement, so SNAP receipt passes
+                # through to Medicaid's community engagement requirement.
+                "is_snap_workfare_participant": {year: True},
+            },
+        },
+        "tax_units": {"unit": unit},
+        "marital_units": {"unit": unit},
+        "families": {"unit": unit},
+        "spm_units": {"unit": spm_unit},
+        "households": {"unit": {**unit, "state_code": {year: "CO"}}},
+    }
+
+
+@pytest.mark.parametrize("snap_input", [False, True])
+def test_co_and_cs_spouse_medicaid_through_snap(snap_input):
+    """9 CCR 2503-5 3.549(F) deems nothing from a spouse enrolled in Medicaid
+    with income within the SSI limit. Here enrollment rests on SNAP receipt
+    (42 CFR 435.554(c)(7)), and SNAP counts AND-CS as income. The exemption,
+    and so the supplement, must not depend on which of AND-CS, SNAP and
+    Medicaid is calculated first."""
+    year = 2030
+    variables = ("co_state_supplement", "snap", "medicaid_enrolled")
+    results = []
+    for order in (variables, variables[::-1]):
+        simulation = Simulation(situation=co_couple(year, snap_input))
+        result = {name: simulation.calculate(name, year) for name in order}
+        result["exempt"] = simulation.calculate(
+            "co_state_supplement_deeming_exempt", f"{year}-01"
+        )
+        results.append(result)
+        assert not any(
+            "co_state_supplement_medicaid" in name for name in simulation.branches
+        )
+    for name in results[0]:
+        np.testing.assert_array_equal(results[0][name], results[1][name])
+    assert results[0]["medicaid_enrolled"].tolist() == [True, True]
+    assert results[0]["exempt"].tolist() == [True, True]
+    # SSI deems the spouse's pension; AND-CS does not, so the client is paid.
+    assert results[0]["co_state_supplement"][0] > 0
+
+
 @pytest.mark.parametrize(
     "variable",
     ["medicaid_enrolled", "is_medicaid_eligible", "takes_up_medicaid_if_eligible"],
