@@ -534,3 +534,21 @@
     ssi: 0
   output:
     co_oap: 2_268
+
+- name: Case 35, a monthly average of exactly half a cent rounds up.
+  # $9,000.06/year of rent averages to $750.005/month, $750.01 in cents
+  # (half a cent rounded up). 750.01 - 20 = 730.01; 1,032 - 730.01 = 301.99,
+  # paid as 301 (3.581(E)), or 3,612/year.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        rental_income: 9_000.06
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: 8_760.12
+    co_oap: 3_612

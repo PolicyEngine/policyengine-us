@@ -10,10 +10,12 @@ import numpy as np
 PRECISION = 0.001
 
 # Annual amounts in cents average to multiples of 1/1,200 of a dollar, so an
-# average is either exactly half a cent from a whole cent or at least $0.0008
-# away. Float32 residue near $1,000 is about $0.00006, so $0.00005 of slack
-# (half a hundredth of a cent) keeps a true half cent from rounding down.
-_TIE_SLACK = 0.00005
+# average is either exactly a half cent past a whole cent or at least $0.00083
+# away from one. Storing the annual amount in float32 and dividing it by 12
+# can leave about $0.0001 of residue near $1,000 a month, so $0.0004 of slack,
+# about halfway between, keeps a true half cent from rounding down without
+# moving any other average across a tie.
+_TIE_SLACK = 0.0004
 
 
 def cents(amount):
@@ -29,6 +31,7 @@ def ssi_paid(amount):
     the payment to the next higher cent; a smaller one is dropped.
     """
     amount = np.asarray(amount, dtype=np.float64)
-    # Whole mills, with half a hundredth of a mill of slack for residue.
+    # Whole mills, with half a tenth of a mill ($0.00005) of slack for
+    # float32 residue.
     mills = np.floor(amount * 1_000 + 0.05)
     return np.ceil(mills / 10) / 100
