@@ -12,7 +12,7 @@
     ut_ssp: 15
 
 - name: Case 2, one dollar institutional SSI still qualifies for the full payment.
-  # $49 other income less $20 = $29 countable; $30 - $29 = $1 SSI.
+# $49 other income less $20 = $29 countable; $30 - $29 = $1 SSI.
   period: 2026-01
   input:
     state_code: UT
