@@ -22,8 +22,9 @@ class ca_agi_subtractions(Variable):
         p = parameters(period).gov.states.ca.tax.income.agi
         # Each subtraction takes an amount from the filers' federal return.
         # Federal AGI leaves out a tax unit dependent's income, which the
-        # dependent reports on their own return, so only the head's and
-        # spouse's amounts come off.
+        # dependent reports on their own return, so person-level amounts
+        # count only for the head and spouse. Tax-unit-level items, such as
+        # us_govt_interest, are added as they are.
         total_subtractions = tax_unit_non_dep_add(tax_unit, period, p.subtractions)
         # Prevent negative subtractions from acting as additions
         return max_(0, total_subtractions)

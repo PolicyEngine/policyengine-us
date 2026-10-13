@@ -8,7 +8,7 @@ class ri_additions(Variable):
     unit = USD
     definition_period = YEAR
     reference = (
-        "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%201041%20Schedule%20M_w.pdf#page=2",
+        "https://tax.ri.gov/sites/g/files/xkgbur541/files/2022-12/2022%20RI%20Schedule%20M_w.pdf#page=2",
         # R.I. Gen. Laws § 44-30-12(a) and (b)(6)
         "https://webserver.rilegislature.gov/Statutes/TITLE44/44-30/44-II/44-30-12.htm",
         # 2020 RI Schedule M line 2g
