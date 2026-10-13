@@ -99,3 +99,63 @@
     # loss_ald deducts the loss of total_self_employment_income (0 here), so
     # the add-back follows that total and household income is the same.
     wi_homestead_income: 5_000
+
+# A household is the claimant and the claimant's spouse (Wis. Stat. 71.52(4);
+# 2024 Schedule H instructions, page 8), and the instructions say to leave out
+# children's social security and SSI (page 13), so a dependent's income is not
+# household income. The $500 deduction for each dependent still applies.
+
+- name: Case 6, a dependent grandchild's survivor benefits are not household income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 18_000
+        taxable_pension_income: 6_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        social_security_survivors: 12_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # No social security is taxable: 6,000 + 9,000 is under the 25,000 base.
+    adjusted_gross_income: 6_000
+    # Schedule H: 6,000 pension + 18,000 social security - 500 for one
+    # dependent = 23,500. The grandchild's 12,000 is left out.
+    wi_homestead_income: 23_500
+
+- name: Case 7, a dependent's SSI and 2020 excluded unemployment compensation are not household income.
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 66
+        social_security_retirement: 15_000
+        taxable_pension_income: 5_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        unemployment_compensation: 8_000
+        ssi: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # The child's 8,000 is under the 10,200 exclusion on the child's own
+    # federal return.
+    tax_exempt_unemployment_compensation: [0, 8_000]
+    # 5,000 pension + 15,000 social security - 500 = 19,500.
+    wi_homestead_income: 19_500
