@@ -7,3 +7,7 @@ class charitable_non_cash_donations(Variable):
     label = "Charitable donations (non-cash)"
     unit = USD
     definition_period = YEAR
+    adds = [
+        "charitable_non_cash_donations_50_pct_orgs",
+        "charitable_non_cash_donations_non_50_pct_orgs",
+    ]

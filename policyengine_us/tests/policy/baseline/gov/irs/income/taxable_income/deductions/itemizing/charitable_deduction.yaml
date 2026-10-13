@@ -248,3 +248,19 @@
     # CG 50% reduced = max(10000 - 500, 0) = 9500
     # capped = min(9500, 30000) = 9500
     charitable_deduction: 9_500
+
+- name: 5 mutually exclusive boxes from tax software (pure independent inputs)
+  period: 2024
+  input:
+    charitable_cash_donations_50_pct_orgs: 20_000
+    charitable_non_cash_donations_50_pct_orgs: 15_000
+    charitable_cash_donations_non_50_pct_orgs: 10_000
+    charitable_capital_gain_donations_50_pct_orgs: 10_000
+    charitable_capital_gain_donations_non_50_pct_orgs: 5_000
+    positive_agi: 100_000
+  output:
+    # Box 1 (cash 50%): 20000
+    # Box 2 (ord 50%): 15000 + Box 4 (cg 50%): 10000 = 25000
+    # Box 3 (cash non-50%): 10000 + Box 5 (cg non-50%): 5000 = 15000
+    # Total = 20000 + 25000 + 15000 = 60000 (overall cap 60000)
+    charitable_deduction: 60_000

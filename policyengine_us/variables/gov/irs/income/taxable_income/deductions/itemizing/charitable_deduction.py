@@ -17,16 +17,24 @@ class charitable_deduction(Variable):
         #   (C) Capital gain property to 50% limit orgs: 30% AGI (or 50% with basis reduction)
         #   (B) Cash & non-cash ordinary to non-50% limit orgs: 30% AGI
         #   (D) Capital gain property to non-50% limit orgs: 20% AGI
-        cash_donations = add(tax_unit, period, ["charitable_cash_donations"])
+        cash_50_explicit = add(
+            tax_unit, period, ["charitable_cash_donations_50_pct_orgs"]
+        )
         cash_to_non_50_pct = add(
             tax_unit, period, ["charitable_cash_donations_non_50_pct_orgs"]
         )
-        non_cash_donations = add(tax_unit, period, ["charitable_non_cash_donations"])
+        cash_donations = add(tax_unit, period, ["charitable_cash_donations"])
+
+        non_cash_50_explicit = add(
+            tax_unit, period, ["charitable_non_cash_donations_50_pct_orgs"]
+        )
         non_cash_to_non_50_pct = add(
             tax_unit,
             period,
             ["charitable_non_cash_donations_non_50_pct_orgs"],
         )
+        non_cash_donations = add(tax_unit, period, ["charitable_non_cash_donations"])
+
         cg_to_50_pct = add(
             tax_unit,
             period,
@@ -43,13 +51,21 @@ class charitable_deduction(Variable):
 
         # Resolve category amounts
         cash_non_50 = cash_to_non_50_pct
-        cash_50 = max_(0, cash_donations - cash_to_non_50_pct)
+        cash_50 = where(
+            cash_50_explicit > 0,
+            cash_50_explicit,
+            max_(0, cash_donations - cash_to_non_50_pct),
+        )
 
         cg_50 = cg_to_50_pct
         cg_non_50 = cg_to_non_50_pct
 
         ordinary_non_50 = non_cash_to_non_50_pct
-        ordinary_50 = max_(0, non_cash_donations - non_cash_to_non_50_pct)
+        ordinary_50 = where(
+            non_cash_50_explicit > 0,
+            non_cash_50_explicit,
+            max_(0, non_cash_donations - non_cash_to_non_50_pct),
+        )
 
         if p.floor.applies:
             deduction_floor = p.floor.amount * positive_agi
