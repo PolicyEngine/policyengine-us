@@ -13,6 +13,9 @@ class amt_income(Variable):
         "https://www.irs.gov/pub/irs-prior/f6251--2024.pdf#page=1",
         "https://www.irs.gov/pub/irs-prior/f6251--2025.pdf#page=1",
         "https://www.irs.gov/pub/irs-prior/i6251--2025.pdf#page=2",
+        # 2017 Form 6251 lines 6 and 7, and instructions (PDF pages 2-3).
+        "https://www.irs.gov/pub/irs-prior/f6251--2017.pdf#page=1",
+        "https://www.irs.gov/pub/irs-prior/i6251--2017.pdf#page=2",
     )
 
     def formula(tax_unit, period, parameters):
@@ -36,6 +39,17 @@ class amt_income(Variable):
         deductions_add_back = (
             add(tax_unit, period, p.deductions_add_back) if p.deductions_add_back else 0
         )
+        # 2025 line 2b (2017 line 7): refunds of state and local taxes in
+        # income are not AMTI (26 U.S.C. 56(b)(1)(C)). Dependents' refunds are
+        # on their own returns, as irs_gross_income treats them.
+        tax_refunds = tax_unit_non_dep_add(tax_unit, period, ["salt_refund_income"])
+        # Section 68 does not apply to AMTI (26 U.S.C. 56(b)(1)(E)), so the
+        # itemized deduction reduction in line 1 comes back out (2017 line 6).
+        section_68_reduction = where(
+            tax_unit("tax_unit_itemizes", period),
+            tax_unit("itemized_taxable_income_deductions_reduction", period),
+            0,
+        )
         return (
             line_1
             + deductions_add_back
@@ -44,4 +58,6 @@ class amt_income(Variable):
                 period,
                 ["amt_excluded_deductions", "amt_separate_addition"],
             )
+            - tax_refunds
+            - section_68_reduction
         )
