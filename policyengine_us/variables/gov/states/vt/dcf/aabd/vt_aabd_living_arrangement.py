@@ -8,7 +8,7 @@ class VTAABDLivingArrangement(Enum):
     INDEPENDENT = "Independent living"
     HOUSEHOLD_OF_ANOTHER = "Living in another household"
     RESIDENTIAL_CARE_LEVEL_III = (
-        "State-identified Level III residential or assisted living care"
+        "Level III residential care with assistive community care (PNMI, code C)"
     )
     RESIDENTIAL_CARE_LEVEL_IV = (
         "State-identified Level IV residential or therapeutic care"
@@ -26,13 +26,21 @@ class vt_aabd_living_arrangement(Variable):
     defined_for = StateCode.VT
     possible_values = VTAABDLivingArrangement
     default_value = VTAABDLivingArrangement.NONE
-    reference = "https://secure.ssa.gov/poms.nsf/lnx/0501415058#m"
+    reference = (
+        "https://secure.ssa.gov/poms.nsf/lnx/0501415058#m",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501415970BOS",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501415013BOS",
+        # PDF pages 28, 31
+        "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf#page=28",
+    )
     documentation = """
     Defaults follow federal SSI living arrangements. Residential and custodial
     care require an explicit setting that meets the state's certification and
     service rules. Independent rates are identical inside and outside Chittenden
-    County in 2026. Private-insurance-funded institutional children use an
-    explicit independent arrangement under SI BOS01415.013.
+    County in 2026. Children under 18 in a facility paid by private health
+    insurance map to independent living (SI BOS01415.970). The state-administered
+    Level III residential care home with limited nursing care (rule 2764.2) is
+    not modeled; SI BOS01415.013 reports that all such homes converted to code C.
     """
 
     def formula(person, period, parameters):

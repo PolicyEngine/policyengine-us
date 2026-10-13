@@ -45,11 +45,13 @@
   input:
     state_code: VT
     age: 65
-    vt_aabd_living_arrangement: HOUSEHOLD_OF_ANOTHER
     ssi_lives_in_another_persons_household: true
     ssi_receives_shelter_from_others_in_household: true
     ssi_others_pay_all_meals: true
   output:
+    # Federal another person's household maps to HOUSEHOLD_OF_ANOTHER.
+    vt_aabd_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    # No countable income: 42.05 rate - 0 excess over the 662.67 reduced FBR = 42.05.
     vt_aabd: 42.05
 
 - name: Case 6, medicaid institution individual.
@@ -58,10 +60,12 @@
   input:
     state_code: VT
     age: 65
-    vt_aabd_living_arrangement: MEDICAID_INSTITUTION
     ssi_lives_in_medical_treatment_facility: true
     ssi_medicaid_pays_majority_of_care: true
   output:
+    # Federal Medicaid-paid medical treatment facility maps to MEDICAID_INSTITUTION.
+    vt_aabd_living_arrangement: MEDICAID_INSTITUTION
+    # No countable income: 49.93 rate - 0 excess over the $30 facility FBR = 49.93.
     vt_aabd: 49.93
 
 - name: Case 7, none individual.

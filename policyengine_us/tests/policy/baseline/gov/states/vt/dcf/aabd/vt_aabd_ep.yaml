@@ -98,18 +98,40 @@
   output:
     vt_aabd_ep: 596
 
-- name: Case 9, A certified half-month grant is truncated after proration.
+- name: Case 9, A spouse who is not aged, blind or disabled defaults as the essential person in another household.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
-    state_code: VT
-    age: 70
-    ssi: 994
-    vt_aabd_federal: 55.68
-    vt_aabd_ep_level: FULL
-    vt_aabd_ep_proration: 0.5
+    people:
+      person1:
+        age: 70
+        vt_aabd_ep_level: FULL
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 60
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: VT
   output:
-    vt_aabd_ep: 273
+    # person1 is aged and person2 (60, not blind or disabled) is in the same marital unit.
+    vt_aabd_ep_is_spouse: [true, false]
+    vt_aabd_living_arrangement: [HOUSEHOLD_OF_ANOTHER, HOUSEHOLD_OF_ANOTHER]
+    # No spouse income, so no deeming: 994 * (1 - 1/3) = 662.67 reduced FBR.
+    ssi: [662.67, 0]
+    # 42.05 another-household rate - 0 excess = 42.05.
+    vt_aabd_federal: [42.05, 0]
+    # Maximum 994 + 55.68 = 1,049.68; countable 662.67 + 42.05 = 704.72;
+    # floor(1,049.68 - 704.72) = floor(344.96) = 344.
+    vt_aabd_ep: [344, 0]
 
 - name: Case 10, Essential-person coverage does not extend to residential care.
   period: 2026-01
@@ -157,10 +179,17 @@
   input:
     state_code: VT
     age: 70
-    ssi: 0
-    vt_aabd_federal: 0
     vt_aabd_ep_level: FULL
+    # Scaled low earner claiming at 65: $15,238 in 2025 dollars (2025 Trustees
+    # Report Table V.C7) * 1.028 COLA = about $15,665 a year, $1,305.42 a month.
+    social_security_retirement: 15_665
   output:
+    # SSI countable 1,305.42 - 20 = 1,285.42 > 994 FBR, so SSI is 0.
+    ssi: 0
+    # 55.68 - (1,285.42 - 994) excess of 291.42 < 0, so no AABD supplement.
+    vt_aabd_federal: 0
+    # No SSI, AABD or reported SSI receipt and no state resource determination.
+    vt_aabd_ep_resources_eligible: false
     vt_aabd_ep: 0
 
 - name: Case 14, State-only essential-person grant with verified resources.
@@ -169,13 +198,18 @@
   input:
     state_code: VT
     age: 70
-    ssi: 0
-    vt_aabd_federal: 0
     vt_aabd_ep_level: FULL
     vt_aabd_ep_resources_eligible: true
-    social_security_retirement: 12_000
+    # Same scaled low earner Social Security benefit as Case 13: $1,305.42 a month.
+    social_security_retirement: 15_665
   output:
-    vt_aabd_ep: 616
+    # SSI countable 1,285.42 > 994 FBR and 291.42 excess > 55.68 supplement.
+    ssi: 0
+    vt_aabd_federal: 0
+    # 1,305.42 - 20 general exclusion = 1,285.42.
+    vt_aabd_ep_countable_income: 1_285.42
+    # Maximum 1,491 + 105.80 = 1,596.80; floor(1,596.80 - 1,285.42) = floor(311.38) = 311.
+    vt_aabd_ep: 311
 
 - name: Case 15, A worker receives the state employment-expense deduction.
   period: 2026-01
@@ -183,13 +217,20 @@
   input:
     state_code: VT
     age: 70
-    ssi: 0
-    vt_aabd_federal: 0
     vt_aabd_ep_level: FULL
     vt_aabd_ep_resources_eligible: true
-    employment_income: 24_000
+    # Full time at Vermont's 2026 minimum wage: $14.42 * 2,080 hours = $29,993.60,
+    # $2,499.47 a month.
+    employment_income: 29_993.6
   output:
-    vt_aabd_ep: 684
+    # SSI countable (2,499.47 - 20 - 65) * 0.5 = 1,207.23 > 994 FBR.
+    ssi: 0
+    # 1,207.23 - 994 = 213.23 excess > 55.68 supplement.
+    vt_aabd_federal: 0
+    # (2,499.47 - 90 employment expense - 20 - 65) * 0.5 = 1,162.23.
+    vt_aabd_ep_countable_income: 1_162.23
+    # floor(1,596.80 - 1,162.23) = floor(434.57) = 434.
+    vt_aabd_ep: 434
 
 - name: Case 16, Needs-based veterans pension does not get the general exclusion.
   period: 2026-01
@@ -197,13 +238,20 @@
   input:
     state_code: VT
     age: 70
-    ssi: 0
-    vt_aabd_federal: 0
     vt_aabd_ep_level: FULL
     vt_aabd_ep_resources_eligible: true
-    veterans_benefits: 12_000
+    # VA pension MAPR for a veteran with no dependents from December 1, 2025:
+    # $17,441 a year, $1,453.42 a month, with no other income.
+    veterans_benefits: 17_441
   output:
-    vt_aabd_ep: 596
+    # SSI countable 1,453.42 - 20 = 1,433.42 > 994 FBR.
+    ssi: 0
+    # 1,433.42 - 994 = 439.42 excess > 55.68 supplement.
+    vt_aabd_federal: 0
+    # The needs-based pension counts in full, without the $20 general exclusion.
+    vt_aabd_ep_countable_income: 1_453.42
+    # floor(1,596.80 - 1,453.42) = floor(143.38) = 143.
+    vt_aabd_ep: 143
 
 - name: Case 17, Out of state.
   period: 2026-01

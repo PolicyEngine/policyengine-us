@@ -19,7 +19,7 @@ values:
     - strike_benefits
     - social_security
     - ssi
-    - vt_aabd_countable_for_hud
+    - vt_aabd
     - general_assistance
     - unemployment_compensation
     - child_support_received
@@ -36,5 +36,5 @@ metadata:
   period: year
   label: HUD unearned income sources
   reference:
-    - title: 24 CFR § 5.609(a)(1), (a)(2), (b)(6), (b)(19)
+    - title: 24 CFR § 5.609(a)(1), (a)(2)
       href: https://www.law.cornell.edu/cfr/text/24/5.609

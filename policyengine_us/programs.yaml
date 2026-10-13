@@ -1098,9 +1098,9 @@ programs:
         parameter_prefix: gov.states.vt.dcf.aabd
         verified_years: "2026"
         notes: >-
-          Models federally administered supplements and Essential Person grants.
-          Essential Person care, nonspouse budgets and state-only resource eligibility
-          require certified inputs. Mandatory grandfathered payments are excluded.
+          Models 2026 federally administered supplements and state Essential Person
+          grants. Mandatory grandfathered payments and the state-administered
+          limited-nursing Level III supplement are not modeled.
 
   - id: social_security
     name: Social Security

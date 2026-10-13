@@ -7,7 +7,8 @@ class vt_aabd_ep_countable_income(Variable):
     label = "Vermont Essential Person assistance-group countable income"
     definition_period = MONTH
     unit = USD
-    reference = "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf"
+    # PDF pages 48-51
+    reference = "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf#page=48"
     documentation = "Whole marital-group income plus the verified net allocation for nonspouse essential persons/parents. Override for Reach Up income sources/exclusions absent from SSI inputs or an agency allocation of the shared general disregard."
 
     def formula(person, period, parameters):
@@ -17,6 +18,8 @@ class vt_aabd_ep_countable_income(Variable):
         earned = max_(person("ssi_earned_income", period) - p.employment_expense, 0)
         abd_earned = person.marital_unit.sum(earned * abd)
         other_earned = person.marital_unit.sum(earned * ~abd)
+        # NOTE: Rule 2786 withholds the $20 exclusion from VA pension only; with
+        # no pension-specific input, all veterans benefits are treated as pension.
         veterans = max_(person("veterans_benefits", period), 0)
         unearned = person.marital_unit.sum(
             max_(person("ssi_unearned_income", period) - veterans, 0)

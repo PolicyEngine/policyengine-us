@@ -2,10 +2,10 @@ from policyengine_us.model_api import *
 
 
 class VTAABDEssentialPersonLevel(Enum):
-    NONE = "No certified Essential Person arrangement"
     FULL = "Certified full Essential Person care level"
     PARTIAL_67 = "Certified 67 percent Essential Person care level"
     PARTIAL_34 = "Certified 34 percent Essential Person care level"
+    NONE = "No certified Essential Person arrangement"
 
 
 class vt_aabd_ep_level(Variable):
@@ -15,7 +15,8 @@ class vt_aabd_ep_level(Variable):
     definition_period = MONTH
     possible_values = VTAABDEssentialPersonLevel
     default_value = VTAABDEssentialPersonLevel.NONE
-    reference = "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf"
+    # PDF pages 38, 40-41, 44
+    reference = "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf#page=38"
     documentation = """
     Certified co-resident essential person under rules 2781-2784: full for
     an ineligible spouse 55 or older, or required personal care, or seven
