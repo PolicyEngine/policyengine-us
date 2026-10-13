@@ -58,9 +58,10 @@
       person1:
         age: 65
         va_ag_certified: true
+        is_ssi_spousal_deeming_applies: false
       person2:
-        age: 40
-        social_security_retirement: 60_000
+        age: 63
+        social_security_retirement: 18_000
     marital_units:
       couple:
         members: [person1, person2]
@@ -72,7 +73,13 @@
         members: [person1, person2]
         state_code: VA
   output:
-    va_ag: [2_217, 0]
+    # No deeming: person1 has no income, so SSI is 994 - 0 = 994.
+    # person2 (63, not disabled) is not SSI-eligible.
+    # Deeming would count 1,500 - 20 = 1,480 and cut SSI to 1,491 - 1,480 = 11.
+    ssi: [994, 0]
+    # Countable income 0 + 994 = 994; 2,217 - 994 = 1,223.
+    # With deeming it would be 2,217 - (1,480 + 11) = 726.
+    va_ag: [1_223, 0]
 
 - name: Case 4, initial couple resource limit.
   period: 2026-01
@@ -114,3 +121,88 @@
     household_state_benefits: 14_676
     snap_unearned_income: 26_604
     hud_unearned_income: 26_604
+
+- name: Case 6, moderate earnings spouse in a separate marital unit is not deemed in ongoing care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        va_ag_certified: true
+      person2:
+        age: 60
+        employment_income: 30_000
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # After the entry month the spouse sits in a separate marital unit,
+    # so none of the spouse's 2,500 monthly earnings is deemed.
+    is_ssi_spousal_deeming_applies: [false, false]
+    ssi_income_deemed_from_ineligible_spouse: [0, 0]
+    ssi_countable_income: [0, 0]
+    # person1 gets the individual FBR: 994 - 0 = 994.
+    # person2 (60, not disabled) is not SSI-eligible.
+    uncapped_ssi: [994, 0]
+    ssi: [994, 0]
+    va_ag_eligible: [true, false]
+    va_ag_maximum_care_rate: [2_130, 2_130]
+    # Countable income 0 + 994 = 994; 2,130 + 87 - 994 = 1,223.
+    # In one marital unit, (2,500 - 85) * 0.5 = 1,207.50 would be deemed:
+    # SSI 1,491 - 1,207.50 = 283.50 and the grant 2,217 - 1,491 = 726.
+    va_ag: [1_223, 0]
+
+- name: Case 7, couple entering care together pools income in the initial month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+        social_security_retirement: 19_200
+      person2:
+        age: 70
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+        social_security_retirement: 19_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Both spouses are aged, so SSI uses the couple computation.
+    ssi_claim_is_joint: [true, true]
+    ssi_couple_computation_applies: [true, true]
+    # 1,491 / 2 = 745.50 each.
+    ssi_amount_if_eligible: [745.5, 745.5]
+    # (1,600 + 1,600 - 20) / 2 = 1,590 each.
+    ssi_countable_income: [1_590, 1_590]
+    # 745.50 - 1,590 = -844.50, so no SSI.
+    uncapped_ssi: [-844.5, -844.5]
+    ssi: [0, 0]
+    # Pooled resources 0 are within the 3,000 couple limit.
+    va_ag_eligible: [true, true]
+    va_ag_maximum_care_rate: [2_130, 2_130]
+    # Non-SSI budget pools 3,200, takes one 20 exclusion and halves:
+    # (3,200 - 20) / 2 = 1,590 each (separate budgets would give 1,580).
+    va_ag_countable_income: [1_590, 1_590]
+    # 2,130 + 87 - 1,590 = 627 each (637 without the joint flag).
+    va_ag: [627, 627]

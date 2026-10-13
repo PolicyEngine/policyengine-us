@@ -7,7 +7,8 @@ class va_ag_allowable_income_exclusions(Variable):
     label = "Virginia Auxiliary Grant allowable state income exclusions"
     definition_period = MONTH
     unit = USD
-    reference = "https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf"
+    # PDF pages 127-132, 369-379, 383
+    reference = "https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=127"
     documentation = """
     Total verified Virginia exclusions after applying Chapter D section 6 or
     Chapter H: entry-month community expenses, the applicable spouse/child

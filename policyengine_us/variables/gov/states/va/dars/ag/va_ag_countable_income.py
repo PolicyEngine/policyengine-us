@@ -10,9 +10,20 @@ class va_ag_countable_income(Variable):
     label = "Virginia Auxiliary Grant countable income"
     definition_period = MONTH
     unit = USD
-    reference = "https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf"
+    # PDF pages 34-35, 123, 126-128, 369-374, 439
+    reference = "https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=34"
+    documentation = """
+    SSI recipients use SSA's net countable income plus the SSI payment. After
+    the initial month each spouse in care is a separate case and a spouse's
+    income is not deemed. The model's federal SSI deems an ineligible spouse's
+    income across the marital unit without checking the household, so set
+    ssi_claim_is_joint to false when both spouses are SSI-eligible; otherwise
+    use separate marital units or set is_ssi_spousal_deeming_applies to false
+    for the recipient.
+    """
 
     def formula(person, period, parameters):
+        p = parameters(period).gov.states.va.dars.ag
         joint = (
             person.marital_unit.sum(person("va_ag_is_joint_initial_month", period)) == 2
         )
@@ -21,7 +32,11 @@ class va_ag_countable_income(Variable):
             - person("ssi_blind_or_disabled_working_student_exclusion", period),
             0,
         )
-        unearned = max_(person("ssi_unearned_income", period), 0)
+        unearned = max_(
+            person("ssi_unearned_income", period)
+            - add(person, period, p.excluded_unearned_sources),
+            0,
+        )
         earned = where(joint, person.marital_unit.sum(earned), earned)
         unearned = where(joint, person.marital_unit.sum(unearned), unearned)
         non_ssi_countable = (

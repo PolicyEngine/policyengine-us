@@ -7,11 +7,10 @@ class va_ag_eligible(Variable):
     label = "Virginia Auxiliary Grant non-income eligibility"
     definition_period = MONTH
     defined_for = StateCode.VA
-    reference = "https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf"
+    # PDF pages 75-78, 93, 125, 152
+    reference = "https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=75"
 
     def formula(person, period, parameters):
-        p = parameters(period).gov.states.va.dars.ag
-        age = person("age", period.this_year)
         immigration = person("immigration_status", period.this_year)
         citizen = immigration == immigration.possible_values.CITIZEN
         immigrant = person("is_ssi_qualified_noncitizen", period.this_year)
@@ -26,7 +25,6 @@ class va_ag_eligible(Variable):
         )
         return (
             person("va_ag_certified", period)
-            & (age >= p.minimum_age)
             & person("is_ssi_aged_blind_disabled", period.this_year)
             & (citizen | immigrant)
             & resource_eligible

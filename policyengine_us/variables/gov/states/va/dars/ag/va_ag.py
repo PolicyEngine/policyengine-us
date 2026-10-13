@@ -10,18 +10,16 @@ class va_ag(Variable):
     defined_for = "va_ag_eligible"
     reference = (
         "https://law.lis.virginia.gov/admincode/title22/agency30/chapter80/section50/",
-        "https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf",
+        # PDF pages 519-520, 522, 524
+        "https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=519",
     )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.va.dars.ag
-        rate = max_(person("va_ag_care_rate", period), 0)
-        northern = np.isin(
-            person.household("county_str", period.this_year),
-            p.northern_virginia_localities,
+        rate = min_(
+            max_(person("va_ag_care_rate", period), 0),
+            person("va_ag_maximum_care_rate", period),
         )
-        maximum = where(northern, p.rate.northern_virginia, p.rate.standard)
-        rate = min_(rate, maximum)
         days = clip(person("va_ag_days_eligible", period), 0, period.days)
         rate = where(days == period.days, rate, rate / p.proration_days * days)
         need = rate + p.personal_needs_allowance
