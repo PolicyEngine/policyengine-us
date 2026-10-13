@@ -33,6 +33,12 @@ _PINNED_TBS_CACHE = {}
 # non-refundable CTC (26 U.S.C. 25D(c); Form 5695, line 14 worksheet).
 CREDIT_DEPENDENT_VARIABLES = ("residential_clean_energy_credit",)
 
+# Variables without "ctc", "cdcc" or "eitc" in their names that the 2020-IRC
+# pin changes and the pinned credits read, so the Alabama branch must
+# recompute them too. The IRC section 129 exclusion reduces the CDCC's
+# section 21(c) dollar limit (Form 2441 Part III, line 28).
+IRC_2020_RECOMPUTED_VARIABLES = ("dependent_care_assistance_exclusion",)
+
 
 def _get_pinned_tbs(base_tbs, pin_name, pin_fn):
     entry = _PINNED_TBS_CACHE.get(pin_name)
@@ -103,11 +109,24 @@ def _pin_2020_irc(tbs):
     # to tax year 2021 (the one-year ARPA expansion); the 2022+ Alabama
     # worksheets are Part I only. Pin those three credits' parameters to their
     # 2020 vintage for TY2021.
+    # The section 21(c) limit is reduced by the amount excludable under
+    # section 129, so the 2020-rule CDCC also uses the 2020 section 129 cap:
+    # $5,000 ($2,500), not the $10,500 ($5,250) that ARPA section 9632 set for
+    # 2021. The worksheet recomputes the credit "based on 2020 Form 2441 Line
+    # 11", and line 21 of the 2020 form enters $5,000.
     pin_date = instant("2020-01-01")
     start = instant("2021-01-01")
     stop = instant("2021-12-31")
     credits = tbs.parameters.gov.irs.credits
-    for subtree in (credits.eitc, credits.ctc, credits.cdcc):
+    dependent_care_assistance = (
+        tbs.parameters.gov.irs.gross_income.dependent_care_assistance_programs
+    )
+    for subtree in (
+        credits.eitc,
+        credits.ctc,
+        credits.cdcc,
+        dependent_care_assistance,
+    ):
         for param in subtree.get_descendants():
             if isinstance(param, Parameter):
                 try:
@@ -155,7 +174,8 @@ def get_pre_arpa_eitc_tbs(base_tbs):
 
 
 def get_2020_irc_tbs(base_tbs):
-    """2020-IRC-pinned EITC/CTC/CDCC system for Alabama's Act 2022-37 recompute."""
+    """2020-IRC-pinned EITC/CTC/CDCC (and section 129 cap) system for Alabama's
+    Act 2022-37 recompute."""
     return _get_pinned_tbs(base_tbs, "al_2020_irc", _pin_2020_irc)
 
 

@@ -82,3 +82,18 @@
     nc_taxable_income: [75_000, 75_000]
     # 4.5% in 2024.
     nc_income_tax: [3_375, 3_375]
+
+- name: North Carolina follows the federal exclusion for self-employed insurance premiums
+  period: 2025
+  input:
+    state_code: NC
+    adjusted_gross_income: 30_000
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 1_000
+    other_medical_expenses: 500
+    mortgage_interest: 0
+    real_estate_taxes: 0
+    charitable_deduction: 0
+  output:
+    medical_expense_deduction: 3_250
+    nc_itemized_deductions: 3_250

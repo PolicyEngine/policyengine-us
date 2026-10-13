@@ -133,7 +133,6 @@ KNOWN_VIOLATIONS = {
         "adds",
         "state_withheld_income_tax",
     ),
-    ("la_general_relief_gross_income", "adds", "tanf"),
 }
 
 
