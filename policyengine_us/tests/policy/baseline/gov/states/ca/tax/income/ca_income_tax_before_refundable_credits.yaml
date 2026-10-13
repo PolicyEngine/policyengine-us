@@ -32,3 +32,154 @@
   output:
     # (50000 - 1000) + 2000 + 5000 = 56000
     ca_income_tax_before_refundable_credits: 56_000
+
+# PolicyBench scenario_099, snapshot 20260501, tax year 2026. Exact inputs
+# copied from scenario_json via the PolicyBench household converter.
+# FTB Schedule CA (540), Section C, line 11, restores the spouse's $337.50
+# claimed deduction: $159,729.30 federal AGI + $337.50 = $160,066.80 CA AGI.
+# https://www.ftb.ca.gov/forms/2025/2025-540-booklet.pdf#page=64
+# On this model head, CA deductions are $12,621 donations + $8,653.50
+# property tax = $21,274.50, so taxable income is $138,792.30. Applying the
+# 2026 indexed joint brackets gives $5,752.91 less $1,284.46 exemptions
+# = $4,468.45 tax. Restoring $337.50 at 8% adds $27 to the unfixed $4,441.45.
+- name: 2026, PolicyBench scenario_099 restores the spouse educator deduction
+  period: 2026
+  absolute_error_margin: 0.02
+  input:
+    people:
+      head:
+        age: 42
+        employment_income: 85000.0
+        employer_sponsored_insurance_premiums: 18707.525390625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 2500.0
+        hourly_wage: 42.0
+        hours_worked_last_week: 40.0
+        is_paid_hourly: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        other_health_insurance_premiums: 2500.0
+        other_medical_expenses: 2000.0
+        over_the_counter_health_expenses: 500.0
+        roth_401k_contributions_desired: 272.3999938964844
+        roth_ira_contributions_desired: 111.87200164794922
+        taxable_interest_income: 500.0
+        traditional_401k_contributions_desired: 1543.5999755859375
+        traditional_ira_contributions_desired: 72.12799835205078
+        weekly_hours_worked_before_lsr: 40.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+      spouse:
+        age: 41
+        employment_income: 80000.0
+        bank_account_assets: 28035.294921875
+        charitable_cash_donations: 11932.94140625
+        charitable_non_cash_donations: 688.058837890625
+        educator_expense: 337.5
+        employer_sponsored_insurance_premiums: 5889.27587890625
+        has_esi: true
+        health_insurance_premiums_without_medicare_part_b: 2500.0
+        hourly_wage: 30.799999237060547
+        hours_worked_last_week: 50.0
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        long_term_capital_gains: -7018.0
+        non_qualified_dividend_income: 16.0
+        other_health_insurance_premiums: 2500.0
+        other_medical_expenses: 2000.0
+        over_the_counter_health_expenses: 500.0
+        pre_subsidy_rent: 26400.0
+        qualified_dividend_income: 128.0
+        real_estate_taxes: 8653.5
+        roth_401k_contributions_desired: 272.3999938964844
+        roth_ira_contributions_desired: 111.87200164794922
+        short_term_capital_gains: 540.0
+        stock_assets: 2230000.0
+        taxable_interest_income: 510.0
+        traditional_401k_contributions_desired: 1543.5999755859375
+        traditional_ira_contributions_desired: 72.12799835205078
+        unreimbursed_business_employee_expenses: 1262.6470947265625
+        weekly_hours_worked_before_lsr: 50.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+      child1:
+        age: 9
+        employment_income: 0.0
+        has_esi: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        other_medical_expenses: 500.0
+        over_the_counter_health_expenses: 200.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+      child2:
+        age: 4
+        employment_income: 0.0
+        has_esi: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        other_medical_expenses: 500.0
+        over_the_counter_health_expenses: 200.0
+        takes_up_medicaid_if_eligible: true
+        takes_up_ssi_if_eligible: true
+    marital_units:
+      marital_unit_1:
+        members:
+        - head
+        - spouse
+      marital_unit_2:
+        members:
+        - child1
+      marital_unit_3:
+        members:
+        - child2
+    tax_units:
+      tax_unit:
+        members:
+        - head
+        - spouse
+        - child1
+        - child2
+        takes_up_aca_if_eligible: true
+        takes_up_dc_ptc: true
+        takes_up_eitc: true
+        would_file_if_eligible_for_refundable_credit: true
+        would_file_taxes_voluntarily: true
+    spm_units:
+      spm_unit:
+        members:
+        - head
+        - spouse
+        - child1
+        - child2
+        spm_unit_pre_subsidy_childcare_expenses: 12740.0
+        takes_up_snap_if_eligible: true
+    families:
+      family:
+        members:
+        - head
+        - spouse
+        - child1
+        - child2
+    households:
+      household:
+        members:
+        - head
+        - spouse
+        - child1
+        - child2
+        state_code: CA
+        auto_loan_balance: 42000.0
+        auto_loan_interest: 1575.0
+        household_vehicles_value: 21964.705078125
+  output:
+    educator_expense_ald: 337.5
+    adjusted_gross_income: 159729.3
+    ca_educator_expense_addition: 337.5
+    ca_additions: 337.5
+    ca_agi: 160066.8
+    ca_deductions: 21274.50
+    ca_taxable_income: 138792.30
+    ca_income_tax_before_credits: 5752.91
+    ca_non_refundable_credits: 1284.46
+    ca_income_tax_before_refundable_credits: 4468.45
