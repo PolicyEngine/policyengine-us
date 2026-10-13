@@ -1,0 +1,49 @@
+# RI: 218-RICR-20-00-5 Section 5.1.1. The certified care category is an
+# input; ri_ssp.yaml tests its couple and child fallback.
+- name: Case 1, own household.
+  period: 2026-01
+  input:
+    state_code: RI
+    age: 65
+  output:
+    ri_ssp_living_arrangement: INDEPENDENT
+
+- name: Case 2, household of another with shelter and all meals provided.
+  period: 2026-01
+  input:
+    state_code: RI
+    age: 65
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    ri_ssp_living_arrangement: HOUSEHOLD_OF_ANOTHER
+
+- name: Case 3, Medicaid pays most of the facility care.
+  period: 2026-01
+  input:
+    state_code: RI
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ri_ssp_living_arrangement: MEDICAID_INSTITUTION
+
+- name: Case 4, facility resident without majority Medicaid payment.
+  period: 2026-01
+  input:
+    state_code: RI
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: false
+  output:
+    # Not a Title XIX facility placement, so the own household category applies.
+    ri_ssp_living_arrangement: INDEPENDENT
+
+- name: Case 5, nonresident.
+  period: 2026-01
+  input:
+    state_code: OH
+    age: 65
+  output:
+    ri_ssp_living_arrangement: NONE

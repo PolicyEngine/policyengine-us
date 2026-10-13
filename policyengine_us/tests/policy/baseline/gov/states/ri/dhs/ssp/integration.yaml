@@ -18,9 +18,17 @@
         members: [person1, person2]
         state_code: RI
   output:
+    # Both spouses are aged, so the SSI couple computation applies.
+    ssi_couple_computation_applies: [true, true]
+    ri_ssp_living_arrangement: [INDEPENDENT, INDEPENDENT]
+    ssi_countable_income: [0, 0]
+    # Federal couple rate: 1_491 / 2 = 745.50 each
+    ssi_amount_if_eligible: [745.5, 745.5]
+    ssi: [745.5, 745.5]
+    # Category A couple rate: 79.38 / 2 = 39.69 each
     ri_ssp: [39.69, 39.69]
 
-- name: Case 2, household_of_another couple.
+- name: Case 2, couple living in another person's household.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -46,6 +54,15 @@
         members: [person1, person2]
         state_code: RI
   output:
+    ssi_federal_living_arrangement: [ANOTHER_PERSONS_HOUSEHOLD, ANOTHER_PERSONS_HOUSEHOLD]
+    ri_ssp_living_arrangement: [HOUSEHOLD_OF_ANOTHER, HOUSEHOLD_OF_ANOTHER]
+    ssi_couple_computation_applies: [true, true]
+    # The one-third reduction lowers the rate; no in-kind support is counted.
+    ssi_countable_income: [0, 0]
+    # Federal: 1_491 / 2 = 745.50 * (1 - 1/3) = 497 each
+    ssi_amount_if_eligible: [497, 497]
+    ssi: [497, 497]
+    # Category B couple rate: 97.30 / 2 = 48.65 each
     ri_ssp: [48.65, 48.65]
 
 - name: Case 3, annual benefits and SNAP income.
@@ -55,7 +72,111 @@
     state_code: RI
     age: 65
   output:
+    ssi_countable_income: 0
+    # Federal: 994 * 12 = 11_928
+    ssi_amount_if_eligible: 11_928
+    ssi: 11_928
+    # Category A individual rate: 39.92 * 12 = 479.04
     ri_ssp: 479.04
     household_state_benefits: 479.04
+    # SSI plus the supplement: 11_928 + 479.04 = 12_407.04
     snap_unearned_income: 12_407.04
     hud_unearned_income: 12_407.04
+
+- name: Case 4, couple with Social Security above the federal couple rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 12_600
+      person2:
+        age: 68
+        social_security_retirement: 6_000
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    ssi_couple_computation_applies: [true, true]
+    ri_ssp_living_arrangement: [INDEPENDENT, INDEPENDENT]
+    # Monthly Social Security: 12_600 / 12 = 1_050 and 6_000 / 12 = 500
+    ssi_unearned_income: [1_050, 500]
+    # Couple countable income: 1_050 + 500 - 20 = 1_530; 1_530 / 2 = 765 each
+    ssi_countable_income: [765, 765]
+    ssi_amount_if_eligible: [745.5, 745.5]
+    # 745.50 - 765 = -19.50, so federal SSI is exhausted.
+    uncapped_ssi: [-19.5, -19.5]
+    ssi: [0, 0]
+    # Category A: 39.69 - (765 - 745.50) = 39.69 - 19.50 = 20.19 each
+    ri_ssp: [20.19, 20.19]
+
+- name: Case 5, aged worker with part-time earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 67
+    employment_income: 25_200
+  output:
+    ri_ssp_living_arrangement: INDEPENDENT
+    # Earnings: 25_200 / 12 = 2_100 per month
+    ssi_earned_income: 2_100
+    # No unearned income, so the $20 general exclusion applies to earnings:
+    # (2_100 - 20 - 65) * 0.5 = 1_007.50
+    ssi_countable_income: 1_007.5
+    ssi_amount_if_eligible: 994
+    # 994 - 1_007.50 = -13.50, so federal SSI is exhausted.
+    uncapped_ssi: -13.5
+    ssi: 0
+    # Category A: 39.92 - (1_007.50 - 994) = 39.92 - 13.50 = 26.42
+    ri_ssp: 26.42
+
+- name: Case 6, assisted living resident with an ineligible spouse.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        ri_ssp_living_arrangement: RESIDENTIAL_CARE
+      person2:
+        age: 63
+        social_security_retirement: 19_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # person2 is under 65 and not blind or disabled, so there is no joint
+    # claim and person1 stays in Category D.
+    ssi_couple_computation_applies: [false, false]
+    ri_ssp_living_arrangement: [RESIDENTIAL_CARE, INDEPENDENT]
+    is_ssi_eligible: [true, false]
+    # Spouse income: 19_200 / 12 = 1_600 per month, above the
+    # 1_491 - 994 = 497 deeming threshold.
+    # Deemed income: (0 + 1_600 - 20) - 0 = 1_580
+    ssi_income_deemed_from_ineligible_spouse: [1_580, 0]
+    ssi_countable_income: [1_580, 0]
+    # Deeming uses the couple rate; person2 is not an eligible individual.
+    ssi_amount_if_eligible: [1_491, 994]
+    # 1_491 - 1_580 = -89, so federal SSI is exhausted.
+    uncapped_ssi: [-89, 0]
+    ssi: [0, 0]
+    # Own income alone: 332 - max(0 - 994, 0) = 332
+    # With deeming: max(332, 332) - (1_580 - 1_491) = 332 - 89 = 243
+    # Category D pays the lower amount: min(332, 243) = 243
+    ri_ssp: [243, 0]

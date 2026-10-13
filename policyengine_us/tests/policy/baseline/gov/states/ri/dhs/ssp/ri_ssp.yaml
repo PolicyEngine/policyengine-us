@@ -1,4 +1,4 @@
-# RI: 218-RICR-20-00-5. PA: 55 Pa. Code 299; POMS SI 01415.058.
+# RI: 218-RICR-20-00-5; R.I. Gen. Laws § 40-6-27; POMS SI 01415.058 and SI BOS01415.012.
 - name: Case 1, independent living.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -53,22 +53,27 @@
 
 - name: Case 6, state administered payment below a dollar.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.001
   input:
     state_code: RI
     age: 65
-    social_security_retirement: 12_646.92
+    social_security_retirement: 12_642
   output:
-    ri_ssp: 0.01
+    # Countable income: 12_642 / 12 = 1_053.50 - 20 = 1_033.50
+    # Excess over the FBR: 1_033.50 - 994 = 39.50
+    # Category A: 39.92 - 39.50 = 0.42; the state pays no $1 minimum.
+    ri_ssp: 0.42
 
 - name: Case 7, combined income cutoff.
   period: 2026-01
-  absolute_error_margin: 0.01
+  absolute_error_margin: 0.001
   input:
     state_code: RI
     age: 65
-    social_security_retirement: 12_647.04
+    social_security_retirement: 18_000
   output:
+    # Countable income: 18_000 / 12 = 1_500 - 20 = 1_480
+    # 1_480 exceeds the combined standard of 994 + 39.92 = 1_033.92.
     ri_ssp: 0
 
 - name: Case 8, excess resources.
@@ -120,3 +125,84 @@
     social_security_retirement: 720
   output:
     ri_ssp: 35
+
+- name: Case 13, married couple in assisted living with a joint claim.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+        ri_ssp_living_arrangement: RESIDENTIAL_CARE
+      person2:
+        age: 72
+        ri_ssp_living_arrangement: RESIDENTIAL_CARE
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # Category D is for adult individuals only, so the couple is paid as
+    # Category A: couple rate 79.38 / 2 = 39.69 each, state administered.
+    ri_ssp: [39.69, 39.69]
+
+- name: Case 14, couple with only one spouse in certified care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 72
+      person2:
+        age: 72
+        ri_ssp_living_arrangement: RESIDENTIAL_CARE
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: RI
+  output:
+    # person1 is in the own household category; person2's certified care
+    # falls back to Category A in an eligible couple.
+    # Couple rate: (79.38 / 2 + 79.38 / 2) / 2 = 39.69 each.
+    ri_ssp: [39.69, 39.69]
+
+- name: Case 15, disabled child with the certified care input.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 16
+    is_disabled: true
+    meets_ssi_disability_criteria: true
+    ri_ssp_living_arrangement: RESIDENTIAL_CARE
+  output:
+    # Category D does not apply to children, so the Category A individual
+    # rate applies, paid by the state: 39.92.
+    ri_ssp: 39.92
+
+- name: Case 16, federally administered assisted living payment below a dollar.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: RI
+    age: 80
+    social_security_retirement: 16_146
+    ri_ssp_living_arrangement: RESIDENTIAL_CARE
+  output:
+    # Countable income: 16_146 / 12 = 1_345.50 - 20 = 1_325.50
+    # Excess over the FBR: 1_325.50 - 994 = 331.50
+    # Raw Category D amount: 332 - 331.50 = 0.50
+    # SSA administers Category D and pays at least $1.
+    ri_ssp: 1
