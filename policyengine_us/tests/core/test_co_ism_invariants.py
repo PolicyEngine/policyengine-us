@@ -159,7 +159,7 @@ def assert_properties(cases, values):
 
 
 def test_worked_examples():
-    """co_state_supplement YAML Cases 28 and 32, monthly: a single client in
+    """co_state_supplement YAML Cases 28 and 34, monthly: a single client in
     another person's household is charged 331.33 and paid $20; each member of
     a couple is charged 248.50 and paid 258.50. A client without SSI who
     pays nothing is counted the $351 maximum, whatever the support is
