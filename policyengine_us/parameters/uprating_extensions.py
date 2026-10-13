@@ -955,10 +955,12 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     )
 
     # CMS per-capita out-of-pocket medical spending (January values, last
-    # projection year 2035). Health expense inputs use this as their uprater.
+    # projection year 2034). Health expense inputs use this as their uprater.
+    # Each year from 2035 to 2100 grows at CMS's 2033-2034 rate, and later
+    # years hold the 2100 value.
     extend_parameter_values(
         parameters.calibration.gov.hhs.cms.moop_per_capita,
-        last_projected_year=2035,
+        last_projected_year=2034,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
@@ -993,6 +995,23 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
+    )
+
+    # CMS Medicare spending per enrollee (January values, last projection
+    # year 2034), which Medicare cost variables read directly. Sequestration
+    # cuts Medicare expenditures 2 percent through August 31, 2033 (2026
+    # Medicare Trustees Report, file page 209); its end lifts 2033 and 2034
+    # growth, and the Trustees' per-beneficiary growth falls from 6.6
+    # percent in 2034 to 5.4 percent in 2035 (Table V.D1, file page 210).
+    # So each year from 2035 to 2100 grows at the 2031-2032 rate, and later
+    # years hold the 2100 value.
+    extend_parameter_values(
+        parameters.calibration.gov.hhs.medicare.per_capita_cost,
+        last_projected_year=2034,
+        end_year=END_YEAR,
+        period_month=1,
+        period_day=1,
+        growth_years=(2031, 2032),
     )
 
     # CBO income-by-source aggregates are used directly and as anchors for
