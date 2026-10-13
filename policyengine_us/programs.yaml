@@ -1098,21 +1098,9 @@ programs:
         parameter_prefix: gov.states.wi.dhs.ssp
         verified_years: "2026"
         notes: >-
-          Models regular supplements and certified SSI-E payments, including
-          the May 2026 increase. Temporary institutional continuation and
-          county SSI-E certification require explicit inputs. HUD excludes SSI-E
-          only for certified home-care payments to a disabled person's caregiver
-          in the same assisted SPM unit; purpose and caregiver identity require
-          inputs. Within-year changes of caregiver require separate scenarios.
-          Grandfathered state-only SSI payments are not modeled. The continuing
-          April 2026 award receives a known 10 percent May increase, but the
-          references do not resolve how new SSI-E certification adds to or
-          offsets the protected award (Wis. Stat. 49.77(2)(a)3 and (3s)(d),
-          SSI Administration Handbook 3.1). Caretaker Supplement includes
-          target-child filing units, Buening tests and published income limits
-          through size 12; larger groups require agency-verified net limits.
-          Complex family composition, specialized assets, deductions and
-          procedural exclusions require explicit inputs.
+          Models 2026 regular State SSI Supplement, certified Exceptional
+          Expense (SSI-E) and Caretaker Supplement payments, including the May
+          2026 increase. Grandfathered state-only SSI recipients are not modeled.
 
   - id: social_security
     name: Social Security

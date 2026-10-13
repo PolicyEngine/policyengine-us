@@ -3,13 +3,13 @@ description: Wisconsin sets these Caretaker Supplement gross pregnant income lim
 metadata:
   unit: currency-USD
   period: month
-  label: Wisconsin CTS Area 2 gross_pregnant limits
+  label: Wisconsin CTS Area 2 gross income limits with pregnancy allowance
   type: single_amount
   threshold_unit: person
   amount_unit: currency-USD
   reference:
-    - title: Caretaker Supplement Handbook, 5.2
-      href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf
+    - title: "Caretaker Supplement Handbook 5.2.2 #page 62-63"
+      href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf#page=62
 
 brackets:
   - threshold:

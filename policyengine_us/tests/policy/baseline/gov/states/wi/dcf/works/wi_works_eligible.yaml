@@ -156,3 +156,74 @@
         state_code: WI
   output:
     wi_works_eligible: true
+
+- name: Case 10, Parent reported to receive SSI cannot receive W-2 even when modeled SSI is zero.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 35
+        ssi: 0
+        receives_ssi: true
+        person_id: 1
+      person2:
+        age: 8
+        ssi: 0
+        person_id: 2
+        parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # The only custodial parent receives SSI through receives_ssi.
+    wi_works_eligible: false
+
+- name: Case 11, Non-SSI grandparent is not a custodial parent of the SSI mother's child.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 994
+        person_id: 1
+        parent_1_id: 3
+      person2:
+        age: 8
+        ssi: 0
+        person_id: 2
+        parent_1_id: 1
+      person3:
+        age: 58
+        ssi: 0
+        person_id: 3
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+      grandparent:
+        members: [person3]
+    spm_units:
+      unit:
+        members: [person1, person2, person3]
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: WI
+  output:
+    # The grandmother is the parent of an adult, not a custodial parent of
+    # a dependent child; the only custodial parent receives SSI.
+    wi_works_eligible: false

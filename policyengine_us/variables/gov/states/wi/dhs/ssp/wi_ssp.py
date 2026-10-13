@@ -8,5 +8,8 @@ class wi_ssp(Variable):
     definition_period = MONTH
     unit = USD
     defined_for = StateCode.WI
-    reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf"
+    reference = (
+        "https://www.emhandbooks.wisconsin.gov/ssi-admin/2/2.1_federal_and_state_ssi_recipients.htm",
+        "https://www.dhs.wisconsin.gov/dms/memos/ops/dms-ops-2026-12.pdf#page=2",
+    )
     adds = ["wi_ssp_regular", "wi_ssi_e", "wi_cts"]

@@ -7,7 +7,8 @@ class wi_cts_gross_income(Variable):
     label = "Wisconsin CTS individual gross countable income"
     definition_period = MONTH
     unit = USD
-    reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf"
+    # PDF pages 30-31
+    reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf#page=30"
     documentation = "All child support is excluded. Override for income sources or deeming absent from the modeled SSI cash-income sources. SSI recipients are excluded from the filing unit."
 
     def formula(person, period, parameters):

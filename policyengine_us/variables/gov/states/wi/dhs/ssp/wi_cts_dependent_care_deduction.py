@@ -7,7 +7,7 @@ class wi_cts_dependent_care_deduction(Variable):
     label = "Wisconsin CTS allowed dependent care deduction"
     definition_period = MONTH
     unit = USD
-    reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf"
+    reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf#page=31"
     documentation = "Childcare cost per care recipient. Override with verified work-related care costs or incapacitated-adult care, subject to Handbook 3.2.1.2.3 limits."
 
     def formula(person, period, parameters):

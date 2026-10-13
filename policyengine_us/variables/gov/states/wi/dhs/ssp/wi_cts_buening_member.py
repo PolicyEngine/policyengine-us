@@ -7,9 +7,10 @@ class wi_cts_buening_member(Variable):
     entity = Person
     label = "Wisconsin CTS non-SSI co-parent subgroup member"
     definition_period = MONTH
-    reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf"
+    # PDF pages 33-34
+    reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf#page=33"
     documentation = "The non-SSI co-parent and children whose needs must be tested separately under Buening. Parent links identify ordinary two-parent blended families; override for more complex configurations or when links are absent."
 
     def formula(person, period, parameters):
-        _, subgroup = cts_filing_unit(person, period)
+        _, _, subgroup = cts_filing_unit(person, period)
         return subgroup

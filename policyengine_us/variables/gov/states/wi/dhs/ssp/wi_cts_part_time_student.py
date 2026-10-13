@@ -6,4 +6,4 @@ class wi_cts_part_time_student(Variable):
     entity = Person
     label = "Wisconsin CTS child attends school part time"
     definition_period = MONTH
-    reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf"
+    reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf#page=31"

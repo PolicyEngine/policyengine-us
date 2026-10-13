@@ -7,7 +7,7 @@ class wi_cts_net_income(Variable):
     label = "Wisconsin CTS individual net countable income"
     definition_period = MONTH
     unit = USD
-    reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf"
+    reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf#page=31"
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.wi.dhs.ssp.cts

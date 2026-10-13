@@ -19,10 +19,10 @@
         members: [person2]
     families:
       unit:
-        members: &id001 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id001
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -61,10 +61,10 @@
         members: [person4]
     families:
       unit:
-        members: &id002 [person1, person2, person3, person4]
+        members: [person1, person2, person3, person4]
     households:
       home:
-        members: *id002
+        members: [person1, person2, person3, person4]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -92,10 +92,10 @@
         members: [person2]
     families:
       unit:
-        members: &id003 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id003
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -123,16 +123,16 @@
         members: [person2]
     families:
       unit:
-        members: &id004 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id004
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
     wi_cts: [0, 0]
 
-- name: Case 5, Verified grandfathered state-only SSI parent can qualify.
+- name: Case 5, Parent reported to receive SSI with modeled SSI of zero can qualify.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -140,9 +140,9 @@
       person1:
         age: 40
         person_id: 1
+        is_disabled: true
         ssi: 0
-        wi_ssp_regular: 0
-        wi_cts_state_only_ssi_recipient: true
+        receives_ssi: true
       person2:
         age: 8
         person_id: 2
@@ -154,13 +154,17 @@
         members: [person2]
     families:
       unit:
-        members: &id005 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id005
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
+    # receives_ssi makes the parent wi_ssp_eligible; alone in the
+    # marital unit, the parent gets the January 2026 individual rate of $83.78.
+    wi_ssp_regular: [83.78, 0]
+    # wi_ssp_regular > 0, so the parent is a CTS parent: one child = $275.
     wi_cts: [275, 0]
 
 - name: Case 6, Age 18 needs graduation certification.
@@ -185,10 +189,10 @@
         members: [person2]
     families:
       unit:
-        members: &id006 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id006
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -217,10 +221,10 @@
         members: [person2]
     families:
       unit:
-        members: &id007 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id007
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -249,10 +253,10 @@
         members: [person2]
     families:
       unit:
-        members: &id008 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id008
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -280,10 +284,10 @@
         members: [person2]
     families:
       unit:
-        members: &id009 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id009
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -311,10 +315,10 @@
         members: [person2]
     families:
       unit:
-        members: &id010 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id010
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -342,16 +346,16 @@
         members: [person2]
     families:
       unit:
-        members: &id011 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id011
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
     wi_cts: [0, 0]
 
-- name: Case 12, Same income exceeds Area II net limit.
+- name: Case 12, Income between the Area II and Area I net limits fails in Area II.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -373,10 +377,10 @@
         members: [person2]
     families:
       unit:
-        members: &id012 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id012
+        members: [person1, person2]
         state_code: WI
         county: ADAMS_COUNTY_WI
   output:
@@ -390,10 +394,14 @@
       person1:
         age: 40
         person_id: 1
-        ssi: 994
+        # 20 hours a week at the $7.25 minimum wage: 7.25 * 20 * 52 = 7,540,
+        # or 628.33 a month. SSI countable earnings = (628.33 - 20 - 65) / 2
+        # = 271.67, so SSI = 994 - 271.67 = 722.33.
+        ssi: 722.33
         wi_ssp_regular: 83.78
-        employment_income: 120_000
-        ssi_countable_resources: 100_000
+        employment_income: 7_540
+        # Below the $2,000 SSI resource limit, above the $1,000 CTS limit.
+        ssi_countable_resources: 1_500
       person2:
         age: 8
         person_id: 2
@@ -405,13 +413,16 @@
         members: [person2]
     families:
       unit:
-        members: &id013 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id013
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
+    # The SSI parent is outside the group, so the $628.33 of monthly wages
+    # (above the $311 size-1 net limit) and $1,500 of resources (above the
+    # $1,000 limit) are not counted: the child alone has $0, so $275.
     wi_cts: [275, 0]
 
 - name: Case 14, Non-SSI resources at the limit.
@@ -436,10 +447,10 @@
         members: [person2]
     families:
       unit:
-        members: &id014 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id014
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -467,10 +478,10 @@
         members: [person2]
     families:
       unit:
-        members: &id015 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id015
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -487,7 +498,7 @@
         ssi: 994
         wi_ssp_regular: 83.78
       person2:
-        age: 8
+        age: 16
         person_id: 2
         parent_1_id: 1
         employment_income: 4_812
@@ -498,13 +509,15 @@
         members: [person2]
     families:
       unit:
-        members: &id016 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id016
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
+    # 4,812 / 12 = 401 a month; gross 401 <= 576 (size 1, Area I);
+    # net 401 - 90 = 311 <= 311 net limit (threshold edge), so $275.
     wi_cts: [275, 0]
 
 - name: Case 17, New applicant just above net earnings limit.
@@ -518,7 +531,7 @@
         ssi: 994
         wi_ssp_regular: 83.78
       person2:
-        age: 8
+        age: 16
         person_id: 2
         parent_1_id: 1
         employment_income: 4_824
@@ -529,13 +542,14 @@
         members: [person2]
     families:
       unit:
-        members: &id017 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id017
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
+    # 4,824 / 12 = 402 a month; net 402 - 90 = 312 > 311 (threshold edge).
     wi_cts: [0, 0]
 
 - name: Case 18, Continuing minor full-time student earnings are exempt only in net test.
@@ -549,7 +563,7 @@
         ssi: 994
         wi_ssp_regular: 83.78
       person2:
-        age: 8
+        age: 16
         person_id: 2
         parent_1_id: 1
         employment_income: 6_912
@@ -562,13 +576,16 @@
         members: [person2]
     families:
       unit:
-        members: &id018 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id018
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
+    # 6,912 / 12 = 576 a month; gross 576 <= 576 (threshold edge); a
+    # continuing full-time student's earnings are exempt in the net
+    # test, so net 0 <= 311 and the benefit is $275.
     wi_cts: [275, 0]
 
 - name: Case 19, Continuing student fails gross test despite net exemption.
@@ -582,7 +599,7 @@
         ssi: 994
         wi_ssp_regular: 83.78
       person2:
-        age: 8
+        age: 16
         person_id: 2
         parent_1_id: 1
         employment_income: 6_924
@@ -595,13 +612,14 @@
         members: [person2]
     families:
       unit:
-        members: &id019 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id019
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
+    # 6,924 / 12 = 577 a month > 576 gross limit (threshold edge).
     wi_cts: [0, 0]
 
 - name: Case 20, Continuing nonschool minor receives 30 and one-third deduction.
@@ -615,7 +633,7 @@
         ssi: 994
         wi_ssp_regular: 83.78
       person2:
-        age: 8
+        age: 17
         person_id: 2
         parent_1_id: 1
         employment_income: 6_840
@@ -628,13 +646,16 @@
         members: [person2]
     families:
       unit:
-        members: &id020 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id020
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
+    # 6,840 / 12 = 570 a month; gross 570 <= 576; a continuing minor
+    # not in school gets $90, $30 and one-third:
+    # (570 - 90 - 30) * 2 / 3 = 300 <= 311, so $275.
     wi_cts: [275, 0]
 
 - name: Case 21, Two co-resident parents must both receive state SSI.
@@ -664,16 +685,16 @@
         members: [person3]
     families:
       unit:
-        members: &id021 [person1, person2, person3]
+        members: [person1, person2, person3]
     households:
       home:
-        members: *id021
+        members: [person1, person2, person3]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
     wi_cts: [0, 0, 0]
 
-- name: Case 22, Two SSI parents share one child award through the designated payee.
+- name: Case 22, Two unmarried SSI parents tie on one child, so the lower person_id parent is the caretaker.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -702,10 +723,10 @@
         members: [person3]
     families:
       unit:
-        members: &id022 [person1, person2, person3]
+        members: [person1, person2, person3]
     households:
       home:
-        members: *id022
+        members: [person1, person2, person3]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -732,10 +753,10 @@
         members: [person2]
     families:
       unit:
-        members: &id023 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id023
+        members: [person1, person2]
         state_code: IL
         county: DANE_COUNTY_WI
   output:
@@ -763,10 +784,10 @@
         members: [person2]
     families:
       unit:
-        members: &id024 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id024
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -794,10 +815,10 @@
         members: [person2]
     families:
       unit:
-        members: &id025 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id025
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -838,10 +859,10 @@
         members: [person4]
     families:
       unit:
-        members: &id026 [person1, person2, person3, person4]
+        members: [person1, person2, person3, person4]
     households:
       home:
-        members: *id026
+        members: [person1, person2, person3, person4]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -882,10 +903,10 @@
         members: [person4]
     families:
       unit:
-        members: &id027 [person1, person2, person3, person4]
+        members: [person1, person2, person3, person4]
     households:
       home:
-        members: *id027
+        members: [person1, person2, person3, person4]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -902,7 +923,7 @@
         ssi: 994
         wi_ssp_regular: 83.78
       person2:
-        age: 8
+        age: 16
         person_id: 2
         parent_1_id: 1
         employment_income: 8_400
@@ -927,6 +948,9 @@
         state_code: WI
         county: DANE_COUNTY_WI
   output:
+    # Teen earns 8,400 / 12 = 700 a month: gross 700 <= 1,018 (size 2).
+    # Net 700 - 90 = 610; the 9-year-old's care 2,400 / 12 = 200 is capped
+    # at $175, so 610 - 175 = 435 <= 550 and two children get 275 + 165.
     wi_cts: [440, 0, 0]
 
 - name: Case 29, Child-support noncooperation excludes the entire family.
@@ -950,11 +974,11 @@
         members: [person2]
     families:
       unit:
-        members: &id028 [person1, person2]
+        members: [person1, person2]
         wi_cts_nonfinancially_ineligible: true
     households:
       home:
-        members: *id028
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -982,10 +1006,10 @@
         members: [person2]
     families:
       unit:
-        members: &id029 [person1, person2]
+        members: [person1, person2]
     households:
       home:
-        members: *id029
+        members: [person1, person2]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -1084,10 +1108,10 @@
         members: [person14]
     families:
       unit:
-        members: &id030 [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
     households:
       home:
-        members: *id030
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
@@ -1186,12 +1210,666 @@
         members: [person14]
     families:
       unit:
-        members: &id031 [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
         wi_cts_large_group_net_income_limit: 1_254
     households:
       home:
-        members: *id031
+        members: [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
         state_code: WI
         county: DANE_COUNTY_WI
   output:
     wi_cts: [2_255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+- name: Case 33, Handbook Scenario 4 unmarried SSI caretakers with own children and a child in common.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        person_id: 1
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person2:
+        age: 36
+        person_id: 2
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person3:
+        age: 12
+        person_id: 3
+        parent_1_id: 1
+      person4:
+        age: 6
+        person_id: 4
+        parent_1_id: 1
+        parent_2_id: 2
+      person5:
+        age: 10
+        person_id: 5
+        parent_1_id: 2
+    marital_units:
+      parent:
+        members: [person1]
+      other:
+        members: [person2]
+      child0:
+        members: [person3]
+      child1:
+        members: [person4]
+      child2:
+        members: [person5]
+    families:
+      unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      home:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # The child in common links all three children into one filing unit
+    # (size 3, no income). Each caretaker has two eligible children, so the
+    # child in common goes to the lower person_id: person1 cares for
+    # persons 3 and 4, person2 for person 5.
+    wi_cts_caretaker_children: [2, 1, 0, 0, 0]
+    # Handbook Scenario 4: 275 + 165 = 440 to person1 and 275 to person2,
+    # 715 in total.
+    wi_cts: [440, 275, 0, 0, 0]
+
+- name: Case 34, Handbook Scenario 5 married SSI caretakers with own children and a child in common.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        person_id: 1
+        # SSI couple: 1,491 / 2 = 745.50 each; SSP couple: 132.05 / 2.
+        ssi: 745.5
+        wi_ssp_regular: 66.025
+      person2:
+        age: 36
+        person_id: 2
+        ssi: 745.5
+        wi_ssp_regular: 66.025
+      person3:
+        age: 12
+        person_id: 3
+        parent_1_id: 1
+      person4:
+        age: 6
+        person_id: 4
+        parent_1_id: 1
+        parent_2_id: 2
+      person5:
+        age: 10
+        person_id: 5
+        parent_1_id: 2
+    marital_units:
+      parents:
+        members: [person1, person2]
+      child0:
+        members: [person3]
+      child1:
+        members: [person4]
+      child2:
+        members: [person5]
+    families:
+      unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      home:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # Marriage does not change the groups: two children each, the tie goes
+    # to the lower person_id.
+    wi_cts_caretaker_children: [2, 1, 0, 0, 0]
+    # Handbook Scenario 5: 275 + 165 = 440 and 275, 715 in total.
+    wi_cts: [440, 275, 0, 0, 0]
+
+- name: Case 35, Tie for a child in common goes to the lower person ID whatever the member order.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 36
+        person_id: 2
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person2:
+        age: 38
+        person_id: 1
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person3:
+        age: 6
+        person_id: 4
+        parent_1_id: 2
+        parent_2_id: 1
+      person4:
+        age: 10
+        person_id: 5
+        parent_1_id: 2
+      person5:
+        age: 12
+        person_id: 3
+        parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      other:
+        members: [person2]
+      child0:
+        members: [person3]
+      child1:
+        members: [person4]
+      child2:
+        members: [person5]
+    families:
+      unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      home:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # Case 33 with the rows and parent slots reversed: each caretaker has
+    # two eligible children, and person2 (person_id 1) is listed second and
+    # in the child's second parent slot, yet still takes the child in common.
+    wi_cts_caretaker_children: [1, 2, 0, 0, 0]
+    # 275 to person1; 275 + 165 = 440 to person2.
+    wi_cts: [275, 440, 0, 0, 0]
+
+- name: Case 36, Handbook Scenario 7 married parents whose only child in common receives SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        person_id: 1
+        ssi: 745.5
+        wi_ssp_regular: 66.025
+      person2:
+        age: 36
+        person_id: 2
+        ssi: 745.5
+        wi_ssp_regular: 66.025
+      person3:
+        age: 12
+        person_id: 3
+        parent_1_id: 1
+      person4:
+        age: 6
+        person_id: 4
+        parent_1_id: 1
+        parent_2_id: 2
+        is_disabled: true
+        ssi: 994
+      person5:
+        age: 10
+        person_id: 5
+        parent_1_id: 2
+    marital_units:
+      parents:
+        members: [person1, person2]
+      child0:
+        members: [person3]
+      child1:
+        members: [person4]
+      child2:
+        members: [person5]
+    families:
+      unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      home:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # The SSI child breaks the link, so persons 3 and 5 form two separate
+    # one-child filing units and the SSI child is in neither.
+    wi_cts_sfu_member: [false, false, true, false, true]
+    wi_cts_caretaker_children: [1, 1, 0, 0, 0]
+    # Handbook Scenario 7: two payments of $275.
+    wi_cts: [275, 275, 0, 0, 0]
+
+- name: Case 37, Handbook Scenario 8 unmarried parents whose only child in common receives SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        person_id: 1
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person2:
+        age: 36
+        person_id: 2
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person3:
+        age: 12
+        person_id: 3
+        parent_1_id: 1
+      person4:
+        age: 6
+        person_id: 4
+        parent_1_id: 1
+        parent_2_id: 2
+        is_disabled: true
+        ssi: 994
+      person5:
+        age: 10
+        person_id: 5
+        parent_1_id: 2
+    marital_units:
+      parent:
+        members: [person1]
+      other:
+        members: [person2]
+      child0:
+        members: [person3]
+      child1:
+        members: [person4]
+      child2:
+        members: [person5]
+    families:
+      unit:
+        members: [person1, person2, person3, person4, person5]
+    households:
+      home:
+        members: [person1, person2, person3, person4, person5]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # Two separate one-child units, one per SSI parent.
+    wi_cts_caretaker_children: [1, 1, 0, 0, 0]
+    # Handbook Scenario 8: one $275 payment in each case.
+    wi_cts: [275, 275, 0, 0, 0]
+
+- name: Case 38, SSI child in common does not pull the non-SSI co-parent into the filing unit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person2:
+        age: 16
+        person_id: 2
+        parent_1_id: 1
+        # 16 hours a week at the $7.25 minimum wage: 7.25 * 16 * 52 = 6,032.
+        employment_income: 6_032
+      person3:
+        age: 42
+        person_id: 3
+      person4:
+        age: 4
+        person_id: 4
+        parent_1_id: 1
+        parent_2_id: 3
+        is_disabled: true
+        ssi: 994
+    marital_units:
+      parent:
+        members: [person1]
+      other:
+        members: [person3]
+      child0:
+        members: [person2]
+      child1:
+        members: [person4]
+    families:
+      unit:
+        members: [person1, person2, person3, person4]
+    households:
+      home:
+        members: [person1, person2, person3, person4]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # The partner is linked to the teen only through the SSI child, who
+    # breaks the link (Handbook 3.3.1), so the teen is tested alone.
+    wi_cts_sfu_member: [false, true, false, false]
+    # 6,032 / 12 = 502.67 a month: gross 502.67 <= 576, but net
+    # 502.67 - 90 = 412.67 > 311 (size 1, Area I), so $0.
+    wi_cts: [0, 0, 0, 0]
+
+- name: Case 39, Paroled child of an SSI parent is eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person2:
+        age: 8
+        person_id: 2
+        parent_1_id: 1
+        immigration_status: PAROLED_ONE_YEAR
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+    families:
+      unit:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # Parole under 8 USC 1182(d)(5) is lawful presence under Handbook
+    # 3.1.4, so the child counts: one child = $275.
+    wi_cts: [275, 0]
+
+- name: Case 40, Omitting marital units does not exclude the child.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person2:
+        age: 8
+        person_id: 2
+        parent_1_id: 1
+    families:
+      unit:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # Both people fall into one default marital unit; only
+    # wi_cts_child_excluded marks a married minor, so one child = $275.
+    wi_cts: [275, 0]
+
+- name: Case 41, Pregnancy allowance raises the gross income limit for a pregnant teen.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person2:
+        age: 17
+        person_id: 2
+        parent_1_id: 1
+        is_pregnant: true
+        is_full_time_student: true
+        wi_cts_received_recently: true
+        # 20 hours a week at the $7.25 minimum wage: 7.25 * 20 * 52 = 7,540.
+        employment_income: 7_540
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+    families:
+      unit:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # 7,540 / 12 = 628.33 a month counts in the gross test.
+    wi_cts_gross_income: [0, 628.33]
+    # A continuing full-time student's earnings are exempt in the net test.
+    wi_cts_net_income: [0, 0]
+    # Gross 628.33 exceeds the 576 regular limit but not the 707 pregnancy
+    # limit (size 1, Area I); net 0 <= 311 + 71 = 382, so $275.
+    wi_cts: [275, 0]
+
+- name: Case 42, Without parent IDs the family SSI parent receives the award for its children.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        ssi: 994
+        wi_ssp_regular: 83.78
+        own_children_in_household: 2
+      person2:
+        age: 9
+      person3:
+        age: 5
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+    families:
+      unit:
+        members: [person1, person2, person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code: WI
+        county: MILWAUKEE_COUNTY_WI
+  output:
+    # No parent links, as in microsimulation: the family is one filing unit,
+    # its only parent (own_children_in_household) receives SSP, and the
+    # parent receives the award for both children.
+    wi_cts_sfu_member: [false, true, true]
+    wi_cts_caretaker_children: [2, 0, 0]
+    # 275 + 165 = 440.
+    wi_cts: [440, 0, 0]
+
+- name: Case 43, Additional flat disregard alone subtracts 30 dollars after the work expense.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        person_id: 1
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person2:
+        age: 18
+        person_id: 2
+        parent_1_id: 1
+        is_in_secondary_school: true
+        wi_cts_graduates_before_19: true
+        wi_cts_additional_flat_disregard: true
+        # 20 hours a week at the $7.25 minimum wage: 7.25 * 20 * 52 = 7,540.
+        employment_income: 7_540
+      person3:
+        age: 14
+        person_id: 3
+        parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+    families:
+      unit:
+        members: [person1, person2, person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # The 18-year-old senior is past the one-third months but still gets
+    # $30: 7,540 / 12 = 628.33; 628.33 - 90 - 30 = 508.33.
+    wi_cts_net_income: [0, 508.33, 0]
+    # Size 2: gross 628.33 <= 1,018 and net 508.33 <= 550, so 275 + 165.
+    wi_cts: [440, 0, 0]
+
+- name: Case 44, Continuing part-time student working under 30 hours has exempt earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 42
+        person_id: 1
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person2:
+        age: 16
+        person_id: 2
+        parent_1_id: 1
+        is_full_time_student: false
+        wi_cts_part_time_student: true
+        wi_cts_received_recently: true
+        weekly_hours_worked: 20
+        # 20 hours a week at the $7.25 minimum wage: 7.25 * 20 * 52 = 7,540.
+        employment_income: 7_540
+      person3:
+        age: 11
+        person_id: 3
+        parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+    families:
+      unit:
+        members: [person1, person2, person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # 7,540 / 12 = 628.33 a month counts in the gross test.
+    wi_cts_gross_income: [0, 628.33, 0]
+    # 20 hours < 30, so a continuing part-time student's earnings are exempt.
+    wi_cts_net_income: [0, 0, 0]
+    # Size 2: gross 628.33 <= 1,018 and net 0 <= 550, so 275 + 165.
+    wi_cts: [440, 0, 0]
+
+- name: Case 45, Infant care deduction is capped at 200 dollars in an Area II county.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 38
+        person_id: 1
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person2:
+        age: 17
+        person_id: 2
+        parent_1_id: 1
+        # 20 hours a week at the $7.25 minimum wage: 7.25 * 20 * 52 = 7,540.
+        employment_income: 7_540
+      person3:
+        age: 1
+        person_id: 3
+        parent_1_id: 1
+        # Part-time infant care at $600 a month.
+        pre_subsidy_childcare_expenses: 7_200
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+    families:
+      unit:
+        members: [person1, person2, person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code: WI
+        county: WOOD_COUNTY_WI
+  output:
+    # 7,200 / 12 = 600 a month, capped at $200 for a child under 2.
+    wi_cts_dependent_care_deduction: [0, 0, 200]
+    # New applicant teen: 7,540 / 12 = 628.33; 628.33 - 90 = 538.33.
+    wi_cts_net_income: [0, 538.33, 0]
+    # Area II size 2: gross 628.33 <= 987; net 538.33 - 200 = 338.33 <= 533,
+    # so 275 + 165 = 440.
+    wi_cts: [440, 0, 0]
+
+- name: Case 46, Child support the co-parent pays outside the home lowers the Buening group net income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        ssi: 994
+        wi_ssp_regular: 83.78
+      person2:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        social_security_survivors: 2_400
+      person3:
+        age: 8
+        person_id: 3
+        parent_1_id: 1
+        parent_2_id: 20
+      person4:
+        age: 40
+        person_id: 20
+        unemployment_compensation: 6_000
+        # $85 a month for a child living elsewhere: 17% of his $500, the
+        # Wisconsin one-child percentage standard.
+        child_support_expense: 1_020
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+      other:
+        members: [person4]
+    families:
+      unit:
+        members: [person1, person2, person3, person4]
+    households:
+      home:
+        members: [person1, person2, person3, person4]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # Handbook 3.3.1 Example 2 (Case 27) plus the support Dan pays.
+    # Tim and Dan: gross 500 <= 1,018; net 500 - 85 = 415 <= 550, so they
+    # stay in the group. Group of 3: gross 200 + 500 = 700 <= 1,197; net
+    # 700 - 85 = 615 <= 647, so Mary gets $275 for Jill.
+    wi_cts: [275, 0, 0, 0]

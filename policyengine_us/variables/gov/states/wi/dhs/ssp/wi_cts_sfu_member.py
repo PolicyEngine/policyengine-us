@@ -7,9 +7,10 @@ class wi_cts_sfu_member(Variable):
     entity = Person
     label = "Wisconsin CTS standard filing unit member before Buening"
     definition_period = MONTH
-    reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf"
-    documentation = "Uses co-resident parent IDs to form the target-child sibling and parent group. Without parent links the family is treated as one nuclear family. Override for multigeneration, step-parent or other complex filing units; parent IDs do not distinguish natural/adoptive from step relationships."
+    # PDF pages 18, 30, 68-75
+    reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf#page=18"
+    documentation = "Co-resident parent IDs group non-SSI dependent children who share a parent, with those parents, into separate filing units; an SSI child does not link its siblings. Without parent links the family is treated as one nuclear family. Override to remove a person from their unit, for example a step-parent: parent IDs do not distinguish natural or adoptive parents from step-parents. A person outside every unit cannot be added."
 
     def formula(person, period, parameters):
-        members, _ = cts_filing_unit(person, period)
-        return members
+        _, member, _ = cts_filing_unit(person, period)
+        return member
