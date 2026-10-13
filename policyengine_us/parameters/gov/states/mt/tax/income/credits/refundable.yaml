@@ -1,14 +1,21 @@
-description: Montana provides these refundable tax credits.  
+description: Montana provides these refundable tax credits.
 metadata:
   unit: list
   period: year
   label: Montana refundable tax credits
-  reference: 
+  reference:
+    - title: "Laws of Montana 2017, Chapter 381 (HB 391), Sections 1(4) and 4 #page 1-2"
+      href: https://docs.legmt.gov/download-ticket?ticketId=c64da15b-15fd-4015-9901-7aa12b3f6855#page=1
+    - title: 2019 Montana Form 2 Instructions, line 20
+      href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2019_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15
     - title: Montana 2022 Form2 Individual Income Tax Instructions
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=17
     - title: 2025 Montana Form 2 Instructions
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=14
 
 values:
-  2021-01-01:
+  # The refundable Montana EITC first applies in tax year 2019 (Ch. 381, L. 2017,
+  # sec. 4).
+  2000-01-01: []
+  2019-01-01:
     - mt_eitc

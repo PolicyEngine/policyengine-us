@@ -39,6 +39,11 @@ def test_all_uprating_factors_extend_to_2100():
         ("CPI-U", parameters.gov.bls.cpi.cpi_u, "-02-01"),
         ("Chained CPI-U", parameters.gov.bls.cpi.c_cpi_u, "-02-01"),
         ("CPI-W", parameters.gov.bls.cpi.cpi_w, "-02-01"),
+        (
+            "CMS Medicare spending per enrollee",
+            parameters.calibration.gov.hhs.medicare.per_capita_cost,
+            "-01-01",
+        ),
     ]
 
     for name, param, date_suffix in uprating_params:
@@ -131,11 +136,17 @@ def test_social_security_benefit_inputs_use_gross_benefit_uprater():
 
 
 def test_cms_moop_per_capita_extends_to_2100():
-    """Health expense input upraters should not flatten after 2035."""
+    """Health expense input upraters keep growing after CMS's 2034
+    projection, at the 2033-2034 growth rate, then hold the 2100 value."""
     parameter = PARAMETERS.calibration.gov.hhs.cms.moop_per_capita
+    last_growth = parameter("2034-01-01") / parameter("2033-01-01")
 
-    assert parameter("2036-01-01") > parameter("2035-01-01")
-    assert parameter("2100-01-01") > parameter("2036-01-01")
+    assert parameter("2034-01-01") == 2_512
+    assert last_growth == pytest.approx(2_512 / 2_412, rel=1e-12)
+    for year in [2035, 2036, 2050, 2100]:
+        growth = parameter(f"{year}-01-01") / parameter(f"{year - 1}-01-01")
+        assert growth == pytest.approx(last_growth, rel=1e-12)
+    assert parameter("2150-01-01") == parameter("2100-01-01")
 
 
 def test_cms_esi_premium_per_enrollee_holds_last_projected_growth_rate():

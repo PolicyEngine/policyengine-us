@@ -146,10 +146,218 @@
   output:
     vt_renter_credit: 1_692
 
+# Franklin and Grand Isle use the state-average fair market rent (32 V.S.A.
+# 6061(7)(C)). Expected values are the department's Renter Credit Website
+# Calculators (2022, 2023, 2025), recalculated in LibreOffice for each household:
+# 12 months rented, not shared, not subsidized.
+- name: Franklin, 4 people, 2022, full credit at the state-average fair market rent
+  period: 2022
+  input:
+    vt_renter_credit_income: 5_000
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 4
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # 10% x 12 x 1,477.91 = 1,773.49; the whole-dollar 1,478 gave 1,774.
+    vt_renter_credit: 1_773
+
+- name: Grand Isle, 3 people, 2023, full credit at the state-average fair market rent
+  period: 2023
+  input:
+    vt_renter_credit_income: 5_000
+    county: GRAND_ISLE_COUNTY_VT
+    tax_unit_size: 3
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # 10% x 12 x 1,457.83 = 1,749.40; the whole-dollar 1,458 gave 1,750.
+    vt_renter_credit: 1_749
+
+- name: Franklin, 1 person, 2025, full credit at the state-average fair market rent
+  period: 2025
+  input:
+    vt_renter_credit_income: 5_000
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # 10% x 12 x 1,057.75 = 1,269.30; the whole-dollar 1,058 gave 1,270.
+    vt_renter_credit: 1_269
+
+- name: Grand Isle, 3 people, 2025, full credit at the state-average fair market rent
+  period: 2025
+  input:
+    vt_renter_credit_income: 5_000
+    county: GRAND_ISLE_COUNTY_VT
+    tax_unit_size: 3
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # 10% x 12 x 1,687.17 = 2,024.60; the whole-dollar 1,688 gave 2,026.
+    vt_renter_credit: 2_025
+
+- name: Franklin, 6 people, 2025, full credit with the credit amount rounded half up
+  period: 2025
+  input:
+    vt_renter_credit_income: 5_000
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 6
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # 10% x 12 x 1,828.75 = 2,194.50 exactly, which the department rounds up.
+    vt_renter_credit: 2_195
+
+- name: Franklin, 1 person, 2025, partial credit from the whole-dollar credit amount
+  period: 2025
+  input:
+    vt_renter_credit_income: 31_090
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # (49,340 - 31,090) / (49,340 - 22,790) x 1,269 = 872.29.
+    vt_renter_credit: 872
+
+- name: Grand Isle, 3 people, 2025, partial credit from the whole-dollar credit amount
+  period: 2025
+  input:
+    vt_renter_credit_income: 39_980
+    county: GRAND_ISLE_COUNTY_VT
+    tax_unit_size: 3
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # (63,410 - 39,980) / (63,410 - 29,280) x 2,025 = 1,390.15.
+    vt_renter_credit: 1_390
+
+- name: Grand Isle, 3 people, 2023, partial credit from the whole-dollar credit amount
+  period: 2023
+  input:
+    vt_renter_credit_income: 30_740
+    county: GRAND_ISLE_COUNTY_VT
+    tax_unit_size: 3
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # (42,350 - 30,740) / (42,350 - 25,640) x 1,749 = 1,215.19.
+    vt_renter_credit: 1_215
+
+- name: Franklin, 5 people, 2022, partial credit from the whole-dollar credit amount
+  period: 2022
+  input:
+    vt_renter_credit_income: 37_560
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 5
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # (47,990 - 37,560) / (47,990 - 32,660) x 1,773 = 1,206.29.
+    vt_renter_credit: 1_206
+
+- name: Addison, 1 person, 2025, partial credit from the whole-dollar credit amount
+  period: 2025
+  input:
+    vt_renter_credit_income: 33_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # 10% x 12 x 1,103 = 1,323.60, which the department rounds to 1,324 before
+    # the phase-out: (52,850 - 33,000) / (52,850 - 24,400) x 1,324 = 923.78.
+    # Applying the phase-out to the unrounded 1,323.60 gave 923.
+    vt_renter_credit: 924
+
+# The 2025 department calculator's Calculator!G17 uses ROUND(..., 0).
+# Exact 50-cent ties round up for these full-year, unshared, unsubsidized claims:
+# https://tax.vermont.gov/sites/tax/files/documents/2025%20Renter%20Credit%20Website%20Calculator.xlsx
+- name: Franklin, 1 person, 2025, final partial-credit tie rounds half up
+  period: 2025
+  input:
+    vt_renter_credit_income: 36_065
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # (49,340 - 36,065) / (49,340 - 22,790) x 1,269 = 634.50.
+    vt_renter_credit: 635
+
+- name: Lamoille, 1 person, 2025, final partial-credit tie rounds half up
+  period: 2025
+  input:
+    vt_renter_credit_income: 34_495
+    county: LAMOILLE_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # (47,190 - 34,495) / (47,190 - 21,800) x 1,169 = 584.50.
+    vt_renter_credit: 585
+
+- name: Addison, 1 person, 2027, full-credit base tie rounds half up
+  period: 2027
+  input:
+    vt_renter_credit_income: 5_000
+    county: ADDISON_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # 1,103 x 12 x the temporary 12.5% rate = 1,654.50.
+    vt_renter_credit: 1_655
+
+# The 2022 calculator's Calculator!G16 rounds this non-midpoint tie up:
+# https://tax.vermont.gov/sites/tax/files/documents/2022%20Renter%20Credit%20Website%20Calculator_1.xlsx
+- name: Caledonia, 1 person, 2022, final tie preserves precision during phase-out
+  period: 2022
+  input:
+    vt_renter_credit_income: 23_500
+    county: CALEDONIA_COUNTY_VT
+    tax_unit_size: 1
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # 924 x (30,000 - 23,500) / (30,000 - 18,000) = 500.50.
+    vt_renter_credit: 501
+
 # Income limit corrections. Each case puts income where the corrected limits
-# and PE's earlier values give different credits. Base credit = fair market
-# rent x 12 x 10%. The 2023-2025 expectations match the department's Renter
-# Credit Website Calculator for the same household.
+# and PE's earlier values give different credits. Base credit = ROUND(fair market
+# rent x 12 x 10%, 0), before the income phase-out; final credits round half up.
+# The 2023-2025 expectations match the department's Renter Credit Website
+# Calculator for the same household.
 - name: Washington, 7 people, 2025, midpoint of the corrected income limits
   period: 2025
   input:
@@ -163,7 +371,8 @@
   output:
     # Partial limit 88,990 = 1.3 x HUD FY2025 very low-income limit 68,450,
     # rounded to $10 (the booklet prints 88,880). Full limit 48,650.
-    # (88,990 - 68,820) / (88,990 - 48,650) = 0.5; 0.5 x 1,977 x 12 x 0.1 = 1,186.2
+    # Base: ROUND(1,977 x 12 x 0.1, 0) = ROUND(2,372.4, 0) = 2,372.
+    # (88,990 - 68,820) / (88,990 - 48,650) = 0.5; 0.5 x 2,372 = 1,186.
     vt_renter_credit: 1_186
 
 - name: Washington, 7 people, 2025, income between the booklet and corrected limits
@@ -178,7 +387,8 @@
     state_code: VT
   output:
     # Above the booklet's 88,880 but below 88,990.
-    # (88,990 - 88,950) / 40,340 x 2,372.4 = 2.35
+    # Base: ROUND(1,977 x 12 x 0.1, 0) = 2,372.
+    # (88,990 - 88,950) / 40,340 x 2,372 = 2.352... -> 2.
     vt_renter_credit: 2
 
 - name: Chittenden, 8 people, 2024, income above the corrected partial limit
@@ -221,7 +431,7 @@
     state_code: VT
   output:
     # Full limit 31,200 = HUD FY2024 extremely low-income limit (PE had 30,000).
-    # Full credit: 1,657 x 12 x 0.1 = 1,988.4
+    # Full credit: ROUND(1,657 x 12 x 0.1, 0) = ROUND(1,988.4, 0) = 1,988.
     vt_renter_credit: 1_988
 
 - name: Franklin, 7 people, 2023, midpoint of the corrected income limits
@@ -236,7 +446,8 @@
     state_code: VT
   output:
     # Partial limit 58,320 (PE had Lamoille's 56,250). Full limit 45,420.
-    # (58,320 - 51,870) / (58,320 - 45,420) = 0.5; 0.5 x 1,587 x 12 x 0.1 = 952.2
+    # Base: ROUND(1,586.94 x 12 x 0.1, 0) = ROUND(1,904.328, 0) = 1,904.
+    # (58,320 - 51,870) / (58,320 - 45,420) = 0.5; 0.5 x 1,904 = 952.
     vt_renter_credit: 952
 
 - name: Lamoille, 7 people, 2023, midpoint of the corrected income limits
@@ -251,7 +462,8 @@
     state_code: VT
   output:
     # Partial limit 56,250 (PE had Franklin's 58,320). Full limit 45,420.
-    # (56,250 - 50,835) / (56,250 - 45,420) = 0.5; 0.5 x 1,556 x 12 x 0.1 = 933.6
+    # Base: ROUND(1,556 x 12 x 0.1, 0) = ROUND(1,867.2, 0) = 1,867.
+    # (56,250 - 50,835) / (56,250 - 45,420) = 0.5; 0.5 x 1,867 = 933.5 -> 934.
     vt_renter_credit: 934
 
 - name: Windsor, 2 people, 2021, midpoint of the corrected income limits
@@ -266,7 +478,8 @@
     state_code: VT
   output:
     # Partial limit 31,550 = HUD FY2021 limit (PE had 31,350). Full limit 18,950.
-    # (31,550 - 25,250) / (31,550 - 18,950) = 0.5; 0.5 x 1,007 x 12 x 0.1 = 604.2
+    # Base: ROUND(1,007 x 12 x 0.1, 0) = ROUND(1,208.4, 0) = 1,208.
+    # (31,550 - 25,250) / (31,550 - 18,950) = 0.5; 0.5 x 1,208 = 604.
     vt_renter_credit: 604
 
 - name: Chittenden, 5 people, 2021, income below the corrected full limit
@@ -281,5 +494,5 @@
     state_code: VT
   output:
     # Full limit 31,050 = HUD FY2021 extremely low-income limit (PE had 31,040).
-    # Full credit: 2,083 x 12 x 0.1 = 2,499.6
+    # Full credit: ROUND(2,083 x 12 x 0.1, 0) = ROUND(2,499.6, 0) = 2,500.
     vt_renter_credit: 2_500
