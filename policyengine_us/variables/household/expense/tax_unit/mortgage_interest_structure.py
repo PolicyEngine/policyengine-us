@@ -71,38 +71,6 @@ class second_home_mortgage_balance(Variable):
     )
 
 
-class first_home_mortgage_interest(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "First home mortgage interest"
-    unit = USD
-    definition_period = YEAR
-    default_value = 0
-    documentation = (
-        "DEPRECATED (issue #9275): use the person-level home_mortgage_interest "
-        "input instead; the deduction only ever uses the first+second sum, and "
-        "this input is read only when no person-level interest is reported. "
-        "Kept temporarily so existing datasets that supply it keep working; "
-        "removal is scheduled once certified microdata stops exporting it."
-    )
-
-
-class second_home_mortgage_interest(Variable):
-    value_type = float
-    entity = TaxUnit
-    label = "Second home mortgage interest"
-    unit = USD
-    definition_period = YEAR
-    default_value = 0
-    documentation = (
-        "DEPRECATED (issue #9275): use the person-level home_mortgage_interest "
-        "input instead; the deduction only ever uses the first+second sum, and "
-        "this input is read only when no person-level interest is reported. "
-        "Kept temporarily so existing datasets that supply it keep working; "
-        "removal is scheduled once certified microdata stops exporting it."
-    )
-
-
 _ORIGINATION_YEAR_CONVENTION = (
     "The federal debt limits treat 1987 as on or before October 13, 1987 and "
     "2017 as on or before December 15, 2017. A refinancing that still counts as "
@@ -144,20 +112,12 @@ class home_mortgage_interest_tax_unit(Variable):
     unit = USD
     definition_period = YEAR
     documentation = (
-        "Total home mortgage interest. The person-level home_mortgage_interest "
-        "input is canonical; the deprecated structured first/second interest "
-        "inputs are used only when no person-level interest is reported "
-        "(existing datasets still supply them — see issue #9275)."
+        "Total home mortgage interest, summed from the person-level "
+        "home_mortgage_interest input — the single mortgage-interest input "
+        "(issue #9275). The per-mortgage balances and origination years remain "
+        "tax-unit inputs because the acquisition-debt caps need them per loan."
     )
-
-    def formula(tax_unit, period, parameters):
-        reported_interest = add(tax_unit, period, ["home_mortgage_interest"])
-        structured_interest = add(
-            tax_unit,
-            period,
-            ["first_home_mortgage_interest", "second_home_mortgage_interest"],
-        )
-        return where(reported_interest > 0, reported_interest, structured_interest)
+    adds = ["home_mortgage_interest"]
 
 
 class deductible_mortgage_interest_tax_unit(Variable):
@@ -186,8 +146,6 @@ class deductible_mortgage_interest_tax_unit(Variable):
         first_year = tax_unit("first_home_mortgage_origination_year", period)
         second_year = tax_unit("second_home_mortgage_origination_year", period)
         total_balance = first_balance + second_balance
-        # Falls back to reported person-level interest when the structured
-        # first/second inputs are absent.
         total_interest = tax_unit("home_mortgage_interest_tax_unit", period)
 
         filing_status = tax_unit("filing_status", period)
