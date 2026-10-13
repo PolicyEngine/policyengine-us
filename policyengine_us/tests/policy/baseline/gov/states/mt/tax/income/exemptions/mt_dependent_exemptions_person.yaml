@@ -440,10 +440,6 @@
     # Provisional income = 0.5 x 12,000 = 6,000 < 25,000, so no Social
     # Security is taxable; Montana gross income = 0 <= 2,710.
     mt_dependent_exemptions_person: [0, 2_710]
-    # mt_income_tax is not asserted: federal dependent_gross_income counts
-    # all 12,000 of Social Security, so the head files single rather than
-    # head of household. With that status the tax falls from 2,246.00 to
-    # 2,063.07 (-182.93).
 
 - name: Dependent parent with taxable Social Security exactly at the 2022 exemption amount is eligible
   period: 2022
@@ -718,3 +714,34 @@
     # Without the exemptions the tax is 1,914.57; 1,914.57 - 2 x 182.925
     # = 1,548.72.
     mt_income_tax: 1_548.72
+
+- name: Adult dependent whose capital loss lowers taxable Social Security below the 2022 exemption amount is eligible
+  period: 2022
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        employment_income: 50_000
+      person2:
+        age: 70
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false # Required, or the adult is inferred as the spouse and skips the income test.
+        unemployment_compensation: 26_000
+        social_security_retirement: 10_000
+        long_term_capital_gains: -3_000
+        is_qualifying_child_dependent: false
+        is_disabled: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    # IRC 86(b)(2) modified AGI = 26,000 unemployment compensation - 3,000
+    # capital loss = 23,000; combined income = 23,000 + 0.5 x 10,000 = 28,000;
+    # taxable Social Security = min(5,000, 0.5 x (28,000 - 25,000)) = 1,500.
+    # Montana gross income = 1,500 (unemployment compensation is excluded and
+    # losses are not gross income) <= 2,710, so one exemption of 2,710.
+    mt_dependent_exemptions_person: [0, 2_710]
