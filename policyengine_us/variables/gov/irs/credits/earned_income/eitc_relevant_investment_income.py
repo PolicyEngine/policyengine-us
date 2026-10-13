@@ -42,7 +42,7 @@ class eitc_relevant_investment_income(Variable):
         "https://www.irs.gov/pub/irs-prior/i8814--2025.pdf#page=4",
         "https://www.irs.gov/pub/irs-prior/f4835--2025.pdf#page=2",
         "https://www.irs.gov/pub/irs-prior/f1040se--2024.pdf#page=2",
-        "https://www.irs.gov/pub/irs-prior/i1041sk1--2024.pdf#page=2",
+        "https://www.irs.gov/pub/irs-prior/f1041sk1--2024.pdf#page=2",
         "https://www.irs.gov/pub/irs-pdf/p4801.pdf#page=50",
     )
 
@@ -88,8 +88,9 @@ class eitc_relevant_investment_income(Variable):
         # nonpassive farm rental. Lines 11 and 12 also name Schedule E line
         # 34a column (d) and line 34b column (c), the passive income and loss
         # from estates and trusts (Schedule K-1 (Form 1041) boxes 6 through 8
-        # when passive to the beneficiary), not the nonpassive columns (e) and
-        # (f), which carry box 5 annuities and income in respect of a decedent.
+        # when passive to the beneficiary, less their box 9 deductions), not
+        # the nonpassive columns (e) and (f); box 5 annuities and income in
+        # respect of a decedent go in column (f).
         # estate_income is the Part III total, so the passive part is the
         # separate passive_estate_income input. It defaults to zero, like
         # passive_partnership_s_corp_income, rather than to all of

@@ -6,10 +6,11 @@
 # losses "(... 34b (col. (c)) ...)", and line 13 combines them and enters zero
 # if the result is less than zero. Schedule E (2024) Part III line 34a column
 # (d) is passive income and line 34b column (c) the passive deduction or loss
-# allowed, from Schedule K-1 (Form 1041) boxes 6 through 8. Box 5 (royalties,
-# annuities and income in respect of a decedent) is not subject to the passive
-# activity rules and goes in the nonpassive columns, which lines 11 and 12 do
-# not name. The 2021-2025 worksheets cite the same Schedule E columns.
+# allowed, from Schedule K-1 (Form 1041) boxes 6 through 8 less their box 9
+# deductions. Box 5 (royalties, annuities and income in respect of a decedent)
+# is not subject to the passive activity rules and goes in nonpassive column
+# (f), which lines 11 and 12 do not name. The 2018-2025 worksheets cite the
+# same Schedule E columns.
 #
 # estate_income is the Schedule E Part III total (line 37), which is in AGI.
 # passive_estate_income is its passive subset (column (d) less column (c)) and
@@ -135,6 +136,7 @@
     eitc_investment_income_eligible: true
     # All 20,000 is still gross income.
     adjusted_gross_income: 29_600
+    # Before: 9,600.
 
 - name: Estate income with no passive part entered stays out of the passive basket
   period: 2024
@@ -217,6 +219,7 @@
     eitc_relevant_investment_income: 11_600
     eitc_investment_income_eligible: true
     adjusted_gross_income: 17_600
+    # Before: 9,600.
 
 - name: A dependent's estate income stays off the filer's investment income
   period: 2024
@@ -299,6 +302,7 @@
     adjusted_gross_income: 31_600
     # 4,213 - 15.98% x (31,600 - 22,720) = 4,213 - 1,419.024.
     eitc: 2_793.976
+    # Before: investment income 0 and the same credit.
 
 - name: Passive estate income one dollar over the limit denies the credit
   period: 2024

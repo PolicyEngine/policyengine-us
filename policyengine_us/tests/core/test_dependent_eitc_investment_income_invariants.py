@@ -34,7 +34,9 @@ spouse. For every tax unit:
    passive partnership and passive estate and trust income less the signed part
    also in earned income, floored at zero (line 13).
 3. Bounds: it is at least the filers' interest and dividends (drawn
-   nonnegative), so never negative, and $1,000 more of the head's interest
+   nonnegative), so never negative, and at least that plus their capital gains
+   floored at zero, so no passive loss (an estate or trust loss included)
+   reaches those baskets. $1,000 more of the head's interest
    raises it by exactly $1,000 even though the filers' partnership
    self-employment earnings change too: only the explicit overlap input moves
    passive income out of the basket.
@@ -390,6 +392,9 @@ def _check(units, year):
     # 3. Bounds, and an exact shift in the head's interest while the filers'
     # partnership self-employment earnings change too.
     assert (investment_income >= portfolio - TOLERANCE).all()
+    # A passive loss, including an estate or trust loss, never reaches the
+    # interest and dividend or capital gain baskets.
+    assert (investment_income >= portfolio + capital - TOLERANCE).all()
     assert (investment_income >= -TOLERANCE).all()
     np.testing.assert_allclose(
         shifted["eitc_relevant_investment_income"] - investment_income,
