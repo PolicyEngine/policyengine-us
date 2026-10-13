@@ -1,0 +1,154 @@
+# N.J.S.A. 54A:5-2 and TAM 2011-7: "any repayment or deduction may be applied
+# against other income earned in the same category and in the same tax year as
+# the repayment ... If the offset results in a net loss or negative amount, the
+# taxpayer must report zero income in that category."
+
+- name: Case 1, TAM 2011-7's example, repaid wages reduce this year's wages.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        claim_of_right_repayment: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    nj_claim_of_right_offset: 8_000
+    nj_gross_income: 42_000
+    nj_agi: 42_000
+
+- name: Case 2, wages are reported as zero, and other categories are untouched, when the repayment exceeds them.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 5_000
+        taxable_interest_income: 1_000
+        claim_of_right_repayment: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    nj_claim_of_right_offset: 5_000
+    nj_gross_income: 1_000
+
+- name: Case 3, a repaid pension offsets pensions, not wages.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 10_000
+        taxable_pension_income: 2_000
+        claim_of_right_repayment: 3_000
+        nj_claim_of_right_repayment_category: PENSIONS_AND_ANNUITIES
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    nj_claim_of_right_offset: 2_000
+    nj_gross_income: 10_000
+
+- name: Case 4, repaid income New Jersey never taxed, such as unemployment compensation, offsets nothing.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        claim_of_right_repayment: 4_000
+        nj_claim_of_right_repayment_category: NOT_TAXED
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    nj_claim_of_right_offset: 0
+    nj_gross_income: 30_000
+
+# Joint return: line 15 combines both spouses' wages ($2,000 + $40,000 =
+# $42,000), so the head's $6,000 wage repayment is offset in full. Each spouse
+# bears it in proportion to their wages: $6,000 x 2/42 = $285.71 and
+# $6,000 x 40/42 = $5,714.29. The dependent's repayment belongs on the
+# dependent's own return.
+- name: Case 5, a joint return offsets one spouse's repayment against both spouses' wages.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 2_000
+        claim_of_right_repayment: 6_000
+      spouse:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 17
+        employment_income: 3_000
+        claim_of_right_repayment: 3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: NJ
+  output:
+    nj_claim_of_right_offset: [285.71, 5_714.29, 0]
+    nj_gross_income: [1_714.29, 34_285.71, 3_000]
+
+- name: Case 6, the federal credit method does not change the offset.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        claim_of_right_repayment: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    nj_claim_of_right_offset: 8_000
+
+- name: Case 7, outside New Jersey.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        claim_of_right_repayment: 8_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NY
+  output:
+    nj_claim_of_right_offset: 0

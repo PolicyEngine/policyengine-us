@@ -10,6 +10,8 @@ class nj_gross_income(Variable):
     reference = (
         "https://law.justia.com/codes/new-jersey/title-54a/section-54a-5-1/",
         "https://www.nj.gov/treasury/taxation/pdf/current/1040.pdf",
+        # N.J.S.A. 54A:5-2
+        "https://lis.njleg.state.nj.us/nxt/gateway.dll/statutes/1/53569/53634",
     )
     defined_for = StateCode.NJ
 
@@ -23,4 +25,6 @@ class nj_gross_income(Variable):
         total = total + max_(add(person, period, cats.category_c), 0)
         total = total + max_(add(person, period, cats.category_d), 0)
         total = total + max_(add(person, period, cats.category_k_p), 0)
-        return total
+        # A claim of right repayment offsets income of its own category,
+        # not below zero (N.J.S.A. 54A:5-2).
+        return total - person("nj_claim_of_right_offset", period)
