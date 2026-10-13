@@ -194,7 +194,8 @@ def assert_properties(cases, calculated=None):
                         parameters,
                         YEAR,
                     )[0]
-                    assert own == pytest.approx(expected, abs=TOLERANCE), c
+                    # OAP takes each monthly source in cents; SSI does not.
+                    assert own == pytest.approx(expected, abs=0.3), c
             continue
         a, b, c_, d = (f"client_{x}{i}" for x in ARRANGEMENTS)
         # 3. The Medicaid exemption only lowers countable income.

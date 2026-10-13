@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.co.ssa.oap._precision import (
+    cents,
+    ssi_paid,
+)
 
 
 class co_oap_deemed_income(Variable):
@@ -16,8 +20,9 @@ class co_oap_deemed_income(Variable):
         # 3.534(C): no income is deemed from a spouse who receives Adult
         # Financial, SSI or Medicaid with income within the OAP limit.
         deemable = ~person("co_oap_deeming_exempt", period)
-        ssi = person("ssi", period)
-        earned = person("ssi_earned_income", period) * deemable
+        # Monthly amounts in cents, SSI as SSA pays it (see _precision.py).
+        ssi = ssi_paid(person("ssi", period))
+        earned = cents(person("ssi_earned_income", period)) * deemable
         # 3.534(B)(1): the total unearned income of the spouse, SSI and any
         # matching ISM included (3.520.785(B)(1), 3.520.79(B)(6)), less exempt
         # income (3.520.786).
@@ -33,7 +38,8 @@ class co_oap_deemed_income(Variable):
         # treat alimony paid as court-ordered. Whether the income is garnished
         # instead is not modeled.
         support = (
-            add(person, period, ["child_support_expense", "alimony_expense"]) * deemable
+            cents(add(person, period, ["child_support_expense", "alimony_expense"]))
+            * deemable
         )
 
         # 3.534(B)(3): for each dependent child in the spouse's household,
@@ -56,7 +62,7 @@ class co_oap_deemed_income(Variable):
         )
         ssi_sources = parameters(period).gov.ssa.ssi.income.sources
         child_sources = [
-            max_(0, person(source, period))
+            cents(max_(0, person(source, period)))
             for source in ["ssi_earned_income", *ssi_sources.unearned]
         ]
         child_income = sum(child_sources) + ssi

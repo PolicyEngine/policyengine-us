@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.co.ssa.oap._precision import PRECISION
+from policyengine_us.variables.gov.states.co.ssa.oap._precision import (
+    PRECISION,
+    ssi_paid,
+)
 
 
 class co_oap_deeming_exempt(Variable):
@@ -22,7 +25,7 @@ class co_oap_deeming_exempt(Variable):
         # Financial grant payments, SSI or Medicaid "and has income no greater
         # than the OAP limit" is not deemed to the OAP client.
         p = parameters(period).gov.states.co.ssa.oap
-        ssi = person("ssi", period)
+        ssi = ssi_paid(person("ssi", period))
         # The rule does not define the OAP limit. We read it as the OAP grant
         # standard, against the spouse's own total countable income under
         # 3.533, SSI included.

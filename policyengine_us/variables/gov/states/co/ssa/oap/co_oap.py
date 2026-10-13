@@ -1,5 +1,8 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.co.ssa.oap._precision import PRECISION
+from policyengine_us.variables.gov.states.co.ssa.oap._precision import (
+    PRECISION,
+    ssi_paid,
+)
 
 
 class co_oap(Variable):
@@ -18,7 +21,7 @@ class co_oap(Variable):
             p = parameters(month).gov.states.co.ssa.oap
             # 9 CCR 2503-5 3.532(B), 3.533(B): the grant is the grant standard
             # less total countable income, SSI included (3.533(A)(2)(d)).
-            ssi = person("ssi", month)
+            ssi = ssi_paid(person("ssi", month))
             income = ssi + person("co_oap_countable_income", month)
             grant = p.grant_standard - income
             # 3.533 and 3.520.781(A): a client whose total countable income

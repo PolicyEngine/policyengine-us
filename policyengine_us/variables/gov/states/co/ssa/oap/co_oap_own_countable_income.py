@@ -1,4 +1,8 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.states.co.ssa.oap._precision import (
+    cents,
+    ssi_paid,
+)
 
 
 class co_oap_own_countable_income(Variable):
@@ -19,8 +23,9 @@ class co_oap_own_countable_income(Variable):
         p = parameters(period).gov.states.co.ssa.oap.income
         # 3.520.786 limits exempt earned income to the items it lists, so
         # SSI's student earned income exclusion is not deducted.
-        earned = person("ssi_earned_income", period)
-        ssi = person("ssi", period)
+        # Monthly amounts in cents, SSI as SSA pays it (see _precision.py).
+        earned = cents(person("ssi_earned_income", period))
+        ssi = ssi_paid(person("ssi", period))
         receives_ssi = ssi > 0
         unearned = person("co_oap_unearned_income", period) + person(
             "co_oap_in_kind_support_and_maintenance", period

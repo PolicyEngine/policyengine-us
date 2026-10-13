@@ -447,3 +447,70 @@
         state_code: CO
   output:
     co_oap: 6_432
+
+- name: Case 30, a monthly average just under a cent boundary is recorded in cents.
+  # $12,623.96/year of rent averages to $1,051.9967/month, $1,052.00 in
+  # cents. Less $20 that equals the standard: denied, as in Case 28.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        rental_income: 12_623.96
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 0
+
+- name: Case 31, a monthly average just over a cent boundary is recorded in cents.
+  # $6,192.04/year of rent averages to $516.0033/month, $516.00 in cents:
+  # the grant is 536/month, or 6,432/year, as in Case 29.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        rental_income: 6_192.04
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 6_432
+
+- name: Case 32, SSI counts as SSA pays it, a fractional cent raised.
+  # Both are 65. The client earns $1,291/month and the spouse $100.03/month.
+  # The model computes SSI of $418.9925/month each; SSA raises a fractional
+  # cent to the next cent (POMS SI 02001.010), paying $419.00. The client's
+  # only unearned income is SSI, so (1,291 - 65) / 2 = 613, and 613 + 419 =
+  # 1,032 equals the standard: denied. The spouse is on SSI within the limit
+  # ((100.03 - 65) / 2 + 419 = 436.515), so nothing is deemed either way;
+  # the spouse's grant, 1,032 - 436.515 = 595.485, is reduced by SSI and
+  # keeps its cents: 7,145.82/year.
+  period: 2026
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 65
+        employment_income: 15_492
+        is_tax_unit_head: true
+      spouse:
+        age: 65
+        employment_income: 1_200.36
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: CO
+  output:
+    ssi: [5_027.91, 5_027.91]
+    co_oap: [0, 7_145.82]

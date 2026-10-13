@@ -29,13 +29,14 @@ class co_oap_medicaid_enrolled(Variable):
         # other spouses' income is still deemed, before an exemption raises
         # OAP. The spouse keeps every Medicaid route, supplied inputs
         # included, and the result does not depend on calculation order.
-        # In a SNAP unit with one spouse whose exemption turns on this, higher
-        # OAP can only lower SNAP, so at most one outcome is self-consistent,
-        # and this finds it when it exists; when none exists (the exemption's
-        # higher OAP would end the SNAP receipt that gave the spouse Medicaid),
-        # it treats the spouse as enrolled. With several such spouses in one
-        # SNAP unit, enrollment is decided with all of their income deemed,
-        # which need not be self-consistent.
+        # Where a single unresolved exemption is all that links a group of
+        # households through SNAP units and marriages, higher OAP can only
+        # lower SNAP, so at most one outcome is self-consistent, and this
+        # finds it when it exists; when none exists (the exemption's higher
+        # OAP would end the SNAP receipt that gave the spouse Medicaid), it
+        # treats the spouse as enrolled. With several unresolved exemptions
+        # linked that way, enrollment is decided with all of their income
+        # deemed, which need not be self-consistent.
         simulation = person.simulation
         branch_name = f"{simulation.branch_name}_co_oap_medicaid_{period}"
         try:
