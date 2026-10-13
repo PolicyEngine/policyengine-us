@@ -42,6 +42,9 @@ class taxable_unemployment_compensation(Variable):
         eligible = where(is_dependent, dependent_eligible, filer_eligible)
         # Each person excludes up to the amount of the compensation they
         # received, so on a joint return each spouse does (worksheet lines 8
-        # and 9). A net repayment is not excluded.
+        # and 9).
         excluded = eligible * min_(max_(0, received), p.amount)
-        return received - excluded
+        # A net repayment adds nothing to gross income (irs_gross_income
+        # counts positive amounts only), so none of it is taxable;
+        # tax_exempt_unemployment_compensation carries it.
+        return max_(0, received - excluded)

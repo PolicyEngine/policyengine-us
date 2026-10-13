@@ -15,17 +15,16 @@ with its dependents' compensation set to zero, and with the head's and
 spouse's compensation swapped. A 2021 simulation of the drawn units checks
 that the exclusion ends. For every person and tax unit:
 
-1. Bounds: the exempt part of each person's compensation is between zero and
-   the lesser of what they received and $10,200, and zero in 2021.
-2. Cutoff: the head's and spouse's compensation is exempt only when the tax
-   unit's `taxable_uc_agi` is under $150,000, a dependent's only when their
-   own `dependent_taxable_uc_agi` is, and then each person's exempt part is
+1. Bounds: taxable compensation is never negative, and the exempt part
+   (compensation less taxable) is at most the lesser of what the person
+   received and $10,200. A net repayment is neither taxable nor excluded;
+   the exempt part carries it. Nothing is excluded in 2021.
+2. Cutoff: the head's and spouse's compensation is excluded only when the
+   tax unit's `taxable_uc_agi` is under $150,000, a dependent's only when
+   their own `dependent_taxable_uc_agi` is, and then each person excludes
    the lesser of their own compensation and $10,200.
-3. Differential, for compensation that is not negative (the draws never
-   are): `taxable_uc_agi` equals adjusted gross income less the taxable
-   compensation on the return, floored at zero. A net repayment is
-   different: `irs_gross_income` floors each person's negative taxable
-   compensation at zero, so it never reduces AGI. The model figures
+3. Differential: `taxable_uc_agi` equals adjusted gross income less the
+   taxable compensation on the return, floored at zero. The model figures
    AGI without the compensation once from gross income sources and once,
    here, from AGI itself; the two must agree, so the compensation is left
    out exactly once.
@@ -70,6 +69,8 @@ compensation = st.one_of(
     st.just(0),
     st.integers(1, 30_000),
     st.sampled_from([AMOUNT - 1, AMOUNT, AMOUNT + 1]),
+    # A net repayment.
+    st.integers(-2_000, -1),
 )
 
 
@@ -188,15 +189,18 @@ def _check_2020(units):
 
     # 1. Bounds.
     cap = np.minimum(np.maximum(received, 0), AMOUNT)
-    assert (exempt >= -TOLERANCE["atol"]).all()
+    assert (taxable >= 0).all()
     assert (exempt <= cap + TOLERANCE["atol"]).all()
     np.testing.assert_allclose(taxable + exempt, received, **TOLERANCE)
+    repayment = received < 0
+    np.testing.assert_allclose(exempt[repayment], received[repayment])
 
     # 2. Cutoff: the filers' return, and each dependent's own return.
     filer_under = magi[run["tax_unit_index"]] < CUTOFF
     dependent_under = run["dependent_taxable_uc_agi"] < CUTOFF
     under = np.where(dependent, dependent_under, filer_under)
-    np.testing.assert_allclose(exempt, under * cap, **TOLERANCE)
+    excluded = under * cap
+    np.testing.assert_allclose(taxable, np.maximum(0, received - excluded), **TOLERANCE)
 
     # 3. Differential: AGI without the compensation, two ways.
     np.testing.assert_allclose(
@@ -258,11 +262,16 @@ def _check_2020(units):
 
 def _check_2021(units):
     run = _run(units, 2021, ["drawn"])
-    np.testing.assert_allclose(run["tax_exempt_unemployment_compensation"], 0)
+    received = run["unemployment_compensation"]
+    # Nothing is excluded: all compensation is taxable, and only a net
+    # repayment is left in the exempt part.
     np.testing.assert_allclose(
         run["taxable_unemployment_compensation"],
-        run["unemployment_compensation"],
+        np.maximum(0, received),
         **TOLERANCE,
+    )
+    np.testing.assert_allclose(
+        run["tax_exempt_unemployment_compensation"], np.minimum(0, received)
     )
 
 

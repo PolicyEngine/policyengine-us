@@ -387,7 +387,7 @@
     tax_exempt_unemployment_compensation: [0]
     tax_unit_taxable_unemployment_compensation: 8_000
 
-- name: Case 14, a net repayment is not excluded.
+- name: Case 14, a net repayment is neither taxable nor excluded.
   period: 2020
   input:
     people:
@@ -403,8 +403,30 @@
         members: [person1]
         state_code: TX
   output:
-    # Only compensation received can be excluded, so the exempt amount is
-    # never negative.
-    taxable_unemployment_compensation: [-500]
-    tax_exempt_unemployment_compensation: [0]
+    # irs_gross_income counts positive amounts only, so a net repayment
+    # never reduces gross income and none of it is taxable. The exempt
+    # amount carries it, as states that subtract repayments read it.
+    taxable_unemployment_compensation: [0]
+    tax_exempt_unemployment_compensation: [-500]
+    adjusted_gross_income: 30_000
+
+- name: Case 15, a net repayment outside 2020 is not taxable either.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        unemployment_compensation: -500
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    taxable_unemployment_compensation: [0]
+    tax_exempt_unemployment_compensation: [-500]
+    tax_unit_taxable_unemployment_compensation: 0
     adjusted_gross_income: 30_000
