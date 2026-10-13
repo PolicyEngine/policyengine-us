@@ -1,10 +1,11 @@
 description: Oklahoma uses this allocation for an ineligible child for its State Supplemental Payment.
 values:
-  '2026-01-01': 498
+  2026-01-01: 498
+
 metadata:
   unit: currency-USD
+  period: month
   label: Oklahoma SSP allocation for an ineligible child
   reference:
-  - title: Appendix C-1 Schedule VIII A, C
-    href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-1.pdf#page=3
-  period: month
+    - title: Appendix C-1 Schedule VIII A, C
+      href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-1.pdf#page=3

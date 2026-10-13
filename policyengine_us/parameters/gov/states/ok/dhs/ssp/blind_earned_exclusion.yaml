@@ -1,11 +1,11 @@
-description: Oklahoma excludes this additional amount of monthly earned income of a blind individual before
-  the standard earned income exclusions.
+description: Oklahoma excludes this additional amount of monthly earned income of a blind individual before the standard earned income exclusions.
 values:
-  '2026-01-01': 500
+  2026-01-01: 500
+
 metadata:
   unit: currency-USD
+  period: month
   label: Oklahoma SSP blind earnings exclusion
   reference:
-  - title: OAC 317:35-5-42(g)(5)
-    href: https://www.oklahoma.gov/ohca/policies-and-rules/xpolicy/medical-assistance-for-adults-and-children-eligibility/eligibility-and-countable-income/countable-income-and-resources/determination-of-countable-income-for-individuals-categorically-.html
-  period: month
+    - title: OAC 317:35-5-42(g)(5)
+      href: https://www.oklahoma.gov/ohca/policies-and-rules/xpolicy/medical-assistance-for-adults-and-children-eligibility/eligibility-and-countable-income/countable-income-and-resources/determination-of-countable-income-for-individuals-categorically-.html
