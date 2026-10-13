@@ -13,6 +13,15 @@ class nd_renters_refund_income(Variable):
     )
     defined_for = StateCode.ND
 
+    documentation = (
+        "Renter refund income after unreimbursed medical costs actually paid. "
+        "The paid-cost base restores self-employed premiums only when the "
+        "federal formula excluded them. Caller-supplied subtotals remain "
+        "unchanged, including when components are supplied. Premium inputs use payer "
+        "attribution: each person reports premiums that person paid, including "
+        "family coverage regardless of whom it covers."
+    )
+
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nd.tax.property.renters_refund
         # NDCC 57-02-08.1(5)(c) excludes income excluded by federal or state
@@ -21,9 +30,18 @@ class nd_renters_refund_income(Variable):
         # These premiums are disjoint from itemized_medical_expenses,
         # whose medical definition follows state income tax law.
         excluded_premiums = add(tax_unit, period, ["pre_tax_health_insurance_premiums"])
+        # Restore only premiums excluded from a computed federal subtotal.
+        medical_expenses = add(
+            tax_unit,
+            period,
+            [
+                "itemized_medical_expenses",
+                "itemized_medical_expenses_applied_exclusion",
+            ],
+        )
         return max_(
             add(tax_unit, period, p.income_sources)
             - excluded_premiums
-            - tax_unit("itemized_medical_expenses", period),
+            - medical_expenses,
             0,
         )

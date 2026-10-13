@@ -17,12 +17,15 @@
   input:
     health_insurance_premiums: 5_000
     other_medical_expenses: 0
-    medical_expense_deduction: 4_625 #medical expenses over 7.5% of taxable_income, equals to 92.5% of income and insurance_premiums
+    medical_expense_deduction: 4_625
     tax_unit_itemizes: True
     taxable_income: 5_000
     state_code: MO
   output:
-    mo_qualified_health_insurance_premiums: 375
+    # Form 5695 line 12: 4,625 / 5,000 = 92.5%, rounded to 93%.
+    # Lines 13-14: 5,000 * (1 - 0.93) = 350.
+    # https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=36
+    mo_qualified_health_insurance_premiums: 350
 
 - name: Itemizes, more health expenses than taxable income, max federal itemized health deduction
   period: 2021
@@ -35,7 +38,10 @@
     taxable_income: 7_000
     state_code: MO
   output:
-    mo_qualified_health_insurance_premiums: 525
+    # Form 5695 lines 12-14: 11,475 / 12,000 = 95.625% -> 96%;
+    # 12,000 * (1 - 0.96) = 480.
+    # https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=36
+    mo_qualified_health_insurance_premiums: 480
 
 - name: Itemizes, equal amounts of other medical expenses and health insurance premiums
   period: 2021
@@ -48,7 +54,10 @@
     taxable_income: 7_000
     state_code: MO
   output:
-    mo_qualified_health_insurance_premiums: 262.5
+    # Form 5695 lines 12-14: 11,475 / 12,000 = 95.625% -> 96%;
+    # 6,000 * (1 - 0.96) = 240.
+    # https://dor.mo.gov/forms/MO-1040%20Instructions_2021.pdf#page=36
+    mo_qualified_health_insurance_premiums: 240
 
 - name: Head and spouse have different amounts, no itemizing.
   period: 2021
@@ -92,3 +101,145 @@
   output:
     # Half of their expenses were deducted from federal return.
     mo_qualified_health_insurance_premiums: [50, 150]
+
+- name: Missouri's medical overlap ratio follows federal Schedule A after the SE premium exclusion
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 1_000
+    other_medical_expenses: 500
+    adjusted_gross_income: 30_000
+    taxable_income: 30_000
+    tax_unit_itemizes: true
+  output:
+    # MO-1040 instructions page 15 excludes the Schedule 1 deduction:
+    # qualifying pool = 6,000 - 1,000 = 5,000.
+    # Schedule A: 5,000 + 500 - 0.075 * 30,000 = 3,250.
+    # Form 5695 lines 10-14: 3,250 / 5,500 = 59.0909% -> 59%;
+    # Missouri subtraction = 5,000 * (1 - 0.59) = 2,050.
+    # https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=15
+    # https://dor.mo.gov/forms/5695.pdf
+    itemized_medical_expenses: 5_500
+    medical_expense_deduction: 3_250
+    mo_qualified_health_insurance_premiums: 2_050
+
+- name: Missouri's qualifying pool is unchanged without an SE deduction
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 0
+    other_medical_expenses: 0
+    adjusted_gross_income: 40_000
+    taxable_income: 40_000
+    tax_unit_itemizes: true
+  output:
+    # 6,000 - 0.075 * 40,000 = 3,000; ratio = 50% exactly.
+    # 6,000 * (1 - 0.5) = 3,000, matching the previous formula.
+    itemized_medical_expenses: 6_000
+    medical_expense_deduction: 3_000
+    mo_qualified_health_insurance_premiums: 3_000
+
+- name: Missouri excludes SE-deducted premiums even without itemization
+  period: 2025
+  input:
+    state_code: MO
+    health_insurance_premiums: 6_000
+    self_employed_health_insurance_ald: 1_000
+    tax_unit_itemizes: false
+    taxable_income: 30_000
+  output:
+    mo_qualified_health_insurance_premiums: 5_000
+
+- name: Missouri's full-percent rounding just below a half-percent tie
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    health_insurance_premiums: 10_000
+    other_medical_expenses: 0
+    medical_expense_deduction: 5_849
+    tax_unit_itemizes: true
+    taxable_income: 30_000
+  output:
+    # 58.49% rounds to 58%; 10,000 * (1 - 0.58) = 4,200.
+    mo_qualified_health_insurance_premiums: 4_200
+
+- name: Missouri's full-percent rounding at a half-percent tie
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    state_code: MO
+    health_insurance_premiums: 10_000
+    other_medical_expenses: 0
+    medical_expense_deduction: 5_850
+    tax_unit_itemizes: true
+    taxable_income: 30_000
+  output:
+    # Form 5695 line 12 requires full-percent rounding. Half-up ties follow
+    # the MO-1040 instructions' percentage example on page 7 (97.5% -> 98%).
+    # 58.5% rounds to 59%; 10,000 * (1 - 0.59) = 4,100.
+    # https://dor.mo.gov/forms/MO-1040%20Instructions_2025.pdf#page=7
+    mo_qualified_health_insurance_premiums: 4_100
+
+- name: Missouri caps each payer's SE exclusion before combining premiums
+  period: 2025
+  input:
+    people:
+      parent:
+        health_insurance_premiums: 300
+        self_employed_health_insurance_ald_person: 800
+      spouse:
+        health_insurance_premiums: 500
+        self_employed_health_insurance_ald_person: 0
+    tax_units:
+      tax_unit:
+        members: [parent, spouse]
+        tax_unit_itemizes: false
+        taxable_income: 30_000
+    households:
+      household:
+        members: [parent, spouse]
+        state_code: MO
+  output:
+    # Premiums belong to their payer. The parent's unmatched $500 deduction
+    # cannot exclude the spouse's $500 of premiums.
+    self_employed_health_insurance_ald: 800
+    mo_qualified_health_insurance_premiums: [0, 500]
+
+- name: Missouri honors a supplied zero federal SE deduction
+  period: 2025
+  input:
+    state_code: MO
+    health_insurance_premiums: 1_000
+    is_self_employed: true
+    self_employed_health_insurance_premiums: 1_000
+    total_self_employment_income: 10_000
+    self_employed_health_insurance_ald: 0
+    tax_unit_itemizes: false
+    taxable_income: 30_000
+  output:
+    # Personal eligibility is $1,000, but the actual federal return claims $0.
+    # No premiums were deducted federally, so the qualifying pool stays $1,000.
+    self_employed_health_insurance_ald_person: 1_000
+    mo_qualified_health_insurance_premiums: 1_000
+
+- name: Missouri honors a supplied partial federal SE deduction
+  period: 2025
+  input:
+    state_code: MO
+    health_insurance_premiums: 1_000
+    is_self_employed: true
+    self_employed_health_insurance_premiums: 1_000
+    total_self_employment_income: 10_000
+    self_employed_health_insurance_ald: 500
+    tax_unit_itemizes: false
+    taxable_income: 30_000
+  output:
+    # Limit the personal $1,000 deduction to the actual $500 claimed federally.
+    # The remaining qualifying pool is 1,000 - 500 = 500.
+    self_employed_health_insurance_ald_person: 1_000
+    mo_qualified_health_insurance_premiums: 500
