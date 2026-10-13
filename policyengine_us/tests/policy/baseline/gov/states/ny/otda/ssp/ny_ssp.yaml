@@ -290,24 +290,23 @@
   output:
     ny_ssp: 228.48
 
-# 18 NYCRR 398-2.1(t), 398-4.5(e): regular attendance is broader than full-time study.
-# The certified true input represents qualifying eight-hour-per-week college attendance.
+# 18 NYCRR 398-2.1(t): is_full_time_student stands in for regular school attendance;
+# qualifying part-time attendance is not modeled.
 # https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-2.1
-- name: Case 28, certified regularly attending part-time college student receives minor rate.
+- name: Case 28, full-time student who is not a household head receives minor rate.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NY
     age: 20
     is_blind: true
-    is_part_time_college_student: true
-    ny_ssp_regularly_attends_school: true
+    is_full_time_student: true
     is_household_head: false
     ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
   output:
     ny_ssp: 23
 
-- name: Case 29, nonregular part-time attendance does not confer minor status.
+- name: Case 29, part-time attendance does not confer minor status.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -315,36 +314,121 @@
     age: 20
     is_blind: true
     is_part_time_college_student: true
-    ny_ssp_regularly_attends_school: false
+    is_full_time_student: false
     is_household_head: false
     ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
   output:
     ny_ssp: 694
 
-- name: Case 30, regularly attending student who is household head receives adult rate.
+- name: Case 30, full-time student who is household head receives adult rate.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NY
     age: 20
     is_blind: true
-    is_part_time_college_student: true
-    ny_ssp_regularly_attends_school: true
+    is_full_time_student: true
     is_household_head: true
     ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
   output:
     ny_ssp: 694
 
-- name: Case 31, regular student at age twenty-two receives adult rate.
+- name: Case 31, full-time student at age twenty-two receives adult rate.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NY
     age: 22
     is_blind: true
-    is_part_time_college_student: true
-    ny_ssp_regularly_attends_school: true
+    is_full_time_student: true
     is_household_head: false
     ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
   output:
     ny_ssp: 694
+
+# 18 NYCRR 398-2.1(t): a minor is neither married nor a head of a household,
+# under both the age and the student test.
+# https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-2.1
+- name: Case 32, blind seventeen-year-old household head living alone is not a minor.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NY
+    age: 17
+    is_blind: true
+    is_household_head: true
+  output:
+    # Age 17 < 18, but a household head is not a minor.
+    ny_ssp_is_minor: false
+    # One-person household, not a minor: living alone.
+    ny_ssp_living_arrangement: LIVING_ALONE
+    # Living alone rate 87 - excess countable income 0 = 87.
+    ny_ssp: 87
+
+- name: Case 33, blind sixteen-year-old living with parents receives minor rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        own_children_in_household: 1
+      person2:
+        age: 43
+        own_children_in_household: 1
+      person3:
+        age: 16
+        is_blind: true
+    marital_units:
+      parents:
+        members: [person1, person2]
+      child:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    # person3: age 16 < 18, unmarried and not a household head.
+    ny_ssp_is_minor: [false, false, true]
+    # person3 is a minor (the three-person household also rules out living alone).
+    ny_ssp_living_arrangement: [LIVING_WITH_OTHERS, LIVING_WITH_OTHERS, LIVING_WITH_OTHERS]
+    # Parents have no income to deem: living with others rate 23 - 0 = 23.
+    # The parents are not aged, blind or disabled.
+    ny_ssp: [0, 0, 23]
+
+- name: Case 34, unmarried twenty-year-old student with married parents is a minor.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 50
+      person2:
+        age: 48
+      person3:
+        age: 20
+        is_blind: true
+        is_full_time_student: true
+    marital_units:
+      parents:
+        members: [person1, person2]
+      child:
+        members: [person3]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NY
+  output:
+    # person3: age 20 < 22 and a full-time student; the parents' marriage does
+    # not make person3 married.
+    ny_ssp_is_minor: [false, false, true]
+    ny_ssp_living_arrangement: [LIVING_WITH_OTHERS, LIVING_WITH_OTHERS, LIVING_WITH_OTHERS]
+    # No countable income: living with others rate 23 - 0 = 23.
+    ny_ssp: [0, 0, 23]

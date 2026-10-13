@@ -29,9 +29,14 @@ class ny_ssp_living_arrangement(Variable):
     minors require the authorized placements specified in 18 NYCRR 398-4.5.
     The formula uses household membership; set LIVING_ALONE explicitly for
     qualifying separate-food, room-and-board, foster-child or attendant cases.
-    Use NONE for excluded public facilities and emergency shelters. Nursing
-    facilities must be identified explicitly; other Medicaid institutions use
-    the lower medical-facility allowance. Set SSI claim status explicitly for
+    The household count includes a spouse who lives in a medical facility,
+    because temporary and permanent absence are not modeled, so set the
+    arrangement of the spouse at home explicitly. Use NONE for excluded public
+    facilities and emergency shelters. Residents of medical facilities where
+    Medicaid pays more than half the cost default to OTHER_MEDICAL_FACILITY,
+    the lower personal needs allowance; residents of Department of Health
+    licensed nursing homes receive the higher allowance only when
+    NURSING_FACILITY is set explicitly. Set SSI claim status explicitly for
     institutional couples after their month of entry.
     """
 

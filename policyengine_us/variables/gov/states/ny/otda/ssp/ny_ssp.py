@@ -15,8 +15,10 @@ class ny_ssp(Variable):
     definition_period = MONTH
     defined_for = StateCode.NY
     reference = (
+        # Social Services Law 209(2)(a)-(e), (2-a)
         "https://www.nysenate.gov/legislation/laws/SOS/209",
         "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-3.2",
+        "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-4.4",
         "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-4.6",
     )
 
