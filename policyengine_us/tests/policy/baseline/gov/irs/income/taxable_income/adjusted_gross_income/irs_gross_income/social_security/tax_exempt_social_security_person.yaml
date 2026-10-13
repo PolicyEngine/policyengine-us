@@ -1,0 +1,79 @@
+- name: Case 1, a single filer's benefits below the base amount are all tax-exempt.
+  period: 2025
+  input:
+    social_security_retirement: 20_000
+  output:
+    taxable_social_security: 0
+    tax_exempt_social_security_person: 20_000
+
+- name: Case 2, each spouse keeps their own share of the joint return's tax-exempt benefits.
+  # Combined income is $30,000 of pension plus half of $40,000 of benefits,
+  # $50,000. Over the $44,000 adjusted base amount, the taxable amount is the
+  # lesser of 85% of $40,000 or 85% of the $6,000 excess plus the lesser of
+  # half the $18,000 excess over $32,000 ($9,000) or $6,000: $11,100 (IRC
+  # 86(a)(2)). taxable_social_security splits it by each spouse's benefits,
+  # 30/40 and 10/40.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        social_security_retirement: 30_000
+        taxable_pension_income: 30_000
+      spouse:
+        age: 68
+        social_security_retirement: 10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+  output:
+    tax_unit_taxable_social_security: 11_100
+    taxable_social_security: [8_325, 2_775]
+    tax_exempt_social_security_person: [21_675, 7_225]
+    filer_tax_exempt_social_security: 28_900
+
+- name: Case 3, a dependent's benefits are the dependent's own, not the filer's.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 12
+        social_security_survivors: 12_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+  output:
+    tax_exempt_social_security_person: [0, 12_000]
+    filer_tax_exempt_social_security: 0
+    tax_exempt_social_security: 12_000
+
+- name: Case 4, a dependent's taxable benefits, figured on their own return, are not tax-exempt.
+  # Combined income is $15,000 of wages plus half of $36,000, $33,000; the
+  # lesser of $18,000 or half the $8,000 excess over $25,000 is taxable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 60
+        employment_income: 40_000
+      adult_child:
+        age: 30
+        is_tax_unit_dependent: true
+        is_tax_unit_spouse: false
+        is_disabled: true
+        employment_income: 15_000
+        social_security_dependents: 36_000
+    tax_units:
+      tax_unit:
+        members: [parent, adult_child]
+  output:
+    dependent_taxable_social_security: [0, 4_000]
+    tax_exempt_social_security_person: [0, 32_000]
+    # The tax unit amount subtracts only the filers' taxable benefits.
+    tax_exempt_social_security: 36_000

@@ -41,3 +41,54 @@
     # Form 8962 Worksheet 1-1 line 3 takes Form 2555 lines 45 and 50.
     medicaid_magi: 65_000
     aca_magi: 65_000
+
+- name: 2025 a child's survivor benefits stay out of premium tax credit household income when the child need not file
+  # 26 CFR 1.36B-1(e)(1)(ii): household income counts other family members'
+  # modified AGI only if they are required to file. The child's gross income
+  # is zero, since none of their benefits is taxable.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 12
+        social_security_survivors: 12_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: TX
+  output:
+    # Before the fix: 52,000 and 2.54.
+    aca_magi: 40_000
+    # 40,000 / 20,440 (the 2024 poverty line for two), truncated.
+    aca_magi_fraction: 1.95
+
+- name: 2025 a teen who must file adds their modified AGI to premium tax credit household income
+  # Wages of $16,000 are more than $15,750, so the teen must file (IRS Pub.
+  # 501 (2025), Table 2), and Form 8962 line 2b takes their modified AGI.
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      teen:
+        age: 17
+        employment_income: 16_000
+    tax_units:
+      tax_unit:
+        members: [parent, teen]
+    households:
+      household:
+        members: [parent, teen]
+        state_code: TX
+  output:
+    # Before the fix: 40,000 and 1.95.
+    aca_magi: 56_000
+    # 56,000 / 20,440, truncated.
+    aca_magi_fraction: 2.73

@@ -1,0 +1,1 @@
+Count a dependent's modified AGI in premium tax credit and Medicaid/CHIP household income only when the dependent is required to file, and keep each person's Social Security in their own MAGI, so a child's survivor benefits or tax-exempt interest no longer raise household income unless the child must file.
