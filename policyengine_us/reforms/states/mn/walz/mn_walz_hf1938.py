@@ -112,7 +112,16 @@ def create_mn_walz_hf1938_repeal() -> Reform:
             # ... calculate pre-limitation itemized deductions
             itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
             capped_property_taxes = tax_unit("capped_property_taxes", period)
-            mn_itm_deds = itm_deds_less_salt + capped_property_taxes
+            # Schedule M1SA line 19 takes Minnesota's own casualty and theft
+            # loss (Schedule M1CAT) in place of the federal one.
+            federal_casualty_loss = tax_unit("casualty_loss_deduction", period)
+            mn_casualty_loss = tax_unit("mn_casualty_loss_deduction", period)
+            mn_itm_deds = (
+                itm_deds_less_salt
+                - federal_casualty_loss
+                + mn_casualty_loss
+                + capped_property_taxes
+            )
             # ... calculate itemized deductions offset
             p = parameters(period).gov.states.mn.tax.income.deductions.itemized
             # As in the baseline: Minn. Stat. 290.0122, subd. 2(d)(3) leaves
@@ -123,7 +132,7 @@ def create_mn_walz_hf1938_repeal() -> Reform:
                 period,
                 [
                     "medical_expense_deduction",
-                    "casualty_loss_deduction",
+                    "mn_casualty_loss_deduction",
                     "wagering_losses_deduction",
                 ],
             )

@@ -12,7 +12,10 @@ class mn_itemized_deductions(Variable):
         "https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_inst_21.pdf",
         "https://www.revenue.state.mn.us/sites/default/files/2023-12/m1_22.pdf",
         "https://www.revenue.state.mn.us/sites/default/files/2024-02/m1-inst-22.pdf",
-        # Minn. Stat. 290.0122, subd. 2(d) and subd. 8
+        # 2024 Schedule M1SA, line 19, and the line 26 limitation worksheets
+        # PDF pages 1, 8
+        "https://www.revenue.state.mn.us/sites/default/files/2024-12/m1sa-24.pdf#page=1",
+        # Minn. Stat. § 290.0122, subd. 2(d) and subd. 8
         "https://www.revisor.mn.gov/statutes/cite/290.0122",
     )
     defined_for = StateCode.MN
@@ -26,17 +29,28 @@ class mn_itemized_deductions(Variable):
         # ... calculate pre-limitation itemized deductions
         itm_deds_less_salt = tax_unit("itemized_deductions_less_salt", period)
         capped_property_taxes = tax_unit("capped_property_taxes", period)
-        mn_itm_deds = itm_deds_less_salt + capped_property_taxes
+        # Schedule M1SA line 19 takes Minnesota's own casualty and theft loss
+        # (Schedule M1CAT) in place of the federal one, which is limited to
+        # declared disasters from 2018.
+        federal_casualty_loss = tax_unit("casualty_loss_deduction", period)
+        mn_casualty_loss = tax_unit("mn_casualty_loss_deduction", period)
+        mn_itm_deds = (
+            itm_deds_less_salt
+            - federal_casualty_loss
+            + mn_casualty_loss
+            + capped_property_taxes
+        )
         # ... calculate itemized deductions offset
         p = parameters(period).gov.states.mn.tax.income.deductions.itemized
-        # Minn. Stat. 290.0122, subd. 2(d)(3) leaves the subd. 8 losses,
-        # which include section 165(d) wagering losses, out of the limitation.
+        # Minn. Stat. 290.0122, subd. 2(d), and the M1SA line 26 worksheets
+        # leave medical expenses and the subd. 8 casualty, theft and wagering
+        # losses out of the reduction. The casualty amount is Minnesota's own.
         exempt_deds = add(
             tax_unit,
             period,
             [
                 "medical_expense_deduction",
-                "casualty_loss_deduction",
+                "mn_casualty_loss_deduction",
                 "wagering_losses_deduction",
             ],
         )

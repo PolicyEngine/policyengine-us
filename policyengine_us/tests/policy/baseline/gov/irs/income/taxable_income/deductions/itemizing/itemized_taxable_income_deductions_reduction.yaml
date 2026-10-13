@@ -211,3 +211,163 @@
     # Lesser: 27_000; reduction: 27_000 * 2 / 37 = 1_459.46
     itemized_taxable_income_deductions_reduction: 1_459.46
     itemized_taxable_income_deductions: 25_540.54
+
+# Section 68(a)(2) as rewritten by P.L. 119-21, sec. 70111(a): "so much of the
+# taxable income of the taxpayer for the taxable year (determined without
+# regard to this section and increased by such amount of itemized
+# deductions) as exceeds the dollar amount at which the 37 percent rate
+# bracket under section 1 begins". That is adjusted gross income less the
+# deductions section 63(b) allows besides itemized deductions, such as the
+# qualified business income deduction. The 37 percent bracket begins at
+# $640,600 (single, head of household), $768,700 (joint, surviving spouse) and
+# $384,350 (separate) in 2026 (Rev. Proc. 2025-32, sec. 4.01, Tables 1-4).
+- name: 2026 single filer - the QBI deduction lowers the taxable income leg
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 700_000
+    filing_status: SINGLE
+    qualified_business_income_deduction: 20_000
+    charitable_deduction: 50_000
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # Leg (1): 50_000
+    # Leg (2): 700_000 - 20_000 = 680_000 (taxable income 630_000 plus the
+    # 50_000 of itemized deductions); 680_000 - 640_600 = 39_400
+    # Reduction: 2 / 37 * 39_400 = 2_129.73
+    taxable_income_before_itemized_deductions: 680_000
+    itemized_taxable_income_deductions_reduction: 2_129.73
+    itemized_taxable_income_deductions: 47_870.27
+
+- name: 2026 single filer - the QBI deduction keeps the taxable income leg under the 37 percent bracket
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 700_000
+    filing_status: SINGLE
+    qualified_business_income_deduction: 60_000
+    charitable_deduction: 50_000
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # Leg (2): 700_000 - 60_000 = 640_000, below 640_600, so no reduction.
+    itemized_taxable_income_deductions_reduction: 0
+    itemized_taxable_income_deductions: 50_000
+
+- name: 2026 joint filers - the QBI and tip deductions lower the taxable income leg
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 50
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 1_000_000
+        filing_status: JOINT
+        qualified_business_income_deduction: 150_000
+        tip_income_deduction: 10_000
+        charitable_deduction: 100_000
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    # Leg (1): 100_000
+    # Leg (2): 1_000_000 - 150_000 - 10_000 = 840_000; 840_000 - 768_700 = 71_300
+    # Reduction: 2 / 37 * 71_300 = 3_854.05
+    itemized_taxable_income_deductions_reduction: 3_854.05
+    itemized_taxable_income_deductions: 96_145.95
+
+- name: 2026 separate filer - the QBI deduction lowers the taxable income leg
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 450_000
+    filing_status: SEPARATE
+    qualified_business_income_deduction: 40_000
+    charitable_deduction: 30_000
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # Leg (2): 450_000 - 40_000 = 410_000; 410_000 - 384_350 = 25_650
+    # Reduction: 2 / 37 * 25_650 = 1_386.49
+    itemized_taxable_income_deductions_reduction: 1_386.49
+
+- name: 2026 head of household - the itemized deductions leg binds whatever the QBI deduction
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    adjusted_gross_income: 800_000
+    filing_status: HEAD_OF_HOUSEHOLD
+    qualified_business_income_deduction: 100_000
+    charitable_deduction: 20_000
+    interest_deduction: 0
+    salt_deduction: 0
+    medical_expense_deduction: 0
+    casualty_loss_deduction: 0
+    misc_deduction: 0
+  output:
+    # Leg (2): 800_000 - 100_000 = 700_000; 700_000 - 640_600 = 59_400
+    # Lesser of 20_000 and 59_400: 20_000; 2 / 37 * 20_000 = 1_081.08
+    itemized_taxable_income_deductions_reduction: 1_081.08
+
+# Section 199A(e)(1), as amended by P.L. 119-21, sec. 70111(b)(1): "taxable
+# income shall be computed without regard to section 68 and without regard to
+# any deduction allowable under this section." The QBI deduction caps at 20
+# percent of that taxable income (section 199A(a)(2)), and section 68 then
+# nets the QBI deduction out of its own taxable income leg.
+- name: 2026 single filer with qualified REIT dividends - QBI deduction capped by taxable income without section 68
+  period: 2026
+  # Float32 spacing near $572,000 is 6.25 cents.
+  absolute_error_margin: 0.1
+  input:
+    people:
+      head:
+        age: 50
+        non_qualified_dividend_income: 1_000_000
+        qualified_reit_and_ptp_income: 1_000_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        tax_unit_itemizes: true
+        charitable_deduction: 300_000
+        interest_deduction: 0
+        salt_deduction: 0
+        medical_expense_deduction: 0
+        casualty_loss_deduction: 0
+        misc_deduction: 0
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    adjusted_gross_income: 1_000_000
+    # Taxable income without section 68 or 199A: 1_000_000 - 300_000 = 700_000
+    taxable_income_less_qbid: 700_000
+    # Section 199A(b)(1)(B): 20 percent of 1_000_000 = 200_000;
+    # section 199A(a)(2): 20 percent of 700_000 = 140_000; lesser: 140_000
+    qualified_business_income_deduction: 140_000
+    # Leg (2): 1_000_000 - 140_000 = 860_000; 860_000 - 640_600 = 219_400
+    # Lesser of 300_000 and 219_400: 219_400; 2 / 37 * 219_400 = 11_859.46
+    itemized_taxable_income_deductions_reduction: 11_859.46
+    itemized_taxable_income_deductions: 288_140.54
+    # 1_000_000 - 288_140.54 - 140_000 = 571_859.46
+    taxable_income: 571_859.46

@@ -312,17 +312,15 @@ exit "$outcome"
 """
 
 
-@pytest.mark.parametrize(
-    "outcomes",
-    [
-        ["0", "1", "0", "killed", "0", "0"],
-        ["killed", "1", "1", "1", "1", "1"],
-        ["0"] * 6,
-    ],
-    ids=["one-fails-one-killed", "all-fail", "all-pass"],
-)
-def test_every_group_runs_and_any_failure_fails_the_target(tmp_path, groups, outcomes):
-    assert len(groups) == len(outcomes), "give each group one outcome"
+@pytest.mark.parametrize("scenario", ["one-fails-one-killed", "all-fail", "all-pass"])
+def test_every_group_runs_and_any_failure_fails_the_target(tmp_path, groups, scenario):
+    outcomes = ["0"] * len(groups)
+    if scenario == "one-fails-one-killed":
+        assert len(groups) >= 4, "need groups before and after the failures"
+        outcomes[1] = "1"
+        outcomes[3] = "killed"
+    elif scenario == "all-fail":
+        outcomes = ["killed"] + ["1"] * (len(groups) - 1)
     stub = tmp_path / "bin" / "pytest"
     stub.parent.mkdir()
     stub.write_text(STUB_PYTEST)
