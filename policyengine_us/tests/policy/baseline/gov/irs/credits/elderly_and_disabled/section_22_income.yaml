@@ -1,0 +1,91 @@
+# 2024 Instructions for Schedule R (Form 1040), file pages 3-4: a qualified
+# individual under 65 must have taxable disability income, paid under the
+# employer's accident or health plan or pension plan and included in income
+# as wages or payments instead of wages; the initial amount can't be more
+# than that income.
+
+- name: Schedule R Example 1, joint filers with one spouse under 65 retired on disability.
+  period: 2024
+  input:
+    people:
+      head:
+        age: 63
+        is_tax_unit_head: true
+        retired_on_total_disability: true
+        disability_benefits: 4_000
+      spouse:
+        age: 67
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    total_disability_payments: [4_000, 0]
+    # Line 10: 7,500 (box 6). Line 11: 5,000 + 4,000 = 9,000.
+    # Line 12: min(7,500, 9,000) = 7,500. AGI 4,000 is under the 10,000
+    # joint threshold, so nothing is phased out.
+    section_22_income: 7_500
+    # 15% x 7,500.
+    elderly_disabled_credit_potential: 1_125
+
+- name: Schedule R Example 2, single filer under 65 with $3,000 of taxable disability income.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 60
+        retired_on_total_disability: true
+        disability_benefits: 3_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+  output:
+    total_disability_payments: 3_000
+    # Line 10: 5,000 (box 2). Line 11: 3,000. Line 12: 3,000.
+    section_22_income: 3_000
+    # 15% x 3,000.
+    elderly_disabled_credit_potential: 450
+
+- name: Disability benefits from insurance the filer paid for are not disability income for Schedule R.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 60
+        retired_on_total_disability: true
+        disability_benefits: 3_000
+        tax_exempt_disability_benefits: 3_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+  output:
+    # Not included in income, so no taxable disability income on line 11.
+    total_disability_payments: 0
+    section_22_income: 0
+
+- name: Disability benefits of someone not retired on total disability are not Schedule R disability income.
+  period: 2024
+  input:
+    people:
+      person:
+        age: 60
+        retired_on_total_disability: false
+        disability_benefits: 3_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+  output:
+    total_disability_payments: 0
+    section_22_income: 0
