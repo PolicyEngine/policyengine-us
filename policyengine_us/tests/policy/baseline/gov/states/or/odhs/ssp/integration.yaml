@@ -3,112 +3,92 @@
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         or_ssp_category: COMMUNITY_CARE
-      second:
+      person2:
         age: 65
         or_ssp_category: COMMUNITY_CARE
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       hh:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: OR
   output:
-    or_ssp:
-    - 248.5
-    - 248.5
+    or_ssp: [248.5, 248.5]
+
 - name: Case 2, excess income of spouse offsets other spouse.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         or_ssp_category: COMMUNITY_CARE
         ssi: 700
-        or_ssp_countable_income: 1100
-      second:
+        or_ssp_countable_income: 1_100
+      person2:
         age: 65
         or_ssp_category: COMMUNITY_CARE
         ssi: 700
         or_ssp_countable_income: 700
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       hh:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: OR
   output:
-    or_ssp:
-    - 0
-    - 188
+    or_ssp: [0, 188]
+
 - name: Case 3, both spouses must receive SSI.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         or_ssp_category: COMMUNITY_CARE
-      second:
+      person2:
         age: 65
         or_ssp_category: COMMUNITY_CARE
         ssi: 0
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       hh:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: OR
   output:
-    or_ssp:
-    - 0
-    - 0
+    or_ssp: [0, 0]
+
 - name: Case 4, both spouses must have community care.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         or_ssp_category: COMMUNITY_CARE
-      second:
+      person2:
         age: 65
         or_ssp_category: NONE
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       hh:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: OR
   output:
-    or_ssp:
-    - 0
-    - 0
+    or_ssp: [0, 0]
+
 - name: Case 5, in-home reimbursement excluded from SNAP income.
-  period: '2026'
+  period: 2026
   absolute_error_margin: 0.01
   input:
     age: 65
@@ -116,5 +96,5 @@
     or_ssp_category: IN_HOME
   output:
     or_ssp: 264
-    snap_unearned_income: 11928
-    hud_unearned_income: 11928
+    snap_unearned_income: 11_928
+    hud_unearned_income: 11_928

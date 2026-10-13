@@ -3,286 +3,309 @@
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
   output:
     or_ssp: 0
+
 - name: Case 2, approved in-home SSI-only recipient.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: IN_HOME
   output:
     or_ssp: 22
+
 - name: Case 3, ten dollars other cash income disqualifies before deductions.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: IN_HOME
     social_security_retirement: 120
   output:
     or_ssp: 0
+
 - name: Case 4, small earnings disqualify before deductions.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: IN_HOME
     employment_income: 120
   output:
     or_ssp: 0
+
 - name: Case 5, excluded bank interest does not disqualify.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: IN_HOME
     interest_income: 120
   output:
     or_ssp: 22
+
 - name: Case 6, in-home supplement requires SSI.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: IN_HOME
     ssi: 0
   output:
     or_ssp: 0
+
 - name: Case 7, disability interim assistance.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age: 40
     or_ssp_category: DISABILITY_INTERIM
     ssi: 0
   output:
     or_ssp: 994
+
 - name: Case 8, interim amount uses countable not adjusted income.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: DISABILITY_INTERIM
     ssi: 0
-    employment_income: 1200
+    employment_income: 1_200
   output:
     or_ssp: 894
+
 - name: Case 9, SSI restored after institutional payment.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: SSI_RESTORATION
     ssi: 30
   output:
     or_ssp: 964
+
 - name: Case 10, full SSI ends restoration gap.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: SSI_RESTORATION
   output:
     or_ssp: 0
+
 - name: Case 11, reduced VA pension restoration.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: VA_RESTORATION
     ssi: 0
-    veterans_benefits: 1080
+    veterans_benefits: 1_080
   output:
     or_ssp: 904
+
 - name: Case 12, pursuing naturalization after SSI time limit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: NATURALIZATION
     ssi: 0
   output:
     or_ssp: 994
+
 - name: Case 13, suspended SSI gets room and board only.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: SUSPENDED_SSI
     ssi: 0
   output:
     or_ssp: 773
+
 - name: Case 14, suspension allowance ends when SSI restarts.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: SUSPENDED_SSI
   output:
     or_ssp: 0
+
 - name: Case 15, January sixteen day restoration grant.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: SSI_RESTORATION
     ssi: 30
     or_ssp_days_eligible: 16
   output:
     or_ssp: 497.5483870967742
+
 - name: Case 16, February fourteen day interim grant.
   period: 2026-02
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: DISABILITY_INTERIM
     ssi: 0
     or_ssp_days_eligible: 14
   output:
     or_ssp: 497
+
 - name: Case 17, zero eligible days.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: IN_HOME
     or_ssp_days_eligible: 0
   output:
     or_ssp: 0
+
 - name: Case 18, spousal diversion includes income shortfall.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: SPOUSAL_DIVERSION
     ssi: 0
-    social_security_retirement: 9600
+    social_security_retirement: 9_600
     or_ssp_spousal_diversion_difference: 100
   output:
     or_ssp: 294
+
 - name: Case 19, spousal diversion above standard.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: SPOUSAL_DIVERSION
     ssi: 0
-    social_security_retirement: 14400
+    social_security_retirement: 14_400
     or_ssp_spousal_diversion_difference: 100
   output:
     or_ssp: 100
+
 - name: Case 20, temporary absence uses income available after care liability.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: ROOM_BOARD_ABSENCE
     or_ssp_available_room_board_income: 200
   output:
     or_ssp: 573
+
 - name: Case 21, incapacity payment uses accessible income.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: ROOM_BOARD_INCAPACITY
     or_ssp_available_room_board_income: 0
   output:
     or_ssp: 773
+
 - name: Case 22, approved initial placement room and board.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: INITIAL_ROOM_BOARD
     or_ssp_approved_initial_room_board: 500
   output:
     or_ssp: 500
+
 - name: Case 23, initial placement payment capped at published amount.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code:
-      '2026': OR
+      2026: OR
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: INITIAL_ROOM_BOARD
     or_ssp_approved_initial_room_board: 900
   output:
     or_ssp: 773
+
 - name: Case 24, nonresident.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: WA
     age:
-      '2026': 65
+      2026: 65
     or_ssp_category: IN_HOME
   output:
     or_ssp: 0
