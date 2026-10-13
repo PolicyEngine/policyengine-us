@@ -1,0 +1,102 @@
+# Form 7206 line 14 (the Form 1040 instructions worksheet line 3 before 2023):
+# the smaller of the premiums and the earned income limit. Expected values are
+# hand-computed from the form.
+
+- name: Case 1, premiums above the limit are capped at net profit less half of self-employment tax.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_self_employed: true
+        self_employment_income: 2_000
+        health_insurance_premiums: 6_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: TX
+  output:
+    # 2022 Form 1040 instructions worksheet: line 1 is 6,000; line 2 is
+    # 2,000 - 141.2955 (Schedule 1 line 15) = 1,858.7045.
+    self_employed_health_insurance_ald_person: [1_858.7045]
+    self_employed_health_insurance_ald: 1_858.7045
+    # 2,000 - 141.2955 - 1,858.7045.
+    adjusted_gross_income: 0
+
+- name: Case 2, premiums below the limit are deducted in full.
+  period: 2022
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    self_employment_income: 50_000
+    health_insurance_premiums: 6_000
+  output:
+    # Line 2: 50,000 - 3,532.3875 = 46,467.6125.
+    self_employed_health_insurance_earned_income_limit: 46_467.6125
+    self_employed_health_insurance_ald_person: 6_000
+
+- name: Case 3, the plan deduction and half of self-employment tax both reduce the cap.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    self_employment_income: 20_000
+    self_employed_pension_contributions_desired: 3_000
+    health_insurance_premiums: 20_000
+  output:
+    # Form 7206: line 3 is 20,000; line 13 is 20,000 - 1,412.955 - 3,000.
+    self_employed_health_insurance_ald_person: 15_587.045
+
+- name: Case 4, a farm business takes its share of the self-employment tax deduction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    self_employment_income: 30_000
+    farm_operations_income: 10_000
+    health_insurance_premiums: 40_000
+  output:
+    # Form 7206 line 13: 30,000 - 0.75 x 2,825.91 = 27,880.5675.
+    self_employed_health_insurance_ald_person: 27_880.5675
+
+- name: Case 5, each spouse's deduction is capped by their own earned income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        is_self_employed: true
+        self_employment_income: 3_000
+        health_insurance_premiums: 8_000
+      person2:
+        is_self_employed: true
+        self_employment_income: 40_000
+        health_insurance_premiums: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # person1: 3,000 - 3,000 x 0.9235 x 0.153 / 2 = 3,000 - 211.94325.
+    # person2: premiums of 2,000 are under the limit.
+    self_employed_health_insurance_ald_person: [2_788.05675, 2_000]
+    self_employed_health_insurance_ald: 4_788.05675
+
+- name: Case 6, no deduction with a Schedule C loss.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    is_self_employed: true
+    self_employment_income: -5_000
+    health_insurance_premiums: 3_000
+  output:
+    self_employed_health_insurance_ald_person: 0
