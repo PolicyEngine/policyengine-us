@@ -27,11 +27,11 @@ class eitc_relevant_investment_income(Variable):
         "model has no input for a real estate professional's nonpassive farm "
         "rental, whose loss Form 4835 says is not subject to the passive "
         "activity loss limitations. The estate and trust amount is "
-        "passive_estate_income, which defaults to all of estate_income. "
-        "Nonpassive estate and trust income (Schedule E Part III columns (e) "
-        "and (f), such as Schedule K-1 (Form 1041) box 5 annuities and income "
-        "in respect of a decedent) is not on lines 11 and 12, so it counts "
-        "only when passive_estate_income is left at that default."
+        "passive_estate_income, the passive subset of estate_income, which "
+        "defaults to zero; nonpassive estate and trust income (Schedule E "
+        "Part III columns (e) and (f), such as Schedule K-1 (Form 1041) box 5 "
+        "annuities and income in respect of a decedent) is not on lines 11 "
+        "and 12."
     )
     unit = USD
     definition_period = YEAR
@@ -43,6 +43,7 @@ class eitc_relevant_investment_income(Variable):
         "https://www.irs.gov/pub/irs-prior/f4835--2025.pdf#page=2",
         "https://www.irs.gov/pub/irs-prior/f1040se--2024.pdf#page=2",
         "https://www.irs.gov/pub/irs-prior/i1041sk1--2024.pdf#page=2",
+        "https://www.irs.gov/pub/irs-pdf/p4801.pdf#page=50",
     )
 
     def formula(tax_unit, period, parameters):
@@ -87,17 +88,19 @@ class eitc_relevant_investment_income(Variable):
         # nonpassive farm rental. Lines 11 and 12 also name Schedule E line
         # 34a column (d) and line 34b column (c), the passive income and loss
         # from estates and trusts (Schedule K-1 (Form 1041) boxes 6 through 8
-        # when passive to the beneficiary). The model's estate_income has no
-        # passive split, so passive_estate_income defaults to all of it, as
-        # rental income is treated as passive; entering the passive part
-        # leaves out nonpassive amounts such as box 5 annuities and income in
-        # respect of a decedent, which columns (e) and (f) carry and lines 11
-        # and 12 do not name. 32(i)(2)(E) determines passive income and losses
-        # without regard to amounts included in earned income, so the signed
-        # part of passive income also in earned income is removed. Net the
-        # passive amounts across the head and spouse before applying the zero
-        # floor, so a passive estate or trust loss offsets other passive
-        # income but never interest, dividends or capital gains.
+        # when passive to the beneficiary), not the nonpassive columns (e) and
+        # (f), which carry box 5 annuities and income in respect of a decedent.
+        # estate_income is the Part III total, so the passive part is the
+        # separate passive_estate_income input. It defaults to zero, like
+        # passive_partnership_s_corp_income, rather than to all of
+        # estate_income as rental income is treated: most Part III income is
+        # nonpassive (38% of positive Part III income was passive in tax year
+        # 2023, SOI Publication 4801). 32(i)(2)(E) determines passive income
+        # and losses without regard to amounts included in earned income, so
+        # the signed part of passive income also in earned income is removed.
+        # Net the passive amounts across the head and spouse before applying
+        # the zero floor, so a passive estate or trust loss offsets other
+        # passive income but never interest, dividends or capital gains.
         passive_income = tax_unit_non_dep_add(
             tax_unit,
             period,

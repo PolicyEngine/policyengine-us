@@ -1,0 +1,356 @@
+# Passive estate and trust income in the EITC investment income test.
+#
+# Publication 596 (2024) Worksheet 1, page 6: line 11 enters "the total of any
+# net income from passive activities (such as income included on Schedule E,
+# line 26, 29a (col. (h)), 34a (col. (d)), or 40 ...)", line 12 the matching
+# losses "(... 34b (col. (c)) ...)", and line 13 combines them and enters zero
+# if the result is less than zero. Schedule E (2024) Part III line 34a column
+# (d) is passive income and line 34b column (c) the passive deduction or loss
+# allowed, from Schedule K-1 (Form 1041) boxes 6 through 8. Box 5 (royalties,
+# annuities and income in respect of a decedent) is not subject to the passive
+# activity rules and goes in the nonpassive columns, which lines 11 and 12 do
+# not name. The 2021-2025 worksheets cite the same Schedule E columns.
+#
+# estate_income is the Schedule E Part III total (line 37), which is in AGI.
+# passive_estate_income is its passive subset (column (d) less column (c)) and
+# defaults to zero. The 2024 investment income limit is 11,600; the test
+# passes at 11,600 and fails above it (26 USC 32(i)(1): "exceeds").
+# Each "Before" figure is the formula before this change, which left estate and
+# trust income out of the passive basket.
+
+- name: Passive estate income alone brings investment income to the 2024 limit
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    taxable_interest_income: 6_600
+    estate_income: 5_000
+    passive_estate_income: 5_000
+  output:
+    # 6,600 interest + max(0, 5,000) passive.
+    eitc_relevant_investment_income: 11_600
+    eitc_investment_income_eligible: true
+    # Before: 6,600.
+
+- name: One dollar more of passive estate income exceeds the 2024 limit
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    taxable_interest_income: 6_600
+    estate_income: 5_001
+    passive_estate_income: 5_001
+  output:
+    eitc_relevant_investment_income: 11_601
+    eitc_investment_income_eligible: false
+    # Before: 6,600, so the test passed.
+
+- name: A passive estate loss offsets rental income inside the passive basket
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    taxable_interest_income: 9_000
+    rental_income: 4_000
+    estate_income: -1_400
+    passive_estate_income: -1_400
+  output:
+    # 9,000 interest + max(0, 4,000 - 1,400) passive = 9,000 + 2,600.
+    eitc_relevant_investment_income: 11_600
+    eitc_investment_income_eligible: true
+    # Before: 9,000 + 4,000 = 13,000, so the test failed.
+
+- name: A passive estate loss larger than other passive income floors the basket at zero
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    taxable_interest_income: 11_600
+    rental_income: 3_000
+    estate_income: -4_000
+    passive_estate_income: -4_000
+  output:
+    # 11,600 interest + max(0, 3,000 - 4,000) = 11,600 + 0.
+    eitc_relevant_investment_income: 11_600
+    eitc_investment_income_eligible: true
+    # Before: 11,600 + 3,000 = 14,600, so the test failed.
+
+- name: A passive estate loss never offsets interest
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    taxable_interest_income: 12_000
+    estate_income: -5_000
+    passive_estate_income: -5_000
+  output:
+    # 12,000 interest + max(0, -5,000) = 12,000. Unchanged from before.
+    eitc_relevant_investment_income: 12_000
+    eitc_investment_income_eligible: false
+
+- name: A passive estate loss never offsets capital gains
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    long_term_capital_gains: 11_601
+    estate_income: -3_000
+    passive_estate_income: -3_000
+  output:
+    # max(0, 11,601) capital gains + max(0, -3,000) = 11,601. Unchanged.
+    eitc_relevant_investment_income: 11_601
+    eitc_investment_income_eligible: false
+
+- name: Passive estate income nets with a passive partnership loss
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    taxable_interest_income: 10_000
+    partnership_s_corp_income: -6_000
+    passive_partnership_s_corp_income: -6_000
+    estate_income: 7_600
+    passive_estate_income: 7_600
+  output:
+    # 10,000 interest + max(0, 7,600 - 6,000) passive = 10,000 + 1,600.
+    eitc_relevant_investment_income: 11_600
+    eitc_investment_income_eligible: true
+    # Before: 10,000 + max(0, -6,000) = 10,000.
+
+- name: Only the entered passive part of estate income counts
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    taxable_interest_income: 9_600
+    # 20,000 on Schedule E line 37, of which 2,000 is passive (line 34a column
+    # (d)) and 18,000 is nonpassive, such as box 5 income in respect of a
+    # decedent from an inherited retirement account (column (f)).
+    estate_income: 20_000
+    passive_estate_income: 2_000
+  output:
+    passive_estate_income: 2_000
+    # 9,600 interest + max(0, 2,000) passive = 11,600.
+    eitc_relevant_investment_income: 11_600
+    eitc_investment_income_eligible: true
+    # All 20,000 is still gross income.
+    adjusted_gross_income: 29_600
+
+- name: Estate income with no passive part entered stays out of the passive basket
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    taxable_interest_income: 11_600
+    estate_income: 20_000
+  output:
+    passive_estate_income: 0
+    # 11,600 interest + max(0, 0) passive. Unchanged from before.
+    eitc_relevant_investment_income: 11_600
+    eitc_investment_income_eligible: true
+    adjusted_gross_income: 31_600
+
+- name: A wholly nonpassive estate loss stays out of the passive basket
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    age: 30
+    taxable_interest_income: 9_000
+    rental_income: 2_600
+    # A nonpassive loss (column (e)); no passive part is entered.
+    estate_income: -2_000
+  output:
+    passive_estate_income: 0
+    # 9,000 interest + max(0, 2,600 + 0) passive = 11,600. Unchanged.
+    eitc_relevant_investment_income: 11_600
+    eitc_investment_income_eligible: true
+
+- name: Passive estate income nets with the spouse's rental loss on a joint return
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        taxable_interest_income: 6_600
+        estate_income: 8_000
+        passive_estate_income: 8_000
+      spouse:
+        age: 40
+        rental_income: -3_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # 6,600 interest + max(0, 8,000 - 3,000) passive = 11,600.
+    eitc_relevant_investment_income: 11_600
+    eitc_investment_income_eligible: true
+    # Before: 6,600 + max(0, -3,000) = 6,600.
+
+- name: A spouse who enters no passive part adds none, whatever the head enters
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        taxable_interest_income: 9_600
+        estate_income: 3_000
+        passive_estate_income: 2_000
+      spouse:
+        age: 40
+        estate_income: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    passive_estate_income: [2_000, 0]
+    # 9,600 interest + max(0, 2,000 + 0) passive = 11,600.
+    eitc_relevant_investment_income: 11_600
+    eitc_investment_income_eligible: true
+    adjusted_gross_income: 17_600
+
+- name: A dependent's estate income stays off the filer's investment income
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        taxable_interest_income: 11_600
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        estate_income: 20_000
+        passive_estate_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    # The child's estate and trust income is on the child's own return.
+    eitc_relevant_investment_income: 11_600
+    eitc_investment_income_eligible: true
+
+- name: A dependent's estate loss does not offset the filer's passive income
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        rental_income: 11_601
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+        estate_income: -5_000
+        passive_estate_income: -5_000
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_relevant_investment_income: 11_601
+    eitc_investment_income_eligible: false
+
+# End to end, a 30-year-old head of household in TX with $20,000 of wages and
+# one qualifying child aged 8. 2024 amounts with one child: maximum credit
+# 4,213, phase-out start 22,720, phase-out rate 15.98%. Estate and trust
+# income is in AGI (IRC 61(a)(14)), so AGI exceeds earned income and drives the
+# phase-out.
+
+- name: Passive estate income at the limit leaves the credit, phased out on AGI
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        estate_income: 11_600
+        passive_estate_income: 11_600
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_relevant_investment_income: 11_600
+    eitc_investment_income_eligible: true
+    adjusted_gross_income: 31_600
+    # 4,213 - 15.98% x (31,600 - 22,720) = 4,213 - 1,419.024.
+    eitc: 2_793.976
+
+- name: Passive estate income one dollar over the limit denies the credit
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        estate_income: 11_601
+        passive_estate_income: 11_601
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_relevant_investment_income: 11_601
+    eitc_investment_income_eligible: false
+    adjusted_gross_income: 31_601
+    # Before: investment income 0, and 4,213 - 15.98% x 8,881 = 2,793.8162.
+    eitc: 0
+
+- name: The same income, all nonpassive, keeps the credit
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        # Box 5 income, such as an annuity, reported in Schedule E Part III
+        # column (f); no passive part is entered.
+        estate_income: 11_601
+      child:
+        age: 8
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    households:
+      household:
+        members: [head, child]
+        state_code: TX
+  output:
+    eitc_relevant_investment_income: 0
+    eitc_investment_income_eligible: true
+    adjusted_gross_income: 31_601
+    # 4,213 - 15.98% x (31,601 - 22,720) = 4,213 - 1,419.1838.
+    eitc: 2_793.8162
