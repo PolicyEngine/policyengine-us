@@ -279,7 +279,7 @@
     nc_sa: 0
 
 # SA-3220 II.E and IV.A: strict countable-income ceilings apply before initial-month payment.
-# Gross monthly Social Security less the $20 disregard gives the tested limits.
+# Cases 29-32 enter TCMI directly at the last eligible cent and at the cutoff.
 # https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=207
 - name: Case 27, income-ineligible basic entrant receives no partial-month grant.
   period: 2026-01
@@ -311,10 +311,13 @@
   input:
     state_code: NC
     age: 65
-    social_security_retirement: 17_838
+    nc_sa_countable_income: 1_466.5
     nc_sa_care_setting: ADULT_CARE_HOME
     nc_sa_days_eligible: 15
   output:
+    # TCMI 1,466.50 is below the 1,466.51 basic cutoff.
+    nc_sa_eligible: true
+    # Per diem 1,397 / 31 = 45.0645 -> 45.06; 45.06 * 15 + 70 = 745.90 -> 746.
     nc_sa: 746
 
 - name: Case 30, basic exact exclusive income limit prevents partial payment.
@@ -323,10 +326,12 @@
   input:
     state_code: NC
     age: 65
-    social_security_retirement: 17_838.12
+    nc_sa_countable_income: 1_466.51
     nc_sa_care_setting: ADULT_CARE_HOME
     nc_sa_days_eligible: 15
   output:
+    # TCMI 1,466.51 or more is ineligible for the basic rate.
+    nc_sa_eligible: false
     nc_sa: 0
 
 - name: Case 31, enhanced last eligible cent retains the partial-month grant.
@@ -335,10 +340,13 @@
   input:
     state_code: NC
     age: 65
-    social_security_retirement: 22_578
+    nc_sa_countable_income: 1_861.5
     nc_sa_care_setting: SPECIAL_CARE_UNIT
     nc_sa_days_eligible: 15
   output:
+    # TCMI 1,861.50 is below the 1,861.51 enhanced cutoff.
+    nc_sa_eligible: true
+    # Per diem 1,792 / 31 = 57.8065 -> 57.81; 57.81 * 15 + 70 = 937.15 -> 937.
     nc_sa: 937
 
 - name: Case 32, enhanced exact exclusive income limit prevents partial payment.
@@ -347,46 +355,68 @@
   input:
     state_code: NC
     age: 65
-    social_security_retirement: 22_578.12
+    nc_sa_countable_income: 1_861.51
     nc_sa_care_setting: SPECIAL_CARE_UNIT
     nc_sa_days_eligible: 15
   output:
+    # TCMI 1,861.51 or more is ineligible for the enhanced rate.
+    nc_sa_eligible: false
     nc_sa: 0
 
-- name: Case 33, enhanced in-home exact income limit also prevents partial payment.
+# SA-3200 I: "The budget unit is always one", so a non-SSI applicant's own
+# resources are tested against $2,000; SSI's $3,000 couple test does not apply.
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=61
+- name: Case 36, married non-SSI in-home applicant is tested on own resources and income only.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        social_security_retirement: 13_200
+        bank_account_assets: 1_800
+        nc_sa_care_setting: IN_HOME
+      person2:
+        age: 72
+        social_security_retirement: 10_800
+        bank_account_assets: 1_800
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # Joint SSI claim: resources 1,800 + 1,800 = 3,600 > 3,000, and income
+    # 1,100 + 900 - 20 = 1,980 > 1,491, so neither spouse receives SSI.
+    ssi: [0, 0]
+    # Own income only: 1,100 - 20 = 1,080 and 900 - 20 = 880.
+    nc_sa_countable_income: [1_080, 880]
+    # person1: aged, citizen, own resources 1,800 <= 2,000, TCMI 1,080 < 1,466.51.
+    # person2 has no approved care setting.
+    nc_sa_eligible: [true, false]
+    # 1,397 + 70 - 1,080 = 387.
+    nc_sa: [387, 0]
+
+# SA-3220 II.A and IV.A: a lower facility rate replaces the basic rate in
+# the per diem, and initial-month income is not deducted.
+# PDF pages 204, 209-210
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=204
+- name: Case 37, lower contracted facility rate in a fifteen-day initial month.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NC
     age: 65
-    social_security_retirement: 22_578.12
-    nc_sa_care_setting: IN_HOME_ENHANCED
+    nc_sa_care_setting: ADULT_CARE_HOME
+    nc_sa_facility_rate: 1_000
     nc_sa_days_eligible: 15
   output:
-    nc_sa: 0
-
-- name: Case 34, last eligible cent yields one dollar for a full basic month.
-  period: 2026-01
-  absolute_error_margin: 0.01
-  input:
-    state_code: NC
-    age: 65
-    social_security_retirement: 17_838
-    nc_sa_care_setting: ADULT_CARE_HOME
-    nc_sa_days_eligible: 31
-  output:
-    nc_sa: 1
-
-# The earned-income exclusion halves the remaining amount; preserve fractional cents.
-# Monthly earnings 3018.01 less 20 and 65, divided by 2, give 1466.505 < 1466.51.
-- name: Case 35, a half-cent countable earned-income amount below the limit remains eligible.
-  period: 2026-01
-  absolute_error_margin: 0.01
-  input:
-    state_code: NC
-    age: 65
-    employment_income: 36_216.12
-    nc_sa_care_setting: ADULT_CARE_HOME
-    nc_sa_days_eligible: 15
-  output:
-    nc_sa: 746
+    # SSI 994 and TCMI 994 < 1,466.51, so the applicant is eligible.
+    nc_sa_eligible: true
+    # Per diem 1,000 / 31 = 32.2581 -> 32.26; 32.26 * 15 + 70 = 553.90 -> 554.
+    nc_sa: 554

@@ -7,10 +7,12 @@ class nc_sa_facility_rate(Variable):
     label = "North Carolina SA contracted monthly care rate"
     definition_period = MONTH
     unit = USD
+    defined_for = StateCode.NC
     documentation = "Defaults to the published rate. Supply the actual rate if a facility contracts for less. In-home payments use the published basic or enhanced rate."
     reference = (
-        "https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf",
-        "https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-In-Home-Program-Manual-Rev-June-2026.pdf",
+        # PDF pages 204-206
+        "https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=204",
+        "https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-In-Home-Program-Manual-Rev-June-2026.pdf#page=40",
     )
 
     def formula(person, period, parameters):

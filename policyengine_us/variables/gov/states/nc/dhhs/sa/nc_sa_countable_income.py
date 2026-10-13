@@ -10,7 +10,9 @@ class nc_sa_countable_income(Variable):
     label = "North Carolina SA countable income"
     definition_period = MONTH
     unit = USD
-    reference = "https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf"
+    defined_for = StateCode.NC
+    # PDF pages 185-196, 204
+    reference = "https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=185"
 
     def formula(person, period, parameters):
         # SA is always a one-person budget: no spousal or parental deeming.

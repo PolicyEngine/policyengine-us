@@ -9,8 +9,10 @@ class nc_sa(Variable):
     unit = USD
     defined_for = "nc_sa_eligible"
     reference = (
-        "https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf",
-        "https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-In-Home-Program-Manual-Rev-June-2026.pdf",
+        # PDF pages 207-210
+        "https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=207",
+        # PDF pages 42-43
+        "https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-In-Home-Program-Manual-Rev-June-2026.pdf#page=42",
     )
 
     def formula(person, period, parameters):

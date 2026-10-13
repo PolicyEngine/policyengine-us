@@ -1,0 +1,138 @@
+# SA-3100 II.B and SA-3200 I.A: an SSI recipient automatically meets the
+# categorical, financial and resource requirements.
+# PDF pages 7, 61
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=7
+- name: Case 1, SSI recipient in an adult care home is eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 72
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    # No other income: SSI 994; TCMI 994 < 1,466.51.
+    ssi: 994
+    nc_sa_eligible: true
+
+- name: Case 2, reported SSI receipt waives the resource test when modeled SSI is zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 72
+    nc_sa_care_setting: ADULT_CARE_HOME
+    bank_account_assets: 2_500
+    receives_ssi: true
+  output:
+    # Modeled SSI fails the 2,000 resource limit (2,500 > 2,000).
+    ssi: 0
+    # Reported receipt meets the resource requirement; the facility budget
+    # restores TCMI to 994 < 1,466.51.
+    nc_sa_eligible: true
+
+# SA-3200 I: "The resource limit is $2000 for an applicant/recipient. The
+# budget unit is always one."
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=61
+- name: Case 3, non-SSI applicant with an ineligible spouse is tested on own resources only.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        social_security_retirement: 13_200
+        bank_account_assets: 1_800
+        nc_sa_care_setting: IN_HOME
+      person2:
+        age: 60
+        bank_account_assets: 3_500
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # person1 SSI: 1,100 - 20 = 1,080 > 994, and the spouse's 3,500
+    # counts against SSI's 3,000 limit; person2 is not aged, blind or disabled.
+    ssi: [0, 0]
+    # person1: own resources 1,800 <= 2,000 and TCMI 1,080 < 1,466.51.
+    nc_sa_eligible: [true, false]
+
+- name: Case 4, non-SSI applicant over the individual limit is ineligible although the couple limit is met.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        social_security_retirement: 13_200
+        bank_account_assets: 2_500
+        nc_sa_care_setting: IN_HOME
+      person2:
+        age: 72
+        social_security_retirement: 10_800
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # Joint SSI claim: resources 2,500 + 0 = 2,500 <= 3,000.
+    is_ssi_eligible: [true, true]
+    # Joint income (1,100 + 900 - 20) / 2 = 990 > 745.50 each.
+    ssi: [0, 0]
+    # person1's own resources 2,500 > 2,000.
+    nc_sa_eligible: [false, false]
+
+- name: Case 5, non-SSI applicant with resources at the limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 70
+    social_security_retirement: 15_600
+    bank_account_assets: 2_000
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    # 1,300 - 20 = 1,280 > 994.
+    ssi: 0
+    # Resources 2,000 <= 2,000 and TCMI 1,280 < 1,466.51.
+    nc_sa_eligible: true
+
+- name: Case 6, non-SSI applicant with resources one dollar over the limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 70
+    social_security_retirement: 15_600
+    bank_account_assets: 2_001
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    ssi: 0
+    # Resources 2,001 > 2,000.
+    nc_sa_eligible: false
+
+# SA-3100 II.A.7: be a U.S. citizen or qualified alien.
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=6
+- name: Case 7, applicant without a qualified immigration status is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 70
+    immigration_status: UNDOCUMENTED
+    nc_sa_care_setting: ADULT_CARE_HOME
+  output:
+    ssi: 0
+    nc_sa_eligible: false

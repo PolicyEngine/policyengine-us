@@ -1097,11 +1097,8 @@ programs:
         variable: nc_sa
         parameter_prefix: gov.states.nc.dhhs.sa
         verified_years: '2026'
-        notes: Models basic and enhanced facility and in-home payments, lower contracted rates
-          and first-month proration. Certified settings include the residency waiting period,
-          approved care, and benefit-pursuit conditions. Separate SSI claims, agency income adjustments,
-          specialized exclusions and discharge settlements require explicit inputs or further
-          implementation.
+        notes: Models 2026 basic and enhanced facility and in-home payments, including lower contracted
+          rates and first-month proration. Open/shut and discharge payments are not modeled.
 
   - id: social_security
     name: Social Security
