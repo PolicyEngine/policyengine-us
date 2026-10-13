@@ -19,12 +19,19 @@ class eitc_relevant_investment_income(Variable):
         "short_term_capital_gains; a net_capital_gains amount supplied for "
         "the tax unit, or a capital_gains amount set directly on a person, "
         "is not read. The passive basket (lines 11-13) nets rental income, "
-        "farm rental income and passive partnership and S corporation income, "
-        "less eitc_passive_income_also_in_earned_income, then floors the "
-        "result at zero. All rental and farm rental income is treated as "
-        "passive: the model has no input for a real estate professional's "
-        "nonpassive farm rental, whose loss Form 4835 says is not subject to "
-        "the passive activity loss limitations."
+        "farm rental income, passive partnership and S corporation income "
+        "and passive estate and trust income (Schedule E line 34a column (d) "
+        "less line 34b column (c)), less "
+        "eitc_passive_income_also_in_earned_income, then floors the result at "
+        "zero. All rental and farm rental income is treated as passive: the "
+        "model has no input for a real estate professional's nonpassive farm "
+        "rental, whose loss Form 4835 says is not subject to the passive "
+        "activity loss limitations. The estate and trust amount is "
+        "passive_estate_income, which defaults to all of estate_income. "
+        "Nonpassive estate and trust income (Schedule E Part III columns (e) "
+        "and (f), such as Schedule K-1 (Form 1041) box 5 annuities and income "
+        "in respect of a decedent) is not on lines 11 and 12, so it counts "
+        "only when passive_estate_income is left at that default."
     )
     unit = USD
     definition_period = YEAR
@@ -34,6 +41,8 @@ class eitc_relevant_investment_income(Variable):
         "https://www.irs.gov/pub/irs-prior/f8814--2025.pdf#page=1",
         "https://www.irs.gov/pub/irs-prior/i8814--2025.pdf#page=4",
         "https://www.irs.gov/pub/irs-prior/f4835--2025.pdf#page=2",
+        "https://www.irs.gov/pub/irs-prior/f1040se--2024.pdf#page=2",
+        "https://www.irs.gov/pub/irs-prior/i1041sk1--2024.pdf#page=2",
     )
 
     def formula(tax_unit, period, parameters):
@@ -75,11 +84,20 @@ class eitc_relevant_investment_income(Variable):
         # lines 11 and 12 name) is treated as passive in the same way; Form
         # 4835 is for rental activities under the passive activity rules,
         # and the model has no input for a real estate professional's
-        # nonpassive farm rental. 32(i)(2)(E) determines passive income and
-        # losses without regard to amounts included in earned income, so the
-        # signed part of passive income also in earned income is removed. Net
-        # the passive amounts across the head and spouse before applying the
-        # zero floor.
+        # nonpassive farm rental. Lines 11 and 12 also name Schedule E line
+        # 34a column (d) and line 34b column (c), the passive income and loss
+        # from estates and trusts (Schedule K-1 (Form 1041) boxes 6 through 8
+        # when passive to the beneficiary). The model's estate_income has no
+        # passive split, so passive_estate_income defaults to all of it, as
+        # rental income is treated as passive; entering the passive part
+        # leaves out nonpassive amounts such as box 5 annuities and income in
+        # respect of a decedent, which columns (e) and (f) carry and lines 11
+        # and 12 do not name. 32(i)(2)(E) determines passive income and losses
+        # without regard to amounts included in earned income, so the signed
+        # part of passive income also in earned income is removed. Net the
+        # passive amounts across the head and spouse before applying the zero
+        # floor, so a passive estate or trust loss offsets other passive
+        # income but never interest, dividends or capital gains.
         passive_income = tax_unit_non_dep_add(
             tax_unit,
             period,
@@ -87,6 +105,7 @@ class eitc_relevant_investment_income(Variable):
                 "rental_income",
                 "farm_rent_income",
                 "passive_partnership_s_corp_income",
+                "passive_estate_income",
             ],
         ) - tax_unit_non_dep_add(
             tax_unit, period, ["eitc_passive_income_also_in_earned_income"]
