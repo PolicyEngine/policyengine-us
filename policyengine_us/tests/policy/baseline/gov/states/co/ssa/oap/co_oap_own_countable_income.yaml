@@ -248,3 +248,22 @@
   output:
     co_oap_own_countable_income: [0, 0]
     co_oap: [12_384, 0]
+
+- name: Case 14, a rental loss does not offset other income.
+  # 3.520.785(B)(20): rental income counts to the extent it exceeds expenses.
+  # $1,000/month of pension less the $20 disregard is 980/month, or
+  # 11,760/year; the grant of 52 is raised to the floor.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        pension_income: 12_000
+        rental_income: -6_000
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: 11_760
+    co_oap: 2_268

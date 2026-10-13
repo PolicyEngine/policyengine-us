@@ -22,16 +22,9 @@ class co_oap_own_countable_income(Variable):
         earned = person("ssi_earned_income", period)
         ssi = person("ssi", period)
         receives_ssi = ssi > 0
-        # 3.520.79(B)(6): an SSI recipient charged in-kind support and
-        # maintenance by SSA is charged a matching ISM. A joint couple's ISM is
-        # one presumed maximum value for the couple, which SSI splits equally
-        # between the spouses. ISM through SSA's one-third reduction, and
-        # Colorado's own ISM for a client not on SSI (3.520.79(C)), are not
-        # modeled.
-        ism = person("ssi_in_kind_support_and_maintenance", period)
-        couple_computation = person("ssi_couple_computation_applies", period)
-        ism = where(couple_computation, ism / 2, ism) * receives_ssi
-        unearned = add(person, period, p.sources.unearned) + ism
+        unearned = person("co_oap_unearned_income", period) + person(
+            "co_oap_in_kind_support_and_maintenance", period
+        )
         # 3.533(A)(2)(c)(1): a married client's $20 disregard is split equally
         # with the spouse, so that no more than $20 applies to the couple.
         married = person.marital_unit.nb_persons() == 2

@@ -13,18 +13,27 @@ class co_oap_medicaid_enrolled(Variable):
     )
 
     def formula(person, period, parameters):
+        # Reported current coverage counts as receiving Medicaid assistance
+        # (3.534(C)) whatever projected eligibility and take-up say.
+        reported = person("receives_medicaid", period)
         p = parameters(period).gov.hhs.medicaid.eligibility.work_requirements
         if not p.applies:
-            return person("medicaid_enrolled", period)
+            return person("medicaid_enrolled", period) | reported
 
         # SNAP counts OAP as income, and Medicaid's SNAP pass-through from the
         # community engagement requirement (42 CFR 435.554(c)(7)) reads SNAP
         # receipt, so OAP, a spouse's Medicaid enrollment and SNAP depend on
         # each other. Medicaid is computed in a private branch where no
-        # spouse's Medicaid exempts their income from OAP deeming. That OAP is
-        # never higher than the final OAP, so SNAP there is never lower, and
-        # the spouse keeps every Medicaid route, supplied inputs included.
-        # The result does not depend on calculation order.
+        # spouse's Medicaid exempts their income from OAP deeming: enrollment
+        # is decided on the SNAP the household receives while the spouse's
+        # income is still deemed, before the exemption raises OAP. OAP there
+        # is never higher than the final OAP, so SNAP there is never lower,
+        # and the spouse keeps every Medicaid route, supplied inputs included.
+        # Higher OAP can only lower SNAP, so at most one outcome is
+        # self-consistent, and this finds it when it exists. When none exists
+        # (the exemption's higher OAP would end the SNAP receipt that gave the
+        # spouse Medicaid), this treats the spouse as enrolled. The result does
+        # not depend on calculation order.
         simulation = person.simulation
         branch_name = f"{simulation.branch_name}_co_oap_medicaid_{period}"
         try:
@@ -34,7 +43,7 @@ class co_oap_medicaid_enrolled(Variable):
                 period,
                 {"co_oap_medicaid_enrolled": np.zeros(person.count, dtype=bool)},
             )
-            return branch.calculate("medicaid_enrolled", period)
+            return branch.calculate("medicaid_enrolled", period) | reported
         finally:
             # A branch clones cached arrays; retaining it would duplicate a
             # substantial part of the full-population simulation in memory.

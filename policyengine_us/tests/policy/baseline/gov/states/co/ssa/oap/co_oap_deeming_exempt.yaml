@@ -1,95 +1,229 @@
-- name: Case 1, an SSI recipient within the OAP limit.
+- name: Case 1, a spouse on SSI within the OAP limit.
   # 9 CCR 2503-5 3.534(C): 400 + 600 = 1,000/month is within the $1,032 limit.
+  # Each case's client is OAP-eligible with no income; the first output is
+  # the client, who is not the spouse of an OAP-eligible client unless the
+  # spouse is OAP-eligible too.
   period: 2026
   input:
-    state_code: CO
-    ssi: 4_800
-    co_oap_own_countable_income: 7_200
-    co_oap_eligible: false
-    co_oap_medicaid_enrolled: false
+    people:
+      client:
+        co_oap_eligible: true
+        co_oap_own_countable_income: 0
+        ssi: 0
+        co_oap_medicaid_enrolled: false
+      spouse:
+        ssi: 4_800
+        co_oap_own_countable_income: 7_200
+        co_oap_eligible: false
+        co_oap_medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [client, spouse]
+    households:
+      household:
+        members: [client, spouse]
+        state_code: CO
   output:
-    co_oap_deeming_exempt: true
+    co_oap_deeming_exempt: [false, true]
 
-- name: Case 2, an SSI recipient above the OAP limit.
+- name: Case 2, a spouse on SSI above the OAP limit.
   # 100 + 1,000 = 1,100/month exceeds the limit.
   period: 2026
   input:
-    state_code: CO
-    ssi: 1_200
-    co_oap_own_countable_income: 12_000
-    co_oap_eligible: false
-    co_oap_medicaid_enrolled: false
+    people:
+      client:
+        co_oap_eligible: true
+        co_oap_own_countable_income: 0
+        ssi: 0
+        co_oap_medicaid_enrolled: false
+      spouse:
+        ssi: 1_200
+        co_oap_own_countable_income: 12_000
+        co_oap_eligible: false
+        co_oap_medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [client, spouse]
+    households:
+      household:
+        members: [client, spouse]
+        state_code: CO
   output:
-    co_oap_deeming_exempt: false
+    co_oap_deeming_exempt: [false, false]
 
-- name: Case 3, a Medicaid enrollee with income equal to the OAP limit.
+- name: Case 3, a spouse on Medicaid with income equal to the OAP limit.
   # "No greater than the OAP limit" includes income equal to it.
   period: 2026
   input:
-    state_code: CO
-    ssi: 0
-    co_oap_own_countable_income: 12_384
-    co_oap_eligible: false
-    co_oap_medicaid_enrolled: true
+    people:
+      client:
+        co_oap_eligible: true
+        co_oap_own_countable_income: 0
+        ssi: 0
+        co_oap_medicaid_enrolled: false
+      spouse:
+        ssi: 0
+        co_oap_own_countable_income: 12_384
+        co_oap_eligible: false
+        co_oap_medicaid_enrolled: true
+    marital_units:
+      marital_unit:
+        members: [client, spouse]
+    households:
+      household:
+        members: [client, spouse]
+        state_code: CO
   output:
-    co_oap_deeming_exempt: true
+    co_oap_deeming_exempt: [false, true]
 
-- name: Case 4, a Medicaid enrollee above the OAP limit.
+- name: Case 4, a spouse on Medicaid above the OAP limit.
   period: 2026
   input:
-    state_code: CO
-    ssi: 0
-    co_oap_own_countable_income: 12_396
-    co_oap_eligible: false
-    co_oap_medicaid_enrolled: true
+    people:
+      client:
+        co_oap_eligible: true
+        co_oap_own_countable_income: 0
+        ssi: 0
+        co_oap_medicaid_enrolled: false
+      spouse:
+        ssi: 0
+        co_oap_own_countable_income: 12_396
+        co_oap_eligible: false
+        co_oap_medicaid_enrolled: true
+    marital_units:
+      marital_unit:
+        members: [client, spouse]
+    households:
+      household:
+        members: [client, spouse]
+        state_code: CO
   output:
-    co_oap_deeming_exempt: false
+    co_oap_deeming_exempt: [false, false]
 
-- name: Case 5, an OAP client is receiving Adult Financial grant payments.
+- name: Case 5, a spouse who is an OAP client receives Adult Financial grant payments.
   # Own countable income of 1,031/month leaves a grant of 1, so the spouse
-  # receives OAP with income within the limit.
+  # receives OAP with income within the limit. The client, married to an
+  # OAP-eligible spouse and within the limit, is exempt too.
   period: 2026
   input:
-    state_code: CO
-    ssi: 0
-    co_oap_own_countable_income: 12_372
-    co_oap_eligible: true
-    co_oap_medicaid_enrolled: false
+    people:
+      client:
+        co_oap_eligible: true
+        co_oap_own_countable_income: 0
+        ssi: 0
+        co_oap_medicaid_enrolled: false
+      spouse:
+        ssi: 0
+        co_oap_own_countable_income: 12_372
+        co_oap_eligible: true
+        co_oap_medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [client, spouse]
+    households:
+      household:
+        members: [client, spouse]
+        state_code: CO
   output:
-    co_oap_deeming_exempt: true
+    co_oap_deeming_exempt: [true, true]
 
 - name: Case 6, an OAP-eligible spouse with income equal to the standard receives no grant.
   # 3.533: income equal to the grant standard means denial, so the spouse is
   # not receiving Adult Financial grant payments.
   period: 2026
   input:
-    state_code: CO
-    ssi: 0
-    co_oap_own_countable_income: 12_384
-    co_oap_eligible: true
-    co_oap_medicaid_enrolled: false
+    people:
+      client:
+        co_oap_eligible: true
+        co_oap_own_countable_income: 0
+        ssi: 0
+        co_oap_medicaid_enrolled: false
+      spouse:
+        ssi: 0
+        co_oap_own_countable_income: 12_384
+        co_oap_eligible: true
+        co_oap_medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [client, spouse]
+    households:
+      household:
+        members: [client, spouse]
+        state_code: CO
   output:
-    co_oap_deeming_exempt: false
+    co_oap_deeming_exempt: [true, false]
 
 - name: Case 7, a spouse with no assistance has income deemed however low it is.
   period: 2026
   input:
-    state_code: CO
-    ssi: 0
-    co_oap_own_countable_income: 0
-    co_oap_eligible: false
-    co_oap_medicaid_enrolled: false
+    people:
+      client:
+        co_oap_eligible: true
+        co_oap_own_countable_income: 0
+        ssi: 0
+        co_oap_medicaid_enrolled: false
+      spouse:
+        ssi: 0
+        co_oap_own_countable_income: 0
+        co_oap_eligible: false
+        co_oap_medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [client, spouse]
+    households:
+      household:
+        members: [client, spouse]
+        state_code: CO
   output:
-    co_oap_deeming_exempt: false
+    co_oap_deeming_exempt: [false, false]
 
 - name: Case 8, reported SSI receipt counts.
   period: 2026
   input:
-    state_code: CO
-    ssi: 0
-    receives_ssi: true
-    co_oap_own_countable_income: 0
-    co_oap_eligible: false
-    co_oap_medicaid_enrolled: false
+    people:
+      client:
+        co_oap_eligible: true
+        co_oap_own_countable_income: 0
+        ssi: 0
+        co_oap_medicaid_enrolled: false
+      spouse:
+        ssi: 0
+        co_oap_own_countable_income: 0
+        co_oap_eligible: false
+        co_oap_medicaid_enrolled: false
+        receives_ssi: true
+    marital_units:
+      marital_unit:
+        members: [client, spouse]
+    households:
+      household:
+        members: [client, spouse]
+        state_code: CO
   output:
-    co_oap_deeming_exempt: true
+    co_oap_deeming_exempt: [false, true]
+
+- name: Case 9, income a hair under the standard from float residue is not a grant.
+  # Own countable income of 1,031.9999/month, the residue of 1,032 computed
+  # from annual amounts, gives the OAP-eligible spouse no grant.
+  period: 2026
+  input:
+    people:
+      client:
+        co_oap_eligible: true
+        co_oap_own_countable_income: 0
+        ssi: 0
+        co_oap_medicaid_enrolled: false
+      spouse:
+        ssi: 0
+        co_oap_own_countable_income: 12_383.9988
+        co_oap_eligible: true
+        co_oap_medicaid_enrolled: false
+    marital_units:
+      marital_unit:
+        members: [client, spouse]
+    households:
+      household:
+        members: [client, spouse]
+        state_code: CO
+  output:
+    co_oap_deeming_exempt: [true, false]

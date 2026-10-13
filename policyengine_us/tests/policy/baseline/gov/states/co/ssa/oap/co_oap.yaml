@@ -378,3 +378,39 @@
         state_code: CO
   output:
     co_oap: 2_268
+
+- name: Case 26, a half-cent grant is a grant.
+  # $65.09/month of earnings and $1,051.95/month of pension:
+  # (65.09 - 65) / 2 + 1,051.95 - 20 = 1,031.995, below the standard, so the
+  # grant of 0.005 is raised to the floor.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 781.08
+        pension_income: 12_623.40
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 2_268
+
+- name: Case 27, payments drop cents when SSI does not reduce the grant.
+  # $516.50/month of pension: 516.50 - 20 = 496.50; 1,032 - 496.50 = 535.50,
+  # paid as 535 (3.581(E)), or 6,420/year. Case 21 keeps the cents of a grant
+  # reduced by SSI.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        pension_income: 6_198
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: 5_958
+    co_oap: 6_420

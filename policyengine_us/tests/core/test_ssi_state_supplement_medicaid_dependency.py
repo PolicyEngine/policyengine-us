@@ -102,6 +102,52 @@ def test_co_oap_snap_medicaid_calculation_order(year, snap):
     assert results[0]["snap"][0] > 0
 
 
+def test_co_oap_medicaid_without_a_consistent_outcome():
+    """A household with no self-consistent outcome resolves the same way in
+    either order. The client's spouse, 40, earns $5,000/year and is a SNAP
+    workfare participant; an unrelated adult in the same SNAP unit has a
+    $31,250/year pension. With the spouse's income deemed, OAP is lower and
+    the unit gets SNAP, which enrolls the spouse in Medicaid through the
+    pass-through; with the spouse exempt, OAP is higher and the unit gets no
+    SNAP. co_oap_medicaid_enrolled decides enrollment on the SNAP received
+    while the spouse's income is still deemed, so the spouse is exempt and
+    the client gets the full 1,032/month."""
+    year = 2027
+    people = {
+        "client": {"age": {year: 62}},
+        "spouse": {
+            "age": {year: 40},
+            "employment_income": {year: 5_000},
+            "is_snap_workfare_participant": {year: True},
+        },
+        "adult": {
+            "age": {year: 40},
+            "pension_income": {year: 31_250},
+            "is_snap_workfare_participant": {year: True},
+        },
+    }
+    couple = {"members": ["client", "spouse"]}
+    single = {"members": ["adult"]}
+    everyone = {"members": list(people)}
+    situation = {
+        "people": people,
+        **{
+            entity: {"couple": couple, "single": single}
+            for entity in ("tax_units", "marital_units", "families")
+        },
+        "spm_units": {"unit": everyone},
+        "households": {"unit": {**everyone, "state_code": {year: "CO"}}},
+    }
+    variables = ("co_oap", "snap", "medicaid_enrolled")
+    results = []
+    for order in (variables, variables[::-1]):
+        simulation = Simulation(situation=situation)
+        results.append({name: simulation.calculate(name, year) for name in order})
+    for name in variables:
+        np.testing.assert_array_equal(results[0][name], results[1][name])
+    assert results[0]["co_oap"][0] == pytest.approx(12_384)
+
+
 @pytest.mark.parametrize(
     "variable",
     ["medicaid_enrolled", "is_medicaid_eligible", "takes_up_medicaid_if_eligible"],

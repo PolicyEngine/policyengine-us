@@ -9,21 +9,24 @@ ineligible; and 3.530(C), 3.532(B), 3.533(B) raise a grant below the $189
 payment floor standard to it.
 
 Each case is a client aged 60-80 in their own household, with pension,
-interest, Social Security and earnings, optionally receiving outside shelter
-support, and either single or married to a spouse who has earnings and a
-pension. Each married case appears four times: (A) the spouse is enrolled in
+interest, Social Security, earnings, rental income or loss and child support,
+optionally receiving outside shelter support, and either single or married to
+a spouse who has earnings and a pension and may receive shelter support. Each married case appears four times: (A) the spouse is enrolled in
 Medicaid, (B) the spouse is not, (C) as B with extra spousal earnings, and
 (D) as B with the tax-unit roles swapped. For 2026:
 
 1. Payment: OAP is the grant standard less total countable income when that
-   is positive, raised to the floor if below it, and zero otherwise; so it is
-   zero or between the floor and the standard each month.
+   is positive, raised to the floor if below it, and zero otherwise, with
+   cents dropped unless SSI reduces the grant (3.581(E)); so it is zero or
+   between the floor and the standard each month.
 2. Singles: for a client not on SSI, with no earnings or at least $20 of
    unearned income, 3.533(A) counts the same income as SSI's exclusions
-   (20 CFR 416.1112, 416.1124) applied to the same gross income, interest
-   excluded (3.520.786(K)). For a client on SSI with no interest, 3.533(A)
-   never counts less than SSI does. (PolicyEngine's SSI counts interest,
-   which 20 CFR 416.1124(c)(22) excludes on countable resources.)
+   (20 CFR 416.1112, 416.1124) applied to the same gross income, with
+   interest and child support exempt (3.520.786(K), (N)) and a rental loss
+   counted as zero (3.520.785(B)(20)). For a client on SSI with none of
+   those, 3.533(A) never counts less than SSI does. (PolicyEngine's SSI
+   counts interest, which 20 CFR 416.1124(c)(22) excludes on countable
+   resources: #10079.)
 3. Exemption: a spouse's Medicaid enrollment can only lower the client's
    countable income and raise OAP.
 4. Monotonicity: while both spouses' SSI is unchanged, more spousal
@@ -80,6 +83,8 @@ def build_situation(cases):
                 "interest_income": {YEAR: c["client_interest"]},
                 "social_security_retirement": {YEAR: c["client_social_security"]},
                 "employment_income": {YEAR: c["client_earnings"]},
+                "rental_income": {YEAR: c["client_rental"]},
+                "child_support_received": {YEAR: c["client_child_support"]},
                 "ssi_receives_outside_shelter_support": {YEAR: c["shelter_support"]},
                 # Set for everyone: an input for some people gives the others
                 # its default (false), not its formula.
@@ -92,6 +97,9 @@ def build_situation(cases):
                     "age": {YEAR: c["spouse_age"]},
                     "employment_income": {YEAR: c["spouse_earnings"] + extra},
                     "pension_income": {YEAR: c["spouse_pension"]},
+                    "ssi_receives_outside_shelter_support": {
+                        YEAR: c["spouse_shelter_support"]
+                    },
                     "co_oap_medicaid_enrolled": {YEAR: arrangement == "A"},
                 }
                 members = [spouse, client] if arrangement == "D" else [client, spouse]
@@ -141,32 +149,48 @@ def assert_properties(cases, calculated=None):
             # within the year.
             total = (ssi[client] + countable[client]) / 12
             paid = oap[client] / 12
-            # 1. Payment rule and bounds, in cents. Within a cent of the
-            # standard, float32 sums can round either way; YAML pins those.
-            grant = round(standard - total, 2)
+            # 1. Payment rule and bounds. Payments not reduced by SSI drop
+            # cents (3.581(E)). Within a fifth of a cent of the standard,
+            # float32 sums can fall either way; YAML pins those.
+            grant = standard - total
             if not eligible[client]:
                 assert paid == 0, c
-            elif grant >= 0.02:
-                assert paid == pytest.approx(max(grant, floor), abs=0.05), c
+            elif grant > 0.002:
+                expected = max(grant, floor)
+                if ssi[client] > 0:
+                    assert paid == pytest.approx(expected, abs=0.05), c
+                else:
+                    assert abs(paid - round(paid)) < 0.01, c
+                    assert expected - 1 < paid <= expected + 0.01, c
                 assert floor - TOLERANCE <= paid <= standard + TOLERANCE, c
-            elif grant <= -0.01:
+            elif grant < -0.002:
                 assert paid == 0, c
         client = f"client_A{i}"
         if not c["married"]:
-            # 2. Singles, against SSI's exclusions on the same gross income.
+            # 2. Singles, against SSI's exclusions on the same gross income:
+            # interest and child support exempt (3.520.786(K), (N)), a rental
+            # loss counted as zero (3.520.785(B)(20)).
             own = results["co_oap_own_countable_income"][client]
+            plain = (
+                c["client_interest"] == 0
+                and c["client_child_support"] == 0
+                and c["client_rental"] >= 0
+            )
             if ssi[client] > 0:
-                if c["client_interest"] == 0:
+                if plain:
                     assert own >= results["ssi_countable_income"][client] - (
                         TOLERANCE
                     ), c
             elif not c["shelter_support"]:
-                # Interest is exempt (3.520.786(K)); the other sources count.
-                unearned = results["ssi_unearned_income"][client] - c["client_interest"]
+                unearned = (
+                    c["client_pension"]
+                    + c["client_social_security"]
+                    + max(c["client_rental"], 0)
+                )
                 if c["client_earnings"] == 0 or unearned >= 20 * 12:
                     expected = _apply_ssi_exclusions(
                         np.array([results["ssi_earned_income"][client]]),
-                        np.array([unearned]),
+                        np.array([float(unearned)]),
                         parameters,
                         YEAR,
                     )[0]
@@ -203,11 +227,14 @@ def test_worked_example():
         "client_interest": 0,
         "client_social_security": 0,
         "client_earnings": 0,
+        "client_rental": 0,
+        "client_child_support": 0,
         "shelter_support": False,
         "married": True,
         "spouse_age": 50,
         "spouse_earnings": 24_000,
         "spouse_pension": 0,
+        "spouse_shelter_support": False,
         "extra_spouse_earnings": 1_200,
     }
     calculated = calculate([case])
@@ -243,11 +270,14 @@ if hypothesis is not None:
             "client_interest": draw(amount(300)),
             "client_social_security": draw(amount(15_000)),
             "client_earnings": draw(amount(20_000)),
+            "client_rental": draw(st.integers(min_value=-6_000, max_value=6_000)),
+            "client_child_support": draw(amount(6_000)),
             "shelter_support": draw(st.booleans()),
             "married": draw(st.booleans()),
             "spouse_age": draw(st.integers(min_value=18, max_value=80)),
             "spouse_earnings": draw(amount(30_000)),
             "spouse_pension": draw(amount(24_000)),
+            "spouse_shelter_support": draw(st.booleans()),
             "extra_spouse_earnings": draw(st.integers(min_value=1, max_value=12_000)),
         }
 

@@ -18,9 +18,17 @@ class co_oap_deemed_income(Variable):
         deemable = ~person("co_oap_deeming_exempt", period)
         ssi = person("ssi", period)
         earned = person("ssi_earned_income", period) * deemable
-        # 3.534(B)(1): the total unearned income of the spouse, SSI included
-        # (3.520.785(B)(1)), less exempt income (3.520.786).
-        unearned = (add(person, period, p.income.sources.unearned) + ssi) * deemable
+        # 3.534(B)(1): the total unearned income of the spouse, SSI and any
+        # matching ISM included (3.520.785(B)(1), 3.520.79(B)(6)), less exempt
+        # income (3.520.786).
+        unearned = (
+            add(
+                person,
+                period,
+                ["co_oap_unearned_income", "co_oap_in_kind_support_and_maintenance"],
+            )
+            + ssi
+        ) * deemable
         # 3.534(B)(5): court-ordered support obligations of the spouse. We
         # treat alimony paid as court-ordered. Whether the income is garnished
         # instead is not modeled.
@@ -30,15 +38,16 @@ class co_oap_deemed_income(Variable):
 
         # 3.534(B)(3): for each dependent child in the spouse's household,
         # half the SSI benefit standard for an individual less the child's own
-        # income.
+        # income. 3.520.786's exemptions apply to the client, spouse and
+        # sponsor, not the child, so the child's gross income counts, child
+        # support and SSI included.
         year = period.this_year
         dependent_child = person("is_tax_unit_dependent", year) & person(
             "is_child", year
         )
-        child_income = (
-            person("ssi_earned_income", period)
-            + add(person, period, p.income.sources.unearned)
-            + ssi
+        child_income = max_(
+            0,
+            add(person, period, ["ssi_earned_income", "ssi_unearned_income"]) + ssi,
         )
         fbr = parameters(period).gov.ssa.ssi.amount.individual
         child_allocation = dependent_child * max_(
