@@ -352,3 +352,147 @@
   output:
     # 924 x (30,000 - 23,500) / (30,000 - 18,000) = 500.50.
     vt_renter_credit: 501
+
+# Income limit corrections. Each case puts income where the corrected limits
+# and PE's earlier values give different credits. Base credit = ROUND(fair market
+# rent x 12 x 10%, 0), before the income phase-out; final credits round half up.
+# The 2023-2025 expectations match the department's Renter Credit Website
+# Calculator for the same household.
+- name: Washington, 7 people, 2025, midpoint of the corrected income limits
+  period: 2025
+  input:
+    vt_renter_credit_income: 68_820
+    county: WASHINGTON_COUNTY_VT
+    tax_unit_size: 7
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # Partial limit 88,990 = 1.3 x HUD FY2025 very low-income limit 68,450,
+    # rounded to $10 (the booklet prints 88,880). Full limit 48,650.
+    # Base: ROUND(1,977 x 12 x 0.1, 0) = ROUND(2,372.4, 0) = 2,372.
+    # (88,990 - 68,820) / (88,990 - 48,650) = 0.5; 0.5 x 2,372 = 1,186.
+    vt_renter_credit: 1_186
+
+- name: Washington, 7 people, 2025, income between the booklet and corrected limits
+  period: 2025
+  input:
+    vt_renter_credit_income: 88_950
+    county: WASHINGTON_COUNTY_VT
+    tax_unit_size: 7
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # Above the booklet's 88,880 but below 88,990.
+    # Base: ROUND(1,977 x 12 x 0.1, 0) = 2,372.
+    # (88,990 - 88,950) / 40,340 x 2,372 = 2.352... -> 2.
+    vt_renter_credit: 2
+
+- name: Chittenden, 8 people, 2024, income above the corrected partial limit
+  period: 2024
+  input:
+    vt_renter_credit_income: 102_400
+    county: CHITTENDEN_COUNTY_VT
+    tax_unit_size: 8
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # Partial limit 102,050 = 1.3 x HUD FY2024 limit 78,500 (PE had 102,850).
+    vt_renter_credit: 0
+
+- name: Washington, 3 people, 2024, income above the corrected partial limit
+  period: 2024
+  input:
+    vt_renter_credit_income: 61_800
+    county: WASHINGTON_COUNTY_VT
+    tax_unit_size: 3
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # Partial limit 61,690 = 1.3 x HUD FY2024 limit 47,450 (PE had 61,960).
+    vt_renter_credit: 0
+
+- name: Caledonia, 4 people, 2024, income below the corrected full limit
+  period: 2024
+  input:
+    vt_renter_credit_income: 30_600
+    county: CALEDONIA_COUNTY_VT
+    tax_unit_size: 4
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # Full limit 31,200 = HUD FY2024 extremely low-income limit (PE had 30,000).
+    # Full credit: ROUND(1,657 x 12 x 0.1, 0) = ROUND(1,988.4, 0) = 1,988.
+    vt_renter_credit: 1_988
+
+- name: Franklin, 7 people, 2023, midpoint of the corrected income limits
+  period: 2023
+  input:
+    vt_renter_credit_income: 51_870
+    county: FRANKLIN_COUNTY_VT
+    tax_unit_size: 7
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # Partial limit 58,320 (PE had Lamoille's 56,250). Full limit 45,420.
+    # Base: ROUND(1,586.94 x 12 x 0.1, 0) = ROUND(1,904.328, 0) = 1,904.
+    # (58,320 - 51,870) / (58,320 - 45,420) = 0.5; 0.5 x 1,904 = 952.
+    vt_renter_credit: 952
+
+- name: Lamoille, 7 people, 2023, midpoint of the corrected income limits
+  period: 2023
+  input:
+    vt_renter_credit_income: 50_835
+    county: LAMOILLE_COUNTY_VT
+    tax_unit_size: 7
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # Partial limit 56,250 (PE had Franklin's 58,320). Full limit 45,420.
+    # Base: ROUND(1,556 x 12 x 0.1, 0) = ROUND(1,867.2, 0) = 1,867.
+    # (56,250 - 50,835) / (56,250 - 45,420) = 0.5; 0.5 x 1,867 = 933.5 -> 934.
+    vt_renter_credit: 934
+
+- name: Windsor, 2 people, 2021, midpoint of the corrected income limits
+  period: 2021
+  input:
+    vt_renter_credit_income: 25_250
+    county: WINDSOR_COUNTY_VT
+    tax_unit_size: 2
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # Partial limit 31,550 = HUD FY2021 limit (PE had 31,350). Full limit 18,950.
+    # Base: ROUND(1,007 x 12 x 0.1, 0) = ROUND(1,208.4, 0) = 1,208.
+    # (31,550 - 25,250) / (31,550 - 18,950) = 0.5; 0.5 x 1,208 = 604.
+    vt_renter_credit: 604
+
+- name: Chittenden, 5 people, 2021, income below the corrected full limit
+  period: 2021
+  input:
+    vt_renter_credit_income: 31_045
+    county: CHITTENDEN_COUNTY_VT
+    tax_unit_size: 5
+    rent_is_shared_with_another_tax_unit: false
+    housing_assistance: 0
+    rent: 0
+    state_code: VT
+  output:
+    # Full limit 31,050 = HUD FY2021 extremely low-income limit (PE had 31,040).
+    # Full credit: ROUND(2,083 x 12 x 0.1, 0) = ROUND(2,499.6, 0) = 2,500.
+    vt_renter_credit: 2_500

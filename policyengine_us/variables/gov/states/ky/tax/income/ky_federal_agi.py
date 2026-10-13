@@ -24,8 +24,9 @@ class ky_federal_agi(Variable):
             return federal_agi
 
         # KRS 141.016(3): income and business deductions belong to the
-        # spouse to whom they are attributable. Federal person AGI instead
-        # shares the joint loss deduction; undo that sharing for Kentucky.
+        # spouse to whom they are attributable. Undo the loss allocation
+        # actually included in federal person AGI before applying Kentucky's
+        # allocation, so an already-owned loss is not reassigned twice.
         filing_status = person.tax_unit("filing_status", period)
         is_filer = person("is_tax_unit_head", period) | person(
             "is_tax_unit_spouse", period
@@ -75,4 +76,11 @@ class ky_federal_agi(Variable):
         owned_loss = allocate(owned_business_loss, business_loss) + allocate(
             owned_capital_loss, capital_loss
         )
-        return federal_agi + share * loss - owned_loss
+        # Match above_the_line_deductions_person's reconciliation when supplied
+        # person loss amounts differ from the return's loss deduction. Keep
+        # dependent amounts off the parents' return.
+        filer_loss = not_dependent * person("loss_ald_person", period)
+        federal_loss = filer_loss + (
+            loss - person.tax_unit.sum(filer_loss)
+        ) * filer_share(person, period, filer_loss)
+        return federal_agi + federal_loss - owned_loss
