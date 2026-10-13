@@ -11,6 +11,12 @@ class hi_non_refundable_credits(Variable):
     unit = USD
     definition_period = YEAR
     defined_for = StateCode.HI
+    reference = (
+        # Form N-11 applies refundable credits first (line 33) and limits
+        # nonrefundable credits (line 35) to the adjusted tax on line 34.
+        "https://files.hawaii.gov/tax/forms/2025/n11_i.pdf#page=3",
+        "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=21",
+    )
 
     def formula(tax_unit, period, parameters):
         ordered_credits = parameters(
@@ -20,5 +26,5 @@ class hi_non_refundable_credits(Variable):
             tax_unit,
             period,
             ordered_credits,
-            "hi_income_tax_before_non_refundable_credits",
+            "hi_adjusted_tax_liability",
         )
