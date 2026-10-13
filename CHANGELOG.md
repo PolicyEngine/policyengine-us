@@ -1,3 +1,26 @@
+## [2.42.0] - 2026-10-13
+
+### Added
+
+- Integrated modeled Alabama, New Jersey, New York, Oklahoma, Pennsylvania, and Utah unemployment insurance into unemployment compensation income flows, including federal and state taxes, SNAP, TANF, SSI, WIC, school meals, Head Start, HUD, child care, and other means-tested program income sources.
+
+### Changed
+
+- Uprate premium inputs by premium series instead of CMS out-of-pocket spending per capita, which excludes premiums: reported and other health insurance premiums follow CMS's employer-sponsored insurance premium per enrollee (the series pre-tax premiums follow), directly supplied premiums follow a new CMS direct purchase premium per enrollee series, long-term care premiums follow a new CPI-U medical care series (BLS and CBO), and reported Medicare Part B premiums follow a new Part B standard premium series (Medicare Trustees Report).
+
+### Fixed
+
+- Require Arkansas married couples to file jointly when either spouse has a negative total income, and compute Arkansas regular income tax from the published tax table bands below the table threshold.
+- Give each spouse their own above-the-line deductions in per-person AGI on a joint return (IRA, capped educator expenses, early withdrawal penalty, student loan interest, alimony paid, business and capital losses, and the rest), instead of splitting every deduction other than the self-employment ones 50/50; attribute HSA deductions using person amounts when provided, and divide deductions recorded only at tax-unit level equally. This changes the state taxes and benefits that read each spouse's AGI (Kentucky, Montana through 2023, Delaware, Virginia and DC separate filing, Ohio's joint filing credit, West Virginia's senior deduction, state withholding, Illinois Family Planning). DC spouses who file separately on the same return each deduct their own capital losses up to their own capital gains plus $1,500. Montana divides nothing between spouses from 2024, when filing separately on the same form ended.
+- Avoid reallocating spouses' business and capital losses twice in Kentucky AGI after federal person AGI assigns their own deductions.
+- Correct eight Vermont renter credit income limits for 2021, 2023, 2024 and 2025 to HUD's limits and the department's tables, including Washington County's 2025 seven-person partial-credit limit ($88,990; the TY2025 booklet prints $88,880).
+- Apply the federal mortgage debt limits by loan vintage: grandfathered debt incurred on or before October 13, 1987 is no longer capped and reduces the other limits, and older debt larger than the $750,000 limit no longer shrinks the qualified balance of two mortgages to $750,000 (26 U.S.C. 163(h)(3)(D) and (F), Publication 936 Table 1).
+- New Mexico net capital gains deduction now gives each married-filing-separately spouse half of the deduction computed on the couple's combined net capital gain, per NMSA 7-2-34(B).
+- Virginia now subtracts only taxable unemployment compensation (tax year 2020 changes), and Hawaii child care assistance now counts strike benefits.
+- Fixed Arkansas gross income to include partnership and S-corporation income and to let one spouse's loss offset the other's income on a joint return; Montana's capital gain credit to be zero rather than negative on net losses, dependent exemptions to cover non-child dependents whose own Montana gross income (excluding unemployment compensation; only taxable Social Security) is at or below the exemption amount, and permanently and totally disabled adult children to count as qualifying children, and Montana joint AGI to leave out a dependent's Montana additions and subtractions, which are not on the filer's return; and New Mexico's net capital gains deduction to exclude short-term gains in every year, following the IRC Section 1222(11) definition that New Mexico law has used since 2019, and to include capital gain distributions.
+- Cap Montana's 2021 income tax rebate at each column's 2021 Form 2 line 20 and pay it as a refundable amount outside the separate-vs-joint election, with no rebate in other years (taxsim #1189). 2021 Montana tax rises for some two-earner couples who file separately (status 2a), for qualifying surviving spouses (now capped at $1,250) and for filers claimed as a dependent on another return, and it never falls; the rebate no longer carries into 2015-2020.
+
+
 ## [2.41.4] - 2026-10-13
 
 ### Fixed
