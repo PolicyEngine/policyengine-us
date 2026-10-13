@@ -1,0 +1,141 @@
+# 2025 IT-140 instructions, Schedule M line 42 (PDF page 29): "The amount of
+# income repaid MUST be more than $3,000.00 to qualify."
+
+- name: Case 1, a repayment over $3,000 is a decreasing modification.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WV
+  output:
+    wv_claim_of_right_subtraction: 10_000
+    wv_subtractions: 10_000
+
+- name: Case 2, a repayment of $3,000 does not qualify.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 3_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WV
+  output:
+    wv_claim_of_right_subtraction: 0
+
+- name: Case 3, the federal credit method does not change the modification.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head]
+        state_code: WV
+  output:
+    wv_claim_of_right_subtraction: 10_000
+
+- name: Case 4, spouses' repayments count together toward $3,000; a dependent's does not.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 2_000
+      spouse:
+        age: 40
+        claim_of_right_repayment: 2_000
+      child:
+        age: 17
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: WV
+  output:
+    wv_claim_of_right_subtraction: [2_000, 2_000, 0]
+    wv_subtractions: 4_000
+
+- name: Case 5, outside West Virginia.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: VA
+  output:
+    wv_claim_of_right_subtraction: 0
+
+# Wages $40,000, repays $10,000. IT-140: West Virginia AGI $40,000 - $10,000 =
+# $30,000; less the $2,000 exemption = $28,000.
+- name: Case 6, the modification lowers West Virginia AGI and taxable income.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WV
+  output:
+    wv_agi: 30_000
+    wv_taxable_income: 28_000
+
+# Age 70, wages $9,000, repays $4,000. Schedule M line 47: box (c), income not
+# included in lines 35 to 46, is $9,000 - $4,000 = $5,000, under the $8,000
+# cap; box (d) is zero, so the senior modification is $5,000 (it would be
+# $8,000 without the repayment). Total decreasing modifications $9,000.
+- name: Case 7, the repayment line is outside the senior citizen modification's base.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 9_000
+        claim_of_right_repayment: 4_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: WV
+  output:
+    wv_claim_of_right_subtraction: 4_000
+    wv_senior_citizen_disability_deduction_person: 5_000
+    wv_subtractions: 9_000

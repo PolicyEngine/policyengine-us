@@ -1,0 +1,123 @@
+# M.G.L. c. 62, s. 3(B)(a)(14) and the 2025 Form 1 instructions, Schedule Y
+# line 14 (PDF page 21): a repayment of income previously included in
+# Massachusetts taxable income, of any amount, whichever federal method
+# applies.
+
+- name: Case 1, a repayment of $3,000 or less is deductible.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 2_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    claim_of_right_section_1341_eligible: false
+    ma_claim_of_right_deduction: 2_000
+
+- name: Case 2, the federal credit method still gets the Massachusetts deduction.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+        claim_of_right_credit_applies: true
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    ma_claim_of_right_deduction: 10_000
+
+- name: Case 3, income Massachusetts did not tax when received is not deducted.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+        ma_claim_of_right_repayment_excluded_from_income: 2_500
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    ma_claim_of_right_deduction: 7_500
+
+- name: Case 4, a joint return deducts both spouses' repayments but not a dependent's.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 1_000
+      spouse:
+        age: 40
+        claim_of_right_repayment: 1_500
+      child:
+        age: 17
+        claim_of_right_repayment: 700
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: MA
+  output:
+    ma_claim_of_right_deduction: 2_500
+
+- name: Case 5, outside Massachusetts.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        claim_of_right_repayment: 10_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NH
+  output:
+    ma_claim_of_right_deduction: 0
+
+# Wages $60,000, repays $5,000. Schedule Y: Social Security and Medicare tax
+# deduction capped at $2,000 (line 1) plus the $5,000 claim of right deduction
+# (line 14) = $7,000. Form 1: Part B income $60,000 - $7,000 = $53,000, less
+# the $4,400 personal exemption = $48,600 Part B taxable income.
+- name: Case 6, the deduction lowers Part B taxable income.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 60_000
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: MA
+  output:
+    ma_claim_of_right_deduction: 5_000
+    ma_part_b_taxable_income_deductions: 7_000
+    ma_part_b_taxable_income_before_exemption: 53_000
+    ma_part_b_taxable_income: 48_600
