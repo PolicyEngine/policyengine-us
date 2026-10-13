@@ -20,7 +20,9 @@ new variables:
 - with the method chosen by the model, an eligible return gets that relief
   whenever the earlier year's federal tax fell, because a winning deduction
   must have lowered tax, which only an itemized deduction does;
-- neither state's income tax ever rises with a repayment, or as it grows.
+- for these single filers, neither state's income tax ever rises with a
+  repayment, or as it grows (on a joint Ohio return the deduction can cost the
+  joint filing credit; see the YAML).
 """
 
 import gc
