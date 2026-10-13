@@ -6,6 +6,7 @@
     age: 65
   output:
     ny_ssp: 87
+
 - name: Case 2, living with others.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -15,6 +16,7 @@
     ny_ssp_living_arrangement: LIVING_WITH_OTHERS
   output:
     ny_ssp: 23
+
 - name: Case 3, federal household reduction.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -26,6 +28,7 @@
     ssi_others_pay_all_meals: true
   output:
     ny_ssp: 23
+
 - name: Case 4, family_care in albany_county_ny.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -36,6 +39,7 @@
     county: ALBANY_COUNTY_NY
   output:
     ny_ssp: 228.48
+
 - name: Case 5, family_care in bronx_county_ny.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -46,6 +50,7 @@
     county: BRONX_COUNTY_NY
   output:
     ny_ssp: 266.48
+
 - name: Case 6, family_care in nassau_county_ny.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -56,6 +61,7 @@
     county: NASSAU_COUNTY_NY
   output:
     ny_ssp: 266.48
+
 - name: Case 7, residential_care in albany_county_ny.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -66,6 +72,7 @@
     county: ALBANY_COUNTY_NY
   output:
     ny_ssp: 405
+
 - name: Case 8, residential_care in westchester_county_ny.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -76,6 +83,7 @@
     county: WESTCHESTER_COUNTY_NY
   output:
     ny_ssp: 435
+
 - name: Case 9, enhanced_residential_care in albany_county_ny.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -86,42 +94,47 @@
     county: ALBANY_COUNTY_NY
   output:
     ny_ssp: 694
+
 - name: Case 10, state only payment.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NY
     age: 65
-    social_security_retirement: 12360
+    social_security_retirement: 12_360
   output:
     ny_ssp: 71
+
 - name: Case 11, state minimum payment.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NY
     age: 65
-    social_security_retirement: 13209
+    social_security_retirement: 13_209
   output:
     ny_ssp: 1
+
 - name: Case 12, income cutoff.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NY
     age: 65
-    social_security_retirement: 13212
+    social_security_retirement: 13_212
   output:
     ny_ssp: 0
+
 - name: Case 13, excess resources.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NY
     age: 65
-    ssi_countable_resources: 2001
+    ssi_countable_resources: 2_001
   output:
     ny_ssp: 0
+
 - name: Case 14, nonresident.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -130,6 +143,7 @@
     age: 65
   output:
     ny_ssp: 0
+
 - name: Case 15, no aged blind or disability eligibility.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -138,6 +152,7 @@
     age: 30
   output:
     ny_ssp: 0
+
 - name: Case 16, does not apply for SSI.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -147,6 +162,7 @@
     takes_up_ssi_if_eligible: false
   output:
     ny_ssp: 0
+
 - name: Case 17, excluded institution.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -156,6 +172,7 @@
     ny_ssp_living_arrangement: NONE
   output:
     ny_ssp: 0
+
 - name: Case 18, nursing facility personal needs.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -167,6 +184,7 @@
     ny_ssp_living_arrangement: NURSING_FACILITY
   output:
     ny_ssp: 25
+
 - name: Case 19, other medical personal needs.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -177,6 +195,7 @@
     ssi_medicaid_pays_majority_of_care: true
   output:
     ny_ssp: 5
+
 - name: Case 20, nursing facility countable income prevents personal needs.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -189,6 +208,7 @@
     social_security_retirement: 252
   output:
     ny_ssp: 0
+
 - name: Case 21, excluded income does not prevent personal needs.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -201,6 +221,7 @@
     social_security_retirement: 240
   output:
     ny_ssp: 25
+
 - name: Case 22, institution without Medicaid paying majority.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -210,6 +231,7 @@
     ssi_lives_in_medical_treatment_facility: true
   output:
     ny_ssp: 0
+
 - name: Case 23, nursing facility without federal institutional classification.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -219,6 +241,7 @@
     ny_ssp_living_arrangement: NURSING_FACILITY
   output:
     ny_ssp: 0
+
 - name: Case 24, minor in enhanced care receives household rate.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -230,6 +253,7 @@
     ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
   output:
     ny_ssp: 23
+
 - name: Case 25, student under twenty two is a minor.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -241,6 +265,7 @@
     ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
   output:
     ny_ssp: 23
+
 - name: Case 26, student at age twenty two receives care rate.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -252,6 +277,7 @@
     ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
   output:
     ny_ssp: 694
+
 - name: Case 27, certified minor family placement receives care rate.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -280,6 +306,7 @@
     ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
   output:
     ny_ssp: 23
+
 - name: Case 29, nonregular part-time attendance does not confer minor status.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -293,6 +320,7 @@
     ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
   output:
     ny_ssp: 694
+
 - name: Case 30, regularly attending student who is household head receives adult rate.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -306,6 +334,7 @@
     ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
   output:
     ny_ssp: 694
+
 - name: Case 31, regular student at age twenty-two receives adult rate.
   period: 2026-01
   absolute_error_margin: 0.01
