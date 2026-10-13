@@ -23,7 +23,5 @@ class ssi_unearned_income_deemed_from_ineligible_spouse(Variable):
         )
 
         # Next, (b) determine and subtract allocations for ineligible children.
-        child_allocations = add(
-            person.tax_unit, period, ["ssi_ineligible_child_allocation"]
-        )
+        child_allocations = person("ssi_spousal_deeming_child_allocations", period)
         return max_(0, ineligible_spousal_unearned_income - child_allocations)

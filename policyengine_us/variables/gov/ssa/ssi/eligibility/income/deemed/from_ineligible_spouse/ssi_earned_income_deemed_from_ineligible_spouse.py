@@ -26,9 +26,7 @@ class ssi_earned_income_deemed_from_ineligible_spouse(Variable):
         )
 
         # Next, (b) determine and subtract allocations for ineligible children.
-        child_allocations = add(
-            person.tax_unit, period, ["ssi_ineligible_child_allocation"]
-        ) * person("is_ssi_aged_blind_disabled", period)
+        child_allocations = person("ssi_spousal_deeming_child_allocations", period)
         # Child allocations are deducted from unearned income first - ensure we only deduct
         # the remaining allocations from earned income.
         remaining_child_allocations = max_(

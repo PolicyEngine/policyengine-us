@@ -1,0 +1,83 @@
+# 416.1160(d): an ineligible child is a child, 'as the term child is defined
+# in § 416.1101', who 'is not eligible for SSI benefits'. 416.1856: under 18,
+# or under 22 and a student regularly attending school; not married; not the
+# head of a household.
+
+- name: An unmarried 17-year-old is a child
+  period: 2026
+  input:
+    age: 17
+  output:
+    is_ssi_ineligible_child: true
+
+- name: An 18-year-old who is not in school is not a child
+  period: 2026
+  input:
+    age: 18
+  output:
+    is_ssi_ineligible_child: false
+
+- name: A 21-year-old full-time college student is a child
+  period: 2026
+  input:
+    age: 21
+    is_full_time_college_student: true
+  output:
+    is_ssi_ineligible_child: true
+
+- name: A 22-year-old full-time college student is not a child
+  period: 2026
+  input:
+    age: 22
+    is_full_time_college_student: true
+  output:
+    is_ssi_ineligible_child: false
+
+- name: A 16-year-old head of a household is not a child
+  period: 2026
+  input:
+    age: 16
+    is_household_head: true
+  output:
+    is_ssi_ineligible_child: false
+
+- name: A married 17-year-old is not a child
+  # Tax roles are supplied: when they are omitted the model makes the minor
+  # spouse a dependent, and the SSI spouse test cannot then see the marriage.
+  period: 2026
+  input:
+    people:
+      wife:
+        age: 17
+        is_tax_unit_spouse: true
+      husband:
+        age: 20
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [wife, husband]
+    marital_units:
+      couple:
+        members: [wife, husband]
+    households:
+      household:
+        members: [wife, husband]
+  output:
+    is_ssi_ineligible_child: [false, false]
+
+- name: A disabled child who is a citizen is treated as eligible for SSI
+  period: 2026
+  input:
+    age: 10
+    is_ssi_disabled: true
+  output:
+    is_ssi_ineligible_child: false
+
+- name: A disabled child without qualifying immigration status is not eligible for SSI
+  period: 2026
+  input:
+    age: 10
+    is_ssi_disabled: true
+    immigration_status: UNDOCUMENTED
+  output:
+    is_ssi_ineligible_child: true
