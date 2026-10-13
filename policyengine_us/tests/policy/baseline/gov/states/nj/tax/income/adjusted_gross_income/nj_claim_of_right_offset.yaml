@@ -89,11 +89,10 @@
     nj_gross_income: 30_000
 
 # Joint return: line 15 combines both spouses' wages ($2,000 + $40,000 =
-# $42,000), so the head's $6,000 wage repayment is offset in full. Each spouse
-# bears it in proportion to their wages: $6,000 x 2/42 = $285.71 and
-# $6,000 x 40/42 = $5,714.29. The dependent's repayment belongs on the
-# dependent's own return.
-- name: Case 5, a joint return offsets one spouse's repayment against both spouses' wages.
+# $42,000), so the head's $6,000 wage repayment is offset in full. It offsets
+# the head's own $2,000 of wages first and the other $4,000 against the
+# spouse's. The dependent's repayment belongs on the dependent's own return.
+- name: Case 5, a joint return offsets the repayer's wages first and the excess against the spouse's.
   period: 2025
   absolute_error_margin: 0.01
   input:
@@ -117,8 +116,8 @@
         members: [head, spouse, child]
         state_code: NJ
   output:
-    nj_claim_of_right_offset: [285.71, 5_714.29, 0]
-    nj_gross_income: [1_714.29, 34_285.71, 3_000]
+    nj_claim_of_right_offset: [2_000, 4_000, 0]
+    nj_gross_income: [0, 36_000, 3_000]
 
 - name: Case 6, the federal credit method does not change the offset.
   period: 2025
@@ -231,3 +230,85 @@
     nj_total_income: 22_000
     nj_other_retirement_income_exclusion: 22_000
     nj_agi: 0
+
+# Wages $30,000, $5,000 of interest, all of it on U.S. Treasury obligations,
+# which New Jersey does not tax and subtracts from gross income separately. A
+# repaid $8,000 of interest has no New Jersey-taxable interest to offset, so
+# total income stays $30,000.
+- name: Case 11, a repayment of interest does not offset interest New Jersey exempts.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        taxable_interest_income: 5_000
+        us_govt_interest_person: 5_000
+        claim_of_right_repayment: 8_000
+        nj_claim_of_right_repayment_category: INTEREST
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: NJ
+  output:
+    nj_claim_of_right_offset: 0
+    nj_total_income: 30_000
+
+# Joint return: head aged 70 with wages $30,000 and a $20,000 pension; spouse
+# aged 40 with a $20,000 pension. Line 27 is $70,000 - $8,000 = $62,000 either
+# way. Only the head is old enough for the pension exclusion, so line 28a is
+# the head's own pension (Line A, joint filers): $20,000 when the spouse repaid
+# $8,000 of the spouse's pension (line 29 $42,000), $12,000 when the head
+# repaid it (line 29 $50,000). Wages exceed $3,000, so no Worksheet D.
+- name: Case 12, a pension repayment by the younger spouse leaves the older spouse's exclusion whole.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+        taxable_pension_income: 20_000
+      spouse:
+        age: 40
+        taxable_pension_income: 20_000
+        claim_of_right_repayment: 8_000
+        nj_claim_of_right_repayment_category: PENSIONS_AND_ANNUITIES
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NJ
+  output:
+    nj_claim_of_right_pension_offset: [0, 8_000]
+    nj_eligible_pension_income: [20_000, 0]
+    nj_agi: 42_000
+
+- name: Case 13, a pension repayment by the older spouse reduces that spouse's exclusion.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+        employment_income: 30_000
+        taxable_pension_income: 20_000
+        claim_of_right_repayment: 8_000
+        nj_claim_of_right_repayment_category: PENSIONS_AND_ANNUITIES
+      spouse:
+        age: 40
+        taxable_pension_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: NJ
+  output:
+    nj_claim_of_right_pension_offset: [8_000, 0]
+    nj_eligible_pension_income: [12_000, 0]
+    nj_agi: 50_000

@@ -23,36 +23,57 @@ CATEGORY_SOURCES = {
 }
 
 
+# Amounts in a category's sources that New Jersey does not tax and subtracts
+# from gross income separately, so a repayment cannot offset them.
+CATEGORY_EXEMPT_SOURCES = {
+    NJClaimOfRightRepaymentCategory.INTEREST: "interest",
+}
+
+
 def nj_claim_of_right_category_offset(person, period, parameters, category):
     """A person's share of the return's claim of right offset in one category.
 
     New Jersey applies a repayment against income of the same category in the
     year of repayment, and reports a category left negative as zero (N.J.S.A.
-    54A:5-2; TAM 2011-7). So the return's offset in a category is the smaller
-    of the head's and spouse's repayments of that category and their income in
-    it. Each bears it in proportion to their own income in the category, so
-    no one's income in the category falls below zero. Dependents' repayments
-    and income belong on their own returns.
+    54A:5-2; TAM 2011-7). A repayment first offsets the repayer's own taxable
+    income in the category; on a joint return, whose category line combines
+    both spouses, any excess offsets the other spouse's income in it. So the
+    return's offset is the smaller of the filers' repayments of the category
+    and their income in it, and no one's income in the category falls below
+    zero. Dependents' repayments and income belong on their own returns.
     """
-    p = parameters(
-        period
-    ).gov.states.nj.tax.income.gross_income.claim_of_right_category_sources
+    gross_income = parameters(period).gov.states.nj.tax.income.gross_income
     head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-    repayment = person("claim_of_right_repayment", period) * head_or_spouse
     repaid_category = person("nj_claim_of_right_repayment_category", period)
-    sources = getattr(p, CATEGORY_SOURCES[category])
-    income = max_(add(person, period, sources), 0) * head_or_spouse
-    # The tax unit sums below are repeated for each member.
-    return_income = person.tax_unit.sum(income)
-    return_repayment = person.tax_unit.sum(repayment * (repaid_category == category))
-    return_offset = min_(return_repayment, return_income)
-    share = np.divide(
-        income,
-        return_income,
-        out=np.zeros_like(income),
-        where=return_income > 0,
+    repayment = (
+        person("claim_of_right_repayment", period)
+        * head_or_spouse
+        * (repaid_category == category)
     )
-    return share * return_offset
+    sources = getattr(
+        gross_income.claim_of_right_category_sources, CATEGORY_SOURCES[category]
+    )
+    income = add(person, period, sources)
+    if category in CATEGORY_EXEMPT_SOURCES:
+        exempt = getattr(
+            gross_income.claim_of_right_category_exempt_sources,
+            CATEGORY_EXEMPT_SOURCES[category],
+        )
+        income = income - add(person, period, exempt)
+    income = max_(income, 0) * head_or_spouse
+    own_offset = min_(repayment, income)
+    # The tax unit sums below are repeated for each member.
+    excess = person.tax_unit.sum(repayment - own_offset)
+    remaining_income = income - own_offset
+    return_remaining_income = person.tax_unit.sum(remaining_income)
+    excess_offset = min_(excess, return_remaining_income)
+    share = np.divide(
+        remaining_income,
+        return_remaining_income,
+        out=np.zeros_like(remaining_income),
+        where=return_remaining_income > 0,
+    )
+    return own_offset + share * excess_offset
 
 
 class nj_claim_of_right_repayment_category(Variable):

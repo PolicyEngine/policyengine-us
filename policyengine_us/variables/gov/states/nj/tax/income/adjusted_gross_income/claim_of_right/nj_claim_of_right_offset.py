@@ -14,11 +14,11 @@ class nj_claim_of_right_offset(Variable):
         "Reduction in a person's New Jersey gross income for a claim of "
         "right repayment. New Jersey applies a repayment against income of "
         "the same category in the year of repayment, and a category with a "
-        "net negative amount is reported as zero, so the return's offset in "
-        "each category is the smaller of its filers' repayments and their "
-        "income in that category. Each spouse bears the offset in proportion "
-        "to their own income in the category. New Jersey has no counterpart "
-        "to the section 1341 credit, so the federal method does not matter."
+        "net negative amount is reported as zero. A repayment offsets the "
+        "repayer's own taxable income in the category first; on a joint "
+        "return any excess offsets the other spouse's. New Jersey has no "
+        "counterpart to the section 1341 credit, so the federal method does "
+        "not matter."
     )
     definition_period = YEAR
     reference = (
