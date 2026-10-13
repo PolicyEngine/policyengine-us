@@ -1,0 +1,82 @@
+---
+title: "Capital gains realization responses"
+subtitle: "Three functional forms, how each treats a 0% rate, and how to calibrate them"
+---
+
+When a reform changes the tax rate on capital gains, people change how much gain they realize. PolicyEngine US models this as a change in each person's long-term capital gains, driven by the change in their marginal tax rate on capital gains. This page describes how that response is computed and the three functional forms it can take. It is maintained with the code in [`capital_gains_responses.py`](https://github.com/PolicyEngine/policyengine-us/blob/main/policyengine_us/variables/gov/simulation/capital_gains_responses.py) and [`capital_gains_response_forms.py`](https://github.com/PolicyEngine/policyengine-us/blob/main/policyengine_us/variables/gov/simulation/capital_gains_response_forms.py).
+
+## The response
+
+For each person,
+
+```text
+capital_gains_behavioral_response = long_term_capital_gains_before_response × f(τ0, τ1)
+long_term_capital_gains           = long_term_capital_gains_before_response + capital_gains_behavioral_response
+```
+
+so gains after the response are the pre-response gains times the multiplier `1 + f`. The response is zero unless the simulation is a reform with a baseline and one of the three parameters under `gov.simulation.capital_gains_responses` is nonzero. All three default to zero.
+
+`τ0` and `τ1` are the person's marginal tax rates on capital gains under baseline and reform policy. Both come from `marginal_tax_rate_on_capital_gains`, measured in two branches that hold the same pre-response inputs and have every behavioral response switched off (`get_behavioral_response_measurements`). The rate is a household finite difference, `1 − Δ household_net_income / $1,000`, for an extra $1,000 of gains. It is measured for the two adults in each household with the largest long-term gains and is zero for everyone else, so other members do not respond. Because `household_net_income` includes benefits and refundable credits, the rate can fall outside [0, 1] where the extra $1,000 crosses a benefit cliff or phase-in.
+
+## The three forms
+
+Set exactly one parameter. Setting more than one raises an error, because the forms are alternatives and combining them would apply the response more than once.
+
+| Parameter | Realizations scale as | Accepted values | Single-rate revenue `τ·R` peaks at | Rates used |
+|---|---|---|---|---|
+| `elasticity` (log-rate) | `τ^ε` | any finite ε; usually negative | nowhere below 100% for −1 < ε ≤ 0 | floored at 0.001 |
+| `semi_elasticity` | `exp(−β·τ)` | 0 < β ≤ 50 | `τ = 1/β` when β > 1 | clipped to [0, 1] |
+| `net_of_tax_elasticity` | `(1 − τ)^e` | 0 < e ≤ 5 | `τ = 1/(1 + e)` when e ≥ 0.003 | clipped to [0, 0.999] |
+
+So the multipliers are
+
+```text
+log-rate:     1 + f = exp(ε · [ln τ1 − ln τ0])
+semi:         1 + f = exp(−β · (τ1 − τ0))
+net-of-tax:   1 + f = exp(e · [ln(1 − τ1) − ln(1 − τ0)])
+```
+
+The two new forms reject a parameter that is negative, above its maximum or not finite, at the policy level and for any person-level override. Their parameters are positive where realizations fall as the rate rises, the opposite of the log-rate elasticity's usual sign, so a semi-elasticity entered as −3.4 is an error rather than a silent reversal. The maxima keep the dollar response finite in the model's 32-bit arithmetic for any gains below $10 quadrillion; the nonzero semi-elasticities in CRS R41364's Table 1 run from 1.0 to 4.1. A new form's response that is still not finite, which can happen only if a measured rate or a person's gains is not finite or the gains exceed that $10 quadrillion bound, also raises an error. The log-rate form accepts any finite elasticity and keeps its original arithmetic.
+
+In every form `f = 0` when `τ1 = τ0`, and `1 + f` is never negative, so the response never flips the sign of a person's gains; for a net loss, a smaller multiplier moves the loss toward zero. With a negative log-rate elasticity and the new forms' positive parameters, the multiplier does not rise as `τ1` rises. Multipliers compose along a path of rates up to floating-point rounding, which the model's 32-bit arithmetic makes visible: for a round trip from 0% to 100% and back at β = 3.4, the product differs from 1 by at most 32 times float32 machine epsilon (about 3.8 × 10^−6); at β = 20 the product is 0 because the outbound response factor rounds to −1. In 64-bit arithmetic the same β = 20 round trip differs from 1 by at most 2 × 10^−7. In 64-bit arithmetic the composition holds to one part in 10^9 wherever each multiplier is at least 10^−6. The test suite checks these properties, and each form's single-rate revenue peak, for every input [Hypothesis](https://hypothesis.readthedocs.io/) draws (`policyengine_us/tests/core/test_capital_gains_response_forms.py`).
+
+These peaks are for a single flat rate on all gains. A progressive schedule, the net investment income tax, the alternative minimum tax, state taxes and benefit interactions move the model's revenue-maximizing statutory rate away from them.
+
+### Log-rate form
+
+This was the only form before the other two were added, and it remains the one used whenever `elasticity` is set; its results are unchanged. In a single-rate model revenue is proportional to `τ^(1+ε)`, so with any elasticity between −1 and 0, revenue keeps rising up to a 100% rate. The Joint Committee on Taxation (JCT) staff made the same point about this equation in 1990: it "would predict no tax rate at which revenue is maximized" ([JCS-12-90](https://www.jct.gov/getattachment/9cbc5fb2-3452-4e67-8edf-7b41fa12bdeb/jcs-12-90-3157.pdf#page=66), Appendix B, equation [5]).
+
+The log of a 0% rate is undefined, so both rates are floored at 0.001. A person whose baseline rate is 0%, such as someone whose gains fall in the 0% bracket in a state without an income tax, therefore gets a log change of `ln(τ1 / 0.001)`. A move from 0% to 15% is a log change of about 5.0, and at ε = −0.7 it removes about 97% of their realizations. In a household test, a person in the 0% bracket facing a new 10% rate loses 96% of their gains under ε = −0.7.
+
+### Semi-elasticity form
+
+The response depends only on the change in the rate, so it is defined at a 0% baseline without a floor. The same person loses 29% of their gains at β = 3.4. β is roughly the percent fall in realizations per percentage-point rise in the rate.
+
+Single-rate revenue `τ · A · exp(−βτ)` has derivative `A · exp(−βτ) · (1 − βτ)`, so it peaks at `τ = 1/β` when that is below 1. Without the clip described below, a fixed state rate `s` that adds to the federal rate `t` multiplies realizations by the constant `exp(−βs)`, so the analytical peak of single-rate federal revenue `t · R` stays at a federal rate (including the net investment income tax) of `1/β`. With the clip, realizations stop falling once `t + s` reaches 100%, and federal revenue then rises with `t`. The analytical peak is the maximum only when `β(1 − s) − ln β > 1`, which for β from 3.1 to 3.51 means a state rate below about 31% to 36%; otherwise revenue at a 100% federal rate is higher. With no state rate the condition holds for every β above 1.
+
+Rates are clipped to [0, 1] before the change is taken. Without the clip, a household whose measured baseline rate is 10 because of a benefit cliff, and whose reform removes the cliff, would have its realizations multiplied by `exp(9.75β)`. With it, the multiplier `1 + f` stays between `exp(−β)` and `exp(β)`.
+
+### Net-of-tax form
+
+Agersnap and Zidar (2021) estimate realization responses to the log net-of-tax rate. The [Yale Budget Lab's](https://budgetlab.yale.edu/research/revenue-potential-taxes-top) model also specifies its realization response on the net-of-tax rate, within a dynamic model of realizing or deferring gains that this constant-elasticity form does not reproduce. The log of the net-of-tax share is undefined at a 100% rate, the mirror of the log-rate form's problem at 0%, so rates are clipped to at most 0.999. Realizations therefore stop falling above a 99.9% rate, and single-rate revenue rises again there; for elasticities below about 0.0027, whose analytical peak is above 99.7%, revenue at 100% is higher than at that peak. A baseline rate at the cap gives a large response to a reform rate well below it.
+
+## Calibration
+
+| Source | Form | Value | Single-rate revenue-maximizing rate |
+|---|---|---|---|
+| JCT staff, 1990 ([JCS-12-90](https://www.jct.gov/getattachment/9cbc5fb2-3452-4e67-8edf-7b41fa12bdeb/jcs-12-90-3157.pdf#page=62), printed pp. 54 and 59) | `ln(realizations) = a + b·MTR`, b = −0.0351 per percentage point | β = 3.51 | 28.5% |
+| JCT, as reported by the Congressional Research Service in 2021 ([R41364](https://www.congress.gov/crs_external_products/R/PDF/R41364/R41364.13.pdf#page=10), Table 1) and 2025 ([R48562](https://www.congress.gov/crs_external_products/R/PDF/R48562/R48562.1.pdf#page=11)) | Semi-log | β = 3.1 | 32.3% |
+| Treasury, as reported in CRS R41364 | Semi-log | β = 3.25 | 30.8% |
+| CBO time-series forecasting model (2010), as reported in CRS R41364 | Semi-log | β = 1.76 | 56.8% |
+| Dowd, McClelland and Muthitacharoen ([2015](https://doi.org/10.17310/ntj.2015.3.02)), as reported in CRS R41364 | Semi-log | β = 4.1 | 24.4% |
+| Agersnap and Zidar ([2021](https://doi.org/10.1257/aeri.20200535)) | Net-of-tax | | Federal: 33% to 47% across their 10-year specifications; 38% to 47% over years 6 to 10 |
+
+A target revenue-maximizing rate `τ*` maps to `β = 1/τ*`: 28.5% is 3.51, 29% is 3.45 and 30% is 3.33. JCT's 1990 coefficient gives 28.5%. CRS reported in 2021 that JCT used 3.1, which gives 32.3%, and in 2025 that JCT "has used" 3.1. JCT's staff also cautioned that a revenue-maximizing rate is very sensitive to the functional form chosen and that they did not find it a useful summary of taxpayer responsiveness (JCS-12-90, printed p. 5 and pp. 41–42).
+
+JCT's coefficient applies to the marginal rate from its individual income tax model. PolicyEngine applies `β` to the change in a household's marginal rate on gains, which also includes state income tax, the net investment income tax and benefit interactions. Because only the change enters, a federal rate change that passes through one-for-one produces the response JCT's equation would.
+
+## Known limitation: how the rate is measured
+
+`marginal_tax_rate_on_capital_gains` raises the person's `capital_gains` input by $1,000. Gross income counts `capital_gains`, but the preferential-rate computation reads `long_term_capital_gains`, which that override does not change. So the extra $1,000 reaches adjusted gross income but not net capital gain, and the measured rate can reflect ordinary rates, deductions and how gains stack on other income rather than the long-term rate. In household tests for 2026, the measured rate for a Texas filer with $100 million of long-term gains is 0.296 rather than about 0.24 (20% plus the 3.8% net investment income tax) from raising long-term gains directly, with the alternative minimum tax making up the difference; for a Texas filer with $60,000 of wages and $200,000 of gains it is 0.308 rather than 0.188. Raising the top capital gains rate from 20% to 28% leaves the first filer's measured rate unchanged, so no form produces a response to that reform. All three forms take their rates from this measurement. [PolicyEngine US #10058](https://github.com/PolicyEngine/policyengine-us/pull/10058) raises long-term gains instead.
+
+Separately, the measured rate stops rising once a top capital gains rate exceeds the top ordinary rate. 26 U.S.C. 1(h)(1) caps the tax on gains at the tax at ordinary rates (`limit_to_tax_at_main_rates`), so raising only the capital gains rates cannot tax large gains above about 37% plus the net investment income tax.
