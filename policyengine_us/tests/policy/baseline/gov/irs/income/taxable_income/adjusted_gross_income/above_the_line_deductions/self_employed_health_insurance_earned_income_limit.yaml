@@ -205,3 +205,29 @@
   output:
     self_employment_tax_ald_person: 706.4775
     self_employed_health_insurance_earned_income_limit: 9_293.5225
+
+- name: Case 18, a named partnership sets the limit even when the farm earns more.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    farm_operations_income: 40_000
+    partnership_self_employment_net_earnings: 10_000
+    self_employed_health_insurance_plan_business: PARTNERSHIP
+  output:
+    # Line 15: 50,000 x 0.9235 x 0.153 / 2 = 3,532.3875.
+    self_employment_tax_ald_person: 3_532.3875
+    # Lines 5 to 8: 10,000 / 50,000 = 0.2; 10,000 - 0.2 x 3,532.3875.
+    self_employed_health_insurance_earned_income_limit: 9_293.5225
+
+- name: Case 19, a named S corporation sets the limit even when the Schedule C business earns more.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    employment_income: 10_000
+    s_corp_shareholder_medicare_wages: 10_000
+    self_employment_income: 50_000
+    self_employed_health_insurance_plan_business: S_CORPORATION
+  output:
+    # Line 11: 10,000. The Schedule C business would give
+    # 50,000 - 50,000 x 0.9235 x 0.153 / 2 = 46,467.6125.
+    self_employed_health_insurance_earned_income_limit: 10_000

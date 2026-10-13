@@ -28,10 +28,10 @@ the four businesses. For every filer and year:
    equals half of the self-employment tax. Without a named business, the
    limit is the largest of the four.
 2. Differential: the limit without a named business equals the largest of the
-   limits the model computes when each business is named.
-3. Bounds: 0 <= deduction <= premiums; the limit is at least the Schedule C
-   limit (widening the base never lowers the deduction) and at most the sum
-   of the four businesses' limits (one plan cannot pool businesses).
+   limits the model computes when each business is named, so one plan never
+   pools the earned income of two businesses.
+3. Bounds: 0 <= deduction <= premiums, and the limit is at least the Schedule
+   C limit (widening the base never lowers the deduction).
 4. Monotone in premiums: raising premiums by d raises the deduction by at
    least 0 and at most d, and leaves the limit unchanged.
 5. For a filer with no business losses whose income is wages and
@@ -183,7 +183,6 @@ def check_properties(sim, filers, n):
         assert np.all(deduction >= 0)
         assert at_least(premiums, deduction)
         assert at_least(copy(limit, "u"), line_13["SCHEDULE_C"])
-        assert at_least(named.sum(axis=0), copy(limit, "u"))
 
         # 4. Monotone and 1-Lipschitz in premiums; the limit ignores premiums.
         base, raised = copy(deduction, "u"), copy(deduction, "r")

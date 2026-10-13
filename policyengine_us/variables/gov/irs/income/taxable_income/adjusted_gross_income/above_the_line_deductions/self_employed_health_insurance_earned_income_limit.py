@@ -34,6 +34,7 @@ class self_employed_health_insurance_earned_income_limit(Variable):
         "https://www.law.cornell.edu/uscode/text/26/401#c_2_A",
         "https://www.irs.gov/pub/irs-prior/f7206--2023.pdf#page=1",
         # Where a plan may be established, and one Form 7206 per plan.
+        # PDF pages 1-2
         "https://www.irs.gov/pub/irs-prior/i7206--2023.pdf#page=1",
         # The worksheet Form 7206 replaced, used before 2023.
         "https://www.irs.gov/pub/irs-prior/p535--2022.pdf#page=23",
