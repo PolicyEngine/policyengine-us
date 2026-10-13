@@ -8,13 +8,20 @@ class oh_rss(Variable):
     definition_period = MONTH
     unit = USD
     defined_for = "oh_rss_eligible"
-    reference = "https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01"
+    reference = (
+        "https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01",
+        "https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-05.1",
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.oh.dbh.rss
         limits = parameters(period).gov.ssa.ssi.eligibility.resources.limit
         eligible = person("oh_rss_eligible", period)
         couple = person.marital_unit.sum(eligible) == 2
+        # When only one spouse qualifies, 5160:1-5-01(E)(3) applies the
+        # individual standard: own resources against $2,000. Source conflict:
+        # 5160:1-3-05.1(B)(9)(b) and 5160:1-3-05.20(E) would combine the
+        # couple's resources against $3,000.
         resources = person("ssi_countable_resources", period.this_year)
         resources = where(couple, person.marital_unit.sum(resources), resources)
         limit = where(couple, limits.couple, limits.individual)
@@ -27,6 +34,8 @@ class oh_rss(Variable):
         days = clip(person("oh_rss_days_of_placement", period), 0, period.days)
         # First-month placement is prorated after rounding the daily payment
         # upward to the cent. Full months retain the unprorated benefit.
-        daily_payment = np.ceil(payment.astype(np.float64) / period.days * 100) / 100
+        daily_payment = (
+            np.ceil(payment.astype(np.float64) / period.days * 100 - 1e-8) / 100
+        )
         partial = np.ceil(daily_payment * days * 100 - 1e-8) / 100
         return (resources <= limit) * where(days == period.days, payment, partial)

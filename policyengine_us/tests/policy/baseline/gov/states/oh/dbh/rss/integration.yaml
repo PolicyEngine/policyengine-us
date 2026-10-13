@@ -59,7 +59,8 @@
         medicaid_enrolled: true
       person2:
         age: 40
-        social_security_retirement: 60_000
+        # BLS OEWS May 2025, Ohio all-occupations median annual wage.
+        employment_income: 49_380
     marital_units:
       couple:
         members: [person1, person2]
@@ -71,6 +72,16 @@
         members: [person1, person2]
         state_code: OH
   output:
+    # SSI deems the spouse's wages: 49,380 / 12 = 4,115;
+    # (4,115 - 20 - 65) / 2 = 2,015.
+    ssi_income_deemed_from_ineligible_spouse: [2_015, 0]
+    # Couple rate under deeming: 1,491 - 2,015 < 0.
+    ssi: [0, 0]
+    oh_rss_eligible: [true, false]
+    # RSS counts only person1's own income (0) plus SSI (0). Person2 is not
+    # an RSS candidate; person2's own wages compute to (4,115 - 85) / 2 = 2,015.
+    oh_rss_countable_income: [0, 2_015]
+    # 1,600 fee + 200 allowance - 0 = 1,800.
     oh_rss: [1_800, 0]
 
 - name: Case 4, combined resource boundary.
@@ -157,3 +168,65 @@
     oh_rss_days_of_placement: 15
   output:
     oh_rss: 403.05
+
+- name: Case 8, couple income pooled with one general exclusion.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        oh_rss_certified: true
+        medicaid_enrolled: true
+        social_security_retirement: 12_000
+      person2:
+        age: 70
+        oh_rss_certified: true
+        medicaid_enrolled: true
+        social_security_retirement: 12_000
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OH
+  output:
+    oh_rss_eligible: [true, true]
+    # SSI couple computation: (1,000 + 1,000 - 20) / 2 = 990 each.
+    ssi_countable_income: [990, 990]
+    # 1,491 / 2 = 745.50 - 990 < 0.
+    ssi: [0, 0]
+    # RSS pools the couple's income: (2,000 - 20) / 2 = 990 each (not
+    # 1,000 - 20 = 980 with a separate exclusion per spouse); SSI adds 0.
+    oh_rss_countable_income: [990, 990]
+    # 1,600 fee + 200 allowance - 990 = 810 each.
+    oh_rss: [810, 810]
+
+- name: Case 9, partial month with a whole-cent daily amount.
+  period: 2026-04
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OH
+    age:
+      2026: 65
+    oh_rss_certified: true
+    medicaid_enrolled:
+      2026: true
+    # $1,578.50 a month, chosen so the daily amount is a whole cent.
+    social_security_retirement:
+      2026: 18_942
+    oh_rss_days_of_placement: 15
+  output:
+    oh_rss_eligible: true
+    # 18,942 / 12 = 1,578.50; 1,578.50 - 20 = 1,558.50; 994 - 1,558.50 < 0.
+    ssi: 0
+    # 1,558.50 + SSI 0.
+    oh_rss_countable_income: 1_558.5
+    # 1,800 - 1,558.50 = 241.50; 241.50 / 30 days = 8.05 exactly (no
+    # float round-up to 8.06); 8.05 x 15 days = 120.75.
+    oh_rss: 120.75

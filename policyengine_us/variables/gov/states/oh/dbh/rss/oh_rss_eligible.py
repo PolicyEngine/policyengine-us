@@ -7,7 +7,10 @@ class oh_rss_eligible(Variable):
     label = "Meets Ohio RSS categorical and placement requirements"
     definition_period = MONTH
     defined_for = StateCode.OH
-    reference = "https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01"
+    reference = (
+        "https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01",
+        "https://codes.ohio.gov/ohio-administrative-code/rule-5122-36-02",
+    )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.oh.dbh.rss

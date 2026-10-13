@@ -10,6 +10,7 @@ class oh_rss_countable_income(Variable):
     label = "Ohio RSS countable income"
     definition_period = MONTH
     unit = USD
+    defined_for = StateCode.OH
     reference = (
         "https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-5-01",
         "https://codes.ohio.gov/ohio-administrative-code/rule-5160:1-3-03.2",
