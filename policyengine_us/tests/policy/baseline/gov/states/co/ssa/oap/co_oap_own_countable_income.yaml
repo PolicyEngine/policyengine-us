@@ -32,15 +32,15 @@
     co_oap_own_countable_income: 5_760
 
 - name: Case 3, unearned income under $20 passes the rest of the disregard to earnings.
-  # $10/month of interest and $500/month of earnings. The disregard covers the
-  # $10 of interest (3.533(A)(2)(c)) and the other $10 reduces earnings
+  # $10/month of pension and $500/month of earnings. The disregard covers the
+  # $10 of pension (3.533(A)(2)(c)) and the other $10 reduces earnings
   # (3.533(A)(2)(f)): (500 - 65 - 10) / 2 = 212.50/month, or 2,550/year.
   period: 2026
   input:
     people:
       person:
         age: 62
-        interest_income: 120
+        pension_income: 120
         employment_income: 6_000
     households:
       household:
@@ -206,3 +206,45 @@
     employment_income: 6_000
   output:
     co_oap_own_countable_income: 2_610
+
+- name: Case 12, interest and dividends on countable resources are exempt.
+  # 3.520.786(K) exempts the unearned income SSA excludes, including interest
+  # and dividends on countable resources (20 CFR 416.1124(c)(22)).
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        interest_income: 360
+        dividend_income: 240
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: 0
+    co_oap: 12_384
+
+- name: Case 13, child support received is exempt.
+  # 3.520.786(N) exempts child support received by the client for another
+  # person, and (P) arrears received for the client. A 62-year-old caring for
+  # their child receives $500/month.
+  period: 2026
+  input:
+    people:
+      parent:
+        age: 62
+        child_support_received: 6_000
+      child:
+        age: 10
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CO
+  output:
+    co_oap_own_countable_income: [0, 0]
+    co_oap: [12_384, 0]

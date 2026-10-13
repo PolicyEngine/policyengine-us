@@ -20,20 +20,22 @@ Medicaid, (B) the spouse is not, (C) as B with extra spousal earnings, and
    zero or between the floor and the standard each month.
 2. Singles: for a client not on SSI, with no earnings or at least $20 of
    unearned income, 3.533(A) counts the same income as SSI's exclusions
-   (20 CFR 416.1112, 416.1124) applied to the same gross income. For a
-   client on SSI, 3.533(A) never counts less than SSI does.
+   (20 CFR 416.1112, 416.1124) applied to the same gross income, interest
+   excluded (3.520.786(K)). For a client on SSI with no interest, 3.533(A)
+   never counts less than SSI does. (PolicyEngine's SSI counts interest,
+   which 20 CFR 416.1124(c)(22) excludes on countable resources.)
 3. Exemption: a spouse's Medicaid enrollment can only lower the client's
    countable income and raise OAP.
-4. Monotonicity: more spousal earnings never lower the client's countable
-   income, and never raise OAP unless they lower the client's own SSI. That
-   exception is intended: OAP counts the client's SSI, and a spouse's
-   earnings lower it under SSI's couple computation or spousal deeming
-   (e.g. an SSI couple aged 65 with no income: $85/month of spousal
-   earnings cut each spouse's SSI by $0.02, and OAP rises by as much).
-   Countable income is checked only while the client's SSI receipt is
-   unchanged or the client has no shelter support: Colorado's own ISM for
-   a client not on SSI (3.520.79(C)) is not modeled, so a client whom more
-   spousal earnings take off SSI also loses SSA's matching ISM.
+4. Monotonicity: while both spouses' SSI is unchanged, more spousal
+   earnings never lower the client's countable income or raise OAP. When
+   they change SSI, either can move the other way, as intended: OAP counts
+   the client's SSI (an SSI couple aged 65 with no income: $85/month of
+   spousal earnings cut each spouse's SSI by $0.02, and OAP rises by as
+   much); SSI falling under $20 releases the 3.533(A)(2)(f) spillover; a
+   client taken off SSI loses SSA's matching ISM, because Colorado's own ISM
+   for clients not on SSI (3.520.79(C)) is not modeled; and a spouse on SSI
+   above the OAP limit has SSI deemed (3.534(B)(1)), which their earnings
+   below the $65 disregard can lower.
 5. Role invariance: the client's countable income and OAP do not depend on
    which spouse is the tax-unit head.
 
@@ -81,7 +83,7 @@ def build_situation(cases):
                 "ssi_receives_outside_shelter_support": {YEAR: c["shelter_support"]},
                 # Set for everyone: an input for some people gives the others
                 # its default (false), not its formula.
-                "medicaid_enrolled_for_ssi_state_supplement": {YEAR: True},
+                "co_oap_medicaid_enrolled": {YEAR: True},
             }
             members = [client]
             if c["married"]:
@@ -90,9 +92,7 @@ def build_situation(cases):
                     "age": {YEAR: c["spouse_age"]},
                     "employment_income": {YEAR: c["spouse_earnings"] + extra},
                     "pension_income": {YEAR: c["spouse_pension"]},
-                    "medicaid_enrolled_for_ssi_state_supplement": {
-                        YEAR: arrangement == "A"
-                    },
+                    "co_oap_medicaid_enrolled": {YEAR: arrangement == "A"},
                 }
                 members = [spouse, client] if arrangement == "D" else [client, spouse]
                 head, partner = members
@@ -127,8 +127,8 @@ def calculate(cases):
     return results, simulation.tax_benefit_system.parameters, p
 
 
-def assert_properties(cases):
-    results, parameters, p = calculate(cases)
+def assert_properties(cases, calculated=None):
+    results, parameters, p = calculated or calculate(cases)
     standard, floor = p.grant_standard, p.payment_floor
     oap = results["co_oap"]
     countable = results["co_oap_countable_income"]
@@ -141,30 +141,32 @@ def assert_properties(cases):
             # within the year.
             total = (ssi[client] + countable[client]) / 12
             paid = oap[client] / 12
-            # 1. Payment rule and bounds.
+            # 1. Payment rule and bounds, in cents. Within a cent of the
+            # standard, float32 sums can round either way; YAML pins those.
+            grant = round(standard - total, 2)
             if not eligible[client]:
                 assert paid == 0, c
-            elif total < standard - TOLERANCE:
-                assert paid == pytest.approx(max(standard - total, floor), abs=0.05)
+            elif grant >= 0.02:
+                assert paid == pytest.approx(max(grant, floor), abs=0.05), c
                 assert floor - TOLERANCE <= paid <= standard + TOLERANCE, c
-            elif total > standard + TOLERANCE:
+            elif grant <= -0.01:
                 assert paid == 0, c
         client = f"client_A{i}"
         if not c["married"]:
             # 2. Singles, against SSI's exclusions on the same gross income.
             own = results["co_oap_own_countable_income"][client]
             if ssi[client] > 0:
-                assert own >= results["ssi_countable_income"][client] - TOLERANCE, c
+                if c["client_interest"] == 0:
+                    assert own >= results["ssi_countable_income"][client] - (
+                        TOLERANCE
+                    ), c
             elif not c["shelter_support"]:
-                other_unearned = (
-                    c["client_pension"]
-                    + c["client_interest"]
-                    + c["client_social_security"]
-                )
-                if c["client_earnings"] == 0 or other_unearned >= 20 * 12:
+                # Interest is exempt (3.520.786(K)); the other sources count.
+                unearned = results["ssi_unearned_income"][client] - c["client_interest"]
+                if c["client_earnings"] == 0 or unearned >= 20 * 12:
                     expected = _apply_ssi_exclusions(
                         np.array([results["ssi_earned_income"][client]]),
-                        np.array([results["ssi_unearned_income"][client]]),
+                        np.array([unearned]),
                         parameters,
                         YEAR,
                     )[0]
@@ -174,11 +176,13 @@ def assert_properties(cases):
         # 3. The Medicaid exemption only lowers countable income.
         assert countable[a] <= countable[b] + TOLERANCE, c
         assert oap[a] >= oap[b] - TOLERANCE, c
-        # 4. More spousal earnings never lower countable income, and raise
-        # OAP only through the client's SSI.
-        if (ssi[c_] > 0) == (ssi[b] > 0) or not c["shelter_support"]:
+        # 4. With the client's SSI unchanged, more spousal earnings never
+        # lower countable income or raise OAP.
+        spouse_b, spouse_c = f"spouse_B{i}", f"spouse_C{i}"
+        if ssi[c_] == pytest.approx(ssi[b], abs=TOLERANCE) and ssi[
+            spouse_c
+        ] == pytest.approx(ssi[spouse_b], abs=TOLERANCE):
             assert countable[c_] >= countable[b] - TOLERANCE, c
-        if ssi[c_] == pytest.approx(ssi[b], abs=TOLERANCE):
             assert oap[c_] <= oap[b] + TOLERANCE, c
         # 5. Roles.
         assert countable[d] == pytest.approx(countable[b], abs=TOLERANCE), c
@@ -186,7 +190,7 @@ def assert_properties(cases):
 
 
 def test_worked_example():
-    """co_oap YAML Case 22, with and without the spouse on Medicaid. The
+    """co_oap YAML Case 22, adding the spouse on Medicaid. The
     client, 62, has no income; the spouse, 50, earns $2,000/month. Without
     Medicaid, 3.534(A) deems (2,000 - 65) / 2 = 967.50 and the grant of
     1,032 - 967.50 = 64.50 is raised to the $189 floor. With the spouse on
@@ -206,14 +210,15 @@ def test_worked_example():
         "spouse_pension": 0,
         "extra_spouse_earnings": 1_200,
     }
-    results, _, _ = calculate([case])
+    calculated = calculate([case])
+    results = calculated[0]
     oap = results["co_oap"]
     countable = results["co_oap_countable_income"]
     assert oap["client_A0"] == pytest.approx(12_384, abs=TOLERANCE)
     assert countable["client_A0"] == pytest.approx(0, abs=TOLERANCE)
     assert oap["client_B0"] == pytest.approx(2_268, abs=TOLERANCE)
     assert countable["client_B0"] == pytest.approx(11_610, abs=TOLERANCE)
-    assert_properties([case])
+    assert_properties([case], calculated)
 
 
 try:

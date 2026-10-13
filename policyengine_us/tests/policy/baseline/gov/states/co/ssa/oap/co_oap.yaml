@@ -1,22 +1,23 @@
 - name: Case 1, countable income other than SSI reduces the grant.
-  # 9 CCR 2503-5 3.533(B): 952 x 12 - 1,000 = 10,424.
+  # 9 CCR 2503-5 3.533(B): 952 - 100 = 852/month, or 10,224/year.
   period: 2023
   input:
     co_oap_eligible: true
-    co_oap_countable_income: 1_000
+    co_oap_countable_income: 1_200
     ssi: 0
   output:
-    co_oap: 10_424
+    co_oap: 10_224
 
 - name: Case 2, SSI reduces the grant.
-  # 3.533(A)(2)(d) adds SSI back to countable income: 11,424 - 2,000 = 9,424.
+  # 3.533(A)(2)(d) adds SSI back to countable income: 952 - 200 = 752/month,
+  # or 9,024/year.
   period: 2023
   input:
     co_oap_eligible: true
     co_oap_countable_income: 0
-    ssi: 2_000
+    ssi: 2_400
   output:
-    co_oap: 9_424
+    co_oap: 9_024
 
 - name: Case 3, total countable income above the grant standard.
   period: 2023
@@ -343,3 +344,37 @@
     co_oap_deeming_exempt: [true, false]
     co_oap_deemed_income: [5_616, 0]
     co_oap: [6_768, 0]
+
+- name: Case 24, income equal to the standard in cents gets no floor.
+  # $65.40/month of earnings and $1,051.80/month of pension: (65.40 - 65) / 2
+  # = 0.20 plus 1,051.80 - 20 = 1,031.80 is exactly 1,032. 3.533: denied.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 784.80
+        pension_income: 12_621.60
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 0
+
+- name: Case 25, income one cent under the standard gets the floor.
+  # As Case 24 with $1,051.79/month of pension: total 1,031.99, a grant of
+  # 0.01 raised to 189.
+  period: 2026
+  input:
+    people:
+      person:
+        age: 62
+        employment_income: 784.80
+        pension_income: 12_621.48
+    households:
+      household:
+        members: [person]
+        state_code: CO
+  output:
+    co_oap: 2_268

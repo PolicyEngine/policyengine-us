@@ -18,7 +18,10 @@ class co_oap(Variable):
             # 9 CCR 2503-5 3.532(B), 3.533(B): the grant is the grant standard
             # less total countable income, SSI included (3.533(A)(2)(d)).
             income = person("ssi", month) + person("co_oap_countable_income", month)
-            grant = max_(0, p.grant_standard - income)
+            # Cents: monthly amounts derived from annual ones carry
+            # floating-point residue, which must not turn income equal to the
+            # standard into a positive grant.
+            grant = max_(0, np.round(p.grant_standard - income, 2))
             # 3.533 and 3.520.781(A): a client whose total countable income
             # equals or exceeds the grant standard is not eligible.
             # 3.531(D)(2), 3.532(B), 3.533(B): an eligible client's grant below

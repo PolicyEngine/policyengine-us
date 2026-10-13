@@ -6,7 +6,7 @@
     ssi: 4_800
     co_oap_own_countable_income: 7_200
     co_oap_eligible: false
-    medicaid_enrolled_for_ssi_state_supplement: false
+    co_oap_medicaid_enrolled: false
   output:
     co_oap_deeming_exempt: true
 
@@ -18,7 +18,7 @@
     ssi: 1_200
     co_oap_own_countable_income: 12_000
     co_oap_eligible: false
-    medicaid_enrolled_for_ssi_state_supplement: false
+    co_oap_medicaid_enrolled: false
   output:
     co_oap_deeming_exempt: false
 
@@ -30,7 +30,7 @@
     ssi: 0
     co_oap_own_countable_income: 12_384
     co_oap_eligible: false
-    medicaid_enrolled_for_ssi_state_supplement: true
+    co_oap_medicaid_enrolled: true
   output:
     co_oap_deeming_exempt: true
 
@@ -41,7 +41,7 @@
     ssi: 0
     co_oap_own_countable_income: 12_396
     co_oap_eligible: false
-    medicaid_enrolled_for_ssi_state_supplement: true
+    co_oap_medicaid_enrolled: true
   output:
     co_oap_deeming_exempt: false
 
@@ -54,7 +54,7 @@
     ssi: 0
     co_oap_own_countable_income: 12_372
     co_oap_eligible: true
-    medicaid_enrolled_for_ssi_state_supplement: false
+    co_oap_medicaid_enrolled: false
   output:
     co_oap_deeming_exempt: true
 
@@ -67,7 +67,7 @@
     ssi: 0
     co_oap_own_countable_income: 12_384
     co_oap_eligible: true
-    medicaid_enrolled_for_ssi_state_supplement: false
+    co_oap_medicaid_enrolled: false
   output:
     co_oap_deeming_exempt: false
 
@@ -78,7 +78,7 @@
     ssi: 0
     co_oap_own_countable_income: 0
     co_oap_eligible: false
-    medicaid_enrolled_for_ssi_state_supplement: false
+    co_oap_medicaid_enrolled: false
   output:
     co_oap_deeming_exempt: false
 
@@ -90,6 +90,6 @@
     receives_ssi: true
     co_oap_own_countable_income: 0
     co_oap_eligible: false
-    medicaid_enrolled_for_ssi_state_supplement: false
+    co_oap_medicaid_enrolled: false
   output:
     co_oap_deeming_exempt: true

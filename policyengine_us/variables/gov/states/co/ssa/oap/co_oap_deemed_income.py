@@ -16,35 +16,47 @@ class co_oap_deemed_income(Variable):
         # 3.534(C): no income is deemed from a spouse who receives Adult
         # Financial, SSI or Medicaid with income within the OAP limit.
         deemable = ~person("co_oap_deeming_exempt", period)
+        ssi = person("ssi", period)
         earned = person("ssi_earned_income", period) * deemable
-        unearned = person("ssi_unearned_income", period) * deemable
-        # 3.534(B)(5): court-ordered support obligations of the spouse. Whether
-        # the income is garnished instead is not modeled.
+        # 3.534(B)(1): the total unearned income of the spouse, SSI included
+        # (3.520.785(B)(1)), less exempt income (3.520.786).
+        unearned = (add(person, period, p.income.sources.unearned) + ssi) * deemable
+        # 3.534(B)(5): court-ordered support obligations of the spouse. We
+        # treat alimony paid as court-ordered. Whether the income is garnished
+        # instead is not modeled.
         support = (
             add(person, period, ["child_support_expense", "alimony_expense"]) * deemable
         )
-        marital_unit = person.marital_unit
-        spouse_earned = marital_unit.sum(earned) - earned
-        spouse_unearned = marital_unit.sum(unearned) - unearned
-        spouse_support = marital_unit.sum(support) - support
 
-        # 3.534(B)(3): for each dependent child in the household, half the SSI
-        # benefit standard for an individual less the child's own income.
+        # 3.534(B)(3): for each dependent child in the spouse's household,
+        # half the SSI benefit standard for an individual less the child's own
+        # income.
         year = period.this_year
         dependent_child = person("is_tax_unit_dependent", year) & person(
             "is_child", year
         )
-        child_income = add(person, period, ["ssi_earned_income", "ssi_unearned_income"])
+        child_income = (
+            person("ssi_earned_income", period)
+            + add(person, period, p.income.sources.unearned)
+            + ssi
+        )
         fbr = parameters(period).gov.ssa.ssi.amount.individual
         child_allocation = dependent_child * max_(
             0, fbr * p.income.deeming.child_allocation_share - child_income
         )
-        child_allocations = person.household.sum(child_allocation)
+        # Each person's household total; the spouse's reaches the client
+        # through the marital unit.
+        child_allocations = person.household.sum(child_allocation) * deemable
+
+        marital_unit = person.marital_unit
+
+        def spouse(values):
+            return marital_unit.sum(values) - values
 
         # 3.534(A): deduct $65 from the spouse's gross earned income and halve
         # the rest. Unlike SSI (20 CFR 416.1163) there is no deeming threshold.
         deemed_earned = (
-            max_(0, spouse_earned - p.income.disregards.earned)
+            max_(0, spouse(earned) - p.income.disregards.earned)
             * p.income.disregards.earned_share
         )
         # 3.534(B): deduct the OAP grant standard, child allocations and
@@ -52,8 +64,11 @@ class co_oap_deemed_income(Variable):
         # payments for uninsured dependents (3.534(B)(4)) are not modeled.
         deemed_unearned = max_(
             0,
-            spouse_unearned - p.grant_standard - child_allocations - spouse_support,
+            spouse(unearned)
+            - p.grant_standard
+            - spouse(child_allocations)
+            - spouse(support),
         )
         # Sponsor deeming (3.534(D)) and the institutionalized spouse's MMMNA
         # (3.534(C)) are not modeled.
-        return (deemed_earned + deemed_unearned) * (marital_unit.nb_persons() == 2)
+        return deemed_earned + deemed_unearned

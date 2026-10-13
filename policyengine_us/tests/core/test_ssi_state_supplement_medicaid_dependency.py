@@ -57,7 +57,7 @@ def test_ssp_snap_medicaid_calculation_order(year, state, benefit):
     assert results[0]["medicaid_enrolled"].tolist() == [True, state == "IN"]
 
 
-def co_oap_couple(year):
+def co_oap_couple(year, snap=None):
     """An Old Age Pension client whose spouse is a SNAP workfare participant."""
     people = {
         "client": {"age": {year: 62}},
@@ -68,32 +68,37 @@ def co_oap_couple(year):
         },
     }
     unit = {"unit": {"members": list(people)}}
+    spm_units = {"unit": {"members": list(people)}}
+    if snap is not None:
+        spm_units["unit"]["snap"] = {year: snap}
     return {
         "people": people,
-        **{
-            entity: unit
-            for entity in ("tax_units", "marital_units", "spm_units", "families")
-        },
+        **{entity: unit for entity in ("tax_units", "marital_units", "families")},
+        "spm_units": spm_units,
         "households": {"unit": {"members": list(people), "state_code": {year: "CO"}}},
     }
 
 
 @pytest.mark.parametrize("year", [2027, 2030, 2035])
-def test_co_oap_snap_medicaid_calculation_order(year):
+@pytest.mark.parametrize("snap", [None, 12])
+def test_co_oap_snap_medicaid_calculation_order(year, snap):
     """Colorado OAP reads the spouse's Medicaid enrollment to decide whether the
     spouse's income is deemed (9 CCR 2503-5 3.534(C)), and SNAP counts OAP as
-    income. YAML cannot express repeated calculations in different orders."""
+    income. The spouse is enrolled through SNAP's pass-through from the
+    community engagement requirement, with SNAP computed or supplied, and
+    earns $5,000/year, well within the OAP limit, so nothing is deemed and the
+    client gets the full 1,032/month in either order. YAML cannot express
+    repeated calculations in different orders."""
     variables = ("co_oap", "snap", "medicaid_enrolled")
     results = []
     for order in (variables, variables[::-1]):
-        simulation = Simulation(situation=co_oap_couple(year))
+        simulation = Simulation(situation=co_oap_couple(year, snap))
         results.append({name: simulation.calculate(name, year) for name in order})
-        assert not any(
-            "ssi_state_supplement_medicaid" in name for name in simulation.branches
-        )
+        assert not any("_medicaid_" in name for name in simulation.branches)
     for name in variables:
         np.testing.assert_array_equal(results[0][name], results[1][name])
-    assert results[0]["co_oap"][0] > 0
+    assert results[0]["medicaid_enrolled"].tolist() == [True, True]
+    assert results[0]["co_oap"][0] == pytest.approx(12_384)
     assert results[0]["snap"][0] > 0
 
 
