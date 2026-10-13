@@ -1,7 +1,8 @@
 # R.C. 5747.01(A)(12) and the 2025 IT 1040 instructions, Schedule of
-# Adjustments line 29: deduct a repayment of income reported in a prior year
-# when the federal return claims an itemized deduction or a credit for it,
-# except income that qualified for the Ohio resident or nonresident credit.
+# Adjustments line 29: deduct a repayment of income included in Ohio AGI in a
+# prior year, except income that qualified for the Ohio resident or
+# nonresident credit, when (per the instructions) the federal return claims an
+# itemized deduction or a credit for it.
 
 - name: Case 1, the federal credit method deducts the repayment.
   period: 2025
@@ -21,14 +22,14 @@
   output:
     oh_claim_of_right_deduction: 10_000
 
-- name: Case 2, income that qualified for an Ohio credit when received is not deducted.
+- name: Case 2, income that qualified for an Ohio credit or stayed out of Ohio AGI when received is not deducted.
   period: 2025
   input:
     people:
       head:
         age: 40
         claim_of_right_repayment: 10_000
-        oh_claim_of_right_repayment_qualified_for_credit: 4_000
+        oh_claim_of_right_repayment_not_deductible: 4_000
     tax_units:
       tax_unit:
         members: [head]
@@ -88,7 +89,7 @@
       spouse:
         age: 40
         claim_of_right_repayment: 2_500
-        oh_claim_of_right_repayment_qualified_for_credit: 3_000
+        oh_claim_of_right_repayment_not_deductible: 3_000
       child:
         age: 17
         claim_of_right_repayment: 5_000

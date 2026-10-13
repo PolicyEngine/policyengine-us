@@ -6,19 +6,21 @@ held under a claim of right off federal AGI when the federal return claims
 section 1341 relief: the credit, or the repayment deduction on a return that
 itemizes. The policy cases are in YAML. Which federal method applies, and
 whether the return itemizes, come from the federal branch computations, so
-these tests check over a grid, with independent simulations:
+these tests compare simulations over a grid of repayments, earlier-year
+decreases, wages and charity, each against a reference that does not use the
+new variables:
 
-- each subtraction is the whole repayment exactly when the federal return
-  claims relief, and zero otherwise; an eligible return claims relief whenever
-  the earlier year's federal tax fell, because a deduction method that wins
+- with the federal credit method fixed, or the deduction method fixed on a
+  return that itemizes, Illinois income tax equals that of a simulation with
+  no repayment and the same amount entered through the existing Schedule M
+  input, and Ohio taxable income equals that of a simulation with no
+  repayment and wages lower by the repayment (where wages cover it); with the
+  deduction method fixed on a return taking the standard deduction, both equal
+  a simulation with no repayment;
+- with the method chosen by the model, an eligible return gets that relief
+  whenever the earlier year's federal tax fell, because a winning deduction
   must have lowered tax, which only an itemized deduction does;
-- with the credit method fixed, Illinois income tax equals that of a
-  simulation with no repayment and the same amount entered through the
-  existing Schedule M input, and Ohio taxable income equals that of a
-  simulation with no repayment and wages lower by the repayment (where wages
-  cover it);
-- neither state's income tax ever rises with a repayment, or as the
-  repayment grows.
+- neither state's income tax ever rises with a repayment, or as it grows.
 """
 
 import gc
@@ -53,7 +55,7 @@ OH_COMPARABLE = OH & (WAGE >= ELIGIBLE_REPAYMENT)
 TOLERANCE = 0.01
 
 
-def grid_simulation(repayment, method=None, schedule_m=ZEROS, wage_cut=ZEROS):
+def grid_simulation(repayment, tax_unit_inputs=None, schedule_m=ZEROS, wage_cut=ZEROS):
     """One single-person tax unit per grid point."""
     situation = {"people": {}, "tax_units": {}, "households": {}}
     for i in range(len(GRID)):
@@ -69,8 +71,8 @@ def grid_simulation(repayment, method=None, schedule_m=ZEROS, wage_cut=ZEROS):
             "claim_of_right_prior_year_tax_decrease": {YEAR: float(DECREASE[i])},
             "il_schedule_m_subtractions": {YEAR: float(schedule_m[i])},
         }
-        if method is not None:
-            tax_unit["claim_of_right_credit_applies"] = {YEAR: method}
+        for name, value in (tax_unit_inputs or {}).items():
+            tax_unit[name] = {YEAR: value}
         situation["tax_units"][f"t{i}"] = tax_unit
         situation["households"][f"h{i}"] = {
             "members": [person],
@@ -83,72 +85,78 @@ def calculate(simulation, variables):
     return {v: np.asarray(simulation.calculate(v, YEAR)) for v in variables}
 
 
+METHODS = {
+    "credit": {"claim_of_right_credit_applies": True},
+    "deduction_itemizing": {
+        "claim_of_right_credit_applies": False,
+        "tax_unit_itemizes": True,
+    },
+    "deduction_standard": {
+        "claim_of_right_credit_applies": False,
+        "tax_unit_itemizes": False,
+    },
+}
+OUTPUTS = ["il_income_tax", "oh_taxable_income", "state_income_tax"]
+
+
 @pytest.fixture(scope="module")
 def results():
-    out = {}
-    out["model"] = calculate(
-        grid_simulation(REPAYMENT),
-        [
-            "claim_of_right_section_1341_eligible",
-            "claim_of_right_credit_applies",
-            "tax_unit_itemizes",
-            "claim_of_right_relief_claimed",
-            "il_claim_of_right_subtraction",
-            "oh_claim_of_right_deduction",
-            "state_income_tax",
-        ],
-    )
-    out["none"] = calculate(grid_simulation(ZEROS), ["state_income_tax"])
-    out["credit"] = calculate(
-        grid_simulation(REPAYMENT, method=True),
-        ["il_income_tax", "oh_taxable_income"],
-    )
-    # Independent references: no repayment, and the same amount entered
-    # through paths that existed before these subtractions.
+    out = {"model": calculate(grid_simulation(REPAYMENT), OUTPUTS)}
+    for name, inputs in METHODS.items():
+        out[name] = calculate(
+            grid_simulation(REPAYMENT, tax_unit_inputs=inputs), OUTPUTS
+        )
+    out["none"] = calculate(grid_simulation(ZEROS), OUTPUTS)
+    # Independent reference: no repayment, and the same amount entered through
+    # paths that existed before these subtractions.
     out["reference"] = calculate(
         grid_simulation(
             ZEROS,
             schedule_m=np.where(IL, ELIGIBLE_REPAYMENT, 0),
             wage_cut=np.where(OH_COMPARABLE, ELIGIBLE_REPAYMENT, 0),
         ),
-        ["il_income_tax", "oh_taxable_income"],
+        OUTPUTS,
     )
     yield out
     gc.collect()
 
 
-def test_subtraction_is_the_repayment_exactly_when_relief_is_claimed(results):
-    r = results["model"]
-    eligible = r["claim_of_right_section_1341_eligible"]
-    np.testing.assert_array_equal(eligible, REPAYMENT > THRESHOLD)
-    claimed = r["claim_of_right_relief_claimed"]
-    np.testing.assert_array_equal(
-        claimed,
-        eligible & (r["claim_of_right_credit_applies"] | r["tax_unit_itemizes"]),
-    )
-    assert np.all(claimed[eligible & (DECREASE > 0)]), (
-        "an eligible return claims relief whenever the earlier tax fell"
-    )
-    assert (eligible & ~claimed).any(), "the grid should include an unclaimed case"
-    expected = np.where(claimed, REPAYMENT, 0)
+def assert_relief(r, reference, rows):
+    """Illinois tax and Ohio taxable income in `r` equal `reference` on `rows`."""
     np.testing.assert_allclose(
-        r["il_claim_of_right_subtraction"], np.where(IL, expected, 0)
-    )
-    np.testing.assert_allclose(
-        r["oh_claim_of_right_deduction"], np.where(OH, expected, 0)
-    )
-
-
-def test_states_match_existing_input_paths(results):
-    credit, reference = results["credit"], results["reference"]
-    np.testing.assert_allclose(
-        credit["il_income_tax"][IL], reference["il_income_tax"][IL], atol=TOLERANCE
-    )
-    np.testing.assert_allclose(
-        credit["oh_taxable_income"][OH_COMPARABLE],
-        reference["oh_taxable_income"][OH_COMPARABLE],
+        r["il_income_tax"][IL & rows],
+        reference["il_income_tax"][IL & rows],
         atol=TOLERANCE,
     )
+    oh_rows = OH_COMPARABLE & rows
+    np.testing.assert_allclose(
+        r["oh_taxable_income"][oh_rows],
+        reference["oh_taxable_income"][oh_rows],
+        atol=TOLERANCE,
+    )
+
+
+def test_each_federal_method_matches_the_existing_input_path(results):
+    every = np.ones_like(REPAYMENT, dtype=bool)
+    assert_relief(results["credit"], results["reference"], every)
+    assert_relief(results["deduction_itemizing"], results["reference"], every)
+    # The standard deduction under the deduction method claims nothing.
+    np.testing.assert_allclose(
+        results["deduction_standard"]["il_income_tax"][IL],
+        results["none"]["il_income_tax"][IL],
+        atol=TOLERANCE,
+    )
+    np.testing.assert_allclose(
+        results["deduction_standard"]["oh_taxable_income"][OH],
+        results["none"]["oh_taxable_income"][OH],
+        atol=TOLERANCE,
+    )
+
+
+def test_eligible_returns_get_relief_when_the_earlier_tax_fell(results):
+    eligible = REPAYMENT > THRESHOLD
+    assert_relief(results["model"], results["reference"], eligible & (DECREASE > 0))
+    assert_relief(results["model"], results["none"], ~eligible)
 
 
 def test_state_tax_never_rises(results):
