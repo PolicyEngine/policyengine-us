@@ -22,7 +22,8 @@ class claim_of_right_relief_claimed(Variable):
     )
 
     def formula(tax_unit, period, parameters):
+        eligible = tax_unit("claim_of_right_section_1341_eligible", period)
         credit_applies = tax_unit("claim_of_right_credit_applies", period)
         deduction = tax_unit("claim_of_right_deduction", period)
         itemizes = tax_unit("tax_unit_itemizes", period)
-        return credit_applies | (itemizes & (deduction > 0))
+        return eligible & (credit_applies | (itemizes & (deduction > 0)))
