@@ -161,3 +161,90 @@
     # cash = max(5000 - 0, 0) = 5000
     # min(14500 + 5000 + 5000, 60000) = 24500
     charitable_deduction: 24_500
+
+- name: Cash to non-50% limit orgs capped at 30% of AGI
+  period: 2024
+  input:
+    charitable_cash_donations: 40_000
+    charitable_cash_donations_non_50_pct_orgs: 40_000
+    positive_agi: 100_000
+  output:
+    # cash to non-50% org: min(40000, 0.3 * 100000) = 30000
+    charitable_deduction: 30_000
+
+- name: Capital gains donations to 50% limit orgs capped at 30% of AGI (screenshot example)
+  period: 2024
+  input:
+    charitable_capital_gain_donations_50_pct_orgs: 30_000
+    positive_agi: 80_000
+  output:
+    # 30% of 80000 = 24000
+    charitable_deduction: 24_000
+
+- name: Capital gains donations to 50% limit orgs within 30% of AGI
+  period: 2024
+  input:
+    charitable_capital_gain_donations_50_pct_orgs: 30_000
+    positive_agi: 100_000
+  output:
+    # 30% of 100000 = 30000
+    charitable_deduction: 30_000
+
+- name: Capital gains donations to non-50% limit orgs capped at 20% of AGI
+  period: 2024
+  input:
+    charitable_capital_gain_donations_non_50_pct_orgs: 25_000
+    positive_agi: 100_000
+  output:
+    # 20% of 100000 = 20000
+    charitable_deduction: 20_000
+
+- name: Mix of 50% ordinary and 50% capital gain hitting 50% total non-cash ceiling
+  period: 2024
+  input:
+    charitable_non_cash_donations: 40_000
+    charitable_capital_gain_donations_50_pct_orgs: 20_000
+    positive_agi: 100_000
+  output:
+    # ordinary 50% = 40000 (cap 50000), CG 50% = 20000 (cap 30000)
+    # total 50% non-cash = min(40000 + 20000, 50000) = 50000
+    charitable_deduction: 50_000
+
+- name: Mix of non-50% ordinary and non-50% capital gain hitting 30% ceiling
+  period: 2024
+  input:
+    charitable_non_cash_donations_non_50_pct_orgs: 20_000
+    charitable_capital_gain_donations_non_50_pct_orgs: 20_000
+    positive_agi: 100_000
+  output:
+    # CG non-50% = min(20000, 20000) = 20000
+    # total non-50% = min(20000 + 20000, 30000) = 30000
+    charitable_deduction: 30_000
+
+- name: All 5 categories combined with overall 60% cap binding
+  period: 2024
+  input:
+    charitable_cash_donations: 30_000
+    charitable_cash_donations_non_50_pct_orgs: 10_000
+    charitable_non_cash_donations: 15_000
+    charitable_capital_gain_donations_50_pct_orgs: 10_000
+    charitable_non_cash_donations_non_50_pct_orgs: 5_000
+    charitable_capital_gain_donations_non_50_pct_orgs: 5_000
+    positive_agi: 100_000
+  output:
+    # 50% non-cash = 15000 (ord) + 10000 (CG) = 25000
+    # non-50% = min(10000 cash + 5000 ord + 5000 CG, 30000) = 20000
+    # 50% cash = 20000
+    # total = min(25000 + 20000 + 20000, 60000) = 60000
+    charitable_deduction: 60_000
+
+- name: Floor interaction with capital gain property
+  period: 2026
+  input:
+    charitable_capital_gain_donations_50_pct_orgs: 10_000
+    positive_agi: 100_000
+  output:
+    # floor = 0.005 * 100000 = 500
+    # CG 50% reduced = max(10000 - 500, 0) = 9500
+    # capped = min(9500, 30000) = 9500
+    charitable_deduction: 9_500

@@ -1,0 +1,1 @@
+Model full 5-tier charitable deduction percentage limits under IRC § 170(b), adding variables for cash to non-50% limit organizations and capital gain property donations, statutory ceiling parameters, and stacking formula with deduction floor support. Fixes #10189.
