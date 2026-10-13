@@ -7,6 +7,7 @@
     age: 65
   output:
     ri_ssp: 39.92
+
 - name: Case 2, living in household of another.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -18,6 +19,7 @@
     ssi_others_pay_all_meals: true
   output:
     ri_ssp: 51.92
+
 - name: Case 3, certified residential care.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -27,6 +29,7 @@
     ri_ssp_living_arrangement: RESIDENTIAL_CARE
   output:
     ri_ssp: 332
+
 - name: Case 4, medical institution.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -37,42 +40,47 @@
     ssi_medicaid_pays_majority_of_care: true
   output:
     ri_ssp: 45
+
 - name: Case 5, SSI exhausted but state payment remains.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: RI
     age: 65
-    social_security_retirement: 12360
+    social_security_retirement: 12_360
   output:
     ri_ssp: 23.92
+
 - name: Case 6, state administered payment below a dollar.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: RI
     age: 65
-    social_security_retirement: 12646.92
+    social_security_retirement: 12_646.92
   output:
     ri_ssp: 0.01
+
 - name: Case 7, combined income cutoff.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: RI
     age: 65
-    social_security_retirement: 12647.04
+    social_security_retirement: 12_647.04
   output:
     ri_ssp: 0
+
 - name: Case 8, excess resources.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: RI
     age: 65
-    ssi_countable_resources: 2001
+    ssi_countable_resources: 2_001
   output:
     ri_ssp: 0
+
 - name: Case 9, not aged blind or disabled.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -81,6 +89,7 @@
     age: 30
   output:
     ri_ssp: 0
+
 - name: Case 10, nonresident.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -89,6 +98,7 @@
     age: 65
   output:
     ri_ssp: 0
+
 - name: Case 11, declines required SSI application.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -98,6 +108,7 @@
     takes_up_ssi_if_eligible: false
   output:
     ri_ssp: 0
+
 - name: Case 12, institutional state only payment.
   period: 2026-01
   absolute_error_margin: 0.01
