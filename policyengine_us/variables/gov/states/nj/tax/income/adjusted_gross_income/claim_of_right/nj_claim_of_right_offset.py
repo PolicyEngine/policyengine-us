@@ -1,6 +1,7 @@
 from policyengine_us.model_api import *
 from policyengine_us.variables.gov.states.nj.tax.income.adjusted_gross_income.claim_of_right.nj_claim_of_right_repayment_category import (
-    NJClaimOfRightRepaymentCategory,
+    CATEGORY_SOURCES,
+    nj_claim_of_right_category_offset,
 )
 
 
@@ -29,35 +30,9 @@ class nj_claim_of_right_offset(Variable):
     defined_for = StateCode.NJ
 
     def formula(person, period, parameters):
-        p = parameters(
-            period
-        ).gov.states.nj.tax.income.gross_income.claim_of_right_category_sources
-        # Dependents' repayments and income belong on their own returns.
-        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        repayment = person("claim_of_right_repayment", period) * head_or_spouse
-        category = person("nj_claim_of_right_repayment_category", period)
         offset = 0
-        for value, sources in [
-            (NJClaimOfRightRepaymentCategory.WAGES, p.wages),
-            (NJClaimOfRightRepaymentCategory.INTEREST, p.interest),
-            (NJClaimOfRightRepaymentCategory.DIVIDENDS, p.dividends),
-            (NJClaimOfRightRepaymentCategory.GAMBLING_WINNINGS, p.gambling_winnings),
-            (
-                NJClaimOfRightRepaymentCategory.PENSIONS_AND_ANNUITIES,
-                p.pensions_and_annuities,
-            ),
-            (NJClaimOfRightRepaymentCategory.ALIMONY, p.alimony),
-        ]:
-            income = max_(add(person, period, sources), 0) * head_or_spouse
-            # The tax unit sums below are repeated for each member.
-            return_income = person.tax_unit.sum(income)
-            return_repayment = person.tax_unit.sum(repayment * (category == value))
-            return_offset = min_(return_repayment, return_income)
-            share = np.divide(
-                income,
-                return_income,
-                out=np.zeros_like(income),
-                where=return_income > 0,
+        for category in CATEGORY_SOURCES:
+            offset = offset + nj_claim_of_right_category_offset(
+                person, period, parameters, category
             )
-            offset = offset + share * return_offset
         return offset
