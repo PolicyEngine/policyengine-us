@@ -1,10 +1,11 @@
 description: Wisconsin uses this amount as its Caretaker Supplement work expense deduction.
 values:
-  '2026-01-01': 90
+  2026-01-01: 90
+
 metadata:
   unit: currency-USD
+  period: month
   label: Wisconsin CTS work expense deduction
   reference:
-  - title: Caretaker Supplement Handbook, sections 3 and 5.2
-    href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf
-  period: month
+    - title: Caretaker Supplement Handbook, sections 3 and 5.2
+      href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf

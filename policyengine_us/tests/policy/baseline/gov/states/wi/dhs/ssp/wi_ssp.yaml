@@ -8,6 +8,7 @@
       2026: 65
   output:
     wi_ssp: 83.78
+
 - name: Case 2, April retains old rate.
   period: 2026-04
   absolute_error_margin: 0.01
@@ -18,6 +19,7 @@
       2026: 65
   output:
     wi_ssp: 83.78
+
 - name: Case 3, May new rate.
   period: 2026-05
   absolute_error_margin: 0.01
@@ -28,6 +30,7 @@
       2026: 65
   output:
     wi_ssp: 92.16
+
 - name: Case 4, December new rate.
   period: 2026-12
   absolute_error_margin: 0.01
@@ -38,6 +41,7 @@
       2026: 65
   output:
     wi_ssp: 92.16
+
 - name: Case 5, annual amount spans rate change.
   period: 2026
   absolute_error_margin: 0.01
@@ -47,7 +51,8 @@
     age:
       2026: 65
   output:
-    wi_ssp: 1072.4
+    wi_ssp: 1_072.4
+
 - name: Case 6, other household retains flat individual rate.
   period: 2026-05
   absolute_error_margin: 0.01
@@ -61,6 +66,7 @@
     ssi_others_pay_all_meals: true
   output:
     wi_ssp: 92.16
+
 - name: Case 7, small SSI payment gets full state amount.
   period: 2026-05
   absolute_error_margin: 0.01
@@ -70,9 +76,10 @@
     age:
       2026: 65
     social_security_retirement:
-      2026: 12156
+      2026: 12_156
   output:
     wi_ssp: 92.16
+
 - name: Case 8, no federal payment no new state eligibility.
   period: 2026-05
   absolute_error_margin: 0.01
@@ -82,9 +89,10 @@
     age:
       2026: 65
     social_security_retirement:
-      2026: 12168
+      2026: 12_168
   output:
     wi_ssp: 0
+
 - name: Case 9, certified exceptional expense supplement before increase.
   period: 2026-04
   absolute_error_margin: 0.01
@@ -96,6 +104,7 @@
     wi_ssi_e_certified: true
   output:
     wi_ssp: 179.77
+
 - name: Case 10, certified exceptional expense supplement after increase.
   period: 2026-05
   absolute_error_margin: 0.01
@@ -107,6 +116,7 @@
     wi_ssi_e_certified: true
   output:
     wi_ssp: 197.75
+
 - name: Case 11, long term medical institution excluded.
   period: 2026-05
   absolute_error_margin: 0.01
@@ -119,6 +129,7 @@
     ssi_medicaid_pays_majority_of_care: true
   output:
     wi_ssp: 0
+
 - name: Case 12, authorized institutional continuation.
   period: 2026-05
   absolute_error_margin: 0.01
@@ -132,6 +143,7 @@
     wi_ssp_institutional_continuation: true
   output:
     wi_ssp: 92.16
+
 - name: Case 13, incarceration excludes payment.
   period: 2026-05
   absolute_error_margin: 0.01
@@ -143,6 +155,7 @@
     is_incarcerated: true
   output:
     wi_ssp: 0
+
 - name: Case 14, outside Wisconsin.
   period: 2026-05
   absolute_error_margin: 0.01
@@ -153,6 +166,7 @@
       2026: 65
   output:
     wi_ssp: 0
+
 - name: Case 15, excess resources.
   period: 2026-05
   absolute_error_margin: 0.01
@@ -162,6 +176,6 @@
     age:
       2026: 65
     ssi_countable_resources:
-      2026: 2001
+      2026: 2_001
   output:
     wi_ssp: 0

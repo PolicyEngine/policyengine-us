@@ -1,1460 +1,1197 @@
-- name: One non-SSI child receives the first-child amount
+- name: Case 1, One non-SSI child receives the first-child amount.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id001
-        - parent
-        - child0
+        members: &id001 [person1, person2]
     households:
       home:
         members: *id001
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 275
-    - 0
-- name: Three eligible children use first and subsequent rates
+    wi_cts: [275, 0]
+
+- name: Case 2, Three eligible children use first and subsequent rates.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-      child1:
+      person3:
         age: 9
         person_id: 3
         parent_1_id: 1
-      child2:
+      person4:
         age: 10
         person_id: 4
         parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
     families:
       unit:
-        members: &id002
-        - parent
-        - child0
-        - child1
-        - child2
+        members: &id002 [person1, person2, person3, person4]
     households:
       home:
         members: *id002
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
-      child1:
-        members:
-        - child1
-      child2:
-        members:
-        - child2
   output:
-    wi_cts:
-    - 605
-    - 0
-    - 0
-    - 0
-- name: A child receiving SSI is excluded
+    wi_cts: [605, 0, 0, 0]
+
+- name: Case 3, A child receiving SSI is excluded.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
         ssi: 100
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id003
-        - parent
-        - child0
+        members: &id003 [person1, person2]
     households:
       home:
         members: *id003
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 0
-    - 0
-- name: SSDI alone does not make the parent eligible
+    wi_cts: [0, 0]
+
+- name: Case 4, SSDI alone does not make the parent eligible.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 0
         wi_ssp_regular: 0
-        social_security_disability: 12000
-      child0:
+        social_security_disability: 12_000
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id004
-        - parent
-        - child0
+        members: &id004 [person1, person2]
     households:
       home:
         members: *id004
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 0
-    - 0
-- name: Verified grandfathered state-only SSI parent can qualify
+    wi_cts: [0, 0]
+
+- name: Case 5, Verified grandfathered state-only SSI parent can qualify.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 0
         wi_ssp_regular: 0
         wi_cts_state_only_ssi_recipient: true
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id005
-        - parent
-        - child0
+        members: &id005 [person1, person2]
     households:
       home:
         members: *id005
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 275
-    - 0
-- name: Age 18 needs graduation certification
+    wi_cts: [275, 0]
+
+- name: Case 6, Age 18 needs graduation certification.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 18
         person_id: 2
         parent_1_id: 1
         is_in_secondary_school: true
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id006
-        - parent
-        - child0
+        members: &id006 [person1, person2]
     households:
       home:
         members: *id006
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 0
-    - 0
-- name: Age 18 enrolled and graduating before 19
+    wi_cts: [0, 0]
+
+- name: Case 7, Age 18 enrolled and graduating before 19.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 18
         person_id: 2
         parent_1_id: 1
         is_in_secondary_school: true
         wi_cts_graduates_before_19: true
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id007
-        - parent
-        - child0
+        members: &id007 [person1, person2]
     households:
       home:
         members: *id007
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 275
-    - 0
-- name: Age 19 is ineligible
+    wi_cts: [275, 0]
+
+- name: Case 8, Age 19 is ineligible.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 19
         person_id: 2
         parent_1_id: 1
         is_in_secondary_school: true
         wi_cts_graduates_before_19: true
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id008
-        - parent
-        - child0
+        members: &id008 [person1, person2]
     households:
       home:
         members: *id008
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 0
-    - 0
-- name: Child support is excluded from both tests
+    wi_cts: [0, 0]
+
+- name: Case 9, Child support is excluded from both tests.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        child_support_received: 24000
+        child_support_received: 24_000
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id009
-        - parent
-        - child0
+        members: &id009 [person1, person2]
     households:
       home:
         members: *id009
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 275
-    - 0
-- name: Income at the Area I net limit
+    wi_cts: [275, 0]
+
+- name: Case 10, Income at the Area I net limit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        social_security_survivors: 3732
+        social_security_survivors: 3_732
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id010
-        - parent
-        - child0
+        members: &id010 [person1, person2]
     households:
       home:
         members: *id010
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 275
-    - 0
-- name: Income above the Area I net limit
+    wi_cts: [275, 0]
+
+- name: Case 11, Income above the Area I net limit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        social_security_survivors: 3744
+        social_security_survivors: 3_744
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id011
-        - parent
-        - child0
+        members: &id011 [person1, person2]
     households:
       home:
         members: *id011
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 0
-    - 0
-- name: Same income exceeds Area II net limit
+    wi_cts: [0, 0]
+
+- name: Case 12, Same income exceeds Area II net limit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        social_security_survivors: 3660
+        social_security_survivors: 3_660
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id012
-        - parent
-        - child0
+        members: &id012 [person1, person2]
     households:
       home:
         members: *id012
         state_code: WI
         county: ADAMS_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 0
-    - 0
-- name: Income and resources belonging to SSI people are excluded
+    wi_cts: [0, 0]
+
+- name: Case 13, Income and resources belonging to SSI people are excluded.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-        employment_income: 120000
-        ssi_countable_resources: 100000
-      child0:
+        employment_income: 120_000
+        ssi_countable_resources: 100_000
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id013
-        - parent
-        - child0
+        members: &id013 [person1, person2]
     households:
       home:
         members: *id013
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 275
-    - 0
-- name: Non-SSI resources at the limit
+    wi_cts: [275, 0]
+
+- name: Case 14, Non-SSI resources at the limit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        wi_cts_countable_resources: 1000
+        wi_cts_countable_resources: 1_000
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id014
-        - parent
-        - child0
+        members: &id014 [person1, person2]
     households:
       home:
         members: *id014
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 275
-    - 0
-- name: Non-SSI resources above the limit
+    wi_cts: [275, 0]
+
+- name: Case 15, Non-SSI resources above the limit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        wi_cts_countable_resources: 1001
+        wi_cts_countable_resources: 1_001
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id015
-        - parent
-        - child0
+        members: &id015 [person1, person2]
     households:
       home:
         members: *id015
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 0
-    - 0
-- name: New applicant earnings receive the 90 dollar work deduction
+    wi_cts: [0, 0]
+
+- name: Case 16, New applicant earnings receive the 90 dollar work deduction.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        employment_income: 4812
+        employment_income: 4_812
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id016
-        - parent
-        - child0
+        members: &id016 [person1, person2]
     households:
       home:
         members: *id016
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 275
-    - 0
-- name: New applicant just above net earnings limit
+    wi_cts: [275, 0]
+
+- name: Case 17, New applicant just above net earnings limit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        employment_income: 4824
+        employment_income: 4_824
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id017
-        - parent
-        - child0
+        members: &id017 [person1, person2]
     households:
       home:
         members: *id017
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 0
-    - 0
-- name: Continuing minor full-time student earnings are exempt only in net test
+    wi_cts: [0, 0]
+
+- name: Case 18, Continuing minor full-time student earnings are exempt only in net test.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        employment_income: 6912
+        employment_income: 6_912
         is_full_time_student: true
         wi_cts_received_recently: true
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id018
-        - parent
-        - child0
+        members: &id018 [person1, person2]
     households:
       home:
         members: *id018
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 275
-    - 0
-- name: Continuing student fails gross test despite net exemption
+    wi_cts: [275, 0]
+
+- name: Case 19, Continuing student fails gross test despite net exemption.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        employment_income: 6924
+        employment_income: 6_924
         is_full_time_student: true
         wi_cts_received_recently: true
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id019
-        - parent
-        - child0
+        members: &id019 [person1, person2]
     households:
       home:
         members: *id019
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 0
-    - 0
-- name: Continuing nonschool minor receives 30 and one-third deduction
+    wi_cts: [0, 0]
+
+- name: Case 20, Continuing nonschool minor receives 30 and one-third deduction.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        employment_income: 6840
+        employment_income: 6_840
         wi_cts_received_recently: true
         is_full_time_student: false
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id020
-        - parent
-        - child0
+        members: &id020 [person1, person2]
     households:
       home:
         members: *id020
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 275
-    - 0
-- name: Two co-resident parents must both receive state SSI
+    wi_cts: [275, 0]
+
+- name: Case 21, Two co-resident parents must both receive state SSI.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
         parent_2_id: 20
-      other:
+      person3:
         age: 40
         person_id: 20
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      other:
+        members: [person3]
     families:
       unit:
-        members: &id021
-        - parent
-        - child0
-        - other
+        members: &id021 [person1, person2, person3]
     households:
       home:
         members: *id021
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
-      other:
-        members:
-        - other
   output:
-    wi_cts:
-    - 0
-    - 0
-    - 0
-- name: Two SSI parents share one child award through the designated payee
+    wi_cts: [0, 0, 0]
+
+- name: Case 22, Two SSI parents share one child award through the designated payee.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
         parent_2_id: 20
-      other:
+      person3:
         age: 40
         person_id: 20
         ssi: 745.5
         wi_ssp_regular: 66.03
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      other:
+        members: [person3]
     families:
       unit:
-        members: &id022
-        - parent
-        - child0
-        - other
+        members: &id022 [person1, person2, person3]
     households:
       home:
         members: *id022
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
-      other:
-        members:
-        - other
   output:
-    wi_cts:
-    - 275
-    - 0
-    - 0
-- name: Outside Wisconsin
+    wi_cts: [275, 0, 0]
+
+- name: Case 23, Outside Wisconsin.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id023
-        - parent
-        - child0
+        members: &id023 [person1, person2]
     households:
       home:
         members: *id023
         state_code: IL
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 0
-    - 0
-- name: Undocumented child
+    wi_cts: [0, 0]
+
+- name: Case 24, Undocumented child.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
         immigration_status: UNDOCUMENTED
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id024
-        - parent
-        - child0
+        members: &id024 [person1, person2]
     households:
       home:
         members: *id024
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 0
-    - 0
-- name: Permanent resident child is not subject to SSI five-year rules
+    wi_cts: [0, 0]
+
+- name: Case 25, Permanent resident child is not subject to SSI five-year rules.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
         immigration_status: LEGAL_PERMANENT_RESIDENT
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id025
-        - parent
-        - child0
+        members: &id025 [person1, person2]
     households:
       home:
         members: *id025
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 275
-    - 0
-- name: Handbook Buening example with co-parent income 700
+    wi_cts: [275, 0]
+
+- name: Case 26, Handbook Buening example with co-parent income 700.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 10
         person_id: 2
         parent_1_id: 1
         social_security_survivors: 0
-      child1:
+      person3:
         age: 8
         person_id: 3
         parent_1_id: 1
         parent_2_id: 20
-      other:
+      person4:
         age: 40
         person_id: 20
-        unemployment_compensation: 8400
+        unemployment_compensation: 8_400
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+      other:
+        members: [person4]
     families:
       unit:
-        members: &id026
-        - parent
-        - child0
-        - child1
-        - other
+        members: &id026 [person1, person2, person3, person4]
     households:
       home:
         members: *id026
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
-      child1:
-        members:
-        - child1
-      other:
-        members:
-        - other
   output:
-    wi_cts:
-    - 275
-    - 0
-    - 0
-    - 0
-- name: Handbook Buening example with co-parent income 500
+    wi_cts: [275, 0, 0, 0]
+
+- name: Case 27, Handbook Buening example with co-parent income 500.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 10
         person_id: 2
         parent_1_id: 1
-        social_security_survivors: 2400
-      child1:
+        social_security_survivors: 2_400
+      person3:
         age: 8
         person_id: 3
         parent_1_id: 1
         parent_2_id: 20
-      other:
+      person4:
         age: 40
         person_id: 20
-        unemployment_compensation: 6000
+        unemployment_compensation: 6_000
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+      other:
+        members: [person4]
     families:
       unit:
-        members: &id027
-        - parent
-        - child0
-        - child1
-        - other
+        members: &id027 [person1, person2, person3, person4]
     households:
       home:
         members: *id027
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
-      child1:
-        members:
-        - child1
-      other:
-        members:
-        - other
   output:
-    wi_cts:
-    - 0
-    - 0
-    - 0
-    - 0
-- name: Dependent care paid for a sibling reduces the whole group net income
+    wi_cts: [0, 0, 0, 0]
+
+- name: Case 28, Dependent care paid for a sibling reduces the whole group net income.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        employment_income: 8400
-      child1:
+        employment_income: 8_400
+      person3:
         age: 9
         person_id: 3
         parent_1_id: 1
-        pre_subsidy_childcare_expenses: 2400
-    families:
-      unit:
-        members:
-        - parent
-        - child0
-        - child1
-    households:
-      home:
-        members:
-        - parent
-        - child0
-        - child1
-        state_code: WI
-        county: DANE_COUNTY_WI
+        pre_subsidy_childcare_expenses: 2_400
     marital_units:
       parent:
-        members:
-        - parent
+        members: [person1]
       child0:
-        members:
-        - child0
+        members: [person2]
       child1:
-        members:
-        - child1
+        members: [person3]
+    families:
+      unit:
+        members: [person1, person2, person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code: WI
+        county: DANE_COUNTY_WI
   output:
-    wi_cts:
-    - 440
-    - 0
-    - 0
-- name: Child-support noncooperation excludes the entire family
+    wi_cts: [440, 0, 0]
+
+- name: Case 29, Child-support noncooperation excludes the entire family.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id028
-        - parent
-        - child0
+        members: &id028 [person1, person2]
         wi_cts_nonfinancially_ineligible: true
     households:
       home:
         members: *id028
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 0
-    - 0
-- name: Annual CTS resource balance above the limit remains ineligible
-  period: '2026'
+    wi_cts: [0, 0]
+
+- name: Case 30, Annual CTS resource balance above the limit remains ineligible.
+  period: 2026
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        wi_cts_countable_resources: 1001
+        wi_cts_countable_resources: 1_001
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
     families:
       unit:
-        members: &id029
-        - parent
-        - child0
+        members: &id029 [person1, person2]
     households:
       home:
         members: *id029
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
   output:
-    wi_cts:
-    - 0
-    - 0
-- name: Large CTS group requires a verified net income limit
+    wi_cts: [0, 0]
+
+- name: Case 31, Large CTS group requires a verified net income limit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-      child1:
+      person3:
         age: 9
         person_id: 3
         parent_1_id: 1
-      child2:
+      person4:
         age: 10
         person_id: 4
         parent_1_id: 1
-      child3:
+      person5:
         age: 11
         person_id: 5
         parent_1_id: 1
-      child4:
+      person6:
         age: 12
         person_id: 6
         parent_1_id: 1
-      child5:
+      person7:
         age: 13
         person_id: 7
         parent_1_id: 1
-      child6:
+      person8:
         age: 14
         person_id: 8
         parent_1_id: 1
-      child7:
+      person9:
         age: 15
         person_id: 9
         parent_1_id: 1
-      child8:
+      person10:
         age: 8
         person_id: 10
         parent_1_id: 1
-      child9:
+      person11:
         age: 9
         person_id: 11
         parent_1_id: 1
-      child10:
+      person12:
         age: 10
         person_id: 12
         parent_1_id: 1
-      child11:
+      person13:
         age: 11
         person_id: 13
         parent_1_id: 1
-      child12:
+      person14:
         age: 12
         person_id: 14
         parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+      child3:
+        members: [person5]
+      child4:
+        members: [person6]
+      child5:
+        members: [person7]
+      child6:
+        members: [person8]
+      child7:
+        members: [person9]
+      child8:
+        members: [person10]
+      child9:
+        members: [person11]
+      child10:
+        members: [person12]
+      child11:
+        members: [person13]
+      child12:
+        members: [person14]
     families:
       unit:
-        members: &id030
-        - parent
-        - child0
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
-        - child7
-        - child8
-        - child9
-        - child10
-        - child11
-        - child12
+        members: &id030 [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
     households:
       home:
         members: *id030
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
-      child1:
-        members:
-        - child1
-      child2:
-        members:
-        - child2
-      child3:
-        members:
-        - child3
-      child4:
-        members:
-        - child4
-      child5:
-        members:
-        - child5
-      child6:
-        members:
-        - child6
-      child7:
-        members:
-        - child7
-      child8:
-        members:
-        - child8
-      child9:
-        members:
-        - child9
-      child10:
-        members:
-        - child10
-      child11:
-        members:
-        - child11
-      child12:
-        members:
-        - child12
   output:
-    wi_cts:
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-- name: Agency-verified CTS limit supports a thirteen-child group
+    wi_cts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+- name: Case 32, Agency-verified CTS limit supports a thirteen-child group.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      parent:
+      person1:
         age: 40
         person_id: 1
         ssi: 994
         wi_ssp_regular: 83.78
-      child0:
+      person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-      child1:
+      person3:
         age: 9
         person_id: 3
         parent_1_id: 1
-      child2:
+      person4:
         age: 10
         person_id: 4
         parent_1_id: 1
-      child3:
+      person5:
         age: 11
         person_id: 5
         parent_1_id: 1
-      child4:
+      person6:
         age: 12
         person_id: 6
         parent_1_id: 1
-      child5:
+      person7:
         age: 13
         person_id: 7
         parent_1_id: 1
-      child6:
+      person8:
         age: 14
         person_id: 8
         parent_1_id: 1
-      child7:
+      person9:
         age: 15
         person_id: 9
         parent_1_id: 1
-      child8:
+      person10:
         age: 8
         person_id: 10
         parent_1_id: 1
-      child9:
+      person11:
         age: 9
         person_id: 11
         parent_1_id: 1
-      child10:
+      person12:
         age: 10
         person_id: 12
         parent_1_id: 1
-      child11:
+      person13:
         age: 11
         person_id: 13
         parent_1_id: 1
-      child12:
+      person14:
         age: 12
         person_id: 14
         parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
+      child3:
+        members: [person5]
+      child4:
+        members: [person6]
+      child5:
+        members: [person7]
+      child6:
+        members: [person8]
+      child7:
+        members: [person9]
+      child8:
+        members: [person10]
+      child9:
+        members: [person11]
+      child10:
+        members: [person12]
+      child11:
+        members: [person13]
+      child12:
+        members: [person14]
     families:
       unit:
-        members: &id031
-        - parent
-        - child0
-        - child1
-        - child2
-        - child3
-        - child4
-        - child5
-        - child6
-        - child7
-        - child8
-        - child9
-        - child10
-        - child11
-        - child12
-        wi_cts_large_group_net_income_limit: 1254
+        members: &id031 [person1, person2, person3, person4, person5, person6, person7, person8, person9, person10, person11, person12, person13, person14]
+        wi_cts_large_group_net_income_limit: 1_254
     households:
       home:
         members: *id031
         state_code: WI
         county: DANE_COUNTY_WI
-    marital_units:
-      parent:
-        members:
-        - parent
-      child0:
-        members:
-        - child0
-      child1:
-        members:
-        - child1
-      child2:
-        members:
-        - child2
-      child3:
-        members:
-        - child3
-      child4:
-        members:
-        - child4
-      child5:
-        members:
-        - child5
-      child6:
-        members:
-        - child6
-      child7:
-        members:
-        - child7
-      child8:
-        members:
-        - child8
-      child9:
-        members:
-        - child9
-      child10:
-        members:
-        - child10
-      child11:
-        members:
-        - child11
-      child12:
-        members:
-        - child12
   output:
-    wi_cts:
-    - 2255
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
-    - 0
+    wi_cts: [2_255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

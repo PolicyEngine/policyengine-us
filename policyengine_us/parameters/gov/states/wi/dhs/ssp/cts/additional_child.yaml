@@ -1,10 +1,11 @@
 description: Wisconsin uses this amount as its Caretaker Supplement additional eligible child benefit.
 values:
-  '2026-01-01': 165
+  2026-01-01: 165
+
 metadata:
   unit: currency-USD
+  period: month
   label: Wisconsin CTS additional eligible child benefit
   reference:
-  - title: Caretaker Supplement Handbook, sections 3 and 5.2
-    href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf
-  period: month
+    - title: Caretaker Supplement Handbook, sections 3 and 5.2
+      href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf

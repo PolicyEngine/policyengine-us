@@ -1,4 +1,5 @@
 description: Wisconsin sets these Caretaker Supplement gross income limits for Area 2.
+
 metadata:
   unit: currency-USD
   period: month
@@ -7,54 +8,55 @@ metadata:
   threshold_unit: person
   amount_unit: currency-USD
   reference:
-  - title: Caretaker Supplement Handbook, 5.2
-    href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf
+    - title: Caretaker Supplement Handbook, 5.2
+      href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf
+
 brackets:
-- threshold:
-    '2026-01-01': 1
-  amount:
-    '2026-01-01': 557
-- threshold:
-    '2026-01-01': 2
-  amount:
-    '2026-01-01': 987
-- threshold:
-    '2026-01-01': 3
-  amount:
-    '2026-01-01': 1159
-- threshold:
-    '2026-01-01': 4
-  amount:
-    '2026-01-01': 1386
-- threshold:
-    '2026-01-01': 5
-  amount:
-    '2026-01-01': 1593
-- threshold:
-    '2026-01-01': 6
-  amount:
-    '2026-01-01': 1719
-- threshold:
-    '2026-01-01': 7
-  amount:
-    '2026-01-01': 1863
-- threshold:
-    '2026-01-01': 8
-  amount:
-    '2026-01-01': 1976
-- threshold:
-    '2026-01-01': 9
-  amount:
-    '2026-01-01': 2067
-- threshold:
-    '2026-01-01': 10
-  amount:
-    '2026-01-01': 2115
-- threshold:
-    '2026-01-01': 11
-  amount:
-    '2026-01-01': 2161
-- threshold:
-    '2026-01-01': 12
-  amount:
-    '2026-01-01': 2208
+  - threshold:
+      2026-01-01: 1
+    amount:
+      2026-01-01: 557
+  - threshold:
+      2026-01-01: 2
+    amount:
+      2026-01-01: 987
+  - threshold:
+      2026-01-01: 3
+    amount:
+      2026-01-01: 1_159
+  - threshold:
+      2026-01-01: 4
+    amount:
+      2026-01-01: 1_386
+  - threshold:
+      2026-01-01: 5
+    amount:
+      2026-01-01: 1_593
+  - threshold:
+      2026-01-01: 6
+    amount:
+      2026-01-01: 1_719
+  - threshold:
+      2026-01-01: 7
+    amount:
+      2026-01-01: 1_863
+  - threshold:
+      2026-01-01: 8
+    amount:
+      2026-01-01: 1_976
+  - threshold:
+      2026-01-01: 9
+    amount:
+      2026-01-01: 2_067
+  - threshold:
+      2026-01-01: 10
+    amount:
+      2026-01-01: 2_115
+  - threshold:
+      2026-01-01: 11
+    amount:
+      2026-01-01: 2_161
+  - threshold:
+      2026-01-01: 12
+    amount:
+      2026-01-01: 2_208

@@ -1,10 +1,11 @@
 description: Wisconsin uses this amount as its Caretaker Supplement young child care deduction limit.
 values:
-  '2026-01-01': 200
+  2026-01-01: 200
+
 metadata:
   unit: currency-USD
+  period: month
   label: Wisconsin CTS young child care deduction limit
   reference:
-  - title: Caretaker Supplement Handbook, sections 3 and 5.2
-    href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf
-  period: month
+    - title: Caretaker Supplement Handbook, sections 3 and 5.2
+      href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf

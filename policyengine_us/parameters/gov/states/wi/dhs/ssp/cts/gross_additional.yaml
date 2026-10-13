@@ -1,11 +1,11 @@
-description: Wisconsin uses this amount as its Caretaker Supplement gross income limit increase beyond
-  the table.
+description: Wisconsin uses this amount as its Caretaker Supplement gross income limit increase beyond the table.
 values:
-  '2026-01-01': 25
+  2026-01-01: 25
+
 metadata:
   unit: currency-USD
+  period: month
   label: Wisconsin CTS gross income limit increase beyond the table
   reference:
-  - title: Caretaker Supplement Handbook, sections 3 and 5.2
-    href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf
-  period: month
+    - title: Caretaker Supplement Handbook, sections 3 and 5.2
+      href: https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf
