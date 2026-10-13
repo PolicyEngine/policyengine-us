@@ -8,6 +8,7 @@
     vt_aabd_living_arrangement: INDEPENDENT
   output:
     vt_aabd: 55.68
+
 - name: Case 2, residential care level iii individual.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -17,6 +18,7 @@
     vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_III
   output:
     vt_aabd: 51.77
+
 - name: Case 3, residential care level iv individual.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -26,6 +28,7 @@
     vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_IV
   output:
     vt_aabd: 239.62
+
 - name: Case 4, custodial care individual.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -35,6 +38,7 @@
     vt_aabd_living_arrangement: CUSTODIAL_CARE
   output:
     vt_aabd: 105.6
+
 - name: Case 5, household of another individual.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -47,6 +51,7 @@
     ssi_others_pay_all_meals: true
   output:
     vt_aabd: 42.05
+
 - name: Case 6, medicaid institution individual.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -58,6 +63,7 @@
     ssi_medicaid_pays_majority_of_care: true
   output:
     vt_aabd: 49.93
+
 - name: Case 7, none individual.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -67,6 +73,7 @@
     vt_aabd_living_arrangement: NONE
   output:
     vt_aabd: 0
+
 - name: Case 8, automatic independent classification.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -75,42 +82,47 @@
     age: 65
   output:
     vt_aabd: 55.68
+
 - name: Case 9, income above federal SSI standard.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: VT
     age: 65
-    social_security_retirement: 12360
+    social_security_retirement: 12_360
   output:
     vt_aabd: 39.68
+
 - name: Case 10, income at combined cutoff.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: VT
     age: 65
-    social_security_retirement: 12836.16
+    social_security_retirement: 12_836.16
   output:
     vt_aabd: 0
+
 - name: Case 11, minimum positive payment.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: VT
     age: 65
-    social_security_retirement: 12836.04
+    social_security_retirement: 12_836.04
   output:
     vt_aabd: 1
+
 - name: Case 12, excess resources.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: VT
     age: 65
-    ssi_countable_resources: 2001
+    ssi_countable_resources: 2_001
   output:
     vt_aabd: 0
+
 - name: Case 13, not aged blind or disabled.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -119,6 +131,7 @@
     age: 30
   output:
     vt_aabd: 0
+
 - name: Case 14, non Vermont resident.
   period: 2026-01
   absolute_error_margin: 0.01

@@ -1,17 +1,22 @@
 description: Vermont sets the Essential Person increment at this fraction for the certified care level.
-NONE:
-  '2026-01-01': 0
-FULL:
-  '2026-01-01': 1
-PARTIAL_67:
-  '2026-01-01': 0.67
-PARTIAL_34:
-  '2026-01-01': 0.34
+
 metadata:
   unit: /1
   label: Vermont Essential Person care fraction
   breakdown:
-  - vt_aabd_ep_level
+    - vt_aabd_ep_level
   reference:
-  - title: AABD rules 2784(A)
-    href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf
+    - title: AABD rules 2784(A)
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf
+
+NONE:
+  2026-01-01: 0
+
+FULL:
+  2026-01-01: 1
+
+PARTIAL_67:
+  2026-01-01: 0.67
+
+PARTIAL_34:
+  2026-01-01: 0.34

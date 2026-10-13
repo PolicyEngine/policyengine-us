@@ -3,137 +3,109 @@
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         vt_aabd_living_arrangement: INDEPENDENT
-      second:
+      person2:
         age: 65
         vt_aabd_living_arrangement: INDEPENDENT
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: VT
   output:
-    vt_aabd:
-    - 52.9
-    - 52.9
+    vt_aabd: [52.9, 52.9]
+
 - name: Case 2, residential_care_level_iii couple.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_III
-      second:
+      person2:
         age: 65
         vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_III
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: VT
   output:
-    vt_aabd:
-    - 51.77
-    - 51.77
+    vt_aabd: [51.77, 51.77]
+
 - name: Case 3, residential_care_level_iv couple.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_IV
-      second:
+      person2:
         age: 65
         vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_IV
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: VT
   output:
-    vt_aabd:
-    - 300.7
-    - 300.7
+    vt_aabd: [300.7, 300.7]
+
 - name: Case 4, custodial_care couple.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         vt_aabd_living_arrangement: CUSTODIAL_CARE
-      second:
+      person2:
         age: 65
         vt_aabd_living_arrangement: CUSTODIAL_CARE
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: VT
   output:
-    vt_aabd:
-    - 178.06
-    - 178.06
+    vt_aabd: [178.06, 178.06]
+
 - name: Case 5, household_of_another couple.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         vt_aabd_living_arrangement: HOUSEHOLD_OF_ANOTHER
         ssi_lives_in_another_persons_household: true
         ssi_receives_shelter_from_others_in_household: true
         ssi_others_pay_all_meals: true
-      second:
+      person2:
         age: 65
         vt_aabd_living_arrangement: HOUSEHOLD_OF_ANOTHER
         ssi_lives_in_another_persons_household: true
@@ -141,59 +113,45 @@
         ssi_others_pay_all_meals: true
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: VT
   output:
-    vt_aabd:
-    - 25.85
-    - 25.85
+    vt_aabd: [25.85, 25.85]
+
 - name: Case 6, medicaid_institution couple.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         vt_aabd_living_arrangement: MEDICAID_INSTITUTION
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
-      second:
+      person2:
         age: 65
         vt_aabd_living_arrangement: MEDICAID_INSTITUTION
         ssi_lives_in_medical_treatment_facility: true
         ssi_medicaid_pays_majority_of_care: true
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: VT
   output:
-    vt_aabd:
-    - 49.93
-    - 49.93
+    vt_aabd: [49.93, 49.93]
+
 - name: Case 7, annual benefits and SNAP income.
   period: 2026
   absolute_error_margin: 0.01
@@ -203,83 +161,71 @@
   output:
     vt_aabd: 668.16
     household_state_benefits: 668.16
-    snap_unearned_income: 12596.16
-- name: Essential-person grant enters the annual Vermont benefit total
-  period: '2026'
+    snap_unearned_income: 12_596.16
+
+- name: Case 8, Essential-person grant enters the annual Vermont benefit total.
+  period: 2026
   absolute_error_margin: 0.01
   input:
     state_code: VT
     age: 70
     vt_aabd_ep_level:
-      '2026': FULL
+      2026: FULL
   output:
-    ssi: 11928
+    ssi: 11_928
     vt_aabd_federal: 668.16
-    vt_aabd_ep: 6564
-    vt_aabd: 7232.16
-    snap_unearned_income: 19160.16
-- name: Two eligible spouses share one essential-person grant
+    vt_aabd_ep: 6_564
+    vt_aabd: 7_232.16
+    snap_unearned_income: 19_160.16
+
+- name: Case 9, Two eligible spouses share one essential-person grant.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      a:
+      person1:
         age: 70
         vt_aabd_ep_level: FULL
-      b:
+      person2:
         age: 70
         vt_aabd_ep_level: FULL
     marital_units:
       couple:
-        members:
-        - a
-        - b
+        members: [person1, person2]
     households:
       home:
-        members:
-        - a
-        - b
+        members: [person1, person2]
         state_code: VT
   output:
-    vt_aabd_ep:
-    - 91.5
-    - 91.5
-    vt_aabd:
-    - 144.4
-    - 144.4
-- name: Ineligible spouse earnings do not get the ABD half-earnings deduction
+    vt_aabd_ep: [91.5, 91.5]
+    vt_aabd: [144.4, 144.4]
+
+- name: Case 10, Ineligible spouse earnings do not get the ABD half-earnings deduction.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      a:
+      person1:
         age: 70
         vt_aabd_ep_level: FULL
         vt_aabd_ep_is_spouse: true
         vt_aabd_ep_resources_eligible: true
-      b:
+      person2:
         age: 40
-        employment_income: 6000
+        employment_income: 6_000
     marital_units:
       couple:
-        members:
-        - a
-        - b
+        members: [person1, person2]
     households:
       home:
-        members:
-        - a
-        - b
+        members: [person1, person2]
         state_code: VT
   output:
-    vt_aabd_ep_countable_income:
-    - 1439.68
-    - 1439.68
-    vt_aabd_ep:
-    - 157
-    - 0
-- name: Vermont essential care for a disabled member is excluded for HUD
-  period: '2026'
+    vt_aabd_ep_countable_income: [1_439.68, 1_439.68]
+    vt_aabd_ep: [157, 0]
+
+- name: Case 11, Vermont essential care for a disabled member is excluded for HUD.
+  period: 2026
   absolute_error_margin: 0.01
   input:
     state_code: VT
@@ -288,6 +234,6 @@
     is_disabled: true
     vt_aabd_ep_level: FULL
   output:
-    vt_aabd: 7232.16
-    snap_unearned_income: 19160.16
-    hud_unearned_income: 12596.16
+    vt_aabd: 7_232.16
+    snap_unearned_income: 19_160.16
+    hud_unearned_income: 12_596.16

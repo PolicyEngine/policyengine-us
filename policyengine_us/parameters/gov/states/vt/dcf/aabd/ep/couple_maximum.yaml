@@ -1,10 +1,11 @@
 description: Vermont uses this amount as its Essential Person independent eligible-couple payment maximum.
 values:
-  '2026-01-01': 1780.64
+  2026-01-01: 1_780.64
+
 metadata:
   unit: currency-USD
+  period: month
   label: Vermont Essential Person independent eligible-couple payment maximum
   reference:
-  - title: Bulletin 25-26, P2740B, 2026 payment maximums
-    href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/B25-26.pdf
-  period: month
+    - title: Bulletin 25-26, P2740B, 2026 payment maximums
+      href: https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/B25-26.pdf
