@@ -6,6 +6,7 @@
     age: 65
   output:
     nh_ssp: 27
+
 - name: Case 2, certified subsidized_community_residence.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -15,6 +16,7 @@
     nh_ssp_living_arrangement: SUBSIDIZED_COMMUNITY_RESIDENCE
   output:
     nh_ssp: 89
+
 - name: Case 3, certified nonsubsidized_community_residence.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -24,6 +26,7 @@
     nh_ssp_living_arrangement: NONSUBSIDIZED_COMMUNITY_RESIDENCE
   output:
     nh_ssp: 149
+
 - name: Case 4, certified enhanced_family_care.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -33,6 +36,7 @@
     nh_ssp_living_arrangement: ENHANCED_FAMILY_CARE
   output:
     nh_ssp: 207
+
 - name: Case 5, certified residential_care.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -42,24 +46,27 @@
     nh_ssp_living_arrangement: RESIDENTIAL_CARE
   output:
     nh_ssp: 207
+
 - name: Case 6, resources at state limit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NH
     age: 65
-    ssi_countable_resources: 1500
+    ssi_countable_resources: 1_500
   output:
     nh_ssp: 27
+
 - name: Case 7, resources exceed state limit despite federal eligibility.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NH
     age: 65
-    ssi_countable_resources: 1501
+    ssi_countable_resources: 1_501
   output:
     nh_ssp: 0
+
 - name: Case 8, twenty dollars of Social Security reduces state grant.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -69,42 +76,47 @@
     social_security_retirement: 240
   output:
     nh_ssp: 7
+
 - name: Case 9, state only benefit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NH
     age: 65
-    social_security_retirement: 12216
+    social_security_retirement: 12_216
   output:
     nh_ssp: 3
+
 - name: Case 10, positive dollar amount raised to state minimum.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NH
     age: 65
-    nh_ssp_countable_income: 1007
+    nh_ssp_countable_income: 1_007
   output:
     nh_ssp: 2
+
 - name: Case 11, income at standard.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NH
     age: 65
-    nh_ssp_countable_income: 1008
+    nh_ssp_countable_income: 1_008
   output:
     nh_ssp: 0
+
 - name: Case 12, aged employment rules.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NH
     age: 65
-    employment_income: 1200
+    employment_income: 1_200
   output:
     nh_ssp: 3
+
 - name: Case 13, blind employment rules.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -112,19 +124,21 @@
     state_code: NH
     age: 40
     is_blind: true
-    employment_income: 1200
+    employment_income: 1_200
   output:
     nh_ssp: 27
+
 - name: Case 14, verified employment expenses above minimum.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: NH
     age: 65
-    employment_income: 1200
+    employment_income: 1_200
     nh_ssp_employment_expenses: 50
   output:
     nh_ssp: 35
+
 - name: Case 15, other allowed deductions.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -134,6 +148,7 @@
     nh_ssp_other_income_deductions: 25
   output:
     nh_ssp: 52
+
 - name: Case 16, independently determined one third grant reduction.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -143,6 +158,7 @@
     nh_ssp_grant_reduction_applies: true
   output:
     nh_ssp: 18
+
 - name: Case 17, federal disability alone does not establish forty eight month duration.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -152,6 +168,7 @@
     meets_ssi_disability_criteria: true
   output:
     nh_ssp: 0
+
 - name: Case 18, permanently disabled adult.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -162,6 +179,7 @@
     is_permanently_and_totally_disabled: true
   output:
     nh_ssp: 27
+
 - name: Case 19, blind child.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -171,6 +189,7 @@
     is_blind: true
   output:
     nh_ssp: 27
+
 - name: Case 20, disabled child without blindness.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -181,6 +200,7 @@
     is_permanently_and_totally_disabled: true
   output:
     nh_ssp: 0
+
 - name: Case 21, nonresident.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -189,6 +209,7 @@
     age: 65
   output:
     nh_ssp: 0
+
 - name: Case 22, required federal benefit application declined.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -198,6 +219,7 @@
     takes_up_ssi_if_eligible: false
   output:
     nh_ssp: 0
+
 - name: Case 23, excluded living arrangement.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -207,7 +229,8 @@
     nh_ssp_living_arrangement: NONE
   output:
     nh_ssp: 0
-- name: Single recipient and certified essential person use group size two
+
+- name: Case 24, Single recipient and certified essential person use group size two.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -217,7 +240,8 @@
     nh_ssp_has_essential_person: true
   output:
     nh_ssp: 518
-- name: Essential person income is added before the group disregard
+
+- name: Case 25, Essential person income is added before the group disregard.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -228,7 +252,8 @@
     nh_ssp_essential_person_countable_income: 100
   output:
     nh_ssp: 418
-- name: Essential person resources are counted even when recipient receives SSI
+
+- name: Case 26, Essential person resources are counted even when recipient receives SSI.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -236,11 +261,12 @@
     age: 70
     ssi: 994
     nh_ssp_has_essential_person: true
-    ssi_countable_resources: 1000
+    ssi_countable_resources: 1_000
     nh_ssp_essential_person_resources: 501
   output:
     nh_ssp: 0
-- name: Essential person resource limit is inclusive
+
+- name: Case 27, Essential person resource limit is inclusive.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -248,11 +274,12 @@
     age: 70
     ssi: 994
     nh_ssp_has_essential_person: true
-    ssi_countable_resources: 1000
+    ssi_countable_resources: 1_000
     nh_ssp_essential_person_resources: 500
   output:
     nh_ssp: 518
-- name: Care facilities remain single-person groups
+
+- name: Case 28, Care facilities remain single-person groups.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -264,7 +291,8 @@
     nh_ssp_essential_person_countable_income: 100
   output:
     nh_ssp: 207
-- name: Uncertified caregiver does not increase the standard
+
+- name: Case 29, Uncertified caregiver does not increase the standard.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -274,8 +302,8 @@
     nh_ssp_has_essential_person: false
   output:
     nh_ssp: 27
-- name: Group standard disregard does not turn excess essential-person income into
-    eligibility
+
+- name: Case 30, Group standard disregard does not turn excess essential-person income into eligibility.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -286,336 +314,269 @@
     nh_ssp_essential_person_countable_income: 518
   output:
     nh_ssp: 0
-- name: Annual essential-person resource input stays a balance in each month
-  period: '2026'
+
+- name: Case 31, Annual essential-person resource input stays a balance in each month.
+  period: 2026
   absolute_error_margin: 0.01
   input:
     state_code: NH
     age: 70
     ssi: 994
     nh_ssp_has_essential_person: true
-    ssi_countable_resources: 1000
+    ssi_countable_resources: 1_000
     nh_ssp_essential_person_resources: 501
   output:
     nh_ssp: 0
 
 # He-W 652.03(i)-(j),(q): full parental excess, NH $1500 ceiling, and adult control.
 # https://gc.nh.gov/rules/state_agencies/he-w600.html
-- name: Blind child is ineligible with excess co-resident parent resources
+- name: Case 32, Blind child is ineligible with excess co-resident parent resources.
   period: 2026-06
   absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 1
+          2026: 1
         bank_account_assets:
-          '2026': 10000
-      child1:
+          2026: 10_000
+      person2:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 3
+          2026: 3
         parent_1_id:
-          '2026': 1
+          2026: 1
         is_blind:
-          '2026': true
+          2026: true
     marital_units:
       parent1:
-        members:
-        - parent1
+        members: [person1]
       child1:
-        members:
-        - child1
-    tax_units:
-      parent1:
-        members:
-        - parent1
-      child1:
-        members:
-        - child1
+        members: [person2]
     families:
       family:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
     spm_units:
       unit:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
     households:
       home:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
         state_code:
-          '2026': NH
+          2026: NH
   output:
-    nh_ssp:
-    - 0
-    - 0
-- name: Parental allowance plus the NH child resource ceiling is inclusive
+    nh_ssp: [0, 0]
+
+- name: Case 33, Parental allowance plus the NH child resource ceiling is inclusive.
   period: 2026-06
   absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 1
+          2026: 1
         bank_account_assets:
-          '2026': 3500
-      child1:
+          2026: 3_500
+      person2:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 3
+          2026: 3
         parent_1_id:
-          '2026': 1
+          2026: 1
         is_blind:
-          '2026': true
+          2026: true
     marital_units:
       parent1:
-        members:
-        - parent1
+        members: [person1]
       child1:
-        members:
-        - child1
-    tax_units:
-      parent1:
-        members:
-        - parent1
-      child1:
-        members:
-        - child1
+        members: [person2]
     families:
       family:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
     spm_units:
       unit:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
     households:
       home:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
         state_code:
-          '2026': NH
+          2026: NH
   output:
-    nh_ssp:
-    - 0
-    - 27
-- name: One cent above the parent allowance and NH resource ceiling is ineligible
+    nh_ssp: [0, 27]
+
+- name: Case 34, One cent above the parent allowance and NH resource ceiling is ineligible.
   period: 2026-06
   absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 1
+          2026: 1
         bank_account_assets:
-          '2026': 3500.01
-      child1:
+          2026: 3_500.01
+      person2:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 3
+          2026: 3
         parent_1_id:
-          '2026': 1
+          2026: 1
         is_blind:
-          '2026': true
+          2026: true
     marital_units:
       parent1:
-        members:
-        - parent1
+        members: [person1]
       child1:
-        members:
-        - child1
-    tax_units:
-      parent1:
-        members:
-        - parent1
-      child1:
-        members:
-        - child1
+        members: [person2]
     families:
       family:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
     spm_units:
       unit:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
     households:
       home:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
         state_code:
-          '2026': NH
+          2026: NH
   output:
-    nh_ssp:
-    - 0
-    - 0
-- name: A blind adult does not receive deemed parental resources
+    nh_ssp: [0, 0]
+
+- name: Case 35, A blind adult does not receive deemed parental resources.
   period: 2026-06
   absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 1
+          2026: 1
         bank_account_assets:
-          '2026': 10000
-      child1:
+          2026: 10_000
+      person2:
         age:
-          '2026': 19
+          2026: 19
         person_id:
-          '2026': 3
+          2026: 3
         parent_1_id:
-          '2026': 1
+          2026: 1
         is_blind:
-          '2026': true
+          2026: true
     marital_units:
       parent1:
-        members:
-        - parent1
+        members: [person1]
       child1:
-        members:
-        - child1
-    tax_units:
-      parent1:
-        members:
-        - parent1
-      child1:
-        members:
-        - child1
+        members: [person2]
     families:
       family:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
+    tax_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
     spm_units:
       unit:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
     households:
       home:
-        members:
-        - parent1
-        - child1
+        members: [person1, person2]
         state_code:
-          '2026': NH
+          2026: NH
   output:
-    nh_ssp:
-    - 0
-    - 27
-- name: Each blind sibling receives the full excess under the NH rule
+    nh_ssp: [0, 27]
+
+- name: Case 36, Each blind sibling receives the full excess under the NH rule.
   period: 2026-06
   absolute_error_margin: 0.01
   input:
     people:
-      parent1:
+      person1:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 1
+          2026: 1
         bank_account_assets:
-          '2026': 5500
-      parent2:
+          2026: 5_500
+      person2:
         age:
-          '2026': 40
+          2026: 40
         person_id:
-          '2026': 2
-      child1:
+          2026: 2
+      person3:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 3
+          2026: 3
         parent_1_id:
-          '2026': 1
+          2026: 1
         is_blind:
-          '2026': true
+          2026: true
         parent_2_id:
-          '2026': 2
-      child2:
+          2026: 2
+      person4:
         age:
-          '2026': 10
+          2026: 10
         person_id:
-          '2026': 4
+          2026: 4
         parent_1_id:
-          '2026': 1
+          2026: 1
         is_blind:
-          '2026': true
+          2026: true
         parent_2_id:
-          '2026': 2
+          2026: 2
     marital_units:
       parent1:
-        members:
-        - parent1
+        members: [person1]
       parent2:
-        members:
-        - parent2
+        members: [person2]
       child1:
-        members:
-        - child1
+        members: [person3]
       child2:
-        members:
-        - child2
-    tax_units:
-      parent1:
-        members:
-        - parent1
-      parent2:
-        members:
-        - parent2
-      child1:
-        members:
-        - child1
-      child2:
-        members:
-        - child2
+        members: [person4]
     families:
       family:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
+        members: [person1, person2, person3, person4]
+    tax_units:
+      parent1:
+        members: [person1]
+      parent2:
+        members: [person2]
+      child1:
+        members: [person3]
+      child2:
+        members: [person4]
     spm_units:
       unit:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
+        members: [person1, person2, person3, person4]
     households:
       home:
-        members:
-        - parent1
-        - parent2
-        - child1
-        - child2
+        members: [person1, person2, person3, person4]
         state_code:
-          '2026': NH
+          2026: NH
   output:
-    nh_ssp:
-    - 0
-    - 0
-    - 0
-    - 0
+    nh_ssp: [0, 0, 0, 0]

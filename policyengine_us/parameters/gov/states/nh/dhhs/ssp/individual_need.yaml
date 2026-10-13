@@ -1,23 +1,29 @@
-description: New Hampshire sets these monthly adult assistance standards of need for an individual in
-  each living arrangement.
+description: New Hampshire sets these monthly adult assistance standards of need for an individual in each living arrangement.
+
 metadata:
   unit: currency-USD
   period: month
   label: New Hampshire SSP individual need standard
   breakdown:
-  - nh_ssp_living_arrangement
+    - nh_ssp_living_arrangement
   reference:
-  - title: New Hampshire 2026 approved optional state supplement income standards, Section D and E
-    href: https://www.medicaid.gov/medicaid/spa/downloads/NH-26-0001.pdf
+    - title: New Hampshire 2026 approved optional state supplement income standards, Section D and E
+      href: https://www.medicaid.gov/medicaid/spa/downloads/NH-26-0001.pdf
+
 INDEPENDENT:
-  '2026-01-01': 1008
+  2026-01-01: 1_008
+
 SUBSIDIZED_COMMUNITY_RESIDENCE:
-  '2026-01-01': 1070
+  2026-01-01: 1_070
+
 NONSUBSIDIZED_COMMUNITY_RESIDENCE:
-  '2026-01-01': 1130
+  2026-01-01: 1_130
+
 ENHANCED_FAMILY_CARE:
-  '2026-01-01': 1188
+  2026-01-01: 1_188
+
 RESIDENTIAL_CARE:
-  '2026-01-01': 1188
+  2026-01-01: 1_188
+
 NONE:
-  '2026-01-01': 0
+  2026-01-01: 0

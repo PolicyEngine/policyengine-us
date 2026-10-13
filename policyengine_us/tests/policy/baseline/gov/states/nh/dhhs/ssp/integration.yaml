@@ -3,156 +3,121 @@
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
-      second:
+      person2:
         age: 65
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: NH
   output:
-    nh_ssp:
-    - 10.5
-    - 10.5
+    nh_ssp: [10.5, 10.5]
+
 - name: Case 2, nonapplicant spouse is included in needs.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
-      second:
+      person2:
         age: 40
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: NH
   output:
-    nh_ssp:
-    - 518
-    - 0
+    nh_ssp: [518, 0]
+
 - name: Case 3, independent couple combined resources exceed limit.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         ssi_countable_resources: 750
-      second:
+      person2:
         age: 65
         ssi_countable_resources: 751
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: NH
   output:
-    nh_ssp:
-    - 0
-    - 0
+    nh_ssp: [0, 0]
+
 - name: Case 4, care spouses are individual assistance groups.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         nh_ssp_living_arrangement: RESIDENTIAL_CARE
         ssi_claim_is_joint: false
-      second:
+      person2:
         age: 65
         nh_ssp_living_arrangement: RESIDENTIAL_CARE
         ssi_claim_is_joint: false
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: NH
   output:
-    nh_ssp:
-    - 207
-    - 207
+    nh_ssp: [207, 207]
+
 - name: Case 5, two aged applicants receive separate earned disregards.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
-        employment_income: 1200
-      second:
+        employment_income: 1_200
+      person2:
         age: 65
-        employment_income: 1200
+        employment_income: 1_200
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: NH
   output:
-    nh_ssp:
-    - 7.5
-    - 7.5
+    nh_ssp: [7.5, 7.5]
+
 - name: Case 6, annual independent grant and SNAP income.
-  period: '2026'
+  period: 2026
   absolute_error_margin: 0.01
   input:
     state_code: NH
@@ -160,58 +125,46 @@
   output:
     nh_ssp: 324
     household_state_benefits: 324
-    snap_unearned_income: 12252
-    hud_unearned_income: 12252
-- name: Eligible couple and essential person share a three-person grant
+    snap_unearned_income: 12_252
+    hud_unearned_income: 12_252
+
+- name: Case 7, Eligible couple and essential person share a three-person grant.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      a:
+      person1:
         age: 70
         nh_ssp_has_essential_person: true
-      b:
+      person2:
         age: 70
     marital_units:
       couple:
-        members:
-        - a
-        - b
+        members: [person1, person2]
     households:
       home:
-        members:
-        - a
-        - b
+        members: [person1, person2]
         state_code: NH
   output:
-    nh_ssp:
-    - 261.5
-    - 261.5
-    nh_ssp_countable_income:
-    - 1466
-    - 1466
-- name: Three-person grant with a non-applicant spouse
+    nh_ssp: [261.5, 261.5]
+    nh_ssp_countable_income: [1_466, 1_466]
+
+- name: Case 8, Three-person grant with a non-applicant spouse.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      a:
+      person1:
         age: 70
         nh_ssp_has_essential_person: true
-      b:
+      person2:
         age: 40
     marital_units:
       couple:
-        members:
-        - a
-        - b
+        members: [person1, person2]
     households:
       home:
-        members:
-        - a
-        - b
+        members: [person1, person2]
         state_code: NH
   output:
-    nh_ssp:
-    - 1020
-    - 0
+    nh_ssp: [1_020, 0]
