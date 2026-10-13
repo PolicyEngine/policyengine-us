@@ -172,8 +172,10 @@
       person1:
         age: 17
         employment_income: 6_000
+        is_tax_unit_head: true
       person2:
         age: 19
+        is_tax_unit_spouse: true
     tax_units:
       tax_unit:
         members: [person1, person2]
