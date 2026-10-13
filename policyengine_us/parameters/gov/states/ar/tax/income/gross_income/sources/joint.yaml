@@ -49,7 +49,7 @@ values:
     - estate_income # Line 19
     - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
     - farm_operations_income # Line 20, Schedule F
-    - unemployment_compensation # Line 21
+    - total_unemployment_compensation # Line 21
     - gambling_winnings # Line 22, other income (Form AR-OI)
   2020-01-01:
     - irs_employment_income # Line 8
@@ -92,7 +92,7 @@ values:
     - estate_income # Line 19
     - farm_rent_income # Line 19, Form 4835 rent is reported on Schedule E
     - farm_operations_income # Line 20, Schedule F
-    - unemployment_compensation # Line 21
+    - total_unemployment_compensation # Line 21
     - gambling_winnings # Line 22, other income (Form AR-OI)
 
 metadata:
