@@ -3,65 +3,51 @@
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
-      second:
+      person2:
         age: 65
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: PA
   output:
-    pa_ssp:
-    - 16.65
-    - 16.65
+    pa_ssp: [16.65, 16.65]
+
 - name: Case 2, household_of_another couple.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         ssi_lives_in_another_persons_household: true
         ssi_receives_shelter_from_others_in_household: true
         ssi_others_pay_all_meals: true
-      second:
+      person2:
         age: 65
         ssi_lives_in_another_persons_household: true
         ssi_receives_shelter_from_others_in_household: true
         ssi_others_pay_all_meals: true
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: PA
   output:
-    pa_ssp:
-    - 19.22
-    - 19.22
+    pa_ssp: [19.22, 19.22]
+
 - name: Case 3, annual benefits and SNAP income.
   period: 2026
   absolute_error_margin: 0.01
@@ -71,5 +57,5 @@
   output:
     pa_ssp: 265.2
     household_state_benefits: 265.2
-    snap_unearned_income: 12193.2
-    hud_unearned_income: 12193.2
+    snap_unearned_income: 12_193.2
+    hud_unearned_income: 12_193.2
