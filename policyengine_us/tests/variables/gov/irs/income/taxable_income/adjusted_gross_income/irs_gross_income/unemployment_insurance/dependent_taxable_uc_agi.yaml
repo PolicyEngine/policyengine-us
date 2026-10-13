@@ -1,0 +1,132 @@
+# A dependent's IRC 85(c)(2) adjusted gross income on their own return: line 6
+# of the 2020 Unemployment Compensation Exclusion Worksheet (Instructions for
+# Form 1040, rev. 4-2021, p. 88), figured with the dependent's own income.
+- name: Case 1, the dependent's own income less their own adjustments, without the compensation.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+      person2:
+        age: 19
+        is_full_time_student: true
+        employment_income: 12_000
+        early_withdrawal_penalty: 100
+        unemployment_compensation: 4_000
+      person3:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [person1, person3, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person3]
+    households:
+      household:
+        members: [person1, person3, person2]
+        state_code: TX
+  output:
+    # Line 1: 12,000 of wages. Line 5: 100. Line 6: 11,900. The head and
+    # spouse are not dependents and are tested on the tax unit's return.
+    is_tax_unit_dependent: [false, true, false]
+    dependent_taxable_uc_agi: [0, 11_900, 0]
+
+- name: Case 2, the dependent's Social Security is taxable on the full compensation.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+      person2:
+        age: 19
+        is_full_time_student: true
+        employment_income: 30_000
+        social_security_survivors: 10_000
+        unemployment_compensation: 6_000
+      person3:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [person1, person3, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person3]
+    households:
+      household:
+        members: [person1, person3, person2]
+        state_code: TX
+  output:
+    # Social Security Benefits Worksheet (p. 31), unmarried: line 3, 30,000
+    # + 6,000 = 36,000; line 5, 36,000 + 5,000 = 41,000. Taxable: the lesser
+    # of 85% x (41,000 - 34,000) + 4,500 = 10,450 and 85% x 10,000 = 8,500.
+    # Exclusion worksheet line 6: 30,000 + 8,500 = 38,500.
+    is_tax_unit_dependent: [false, true, false]
+    dependent_taxable_social_security: [0, 8_500, 0]
+    dependent_taxable_uc_agi: [0, 38_500, 0]
+
+- name: Case 3, an estate or trust loss reduces the dependent's own AGI below the cutoff.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+      person2:
+        age: 20
+        is_full_time_student: true
+        dividend_income: 150_000
+        estate_income: -1_000
+        unemployment_compensation: 5_000
+      person3:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [person1, person3, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person3]
+    households:
+      household:
+        members: [person1, person3, person2]
+        state_code: TX
+  output:
+    # Line 1: Form 1040 line 3b dividends, 150,000. Line 2: Schedule 1 line
+    # 5, the Schedule E Part III loss, -1,000. Line 6: 149,000, under the
+    # cutoff, so the dependent excludes all 5,000.
+    is_tax_unit_dependent: [false, true, false]
+    dependent_taxable_uc_agi: [0, 149_000, 0]
+    taxable_unemployment_compensation: [0, 0, 0]
+    tax_exempt_unemployment_compensation: [0, 5_000, 0]
+
+- name: Case 4, the IRC 461(l) limit is suspended for 2020, so the whole loss counts.
+  period: 2020
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 50_000
+      person2:
+        age: 20
+        is_full_time_student: true
+        dividend_income: 150_000
+        estate_income: -200_000
+        unemployment_compensation: 5_000
+      person3:
+        age: 43
+    tax_units:
+      tax_unit:
+        members: [person1, person3, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person3]
+    households:
+      household:
+        members: [person1, person3, person2]
+        state_code: TX
+  output:
+    # CARES Act section 2304 suspends the excess business loss limit through
+    # 2020. Line 6: 150,000 - 200,000 = -50,000, under the cutoff.
+    dependent_taxable_uc_agi: [0, -50_000, 0]
+    taxable_unemployment_compensation: [0, 0, 0]
