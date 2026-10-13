@@ -140,3 +140,46 @@
         state_code: WI
   output:
     wi_homestead_eligible: true
+
+# Either spouse can be the claimant, who must be 18 or older and 62 or older,
+# disabled or have their own earned income (2024 Schedule H instructions,
+# pages 4 and 10; Wis. Stat. 71.52(1g)).
+
+- name: Case 10, one spouse's wages qualify even when the other has a larger self-employment loss.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 5_000
+      person2:
+        age: 40
+        self_employment_income: -8_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_homestead_eligible: true
+
+- name: Case 11, the earner must also be 18 or older.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 17
+        employment_income: 6_000
+      person2:
+        age: 19
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    wi_homestead_eligible: false

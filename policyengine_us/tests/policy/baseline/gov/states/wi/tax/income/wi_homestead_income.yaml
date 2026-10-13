@@ -159,3 +159,68 @@
     tax_exempt_unemployment_compensation: [0, 8_000]
     # 5,000 pension + 15,000 social security - 500 = 19,500.
     wi_homestead_income: 19_500
+
+- name: Case 8, a dependent's capital loss is not added back to household income.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 12_000
+        taxable_pension_income: 6_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        long_term_capital_gains: -2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # No W-2 payments, which would count too (Tax 14.03(4)(b)3.b).
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # The child's loss is on the child's own return, so AGI stays 6,000 and
+    # Schedule 4 line 3 adds nothing back: 6,000 + 12,000 - 500 = 17,500.
+    adjusted_gross_income: 6_000
+    wi_homestead_disqualified_losses: 0
+    wi_homestead_income: 17_500
+
+- name: Case 9, a dependent's capital gain does not shrink the claimant's loss add-back.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 12_000
+        taxable_pension_income: 6_000
+        long_term_capital_gains: -3_000
+      person2:
+        age: 17
+        is_tax_unit_dependent: true
+        long_term_capital_gains: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        # No W-2 payments, which would count too (Tax 14.03(4)(b)3.b).
+        tanf: 0
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # AGI = 6,000 - 3,000 claimant's allowed loss = 3,000; the 3,000 loss is
+    # added back: 3,000 + 3,000 + 12,000 - 500 = 17,500.
+    adjusted_gross_income: 3_000
+    wi_homestead_disqualified_losses: 3_000
+    wi_homestead_income: 17_500
