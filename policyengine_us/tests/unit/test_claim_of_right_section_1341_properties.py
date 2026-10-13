@@ -38,9 +38,11 @@ its payment is the prior-year increase when the credit method applies and zero
 otherwise.
 
 Last, one itemizing household per state: with the credit method fixed, the
-repayment leaves every state's income tax unchanged in the model (no state
-input is supplied), and with the deduction method fixed it leaves Arizona's,
-California's, Kansas's and Wisconsin's unchanged.
+repayment leaves the income tax of every state without its own claim of right
+rule unchanged (section 1341(b)(3)) and never raises the tax of a state with
+one; with the deduction method fixed it leaves Arizona's, California's,
+Kansas's and Wisconsin's unchanged. A state has its own rule when the model
+has a variable named ``<state>_claim_of_right_...``.
 """
 
 import gc
@@ -294,8 +296,8 @@ def test_north_carolina_follows_the_federal_method(results, year):
     )
 
 
-def state_income_tax(year, repayment, method=None):
-    """State income tax of an itemizing single filer in each state."""
+def state_simulation(year, repayment, method=None):
+    """An itemizing single filer in each state."""
     situation = {"people": {}, "tax_units": {}, "households": {}}
     for i, state in enumerate(STATES):
         situation["people"][f"p{i}"] = {
@@ -316,17 +318,39 @@ def state_income_tax(year, repayment, method=None):
             "members": [f"p{i}"],
             "state_code": {year: state},
         }
-    simulation = Simulation(situation=situation)
+    return Simulation(situation=situation)
+
+
+def state_income_tax(simulation, year):
     return np.asarray(simulation.calculate("state_income_tax", year))
+
+
+def states_with_own_rules(simulation):
+    """Whether the model has a claim of right rule of each state's own."""
+    names = simulation.tax_benefit_system.variables
+    return np.array(
+        [
+            any(name.startswith(f"{state.lower()}_claim_of_right_") for name in names)
+            for state in STATES
+        ]
+    )
 
 
 def test_states_under_each_federal_method():
     # One year: each of these three simulations computes every state's tax.
     year = YEARS[0]
-    without_repayment = state_income_tax(year, 0)
-    with_credit = state_income_tax(year, 10_000, method=True)
-    np.testing.assert_allclose(with_credit, without_repayment, atol=TOLERANCE)
-    with_deduction = state_income_tax(year, 10_000, method=False)
+    without_repayment = state_income_tax(state_simulation(year, 0), year)
+    credit = state_simulation(year, 10_000, method=True)
+    with_credit = state_income_tax(credit, year)
+    own_rules = states_with_own_rules(credit)
+    assert own_rules[STATES.index("NC")], "North Carolina has its own rules"
+    np.testing.assert_allclose(
+        with_credit[~own_rules], without_repayment[~own_rules], atol=TOLERANCE
+    )
+    assert np.all(with_credit[own_rules] <= without_repayment[own_rules] + TOLERANCE)
+    with_deduction = state_income_tax(
+        state_simulation(year, 10_000, method=False), year
+    )
     assert np.any(np.abs(with_deduction - without_repayment) > 1), (
         "the deduction should reach the states that follow federal itemized deductions"
     )
