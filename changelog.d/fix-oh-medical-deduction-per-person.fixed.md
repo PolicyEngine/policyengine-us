@@ -1,1 +1,0 @@
-Count Ohio's unreimbursed medical care deduction once per return: each member now takes their prorated share of worksheet line 8 rather than the full return amount, and federal AGI below zero is entered as zero on worksheet line 6.

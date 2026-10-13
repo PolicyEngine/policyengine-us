@@ -6,14 +6,18 @@ federal AGI, with AGI entered as zero if less than zero (line 6). Lines 1 and 2
 (premiums with no Medicare or employer plan, and long-term care premiums) are
 deducted in full. Each person carries their own lines 1 and 2 and a share of
 line 8 in proportion to their line 5 expenses, and Ohio AGI is the sum over
-the members.
+the members. Premiums go on line 1 if the person is eligible for neither
+Medicare nor a subsidized plan of the taxpayer's or spouse's employer
+(R.C. 5747.01(A)(10)(a)), and on line 3, part of line 5, otherwise.
 
 Hypothesis draws batches of tax units (single, joint, head of household or
-joint with dependents), each person with wages, medical expenses, uninsured
-premiums and long-term care premiums, and some heads with a business loss
-that makes federal AGI negative. A seeded population of 200 units adds
-breadth. Each batch runs as one vectorized simulation, and again with every
-medical amount set to zero. For every tax unit:
+joint with dependents), each person with wages, medical expenses, health
+insurance premiums, long-term care premiums, Medicare eligibility, employer
+coverage, an employer coverage offer and an employer contribution category,
+and some heads with a business loss that makes federal AGI negative. A seeded
+population of 200 units adds breadth. Each batch runs as one vectorized
+simulation, and again with every medical amount set to zero. For every tax
+unit:
 
 1. Conservation: the members' line 8 shares sum to the return's line 8.
 2. Differential: line 8 and each share equal an independent numpy worksheet,
@@ -25,6 +29,11 @@ medical amount set to zero. For every tax unit:
    deduction, and raises each person's Ohio AGI (and joint filing credit
    qualifying income) by exactly their own share, so a spouse never loses
    qualifying income for the other spouse's expenses.
+5. Partition: each person's premiums are on exactly one of lines 1 and 3, so
+   line 1 plus the premiums on line 3 equals the premiums paid. Line 1 is
+   zero for everyone on a return where the head or spouse has employer
+   coverage, an offer of it, or an employer paying some or all of their
+   premiums, and for every Medicare-eligible person.
 """
 
 import numpy as np
@@ -48,6 +57,12 @@ MEDICAL = [
     "health_insurance_premiums",
     "long_term_health_insurance_premiums",
 ]
+COVERAGE = [
+    "is_medicare_eligible",
+    "has_esi",
+    "offered_aca_disqualifying_esi",
+    "employer_contribution_to_health_insurance_premiums_category",
+]
 
 amounts = st.one_of(
     st.just(0.0),
@@ -56,6 +71,10 @@ amounts = st.one_of(
 )
 wages = st.one_of(st.just(0.0), st.integers(1, 200_000).map(float))
 losses = st.one_of(st.just(0.0), st.integers(-100_000, -1).map(float))
+# Weighted toward the defaults: no Medicare, no employer coverage and the NONE
+# category, which says nothing about whether an employer plan exists.
+CATEGORIES = ["NONE", "NONE", "NONE", "SOME", "ALL", "NA"]
+rare = st.sampled_from([False, False, False, True])
 
 
 @st.composite
@@ -65,6 +84,12 @@ def people(draw):
         "other_medical_expenses": draw(amounts),
         "health_insurance_premiums": draw(amounts),
         "long_term_health_insurance_premiums": draw(amounts),
+        "is_medicare_eligible": draw(rare),
+        "has_esi": draw(rare),
+        "offered_aca_disqualifying_esi": draw(rare),
+        "employer_contribution_to_health_insurance_premiums_category": draw(
+            st.sampled_from(CATEGORIES)
+        ),
     }
 
 
@@ -97,6 +122,12 @@ def _seeded_units(n=200):
             "other_medical_expenses": amount(),
             "health_insurance_premiums": amount(),
             "long_term_health_insurance_premiums": amount(),
+            "is_medicare_eligible": bool(rng.random() < 0.25),
+            "has_esi": bool(rng.random() < 0.25),
+            "offered_aca_disqualifying_esi": bool(rng.random() < 0.25),
+            "employer_contribution_to_health_insurance_premiums_category": str(
+                rng.choice(CATEGORIES)
+            ),
         }
 
     units = []
@@ -121,14 +152,15 @@ def _situation(units, year, *, medical):
 
     def add(name, values, role):
         people[name] = {
-            # Under 65 and not disabled, so no one is eligible for Medicare
-            # and worksheet line 3 is zero.
             "age": {"head": 45, "spouse": 43, "dependent": 10}[role],
             "is_tax_unit_head": role == "head",
             "is_tax_unit_spouse": role == "spouse",
             "is_tax_unit_dependent": role == "dependent",
             "employment_income": values["employment_income"],
-            "employer_contribution_to_health_insurance_premiums_category": "NONE",
+            **{name: values[name] for name in COVERAGE},
+            # No modeled Medicare Part B premium, so the premiums are only
+            # the drawn ones and zeroing them removes every medical amount.
+            "takes_up_medicare_if_eligible": False,
             **{name: values[name] * medical for name in MEDICAL},
         }
 
@@ -162,6 +194,11 @@ def _situation(units, year, *, medical):
 
 PERSON = [
     "other_medical_expenses",
+    "health_insurance_premiums",
+    "oh_medical_care_insurance_premiums",
+    "is_medicare_eligible",
+    "has_esi",
+    "offered_aca_disqualifying_esi",
     "oh_insured_unreimbursed_medical_care_expense_amount",
     "oh_insured_unreimbursed_medical_care_expenses_person",
     "oh_uninsured_unreimbursed_medical_care_expenses",
@@ -172,6 +209,7 @@ PERSON = [
 ]
 TAX_UNIT = [
     "adjusted_gross_income",
+    "oh_employer_subsidized_health_plan_eligible",
     "oh_insured_unreimbursed_medical_care_expenses",
     "oh_unreimbursed_medical_care_expense_deduction",
     "oh_agi",
@@ -185,6 +223,9 @@ def _run(units, year, *, medical=True):
         for name in PERSON + TAX_UNIT
     }
     out["filer"] = np.asarray(sim.calculate("is_tax_unit_head_or_spouse", year))
+    out["category"] = sim.calculate(
+        "employer_contribution_to_health_insurance_premiums_category", year
+    ).decode_to_str()
     out["unit"] = sim.populations["tax_unit"].members_entity_id
     return out
 
@@ -199,11 +240,28 @@ def _check(units, year):
     line_5_person = base["oh_insured_unreimbursed_medical_care_expense_amount"]
     line_8 = base["oh_insured_unreimbursed_medical_care_expenses"]
     share = base["oh_insured_unreimbursed_medical_care_expenses_person"]
+    line_1 = base["oh_uninsured_unreimbursed_medical_care_expenses"]
 
-    # No one is Medicare eligible, so line 5 is each person's medical care.
+    # 5. Partition, against an independent reading of the worksheet. No one
+    # is self-employed, so the premiums are the drawn ones.
+    premiums = base["health_insurance_premiums"]
     np.testing.assert_allclose(
-        line_5_person, base["other_medical_expenses"], atol=TOLERANCE
+        base["oh_medical_care_insurance_premiums"], premiums, atol=TOLERANCE
     )
+    employer_plan = (
+        (base["has_esi"] > 0)
+        | (base["offered_aca_disqualifying_esi"] > 0)
+        | np.isin(base["category"], ["SOME", "ALL"])
+    )
+    return_eligible = _unit_sum(base, base["filer"] * employer_plan) > 0
+    np.testing.assert_array_equal(
+        base["oh_employer_subsidized_health_plan_eligible"] > 0, return_eligible
+    )
+    on_line_3 = (base["is_medicare_eligible"] > 0) | return_eligible[unit]
+    line_3 = line_5_person - base["other_medical_expenses"]
+    np.testing.assert_allclose(line_1, np.where(on_line_3, 0, premiums), atol=TOLERANCE)
+    np.testing.assert_allclose(line_3, np.where(on_line_3, premiums, 0), atol=TOLERANCE)
+    np.testing.assert_allclose(line_1 + line_3, premiums, atol=TOLERANCE)
     line_5 = _unit_sum(base, line_5_person)
 
     # 1. Conservation.
@@ -250,13 +308,20 @@ def _check(units, year):
     np.testing.assert_allclose(
         without["oh_unreimbursed_medical_care_expense_deduction"], 0, atol=TOLERANCE
     )
-    np.testing.assert_allclose(
-        without["oh_agi"] - base["oh_agi"], deduction, atol=TOLERANCE
-    )
+    _assert_difference(without["oh_agi"], base["oh_agi"], deduction, "oh_agi")
     for name in ["oh_agi_person", "oh_joint_filing_credit_qualifying_income"]:
-        np.testing.assert_allclose(
-            without[name] - base[name], person_deduction, atol=TOLERANCE, err_msg=name
-        )
+        _assert_difference(without[name], base[name], person_deduction, name)
+
+
+def _assert_difference(minuend, subtrahend, expected, name):
+    # Incomes are float32, so above 131,072 the spacing between values is
+    # 0.016 or more, and a difference of two incomes is only exact to about
+    # one spacing of the larger.
+    spacing = np.spacing(
+        np.maximum(np.abs(minuend), np.abs(subtrahend)).astype(np.float32)
+    )
+    error = np.abs(minuend - subtrahend - expected)
+    assert (error <= TOLERANCE + 2 * spacing).all(), name
 
 
 # A batch's cost is mostly per-variable overhead, so each example is a large

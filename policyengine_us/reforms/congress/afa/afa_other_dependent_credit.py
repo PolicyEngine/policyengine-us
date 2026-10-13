@@ -5,6 +5,21 @@ import numpy as np
 
 
 def create_afa_other_dependent_credit() -> Reform:
+    class refundable_ctc_barred_by_section_911_exclusion(Variable):
+        reference = "https://www.bennet.senate.gov/wp-content/uploads/2025/04/American-Family-Act-2025.pdf"
+        documentation = (
+            "The American Family Act replaces section 24 from 2025 with "
+            "section 24A, which does not bar refundability for section 911 "
+            "claimants, including in Puerto Rico. Earlier years retain "
+            "the current-law bar."
+        )
+
+        def formula_2025(tax_unit, period, parameters):
+            # Section 2(c) ends old section 24 after 2024; sections 24A(d)
+            # and 2(f)(1) provide refundability from 2025 without a sunset.
+            # Keep this rule after the fully_refundable parameter expires.
+            return False
+
     class other_dependent_credit(Variable):
         value_type = float
         entity = TaxUnit
@@ -152,7 +167,9 @@ def create_afa_other_dependent_credit() -> Reform:
             ctc_capped_by_tax = min_(total_ctc, limiting_tax)
             ctc_capped_by_increased_tax = min_(total_ctc, limiting_tax + phase_in)
             amount_ctc_would_increase = ctc_capped_by_increased_tax - ctc_capped_by_tax
-            return min_(maximum_refundable_ctc, amount_ctc_would_increase)
+            refundable_amount = min_(maximum_refundable_ctc, amount_ctc_would_increase)
+            barred = tax_unit("refundable_ctc_barred_by_section_911_exclusion", period)
+            return where(barred, 0, refundable_amount)
 
     class ctc(Variable):
         value_type = float
@@ -256,6 +273,7 @@ def create_afa_other_dependent_credit() -> Reform:
             self.update_variable(ctc_lower_phase_out)
             self.update_variable(ctc_higher_phase_out)
             self.update_variable(ctc)
+            self.update_variable(refundable_ctc_barred_by_section_911_exclusion)
             self.update_variable(refundable_ctc)
             self.update_variable(ctc_child_individual_maximum_arpa)
             self.modify_parameters(modify_parameters)
