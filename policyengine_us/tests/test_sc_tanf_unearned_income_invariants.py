@@ -14,8 +14,10 @@ SC DSS TANF Policy Manual, Volume 67 (effective August 1, 2026):
   his/her income, resources and SSI payments in determining benefits for
   other BG members."
 - Section 8.15 (page 133): the need standard is 50% of the federal poverty
-  guideline for the benefit group's size; the table's 2024 guideline is
-  $15,060 for one person plus $5,380 for each additional person.
+  guideline for the number of persons in the benefit group, revised each
+  October 1. For January 2025 the guideline is the one in Volume 65's
+  table (PDF page 132): $15,060 for one person plus $5,380 for each
+  additional person.
 
 For every benefit group, in January 2025:
 
@@ -51,7 +53,7 @@ from policyengine_us import Simulation
 YEAR = 2025
 MONTH = f"{YEAR}-01"
 EXCLUSION = 400  # Section 7.7, page 113, per benefit group per year.
-# Section 8.15, page 133: 2024 guideline, in effect from October 2024.
+# Volume 65, Section 8.15 (PDF page 132): in effect from October 2024.
 FPG_FIRST_PERSON = 15_060
 FPG_ADDITIONAL_PERSON = 5_380
 NEED_STANDARD_RATE = 0.5
@@ -241,7 +243,7 @@ def test_worked_example():
     (unearned, _, _, size, need), _ = run(groups, [0])
     # 300 + (1,000 - 400) / 12 = 350 for the parent; 400 for the child.
     assert unearned[0] == pytest.approx([350, 400, 0], abs=TOLERANCE)
-    # Section 8.15 table, three persons: (15,060 + 2 x 5,380) / 12 x 0.5.
+    # Volume 65 Section 8.15 guideline, three persons: (15,060 + 2 x 5,380) / 12 x 0.5.
     assert size[0] == 3
     assert need[0] == pytest.approx(1_075.83, abs=TOLERANCE)
 
