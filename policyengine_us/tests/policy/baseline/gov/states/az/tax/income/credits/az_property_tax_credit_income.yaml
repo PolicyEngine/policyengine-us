@@ -1129,7 +1129,8 @@
         age: 70
         long_term_capital_gains: 4_000
         # Final Form 1041 K-1 box 11 code C, on Schedule D line 5: the year's
-        # short-term result is that 3,000 loss alone.
+        # short-term result is that 3,000 loss alone. Treated like code D
+        # under d1107, pending Max's confirmation (d1512).
         short_term_capital_gains: -3_000
         estate_or_trust_short_term_capital_loss_carryover: 3_000
         rent: 5_000

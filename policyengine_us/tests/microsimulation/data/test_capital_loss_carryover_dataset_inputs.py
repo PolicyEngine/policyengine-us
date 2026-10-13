@@ -4,7 +4,8 @@ Datasets can carry ``long_term_capital_loss_carryover`` or
 leaves: the person's own carryover and one from a terminated estate or trust
 (Schedule K-1 (Form 1041), box 11, codes D and C). Core does not uprate a
 variable that adds others, so ``MICRODATA_UPRATING_OVERRIDES`` gives the sums
-the series their leaves follow. A dataset carrying the sums must keep them in
+the series their leaves follow, and the simulation files each year's sums as
+the person's own carryover. A dataset carrying the sums must keep them in
 every extended year and give the same results as one carrying the leaves.
 """
 
@@ -137,3 +138,10 @@ def test_line_d_adds_back_dataset_carryovers(simulations):
     for simulation in simulations.values():
         line_d = simulation.calculate("az_property_tax_credit_capital_gains", BASE_YEAR)
         np.testing.assert_allclose(line_d.values, [4_500, 0, 0], atol=0.01)
+
+
+def test_dataset_sums_are_filed_as_own_carryovers(simulations):
+    inputs = simulations["sums"].input_variables
+    for term in CARRYOVERS:
+        assert f"{term}_term_capital_loss_carryover" not in inputs
+        assert f"own_{term}_term_capital_loss_carryover" in inputs
