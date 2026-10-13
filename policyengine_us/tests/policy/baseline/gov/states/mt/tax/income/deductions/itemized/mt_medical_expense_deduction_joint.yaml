@@ -158,3 +158,33 @@
     # Form 2 line 2, Worksheet A, takes federal Schedule A:
     # 10,000 - 7.5% x 100,000 = 2,500.
     mt_medical_expense_deduction_joint: 2_500
+
+- name: Montana joint medical deduction excludes spouses' self-employed premiums
+  period: 2023
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 6_000
+        self_employed_health_insurance_ald_person: 1_000
+        other_medical_expenses: 500
+      spouse:
+        age: 40
+        health_insurance_premiums: 3_000
+        self_employed_health_insurance_ald_person: 2_000
+        other_medical_expenses: 500
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+        mt_agi_joint: 40_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # (6,000 + 3,000 - 1,000 - 2,000 + 1,000) - 7.5% of 40,000.
+    mt_medical_expense_deduction_joint: [4_000, 0]
