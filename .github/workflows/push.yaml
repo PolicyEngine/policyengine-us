@@ -424,6 +424,12 @@ jobs:
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     needs: [ReleaseLock, ReleaseLockTests, Baseline, HouseholdAPIPartners, Contrib, Rest, Microsimulation]
+    # PyPI trusted publishing: PyPI accepts uploads only from this workflow in
+    # the pypi environment, which is limited to main. No stored PyPI token.
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -446,6 +452,4 @@ jobs:
       - name: Publish a Python distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          user: __token__
-          password: ${{ secrets.PYPI }}
           skip-existing: true
