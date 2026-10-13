@@ -8,6 +8,7 @@
     medicaid_enrolled: true
   output:
     oh_rss: 806
+
 - name: Case 2, non SSI Social Security.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -16,9 +17,10 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    social_security_retirement: 18000
+    social_security_retirement: 18_000
   output:
     oh_rss: 320
+
 - name: Case 3, income exactly at threshold.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -27,9 +29,10 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    social_security_retirement: 21840
+    social_security_retirement: 21_840
   output:
     oh_rss: 0
+
 - name: Case 4, income just below threshold.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -38,9 +41,10 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    social_security_retirement: 21828
+    social_security_retirement: 21_828
   output:
     oh_rss: 1
+
 - name: Case 5, income above threshold.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -49,9 +53,10 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    social_security_retirement: 24000
+    social_security_retirement: 24_000
   output:
     oh_rss: 0
+
 - name: Case 6, earned income exclusion.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -60,9 +65,10 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    employment_income: 2220
+    employment_income: 2_220
   output:
     oh_rss: 806
+
 - name: Case 7, no care certification.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -73,6 +79,7 @@
     medicaid_enrolled: true
   output:
     oh_rss: 0
+
 - name: Case 8, no Medicaid.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -83,6 +90,7 @@
     medicaid_enrolled: false
   output:
     oh_rss: 0
+
 - name: Case 9, age seventeen.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -94,6 +102,7 @@
     meets_ssi_disability_criteria: true
   output:
     oh_rss: 0
+
 - name: Case 10, age eighteen disabled.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -105,6 +114,7 @@
     meets_ssi_disability_criteria: true
   output:
     oh_rss: 806
+
 - name: Case 11, not aged blind or disabled.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -115,6 +125,7 @@
     medicaid_enrolled: true
   output:
     oh_rss: 0
+
 - name: Case 12, resource boundary.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -123,9 +134,10 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    ssi_countable_resources: 2000
+    ssi_countable_resources: 2_000
   output:
     oh_rss: 806
+
 - name: Case 13, excess resources.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -134,9 +146,10 @@
     age: 65
     oh_rss_certified: true
     medicaid_enrolled: true
-    ssi_countable_resources: 2001
+    ssi_countable_resources: 2_001
   output:
     oh_rss: 0
+
 - name: Case 14, out of state.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -147,6 +160,7 @@
     medicaid_enrolled: true
   output:
     oh_rss: 0
+
 - name: Case 15, partial first month sixteen days.
   period: 2026-01
   absolute_error_margin: 0.01
@@ -158,6 +172,7 @@
     oh_rss_days_of_placement: 16
   output:
     oh_rss: 416
+
 - name: Case 16, zero days of placement.
   period: 2026-01
   absolute_error_margin: 0.01

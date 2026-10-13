@@ -3,167 +3,132 @@
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         oh_rss_certified: true
         medicaid_enrolled: true
-      second:
+      person2:
         age: 65
         oh_rss_certified: true
         medicaid_enrolled: true
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: OH
   output:
-    oh_rss:
-    - 1054.5
-    - 1054.5
+    oh_rss: [1_054.5, 1_054.5]
+
 - name: Case 2, one spouse in approved care.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         oh_rss_certified: true
         medicaid_enrolled: true
-      second:
+      person2:
         age: 65
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: OH
   output:
-    oh_rss:
-    - 1054.5
-    - 0
+    oh_rss: [1_054.5, 0]
+
 - name: Case 3, ineligible spouse income is not deemed.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         oh_rss_certified: true
         medicaid_enrolled: true
-      second:
+      person2:
         age: 40
-        social_security_retirement: 60000
+        social_security_retirement: 60_000
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: OH
   output:
-    oh_rss:
-    - 1800
-    - 0
+    oh_rss: [1_800, 0]
+
 - name: Case 4, combined resource boundary.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         oh_rss_certified: true
         medicaid_enrolled: true
-        ssi_countable_resources: 2000
-      second:
+        ssi_countable_resources: 2_000
+      person2:
         age: 65
         oh_rss_certified: true
         medicaid_enrolled: true
-        ssi_countable_resources: 1000
+        ssi_countable_resources: 1_000
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: OH
   output:
-    oh_rss:
-    - 1054.5
-    - 1054.5
+    oh_rss: [1_054.5, 1_054.5]
+
 - name: Case 5, combined excess resources.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
-      first:
+      person1:
         age: 65
         oh_rss_certified: true
         medicaid_enrolled: true
-        ssi_countable_resources: 2000
-      second:
+        ssi_countable_resources: 2_000
+      person2:
         age: 65
         oh_rss_certified: true
         medicaid_enrolled: true
-        ssi_countable_resources: 1001
+        ssi_countable_resources: 1_001
     marital_units:
       couple:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     tax_units:
       unit:
-        members:
-        - first
-        - second
+        members: [person1, person2]
     households:
       household:
-        members:
-        - first
-        - second
+        members: [person1, person2]
         state_code: OH
   output:
-    oh_rss:
-    - 0
-    - 0
+    oh_rss: [0, 0]
+
 - name: Case 6, annual benefits and SNAP income.
   period: 2026
   absolute_error_margin: 0.01
@@ -173,10 +138,11 @@
     oh_rss_certified: true
     medicaid_enrolled: true
   output:
-    oh_rss: 9672
-    household_state_benefits: 9672
-    snap_unearned_income: 21600
-    hud_unearned_income: 21600
+    oh_rss: 9_672
+    household_state_benefits: 9_672
+    snap_unearned_income: 21_600
+    hud_unearned_income: 21_600
+
 - name: Case 7, partial month daily amount rounded upward.
   period: 2026-04
   absolute_error_margin: 0.01
