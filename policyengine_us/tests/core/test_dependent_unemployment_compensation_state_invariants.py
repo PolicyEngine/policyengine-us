@@ -11,7 +11,7 @@ not move them.
 The tests draw a seeded random population of tax units, each single or
 joint, with wages, unemployment compensation and state tax refunds for the
 head and spouse, and zero to two dependent children with unemployment
-compensation. Every unit is placed in each of the three states, and each
+compensation and, in California, state tax refunds. Every unit is placed in each of the three states, and each
 scenario runs as one vectorized simulation. TY2020 is the only year with a
 federal exclusion (IRC 85(c)), so Rhode Island's add-back is non-zero only
 then; TY2024 checks California and Wisconsin in a year without it. In 2020
@@ -39,11 +39,11 @@ TOLERANCE = 0.01  # dollars
 STATES = ["CA", "RI", "WI"]
 YEARS = [2020, 2024]
 N_UNITS = 40
+EXCLUSION_YEAR = 2020
+EXCLUSION_CAP = 10_200
 # Wisconsin's worksheet base (line 3) by filing status: $18,000 joint,
 # $12,000 otherwise (2024 Schedule SB instructions, page 2). No unit here is
 # married filing separately.
-EXCLUSION_YEAR = 2020
-EXCLUSION_CAP = 10_200
 WI_BASE_JOINT = 18_000
 WI_BASE_OTHER = 12_000
 WI_RATE = 0.5
@@ -81,6 +81,7 @@ def _draw_units(n, rng):
                 "age": int(rng.integers(5, 19)),
                 "unemployment_compensation": compensation,
                 "excluded_2020": excluded(compensation),
+                "salt_refund_income": draw(800),
             }
 
         units.append(
@@ -143,6 +144,7 @@ def _situation(units, year, *, zero_dependents=False):
                     **_filer_inputs(u["spouse"], state, year),
                 }
             marital_units[f"mu_{key}"] = {"members": couple}
+            scale = 0.0 if zero_dependents else 1.0
             for j, dependent in enumerate(u["dependents"]):
                 child = f"child_{key}_{j}"
                 members.append(child)
@@ -152,9 +154,13 @@ def _situation(units, year, *, zero_dependents=False):
                     "is_tax_unit_head": {year: False},
                     "is_tax_unit_spouse": {year: False},
                     "is_tax_unit_dependent": {year: True},
-                    **_compensation_inputs(
-                        dependent, year, scale=0.0 if zero_dependents else 1.0
-                    ),
+                    **_compensation_inputs(dependent, year, scale=scale),
+                    # Wisconsin's general subtractions still take a
+                    # dependent's refund (a separate fix), so only the
+                    # California dependents get one.
+                    "salt_refund_income": {
+                        year: scale * dependent["salt_refund_income"] * (state == "CA")
+                    },
                 }
             tax_units[f"tu_{key}"] = {"members": members}
             spm_units[f"spm_{key}"] = {"members": members}
@@ -211,8 +217,9 @@ def simulations(request):
 def test_dependents_compensation_leaves_state_lines_unchanged(simulations):
     year, units, with_income, without_income = simulations
     # The population must exercise the property: some dependents have
-    # compensation in every state.
+    # compensation in every state, and some California dependents refunds.
     assert any(d["unemployment_compensation"] for u in units for d in u["dependents"])
+    assert any(d["salt_refund_income"] for u in units for d in u["dependents"])
     for state, variables in LINES.items():
         rows = _state_slice(state)
         for variable in variables:
