@@ -1,1 +1,0 @@
-Deduct a Schedule C loss in one SSTB category from AGI when the same person has Schedule C profit in the other category, and treat the two categories separately in the Wisconsin homestead loss add-back and the Kentucky and Maryland spouse loss allocations.

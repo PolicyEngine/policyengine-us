@@ -1,3 +1,14 @@
+## [2.41.3] - 2026-10-13
+
+### Fixed
+
+- Deduct a Schedule C loss in one SSTB category from AGI when the same person has Schedule C profit in the other category, and treat the two categories separately in the Wisconsin homestead loss add-back and the Kentucky and Maryland spouse loss allocations.
+- Match the Vermont Department of Taxes' published renter credit base amounts for Franklin and Grand Isle in 2022, 2023 and 2025, and round both the base amount before the income phase-out and the final credit half up to whole dollars, including exact 50-cent ties.
+- Add the excess business loss back to Massachusetts 5.0% income for tax years 2022 through 2028 (Schedule X, line 6), measured from 2026 against a Massachusetts threshold that does not adopt the OBBBA reset, with new excess_business_loss and net_business_loss variables.
+- Count 18-year-old qualifying children, students or not, as qualifying older children for the Minnesota working family credit.
+- Compute the New York child and dependent care credit as Form IT-216 does: New York expense caps on qualified expenses less excluded employer dependent care benefits (Worksheet 1), the line 10 table decimal, and no 2021 ARPA rates.
+
+
 ## [2.41.2] - 2026-10-13
 
 ### Fixed
