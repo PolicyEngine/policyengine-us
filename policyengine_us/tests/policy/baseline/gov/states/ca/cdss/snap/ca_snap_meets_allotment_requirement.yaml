@@ -14,7 +14,7 @@
 # Expected benefits are hand-calculated as max(minimum, maximum minus
 # ceil(30% x net)); minimum is $24 for one/two-person units and $0 otherwise.
 
-# Net 0 / 2610 gives contributions 0 / 783,
+# Net 0 / 2608 gives contributions 0 / 783,
 # so maximum $298 yields allotments $298 / $24.
 - name: California MCE size 1 without elderly or disabled members varies net income at fixed gross income.
   period: 2026-01
@@ -34,12 +34,12 @@
     spm_units:
       lower:
         members: [lower_person_1]
-        snap_gross_income: 2610
+        snap_gross_income: 2608
         snap_net_income: 0
       higher:
         members: [higher_person_1]
-        snap_gross_income: 2610
-        snap_net_income: 2610
+        snap_gross_income: 2608
+        snap_net_income: 2608
     tax_units:
       tax_lower_person_1:
         members: [lower_person_1]
@@ -66,7 +66,7 @@
     snap_unit_size: [1, 1]
     is_snap_excluded_member: [false, false]
     is_tanf_non_cash_hheod: [false, false]
-    snap_gross_test_income: [2610, 2610]
+    snap_gross_test_income: [2608, 2608]
     meets_tanf_non_cash_gross_income_test: [true, true]
     meets_tanf_non_cash_net_income_test: [true, true]
     is_tanf_non_cash_eligible: [true, true]
