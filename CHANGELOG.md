@@ -1,3 +1,12 @@
+## [2.42.8] - 2026-10-14
+
+### Fixed
+
+- Measure a branch's or clone's labor-supply and capital-gains responses against baseline policy applied to its own inputs, and give each simulation its own measurement cache. A branch of a reform simulation made before anything was calculated (and, on policyengine-core before #587, such a clone) measured against a new branch under the reform policy and reported no response, and a clone given other inputs reused its source's measurements.
+  Preserve zero responses without a reform, make capital-gains marginal tax rates independent of calculation order while reusing household measurements, and discard incompatible holders when applying baseline policy to measurement branches.
+  Forget deleted pre-response input records on Core 3.32.8 so fully calculated clones remeasure changed earnings, while retaining explicit overrides and the baseline household's inputs.
+
+
 ## [2.42.7] - 2026-10-14
 
 ### Fixed
