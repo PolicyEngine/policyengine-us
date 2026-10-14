@@ -21,7 +21,6 @@ class ca_snap_meets_allotment_requirement(Variable):
     )
 
     def formula_2015_10_01(spm_unit, period, parameters):
-        size = spm_unit("snap_unit_size", period)
         allotment = spm_unit("snap_allotment_before_eligibility", period)
         # This is a participation screen, not the regular net-income test.
-        return (size < 3) | (allotment > 0)
+        return allotment > 0
