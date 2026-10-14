@@ -210,3 +210,43 @@
     nj_ssp_living_arrangement: [CONGREGATE_CARE, CONGREGATE_CARE]
     # J.2.a individual code A row: 150.05 each.
     nj_ssp: [150.05, 150.05]
+
+- name: Case 9, deeming in the living alone or with others code uses the higher individual rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 45
+        # Full-time cashier (SOC 41-2011) at the New Jersey median wage, BLS
+        # OEWS May 2025: $16.63 an hour, published as $34,590 a year.
+        employment_income: 34_590
+      person3:
+        age: 12
+        is_tax_unit_dependent: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+      child:
+        members: [person3]
+    tax_units:
+      unit:
+        members: &id009 [person1, person2, person3]
+    households:
+      household:
+        members: *id009
+        state_code: NJ
+  output:
+    # 34_590 / 12 = 2_882.50 - 497 child allocation = 2_385.50 > 497, so
+    # deeming applies: (2_385.50 - 20 - 65) / 2 = 1_150.25 countable.
+    is_ssi_spousal_deeming_applies: [true, false, false]
+    ssi_countable_income: [1_150.25, 0, 0]
+    # 1_491 couple FBR - 1_150.25 = 340.75.
+    ssi: [340.75, 0, 0]
+    # A child shares the household, so code B.
+    nj_ssp_living_arrangement: [LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS]
+    # Deemed: max(25.35, 31.25) - max(1_150.25 - 1_491, 0) = 31.25; own: 31.25.
+    # The lesser is 31.25; the couple rate would give 25.35 (SI 01320.430 D.2.c).
+    nj_ssp: [31.25, 0, 0]
