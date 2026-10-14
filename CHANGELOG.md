@@ -1,3 +1,14 @@
+## [2.42.4] - 2026-10-14
+
+### Changed
+
+- Use DHCS Title 21 child cost estimates for California CCHIP net and gross benefit values in model years 2026 and 2027, retaining the existing MCAP valuation.
+
+### Fixed
+
+- Fix the deduction determinism test fixture and health-expense uprating expectations to reflect the current unemployment-compensation and premium inputs.
+
+
 ## [2.42.3] - 2026-10-14
 
 ### Fixed
