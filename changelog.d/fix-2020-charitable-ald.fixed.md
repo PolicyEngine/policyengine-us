@@ -1,0 +1,1 @@
+Take the 2020 charitable deduction for non-itemizers (IRC 62(a)(22), Form 1040 line 10b) above the line, so it reduces adjusted gross income, and stop adding the 2020 and 2021 non-itemizer amount to itemized deductions.
