@@ -180,3 +180,37 @@
     ssi: [0, 0]
     # 25.35 / 2 = 12.675 - 4.50 = 8.175, rounded up to 8.18 per spouse.
     nj_ssp: [8.18, 8.18]
+
+- name: Case 17, disabled child living with parents receives the living alone or with others rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        own_children_in_household: 1
+      person2:
+        age: 40
+        own_children_in_household: 1
+      person3:
+        age: 10
+        meets_ssi_disability_criteria: true
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: NJ
+  output:
+    # The parents are not aged, blind or disabled, so the child is in federal
+    # code C, which New Jersey pays as code B (SI 01415.058 J.1).
+    ssi_federal_living_arrangement: [OWN_HOUSEHOLD, OWN_HOUSEHOLD, CHILD_IN_PARENTAL_HOUSEHOLD]
+    nj_ssp_living_arrangement: [LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS, LIVING_ALONE_OR_WITH_OTHERS]
+    # The parents have no income, so nothing is deemed.
+    ssi: [0, 0, 994]
+    # J.2.a row C/B: 31.25.
+    nj_ssp: [0, 0, 31.25]

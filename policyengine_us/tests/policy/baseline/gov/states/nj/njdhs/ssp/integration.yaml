@@ -20,9 +20,11 @@
   output:
     nj_ssp: [12.68, 12.68]
 
-- name: Case 2, congregate care couple in the month of entry.
+- name: Case 2, congregate care couple in a small household-scale facility.
   period: 2026-01
   absolute_error_margin: 0.001
+  # SI NY01415.025: couple status continues in a small Level 2 facility that
+  # is not an institution.
   input:
     people:
       person1:
@@ -133,9 +135,11 @@
   output:
     nj_ssp: [31.25, 0, 0]
 
-- name: Case 6, explicit separate food household state determination.
+- name: Case 6, explicit ineligible spouse code for a couple living only with a foster child.
   period: 2026-01
   absolute_error_margin: 0.001
+  # SI NY01415.025 allows code C with foster children (effective 7/1/90); the
+  # state's household determination is entered directly.
   input:
     people:
       person1:
