@@ -10,8 +10,10 @@ class charitable_cash_donations_non_50_pct_orgs(Variable):
         "Cash charitable donations to organizations other than "
         "50-percent limit organizations described in "
         "26 U.S. Code § 170(b)(1)(A), such as private non-operating "
-        "foundations, veterans organizations, and fraternal domestic "
-        "societies. These are subject to a 30% AGI ceiling under "
+        "foundations, certain war veterans' organizations (note: federally "
+        "chartered 501(c)(19) veterans' service organizations became 50% "
+        "limit organizations under § 170(b)(1)(A)(x) in 2025), and fraternal "
+        "domestic societies. These are subject to a 30% AGI ceiling under "
         "26 U.S. Code § 170(b)(1)(B)."
     )
     definition_period = YEAR

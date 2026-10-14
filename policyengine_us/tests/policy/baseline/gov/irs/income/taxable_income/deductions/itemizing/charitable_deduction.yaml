@@ -14,8 +14,11 @@
     charitable_cash_donations: 500
     charitable_non_cash_donations: 200
     positive_agi: 1_000
-  output: # min(min(200, 1000 * 0.5) + 500, 1000 * 0.6)
-    charitable_deduction: 600
+  output:
+    # Cash (Line 13): 500
+    # Non-cash limit (Line 16): 500 - 500 = 0
+    # Total deduction per Pub 526 Worksheet 2: 500
+    charitable_deduction: 500
 
 - name: 2020 filer
   period: 2020
@@ -24,8 +27,11 @@
     charitable_non_cash_donations: 200
     positive_agi: 1_000
     charitable_deduction_for_non_itemizers: 0
-  output: # min(min(200, 1000 * 0.5) + 500, 1000 * 1)
-    charitable_deduction: 700
+  output:
+    # Cash (Line 13): 500
+    # Non-cash limit (Line 16): 500 - 500 = 0
+    # Total deduction per Pub 526 Worksheet 2: 500
+    charitable_deduction: 500
 
 - name: 2021 filer
   period: 2021
@@ -34,8 +40,11 @@
     charitable_non_cash_donations: 200
     positive_agi: 1_000
     charitable_deduction_for_non_itemizers: 300
-  output: # min(min(200, 1000 * 0.5) + (500 - 300), 1000 * 0.6)
-    charitable_deduction: 600
+  output:
+    # Cash (Line 13): 500
+    # Non-cash limit (Line 16): 500 - 500 = 0
+    # Total deduction per Pub 526 Worksheet 2: 500
+    charitable_deduction: 500
 
 - name: 2021 filer 2
   period: 2021
@@ -44,8 +53,11 @@
     charitable_non_cash_donations: 200
     positive_agi: 1_000
     charitable_deduction_for_non_itemizers: 600
-  output: # min(min(200, 1000 * 0.5) + max(500 - 600, 0), 1000 * 0.6)
-    charitable_deduction: 600
+  output:
+    # Cash (Line 13): 500
+    # Non-cash limit (Line 16): 500 - 500 = 0
+    # Total deduction per Pub 526 Worksheet 2: 500
+    charitable_deduction: 500
 
 - name: No AGI
   period: 2026
@@ -81,7 +93,11 @@
     charitable_non_cash_donations: 12_000
     positive_agi: 20_000
   output:
-    charitable_deduction: 10_600
+    # Pub 526 Worksheet 2: Cash (Line 13): 600.
+    # Non-cash limit (Line 16): 10,000 - 600 = 9,400. Non-cash allowed (Line 17): 9,400.
+    # Total before floor = 600 + 9,400 = 10,000. Floor = 0.005 * 20,000 = 100.
+    # Total deduction = 10,000 - 100 = 9,900.
+    charitable_deduction: 9_900
 
 - name: Non cash donations are capped at 50% of AGI and cash donation increase the cap to 60%, full cap
   period: 2026
@@ -90,7 +106,11 @@
     charitable_non_cash_donations: 12_000
     positive_agi: 20_000
   output:
-    charitable_deduction: 12_000
+    # Pub 526 Worksheet 2: Cash (Line 13): 3,000.
+    # Non-cash limit (Line 16): 10,000 - 3,000 = 7,000. Non-cash allowed (Line 17): 7,000.
+    # Total before floor = 3,000 + 7,000 = 10,000. Floor = 0.005 * 20,000 = 100.
+    # Total deduction = 10,000 - 100 = 9,900.
+    charitable_deduction: 9_900
 
 - name: Non-cash to non-50% limit orgs capped at 30% of AGI
   period: 2024
@@ -113,10 +133,10 @@
     charitable_non_cash_donations_non_50_pct_orgs: 200
     positive_agi: 1_000
   output:
-    # 50% org: min(400, 500) = 400
-    # non-50% org: min(200, 300) = 200
-    # min(400 + 200, 600) = 600
-    charitable_deduction: 600
+    # 50% org non-cash: min(400, 500) = 400
+    # non-50% org: min(200, 300, 500 - 400) = 100 per Pub 526 Worksheet 2
+    # total = 400 + 100 = 500
+    charitable_deduction: 500
 
 - name: Overall ceiling binds with mixed org types
   period: 2024
@@ -126,10 +146,10 @@
     charitable_non_cash_donations_non_50_pct_orgs: 400
     positive_agi: 1_000
   output:
-    # 50% org: min(400, 500) = 400
-    # non-50% org: min(400, 300) = 300
-    # min(400 + 300, 600) = 600
-    charitable_deduction: 600
+    # 50% org non-cash: min(400, 500) = 400
+    # non-50% org: min(400, 300, 500 - 400) = 100 per Pub 526 Worksheet 2
+    # total = 400 + 100 = 500
+    charitable_deduction: 500
 
 - name: Non-50% org only hits 30% cap
   period: 2024
@@ -164,6 +184,7 @@
 
 - name: Cash to non-50% limit orgs capped at 30% of AGI
   period: 2024
+  absolute_error_margin: 0.01
   input:
     charitable_cash_donations: 40_000
     charitable_cash_donations_non_50_pct_orgs: 40_000
@@ -184,11 +205,11 @@
 - name: Capital gains donations to 50% limit orgs within 30% of AGI
   period: 2024
   input:
-    charitable_capital_gain_donations_50_pct_orgs: 30_000
+    charitable_capital_gain_donations_50_pct_orgs: 25_000
     positive_agi: 100_000
   output:
-    # 30% of 100000 = 30000
-    charitable_deduction: 30_000
+    # 25000 is within 30% of 100000 = 30000
+    charitable_deduction: 25_000
 
 - name: Capital gains donations to non-50% limit orgs capped at 20% of AGI
   period: 2024
@@ -212,6 +233,7 @@
 
 - name: Mix of non-50% ordinary and non-50% capital gain hitting 30% ceiling
   period: 2024
+  absolute_error_margin: 0.01
   input:
     charitable_non_cash_donations_non_50_pct_orgs: 20_000
     charitable_capital_gain_donations_non_50_pct_orgs: 20_000
@@ -232,11 +254,13 @@
     charitable_capital_gain_donations_non_50_pct_orgs: 5_000
     positive_agi: 100_000
   output:
-    # 50% non-cash = 15000 (ord) + 10000 (CG) = 25000
-    # non-50% = min(10000 cash + 5000 ord + 5000 CG, 30000) = 20000
-    # 50% cash = 20000
-    # total = min(25000 + 20000 + 20000, 60000) = 60000
-    charitable_deduction: 60_000
+    # Cash 50% (Line 13): 20000
+    # Ord 50% (Line 17): min(10000, 50000 - 20000) = 10000
+    # Non-50% ord/cash (Line 24): min(15000, 30000, 50000 - 40000) = 10000
+    # CG 50% (Line 30): min(10000, 30000, 50000 - 30000) = 10000
+    # CG non-50% (Line 40): room under 50% is 50000 - 50000 = 0
+    # Total per Pub 526 Worksheet 2: 20000 + 10000 + 10000 + 10000 + 0 = 50000
+    charitable_deduction: 50_000
 
 - name: Floor interaction with capital gain property
   period: 2026
@@ -245,8 +269,8 @@
     positive_agi: 100_000
   output:
     # floor = 0.005 * 100000 = 500
-    # CG 50% reduced = max(10000 - 500, 0) = 9500
-    # capped = min(9500, 30000) = 9500
+    # CG 50% allowed = min(10000, 30000) = 10000
+    # post-ceiling floor: 10000 - 500 = 9500
     charitable_deduction: 9_500
 
 - name: 5 mutually exclusive boxes from tax software (pure independent inputs)
@@ -259,8 +283,77 @@
     charitable_capital_gain_donations_non_50_pct_orgs: 5_000
     positive_agi: 100_000
   output:
-    # Box 1 (cash 50%): 20000
-    # Box 2 (ord 50%): 15000 + Box 4 (cg 50%): 10000 = 25000
-    # Box 3 (cash non-50%): 10000 + Box 5 (cg non-50%): 5000 = 15000
-    # Total = 20000 + 25000 + 15000 = 60000 (overall cap 60000)
-    charitable_deduction: 60_000
+    # Cash 50% (Line 13): 20000
+    # Ord 50% (Line 17): min(15000, 50000 - 20000) = 15000
+    # Non-50% ord/cash (Line 24): min(10000, 30000, 50000 - 45000) = 5000
+    # CG 50% (Line 30): min(10000, 30000, 50000 - 35000) = 10000
+    # CG non-50% (Line 40): room under 50% is 50000 - 50000 = 0
+    # Total per Pub 526 Worksheet 2: 20000 + 15000 + 5000 + 10000 + 0 = 50000
+    charitable_deduction: 50_000
+
+- name: IRS Publication 526 page 26 example (Worksheet 2 coupled limits)
+  period: 2024
+  input:
+    charitable_cash_donations_50_pct_orgs: 2_000
+    charitable_capital_gain_donations_50_pct_orgs: 28_000
+    charitable_cash_donations_non_50_pct_orgs: 5_000
+    positive_agi: 50_000
+  output:
+    # Cash 50% (Line 13): 2000
+    # Ord 50% (Line 17): 0
+    # Non-50% cash (Line 24): min(5000, 15000, 25000 - (28000 + 2000)) = 0
+    # CG 50% (Line 30): min(28000, 15000, 25000 - 2000) = 15000
+    # Total deduction per Pub 526 Worksheet 2: 2000 + 15000 = 17000
+    charitable_deduction: 17_000
+
+- name: Shared 30% capital gain ceiling (§ 170(b)(1)(D)(i)(II))
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    charitable_capital_gain_donations_50_pct_orgs: 30_000
+    charitable_capital_gain_donations_non_50_pct_orgs: 20_000
+    positive_agi: 100_000
+  output:
+    # CG 50% takes 30000 (30% of AGI). Under § 170(b)(1)(D)(i)(II),
+    # CG non-50% is limited to min(20% AGI, 30% AGI - CG 50%) = min(20000, 0) = 0.
+    charitable_deduction: 30_000
+
+- name: Fallback resolves cash total and 50% org cash without dropping dollars
+  period: 2024
+  input:
+    charitable_cash_donations: 30_000
+    charitable_cash_donations_50_pct_orgs: 20_000
+    positive_agi: 100_000
+  output:
+    # Cash 50%: 20000; cash non-50% remainder: 10000.
+    # Total deduction: 20000 + 10000 = 30000
+    charitable_deduction: 30_000
+
+- name: Pre-2018 50% cash limit on 50% limit organizations
+  period: 2017
+  input:
+    charitable_cash_donations_50_pct_orgs: 60_000
+    positive_agi: 100_000
+  output:
+    # Pre-TCJA cash ceiling was 50% of AGI = 50000
+    charitable_deduction: 50_000
+
+- name: 2020 100% CARES Act cash limit on 50% limit organizations
+  period: 2020
+  input:
+    charitable_cash_donations_50_pct_orgs: 100_000
+    positive_agi: 100_000
+  output:
+    # 2020 CARES Act cash ceiling was 100% of AGI = 100000
+    charitable_deduction: 100_000
+
+- name: 2026 floor applied after percentage ceilings with donor exceeding ceiling
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    charitable_cash_donations_50_pct_orgs: 70_000
+    positive_agi: 100_000
+  output:
+    # 60% ceiling limits cash to 60,000.
+    # Floor (0.005 * 100,000 = 500) applies after ceiling: 60,000 - 500 = 59,500
+    charitable_deduction: 59_500
