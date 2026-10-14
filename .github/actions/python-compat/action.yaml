@@ -1,0 +1,35 @@
+name: Python compatibility checks
+description: Install, import, and check dataset semantics in an isolated checkout and environment.
+inputs:
+  python-version:
+    description: Supported Python version to check.
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Checkout for Python ${{ inputs.python-version }}
+      uses: actions/checkout@v6
+      with:
+        path: python-${{ inputs.python-version }}
+    - name: Set up Python ${{ inputs.python-version }}
+      uses: actions/setup-python@v6
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Resolve latest compatible PolicyEngine Core
+      shell: bash
+      working-directory: python-${{ inputs.python-version }}
+      run: uv lock --upgrade-package policyengine-core
+    - name: Install package
+      shell: bash
+      working-directory: python-${{ inputs.python-version }}
+      run: uv sync --locked --python "${{ inputs.python-version }}" --extra dev
+    - name: Smoke-import
+      shell: bash
+      working-directory: python-${{ inputs.python-version }}
+      run: |
+        uv run --no-sync --python "${{ inputs.python-version }}" python -c "from policyengine_us import CountryTaxBenefitSystem, Simulation, Microsimulation; print('import OK')"
+    - name: Dataset copy/extension tests (real pandas semantics per Python version)
+      # Fixture-based and requires no dataset downloads.
+      shell: bash
+      working-directory: python-${{ inputs.python-version }}
+      run: uv run --no-sync --python "${{ inputs.python-version }}" python -m pytest policyengine_us/tests/microsimulation/data/ -q

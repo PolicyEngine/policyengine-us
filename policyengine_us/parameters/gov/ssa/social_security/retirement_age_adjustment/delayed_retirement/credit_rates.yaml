@@ -5,16 +5,25 @@ metadata:
   amount_unit: /1
   label: Delayed retirement credit rates by birth year
   reference:
-    - title: 42 U.S. Code § 402(w)
-      href: https://www.law.cornell.edu/uscode/text/42/402#w
+    - title: 42 U.S. Code § 402(w)(6)
+      href: https://www.law.cornell.edu/uscode/text/42/402#w_6
+    - title: SSA POMS RS 00615.692D - Chart for Delayed Retirement Credits
+      href: https://secure.ssa.gov/poms.nsf/lnx/0300615692
     - title: SSA Delayed Retirement Credits
       href: https://www.ssa.gov/OACT/quickcalc/early_late.html
 
+# 402(w)(6) keys the rate to the year of first eligibility (age 62); POMS
+# RS 00615.692D gives the equivalent birth-date ranges, each starting on
+# January 2.
 brackets:
   - threshold:
       1900-01-01: 1900
     amount:
-      1900-01-01: 0.03      # Before 1925
+      1900-01-01: 0.01      # Before 1917: 402(w)(6)(A), eligible before 1979
+  - threshold:
+      1900-01-01: 1917
+    amount:
+      1900-01-01: 0.03      # 1917-1924: 402(w)(6)(B), eligible 1979-1986
   - threshold:
       1900-01-01: 1925
     amount:

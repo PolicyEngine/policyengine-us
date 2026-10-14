@@ -34,3 +34,237 @@
     adjusted_gross_income_person: 20_000
   output:
     wv_senior_citizen_disability_deduction_person: 0
+
+# Schedule M line 47, box (c), excludes lines 35-46 before the $8,000
+# cap; box (d) then subtracts lines 29-34. Sources: 2025 IT-140 PDF
+# pages 5-6 and 29-30; 2024 PDF pages 5-6 and 29; 2018 PDF page 5;
+# 2014 PDF page 9.
+- name: A senior with a taxable state refund subtracts no more than own income.
+  period: 2025
+  input:
+    age: 66
+    employment_income: 4_000
+    salt_refund_income: 2_000
+    state_code: WV
+  output:
+    adjusted_gross_income_person: 6_000
+    # Box (c) = min(6,000 - 2,000, 8,000) = 4,000; box (d) = 0.
+    wv_senior_citizen_disability_deduction_person: 4_000
+    wv_subtractions: 6_000
+    wv_agi: 0
+
+- name: The 2024 line 49 excludes taxable state refunds from box c.
+  period: 2024
+  input:
+    age: 66
+    adjusted_gross_income_person: 6_000
+    salt_refund_income: 2_000
+    state_code: WV
+  output:
+    # min(6,000 - 2,000, 8,000) - 0 = 4,000.
+    wv_senior_citizen_disability_deduction_person: 4_000
+
+- name: The 2018 form already excludes refunds before capping remaining income.
+  period: 2018
+  input:
+    wv_senior_citizen_disability_deduction_eligible_person: true
+    adjusted_gross_income_person: 6_000
+    salt_refund_income: 2_000
+    wv_senior_citizen_disability_deduction_total_modifications: 0
+  output:
+    # min(6,000 - 2,000, 8,000) - 0 = 4,000.
+    wv_senior_citizen_disability_deduction_person: 4_000
+
+- name: The 2014 worksheet excludes refunds from available income.
+  period: 2014
+  input:
+    wv_senior_citizen_disability_deduction_eligible_person: true
+    adjusted_gross_income_person: 6_000
+    salt_refund_income: 2_000
+    wv_senior_citizen_disability_deduction_total_modifications: 1_000
+  output:
+    # Available income = 6,000 - 2,000 - 1,000 = 3,000.
+    # Remaining allowance = 8,000 - 1,000 = 7,000; min = 3,000.
+    wv_senior_citizen_disability_deduction_person: 3_000
+
+- name: Only the refund recipient's box c is reduced on a joint return.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 66
+        employment_income: 4_000
+        salt_refund_income: 2_000
+      spouse:
+        age: 68
+        employment_income: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WV
+  output:
+    # Head: min(6,000 - 2,000, 8,000); spouse: min(6,000, 8,000).
+    wv_senior_citizen_disability_deduction_person: [4_000, 6_000]
+    wv_senior_citizen_disability_deduction: 10_000
+    wv_subtractions: 12_000
+    wv_agi: 0
+
+- name: Only the military pay recipient's box c is reduced on a joint return.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 66
+        adjusted_gross_income_person: 6_000
+      spouse:
+        age: 68
+        adjusted_gross_income_person: 6_000
+        military_service_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WV
+  output:
+    # Head: min(6,000, 8,000); spouse: min(6,000 - 2,000, 8,000).
+    wv_senior_citizen_disability_deduction_person: [6_000, 4_000]
+    wv_senior_citizen_disability_deduction: 10_000
+    wv_subtractions: 12_000
+
+- name: A line 39 contribution reduces only the contributor's remaining income.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 66
+        adjusted_gross_income_person: 6_000
+        investment_in_529_plan_indv: 2_000
+      spouse:
+        age: 68
+        adjusted_gross_income_person: 6_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WV
+  output:
+    # The contribution deducts 2,000 on a line within the excluded range.
+    # Head: min(6,000 - 2,000, 8,000); spouse: min(6,000, 8,000).
+    wv_529_plan_deduction: 2_000
+    wv_senior_citizen_disability_deduction_person: [4_000, 6_000]
+    wv_subtractions: 12_000
+
+- name: Income still above the cap after exclusions leaves the modification unchanged.
+  period: 2025
+  input:
+    age: 66
+    adjusted_gross_income_person: 20_000
+    military_service_income: 2_000
+    salt_refund_income: 1_000
+    investment_in_529_plan_indv: 1_000
+    wv_senior_citizen_disability_deduction_total_modifications: 3_000
+    state_code: WV
+  output:
+    # min(20,000 - 4,000, 8,000) - 3,000 = 5,000, as before.
+    wv_senior_citizen_disability_deduction_person: 5_000
+
+- name: Box d is subtracted after excluding refunds and applying the cap.
+  period: 2025
+  input:
+    age: 66
+    adjusted_gross_income_person: 10_000
+    salt_refund_income: 3_000
+    us_govt_interest_person: 2_000
+    state_code: WV
+  output:
+    wv_senior_citizen_disability_deduction_total_modifications: 2_000
+    # min(10,000 - 3,000, 8,000) - 2,000 = 5,000.
+    wv_senior_citizen_disability_deduction_person: 5_000
+    wv_subtractions: 10_000
+
+- name: Remaining income exactly at the cap is reduced by box d.
+  period: 2025
+  input:
+    age: 66
+    adjusted_gross_income_person: 10_000
+    salt_refund_income: 2_000
+    us_govt_interest_person: 1_000
+    state_code: WV
+  output:
+    # min(10,000 - 2,000, 8,000) - 1,000 = 7,000.
+    wv_senior_citizen_disability_deduction_person: 7_000
+
+- name: Exclusions exceeding AGI leave no senior modification.
+  period: 2025
+  input:
+    age: 66
+    adjusted_gross_income_person: 1_000
+    salt_refund_income: 2_000
+    state_code: WV
+  output:
+    # max(0, min(1,000 - 2,000, 8,000)) = 0.
+    wv_senior_citizen_disability_deduction_person: 0
+
+- name: Negative AGI leaves no senior modification.
+  period: 2025
+  input:
+    age: 66
+    adjusted_gross_income_person: -1_000
+    salt_refund_income: 2_000
+    state_code: WV
+  output:
+    wv_senior_citizen_disability_deduction_person: 0
+
+- name: A qualifying disabled person also excludes a line 39 contribution.
+  period: 2025
+  input:
+    age: 50
+    is_permanently_and_totally_disabled: true
+    adjusted_gross_income_person: 6_000
+    investment_in_529_plan_indv: 1_000
+    state_code: WV
+  output:
+    # min(6,000 - 1,000, 8,000) - 0 = 5,000.
+    wv_senior_citizen_disability_deduction_person: 5_000
+    wv_529_plan_deduction: 1_000
+    wv_subtractions: 6_000
+
+- name: Each spouse's $8,000 limit uses their own AGI, after their own IRA deduction.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 67
+        employment_income: 6_000
+        traditional_ira_contributions: 2_000
+      spouse:
+        age: 66
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: WV
+  output:
+    # W. Va. Code 11-21-12(c): up to $8,000 of each eligible individual's
+    # federal AGI. Before: [5_000, 8_000].
+    wv_senior_citizen_disability_deduction_person: [4_000, 8_000]

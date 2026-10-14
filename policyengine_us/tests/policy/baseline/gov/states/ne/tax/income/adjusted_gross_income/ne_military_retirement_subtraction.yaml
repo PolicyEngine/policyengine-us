@@ -52,4 +52,113 @@
   output:
     ne_military_retirement_subtraction: 30_000
 
+- name: Dependent child's military retirement pay is not subtracted
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      child:
+        age: 10
+        military_retirement_pay: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: NE
+  output:
+    ne_military_retirement_subtraction: 0
 
+- name: Only the head's and spouse's military retirement pay is subtracted
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        age: 70
+        military_retirement_pay: 30_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      spouse:
+        age: 68
+        military_retirement_pay: 12_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      child:
+        age: 16
+        military_retirement_pay: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      couple_marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: NE
+  output:
+    # 100% of 30,000 + 12,000; the child's 10,000 is excluded.
+    ne_military_retirement_subtraction: 42_000
+
+- name: In 2021 only an age-eligible head or spouse counts, not an age-eligible dependent
+  absolute_error_margin: 0.01
+  period: 2021
+  input:
+    people:
+      head:
+        age: 60
+        military_retirement_pay: 20_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+      spouse:
+        age: 70
+        military_retirement_pay: 10_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+      relative:
+        age: 68
+        military_retirement_pay: 4_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, relative]
+    marital_units:
+      couple_marital_unit:
+        members: [head, spouse]
+      relative_marital_unit:
+        members: [relative]
+    households:
+      household:
+        members: [head, spouse, relative]
+        state_code: NE
+  output:
+    # The head is under 67, and the dependent relative is excluded despite
+    # being 67 or older, so only the spouse's 10,000 counts: 40% * 10,000.
+    ne_military_retirement_subtraction: 4_000

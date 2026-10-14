@@ -8,15 +8,15 @@ metadata:
   reference:
     - title: New Jersey Statutes Title 54A:4-17.1(1)(a) Child tax credit, income limit.
       href: https://law.justia.com/codes/new-jersey/2022/title-54a/section-54a-4-17-1/
-    - title: 2022 Instructions for Form NJ-1040 (line 65)
-      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=44
+    # New Jersey child tax credit was introduced in 2022 (page 3); line 65 is on page 44.
+    - title: "2022 Instructions for Form NJ-1040 #page 3,44"
+      href: https://www.nj.gov/treasury/taxation/pdf/other_forms/tgi-ee/2022/1040i.pdf#page=3
     - title: 2023 NJ-1040 Instructions (line 65)
       href: https://www.state.nj.us/treasury/taxation/pdf/current/1040i.pdf#page=46
     - title: 2024 NJ-1040 Instructions (line 65)
       href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=46
     - title: 2025 NJ-1040 Instructions (Line 65)
       href: https://www.nj.gov/treasury/taxation/pdf/current/1040i.pdf#page=46
-      # New Jersey child tax credit was introduced in 2022
     - title: P.L.2026, c.26 (S-4531), enacted 2026-06-30 - increases the child tax credit 25% for tax years 2026-2028 (bill passed unamended; introduced text linked as the chaptered PDF is not yet posted)
       href: https://pub.njleg.state.nj.us/Bills/2026/S5000/4531_I1.HTM
       # The FY2027 budget raises each amount by 25% for tax years 2026, 2027, and
@@ -26,6 +26,8 @@ brackets:
   - threshold:
       2022-01-01: 0
     amount:
+      # No New Jersey child tax credit before tax year 2022.
+      2021-01-01: 0
       2022-01-01: 500
       2023-01-01: 1_000
       2026-01-01: 1_250
@@ -33,6 +35,8 @@ brackets:
   - threshold:
       2022-01-01: 30_000
     amount:
+      # No New Jersey child tax credit before tax year 2022.
+      2021-01-01: 0
       2022-01-01: 400
       2023-01-01: 800
       2026-01-01: 1_000
@@ -40,6 +44,8 @@ brackets:
   - threshold:
       2022-01-01: 40_000
     amount:
+      # No New Jersey child tax credit before tax year 2022.
+      2021-01-01: 0
       2022-01-01: 300
       2023-01-01: 600
       2026-01-01: 750
@@ -47,6 +53,8 @@ brackets:
   - threshold:
       2022-01-01: 50_000
     amount:
+      # No New Jersey child tax credit before tax year 2022.
+      2021-01-01: 0
       2022-01-01: 200
       2023-01-01: 400
       2026-01-01: 500
@@ -54,6 +62,8 @@ brackets:
   - threshold:
       2022-01-01: 60_000
     amount:
+      # No New Jersey child tax credit before tax year 2022.
+      2021-01-01: 0
       2022-01-01: 100
       2023-01-01: 200
       2026-01-01: 250

@@ -19,5 +19,8 @@ class ky_subtractions(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ky.tax.income
         total_subtractions = add(person, period, p.subtractions)
+        # Dependents' income is not in federal AGI; they report it, and
+        # claim these subtractions, on their own Kentucky return.
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         # Prevent negative subtractions from acting as additions
-        return max_(0, total_subtractions)
+        return head_or_spouse * max_(0, total_subtractions)

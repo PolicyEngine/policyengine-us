@@ -1,0 +1,94 @@
+- name: 2025 single filer who can be claimed as a dependent
+  period: 2025
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    claimed_as_dependent_on_another_return: true
+  output:
+    ny_standard_deduction: 3_100
+
+- name: 2025 single filer who cannot be claimed as a dependent
+  period: 2025
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    claimed_as_dependent_on_another_return: false
+  output:
+    ny_standard_deduction: 8_000
+
+- name: 2025 head of household who can be claimed as a dependent keeps the regular amount
+  period: 2025
+  input:
+    state_code: NY
+    filing_status: HEAD_OF_HOUSEHOLD
+    claimed_as_dependent_on_another_return: true
+  output:
+    # The IT-201 table gives the dependent amount only to filing status 1.
+    ny_standard_deduction: 11_200
+
+- name: 2025 separate filer who can be claimed as a dependent keeps the regular amount
+  period: 2025
+  input:
+    state_code: NY
+    filing_status: SEPARATE
+    claimed_as_dependent_on_another_return: true
+  output:
+    ny_standard_deduction: 8_000
+
+- name: 2025 joint return where only one spouse can be claimed (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 20
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 20
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NY
+  output:
+    # The IT-201 table gives married filing jointly $16,050 whether or not
+    # item C is marked.
+    ny_standard_deduction: 16_050
+
+- name: 2025 joint return where only one spouse can be claimed (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 20
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 20
+        employment_income: 8_000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NY
+  output:
+    # The IT-201 table gives married filing jointly $16,050 whether or not
+    # item C is marked.
+    ny_standard_deduction: 16_050
