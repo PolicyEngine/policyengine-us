@@ -1,3 +1,10 @@
+## [2.42.10] - 2026-10-14
+
+### Fixed
+
+- Apply Hawaii refundable credits before nonrefundable credits, limiting nonrefundable credits (including the 2018-2022 Hawaii EITC) to the adjusted tax liability on Form N-11, line 34.
+
+
 ## [2.42.9] - 2026-10-14
 
 ### Fixed
