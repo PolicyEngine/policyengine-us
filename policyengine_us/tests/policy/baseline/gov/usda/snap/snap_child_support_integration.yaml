@@ -46,9 +46,6 @@
     spm_units:
       spm_unit:
         members: [head]
-        # Isolate California MCE from the separate heat-and-eat change.
-        # No utility costs are entered and this case assumes no allowance.
-        snap_utility_allowance: 0
     households:
       household:
         members: [head]
@@ -57,6 +54,8 @@
     snap_child_support_gross_income_deduction: 433.33
     snap_gross_income: 2_589.63
     snap_child_support_deduction: 0
+    # Without utility costs or heat-and-eat eligibility, no allowance is deemed.
+    snap_utility_allowance: 0
     # The earned deduction uses full wages under 7 CFR 273.9(d)(2):
     # $36,275.59 / 12 x 20% = $604.5931667, before excluding child support.
     snap_earned_income_deduction: 604.59
@@ -66,6 +65,7 @@
     snap_excess_shelter_expense_deduction: 0
     snap_net_income: 1_776
     meets_snap_net_income_test: false
+    meets_tanf_non_cash_net_income_test: true
     meets_snap_categorical_eligibility: true
     is_snap_eligible: true
     # MCE retains the one-person minimum: $298 - ceil(30% x $1,776)
