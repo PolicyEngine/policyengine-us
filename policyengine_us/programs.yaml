@@ -808,7 +808,7 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MS, NC, NE, TX
+    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OR, TX
     state_implementations:
       - state: DC
         status: complete
@@ -852,6 +852,14 @@ programs:
         parameter_prefix: gov.states.ky.dcbs.liheap
         verified_years: "2025-2026"
         notes: FY2025-FY2026 regular heating only, from the published benefit workbooks. Crisis and cooling assistance are out of scope.
+      - state: MD
+        status: partial
+        name: Maryland MEAP
+        full_name: Maryland Energy Assistance Program
+        variable: md_meap
+        parameter_prefix: gov.states.md.dhs.meap
+        verified_years: "2025-2027"
+        notes: FY25-FY27 regular heating only, with the fuel tables, the Garrett County multiplier and the subsidized and nominal levels. The SNAP nominal payment, cooling, EUSP, arrearage, crisis and equipment benefits are out of scope.
       - state: MS
         status: partial
         name: Mississippi LIHEAP
@@ -876,6 +884,30 @@ programs:
         parameter_prefix: gov.states.ne.dhhs.liheap
         verified_years: "2026"
         notes: FY2026 regular heating only, with the single-family and multifamily schedules and the earned-income disregard. Crisis, cooling and weatherization assistance are out of scope.
+      - state: NJ
+        status: partial
+        name: New Jersey LIHEAP
+        full_name: New Jersey Low Income Home Energy Assistance Program
+        variable: nj_liheap
+        parameter_prefix: gov.states.nj.dca.liheap
+        verified_years: "2026-2027"
+        notes: FY2026-FY2027 regular heating only, covering eligibility, countable income and the benefit grid, including the one renters cell that changes in FY2027; the program is not modeled before FY2022. Crisis, cooling and equipment assistance are out of scope.
+      - state: NY
+        status: partial
+        name: New York HEAP
+        full_name: New York Home Energy Assistance Program
+        variable: ny_heap
+        parameter_prefix: gov.states.ny.otda.heap
+        verified_years: "2024-2026"
+        notes: FY2024-FY2026 regular heating only, with the fuel base amounts, the Tier I and vulnerable supplements and the heat-included levels. Crisis, cooling, HERR and clean-and-tune assistance are out of scope.
+      - state: OR
+        status: partial
+        name: Oregon LIHEAP
+        full_name: Oregon Low Income Home Energy Assistance Program
+        variable: or_liheap
+        parameter_prefix: gov.states.or.ohcs.liheap
+        verified_years: "2025-2027"
+        notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP
@@ -921,6 +953,9 @@ programs:
         name: California SSP
         full_name: California State Supplementary Payment
         variable: ca_state_supplement
+        parameter_prefix: gov.states.ca.cdss.state_supplement
+        verified_years: "2025-2026"
+        notes: Payment standards verified for independent living, no cooking facilities, blind and disabled minor categories. Facility and household-of-another arrangements are not verified (issue 7892).
       - state: CT
         status: complete
         name: Connecticut SSP
@@ -1821,7 +1856,7 @@ programs:
     variable: nyc_income_tax
     parameter_prefix: gov.local.ny.nyc.tax.income
     verified_start_year: 2022
-    notes: Local income tax for NYC residents
+    notes: Local income tax for NYC residents, including the household credit, NYC earned income credit, NYC child and dependent care credit, school tax credit, and, from 2025, the income tax elimination credit (Tax Law § 1310(h)); the unincorporated business tax credit is an input
 
   - id: philadelphia_wage_tax
     name: Philadelphia wage tax
