@@ -22,7 +22,8 @@ and compare them:
   when a tax liability under one itemizing choice is calculated before the
   method is known, under both settings of
   ``gov.simulation.branch_to_determine_itemization``; the itemizing branches
-  keep the simulation's method;
+  keep the simulation's method, including the 2026 branch that
+  ``tax_unit_itemizes`` opens for the section 68 limitation;
 - a later year calculated on the same simulation equals a simulation of that
   year alone, and an itemizing branch of a simulation whose itemizing input
   changed after its tax was calculated does not reuse that tax;
@@ -343,6 +344,26 @@ def test_states_under_each_federal_method():
 # $4,971.50. So the deduction applies, and tax without itemizing under that
 # method is $5,071.50.
 TEXAS_YEAR = 2025
+# From 2026 tax_unit_itemizes takes the itemized deductions from the branch
+# that itemizes (the P.L. 119-21 section 68 limitation). A household for which
+# that branch, choosing a method for itself, would pick the deduction while
+# the simulation picks the credit. Standard deduction $16,100 plus the $1,000
+# section 170(p) charitable deduction: taxable income $42,900, tax $1,240 +
+# 12% x $30,500 = $4,900, less the $800 decrease is $4,100. With the deduction:
+# gifts of $10,000 less the 0.5% floor ($300) plus the $10,000 repayment are
+# $19,700 of itemized deductions, taxable income $40,300, tax $4,588. Itemizing
+# under the credit method: $9,700 of deductions, taxable income $50,300, tax
+# $5,788 less $800 is $4,988.
+ITEMIZING_BRANCH_YEAR = 2026
+ITEMIZING_BRANCH_EXPECTED = {
+    "income_tax": 4_100,
+    "claim_of_right_credit_applies": True,
+    "tax_unit_itemizes": False,
+    "tax_liability_if_itemizing": 4_988,
+    "tax_liability_if_not_itemizing": 4_100,
+    "income_tax_if_claiming_claim_of_right_deduction": 4_588,
+    "income_tax_if_claiming_claim_of_right_credit": 4_100,
+}
 TEXAS_EXPECTED = {
     "income_tax": 4_561.5,
     "claim_of_right_credit_applies": False,
@@ -358,7 +379,7 @@ class no_itemization_branching(Reform):
         def modify(parameters):
             parameters.gov.simulation.branch_to_determine_itemization.update(
                 start=instant(f"{TEXAS_YEAR}-01-01"),
-                stop=instant(f"{TEXAS_YEAR}-12-31"),
+                stop=instant(f"{ITEMIZING_BRANCH_YEAR}-12-31"),
                 value=False,
             )
             return parameters
@@ -378,8 +399,7 @@ def systems():
     gc.collect()
 
 
-def texas_simulation(system):
-    year = TEXAS_YEAR
+def texas_simulation(system, year=TEXAS_YEAR, decrease=100, **tax_unit_inputs):
     situation = {
         "people": {
             "p": {
@@ -392,9 +412,10 @@ def texas_simulation(system):
         "tax_units": {
             "t": {
                 "members": ["p"],
-                "claim_of_right_prior_year_tax_decrease": {year: 100},
+                "claim_of_right_prior_year_tax_decrease": {year: decrease},
                 "state_sales_tax": {year: 0},
                 "local_sales_tax": {year: 0},
+                **{name: {year: value} for name, value in tax_unit_inputs.items()},
             }
         },
         "households": {"h": {"members": ["p"], "state_code": {year: "TX"}}},
@@ -414,6 +435,30 @@ def test_texas_household_does_not_depend_on_calculation_order(
     for variable, expected in TEXAS_EXPECTED.items():
         np.testing.assert_allclose(
             np.asarray(simulation.calculate(variable, TEXAS_YEAR)),
+            [expected],
+            atol=TOLERANCE,
+            err_msg=f"{variable} when {first} is calculated first",
+        )
+
+
+@pytest.mark.parametrize("branching", [True, False])
+@pytest.mark.parametrize("first", list(ITEMIZING_BRANCH_EXPECTED))
+def test_the_itemizing_branch_keeps_the_simulation_method(systems, branching, first):
+    # From policyengine-core 3.33, set_input on a branch drops the values
+    # stored after the overridden variable was first stored anywhere in the
+    # simulation. A branch fixing only itemization then lost the inherited
+    # method and chose its own, and with itemization branching off its
+    # itemized deductions alone decided whether to itemize: $4,988 here.
+    year = ITEMIZING_BRANCH_YEAR
+    forced = texas_simulation(systems[branching], year, 800, tax_unit_itemizes=True)
+    assert not forced.calculate("claim_of_right_credit_applies", year)[0], (
+        "a filer who must itemize would choose the deduction"
+    )
+    simulation = texas_simulation(systems[branching], year, 800)
+    simulation.calculate(first, year)
+    for variable, expected in ITEMIZING_BRANCH_EXPECTED.items():
+        np.testing.assert_allclose(
+            np.asarray(simulation.calculate(variable, year)),
             [expected],
             atol=TOLERANCE,
             err_msg=f"{variable} when {first} is calculated first",
