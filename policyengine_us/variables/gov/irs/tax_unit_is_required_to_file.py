@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.section_911 import section_911_gross_exclusion
 
 
 class tax_unit_is_required_to_file(Variable):
@@ -13,7 +14,10 @@ class tax_unit_is_required_to_file(Variable):
     the basic standard deduction plus the additions for age, but not
     blindness, and gross income equal to that amount requires a return. A
     tax unit whose head or spouse can be claimed as a dependent keeps the
-    standard deduction test in every year.
+    standard deduction test in every year. Under section 6012(c), both
+    tests count gross section 911 exclusions: Form 2555 line 43 when leaf
+    inputs are supplied, otherwise the nonnegative legacy
+    foreign_earned_income_exclusion amount.
     """
     definition_period = YEAR
     reference = (
@@ -33,12 +37,21 @@ class tax_unit_is_required_to_file(Variable):
         "https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=4",
         # Gross income counts amounts excluded under section 911.
         "https://www.law.cornell.edu/uscode/text/26/6012#c",
+        # Chart A: gross income includes income from sources outside the
+        # United States "even if you can exclude part or all of it".
+        "https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=9",
+        # Form 2555 line 43: the line 36 and line 42 exclusions.
+        "https://www.irs.gov/pub/irs-prior/f2555--2025.pdf#page=3",
     )
 
     def formula(tax_unit, period, parameters):
         # Section 6012(c): for the filing requirement, gross income is
-        # computed without regard to the section 911 exclusion.
-        section_911_exclusion = tax_unit("foreign_earned_income_exclusion", period)
+        # computed without regard to the section 911 exclusion in every year,
+        # including the section 6012(a)(1) threshold from 2026. That is the
+        # gross exclusion on Form 2555 line 43, not the worksheet line 2c
+        # stacking amount, which is net of line 44 and worksheet line 2b and
+        # includes the line 50 housing deduction.
+        section_911_exclusion = section_911_gross_exclusion(tax_unit, period)
         gross_income = add(tax_unit, period, ["irs_gross_income"]) + (
             section_911_exclusion
         )

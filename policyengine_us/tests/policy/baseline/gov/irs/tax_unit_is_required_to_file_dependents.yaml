@@ -422,6 +422,32 @@
   output:
     tax_unit_is_required_to_file: true
 
+- name: 2025, a claimed spouse's farm profit is earned income, not unearned income
+  # Farm income (Schedule 1 line 6) is earned income on the IRS dependent
+  # worksheet, so the unearned income test does not apply to it. Gross income
+  # of $2,000 is under the joint standard deduction, whether the regular
+  # $31,500 plus $1,600 or the limited $1,350 plus $1,600. (Section 6017
+  # separately requires a return with $400 or more of net self-employment
+  # earnings; tax_unit_is_required_to_file covers section 6012 only.)
+  period: 2025
+  input:
+    people:
+      head:
+        age: 70
+      spouse:
+        age: 40
+        claimed_as_dependent_on_another_return: true
+        farm_operations_income: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    tax_unit_is_required_to_file: false
+
 - name: 2025, the head's age does not raise the claimed spouse's unearned income test
   period: 2025
   input:

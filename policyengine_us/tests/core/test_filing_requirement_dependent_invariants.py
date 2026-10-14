@@ -48,8 +48,8 @@ has rows to check and both answers occur; the test asserts that it does.
 6. Monotonicity: more wages, interest or self-employment profit never turns
    "required" into "not required", for any tax unit.
 7. Claimability never removes the requirement: marking the head as claimable
-   never turns "required" into "not required" (filers who are not blind; see
-   below).
+   never turns "required" into "not required" (filers who are not blind and
+   do not file separately; see below).
 8. A tax unit dependent's wages and interest never change the result: that
    income belongs on the dependent's own return.
 9. Table 2 and the Medicaid implementation, as in 1 and 2, on the drawn
@@ -79,6 +79,10 @@ Intended exceptions, each from the law rather than the code:
   2026 the model follows Chart A here: section 6012(a)(1)(B) raises the
   threshold of a filer nobody can claim for age only, while a filer who can
   be claimed keeps the standard deduction test (decision d1395).
+- Property 7 also leaves out separate filers: Table 2 lets a claimable
+  married dependent filing separately skip a return unless the spouse
+  itemizes, while sections 6012(f) and (a)(1) require one with any gross
+  income (decision d1395).
 - From 2026, property 7 also fails at one dollar: gross income equal to the
   threshold of a sighted filer nobody can claim. Section 6012(a)(1)(A)
   excuses that filer only if gross income is "less than" the threshold, while
@@ -462,6 +466,9 @@ def test_filing_requirement_properties(anchors, drawn):
             for unit in units
         ]
     ).reshape(-1, len(VARIANTS))
+    separate = np.array(
+        [unit["filing_status"] == "SEPARATE" for unit in units]
+    ).reshape(-1, len(VARIANTS))
     anyone_blind = np.array(
         [any(adult["is_blind"] for adult in unit["adults"]) for unit in units]
     ).reshape(-1, len(VARIANTS))
@@ -492,7 +499,7 @@ def test_filing_requirement_properties(anchors, drawn):
         )
         assert required["base"].any() and not required["base"].all()
         # Property 7, except at the 2026 threshold (see the docstring).
-        sighted = ~anyone_blind[:, 0]
+        sighted = ~anyone_blind[:, 0] & ~separate[:, 0]
         ended = required["base"] & ~required["claimed"]
         if year >= 2026:
             gross_income = unit_totals(
