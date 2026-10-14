@@ -317,3 +317,28 @@
     # 48,000 on the joint schedule (divided by 0.5), so the rate is 20%,
     # not the 50% that 22,000 (44,000) would give.
     savers_credit_person: 400
+
+- name: Self-employed employer contributions beyond the elective deferral room do not count toward the credit
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+        traditional_401k_contributions_desired: 23_500
+        self_employment_income: 20_000
+        self_employed_pension_contributions_desired: 5_000
+        retirement_distributions: 22_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+        adjusted_gross_income: 20_000
+  output:
+    # 26 U.S.C. 25B(d)(1)(B): the 401(k) deferrals use all $23,500 of
+    # elective deferral room, so the self-employed plan contributions are
+    # employer contributions. Qualified contributions are
+    # 23,500 + 0 - 22,000 = 1,500, and the 50% rate gives 750. Counting the
+    # $5,000 would give 6,500, capped at 2,000, and a credit of 1,000.
+    savers_credit_qualified_contributions: 1_500
+    savers_credit_person: 750
