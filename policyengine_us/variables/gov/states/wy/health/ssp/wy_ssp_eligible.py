@@ -20,6 +20,11 @@ class wy_ssp_eligible(Variable):
         # in one source cannot offset a positive payment from another source.
         # NOTE: noncash support and income sources absent from the federal SSI
         # income model are not separately evaluated.
+        # NOTE: only the person's own sources count. Income deemed from a parent
+        # or an ineligible spouse, and the other spouse's income in an eligible
+        # couple, are not treated as the person's other income. The statute does
+        # not define "income", and EOM M1804 lists child cases in a parent's
+        # household (living arrangement C) among its pay-rate codes.
         sources = list(p.earned) + list(p.unearned)
         has_other_income = np.zeros_like(receives_ssi)
         for source in sources:

@@ -28,3 +28,13 @@
     ssi: [745.5, 745.5]
     wy_ssp: [20, 20]
     household_state_benefits: 40
+
+- name: Case 3, annual Wyoming supplement counts as HUD income.
+  period: 2026
+  input:
+    state_code: WY
+    age: 65
+  output:
+    wy_ssp: 240
+    # SSI $994 * 12 = $11,928, plus the $240 supplement = $12,168.
+    hud_annual_income: 12_168

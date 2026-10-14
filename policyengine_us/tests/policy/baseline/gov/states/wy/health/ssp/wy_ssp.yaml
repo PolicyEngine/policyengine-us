@@ -147,3 +147,55 @@
     ssi: 0
     # Reported receipt meets the SSI condition and there is no other income: $20.
     wy_ssp: 20
+
+- name: Case 12, in an eligible couple only the spouse with other income loses the supplement.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 67
+        # $100 a month of Social Security retirement: $100 * 12 = $1,200 a year.
+        social_security_retirement: 1_200
+      person2:
+        age: 66
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # Couple: $100 - $20 general exclusion = $80 countable;
+    # ($1,491 - $80) / 2 = $705.50 each.
+    ssi: [705.5, 705.5]
+    # person1 has $100 of own income; person2's own sources are $0, so the
+    # spouse's income does not count against person2: $20.
+    wy_ssp: [0, 20]
+
+- name: Case 13, income deemed from an ineligible spouse does not defeat the sole income rule.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 67
+      person2:
+        age: 45
+        # 14 hours a week at the Wyoming retail salesperson median wage of
+        # $16.50 (BLS OEWS May 2025): $16.50 * 14 * 52 = $12,012 a year.
+        employment_income: 12_012
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WY
+  output:
+    # $12,012 / 12 = $1,001 a month of spouse wages, above the $497 difference
+    # between the couple and individual rates, so deeming applies:
+    # ($1,001 - $20 - $65) * 0.5 = $458 deemed; $1,491 - $458 = $1,033,
+    # capped at the $994 individual rate. person2 is not aged, blind or disabled.
+    ssi: [994, 0]
+    # person1's own sources are $0; deemed spouse income is not one of them: $20.
+    wy_ssp: [20, 0]
