@@ -10,7 +10,7 @@ values:
     # Unearned income (Subsidy Manual, Section 4).
     - rental_income            # "lease income"
     - social_security          # "Social Security (SSA)"; already excludes SSI
-    - unemployment_compensation
+    - total_unemployment_compensation
     - workers_compensation
     - veterans_benefits        # "VA benefits"; VA disability is non-countable
     - pension_income           # "pensions" and "retirement"

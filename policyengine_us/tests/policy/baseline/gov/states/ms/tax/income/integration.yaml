@@ -297,3 +297,27 @@
   output:
     ms_taxable_income_joint: [10_000, 11_220.024, 0, 0]
     ms_income_tax: 53.681076
+
+- name: Joint 2021, a self-employment loss in one column offsets the other spouse's wages
+  period: 2021
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 46
+        self_employment_income: -10_000
+      spouse:
+        age: 35
+        employment_income: 40_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MS
+  output:
+    # Columns combined: -10,000 + 40,000 - 4,600 standard deduction - 12,000
+    # exemption = 13,400. 2021: 4,000 * 0% + 1,000 * 3% + 5,000 * 4%
+    # + 3,400 * 5% = 400
+    ms_income_tax_before_credits_unit: 400

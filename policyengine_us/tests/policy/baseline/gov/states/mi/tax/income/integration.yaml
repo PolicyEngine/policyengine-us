@@ -195,7 +195,9 @@
   output:
     adjusted_gross_income: 39_260
     taxable_social_security: 9_260
-    mi_personal_exemptions: 5_950
-    mi_standard_deduction_tier_three: 14_050
+    # 2026 personal exemption $5,900 (2026 Form 446); the tier 3 deduction is
+    # 20,000 - 5,900 = 14,100, so taxable income is unchanged.
+    mi_personal_exemptions: 5_900
+    mi_standard_deduction_tier_three: 14_100
     mi_taxable_income: 10_000
     mi_income_tax_before_refundable_credits: 425

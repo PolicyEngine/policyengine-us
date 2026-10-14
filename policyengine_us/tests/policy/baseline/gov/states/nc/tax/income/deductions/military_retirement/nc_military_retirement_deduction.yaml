@@ -15,3 +15,303 @@
      state_code: NC
   output:
     nc_military_retirement_deduction: 0
+
+# G.S. 105-153.5(b) allows only items included in the taxpayer's adjusted gross
+# income, and (b)(5a)a. only the pay of a retired member with 20 years of
+# service or a medical retirement. A tax unit dependent's pay is not in the
+# filer's federal AGI (the dependent files their own return).
+
+- name: A dependent's military retirement pay is not deducted from the filer's income.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        employment_income: 60_000
+      person2:
+        # An elderly parent claimed as a qualifying relative.
+        age: 80
+        is_tax_unit_dependent: true
+        years_in_military: 25
+        military_retirement_pay: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    nc_military_retirement_deduction: 0
+
+- name: The head's qualifying pay is deducted and the dependent's is not.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        years_in_military: 22
+        military_retirement_pay: 20_000
+      person2:
+        age: 78
+        is_tax_unit_dependent: true
+        years_in_military: 20
+        military_retirement_pay: 3_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    nc_military_retirement_deduction: 20_000
+
+- name: A spouse's pay counts only if the spouse meets the service test.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        years_in_military: 20
+        military_retirement_pay: 20_000
+      person2:
+        age: 48
+        years_in_military: 4
+        military_retirement_pay: 10_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # The spouse served 4 years and was not medically retired.
+    nc_military_retirement_deduction: 20_000
+
+# G.S. 105-153.5(b)(5a)b. also allows Survivor Benefit Plan payments to the
+# beneficiary of a retired member who meets the (5a)a. test. Eligibility turns
+# on the deceased member's service, recorded as
+# nc_military_retirement_survivor_eligible, not on the beneficiary's own.
+
+- name: A spouse's qualifying survivor benefits are deducted with the retiree's own pay.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        employment_income: 60_000
+        years_in_military: 20
+        military_retirement_pay: 20_000
+        # Military pension descriptors do not add themselves to federal AGI.
+        taxable_public_pension_income: 20_000
+      person2:
+        # A civilian spouse receiving Survivor Benefit Plan payments as the
+        # beneficiary of a former spouse who retired after 20 years.
+        age: 48
+        military_retirement_pay: 10_000
+        taxable_public_pension_income: 10_000
+        nc_military_retirement_survivor_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    nc_military_retirement_deduction: 30_000
+    adjusted_gross_income: 90_000
+    # (90,000 AGI - 30,000 military deduction - 25,500 joint standard
+    # deduction) * 4.25%. Dropping the spouse's SBP increases tax by $425.
+    nc_income_tax: 1_466.25
+
+- name: Qualifying survivor benefits do not make an early retiree's own pay deductible.
+  period: 2025
+  input:
+    age: 50
+    years_in_military: 15
+    is_permanently_disabled_veteran: false
+    military_retirement_pay: 20_000
+    # The deceased member met the service test, but the recipient does not.
+    military_retirement_pay_survivors: 10_000
+    nc_military_retirement_survivor_eligible: true
+    taxable_public_pension_income: 30_000
+    state_code: NC
+  output:
+    adjusted_gross_income: 30_000
+    nc_military_retirement_deduction: 10_000
+
+- name: Explicit own-pay eligibility is preserved with separate nonqualifying survivor benefits.
+  period: 2025
+  input:
+    age: 50
+    military_retirement_pay: 20_000
+    military_retirement_pay_survivors: 10_000
+    taxable_public_pension_income: 30_000
+    # The caller supplies own-pay eligibility instead of service inputs.
+    nc_military_retirement_deduction_eligible: true
+    nc_military_retirement_survivor_eligible: false
+    state_code: NC
+  output:
+    adjusted_gross_income: 30_000
+    nc_military_retirement_deduction: 20_000
+
+- name: Explicit ineligibility is preserved when another filer qualifies and survivor pay is separate.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        military_retirement_pay: 20_000
+        taxable_public_pension_income: 20_000
+        nc_military_retirement_deduction_eligible: true
+      person2:
+        age: 48
+        years_in_military: 20
+        military_retirement_pay: 10_000
+        military_retirement_pay_survivors: 5_000
+        taxable_public_pension_income: 15_000
+        # The head opens the unit's gate, but the spouse's explicit false
+        # input must not be overridden by recomputing their service test.
+        nc_military_retirement_deduction_eligible: false
+        nc_military_retirement_survivor_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    adjusted_gross_income: 35_000
+    nc_military_retirement_deduction: 20_000
+
+- name: Survivor benefits from a member who did not qualify are not deducted.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        years_in_military: 20
+        military_retirement_pay: 20_000
+      person2:
+        age: 48
+        military_retirement_pay: 10_000
+        nc_military_retirement_survivor_eligible: false
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    nc_military_retirement_deduction: 20_000
+
+- name: A surviving spouse filing alone deducts qualifying survivor benefits recorded separately.
+  period: 2025
+  input:
+    age: 70
+    military_retirement_pay_survivors: 12_000
+    nc_military_retirement_survivor_eligible: true
+    state_code: NC
+  output:
+    nc_military_retirement_deduction: 12_000
+
+- name: Survivor benefits recorded separately are not deducted without a qualifying member.
+  period: 2025
+  input:
+    age: 70
+    years_in_military: 20
+    military_retirement_pay_survivors: 12_000
+    nc_military_retirement_survivor_eligible: false
+    state_code: NC
+  output:
+    # The filer's own service does not make another member's survivor
+    # benefits deductible.
+    nc_military_retirement_deduction: 0
+
+- name: A dependent child's qualifying survivor benefits are not deducted from the filer's income.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 50_000
+      person2:
+        age: 12
+        is_tax_unit_dependent: true
+        military_retirement_pay_survivors: 6_000
+        nc_military_retirement_survivor_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    nc_military_retirement_deduction: 0
+
+- name: Explicit ineligibility excludes survivor pay even when another filer qualifies.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 50
+        years_in_military: 20
+        military_retirement_pay: 20_000
+        taxable_public_pension_income: 20_000
+        # Supplying the spouse's eligibility makes this variable an input
+        # for every member, so also supply the qualifying head's value.
+        nc_military_retirement_deduction_eligible: true
+      person2:
+        age: 48
+        military_retirement_pay_survivors: 5_000
+        taxable_public_pension_income: 5_000
+        # The head opens the unit's gate, but the spouse's explicit false
+        # must also exclude separately recorded survivor benefits.
+        nc_military_retirement_deduction_eligible: false
+        nc_military_retirement_survivor_eligible: true
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    adjusted_gross_income: 25_000
+    nc_military_retirement_deduction: 20_000
