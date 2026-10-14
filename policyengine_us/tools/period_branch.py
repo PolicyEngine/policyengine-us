@@ -1,11 +1,15 @@
 """Formula branches that calculate one period, under overridden inputs.
 
 A policyengine-core branch starts from every array its parent has cached when
-the branch is created and never sees the parent's later calculations, and
-``set_input`` on the branch stores the new value without clearing anything
-that was calculated from the old one. A branch therefore answers any variable
-its parent had already calculated with the parent's value, whatever the
-branch's inputs say. A branch kept from another period also answers this
+the branch is created and never sees the parent's later calculations. Before
+policyengine-core 3.33, ``set_input`` on the branch stored the new value
+without clearing anything that was calculated from the old one, so a branch
+answered any variable its parent had already calculated with the parent's
+value, whatever the branch's inputs said. From 3.33 it drops the values stored
+after the overridden variable was first stored anywhere in the simulation,
+which can include a choice the caller wants the branch to keep; pass such a
+choice as an input (as ``get_itemization_branch`` does for the claim of right
+method). A branch kept from another period also answers this
 period from a copy taken before any of this period was calculated, unlike the
 branch a simulation calculating only this period would create, so a later
 year came out differently when an earlier year had been calculated first.
