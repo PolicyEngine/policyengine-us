@@ -1,11 +1,31 @@
 description: Total alimony income.
 values:
-  2015-01-01: 10_077_088_000
+  # IRS SOI Publication 1304 Table 1.4, all returns: alimony received. Amounts
+  # are published in thousands of dollars. Each value is for the tax year of
+  # its date.
+  2015-01-01: 10_077_086_000
+  2016-01-01: 10_468_433_000
+  2017-01-01: 10_381_660_000
+  2018-01-01: 11_271_656_000
+  2019-01-01: 10_810_673_000
+  2020-01-01: 9_659_488_000
   2021-01-01: 8_507_104_000
 metadata:
   unit: currency-USD
   label: SOI alimony income
   uprating: calibration.gov.cbo.income_by_source.adjusted_gross_income
   reference:
-    - title: IRS SOI Tax Stats - Individual Statistical Tables by Size of Adjusted Gross Income
-      href: https://www.irs.gov/statistics/soi-tax-stats-individual-statistical-tables-by-size-of-adjusted-gross-income
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2015, alimony received
+      href: https://www.irs.gov/pub/irs-soi/15in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2016, alimony received
+      href: https://www.irs.gov/pub/irs-soi/16in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2017, alimony received
+      href: https://www.irs.gov/pub/irs-soi/17in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2018, alimony received
+      href: https://www.irs.gov/pub/irs-soi/18in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2019, alimony received
+      href: https://www.irs.gov/pub/irs-soi/19in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2020, alimony received
+      href: https://www.irs.gov/pub/irs-soi/20in14ar.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4, tax year 2021, alimony received
+      href: https://www.irs.gov/pub/irs-soi/21in14ar.xls

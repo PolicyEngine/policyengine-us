@@ -1,12 +1,37 @@
 description: Total long-term capital gains.
 values:
+  # IRS SOI Publication 1304 Table 1.4A, all returns: net long-term capital
+  # gain. Amounts are published in thousands of dollars. Each value is for the
+  # tax year of its date.
   2015-01-01: 733_313_255_000
+  2016-01-01: 634_770_066_000
+  2017-01-01: 841_131_872_000
+  2018-01-01: 951_249_403_000
+  2019-01-01: 849_406_787_000
   2020-01-01: 1_063_500_316_000
+  2021-01-01: 1_922_391_473_000
+  2022-01-01: 1_351_166_751_000
   2023-01-01: 971_279_947_000
 metadata:
   unit: currency-USD
   label: SOI long-term capital gains
   uprating: calibration.gov.cbo.income_by_source.net_capital_gain
   reference:
-    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A
-      href: https://www.irs.gov/statistics/soi-tax-stats-individual-income-tax-returns-complete-report-publication-1304-basic-tables-part-1
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2015, net long-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/15in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2016, net long-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/16in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2017, net long-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/17in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2018, net long-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/18in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2019, net long-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/19in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2020, net long-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/20in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2021, net long-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/21in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2022, net long-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/22in14acg.xls
+    - title: IRS SOI Tax Stats - Publication 1304 Table 1.4A, tax year 2023, net long-term capital gain
+      href: https://www.irs.gov/pub/irs-soi/23in14acg.xls

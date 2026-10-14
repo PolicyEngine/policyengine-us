@@ -9,7 +9,10 @@ from pathlib import Path
 import pytest
 from policyengine_core.parameters.operations.get_parameter import get_parameter
 
-from policyengine_us.data.economic_assumptions import MICRODATA_UPRATING_OVERRIDES
+from policyengine_us.data.economic_assumptions import (
+    MICRODATA_UPRATING_OVERRIDES,
+    get_parameter_last_year,
+)
 from policyengine_us.system import system
 from policyengine_us.tools.per_capita_uprating import DERIVED_FROM, per_capita_path
 
@@ -215,3 +218,51 @@ def test_methodology_page_links_every_series_an_input_follows(series):
         f"{METHODOLOGY_PAGE.name} does not link {series}, which uprates at "
         "least one input. Say on the page which inputs follow it."
     )
+
+
+def _january_years(parameter):
+    return sorted(
+        {
+            int(value.instant_str[:4])
+            for value in parameter.values_list
+            if value.instant_str.endswith("-01-01")
+        }
+    )
+
+
+@pytest.mark.parametrize("series", _series_that_inputs_follow())
+def test_series_has_a_january_value_for_every_year(series):
+    """A year with no value holds the previous one. The per-capita index then
+    drifts down with population across the gap and jumps when values resume,
+    and an input dated in or before the gap is uprated past it by the wrong
+    factor. The IRS SOI series once had nothing between 2015 and 2020 or
+    2021."""
+    years = _january_years(get_parameter(system.parameters, series))
+    missing = sorted(set(range(years[0], years[-1] + 1)) - set(years))
+    assert missing == [], f"{series} has no January 1 value for {missing}"
+
+
+SOI_SERIES_UPRATED_BY_CBO = sorted(
+    series
+    for series in _series_that_inputs_follow()
+    if series.startswith("calibration.gov.irs.soi.")
+    and get_parameter(system.parameters, series).metadata.get("uprating")
+)
+
+
+@pytest.mark.parametrize("series", SOI_SERIES_UPRATED_BY_CBO)
+def test_soi_series_follows_its_projection_from_its_last_authored_year(series):
+    """From its last authored value on, an SOI series grows with the series
+    in its uprating metadata, so values filled in before that year cannot
+    move the projection's growth."""
+    total = get_parameter(system.parameters, series)
+    uprating = total.metadata["uprating"]
+    uprater = get_parameter(
+        system.parameters,
+        uprating["parameter"] if isinstance(uprating, dict) else uprating,
+    )
+    last = get_parameter_last_year(total)
+    for year in range(last + 1, 2036):
+        assert total(f"{year}-01-01") / total(f"{last}-01-01") == pytest.approx(
+            uprater(f"{year}-01-01") / uprater(f"{last}-01-01"), rel=1e-12
+        )
