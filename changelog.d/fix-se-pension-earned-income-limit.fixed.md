@@ -1,0 +1,1 @@
+Limit the self-employed SEP, SIMPLE and qualified plan deduction to the Pub. 560 maximum, based on Schedule C net profit less the deductible part of self-employment tax, so it can no longer reach 100% of profit or make AGI negative.
