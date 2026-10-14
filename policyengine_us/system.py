@@ -1,6 +1,8 @@
 import hashlib
 from functools import lru_cache
 from pathlib import Path
+
+import numpy as np
 from policyengine_core.taxbenefitsystems import TaxBenefitSystem
 from policyengine_us.entities import *
 from policyengine_us.parameters.gov.irs.uprating import (
@@ -218,6 +220,63 @@ def _backfill_state_code_from_str(simulation):
         state_code_str.delete_arrays(known_period)
 
 
+CAPITAL_LOSS_CARRYOVER_SUMS = {
+    "long_term_capital_loss_carryover": (
+        "own_long_term_capital_loss_carryover",
+        "estate_or_trust_long_term_capital_loss_carryover",
+    ),
+    "short_term_capital_loss_carryover": (
+        "own_short_term_capital_loss_carryover",
+        "estate_or_trust_short_term_capital_loss_carryover",
+    ),
+}
+
+
+def _file_capital_loss_carryover_sums(simulation):
+    """File an entered capital loss carryover sum as the person's own carryover.
+
+    Each sum adds the person's own carryover and one from a terminated estate
+    or trust. Core does not uprate a variable that adds others, and a sum
+    entered for anyone in a simulation would otherwise be an input for
+    everyone in it. So, mirroring the ``employment_income`` ->
+    ``employment_income_before_lsr`` moves, a sum entered for a period
+    replaces the leaves entered for that period for each person it is
+    nonzero for: their own carryover becomes the sum, which uprates to later
+    periods as that leaf does, and an estate or trust carryover entered for
+    the period becomes zero. Where the sum is zero, the leaves entered for the
+    period stay, and without any the person's own carryover is zero, as the
+    entered sum was. Leaves entered for other periods are left alone. The sum
+    is then computed from its leaves.
+    """
+    for total, (own, estate_or_trust) in CAPITAL_LOSS_CARRYOVER_SUMS.items():
+        holder = simulation.get_holder(total)
+        for known_period in holder.get_known_periods():
+            amount = holder.get_array(known_period)
+            entered = amount != 0
+            for leaf, value in [(own, amount), (estate_or_trust, 0)]:
+                existing = simulation.get_holder(leaf).get_array(known_period)
+                if existing is None and leaf == estate_or_trust:
+                    continue
+                simulation.set_input(
+                    leaf,
+                    known_period,
+                    np.where(entered, value, 0 if existing is None else existing),
+                )
+            holder.delete_arrays(known_period)
+    if getattr(simulation, "input_variables", None) is not None:
+        names = [
+            name
+            for name in simulation.input_variables
+            if name not in CAPITAL_LOSS_CARRYOVER_SUMS
+        ]
+        for leaves in CAPITAL_LOSS_CARRYOVER_SUMS.values():
+            for leaf in leaves:
+                known = simulation.get_holder(leaf).get_known_periods()
+                if known and leaf not in names:
+                    names.append(leaf)
+        simulation.input_variables = names
+
+
 class Simulation(SPMSimulationMixin, CoreSimulation):
     """
     A simulation of the tax-benefit system for the United States,
@@ -296,6 +355,8 @@ class Simulation(SPMSimulationMixin, CoreSimulation):
                 "long_term_capital_gains_before_response", known_period, array
             )
             delete_input_values(cg_holder, known_period)
+
+        _file_capital_loss_carryover_sums(self)
 
         # Geography backfill: state_code_str-only input -> state_code enum.
         _backfill_state_code_from_str(self)
@@ -556,6 +617,8 @@ class Microsimulation(SPMSimulationMixin, CoreMicrosimulation):
                 "long_term_capital_gains_before_response", known_period, array
             )
             delete_input_values(cg_holder, known_period)
+
+        _file_capital_loss_carryover_sums(self)
 
         # Geography backfill: state_code_str-only input -> state_code enum.
         # Datasets carry state_fips, so this only fires for situations that

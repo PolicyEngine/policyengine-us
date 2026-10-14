@@ -1,0 +1,55 @@
+# 26 U.S.C. 1212(b)(1)(B) and 642(h)(1): the long-term capital loss carried to
+# the year is the person's own carryover (Schedule D line 14) plus any
+# carryover from a terminated estate or trust (Schedule K-1 (Form 1041), box
+# 11, code D, part of Schedule D line 12).
+- name: No carryover unless entered
+  period: 2025
+  input:
+    age: 40
+  output:
+    long_term_capital_loss_carryover: 0
+
+- name: The person's own carryover
+  period: 2025
+  input:
+    own_long_term_capital_loss_carryover: 3_000
+  output:
+    long_term_capital_loss_carryover: 3_000
+
+- name: A carryover from a terminated estate or trust
+  period: 2025
+  input:
+    estate_or_trust_long_term_capital_loss_carryover: 2_000
+  output:
+    long_term_capital_loss_carryover: 2_000
+
+- name: Own and estate or trust carryovers add
+  period: 2025
+  input:
+    own_long_term_capital_loss_carryover: 3_000
+    estate_or_trust_long_term_capital_loss_carryover: 2_000
+  output:
+    long_term_capital_loss_carryover: 5_000
+
+- name: An amount entered as the sum is used for that year
+  period: 2025
+  input:
+    own_long_term_capital_loss_carryover: 1_000
+    long_term_capital_loss_carryover: 4_000
+  output:
+    # Callers and datasets that enter the sum keep their amount.
+    long_term_capital_loss_carryover: 4_000
+
+- name: Each person's leaves add separately
+  period: 2025
+  input:
+    people:
+      head:
+        own_long_term_capital_loss_carryover: 1_000
+        estate_or_trust_long_term_capital_loss_carryover: 500
+      spouse:
+        estate_or_trust_long_term_capital_loss_carryover: 2_000
+      child:
+        age: 10
+  output:
+    long_term_capital_loss_carryover: [1_500, 2_000, 0]

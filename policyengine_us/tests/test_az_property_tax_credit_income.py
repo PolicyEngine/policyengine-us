@@ -33,6 +33,13 @@ dependent who has income) whose members' net capital gains run from well below
 4. Schedule floor: the credit depends on line J only through max(line J, 0),
    so a negative line J gets the zero-income schedule amount.
 5. The income does not depend on capital_gains_excluded_from_taxable_income.
+6. Carryover leaves: moving part of a member's short-term result into the
+   short-term carryover memo, which short_term_capital_gains then nets as
+   Schedule D line 7 does, leaves line J unchanged (ITR 12-1 item (7)).
+   Entering each carryover memo as its leaves, split at random between the
+   member's own carryover and one from a terminated estate or trust (Schedule
+   K-1 (Form 1041), box 11, codes C and D), gives the same Arizona and federal
+   results as entering the sum.
 """
 
 import numpy as np
@@ -492,3 +499,78 @@ def test_line_d_survives_a_loss_deduction_without_capital_losses():
     np.testing.assert_allclose(
         sim.calculate("az_property_tax_credit", YEAR), [502], atol=0.01
     )
+
+
+def _with_short_term_carryovers(units: list, rng: np.random.Generator) -> list:
+    """The units with part of some members' short-term result entered as a
+    short-term capital loss carryover, which short_term_capital_gains nets, as
+    Schedule D line 7 does. Each member's year's own net gain is unchanged."""
+    changed = []
+    for unit in units:
+        members = []
+        for member in unit["members"]:
+            member = dict(member)
+            carryover = round(rng.uniform(0, 4_000), 2) if rng.random() < 0.3 else 0.0
+            member["short_term_capital_gains"] = round(
+                member["short_term_capital_gains"] - carryover, 2
+            )
+            member["short_term_capital_loss_carryover"] = carryover
+            members.append(member)
+        changed.append({**unit, "members": members})
+    return changed
+
+
+def _as_leaves(units: list, rng: np.random.Generator) -> list:
+    """The units with each carryover memo entered as its leaves: part the
+    member's own carryover, the rest from a terminated estate or trust."""
+    changed = []
+    for unit in units:
+        members = []
+        for member in unit["members"]:
+            member = dict(member)
+            for term in ["long", "short"]:
+                total = member.pop(f"{term}_term_capital_loss_carryover")
+                own = round(total * rng.random(), 2)
+                member[f"own_{term}_term_capital_loss_carryover"] = own
+                member[f"estate_or_trust_{term}_term_capital_loss_carryover"] = round(
+                    total - own, 2
+                )
+            members.append(member)
+        changed.append({**unit, "members": members})
+    return changed
+
+
+def test_carryover_leaves_match_their_sums():
+    rng = np.random.default_rng(SEED + 2)
+    summed_units = _with_short_term_carryovers(UNITS, rng)
+    leaf_units = _as_leaves(summed_units, rng)
+    members = [m for unit in summed_units for m in unit["members"]]
+    assert sum(m["short_term_capital_loss_carryover"] > 0 for m in members) >= 20
+    assert any(
+        m["short_term_capital_loss_carryover"] > 0 and m["role"] == "dependent"
+        for m in members
+    )
+    # The two cohorts run in separate simulations: a sum entered for anyone in
+    # a simulation is an input for everyone in it.
+    summed = Simulation(situation=_situation(summed_units))
+    leaves = Simulation(situation=_situation(leaf_units))
+    # The short-term memo is added back, so line J is the year's own result.
+    np.testing.assert_allclose(
+        summed.calculate("az_property_tax_credit_income", YEAR), LINE_J, atol=0.01
+    )
+    for name in [
+        "long_term_capital_loss_carryover",
+        "short_term_capital_loss_carryover",
+        "az_property_tax_credit_capital_gains",
+        "az_property_tax_credit_income",
+        "az_property_tax_credit",
+        "adjusted_gross_income",
+        "capital_gains_28_percent_rate_gain",
+        "income_tax",
+    ]:
+        np.testing.assert_allclose(
+            leaves.calculate(name, YEAR),
+            summed.calculate(name, YEAR),
+            atol=0.01,
+            err_msg=name,
+        )
