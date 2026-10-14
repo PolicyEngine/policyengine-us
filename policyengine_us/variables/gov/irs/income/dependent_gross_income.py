@@ -6,9 +6,10 @@ from policyengine_us.model_api import *
 # turn depends on this variable through the qualifying relative test, so
 # neither is read here.
 DEPENDENT_GROSS_INCOME_SOURCE_OVERRIDES = {
-    # Unemployment compensation is counted in full. IRC 86(b)(2)(A) also
+    # Unemployment compensation is counted in full, reported or, when none is
+    # reported, modeled state unemployment insurance. IRC 86(b)(2)(A) also
     # disregards the IRC 85(c) exclusion when figuring modified AGI.
-    "taxable_unemployment_compensation": ["unemployment_compensation"],
+    "taxable_unemployment_compensation": ["total_unemployment_compensation"],
     # Only the IRC 86 taxable part of Social Security is gross income. It is
     # computed in dependent_taxable_social_security, on the dependent's own
     # income, and modified AGI is figured without it (IRC 86(b)(2)(A)).

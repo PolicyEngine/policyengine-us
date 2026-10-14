@@ -16,4 +16,9 @@ class medicare_part_b_premiums_reported(Variable):
         "input."
     )
     unit = USD
-    uprating = "calibration.gov.hhs.cms.moop_per_capita"
+    # Grows with the standard premium: within an income tier, a premium with
+    # its income-related adjustment is a fixed multiple of the standard
+    # premium before rounding (42 U.S.C. 1395r(i)(3)), though hold-harmless
+    # limits and Medicare Advantage premium reductions move some people's
+    # premiums differently.
+    uprating = "calibration.gov.hhs.cms.medicare_part_b_premium_per_enrollee"

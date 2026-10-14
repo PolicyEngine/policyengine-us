@@ -1,1 +1,0 @@
-Montana's elderly homeowner/renter credit now counts SSI, TANF, workers' compensation and guaranteed income payments received by household members in gross household income (MCA 15-30-2337(9)(a); Schedule 2EC line 16).
