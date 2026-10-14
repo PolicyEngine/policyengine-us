@@ -1,0 +1,445 @@
+# Medicaid MAGI household income is the sum of the MAGI-based income of every
+# member of the household (42 CFR 435.603(d)(1)). A member's MAGI-based income
+# can be negative, and it offsets the others' income before the total is
+# floored at zero, as Form 8962 line 3 combines the taxpayer's and dependents'
+# modified AGIs "even if one or both of them are negative"
+# (https://www.irs.gov/pub/irs-prior/i8962--2025.pdf#page=8).
+
+# The first three cases are CMS's worked examples in the MAGI-Based Household
+# Income Eligibility Training Manual (December 2020),
+# https://www.medicaid.gov/state-resource-center/mac-learning-collaboratives/downloads/household-composition-and-income-training.pdf
+# Monthly amounts are annualized.
+
+- name: CMS Sam scenario, a joint couple's income is added (training manual, p. 83).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      sam:
+        age: 35
+        employment_income: 12_000 # $1,000 a month
+        is_tax_unit_head: true
+      susan:
+        age: 35
+        employment_income: 6_000 # $500 a month
+        is_tax_unit_spouse: true
+      sarah:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [sam, susan, sarah]
+    marital_units:
+      couple:
+        members: [sam, susan]
+      sarah_unit:
+        members: [sarah]
+    households:
+      household:
+        members: [sam, susan, sarah]
+        state_code: TX
+  output:
+    # $1,500 a month for a household of 3.
+    medicaid_household_income: [18_000, 18_000, 18_000]
+
+- name: CMS Marty scenario, a dependent adult child not required to file adds no income (training manual, p. 86).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      marty:
+        age: 50
+        employment_income: 30_000 # $2,500 a month
+        is_tax_unit_head: true
+      mark:
+        age: 22
+        is_full_time_student: true
+        employment_income: 9_600 # $800 a month, below the filing threshold
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [marty, mark]
+    households:
+      household:
+        members: [marty, mark]
+        state_code: TX
+  output:
+    medicaid_person_is_required_to_file: [true, false]
+    medicaid_household_income: [30_000, 30_000]
+
+- name: CMS Sadie and Stephanie scenarios, a dependent child's income below the filing threshold is excluded (training manual, pp. 87-88).
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      sadie:
+        age: 55
+        employment_income: 36_000 # $3,000 a month
+        is_tax_unit_head: true
+      stephanie:
+        age: 17
+        employment_income: 6_000 # $500 a month
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [sadie, stephanie]
+    households:
+      household:
+        members: [sadie, stephanie]
+        state_code: TX
+  output:
+    # $3,000 a month for Sadie and for Stephanie. The manual's household also
+    # has Stephanie's daughter Sarah, whom Sadie claims; she has no income and
+    # uses the non-filer rules, so she is left out here.
+    medicaid_person_is_required_to_file: [true, false]
+    medicaid_household_income: [36_000, 36_000]
+
+- name: A spouse's business loss offsets the other spouse's wages on their joint return.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -20_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Joint AGI: wages 30,000 less the 20,000 Schedule C loss (Schedule 1,
+    # line 3) = 10,000. Each spouse's MAGI-based income is their own part,
+    # 30,000 and -20,000, and the household's total is 10,000. Flooring each
+    # spouse at zero would give 30,000; splitting the loss equally and then
+    # flooring would give 20,000.
+    adjusted_gross_income: 10_000
+    medicaid_magi_person: [30_000, -20_000]
+    medicaid_household_income: [10_000, 10_000]
+
+- name: One spouse's IRA deduction lowers the couple's income once.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 30_000
+        traditional_ira_contributions: 6_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # 30,000 - 6,000 = 24,000. The deduction is the head's; splitting it
+    # equally would leave the spouse at -3,000, floored to 0, and the head at
+    # 27,000.
+    adjusted_gross_income: 24_000
+    medicaid_magi_person: [24_000, 0]
+    medicaid_household_income: [24_000, 24_000]
+
+- name: A negative joint MAGI offsets a dependent's income when the dependent is required to file.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 45
+        self_employment_income: -30_000
+        is_tax_unit_head: true
+      spouse:
+        age: 45
+        employment_income: 10_000
+        is_tax_unit_spouse: true
+      child:
+        age: 17
+        employment_income: 25_000
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: TX
+  output:
+    # Joint AGI: 10,000 - 30,000 = -20,000 (Form 8962, line 2a). The child's
+    # wages exceed the 15,750 standard deduction, so the child is required to
+    # file and the child's MAGI, 25,000, is added (line 2b; 42 CFR
+    # 435.603(d)(2)). Line 3 combines them even though line 2a is negative:
+    # -20,000 + 25,000 = 5,000.
+    adjusted_gross_income: -20_000
+    medicaid_person_is_required_to_file: [false, false, true]
+    medicaid_magi_person: [-30_000, 10_000, 25_000]
+    medicaid_household_income: [5_000, 5_000, 5_000]
+
+- name: A dependent's negative MAGI offsets the filer's income when the dependent is required to file.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 45
+        employment_income: 50_000
+        is_tax_unit_head: true
+      mother:
+        age: 72
+        taxable_private_pension_income: 4_000
+        alimony_expense: 6_000
+        divorce_year: 2010
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [filer, mother]
+    households:
+      household:
+        members: [filer, mother]
+        state_code: TX
+  output:
+    # The mother's unearned income, 4,000, exceeds 1,350 plus the 2,000
+    # additional amount for age, so she is required to file. Her own AGI is
+    # 4,000 less alimony paid under a 2010 instrument, 6,000: -2,000. The
+    # filer's household counts her MAGI (42 CFR 435.603(d)(2)(ii)), which
+    # offsets the filer's: 50,000 - 2,000 = 48,000. As a parent claimed by her
+    # child she uses the non-filer rules (435.603(f)(2)(i)); her own
+    # household is herself, whose negative total is floored at zero.
+    medicaid_person_is_required_to_file: [true, true]
+    medicaid_magi_person: [50_000, -2_000]
+    medicaid_uses_non_filer_rules: [false, true]
+    medicaid_household_income: [48_000, 0]
+
+- name: Cohabiting spouses filing separately offset each other's income in their shared household.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        employment_income: 30_000
+      person2:
+        age: 40
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        cohabitating_spouses: true
+        tax_unit_is_filer: true
+      tax_unit2:
+        members: [person2]
+        cohabitating_spouses: true
+        tax_unit_is_filer: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    # Each spouse is in the other's household whether or not they file
+    # jointly (42 CFR 435.603(f)(4)), so each household's income is the sum
+    # of the two spouses' MAGI-based income: 30,000 - 20,000 = 10,000.
+    medicaid_magi_person: [30_000, -20_000]
+    medicaid_household_income: [10_000, 10_000]
+
+- name: A non-filer spouse's business loss offsets the other spouse's wages.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 12_000
+        is_tax_unit_head: true
+      spouse:
+        age: 40
+        self_employment_income: -5_000
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        tax_unit_is_filer: false
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # Neither spouse files, so each household is the individual and their
+    # spouse (42 CFR 435.603(f)(3)(i)): 12,000 - 5,000 = 7,000.
+    medicaid_uses_non_filer_rules: [true, true]
+    medicaid_magi_person: [12_000, -5_000]
+    medicaid_household_income: [7_000, 7_000]
+
+- name: A household whose total MAGI-based income is negative has zero household income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person:
+        age: 40
+        self_employment_income: -10_000
+        taxable_interest_income: 1_000
+    tax_units:
+      tax_unit:
+        members: [person]
+    households:
+      household:
+        members: [person]
+        state_code: TX
+  output:
+    medicaid_magi_person: -9_000
+    medicaid_household_income: 0
+
+- name: A grandparent outside a child's non-filer household does not lower its income.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      grandmother:
+        age: 50
+        self_employment_income: -5_000
+        own_children_in_household: 1
+        is_tax_unit_head: true
+      mother:
+        age: 30
+        employment_income: 12_000
+        own_children_in_household: 1
+        is_tax_unit_head: true
+      child:
+        age: 8
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit1:
+        members: [grandmother]
+        tax_unit_is_filer: false
+      tax_unit2:
+        members: [mother]
+        tax_unit_is_filer: false
+      tax_unit3:
+        members: [child]
+        tax_unit_is_filer: false
+    families:
+      family:
+        members: [grandmother, mother, child]
+    marital_units:
+      grandmother_unit:
+        members: [grandmother]
+      mother_unit:
+        members: [mother]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [grandmother, mother, child]
+        state_code: TX
+  output:
+    # The child's household is the child and her mother (42 CFR
+    # 435.603(f)(3)(iii)); her grandmother is not in it, so the grandmother's
+    # loss does not offset the mother's 12,000. The grandmother's own
+    # household's total, -5,000, is floored at zero.
+    medicaid_uses_non_filer_rules: [true, true, true]
+    medicaid_household_income: [0, 12_000, 12_000]
+
+- name: A dependent's household includes the claimant's cohabiting spouse who files separately.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent_a:
+        age: 50
+        employment_income: 30_000
+      child:
+        age: 21
+        is_full_time_student: true
+        taxable_interest_income: 2_000
+        early_withdrawal_penalty: 5_000
+        is_tax_unit_dependent: true
+      parent_b:
+        age: 50
+        self_employment_income: -20_000
+    tax_units:
+      tax_unit_a:
+        members: [parent_a, child]
+        cohabitating_spouses: true
+        tax_unit_is_filer: true
+      tax_unit_b:
+        members: [parent_b]
+        cohabitating_spouses: true
+        tax_unit_is_filer: true
+    marital_units:
+      couple:
+        members: [parent_a, parent_b]
+      child_unit:
+        members: [child]
+    households:
+      household:
+        members: [parent_a, child, parent_b]
+        state_code: TX
+  output:
+    # The child's unearned income, 2,000, exceeds 1,350, so the child is
+    # required to file, and the child's MAGI is 2,000 - 5,000 = -3,000. Parent
+    # A's household includes the child and parent B (435.603(f)(4)): 30,000
+    # - 3,000 - 20,000 = 7,000. The child is in parent A's household
+    # (435.603(f)(2)), so the child's is the same. Parent B's household is
+    # parent B and parent A: -20,000 + 30,000 = 10,000.
+    medicaid_person_is_required_to_file: [true, true, false]
+    medicaid_magi_person: [30_000, -3_000, -20_000]
+    medicaid_household_income: [7_000, 7_000, 10_000]
+
+- name: Married non-filer parents' loss offsets their wages in their child's household.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      mother:
+        age: 35
+        employment_income: 12_000
+        own_children_in_household: 1
+        is_tax_unit_head: true
+      father:
+        age: 35
+        self_employment_income: -5_000
+        own_children_in_household: 1
+        is_tax_unit_spouse: true
+      child:
+        age: 8
+        is_tax_unit_head: true
+    tax_units:
+      parents:
+        members: [mother, father]
+        tax_unit_is_filer: false
+      child_unit:
+        members: [child]
+        tax_unit_is_filer: false
+    families:
+      family:
+        members: [mother, father, child]
+    marital_units:
+      couple:
+        members: [mother, father]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [mother, father, child]
+        state_code: TX
+  output:
+    # Each parent's household is the parent, their spouse and their child
+    # (42 CFR 435.603(f)(3)(i)-(ii)), and the child's is the child and both
+    # parents ((f)(3)(iii)): 12,000 - 5,000 = 7,000 for all three.
+    medicaid_uses_non_filer_rules: [true, true, true]
+    medicaid_household_income: [7_000, 7_000, 7_000]
