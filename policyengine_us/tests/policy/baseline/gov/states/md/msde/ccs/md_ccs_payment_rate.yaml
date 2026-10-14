@@ -321,3 +321,56 @@
     #   UNIT_1: $83 / 3 = $27.67/week.
     # person6: Virginia; defined_for zeroes the result.
     md_ccs_payment_rate: [0, 59, 0, 27.67, 0, 0]
+
+- name: Maryland household with a Virginia county uses Allegany in a mixed simulation
+  # Keep a normal Maryland household present so the vectorized formula runs
+  # for the household whose county belongs to another state.
+  period: 2026-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_head_or_spouse: true
+      person2:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 2
+        md_ccs_provider_type: INFORMAL
+      person3:
+        age: 30
+        employment_income: 40_000
+        is_tax_unit_head_or_spouse: true
+      person4:
+        age: 3
+        is_tax_unit_dependent: true
+        immigration_status: CITIZEN
+        childcare_hours_per_day: 2
+        md_ccs_provider_type: INFORMAL
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+    spm_units:
+      spm_unit1:
+        members: [person1, person2]
+      spm_unit2:
+        members: [person3, person4]
+    households:
+      household1:
+        members: [person1, person2]
+        state_code: MD
+        county: MONTGOMERY_COUNTY_MD
+      household2:
+        members: [person3, person4]
+        state_code: MD
+        county: FAIRFAX_COUNTY_VA
+  output:
+    # person2: informal, Montgomery, REGULAR (age 3), UNIT_1 (2 hours):
+    #   $177 / 3 = $59/week.
+    # person4: the Virginia county falls back to Allegany, informal REGULAR,
+    #   UNIT_1: $83 / 3 = $27.67/week.
+    md_ccs_payment_rate: [0, 59, 0, 27.67]

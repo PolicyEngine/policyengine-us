@@ -21,12 +21,16 @@ class wi_shares_hourly_max_rate(Variable):
         p = parameters(period).gov.states.wi.dcf.shares.rates
         age_group = person("wi_shares_age_group", period)
         county = person.household("county_str", period)
-        # defined_for does not short-circuit vectorized execution, so
-        # non-Wisconsin counties are masked before indexing the county-keyed
-        # rate tables. The tables have no UNKNOWN key either, so a Wisconsin
-        # household with an unknown county also falls back to Adams.
+        # defined_for does not short-circuit vectorized execution, so only
+        # Wisconsin households with a Wisconsin county can index the
+        # county-keyed rate tables. Unknown and mismatched-state counties
+        # fall back to Adams along with non-Wisconsin households.
         in_wi = person.household("state_code_str", period) == "WI"
-        safe_county = where(in_wi & (county != "UNKNOWN"), county, "ADAMS_COUNTY_WI")
+        safe_county = where(
+            in_wi & np.char.endswith(county.astype(str), "_WI"),
+            county,
+            "ADAMS_COUNTY_WI",
+        )
         licensed_group_rate = p.licensed_group.hourly[age_group][safe_county]
         licensed_family_rate = p.licensed_family.hourly[age_group][safe_county]
         # Certified hourly maximums are 90% of the licensed family hourly

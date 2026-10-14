@@ -27,13 +27,16 @@ class mn_ccap_provider_rate(Variable):
         age_group = person("mn_ccap_age_group", period)
         rate_unit = person("mn_ccap_rate_unit", period)
         # defined_for filters output but does not short-circuit vectorized
-        # execution, so mask on Minnesota before indexing county_str; non-MN
-        # county strings are absent from the rate tables and would crash the
-        # lookup. The rate tables have no UNKNOWN key either, so a Minnesota
-        # household with an unknown county also falls back to Hennepin.
+        # execution, so only Minnesota households with a Minnesota county can
+        # index the county-keyed tables. Unknown and mismatched-state counties
+        # fall back to Hennepin along with non-Minnesota households.
         county = person.household("county_str", period.this_year)
         in_mn = person.household("state_code_str", period.this_year) == "MN"
-        county_key = where(in_mn & (county != "UNKNOWN"), county, "HENNEPIN_COUNTY_MN")
+        county_key = where(
+            in_mn & np.char.endswith(county.astype(str), "_MN"),
+            county,
+            "HENNEPIN_COUNTY_MN",
+        )
 
         # Centers and license-exempt programs (paid at the center rate per
         # section 9.9) use the child care center column; family child care

@@ -630,3 +630,48 @@
     # Full limit 31,050 = HUD FY2021 extremely low-income limit (PE had 31,040).
     # Full credit: ROUND(2,083 x 12 x 0.1, 0) = ROUND(2,499.6, 0) = 2,500.
     vt_renter_credit: 2_500
+
+- name: Vermont household with a New Hampshire county uses Addison in a mixed simulation
+  # An in-state household with another state's county must not reach the
+  # Vermont county-keyed tables, even with a normal Vermont household present.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        tax_unit_size: 2
+        vt_renter_credit_income: 49_370
+        rent_is_shared_with_another_tax_unit: false
+      tax_unit2:
+        members: [person2]
+        tax_unit_size: 2
+        vt_renter_credit_income: 44_145
+        rent_is_shared_with_another_tax_unit: false
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        housing_assistance: 0
+      spm_unit2:
+        members: [person2]
+        housing_assistance: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: VT
+        county: CHITTENDEN_COUNTY_VT
+      household2:
+        members: [person2]
+        state_code: VT
+        county: GRAFTON_COUNTY_NH
+  output:
+    # tax_unit1: Chittenden, size 2: ROUND(1,936 * 12 * 0.1, 0) = 2,323;
+    #   (67,540 - 49,370) * 2,323 / (67,540 - 31,200) = 1,161.5 -> 1,162.
+    # tax_unit2: the NH county falls back to Addison, size 2:
+    #   ROUND(1,410 * 12 * 0.1, 0) = 1,692;
+    #   (60,390 - 44,145) * 1,692 / (60,390 - 27,900) = 846.
+    vt_renter_credit: [1_162, 846]

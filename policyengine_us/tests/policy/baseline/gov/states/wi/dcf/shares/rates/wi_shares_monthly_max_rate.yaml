@@ -139,3 +139,32 @@
     #   x 131 = 1,146.25.
     # person3: Minnesota; defined_for zeroes the result.
     wi_shares_monthly_max_rate: [1_273.32, 1_146.25, 0]
+
+- name: Case 7, Wisconsin household with a Minnesota county falls back to Adams alongside a Milwaukee County household.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 15
+        wi_shares_provider_type: LICENSED_GROUP
+      person2:
+        age: 3
+        childcare_hours_per_week: 15
+        wi_shares_provider_type: LICENSED_GROUP
+    households:
+      household1:
+        members: [person1]
+        state_code: WI
+        county: MILWAUKEE_COUNTY_WI
+      household2:
+        members: [person2]
+        state_code: WI
+        county: HENNEPIN_COUNTY_MN
+  output:
+    # Part-time monthly hours: ceil(30 * 4.348125) = 131.
+    # person1: Milwaukee licensed group hourly 9.72 * 131 = 1,273.32.
+    # person2: Minnesota county falls back to Adams licensed group hourly
+    #   8.75 * 131 = 1,146.25.
+    wi_shares_monthly_max_rate: [1_273.32, 1_146.25]

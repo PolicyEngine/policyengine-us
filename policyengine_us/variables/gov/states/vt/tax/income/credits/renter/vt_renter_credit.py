@@ -23,12 +23,17 @@ class vt_renter_credit(Variable):
         tax_unit_size = tax_unit("tax_unit_size", period)
         size = min_(tax_unit_size, p.max_household_size).astype(int)
         # defined_for masks the output but does not stop the formula from
-        # running over every household, so non-Vermont and unknown counties
-        # are masked to a Vermont county before indexing the county-keyed
-        # tables, which would otherwise raise ParameterNotFoundError.
+        # running over every household, so non-Vermont households and Vermont
+        # households with unknown or another state's counties use Addison
+        # before indexing the county-keyed tables, which would otherwise raise
+        # ParameterNotFoundError.
         county = tax_unit.household("county_str", period)
         in_vt = tax_unit.household("state_code_str", period) == "VT"
-        safe_county = where(in_vt & (county != "UNKNOWN"), county, "ADDISON_COUNTY_VT")
+        safe_county = where(
+            in_vt & np.char.endswith(county.astype(str), "_VT"),
+            county,
+            "ADDISON_COUNTY_VT",
+        )
         # locate the values by family size and county
         full_credit_income_limit = p.income_limit_ami.thirty_percent[size][safe_county]
         partial_credit_income_limit = p.income_limit_ami.fifty_percent[size][
