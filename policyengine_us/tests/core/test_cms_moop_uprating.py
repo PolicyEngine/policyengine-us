@@ -58,21 +58,15 @@ LAST_PROJECTED_YEAR, END_YEAR = 2034, 2100
 TABLE_YEARS = range(FIRST_TABLE_YEAR, LAST_PROJECTED_YEAR + 1)
 ACCOUNT_YEARS = range(FIRST_YEAR, FIRST_PROJECTED_YEAR)
 # Health expense inputs that uprate by this series, as listed in
-# docs-quarto/methodology/spm-poverty.qmd. Pre-tax health insurance premiums
-# also use it today; PR #10083 moves them to the ESI premium series, so they
-# are left out here. HSA payroll contributions follow the family HSA
-# contribution limit since #10097.
+# docs-quarto/methodology/spm-poverty.qmd. Premiums follow separate series,
+# covered by test_premium_input_uprating.py. HSA payroll contributions follow
+# the family HSA contribution limit.
 HEALTH_INPUTS = {
     "ambulance_expense",
     "er_visit_expense",
-    "health_insurance_premiums",
-    "health_insurance_premiums_without_medicare_part_b",
     "imaging_expense",
     "inpatient_expense",
     "lab_expense",
-    "long_term_health_insurance_premiums",
-    "medicare_part_b_premiums_reported",
-    "other_health_insurance_premiums",
     "other_medical_expenses",
     "outpatient_expense",
     "over_the_counter_health_expenses",
@@ -265,4 +259,4 @@ def test_health_inputs_uprate_by_the_cms_series():
     users = {
         name for name, variable in system.variables.items() if variable.uprating == MOOP
     }
-    assert users - {"pre_tax_health_insurance_premiums"} == HEALTH_INPUTS
+    assert users == HEALTH_INPUTS
