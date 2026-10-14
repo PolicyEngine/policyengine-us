@@ -13,7 +13,15 @@ class ky_pension_income_exclusion(Variable):
         p = parameters(period).gov.states.ky.tax.income.exclusions.pension_income
 
         # Get taxable pension and retirement income.
-        pension_income = person("taxable_pension_income", period)
+        pension_income = add(
+            person,
+            period,
+            [
+                "taxable_pension_income",
+                "military_retirement_pay",
+                "military_retirement_pay_survivors",
+            ],
+        )
 
         # Check if person is eligible for exemption.
         exemption_eligible = person(

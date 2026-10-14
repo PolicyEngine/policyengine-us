@@ -367,3 +367,28 @@
     me_pension_income_deduction: 0
     me_agi: 60_000
 
+- name: Maine 2025 military retirement survivor benefits deducted in full (not phased out)
+  period: 2025
+  input:
+    people:
+      person1:
+        is_tax_unit_head: true
+        age: 67
+        social_security: 0
+        military_retirement_pay_survivors: 35_000
+        taxable_interest_income: 300_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person1]
+        state_code: ME
+    spm_units:
+      spm_unit:
+        members: [person1]
+  output:
+    me_pension_income_deduction: 35_000
+
+

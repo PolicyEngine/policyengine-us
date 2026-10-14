@@ -32,7 +32,11 @@ class mi_standard_deduction_tier_two(Variable):
         military_pay = add(
             person,
             period,
-            ["military_retirement_pay", "military_service_income"],
+            [
+                "military_retirement_pay",
+                "military_retirement_pay_survivors",
+                "military_service_income",
+            ],
         )
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
         head_or_spouse_military_pay = tax_unit.sum(military_pay * is_head_or_spouse)

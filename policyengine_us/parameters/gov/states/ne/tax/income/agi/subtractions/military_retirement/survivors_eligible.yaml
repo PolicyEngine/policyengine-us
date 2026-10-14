@@ -1,0 +1,16 @@
+description: Whether military retirement survivor benefit payments are eligible for the Nebraska military retirement subtraction.
+values:
+  2015-01-01: false
+  2022-01-01: true
+
+metadata:
+  label: Nebraska military retirement survivor benefits eligible
+  unit: bool
+  period: year
+  reference:
+    - title: Neb. Rev. Stat. § 77-2716(15)
+      href: https://nebraskalegislature.gov/laws/statutes.php?statute=77-2716
+    - title: 2021 Form 1040N-MIL
+      href: https://revenue.nebraska.gov/sites/revenue.nebraska.gov/files/doc/f_1040n_booklet.pdf#page=16
+    - title: 2025 Form 1040N Schedule I, line 32
+      href: https://revenue.nebraska.gov/sites/default/files/doc/tax-forms/2025/f_Individual_Income_Tax_Booklet.pdf#page=26

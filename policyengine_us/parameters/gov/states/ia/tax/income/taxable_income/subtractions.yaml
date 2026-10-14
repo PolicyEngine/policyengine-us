@@ -4,6 +4,8 @@ values:
     # Line 1B
     - us_govt_interest
     # Dividends from federal securities
+    - military_retirement_pay
+    - military_retirement_pay_survivors
     # Line 5B 
     - taxable_social_security
     # Line 6B
@@ -15,7 +17,7 @@ values:
     # Iowa Health Insurance Deduction
     # Iowa capital gains deduction
     - ia_529_plan_subtraction
-  2024-01-01: # military_retirement_pay added in 2024.
+  2024-01-01: # Line 4B on 2024 Form IA 1040
     # Line 1B
     - us_govt_interest
     # Dividends from federal securities

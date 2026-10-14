@@ -25,8 +25,10 @@ class de_pension_exclusion(Variable):
         eligible_for_pension_exclusion_income = p.age_threshold.calc(age)
 
         eligible_pension_income = (
-            person("taxable_pension_income", period) * head_or_spouse
-        )
+            person("taxable_pension_income", period)
+            + person("military_retirement_pay", period)
+            + person("military_retirement_pay_survivors", period)
+        ) * head_or_spouse
 
         eligible_retirement_income = (
             person("de_pension_exclusion_income", period) * head_or_spouse
