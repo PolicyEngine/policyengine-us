@@ -1,0 +1,10 @@
+description: The IRS rounds down the active-participant IRA deduction phase-out reduction to the next multiple of this amount.
+values:
+  2015-01-01: 10
+metadata:
+  unit: currency-USD
+  period: year
+  label: IRA deduction phase-out reduction rounding interval
+  reference:
+    - title: 26 U.S. Code § 219(g)(2)(C)
+      href: https://www.law.cornell.edu/uscode/text/26/219#g_2_C
