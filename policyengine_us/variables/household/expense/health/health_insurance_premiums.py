@@ -7,7 +7,10 @@ class health_insurance_premiums(Variable):
     label = "Health insurance premiums"
     unit = USD
     definition_period = YEAR
-    uprating = "calibration.gov.hhs.cms.moop_per_capita"
+    # Survey data put premiums here only for self-employed people under 65
+    # without employer-sponsored coverage. CMS's premium per enrollee for
+    # plans bought outside an employer is the closest series for them.
+    uprating = "calibration.gov.hhs.cms.direct_purchase_premium_per_enrollee"
     documentation = (
         "Person-level health insurance premiums supplied directly as an input. "
         "SPM MOOP and statutory medical expense definitions use decomposed "

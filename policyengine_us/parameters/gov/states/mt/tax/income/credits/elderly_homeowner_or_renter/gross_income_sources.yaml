@@ -18,17 +18,23 @@ metadata:
     href: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/297c7a8d-f6f4-4b70-a7b7-fe1cedee53e7
   - title: ARM 42.4.301(2) as in effect from 9/7/2024 ("federal refundable tax credits received" and "any state refundable tax credits received")
     href: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/768c8344-24ee-4950-9d5e-9d8fc97ec0f7
-  - title: 2016 Montana Form 2EC instructions, Part II, disability benefits including SSI payments and workers' compensation, and cash public assistance and relief
+  - title: "2014 Montana Form 2EC instructions, Part II, disability benefits including SSI payments and workers' compensation; Income Source Worksheet, line 7, alimony, cash public assistance, unemployment #page 53-54"
+    href: https://taxsim.nber.org/historical_state_tax_forms/MT/2014/Form_2_booklet_2014.pdf#page=53
+  - title: "2016 Montana Form 2EC instructions, Part II, disability benefits including SSI payments and workers' compensation, and cash public assistance and relief; Gross Household Income Worksheet, line 7, alimony, cash public assistance, unemployment #page 74-75"
     href: https://taxsim.nber.org/historical_state_tax_forms/MT/2016/Form_2_booklet_2016.pdf#page=74
-  - title: "2017 Montana Form 2EC instructions, Part II, disability benefits including SSI payments and workers' compensation, and cash public assistance and relief; Gross Household Income Worksheet, items 4 and 5 #page 64-65"
+  - title: "2017 Montana Form 2EC instructions, Part II, disability benefits including SSI payments and workers' compensation, and cash public assistance and relief; Gross Household Income Worksheet, items 4 and 5 (alimony, cash public assistance, unemployment) #page 64-65"
     href: https://taxsim.nber.org/historical_state_tax_forms/MT/2017/Form%202%202017%20Booklet.pdf#page=64
-  - title: "2022 Montana Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, gross household income; line 8, disability benefits including SSI payments and workers' compensation #page 47-48"
+  - title: 2020 Montana Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 1, federal adjusted gross income; line 8, other income not listed above, including disability benefits
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2020_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=45
+  - title: 2021 Montana Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 8, other income not listed above, including disability benefits
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2021_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=49
+  - title: "2022 Montana Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, gross household income; line 8, other income, including disability benefits, SSI payments and workers' compensation #page 47-48"
     href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
-  - title: "2023 Montana Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 7, refundable credits received; line 8, disability benefits including SSI payments and workers' compensation #page 51-52"
+  - title: "2023 Montana Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 7, refundable credits received; line 8, other income, including disability benefits, SSI payments and workers' compensation #page 51-52"
     href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=51
-  - title: "2024 Montana Form 2 instructions, Schedule 2EC, gross household income; line 8, refundable credits received; line 16, government assistance #page 46-48"
+  - title: "2024 Montana Form 2 instructions, Schedule 2EC, gross household income; line 1, wages; line 8, refundable credits received; line 14, unemployment compensation; line 15, other income; line 16, government assistance #page 46-48"
     href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=46
-  - title: "2025 Montana Form 2 instructions, Schedule 2EC, line 8, refundable credits received; line 16, government assistance #page 45-46"
+  - title: "2025 Montana Form 2 instructions, Schedule 2EC, line 8, refundable credits received; line 14, unemployment compensation; line 15, other income; line 16, government assistance #page 45-46"
     href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=45
 
 values:
@@ -60,6 +66,21 @@ values:
     # (9)(a) counts all nontaxable income; a government-funded pilot is also
     # "any other government assistance" (Schedule 2EC line 16).
     - gi_cash_assistance
+    # Disability benefits from employment other than workers' compensation
+    # (2014-2023 instructions: "Disability benefits including, but not
+    # limited to, veteran's disability, SSI payments, and workers'
+    # compensation"; from 2024, Schedule 2EC line 1 for taxable sick pay and
+    # disability pay reported as wages, line 5 for a disability pension after
+    # minimum retirement age (IRS Pub. 525), otherwise line 15). The model
+    # leaves them out of federal AGI (irs_gross_income) and
+    # dependent_gross_income, so all of them count here, once.
+    - disability_benefits
+    # Unemployment compensation that neither federal AGI nor a dependent's
+    # own gross income counts, such as the 2020 IRC 85(c) exclusion (2020
+    # line 8, "all items of income ... not reported on lines 1 through 7";
+    # 2014-2017 worksheets, "Alimony, cash public assistance,
+    # unemployment"; Schedule 2EC line 14 from 2024, the total received).
+    - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
     # Refundable credits received (2023 schedule line 7, Schedule 2EC line 8
     # from 2024): Montana's refundable credits other than this credit,
     # and this credit as received during the year (ARM 42.4.301(2)(c)).
@@ -81,6 +102,8 @@ values:
     - tanf_person
     - workers_compensation
     - gi_cash_assistance
+    - disability_benefits
+    - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
     - mt_refundable_credits_before_renter_credit
     - mt_elderly_homeowner_or_renter_credit_received
     - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
@@ -101,12 +124,17 @@ values:
     - tanf_person
     - workers_compensation
     - gi_cash_assistance
+    - disability_benefits
+    - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
     - mt_refundable_credits_before_renter_credit
     - mt_elderly_homeowner_or_renter_credit_received
     - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
     - mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received
-# Social Security under § 15-30-2337(9)(a)(viii) is added separately in
-# mt_elderly_homeowner_or_renter_credit_gross_household_income.py because the
-# untaxed portion is computed as social_security - taxable_social_security.
+# mt_elderly_homeowner_or_renter_credit_gross_household_income.py adds three
+# items separately: a tax unit dependent's own gross income (their income is
+# on their own return, not in adjusted_gross_income_person); the untaxed
+# portion of Social Security under § 15-30-2337(9)(a)(viii), computed as
+# social_security less the taxable part already counted; and the losses
+# deducted in federal AGI.
 # This year's elderly homeowner/renter credit is excluded to avoid a circular
 # reference; the credit received during the year counts instead.

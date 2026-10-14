@@ -7,4 +7,10 @@ class long_term_health_insurance_premiums(Variable):
     label = "Long-term health insurance premiums"
     unit = USD
     definition_period = YEAR
-    uprating = "calibration.gov.hhs.cms.moop_per_capita"
+    # No dataset fills this input, and CMS's health expenditure projections
+    # have no long-term care insurance premium series. 26 U.S.C.
+    # 213(d)(10)(B) indexes the deductible limits on these premiums by the
+    # chained CPI-U medical care component for August of the preceding year.
+    # CBO and CMS do not project that index, so this uses CBO's projection of
+    # the CPI-U medical care component, by calendar year, as a proxy.
+    uprating = "gov.bls.cpi.cpi_u_medical_care"

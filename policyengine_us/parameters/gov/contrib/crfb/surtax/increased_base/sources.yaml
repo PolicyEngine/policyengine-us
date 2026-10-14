@@ -27,8 +27,13 @@ values:
     - foreign_earned_income_exclusion
     # Tax-free bond interest
     - tax_exempt_interest_income
-    # Employer-provided health insurance (premiums)
-    - health_insurance_premiums
+    # Employer-provided health insurance: employer-paid premiums and the
+    # employee's pretax payroll contribution. Including the employee's
+    # pretax contribution is inferred from the broad income definition and
+    # IRS Rev. Rul. 2002-3's treatment of salary-reduction premiums as
+    # employer-provided coverage; after-tax premiums use income in AGI.
+    - employer_sponsored_insurance_premiums
+    - pre_tax_health_insurance_premiums
 
 metadata:
   unit: list
@@ -37,3 +42,5 @@ metadata:
   reference:
     - title: "Committee for a Responsible Federal Budget, Break Glass: A Plan for the Next Economic Shock, footnote 2"
       href: https://www.crfb.org/papers/break-glass-plan-next-economic-shock
+    - title: "IRS Revenue Ruling 2002-3, salary-reduction health insurance premiums #page 1-2"
+      href: https://www.irs.gov/pub/irs-drop/rr-02-3.pdf#page=1
