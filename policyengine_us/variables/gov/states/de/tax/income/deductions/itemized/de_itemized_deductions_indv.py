@@ -13,7 +13,11 @@ EXPENSE_SOURCES = {
     ],
     "interest_deduction": ["deductible_interest_expense"],
     "casualty_loss_deduction": ["casualty_loss"],
+    "wagering_losses_deduction": ["gambling_losses"],
 }
+# Deductions that count only the head's and spouse's expenses, so a
+# dependent's expense leaves nothing unallocated.
+FILER_ONLY_DEDUCTIONS = ("wagering_losses_deduction",)
 
 
 def _share(numerator, denominator):
@@ -64,6 +68,8 @@ class de_itemized_deductions_indv(Variable):
                 continue
             amount = person.tax_unit(deduction, period)
             expense = add(person, period, expense_sources)
+            if deduction in FILER_ONLY_DEDUCTIONS:
+                expense = head_or_spouse * expense
             total_expense = person.tax_unit.sum(expense)
             allocated += amount * _share(head_or_spouse * expense, total_expense)
         # Prorate what could not be specifically allocated.

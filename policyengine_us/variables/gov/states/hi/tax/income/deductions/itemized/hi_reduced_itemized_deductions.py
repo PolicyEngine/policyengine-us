@@ -9,6 +9,8 @@ class hi_reduced_itemized_deductions(Variable):
     reference = (
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=15",
         "https://files.hawaii.gov/tax/forms/2022/n11ins.pdf#page=32",  # total itemized deduction worksheet
+        # 2025 Total Itemized Deductions Worksheet, lines 2d and 4
+        "https://files.hawaii.gov/tax/forms/2025/n11ins.pdf#page=34",
     )
     definition_period = YEAR
     defined_for = StateCode.HI
@@ -24,6 +26,8 @@ class hi_reduced_itemized_deductions(Variable):
                 "hi_medical_expense_deduction",
                 "investment_interest_expense",
                 "hi_casualty_loss_deduction",
+                # Line 2d: gambling losses included in Worksheet A-6, line 30.
+                "wagering_losses_deduction",
             ],
         )
 
@@ -53,4 +57,7 @@ class hi_reduced_itemized_deductions(Variable):
         )
         reduced_deductions = max_(0, total_deductions - smaller_reduced_ded)
         eligible = partial_deductions_less_than_total & agi_over_threshold
-        return eligible * reduced_deductions
+        # Worksheet lines 4 and 8: when the deductions outside the limit are
+        # not less than the total, or income is not over the threshold, the
+        # deduction is not limited and line 1 is deducted in full.
+        return where(eligible, reduced_deductions, total_deductions)

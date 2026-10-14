@@ -18,6 +18,8 @@ values:
     - farm_operations_income
     - taxable_unemployment_compensation
     - miscellaneous_income
+    # IA 1040 line 13, gambling winnings, of the head and spouse.
+    - ia_gambling_winnings
 
 metadata:
   unit: list

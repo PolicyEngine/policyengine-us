@@ -43,12 +43,16 @@ class mn_itemized_deductions(Variable):
         # ... calculate itemized deductions offset
         p = parameters(period).gov.states.mn.tax.income.deductions.itemized
         # Minn. Stat. 290.0122, subd. 2(d), and the M1SA line 26 worksheets
-        # (step 2: lines 4, 13 and 19) leave medical expenses and casualty
-        # and theft losses out of the reduction.
+        # leave medical expenses and the subd. 8 casualty, theft and wagering
+        # losses out of the reduction. The casualty amount is Minnesota's own.
         exempt_deds = add(
             tax_unit,
             period,
-            ["medical_expense_deduction", "mn_casualty_loss_deduction"],
+            [
+                "medical_expense_deduction",
+                "mn_casualty_loss_deduction",
+                "wagering_losses_deduction",
+            ],
         )
         net_deds = max_(0, mn_itm_deds - exempt_deds)
         filing_status = tax_unit("filing_status", period)

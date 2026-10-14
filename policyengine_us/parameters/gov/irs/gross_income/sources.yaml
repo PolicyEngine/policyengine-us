@@ -33,6 +33,9 @@ values:
     - taxable_retirement_distributions
     - taxable_roth_conversions
     - miscellaneous_income
+    # Gambling winnings, including lotteries and raffles (Schedule 1 line
+    # 8b). Only itemizers deduct the losses (wagering_losses_deduction).
+    - gambling_winnings
     # Listed separately on 1040 line 8g.
     - ak_permanent_fund_dividend
     # Alimony from divorces executed before the TCJA cutoff (Schedule 1 line 2a).
@@ -51,7 +54,11 @@ metadata:
       href: https://www.law.cornell.edu/uscode/text/26/111
     - title: 26 U.S. Code § 61(a)(14) - Income from an interest in an estate or trust
       href: https://www.law.cornell.edu/uscode/text/26/61#a_14
-    - title: 2024 Schedule 1 (Form 1040), line 5 - Rental real estate, royalties, partnerships, S corporations, trusts, etc.
+    - title: 2024 Schedule 1 (Form 1040), line 5 - Rental real estate, royalties, partnerships, S corporations, trusts, etc., and line 8b - Gambling
       href: https://www.irs.gov/pub/irs-prior/f1040s1--2024.pdf#page=1
     - title: 2024 Instructions for Schedule E (Form 1040), Part III - Income or Loss From Estates and Trusts
       href: https://www.irs.gov/pub/irs-prior/i1040se--2024.pdf#page=11
+    - title: 2024 Instructions for Form 1040, Schedule 1 line 8b - Gambling
+      href: https://www.irs.gov/pub/irs-prior/i1040gi--2024.pdf#page=85
+    - title: 2025 Instructions for Form 1040, Schedule 1 line 8b - Gambling
+      href: https://www.irs.gov/pub/irs-prior/i1040gi--2025.pdf#page=91

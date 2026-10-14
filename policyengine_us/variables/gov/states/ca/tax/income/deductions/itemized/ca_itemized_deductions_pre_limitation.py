@@ -19,7 +19,7 @@ class ca_itemized_deductions_pre_limitation(Variable):
 
     def formula(tax_unit, period, parameters):
         # Exclude the replaced federal amounts before summation, so changes
-        # to federal charity/misc/casualty rules cannot cause cancellation
+        # to federal charity/misc/casualty/wagering rules cannot cause cancellation
         # errors. Schedule CA line 15 replaces the federal casualty loss,
         # which is limited to declared disasters from 2018, with California's
         # own.
@@ -33,6 +33,7 @@ class ca_itemized_deductions_pre_limitation(Variable):
                 "charitable_deduction",
                 "charitable_deduction_for_non_itemizers",
                 "misc_deduction",
+                "wagering_losses_deduction",
                 "casualty_loss_deduction",
             )
         ]
@@ -41,6 +42,7 @@ class ca_itemized_deductions_pre_limitation(Variable):
             "real_estate_taxes",
             "ca_charitable_deduction",
             "ca_misc_deduction",
+            "ca_wagering_losses_deduction",
             "ca_casualty_loss_deduction",
         ]
         # Federal investment interest is nested in interest_deduction.

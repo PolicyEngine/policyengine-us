@@ -52,6 +52,49 @@
   output:
     ca_itemized_deductions: 7_000  # charity subject to limitation
 
+- name: California allows all gambling losses up to winnings in 2026 and does not limit them.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    filing_status: SINGLE
+    adjusted_gross_income: 1_000_000
+    gambling_winnings: 10_000
+    gambling_losses: 10_000
+    state_code: CA
+  output:
+    # Federal: min(90% x 10,000 losses, 10,000 winnings) = 9,000.
+    wagering_losses_deduction: 9_000
+    # California: min(10,000 losses, 10,000 winnings) = 10,000.
+    ca_wagering_losses_deduction: 10_000
+    ca_itemized_deductions_pre_limitation: 10_000
+    # Gambling losses are outside the high-income limitation.
+    ca_itemized_deductions: 10_000
+
+- name: California gambling losses are capped at winnings and exclude a dependent's.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      parent:
+        age: 40
+        gambling_winnings: 5_000
+        gambling_losses: 8_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        gambling_winnings: 10_000
+        gambling_losses: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: CA
+  output:
+    # Only the parent counts: min(8,000 losses, 5,000 winnings) = 5,000.
+    ca_wagering_losses_deduction: 5_000
+
 # 2024 Schedule CA (540) instructions, line 29 worksheet (Form 540 booklet,
 # PDF p. 68): line 2 takes medical expenses, investment interest, casualty and
 # theft losses and gambling losses out before the 80%/6% limitation. Cal. Rev.

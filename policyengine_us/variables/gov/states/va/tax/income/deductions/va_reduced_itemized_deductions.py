@@ -16,7 +16,8 @@ class va_reduced_itemized_deductions(Variable):
         # Part A: If AGI from federal return is over a certain amount, then
         # limitations to the itemized deduction are applied
         # Line 1 - sum of medical exepens ded., capped state and local tax,
-        # interest ded., charitable ded., and casualty loss ded.
+        # interest ded., charitable ded., casualty loss ded., and gambling
+        # losses (Schedule A line 16a)
         applicable_ded = add(
             tax_unit,
             period,

@@ -17,6 +17,10 @@ class pa_property_tax_or_rent_rebate_income(Variable):
         "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/"
         "formsandpublications/formsforindividuals/ptrr/documents/"
         "2025_pa-1000_inst.pdf#page=9",
+        # PA-1000 booklet, line 11b: net gambling and lottery winnings
+        "https://www.pa.gov/content/dam/copapwp-pagov/en/revenue/documents/"
+        "formsandpublications/formsforindividuals/ptrr/documents/"
+        "dfo-03.pdf#page=40",
     )
     defined_for = StateCode.PA
 
@@ -57,12 +61,17 @@ class pa_property_tax_or_rent_rebate_income(Variable):
                 person,
                 period,
                 [
-                    "gambling_winnings",
                     "alimony_income",
                     "workers_compensation",
                     "disability_benefits",
                 ],
             )
+        )
+        # Line 11b counts net gambling and lottery winnings: losses offset the
+        # winnings but may not exceed them. The winnings are already in
+        # federal adjusted gross income.
+        gambling_loss_offset = tax_unit.sum(
+            head_or_spouse * person("pa_gambling_loss_offset", period)
         )
         life_insurance_benefits = tax_unit.sum(
             head_or_spouse * person("life_insurance_benefits", period)
@@ -84,6 +93,7 @@ class pa_property_tax_or_rent_rebate_income(Variable):
             + p.benefit_income_rate * half_counted_benefits
             + tax_exempt_income
             + pa_1000_line_11_income
+            - gambling_loss_offset
             + taxable_life_insurance_benefits
             + csrs_income
             - csrs_exclusion,

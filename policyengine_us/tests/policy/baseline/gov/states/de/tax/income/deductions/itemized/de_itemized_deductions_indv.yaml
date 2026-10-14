@@ -198,3 +198,66 @@
         state_code: DE
   output:
     de_itemized_deductions_indv: [0, 5_000, 0]
+
+- name: Wagering losses go to the spouse who had them.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+        gambling_winnings: 10_000
+        gambling_losses: 6_000
+      spouse:
+        age: 40
+        employment_income: 50_000
+        gambling_losses: 2_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: DE
+  output:
+    de_itemized_deductions_unit: 8_000
+    de_itemized_deductions_indv: [6_000, 2_000]
+
+- name: A dependent's gambling losses do not change the spouses' wagering allocation.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 40_000
+        gambling_winnings: 10_000
+        gambling_losses: 6_000
+      spouse:
+        age: 40
+        employment_income: 50_000
+        gambling_losses: 2_000
+      child:
+        age: 17
+        is_tax_unit_dependent: true
+        gambling_winnings: 10_000
+        gambling_losses: 8_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: DE
+  output:
+    de_itemized_deductions_unit: 8_000
+    # The head's 6,000 and the spouse's 2,000; the child's 8,000 is on the
+    # child's own return.
+    de_itemized_deductions_indv: [6_000, 2_000, 0]
