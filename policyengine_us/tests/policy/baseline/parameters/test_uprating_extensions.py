@@ -18,6 +18,7 @@ from policyengine_us.parameters.uprating_extensions import (
     extend_educator_expense_cap,
     get_irs_cola,
     get_irs_cola_denominator,
+    get_irs_cpi,
     round_social_security_amount,
     round_social_security_payroll_cap,
 )
@@ -291,7 +292,7 @@ def test_float_dollar_inputs_have_long_run_upraters():
 
 
 def test_ssa_nawi_and_payroll_cap_extend_to_2100():
-    """Test that the SSA NAWI and payroll cap do not flatten after 2035."""
+    """Test that the SSA NAWI and payroll cap do not flatten after 2036."""
     parameters = PARAMETERS
 
     nawi = parameters.gov.ssa.nawi
@@ -309,7 +310,7 @@ def test_ssa_nawi_and_payroll_cap_extend_to_2100():
             f"Payroll cap should increase from {test_years[i - 1]} to {test_years[i]}"
         )
 
-    for year in [2036, 2040, 2050, 2100]:
+    for year in [2037, 2040, 2050, 2100]:
         current_cap = payroll_cap(f"{year - 1}-01-01")
         expected_cap = round_social_security_payroll_cap(
             current_cap * nawi(f"{year - 2}-01-01") / nawi(f"{year - 3}-01-01")
@@ -410,6 +411,95 @@ def test_social_security_parameters_include_latest_official_2027_values():
     pia = social_security.pia.formula_factors("2027-01-01")
     assert pia.thresholds[1] == 1_340
     assert pia.thresholds[2] == 8_077
+
+
+# CBO February 2026 projections (US-CBO/cbo-data at 284a956): quarterly and
+# calendar-year CPI-U (cpiu) and the contribution and benefit base
+# (tp_ss_max_earnings).
+CBO_2026_02_QUARTERLY_CPI_U = {
+    "2026Q2": 330.708,
+    "2026Q3": 332.976,
+    "2035Q3": 408.476,
+    "2036Q2": 415.373,
+    "2036Q4": 420.036,
+}
+CBO_2026_02_CALENDAR_CPI_U = {2026: 331.807, 2036: 416.542}
+CBO_2026_02_CBB = {2027: 191_100, 2036: 258_600}
+
+
+def test_upraters_follow_cbo_february_2026_growth_through_2036():
+    """2036 values grow each series from its anchor at CBO's February 2026 rates."""
+    parameters = PARAMETERS
+    quarterly = CBO_2026_02_QUARTERLY_CPI_U
+    calendar = CBO_2026_02_CALENDAR_CPI_U
+
+    # SSA: the 2026Q3 CPI-W behind the 2027 COLA, grown to 2035Q3.
+    ssa = parameters.gov.ssa.uprating
+    assert ssa("2036-01-01") == pytest.approx(
+        ssa("2027-01-01") * quarterly["2035Q3"] / quarterly["2026Q3"], abs=5e-4
+    )
+    # SNAP: June 2026 CPI-U, grown to 2036Q2.
+    snap = parameters.gov.usda.snap.uprating
+    assert snap("2036-10-01") == pytest.approx(
+        snap("2026-10-01") * quarterly["2036Q2"] / quarterly["2026Q2"], abs=5e-4
+    )
+    # HHS: the index's 2026 value, grown to 2036.
+    hhs = parameters.gov.hhs.uprating
+    assert hhs("2036-01-01") == pytest.approx(
+        hhs("2026-01-01") * calendar[2036] / calendar[2026], abs=5e-4
+    )
+    # NAWI(2025) is SSA's published value; later years grow with CBO's
+    # CBB, and the cap follows 42 U.S.C. 430(b) on that NAWI.
+    nawi = parameters.gov.ssa.nawi
+    assert nawi("2034-01-01") == pytest.approx(
+        nawi("2025-01-01") * CBO_2026_02_CBB[2036] / CBO_2026_02_CBB[2027],
+        abs=5e-3,
+    )
+    cap = parameters.gov.irs.payroll.social_security.cap
+    for year in range(2028, 2037):
+        assert cap(f"{year}-01-01") == round_social_security_payroll_cap(
+            cap("1994-01-01") * nawi(f"{year - 2}-01-01") / nawi("1992-01-01")
+        )
+    assert cap("2036-01-01") == 260_400
+    # CPI-W: CBO's 2036Q4 CPI-U at the last observed CPI-W/CPI-U ratio.
+    assert parameters.gov.bls.cpi.cpi_w("2036-11-01") == pytest.approx(
+        quarterly["2036Q4"] * 327.075 / 333.952, abs=5e-4
+    )
+    # CBO's 2035 CPI-U projection points, which apply through 2036, survive
+    # the extension, and the 2036 IRS index reads them.
+    assert parameters.gov.bls.cpi.cpi_u("2035-02-01") == 407.3
+    assert parameters.gov.bls.cpi.c_cpi_u("2035-02-01") == 219.2
+    assert parameters.gov.irs.uprating("2036-01-01") == pytest.approx(
+        get_irs_cpi(parameters, 2035), rel=1e-12
+    )
+
+
+@pytest.mark.parametrize(
+    "path,last_projected_year,date_suffix",
+    [
+        ("gov.irs.uprating", 2036, "-01-01"),
+        ("gov.ssa.uprating", 2036, "-01-01"),
+        ("gov.usda.snap.uprating", 2036, "-10-01"),
+        ("gov.hhs.uprating", 2036, "-01-01"),
+        ("gov.ssa.nawi", 2034, "-01-01"),
+        ("gov.bls.cpi.cpi_u", 2035, "-02-01"),
+        ("gov.bls.cpi.c_cpi_u", 2035, "-02-01"),
+        ("gov.bls.cpi.cpi_w", 2036, "-02-01"),
+    ],
+)
+def test_upraters_extrapolate_only_after_cbo_projections(
+    path, last_projected_year, date_suffix
+):
+    """Each series holds its final projected growth after CBO's last year."""
+    parameter = PARAMETERS.get_child(path)
+    last_growth = parameter(f"{last_projected_year}{date_suffix}") / parameter(
+        f"{last_projected_year - 1}{date_suffix}"
+    )
+    for year in [last_projected_year + 1, last_projected_year + 2, 2050, 2100]:
+        growth = parameter(f"{year}{date_suffix}") / parameter(
+            f"{year - 1}{date_suffix}"
+        )
+        assert growth == pytest.approx(last_growth, rel=1e-12)
 
 
 def test_social_security_wage_indexed_parameters_follow_statutory_rounding():

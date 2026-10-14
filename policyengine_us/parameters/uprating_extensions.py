@@ -936,7 +936,9 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
 
     # IRS uprating - special case that computes from CPI
     IRS_UPRATING_START_YEAR = 2010
-    IRS_LAST_PROJECTED_YEAR = 2035
+    # 2036 reads the 12 months ending August 2035, whose chained CPI-U
+    # projection points (CBO February 2026) run through the 2035 instant.
+    IRS_LAST_PROJECTED_YEAR = 2036
 
     uprating_index = parameters.gov.irs.uprating
 
@@ -956,31 +958,31 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         uprating_index.update(period=f"year:{year}-01-01:1", value=irs_cpi)
     uprating_index.update(start=instant(f"{END_YEAR}-01-01"), value=irs_cpi)
 
-    # SNAP uprating (October values, last projection year 2034)
+    # SNAP uprating (October values, last projection year 2036)
     extend_parameter_values(
         parameters.gov.usda.snap.uprating,
-        last_projected_year=2034,
+        last_projected_year=2036,
         end_year=END_YEAR,
         period_month=10,
         period_day=1,
     )
 
-    # SSA uprating (January values, last projection year 2035)
+    # SSA uprating (January values, last projection year 2036)
     extend_parameter_values(
         parameters.gov.ssa.uprating,
-        last_projected_year=2035,
+        last_projected_year=2036,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
     )
 
     # Social Security National Average Wage Index (January values, last
-    # projection year 2035). The payroll tax contribution and benefit base is
-    # indexed to NAWI, so this must remain available through the full long-run
-    # projection horizon.
+    # projection year 2034, the NAWI behind CBO's 2036 CBB). The payroll tax
+    # contribution and benefit base is indexed to NAWI, so this must remain
+    # available through the full long-run projection horizon.
     extend_parameter_values(
         parameters.gov.ssa.nawi,
-        last_projected_year=2035,
+        last_projected_year=2034,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
@@ -991,7 +993,7 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
     # independently.
     extend_social_security_payroll_cap(
         parameters,
-        last_projected_year=2035,
+        last_projected_year=2036,
         end_year=END_YEAR,
     )
 
@@ -1000,37 +1002,40 @@ def set_all_uprating_parameters(parameters: ParameterNode) -> ParameterNode:
         end_year=END_YEAR,
     )
 
-    # HHS poverty guideline uprating (January values, last projection year 2035)
+    # HHS poverty guideline uprating (January values, last projection year 2036)
     extend_parameter_values(
         parameters.gov.hhs.uprating,
-        last_projected_year=2035,
+        last_projected_year=2036,
         end_year=END_YEAR,
         period_month=1,
         period_day=1,
     )
 
-    # CPI-U (February values, last projection year 2034)
+    # CPI-U (February values, last projection year 2035). The 2035 instant
+    # holds CBO's February 2026 projection that applies through 2036, so
+    # extrapolation starts at the 2036 instant.
     extend_parameter_values(
         parameters.gov.bls.cpi.cpi_u,
-        last_projected_year=2034,
+        last_projected_year=2035,
         end_year=END_YEAR,
         period_month=2,
         period_day=1,
     )
 
-    # Chained CPI-U (February values, last projection year 2034)
+    # Chained CPI-U (February values, last projection year 2035), as for CPI-U.
     extend_parameter_values(
         parameters.gov.bls.cpi.c_cpi_u,
-        last_projected_year=2034,
+        last_projected_year=2035,
         end_year=END_YEAR,
         period_month=2,
         period_day=1,
     )
 
-    # CPI-W (February values, last projection year 2034)
+    # CPI-W (February values, last projection year 2036; quarterly
+    # projections run through 2036Q4)
     extend_parameter_values(
         parameters.gov.bls.cpi.cpi_w,
-        last_projected_year=2034,
+        last_projected_year=2036,
         end_year=END_YEAR,
         period_month=2,
         period_day=1,
