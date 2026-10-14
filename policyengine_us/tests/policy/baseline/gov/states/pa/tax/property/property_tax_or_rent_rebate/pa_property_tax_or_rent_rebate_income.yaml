@@ -123,6 +123,9 @@
         alimony_income: 2_000
         workers_compensation: 3_000
         disability_benefits: 4_000
+        # Not in federal AGI (a policy the person paid for), so counted on
+        # line 11. A taxable part would be in adjusted_gross_income.
+        tax_exempt_disability_benefits: 4_000
     tax_units:
       tax_unit:
         members: [person1]
@@ -175,3 +178,24 @@
         state_code: PA
   output:
     pa_property_tax_or_rent_rebate_income: 12_000
+
+- name: Taxable disability benefits count once, through federal AGI.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 65
+        ssi: 0
+        disability_benefits: 10_000
+        tax_exempt_disability_benefits: 4_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: PA
+  output:
+    # Federal AGI holds the taxable 6,000 and line 11 the exempt 4,000.
+    adjusted_gross_income: 6_000
+    pa_property_tax_or_rent_rebate_income: 10_000

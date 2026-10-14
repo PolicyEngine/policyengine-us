@@ -17,8 +17,12 @@ values:
     - rental_income
     # Royalties included in rental income
     - dividend_income
-    - taxable_pension_income 
+    - taxable_pension_income
     # Pension income includes annuities and endowment contracts
+    # Disability benefits from a plan paid for by the employer (§ 105(a)),
+    # on Form 1040 line 1h until minimum retirement age, then line 5.
+    # Benefits from a plan the recipient paid for are excluded (§ 104(a)(3)).
+    - taxable_disability_benefits
     - debt_relief
     # Income in respect of a decedent (§ 61(a)(13)) has no dedicated input;
     # IRD a beneficiary receives through an estate or trust (K-1 box 5) is
@@ -49,6 +53,12 @@ metadata:
       href: https://www.law.cornell.edu/uscode/text/26/61
     - title: 26 U.S. Code § 111 - Recovery of tax benefit items
       href: https://www.law.cornell.edu/uscode/text/26/111
+    - title: 26 U.S. Code § 104(a)(3) - Amounts received through accident or health insurance
+      href: https://www.law.cornell.edu/uscode/text/26/104#a_3
+    - title: 26 U.S. Code § 105(a) - Amounts attributable to employer contributions
+      href: https://www.law.cornell.edu/uscode/text/26/105#a
+    - title: IRS Publication 525 (2024), Sickness and Injury Benefits and Disability Pensions
+      href: https://www.irs.gov/pub/irs-prior/p525--2024.pdf#page=18
     - title: 26 U.S. Code § 61(a)(14) - Income from an interest in an estate or trust
       href: https://www.law.cornell.edu/uscode/text/26/61#a_14
     - title: 2024 Schedule 1 (Form 1040), line 5 - Rental real estate, royalties, partnerships, S corporations, trusts, etc.

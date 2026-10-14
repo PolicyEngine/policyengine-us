@@ -18,7 +18,11 @@ class medicaid_person_is_required_to_file(Variable):
         standard = parameters(period).gov.irs.deductions.standard
         filing_requirement = parameters(period).gov.irs.income.filing_requirement
         gross_income = person("medicaid_irs_gross_income", period)
-        earned_income = person("earned_income", period)
+        # Disability pensions reported as wages before minimum retirement
+        # age are earned income.
+        earned_income = add(
+            person, period, ["earned_income", "earned_disability_benefits"]
+        )
         unearned_income = gross_income - earned_income
 
         married = person.marital_unit.nb_persons() == 2

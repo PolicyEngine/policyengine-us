@@ -107,3 +107,29 @@
         members: [person1]
   output:
     medicaid_person_is_required_to_file: false
+
+- name: A dependent's disability pension before minimum retirement age is earned income for the filing threshold.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 25_000
+      child:
+        age: 20
+        is_tax_unit_dependent: true
+        disability_benefits: 10_000
+        disability_benefits_before_minimum_retirement_age: 10_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+  output:
+    # Earned income 10,000 and no unearned income. Dependent standard
+    # deduction: max(1,300, 10,000 + 450) = 10,450, so gross income of
+    # 10,000 is under it and the dependent need not file. The parent's
+    # 25,000 of wages is over the 14,600 single amount.
+    medicaid_person_is_required_to_file: [true, false]

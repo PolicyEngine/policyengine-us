@@ -19,7 +19,10 @@ class basic_standard_deduction(Variable):
             standard_deduction,
             max_(
                 p.dependent.additional_earned_income
-                + tax_unit("tax_unit_earned_income", period),
+                + tax_unit("tax_unit_earned_income", period)
+                # Disability pensions reported on Form 1040 line 1h count
+                # as earned income on the worksheet (line 1z).
+                + tax_unit_non_dep_sum("earned_disability_benefits", tax_unit, period),
                 p.dependent.amount,
             ),
         )
