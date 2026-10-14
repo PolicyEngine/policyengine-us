@@ -20,6 +20,8 @@ class ma_gross_income(Variable):
         federal_gross_income = add(tax_unit, period, ["irs_gross_income"])
         # Add back lines 6/7 losses dropped by irs_gross_income.
         loss_adjustment = tax_unit("ma_gross_income_loss_adjustment", period)
+        # Add back the excess business loss (Schedule X, line 6).
+        excess_business_loss = tax_unit("ma_excess_business_loss_adjustment", period)
         # Under M.G.L. c. 62 § 2(a)(1)(C), earned income from foreign sources
         # excluded under section 911 of the Code is added to MA gross income.
         # It is neither interest, dividends nor capital gains, so the Part B
@@ -47,5 +49,9 @@ class ma_gross_income(Variable):
         deductions = social_security_in_agi + salt_refund_income + public_pension
         return max_(
             0,
-            federal_gross_income + loss_adjustment + foreign_earned_income - deductions,
+            federal_gross_income
+            + loss_adjustment
+            + excess_business_loss
+            + foreign_earned_income
+            - deductions,
         )

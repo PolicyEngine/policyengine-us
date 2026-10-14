@@ -207,3 +207,25 @@
     # Railroad Retirement benefits" as unearned income.
     # 21,600 Railroad Retirement + 9,600 Social Security = 31,200.
     ms_liheap_income: 31_200
+
+- name: Case 9, reported unemployment compensation counts as unearned income.
+  # The unearned source list reads total_unemployment_compensation.
+  # Mississippi has no modeled unemployment insurance program, so the total is
+  # the reported amount and this control shows reported UC still counts.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        unemployment_compensation: 6_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+    households:
+      household:
+        members: [person1]
+        state_code: MS
+  output:
+    total_unemployment_compensation: 6_000
+    ms_liheap_income: 6_000
