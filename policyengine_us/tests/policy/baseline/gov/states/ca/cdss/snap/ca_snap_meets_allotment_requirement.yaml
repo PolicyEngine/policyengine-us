@@ -1,0 +1,1171 @@
+# California MCE has no net-income ceiling for any household size or
+# elderly/disabled status (ACL 12-62 examples 4-5; ACL 13-32). ACL 14-56
+# page 6 and ACL 14-63 page 2 deny zero-allotment units of three or more.
+# https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2012/12-62.pdf
+# https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2013/13-32.pdf
+# https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2014/14-56.pdf#page=6
+# https://www.cdss.ca.gov/lettersnotices/entres/getinfo/acl/2014/14-63.pdf#page=2
+# FY2026 maximum/minimum allotments: CDSS ACIN I-46-25 attachment I.
+# Each pair holds gross income, size and member eligibility fixed while
+# varying only net income. All categorical and member gates are derived.
+# Gross inputs floor the model's exact 200%-FPG limit: twice
+# ($15,650 + $5,500 x (size - 1))/12. This preserves the existing model's
+# exact-ratio convention rather than imposing CDSS chart rounding.
+# Expected benefits are hand-calculated as max(minimum, maximum minus
+# ceil(30% x net)); minimum is $24 for one/two-person units and $0 otherwise.
+
+# Net 0 / 2610 gives contributions 0 / 783,
+# so maximum $298 yields allotments $298 / $24.
+- name: California MCE size 1 without elderly or disabled members varies net income at fixed gross income.
+  period: 2026-01
+  input:
+    people:
+      lower_person_1: &first_member_1
+        age: 35
+        monthly_age: 35
+        immigration_status: CITIZEN
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_dependent: false
+        is_full_time_college_student: false
+        is_part_time_college_student: false
+        is_permanently_disabled_veteran: false
+      higher_person_1:
+        <<: *first_member_1
+    spm_units:
+      lower:
+        members: [lower_person_1]
+        snap_gross_income: 2610
+        snap_net_income: 0
+      higher:
+        members: [higher_person_1]
+        snap_gross_income: 2610
+        snap_net_income: 2610
+    tax_units:
+      tax_lower_person_1:
+        members: [lower_person_1]
+      tax_higher_person_1:
+        members: [higher_person_1]
+    families:
+      family_lower_person_1:
+        members: [lower_person_1]
+      family_higher_person_1:
+        members: [higher_person_1]
+    marital_units:
+      marital_lower_person_1:
+        members: [lower_person_1]
+      marital_higher_person_1:
+        members: [higher_person_1]
+    households:
+      lower_household:
+        members: [lower_person_1]
+        state_code: CA
+      higher_household:
+        members: [higher_person_1]
+        state_code: CA
+  output:
+    snap_unit_size: [1, 1]
+    is_snap_excluded_member: [false, false]
+    is_tanf_non_cash_hheod: [false, false]
+    snap_gross_test_income: [2610, 2610]
+    meets_tanf_non_cash_gross_income_test: [true, true]
+    meets_tanf_non_cash_net_income_test: [true, true]
+    is_tanf_non_cash_eligible: [true, true]
+    meets_snap_categorical_eligibility: [true, true]
+    snap_max_allotment: [298, 298]
+    snap_allotment_before_eligibility: [298, 24]
+    ca_snap_meets_allotment_requirement: [true, true]
+    is_snap_eligible: [true, true]
+    snap_normal_allotment: [298, 24]
+    snap: [298, 24]
+
+# Net 0 / 3525 gives contributions 0 / 1058,
+# so maximum $546 yields allotments $546 / $24.
+- name: California MCE size 2 elderly varies net income at fixed gross income.
+  period: 2026-01
+  input:
+    people:
+      lower_person_1: &first_member_2
+        age: 65
+        monthly_age: 65
+        immigration_status: CITIZEN
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_dependent: false
+        is_full_time_college_student: false
+        is_part_time_college_student: false
+        is_permanently_disabled_veteran: false
+      lower_person_2:
+        <<: *first_member_2
+        age: 35
+        monthly_age: 35
+      higher_person_1:
+        <<: *first_member_2
+      higher_person_2:
+        <<: *first_member_2
+        age: 35
+        monthly_age: 35
+    spm_units:
+      lower:
+        members: [lower_person_1, lower_person_2]
+        snap_gross_income: 3525
+        snap_net_income: 0
+      higher:
+        members: [higher_person_1, higher_person_2]
+        snap_gross_income: 3525
+        snap_net_income: 3525
+    tax_units:
+      tax_lower_person_1:
+        members: [lower_person_1]
+      tax_lower_person_2:
+        members: [lower_person_2]
+      tax_higher_person_1:
+        members: [higher_person_1]
+      tax_higher_person_2:
+        members: [higher_person_2]
+    families:
+      family_lower_person_1:
+        members: [lower_person_1]
+      family_lower_person_2:
+        members: [lower_person_2]
+      family_higher_person_1:
+        members: [higher_person_1]
+      family_higher_person_2:
+        members: [higher_person_2]
+    marital_units:
+      marital_lower_person_1:
+        members: [lower_person_1]
+      marital_lower_person_2:
+        members: [lower_person_2]
+      marital_higher_person_1:
+        members: [higher_person_1]
+      marital_higher_person_2:
+        members: [higher_person_2]
+    households:
+      lower_household:
+        members: [lower_person_1, lower_person_2]
+        state_code: CA
+      higher_household:
+        members: [higher_person_1, higher_person_2]
+        state_code: CA
+  output:
+    snap_unit_size: [2, 2]
+    is_snap_excluded_member: [false, false, false, false]
+    is_tanf_non_cash_hheod: [true, true]
+    snap_gross_test_income: [3525, 3525]
+    meets_tanf_non_cash_gross_income_test: [true, true]
+    meets_tanf_non_cash_net_income_test: [true, true]
+    is_tanf_non_cash_eligible: [true, true]
+    meets_snap_categorical_eligibility: [true, true]
+    snap_max_allotment: [546, 546]
+    snap_allotment_before_eligibility: [546, 24]
+    ca_snap_meets_allotment_requirement: [true, true]
+    is_snap_eligible: [true, true]
+    snap_normal_allotment: [546, 24]
+    snap: [546, 24]
+
+# Net 2613 / 2614 gives contributions 784 / 785,
+# so maximum $785 yields allotments $1 / $0.
+- name: California MCE size 3 disabled varies net income at fixed gross income.
+  period: 2026-01
+  input:
+    people:
+      lower_person_1: &first_member_3
+        age: 35
+        monthly_age: 35
+        immigration_status: CITIZEN
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_dependent: false
+        is_full_time_college_student: false
+        is_part_time_college_student: false
+        is_permanently_disabled_veteran: true
+      lower_person_2:
+        <<: *first_member_3
+        is_permanently_disabled_veteran: false
+      lower_person_3:
+        <<: *first_member_3
+        is_permanently_disabled_veteran: false
+      higher_person_1:
+        <<: *first_member_3
+      higher_person_2:
+        <<: *first_member_3
+        is_permanently_disabled_veteran: false
+      higher_person_3:
+        <<: *first_member_3
+        is_permanently_disabled_veteran: false
+    spm_units:
+      lower:
+        members: [lower_person_1, lower_person_2, lower_person_3]
+        snap_gross_income: 4441
+        snap_net_income: 2613
+      higher:
+        members: [higher_person_1, higher_person_2, higher_person_3]
+        snap_gross_income: 4441
+        snap_net_income: 2614
+    tax_units:
+      tax_lower_person_1:
+        members: [lower_person_1]
+      tax_lower_person_2:
+        members: [lower_person_2]
+      tax_lower_person_3:
+        members: [lower_person_3]
+      tax_higher_person_1:
+        members: [higher_person_1]
+      tax_higher_person_2:
+        members: [higher_person_2]
+      tax_higher_person_3:
+        members: [higher_person_3]
+    families:
+      family_lower_person_1:
+        members: [lower_person_1]
+      family_lower_person_2:
+        members: [lower_person_2]
+      family_lower_person_3:
+        members: [lower_person_3]
+      family_higher_person_1:
+        members: [higher_person_1]
+      family_higher_person_2:
+        members: [higher_person_2]
+      family_higher_person_3:
+        members: [higher_person_3]
+    marital_units:
+      marital_lower_person_1:
+        members: [lower_person_1]
+      marital_lower_person_2:
+        members: [lower_person_2]
+      marital_lower_person_3:
+        members: [lower_person_3]
+      marital_higher_person_1:
+        members: [higher_person_1]
+      marital_higher_person_2:
+        members: [higher_person_2]
+      marital_higher_person_3:
+        members: [higher_person_3]
+    households:
+      lower_household:
+        members: [lower_person_1, lower_person_2, lower_person_3]
+        state_code: CA
+      higher_household:
+        members: [higher_person_1, higher_person_2, higher_person_3]
+        state_code: CA
+  output:
+    snap_unit_size: [3, 3]
+    is_snap_excluded_member: [false, false, false, false, false, false]
+    is_tanf_non_cash_hheod: [true, true]
+    snap_gross_test_income: [4441, 4441]
+    meets_tanf_non_cash_gross_income_test: [true, true]
+    meets_tanf_non_cash_net_income_test: [true, true]
+    is_tanf_non_cash_eligible: [true, true]
+    meets_snap_categorical_eligibility: [true, true]
+    snap_max_allotment: [785, 785]
+    snap_allotment_before_eligibility: [1, 0]
+    ca_snap_meets_allotment_requirement: [true, false]
+    is_snap_eligible: [true, false]
+    snap_normal_allotment: [1, 0]
+    snap: [1, 0]
+
+# Net 3310 / 3311 gives contributions 993 / 994,
+# so maximum $994 yields allotments $1 / $0.
+- name: California MCE size 4 elderly and disabled varies net income at fixed gross income.
+  period: 2026-01
+  input:
+    people:
+      lower_person_1: &first_member_4
+        age: 65
+        monthly_age: 65
+        immigration_status: CITIZEN
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_dependent: false
+        is_full_time_college_student: false
+        is_part_time_college_student: false
+        is_permanently_disabled_veteran: true
+      lower_person_2:
+        <<: *first_member_4
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      lower_person_3:
+        <<: *first_member_4
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      lower_person_4:
+        <<: *first_member_4
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      higher_person_1:
+        <<: *first_member_4
+      higher_person_2:
+        <<: *first_member_4
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      higher_person_3:
+        <<: *first_member_4
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      higher_person_4:
+        <<: *first_member_4
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+    spm_units:
+      lower:
+        members: [lower_person_1, lower_person_2, lower_person_3, lower_person_4]
+        snap_gross_income: 5358
+        snap_net_income: 3310
+      higher:
+        members: [higher_person_1, higher_person_2, higher_person_3, higher_person_4]
+        snap_gross_income: 5358
+        snap_net_income: 3311
+    tax_units:
+      tax_lower_person_1:
+        members: [lower_person_1]
+      tax_lower_person_2:
+        members: [lower_person_2]
+      tax_lower_person_3:
+        members: [lower_person_3]
+      tax_lower_person_4:
+        members: [lower_person_4]
+      tax_higher_person_1:
+        members: [higher_person_1]
+      tax_higher_person_2:
+        members: [higher_person_2]
+      tax_higher_person_3:
+        members: [higher_person_3]
+      tax_higher_person_4:
+        members: [higher_person_4]
+    families:
+      family_lower_person_1:
+        members: [lower_person_1]
+      family_lower_person_2:
+        members: [lower_person_2]
+      family_lower_person_3:
+        members: [lower_person_3]
+      family_lower_person_4:
+        members: [lower_person_4]
+      family_higher_person_1:
+        members: [higher_person_1]
+      family_higher_person_2:
+        members: [higher_person_2]
+      family_higher_person_3:
+        members: [higher_person_3]
+      family_higher_person_4:
+        members: [higher_person_4]
+    marital_units:
+      marital_lower_person_1:
+        members: [lower_person_1]
+      marital_lower_person_2:
+        members: [lower_person_2]
+      marital_lower_person_3:
+        members: [lower_person_3]
+      marital_lower_person_4:
+        members: [lower_person_4]
+      marital_higher_person_1:
+        members: [higher_person_1]
+      marital_higher_person_2:
+        members: [higher_person_2]
+      marital_higher_person_3:
+        members: [higher_person_3]
+      marital_higher_person_4:
+        members: [higher_person_4]
+    households:
+      lower_household:
+        members: [lower_person_1, lower_person_2, lower_person_3, lower_person_4]
+        state_code: CA
+      higher_household:
+        members: [higher_person_1, higher_person_2, higher_person_3, higher_person_4]
+        state_code: CA
+  output:
+    snap_unit_size: [4, 4]
+    is_snap_excluded_member: [false, false, false, false, false, false, false, false]
+    is_tanf_non_cash_hheod: [true, true]
+    snap_gross_test_income: [5358, 5358]
+    meets_tanf_non_cash_gross_income_test: [true, true]
+    meets_tanf_non_cash_net_income_test: [true, true]
+    is_tanf_non_cash_eligible: [true, true]
+    meets_snap_categorical_eligibility: [true, true]
+    snap_max_allotment: [994, 994]
+    snap_allotment_before_eligibility: [1, 0]
+    ca_snap_meets_allotment_requirement: [true, false]
+    is_snap_eligible: [true, false]
+    snap_normal_allotment: [1, 0]
+    snap: [1, 0]
+
+# Net 3940 / 3941 gives contributions 1182 / 1183,
+# so maximum $1183 yields allotments $1 / $0.
+- name: California MCE size 5 without elderly or disabled members varies net income at fixed gross income.
+  period: 2026-01
+  input:
+    people:
+      lower_person_1: &first_member_5
+        age: 35
+        monthly_age: 35
+        immigration_status: CITIZEN
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_dependent: false
+        is_full_time_college_student: false
+        is_part_time_college_student: false
+        is_permanently_disabled_veteran: false
+      lower_person_2:
+        <<: *first_member_5
+      lower_person_3:
+        <<: *first_member_5
+      lower_person_4:
+        <<: *first_member_5
+      lower_person_5:
+        <<: *first_member_5
+      higher_person_1:
+        <<: *first_member_5
+      higher_person_2:
+        <<: *first_member_5
+      higher_person_3:
+        <<: *first_member_5
+      higher_person_4:
+        <<: *first_member_5
+      higher_person_5:
+        <<: *first_member_5
+    spm_units:
+      lower:
+        members: [lower_person_1, lower_person_2, lower_person_3, lower_person_4, lower_person_5]
+        snap_gross_income: 6275
+        snap_net_income: 3940
+      higher:
+        members: [higher_person_1, higher_person_2, higher_person_3, higher_person_4, higher_person_5]
+        snap_gross_income: 6275
+        snap_net_income: 3941
+    tax_units:
+      tax_lower_person_1:
+        members: [lower_person_1]
+      tax_lower_person_2:
+        members: [lower_person_2]
+      tax_lower_person_3:
+        members: [lower_person_3]
+      tax_lower_person_4:
+        members: [lower_person_4]
+      tax_lower_person_5:
+        members: [lower_person_5]
+      tax_higher_person_1:
+        members: [higher_person_1]
+      tax_higher_person_2:
+        members: [higher_person_2]
+      tax_higher_person_3:
+        members: [higher_person_3]
+      tax_higher_person_4:
+        members: [higher_person_4]
+      tax_higher_person_5:
+        members: [higher_person_5]
+    families:
+      family_lower_person_1:
+        members: [lower_person_1]
+      family_lower_person_2:
+        members: [lower_person_2]
+      family_lower_person_3:
+        members: [lower_person_3]
+      family_lower_person_4:
+        members: [lower_person_4]
+      family_lower_person_5:
+        members: [lower_person_5]
+      family_higher_person_1:
+        members: [higher_person_1]
+      family_higher_person_2:
+        members: [higher_person_2]
+      family_higher_person_3:
+        members: [higher_person_3]
+      family_higher_person_4:
+        members: [higher_person_4]
+      family_higher_person_5:
+        members: [higher_person_5]
+    marital_units:
+      marital_lower_person_1:
+        members: [lower_person_1]
+      marital_lower_person_2:
+        members: [lower_person_2]
+      marital_lower_person_3:
+        members: [lower_person_3]
+      marital_lower_person_4:
+        members: [lower_person_4]
+      marital_lower_person_5:
+        members: [lower_person_5]
+      marital_higher_person_1:
+        members: [higher_person_1]
+      marital_higher_person_2:
+        members: [higher_person_2]
+      marital_higher_person_3:
+        members: [higher_person_3]
+      marital_higher_person_4:
+        members: [higher_person_4]
+      marital_higher_person_5:
+        members: [higher_person_5]
+    households:
+      lower_household:
+        members: [lower_person_1, lower_person_2, lower_person_3, lower_person_4, lower_person_5]
+        state_code: CA
+      higher_household:
+        members: [higher_person_1, higher_person_2, higher_person_3, higher_person_4, higher_person_5]
+        state_code: CA
+  output:
+    snap_unit_size: [5, 5]
+    is_snap_excluded_member: [false, false, false, false, false, false, false, false, false, false]
+    is_tanf_non_cash_hheod: [false, false]
+    snap_gross_test_income: [6275, 6275]
+    meets_tanf_non_cash_gross_income_test: [true, true]
+    meets_tanf_non_cash_net_income_test: [true, true]
+    is_tanf_non_cash_eligible: [true, true]
+    meets_snap_categorical_eligibility: [true, true]
+    snap_max_allotment: [1183, 1183]
+    snap_allotment_before_eligibility: [1, 0]
+    ca_snap_meets_allotment_requirement: [true, false]
+    is_snap_eligible: [true, false]
+    snap_normal_allotment: [1, 0]
+    snap: [1, 0]
+
+# Net 4733 / 4734 gives contributions 1420 / 1421,
+# so maximum $1421 yields allotments $1 / $0.
+- name: California MCE size 6 elderly varies net income at fixed gross income.
+  period: 2026-01
+  input:
+    people:
+      lower_person_1: &first_member_6
+        age: 65
+        monthly_age: 65
+        immigration_status: CITIZEN
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_dependent: false
+        is_full_time_college_student: false
+        is_part_time_college_student: false
+        is_permanently_disabled_veteran: false
+      lower_person_2:
+        <<: *first_member_6
+        age: 35
+        monthly_age: 35
+      lower_person_3:
+        <<: *first_member_6
+        age: 35
+        monthly_age: 35
+      lower_person_4:
+        <<: *first_member_6
+        age: 35
+        monthly_age: 35
+      lower_person_5:
+        <<: *first_member_6
+        age: 35
+        monthly_age: 35
+      lower_person_6:
+        <<: *first_member_6
+        age: 35
+        monthly_age: 35
+      higher_person_1:
+        <<: *first_member_6
+      higher_person_2:
+        <<: *first_member_6
+        age: 35
+        monthly_age: 35
+      higher_person_3:
+        <<: *first_member_6
+        age: 35
+        monthly_age: 35
+      higher_person_4:
+        <<: *first_member_6
+        age: 35
+        monthly_age: 35
+      higher_person_5:
+        <<: *first_member_6
+        age: 35
+        monthly_age: 35
+      higher_person_6:
+        <<: *first_member_6
+        age: 35
+        monthly_age: 35
+    spm_units:
+      lower:
+        members: [lower_person_1, lower_person_2, lower_person_3, lower_person_4, lower_person_5, lower_person_6]
+        snap_gross_income: 7191
+        snap_net_income: 4733
+      higher:
+        members: [higher_person_1, higher_person_2, higher_person_3, higher_person_4, higher_person_5, higher_person_6]
+        snap_gross_income: 7191
+        snap_net_income: 4734
+    tax_units:
+      tax_lower_person_1:
+        members: [lower_person_1]
+      tax_lower_person_2:
+        members: [lower_person_2]
+      tax_lower_person_3:
+        members: [lower_person_3]
+      tax_lower_person_4:
+        members: [lower_person_4]
+      tax_lower_person_5:
+        members: [lower_person_5]
+      tax_lower_person_6:
+        members: [lower_person_6]
+      tax_higher_person_1:
+        members: [higher_person_1]
+      tax_higher_person_2:
+        members: [higher_person_2]
+      tax_higher_person_3:
+        members: [higher_person_3]
+      tax_higher_person_4:
+        members: [higher_person_4]
+      tax_higher_person_5:
+        members: [higher_person_5]
+      tax_higher_person_6:
+        members: [higher_person_6]
+    families:
+      family_lower_person_1:
+        members: [lower_person_1]
+      family_lower_person_2:
+        members: [lower_person_2]
+      family_lower_person_3:
+        members: [lower_person_3]
+      family_lower_person_4:
+        members: [lower_person_4]
+      family_lower_person_5:
+        members: [lower_person_5]
+      family_lower_person_6:
+        members: [lower_person_6]
+      family_higher_person_1:
+        members: [higher_person_1]
+      family_higher_person_2:
+        members: [higher_person_2]
+      family_higher_person_3:
+        members: [higher_person_3]
+      family_higher_person_4:
+        members: [higher_person_4]
+      family_higher_person_5:
+        members: [higher_person_5]
+      family_higher_person_6:
+        members: [higher_person_6]
+    marital_units:
+      marital_lower_person_1:
+        members: [lower_person_1]
+      marital_lower_person_2:
+        members: [lower_person_2]
+      marital_lower_person_3:
+        members: [lower_person_3]
+      marital_lower_person_4:
+        members: [lower_person_4]
+      marital_lower_person_5:
+        members: [lower_person_5]
+      marital_lower_person_6:
+        members: [lower_person_6]
+      marital_higher_person_1:
+        members: [higher_person_1]
+      marital_higher_person_2:
+        members: [higher_person_2]
+      marital_higher_person_3:
+        members: [higher_person_3]
+      marital_higher_person_4:
+        members: [higher_person_4]
+      marital_higher_person_5:
+        members: [higher_person_5]
+      marital_higher_person_6:
+        members: [higher_person_6]
+    households:
+      lower_household:
+        members: [lower_person_1, lower_person_2, lower_person_3, lower_person_4, lower_person_5, lower_person_6]
+        state_code: CA
+      higher_household:
+        members: [higher_person_1, higher_person_2, higher_person_3, higher_person_4, higher_person_5, higher_person_6]
+        state_code: CA
+  output:
+    snap_unit_size: [6, 6]
+    is_snap_excluded_member: [false, false, false, false, false, false, false, false, false, false, false, false]
+    is_tanf_non_cash_hheod: [true, true]
+    snap_gross_test_income: [7191, 7191]
+    meets_tanf_non_cash_gross_income_test: [true, true]
+    meets_tanf_non_cash_net_income_test: [true, true]
+    is_tanf_non_cash_eligible: [true, true]
+    meets_snap_categorical_eligibility: [true, true]
+    snap_max_allotment: [1421, 1421]
+    snap_allotment_before_eligibility: [1, 0]
+    ca_snap_meets_allotment_requirement: [true, false]
+    is_snap_eligible: [true, false]
+    snap_normal_allotment: [1, 0]
+    snap: [1, 0]
+
+# Net 5233 / 5234 gives contributions 1570 / 1571,
+# so maximum $1571 yields allotments $1 / $0.
+- name: California MCE size 7 disabled varies net income at fixed gross income.
+  period: 2026-01
+  input:
+    people:
+      lower_person_1: &first_member_7
+        age: 35
+        monthly_age: 35
+        immigration_status: CITIZEN
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_dependent: false
+        is_full_time_college_student: false
+        is_part_time_college_student: false
+        is_permanently_disabled_veteran: true
+      lower_person_2:
+        <<: *first_member_7
+        is_permanently_disabled_veteran: false
+      lower_person_3:
+        <<: *first_member_7
+        is_permanently_disabled_veteran: false
+      lower_person_4:
+        <<: *first_member_7
+        is_permanently_disabled_veteran: false
+      lower_person_5:
+        <<: *first_member_7
+        is_permanently_disabled_veteran: false
+      lower_person_6:
+        <<: *first_member_7
+        is_permanently_disabled_veteran: false
+      lower_person_7:
+        <<: *first_member_7
+        is_permanently_disabled_veteran: false
+      higher_person_1:
+        <<: *first_member_7
+      higher_person_2:
+        <<: *first_member_7
+        is_permanently_disabled_veteran: false
+      higher_person_3:
+        <<: *first_member_7
+        is_permanently_disabled_veteran: false
+      higher_person_4:
+        <<: *first_member_7
+        is_permanently_disabled_veteran: false
+      higher_person_5:
+        <<: *first_member_7
+        is_permanently_disabled_veteran: false
+      higher_person_6:
+        <<: *first_member_7
+        is_permanently_disabled_veteran: false
+      higher_person_7:
+        <<: *first_member_7
+        is_permanently_disabled_veteran: false
+    spm_units:
+      lower:
+        members: [lower_person_1, lower_person_2, lower_person_3, lower_person_4, lower_person_5, lower_person_6, lower_person_7]
+        snap_gross_income: 8108
+        snap_net_income: 5233
+      higher:
+        members: [higher_person_1, higher_person_2, higher_person_3, higher_person_4, higher_person_5, higher_person_6, higher_person_7]
+        snap_gross_income: 8108
+        snap_net_income: 5234
+    tax_units:
+      tax_lower_person_1:
+        members: [lower_person_1]
+      tax_lower_person_2:
+        members: [lower_person_2]
+      tax_lower_person_3:
+        members: [lower_person_3]
+      tax_lower_person_4:
+        members: [lower_person_4]
+      tax_lower_person_5:
+        members: [lower_person_5]
+      tax_lower_person_6:
+        members: [lower_person_6]
+      tax_lower_person_7:
+        members: [lower_person_7]
+      tax_higher_person_1:
+        members: [higher_person_1]
+      tax_higher_person_2:
+        members: [higher_person_2]
+      tax_higher_person_3:
+        members: [higher_person_3]
+      tax_higher_person_4:
+        members: [higher_person_4]
+      tax_higher_person_5:
+        members: [higher_person_5]
+      tax_higher_person_6:
+        members: [higher_person_6]
+      tax_higher_person_7:
+        members: [higher_person_7]
+    families:
+      family_lower_person_1:
+        members: [lower_person_1]
+      family_lower_person_2:
+        members: [lower_person_2]
+      family_lower_person_3:
+        members: [lower_person_3]
+      family_lower_person_4:
+        members: [lower_person_4]
+      family_lower_person_5:
+        members: [lower_person_5]
+      family_lower_person_6:
+        members: [lower_person_6]
+      family_lower_person_7:
+        members: [lower_person_7]
+      family_higher_person_1:
+        members: [higher_person_1]
+      family_higher_person_2:
+        members: [higher_person_2]
+      family_higher_person_3:
+        members: [higher_person_3]
+      family_higher_person_4:
+        members: [higher_person_4]
+      family_higher_person_5:
+        members: [higher_person_5]
+      family_higher_person_6:
+        members: [higher_person_6]
+      family_higher_person_7:
+        members: [higher_person_7]
+    marital_units:
+      marital_lower_person_1:
+        members: [lower_person_1]
+      marital_lower_person_2:
+        members: [lower_person_2]
+      marital_lower_person_3:
+        members: [lower_person_3]
+      marital_lower_person_4:
+        members: [lower_person_4]
+      marital_lower_person_5:
+        members: [lower_person_5]
+      marital_lower_person_6:
+        members: [lower_person_6]
+      marital_lower_person_7:
+        members: [lower_person_7]
+      marital_higher_person_1:
+        members: [higher_person_1]
+      marital_higher_person_2:
+        members: [higher_person_2]
+      marital_higher_person_3:
+        members: [higher_person_3]
+      marital_higher_person_4:
+        members: [higher_person_4]
+      marital_higher_person_5:
+        members: [higher_person_5]
+      marital_higher_person_6:
+        members: [higher_person_6]
+      marital_higher_person_7:
+        members: [higher_person_7]
+    households:
+      lower_household:
+        members: [lower_person_1, lower_person_2, lower_person_3, lower_person_4, lower_person_5, lower_person_6, lower_person_7]
+        state_code: CA
+      higher_household:
+        members: [higher_person_1, higher_person_2, higher_person_3, higher_person_4, higher_person_5, higher_person_6, higher_person_7]
+        state_code: CA
+  output:
+    snap_unit_size: [7, 7]
+    is_snap_excluded_member: [false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+    is_tanf_non_cash_hheod: [true, true]
+    snap_gross_test_income: [8108, 8108]
+    meets_tanf_non_cash_gross_income_test: [true, true]
+    meets_tanf_non_cash_net_income_test: [true, true]
+    is_tanf_non_cash_eligible: [true, true]
+    meets_snap_categorical_eligibility: [true, true]
+    snap_max_allotment: [1571, 1571]
+    snap_allotment_before_eligibility: [1, 0]
+    ca_snap_meets_allotment_requirement: [true, false]
+    is_snap_eligible: [true, false]
+    snap_normal_allotment: [1, 0]
+    snap: [1, 0]
+
+# Net 5960 / 5961 gives contributions 1788 / 1789,
+# so maximum $1789 yields allotments $1 / $0.
+- name: California MCE size 8 elderly and disabled varies net income at fixed gross income.
+  period: 2026-01
+  input:
+    people:
+      lower_person_1: &first_member_8
+        age: 65
+        monthly_age: 65
+        immigration_status: CITIZEN
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_dependent: false
+        is_full_time_college_student: false
+        is_part_time_college_student: false
+        is_permanently_disabled_veteran: true
+      lower_person_2:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      lower_person_3:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      lower_person_4:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      lower_person_5:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      lower_person_6:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      lower_person_7:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      lower_person_8:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      higher_person_1:
+        <<: *first_member_8
+      higher_person_2:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      higher_person_3:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      higher_person_4:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      higher_person_5:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      higher_person_6:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      higher_person_7:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+      higher_person_8:
+        <<: *first_member_8
+        age: 35
+        monthly_age: 35
+        is_permanently_disabled_veteran: false
+    spm_units:
+      lower:
+        members: [lower_person_1, lower_person_2, lower_person_3, lower_person_4, lower_person_5, lower_person_6, lower_person_7, lower_person_8]
+        snap_gross_income: 9025
+        snap_net_income: 5960
+      higher:
+        members: [higher_person_1, higher_person_2, higher_person_3, higher_person_4, higher_person_5, higher_person_6, higher_person_7, higher_person_8]
+        snap_gross_income: 9025
+        snap_net_income: 5961
+    tax_units:
+      tax_lower_person_1:
+        members: [lower_person_1]
+      tax_lower_person_2:
+        members: [lower_person_2]
+      tax_lower_person_3:
+        members: [lower_person_3]
+      tax_lower_person_4:
+        members: [lower_person_4]
+      tax_lower_person_5:
+        members: [lower_person_5]
+      tax_lower_person_6:
+        members: [lower_person_6]
+      tax_lower_person_7:
+        members: [lower_person_7]
+      tax_lower_person_8:
+        members: [lower_person_8]
+      tax_higher_person_1:
+        members: [higher_person_1]
+      tax_higher_person_2:
+        members: [higher_person_2]
+      tax_higher_person_3:
+        members: [higher_person_3]
+      tax_higher_person_4:
+        members: [higher_person_4]
+      tax_higher_person_5:
+        members: [higher_person_5]
+      tax_higher_person_6:
+        members: [higher_person_6]
+      tax_higher_person_7:
+        members: [higher_person_7]
+      tax_higher_person_8:
+        members: [higher_person_8]
+    families:
+      family_lower_person_1:
+        members: [lower_person_1]
+      family_lower_person_2:
+        members: [lower_person_2]
+      family_lower_person_3:
+        members: [lower_person_3]
+      family_lower_person_4:
+        members: [lower_person_4]
+      family_lower_person_5:
+        members: [lower_person_5]
+      family_lower_person_6:
+        members: [lower_person_6]
+      family_lower_person_7:
+        members: [lower_person_7]
+      family_lower_person_8:
+        members: [lower_person_8]
+      family_higher_person_1:
+        members: [higher_person_1]
+      family_higher_person_2:
+        members: [higher_person_2]
+      family_higher_person_3:
+        members: [higher_person_3]
+      family_higher_person_4:
+        members: [higher_person_4]
+      family_higher_person_5:
+        members: [higher_person_5]
+      family_higher_person_6:
+        members: [higher_person_6]
+      family_higher_person_7:
+        members: [higher_person_7]
+      family_higher_person_8:
+        members: [higher_person_8]
+    marital_units:
+      marital_lower_person_1:
+        members: [lower_person_1]
+      marital_lower_person_2:
+        members: [lower_person_2]
+      marital_lower_person_3:
+        members: [lower_person_3]
+      marital_lower_person_4:
+        members: [lower_person_4]
+      marital_lower_person_5:
+        members: [lower_person_5]
+      marital_lower_person_6:
+        members: [lower_person_6]
+      marital_lower_person_7:
+        members: [lower_person_7]
+      marital_lower_person_8:
+        members: [lower_person_8]
+      marital_higher_person_1:
+        members: [higher_person_1]
+      marital_higher_person_2:
+        members: [higher_person_2]
+      marital_higher_person_3:
+        members: [higher_person_3]
+      marital_higher_person_4:
+        members: [higher_person_4]
+      marital_higher_person_5:
+        members: [higher_person_5]
+      marital_higher_person_6:
+        members: [higher_person_6]
+      marital_higher_person_7:
+        members: [higher_person_7]
+      marital_higher_person_8:
+        members: [higher_person_8]
+    households:
+      lower_household:
+        members: [lower_person_1, lower_person_2, lower_person_3, lower_person_4, lower_person_5, lower_person_6, lower_person_7, lower_person_8]
+        state_code: CA
+      higher_household:
+        members: [higher_person_1, higher_person_2, higher_person_3, higher_person_4, higher_person_5, higher_person_6, higher_person_7, higher_person_8]
+        state_code: CA
+  output:
+    snap_unit_size: [8, 8]
+    is_snap_excluded_member: [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false]
+    is_tanf_non_cash_hheod: [true, true]
+    snap_gross_test_income: [9025, 9025]
+    meets_tanf_non_cash_gross_income_test: [true, true]
+    meets_tanf_non_cash_net_income_test: [true, true]
+    is_tanf_non_cash_eligible: [true, true]
+    meets_snap_categorical_eligibility: [true, true]
+    snap_max_allotment: [1789, 1789]
+    snap_allotment_before_eligibility: [1, 0]
+    ca_snap_meets_allotment_requirement: [true, false]
+    is_snap_eligible: [true, false]
+    snap_normal_allotment: [1, 0]
+    snap: [1, 0]
+
+# Net 2613 / 2614 gives contributions 784 / 785,
+# so maximum $785 yields allotments $1 / $0.
+- name: Washington keeps categorical eligibility for a zero allotment outside California.
+  period: 2026-01
+  input:
+    people:
+      lower_person_1: &first_member_9
+        age: 35
+        monthly_age: 35
+        immigration_status: CITIZEN
+        weekly_hours_worked_before_lsr: 40
+        is_tax_unit_dependent: false
+        is_full_time_college_student: false
+        is_part_time_college_student: false
+        is_permanently_disabled_veteran: false
+      lower_person_2:
+        <<: *first_member_9
+      lower_person_3:
+        <<: *first_member_9
+      higher_person_1:
+        <<: *first_member_9
+      higher_person_2:
+        <<: *first_member_9
+      higher_person_3:
+        <<: *first_member_9
+    spm_units:
+      lower:
+        members: [lower_person_1, lower_person_2, lower_person_3]
+        snap_gross_income: 4441
+        snap_net_income: 2613
+      higher:
+        members: [higher_person_1, higher_person_2, higher_person_3]
+        snap_gross_income: 4441
+        snap_net_income: 2614
+    tax_units:
+      tax_lower_person_1:
+        members: [lower_person_1]
+      tax_lower_person_2:
+        members: [lower_person_2]
+      tax_lower_person_3:
+        members: [lower_person_3]
+      tax_higher_person_1:
+        members: [higher_person_1]
+      tax_higher_person_2:
+        members: [higher_person_2]
+      tax_higher_person_3:
+        members: [higher_person_3]
+    families:
+      family_lower_person_1:
+        members: [lower_person_1]
+      family_lower_person_2:
+        members: [lower_person_2]
+      family_lower_person_3:
+        members: [lower_person_3]
+      family_higher_person_1:
+        members: [higher_person_1]
+      family_higher_person_2:
+        members: [higher_person_2]
+      family_higher_person_3:
+        members: [higher_person_3]
+    marital_units:
+      marital_lower_person_1:
+        members: [lower_person_1]
+      marital_lower_person_2:
+        members: [lower_person_2]
+      marital_lower_person_3:
+        members: [lower_person_3]
+      marital_higher_person_1:
+        members: [higher_person_1]
+      marital_higher_person_2:
+        members: [higher_person_2]
+      marital_higher_person_3:
+        members: [higher_person_3]
+    households:
+      lower_household:
+        members: [lower_person_1, lower_person_2, lower_person_3]
+        state_code: WA
+      higher_household:
+        members: [higher_person_1, higher_person_2, higher_person_3]
+        state_code: WA
+  output:
+    snap_unit_size: [3, 3]
+    is_snap_excluded_member: [false, false, false, false, false, false]
+    is_tanf_non_cash_hheod: [false, false]
+    snap_gross_test_income: [4441, 4441]
+    meets_tanf_non_cash_gross_income_test: [true, true]
+    meets_tanf_non_cash_net_income_test: [true, true]
+    is_tanf_non_cash_eligible: [true, true]
+    meets_snap_categorical_eligibility: [true, true]
+    snap_max_allotment: [785, 785]
+    snap_allotment_before_eligibility: [1, 0]
+    ca_snap_meets_allotment_requirement: [true, true]
+    is_snap_eligible: [true, true]
+    snap_normal_allotment: [1, 0]
+    snap: [1, 0]
