@@ -25,3 +25,15 @@
     has_itin: true
   output:
     has_tin: true
+
+- name: Canonical TIN branch-precedence seed
+  period: 2026
+  input:
+    people:
+      adult: {age: 30, has_tin: true, has_itin: true}
+    tax_units:
+      tax_unit: {members: [adult]}
+    households:
+      household: {members: [adult], state_code: CA}
+  output:
+    has_tin: [true]

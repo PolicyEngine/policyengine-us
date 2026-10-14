@@ -1,0 +1,68 @@
+# 26 U.S.C. 63(b) lists the deductions taken whether or not the filer
+# itemizes: personal exemptions under section 151 (which include the section
+# 151(d)(5)(C) senior deduction), the section 199A, 224 and 225 deductions,
+# and qualified passenger vehicle loan interest under section 163(h)(4).
+# Section 63(d)(2) keeps them out of "itemized deductions"; wagering losses
+# (section 165(d)) are not listed, so they are itemized deductions. Section
+# 68(a)(2) adds the itemized deductions back to taxable income, leaving
+# adjusted gross income less personal exemptions and the 63(b) deductions.
+- name: 2026 single filer - every non-itemized deduction counts, wagering losses do not
+  period: 2026
+  input:
+    adjusted_gross_income: 500_000
+    filing_status: SINGLE
+    qualified_business_income_deduction: 1_000
+    tip_income_deduction: 2_000
+    overtime_income_deduction: 3_000
+    additional_senior_deduction: 4_000
+    auto_loan_interest_deduction: 5_000
+    wagering_losses_deduction: 6_000
+    charitable_deduction: 7_000
+  output:
+    # 500_000 - 1_000 - 2_000 - 3_000 - 4_000 - 5_000 = 485_000
+    taxable_income_before_itemized_deductions: 485_000
+
+- name: 2026 joint filers with only a qualified business income deduction
+  period: 2026
+  input:
+    people:
+      head:
+        age: 50
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        adjusted_gross_income: 1_000_000
+        filing_status: JOINT
+        qualified_business_income_deduction: 150_000
+    households:
+      household:
+        members: [head, spouse]
+  output:
+    taxable_income_before_itemized_deductions: 850_000
+
+- name: Not floored at zero
+  period: 2026
+  input:
+    adjusted_gross_income: 10_000
+    filing_status: SINGLE
+    qualified_business_income_deduction: 15_000
+  output:
+    taxable_income_before_itemized_deductions: -5_000
+
+- name: 2030, after the tip, overtime, senior and vehicle loan deductions end
+  period: 2030
+  input:
+    adjusted_gross_income: 500_000
+    filing_status: SINGLE
+    qualified_business_income_deduction: 1_000
+    tip_income_deduction: 2_000
+    overtime_income_deduction: 3_000
+    additional_senior_deduction: 4_000
+    auto_loan_interest_deduction: 5_000
+  output:
+    # Sections 224(h), 225(g), 151(d)(5)(C)(i) and 163(h)(4)(A), as added by
+    # P.L. 119-21, allow these deductions only for taxable years beginning
+    # before 2029, so only the QBI deduction is subtracted.
+    taxable_income_before_itemized_deductions: 499_000

@@ -304,3 +304,117 @@
         state_code: OK
   output:
     ok_pension_subtraction: 8_000
+
+# A tax-unit dependent's income is not in the filer's federal AGI (the
+# dependent files their own return), so only the head's and spouse's
+# retirement benefits can be subtracted (2025 Form 511 Packet, page 17:
+# "not to exceed the amount included in the Federal AGI"; page 5, Chart B).
+- name: A dependent child's public pension is not subtracted from the parent's income.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 40
+        employment_income: 50_000
+      child:
+        is_tax_unit_dependent: true
+        age: 10
+        taxable_public_pension_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [head, child]
+    tax_units:
+      tax_unit:
+        members: [head, child]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, child]
+        state_code: OK
+  output:
+    # Head: no retirement income = $0
+    # Child: dependent, income not in federal AGI = $0
+    ok_pension_subtraction: 0
+
+- name: Only the head's and spouse's retirement benefits count, each capped at the limit.
+  absolute_error_margin: 0.01
+  period: 2026
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        age: 68
+        taxable_public_pension_income: 12_000
+      spouse:
+        is_tax_unit_spouse: true
+        age: 66
+        taxable_ira_distributions: 6_000
+      child:
+        is_tax_unit_dependent: true
+        age: 16
+        taxable_private_pension_income: 10_000
+    spm_units:
+      spm_unit:
+        members: [head, spouse, child]
+    tax_units:
+      tax_unit:
+        members: [head, spouse, child]
+    marital_units:
+      parents_marital_unit:
+        members: [head, spouse]
+      child_marital_unit:
+        members: [child]
+    households:
+      household:
+        members: [head, spouse, child]
+        state_code: OK
+  output:
+    # Head: $12,000 pension, capped at $10,000
+    # Spouse: $6,000 IRA distributions, under the $10,000 limit = $6,000
+    # Child: dependent = $0
+    # Total: $10,000 + $6,000 = $16,000
+    ok_pension_subtraction: 10_000 + 6_000
+
+- name: An older adult dependent's IRA distributions are not subtracted from the filer's income.
+  absolute_error_margin: 0.01
+  period: 2025
+  input:
+    people:
+      head:
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        age: 50
+        employment_income: 40_000
+        taxable_401k_distributions: 3_000
+      parent:
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        age: 80
+        taxable_ira_distributions: 4_000
+    spm_units:
+      spm_unit:
+        members: [head, parent]
+    tax_units:
+      tax_unit:
+        members: [head, parent]
+    marital_units:
+      head_marital_unit:
+        members: [head]
+      parent_marital_unit:
+        members: [parent]
+    households:
+      household:
+        members: [head, parent]
+        state_code: OK
+  output:
+    # Head: $3,000 401(k) distributions, under the $10,000 limit = $3,000
+    # Parent: dependent (older than the head) = $0
+    ok_pension_subtraction: 3_000
