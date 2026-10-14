@@ -259,9 +259,9 @@ def _probe_fixture(simulation):
             "other_net_gain",
             "limited_business_loss",
             "capital_losses",
-            # MAGI reads all unemployment compensation, even when only its
-            # taxable portion is in the gross-income parameter list.
-            "unemployment_compensation",
+            # MAGI reads total reported or modeled unemployment compensation,
+            # even when only its taxable portion is in the gross-income list.
+            "total_unemployment_compensation",
             "basic_income",
         )
     )
