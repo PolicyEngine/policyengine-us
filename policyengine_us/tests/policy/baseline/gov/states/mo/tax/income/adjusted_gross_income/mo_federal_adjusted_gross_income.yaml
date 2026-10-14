@@ -1,0 +1,549 @@
+# Form MO-1040 Line 1 for each filer. On a combined return the Line 1
+# worksheet puts each spouse's own income, losses and federal adjustments in
+# their column, and the columns add up to joint federal AGI (2023
+# instructions, pages 6-7). From 2024 a negative amount is replaced by zero:
+# 12 CSR 10-2.710(1), the 2025 instructions' Negative Federal Adjusted Gross
+# Income table (page 6) and 12 CSR 10-2.010(5).
+
+- name: Single filer with negative federal AGI keeps it through 2023
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 40
+        self_employment_income: -12_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: MO
+  output:
+    adjusted_gross_income: -12_000
+    mo_federal_adjusted_gross_income: -12_000
+
+- name: Single filer with negative federal AGI enters zero from 2024
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 40
+        self_employment_income: -12_000
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: MO
+  output:
+    # 2024 instructions, Line 1: "If the amount you would otherwise report as
+    # your federal adjusted gross income would be a negative number, enter $0
+    # on Line 1."
+    adjusted_gross_income: -12_000
+    mo_federal_adjusted_gross_income: 0
+
+- name: Combined return through 2023, one spouse's column negative
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 5_000
+        self_employment_income: -15_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # Primary: 5,000 of wages and a 15,000 business loss = -10,000.
+    # Secondary: 100,000. The columns add up to joint federal AGI, 90,000.
+    # (main split the loss by gross income share: 4,285.71 and 85,714.29.)
+    adjusted_gross_income: 90_000
+    mo_federal_adjusted_gross_income: [-10_000, 100_000]
+
+- name: 2025 table row 1, joint federal AGI 90,000 = (10,000) + 100,000
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 5_000
+        self_employment_income: -15_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # Table: Line 1Y (primary) $0.00, Line 1S (secondary) $90,000.
+    adjusted_gross_income: 90_000
+    mo_federal_adjusted_gross_income: [0, 90_000]
+
+- name: 2025 table row 1 with the head and spouse labels exchanged
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 5_000
+        self_employment_income: -15_000
+      secondary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    adjusted_gross_income: 90_000
+    mo_federal_adjusted_gross_income: [0, 90_000]
+
+- name: 2024 applies the same rule to a combined return
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 5_000
+        self_employment_income: -15_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # The 2024 instructions say only "enter $0 on Line 1". Giving the
+    # secondary spouse the whole 90,000 keeps the worksheet's rule that the
+    # columns add up to joint federal AGI, as the 2025 instructions do under
+    # the same 12 CSR 10-2.710(1).
+    mo_federal_adjusted_gross_income: [0, 90_000]
+
+- name: 2025 table row 2, joint federal AGI (50,000) = 200,000 + (250,000)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 200_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        self_employment_income: -250_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # Table: $0.00 and $0.00.
+    adjusted_gross_income: -50_000
+    mo_federal_adjusted_gross_income: [0, 0]
+
+- name: The same couple through 2023 keeps both columns
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 200_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        self_employment_income: -250_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    mo_federal_adjusted_gross_income: [200_000, -250_000]
+
+- name: 2025 table row 3, joint federal AGI (17,000) = (53,000) + 36,000
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        self_employment_income: -53_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 36_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # Table: $0.00 and $0.00.
+    adjusted_gross_income: -17_000
+    mo_federal_adjusted_gross_income: [0, 0]
+
+- name: 2025 table row 4, joint federal AGI (24,000) = (14,000) + (10,000)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        self_employment_income: -14_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        self_employment_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # Table: $0.00 and $0.00.
+    adjusted_gross_income: -24_000
+    mo_federal_adjusted_gross_income: [0, 0]
+
+- name: Each spouse's IRA, student loan interest and educator expenses stay in their column
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 40_000
+        traditional_ira_contributions: 7_000
+        student_loan_interest: 2_500
+        educator_expense: 300
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 8_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # Primary: 40,000 - 7,000 - 2,500 - 300 = 30,200. Secondary: 8,000.
+    # (main split the 9,800 by gross income share: 31,833.33 and 6,366.67.)
+    adjusted_gross_income: 38_200
+    mo_federal_adjusted_gross_income: [30_200, 8_000]
+
+- name: Alimony paid under a 2015 decree stays with the payer
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 50
+        is_tax_unit_head: true
+        employment_income: 60_000
+        alimony_expense: 12_000
+        divorce_year: 2015
+      secondary:
+        age: 50
+        is_tax_unit_spouse: true
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # Primary: 60,000 - 12,000 = 48,000. Secondary: 20,000.
+    adjusted_gross_income: 68_000
+    mo_federal_adjusted_gross_income: [48_000, 20_000]
+
+- name: A health savings account deduction goes to the account holder
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 40_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 20_000
+        health_savings_account_ald_person: 4_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+        health_savings_account_ald: 4_000
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    adjusted_gross_income: 56_000
+    mo_federal_adjusted_gross_income: [40_000, 16_000]
+
+- name: A health savings account deduction recorded only for the tax unit is divided equally
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      primary:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 40_000
+      secondary:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 20_000
+    tax_units:
+      tax_unit:
+        members: [primary, secondary]
+        health_savings_account_ald: 4_000
+    marital_units:
+      marital_unit:
+        members: [primary, secondary]
+    households:
+      household:
+        members: [primary, secondary]
+        state_code: MO
+  output:
+    # 26 U.S.C. 223(b)(5) divides a married couple's limit equally unless
+    # they agree otherwise: 2,000 each.
+    mo_federal_adjusted_gross_income: [38_000, 18_000]
+
+- name: 12 CSR 10-2.010(2) Example No. 1, both spouses responsible for the excess capital loss
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      spouse_1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 10_000
+        long_term_capital_gains: -2_000
+      spouse_2:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 5_000
+        long_term_capital_gains: -3_000
+    tax_units:
+      tax_unit:
+        members: [spouse_1, spouse_2]
+    marital_units:
+      marital_unit:
+        members: [spouse_1, spouse_2]
+    households:
+      household:
+        members: [spouse_1, spouse_2]
+        state_code: MO
+  output:
+    # The $3,000 Section 1211 deduction pro rata: 2/5 and 3/5.
+    # Regulation: MAGI $8,800 and $3,200, total $12,000.
+    adjusted_gross_income: 12_000
+    mo_federal_adjusted_gross_income: [8_800, 3_200]
+
+- name: 12 CSR 10-2.010(2) Example No. 2, short-term and long-term netting
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      spouse_1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 10_000
+        short_term_capital_gains: -200
+        long_term_capital_gains: -8_000
+      spouse_2:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 5_000
+        short_term_capital_gains: -300
+        long_term_capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [spouse_1, spouse_2]
+    marital_units:
+      marital_unit:
+        members: [spouse_1, spouse_2]
+    households:
+      household:
+        members: [spouse_1, spouse_2]
+        state_code: MO
+  output:
+    # The 5,500 excess is 200 + 5,000 for spouse 1 (short-term and the net
+    # long-term loss) and 300 for spouse 2. The regulation's allocation:
+    # "Spouse 1 (5,200/5,500 x 3,000) and Spouse 2 (300/5,500 x 3,000)",
+    # 2,836.36 and 163.64. Its table rounds them to 2,850 and 150.
+    # Spouse 2's long-term gain nets against spouse 1's losses and is in
+    # neither column.
+    adjusted_gross_income: 12_000
+    mo_federal_adjusted_gross_income: [7_163.64, 4_836.36]
+
+- name: 12 CSR 10-2.010(2) Example No. 3, one spouse responsible for the excess
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      spouse_1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 10_000
+        short_term_capital_gains: 1_000
+        long_term_capital_gains: -8_000
+      spouse_2:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 5_000
+        short_term_capital_gains: -1_000
+        long_term_capital_gains: 3_000
+    tax_units:
+      tax_unit:
+        members: [spouse_1, spouse_2]
+    marital_units:
+      marital_unit:
+        members: [spouse_1, spouse_2]
+    households:
+      household:
+        members: [spouse_1, spouse_2]
+        state_code: MO
+  output:
+    # Regulation: MAGI $7,000 and $5,000.
+    adjusted_gross_income: 12_000
+    mo_federal_adjusted_gross_income: [7_000, 5_000]
+
+- name: With a net capital gain each spouse keeps their own gain or loss
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      spouse_1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 20_000
+        long_term_capital_gains: 10_000
+      spouse_2:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 20_000
+        long_term_capital_gains: -4_000
+    tax_units:
+      tax_unit:
+        members: [spouse_1, spouse_2]
+    marital_units:
+      marital_unit:
+        members: [spouse_1, spouse_2]
+    households:
+      household:
+        members: [spouse_1, spouse_2]
+        state_code: MO
+  output:
+    # The worksheet's "Capital gain or loss" line by owner: 30,000 and
+    # 16,000.
+    adjusted_gross_income: 46_000
+    mo_federal_adjusted_gross_income: [30_000, 16_000]
+
+- name: A dependent's column is zero
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 40_000
+      child:
+        age: 17
+        employment_income: 5_000
+        self_employment_income: -2_000
+    tax_units:
+      tax_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MO
+  output:
+    mo_federal_adjusted_gross_income: [40_000, 0]

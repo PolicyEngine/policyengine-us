@@ -5,56 +5,40 @@ class mo_adjusted_gross_income(Variable):
     value_type = float
     entity = Person
     label = "Missouri adjusted gross income"
+    documentation = (
+        "Each filer's Missouri adjusted gross income on Form MO-1040, Line 5: "
+        "their federal adjusted gross income less their Missouri "
+        "subtractions. A spouse's amount can be negative; Line 6 adds the two "
+        "columns."
+    )
     unit = USD
     definition_period = YEAR
     reference = (
         "https://dor.mo.gov/forms/MO-1040%20Fillable%20Calculating_2021.pdf",
+        # PDF pages 7, 22: the Line 7 note on a spouse with negative income;
+        # Line 5, "Subtract Line 4 from Line 3", and Line 6, "Add columns 5Y
+        # and 5S".
+        "https://dor.mo.gov/forms/MO-1040%20Instructions_2023.pdf#page=7",
+        # 12 CSR 10-2.010(4)(A)2 (effective February 29, 2024): a spouse's
+        # Missouri AGI of -$4,000 after a subtraction.
+        "https://dor.mo.gov/resources/official-final-rules/documents/12_CSR_10-2_010.pdf#page=5",
         "https://revisor.mo.gov/main/OneSection.aspx?section=143.121",
     )
     defined_for = StateCode.MO
 
     def formula(person, period, parameters):
-        gross_income = person("irs_gross_income", period)
-        # subtract federal above-the-line deductions (ALDs) by person
-        # ... subtract some ALDs explicitly by person
-        PERSONAL_ALDS = [
-            "self_employment_tax_ald_person",
-            "self_employed_health_insurance_ald_person",
-            "self_employed_pension_contribution_ald_person",
-        ]
-        tax_unit = person.tax_unit
-        # A tax unit dependent's deductions are on their own return, and are
-        # left out of above_the_line_deductions, as their income is left out
-        # of irs_gross_income.
-        not_dependent = ~person("is_tax_unit_dependent", period)
-        ind_total_personal_alds = not_dependent * add(person, period, PERSONAL_ALDS)
-        unit_total_personal_alds = tax_unit.sum(ind_total_personal_alds)
-        # ... subtract remaining ALDs by adhoc allocation between spouses
-        unit_total_alds = tax_unit("above_the_line_deductions", period)
-        unit_remaining_alds = unit_total_alds - unit_total_personal_alds
-        filing_status = person.tax_unit("filing_status", period)
-        is_married = filing_status == filing_status.possible_values.JOINT
-        is_head = person("is_tax_unit_head", period)
-        is_spouse = person("is_tax_unit_spouse", period)
-        # Allocate remaining ALDs proportionally based on gross income
-        # to avoid losing deductions when one spouse has no income.
-        # Use np.divide with mask to avoid divide-by-zero warnings.
-        unit_gross_income = tax_unit.sum(gross_income)
-        mask = unit_gross_income > 0
-        # Default: head gets 100%, others get 0% (used when unit has no income)
-        default_share = where(is_head, 1.0, 0.0)
-        allocation_share = np.divide(
-            gross_income,
-            unit_gross_income,
-            out=default_share.copy(),  # Copy to avoid modifying default_share
-            where=mask,
-        )
-        allocated_alds = where(
-            is_head | is_spouse,
-            unit_remaining_alds * allocation_share,
-            0,
-        )
-        fed_agi = gross_income - ind_total_personal_alds - allocated_alds
-        # return MO AGI including MO additions and MO subtractions
+        federal_agi = person("mo_federal_adjusted_gross_income", period)
+        # Missouri additions (Line 2) are not modeled.
         subtractions = person("mo_agi_subtractions", period)
-        return max_(0, fed_agi - subtractions)
+        p = parameters(period).gov.states.mo.tax.income.subtractions
+        if p.plan_529_contributions.limited_to_own_agi:
+            # 12 CSR 10-2.010(4)(A)3 (effective February 29, 2024): "the MOST
+            # subtraction is limited to the spouse's Missouri adjusted gross
+            # income". It is taken after the other subtractions.
+            most = person("mo_529_deduction", period)
+            other_subtractions = max_(0, subtractions - most)
+            allowed_most = min_(most, max_(0, federal_agi - other_subtractions))
+            subtractions = other_subtractions + allowed_most
+        # A tax unit dependent's Missouri AGI is on their own return.
+        filer = ~person("is_tax_unit_dependent", period)
+        return filer * (federal_agi - subtractions)

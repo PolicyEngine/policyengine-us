@@ -46,7 +46,9 @@
     mo_qualified_health_insurance_premiums: 3_000
     state_code: MO
   output:
-    mo_adjusted_gross_income: 0  # AGI cannot be negative
+    # Form MO-1040 Line 5, "Subtract Line 4 from Line 3", has no floor; the
+    # floor is on the joint subtotal, Line 26.
+    mo_adjusted_gross_income: -1_000
 
 - name: Dependent's self-employment tax deduction neither reduces nor raises the parent's Missouri AGI
   period: 2025
@@ -75,3 +77,186 @@
     # -706.48.
     adjusted_gross_income: 40_000
     mo_adjusted_gross_income: [40_000, 0]
+
+- name: 12 CSR 10-2.010(4)(A)2, a spouse's subtraction for U.S. obligation interest exceeds their federal AGI
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      spouse_1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 38_000
+      spouse_2:
+        age: 40
+        is_tax_unit_spouse: true
+        taxable_interest_income: 5_000
+        us_govt_interest_person: 5_000
+        self_employment_income: -4_000
+    tax_units:
+      tax_unit:
+        members: [spouse_1, spouse_2]
+    marital_units:
+      marital_unit:
+        members: [spouse_1, spouse_2]
+    households:
+      household:
+        members: [spouse_1, spouse_2]
+        state_code: MO
+  output:
+    # Spouse 2's federal AGI is 1,000 (5,000 of interest less a 4,000
+    # business loss) and the U.S. obligation interest subtraction is 5,000.
+    # Regulation (effective February 29, 2024): "The combined Missouri
+    # adjusted gross income equals thirty-four thousand dollars ($34,000)
+    # (thirty-eight thousand dollars ($38,000) plus negative four thousand
+    # dollars (-$4,000))." (main floored spouse 2 at 0 and split the loss by
+    # gross income share: 34,465.12 and 0.)
+    mo_adjusted_gross_income: [38_000, -4_000]
+
+- name: 12 CSR 10-2.010(4)(A)3, the MOST subtraction is limited to the spouse's Missouri AGI in 2024
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      spouse_1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 38_000
+      spouse_2:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 1_000
+        investment_in_529_plan_indv: 5_000
+    tax_units:
+      tax_unit:
+        members: [spouse_1, spouse_2]
+    marital_units:
+      marital_unit:
+        members: [spouse_1, spouse_2]
+    households:
+      household:
+        members: [spouse_1, spouse_2]
+        state_code: MO
+  output:
+    # Regulation (effective February 29, 2024): "thirty-eight thousand
+    # dollars ($38,000) plus zero ... because the MOST subtraction is limited
+    # to the spouse's Missouri adjusted gross income."
+    mo_adjusted_gross_income: [38_000, 0]
+
+- name: The MOST limit also applies in 2025
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      spouse_1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 38_000
+      spouse_2:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 1_000
+        investment_in_529_plan_indv: 5_000
+    tax_units:
+      tax_unit:
+        members: [spouse_1, spouse_2]
+    marital_units:
+      marital_unit:
+        members: [spouse_1, spouse_2]
+    households:
+      household:
+        members: [spouse_1, spouse_2]
+        state_code: MO
+  output:
+    mo_adjusted_gross_income: [38_000, 0]
+
+- name: 12 CSR 10-2.010(4)(A)2 as amended effective April 30, 2026, the MOST subtraction is not limited
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      spouse_1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 38_000
+      spouse_2:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 1_000
+        investment_in_529_plan_indv: 5_000
+    tax_units:
+      tax_unit:
+        members: [spouse_1, spouse_2]
+    marital_units:
+      marital_unit:
+        members: [spouse_1, spouse_2]
+    households:
+      household:
+        members: [spouse_1, spouse_2]
+        state_code: MO
+  output:
+    # Regulation (effective April 30, 2026): "thirty-eight thousand dollars
+    # ($38,000) plus negative four thousand dollars (-$4,000)".
+    mo_adjusted_gross_income: [38_000, -4_000]
+
+- name: Before 2024 the MOST subtraction is not limited
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      spouse_1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 38_000
+      spouse_2:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 1_000
+        investment_in_529_plan_indv: 5_000
+    tax_units:
+      tax_unit:
+        members: [spouse_1, spouse_2]
+    marital_units:
+      marital_unit:
+        members: [spouse_1, spouse_2]
+    households:
+      household:
+        members: [spouse_1, spouse_2]
+        state_code: MO
+  output:
+    # The 2019 version of 12 CSR 10-2.010 covers only capital losses, and
+    # RSMo 166.435 caps the subtraction only by dollar amount.
+    mo_adjusted_gross_income: [38_000, -4_000]
+
+- name: A negative federal AGI column is replaced by zero before subtractions from 2024
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      spouse_1:
+        age: 40
+        is_tax_unit_head: true
+        employment_income: 5_000
+        self_employment_income: -15_000
+        us_govt_interest_person: 1_000
+        taxable_interest_income: 1_000
+      spouse_2:
+        age: 40
+        is_tax_unit_spouse: true
+        employment_income: 100_000
+    tax_units:
+      tax_unit:
+        members: [spouse_1, spouse_2]
+    marital_units:
+      marital_unit:
+        members: [spouse_1, spouse_2]
+    households:
+      household:
+        members: [spouse_1, spouse_2]
+        state_code: MO
+  output:
+    # Spouse 1's separate federal AGI is 6,000 - 15,000 = -9,000, so Line 1
+    # is 0 for spouse 1 and the joint 91,000 for spouse 2 (2025 instructions,
+    # page 6). Spouse 1's Line 5 is 0 - 1,000 = -1,000.
+    mo_federal_adjusted_gross_income: [0, 91_000]
+    mo_adjusted_gross_income: [-1_000, 91_000]
