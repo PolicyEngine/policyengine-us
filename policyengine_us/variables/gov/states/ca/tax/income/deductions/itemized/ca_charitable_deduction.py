@@ -15,61 +15,17 @@ class ca_charitable_deduction(Variable):
     )
 
     def formula(tax_unit, period, parameters):
-        cash_50_explicit = add(
-            tax_unit, period, ["charitable_cash_donations_50_pct_orgs"]
-        )
-        cash_to_non_50 = add(
-            tax_unit, period, ["charitable_cash_donations_non_50_pct_orgs"]
-        )
-        cash_total = add(tax_unit, period, ["charitable_cash_donations"])
-        cash = where(
-            cash_50_explicit + cash_to_non_50 > 0,
-            cash_50_explicit + cash_to_non_50,
-            cash_total,
-        )
+        cash_50 = add(tax_unit, period, ["charitable_cash_donations_50_pct"])
+        cash_non_50 = add(tax_unit, period, ["charitable_cash_donations_non_50_pct"])
+        cash = cash_50 + cash_non_50
 
-        non_cash_50_explicit = add(
-            tax_unit, period, ["charitable_non_cash_donations_50_pct_orgs"]
+        ordinary_50 = add(tax_unit, period, ["charitable_non_cash_donations_50_pct"])
+        ordinary_non_50 = add(
+            tax_unit, period, ["charitable_non_cash_donations_non_50_pct"]
         )
-        non_cash_non_50_input = add(
-            tax_unit, period, ["charitable_non_cash_donations_non_50_pct_orgs"]
-        )
-        non_cash_total = add(tax_unit, period, ["charitable_non_cash_donations"])
-        ordinary_50 = where(
-            non_cash_50_explicit > 0,
-            non_cash_50_explicit,
-            max_(0, non_cash_total - non_cash_non_50_input),
-        )
-        ordinary_non_50 = where(
-            non_cash_non_50_input > 0,
-            non_cash_non_50_input,
-            max_(0, non_cash_total - ordinary_50),
-        )
-
-        cg_to_50_pct = add(
-            tax_unit,
-            period,
-            ["charitable_capital_gain_donations_50_pct_orgs"],
-        )
-        cg_to_non_50_pct = add(
-            tax_unit,
-            period,
-            ["charitable_capital_gain_donations_non_50_pct_orgs"],
-        )
-        cg_total = add(
-            tax_unit,
-            period,
-            ["charitable_capital_gain_donations"],
-        )
-        cg_50 = where(
-            cg_to_50_pct > 0,
-            cg_to_50_pct,
-            max_(0, cg_total - cg_to_non_50_pct),
-        )
-        cg_non_50 = where(
-            cg_to_non_50_pct > 0,
-            cg_to_non_50_pct,
-            max_(0, cg_total - cg_50),
+        cg_50 = add(tax_unit, period, ["charitable_capital_gain_donations_50_pct"])
+        cg_non_50 = add(
+            tax_unit, period, ["charitable_capital_gain_donations_non_50_pct"]
         )
 
         non_cash_50 = ordinary_50 + cg_50

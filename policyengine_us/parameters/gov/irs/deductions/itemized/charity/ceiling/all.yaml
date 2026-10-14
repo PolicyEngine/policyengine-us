@@ -1,7 +1,7 @@
-description: Ceiling (as a decimal fraction of AGI) for all charitable contribution deductions.
+description: Ceiling (as a decimal fraction of AGI) for cash contributions to 50-percent limit organizations under 26 U.S. Code § 170(b)(1)(G)(i).
 metadata:
   unit: /1
-  label: Charitable deduction limit
+  label: Cash charitable deduction limit for 50% limit organizations
   reference:
     - title: 26 U.S. Code § 170 - Charitable, etc., contributions and gifts (b)(1)(G)(i)
       href: https://www.law.cornell.edu/uscode/text/26/170
@@ -9,4 +9,5 @@ values:
   2013-01-01: 0.5
   2018-01-01: 0.6
   2020-01-01: 1.0
-  2021-01-01: 0.6
+  2021-01-01: 1.0
+  2022-01-01: 0.6

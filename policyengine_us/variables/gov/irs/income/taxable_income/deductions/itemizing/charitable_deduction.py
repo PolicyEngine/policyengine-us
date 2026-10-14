@@ -1,5 +1,4 @@
 from policyengine_us.model_api import *
-import numpy as np
 
 
 class charitable_deduction(Variable):
@@ -19,140 +18,150 @@ class charitable_deduction(Variable):
         #   (B) Cash & non-cash ordinary to non-50% limit orgs: 30% AGI (reduced by 50% gifts)
         #   (C) Capital gain property to 50% limit orgs: 30% AGI (reduced by ordinary 50% gifts)
         #   (D) Capital gain property to non-50% limit orgs: 20% AGI (taken into account last)
-        cash_50_explicit = add(
-            tax_unit, period, ["charitable_cash_donations_50_pct_orgs"]
+        cash_50 = add(tax_unit, period, ["charitable_cash_donations_50_pct"])
+        cash_non_50 = add(tax_unit, period, ["charitable_cash_donations_non_50_pct"])
+        ordinary_50 = add(tax_unit, period, ["charitable_non_cash_donations_50_pct"])
+        ordinary_non_50 = add(
+            tax_unit, period, ["charitable_non_cash_donations_non_50_pct"]
         )
-        cash_to_non_50_pct = add(
-            tax_unit, period, ["charitable_cash_donations_non_50_pct_orgs"]
-        )
-        cash_donations = add(tax_unit, period, ["charitable_cash_donations"])
-
-        non_cash_50_explicit = add(
-            tax_unit, period, ["charitable_non_cash_donations_50_pct_orgs"]
-        )
-        non_cash_to_non_50_pct = add(
-            tax_unit,
-            period,
-            ["charitable_non_cash_donations_non_50_pct_orgs"],
-        )
-        non_cash_donations = add(tax_unit, period, ["charitable_non_cash_donations"])
-
-        cg_to_50_pct = add(
-            tax_unit,
-            period,
-            ["charitable_capital_gain_donations_50_pct_orgs"],
-        )
-        cg_to_non_50_pct = add(
-            tax_unit,
-            period,
-            ["charitable_capital_gain_donations_non_50_pct_orgs"],
-        )
-        cg_donations = add(
-            tax_unit,
-            period,
-            ["charitable_capital_gain_donations"],
+        cg_50 = add(tax_unit, period, ["charitable_capital_gain_donations_50_pct"])
+        cg_non_50 = add(
+            tax_unit, period, ["charitable_capital_gain_donations_non_50_pct"]
         )
 
         positive_agi = tax_unit("positive_agi", period)
         p = parameters(period).gov.irs.deductions.itemized.charity
 
-        # Resolve category contributions: fallback logic ensures no dollars
-        # are dropped if a user specifies both a total and a sub-category.
-        cash_50 = where(
-            cash_50_explicit > 0,
-            cash_50_explicit,
-            max_(0, cash_donations - cash_to_non_50_pct),
-        )
-        cash_non_50 = where(
-            cash_to_non_50_pct > 0,
-            cash_to_non_50_pct,
-            max_(0, cash_donations - cash_50),
-        )
-
-        ordinary_50 = where(
-            non_cash_50_explicit > 0,
-            non_cash_50_explicit,
-            max_(0, non_cash_donations - non_cash_to_non_50_pct),
-        )
-        ordinary_non_50 = where(
-            non_cash_to_non_50_pct > 0,
-            non_cash_to_non_50_pct,
-            max_(0, non_cash_donations - ordinary_50),
-        )
-
-        cg_50 = where(
-            cg_to_50_pct > 0,
-            cg_to_50_pct,
-            max_(0, cg_donations - cg_to_non_50_pct),
-        )
-        cg_non_50 = where(
-            cg_to_non_50_pct > 0,
-            cg_to_non_50_pct,
-            max_(0, cg_donations - cg_50),
-        )
-
-        # Worksheet 2, Step 3:
         agi = positive_agi
         limit_50 = p.ceiling.non_cash * agi
         limit_30_non_50 = p.ceiling.non_cash_to_non_50_pct_org * agi
         limit_30_cg_50 = p.ceiling.capital_gain_to_50_pct_org * agi
         limit_20_cg_non_50 = p.ceiling.capital_gain_to_non_50_pct_org * agi
 
-        # 1. Cash contributions subject to limit based on 60% of AGI (Worksheet 2 lines 12-14, IRC § 170(b)(1)(G))
-        cash_ceiling = p.ceiling.all * agi
-        deductible_cash_50 = min_(cash_50, cash_ceiling)
+        if p.qualified_cash_election:
+            # Under CARES Act § 2205(a) / P.L. 116-260 div. EE § 213, elected qualified cash
+            # contributions to 50% orgs are disregarded when applying percentage limits to
+            # other contributions, and then allowed up to remaining AGI (Pub 526 (2020) Worksheet 2).
+            # 1. Non-cash ordinary contributions to 50% limit orgs:
+            deductible_ord_50 = min_(ordinary_50, limit_50)
 
-        # 2. Noncash ordinary contributions subject to limit based on 50% of AGI (Worksheet 2 lines 15-18, IRC § 170(b)(1)(A))
-        room_for_ord_50 = max_(0, limit_50 - deductible_cash_50)
-        deductible_ord_50 = min_(ordinary_50, room_for_ord_50)
+            # 2. Contributions to non-50% limit orgs:
+            contribs_to_50_orgs = cg_50 + ordinary_50
+            room_under_50_for_non_50 = max_(0, limit_50 - contribs_to_50_orgs)
+            non_50_ordinary_and_cash = cash_non_50 + ordinary_non_50
+            deductible_non_50_ordinary = min_(
+                non_50_ordinary_and_cash,
+                min_(limit_30_non_50, room_under_50_for_non_50),
+            )
 
-        # 3. Contributions (other than capital gain property) subject to 30% limit (Worksheet 2 lines 19-25, IRC § 170(b)(1)(B))
-        contribs_to_50_orgs = cg_50 + ordinary_50 + cash_50
-        room_under_50_for_non_50 = max_(0, limit_50 - contribs_to_50_orgs)
-        non_50_ordinary_and_cash = cash_non_50 + ordinary_non_50
-        deductible_non_50_ordinary = min_(
-            non_50_ordinary_and_cash,
-            min_(limit_30_non_50, room_under_50_for_non_50),
-        )
+            # 3. Capital gain property to 50% limit orgs:
+            room_under_50_for_cg_50 = max_(0, limit_50 - deductible_ord_50)
+            deductible_cg_50 = min_(
+                cg_50,
+                min_(limit_30_cg_50, room_under_50_for_cg_50),
+            )
 
-        # 4. Contributions of capital gain property to 50% limit orgs subject to 30% limit (Worksheet 2 lines 26-31, IRC § 170(b)(1)(C))
-        contribs_ord_and_cash_to_50 = ordinary_50 + cash_50
-        room_under_50_for_cg_50 = max_(0, limit_50 - contribs_ord_and_cash_to_50)
-        deductible_cg_50 = min_(
-            cg_50,
-            min_(limit_30_cg_50, room_under_50_for_cg_50),
-        )
-
-        # 5. Contributions of capital gain property to non-50% limit orgs subject to 20% limit (Worksheet 2 lines 32-41, IRC § 170(b)(1)(D))
-        deductible_so_far = (
-            deductible_cash_50
-            + deductible_ord_50
-            + deductible_non_50_ordinary
-            + deductible_cg_50
-        )
-        room_under_50_overall = max_(0, limit_50 - deductible_so_far)
-        room_under_30_after_non_50_ord = max_(
-            0, limit_30_non_50 - deductible_non_50_ordinary
-        )
-        room_under_30_after_cg_50 = max_(0, limit_30_non_50 - deductible_cg_50)
-        deductible_cg_non_50 = np.minimum.reduce(
-            [
+            # 4. Capital gain property to non-50% limit orgs:
+            deductible_non_cash_so_far = (
+                deductible_ord_50 + deductible_non_50_ordinary + deductible_cg_50
+            )
+            room_under_50_overall = max_(0, limit_50 - deductible_non_cash_so_far)
+            room_under_30_after_non_50_ord = max_(
+                0, limit_30_non_50 - deductible_non_50_ordinary
+            )
+            room_under_30_after_cg_50 = max_(0, limit_30_non_50 - deductible_cg_50)
+            deductible_cg_non_50 = min_(
                 cg_non_50,
-                limit_20_cg_non_50,
-                room_under_50_overall,
-                room_under_30_after_non_50_ord,
-                room_under_30_after_cg_50,
-            ]
-        )
+                min_(
+                    limit_20_cg_non_50,
+                    min_(
+                        room_under_50_overall,
+                        min_(
+                            room_under_30_after_non_50_ord,
+                            room_under_30_after_cg_50,
+                        ),
+                    ),
+                ),
+            )
 
-        # Total deductible contributions before floor (Worksheet 2 line 52):
-        total_allowed = (
-            deductible_cash_50
-            + deductible_ord_50
-            + deductible_non_50_ordinary
-            + deductible_cg_50
-            + deductible_cg_non_50
-        )
+            other_allowed = (
+                deductible_ord_50
+                + deductible_non_50_ordinary
+                + deductible_cg_50
+                + deductible_cg_non_50
+            )
+
+            # 5. Qualified cash fills remaining room up to 100% of AGI:
+            cash_ceiling = p.ceiling.all * agi
+            deductible_cash_50 = min_(cash_50, max_(0, cash_ceiling - other_allowed))
+
+            total_allowed = other_allowed + deductible_cash_50
+        else:
+            # Standard IRS Pub 526 Worksheet 2 sequential calculation:
+            # Note: (G)(i) ordering: cash is taken into account first per
+            # unrepealed (G)(iii)(II) and current IRS Worksheet 2.
+            # 1. Cash contributions subject to limit based on 60% of AGI (Worksheet 2 lines 12-14, IRC § 170(b)(1)(G)):
+            cash_ceiling = p.ceiling.all * agi
+            deductible_cash_50 = min_(cash_50, cash_ceiling)
+
+            # 2. Non-cash ordinary contributions subject to limit based on 50% of AGI (Worksheet 2 lines 15-18, IRC § 170(b)(1)(A)):
+            room_for_ord_50 = max_(0, limit_50 - deductible_cash_50)
+            deductible_ord_50 = min_(ordinary_50, room_for_ord_50)
+
+            # 3. Contributions (other than capital gain property) subject to 30% limit (Worksheet 2 lines 19-25, IRC § 170(b)(1)(B)):
+            # From 2026, P.L. 119-21 § 70425 adds back up to 10% of AGI of cash to 50% orgs:
+            add_back_rate = p.ceiling.non_50_pct_cash_add_back
+            subtracted_cash_50 = max_(0, cash_50 - add_back_rate * agi)
+            contribs_to_50_orgs = cg_50 + ordinary_50 + subtracted_cash_50
+            room_under_50_for_non_50 = max_(0, limit_50 - contribs_to_50_orgs)
+            non_50_ordinary_and_cash = cash_non_50 + ordinary_non_50
+            deductible_non_50_ordinary = min_(
+                non_50_ordinary_and_cash,
+                min_(limit_30_non_50, room_under_50_for_non_50),
+            )
+
+            # 4. Contributions of capital gain property to 50% limit orgs subject to 30% limit (Worksheet 2 lines 26-31, IRC § 170(b)(1)(C)):
+            contribs_ord_and_cash_to_50 = ordinary_50 + cash_50
+            room_under_50_for_cg_50 = max_(0, limit_50 - contribs_ord_and_cash_to_50)
+            deductible_cg_50 = min_(
+                cg_50,
+                min_(limit_30_cg_50, room_under_50_for_cg_50),
+            )
+
+            # 5. Contributions of capital gain property to non-50% limit orgs subject to 20% limit (Worksheet 2 lines 32-41, IRC § 170(b)(1)(D)):
+            deductible_so_far = (
+                subtracted_cash_50
+                + deductible_ord_50
+                + deductible_non_50_ordinary
+                + deductible_cg_50
+            )
+            room_under_50_overall = max_(0, limit_50 - deductible_so_far)
+            room_under_30_after_non_50_ord = max_(
+                0, limit_30_non_50 - deductible_non_50_ordinary
+            )
+            room_under_30_after_cg_50 = max_(0, limit_30_non_50 - deductible_cg_50)
+            deductible_cg_non_50 = min_(
+                cg_non_50,
+                min_(
+                    limit_20_cg_non_50,
+                    min_(
+                        room_under_50_overall,
+                        min_(
+                            room_under_30_after_non_50_ord,
+                            room_under_30_after_cg_50,
+                        ),
+                    ),
+                ),
+            )
+
+            # Total deductible contributions before floor (Worksheet 2 line 52):
+            total_allowed = (
+                deductible_cash_50
+                + deductible_ord_50
+                + deductible_non_50_ordinary
+                + deductible_cg_50
+                + deductible_cg_non_50
+            )
 
         # 2026+ floor under IRC § 170(b)(1)(I) (P.L. 119-21):
         # Applies to contributions otherwise allowable (after ceilings).

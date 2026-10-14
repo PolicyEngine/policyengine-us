@@ -7,15 +7,7 @@ from policyengine_us.model_api import *
 # spouse and are prorated by income.
 EXPENSE_SOURCES = {
     "de_capped_real_estate_tax": ["real_estate_taxes"],
-    "charitable_deduction": [
-        "charitable_cash_donations",
-        "charitable_cash_donations_50_pct_orgs",
-        "charitable_cash_donations_non_50_pct_orgs",
-        "charitable_non_cash_donations",
-        "charitable_non_cash_donations_50_pct_orgs",
-        "charitable_non_cash_donations_non_50_pct_orgs",
-        "charitable_capital_gain_donations",
-    ],
+    "charitable_deduction": ["total_charitable_donations"],
     "interest_deduction": ["deductible_interest_expense"],
     "casualty_loss_deduction": ["casualty_loss"],
 }

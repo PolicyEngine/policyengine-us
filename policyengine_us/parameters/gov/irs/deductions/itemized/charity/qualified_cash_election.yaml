@@ -1,0 +1,15 @@
+description: >-
+  Whether qualified cash contributions to 50% limit organizations are
+  disregarded when computing limits for other contributions and allowed
+  up to 100% of AGI under CARES Act § 2205 and P.L. 116-260.
+metadata:
+  unit: bool
+  period: year
+  label: Qualified cash contribution election
+  reference:
+    - title: CARES Act § 2205(a) (P.L. 116-136)
+    - title: Consolidated Appropriations Act, 2021, div. EE § 213 (P.L. 116-260)
+values:
+  2013-01-01: false
+  2020-01-01: true
+  2022-01-01: false

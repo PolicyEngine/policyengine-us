@@ -12,24 +12,7 @@ class wa_millionaires_tax_charitable_deduction(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.wa.tax.income.millionaires_tax
-        cash_50 = add(tax_unit, period, ["charitable_cash_donations_50_pct_orgs"])
-        cash_non_50 = add(
-            tax_unit, period, ["charitable_cash_donations_non_50_pct_orgs"]
-        )
-        cash_total = add(tax_unit, period, ["charitable_cash_donations"])
-        cash = where(cash_50 + cash_non_50 > 0, cash_50 + cash_non_50, cash_total)
-
-        ord_50 = add(tax_unit, period, ["charitable_non_cash_donations_50_pct_orgs"])
-        ord_non_50 = add(
-            tax_unit,
-            period,
-            ["charitable_non_cash_donations_non_50_pct_orgs"],
-        )
-        ord_total = add(tax_unit, period, ["charitable_non_cash_donations"])
-        non_cash = where(ord_50 + ord_non_50 > 0, ord_50 + ord_non_50, ord_total)
-
-        cg = add(tax_unit, period, ["charitable_capital_gain_donations"])
-        charitable = cash + non_cash + cg
+        charitable = add(tax_unit, period, ["total_charitable_donations"])
         # Sec. 309: spouses filing separately split the combined cap.
         filing_status = tax_unit("filing_status", period)
         is_separate = filing_status == filing_status.possible_values.SEPARATE
