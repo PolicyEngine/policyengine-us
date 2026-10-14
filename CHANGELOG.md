@@ -1,3 +1,10 @@
+## [2.42.7] - 2026-10-14
+
+### Fixed
+
+- Correct CRFB expanded surtax premium addbacks to use employer-paid coverage and employee pretax premiums without double-counting after-tax employee premiums.
+
+
 ## [2.42.6] - 2026-10-14
 
 ### Fixed
