@@ -1,0 +1,38 @@
+- name: HUD medical expenses sum disjoint premiums across household members.
+  period: 2026
+  input:
+    people:
+      head:
+        health_insurance_premiums: 1_800
+        pre_tax_health_insurance_premiums: 2_400
+        other_medical_expenses: 300
+        medicare_enrolled: false
+      spouse:
+        health_insurance_premiums: 600
+        pre_tax_health_insurance_premiums: 1_200
+        other_medical_expenses: 200
+        medicare_enrolled: false
+    spm_units:
+      spm_unit:
+        members: [head, spouse]
+  output:
+    hud_medical_expenses: 6_500
+
+- name: HUD adds payroll premiums to decomposed non-pretax Medicare premiums.
+  period: 2026
+  input:
+    health_insurance_premiums_without_medicare_part_b: 600
+    medicare_part_b_premium: 1_200
+    medicare_enrolled: true
+    pre_tax_health_insurance_premiums: 2_400
+    other_medical_expenses: 300
+  output:
+    hud_medical_expenses: 4_500
+
+- name: HUD medical expenses include premiums paid entirely through payroll.
+  period: 2026
+  input:
+    pre_tax_health_insurance_premiums: 2_400
+    medicare_enrolled: false
+  output:
+    hud_medical_expenses: 2_400
