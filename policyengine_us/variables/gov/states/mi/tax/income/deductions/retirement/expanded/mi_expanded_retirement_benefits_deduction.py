@@ -54,8 +54,9 @@ class mi_expanded_retirement_benefits_deduction(Variable):
         # Line 1
         tier_one_cap = p.tier_one.amount[filing_status]
         head_or_spouse_military_retirement_pay = (
-            person("military_retirement_pay", period) * is_head_or_spouse
-        )
+            person("military_retirement_pay", period)
+            + person("military_retirement_pay_survivors", period)
+        ) * is_head_or_spouse
         # Line 2
         total_military_retirement_pay = tax_unit.sum(
             head_or_spouse_military_retirement_pay

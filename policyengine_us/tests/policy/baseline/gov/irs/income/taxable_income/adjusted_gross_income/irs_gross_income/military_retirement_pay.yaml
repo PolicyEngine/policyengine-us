@@ -1,59 +1,64 @@
-# IRC § 61(a)(11) includes pensions, including military retirement pay and
+# IRC § 61(a)(10) includes pensions, including military retirement pay and
 # military retirement survivor benefit payments, in gross income.
+# See IRS Publication 525 (Taxable and Nontaxable Income) and
+# IRS Publication 575 (Pension and Annuity Income).
 # Military retirement pay is also market income, SNAP unearned income,
 # and SSI unearned income.
 
-- name: Military retirement pay flows into federal gross income, AGI, and taxable income
+- name: Case 1, Military retirement pay flows into federal gross income, AGI, and taxable income.
   period: 2024
-  absolute_error_margin: 1
   input:
     people:
-      person:
+      person1:
         age: 60
         is_tax_unit_head: true
         military_retirement_pay: 30_000
     tax_units:
       tax_unit:
-        members: [person]
+        members: [person1]
     households:
       household:
-        members: [person]
+        members: [person1]
         state_code: TX
   output:
     irs_gross_income: 30_000
     adjusted_gross_income: 30_000
+    taxable_income: 30_000 - 14_600
     market_income: 30_000
+    household_market_income: 30_000
     snap_unearned_income: 30_000
     ssi_unearned_income: 30_000
+    household_net_income: 28_915
 
-- name: Military retirement pay survivors flows into federal gross income, AGI, and taxable income
+- name: Case 2, Military retirement pay survivors flows into federal gross income, AGI, and taxable income.
   period: 2024
-  absolute_error_margin: 1
   input:
     people:
-      person:
+      person1:
         age: 60
         is_tax_unit_head: true
-        military_retirement_pay_survivors: 25_000
+        military_retirement_pay_survivors: 24_000
     tax_units:
       tax_unit:
-        members: [person]
+        members: [person1]
     households:
       household:
-        members: [person]
+        members: [person1]
         state_code: TX
   output:
-    irs_gross_income: 25_000
-    adjusted_gross_income: 25_000
-    market_income: 25_000
-    snap_unearned_income: 25_000
-    ssi_unearned_income: 25_000
+    irs_gross_income: 24_000
+    adjusted_gross_income: 24_000
+    taxable_income: 24_000 - 14_600
+    market_income: 24_000
+    household_market_income: 24_000
+    snap_unearned_income: 24_000
+    ssi_unearned_income: 24_000
 
-- name: Military retirement pay adds with employment income
+- name: Case 3, Military retirement pay adds with employment income.
   period: 2024
   input:
     people:
-      person:
+      person1:
         age: 50
         is_tax_unit_head: true
         employment_income: 40_000
@@ -61,35 +66,41 @@
         military_retirement_pay_survivors: 10_000
     tax_units:
       tax_unit:
-        members: [person]
+        members: [person1]
     households:
       household:
-        members: [person]
+        members: [person1]
         state_code: TX
   output:
     irs_gross_income: 70_000
     adjusted_gross_income: 70_000
+    taxable_income: 70_000 - 14_600
     market_income: 70_000
+    household_market_income: 70_000
+    household_net_income: 59_699
 
-- name: Dependent military retirement pay is excluded from the tax unit filer gross income
+- name: Case 4, Dependent military retirement pay is excluded from the tax unit filer gross income.
   period: 2024
   input:
     people:
-      head:
+      person1:
         age: 45
         is_tax_unit_head: true
         employment_income: 50_000
-      dependent:
+      person2:
         age: 18
         is_tax_unit_dependent: true
         military_retirement_pay_survivors: 15_000
     tax_units:
       tax_unit:
-        members: [head, dependent]
+        members: [person1, person2]
     households:
       household:
-        members: [head, dependent]
+        members: [person1, person2]
         state_code: TX
   output:
     irs_gross_income: [50_000, 0]
     adjusted_gross_income: 50_000
+    taxable_income: 50_000 - 21_900
+    market_income: [50_000, 15_000]
+    household_market_income: 65_000

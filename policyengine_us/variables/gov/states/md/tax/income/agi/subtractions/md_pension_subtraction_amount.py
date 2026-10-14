@@ -19,8 +19,23 @@ class md_pension_subtraction_amount(Variable):
         disabled = person("is_disabled", period)
         partner_is_disabled = person("has_disabled_spouse", period)
         eligible = ~dependent & (elderly | disabled | partner_is_disabled)
+        # Under Md. Code Tax-General § 10-209(d)(1) and Form 502 instructions
+        # (Worksheet 13A, line 1), military retirement income exceeding the
+        # § 10-207(q) military retirement subtraction qualifies for the
+        # general pension exclusion.
+        p_mil = p.military_retirement
+        military_income = person("military_retirement_pay", period) + person(
+            "military_retirement_pay_survivors", period
+        )
+        mil_cap = where(
+            elderly,
+            p_mil.max_amount.at_or_above_age_threshold,
+            p_mil.max_amount.under_age_threshold,
+        )
+        excess_military = max_(0, military_income - mil_cap)
+
         # calculate pension subtraction amount for each person
-        peninc = add(person, period, p.pension.sources)
+        peninc = add(person, period, p.pension.sources) + excess_military
         socsec = person("social_security", period)
         amount = min_(peninc, max_(0, p.pension.max_amount - socsec))
         # return pension subtraction amount for each eligible person

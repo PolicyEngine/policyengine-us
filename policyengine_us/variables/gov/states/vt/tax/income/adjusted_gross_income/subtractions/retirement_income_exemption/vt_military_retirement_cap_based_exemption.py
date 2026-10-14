@@ -21,13 +21,8 @@ class vt_military_retirement_cap_based_exemption(Variable):
         # Get retirement amount from military retirement system
         # Dependents' income is not in federal AGI; they report it on their
         # own return, so only the head's and spouse's pay counts.
-        tax_unit_military_retirement_pay = tax_unit_non_dep_add(
-            tax_unit,
-            period,
-            [
-                "military_retirement_pay",
-                "military_retirement_pay_survivors",
-            ],
+        tax_unit_military_retirement_pay = tax_unit_non_dep_sum(
+            "military_retirement_pay", tax_unit, period
         )
 
         # Cap exemption at the specified amount

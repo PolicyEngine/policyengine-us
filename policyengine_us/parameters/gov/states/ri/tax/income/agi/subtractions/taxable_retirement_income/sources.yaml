@@ -2,6 +2,12 @@ description: Rhode Island subtracts these retirement income sources from adjuste
 values:
   2021-01-01:
     - taxable_pension_income
+    - military_retirement_pay
+    - military_retirement_pay_survivors
+    - taxable_401k_distributions
+    - taxable_403b_distributions
+  2023-01-01:
+    - taxable_pension_income
     - taxable_401k_distributions
     - taxable_403b_distributions
 metadata:

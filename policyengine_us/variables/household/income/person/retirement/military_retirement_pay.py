@@ -7,6 +7,12 @@ class military_retirement_pay(Variable):
     label = "Military retirement pay"
     unit = USD
     definition_period = YEAR
-    documentation = "The benefits received under a United States military retirement plan, including survivor benefits."
-    reference = "https://militarypay.defense.gov/Pay/Retirement/"
+    documentation = (
+        "Retirement pay received by former members of the uniformed services "
+        "of the United States. Included in federal gross income under 26 U.S.C. § 61(a)(10)."
+    )
+    reference = (
+        "https://militarypay.defense.gov/Pay/Retirement/",
+        "https://www.irs.gov/publications/p525",
+    )
     uprating = "calibration.gov.irs.soi.taxable_pension_income"

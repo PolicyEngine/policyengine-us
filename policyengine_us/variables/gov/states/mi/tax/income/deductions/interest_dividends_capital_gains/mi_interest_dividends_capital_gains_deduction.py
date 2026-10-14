@@ -34,7 +34,11 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
         reductions_pay = add(
             person,
             period,
-            ["military_retirement_pay", "taxable_pension_income"],
+            [
+                "military_retirement_pay",
+                "military_retirement_pay_survivors",
+                "taxable_pension_income",
+            ],
         )
         elderly_disabled_credit = tax_unit("elderly_disabled_credit", period)
 
