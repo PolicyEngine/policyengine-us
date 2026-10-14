@@ -127,3 +127,75 @@
     ny_drive_clean_vehicle_electric_range: 200
   output:
     ny_drive_clean_rebate: 0
+
+
+# NYSERDA Drive Clean Implementation Manual, section 4, page 8:
+# https://www.nyserda.ny.gov/-/media/Project/Nyserda/Files/Programs/Drive-Clean-NY/implementation-manual.pdf#page=8
+# First-of-month rolling years exercise the annual formula on either side
+# of the July 1 transition. Core 3.32.15 rejects caching mid-month annual periods;
+# exact June 30 parameter lookups are covered in test_ny_drive_clean_rebate_schedule.py.
+- name: June 1 rolling year retains the 20-mile rebate
+  period: year:2021-06-01
+  input:
+    state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
+    ny_drive_clean_vehicle_cost: 30_000
+    ny_drive_clean_vehicle_electric_range: 20
+  output:
+    # $30,000 < $60,000 cap; table gives $1,100 (July reduction: 1,100 - 500 = 600).
+    ny_drive_clean_rebate: 1_100
+
+- name: July 1 rolling year applies the reduced 20-mile rebate
+  period: year:2021-07-01
+  input:
+    state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
+    ny_drive_clean_vehicle_cost: 30_000
+    ny_drive_clean_vehicle_electric_range: 20
+  output:
+    # $30,000 < $42,000 cap; table gives $500 (1,100 - 600 = 500).
+    ny_drive_clean_rebate: 500
+
+- name: June 1 rolling year retains the 40-mile rebate
+  period: year:2021-06-01
+  input:
+    state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
+    ny_drive_clean_vehicle_cost: 30_000
+    ny_drive_clean_vehicle_electric_range: 40
+  output:
+    # $30,000 < $60,000 cap; table gives $1,700.
+    ny_drive_clean_rebate: 1_700
+
+- name: July 1 rolling year applies the reduced 40-mile rebate
+  period: year:2021-07-01
+  input:
+    state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
+    ny_drive_clean_vehicle_cost: 30_000
+    ny_drive_clean_vehicle_electric_range: 40
+  output:
+    # $30,000 < $42,000 cap; table gives $1,000 (1,700 - 700 = 1,000).
+    ny_drive_clean_rebate: 1_000
+
+- name: June 1 rolling year retains the higher MSRP cap
+  period: year:2021-06-01
+  input:
+    state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
+    ny_drive_clean_vehicle_cost: 50_000
+    ny_drive_clean_vehicle_electric_range: 200
+  output:
+    # $50,000 < $60,000 cap, so $2,000 by range (July reduction: 2,000 - 500 = 1,500).
+    ny_drive_clean_rebate: 2_000
+
+- name: July 1 rolling year applies the lower MSRP cap
+  period: year:2021-07-01
+  input:
+    state_code: NY
+    ny_drive_clean_purchased_qualifying_vehicle: true
+    ny_drive_clean_vehicle_cost: 50_000
+    ny_drive_clean_vehicle_electric_range: 200
+  output:
+    # $50,000 > $42,000 cap, so flat $500 (2,000 - 1,500 = 500).
+    ny_drive_clean_rebate: 500
