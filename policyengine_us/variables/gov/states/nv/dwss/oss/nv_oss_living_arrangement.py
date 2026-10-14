@@ -30,15 +30,17 @@ class nv_oss_living_arrangement(Variable):
             (federal == arrangements.MEDICAL_TREATMENT_FACILITY)
             | (care == settings.UNCERTIFIED_MEDICAL_FACILITY)
             | (care == settings.PUBLIC_EMERGENCY_SHELTER)
-            | (
-                (care == settings.DOMICILIARY_CARE)
-                & person("is_child", period.this_year)
-            )
+        )
+        # SF01415.300 C facilities serve adults, but E lists no exclusion for
+        # children, so a child in such a setting keeps the federal mapping
+        # (A.2: FLA A or a blind child in FLA C is OSS A).
+        domiciliary = (care == settings.DOMICILIARY_CARE) & ~person(
+            "is_child", period.this_year
         )
         return select(
             [
                 excluded,
-                care == settings.DOMICILIARY_CARE,
+                domiciliary,
                 federal == arrangements.ANOTHER_PERSONS_HOUSEHOLD,
                 (federal == arrangements.OWN_HOUSEHOLD)
                 | (federal == arrangements.CHILD_IN_PARENTAL_HOUSEHOLD),

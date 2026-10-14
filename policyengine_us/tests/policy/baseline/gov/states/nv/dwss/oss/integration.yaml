@@ -11,7 +11,6 @@
     is_ssi_eligible: true
     ssi_category: AGED
     nv_oss_living_arrangement: INDEPENDENT_LIVING
-    nv_oss_payment_standard: 36.4
     ssi_countable_income: 0
     ssi_amount_if_eligible: 994
     ssi: 994
@@ -20,6 +19,9 @@
       2026: 436.8
     snap_unearned_income: 1_030.4
     spm_unit_benefits:
+      2026: 12_364.8
+    # HUD counts SSI and the supplement: $994 * 12 + $436.80 = $12,364.80.
+    hud_annual_income:
       2026: 12_364.8
 
 - name: Case 2, state-only payment remains after federal SSI is exhausted.
@@ -37,7 +39,6 @@
     is_ssi_eligible: true
     ssi_category: AGED
     nv_oss_living_arrangement: INDEPENDENT_LIVING
-    nv_oss_payment_standard: 36.4
     ssi_countable_income: 1_010
     ssi_amount_if_eligible: 994
     ssi: 0
@@ -80,7 +81,6 @@
     is_ssi_eligible: [true, true]
     ssi_category: [AGED, BLIND]
     ssi_couple_computation_applies: [true, true]
-    nv_oss_payment_standard: [112.265, 112.265]
     ssi_countable_income: [840, 840]
     ssi_amount_if_eligible: [745.5, 745.5]
     ssi: [0, 0]
@@ -124,7 +124,6 @@
     ssi_category: [BLIND, NONE]
     ssi_couple_computation_applies: [false, false]
     is_ssi_spousal_deeming_applies: [true, false]
-    nv_oss_payment_standard: [109.3, 0]
     ssi_countable_income: [1_830, 0]
     ssi_amount_if_eligible: [1_491, 994]
     ssi: [0, 0]
@@ -156,7 +155,6 @@
     ssi_category: BLIND
     ssi_federal_living_arrangement: ANOTHER_PERSONS_HOUSEHOLD
     nv_oss_living_arrangement: HOUSEHOLD_OF_ANOTHER
-    nv_oss_payment_standard: 213.96
     ssi_countable_income: 0
     ssi_amount_if_eligible: 662.67
     ssi: 662.67
@@ -184,7 +182,6 @@
     is_ssi_eligible: true
     ssi_category: AGED
     nv_oss_living_arrangement: DOMICILIARY_CARE
-    nv_oss_payment_standard: 391
     ssi_countable_income: 1_180
     ssi_amount_if_eligible: 994
     ssi: 0

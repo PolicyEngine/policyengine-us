@@ -65,7 +65,7 @@
   output:
     nv_oss_living_arrangement: NONE
 
-- name: Case 9, a child does not qualify for adult domiciliary care.
+- name: Case 9, a child in domiciliary care keeps the federal living arrangement mapping.
   period: 2026-01
   input:
     state_code: NV
@@ -73,4 +73,5 @@
     is_blind: true
     nv_oss_care_setting: DOMICILIARY_CARE
   output:
-    nv_oss_living_arrangement: NONE
+    # SF01415.300 E lists no exclusion for children; FLA A gives OSS A.
+    nv_oss_living_arrangement: INDEPENDENT_LIVING
