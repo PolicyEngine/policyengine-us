@@ -20,6 +20,8 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 WORKFLOW = REPO_ROOT / ".github" / "workflows" / "pr.yaml"
 SHARD = re.compile(r"\s+--shard\s+\d+/\d+")
 MAKE_TARGET = re.compile(r"\bmake\s+([\w-]+)")
+MATRIX_TARGET = re.compile(r"target\d*")
+MATRIX_CMD = re.compile(r"cmd\d*")
 
 pytestmark = pytest.mark.skipif(
     shutil.which("make") is None or not WORKFLOW.exists(),
@@ -60,13 +62,14 @@ def ci_suites():
     for job in workflow_jobs(WORKFLOW):
         matrix = (job.get("strategy") or {}).get("matrix") or {}
         for entry in matrix.get("include") or []:
-            if "target" in entry:
-                targets.add(entry["target"])
-            if "cmd" in entry:
-                cmd = entry["cmd"]
-                targets.update(MAKE_TARGET.findall(cmd))
-                if "test_batched.py" in cmd:
-                    commands.add(cmd.strip())
+            # A runner can run several groups: target1, target2, cmd1, ...
+            for key, value in entry.items():
+                if MATRIX_TARGET.fullmatch(key):
+                    targets.add(value)
+                if MATRIX_CMD.fullmatch(key):
+                    targets.update(MAKE_TARGET.findall(value))
+                    if "test_batched.py" in value:
+                        commands.add(value.strip())
         for step in job.get("steps") or []:
             for target in MAKE_TARGET.findall(step.get("run") or ""):
                 if not target.startswith("$"):

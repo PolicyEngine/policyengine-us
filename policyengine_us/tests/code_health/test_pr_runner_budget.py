@@ -14,6 +14,23 @@ GROUP_WORKFLOWS = {
 }
 PYTHON_JOBS = GROUP_WORKFLOWS["PythonTests"]["jobs"]
 KEEP_RUNNING = "${{ !cancelled() }}"
+PUSH_JOBS = yaml.safe_load((ROOT / ".github/workflows/push.yaml").read_text())["jobs"]
+# Each runner runs its groups in this order, grouped by name.
+GROUPED_SUITES = {
+    "Baseline": (
+        ("states-shard-1", "states-shard-2"),
+        ("states-shard-3", "states-shard-4"),
+        ("household", "ssa-usda"),
+        ("contrib-hhs", "irs", "reform"),
+        ("rest-a", "rest-b"),
+    ),
+    "Contrib": (
+        ("states-shard-1", "states-shard-2"),
+        ("states-shard-3", "states-shard-4"),
+        ("other-shard-1", "other-shard-2a"),
+        ("other-shard-2b", "other-shard-3", "congress"),
+    ),
+}
 
 
 def action(name):
@@ -30,6 +47,18 @@ def calls(job, name):
     ]
 
 
+def runners(job):
+    matrix = job.get("strategy", {}).get("matrix", {})
+    if "include" in matrix:
+        return len(matrix["include"])
+    return math.prod(len(values) for values in matrix.values())
+
+
+def needs(job):
+    value = job.get("needs", [])
+    return [value] if isinstance(value, str) else value
+
+
 def test_pr_runner_budget_keeps_the_heavy_suites_separate():
     counts = {}
     runner_jobs = {name: job for name, job in JOBS.items() if "uses" not in job}
@@ -38,25 +67,85 @@ def test_pr_runner_budget_keeps_the_heavy_suites_separate():
             assert name not in runner_jobs
             runner_jobs[name] = job
     for name, job in runner_jobs.items():
-        matrix = job.get("strategy", {}).get("matrix", {})
-        if "include" in matrix:
-            counts[name] = len(matrix["include"])
-        else:
-            counts[name] = math.prod(len(values) for values in matrix.values())
+        counts[name] = runners(job)
     # Rest hit the 90-minute timeout on #10024, #9913, #10139 and #10029
     # in October 2026. One extra runner buys about 45 minutes of headroom:
     # two tested shards share variables and the legacy summary check.
-    assert sum(counts.values()) == 27
+    # Baseline and Contrib run their groups in sequence on 5 and 4 runners
+    # (were 11 and 9), still finishing before the Rest shard chain.
+    assert sum(counts.values()) == 16
     assert {
         name: counts[name]
         for name in ("Baseline", "Contrib", "RestPython", "Rest", "Microsimulation")
     } == {
-        "Baseline": 11,
-        "Contrib": 9,
+        "Baseline": 5,
+        "Contrib": 4,
         "RestPython": 1,
         "Rest": 1,
         "Microsimulation": 1,
     }
+
+
+def test_a_pr_runs_at_most_14_runners_at_once():
+    # Validation runs alone. Everything that needs only validation then starts
+    # together; Rest waits for RestPython.
+    first_wave = {}
+    for name, job in JOBS.items():
+        if needs(job) != ["ReleaseLock"]:
+            continue
+        if "uses" not in job:
+            first_wave[name] = runners(job)
+            continue
+        for inner_name, inner in GROUP_WORKFLOWS[name]["jobs"].items():
+            if not needs(inner):
+                first_wave[inner_name] = runners(inner)
+    assert "Rest" not in first_wave
+    assert sum(first_wave.values()) == 14
+
+
+def test_grouped_runners_run_every_group_once_and_stop_on_cancellation():
+    for suite, runner_groups in GROUPED_SUITES.items():
+        pr_job = GROUP_WORKFLOWS[suite]["jobs"][suite]
+        push_job = PUSH_JOBS[suite]
+        # Release CI must test exactly what PR CI tests.
+        assert push_job["strategy"] == pr_job["strategy"]
+        key = "cmd" if suite == "Baseline" else "target"
+        entries = pr_job["strategy"]["matrix"]["include"]
+        assert [
+            tuple(entry[f"group{i}"] for i in (1, 2, 3) if f"group{i}" in entry)
+            for entry in entries
+        ] == list(runner_groups)
+        for entry, groups in zip(entries, runner_groups):
+            assert entry["group"] == " + ".join(groups)
+            assert set(entry) == {"group"} | {
+                f"{prefix}{i}"
+                for i in range(1, len(groups) + 1)
+                for prefix in ("group", key)
+            }
+        for job in (pr_job, push_job):
+            later = [
+                step
+                for step in job["steps"]
+                if any(f"matrix.{key}{i}" in step.get("run", "") for i in (2, 3))
+            ]
+            # A failed group must not hide the next group's results, and a
+            # cancelled run must stop the remaining groups.
+            assert [step["if"] for step in later] == [
+                f"${{{{ !cancelled() && matrix.{key}{i} }}}}" for i in (2, 3)
+            ]
+
+
+def test_no_test_job_keeps_running_after_cancellation():
+    # A job-level always() also holds after a manual or cancel-in-progress
+    # cancellation, so the job keeps running or even starts. Jobs that wait for
+    # another suite use !cancelled() to run after its failure instead.
+    workflows = ["pr.yaml", "push.yaml"] + [
+        Path(job["uses"]).name for job in JOBS.values() if "uses" in job
+    ]
+    for file in workflows:
+        jobs = yaml.safe_load((ROOT / ".github/workflows" / file).read_text())["jobs"]
+        for name, job in jobs.items():
+            assert "always()" not in str(job.get("if", "")), (file, name)
 
 
 def test_suite_groups_have_no_extra_runners_or_triggers():
@@ -88,7 +177,8 @@ def test_suite_groups_have_no_extra_runners_or_triggers():
         assert not job.get("continue-on-error")
     # The second tested runner also checks the first runner's result. There
     # is no third runner just for the summary, or a variables-only runner.
-    assert PYTHON_JOBS["Rest"]["if"] == "${{ always() }}"
+    # !cancelled(), not always(): always() kept it running after cancellation.
+    assert PYTHON_JOBS["Rest"]["if"] == KEEP_RUNNING
     assert PYTHON_JOBS["Rest"]["name"] == "Full Suite - Rest (Python + variables)"
 
 

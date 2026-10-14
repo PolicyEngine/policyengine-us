@@ -168,7 +168,10 @@ jobs:
     needs: ReleaseLock
     name: Full Suite - Baseline (${{ matrix.group }})
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Two or three groups in sequence: historical medians about 54-66
+    # minutes per runner (household + ssa-usda projected at about 60 after
+    # the household split; about 22 for rest-a + rest-b).
+    timeout-minutes: 120
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -179,30 +182,37 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # One state per subprocess; retain four runners and one worker each.
-          # The former NY/OH/OK process peaked at 15.1 GB (run 36930199045).
-          - group: states-shard-1
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 1/4
-          - group: states-shard-2
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 2/4
-          - group: states-shard-3
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 3/4
-          - group: states-shard-4
-            cmd: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 4/4
-          - group: irs
-            cmd: make test-yaml-no-structural-other-irs
-          - group: household
-            cmd: make test-yaml-no-structural-other-household
-          - group: ssa-usda
-            cmd: make test-yaml-no-structural-other-ssa-usda
-          - group: rest-a
-            cmd: make test-yaml-no-structural-other-rest-a
-          - group: rest-b
-            cmd: make test-yaml-no-structural-other-rest-b
-          - group: contrib-hhs
-            cmd: make test-yaml-contrib-hhs
-          - group: reform
-            cmd: make test-yaml-reform
+          # Five runners, grouped by name, run their groups one after another
+          # with one worker each. The states shards still run one state per
+          # subprocess: the former NY/OH/OK process peaked at 15.1 GB (run
+          # 36930199045).
+          - group: states-shard-1 + states-shard-2
+            group1: states-shard-1
+            cmd1: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 1/4
+            group2: states-shard-2
+            cmd2: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 2/4
+          - group: states-shard-3 + states-shard-4
+            group1: states-shard-3
+            cmd1: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 3/4
+            group2: states-shard-4
+            cmd2: python policyengine_us/tests/test_batched.py policyengine_us/tests/policy/baseline/gov/states --mode per-subdir --workers 1 --shard 4/4
+          - group: household + ssa-usda
+            group1: household
+            cmd1: make test-yaml-no-structural-other-household
+            group2: ssa-usda
+            cmd2: make test-yaml-no-structural-other-ssa-usda
+          - group: contrib-hhs + irs + reform
+            group1: contrib-hhs
+            cmd1: make test-yaml-contrib-hhs
+            group2: irs
+            cmd2: make test-yaml-no-structural-other-irs
+            group3: reform
+            cmd3: make test-yaml-reform
+          - group: rest-a + rest-b
+            group1: rest-a
+            cmd1: make test-yaml-no-structural-other-rest-a
+            group2: rest-b
+            cmd2: make test-yaml-no-structural-other-rest-b
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -221,8 +231,16 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run Baseline YAML tests (${{ matrix.group }})
-        run: uv run --no-sync ${{ matrix.cmd }}
+      - name: Run Baseline YAML tests (${{ matrix.group1 }})
+        run: uv run --no-sync ${{ matrix.cmd1 }}
+      # Later groups still run after an earlier group fails, but not after
+      # the run is cancelled.
+      - name: Run Baseline YAML tests (${{ matrix.group2 }})
+        if: ${{ !cancelled() && matrix.cmd2 }}
+        run: uv run --no-sync ${{ matrix.cmd2 }}
+      - name: Run Baseline YAML tests (${{ matrix.group3 }})
+        if: ${{ !cancelled() && matrix.cmd3 }}
+        run: uv run --no-sync ${{ matrix.cmd3 }}
   HouseholdAPIPartners:
     needs: ReleaseLock
     name: Household API Partners
@@ -258,7 +276,9 @@ jobs:
     needs: ReleaseLock
     name: Full Suite - Contrib (${{ matrix.group }})
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # Two or three groups in sequence: historical medians 47-74 minutes per
+    # runner.
+    timeout-minutes: 120
     if: |
       (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
@@ -269,24 +289,29 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - group: states-shard-1
-            target: test-yaml-structural-heavy-shard-1
-          - group: states-shard-2
-            target: test-yaml-structural-heavy-shard-2
-          - group: states-shard-3
-            target: test-yaml-structural-heavy-shard-3
-          - group: states-shard-4
-            target: test-yaml-structural-heavy-shard-4
-          - group: other-shard-1
-            target: test-yaml-structural-other
-          - group: other-shard-2a
-            target: test-yaml-structural-other-shard-2a
-          - group: other-shard-2b
-            target: test-yaml-structural-other-shard-2b
-          - group: other-shard-3
-            target: test-yaml-structural-other-shard-3
-          - group: congress
-            target: test-yaml-structural-congress
+          # Four runners, grouped by name, run their groups one after another.
+          - group: states-shard-1 + states-shard-2
+            group1: states-shard-1
+            target1: test-yaml-structural-heavy-shard-1
+            group2: states-shard-2
+            target2: test-yaml-structural-heavy-shard-2
+          - group: states-shard-3 + states-shard-4
+            group1: states-shard-3
+            target1: test-yaml-structural-heavy-shard-3
+            group2: states-shard-4
+            target2: test-yaml-structural-heavy-shard-4
+          - group: other-shard-1 + other-shard-2a
+            group1: other-shard-1
+            target1: test-yaml-structural-other
+            group2: other-shard-2a
+            target2: test-yaml-structural-other-shard-2a
+          - group: other-shard-2b + other-shard-3 + congress
+            group1: other-shard-2b
+            target1: test-yaml-structural-other-shard-2b
+            group2: other-shard-3
+            target2: test-yaml-structural-other-shard-3
+            group3: congress
+            target3: test-yaml-structural-congress
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -305,11 +330,19 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run Contrib YAML tests (${{ matrix.group }})
-        run: uv run --no-sync make ${{ matrix.target }}
+      - name: Run Contrib YAML tests (${{ matrix.group1 }})
+        run: uv run --no-sync make ${{ matrix.target1 }}
       - name: Run Contrib Python tests
-        if: ${{ matrix.group == 'other-shard-1' }}
+        if: ${{ matrix.group1 == 'other-shard-1' }}
         run: uv run --no-sync make test-policy-contrib-python
+      # Later groups still run after an earlier group fails, but not after
+      # the run is cancelled.
+      - name: Run Contrib YAML tests (${{ matrix.group2 }})
+        if: ${{ !cancelled() && matrix.target2 }}
+        run: uv run --no-sync make ${{ matrix.target2 }}
+      - name: Run Contrib YAML tests (${{ matrix.group3 }})
+        if: ${{ !cancelled() && matrix.target3 }}
+        run: uv run --no-sync make ${{ matrix.target3 }}
   RestPython:
     needs: ReleaseLock
     name: Full Suite - Rest (Python, shard-1 + variables)
@@ -378,10 +411,12 @@ jobs:
     name: Full Suite - Rest (Python + variables)
     runs-on: ubuntu-latest
     # Historical group times: 32-46 minutes plus setup.
-    # This runner also retains the legacy summary check, keeping PRs at 27 runners.
+    # This runner also retains the legacy summary check, keeping PRs at 16 runners.
     timeout-minutes: 90
+    # Runs after a shard-1 failure but stops when the run is cancelled.
+    # always() kept this runner alive after cancellation.
     if: |
-      always()
+      !cancelled()
       && (github.repository == 'PolicyEngine/policyengine-us')
       && (github.event.head_commit.message == 'Update PolicyEngine US')
     env:

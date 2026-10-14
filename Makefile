@@ -197,8 +197,9 @@ test-yaml-variables:
 	$(BATCH) $(TESTS)/variables --batches 1
 test-yaml-no-structural-states:
 	# Release model/parameter caches between states. The former NY/OH/OK
-	# group peaked at 15.1 GB; keep one subprocess at a time on each of
-	# the existing four CI runners. Root-level state tests remain included.
+	# group peaked at 15.1 GB; keep one subprocess at a time. CI runs the
+	# four --shard i/4 slices two per runner, one after another.
+	# Root-level state tests remain included.
 	$(BATCH) $(TESTS)/policy/baseline/gov/states --mode per-subdir --workers 1
 test-yaml-no-structural-other:
 	$(BATCH) $(TESTS)/policy/baseline --batches 2 --exclude states
@@ -211,10 +212,11 @@ test-yaml-no-structural-other-irs:
 	# 28698452678 — co-scheduling a second batch leaves no headroom.
 	$(BATCH) $(TESTS)/policy/baseline/gov/irs --mode per-subdir --workers 1
 test-yaml-no-structural-other-household:
-	# 4 batches (was 2), --workers 1: a 2-batch half of this folder (incl.
-	# the weights/MTR files) peaked 11.8 GB on CI run 28698452678. Quarter
-	# batches keep each subprocess <= ~6 GB.
-	$(BATCH) $(TESTS)/policy/baseline/household --batches 4 --workers 1
+	# --workers 1: the batcher's household branch runs the root files and
+	# income/household one file per subprocess and each other subfolder as
+	# one, keeping each subprocess <= ~7 GB. The former quarter batches
+	# peaked at 15.1 GB on the 16 GB runner.
+	$(BATCH) $(TESTS)/policy/baseline/household --workers 1
 test-yaml-no-structural-other-contrib:
 	# ubi_center is microsim-heavy → per-file, one ~4 GB peak at a time.
 	$(BATCH) $(TESTS)/policy/baseline/contrib/ubi_center --mode per-file --workers 1
@@ -237,9 +239,9 @@ test-yaml-no-structural-other-hhs:
 	# hhs (~2.7 GB peak) rides along with the baseline-contrib runner,
 	# which has spare headroom.
 	$(BATCH) $(TESTS)/policy/baseline/gov/hhs --batches 1
-# baseline contrib + gov/hhs share one CI runner. policy/reform no longer
-# rides along: its per-file peaks (~5.5-8 GB) plus this pair filled a job
-# past the safety margin, so reform gets its own runner.
+# baseline contrib + gov/hhs form one make target. policy/reform stays a
+# separate target (per-file peaks ~5.5-8 GB): CI runs contrib-hhs, irs and
+# reform as sequential steps on one runner, so only one peak is resident.
 test-yaml-contrib-hhs: test-yaml-no-structural-other-contrib test-yaml-no-structural-other-hhs
 test-yaml-no-structural-other-ssa:
 	# revenue is heavy enough to need its own 2-batch split. --workers 1:

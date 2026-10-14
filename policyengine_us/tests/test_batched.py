@@ -385,6 +385,40 @@ def split_into_batches(
             batches.append([str(f) for f in root_files])
         return batches
 
+    # Special handling for household tests. Household totals (net income,
+    # marginal tax rates, all-program benefits) load most of the model in
+    # every file, and memory accumulates across the files one subprocess
+    # runs. The former quarter batches peaked at 15.1 GB on the 16 GB runner
+    # and ended in "The runner has received a shutdown signal". Measured
+    # 2026-10-14 (local peak footprint, within 1% of CI's batch peaks): the
+    # 15 root files peaked at 13.3 GB together and income/household's 8 files
+    # at 11.4 GB, but no single file exceeded 6.2 GB. Those files run one per
+    # subprocess; every other subfolder stays one subprocess (at most 7.1 GB,
+    # income/spm_unit), with income split into its subfolders.
+    if str(base_path).endswith("baseline/household"):
+        income = base_path / "income"
+        one_per_file = {base_path, income / "household"}
+        batches = []
+
+        def visit(folder: Path) -> None:
+            for item in sorted(folder.iterdir()):
+                if not item.is_dir() or item.name in exclude:
+                    continue
+                if item == income:
+                    visit(item)
+                elif item in one_per_file:
+                    batches.extend([str(f)] for f in yaml_files(item))
+                else:
+                    batches.extend(subdir_batches(item))
+            loose = root_yaml_files(folder)
+            if folder in one_per_file:
+                batches.extend([str(f)] for f in loose)
+            elif loose:
+                batches.append([str(f) for f in loose])
+
+        visit(base_path)
+        return batches
+
     # Special handling for baseline tests
     if "baseline" in str(base_path) and str(base_path).endswith("baseline"):
         states_path = base_path / "gov" / "states"
