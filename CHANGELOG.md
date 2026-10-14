@@ -1,3 +1,35 @@
+## [2.42.4] - 2026-10-14
+
+### Changed
+
+- Use DHCS Title 21 child cost estimates for California CCHIP net and gross benefit values in model years 2026 and 2027, retaining the existing MCAP valuation.
+
+### Fixed
+
+- Fix the deduction determinism test fixture and health-expense uprating expectations to reflect the current unemployment-compensation and premium inputs.
+
+
+## [2.42.3] - 2026-10-14
+
+### Fixed
+
+- North Carolina's $20,000 cap on mortgage interest and real estate taxes is now shared by spouses filing separately, including a spouse in another state, prorated by the share each paid or, for joint-account payments, by each spouse's income (G.S. 105-153.5(a)(2)b).
+
+
+## [2.42.2] - 2026-10-13
+
+### Fixed
+
+- Count a tax unit that takes up the ACA premium tax credit as filing a return to claim it (26 CFR 1.6011-8(a)), so the filing gate on aca_ptc and on the California, Maryland and New Mexico premium programs no longer zeroes the credit of a tax unit that takes it up but would not otherwise file; a tax unit that neither files nor takes up the credit still gets none.
+
+
+## [2.42.1] - 2026-10-13
+
+### Fixed
+
+- Split the Rest CI suite into two sequential Python shards, folding variables YAML and the legacy aggregate check into those runners to avoid the 90-minute timeout while increasing the PR runner budget from 26 to 27. Retain isolated test processes and timing reports.
+
+
 ## [2.42.0] - 2026-10-13
 
 ### Added
