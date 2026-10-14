@@ -1,6 +1,9 @@
 description: Hawaii provides the following non-refundable tax credits.
 values:
-  2021-01-01:
+  # Model years start in 2015. Hawaii had no earned income tax credit
+  # before 2018.
+  2000-01-01: []
+  2018-01-01:
     - hi_eitc
   2023-01-01: []
 
@@ -11,5 +14,9 @@ metadata:
   reference:
     - title: Hawaii Revised Statutes Title 14. Taxation 235. Income Tax Law, 235-55.75 Earned income tax credit. # repealed in 2023
       href: https://law.justia.com/codes/hawaii/2022/title-14/chapter-235/section-235-55-75/
+    - title: 2018 Hawaii N-11 Instructions, What's new (Act 107, SLH 2017)
+      href: https://files.hawaii.gov/tax/forms/2018/n11ins.pdf#page=2
+    - title: 2018 Hawaii Form N-356 Instructions
+      href: https://web.archive.org/web/20190819110547/http://files.hawaii.gov/tax/forms/2018/n356_i.pdf#page=2
     - title: 2025 Hawaii N-11 Instructions
       href: https://files.hawaii.gov/tax/forms/current/n11ins.pdf

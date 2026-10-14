@@ -1,5 +1,12 @@
 description: Hawaii provides the following refundable tax credits.
 values:
+  # Model years start in 2015. The Act 115 refund went only to filers of a
+  # 2021 Form N-11.
+  2000-01-01:
+    - hi_food_excise_credit
+    - hi_cdcc
+    - hi_tax_credit_for_low_income_household_renters
+
   2021-01-01:
     - hi_food_excise_credit
     - hi_cdcc
@@ -22,6 +29,10 @@ metadata:
   period: year
   label: Hawaii refundable tax credits
   reference:
+    - title: 2018 Hawaii N-11 Tax Form
+      href: https://files.hawaii.gov/tax/forms/2018/n11_i.pdf#page=3
+    - title: Hawaii Department of Taxation Announcement No. 2022-03, Act 115 Income Tax Refunds
+      href: https://files.hawaii.gov/tax/news/announce/ann22-03.pdf#page=2
     - title: 2022 Hawaii N-11 Tax Form
       href: https://files.hawaii.gov/tax/forms/2022/n11_i.pdf#page=3
     - title: 2021 Hawaii N-11 Tax Form
