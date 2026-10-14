@@ -102,6 +102,55 @@
   output:
     nm_medical_expense_credit: 0
 
+- name: An independent senior household cannot qualify a senior claimed elsewhere in another household
+  period: 2025
+  input:
+    people:
+      independent_senior:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        medicare_enrolled: false
+        claimed_as_dependent_on_another_return: false
+        other_medical_expenses: 28_000
+      claimed_senior:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        medicare_enrolled: false
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        medicare_enrolled: false
+        other_medical_expenses: 28_000
+    tax_units:
+      independent_unit:
+        members: [independent_senior]
+        filing_status: SINGLE
+        self_employed_health_insurance_ald: 0
+      claimed_unit:
+        members: [claimed_senior, child]
+        filing_status: SINGLE
+        self_employed_health_insurance_ald: 0
+    households:
+      independent_household:
+        members: [independent_senior]
+        state_code: NM
+      claimed_household:
+        members: [claimed_senior, child]
+        state_code: NM
+  output:
+    itemized_medical_expenses: [28_000, 28_000]
+    itemized_medical_expenses_applied_exclusion: [0, 0]
+    head_is_dependent_elsewhere: [false, true]
+    head_or_spouse_is_dependent_elsewhere: [false, true]
+    # NMSA 7-2-18.13(A): age 65 and 28,000 of costs are insufficient
+    # when the SINGLE filer is a dependent of another taxpayer.
+    nm_medical_expense_credit: [2_800, 0]
+
 - name: Joint return where only one spouse is a dependent of another taxpayer (the claimable spouse is the head)
   period: 2023
   input:
