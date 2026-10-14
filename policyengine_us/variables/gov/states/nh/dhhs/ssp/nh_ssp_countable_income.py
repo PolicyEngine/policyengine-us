@@ -17,14 +17,11 @@ class nh_ssp_countable_income(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nh.dhhs.ssp
-        arrangement = person("nh_ssp_living_arrangement", period)
-        independent = arrangement == arrangement.possible_values.INDEPENDENT
         spouse = nh_ssp_spouse(person, period)
         couple = spouse >= 0
-        has_essential_person = person("nh_ssp_has_essential_person", period)
-        essential = independent & (
-            has_essential_person | spouse_value(has_essential_person, spouse, False)
-        )
+        size = person("nh_ssp_assistance_group_size", period)
+        # A group larger than the person and any spouse includes an essential person.
+        essential = size > 1 + couple
         eligible = person("nh_ssp_eligible", period)
         both_applicants = eligible & spouse_value(eligible, spouse, False)
         earned = max_(person("ssi_earned_income", period), 0)
@@ -68,9 +65,5 @@ class nh_ssp_countable_income(Variable):
         unearned = unearned + essential * max_(
             essential_income, spouse_value(essential_income, spouse)
         )
-        disregard = where(
-            essential & couple,
-            p.three_person_disregard,
-            where(couple | essential, p.couple_disregard, p.single_disregard),
-        )
+        disregard = p.standard_disregard[size]
         return max_(net_earned + unearned - disregard - other, 0)

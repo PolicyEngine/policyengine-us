@@ -1,0 +1,21 @@
+description: New Hampshire maintains this minimum supplemental payment level for a two-person independent-living assistance group under the adult category financial assistance program.
+values:
+  # SR 26-01: the $1,492 standard less the $1,491 SSI maximum for an individual
+  # and either a spouse or needy essential person, plus the $20 standard
+  # disregard. SSA's January 1998 and January 2011 tables print the same $21
+  # couple supplement, and NH's January releases match it from 1999 to 2026.
+  1998-01-01: 21
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: New Hampshire SSP two-person minimum payment level
+  reference:
+    - title: He-W 658.03(c) and (e), Adult category standard of need
+      href: https://gc.nh.gov/rules/state_agencies/he-w600.html
+    - title: SSA, State Assistance Programs for SSI Recipients, January 1998, New Hampshire, payment levels
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/1998/nh.pdf#page=3
+    - title: SSA, State Assistance Programs for SSI Recipients, January 2011, New Hampshire, Table 1
+      href: https://www.ssa.gov/policy/docs/progdesc/ssi_st_asst/2011/nh.pdf#page=2
+    - title: NH DHHS Supervisory Release SR 26-01, January 2026 COLA
+      href: https://www.dhhs.nh.gov/sr_htm/html/sr_26-01_dated_01_26.htm

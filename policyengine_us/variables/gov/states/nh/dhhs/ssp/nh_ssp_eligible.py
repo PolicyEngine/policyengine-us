@@ -16,6 +16,7 @@ class nh_ssp_eligible(Variable):
         "https://gc.nh.gov/rules/state_agencies/he-w600.html",
         "https://dhhs.nh.gov/aam_htm/html/305_11_qualified_aliens_eligible_without_restriction_aam.htm",
         "https://dhhs.nh.gov/aam_htm/html/305_13_qualified_aliens_with_restricted_eligibility_based_on_date_of_entry_into_the_us_aam.htm",
+        "https://www.law.cornell.edu/uscode/text/8/1622#b",
     )
 
     def formula(person, period, parameters):
@@ -28,12 +29,10 @@ class nh_ssp_eligible(Variable):
         )
         arrangement = person("nh_ssp_living_arrangement", period)
         la = arrangement.possible_values
-        independent = arrangement == la.INDEPENDENT
         spouse = nh_ssp_spouse(person, period)
-        has_essential_person = person("nh_ssp_has_essential_person", period)
-        essential = independent & (
-            has_essential_person | spouse_value(has_essential_person, spouse, False)
-        )
+        size = person("nh_ssp_assistance_group_size", period)
+        # A group larger than the person and any spouse includes an essential person.
+        essential = size > 1 + (spouse >= 0)
         resources = person("ssi_countable_resources", period.this_year)
         resources = resources + spouse_value(resources, spouse)
         resources = resources + person("nh_ssp_resources_deemed_from_parents", period)
@@ -45,19 +44,31 @@ class nh_ssp_eligible(Variable):
         )
         # He-W 616.02(a): qualified aliens under 8 USC 1641(b) are eligible once
         # the waiting period since entry has elapsed, which also covers entry
-        # before August 22, 1996. AAM 305.11 exempts the listed statuses; AAM
-        # 305.13 applies the wait to permanent residents regardless of work
-        # history, so SSI's 40-quarter rule does not apply.
+        # before August 22, 1996. AAM 305.11 exempts the listed statuses, as
+        # 8 USC 1622(b)(1) requires.
+        # NOTE: source conflict. AAM 305.13 keeps "lawfully admitted permanent
+        # residents regardless of work history" out for the 5 years. 8 USC
+        # 1622(b)(2) instead makes a permanent resident credited with 40
+        # qualifying quarters (8 USC 1645) "eligible for any State public
+        # benefits", and He-W 616.02 does not address it. The model follows
+        # the federal statute. The quarters come from
+        # snap_alien_qualifying_quarters, the same legal count, which defaults
+        # to 0, so the exception applies only when quarters are supplied.
         immigration = person("immigration_status", period.this_year)
-        citizen = immigration == immigration.possible_values.CITIZEN
+        statuses = immigration.possible_values
+        citizen = immigration == statuses.CITIZEN
         exempt = np.isin(immigration.decode_to_str(), p.immigration.exempt_statuses)
+        quarters = person("snap_alien_qualifying_quarters", period.this_year)
+        credited_permanent_resident = (
+            immigration == statuses.LEGAL_PERMANENT_RESIDENT
+        ) & (quarters >= p.immigration.permanent_resident_qualifying_quarters)
         waited = (
             person("years_since_us_entry", period.this_year)
             >= p.immigration.waiting_period
         )
         immigration_eligible = person(
             "is_citizen_or_legal_immigrant", period.this_year
-        ) & (citizen | exempt | waited)
+        ) & (citizen | exempt | credited_permanent_resident | waited)
         return (
             (aged | blind | disabled)
             & (resources <= p.resource_limit)

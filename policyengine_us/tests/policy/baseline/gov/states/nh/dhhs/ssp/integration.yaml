@@ -161,6 +161,8 @@
     # 11,928 SSI + 324 state supplement = 12,252.
     snap_unearned_income: 12_252
     hud_unearned_income: 12_252
+    # $11,928 SSI + $324 state supplement + $678 SNAP = $12,930.
+    spm_unit_benefits: 12_930
 
 - name: Case 7, eligible couple and essential person share a three-person grant.
   period: 2026-01
@@ -181,8 +183,9 @@
         state_code: NH
   output:
     ssi: [745.5, 745.5]
-    # 1,989 three-person standard - 1,466 = 523, split between two recipients.
-    nh_ssp: [261.5, 261.5]
+    # 1,976 three-person standard (SR 26-01) - 1,466 = 510, split between two
+    # recipients.
+    nh_ssp: [255, 255]
     # 745.5 + 745.5 - 25 three-person disregard = 1,466.
     nh_ssp_countable_income: [1_466, 1_466]
 
@@ -207,8 +210,8 @@
     ssi: [994, 0]
     # 994 - 25 three-person disregard = 969.
     nh_ssp_countable_income: [969, 969]
-    # 1,989 three-person standard - 969 = 1,020.
-    nh_ssp: [1_020, 0]
+    # 1,976 three-person standard (SR 26-01) - 969 = 1,007.
+    nh_ssp: [1_007, 0]
 
 - name: Case 9, nonapplicant spouse's part-time earnings are combined with the applicant's.
   period: 2026-01

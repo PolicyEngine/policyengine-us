@@ -19,7 +19,8 @@ class nh_ssp_resources_deemed_from_parents(Variable):
     # under He-W 601.06(b); the federal pool also counts a named parent's
     # co-resident spouse. Override with the agency-determined amount for a different
     # certified budget, temporary absence, or the month of the eighteenth birthday;
-    # annual age cannot identify that month.
+    # annual age cannot identify that month. He-W 652.03(j) cites "He-W 656.06(c)",
+    # which does not exist; the adult category resource limit is He-W 656.06(b).
 
     def formula(person, period, parameters):
         p = parameters(period).gov.ssa.ssi.eligibility.resources.limit

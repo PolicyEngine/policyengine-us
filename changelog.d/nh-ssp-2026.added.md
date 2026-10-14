@@ -1,1 +1,1 @@
-Add New Hampshire essential-person assistance groups to the 2026 SSP calculation. Add New Hampshire State Supplement Program for 2026.
+Add New Hampshire's adult category state supplement (Old Age Assistance, Aid to the Needy Blind and Aid to the Permanently and Totally Disabled) for 2026.

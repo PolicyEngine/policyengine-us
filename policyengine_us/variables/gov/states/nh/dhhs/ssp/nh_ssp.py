@@ -16,27 +16,34 @@ class nh_ssp(Variable):
         # PDF pages 14-16
         "https://www.medicaid.gov/medicaid/spa/downloads/NH-26-0001.pdf#page=14",
         "https://gc.nh.gov/rules/state_agencies/he-w600.html",
+        "https://www.dhhs.nh.gov/sr_htm/html/sr_26-01_dated_01_26.htm",
     )
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.nh.dhhs.ssp
         arrangement = person("nh_ssp_living_arrangement", period)
-        independent = arrangement == arrangement.possible_values.INDEPENDENT
         spouse = nh_ssp_spouse(person, period)
-        couple = spouse >= 0
-        has_essential_person = person("nh_ssp_has_essential_person", period)
-        essential = independent & (
-            has_essential_person | spouse_value(has_essential_person, spouse, False)
-        )
-        standard = where(couple, p.couple_need, p.individual_need[arrangement])
-        standard = where(
-            essential, where(couple, p.three_person_need, p.couple_need), standard
+        size = person("nh_ssp_assistance_group_size", period)
+        # He-W 658.03(e) and 648.04(b): the standard of need is the SSI maximum
+        # for the group plus the minimum payment level less the standard
+        # disregard, so it moves with each SSI cost-of-living increase.
+        ssi = parameters(period).gov.ssa.ssi.amount
+        disregard = p.standard_disregard[size]
+        level = p.minimum_payment_level
+        one_person = ssi.individual + level.one_person[arrangement] - disregard
+        two_person = ssi.couple + level.two_person - disregard
+        standard = select(
+            [size == 3, size == 2],
+            [p.three_person_need, two_person],
+            default=one_person,
         )
         income = person("nh_ssp_countable_income", period)
         grant = np.floor(max_(standard - income, 0) + 0.5)
         # He-W 670.03(a)(4): no payment when the rounded grant is below the minimum.
         grant = where(grant >= p.minimum_payment, grant, 0)
-        # He-W 670.03(c) reduces the group grant, so either spouse's flag applies.
+        # He-W 670.03(c) reduces "the adult category grant pursuant to (a)", and
+        # the rule does not apply the minimum again afterwards, so a reduced $2
+        # grant pays $1. Either spouse's flag reduces the group grant.
         reduction = person("nh_ssp_grant_reduction_applies", period)
         reduction = reduction | spouse_value(reduction, spouse, False)
         grant = np.floor(grant * (1 - reduction * p.grant_reduction_fraction) + 0.5)
