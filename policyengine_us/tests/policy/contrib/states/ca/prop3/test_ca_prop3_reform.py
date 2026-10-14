@@ -59,6 +59,15 @@ POST_SUNSET_RATES = BASE_RATES + [0.093, 0.093, 0.093]
 SURCHARGE_BRACKETS = [6, 7, 8]
 INCOME = 1_000_000
 
+# Input generation can be descheduled on shared hosts; keep every example and
+# assertion without treating that wall-clock delay as a test failure.
+# Deterministic examples keep CI failures reproducible.
+PROPERTY_SETTINGS = dict(
+    deadline=None,
+    derandomize=True,
+    suppress_health_check=[HealthCheck.too_slow, HealthCheck.data_too_large],
+)
+
 
 @functools.lru_cache(maxsize=None)
 def _bypass_system():
@@ -146,7 +155,7 @@ def test_ca_prop3_rates_all_statuses_and_years(status):
         ), year
 
 
-@settings(max_examples=300, deadline=None)
+@settings(max_examples=300, **PROPERTY_SETTINGS)
 @given(
     year=st.integers(min_value=2025, max_value=2040),
     income=st.floats(min_value=0, max_value=50_000_000, allow_nan=False),
@@ -372,13 +381,7 @@ UPDATES = st.lists(
 )
 
 
-# Input generation can be descheduled on shared hosts; keep every example and
-# assertion without treating that wall-clock delay as a test failure.
-@settings(
-    max_examples=300,
-    deadline=None,
-    suppress_health_check=[HealthCheck.too_slow],
-)
+@settings(max_examples=300, **PROPERTY_SETTINGS)
 @given(updates=UPDATES)
 def test_ca_prop3_windows_match_dated_in_effect(updates):
     in_effect, boundaries = _toggle(updates)
@@ -417,7 +420,7 @@ EDITS = st.lists(
 )
 
 
-@settings(max_examples=150, deadline=None)
+@settings(max_examples=150, **PROPERTY_SETTINGS)
 @given(edits=EDITS, updates=UPDATES)
 def test_ca_prop3_restores_only_the_enacted_sunset(edits, updates):
     baseline_rates = baseline_system.parameters.gov.states.ca.tax.income.rates
