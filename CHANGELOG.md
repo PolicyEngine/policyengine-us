@@ -1,3 +1,12 @@
+## [2.42.9] - 2026-10-14
+
+### Fixed
+
+- Stop testing every filer's unearned income against $500 in the federal filing requirement (26 U.S.C. 6012): the unearned income test now applies only to a head or spouse who can be claimed as a dependent on another return, uses the section 63(c)(5)(A) amount for the year ($1,350 in 2025) plus that person's own additional standard deduction for age or blindness, and counts that person's gross income other than wages, business income and farm income (the earned income of the IRS dependent worksheet), so a self-employment loss no longer counts as unearned income.
+- Medicaid MAGI household income now nets one household member's negative MAGI-based income, such as a spouse's business loss on a joint return, against the others' income and floors only the household's total at zero (42 CFR 435.603(d)(1); Form 8962, line 3). Each person's Medicaid AGI now subtracts their own above-the-line deductions, and a self-employment loss no longer counts as unearned income in the Medicaid filing-requirement test.
+- Apply the 26 U.S.C. 6012(a)(1) federal filing requirement from 2026, when section 6012(f) expires: for a tax unit nobody can claim as a dependent, the threshold is the basic standard deduction plus the additions for age but not blindness, and gross income equal to it requires a return.
+
+
 ## [2.42.8] - 2026-10-14
 
 ### Fixed

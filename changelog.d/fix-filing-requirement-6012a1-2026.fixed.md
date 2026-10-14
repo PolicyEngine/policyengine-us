@@ -1,1 +1,0 @@
-Apply the 26 U.S.C. 6012(a)(1) federal filing requirement from 2026, when section 6012(f) expires: for a tax unit nobody can claim as a dependent, the threshold is the basic standard deduction plus the additions for age but not blindness, and gross income equal to it requires a return.
