@@ -47,6 +47,8 @@ def _active_windows(in_effect) -> list:
 def _enacted_schedule(file_path: str):
     # The schedule as enacted, read from the file the rates were loaded from,
     # so the reform can tell the statutory sunset apart from a user's edit.
+    # The YAML must remain readable at this path, including after unpickling
+    # the system on another machine.
     return load_parameter_file(file_path)
 
 
