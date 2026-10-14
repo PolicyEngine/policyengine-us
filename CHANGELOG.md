@@ -1,3 +1,10 @@
+## [2.42.12] - 2026-10-14
+
+### Fixed
+
+- Document disjoint pretax and non-pretax health premium inputs, include employee-paid pretax premiums in applicable benefit and New Jersey medical deductions, exclude pretax premiums from SSI wages and North Dakota renter-refund income. Preserve Minnesota Supplemental Aid gross income for eligibility and guardian fees while applying SSI salary-reduction exclusions to countable income.
+
+
 ## [2.42.11] - 2026-10-14
 
 ### Fixed
