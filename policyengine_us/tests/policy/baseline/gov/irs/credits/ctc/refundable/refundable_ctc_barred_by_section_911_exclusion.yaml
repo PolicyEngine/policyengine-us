@@ -47,3 +47,48 @@
     foreign_earned_income_exclusion: 30_000
   output:
     refundable_ctc_barred_by_section_911_exclusion: false
+
+# Section 911(a)(2) covers the housing exclusion even when the earned-income
+# exclusion is zero. Deductions can reduce the derived aggregates to zero
+# without undoing the Form 2555 election.
+- name: A housing-only leaf election is barred when deductions cancel both aggregates
+  period: 2025
+  input:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    refundable_ctc_barred_by_section_911_exclusion: true
+
+- name: A housing-only election is barred with an explicit zero stacking override
+  period: 2025
+  input:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion: 0
+  output:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_earned_income_exclusion: 0
+    refundable_ctc_barred_by_section_911_exclusion: true
+
+- name: An earned-income leaf election is barred when deductions cancel both aggregates
+  period: 2025
+  input:
+    foreign_earned_income_exclusion_amount: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    refundable_ctc_barred_by_section_911_exclusion: true
+
+- name: A positive section 911 MAGI amount is barred with zero stacking
+  period: 2025
+  input:
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    refundable_ctc_barred_by_section_911_exclusion: true

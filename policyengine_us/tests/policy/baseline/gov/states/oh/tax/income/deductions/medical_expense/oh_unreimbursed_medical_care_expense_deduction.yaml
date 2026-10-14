@@ -143,3 +143,69 @@
     # tax 342 + 2.75% * (52,350 - 26,050) = 1,065.25 (2025 instructions, p. 18).
     # MAGI less exemptions is 52,350, so the credit is 10% = 106.53.
     oh_joint_filing_credit: 106.53
+
+- name: PolicyBench scenario_025, after-tax premiums of a spouse with employer coverage count on line 3
+  # R.C. 5747.01(A)(10)(a) bars the full premium deduction (worksheet line 1)
+  # for a taxpayer eligible for a subsidized plan of the taxpayer's or the
+  # spouse's employer. Division (b) still counts premiums the taxpayer paid,
+  # not otherwise deducted or excluded, toward medical care above 7.5% of
+  # federal AGI. The 2025 worksheet (p. 41) puts them on line 3, for anyone
+  # "eligible for Medicare or an employer-paid health care plan", and Ohio's
+  # FAQ (Q8) says the same of after-tax premiums for an employer plan. The
+  # inputs are PolicyBench scenario_025's; it previously deducted nothing.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 61
+        has_esi: true
+        hours_worked_last_week: 40
+        health_insurance_premiums_without_medicare_part_b: 6_500
+        # The same 6,500 under the SPM premium decomposition; not added again.
+        other_health_insurance_premiums: 6_500
+        # Employer-paid, excluded from income under IRC 106, so not paid by
+        # the taxpayer.
+        employer_sponsored_insurance_premiums: 21_207.525390625
+        other_medical_expenses: 800
+        # Not prescribed drugs, so not medical care under IRC 213(b).
+        over_the_counter_health_expenses: 50
+      spouse:
+        age: 57
+        has_esi: true
+        employment_income: 62_725.29296875
+        taxable_private_pension_income: 32_200
+        hourly_wage: 19.450000762939453
+        hours_worked_last_week: 40
+        is_paid_hourly: true
+        bank_account_assets: 54_394.1171875
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        first_home_mortgage_balance: 366_000
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: OH
+        household_vehicles_value: 9_510
+  output:
+    # 62,725.29 + 32,200.
+    adjusted_gross_income: 94_925.29
+    # Line 1: barred by the employer plan.
+    oh_uninsured_unreimbursed_medical_care_expenses: [0, 0]
+    # Line 3 (6,500) + line 4 (800).
+    oh_insured_unreimbursed_medical_care_expense_amount: [7_300, 0]
+    # Line 8 = 7,300 - 0.075 * 94,925.29 = 7,300 - 7,119.40 = 180.60.
+    oh_insured_unreimbursed_medical_care_expenses: 180.60
+    oh_unreimbursed_medical_care_expense_deduction: 180.60
+    # 94,925.29 - 180.60.
+    oh_agi: 94_744.69
+    # Less 2 * 1,900 exemptions (MAGI above 80,000; R.C. 5747.025).
+    oh_taxable_income: 90_944.69
+    # R.C. 5747.02(A) for 2026: 332 + 2.75% * (90,944.69 - 26,050) = 2,116.60,
+    # less the 200 retirement income credit (R.C. 5747.055(B)). Was 1,921.57.
+    oh_income_tax_before_refundable_credits: 1_916.60
+    state_income_tax_before_refundable_credits: 1_916.60

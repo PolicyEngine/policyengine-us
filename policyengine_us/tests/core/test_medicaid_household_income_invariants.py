@@ -32,7 +32,8 @@ again with metamorphic changes. For every household:
 4. Household income is never negative, and is zero exactly when the
    unfloored sum is not positive.
 5. Metamorphic: removing the spouse's own IRA deduction, early withdrawal
-   penalty and alimony leaves the head's own deductions unchanged; swapping
+   penalty and alimony leaves the head's deductions unchanged apart from
+   IRA and student-loan deductions subject to shared limits; swapping
    the head's and spouse's incomes and deductions leaves every member's
    household income unchanged; and lowering the spouse's self-employment
    income never raises household income.
@@ -48,9 +49,9 @@ from policyengine_us import Simulation
 YEAR = 2025
 TOLERANCE = 0.01  # dollars
 
-# Each spouse's own deductions that no other member's inputs limit. Student
-# loan interest and capital losses are limited for the return as a whole, so
-# one spouse's amount can change the other's share.
+# Remove these spouse inputs to check attribution of independent deductions.
+# IRA and student-loan deductions are excluded from the head's comparison:
+# joint MAGI affects both, and Section 219(c) shares IRA compensation.
 SPOUSE_ONLY_DEDUCTION_INPUTS = [
     "traditional_ira_contributions",
     "early_withdrawal_penalty",
@@ -64,6 +65,7 @@ OUTPUTS = [
     "medicaid_person_is_required_to_file",
     "medicaid_uses_non_filer_rules",
     "above_the_line_deductions_person",
+    "traditional_ira_deduction",
     "student_loan_interest_ald",
     "tax_exempt_interest_income",
 ]
@@ -367,17 +369,21 @@ def _check(units):
     assert (income[unfloored <= 0] == 0).all()
 
     # 5. Metamorphic relations. The spouse's own deductions never change the
-    # head's deductions, other than the student loan interest deduction,
-    # whose phase-out reads the couple's joint MAGI.
+    # head's independent deductions. IRA and student-loan deductions can
+    # change with joint MAGI, and removing the spouse's IRA contributions
+    # can free compensation for the head under Section 219(c).
     head = role == "head"
     without = _run(_without_spouse_deductions(units))
     head_deductions = (
-        run["above_the_line_deductions_person"] - run["student_loan_interest_ald"]
+        run["above_the_line_deductions_person"]
+        - run["student_loan_interest_ald"]
+        - run["traditional_ira_deduction"]
     )
     np.testing.assert_allclose(
         (
             without["above_the_line_deductions_person"]
             - without["student_loan_interest_ald"]
+            - without["traditional_ira_deduction"]
         )[head],
         head_deductions[head],
         atol=TOLERANCE,

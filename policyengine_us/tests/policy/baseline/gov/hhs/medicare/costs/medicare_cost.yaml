@@ -9,7 +9,7 @@
     tax_exempt_interest_income:
       2023: 0
   output:
-    medicare_cost: 12_280  # $14,500 spending - $2,220 Part B premium (2025)
+    medicare_cost: 15_531  # $17,751 spending - $2,220 Part B premium (2025)
 
 - name: unit test 2 - enrolled, pays full Part A premium
   period: 2025
@@ -22,7 +22,7 @@
     tax_exempt_interest_income:
       2023: 0
   output:
-    medicare_cost: 6_064  # $14,500 - $6,216 Part A - $2,220 Part B (2025)
+    medicare_cost: 9_315  # $17,751 - $6,216 Part A - $2,220 Part B (2025)
 
 - name: unit test 3 - enrolled with IRMAA
   period: 2025
@@ -36,7 +36,7 @@
       2023: 0
     filing_status: SINGLE
   output:
-    medicare_cost: 6_953.2  # $14,500 - $7,546.80 Part B with IRMAA (2025)
+    medicare_cost: 10_204.2  # $17,751 - $7,546.80 Part B with IRMAA (2025)
 
 - name: unit test 4 - eligible but not enrolled
   period: 2025
@@ -58,7 +58,7 @@
     tax_exempt_interest_income:
       2019: 0
   output:
-    medicare_cost: 9_298  # $11,080 - $1,782 Part B (2021: $148.50*12)
+    medicare_cost: 12_511  # $14,293 - $1,782 Part B (2021: $148.50*12)
 
 - name: unit test 6 - direct Part B premium input
   period: 2025
@@ -68,4 +68,4 @@
     medicare_quarters_of_coverage: 40
     gross_medicare_part_b_premium: 3_000
   output:
-    medicare_cost: 11_500  # $14,500 spending - $3,000 Part B premium
+    medicare_cost: 14_751  # $17,751 spending - $3,000 Part B premium

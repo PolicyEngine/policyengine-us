@@ -95,6 +95,79 @@
   output:
     de_agi_joint: [0, 0]
 
+- name: A joint return applies the joint 529 limit, not each spouse's column limit
+  period: 2025
+  input:
+    people:
+      person1:
+        employment_income: 90_000
+        investment_in_529_plan_indv: 1_500
+      person2:
+        employment_income: 60_000
+        investment_in_529_plan_indv: 1_500
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # PIT-RES joint return (Filing Status 2), one column: line 1 federal AGI
+    # 150_000; line 8b subtraction min(1_500 + 1_500, 2_000) = 2_000;
+    # line 10 = line 12 = 148_000.
+    de_agi_joint: [148_000, 0]
+    # Combined separate columns (Filing Status 4): each spouse subtracts
+    # min(1_500, 1_000) = 1_000 from their own column.
+    de_agi_indiv: [89_000, 59_000]
+
+- name: The joint 529 limit exceeds the column limits when one spouse contributes everything
+  period: 2025
+  input:
+    people:
+      person1:
+        employment_income: 90_000
+        investment_in_529_plan_indv: 2_000
+      person2:
+        employment_income: 60_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Joint return: the spouses' combined contributions up to 2_000
+    # (§ 1106(b)(11)): 150_000 - 2_000. Each column alone would allow only
+    # min(2_000, 1_000) + 0 = 1_000.
+    de_agi_joint: [148_000, 0]
+    de_agi_indiv: [89_000, 60_000]
+
+- name: The joint 529 limit applies when one spouse's column is over its AGI limit
+  period: 2025
+  input:
+    people:
+      person1:
+        employment_income: 120_000
+        investment_in_529_plan_indv: 1_000
+      person2:
+        employment_income: 70_000
+        investment_in_529_plan_indv: 1_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: DE
+  output:
+    # Joint federal AGI 190_000 is within the 200_000 joint limit:
+    # 190_000 - 2_000. Person 1's column (120_000) is over the 100_000 limit,
+    # so the columns subtract only person 2's 1_000.
+    de_agi_joint: [188_000, 0]
+    de_agi_indiv: [120_000, 69_000]
+
 - name: Joint return takes the $4,000 exclusion when the couple, not each spouse, meets the income limits
   period: 2024
   absolute_error_margin: 0.01

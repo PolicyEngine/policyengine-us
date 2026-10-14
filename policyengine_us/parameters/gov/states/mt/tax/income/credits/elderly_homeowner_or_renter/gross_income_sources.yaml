@@ -4,12 +4,38 @@ metadata:
   period: year
   label: Montana elderly homeowner or renter credit gross income sources
   reference:
-  - title: Montana 2022 Form2 Individual Income Tax Instructions, Page47, Gross Household Income
-    href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
+  - title: MCA 15-30-2337(9)(a), all nontaxable income, including (vi) cash public assistance and relief
+    href: https://mca.legmt.gov/bills/mca/title_0150/chapter_0300/part_0230/section_0370/0150-0300-0230-0370.html
+  - title: MCA 15-30-2337(9)(a) (2009), the same definition
+    href: https://archive.legmt.gov/bills/2009/mca/15/30/15-30-2337.htm
   - title: 2022 Montana Code Annotated, Title 15, Chapter 30, Part 23, 15-30-2337 (9)
     href: https://law.justia.com/codes/montana/2022/title-15/chapter-30/part-23/section-15-30-2337/
-  - title: 2024 Montana Individual Income Tax Return
-    href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=46
+  - title: HB191 (2021), section 1(9), all nontaxable income
+    href: https://archive.legmt.gov/bills/2021/HB0199/HB0191_X.pdf#page=2
+  - title: ARM 42.4.301(2) as in effect 8/20/2004 to 11/9/2017 ("elderly homeowner/renter credit refunds received")
+    href: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/788508cc-8418-41c8-926d-3dfb11af3fd6
+  - title: ARM 42.4.301(2) as in effect 11/10/2017 to 9/6/2024 ("federal refundable credits received" and "any state refundable credits received")
+    href: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/297c7a8d-f6f4-4b70-a7b7-fe1cedee53e7
+  - title: ARM 42.4.301(2) as in effect from 9/7/2024 ("federal refundable tax credits received" and "any state refundable tax credits received")
+    href: https://rules.mt.gov/api/policy-library-public/collections/aec52c46-128e-4279-9068-8af5d5432d74/policies/c90ea93a-03a2-4605-a0f8-f2f3760198bf/document/768c8344-24ee-4950-9d5e-9d8fc97ec0f7
+  - title: "2014 Montana Form 2EC instructions, Part II, disability benefits including SSI payments and workers' compensation; Income Source Worksheet, line 7, alimony, cash public assistance, unemployment #page 53-54"
+    href: https://taxsim.nber.org/historical_state_tax_forms/MT/2014/Form_2_booklet_2014.pdf#page=53
+  - title: "2016 Montana Form 2EC instructions, Part II, disability benefits including SSI payments and workers' compensation, and cash public assistance and relief; Gross Household Income Worksheet, line 7, alimony, cash public assistance, unemployment #page 74-75"
+    href: https://taxsim.nber.org/historical_state_tax_forms/MT/2016/Form_2_booklet_2016.pdf#page=74
+  - title: "2017 Montana Form 2EC instructions, Part II, disability benefits including SSI payments and workers' compensation, and cash public assistance and relief; Gross Household Income Worksheet, items 4 and 5 (alimony, cash public assistance, unemployment) #page 64-65"
+    href: https://taxsim.nber.org/historical_state_tax_forms/MT/2017/Form%202%202017%20Booklet.pdf#page=64
+  - title: 2020 Montana Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 1, federal adjusted gross income; line 8, other income not listed above, including disability benefits
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2020_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=45
+  - title: 2021 Montana Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 8, other income not listed above, including disability benefits
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2021_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=49
+  - title: "2022 Montana Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, gross household income; line 8, other income, including disability benefits, SSI payments and workers' compensation #page 47-48"
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2022_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=47
+  - title: "2023 Montana Form 2 instructions, Elderly Homeowner/Renter Credit Schedule, line 7, refundable credits received; line 8, other income, including disability benefits, SSI payments and workers' compensation #page 51-52"
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=51
+  - title: "2024 Montana Form 2 instructions, Schedule 2EC, gross household income; line 1, wages; line 8, refundable credits received; line 14, unemployment compensation; line 15, other income; line 16, government assistance #page 46-48"
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=46
+  - title: "2025 Montana Form 2 instructions, Schedule 2EC, line 8, refundable credits received; line 14, unemployment compensation; line 15, other income; line 16, government assistance #page 45-46"
+    href: https://revenue.mt.gov/files/forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2025_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=45
 
 values:
   2009-01-01:
@@ -27,8 +53,85 @@ values:
     - child_support_received # § 15-30-2337(9)(a)(iv) – support money
     - strike_benefits # § 15-30-2337(9)(a)(v) – nontaxable strike benefits
     - general_assistance # § 15-30-2337(9)(a)(vi) – cash public assistance
-    - mt_refundable_credits_before_renter_credit # Line 7: Refundable credits
+    # Government assistance (Schedule 2EC line 16 from 2024; "disability
+    # benefits including ... SSI payments and workers' compensation" and
+    # "cash public assistance and relief" in earlier instructions). TANF is
+    # held for the SPM unit; tanf_person is each member's per capita share,
+    # so the household sum counts the unit's TANF once. LIEAP and SNAP are
+    # not cash public assistance (2014-2017 Form 2EC instructions).
+    - ssi
+    - tanf_person
+    - workers_compensation
+    # Guaranteed income pilot payments are outside federal AGI here, and
+    # (9)(a) counts all nontaxable income; a government-funded pilot is also
+    # "any other government assistance" (Schedule 2EC line 16).
+    - gi_cash_assistance
+    # Disability benefits from employment other than workers' compensation
+    # (2014-2023 instructions: "Disability benefits including, but not
+    # limited to, veteran's disability, SSI payments, and workers'
+    # compensation"; from 2024, Schedule 2EC line 1 for taxable sick pay and
+    # disability pay reported as wages, line 5 for a disability pension after
+    # minimum retirement age (IRS Pub. 525), otherwise line 15). The model
+    # leaves them out of federal AGI (irs_gross_income) and
+    # dependent_gross_income, so all of them count here, once.
+    - disability_benefits
+    # Unemployment compensation that neither federal AGI nor a dependent's
+    # own gross income counts, such as the 2020 IRC 85(c) exclusion (2020
+    # line 8, "all items of income ... not reported on lines 1 through 7";
+    # 2014-2017 worksheets, "Alimony, cash public assistance,
+    # unemployment"; Schedule 2EC line 14 from 2024, the total received).
+    - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
+    # Refundable credits received (2023 schedule line 7, Schedule 2EC line 8
+    # from 2024): Montana's refundable credits other than this credit,
+    # and this credit as received during the year (ARM 42.4.301(2)(c)).
+    - mt_refundable_credits_before_renter_credit
+    - mt_elderly_homeowner_or_renter_credit_received
+  # ARM 42.4.301(2)(b), amended effective 11/10/2017, counts "federal
+  # refundable credits received"; the 2017 Form 2EC worksheet counts "any
+  # federal or state refundable credits".
+  2017-01-01:
+    - adjusted_gross_income_person
+    - tax_exempt_interest_income
+    - tax_exempt_ira_distributions
+    - tax_exempt_pension_income
+    - veterans_benefits
+    - child_support_received
+    - strike_benefits
+    - general_assistance
+    - ssi
+    - tanf_person
+    - workers_compensation
+    - gi_cash_assistance
+    - disability_benefits
+    - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
+    - mt_refundable_credits_before_renter_credit
+    - mt_elderly_homeowner_or_renter_credit_received
+    - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
+  # Actual rebate receipts count under the statutory nontaxable-income
+  # definition and ARM 42.4.301(2)(c). The 2023 form's illustrative list
+  # establishes no exemption for 2022 rebates received in 2023. The
+  # 2024/2025 schedules explicitly name the prior property-year rebates.
+  2023-01-01:
+    - adjusted_gross_income_person
+    - tax_exempt_interest_income
+    - tax_exempt_ira_distributions
+    - tax_exempt_pension_income
+    - veterans_benefits
+    - child_support_received
+    - strike_benefits
+    - general_assistance
+    - ssi
+    - tanf_person
+    - workers_compensation
+    - gi_cash_assistance
+    - disability_benefits
+    - mt_elderly_homeowner_or_renter_credit_unemployment_compensation_addback
+    - mt_refundable_credits_before_renter_credit
+    - mt_elderly_homeowner_or_renter_credit_received
+    - mt_elderly_homeowner_or_renter_credit_federal_refundable_credits
+    - mt_elderly_homeowner_or_renter_credit_property_tax_rebate_received
 # Social Security under § 15-30-2337(9)(a)(viii) is added separately in
 # mt_elderly_homeowner_or_renter_credit_gross_household_income.py because the
 # untaxed portion is computed as social_security - taxable_social_security.
-# The renter credit itself is excluded to avoid a circular reference.
+# This year's elderly homeowner/renter credit is excluded to avoid a circular
+# reference; the credit received during the year counts instead.

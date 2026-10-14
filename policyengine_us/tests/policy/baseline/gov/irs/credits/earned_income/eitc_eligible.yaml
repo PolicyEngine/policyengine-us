@@ -74,3 +74,63 @@
     foreign_earned_income_exclusion: 30_000
   output:
     eitc_eligible: false
+
+# Section 32(c)(1)(C) also denies the EITC for the housing exclusion under
+# section 911(a)(2), including leaf elections with zero derived aggregates.
+- name: A housing-only leaf election is ineligible when deductions cancel both aggregates.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    eitc_eligible: false
+
+- name: A housing-only election is ineligible with an explicit zero stacking override.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion_amount: 0
+    foreign_housing_exclusion: 5_000
+    foreign_earned_income_exclusion: 0
+  output:
+    foreign_earned_income_exclusion_amount: 0
+    foreign_earned_income_exclusion: 0
+    eitc_eligible: false
+
+- name: An earned-income leaf election is ineligible when deductions cancel both aggregates.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion_amount: 5_000
+    foreign_earned_income_exclusion_allocable_deductions: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 0
+    eitc_eligible: false
+
+- name: A positive section 911 MAGI amount is ineligible with zero stacking.
+  period: 2025
+  input:
+    eitc_investment_income_eligible: true
+    eitc_demographic_eligible: true
+    filer_meets_eitc_identification_requirements: true
+    filing_status: JOINT
+    foreign_earned_income_exclusion: 0
+    section_911_excluded_income: 5_000
+  output:
+    foreign_earned_income_exclusion: 0
+    eitc_eligible: false

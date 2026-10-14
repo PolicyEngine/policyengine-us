@@ -5,10 +5,9 @@ less their own above-the-line deductions (above_the_line_deductions_person).
 On a joint return a deduction that belongs to one spouse, such as their IRA
 deduction, educator expenses, early withdrawal penalty, alimony paid, student
 loan interest or business and capital losses, lowers only that spouse's AGI.
-Only deductions recorded for the tax unit alone are divided equally. This
-generator supplies HSA amounts only for the tax unit, so it exercises that
-equal fallback; supplied person HSA amounts are attributed to their owners.
-States that tax spouses
+Only deductions recorded for the tax unit alone (here the tuition and fees
+deduction) are divided equally. HSA deductions follow the supplied account
+holders' amounts, with an equal division when none are supplied. States that tax spouses
 separately (Kentucky, Montana, Delaware, Virginia, Ohio's joint filing credit,
 the District of Columbia, West Virginia's senior deduction) read these
 amounts.
@@ -37,20 +36,22 @@ tax unit is an input for every unit in its simulation. For every tax unit:
    computations of the Section 461(l) and 1211(b) limits from the inputs and
    parameters. For units with no deduction set directly,
    above_the_line_deductions_person equals a numpy reference built from the
-   inputs: each person's own person-level deductions, their alimony under a
+   inputs: each person's own person-level deductions, their educator
+   expenses capped at the per-educator limit, their HSA share from the supplied
+   account-holder amounts and return total, their alimony under a
    pre-2019 instrument, their share of the numpy-limited business loss by
    their own business losses and of the capital loss deduction (losses up
    to the filers' capital gains and distributions, plus the net loss up to
    the 1211(b) limit) by their own capital losses, and an equal share of the
-   HSA and tuition and fees deductions.
-3. Own deductions. The spouse's deductions never add to the head's: the
-   head's above_the_line_deductions_person is never higher with the spouse's
-   deduction inputs than without them. It is the same, and so is the head's
-   AGI, when the head has no loss or student loan interest that shares a
-   return-level limit with the spouse's, and no income (Social Security,
-   unemployment compensation) taxed by reference to the couple's AGI. The
+   tuition and fees deduction.
+3. Own deductions. Except for IRA and student-loan shared limits and MAGI
+   interactions, the head's above_the_line_deductions_person is never higher
+   with the spouse's deduction inputs than without them. It is the same, and so is the head's
+   AGI, when the head has no loss, IRA contribution or student loan interest
+   that shares a return-level limit with the spouse's, and no income (Social
+   Security, unemployment compensation) taxed by reference to the couple's AGI. The
    spouse's own AGI and the couple's AGI never fall when the spouse's
-   deduction inputs are removed.
+   deduction inputs are removed and the head has no IRA contribution.
    This is checked for units with no deduction set directly.
 4. Dependents. A dependent's adjusted_gross_income_person, loss_ald_person
    and limited_capital_loss_person are zero, and their
@@ -122,6 +123,7 @@ TAX_UNIT_OUTPUTS = [
     "limited_business_loss",
     "limited_capital_loss",
     "alimony_expense_ald",
+    "educator_expense_ald",
     "health_savings_account_ald",
     "other_net_gain",
 ]
@@ -132,6 +134,9 @@ PERSON_OUTPUTS = [
     "loss_ald_person",
     "limited_capital_loss_person",
     "alimony_expense_ald_person",
+    "educator_expense",
+    "educator_expense_ald_person",
+    "health_savings_account_ald_person",
     "irs_gross_income",
     "capital_losses",
     "capital_gains",
@@ -139,6 +144,7 @@ PERSON_OUTPUTS = [
     "alimony_expense",
     "divorce_year",
     "student_loan_interest",
+    "traditional_ira_contributions",
     "social_security",
     "unemployment_compensation",
     "dc_separate_capital_loss_adjustment",
@@ -386,19 +392,19 @@ def _run_group(units, year, *, zero_spouse):
         for name in TAX_UNIT_OUTPUTS + PERSON_OUTPUTS
     }
     # The person-level deductions and the person amounts behind the tax-unit
-    # deductions other than losses and alimony, which the reference below
-    # builds from the inputs.
+    # deductions other than losses, alimony, educator expenses and HSA,
+    # which the reference below builds independently from inputs and limits.
     own_names, shared_names = [], []
     for deduction in sorted(set(deductions)):
         if tbs.variables[deduction].entity.is_person:
             own_names.append(deduction)
-        elif deduction in ("loss_ald", "alimony_expense_ald"):
+        elif deduction in (
+            "loss_ald",
+            "alimony_expense_ald",
+            "educator_expense_ald",
+            "health_savings_account_ald",
+        ):
             continue
-        elif deduction == "health_savings_account_ald":
-            # These generators supply only the return's HSA amount. With
-            # no person amounts, the existing equal fallback still applies
-            # even though main now provides an optional *_person input.
-            shared_names.append(deduction)
         elif f"{deduction}_person" in tbs.variables:
             own_names.append(f"{deduction}_person")
         else:
@@ -433,6 +439,13 @@ def _run_group(units, year, *, zero_spouse):
     out["capital_loss_limit"] = np.asarray(loss.capital.max[filing_status], dtype=float)
     out["separate_capital_loss_limit"] = np.full(
         len(filing_status), float(loss.capital.max["SEPARATE"])
+    )
+    out["educator_cap"] = float(
+        tbs.parameters(f"{year}-01-01").gov.irs.ald.educator_expense.cap
+    )
+    # Keep every run output an array so grouped runs concatenate uniformly.
+    out["educator_cap"] = np.full(
+        len(out["adjusted_gross_income_person"]), out["educator_cap"]
     )
     out["joint"] = filing_status == "JOINT"
     out["state"] = np.array([u["state"] for u in units])
@@ -517,6 +530,24 @@ def _capital_part_of_loss_ald(run):
     )
 
 
+def _educator_deduction_person(run):
+    """26 USC 62(a)(2)(D): the cap applies separately to each educator."""
+    return np.minimum(np.maximum(0, run["educator_expense"]), run["educator_cap"])
+
+
+def _hsa_deduction_person(run):
+    """Attribute the supplied return total by the account holders' inputs."""
+    filer = ~run["is_dependent"]
+    own = run["health_savings_account_ald_person"]
+    filer_own = filer * own
+    total = _per_person(run, _unit_sum(run, filer_own))
+    share = _share(filer_own, total, _even(run))
+    return_total = _per_person(run, run["health_savings_account_ald"])
+    reconciled = filer_own + (return_total - total) * share
+    # A dependent's own input is preserved and never enters the filer's sum.
+    return np.where(filer, reconciled, own)
+
+
 def _reference(run):
     """above_the_line_deductions_person, built from the inputs with numpy."""
     filer = ~run["is_dependent"]
@@ -541,12 +572,14 @@ def _reference(run):
     dependent_filer_amounts = _per_person(
         run, _unit_sum(run, run["is_dependent"] * run["filer_amounts"])
     )
-    filer_part = run["own_direct"] + alimony + losses + shared
+    educator = _educator_deduction_person(run)
+    hsa = _hsa_deduction_person(run)
+    filer_part = run["own_direct"] + educator + hsa + alimony + losses + shared
     filer_part = filer_part + dependent_filer_amounts * even
     return np.where(
         filer,
         filer_part,
-        run["own_direct"] + alimony - run["filer_amounts"],
+        run["own_direct"] + educator + hsa + alimony - run["filer_amounts"],
     )
 
 
@@ -595,16 +628,19 @@ def _check(units, year):
         run["adjusted_gross_income"],
     )
 
-    # 2. Differential against numpy.
+    # 2. Differential against numpy, including each educator's separate cap.
+    educator = _educator_deduction_person(run)
+    _close(run["educator_expense_ald_person"], educator)
+    _close(run["educator_expense_ald"], _unit_sum(run, filer * educator))
     limited_business, limited_capital, _ = _limits(run)
     _close(run["limited_business_loss"], limited_business)
     _close(run["limited_capital_loss"], limited_capital)
     _close(run["above_the_line_deductions_person"][~direct], _reference(run)[~direct])
 
-    # 3. The spouse's deductions never add to the head's. A head with student
-    # loan interest is left out of the first check: the spouse's IRA
-    # deduction, for example, lowers the couple's MAGI and with it the
-    # phase-out of the head's student loan interest deduction.
+    # 3. Shared deduction limits and MAGI interactions can change the head's
+    # own deduction. Spouse deductions can lower joint MAGI and increase the
+    # head's IRA or student-loan deduction; removing the spouse's IRA
+    # contributions can also free compensation under Section 219(c).
     head = run["is_head"]
     spouse = run["is_spouse"]
     has_spouse = _per_person(run, _unit_sum(run, spouse.astype(float))) > 0
@@ -615,7 +651,8 @@ def _check(units, year):
         r[deductions] = r["irs_gross_income"] - r["adjusted_gross_income_person"]
     agi = "adjusted_gross_income_person"
     no_student_loan = run["student_loan_interest"] == 0
-    checked = paired_head & no_student_loan
+    no_ira = run["traditional_ira_contributions"] == 0
+    checked = paired_head & no_student_loan & no_ira
     assert _at_most(run[deductions][checked], zeroed[deductions][checked])
     # A Form 4797 loss, recorded for the tax unit, is a business loss of both
     # the head and spouse.
@@ -631,10 +668,16 @@ def _check(units, year):
     )
     unaffected = own_only & ~joint_taxed_income
     _close(run[agi][unaffected], zeroed[agi][unaffected])
-    assert _at_most(run[agi][spouse & ~direct], zeroed[agi][spouse & ~direct])
+    # Removing a spouse's pension contributions can also change retirement
+    # plan coverage and release the head's IRA phase-out. That discontinuity
+    # can increase the head's deduction by more than the amount removed.
+    head_has_ira = _unit_sum(run, head & ~no_ira) > 0
+    independent_units = ~direct_unit & ~head_has_ira
+    checked_spouse = spouse & _per_person(run, independent_units)
+    assert _at_most(run[agi][checked_spouse], zeroed[agi][checked_spouse])
     assert _at_most(
-        run["adjusted_gross_income"][~direct_unit],
-        zeroed["adjusted_gross_income"][~direct_unit],
+        run["adjusted_gross_income"][independent_units],
+        zeroed["adjusted_gross_income"][independent_units],
     )
 
     # 4. Dependents.
@@ -713,15 +756,16 @@ def test_seeded_population(year):
 
 
 def test_every_deduction_is_attributed_or_divided_equally_on_purpose():
-    # A tax-unit deduction with no person-level variable falls back to an equal
+    # A tax-unit deduction with no person amount falls back to an equal
     # division between the head and spouse. Only those listed, with their
     # reasons, in EQUALLY_DIVIDED_DEDUCTIONS may do so.
-    from policyengine_us import CountryTaxBenefitSystem
     from policyengine_us.variables.gov.irs.income.taxable_income.adjusted_gross_income.above_the_line_deductions.above_the_line_deductions_person import (
         EQUALLY_DIVIDED_DEDUCTIONS,
     )
 
-    system = CountryTaxBenefitSystem()
+    # This audit only reads the baseline registry and parameter histories.
+    # Reuse the already initialized system rather than uprating it again.
+    system = Simulation.default_tax_benefit_system_instance
     deductions = system.parameters.gov.irs.ald.deductions
     seen = set()
     for value in deductions.values_list:

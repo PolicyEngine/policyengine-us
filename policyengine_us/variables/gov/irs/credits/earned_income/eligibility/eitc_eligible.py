@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.section_911 import elects_section_911_exclusion
 
 
 class eitc_eligible(Variable):
@@ -22,7 +23,7 @@ class eitc_eligible(Variable):
         )
         # Section 32(c)(1)(C): "eligible individual" does not include an
         # individual who claims the benefits of section 911 (Form 2555).
-        claims_section_911 = tax_unit("foreign_earned_income_exclusion", period) > 0
+        claims_section_911 = elects_section_911_exclusion(tax_unit, period)
         # Define eligibility before considering separate filer limitation.
         eligible = (
             demographic_eligible

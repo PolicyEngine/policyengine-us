@@ -97,3 +97,28 @@
     filing_status: JOINT
   output:
     mt_standard_deduction_joint: 29_200
+
+- name: Spouse's loss reduces the joint return's Montana AGI
+  period: 2022
+  absolute_error_margin: 1
+  input:
+    people:
+      head:
+        age: 40
+        employment_income: 50_000
+      spouse:
+        age: 40
+        self_employment_income: -10_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    # Form 2 page 1, line 14: 50,000 - 10,000 = 40,000, reported in one column.
+    mt_agi_joint: 40_000
+    # Standard Deduction Worksheet: 20% x 40,000 = 8,000, between the $4,520
+    # minimum and the $10,180 maximum for a joint return.
+    mt_standard_deduction_joint: [8_000, 0]
