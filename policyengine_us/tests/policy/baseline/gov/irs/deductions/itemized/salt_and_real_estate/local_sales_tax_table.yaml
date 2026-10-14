@@ -641,3 +641,980 @@
     county_fips: "13089"
   output:
     local_sales_tax_table: D
+
+# 2015-2021 selectors. Through 2016 the other-locality rows read "Any locality",
+# "Any other locality" or "... or any other locality".
+
+- name: Default local tables, 2015
+  # 2015 selector (PDF page 18), row and table by state:
+  # AK: "Any locality" -> C
+  # AR: "Any Locality" -> B
+  # AZ: "... or any other locality" -> B
+  # CO: "... or any other locality" -> A
+  # GA: "Any locality" -> B
+  # IL: "Any locality" -> A
+  # LA: "Any other locality" -> B
+  # MO: "Any locality" -> B
+  # MS: "Cities of Jackson and Tupelo only" -> B
+  # NC: "Any locality" -> A
+  # NY: "Any other locality" -> D
+  # SC: "... or Any other locality" -> B
+  # TN: "Any locality" -> B
+  # UT: "Any locality" -> A
+  # VA: "Any locality" -> B
+  period: 2015
+  input:
+    people:
+      person_AK:
+        age: 40
+      person_AR:
+        age: 40
+      person_AZ:
+        age: 40
+      person_CO:
+        age: 40
+      person_GA:
+        age: 40
+      person_IL:
+        age: 40
+      person_LA:
+        age: 40
+      person_MO:
+        age: 40
+      person_MS:
+        age: 40
+      person_NC:
+        age: 40
+      person_NY:
+        age: 40
+      person_SC:
+        age: 40
+      person_TN:
+        age: 40
+      person_UT:
+        age: 40
+      person_VA:
+        age: 40
+    households:
+      household_AK:
+        members: [person_AK]
+        state_code: AK
+      household_AR:
+        members: [person_AR]
+        state_code: AR
+      household_AZ:
+        members: [person_AZ]
+        state_code: AZ
+      household_CO:
+        members: [person_CO]
+        state_code: CO
+      household_GA:
+        members: [person_GA]
+        state_code: GA
+      household_IL:
+        members: [person_IL]
+        state_code: IL
+      household_LA:
+        members: [person_LA]
+        state_code: LA
+      household_MO:
+        members: [person_MO]
+        state_code: MO
+      household_MS:
+        members: [person_MS]
+        state_code: MS
+      household_NC:
+        members: [person_NC]
+        state_code: NC
+      household_NY:
+        members: [person_NY]
+        state_code: NY
+      household_SC:
+        members: [person_SC]
+        state_code: SC
+      household_TN:
+        members: [person_TN]
+        state_code: TN
+      household_UT:
+        members: [person_UT]
+        state_code: UT
+      household_VA:
+        members: [person_VA]
+        state_code: VA
+  output:
+    local_sales_tax_table: [C, B, B, A, B, A, B, B, B, A, D, B, B, A, B]
+
+- name: Default local tables, 2016
+  # 2016 selector (PDF page 18), row and table by state:
+  # AK: "Any locality" -> C
+  # AR: "Any Locality" -> B
+  # AZ: "... or any other locality" -> B
+  # CO: "... or any other locality" -> A
+  # GA: "Any locality" -> B
+  # IL: "... or any other locality" -> A
+  # LA: "... or any other locality" -> B
+  # MO: "Any locality" -> B
+  # MS: "City of Jackson only" -> A
+  # NC: "Any locality" -> A
+  # NY: "Any other locality" -> D
+  # SC: "... or any other locality" -> B
+  # TN: "Any locality" -> B
+  # UT: "Any locality" -> A
+  # VA: "Any locality" -> B
+  period: 2016
+  input:
+    people:
+      person_AK:
+        age: 40
+      person_AR:
+        age: 40
+      person_AZ:
+        age: 40
+      person_CO:
+        age: 40
+      person_GA:
+        age: 40
+      person_IL:
+        age: 40
+      person_LA:
+        age: 40
+      person_MO:
+        age: 40
+      person_MS:
+        age: 40
+      person_NC:
+        age: 40
+      person_NY:
+        age: 40
+      person_SC:
+        age: 40
+      person_TN:
+        age: 40
+      person_UT:
+        age: 40
+      person_VA:
+        age: 40
+    households:
+      household_AK:
+        members: [person_AK]
+        state_code: AK
+      household_AR:
+        members: [person_AR]
+        state_code: AR
+      household_AZ:
+        members: [person_AZ]
+        state_code: AZ
+      household_CO:
+        members: [person_CO]
+        state_code: CO
+      household_GA:
+        members: [person_GA]
+        state_code: GA
+      household_IL:
+        members: [person_IL]
+        state_code: IL
+      household_LA:
+        members: [person_LA]
+        state_code: LA
+      household_MO:
+        members: [person_MO]
+        state_code: MO
+      household_MS:
+        members: [person_MS]
+        state_code: MS
+      household_NC:
+        members: [person_NC]
+        state_code: NC
+      household_NY:
+        members: [person_NY]
+        state_code: NY
+      household_SC:
+        members: [person_SC]
+        state_code: SC
+      household_TN:
+        members: [person_TN]
+        state_code: TN
+      household_UT:
+        members: [person_UT]
+        state_code: UT
+      household_VA:
+        members: [person_VA]
+        state_code: VA
+  output:
+    local_sales_tax_table: [C, B, B, A, B, A, B, B, A, A, D, B, B, A, B]
+
+- name: Default local tables, 2017
+  # 2017 selector (PDF page 19), row and table by state:
+  # AK: "Any locality that imposes a local sales tax" -> C
+  # AR: "Any locality that imposes a local sales tax" -> B
+  # AZ: "... or any other locality that imposes a local sales tax" -> B
+  # CO: "... or any other locality that imposes a local sales tax" -> A
+  # GA: "Any locality that imposes a local sales tax" -> B
+  # IL: "... or any other locality that imposes a local sales tax" -> A
+  # LA: "... or any other locality that imposes a local sales tax" -> B
+  # MO: "Any locality that imposes a local sales tax" -> B
+  # MS: "City of Jackson only" -> A
+  # NC: "Any locality that imposes a local sales tax" -> A
+  # NY: "Any other locality that imposes a local sales tax" -> D
+  # SC: "... or any other locality that imposes a local sales tax" -> B
+  # TN: "Any locality that imposes a local sales tax" -> B
+  # UT: "Any locality that imposes a local sales tax" -> A
+  # VA: "Any locality that imposes a local sales tax" -> B
+  period: 2017
+  input:
+    people:
+      person_AK:
+        age: 40
+      person_AR:
+        age: 40
+      person_AZ:
+        age: 40
+      person_CO:
+        age: 40
+      person_GA:
+        age: 40
+      person_IL:
+        age: 40
+      person_LA:
+        age: 40
+      person_MO:
+        age: 40
+      person_MS:
+        age: 40
+      person_NC:
+        age: 40
+      person_NY:
+        age: 40
+      person_SC:
+        age: 40
+      person_TN:
+        age: 40
+      person_UT:
+        age: 40
+      person_VA:
+        age: 40
+    households:
+      household_AK:
+        members: [person_AK]
+        state_code: AK
+      household_AR:
+        members: [person_AR]
+        state_code: AR
+      household_AZ:
+        members: [person_AZ]
+        state_code: AZ
+      household_CO:
+        members: [person_CO]
+        state_code: CO
+      household_GA:
+        members: [person_GA]
+        state_code: GA
+      household_IL:
+        members: [person_IL]
+        state_code: IL
+      household_LA:
+        members: [person_LA]
+        state_code: LA
+      household_MO:
+        members: [person_MO]
+        state_code: MO
+      household_MS:
+        members: [person_MS]
+        state_code: MS
+      household_NC:
+        members: [person_NC]
+        state_code: NC
+      household_NY:
+        members: [person_NY]
+        state_code: NY
+      household_SC:
+        members: [person_SC]
+        state_code: SC
+      household_TN:
+        members: [person_TN]
+        state_code: TN
+      household_UT:
+        members: [person_UT]
+        state_code: UT
+      household_VA:
+        members: [person_VA]
+        state_code: VA
+  output:
+    local_sales_tax_table: [C, B, B, A, B, A, B, B, A, A, D, B, B, A, B]
+
+- name: Default local tables, 2018
+  # 2018 selector (PDF page 18), row and table by state:
+  # AK: "Any locality that imposes a local sales tax" -> C
+  # AR: "Any locality that imposes a local sales tax" -> B
+  # AZ: "... or any other locality that imposes a local sales tax" -> B
+  # CO: "... or any other locality that imposes a local sales tax" -> A
+  # GA: "Any locality that imposes a local sales tax" -> B
+  # IL: "... or any other locality that imposes a local sales tax" -> A
+  # LA: "... or any other locality that imposes a local sales tax" -> B
+  # MO: "Any locality that imposes a local sales tax" -> B
+  # MS: "City of Jackson only" -> A
+  # NC: "Any locality that imposes a local sales tax" -> A
+  # NY: "Any other locality that imposes a local sales tax" -> D
+  # SC: "... or any other locality that imposes a local sales tax" -> B
+  # TN: "Any locality that imposes a local sales tax" -> B
+  # UT: "Any locality that imposes a local sales tax" -> A
+  # VA: "Any locality that imposes a local sales tax" -> B
+  period: 2018
+  input:
+    people:
+      person_AK:
+        age: 40
+      person_AR:
+        age: 40
+      person_AZ:
+        age: 40
+      person_CO:
+        age: 40
+      person_GA:
+        age: 40
+      person_IL:
+        age: 40
+      person_LA:
+        age: 40
+      person_MO:
+        age: 40
+      person_MS:
+        age: 40
+      person_NC:
+        age: 40
+      person_NY:
+        age: 40
+      person_SC:
+        age: 40
+      person_TN:
+        age: 40
+      person_UT:
+        age: 40
+      person_VA:
+        age: 40
+    households:
+      household_AK:
+        members: [person_AK]
+        state_code: AK
+      household_AR:
+        members: [person_AR]
+        state_code: AR
+      household_AZ:
+        members: [person_AZ]
+        state_code: AZ
+      household_CO:
+        members: [person_CO]
+        state_code: CO
+      household_GA:
+        members: [person_GA]
+        state_code: GA
+      household_IL:
+        members: [person_IL]
+        state_code: IL
+      household_LA:
+        members: [person_LA]
+        state_code: LA
+      household_MO:
+        members: [person_MO]
+        state_code: MO
+      household_MS:
+        members: [person_MS]
+        state_code: MS
+      household_NC:
+        members: [person_NC]
+        state_code: NC
+      household_NY:
+        members: [person_NY]
+        state_code: NY
+      household_SC:
+        members: [person_SC]
+        state_code: SC
+      household_TN:
+        members: [person_TN]
+        state_code: TN
+      household_UT:
+        members: [person_UT]
+        state_code: UT
+      household_VA:
+        members: [person_VA]
+        state_code: VA
+  output:
+    local_sales_tax_table: [C, B, B, A, B, A, B, B, A, A, D, B, B, A, B]
+
+- name: Default local tables, 2019
+  # 2019 selector (PDF page 19), row and table by state:
+  # AK: "... or any locality that imposes a local sales tax" -> C
+  # AR: "Any locality that imposes a local sales tax" -> C
+  # AZ: "... or any other locality that imposes a local sales tax" -> B
+  # CO: "... or any other locality that imposes a local sales tax" -> A
+  # GA: "Any locality that imposes a local sales tax" -> B
+  # IL: "... or any other locality that imposes a local sales tax" -> A
+  # LA: "... or any other locality that imposes a local sales tax" -> C
+  # MO: "Any locality that imposes a local sales tax" -> B
+  # MS: "City of Jackson only" -> A
+  # NC: "Any locality that imposes a local sales tax" -> A
+  # NY: "Any other locality that imposes a local sales tax" -> D
+  # SC: "... or any other locality that imposes a local sales tax" -> C
+  # TN: "Any locality that imposes a local sales tax" -> C
+  # UT: "Any locality that imposes a local sales tax" -> A
+  # VA: "Any locality that imposes a local sales tax" -> C
+  period: 2019
+  input:
+    people:
+      person_AK:
+        age: 40
+      person_AR:
+        age: 40
+      person_AZ:
+        age: 40
+      person_CO:
+        age: 40
+      person_GA:
+        age: 40
+      person_IL:
+        age: 40
+      person_LA:
+        age: 40
+      person_MO:
+        age: 40
+      person_MS:
+        age: 40
+      person_NC:
+        age: 40
+      person_NY:
+        age: 40
+      person_SC:
+        age: 40
+      person_TN:
+        age: 40
+      person_UT:
+        age: 40
+      person_VA:
+        age: 40
+    households:
+      household_AK:
+        members: [person_AK]
+        state_code: AK
+      household_AR:
+        members: [person_AR]
+        state_code: AR
+      household_AZ:
+        members: [person_AZ]
+        state_code: AZ
+      household_CO:
+        members: [person_CO]
+        state_code: CO
+      household_GA:
+        members: [person_GA]
+        state_code: GA
+      household_IL:
+        members: [person_IL]
+        state_code: IL
+      household_LA:
+        members: [person_LA]
+        state_code: LA
+      household_MO:
+        members: [person_MO]
+        state_code: MO
+      household_MS:
+        members: [person_MS]
+        state_code: MS
+      household_NC:
+        members: [person_NC]
+        state_code: NC
+      household_NY:
+        members: [person_NY]
+        state_code: NY
+      household_SC:
+        members: [person_SC]
+        state_code: SC
+      household_TN:
+        members: [person_TN]
+        state_code: TN
+      household_UT:
+        members: [person_UT]
+        state_code: UT
+      household_VA:
+        members: [person_VA]
+        state_code: VA
+  output:
+    local_sales_tax_table: [C, C, B, A, B, A, C, B, A, A, D, C, C, A, C]
+
+- name: Default local tables, 2020
+  # 2020 selector (PDF page 18), row and table by state:
+  # AK: "... or any locality that imposes a local sales tax" -> C
+  # AR: "Any locality that imposes a local sales tax" -> C
+  # AZ: "... or any other locality that imposes a local sales tax" -> B
+  # CO: "... or any other locality that imposes a local sales tax" -> A
+  # GA: "Any locality that imposes a local sales tax" -> A
+  # IL: "... or any other locality that imposes a local sales tax" -> A
+  # LA: "... or any other locality that imposes a local sales tax" -> C
+  # MO: "Any locality that imposes a local sales tax" -> B
+  # MS: "City of Jackson only" -> A
+  # NC: "Any locality that imposes a local sales tax" -> A
+  # NY: "Any other locality that imposes a local sales tax" -> D
+  # SC: "... or any other locality that imposes a local sales tax" -> C
+  # TN: "Any locality that imposes a local sales tax" -> B
+  # UT: "Any locality that imposes a local sales tax" -> A
+  # VA: "Any locality that imposes a local sales tax" -> B
+  period: 2020
+  input:
+    people:
+      person_AK:
+        age: 40
+      person_AR:
+        age: 40
+      person_AZ:
+        age: 40
+      person_CO:
+        age: 40
+      person_GA:
+        age: 40
+      person_IL:
+        age: 40
+      person_LA:
+        age: 40
+      person_MO:
+        age: 40
+      person_MS:
+        age: 40
+      person_NC:
+        age: 40
+      person_NY:
+        age: 40
+      person_SC:
+        age: 40
+      person_TN:
+        age: 40
+      person_UT:
+        age: 40
+      person_VA:
+        age: 40
+    households:
+      household_AK:
+        members: [person_AK]
+        state_code: AK
+      household_AR:
+        members: [person_AR]
+        state_code: AR
+      household_AZ:
+        members: [person_AZ]
+        state_code: AZ
+      household_CO:
+        members: [person_CO]
+        state_code: CO
+      household_GA:
+        members: [person_GA]
+        state_code: GA
+      household_IL:
+        members: [person_IL]
+        state_code: IL
+      household_LA:
+        members: [person_LA]
+        state_code: LA
+      household_MO:
+        members: [person_MO]
+        state_code: MO
+      household_MS:
+        members: [person_MS]
+        state_code: MS
+      household_NC:
+        members: [person_NC]
+        state_code: NC
+      household_NY:
+        members: [person_NY]
+        state_code: NY
+      household_SC:
+        members: [person_SC]
+        state_code: SC
+      household_TN:
+        members: [person_TN]
+        state_code: TN
+      household_UT:
+        members: [person_UT]
+        state_code: UT
+      household_VA:
+        members: [person_VA]
+        state_code: VA
+  output:
+    local_sales_tax_table: [C, C, B, A, A, A, C, B, A, A, D, C, B, A, B]
+
+- name: Default local tables, 2021
+  # 2021 selector (PDF page 18), row and table by state:
+  # AK: "... or any locality that imposes a local sales tax" -> C
+  # AR: "Any locality that imposes a local sales tax" -> C
+  # AZ: "... or any other locality that imposes a local sales tax" -> B
+  # CO: "... or any other locality that imposes a local sales tax" -> A
+  # GA: "Any locality that imposes a local sales tax" -> C
+  # IL: "... or any other locality that imposes a local sales tax" -> A
+  # LA: "... or any other locality that imposes a local sales tax" -> C
+  # MO: "Any locality that imposes a local sales tax" -> C
+  # MS: "City of Jackson only" -> A
+  # NC: "Any locality that imposes a local sales tax" -> A
+  # NY: "Any other locality that imposes a local sales tax" -> D
+  # SC: "... or any other locality that imposes a local sales tax" -> C
+  # TN: "Any locality that imposes a local sales tax" -> C
+  # UT: "Any locality that imposes a local sales tax" -> A
+  # VA: "Any locality that imposes a local sales tax" -> B
+  period: 2021
+  input:
+    people:
+      person_AK:
+        age: 40
+      person_AR:
+        age: 40
+      person_AZ:
+        age: 40
+      person_CO:
+        age: 40
+      person_GA:
+        age: 40
+      person_IL:
+        age: 40
+      person_LA:
+        age: 40
+      person_MO:
+        age: 40
+      person_MS:
+        age: 40
+      person_NC:
+        age: 40
+      person_NY:
+        age: 40
+      person_SC:
+        age: 40
+      person_TN:
+        age: 40
+      person_UT:
+        age: 40
+      person_VA:
+        age: 40
+    households:
+      household_AK:
+        members: [person_AK]
+        state_code: AK
+      household_AR:
+        members: [person_AR]
+        state_code: AR
+      household_AZ:
+        members: [person_AZ]
+        state_code: AZ
+      household_CO:
+        members: [person_CO]
+        state_code: CO
+      household_GA:
+        members: [person_GA]
+        state_code: GA
+      household_IL:
+        members: [person_IL]
+        state_code: IL
+      household_LA:
+        members: [person_LA]
+        state_code: LA
+      household_MO:
+        members: [person_MO]
+        state_code: MO
+      household_MS:
+        members: [person_MS]
+        state_code: MS
+      household_NC:
+        members: [person_NC]
+        state_code: NC
+      household_NY:
+        members: [person_NY]
+        state_code: NY
+      household_SC:
+        members: [person_SC]
+        state_code: SC
+      household_TN:
+        members: [person_TN]
+        state_code: TN
+      household_UT:
+        members: [person_UT]
+        state_code: UT
+      household_VA:
+        members: [person_VA]
+        state_code: VA
+  output:
+    local_sales_tax_table: [C, C, B, A, C, A, C, C, A, A, D, C, C, A, B]
+
+- name: Jackson, Mississippi, 2015, the state's only row
+  # 2015 selector, Mississippi: "Cities of Jackson and Tupelo only" -> B.
+  period: 2015
+  input:
+    state_code: MS
+    county_fips: "28049"
+    place_fips: "36000"
+  output:
+    local_sales_tax_table: B
+
+- name: Jackson, Mississippi, 2016
+  # 2016 selector: "City of Jackson only" -> A; "City of Tupelo only" -> B.
+  period: 2016
+  input:
+    state_code: MS
+    county_fips: "28049"
+    place_fips: "36000"
+  output:
+    local_sales_tax_table: A
+
+- name: Tupelo, Mississippi, 2016
+  period: 2016
+  input:
+    state_code: MS
+    county_fips: "28081"
+    place_fips: "74840"
+  output:
+    local_sales_tax_table: B
+
+- name: Tupelo, Mississippi, 2019
+  # 2019 selector: "City of Tupelo only" -> C.
+  period: 2019
+  input:
+    state_code: MS
+    county_fips: "28081"
+    place_fips: "74840"
+  output:
+    local_sales_tax_table: C
+
+- name: Pueblo, Colorado, 2015, a Table B city in Table A Pueblo County
+  # 2015 selector, Colorado: "Adams County, ..., Pueblo County, or any other
+  # locality" -> A; "Aurora, Boulder, ..., Longmont or Pueblo City." -> B.
+  period: 2015
+  input:
+    state_code: CO
+    county_fips: "08101"
+    place_fips: "62000"
+  output:
+    local_sales_tax_table: B
+
+- name: Arvada, Colorado, 2015, a Table C city in Table B Jefferson County
+  # "Aurora, Boulder, Fort Collins, Greeley, Jefferson County, ..." -> B;
+  # "Arvada, Thornton or Westminster" -> C.
+  period: 2015
+  input:
+    state_code: CO
+    county_fips: "08059"
+    place_fips: "03455"
+  output:
+    local_sales_tax_table: C
+
+- name: Jefferson County, Colorado, 2015, outside its named cities
+  period: 2015
+  input:
+    state_code: CO
+    county_fips: "08059"
+  output:
+    local_sales_tax_table: B
+
+- name: Boulder, Colorado, 2016, a Table B city in Table A Boulder County
+  # 2016 selector: "Adams County, Arapahoe County, Boulder County, ..." -> A;
+  # "Aurora, Boulder, Fort Collins, ..." -> B.
+  period: 2016
+  input:
+    state_code: CO
+    county_fips: "08013"
+    place_fips: "07850"
+  output:
+    local_sales_tax_table: B
+
+- name: Boulder County, Colorado, 2016, outside Boulder
+  period: 2016
+  input:
+    state_code: CO
+    county_fips: "08013"
+  output:
+    local_sales_tax_table: A
+
+- name: Aurora, Illinois, 2016
+  # 2016 selector, Illinois: "Aurora, Elgin, or Waukegan" -> B; "..., or any
+  # other locality" -> A.
+  period: 2016
+  input:
+    state_code: IL
+    county_fips: "17089"
+    place_fips: "03012"
+  output:
+    local_sales_tax_table: B
+
+- name: Elgin, Illinois, 2020, in the Table A row
+  # 2020 selector: "Arlington Heights, ..., Elgin, Joliet, ..., Waukegan or any
+  # other locality that imposes a local sales tax" -> A; "Aurora" -> B.
+  period: 2020
+  input:
+    state_code: IL
+    county_fips: "17089"
+    place_fips: "23074"
+  output:
+    local_sales_tax_table: A
+
+- name: Elgin, Illinois, 2021
+  # 2021 selector: "Aurora, Elgin, Joliet, Waukegan" -> B.
+  period: 2021
+  input:
+    state_code: IL
+    county_fips: "17089"
+    place_fips: "23074"
+  output:
+    local_sales_tax_table: B
+
+- name: Glendale, Arizona, 2017
+  # 2017 selector, Arizona: "Glendale, Mesa, Peoria, Phoenix, or Tucson" -> A;
+  # the rest -> B.
+  period: 2017
+  input:
+    state_code: AZ
+    county_fips: "04013"
+    place_fips: "27820"
+  output:
+    local_sales_tax_table: A
+
+- name: New York City, 2015
+  # 2015 selector, New York: "Counties: Chautauqua, ..., Wayne, New York City or
+  # Norwich City" -> A.
+  period: 2015
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "51000"
+  output:
+    local_sales_tax_table: A
+
+- name: Yonkers, New York, 2015, by Westchester County
+  # 2015 selector: the Table B row names counties only, "... Westchester,
+  # Wyoming or Yates"; it names no cities.
+  period: 2015
+  input:
+    state_code: NY
+    county_fips: "36119"
+    place_fips: "84000"
+  output:
+    local_sales_tax_table: B
+
+- name: Yonkers, New York, 2018
+  # 2018 selector: "Cities: Olean, ..., White Plains, or Yonkers" -> A, as is
+  # the "Counties:" row.
+  period: 2018
+  input:
+    state_code: NY
+    county_fips: "36119"
+    place_fips: "84000"
+  output:
+    local_sales_tax_table: A
+
+- name: Yonkers, New York, 2019
+  # 2019 selector: "Counties: Albany, ... Cities: Auburn, ..., White Plains,
+  # Yonkers" -> B.
+  period: 2019
+  input:
+    state_code: NY
+    county_fips: "36119"
+    place_fips: "84000"
+  output:
+    local_sales_tax_table: B
+
+- name: Wayne County, New York, 2015
+  # 2015 selector: "Counties: Chautauqua, ..., Tioga, Wayne, ..." -> A.
+  period: 2015
+  input:
+    state_code: NY
+    county_fips: "36117"
+  output:
+    local_sales_tax_table: A
+
+- name: Wayne County, New York, 2020
+  # 2020 selector: "Counties: Albany, ..., Wayne, Westchester, Wyoming or
+  # Yates" -> B.
+  period: 2020
+  input:
+    state_code: NY
+    county_fips: "36117"
+  output:
+    local_sales_tax_table: B
+
+- name: Aiken County, South Carolina, 2016
+  # 2016 selector, South Carolina: one row, "Aiken County, ..., or any other
+  # locality" -> B.
+  period: 2016
+  input:
+    state_code: SC
+    county_fips: "45003"
+  output:
+    local_sales_tax_table: B
+
+- name: Aiken County, South Carolina, 2017
+  # 2017 selector: "Aiken County, Andersonn County, ..., or York County" -> A.
+  period: 2017
+  input:
+    state_code: SC
+    county_fips: "45003"
+  output:
+    local_sales_tax_table: A
+
+- name: Allendale County, South Carolina, 2018
+  # 2018 selector: "Aiken County, Allendale, Andersonn County, ..." -> A; the
+  # bare "Allendale" is read as the county (see county/a.yaml).
+  period: 2018
+  input:
+    state_code: SC
+    county_fips: "45005"
+  output:
+    local_sales_tax_table: A
+
+- name: Charleston County, South Carolina, 2018
+  # 2018 selector: "Abbeville County, Berkeley County, Calhoun County,
+  # Charleston, ..., or any other locality that imposes a local sales tax"
+  # -> B.
+  period: 2018
+  input:
+    state_code: SC
+    county_fips: "45019"
+  output:
+    local_sales_tax_table: B
+
+- name: Calcasieu Parish, Louisiana, 2018
+  # 2018 selector, Louisiana: "Calcasieu Parish" -> A.
+  period: 2018
+  input:
+    state_code: LA
+    county_fips: "22019"
+  output:
+    local_sales_tax_table: A
+
+- name: East Baton Rouge Parish, Louisiana, 2019
+  # 2019 selector: "East Baton Rouge Parish" -> B; "..., or any other locality
+  # that imposes a local sales tax" -> C.
+  period: 2019
+  input:
+    state_code: LA
+    county_fips: "22033"
+  output:
+    local_sales_tax_table: B
+
+- name: Jefferson Parish, Louisiana, 2021
+  # 2021 selector: "East Baton Rouge Parish, Jefferson Parish" -> B.
+  period: 2021
+  input:
+    state_code: LA
+    county_fips: "22051"
+  output:
+    local_sales_tax_table: B
+
+- name: DeKalb County, Georgia, outside Atlanta, 2021
+  # 2021 selector: "Dekalb County (excluding Atlanta)" -> B; "Any locality that
+  # imposes a local sales tax" -> C.
+  period: 2021
+  input:
+    state_code: GA
+    county_fips: "13089"
+  output:
+    local_sales_tax_table: B
+
+- name: Atlanta in DeKalb County, Georgia, 2021
+  period: 2021
+  input:
+    state_code: GA
+    county_fips: "13089"
+    place_fips: "04000"
+  output:
+    local_sales_tax_table: C
