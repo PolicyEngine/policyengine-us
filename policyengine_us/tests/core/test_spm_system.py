@@ -24,6 +24,7 @@ from policyengine_us import Microsimulation, Simulation
 from policyengine_us.data.dataset_schema import USMultiYearDataset, USSingleYearDataset
 from policyengine_us.entities import Person
 from policyengine_us.spm import (
+    BEHAVIORAL_RESPONSE_CACHE_ATTR,
     DERIVED_POVERTY_OUTPUTS,
     REJECTED_DATASET_INPUTS,
     create_spm_provider,
@@ -861,9 +862,14 @@ def test_subsampling_never_changes_which_policy_a_holder_belongs_to(
             simulation.calculate(variable, 2024)
 
     for n, seed, quantize_weights in draws:
+        previous_baseline = changed.baseline
+        for simulation in (changed, previous_baseline):
+            simulation.__dict__[BEHAVIORAL_RESPONSE_CACHE_ATTR] = {"2024": "stale"}
         changed.subsample(n, seed=seed, quantize_weights=quantize_weights)
 
         baseline = changed.branches["baseline"]
+        for simulation in (changed, previous_baseline, baseline):
+            assert BEHAVIORAL_RESPONSE_CACHE_ATTR not in simulation.__dict__
         assert changed.baseline is baseline
         assert baseline.baseline is None
         assert changed.tax_benefit_system is policies["reform"]

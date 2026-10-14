@@ -23,5 +23,7 @@ class ar_misc_deduction_joint(Variable):
         # itemized deductions, so start from the expenses, not misc_deduction.
         p = parameters(period).gov.states.ar.tax.income.deductions.itemized.misc
         expenses = add(tax_unit, period, p.sources)
-        agi = add(tax_unit, period, ["ar_agi_joint"])
+        # A spouse's loss can make the joint AGI total negative; floor it at
+        # zero so a negative AGI cannot enlarge the deduction.
+        agi = max_(add(tax_unit, period, ["ar_agi_joint"]), 0)
         return max_(0, expenses - p.income_floor * agi)
