@@ -1,0 +1,1 @@
+Without Form 2555 leaf inputs, the foreign earned income exclusion now uprates only from the latest earlier entered amount, as Core does, so a later year no longer depends on whether earlier years were calculated first.
