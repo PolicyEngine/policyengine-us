@@ -7,7 +7,7 @@ values:
     # exclusion (see interest_and_dividends), and trust and estate income
     # only when positive (see positive_sources).
     - social_security # SSA benefits: count the gross amount
-    - unemployment_compensation
+    - total_unemployment_compensation # Reported, or modeled state UI
     - pension_income # Pension; annuities and endowment contracts
     - retirement_distributions # IRA and 401(k) withdrawals: money received
     - railroad_benefits # Retirement Pay (Railroad Retirement)
