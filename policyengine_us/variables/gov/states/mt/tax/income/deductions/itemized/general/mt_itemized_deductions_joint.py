@@ -17,10 +17,22 @@ class mt_itemized_deductions_joint(Variable):
         # 2023 Form 2 instructions, itemized deductions line 9: home mortgage
         # interest "allowed by federal law", limited to the first $750,000 of
         # acquisition debt incurred after Dec. 15, 2017
+        "https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=15",
+        # 2024 Form 2 instructions, line 2 and Worksheet A: adjusted federal
+        # itemized deductions
     )
     defined_for = StateCode.MT
 
     def formula(person, period, parameters):
+        is_head = person("is_tax_unit_head", period)
+        p = parameters(period).gov.states.mt.tax.income.deductions.itemized
+        if not p.state_specific_deduction_applies:
+            # From 2024 Form 2 line 2 takes the federal itemized deductions,
+            # less the state income tax (Worksheet A).
+            adjusted_federal_itemized_deductions = person.tax_unit(
+                "mt_adjusted_federal_itemized_deductions", period
+            )
+            return is_head * adjusted_federal_itemized_deductions
         charitable_deduction = person.tax_unit("charitable_deduction", period)
         investment_interest = person("investment_interest_expense", period)
         # Montana allows the mortgage interest federal law allows, so interest
@@ -39,5 +51,4 @@ class mt_itemized_deductions_joint(Variable):
                 "mt_federal_income_tax_deduction_unit",
             ],
         )
-        is_head = person("is_tax_unit_head", period)
         return is_head * (interest_ded + other_deductions + charitable_deduction)
