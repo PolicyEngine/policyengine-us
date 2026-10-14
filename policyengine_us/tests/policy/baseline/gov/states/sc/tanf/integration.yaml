@@ -323,3 +323,34 @@
     # include the parent(s) as the only BG member."
     # FPG for 1 = 1255; need standard = 627.50
     # benefit = 627.50 * 0.4046 = 253.89
+
+- name: Case 12, an SSI child's savings do not count against the resource limit.
+  period: 2025-01
+  absolute_error_margin: 0.1
+  input:
+    people:
+      person1:
+        age: 30
+        employment_income_before_lsr: 0
+        bank_account_assets: 800
+      person2:
+        age: 9
+        is_child_dependent: true
+        receives_ssi: true
+        bank_account_assets: 1_800
+      person3:
+        age: 6
+        is_child_dependent: true
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: SC
+  output:
+    sc_tanf_countable_resources: 800
+    sc_tanf: 344.58
+    # Sections 3.6 (page 56) and 7.7 (page 117) exclude the SSI child's
+    # resources: 2,600 - 1,800 = 800, within the $2,500 limit (page 91).
+    # Benefit group of 2: need standard 851.67; benefit = 851.67 * 0.4046

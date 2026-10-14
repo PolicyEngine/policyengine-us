@@ -4,7 +4,8 @@ values:
     # Section 7.1 defines income as money received from any source, and the
     # Section 7.7 chart counts each source below at its gross amount.
     # Interest and dividends are counted separately, after the $400
-    # exclusion (see interest_and_dividends).
+    # exclusion (see interest_and_dividends), and trust and estate income
+    # only when positive (see positive_sources).
     - social_security # SSA benefits: count the gross amount
     - unemployment_compensation
     - pension_income # Pension; annuities and endowment contracts
@@ -21,7 +22,6 @@ values:
     - capital_gains # Capital gains (other)
     - rental_income # Rent payments; royalties are included in rental income
     - farm_rent_income
-    - estate_income # Trust and estate income; settlements are resources
     - partnership_s_corp_income
     - miscellaneous_income
     - illicit_income

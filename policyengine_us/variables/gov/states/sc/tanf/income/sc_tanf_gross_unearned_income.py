@@ -15,7 +15,12 @@ class sc_tanf_gross_unearned_income(Variable):
         p = parameters(period).gov.states.sc.tanf.income.unearned
         # Section 7.7 excludes the income of SSI recipients.
         counted = ~person("sc_tanf_ssi_recipient", period)
-        other_sources = add(person, period, p.sources) * counted
+        other_sources = add(person, period, p.sources)
+        # Sources that can carry a pass-through loss count only when positive:
+        # a loss is not money received (Section 7.1).
+        for source in p.positive_sources:
+            other_sources = other_sources + max_(person(source, period), 0)
+        other_sources = other_sources * counted
         # Section 7.7 excludes up to $400 of interest, dividends and royalties
         # per benefit group each year and averages the rest over 12 months.
         # Each member's exclusion is proportional to their share of that income.

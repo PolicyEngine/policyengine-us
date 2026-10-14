@@ -212,3 +212,36 @@
   output:
     # (1,200 - 400) / 12 = 66.67.
     sc_tanf_gross_unearned_income: 66.67
+
+- name: Case 15, a trust or estate loss does not offset other income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    estate_income: -1_200
+    taxable_private_pension_income: 2_400
+  output:
+    # A pass-through loss is not money received (Section 7.1, page 102).
+    # Pension 2,400 / 12 = 200.
+    sc_tanf_gross_unearned_income: 200
+
+- name: Case 16, one member's estate loss does not offset another member's income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        taxable_private_pension_income: 2_400
+      person2:
+        age: 10
+        estate_income: -1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    sc_tanf_gross_unearned_income: [200, 0]

@@ -40,6 +40,10 @@ For every benefit group, in January 2025:
 6. The benefit group size is the number of members who do not receive SSI,
    and the need standard is 50% of the guideline for that size (0 for an
    empty group).
+7. Trust and estate income counts only when positive, so a pass-through
+   loss never offsets another source or another member's income.
+8. Countable resources are the unit's cash assets less SSI recipients' own
+   bank, stock and bond assets (Sections 3.6 and 7.7).
 
 Each generated group is simulated twice in one vectorized simulation: as
 drawn, and with the head's interest raised (property 5).
@@ -76,9 +80,19 @@ INTEREST_AND_DIVIDENDS = [
     "non_qualified_dividend_income",
 ]
 # Inputs that must not count as unearned income.
+# Counted only when positive.
+POSITIVE_ONLY = ["estate_income"]
 IGNORED = ["debt_relief"]
+ASSETS = ["bank_account_assets", "stock_assets", "bond_assets"]
 WAGES = "employment_income_before_lsr"
-AMOUNT_INPUTS = [*COUNTED, *INTEREST_AND_DIVIDENDS, *IGNORED, WAGES]
+AMOUNT_INPUTS = [
+    *COUNTED,
+    *POSITIVE_ONLY,
+    *INTEREST_AND_DIVIDENDS,
+    *IGNORED,
+    WAGES,
+    *ASSETS,
+]
 
 
 def build_situation(groups):
@@ -139,6 +153,7 @@ def member_counted(member):
     if member["ssi"]:
         return 0
     other = sum(member.get(v, 0) for v in COUNTED) / 12
+    other += sum(max(member.get(v, 0), 0) for v in POSITIVE_ONLY) / 12
     return other + member_interest_and_dividends(member)
 
 
@@ -157,7 +172,8 @@ def reference(group):
     size = sum(not m["ssi"] for m in group)
     fpg = (FPG_FIRST_PERSON + FPG_ADDITIONAL_PERSON * (size - 1)) / 12
     need_standard = NEED_STANDARD_RATE * fpg if size > 0 else 0
-    return unearned, earned, exclusion, size, need_standard
+    resources = sum(sum(m.get(v, 0) for v in ASSETS) for m in group if not m["ssi"])
+    return unearned, earned, exclusion, size, need_standard, resources
 
 
 def run(groups, raises):
@@ -174,6 +190,7 @@ def run(groups, raises):
     ssi = calc("sc_tanf_ssi_recipient")
     size = calc("sc_tanf_benefit_group_size")
     need = calc("sc_tanf_need_standard")
+    resources = calc("sc_tanf_countable_resources")
     bounds = np.cumsum([0, *[len(g) for g in doubled]])
     n = len(groups)
 
@@ -181,18 +198,18 @@ def run(groups, raises):
         return [a[bounds[k] : bounds[k + 1]] for k in range(len(doubled))]
 
     u, e, s = split(unearned), split(earned), split(ssi)
-    drawn = (u[:n], e[:n], s[:n], size[:n], need[:n])
-    raised = (u[n:], e[n:], s[n:], size[n:], need[n:])
+    drawn = (u[:n], e[:n], s[:n], size[:n], need[:n], resources[:n])
+    raised = (u[n:], e[n:], s[n:], size[n:], need[n:], resources[n:])
     return drawn, raised
 
 
 def check(groups, raises):
-    (unearned, earned, ssi, size, need), raised = run(groups, raises)
+    (unearned, earned, ssi, size, need, resources), raised = run(groups, raises)
     raised_unearned = raised[0]
     for k, group in enumerate(groups):
         expected = reference(group)
         expected_unearned, expected_earned, exclusion = expected[:3]
-        expected_size, expected_need = expected[3:]
+        expected_size, expected_need, expected_resources = expected[3:]
         context = {"group": group}
         # Properties 1 and 3: the reference from the manual.
         assert unearned[k] == pytest.approx(expected_unearned, abs=TOLERANCE), context
@@ -223,6 +240,8 @@ def check(groups, raises):
         # Property 6: benefit group size and need standard.
         assert size[k] == expected_size, context
         assert need[k] == pytest.approx(expected_need, abs=TOLERANCE), context
+        # Property 8: SSI recipients' own assets are left out.
+        assert resources[k] == pytest.approx(expected_resources, abs=TOLERANCE), context
 
 
 def test_worked_example():
@@ -240,7 +259,7 @@ def test_worked_example():
             {"age": 6, "ssi": False},
         ]
     ]
-    (unearned, _, _, size, need), _ = run(groups, [0])
+    (unearned, _, _, size, need, _), _ = run(groups, [0])
     # 300 + (1,000 - 400) / 12 = 350 for the parent; 400 for the child.
     assert unearned[0] == pytest.approx([350, 400, 0], abs=TOLERANCE)
     # Volume 65 Section 8.15 guideline, three persons: (15,060 + 2 x 5,380) / 12 x 0.5.
@@ -280,7 +299,14 @@ if hypothesis is not None:
             "tax_exempt_interest_income": draw(amount(1_000)),
             "qualified_dividend_income": draw(amount(2_000)),
             "non_qualified_dividend_income": draw(amount(1_000)),
+            # Signed, like a Schedule E Part III net income or loss.
+            "estate_income": draw(
+                st.one_of(amount(6_000), st.integers(min_value=-6_000, max_value=-1))
+            ),
             "debt_relief": draw(amount(5_000)),
+            "bank_account_assets": draw(amount(3_000)),
+            "stock_assets": draw(amount(2_000)),
+            "bond_assets": draw(amount(1_000)),
             "employment_income_before_lsr": draw(amount(30_000)),
         }
 

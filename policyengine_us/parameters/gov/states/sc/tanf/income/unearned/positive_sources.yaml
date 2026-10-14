@@ -1,0 +1,14 @@
+description: South Carolina counts the positive amount of each of these income sources as unearned income under the Temporary Assistance for Needy Families program.
+values:
+  1996-07-01:
+    # Trust and estate income is money received (Section 7.1); a net loss
+    # passed through from an estate or trust is not, and Section 8.16 allows
+    # no deduction for it. Estate settlements are resources (Section 6.6).
+    - estate_income
+metadata:
+  unit: list
+  period: month
+  label: South Carolina TANF unearned income sources counted when positive
+  reference:
+    - title: "SC DSS TANF Policy Manual (Volume 67), Sections 6.6, 7.1 and 8.16 #page 92,102,134"
+      href: https://dss.sc.gov/media/bxwc1jdj/tanf-policy-manual-volume-67-final.pdf#page=92
