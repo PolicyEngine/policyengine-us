@@ -1,0 +1,82 @@
+- name: An S corporation loss above the 2022 joint threshold is an excess business loss
+  period: 2022
+  input:
+    people:
+      head:
+        age: 50
+        partnership_s_corp_income: -1_000_000
+      spouse:
+        age: 50
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    net_business_loss: 1_000_000
+    # 1,000,000 - 540,000 (Rev. Proc. 2021-45)
+    excess_business_loss: 460_000
+    loss_ald: 540_000
+
+- name: Business income of the other spouse raises the allowed loss
+  period: 2022
+  input:
+    people:
+      head:
+        age: 50
+        partnership_s_corp_income: -1_000_000
+      spouse:
+        age: 50
+        self_employment_income: 200_000
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: TX
+  output:
+    # 1,000,000 - (200,000 + 540,000)
+    excess_business_loss: 260_000
+
+- name: No excess business loss below the 2025 single threshold
+  period: 2025
+  input:
+    people:
+      head:
+        age: 50
+        self_employment_income: -300_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: TX
+  output:
+    # The 2025 single threshold is $313,000 (Form 461, line 15).
+    excess_business_loss: 0
+
+- name: A dependent's business loss is on their own return
+  period: 2022
+  input:
+    people:
+      head:
+        age: 50
+        partnership_s_corp_income: -400_000
+      dependent:
+        age: 20
+        is_tax_unit_dependent: true
+        partnership_s_corp_income: -500_000
+    tax_units:
+      tax_unit:
+        members: [head, dependent]
+    households:
+      household:
+        members: [head, dependent]
+        state_code: TX
+  output:
+    # 400,000 - 270,000
+    excess_business_loss: 130_000
