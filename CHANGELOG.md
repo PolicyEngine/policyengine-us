@@ -1,3 +1,10 @@
+## [2.42.6] - 2026-10-14
+
+### Fixed
+
+- Montana's elderly homeowner/renter credit now counts each person's capital gains without losses netted on the same return or carried over from a prior year, and counts Social Security once when a person is input as both a tax unit dependent and the head or spouse.
+
+
 ## [2.42.5] - 2026-10-14
 
 ### Fixed
