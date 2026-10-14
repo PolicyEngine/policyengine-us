@@ -1,0 +1,13 @@
+description: Vermont subtracts student loan interest not deducted federally if this is true.
+values:
+  0000-01-01: false
+  2022-01-01: true
+metadata:
+  unit: bool
+  period: year
+  label: Vermont student loan interest subtraction in effect
+  reference:
+    - title: "2022 Act 138, Sec. 5 and Sec. 13 (effective retroactively on January 1, 2022) #page 4-5,15"
+      href: https://legislature.vermont.gov/Documents/2022/Docs/ACTS/ACT138/ACT138%20As%20Enacted.pdf#page=4
+    - title: 32 V.S.A. 5811(21)(B)(vi)
+      href: https://legislature.vermont.gov/statutes/section/32/151/05811
