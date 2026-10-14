@@ -40,8 +40,9 @@ For every benefit group, in January 2025:
 6. The benefit group size is the number of members who do not receive SSI,
    and the need standard is 50% of the guideline for that size (0 for an
    empty group).
-7. Trust and estate income counts only when positive, so a pass-through
-   loss never offsets another source or another member's income.
+7. Net amounts that can be losses (trust and estate, rental and
+   partnership income here) count only when positive, so a loss never
+   offsets another source or another member's income.
 8. Countable resources are the unit's cash assets less SSI recipients' own
    bank, stock and bond assets (Sections 3.6 and 7.7).
 
@@ -79,9 +80,11 @@ INTEREST_AND_DIVIDENDS = [
     "qualified_dividend_income",
     "non_qualified_dividend_income",
 ]
+# Net amounts counted only when positive. partnership_income is the only
+# component drawn of partnership_s_corp_income, so flooring it matches the
+# model's floor on that total.
+POSITIVE_ONLY = ["estate_income", "rental_income", "partnership_income"]
 # Inputs that must not count as unearned income.
-# Counted only when positive.
-POSITIVE_ONLY = ["estate_income"]
 IGNORED = ["debt_relief"]
 ASSETS = ["bank_account_assets", "stock_assets", "bond_assets"]
 WAGES = "employment_income_before_lsr"
@@ -279,6 +282,9 @@ if hypothesis is not None:
     def amount(high):
         return st.one_of(st.just(0), st.integers(min_value=1, max_value=high))
 
+    def signed(high):
+        return st.one_of(amount(high), st.integers(min_value=-high, max_value=-1))
+
     @st.composite
     def member(draw, age):
         return {
@@ -299,10 +305,10 @@ if hypothesis is not None:
             "tax_exempt_interest_income": draw(amount(1_000)),
             "qualified_dividend_income": draw(amount(2_000)),
             "non_qualified_dividend_income": draw(amount(1_000)),
-            # Signed, like a Schedule E Part III net income or loss.
-            "estate_income": draw(
-                st.one_of(amount(6_000), st.integers(min_value=-6_000, max_value=-1))
-            ),
+            # Signed net amounts, like Schedule E income or loss.
+            "estate_income": draw(signed(6_000)),
+            "rental_income": draw(signed(8_000)),
+            "partnership_income": draw(signed(8_000)),
             "debt_relief": draw(amount(5_000)),
             "bank_account_assets": draw(amount(3_000)),
             "stock_assets": draw(amount(2_000)),

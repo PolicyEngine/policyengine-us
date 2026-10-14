@@ -245,3 +245,39 @@
         state_code: SC
   output:
     sc_tanf_gross_unearned_income: [200, 0]
+
+- name: Case 17, one member's partnership loss does not offset another member's pension.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        taxable_private_pension_income: 2_400
+      person2:
+        age: 10
+        partnership_income: -1_200
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: SC
+  output:
+    # A net loss is not money received (Section 7.1, page 102).
+    sc_tanf_gross_unearned_income: [200, 0]
+
+- name: Case 18, capital and rental losses do not offset the same member's income.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: SC
+    short_term_capital_gains: -3_000
+    rental_income: -2_400
+    farm_rent_income: 1_200
+    taxable_private_pension_income: 2_400
+  output:
+    # Each net source is floored at zero on its own: farm rent 1,200 / 12 =
+    # 100 plus pension 2,400 / 12 = 200.
+    sc_tanf_gross_unearned_income: 300
