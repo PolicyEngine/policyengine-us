@@ -67,3 +67,44 @@ def _ssi_spouse_index(person, period):
     """The row of each person's co-resident spouse, or -1."""
     first, second = co_resident_parent_indices(person, period)
     return _ssi_established_spouse_indices(person, period, first, second)
+
+
+def _ssi_eligible_apart_from_means(person, period):
+    """Aged, blind or disabled and meeting SSI's citizenship condition.
+
+    416.1160(d) makes an ineligible spouse one who 'is not eligible for SSI
+    benefits'. The resource test runs before eligibility is known, so this
+    tests the conditions that do not depend on it: aged, blind or disabled
+    status, and citizenship or qualified-noncitizen status (as is_ssi_eligible
+    requires).
+    """
+    immigration_status = person("immigration_status", period)
+    is_citizen = immigration_status == immigration_status.possible_values.CITIZEN
+    return person("is_ssi_aged_blind_disabled", period) & (
+        is_citizen | person("is_ssi_qualified_noncitizen", period)
+    )
+
+
+def _ssi_resource_couple(person, period):
+    """Whether 416.1205(b) combines a joint claim's resources.
+
+    A joint claim pairs two aged, blind or disabled spouses. When one of them
+    fails the citizenship condition, they are not an eligible couple
+    (416.1801(c)), so the other's resources are tested with the spouse's
+    deemed under 416.1202(a), with the ineligible-spouse exclusions.
+    """
+    eligible = _ssi_eligible_apart_from_means(person, period)
+    spouse = np.maximum(_ssi_spouse_index(person, period), 0)
+    return person("ssi_claim_is_joint", period) & eligible & eligible[spouse]
+
+
+def _ssi_couple_total(person, period, values):
+    """Each person's value plus their co-resident spouse's, if they have one.
+
+    This equals the marital-unit sum for units of one or two people, and
+    adds only the spouse when a unit holds more people, as the default unit
+    of a situation that omits marital units can. ``period`` is the year of
+    the spouse test.
+    """
+    spouse = _ssi_spouse_index(person, period)
+    return values + where(spouse >= 0, values[np.maximum(spouse, 0)], 0)

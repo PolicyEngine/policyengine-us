@@ -156,3 +156,134 @@
         members: [person1, person2, person3]
   output:
     ssi_claim_is_joint: [true, true, false]
+
+# 20 CFR 416.1801(c): an eligible spouse is a person eligible for SSI whom
+# SSA considers the spouse of another person eligible for SSI and who lives
+# in the same household with that person. Tax-unit roles play no part, so an
+# aged couple whose tax unit also holds an older adult is a joint claim.
+# 2026 rates: $994 individual, $1,491 couple; resource limits $2,000 and
+# $3,000 (416.1205).
+- name: Case 6, aged couple sharing a tax unit with an older adult is a joint claim.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      elder:
+        age: 90
+        social_security_retirement: 900 * 12
+      husband:
+        age: 70
+        social_security_retirement: 700 * 12
+        bank_account_assets: 2_500
+      wife:
+        age: 68
+        social_security_retirement: 600 * 12
+    tax_units:
+      tax_unit:
+        members: [elder, husband, wife]
+    marital_units:
+      elder_unit:
+        members: [elder]
+      couple:
+        members: [husband, wife]
+    households:
+      household:
+        members: [elder, husband, wife]
+        state_code: FL
+  output:
+    # The model makes the elder head and the husband the tax-unit spouse;
+    # the wife is a dependent. The couple is still an eligible couple.
+    ssi_claim_is_joint: [false, true, true]
+    # 416.1205(b): combined resources $2,500 <= $3,000.
+    meets_ssi_resource_test: [true, true, true]
+    # 416.1802(b)(1), 416.412: combined countable income $700 + $600 - $20 =
+    # $1,280; $1,491 - $1,280 = $211, $105.50 each. The elder is an
+    # individual: $994 - ($900 - $20) = $114.
+    ssi: [114, 105.50, 105.50]
+
+- name: Case 7, the same couple fails the couple resource limit together.
+  period: 2026-01
+  input:
+    people:
+      elder:
+        age: 90
+      husband:
+        age: 70
+        bank_account_assets: 2_000
+      wife:
+        age: 68
+        bank_account_assets: 1_500
+    tax_units:
+      tax_unit:
+        members: [elder, husband, wife]
+    marital_units:
+      elder_unit:
+        members: [elder]
+      couple:
+        members: [husband, wife]
+    households:
+      household:
+        members: [elder, husband, wife]
+        state_code: FL
+  output:
+    ssi_claim_is_joint: [false, true, true]
+    # 416.1205(b): $2,000 + $1,500 = $3,500 > $3,000. Tested one by one
+    # against the $2,000 individual limit both spouses would pass.
+    meets_ssi_resource_test: [true, false, false]
+
+- name: Case 8, aged couple who are both tax dependents of their son is a joint claim.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      son:
+        age: 45
+        is_tax_unit_head: true
+      father:
+        age: 75
+        is_tax_unit_dependent: true
+        social_security_retirement: 500 * 12
+      mother:
+        age: 73
+        is_tax_unit_dependent: true
+        social_security_retirement: 300 * 12
+    tax_units:
+      tax_unit:
+        members: [son, father, mother]
+    marital_units:
+      son_unit:
+        members: [son]
+      couple:
+        members: [father, mother]
+    households:
+      household:
+        members: [son, father, mother]
+        state_code: FL
+  output:
+    ssi_claim_is_joint: [false, true, true]
+    # $1,491 - ($500 + $300 - $20) = $711, $355.50 each.
+    ssi: [0, 355.50, 355.50]
+
+- name: Case 9, spouses who live in different households are not a joint claim.
+  period: 2026-01
+  input:
+    people:
+      husband:
+        age: 70
+      wife:
+        age: 68
+    tax_units:
+      tax_unit:
+        members: [husband, wife]
+    marital_units:
+      couple:
+        members: [husband, wife]
+    households:
+      home:
+        members: [husband]
+        state_code: FL
+      facility:
+        members: [wife]
+        state_code: FL
+  output:
+    ssi_claim_is_joint: [false, false]

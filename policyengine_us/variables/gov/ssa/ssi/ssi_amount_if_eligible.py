@@ -1,6 +1,6 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
-    SSIFederalLivingArrangement,
+from policyengine_us.variables.gov.ssa.ssi._ssi_living_arrangement_amount import (
+    ssi_living_arrangement_amount,
 )
 
 
@@ -14,11 +14,11 @@ class ssi_amount_if_eligible(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.ssa.ssi.amount
-        arrangement = person("ssi_federal_living_arrangement", period)
 
         # 20 CFR 416.414(b): Benefit rate depends on couple computation:
         # 1. Couple computation applies → couple rate / 2 per person
-        # 2. No couple computation, deeming → couple rate (capped in ssi)
+        # 2. No couple computation, deeming → couple rate (limited by
+        #    416.1163(e)(2) in uncapped_ssi)
         # 3. No couple computation, no deeming → individual rate
         #
         # ssi_couple_computation_applies is false when only one spouse
@@ -48,23 +48,4 @@ class ssi_amount_if_eligible(Variable):
             person("is_child", period.this_year), p.individual, base_amount
         )
 
-        is_medical_facility = (
-            arrangement == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY
-        )
-
-        # 20 CFR § 416.1131: One-third reduction for another person's
-        # household. Applies to the applicable FBR (individual or couple
-        # based on deeming).
-        is_another_household = (
-            arrangement == SSIFederalLivingArrangement.ANOTHER_PERSONS_HOUSEHOLD
-        )
-        vtr_rate = p.one_third_reduction_rate
-        base_amount = where(
-            is_another_household,
-            base_amount * (1 - vtr_rate),
-            base_amount,
-        )
-
-        # 42 USC § 1382(e)(1)(A), 20 CFR § 416.414: Medical treatment
-        # facility, $30/month per person.
-        return where(is_medical_facility, p.medical_facility, base_amount)
+        return ssi_living_arrangement_amount(person, period, parameters, base_amount)
