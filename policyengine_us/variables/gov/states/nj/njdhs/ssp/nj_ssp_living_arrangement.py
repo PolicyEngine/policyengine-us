@@ -1,5 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.states.nj.dhs.ssp.nj_ssp_care_setting import (
+from policyengine_us.variables.gov.states.nj.njdhs.ssp.nj_ssp_care_setting import (
     NJSSPCareSetting,
 )
 from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
@@ -25,7 +25,10 @@ class nj_ssp_living_arrangement(Variable):
     defined_for = StateCode.NJ
     possible_values = NJSSPLivingArrangement
     default_value = NJSSPLivingArrangement.NONE
-    reference = "https://secure.ssa.gov/poms.nsf/lnx/0501415025NY"
+    reference = (
+        "https://secure.ssa.gov/poms.nsf/lnx/0501415058#j1",
+        "https://secure.ssa.gov/poms.nsf/lnx/0501415025NY",
+    )
     documentation = """
     A separately purchasing couple sharing an address with others, or a couple
     living only with foster children, can set the ineligible-spouse variation

@@ -20,7 +20,7 @@
   output:
     nj_ssp: [12.68, 12.68]
 
-- name: Case 2, congregate care couple.
+- name: Case 2, congregate care couple in the month of entry.
   period: 2026-01
   absolute_error_margin: 0.001
   input:
@@ -172,3 +172,37 @@
     household_state_benefits: 375
     snap_unearned_income: 12_303
     hud_unearned_income: 12_303
+    # SSI 994 * 12 = 11_928. SNAP: 298 - 245 = 53 a month, raised to New
+    # Jersey's 95 minimum, so 95 * 12 = 1_140. 11_928 + 375 + 1_140 = 13_443.
+    spm_unit_benefits: 13_443
+
+- name: Case 8, congregate care spouses claim as individuals after the month of entry.
+  period: 2026-01
+  absolute_error_margin: 0.001
+  input:
+    people:
+      person1:
+        age: 65
+        nj_ssp_care_setting: CONGREGATE_CARE
+      person2:
+        age: 65
+        nj_ssp_care_setting: CONGREGATE_CARE
+    # SI NY01415.025: after the month of entry, spouses in a congregate care
+    # facility are treated as two individuals, entered as separate marital units.
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit:
+        members: &id008 [person1, person2]
+    households:
+      household:
+        members: *id008
+        state_code: NJ
+  output:
+    ssi: [994, 994]
+    nj_ssp_living_arrangement: [CONGREGATE_CARE, CONGREGATE_CARE]
+    # J.2.a individual code A row: 150.05 each.
+    nj_ssp: [150.05, 150.05]
