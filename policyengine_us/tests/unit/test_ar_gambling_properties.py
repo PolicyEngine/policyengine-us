@@ -74,6 +74,8 @@ def test_deduction_is_losses_capped_at_winnings(year):
     )
     deduction = sim.calculate("ar_gambling_loss_deduction", year)
     np.testing.assert_allclose(deduction, np.minimum(LOSSES, WINNINGS))
+    # The bounds and monotonicity follow from the exact check above; they are
+    # kept as the stated invariants.
     assert np.all(deduction >= 0)
     assert np.all(deduction <= WINNINGS)
     assert np.all(deduction <= LOSSES)
@@ -93,9 +95,10 @@ def test_deduction_does_not_depend_on_the_year():
         np.testing.assert_array_equal(result, results[0])
 
 
-@pytest.mark.parametrize("agi", [0, 50_000, 1_000_000])
-def test_deduction_is_not_subject_to_the_two_percent_floor(agi):
-    year = 2019
+@pytest.mark.parametrize("year", [2019, 2025])
+@pytest.mark.parametrize("agi", [10_000, 50_000, 1_000_000])
+def test_deduction_is_not_subject_to_the_two_percent_floor(year, agi):
+    # At these AGIs a 2% floor would remove $200 to $20,000 of the losses.
     sim = grid_simulation(
         year,
         {
@@ -105,12 +108,12 @@ def test_deduction_is_not_subject_to_the_two_percent_floor(agi):
             "ar_agi_indiv": constant(agi),
         },
     )
-    deduction = sim.calculate("ar_gambling_loss_deduction", year)
-    np.testing.assert_allclose(deduction, np.minimum(LOSSES, WINNINGS))
-    # No other itemized deduction has inputs, so the itemized total is the
-    # full gambling deduction whatever the AGI.
-    itemized = sim.calculate("ar_itemized_deductions_joint", year)
-    np.testing.assert_allclose(itemized, deduction)
+    deduction = np.minimum(LOSSES, WINNINGS)
+    # No other itemized deduction has inputs, so both itemized totals equal the
+    # full gambling deduction whatever the AGI. A one-person unit gets 100% of
+    # the separate-filing proration.
+    for variable in ["ar_itemized_deductions_joint", "ar_itemized_deductions_indiv"]:
+        np.testing.assert_allclose(sim.calculate(variable, year), deduction)
 
 
 @pytest.mark.parametrize("year", YEARS)

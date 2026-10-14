@@ -1,0 +1,1 @@
+Cite Act 732 of 2007 and DFA Subject 208 for the Arkansas electronic games of skill exclusion, and tighten the Arkansas gambling loss deduction tests (no 2% floor on the separate-filing path, status 4 proration).
