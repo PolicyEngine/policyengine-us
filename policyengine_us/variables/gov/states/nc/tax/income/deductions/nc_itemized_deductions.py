@@ -11,18 +11,10 @@ class nc_itemized_deductions(Variable):
     defined_for = StateCode.NC
 
     def formula(tax_unit, period, parameters):
-        # Qualified Mortgage Interest and Real Estate Property Taxes.
-        filing_status = tax_unit("filing_status", period)
-
-        mortgage_interest = add(tax_unit, period, ["mortgage_interest"])
-        pirs = parameters(period).gov.irs.deductions.itemized.salt_and_real_estate
-        property_taxes = min_(
-            add(tax_unit, period, ["real_estate_taxes"]),
-            pirs.cap[filing_status],
-        )
-        pco = parameters(period).gov.states.nc.tax.income.deductions.itemized.cap
-        capped_mortage_and_property_taxes = min_(
-            mortgage_interest + property_taxes, pco.mortgage_and_property_tax
+        # Qualified Mortgage Interest and Real Estate Property Taxes, after the
+        # $20,000 limitation shared by spouses (Schedule A line 5).
+        capped_mortage_and_property_taxes = tax_unit(
+            "nc_mortgage_and_property_tax_deduction", period
         )
 
         # North Carolina specifies a state and local tax deduction cap which is currently not modeled in PolicyEngine

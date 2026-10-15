@@ -166,11 +166,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SELECTIVE_TEST_MAX_TARGETS: 25
-      # 100 (was 250): selective runs pack every matched yaml into ONE
-      # policyengine-core subprocess, and ~250 yaml files retained ~15 GB
-      # and OOM'd the 16 GB runner on run 28698452678. When the limit is
-      # exceeded run_selective_tests.py safely narrows to directly changed
-      # test files (or skips, deferring to the full suite jobs).
+      # Keep Quick Feedback's total scope bounded. Selected locations run
+      # sequentially, with contrib/reform folders split one file per process
+      # like the Full Suite CRFB shard. Above this limit, the runner narrows
+      # to directly changed files (or defers to the full suite jobs).
       SELECTIVE_TEST_MAX_FILES: 100
       PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     steps:

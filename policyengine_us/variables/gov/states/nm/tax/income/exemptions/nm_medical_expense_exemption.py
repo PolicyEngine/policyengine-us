@@ -9,13 +9,33 @@ class nm_medical_expense_exemption(Variable):
     reference = "https://nmonesource.com/nmos/nmsa/en/item/4340/index.do#!fragment/zoupio-_Toc140503680/BQCwhgziBcwMYgK4DsDWszIQewE4BUBTADwBdoAvbRABwEtsBaAfX2zgEYAWABgFYeAZgBsADh4BKADTJspQhACKiQrgCe0AOSapEQmFwJlqjdt37DIAMp5SAIQ0AlAKIAZZwDUAggDkAws5SpGAARtCk7BISQA"
     defined_for = StateCode.NM
 
+    documentation = (
+        "Senior medical exemption based on gross unreimbursed costs paid, "
+        "preserving premiums deducted through the federal self-employed health "
+        "insurance ALD. Only the exclusion applied to a computed federal medical "
+        "amount is restored; caller-supplied subtotals remain unchanged even "
+        "with components. "
+        "This assumes qualifying costs were funded from income "
+        "included in AGI. Premium inputs use payer attribution: each person "
+        "reports premiums that person paid, including family coverage regardless "
+        "of whom it covers. "
+    )
+
     def formula(tax_unit, period, parameters):
         person = tax_unit.members
         p = parameters(
             period
         ).gov.states.nm.tax.income.exemptions.unreimbursed_medical_care_expense
         age = person("age", period)
-        medical_expense = tax_unit("itemized_medical_expenses", period)
+        # Restore only premiums excluded from a computed federal subtotal.
+        medical_expense = add(
+            tax_unit,
+            period,
+            [
+                "itemized_medical_expenses",
+                "itemized_medical_expenses_applied_exclusion",
+            ],
+        )
         age_eligible = tax_unit.any(age >= p.age_eligibility)
         expense_eligible = medical_expense >= p.min_expenses
         eligible = age_eligible & expense_eligible
