@@ -242,3 +242,28 @@
     ks_liheap_countable_unearned_income: 7_200
     # 0 earned income + 7,200 unearned income = 7,200.
     ks_liheap_countable_income: 7_200
+
+- name: Case 11, reported unemployment compensation is counted as unearned income.
+  # The unearned source list reads total_unemployment_compensation. Kansas has
+  # no modeled unemployment insurance program, so the total is the reported
+  # amount and this control shows reported UC still counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        unemployment_compensation: 6_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        ks_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: KS
+  output:
+    total_unemployment_compensation: 6_000
+    ks_liheap_countable_unearned_income: 6_000
+    # 0 earned income + 6,000 unearned income = 6,000.
+    ks_liheap_countable_income: 6_000

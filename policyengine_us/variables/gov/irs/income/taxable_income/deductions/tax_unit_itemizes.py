@@ -11,7 +11,26 @@ class tax_unit_itemizes(Variable):
 
     def formula(tax_unit, period, parameters):
         standard_deduction = tax_unit("standard_deduction", period)
-        itemized_deductions = tax_unit("itemized_taxable_income_deductions", period)
+        limitation = parameters(period).gov.irs.deductions.itemized.limitation
+        if limitation.applies and limitation.obbb.applies:
+            # The itemized deductions the unit would claim if it itemized.
+            # The P.L. 119-21 section 68 limitation nets them of the
+            # qualified business income deduction, which depends on the
+            # itemization choice, so they come from the branch that itemizes
+            # (the one that also gives tax_liability_if_itemizing).
+            # Calculated before branching, so the branch inherits it.
+            tax_unit("total_itemized_taxable_income_deductions", period)
+            itemizing_branch = get_override_branch(
+                tax_unit.simulation,
+                "itemizing",
+                period,
+                {"tax_unit_itemizes": np.ones((tax_unit.count,), dtype=bool)},
+            )
+            itemized_deductions = itemizing_branch.calculate(
+                "itemized_taxable_income_deductions", period
+            )
+        else:
+            itemized_deductions = tax_unit("itemized_taxable_income_deductions", period)
         if parameters(period).gov.simulation.branch_to_determine_itemization:
             # determine federal itemization behavior by comparing tax liability
             tax_liability_if_itemizing = tax_unit("tax_liability_if_itemizing", period)

@@ -27,3 +27,35 @@
      is_tax_unit_head_or_spouse: true
   output:
      mt_medical_expense_deduction_indiv: 0
+
+- name: Montana separate medical deductions exclude each spouse's own self-employed premiums
+  period: 2023
+  input:
+    people:
+      head:
+        age: 40
+        health_insurance_premiums: 6_000
+        self_employed_health_insurance_ald_person: 1_000
+        other_medical_expenses: 500
+        mt_agi_indiv: 30_000
+        mt_married_filing_separately_on_same_return_eligible: true
+      spouse:
+        age: 40
+        health_insurance_premiums: 3_000
+        self_employed_health_insurance_ald_person: 2_000
+        other_medical_expenses: 500
+        mt_agi_indiv: 10_000
+        mt_married_filing_separately_on_same_return_eligible: true
+    tax_units:
+      tax_unit:
+        members: [head, spouse]
+        filing_status: JOINT
+    marital_units:
+      marital_unit:
+        members: [head, spouse]
+    households:
+      household:
+        members: [head, spouse]
+        state_code: MT
+  output:
+    mt_medical_expense_deduction_indiv: [3_250, 750]

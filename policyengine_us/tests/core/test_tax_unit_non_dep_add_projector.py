@@ -65,7 +65,7 @@ def simulation():
         sim.set_input(name, year, np.zeros(sim.populations[variable.entity.key].count))
     sim.set_input("irs_employment_income", year, [1_000, 500, 0, 1_500, 0])
     sim.set_input("loss_ald", year, [10, 20])
-    sim.set_input("traditional_ira_contributions", year, [1, 2, 900, 3, 800])
+    sim.set_input("traditional_ira_deduction", year, [1, 2, 900, 3, 800])
     sim.set_input("student_loan_interest_ald_eligible", year, [True] * len(names))
     sim.set_input("taxable_public_pension_income", year, [100, 20, 900, 200, 800])
     sim.set_input("tax_unit_social_security", year, [5, 10])
