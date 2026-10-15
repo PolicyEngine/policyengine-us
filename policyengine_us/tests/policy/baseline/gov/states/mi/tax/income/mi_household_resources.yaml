@@ -1411,3 +1411,27 @@
   output:
     # Line 33: 10,000 - 1,000 = 9,000.
     mi_household_resources: 9_000
+
+- name: Gambling winnings above $300 count over $300 in 2023
+  period: 2023
+  input:
+    employment_income_before_lsr: 20_000
+    gambling_winnings: 400
+    state_code: MI
+  output:
+    # 2023 MI-1040CR line 20 has the same $300 exclusion as 2025.
+    # Line 33: 20,000 + max(400 - 300, 0) = 20,100.
+    mi_household_resources: 20_100
+
+- name: A self-employed claimant's premiums are subtracted once in 2023
+  period: 2023
+  input:
+    self_employment_income: 50_000
+    is_self_employed: true
+    health_insurance_premiums: 5_000
+    state_code: MI
+  output:
+    # 2023 MI-1040CR lines 30-31 exclude premiums already deducted on line 30.
+    # Line 33: 50,000 - (50,000 x 0.9235 x 15.3% / 2) - 5,000 = 41,467.61.
+    mi_household_resources: 41_467.61
+  absolute_error_margin: 0.01
