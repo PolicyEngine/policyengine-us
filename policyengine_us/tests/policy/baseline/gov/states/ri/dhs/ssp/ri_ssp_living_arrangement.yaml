@@ -1,5 +1,6 @@
-# RI: 218-RICR-20-00-5 Section 5.1.1. The certified care category is an
-# input; ri_ssp.yaml tests its couple and child fallback.
+# RI: 218-RICR-20-00-5 Section 5.1.1. Certified care comes from
+# ri_ssp_certified_residential_care; ri_ssp.yaml tests its couple and child
+# fallback.
 - name: Case 1, own household.
   period: 2026-01
   input:
@@ -47,3 +48,37 @@
     age: 65
   output:
     ri_ssp_living_arrangement: NONE
+
+- name: Case 6, certified residential care.
+  period: 2026-01
+  input:
+    state_code: RI
+    age: 80
+    ri_ssp_certified_residential_care: true
+  output:
+    ri_ssp_living_arrangement: RESIDENTIAL_CARE
+
+- name: Case 7, Title XIX facility takes precedence over certified care.
+  period: 2026-01
+  input:
+    state_code: RI
+    age: 80
+    ri_ssp_certified_residential_care: true
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    # Category D is used with federal living arrangement A only (POMS SI
+    # BOS01415.012 B.1).
+    ri_ssp_living_arrangement: MEDICAID_INSTITUTION
+
+- name: Case 8, certified care takes precedence over the household-of-another inputs.
+  period: 2026-01
+  input:
+    state_code: RI
+    age: 80
+    ri_ssp_certified_residential_care: true
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
+  output:
+    ri_ssp_living_arrangement: RESIDENTIAL_CARE

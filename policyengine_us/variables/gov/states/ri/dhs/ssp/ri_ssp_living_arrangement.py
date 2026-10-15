@@ -31,22 +31,33 @@ class ri_ssp_living_arrangement(Variable):
         "https://secure.ssa.gov/poms.nsf/lnx/0501415950BOS",
     )
     documentation = """
-    Certified care is an explicit input. Category D applies to adult
-    individuals only, so ri_ssp pays a child or a member of an eligible couple
-    with this input at the own-household rate. Enter separate individual SSI
-    claims when institutional residence ends eligible-couple status; the care
-    input itself does not override federal SSI claim or income calculations.
+    Certified care comes from ri_ssp_certified_residential_care. Category D
+    applies to adult individuals only, so ri_ssp pays a child or a member of an
+    eligible couple with certified care at the own-household rate. When
+    institutional residence ends eligible-couple status, set ssi_claim_is_joint
+    (a yearly formula variable) to false for both spouses; an input replaces the
+    formula for everyone in the simulation, so set it to true for any other
+    joint couple. Certified care itself does not override federal SSI claim or
+    income calculations. Certified residents are in federal living arrangement
+    A (POMS SI BOS01415.012 B.1), so do not also set the household-of-another
+    SSI inputs for them.
     """
 
     def formula(person, period, parameters):
         federal = person("ssi_federal_living_arrangement", period)
+        # Category D is used with federal living arrangement A only (POMS SI
+        # BOS01415.012 B.1), so a Title XIX facility resident is Category E.
+        # Certified residents are in federal arrangement A, so certified care
+        # precedes the household of another.
         return select(
             [
                 federal == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY,
+                person("ri_ssp_certified_residential_care", period),
                 federal == SSIFederalLivingArrangement.ANOTHER_PERSONS_HOUSEHOLD,
             ],
             [
                 RISSPLivingArrangement.MEDICAID_INSTITUTION,
+                RISSPLivingArrangement.RESIDENTIAL_CARE,
                 RISSPLivingArrangement.HOUSEHOLD_OF_ANOTHER,
             ],
             default=RISSPLivingArrangement.INDEPENDENT,

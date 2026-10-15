@@ -146,12 +146,10 @@
     people:
       person1:
         age: 72
-        ri_ssp_living_arrangement: RESIDENTIAL_CARE
+        ri_ssp_certified_residential_care: true
       person2:
         age: 63
         social_security_retirement: 19_200
-        # Set explicitly: an input for one member gives the others the NONE default.
-        ri_ssp_living_arrangement: INDEPENDENT
     marital_units:
       couple:
         members: [person1, person2]
@@ -163,6 +161,8 @@
         members: [person1, person2]
         state_code: RI
   output:
+    # Both spouses live together in the assisted living residence, so
+    # person2's income is deemed to person1 (20 CFR 416.1160(a)(1)).
     # person2 is under 65 and not blind or disabled, so there is no joint
     # claim and person1 stays in Category D.
     ssi_couple_computation_applies: [false, false]
@@ -180,5 +180,6 @@
     ssi: [0, 0]
     # Own income alone: 332 - max(0 - 994, 0) = 332
     # With deeming: max(332, 332) - (1_580 - 1_491) = 332 - 89 = 243
-    # Category D pays the lower amount: min(332, 243) = 243
+    # Category D pays the lower amount: min(332, 243) = 243. SSI is 0, so
+    # DHS pays it as a state-only supplement; 243 is a whole dollar.
     ri_ssp: [243, 0]
