@@ -7,16 +7,19 @@ Can be used for any test folder with configurable batch count.
 import subprocess
 import sys
 import os
+import tempfile
 import gc
 import time
 import argparse
 import re
 import select
+import shlex
 import threading
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor
 from concurrent.futures import wait as futures_wait
 from pathlib import Path
 from typing import FrozenSet, List, Dict, Optional, Tuple
+from xml.etree import ElementTree
 
 import yaml
 
@@ -385,40 +388,6 @@ def split_into_batches(
             batches.append([str(f) for f in root_files])
         return batches
 
-    # Special handling for household tests. Household totals (net income,
-    # marginal tax rates, all-program benefits) load most of the model in
-    # every file, and memory accumulates across the files one subprocess
-    # runs. The former quarter batches peaked at 15.1 GB on the 16 GB runner
-    # and ended in "The runner has received a shutdown signal". Measured
-    # 2026-10-14 (local peak footprint, within 1% of CI's batch peaks): the
-    # 15 root files peaked at 13.3 GB together and income/household's 8 files
-    # at 11.4 GB, but no single file exceeded 6.2 GB. Those files run one per
-    # subprocess; every other subfolder stays one subprocess (at most 7.1 GB,
-    # income/spm_unit), with income split into its subfolders.
-    if str(base_path).endswith("baseline/household"):
-        income = base_path / "income"
-        one_per_file = {base_path, income / "household"}
-        batches = []
-
-        def visit(folder: Path) -> None:
-            for item in sorted(folder.iterdir()):
-                if not item.is_dir() or item.name in exclude:
-                    continue
-                if item == income:
-                    visit(item)
-                elif item in one_per_file:
-                    batches.extend([str(f)] for f in yaml_files(item))
-                else:
-                    batches.extend(subdir_batches(item))
-            loose = root_yaml_files(folder)
-            if folder in one_per_file:
-                batches.extend([str(f)] for f in loose)
-            elif loose:
-                batches.append([str(f) for f in loose])
-
-        visit(base_path)
-        return batches
-
     # Special handling for baseline tests
     if "baseline" in str(base_path) and str(base_path).endswith("baseline"):
         states_path = base_path / "gov" / "states"
@@ -523,7 +492,9 @@ def split_into_batches(
 PYTEST_NO_TESTS_COLLECTED = 5
 # How long a child gets to die after being asked to, before it is killed.
 TERMINATE_GRACE_SECONDS = 5
-# Overall budget for one batch, enforced inside the monitoring loop below.
+# Budget for one subprocess, enforced inside the monitoring loop below. A
+# batch the memory budget continues in fresh subprocesses gets a fresh budget
+# for each part (see run_batch).
 BATCH_TIMEOUT_SECONDS = 1800
 # How long the runner may take to hand back a status after printing its
 # summary. That gap is pytest's own session-finish hooks and unconfigure, not
@@ -548,6 +519,86 @@ MARKER_GRACE_SECONDS = 300
 # is still terminated exactly as promptly as before.
 BATCH_EXIT_MARKER = "__POLICYENGINE_BATCH_EXIT__"
 
+# Memory accumulates across the YAML files one subprocess runs: household's 15
+# root files peaked at 13.3 GB together (local peak footprint, 2026-10-14, within
+# 1% of CI's VmHWM on the batches compared), yet none passed 6.2 GB alone, and
+# CI's household and gov/hhs batches each reached 15.1 GB on the 16 GB runner.
+# Any fixed batch layout therefore outgrows the runner as tests are added. Instead, after each file the child checks its own peak memory and,
+# once past this budget, hands the files it has not started to a fresh
+# subprocess (run_batch continues them). The next file starts below the budget,
+# so a subprocess peaks at about the budget plus one file's growth. A file that
+# alone exceeds the budget still runs whole. Set the variable to override it,
+# e.g. 0 for one file per subprocess.
+MEMORY_BUDGET_MB = 8000
+MEMORY_BUDGET_ENV = "POLICYENGINE_BATCH_MEMORY_BUDGET_MB"
+REMAINDER_ENV = "POLICYENGINE_BATCH_REMAINDER"
+
+# Child-side half of the memory budget. policyengine-core calls
+# pytest.main(..., plugins=[...]) through the pytest module, so wrapping it
+# adds this plugin without changing Core.
+MEMORY_GUARD = """
+budget_mb = os.environ.get("POLICYENGINE_BATCH_MEMORY_BUDGET_MB")
+remainder_path = os.environ.get("POLICYENGINE_BATCH_REMAINDER")
+if budget_mb and remainder_path:
+    import pytest
+
+    def peak_mb():
+        try:
+            with open("/proc/self/status") as status:
+                for line in status:
+                    if line.startswith("VmHWM:"):
+                        return int(line.split()[1]) / 1024
+        except OSError:
+            pass
+        if sys.platform == "darwin":
+            # ru_maxrss leaves out compressed memory, which reads 2-3x low on
+            # these suites. RUSAGE_INFO_V4 word 30 is the lifetime peak physical
+            # footprint that /usr/bin/time -l reports.
+            try:
+                import ctypes
+
+                info = (ctypes.c_uint64 * 64)()
+                libc = ctypes.CDLL("/usr/lib/libSystem.B.dylib")
+                if libc.proc_pid_rusage(os.getpid(), 4, ctypes.byref(info)) == 0:
+                    return info[30] / 2**20
+            except (OSError, AttributeError):
+                pass
+        import resource
+
+        peak = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        # ru_maxrss is bytes on macOS and kilobytes on Linux.
+        return peak / 2**20 if sys.platform == "darwin" else peak / 1024
+
+    class MemoryBudget:
+        @pytest.hookimpl(wrapper=True)
+        def pytest_runtest_protocol(self, item, nextitem):
+            result = yield
+            # Only stop between files, so every file runs whole in one process.
+            if nextitem is None or nextitem.path == item.path:
+                return result
+            peak = peak_mb()
+            if peak < float(budget_mb):
+                return result
+            items = item.session.items
+            remaining = list(
+                dict.fromkeys(str(later.path) for later in items[items.index(nextitem) :])
+            )
+            with open(remainder_path, "w") as handle:
+                handle.write("\\n".join(remaining))
+            pytest.exit(
+                "memory budget: peak %.0f MB after %s; %d files continue in a "
+                "fresh subprocess" % (peak, item.path.name, len(remaining)),
+                returncode=1 if item.session.testsfailed else 0,
+            )
+
+    run_pytest = pytest.main
+
+    def main(args=None, plugins=None, **kwargs):
+        return run_pytest(args, [*(plugins or []), MemoryBudget()], **kwargs)
+
+    pytest.main = main
+"""
+
 RUNNER_SHIM = f"""
 import os
 import runpy
@@ -558,7 +609,7 @@ import sys
 os.environ["PYTEST_ADDOPTS"] = (
     os.environ.get("PYTEST_ADDOPTS", "") + " --ignore-glob=*.py"
 )
-
+{MEMORY_GUARD}
 code = 0
 try:
     runpy.run_module(
@@ -627,11 +678,95 @@ def batch_status(returncode: Optional[int]) -> str:
     return "passed" if returncode == 0 else "failed"
 
 
+def junit_report_path() -> Optional[str]:
+    """The --junitxml file PYTEST_ADDOPTS asks every part to write, if any."""
+    tokens = shlex.split(os.environ.get("PYTEST_ADDOPTS", ""))
+    path = None
+    for i, token in enumerate(tokens):
+        for flag in ("--junitxml", "--junit-xml"):
+            if token.startswith(flag + "="):
+                path = token.split("=", 1)[1]
+            elif token == flag and i + 1 < len(tokens):
+                path = tokens[i + 1]
+    return path
+
+
+def report_mtime(path: Optional[str]) -> Optional[int]:
+    try:
+        return os.stat(path).st_mtime_ns if path else None
+    except FileNotFoundError:
+        return None
+
+
 def run_batch(
     test_paths: List[str],
     batch_name: str,
     stream: bool = True,
     command: Optional[List[str]] = None,
+) -> Dict:
+    """Run a batch, continuing past the memory budget in fresh subprocesses.
+
+    Each part runs through run_subprocess. A part that reaches
+    MEMORY_BUDGET_MB between files writes the files it has not started to a
+    remainder file and exits; they continue in the next part. The batch passes
+    only if every part passes. Each part rewrites an inherited --junitxml file,
+    so the parts' suites are merged back into it.
+    """
+    budget = os.environ.get(MEMORY_BUDGET_ENV, str(MEMORY_BUDGET_MB))
+    report = junit_report_path()
+    suites: List[ElementTree.Element] = []
+    parts: List[Dict] = []
+    paths = test_paths
+    while paths:
+        handle, remainder = tempfile.mkstemp(prefix="batch-remainder-")
+        os.close(handle)
+        os.unlink(remainder)
+        name = batch_name if not parts else f"{batch_name} (part {len(parts) + 1})"
+        env = dict(os.environ, **{MEMORY_BUDGET_ENV: budget, REMAINDER_ENV: remainder})
+        written = report_mtime(report)
+        parts.append(run_subprocess(paths, name, stream, command, env))
+        command = None
+        if report_mtime(report) not in (None, written):
+            suites.extend(ElementTree.parse(report).getroot().iter("testsuite"))
+        try:
+            with open(remainder) as handle_in:
+                paths = [line for line in handle_in.read().splitlines() if line]
+            os.unlink(remainder)
+        except FileNotFoundError:
+            paths = []
+        if paths:
+            note = (
+                f"    Memory budget ({budget} MB) reached; continuing "
+                f"{len(paths)} files in a fresh subprocess"
+            )
+            if stream:
+                print(note, flush=True)
+            else:
+                parts[-1]["output"] = parts[-1]["output"] + note + "\n"
+    if len(parts) > 1 and suites:
+        merged = ElementTree.Element("testsuites")
+        merged.extend(suites)
+        ElementTree.ElementTree(merged).write(
+            report, encoding="utf-8", xml_declaration=True
+        )
+    failed = [part for part in parts if part["status"] != "passed"]
+    peaks = [part["peak_rss_mb"] for part in parts if part["peak_rss_mb"] is not None]
+    return {
+        "elapsed": sum(part["elapsed"] for part in parts),
+        "status": failed[0]["status"] if failed else "passed",
+        "returncode": failed[0]["returncode"] if failed else 0,
+        "peak_rss_mb": max(peaks) if peaks else None,
+        "parts": len(parts),
+        "output": "".join(part["output"] for part in parts),
+    }
+
+
+def run_subprocess(
+    test_paths: List[str],
+    batch_name: str,
+    stream: bool = True,
+    command: Optional[List[str]] = None,
+    env: Optional[Dict[str, str]] = None,
 ) -> Dict:
     """Run a batch of tests in an isolated subprocess.
 
@@ -673,6 +808,7 @@ def run_batch(
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         bufsize=0,
+        env=env,
     )
 
     def sample_rss() -> None:
@@ -816,9 +952,9 @@ def run_batch(
         # If the runner never reported, wait for the process with a timeout
         if reported_returncode is None and process.poll() is None:
             try:
-                # Wait up to 30 minutes total
+                # Wait out the rest of this subprocess's budget
                 elapsed = time.time() - start_time
-                remaining_timeout = max(1800 - elapsed, 1)
+                remaining_timeout = max(BATCH_TIMEOUT_SECONDS - elapsed, 1)
                 process.wait(timeout=remaining_timeout)
             except subprocess.TimeoutExpired:
                 emit(f"\n    ⏱️ Timeout - terminating process...")

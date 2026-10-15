@@ -1,11 +1,13 @@
-"""YAML batches must not rerun the separately routed Python suites.
+"""YAML batches must not rerun the separately routed Python suites, and must
+continue in a fresh subprocess once one passes the memory budget.
 
 Exercise the real Core CLI and pytest collector with a one-variable country
-package, so this runner regression never constructs the full US model.
+package, so these runner regressions never construct the full US model.
 """
 
 import importlib.util
 import os
+import re
 import shlex
 import subprocess
 import sys
@@ -13,6 +15,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 import pytest
+import yaml
 
 BATCHER = Path(__file__).resolve().parents[1] / "test_batched.py"
 SPEC = importlib.util.spec_from_file_location("test_batched", BATCHER)
@@ -107,3 +110,87 @@ def test_python_only_directory_is_not_a_passing_yaml_batch(small_country):
 
 def test_python_only_subdir_does_not_create_a_yaml_batch(small_country):
     assert batched.split_into_batches(small_country.parent, 2, mode="per-subdir") == []
+
+
+def _write_age_cases(path, count, failing=0):
+    """`count` cases for one person's age; the first `failing` of them fail."""
+    path.write_text(
+        yaml.safe_dump(
+            [
+                {
+                    "name": f"{path.stem} {i}",
+                    "period": 2026,
+                    "input": {"age": 30},
+                    "output": {"age": 31 if i < failing else 30},
+                }
+                for i in range(count)
+            ]
+        )
+    )
+
+
+def _part_summaries(output):
+    return re.findall(r"=+ ((?:\d+ failed, )?\d+ passed)", output)
+
+
+def test_memory_budget_continues_unstarted_files_in_fresh_subprocesses(
+    small_country, monkeypatch
+):
+    for name in ("a", "b", "c"):
+        _write_age_cases(small_country / f"{name}.yaml", 2)
+    # Every process is past a zero budget, so each file gets its own part.
+    monkeypatch.setenv(batched.MEMORY_BUDGET_ENV, "0")
+    report = small_country.parent / "report.xml"
+    monkeypatch.setenv("PYTEST_ADDOPTS", f"--junitxml={report}")
+
+    result = batched.run_batch([str(small_country)], "budget", stream=False)
+
+    assert result["status"] == "passed", result["output"]
+    assert result["parts"] == 3, result["output"]
+    # Each file ran exactly once, both of its cases, with none repeated.
+    assert _part_summaries(result["output"]) == ["2 passed"] * 3, result["output"]
+    # Every part rewrites the inherited report; the batch merges them back.
+    assert len(ET.parse(report).findall(".//testcase")) == 6
+
+
+def test_memory_budget_leaves_a_batch_under_it_in_one_subprocess(
+    small_country, monkeypatch
+):
+    for name in ("a", "b", "c"):
+        _write_age_cases(small_country / f"{name}.yaml", 2)
+    monkeypatch.delenv(batched.MEMORY_BUDGET_ENV, raising=False)
+
+    result = batched.run_batch([str(small_country)], "budget", stream=False)
+
+    assert result["status"] == "passed", result["output"]
+    assert result["parts"] == 1, result["output"]
+    assert _part_summaries(result["output"]) == ["6 passed"], result["output"]
+
+
+def test_memory_budget_never_splits_a_file(small_country, monkeypatch):
+    _write_age_cases(small_country / "a.yaml", 3)
+    monkeypatch.setenv(batched.MEMORY_BUDGET_ENV, "0")
+
+    result = batched.run_batch([str(small_country)], "budget", stream=False)
+
+    assert result["parts"] == 1, result["output"]
+    assert _part_summaries(result["output"]) == ["3 passed"], result["output"]
+
+
+def test_a_failure_before_the_budget_stop_fails_the_batch_but_runs_the_rest(
+    small_country, monkeypatch
+):
+    _write_age_cases(small_country / "a.yaml", 2, failing=1)
+    for name in ("b", "c"):
+        _write_age_cases(small_country / f"{name}.yaml", 2)
+    monkeypatch.setenv(batched.MEMORY_BUDGET_ENV, "0")
+
+    result = batched.run_batch([str(small_country)], "budget", stream=False)
+
+    assert result["status"] == "failed", result["output"]
+    assert result["returncode"] != 0
+    assert _part_summaries(result["output"]) == [
+        "1 failed, 1 passed",
+        "2 passed",
+        "2 passed",
+    ], result["output"]

@@ -394,7 +394,8 @@ def test_original_rest_check_aggregates_all_shards_without_hiding_failure(workfl
     assert not jobs["RestPython"].get("continue-on-error", False)
     if workflow.name == "push.yaml":
         assert " ".join(summary["if"].split()) == (
-            "!cancelled() && (github.repository == 'PolicyEngine/policyengine-us') "
+            "!cancelled() && (needs.RestPython.result != 'skipped') "
+            "&& (github.repository == 'PolicyEngine/policyengine-us') "
             "&& (github.event.head_commit.message == 'Update PolicyEngine US')"
         )
         assert {"RestPython", "Rest"} <= set(jobs["Publish"]["needs"])

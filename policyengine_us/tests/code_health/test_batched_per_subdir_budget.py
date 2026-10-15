@@ -103,52 +103,9 @@ def test_explicit_batches_keep_both_yaml_extensions(tmp_path, mode):
     assert batched.count_yaml_files(tmp_path) == 2
 
 
-def test_household_runs_heavy_files_alone_and_other_folders_together(tmp_path):
-    household = tmp_path / "policy" / "baseline" / "household"
-    for relative in (
-        "demographic/a.yaml",
-        "demographic/nested/b.yaml",
-        "income/household/c.yaml",
-        "income/household/d.yml",
-        "income/person/e.yaml",
-        "income/f.yaml",
-        "income/g.yaml",
-        "h.yaml",
-        "i.yml",
-    ):
-        _write_cases(household / relative, ["r1"])
-    assert batched.split_into_batches(household, 4) == [
-        [str(household / "demographic")],
-        [str(household / "income" / "household" / "c.yaml")],
-        [str(household / "income" / "household" / "d.yml")],
-        [str(household / "income" / "person")],
-        [str(household / "income" / "f.yaml"), str(household / "income" / "g.yaml")],
-        [str(household / "h.yaml")],
-        [str(household / "i.yml")],
-    ]
-
-
-def test_household_batches_run_every_yaml_file_once():
-    household = BATCHER.parent / "policy" / "baseline" / "household"
-    files = [
-        file
-        for batch in batched.split_into_batches(household, 4)
-        for path in map(Path, batch)
-        for file in (batched.yaml_files(path) if path.is_dir() else [path])
-    ]
-    assert sorted(files) == batched.yaml_files(household)
-
-
 @pytest.mark.parametrize(
     "relative",
-    [
-        "policy/contrib",
-        "contrib/states",
-        "reform",
-        "gov/states",
-        "baseline/household",
-        "arbitrary",
-    ],
+    ["policy/contrib", "contrib/states", "reform", "gov/states", "arbitrary"],
 )
 def test_auto_path_routes_keep_root_yml_files(tmp_path, relative):
     root = tmp_path / relative

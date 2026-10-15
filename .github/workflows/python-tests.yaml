@@ -72,7 +72,7 @@ jobs:
     name: Full Suite - Rest (Python + variables)
     runs-on: ubuntu-latest
     # Historical group times: 32-46 minutes plus setup.
-    # This runner also retains the legacy summary check, keeping PRs at 16 runners.
+    # This runner also retains the legacy summary check, keeping PRs at 27 runners.
     timeout-minutes: 90
     env:
       PYTHONUNBUFFERED: 1

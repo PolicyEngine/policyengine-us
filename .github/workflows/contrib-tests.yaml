@@ -7,39 +7,35 @@ jobs:
   Contrib:
     name: Full Suite - Contrib (${{ matrix.group }})
     runs-on: ubuntu-latest
-    # Two or three groups in sequence: historical medians 47-74 minutes per
-    # runner.
-    timeout-minutes: 120
+    timeout-minutes: 60
     env:
       PYTHONUNBUFFERED: 1
       PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
     strategy:
       fail-fast: false
+      # At most 4 Contrib groups run at once; GitHub starts the next group on a
+      # fresh runner as each finishes, so the lanes balance from real durations.
+      max-parallel: 4
       matrix:
         include:
-          # Four runners, grouped by name, run their groups one after another.
-          - group: states-shard-1 + states-shard-2
-            group1: states-shard-1
-            target1: test-yaml-structural-heavy-shard-1
-            group2: states-shard-2
-            target2: test-yaml-structural-heavy-shard-2
-          - group: states-shard-3 + states-shard-4
-            group1: states-shard-3
-            target1: test-yaml-structural-heavy-shard-3
-            group2: states-shard-4
-            target2: test-yaml-structural-heavy-shard-4
-          - group: other-shard-1 + other-shard-2a
-            group1: other-shard-1
-            target1: test-yaml-structural-other
-            group2: other-shard-2a
-            target2: test-yaml-structural-other-shard-2a
-          - group: other-shard-2b + other-shard-3 + congress
-            group1: other-shard-2b
-            target1: test-yaml-structural-other-shard-2b
-            group2: other-shard-3
-            target2: test-yaml-structural-other-shard-3
-            group3: congress
-            target3: test-yaml-structural-congress
+          - group: states-shard-1
+            target: test-yaml-structural-heavy-shard-1
+          - group: states-shard-2
+            target: test-yaml-structural-heavy-shard-2
+          - group: states-shard-3
+            target: test-yaml-structural-heavy-shard-3
+          - group: states-shard-4
+            target: test-yaml-structural-heavy-shard-4
+          - group: other-shard-1
+            target: test-yaml-structural-other
+          - group: other-shard-2a
+            target: test-yaml-structural-other-shard-2a
+          - group: other-shard-2b
+            target: test-yaml-structural-other-shard-2b
+          - group: other-shard-3
+            target: test-yaml-structural-other-shard-3
+          - group: congress
+            target: test-yaml-structural-congress
     steps:
       - name: Checkout repo
         uses: actions/checkout@v6
@@ -58,16 +54,8 @@ jobs:
       - name: Turn off default branching
         shell: bash
         run: bash ./update_itemization.sh
-      - name: Run Contrib YAML tests (${{ matrix.group1 }})
-        run: uv run --no-sync make ${{ matrix.target1 }}
+      - name: Run Contrib YAML tests (${{ matrix.group }})
+        run: uv run --no-sync make ${{ matrix.target }}
       - name: Run Contrib Python tests
-        if: ${{ matrix.group1 == 'other-shard-1' }}
+        if: ${{ matrix.group == 'other-shard-1' }}
         run: uv run --no-sync make test-policy-contrib-python
-      # Later groups still run after an earlier group fails, but not after
-      # the run is cancelled.
-      - name: Run Contrib YAML tests (${{ matrix.group2 }})
-        if: ${{ !cancelled() && matrix.target2 }}
-        run: uv run --no-sync make ${{ matrix.target2 }}
-      - name: Run Contrib YAML tests (${{ matrix.group3 }})
-        if: ${{ !cancelled() && matrix.target3 }}
-        run: uv run --no-sync make ${{ matrix.target3 }}
