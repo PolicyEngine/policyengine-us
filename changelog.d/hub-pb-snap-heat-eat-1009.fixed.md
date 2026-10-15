@@ -1,1 +1,0 @@
-Restrict SNAP heat-and-eat standard utility allowances to households with an elderly or disabled SNAP member under P.L. 119-21, while preserving eligibility based on actual heating or cooling expenses.
