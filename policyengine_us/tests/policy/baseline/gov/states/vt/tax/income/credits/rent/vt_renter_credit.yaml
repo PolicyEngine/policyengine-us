@@ -675,3 +675,46 @@
     #   ROUND(1,410 * 12 * 0.1, 0) = 1,692;
     #   (60,390 - 44,145) * 1,692 / (60,390 - 27,900) = 846.
     vt_renter_credit: [1_162, 846]
+
+- name: UTF-8 byte counties preserve the Vermont credit in a mixed-state simulation
+  # !!binary supplies actual bytes through Core's YAML loader. The second
+  # county is DOÑA_ANA_COUNTY_NM encoded as UTF-8; an ASCII cast raises before
+  # defined_for can mask the New Mexico household.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+      person2:
+        age: 40
+    tax_units:
+      tax_unit1:
+        members: [person1]
+        tax_unit_size: 2
+        vt_renter_credit_income: 49_370
+        rent_is_shared_with_another_tax_unit: false
+      tax_unit2:
+        members: [person2]
+        tax_unit_size: 2
+        vt_renter_credit_income: 49_370
+        rent_is_shared_with_another_tax_unit: false
+    spm_units:
+      spm_unit1:
+        members: [person1]
+        housing_assistance: 0
+      spm_unit2:
+        members: [person2]
+        housing_assistance: 0
+    households:
+      household1:
+        members: [person1]
+        state_code: VT
+        county_str: !!binary Q0hJVFRFTkRFTl9DT1VOVFlfVlQ=  # CHITTENDEN_COUNTY_VT
+      household2:
+        members: [person2]
+        state_code: NM
+        county_str: !!binary RE/DkUFfQU5BX0NPVU5UWV9OTQ==  # DOÑA_ANA_COUNTY_NM
+  output:
+    # Chittenden, size 2: midpoint of the income limits gives half the
+    # rounded $2,323 base credit, rounded half up to $1,162.
+    vt_renter_credit: [1_162, 0]

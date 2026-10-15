@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.geography.county_helpers import county_has_state_suffix
 from policyengine_us.variables.gov.states.mn.dcyf.ccap.mn_ccap_provider_type import (
     MNCCAPProviderType,
 )
@@ -33,7 +34,7 @@ class mn_ccap_provider_rate(Variable):
         county = person.household("county_str", period.this_year)
         in_mn = person.household("state_code_str", period.this_year) == "MN"
         county_key = where(
-            in_mn & np.char.endswith(county.astype(str), "_MN"),
+            in_mn & county_has_state_suffix(county, "MN"),
             county,
             "HENNEPIN_COUNTY_MN",
         )

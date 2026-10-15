@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.geography.county_helpers import county_has_state_suffix
 from policyengine_us.variables.gov.states.md.msde.ccs.md_ccs_provider_type import (
     MDCCSProviderType,
 )
@@ -34,7 +35,7 @@ class md_ccs_payment_rate(Variable):
         county = person.household("county_str", period)
         in_md = person.household("state_code_str", period) == "MD"
         safe_county = where(
-            in_md & np.char.endswith(county.astype(str), "_MD"),
+            in_md & county_has_state_suffix(county, "MD"),
             county,
             "ALLEGANY_COUNTY_MD",
         )

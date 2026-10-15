@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.geography.county_helpers import county_has_state_suffix
 
 
 class vt_renter_credit(Variable):
@@ -30,7 +31,7 @@ class vt_renter_credit(Variable):
         county = tax_unit.household("county_str", period)
         in_vt = tax_unit.household("state_code_str", period) == "VT"
         safe_county = where(
-            in_vt & np.char.endswith(county.astype(str), "_VT"),
+            in_vt & county_has_state_suffix(county, "VT"),
             county,
             "ADDISON_COUNTY_VT",
         )

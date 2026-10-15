@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.tools.geography.county_helpers import county_has_state_suffix
 from policyengine_us.variables.gov.states.wi.dcf.shares.rates.wi_shares_provider_type import (
     WISharesProviderType,
 )
@@ -27,7 +28,7 @@ class wi_shares_hourly_max_rate(Variable):
         # fall back to Adams along with non-Wisconsin households.
         in_wi = person.household("state_code_str", period) == "WI"
         safe_county = where(
-            in_wi & np.char.endswith(county.astype(str), "_WI"),
+            in_wi & county_has_state_suffix(county, "WI"),
             county,
             "ADAMS_COUNTY_WI",
         )

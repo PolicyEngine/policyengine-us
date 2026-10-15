@@ -214,3 +214,30 @@
     # person2: Minnesota county falls back to Adams licensed group, ages 2-3:
     #   8.75 per hour.
     wi_shares_hourly_max_rate: [9.72, 8.75]
+
+- name: UTF-8 byte counties preserve the Wisconsin hourly rate in a mixed-state simulation
+  # !!binary preserves bytes, including the UTF-8 Ñ in DOÑA_ANA_COUNTY_NM.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 3
+        childcare_hours_per_week: 20
+        wi_shares_provider_type: LICENSED_GROUP
+      person2:
+        age: 3
+        childcare_hours_per_week: 20
+        wi_shares_provider_type: LICENSED_GROUP
+    households:
+      household1:
+        members: [person1]
+        state_code: WI
+        county_str: !!binary TUlMV0FVS0VFX0NPVU5UWV9XSQ==  # MILWAUKEE_COUNTY_WI
+      household2:
+        members: [person2]
+        state_code: NM
+        county_str: !!binary RE/DkUFfQU5BX0NPVU5UWV9OTQ==  # DOÑA_ANA_COUNTY_NM
+  output:
+    # Milwaukee licensed group hourly maximum for ages 2-3: $9.72.
+    wi_shares_hourly_max_rate: [9.72, 0]

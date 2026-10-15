@@ -310,3 +310,30 @@
     # person2: Wisconsin county falls back to Hennepin, family infant weekly
     #   250 * 52 / 12 = 1,083.33.
     mn_ccap_provider_rate: [888.33, 1_083.33]
+
+- name: UTF-8 byte counties preserve the Minnesota rate in a mixed-state simulation
+  # !!binary preserves bytes, including the UTF-8 Ñ in DOÑA_ANA_COUNTY_NM.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 0
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+      person2:
+        age: 0
+        childcare_hours_per_week: 45
+        mn_ccap_provider_type: FAMILY_CHILD_CARE
+    households:
+      household1:
+        members: [person1]
+        state_code: MN
+        county_str: !!binary QkVDS0VSX0NPVU5UWV9NTg==  # BECKER_COUNTY_MN
+      household2:
+        members: [person2]
+        state_code: NM
+        county_str: !!binary RE/DkUFfQU5BX0NPVU5UWV9OTQ==  # DOÑA_ANA_COUNTY_NM
+  output:
+    # Becker family infant weekly $205 * 52 / 12 = $888.33 per month.
+    mn_ccap_provider_rate: [888.33, 0]
