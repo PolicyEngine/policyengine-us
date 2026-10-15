@@ -38,6 +38,18 @@ except Nevada's: its files fold the state rate into county rates, and the
 IRS has Nevada residents enter the combined rate above the 6.85% heading. They carry only rates and Census codes derived from the sources below,
 not the sources' files.
 
+The state components stay in `state_rates.csv` alongside the locality rate
+facts so the same official rate files determine both parts of the line 3
+subtraction. The loader averages each dated component over the days of the
+year. This preserves Minnesota's 6.875% rather than the IRS heading's rounded
+6.88%, and South Dakota's 2023 day-weighted 4.348767% rather than the heading's
+4.35%. New York's 4% and Virginia's 4.3% components are recorded explicitly
+by the build from the official state sources listed below. The IRS heading
+rate remains a separate policy parameter for worksheet line 4. The CSV
+components are data inputs, so parameter reforms and the parameter API
+cannot independently change or expose them; a statutory-rate parameter is
+a possible follow-up.
+
 Retrieved 2026-10-06 (from 11:00 UTC). `scripts/local_sales_tax_rates/manifest.json` lists the
 SHA-256 of every input file and the build log.
 
