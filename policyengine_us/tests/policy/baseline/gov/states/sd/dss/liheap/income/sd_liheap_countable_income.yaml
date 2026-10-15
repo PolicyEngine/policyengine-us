@@ -1,6 +1,7 @@
-# South Dakota supported income region and heat-in-rent components only; no final award is asserted.
+# South Dakota LIEAP countable income: rules 67:15:01:18 and 67:15:01:18.01, FY2026 plan section 1.9 and the manual's income chart.
 
-# Rule67:15:01:18.01 and approved net-input approximation:12000+600+600+1200+600=15000; no extra business expense deduction.
+# Rule 67:15:01:18.01: existing net business inputs count with no further business
+# deduction: $12,000 + $600 + $600 + $1,200 + $600 = $15,000.
 - name: Case 1, adult wages and existing net business sources count once.
   period: 2026
   absolute_error_margin: 0.01
@@ -30,7 +31,8 @@
   output:
     sd_liheap_countable_income: 15_000
 
-# Rule67:15:01:18.01 explicitly treats self-employment loss aszero:12000 wages+600 positivebusiness=12600.
+# Rule 67:15:01:18.01 treats a self-employment loss as zero: $12,000 of wages +
+# $600 of partnership income = $12,600.
 - name: Case 2, business losses are zero before adding other income.
   period: 2026
   absolute_error_margin: 0.01
@@ -59,7 +61,9 @@
   output:
     sd_liheap_countable_income: 12_600
 
-# Rule67:15:01:18(1) exempts earnings under18 or under19 while in highschool. UnearnedSSA1200 always counts; when earnings count add6000+1200 to parent12000+SSA1200. College does not satisfy secondary-school rule.
+# Rule 67:15:01:18(1) excludes the earnings of a member under 18. The
+# 17-year-old's $6,000 of wages and $1,200 of self-employment are excluded; their
+# $1,200 of Social Security counts: $12,000 + $1,200 = $13,200.
 - name: Case 3, age 17 nonstudent follows the precise earned income exception.
   period: 2026
   absolute_error_margin: 0.01
@@ -94,7 +98,8 @@
   output:
     sd_liheap_countable_income: 13_200
 
-# Rule67:15:01:18(1) exempts earnings under18 or under19 while in highschool. UnearnedSSA1200 always counts; when earnings count add6000+1200 to parent12000+SSA1200. College does not satisfy secondary-school rule.
+# Rule 67:15:01:18(1) also excludes the earnings of a high school student under
+# 19: $12,000 + $1,200 of the student's Social Security = $13,200.
 - name: Case 4, age 18 secondary student follows the precise earned income exception.
   period: 2026
   absolute_error_margin: 0.01
@@ -129,7 +134,8 @@
   output:
     sd_liheap_countable_income: 13_200
 
-# Rule67:15:01:18(1) exempts earnings under18 or under19 while in highschool. UnearnedSSA1200 always counts; when earnings count add6000+1200 to parent12000+SSA1200. College does not satisfy secondary-school rule.
+# A college student aged 18 is not in high school, so the earnings count:
+# $12,000 + $6,000 + $1,200 + $1,200 = $20,400.
 - name: Case 5, age 18 college student follows the precise earned income exception.
   period: 2026
   absolute_error_margin: 0.01
@@ -164,7 +170,8 @@
   output:
     sd_liheap_countable_income: 20_400
 
-# Rule67:15:01:18(1) exempts earnings under18 or under19 while in highschool. UnearnedSSA1200 always counts; when earnings count add6000+1200 to parent12000+SSA1200. College does not satisfy secondary-school rule.
+# A 19-year-old high school student is not under 19, so the earnings count:
+# $12,000 + $6,000 + $1,200 + $1,200 = $20,400.
 - name: Case 6, age 19 secondary student follows the precise earned income exception.
   period: 2026
   absolute_error_margin: 0.01
@@ -199,7 +206,9 @@
   output:
     sd_liheap_countable_income: 20_400
 
-# Current plan pp5-7,10:1200+2400+600+3600+1200+600+1200+600+1200+600+300+300=13800. Railroad, farm rent and survivor inputs are disjoint.
+# FY2026 plan pages 5-7 and 10: $1,200 + $2,400 + $600 + $3,600 + $1,200 + $600 +
+# $1,200 + $600 + $1,200 + $600 + $300 + $300 = $13,800. The railroad, farm rent
+# and survivor inputs are disjoint.
 - name: Case 7, disjoint rental survivor and ordinary unearned sources count at every age.
   period: 2026
   absolute_error_margin: 0.01
@@ -236,8 +245,12 @@
   output:
     sd_liheap_countable_income: 13_800
 
-# Current planpp6-7 excludes investmentinterest/dividends, gifts andcapital gains; rule67:15:01:18(14) confirms gains.12000 wages remain12000;SNAP also excluded.
-- name: Case 8, interest dividends capital gains and gifts do not enter income.
+# Rule 67:15:01:18 excludes capital gains (14) and only gifts for recurring
+# occasions (17). Plan section 1.9 leaves interest and dividends unchecked and
+# manual page 25 excludes bank interest and dividends but counts monthly cash
+# gifts; application page 5 lists money from family or friends. SNAP is not
+# income: $12,000 wages + $2,400 regular help = $14,400.
+- name: Case 8, interest dividends and capital gains are excluded while regular help from family counts.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -265,9 +278,10 @@
         state_code: SD
         county: AURORA_COUNTY_SD
   output:
-    sd_liheap_countable_income: 12_000
+    sd_liheap_countable_income: 14_400
 
-# Current plan countsSSI/TANF for allages:6000 adultwages+1200 adultSSI+2400 childSSI+3600 familyTANF=13200. Monthly inputs supplied asannual totals are aggregated once.
+# Plan section 1.9 counts SSI and TANF at every age: $6,000 adult wages + $1,200
+# adult SSI + $2,400 child SSI + $3,600 TANF = $13,200; annual totals sum once.
 - name: Case 9, adult and child SSI and the state TANF grant are annualized once.
   period: 2026
   absolute_error_margin: 0.01
@@ -298,7 +312,7 @@
   output:
     sd_liheap_countable_income: 13_200
 
-# Rule67:15:01:18(20):24000-3600 childsupportpaid=20400.
+# Rule 67:15:01:18(20): $24,000 - $3,600 of child support paid = $20,400.
 - name: Case 10, income used for legally mandated child support is deducted.
   period: 2026
   absolute_error_margin: 0.01
@@ -325,7 +339,7 @@
   output:
     sd_liheap_countable_income: 20_400
 
-# Rule67:15:01:18(20) exclusion with householdfloor:max(1200-2400,0)=0.
+# Rule 67:15:01:18(20) with a household floor: max($1,200 - $2,400, 0) = $0.
 - name: Case 11, child support deductions cannot produce negative countable income.
   period: 2026
   absolute_error_margin: 0.01
@@ -678,3 +692,35 @@
         county: CUSTER_COUNTY_SD
   output:
     sd_liheap_countable_income: 26_400
+
+# Plan section 1.9 (page 6) checks "Unemployment insurance" and manual page 28
+# says "All UI payments received are countable." South Dakota pays 1/26 of the
+# high-quarter wages a week (DLR benefit page, $28-$575 a week): $800 a week x
+# 13 weeks = $10,400 / 26 = $400. 26 weeks of wages ($20,800) and 16 weeks of
+# benefits ($6,400) = $27,200.
+- name: Case 23, unemployment insurance counts alongside wages earned before a layoff.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        immigration_status: CITIZEN
+        is_in_secondary_school: false
+        ssi: 0
+        employment_income: 20_800
+        unemployment_compensation: 6_400
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: SD
+        county: CUSTER_COUNTY_SD
+  output:
+    total_unemployment_compensation: 6_400
+    sd_liheap_countable_income: 27_200

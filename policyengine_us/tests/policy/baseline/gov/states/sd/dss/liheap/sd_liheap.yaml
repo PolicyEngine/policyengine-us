@@ -1,6 +1,6 @@
-# FY2026 matrix page 1; current application page 2; 2018 manual physical pages 30-32.
-# Vendor cases use the approved eligible-unpaid-expense assumption. Cash-fuel
-# payments carry forward the manual method; heat-in-rent assumes seven eligible months.
+# FY2026 matrix, page 1; application EA-297, page 2; manual pages 30-32.
+# heating_expense is read as unpaid charges in the claim window. Wood, coal and
+# kerosene are paid in full (manual page 31); heat in rent assumes seven months.
 - name: Case 1, vendor fuels pay the smaller of the schedule and qualifying unpaid seasonal charges.
   period: 2026
   absolute_error_margin: 0.001

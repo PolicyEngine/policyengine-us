@@ -1,6 +1,9 @@
-# South Dakota independent ordinary-household components; no final award is asserted.
+# South Dakota LIEAP first-tier (Mid) thresholds: four times the three-month Mid.
 
-# FY2024matrix pp1-5 Midquarter values4556,6163,7769,9375,10981,12588,14194,15800,17406,19013,20619,22225,23831,25438,27044. Return4times these, not the sometimes-different printedannual column. E.g. size2quarter6163 means24652 rather than24650.
+# FY2024 matrix pages 1-5 print three-month Mid values of 4,556, 6,163, 7,769, 9,375,
+# 10,981, 12,588, 14,194, 15,800, 17,406, 19,013, 20,619, 22,225, 23,831, 25,438 and
+# 27,044. The annual threshold is 4 x each, not the printed annual column: size 2 is
+# 4 x $6,163 = $24,652, not $24,650.
 - name: Case 1, all fifteen FY2024 tier thresholds use the printed three month amounts.
   period: 2024
   absolute_error_margin: 0.01
@@ -13,7 +16,10 @@
     sd_liheap_income_threshold: [18224, 24652, 31076, 37500, 43924, 50352, 56776, 63200, 69624, 76052, 82476, 88900,
       95324, 101752, 108176]
 
-# FY2024reconciled125percent lag1FPG rule carried forward: FY2025FPG15650,21150,59650,65150,92650. Quarter raw4890.625,6609.375,18640.625,20359.375,28953.125 rounds halfup then times4. These are formula-derived FY2026tier thresholds, not printed current numericalMidcells.
+# The FY2026 matrix names Mid without printing it, so the FY2024 rule carries
+# forward: 125% of the 2025 guideline ($15,650, $21,150, $59,650, $65,150, $92,650)
+# over 4 is $4,890.625, $6,609.375, $18,640.625, $20,359.375 and $28,953.125;
+# rounding half up and x 4 gives $19,564, $26,436, $74,564, $81,436 and $115,812.
 - name: Case 2, FY2026 threshold carry forward preserves half up quarter rounding.
   period: 2026
   absolute_error_margin: 0.01

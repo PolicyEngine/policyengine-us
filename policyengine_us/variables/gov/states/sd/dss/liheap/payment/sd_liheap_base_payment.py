@@ -41,10 +41,8 @@ class sd_liheap_base_payment(Variable):
             ],
             default=0,
         )
-        # This is an ungated table ceiling, separate from heat-in-rent payments.
-        # sd_liheap applies supported eligibility and the approved assumption
-        # that heating_expense reports eligible unpaid seasonal vendor charges.
-        # Unknown region or unpriced fuel returns an unsupported-component zero,
-        # not a finding that the household is legally ineligible.
-        size = spm_unit("spm_unit_size", period)
-        return where(supported_region & (size > 0), amount, 0)
+        # sd_liheap applies eligibility and caps vendor fuels at heating_expense,
+        # read as unpaid seasonal vendor charges. An unknown region or a fuel
+        # without a matrix row returns zero as a coverage gap, not a denial; the
+        # default for UNSPECIFIED fuel is tracked in #9754.
+        return where(supported_region, amount, 0)

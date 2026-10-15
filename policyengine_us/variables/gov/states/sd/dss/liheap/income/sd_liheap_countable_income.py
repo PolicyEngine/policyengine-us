@@ -11,6 +11,7 @@ class sd_liheap_countable_income(Variable):
     reference = (
         "https://sdlegislature.gov/Rules/Administrative/67:15:01:18",
         "https://sdlegislature.gov/Rules/Administrative/67:15:01:18.01",
+        # PDF pages 6-7
         "https://liheapch.acf.gov/docs/2026/state-plans/SD_Plan_2026.pdf#page=6",
         # PDF pages 17, 25-28
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=17",

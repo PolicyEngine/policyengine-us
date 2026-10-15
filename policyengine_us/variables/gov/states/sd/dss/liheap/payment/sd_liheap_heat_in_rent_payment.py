@@ -11,8 +11,8 @@ class sd_liheap_heat_in_rent_payment(Variable):
     reference = (
         "https://sdlegislature.gov/Rules/Administrative/67:15:01:41.02",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/SD_BenefitMatrix_2026.pdf",
-        # PDF pages 31-32
-        "https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=31",
+        # PDF pages 30-32
+        "https://liheapch.acf.gov/sites/default/files/webfiles/docs/SD_Policy-and-Procedures-Manual2018.pdf#page=30",
     )
 
     def formula(spm_unit, period, parameters):

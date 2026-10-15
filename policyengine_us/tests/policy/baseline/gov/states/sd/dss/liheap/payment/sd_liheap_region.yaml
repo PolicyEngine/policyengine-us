@@ -1,6 +1,7 @@
-# South Dakota supported income region and heat-in-rent components only; no final award is asserted.
+# South Dakota LIEAP heating regions under rule 67:15:01:35.
 
-# Officialrule67:15:01:35 table, independently extracted in sources/sd_county_regions.json and visually corroborated manualp52. HistoricShannon maps tocurrentOglalaLakota region1. Expected regions come fromoriginalsource, notimplementationparameters.
+# Rule 67:15:01:35 assigns all 66 counties to four regions (manual page 52 maps the
+# same regions); former Shannon County is Oglala Lakota County, region 1.
 - name: Case 1, all sixty six official county assignments match including renamed Shannon County.
   period: 2026
   input:
@@ -38,7 +39,7 @@
       4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 1, 2, 3, 1,
       2, 1, 2, 1, 2, 1, 2]
 
-# ExplicitUNKNOWN/foreigncounty returnsunsupported marker0 safely; missingcounty is a separate sharedmodelAurora fallback and is deliberately not treated asverifiedlocation.
+# An explicit UNKNOWN or out-of-state county returns region 0.
 - name: Case 2, explicit unknown and foreign counties never default to a verified region.
   period: 2026
   input:

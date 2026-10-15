@@ -1,4 +1,4 @@
-description: South Dakota counts these earned income sources subject to its age and school exclusions under the Low Income Energy Assistance Program.
+description: South Dakota uses these sources as earned income under the Low Income Energy Assistance Program.
 values:
   2025-10-01:
     - employment_income
@@ -6,6 +6,7 @@ values:
     - sstb_self_employment_income
     - farm_operations_income
     - partnership_s_corp_income
+# Earnings of members under 18, or under 19 in high school, are excluded.
 # Use existing net business inputs and floor source losses without an additional
 # business-expense deduction or reconstructing gross receipts.
 metadata:

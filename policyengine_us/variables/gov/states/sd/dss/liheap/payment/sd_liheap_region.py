@@ -8,15 +8,16 @@ class sd_liheap_region(Variable):
     label = "South Dakota LIEAP heating region"
     defined_for = StateCode.SD
     reference = "https://sdlegislature.gov/Rules/Administrative/67:15:01:35"
+    documentation = (
+        "Regions 1 to 4 follow ARSD 67:15:01:35. Zero means the county is unknown "
+        "or outside South Dakota. A household with no county input takes the first "
+        "South Dakota county, Aurora, in region 2."
+    )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.sd.dss.liheap.payment.regions
         county = spm_unit.household("county_str", period)
-        # All 66 counties are assigned by rule; historic Shannon is represented
-        # by the existing Oglala Lakota county identifier. Unknown/foreign county
-        # is an unsupported location (0), never silently region 1.
-        # The shared county formula may infer the first county if no geography
-        # is supplied; an observed county is needed for a verified regional amount.
+        # Former Shannon County is the Oglala Lakota county identifier.
         return select(
             [
                 np.isin(county, p.region_1),

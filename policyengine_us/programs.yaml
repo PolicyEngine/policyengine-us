@@ -910,11 +910,11 @@ programs:
         notes: PY2025-PY2027 regular heating only, with the two county regions, five fuel columns and the roomer half payment. Crisis, cooling, Fuel Payment, equipment and OEAP assistance are out of scope.
       - state: SD
         status: partial
-        name: South Dakota LIHEAP
-        full_name: South Dakota Low Income Home Energy Assistance Program
+        name: South Dakota LIEAP
+        full_name: South Dakota Low Income Energy Assistance Program
         variable: sd_liheap
         parameter_prefix: gov.states.sd.dss.liheap
-        notes: Regular heating only. Published FY2024 and FY2026 benefit amounts are tested, but no complete benefit year is verified. The citizenship income proration worksheet is unavailable, so mixed-status income remains overstated. FY2026 Mid thresholds are inferred from prior matrices. Crisis, cooling and weatherization assistance are out of scope.
+        notes: FY2024-FY2026 regular heating only; mixed-status income is counted in full and FY2026 Mid thresholds are inferred, so no year is verified. Crisis, cooling and weatherization are out of scope.
       - state: TX
         status: partial
         name: Texas CEAP

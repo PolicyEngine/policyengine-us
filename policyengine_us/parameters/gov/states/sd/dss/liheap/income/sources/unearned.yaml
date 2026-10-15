@@ -1,4 +1,4 @@
-description: South Dakota counts these unearned income sources for members of all ages under the Low Income Energy Assistance Program.
+description: South Dakota uses these sources as unearned income for members of all ages under the Low Income Energy Assistance Program.
 values:
   2025-10-01:
     # Social Security is counted in the formula, net of the Medicare Part B
@@ -11,7 +11,7 @@ values:
     - military_retirement_pay
     - railroad_benefits
     - survivor_benefits
-    - unemployment_compensation
+    - total_unemployment_compensation
     # The application (page 5) lists "Worker's Compensation" as gross income,
     # rule 67:15:01:01(4) counts unearned income before deductions, and rule
     # 67:15:01:18 does not exclude it.
@@ -30,8 +30,16 @@ values:
     # plan, section 1.9 (page 6), leaves "One-time lump-sum payments, such as
     # rebates/credits, winnings from lotteries" unchecked. The manual is followed.
     - gambling_winnings
+    # Regular cash help from family or friends counts. Rule 67:15:01:18(17)
+    # excludes only "Cash gifts for recurring occasions such as birthdays and
+    # Christmas"; the manual (page 25) counts "Cash Gifts (Monthly)" listed for
+    # all three months, and the application (page 5) lists "Money from Family
+    # or Friends" as gross income. The FY2026 plan, section 1.9 (page 6), leaves
+    # "Cash gifts" unchecked; the rule and manual are followed. An annual input
+    # is read as regular help, not a one-time or occasion gift.
+    - financial_assistance
 # Pension and Social Security subcomponents are not added again. Interest,
-# dividends, capital gains and cash gifts are excluded.
+# dividends and capital gains are excluded.
 metadata:
   unit: list
   period: year

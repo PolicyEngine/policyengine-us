@@ -14,7 +14,7 @@ class sd_liheap_income_limit(Variable):
         # PDF pages 1-5
         "https://liheapch.acf.gov/docs/2024/benefits-matricies/SD_BenefitMatrix_2024.pdf#page=1",
         "https://web.archive.org/web/20250114001211/https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx",
-        "https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx",
+        "https://web.archive.org/web/20260101052007/https://dss.sd.gov/economicassistance/energy_weatherization_assistance.aspx",
     )
 
     def formula(spm_unit, period, parameters):
@@ -42,6 +42,11 @@ class sd_liheap_income_limit(Variable):
         # three-month limits of $16,677, $19,345 and $22,014 (our derivation).
         # The DSS 2025-2026 published limits cited above are $16,075, $18,825
         # and $21,575 (200% of the 2025 poverty guideline). The model follows DSS.
+        # The FY2027 draft plan (status "Saved"), section 2.1, lists 60% of state
+        # median income for sizes 4-10; its size 1-3 rates (52.02%, 53.94% and
+        # 55.13%) match 200% of the 2026 guideline to within 0.01 point. Revisit
+        # sizes 4-6 when DSS posts its 2026-2027 limits:
+        # https://dss.sd.gov/docs/hearings/State_Plan.pdf#page=9
         limit = 4 * np.floor(annual_limit / 4)
         if p.limits.table.in_effect:
             # The published 2024-2025 limits exceed the rule for sizes 4-7 and
