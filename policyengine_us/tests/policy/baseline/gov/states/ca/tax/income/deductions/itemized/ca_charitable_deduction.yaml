@@ -4,7 +4,7 @@
   input:
     state_code: CA
     employment_income: 60_000
-    charitable_cash_donations_50_pct: 40_000
+    charitable_cash_donations_50_pct_orgs: 40_000
   output:
     charitable_deduction: 30_000
     ca_charitable_deduction: 30_000
@@ -15,7 +15,7 @@
   input:
     state_code: CA
     employment_income: 60_000
-    charitable_cash_donations_non_50_pct: 25_000
+    charitable_cash_donations_non_50_pct_orgs: 25_000
   output:
     charitable_deduction: 18_000
     ca_charitable_deduction: 18_000
@@ -26,7 +26,7 @@
   input:
     state_code: CA
     employment_income: 60_000
-    charitable_capital_gain_donations_50_pct: 25_000
+    charitable_capital_gain_donations_50_pct_orgs: 25_000
   output:
     charitable_deduction: 18_000
     ca_charitable_deduction: 18_000
@@ -37,7 +37,7 @@
   input:
     state_code: CA
     employment_income: 60_000
-    charitable_capital_gain_donations_non_50_pct: 15_000
+    charitable_capital_gain_donations_non_50_pct_orgs: 15_000
   output:
     charitable_deduction: 12_000
     ca_charitable_deduction: 12_000
@@ -48,11 +48,11 @@
   input:
     state_code: CA
     employment_income: 60_000
-    charitable_cash_donations_50_pct: 10_000
-    charitable_non_cash_donations_50_pct: 10_000
-    charitable_cash_donations_non_50_pct: 10_000
-    charitable_capital_gain_donations_50_pct: 10_000
-    charitable_capital_gain_donations_non_50_pct: 10_000
+    charitable_cash_donations_50_pct_orgs: 10_000
+    charitable_non_cash_donations_50_pct_orgs: 10_000
+    charitable_cash_donations_non_50_pct_orgs: 10_000
+    charitable_capital_gain_donations_50_pct_orgs: 10_000
+    charitable_capital_gain_donations_non_50_pct_orgs: 10_000
   output:
     charitable_deduction: 30_000
     ca_charitable_deduction: 30_000
@@ -63,7 +63,7 @@
   input:
     state_code: CA
     employment_income: 60_000
-    charitable_cash_donations_50_pct: 50_000
+    charitable_cash_donations_50_pct_orgs: 50_000
   output:
     charitable_deduction: 36_000
     ca_charitable_deduction: 30_000
@@ -74,7 +74,7 @@
   input:
     state_code: CA
     employment_income: 60_000
-    charitable_capital_gain_donations_50_pct: 25_000
+    charitable_capital_gain_donations_50_pct_orgs: 25_000
   output:
     charitable_deduction: 18_000
     ca_charitable_deduction: 18_000
@@ -85,7 +85,7 @@
   input:
     state_code: CA
     employment_income: 60_000
-    charitable_cash_donations_50_pct: 60_000
+    charitable_cash_donations_50_pct_orgs: 60_000
   output:
     charitable_deduction: 60_000
     ca_charitable_deduction: 30_000
@@ -96,7 +96,7 @@
   input:
     state_code: CA
     employment_income: 60_000
-    charitable_cash_donations_50_pct: 500
+    charitable_cash_donations_50_pct_orgs: 500
   output:
     charitable_deduction: 200
     ca_charitable_deduction: 500
@@ -107,7 +107,7 @@
   input:
     state_code: CA
     employment_income: 60_000
-    charitable_cash_donations_non_50_pct: 25_000
+    charitable_cash_donations_non_50_pct_orgs: 25_000
   output:
     charitable_deduction: 17_700
     ca_charitable_deduction: 18_000

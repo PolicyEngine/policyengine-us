@@ -27,59 +27,25 @@ def compute_charitable_deduction(
         # Under CARES Act § 2205(a) / P.L. 116-260 div. EE § 213, elected qualified cash
         # contributions to 50% orgs are disregarded when applying percentage limits to
         # other contributions, and then allowed up to remaining AGI (Pub 526 (2020) Worksheet 2).
-        # 1. Non-cash ordinary contributions to 50% limit orgs:
-        deductible_ord_50 = min_(ordinary_50, limit_50)
-
-        # 2. Contributions to non-50% limit orgs:
-        contribs_to_50_orgs = cg_50 + ordinary_50
-        room_under_50_for_non_50 = max_(0, limit_50 - contribs_to_50_orgs)
-        non_50_ordinary_and_cash = cash_non_50 + ordinary_non_50
-        deductible_non_50_ordinary = min_(
-            non_50_ordinary_and_cash,
-            min_(limit_30_non_50, room_under_50_for_non_50),
+        other_allowed = compute_charitable_deduction(
+            cash_50=0,
+            cash_non_50=cash_non_50,
+            ordinary_50=ordinary_50,
+            ordinary_non_50=ordinary_non_50,
+            cg_50=cg_50,
+            cg_non_50=cg_non_50,
+            positive_agi=positive_agi,
+            ceiling_all=ceiling_all,
+            ceiling_non_cash=ceiling_non_cash,
+            ceiling_non_50=ceiling_non_50,
+            ceiling_cg_50=ceiling_cg_50,
+            ceiling_cg_non_50=ceiling_cg_non_50,
+            non_50_pct_cash_add_back=non_50_pct_cash_add_back,
+            qualified_cash_election=False,
         )
-
-        # 3. Capital gain property to 50% limit orgs:
-        room_under_50_for_cg_50 = max_(0, limit_50 - deductible_ord_50)
-        deductible_cg_50 = min_(
-            cg_50,
-            min_(limit_30_cg_50, room_under_50_for_cg_50),
+        deductible_cash_50 = min_(
+            cash_50, max_(0, ceiling_all * positive_agi - other_allowed)
         )
-
-        # 4. Capital gain property to non-50% limit orgs:
-        deductible_non_cash_so_far = (
-            deductible_ord_50 + deductible_non_50_ordinary + deductible_cg_50
-        )
-        room_under_50_overall = max_(0, limit_50 - deductible_non_cash_so_far)
-        room_under_30_after_non_50_ord = max_(
-            0, limit_30_non_50 - deductible_non_50_ordinary
-        )
-        room_under_30_after_cg_50 = max_(0, limit_30_non_50 - deductible_cg_50)
-        deductible_cg_non_50 = min_(
-            cg_non_50,
-            min_(
-                limit_20_cg_non_50,
-                min_(
-                    room_under_50_overall,
-                    min_(
-                        room_under_30_after_non_50_ord,
-                        room_under_30_after_cg_50,
-                    ),
-                ),
-            ),
-        )
-
-        other_allowed = (
-            deductible_ord_50
-            + deductible_non_50_ordinary
-            + deductible_cg_50
-            + deductible_cg_non_50
-        )
-
-        # 5. Qualified cash fills remaining room up to 100% of AGI:
-        cash_ceiling = ceiling_all * agi
-        deductible_cash_50 = min_(cash_50, max_(0, cash_ceiling - other_allowed))
-
         return other_allowed + deductible_cash_50
 
     # Standard IRS Pub 526 Worksheet 2 sequential calculation:
@@ -95,10 +61,13 @@ def compute_charitable_deduction(
 
     # 3. Contributions (other than capital gain property) subject to 30% limit (Worksheet 2 lines 19-25, IRC § 170(b)(1)(B)):
     # From 2026, P.L. 119-21 § 70425 adds back up to 10% of AGI of cash to 50% orgs:
-    add_back_rate = non_50_pct_cash_add_back
-    subtracted_cash_50 = max_(0, cash_50 - add_back_rate * agi)
-    contribs_to_50_orgs = cg_50 + ordinary_50 + subtracted_cash_50
-    room_under_50_for_non_50 = max_(0, limit_50 - contribs_to_50_orgs)
+    allowable_50_gifts = min_(cg_50 + ordinary_50, room_for_ord_50)
+    subtracted_cash_50 = deductible_cash_50 - min_(
+        deductible_cash_50, non_50_pct_cash_add_back * agi
+    )
+    room_under_50_for_non_50 = max_(
+        0, limit_50 - (allowable_50_gifts + subtracted_cash_50)
+    )
     non_50_ordinary_and_cash = cash_non_50 + ordinary_non_50
     deductible_non_50_ordinary = min_(
         non_50_ordinary_and_cash,
@@ -166,15 +135,27 @@ class charitable_deduction(Variable):
         #   (B) Cash & non-cash ordinary to non-50% limit orgs: 30% AGI (reduced by 50% gifts)
         #   (C) Capital gain property to 50% limit orgs: 30% AGI (reduced by ordinary 50% gifts)
         #   (D) Capital gain property to non-50% limit orgs: 20% AGI (taken into account last)
-        cash_50 = add(tax_unit, period, ["charitable_cash_donations_50_pct"])
-        cash_non_50 = add(tax_unit, period, ["charitable_cash_donations_non_50_pct"])
-        ordinary_50 = add(tax_unit, period, ["charitable_non_cash_donations_50_pct"])
-        ordinary_non_50 = add(
-            tax_unit, period, ["charitable_non_cash_donations_non_50_pct"]
+        cash_50 = add(tax_unit, period, ["resolved_charitable_cash_donations_50_pct"])
+        cash_non_50 = add(
+            tax_unit, period, ["resolved_charitable_cash_donations_non_50_pct"]
         )
-        cg_50 = add(tax_unit, period, ["charitable_capital_gain_donations_50_pct"])
+        ordinary_50 = add(
+            tax_unit, period, ["resolved_charitable_non_cash_donations_50_pct"]
+        )
+        ordinary_non_50 = add(
+            tax_unit,
+            period,
+            ["resolved_charitable_non_cash_donations_non_50_pct"],
+        )
+        cg_50 = add(
+            tax_unit,
+            period,
+            ["resolved_charitable_capital_gain_donations_50_pct"],
+        )
         cg_non_50 = add(
-            tax_unit, period, ["charitable_capital_gain_donations_non_50_pct"]
+            tax_unit,
+            period,
+            ["resolved_charitable_capital_gain_donations_non_50_pct"],
         )
 
         positive_agi = tax_unit("positive_agi", period)

@@ -408,3 +408,22 @@
     # Combined cash 50% = 15,000. Deduction = 15,000.
     charitable_deduction: 15_000
 
+- name: 2026 allowable 50% gifts reducing 30% non-50% room under § 170(b)(1)(B)(ii)
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    charitable_cash_donations_50_pct_orgs: 30_000
+    charitable_non_cash_donations_50_pct_orgs: 40_000
+    charitable_cash_donations_non_50_pct_orgs: 20_000
+    positive_agi: 100_000
+  output:
+    # 2026, Single, AGI 100,000.
+    # Cash to 50% org: 30,000 allowed under (G) (cap 60,000).
+    # Goods to 50% org: allowable under (A) is min(40,000, 50,000 - 30,000) = 20,000.
+    # Non-50% cash: under § 170(b)(1)(B)(ii), room is 50,000 - (allowable (A) + allowable (G) - 10% AGI)
+    # = 50,000 - (20,000 + 30,000 - 10,000) = 10,000.
+    # Total before floor = 30,000 + 20,000 + 10,000 = 60,000.
+    # Floor (0.5% * 100,000 = 500) applies after ceilings: 60,000 - 500 = 59,500.
+    charitable_deduction: 59_500
+
+
