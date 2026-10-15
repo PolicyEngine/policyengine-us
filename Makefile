@@ -13,6 +13,9 @@
 # test growth, and --workers 1 everywhere except the partners target
 # (its largest batch measured 2.5 GB, so two-wide stays trivially safe).
 BATCH := python policyengine_us/tests/test_batched.py
+# CI's Baseline and Contrib jobs set POLICYENGINE_BATCH_WORKERS=2, which
+# overrides --workers below: test_batched.py then runs two batch subprocesses
+# per runner while its memory allows. Local runs keep the counts given here.
 TESTS := policyengine_us/tests
 # Run SPM construction/isolation tests in their own process on the existing
 # Microsimulation CI runner, before the dataset tests. Rest excludes these
@@ -43,8 +46,25 @@ REST_SPM_TESTS := $(TESTS)/core/test_spm_policy_family.py \
 # in its grid fixture. Core reached 13.3 GB in CI run 38141803955 after this
 # and three smaller modules arrived; isolate SSI rather than filling heavy-a
 # (8.1 GB including the pending capital-gains MTR change). These groups remain
-# sequential subprocesses on the existing Rest runner.
+# sequential subprocesses within each Rest Python shard.
 REST_PYTHON_GROUPS := cached-arrays heavy-a heavy-b core-heavy core policy-parameters policy remaining-heavy remaining
+# CI runs two shards of these existing isolated processes. Across seven
+# recent runs (including 38326922385 and 38289790999), their summed group
+# times were 32-45 and 32-46 minutes; variables adds about a minute to shard 1.
+# Both stay near 45 minutes, while the old serial job hit its 90-minute limit.
+# No shard runs more than one Python group at a time. Locally, leaving
+# REST_PYTHON_SHARD unset still runs every group in the original order.
+REST_PYTHON_SHARD_1_GROUPS := cached-arrays core-heavy policy-parameters remaining-heavy remaining
+REST_PYTHON_SHARD_2_GROUPS := heavy-a heavy-b core policy
+REST_PYTHON_SHARD ?=
+ifeq ($(REST_PYTHON_SHARD),)
+REST_PYTHON_SELECTED_GROUPS := $(REST_PYTHON_GROUPS)
+else
+REST_PYTHON_SELECTED_GROUPS := $(REST_PYTHON_SHARD_$(REST_PYTHON_SHARD)_GROUPS)
+ifeq ($(strip $(REST_PYTHON_SELECTED_GROUPS)),)
+$(error REST_PYTHON_SHARD must be 1 or 2)
+endif
+endif
 REST_CACHED_ARRAY_TESTS := $(TESTS)/test_formulas_do_not_write_into_cached_arrays.py
 REST_HEAVY_A_TESTS := $(TESTS)/test_md_poverty_line_credit_invariants.py \
 	$(TESTS)/core/test_ald_determinism.py \
@@ -180,8 +200,9 @@ test-yaml-variables:
 	$(BATCH) $(TESTS)/variables --batches 1
 test-yaml-no-structural-states:
 	# Release model/parameter caches between states. The former NY/OH/OK
-	# group peaked at 15.1 GB; keep one subprocess at a time on each of
-	# the existing four CI runners. Root-level state tests remain included.
+	# group peaked at 15.1 GB; keep one subprocess at a time here. CI's four
+	# runners run up to two while memory allows (POLICYENGINE_BATCH_WORKERS).
+	# Root-level state tests remain included.
 	$(BATCH) $(TESTS)/policy/baseline/gov/states --mode per-subdir --workers 1
 test-yaml-no-structural-other:
 	$(BATCH) $(TESTS)/policy/baseline --batches 2 --exclude states
@@ -195,8 +216,9 @@ test-yaml-no-structural-other-irs:
 	$(BATCH) $(TESTS)/policy/baseline/gov/irs --mode per-subdir --workers 1
 test-yaml-no-structural-other-household:
 	# 4 batches (was 2), --workers 1: a 2-batch half of this folder (incl.
-	# the weights/MTR files) peaked 11.8 GB on CI run 28698452678. Quarter
-	# batches keep each subprocess <= ~6 GB.
+	# the weights/MTR files) peaked 11.8 GB on CI run 28698452678, and by
+	# October 2026 the last quarter batch reached 15.1 GB. test_batched.py's
+	# memory budget now continues a batch in a fresh subprocess past ~8 GB.
 	$(BATCH) $(TESTS)/policy/baseline/household --batches 4 --workers 1
 test-yaml-no-structural-other-contrib:
 	# ubi_center is microsim-heavy → per-file, one ~4 GB peak at a time.
@@ -217,8 +239,9 @@ test-yaml-reform:
 	# ~8 GB file runs solo with ~8 GB spare); new reform files auto-route.
 	$(BATCH) $(TESTS)/policy/reform --mode per-file --workers 1
 test-yaml-no-structural-other-hhs:
-	# hhs (~2.7 GB peak) rides along with the baseline-contrib runner,
-	# which has spare headroom.
+	# hhs rides along with the baseline-contrib runner. As one process it
+	# peaked at 15.1 GB (CI run 38656284185); test_batched.py's memory budget
+	# continues it in a fresh subprocess past ~8 GB.
 	$(BATCH) $(TESTS)/policy/baseline/gov/hhs --batches 1
 # baseline contrib + gov/hhs share one CI runner. policy/reform no longer
 # rides along: its per-file peaks (~5.5-8 GB) plus this pair filled a job
@@ -281,7 +304,7 @@ test-other-python-spm:
 	pytest $(REST_SPM_TESTS) --maxfail=0
 # Every group runs even after one fails; the target fails if any group did.
 test-other-python-rest:
-	@failed=""; for group in $(REST_PYTHON_GROUPS); do \
+	@failed=""; for group in $(REST_PYTHON_SELECTED_GROUPS); do \
 		echo "=== Rest Python group: $$group ==="; \
 		$(MAKE) --no-print-directory test-other-python-rest-$$group || failed="$$failed $$group"; \
 	done; \

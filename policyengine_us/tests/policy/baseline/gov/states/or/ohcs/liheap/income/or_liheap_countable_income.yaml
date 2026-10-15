@@ -151,3 +151,27 @@
     # (page 35 sends landlords to the self-employment form), so the second
     # member's $6,000 loss does not offset the first member's $6,000 of rent.
     or_liheap_countable_income: 6_000
+
+- name: Case 7, reported unemployment compensation counts as unearned income.
+  # The unearned source list reads total_unemployment_compensation. Oregon has
+  # no modeled unemployment insurance program, so the total is the reported
+  # amount and this control shows reported UC still counts.
+  period: 2026
+  input:
+    people:
+      person1:
+        age: 40
+        unemployment_compensation: 6_000
+        ssi: 0
+    spm_units:
+      spm_unit:
+        members: [person1]
+        tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: OR
+  output:
+    total_unemployment_compensation: 6_000
+    # Unemployment insurance is "Considered Income? Yes" (page 48).
+    or_liheap_countable_income: 6_000
