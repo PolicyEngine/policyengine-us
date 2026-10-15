@@ -384,3 +384,47 @@
   output:
     # Own income: person1 2_500 > 2_200, so 0; person2 2_200 - 500 = 1_700.
     sd_ssp_care: [0, 1_700]
+
+- name: Case 14, joint entry flagged for the entry month budgets the spouses separately the next month.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        social_security_retirement: 14_400
+        ssi_countable_resources: 2_100
+        sd_ssp_care_certified:
+          2026-01: true
+          2026-02: true
+        sd_ssp_approved_care_cost:
+          2026-01: 2_200
+          2026-02: 2_200
+        sd_ssp_care_joint_entry:
+          2026-01: true
+      person2:
+        age: 65
+        social_security_retirement: 9_600
+        ssi_countable_resources: 800
+        sd_ssp_care_certified:
+          2026-01: true
+          2026-02: true
+        sd_ssp_approved_care_cost:
+          2026-01: 2_200
+          2026-02: 2_200
+        sd_ssp_care_joint_entry:
+          2026-01: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # January (Case 7): pooled resources and shared income, [1_200, 1_200].
+    # February: separate individuals; person1's 2_100 exceeds 2_000, and
+    # person2 gets min(2_200, 28 x 77.16 = 2_160.48) - 800 = 1_360.48.
+    sd_ssp_care:
+      2026-01: [1_200, 1_200]
+      2026-02: [0, 1_360.48]

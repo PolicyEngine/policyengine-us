@@ -519,3 +519,27 @@
     # ARSD 67:12:14:02(4): institutionalized residents are not eligible.
     ssi: 994
     sd_ssp: 0
+
+- name: Case 37, partial-month days entered for one month leave the next month full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: SD
+    age: 65
+    sd_ssp_care_certified:
+      2026-01: true
+      2026-02: true
+    sd_ssp_approved_care_cost:
+      2026-01: 2_200
+      2026-02: 2_200
+    sd_ssp_care_partial_month_days:
+      2026-01: 10
+  output:
+    sd_ssp_care_partial_month_days:
+      2026-01: 10
+      2026-02: 0
+    # January: min(2_200, 10 x 77.16) = 771.60 with no income applied.
+    # February is a full month: min(2_200, 28 x 77.16 = 2_160.48) - 994.
+    sd_ssp_care:
+      2026-01: 771.6
+      2026-02: 1_166.48

@@ -9,3 +9,7 @@ class sd_ssp_care_died_or_transferred(Variable):
     defined_for = StateCode.SD
     reference = "https://sdlegislature.gov/Rules/Administrative/67:46:06:09"
     documentation = "In a partial month, income is applied toward the cost of care only when the recipient died or transferred to another long-term care facility."
+
+    def formula(person, period, parameters):
+        # A formula stops a one-month input from carrying into later months.
+        return False
