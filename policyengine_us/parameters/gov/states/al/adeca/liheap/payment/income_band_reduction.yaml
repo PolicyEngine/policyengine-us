@@ -1,4 +1,4 @@
-description: Alabama reduces the lowest-income heating payment by this amount for each income band under the Low Income Home Energy Assistance Program.
+description: Alabama sets this reduction from the lowest-band heating payment for each income band under the Low Income Home Energy Assistance Program.
 # These differences reproduce every fuel and household-size cell in Appendix D.
 1:
   2025-10-01: 0
@@ -14,5 +14,5 @@ metadata:
     - range(1, 4)
   propagate_metadata_to_children: true
   reference:
-    - title: Alabama FY2026 LIHEAP Policy and Procedures Manual, Appendix D (current benefit chart)
+    - title: Alabama FY2026 LIHEAP Policy Manual, Appendix D (current benefit chart)
       href: https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=57

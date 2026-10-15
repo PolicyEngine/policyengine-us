@@ -44,6 +44,8 @@ class al_liheap_base_payment(Variable):
         # This compact representation reproduces Appendix D's entire matrix.
         # The manual's worked example on page 22 uses an older payment amount.
         # No published category was identified for fuel oil, solar, other, or
-        # unspecified heat. Returning zero leaves those estimates incomplete;
-        # it does not establish legal ineligibility, including heat in rent.
+        # unspecified heat (manual 3.1 names kerosene, not fuel oil). Returning
+        # zero leaves those estimates incomplete; it does not establish legal
+        # ineligibility, including heat in rent. Issue 9754 tracks the
+        # unspecified-fuel default.
         return where(base > 0, amount, 0)

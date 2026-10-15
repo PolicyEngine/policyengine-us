@@ -1,4 +1,4 @@
-# Source: ADECA FY2026 manual and current Appendix D; requirement bindings in the test manifest.
+# Source: ADECA FY2026 LIHEAP Policy Manual and its Appendix D Payment Assistance Chart.
 
 # Manual pp17–18: 12000 + 6000 + 600 + 2400 + 1800 = 22800; no additional business deduction.
 - name: Case 1, adult wages and existing net business sources are counted.
@@ -31,7 +31,7 @@
   output:
     al_liheap_countable_income: 22_800
 
-# Manual pp17–19: under18 earned income excluded, but annual SSI2400 and survivor1200 remain countable.
+# Manual pp17-19: earned income under 18 is excluded, but annual SSI of 2,400 and survivor benefits of 1,200 count: 12,000 + 2,400 + 1,200 = 15,600.
 - name: Case 2, age 17 earned income follows the under eighteen boundary.
   period: 2026
   absolute_error_margin: 0.01
@@ -67,7 +67,7 @@
   output:
     al_liheap_countable_income: 15_600
 
-# Manual pp17–19: under18 earned income excluded, but annual SSI2400 and survivor1200 remain countable.
+# Manual pp17-19: earned income counts from age 18: 12,000 + 6,000 + 2,400 + 2,400 + 1,200 = 24,000.
 - name: Case 3, age 18 earned income follows the under eighteen boundary.
   period: 2026
   absolute_error_margin: 0.01
@@ -135,7 +135,7 @@
   output:
     al_liheap_countable_income: 22_200
 
-# Manual p18: annual wages1200 plus annual TANF3600 =4800. YEAR test supplies annual amount to MONTH-defined al_tanf.
+# Manual p18: annual wages of 1,200 plus annual TANF of 3,600 = 4,800. The YEAR test supplies an annual amount to the MONTH-defined al_tanf.
 - name: Case 5, Alabama TANF receipts are counted once and annualized once.
   period: 2026
   absolute_error_margin: 0.01
@@ -303,7 +303,7 @@
 
 # Manual p18 counts periodic estate or trust receipts. Existing estate_income is disjoint
 # from separately reported interest, dividends and capital gains; this is not a lump inheritance.
-# Wages23_400 + periodic estate1_200 =24_600 exceeds the annualized23_472 income ceiling.
+# Wages 23,400 + periodic estate income 1,200 = 24,600 exceeds the annualized 23,472 income ceiling.
 - name: Case 10, periodic estate income raises income above the eligibility limit.
   period: 2026
   input:
@@ -328,7 +328,7 @@
     al_liheap_countable_income: 24_600
     al_liheap_eligible: false
 
-# Manual physical p18 counts railroad retirement, financial support from family or friends,
+# Manual p18 counts railroad retirement, financial support from family or friends,
 # and dividends. 21,000 + 1,200 + 1,200 + 600 = 24,000 exceeds the 23,472 annual ceiling.
 - name: Case 11, railroad benefits regular family support and dividends raise income above the limit.
   period: 2026
@@ -533,3 +533,125 @@
     al_ssp: [720, 0]
     al_liheap_countable_income: 27_728
     al_liheap: 490
+
+# Plan item 1.9 (p6) checks "Including MediCare deduction", so Social Security counts gross.
+# The 2026 standard Part B premium is 202.90 x 12 = 2,434.80, but countable income stays
+# 20,000, not 20,000 - 2,434.80 = 17,565.20. 20,000 / 12 = 1,666.67 is above the size-one
+# band 2 top of 1,305 and at most the 1,956 limit, so band 3. Natural gas: 480 - 120 = 360,
+# plus the $100 IIJA supplement, is 460.
+- name: Case 16, Social Security counts gross of the Medicare Part B premium.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: CITIZEN
+        ssi: 0
+        social_security_retirement: 20_000
+        medicare_part_b_premium: 2_434.8
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: NATURAL_GAS
+        gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_liheap_countable_income: 20_000
+    al_liheap_income_band: 3
+    al_liheap: 460
+
+# Manual 5.5.1 (pp17-18) counts "Unemployment compensation". With none reported, the
+# modeled Alabama UI counts. Base period: full-time work at the $7.25 federal minimum wage
+# (29 U.S.C. 206(a)(1)(C); Alabama has none) is 520 x 7.25 = 3,770 a quarter, 15,080 a year.
+# Weekly benefit (Code of Ala. 25-4-72(b)): (3,770 + 3,770) / 52 = 145, under the $275
+# maximum. The January 2026 rate of 2.7% gives 14 weeks (25-4-74); the maximum benefit is
+# min(14 x 145 = 2,030, 0.25 x 15,080 = 3,770) = 2,030. After the one waiting week, 15 weeks
+# unemployed pay 14 x 145 = 2,030. Wages for the other 37 weeks: 37 x 40 x 7.25 = 10,730.
+# Countable income: 10,730 + 2,030 = 12,760, or 1,063.33 a month, in the size-one band 2
+# ($653-$1,305). Electricity: 440 - 30 = 410, plus the $100 IIJA supplement, is 510.
+- name: Case 17, modeled Alabama unemployment insurance counts as unearned income.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 10_730
+        al_ui_base_period_wages: 15_080
+        al_ui_high_quarter_wages: 3_770
+        al_ui_second_high_quarter_wages: 3_770
+        al_ui_quarters_with_wages: 4
+        weeks_unemployed: 15
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: ELECTRICITY
+        pre_subsidy_electricity_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    al_ui: 2_030
+    # No reported unemployment compensation, so the total falls back to modeled al_ui.
+    total_unemployment_compensation: 2_030
+    al_liheap_countable_income: 12_760
+    al_liheap_income_band: 2
+    al_liheap: 510
+
+# Manual pp17-19: each listed unearned source is set to 100 times its position in the
+# list, so 100 x (1 + 2 + ... + 20) = 100 x 210 = 21,000, with no earnings or gambling.
+# A nonzero reported amount overrides modeled UI. ssi and al_ssp are MONTH-defined, so
+# their annual inputs are split across months and summed back.
+- name: Case 18, every listed unearned source counts.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        immigration_status: CITIZEN
+        unemployment_compensation: 100
+        strike_benefits: 200
+        social_security: 300
+        ssi: 400
+        al_ssp: 500
+        pension_income: 600
+        military_retirement_pay: 700
+        survivor_benefits: 800
+        veterans_benefits: 900
+        disability_benefits: 1_000
+        workers_compensation: 1_100
+        child_support_received: 1_200
+        alimony_income: 1_300
+        interest_income: 1_400
+        ordinary_dividend_income: 1_500
+        rental_income: 1_600
+        farm_rent_income: 1_700
+        estate_income: 1_800
+        railroad_benefits: 1_900
+        financial_assistance: 2_000
+    spm_units:
+      spm_unit:
+        members: [person1]
+        heating_type: PROPANE
+        bottled_gas_expense: 1_200
+        al_tanf: 0
+    households:
+      household:
+        members: [person1]
+        state_code: AL
+        hud_utility_allowance: 0
+  output:
+    total_unemployment_compensation: 100
+    al_liheap_countable_income: 21_000

@@ -1,6 +1,6 @@
-# Source: ADECA FY2026 manual and current Appendix D; requirement bindings in the test manifest.
+# Source: ADECA FY2026 LIHEAP Policy Manual and its Appendix D Payment Assistance Chart.
 
-# Manual p21:1956per month inclusive; accepted plan has no asset test.
+# Manual p21: the $1,956 monthly limit is inclusive; the accepted plan has no asset test.
 - name: Case 1, exact rounded monthly income ceiling is eligible without an asset test.
   period: 2026
   input:
@@ -27,7 +27,7 @@
   output:
     al_liheap_eligible: true
 
-# 1956.01monthly exceeds the published1956limit.
+# $1,956.01 a month exceeds the published $1,956 limit.
 - name: Case 2, one cent per month above the income ceiling is ineligible.
   period: 2026
   input:
@@ -188,19 +188,37 @@
   output:
     al_liheap_eligible: true
 
-# Accepted plan categoricalNo; even a recipient must pass income eligibility.
+# The accepted plan answers No to categorical eligibility (item 1.4, p5), so SSI receipt
+# does not waive the income test. The full 2026 SSI federal rate is $994 a month
+# (90 FR 49047): 994 x 12 = 11,928. Two adult children each work full time at the $7.25
+# federal minimum wage (29 U.S.C. 206(a)(1)(C); Alabama has none): 2,080 x 7.25 = 15,080.
+# al_ssp is 0 under the default NONE care setting. Income 11,928 + 15,080 + 15,080 = 42,088.
+# Size-3 limit: (15,650 + 2 x 5,500) x 1.5 / 12 = 3,331.25, rounded to 3,331, x 12 = 39,972.
+# 42,088 > 39,972, so the household is ineligible; without the SSI, 30,160 would qualify.
 - name: Case 8, SSI receipt does not bypass the income ceiling.
   period: 2026
   input:
     people:
       person1:
+        age: 70
+        immigration_status: CITIZEN
+        ssi: 11_928
+      person2:
+        age: 42
+        immigration_status: CITIZEN
+        ssi: 0
+        employment_income: 15_080
+      person3:
         age: 40
         immigration_status: CITIZEN
-        ssi: 30_000
+        ssi: 0
+        employment_income: 15_080
     spm_units:
       spm_unit:
         members:
         - person1
+        - person2
+        - person3
         heating_type: PROPANE
         al_tanf: 0
         bottled_gas_expense: 1_200
@@ -208,9 +226,13 @@
       household:
         members:
         - person1
+        - person2
+        - person3
         state_code: AL
         hud_utility_allowance: 0
   output:
+    al_liheap_countable_income: 42_088
+    al_liheap_income_limit: 39_972
     al_liheap_eligible: false
 
 # Manual pp13,22: at least one citizen or qualified household member is necessary.
@@ -264,3 +286,28 @@
         hud_utility_allowance: 0
   output:
     al_liheap_eligible: false
+
+# Manual 6.1.1 (p21): "Subsidized housing tenants whose home energy costs are included in
+# their rent and do not pay anything out-of-pocket are not eligible for assistance."
+# Unit 1 lives in public housing with heat in rent and a $0 bill, so it is not responsible
+# for heat. Unit 2 has heat in unsubsidized rent, so it qualifies (6.1.3, p22):
+# 12,000 / 12 = 1,000 falls in the size-one band 2 ($653-$1,305), and electricity
+# 440 - 30 = 410, plus the $100 IIJA supplement, is 510.
+- name: Case 11, public housing with heat in rent and no out-of-pocket cost is ineligible.
+  period: 2026
+  input:
+    state_code: [AL, AL]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000]
+    ssi: [0, 0]
+    al_tanf: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [0, 0]
+    heat_expense_included_in_rent: [true, true]
+    receives_housing_assistance: [false, false]
+    is_in_public_housing: [true, false]
+    hud_utility_allowance: [0, 0]
+  output:
+    al_liheap_eligible: [false, true]
+    al_liheap: [0, 510]

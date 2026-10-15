@@ -11,7 +11,7 @@ class al_liheap(Variable):
     reference = (
         # PDF pages 22-23
         "https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-Manual-1.pdf#page=22",
-        "https://adeca.alabama.gov/wp-content/uploads/FY-2026-LIHEAP-State-Plan.pdf#page=10",
+        "https://liheapch.acf.gov/docs/2026/state-plans/AL_Plan_2026.pdf#page=10",
     )
 
     def formula(spm_unit, period, parameters):
@@ -23,13 +23,17 @@ class al_liheap(Variable):
         # an observed annual allowance can be supplied directly.
         allowance = spm_unit.household("hud_utility_allowance", period) / MONTHS_IN_YEAR
         regular_payment = max_(base - allowance, 0)
-        # FY2026 IIJA funds were awarded; assume program funds are available.
+        # The plan pays the $100 IIJA supplement "if funding is available".
+        # The FY2026 award (2601ALLIEI, $1,359,705, roughly 13,600 supplements
+        # across heating and cooling) can run out during the season; the model
+        # assumes it does not, so population totals overstate funded awards.
+        # The draft FY2027 plan drops the supplement, which ends after FY2026.
         # Interpret the plan's "receives a Heating benefit" as requiring a
         # positive regular payment after the HUD adjustment. The plan does
         # not expressly address a regular payment reduced to zero.
         supplement = where(regular_payment > 0, p.iija_supplement, 0)
         # The separate $50 high-need addition requires an agency decision
         # unavailable in existing inputs, so demographic traits alone do not
-        # add it. FY2027 supplement policy is not verified by the draft plan.
-        # Fixed regular payments have no cap at the reported heating expense.
+        # add it. Fixed regular payments have no cap at the reported heating
+        # expense.
         return eligible * (regular_payment + supplement)
