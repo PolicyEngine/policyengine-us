@@ -12,6 +12,8 @@ class hi_act_115_rebate(Variable):
         "https://tax.hawaii.gov/act-115-ref/",
         "https://data.capitol.hawaii.gov/sessions/session2022/bills/SB514_CD2_.HTM",
         "https://files.hawaii.gov/tax/news/announce/ann22-03.pdf#page=2",
+        "https://files.hawaii.gov/tax/legal/hrs/hrs_235.pdf#page=45",
+        "https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=11",
     )
 
     def formula(tax_unit, period, parameters):
@@ -39,6 +41,27 @@ class hi_act_115_rebate(Variable):
         # person in the tax unit is one exemption.
         exemptions = tax_unit("exemptions_count", period)
         # A person who can be claimed as a dependent by another taxpayer is
-        # not a qualifying resident taxpayer.
-        head_is_dependent_elsewhere = tax_unit("head_is_dependent_elsewhere", period)
-        return where(head_is_dependent_elsewhere, 0, amount_per_exemption * exemptions)
+        # not a qualifying resident taxpayer, and each qualifying resident
+        # taxpayer claims the refund for the exemptions they are entitled to.
+        # A filer who can be claimed has no exemption (HRS 235-54(a)), and a
+        # return on which a filer can be claimed generally claims no dependents
+        # (IRS Publication 501, Dependent Taxpayer Test). Its filing exception
+        # restores those dependents, but does not restore the claimable
+        # filer's personal exemption or qualification as a claimant.
+        dependent_filer = tax_unit("head_or_spouse_is_dependent_elsewhere", period)
+        independent_filers = tax_unit(
+            "head_spouse_count_not_dependent_elsewhere", period
+        )
+        dependent_taxpayer = tax_unit(
+            "head_or_spouse_is_dependent_elsewhere_without_filing_exception", period
+        )
+        filers = add(tax_unit, period, ["is_tax_unit_head_or_spouse"])
+        dependent_filers = filers - independent_filers
+        ordinary_exemptions = max_(exemptions - dependent_filers, 0)
+        qualified_exemptions = where(
+            dependent_taxpayer, independent_filers, ordinary_exemptions
+        )
+        qualified_exemptions = where(
+            dependent_filer & (independent_filers == 0), 0, qualified_exemptions
+        )
+        return amount_per_exemption * qualified_exemptions
