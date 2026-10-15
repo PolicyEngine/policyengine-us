@@ -27,7 +27,7 @@
     # Both receive SSI; TCMI 745.50 < 1,466.51.
     nc_sa_eligible: [true, true]
     # In-home basic payments use the published basic rate.
-    nc_sa_facility_rate: [1_397, 1_397]
+    nc_sa_rate: [1_397, 1_397]
     # 1,397 + 70 - 745.50 = 721.50 -> 722.
     nc_sa: [722, 722]
 
@@ -60,7 +60,7 @@
     nc_sa_countable_income: [155.5, 1_335.5]
     # person2 has no approved care setting.
     nc_sa_eligible: [true, false]
-    nc_sa_facility_rate: [1_397, 1_397]
+    nc_sa_rate: [1_397, 1_397]
     # 1,397 + 70 - 155.50 = 1,311.50 -> 1,312.
     nc_sa: [1_312, 0]
 
@@ -97,7 +97,7 @@
     nc_sa_countable_income: [0, 1_851.17]
     # person1: aged citizen with own resources 0 <= 2,000 and TCMI 0.
     nc_sa_eligible: [true, false]
-    nc_sa_facility_rate: [1_397, 1_397]
+    nc_sa_rate: [1_397, 1_397]
     # 1,397 + 70 - 0 = 1,467.
     nc_sa: [1_467, 0]
 
@@ -116,12 +116,14 @@
     nc_sa_eligible:
       2026-01: true
     # 1,397 * 12 = 16,764.
-    nc_sa_facility_rate: 16_764
+    nc_sa_rate: 16_764
     # (1,397 + 70 - 994) * 12 = 473 * 12 = 5,676.
     nc_sa: 5_676
     household_state_benefits: 5_676
     # SSI 11,928 + SA 5,676 = 17,604.
     snap_unearned_income: 17_604
+    # SSI 11,928 + SA 5,676 + the SNAP minimum benefit (24 * 9 + 25 * 3 = 291).
+    spm_unit_benefits: 17_895
 
 - name: Case 5, in home household reduction exception.
   period: 2026-01
@@ -140,11 +142,11 @@
     # In-home budgets keep the reduced SSI (SA-3210 V.D.1.e(3)): 0 + 662.67.
     nc_sa_countable_income: 662.67
     nc_sa_eligible: true
-    nc_sa_facility_rate: 1_397
+    nc_sa_rate: 1_397
     # 1,397 + 70 - 662.67 = 804.33 -> 804.
     nc_sa: 804
 
-- name: Case 6, individual facility budget restores the federal rate.
+- name: Case 6, ongoing individual facility month after the two-month admission window budgets the full federal rate.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -161,7 +163,7 @@
     # Individual facility budget uses max(662.67, 994 - 0) = 994.
     nc_sa_countable_income: 994
     nc_sa_eligible: true
-    nc_sa_facility_rate: 1_397
+    nc_sa_rate: 1_397
     # 1,397 + 70 - 994 = 473.
     nc_sa: 473
 
@@ -178,7 +180,7 @@
     nc_sa_countable_income: 11_928
     nc_sa_eligible:
       2026-01: true
-    nc_sa_facility_rate: 16_764
+    nc_sa_rate: 16_764
     # 473 * 12 = 5,676.
     nc_sa: 5_676
     # SAIH payments are excluded for HUD (SA-5400 III).
@@ -187,3 +189,75 @@
     snap_unearned_income: 17_604
     # SSI 11,928 + SA 0 = 11,928.
     hud_unearned_income: 11_928
+
+# SSA treats spouses as individuals once they no longer live in the same
+# household on the first day of the month (20 CFR 416.1801(c); POMS SI
+# 00501.154 A.1), so a facility resident whose spouse stays at home is entered
+# in a separate marital unit after the month of entry. SA then budgets the
+# resident at the individual FBR (SA-3210 V.D.1.e).
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=195
+- name: Case 8, adult care home resident whose spouse stays at home after the month of entry.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        nc_sa_care_setting: ADULT_CARE_HOME
+      person2:
+        age: 68
+    marital_units:
+      resident:
+        members: [person1]
+      spouse:
+        members: [person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # Separate claims with no income: the individual FBR of 994 each.
+    ssi: [994, 994]
+    nc_sa_countable_income: [994, 994]
+    # 1,397 + 70 - 994 = 473; person2 has no approved care setting.
+    nc_sa: [473, 0]
+
+# A married SAIH applicant whose couple income is at or above the couple FBR
+# need not apply for SSI (SA-3210 V.E.4.c), and SA is computed on countable
+# income when SSI is denied for spousal income (SA-5400 V). The SSI take-up
+# input therefore does not matter.
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=198
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-In-Home-Program-Manual-Rev-June-2026.pdf#page=48
+# person2 earns North Carolina's May 2023 median wage, as in Case 3.
+- name: Case 9, applicant denied SSI for spousal income does not need SSI take-up.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        nc_sa_care_setting: IN_HOME
+        takes_up_ssi_if_eligible: false
+      person2:
+        age: 40
+        employment_income: 45_448
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # Deemed income leaves no SSI: (3,787.33 - 85) / 2 = 1,851.17 > 1,491.
+    uncapped_ssi: [-360.17, 0]
+    ssi: [0, 0]
+    nc_sa_eligible: [true, false]
+    # 1,397 + 70 - 0 = 1,467.
+    nc_sa: [1_467, 0]

@@ -136,3 +136,55 @@
   output:
     ssi: 0
     nc_sa_eligible: false
+
+# SA-3100 II.A.5: the beneficiary must "Not be an inmate in a jail or prison".
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=6
+- name: Case 8, incarcerated applicant is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: NC
+    age: 72
+    nc_sa_care_setting: ADULT_CARE_HOME
+    is_incarcerated: true
+  output:
+    nc_sa_eligible: false
+    nc_sa: 0
+
+# An applicant whose income would qualify for SSI must be eligible for SSI;
+# "If SSA denies the SSDI/SSI application ... based on eligibility criteria
+# other than income (such as resources, transfers, fleeing felon, etc.), the
+# SA application will also be denied" (SA-3110 V.K). SSI counts an ineligible
+# spouse's resources (20 CFR 416.1202(a)).
+# PDF pages 40-41
+# https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-Manual-Rev-June-2026.pdf#page=40
+- name: Case 9, applicant denied SSI on a spouse's resources is ineligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 75
+        bank_account_assets: 1_800
+        nc_sa_care_setting: IN_HOME
+      person2:
+        age: 60
+        bank_account_assets: 3_500
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NC
+  output:
+    # No income, so SSI would be payable, but 1,800 + 3,500 = 5,300 exceeds
+    # the 2,000 limit.
+    ssi: [0, 0]
+    # person1's own resources (1,800) would pass SA-3200 I, but SA requires
+    # SSI eligibility when the income would qualify.
+    nc_sa_eligible: [false, false]
+    nc_sa: [0, 0]

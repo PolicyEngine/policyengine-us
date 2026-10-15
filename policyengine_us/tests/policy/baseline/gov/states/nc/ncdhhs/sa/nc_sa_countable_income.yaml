@@ -42,7 +42,7 @@
 # average for disabled workers who also receive SSI ($710.97, SSA SSI Annual
 # Statistical Report 2024, Table 16).
 # https://www.ssa.gov/policy/docs/statcomps/ssi_asr/2024/sect03.html
-- name: Case 3, individual facility budget restores one-third-reduced SSI to the full FBR.
+- name: Case 3, ongoing facility month after the two-month admission window restores one-third-reduced SSI to the full FBR.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -77,7 +77,7 @@
     # 711 - 20 = 691 + SSI 0; no restoration for in-home budgets.
     nc_sa_countable_income: 691
 
-- name: Case 5, joint SSI claim keeps the couple amount in an adult care home.
+- name: Case 5, couple sharing an adult care home room whom SSA treats as a couple keeps the couple amount.
   period: 2026-01
   absolute_error_margin: 0.01
   input:

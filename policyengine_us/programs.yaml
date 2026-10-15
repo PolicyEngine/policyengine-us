@@ -1093,9 +1093,9 @@ programs:
       - state: NC
         status: partial
         name: North Carolina SA
-        full_name: North Carolina State and County Special Assistance
+        full_name: North Carolina State-County Special Assistance
         variable: nc_sa
-        parameter_prefix: gov.states.nc.dhhs.sa
+        parameter_prefix: gov.states.nc.ncdhhs.sa
         verified_years: '2026'
         notes: Models 2026 basic and enhanced facility and in-home payments, including lower contracted
           rates and first-month proration. Open/shut and discharge payments are not modeled.

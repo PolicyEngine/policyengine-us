@@ -16,6 +16,8 @@ class nc_sa_countable_income(Variable):
 
     def formula(person, period, parameters):
         # SA is always a one-person budget: no spousal or parental deeming.
+        # SA-3210 IV prints the $20, $65 and one-half exclusions as SA's own
+        # rules; they match SSI's, so the SSI exclusion helper applies them.
         earned = max_(
             person("ssi_earned_income", period)
             - person("ssi_blind_or_disabled_working_student_exclusion", period),
@@ -36,7 +38,13 @@ class nc_sa_countable_income(Variable):
         )
         # Ongoing facility budgets assume the appropriate full federal rate
         # while SSA restores a prior institutional or household reduction.
-        # SSA couple computations remain an express exception to this rule.
+        # SSA couple computations remain an express exception to this rule
+        # (SA-3210 V.D.1.e). A one-third-reduced SSI may be budgeted for at
+        # most two months after admission (SA-3210 V.B.1.b); those first two
+        # months are not modeled, so every facility month is an ongoing month.
+        # The joint-claim test follows the marital unit: spouses who no longer
+        # live together belong in separate marital units (see
+        # nc_sa_care_setting), which also gives each the individual SSI amount.
         individual_claim = ~person("ssi_claim_is_joint", period.this_year)
         individual_fbr = parameters(period).gov.ssa.ssi.amount.individual
         federal = where(
