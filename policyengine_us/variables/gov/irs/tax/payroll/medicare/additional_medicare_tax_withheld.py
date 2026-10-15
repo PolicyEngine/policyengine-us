@@ -5,7 +5,7 @@ class additional_medicare_tax_withheld(Variable):
     value_type = float
     entity = Person
     label = "Additional Medicare Tax withheld from wages"
-    documentation = "Additional Medicare Tax an employer withholds from the employee's wages. This can differ from the tax unit's additional_medicare_tax liability, which is reconciled on Form 8959."
+    documentation = "Additional Medicare Tax an employer withholds from the employee's wages. This can differ from the tax unit's additional_medicare_tax liability, which is reconciled on Form 8959. The model treats each person's aggregate wages as paid by one employer because wages are not split by employer."
     unit = USD
     definition_period = YEAR
     reference = (
