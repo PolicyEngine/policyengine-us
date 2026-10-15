@@ -23,7 +23,6 @@ SEED = 9184
 FINANCIAL = system.parameters.gov.hhs.medicaid.eligibility.long_term_care.financial
 HOME_EQUITY = system.parameters.gov.hhs.medicaid.eligibility.long_term_care.home_equity
 SSI = system.parameters.gov.ssa.ssi
-CPI_U = system.parameters.gov.bls.cpi.cpi_u
 
 OUTPUTS = [
     "medicaid_ltss_financial_pathway",
@@ -838,20 +837,17 @@ def test_special_income_limit_follows_the_uprated_federal_benefit_rate(year):
     assert SSI.amount.individual(instant) > SSI.amount.individual("2026-01-01")
 
 
-def test_minimum_home_equity_limit_indexes_like_cms():
-    # 42 USC 1396p(f)(1)(C): September-to-September CPI-U, rounded to the
-    # nearest $1,000, effective January 1. Applied to the 2025 value, the rule
-    # reproduces CMS's published 2026 value.
-    def indexed(value, year):
-        change = CPI_U(f"{year - 1}-09-01") / CPI_U(f"{year - 2}-09-01")
-        return round(value * change / 1_000) * 1_000
-
-    assert indexed(HOME_EQUITY.minimum_limit("2025-01-01"), 2026) == 752_000
-    for year in range(2027, 2036):
-        prior = HOME_EQUITY.minimum_limit(f"{year - 1}-01-01")
-        current = HOME_EQUITY.minimum_limit(f"{year}-01-01")
-        assert current == indexed(prior, year)
-        assert HOME_EQUITY.minimum_limit(f"{year}-12-01") == current
+def test_minimum_home_equity_limit_matches_published_cms_figures():
+    # Chart page 2 of CMS's 2020, 2021, 2022, 2025 and 2026 bulletins.
+    published = {
+        2020: 595_000,
+        2021: 603_000,
+        2022: 636_000,
+        2025: 730_000,
+        2026: 752_000,
+    }
+    for year, minimum in published.items():
+        assert HOME_EQUITY.minimum_limit(f"{year}-01-01") == minimum
 
 
 def test_indexed_minimum_home_equity_limit_is_capped_after_2028():

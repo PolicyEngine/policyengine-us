@@ -625,9 +625,9 @@ def extend_medicaid_home_equity_limits(
 ) -> None:
     """Project the CPI-indexed Medicaid long-term care home equity limits.
 
-    Each year after the last CMS-published value, the agricultural home
-    equity limit becomes the prior year's limit increased by that year's
-    CPI-U percentage (see ``get_cms_cpi_u_percentage_increase``), rounded to
+    Each year after their last CMS-published values, the minimum and
+    agricultural home equity limits become their prior year's limit increased
+    by that year's CPI-U percentage (see ``get_cms_cpi_u_percentage_increase``), rounded to
     the nearest $1,000, effective January 1. Before P.L. 119-21 section 71108
     caps other homes at $1,000,000 beginning in 2028, the agricultural and
     non-agricultural limits are the same indexed maximum, so each year before
@@ -641,21 +641,24 @@ def extend_medicaid_home_equity_limits(
     home_equity = parameters.gov.hhs.medicaid.eligibility.long_term_care.home_equity
     cpi = parameters.gov.bls.cpi
     agricultural = home_equity.agricultural_limit
-    first_projected_year = 1 + max(
-        int(value.instant_str[:4]) for value in agricultural.values_list
-    )
-    for year in range(first_projected_year, end_year + 1):
-        agricultural.update(
-            period=f"year:{year}-01-01:1",
-            value=adjust_home_equity_limit_for_inflation(
-                agricultural(f"{year - 1}-01-01"),
-                get_cms_cpi_u_percentage_increase(cpi, year),
-            ),
+    percentages = {}
+    for parameter in (home_equity.minimum_limit, agricultural):
+        first_projected_year = 1 + max(
+            int(value.instant_str[:4]) for value in parameter.values_list
         )
-    agricultural.update(
-        start=instant(f"{end_year}-01-01"),
-        value=agricultural(f"{end_year}-01-01"),
-    )
+        for year in range(first_projected_year, end_year + 1):
+            if year not in percentages:
+                percentages[year] = get_cms_cpi_u_percentage_increase(cpi, year)
+            parameter.update(
+                period=f"year:{year}-01-01:1",
+                value=adjust_home_equity_limit_for_inflation(
+                    parameter(f"{year - 1}-01-01"), percentages[year]
+                ),
+            )
+        parameter.update(
+            start=instant(f"{end_year}-01-01"),
+            value=parameter(f"{end_year}-01-01"),
+        )
     non_agricultural = home_equity.limit
     encoded_years = {
         int(value.instant_str[:4]) for value in non_agricultural.values_list
