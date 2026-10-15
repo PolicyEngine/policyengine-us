@@ -98,3 +98,27 @@
     ca_state_supplement_aged_blind_disabled_amount: 0
     ca_state_supplement: 0
     ca_capi: 11_306
+
+- name: Integration test, aged permanent resident without 40 SSI quarters has pension counted
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        immigration_status: LEGAL_PERMANENT_RESIDENT
+        years_since_us_entry: 10
+        ssi_qualifying_quarters_earnings: 0
+        pension_income: 6_000
+    households:
+      household:
+        members: [person1]
+        state_code: CA
+  output:
+    ssi: 0
+    ca_capi_eligible_person: true
+    # (500 - 20) x 12 = 5,760 of countable income.
+    ssi_countable_income: 5_760
+    ca_state_supplement: 0
+    # 943 x 12 = 11,316 payment standard, less the 10 offset and 5,760.
+    ca_capi: 5_546

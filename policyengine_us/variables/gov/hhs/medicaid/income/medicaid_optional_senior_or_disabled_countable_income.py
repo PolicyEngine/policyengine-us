@@ -12,6 +12,7 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
     definition_period = YEAR
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396a#m",
+        "https://www.law.cornell.edu/cfr/text/42/435.601",
         "https://www.kff.org/medicaid/medicaid-financial-eligibility-for-seniors-and-people-with-disabilities-findings-from-a-50-state-survey/",
         # Missouri MHABD budgeting order and rounding
         "https://dssmanuals.mo.gov/mo-healthnet-for-the-aged-blind-and-disabled/0805-000-00/0805-015-00/",
@@ -62,12 +63,14 @@ class medicaid_optional_senior_or_disabled_countable_income(Variable):
             "medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse",
             period,
         )
-        is_eligible_individual = person("is_ssi_eligible_individual", period)
-        is_eligible_spouse = person("is_ssi_eligible_spouse", period)
-        is_eligible = is_eligible_individual | is_eligible_spouse
+        # SSI methodology (42 CFR 435.601) counts the applicant's own income
+        # whether or not they meet SSI's noncitizen rules. People who are not
+        # aged, blind, or disabled have no countable income here; a spouse's
+        # income is deemed to the applicant instead.
+        is_aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
 
         return where(
-            ~is_eligible,
+            ~is_aged_blind_disabled,
             0,
             where(
                 couple_computation,
