@@ -29,7 +29,10 @@ and the California CDTFA [city and county sales and use tax rates and downloadab
 `rates.csv` holds the combined state and local general sales tax rate
 (general intrastate rate) of each county's places with their own rate and of
 the county's area outside them, from 2022, and `populations.csv` the 2020
-Census population of each. `state_rates.csv` holds each covered state's
+Census population of each. `place_counties.csv` maps every Census place in
+the covered states to its principal county, including places pruned from
+the rate file, and includes single-county places elsewhere.
+`state_rates.csv` holds each covered state's
 general sales tax rate (worksheet line 3 is the combined rate less it),
 except Nevada's: its files fold the state rate into county rates, and the
 IRS has Nevada residents enter the combined rate above the 6.85% heading. They carry only rates and Census codes derived from the sources below,
@@ -94,6 +97,20 @@ October 2022 snapshot, within that tolerance of its statutory 7%.
   unit, else its county subdivision's, else its county's unit without a
   place code. A place's rate is the population-weighted mean of its blocks'
   rates, and so is the rate of a county's area outside every place.
+- **Household geography.** Both the combined-rate and IRS-table lookups
+  normalize county and place codes and accept a place GEOID only when its
+  state matches the household. When county FIPS is absent, the block's
+  county takes precedence over an explicitly entered county enum. An
+  explicitly entered New York City or Yonkers flag identifies its place
+  when place FIPS is absent. A place with no county uses its principal
+  county: the county containing the largest 2020 Census population slice,
+  with the smaller county FIPS code breaking ties. This mapping is built
+  from all Census blocks before rate pruning. Elsewhere in the 50 states and
+  DC, the Census place list resolves places lying in exactly one county;
+  a place spanning multiple counties requires an entered county or block.
+  Without any location
+  signal, calculated county/city defaults are ignored and the existing
+  state fallback applies. Explicit county and place codes take precedence.
 - **Pruning.** A place whose rate equals the rate outside places in its
   county at every date is dropped, and its population is added to the
   county's remainder: a household there takes the same rate.

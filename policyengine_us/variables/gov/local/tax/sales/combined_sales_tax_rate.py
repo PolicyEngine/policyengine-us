@@ -1,5 +1,6 @@
 from policyengine_us.model_api import *
 from policyengine_us.tools.local_sales_tax_rates import locality_sales_tax_rates
+from policyengine_us.tools.local_sales_tax_geography import sales_tax_location
 
 
 class combined_sales_tax_rate(Variable):
@@ -14,7 +15,10 @@ class combined_sales_tax_rate(Variable):
         "local sales taxes, it is the official rate of the household's place, or "
         "of its county's area outside the places with their own rate, from the "
         "states' rate files, by county and place FIPS code (county_fips and "
-        "place_fips; the county enum is not used). A census block GEOID without "
+        "place_fips). With no county FIPS code, it uses the census block, an "
+        "explicit county enum input, or the place principal county, in that "
+        "order. Explicit in_nyc and in_yonkers inputs identify their cities "
+        "when no place is entered. A census block GEOID without "
         "a place code places the household outside every place. With only the "
         "county known, it is the county's population-weighted rate, and with no "
         "county, the state's. Elsewhere "
@@ -30,23 +34,15 @@ class combined_sales_tax_rate(Variable):
 
     def formula(household, period, parameters):
         rates = locality_sales_tax_rates(period.start.year)
-        state = pd.Series(household("state_code_str", period)).astype(str)
-        county = pd.Series(household("county_fips", period)).astype(str)
-        county = county.where(county == "", county.str.zfill(5))
-        place = pd.Series(household("place_fips", period)).astype(str)
-        # Accept a 7-digit place GEOID (state FIPS code and place code).
-        place = place.where(place.str.len() != 7, place.str[2:])
-        place = place.where(place == "", place.str.zfill(5))
-        block = pd.Series(household("block_geoid", period)).astype(str)
-        # Locality rates are keyed on FIPS codes, never on the county enum,
-        # which falls back to the state's alphabetically first county. A
-        # county outside the household's state is ignored.
-        county = county.where(county.map(rates.county_state) == state, "")
+        location = sales_tax_location(household, period)
+        state = location.state_code
+        county = location.county_fips
+        place = location.place_fips
         place_rate = (county + place).map(rates.place)
         # A known place without its own rate, or a known census block outside
         # every place (an empty place code), is in its county's area outside
         # those places. With only the county known, use the county's rate.
-        location_known = (place != "") | (block != "")
+        location_known = (place != "") | location.block_known
         county_rate = county.map(rates.outside_places).where(location_known)
         county_rate = county_rate.fillna(county.map(rates.county))
         official = place_rate.fillna(county_rate).fillna(state.map(rates.state))

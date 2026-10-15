@@ -37,7 +37,12 @@ def _read(name: str) -> pd.DataFrame:
     with path.open("rb") as f:
         return pd.read_csv(
             f,
-            dtype={"county_fips": str, "place_fips": str, "state_code": str},
+            dtype={
+                "county_fips": str,
+                "place_fips": str,
+                "place_geoid": str,
+                "state_code": str,
+            },
             keep_default_na=False,
         )
 
@@ -54,6 +59,19 @@ def locality_rate_schedule() -> pd.DataFrame:
 @lru_cache(maxsize=None)
 def locality_populations() -> pd.DataFrame:
     return _read("populations.csv")
+
+
+@lru_cache(maxsize=None)
+def locality_place_counties() -> pd.Series:
+    """Principal county of covered-state places and single-county places elsewhere.
+
+    The largest 2020 Census population slice determines the principal
+    county; tied populations choose the smaller county FIPS code. This
+    crosswalk retains places whose rates were pruned as equal to their
+    county's remainder, unlike the rates/populations files. Outside the
+    covered states, only single-county places in the 50 states and DC are inferred.
+    """
+    return _read("place_counties.csv").set_index("place_geoid")["county_fips"]
 
 
 @lru_cache(maxsize=None)

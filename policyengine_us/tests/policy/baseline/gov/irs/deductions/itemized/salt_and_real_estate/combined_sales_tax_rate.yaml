@@ -230,3 +230,128 @@
     place_fips: "18790"
   output:
     combined_sales_tax_rate: 0.11
+
+- name: Geography inputs resolve consistently with explicit-input precedence
+  # NYC: 8.875%, Table A; Yonkers: 8.875%, Table B;
+  # Westchester outside its cities: 8.375%, Table B (NY Pub. 718).
+  # A block outranks an entered county enum; county FIPS outranks both.
+  # Savannah (GA 69000) has no own-rate CSV row: its Chatham County
+  # remainder is 7%, and Georgia's other-locality table is B. The Census
+  # place-to-county crosswalk must retain it despite rate pruning.
+  period: 2025
+  absolute_error_margin: 0.000001
+  input:
+    people:
+      person_county_enum:
+        age: 40
+      person_nyc_flag:
+        age: 40
+      person_yonkers_flag:
+        age: 40
+      person_place_only:
+        age: 40
+      person_block_only:
+        age: 40
+      person_block_over_enum:
+        age: 40
+      person_county_over_block:
+        age: 40
+      person_place_over_flag:
+        age: 40
+      person_no_location:
+        age: 40
+      person_pruned_place:
+        age: 40
+      person_invalid_counties:
+        age: 40
+      person_single_county_outside_coverage:
+        age: 40
+    households:
+      household_county_enum:
+        members: [person_county_enum]
+        state_code: NY
+        county: KINGS_COUNTY_NY
+      household_nyc_flag:
+        members: [person_nyc_flag]
+        state_code: NY
+        in_nyc: true
+      household_yonkers_flag:
+        members: [person_yonkers_flag]
+        state_code: NY
+        in_yonkers: true
+      household_place_only:
+        members: [person_place_only]
+        state_code: NY
+        place_fips: "51000"
+      household_block_only:
+        members: [person_block_only]
+        state_code: NY
+        block_geoid: "361190001001000"
+      household_block_over_enum:
+        members: [person_block_over_enum]
+        state_code: NY
+        block_geoid: "361190001001000"
+        county: KINGS_COUNTY_NY
+      household_county_over_block:
+        members: [person_county_over_block]
+        state_code: NY
+        county_fips: "36119"
+        block_geoid: "360470001001000"
+        county: KINGS_COUNTY_NY
+      household_place_over_flag:
+        members: [person_place_over_flag]
+        state_code: NY
+        place_fips: "51000"
+        in_yonkers: true
+      household_no_location:
+        members: [person_no_location]
+        state_code: NY
+      household_pruned_place:
+        members: [person_pruned_place]
+        state_code: GA
+        place_fips: "69000"
+      household_invalid_counties:
+        members: [person_invalid_counties]
+        state_code: NY
+        county_fips: "36999"
+        block_geoid: "369990001001000"
+        place_fips: "51000"
+      household_single_county_outside_coverage:
+        members: [person_single_county_outside_coverage]
+        state_code: LA
+        place_fips: "05000"
+  output:
+    combined_sales_tax_rate: [0.088750000000, 0.088750000000, 0.088750000000, 0.088750000000, 0.083750000000, 0.083750000000, 0.083750000000, 0.088750000000, 0.085411545063, 0.070000000000, 0.088750000000, 0.050000000000]
+    local_sales_tax_table: [A, A, B, A, B, B, B, A, D, B, A, B]
+
+- name: Out-of-state place GEOID is ignored before its state prefix is stripped
+  period: 2025
+  absolute_error_margin: 0.000001
+  input:
+    state_code: NY
+    place_fips: "0651000"
+  output:
+    combined_sales_tax_rate: 0.085411545063
+    local_sales_tax_table: D
+
+- name: Out-of-state county enum and block do not infer a New York locality
+  period: 2025
+  absolute_error_margin: 0.000001
+  input:
+    state_code: TX
+    county: KINGS_COUNTY_NY
+    block_geoid: "361190001001000"
+  output:
+    combined_sales_tax_rate: 0.062500000000
+    local_sales_tax_table: A
+
+- name: New York city flags do not locate a household in another state
+  period: 2025
+  absolute_error_margin: 0.000001
+  input:
+    state_code: TX
+    in_nyc: true
+    in_yonkers: true
+  output:
+    combined_sales_tax_rate: 0.062500000000
+    local_sales_tax_table: A

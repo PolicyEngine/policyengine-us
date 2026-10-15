@@ -968,9 +968,13 @@
   "WI: place code 55141/73550 matches no Census place or county subdivision (15 records, 2024-05-01 to 2024-07-01, rate 0.05500-0.05500); its blocks take their own place's or county's rate",
   "WI: place code 55141/82375 matches no Census place or county subdivision (2 records, 2023-10-01 to 2025-06-01, rate 0.05500-0.05500); its blocks take their own place's or county's rate",
   "WY: place code 56039/02291 (1 records, 2022-01-01 to 2026-10-01) recoded to Census 01985 (Alta CDP, place, named like postal city ALTA)",
-  "WY: place code 56039/02290 matches no Census place or county subdivision (8 records, 2022-01-01 to 2026-10-01, rate 0.06000-0.07000); its blocks take their own place's or county's rate"
+  "WY: place code 56039/02290 matches no Census place or county subdivision (8 records, 2022-01-01 to 2026-10-01, rate 0.06000-0.07000); its blocks take their own place's or county's rate",
+  "30924 Census places mapped to principal counties"
  ],
  "build_inputs": {
   "vt_local_option.csv": "f45135f066c32567fe1cdf7b9d94242bdbcd0b0f206de4958d128da61d79a910"
+ },
+ "output_sha256": {
+  "place_counties.csv": "50f809dabed7508eca49b4a4223d55ce81274b4d8ad639619cf4863f1bdcca33"
  }
 }

@@ -1,7 +1,5 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.geography.county_helpers import (
-    state_fips_by_state_code,
-)
+from policyengine_us.tools.local_sales_tax_geography import sales_tax_location
 
 
 class LocalSalesTaxTable(Enum):
@@ -23,7 +21,8 @@ class local_sales_tax_table(Variable):
         "the IRS table selector: the table of the household's city if the selector "
         "names it, else of its county, else the state's table for other localities "
         "that impose a local sales tax. Cities and counties are read from "
-        "place_fips and county_fips."
+        "place_fips and county_fips, with the same block, explicit county, "
+        "city-flag and principal-county fallbacks as combined_sales_tax_rate."
     )
     reference = (
         "https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17",
@@ -36,25 +35,12 @@ class local_sales_tax_table(Variable):
         p = parameters(
             period
         ).gov.irs.deductions.itemized.salt_and_real_estate.local_sales_tax_table
-        state_code = household("state_code_str", period)
-        # The selector names some counties and cities. A named city's row
-        # takes precedence over its county's row, as in "Dekalb County
-        # (excluding Atlanta)". Keys are FIPS codes, never the county enum,
-        # which falls back to the state's alphabetically first county.
-        state_fips = (
-            pd.Series(state_code).map(state_fips_by_state_code()).fillna("").to_numpy()
-        )
-        county_fips = pd.Series(household("county_fips", period)).astype(str)
-        county_fips = county_fips.where(
-            county_fips == "", county_fips.str.zfill(5)
-        ).to_numpy()
-        place_fips = pd.Series(household("place_fips", period)).astype(str)
-        # Accept a 7-digit place GEOID (state FIPS code and place code).
-        place_fips = place_fips.where(place_fips.str.len() != 7, place_fips.str[2:])
-        place_fips = place_fips.where(place_fips == "", place_fips.str.zfill(5))
-        place_geoid = where(place_fips != "", state_fips + place_fips.to_numpy(), "")
-        county_in_state = pd.Series(county_fips).str[:2].to_numpy() == state_fips
-        county_fips = where(county_in_state, county_fips, "")
+        location = sales_tax_location(household, period)
+        state_code = location.state_code.to_numpy()
+        county_fips = location.county_fips.to_numpy()
+        place_geoid = location.place_geoid.to_numpy()
+        # Named cities take precedence over their county, including Atlanta
+        # within the selector's "DeKalb County (excluding Atlanta)" row.
         tables = [
             LocalSalesTaxTable.A,
             LocalSalesTaxTable.B,

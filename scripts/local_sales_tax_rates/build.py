@@ -833,6 +833,43 @@ def census_blocks(sources: Path, abbr: str) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=["county", "cousub", "place", "population"])
 
 
+def place_principal_counties(blocks: pd.DataFrame) -> pd.DataFrame:
+    """Map every place to its largest-population county before rate pruning."""
+    population = (
+        blocks.loc[blocks["place"] != ""]
+        .groupby(["place", "county"], as_index=False)["population"]
+        .sum()
+    )
+    principal = population.sort_values(
+        ["place", "population", "county"], ascending=[True, False, True]
+    ).drop_duplicates("place")
+    return pd.DataFrame(
+        {
+            "place_geoid": principal["county"].str[:2] + principal["place"],
+            "county_fips": principal["county"],
+        }
+    ).sort_values("place_geoid")
+
+
+def place_county_crosswalk(sources: Path, principal: pd.DataFrame) -> pd.DataFrame:
+    """Add unambiguous single-county places outside states with block files."""
+    national = pd.read_csv(
+        sources / "census" / "national_place_by_county2020.txt", sep="|", dtype=str
+    )
+    # Wyoming's 56 is the largest state/DC FIPS code; territories start at 60.
+    national = national.loc[national["STATEFP"].astype(int).between(1, 56)].copy()
+    national["place_geoid"] = national["STATEFP"] + national["PLACEFP"]
+    national["county_fips"] = national["STATEFP"] + national["COUNTYFP"]
+    national = national[["place_geoid", "county_fips"]].drop_duplicates()
+    count = national.groupby("place_geoid")["county_fips"].transform("size")
+    single_county = national[count == 1]
+    return (
+        pd.concat([principal, single_county], ignore_index=True)
+        .drop_duplicates("place_geoid", keep="first")
+        .sort_values("place_geoid")
+    )
+
+
 def place_rates(
     abbr: str, blocks: pd.DataFrame, units: pd.DataFrame, log: list
 ) -> pd.DataFrame:
@@ -956,6 +993,7 @@ def build(sources: Path, only: list[str] | None = None) -> None:
     if only:
         states = [s for s in states if s in only]
     state_tables = []
+    place_county_tables = []
     for abbr in states:
         print(f"{abbr}...", flush=True)
         if abbr in STATE_RATES:
@@ -968,7 +1006,9 @@ def build(sources: Path, only: list[str] | None = None) -> None:
             units = va_unit_rates(sources, dates, log)
         else:
             units, state = sst_unit_rates(sources, abbr, dates, log)
-        by_place = place_rates(abbr, census_blocks(sources, abbr), units, log)
+        blocks = census_blocks(sources, abbr)
+        place_county_tables.append(place_principal_counties(blocks))
+        by_place = place_rates(abbr, blocks, units, log)
         by_place["state_code"] = abbr
         tables.append(by_place)
         # Nevada's files put its 4.6% state rate and 2.25% uniform local rate
@@ -983,6 +1023,11 @@ def build(sources: Path, only: list[str] | None = None) -> None:
         OUTPUT / "rates.csv", index=False, float_format="%.6f"
     )
     populations.to_csv(OUTPUT / "populations.csv", index=False)
+    place_counties = place_county_crosswalk(
+        sources, pd.concat(place_county_tables, ignore_index=True)
+    )
+    place_counties.to_csv(OUTPUT / "place_counties.csv", index=False)
+    log.append(f"{len(place_counties)} Census places mapped to principal counties")
     state_rates = pd.concat(state_tables, ignore_index=True).sort_values(
         ["state_code", "effective_from"]
     )
@@ -996,6 +1041,7 @@ def build(sources: Path, only: list[str] | None = None) -> None:
     manifest = {
         "retrieved_at": retrieved.read_text().strip() if retrieved.exists() else None,
         "build_inputs": {"vt_local_option.csv": sha256(HERE / "vt_local_option.csv")},
+        "output_sha256": {"place_counties.csv": sha256(OUTPUT / "place_counties.csv")},
         "sha256": {
             str(p.relative_to(sources)): sha256(p)
             for p in sorted(sources.rglob("*"))
