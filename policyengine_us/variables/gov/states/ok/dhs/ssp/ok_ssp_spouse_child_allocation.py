@@ -8,7 +8,7 @@ class ok_ssp_spouse_child_allocation(Variable):
     definition_period = MONTH
     unit = USD
     reference = "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-5"
-    documentation = "Default uses the family's non-SSI children. Override with the verified allocation for blended families or children in a TANF case."
+    documentation = "The total allocation for the family's children who are not aged, blind or disabled, each reduced by that child's own income. Blended families and children in a TANF case are not modeled separately."
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.ok.dhs.ssp

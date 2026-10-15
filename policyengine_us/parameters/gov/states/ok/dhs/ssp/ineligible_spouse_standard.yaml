@@ -1,4 +1,4 @@
-description: Oklahoma uses this need standard for an individual with an ineligible or essential spouse for its State Supplemental Payment.
+description: Oklahoma sets this amount as the monthly need standard for an individual with an ineligible or essential spouse under the State Supplemental Payment program.
 values:
   2026-01-01: 1_532
 
@@ -6,6 +6,16 @@ metadata:
   unit: currency-USD
   period: month
   label: Oklahoma SSP need standard for an individual with an ineligible or essential spouse
+  # OAC 340:15-1-4(9)(A)-(B) bases the SSP standards on the FBR and passes
+  # along the SSI cost-of-living adjustment; the next Appendix C-1 edition
+  # replaces the projection.
+  uprating:
+    parameter: gov.ssa.uprating
+    rounding:
+      type: nearest
+      interval: 1
   reference:
-    - title: Appendix C-1 Schedule VIII.A
+    - title: OKDHS Appendix C-1 (7/1/2026), Schedule VIII.A
       href: https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-1.pdf#page=3
+    - title: OAC 340:15-1-4(9)
+      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-15-1-4

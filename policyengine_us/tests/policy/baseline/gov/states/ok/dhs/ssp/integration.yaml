@@ -89,7 +89,7 @@
   output:
     ok_ssp: [0, 0]
 
-- name: Case 5, aged spouse who declines SSI leaves the claimant on the individual test.
+- name: Case 5, aged spouse who declines SSI is an ineligible spouse whose income counts.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -114,12 +114,13 @@
   output:
     # person2 does not take up, so only person1 is SSP-eligible.
     ok_ssp_eligible: [true, false]
-    # An aged spouse is not an ineligible spouse, so person1 is tested alone.
+    # 317:35-5-42(k)(1): a spouse who is not eligible is an ineligible spouse.
     # Federal couple SSI: (500 + 1_500 - 20) / 2 = 990 > 745.5, so 0.
-    # Own income 500 - 20 = 480 + 0 SSI; min(1_034 - 480, 40) = 40.
-    ok_ssp: [40, 0]
+    # Own income 500 - 20 = 480 < 1_034, but combined income
+    # 500 + 1_500 - 20 = 1_980 >= 1_532, so 0.
+    ok_ssp: [0, 0]
 
-- name: Case 6, disabled spouse barred from SSP leaves the claimant on the individual test.
+- name: Case 6, disabled spouse barred from SSP is an ineligible spouse whose income counts.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -145,10 +146,10 @@
   output:
     # person2 is disabled but excluded, so only person1 is SSP-eligible.
     ok_ssp_eligible: [true, false]
-    # A disabled spouse is not an ineligible spouse; the 1_500 SSDI is not
-    # combined. Federal couple SSI: (500 + 1_500 - 20) / 2 = 990 > 745.5, so 0.
-    # Own income 480 + 0 SSI; min(1_034 - 480, 40) = 40.
-    ok_ssp: [40, 0]
+    # 317:35-5-42(k)(1): the barred spouse is an ineligible spouse, so the
+    # 1_500 SSDI is combined. Federal couple SSI: (500 + 1_500 - 20) / 2 = 990
+    # > 745.5, so 0. Combined income 1_980 >= 1_532, so 0.
+    ok_ssp: [0, 0]
 
 - name: Case 7, spouse child allocation supports recipient.
   period: 2026-01
@@ -243,6 +244,7 @@
     age: 65
   output:
     ok_ssp: 480
+    household_state_benefits: 480
     snap_unearned_income: 12_408
     hud_unearned_income: 12_408
 
@@ -446,3 +448,93 @@
     # Combined: (3_467 - 696 - 85) / 2 = 1_343 + 147.17 = 1_490.17;
     # min(1_532 - 1_490.17, 40) = 40.
     ok_ssp: [40, 0, 0, 0]
+
+- name: Case 16, ineligible spouse's in-kind support and maintenance is excluded from the couple test.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_receives_outside_shelter_support: true
+      person2:
+        age: 62
+        social_security_retirement: 8_400
+        ssi_receives_outside_shelter_support: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Deeming presumed maximum value 1_491 / 6 + 10 = 258.50 for the claimant;
+    # the ineligible spouse's own 994 / 3 + 20 = 351.33 is excluded by
+    # 317:35-5-42(l)(12).
+    ssi_in_kind_support_and_maintenance: [258.5, 351.33]
+    # Federal: 1_491 - (258.50 - 20 + 700 - 20) = 572.50 (the deeming
+    # computation applies the $20 exclusion twice; issue 10243).
+    ssi: [572.5, 0]
+    # Combined: 258.50 + 700 - 20 + 572.50 = 1_511, the same as when only
+    # person1 receives the support; min(1_532 - 1_511, 40) = 21.
+    ok_ssp_countable_income: [1_511, 1_511]
+    ok_ssp: [21, 0]
+
+- name: Case 17, eligible couple's shared in-kind support and maintenance counts once.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_receives_outside_shelter_support: true
+      person2:
+        age: 68
+        ssi_receives_outside_shelter_support: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # The couple presumed maximum value 1_491 / 3 + 20 = 517 is counted once:
+    # SSI (745.50 - (517 - 20) / 2) = 497 each.
+    ssi: [497, 497]
+    # 517 - 20 + 497 + 497 = 1_491; 1_571 - 1_491 = 80, split [40, 40].
+    ok_ssp_countable_income: [1_491, 1_491]
+    ok_ssp: [40, 40]
+
+- name: Case 18, ineligible spouse standard follows the projected 2027 SSI cost-of-living adjustment.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+      person2:
+        age: 63
+        social_security_retirement: 18_480
+    marital_units:
+      couple:
+        members: [person1, person2]
+    families:
+      family:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # The Case 3 household in 2027: the projected couple FBR (about 1_532.75)
+    # leaves partial SSI, so combined income is about 1_532.75. The uprated
+    # 1_575 standard keeps the 40 maximum; a frozen 1_532 would pay 0.
+    ok_ssp: [40, 0]
