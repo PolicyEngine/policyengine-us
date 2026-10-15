@@ -11,11 +11,14 @@ jobs:
     env:
       PYTHONUNBUFFERED: 1
       PYTEST_ADDOPTS: "--durations=25 -p no:unraisableexception -p no:threadexception"
+      # Two batch subprocesses per runner while its memory allows (see
+      # test_batched.py): 32% fewer runner-minutes, same cases, no shutdowns.
+      POLICYENGINE_BATCH_WORKERS: 2
     strategy:
       fail-fast: false
-      # At most 4 Contrib groups run at once; GitHub starts the next group on a
-      # fresh runner as each finishes, so the lanes balance from real durations.
-      max-parallel: 4
+      # Contrib starts after Baseline finishes, so its 6 lanes take the place of
+      # Baseline's 6.
+      max-parallel: 6
       matrix:
         include:
           - group: states-shard-1

@@ -68,22 +68,23 @@ def needs(job):
     return [value] if isinstance(value, str) else value
 
 
-def test_lanes_cap_a_pr_at_14_runners_at_once():
+def concurrent(job):
+    return min(job.get("strategy", {}).get("max-parallel", math.inf), runners(job))
+
+
+def test_lanes_cap_a_pr_at_11_runners_at_once():
     # Within pr.yaml, validation runs alone; everything that needs only it starts
-    # together, and Rest waits for RestPython. Baseline and Contrib each keep
-    # one job per group but run at most max-parallel of them at once: GitHub
-    # starts the next group as one finishes, so the lanes rebalance from real
-    # durations on every run, with nothing to re-pair as groups grow.
+    # together, Rest waits for RestPython, and Contrib waits for Baseline.
+    # Baseline and Contrib each keep one job per group but run at most
+    # max-parallel of them at once: GitHub starts the next group as one
+    # finishes, so the lanes rebalance from real durations on every run, with
+    # nothing to re-pair as groups grow.
     assert (
-        GROUP_WORKFLOWS["Baseline"]["jobs"]["Baseline"]["strategy"]["max-parallel"] == 5
+        GROUP_WORKFLOWS["Baseline"]["jobs"]["Baseline"]["strategy"]["max-parallel"] == 6
     )
     assert (
-        GROUP_WORKFLOWS["Contrib"]["jobs"]["Contrib"]["strategy"]["max-parallel"] == 4
+        GROUP_WORKFLOWS["Contrib"]["jobs"]["Contrib"]["strategy"]["max-parallel"] == 6
     )
-
-    def concurrent(job):
-        return min(job.get("strategy", {}).get("max-parallel", math.inf), runners(job))
-
     first_wave = {}
     for name, job in JOBS.items():
         if needs(job) != ["ReleaseLock"]:
@@ -94,8 +95,31 @@ def test_lanes_cap_a_pr_at_14_runners_at_once():
         for inner_name, inner in GROUP_WORKFLOWS[name]["jobs"].items():
             if not needs(inner):
                 first_wave[inner_name] = concurrent(inner)
-    assert "Rest" not in first_wave
-    assert sum(first_wave.values()) == 14
+    assert "Rest" not in first_wave and "Contrib" not in first_wave
+    assert sum(first_wave.values()) == 11
+    # Contrib starts only after Baseline has finished, so at most Contrib's
+    # lanes plus every other first-wave job can be running then.
+    single = {name: n for name, n in first_wave.items() if name != "Baseline"}
+    contrib = concurrent(GROUP_WORKFLOWS["Contrib"]["jobs"]["Contrib"])
+    assert contrib + sum(single.values()) <= 11
+
+
+def test_contrib_waits_for_baseline_and_skips_when_it_fails():
+    # A plain needs (no if, or an if without a status function) skips Contrib
+    # when Baseline fails or is cancelled. Re-running the failed Baseline group
+    # then runs Contrib for the first time (fork run 38687143315); an if that
+    # let Contrib run anyway would rerun all of its finished groups.
+    assert needs(JOBS["Contrib"]) == ["ReleaseLock", "Baseline"]
+    assert "if" not in JOBS["Contrib"]
+    assert needs(PUSH_JOBS["Contrib"]) == ["ReleaseLock", "Baseline"]
+    for status in ("always()", "cancelled()", "failure()", "success()"):
+        assert status not in PUSH_JOBS["Contrib"]["if"]
+
+
+def test_yaml_suites_run_two_memory_aware_workers_per_runner():
+    for name in ("Baseline", "Contrib"):
+        for job in (GROUP_WORKFLOWS[name]["jobs"][name], PUSH_JOBS[name]):
+            assert job["env"]["POLICYENGINE_BATCH_WORKERS"] == 2
 
 
 def test_release_ci_runs_the_same_baseline_and_contrib_lanes():
@@ -103,6 +127,7 @@ def test_release_ci_runs_the_same_baseline_and_contrib_lanes():
         pr_job = GROUP_WORKFLOWS[name]["jobs"][name]
         assert PUSH_JOBS[name]["strategy"] == pr_job["strategy"]
         assert PUSH_JOBS[name]["steps"] == pr_job["steps"]
+        assert PUSH_JOBS[name]["env"] == pr_job["env"]
 
 
 def test_no_test_job_keeps_running_after_cancellation():
@@ -129,7 +154,9 @@ def test_suite_groups_have_no_extra_runners_or_triggers():
     for name, (label, file) in groups.items():
         assert JOBS[name] == {
             "name": label,
-            "needs": "ReleaseLock",
+            "needs": ["ReleaseLock", "Baseline"]
+            if name == "Contrib"
+            else "ReleaseLock",
             "uses": f"./.github/workflows/{file}",
         }
         # PyYAML parses the bare `on` key as True. No push/PR trigger here:

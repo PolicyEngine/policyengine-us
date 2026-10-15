@@ -13,6 +13,9 @@
 # test growth, and --workers 1 everywhere except the partners target
 # (its largest batch measured 2.5 GB, so two-wide stays trivially safe).
 BATCH := python policyengine_us/tests/test_batched.py
+# CI's Baseline and Contrib jobs set POLICYENGINE_BATCH_WORKERS=2, which
+# overrides --workers below: test_batched.py then runs two batch subprocesses
+# per runner while its memory allows. Local runs keep the counts given here.
 TESTS := policyengine_us/tests
 # Run SPM construction/isolation tests in their own process on the existing
 # Microsimulation CI runner, before the dataset tests. Rest excludes these
@@ -197,8 +200,9 @@ test-yaml-variables:
 	$(BATCH) $(TESTS)/variables --batches 1
 test-yaml-no-structural-states:
 	# Release model/parameter caches between states. The former NY/OH/OK
-	# group peaked at 15.1 GB; keep one subprocess at a time on each of
-	# the existing four CI runners. Root-level state tests remain included.
+	# group peaked at 15.1 GB; keep one subprocess at a time here. CI's four
+	# runners run up to two while memory allows (POLICYENGINE_BATCH_WORKERS).
+	# Root-level state tests remain included.
 	$(BATCH) $(TESTS)/policy/baseline/gov/states --mode per-subdir --workers 1
 test-yaml-no-structural-other:
 	$(BATCH) $(TESTS)/policy/baseline --batches 2 --exclude states

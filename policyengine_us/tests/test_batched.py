@@ -533,14 +533,68 @@ MEMORY_BUDGET_MB = 8000
 MEMORY_BUDGET_ENV = "POLICYENGINE_BATCH_MEMORY_BUDGET_MB"
 REMAINDER_ENV = "POLICYENGINE_BATCH_REMAINDER"
 
+# POLICYENGINE_BATCH_WORKERS lets several batch subprocesses share a runner
+# while its memory allows; it overrides --workers. (A plain --workers N, as
+# the partners target uses for its small batches, still runs N at once.) A
+# 16 GB, 4-CPU CI runner running one subprocess is about 25% busy, but two
+# fixed subprocesses ran it out of memory (fork runs 38687143268 and
+# 38689387981: a runner shutdown in the crfb group in each, and 77-296 MB
+# left in the contrib states groups). So with the variable above 1, memory
+# decides how many run:
+# - another subprocess starts only while the runner has ADMIT_MB available,
+#   and at most one starts per ADMIT_STAGGER_SECONDS, since a new one takes
+#   that long to load the model; one subprocess may always run;
+# - a subprocess hands off its unstarted files at a file boundary (as for the
+#   memory budget) once the runner has less than FLOOR_MB available, and the
+#   remainder waits for admission;
+# - if the runner falls below EVICT_MB mid-file, the newest of two or more
+#   subprocesses is stopped and its files rerun alone once the others finish;
+# - batches are split, whole files only, until there is one per worker.
+# Where available memory cannot be read (off Linux), one subprocess runs at a
+# time. With two workers the 20 Baseline and Contrib groups averaged 345
+# runner-minutes per fork run against 508 with one (32% fewer over three runs;
+# 33% over 38689387981 and 38710504296, which ran this eviction protocol),
+# passed the same 34,794 cases, and never ran a runner out of memory. Three or
+# four workers were no faster, because memory, not CPU, runs out first.
+WORKERS_ENV = "POLICYENGINE_BATCH_WORKERS"
+FLOOR_ENV = "POLICYENGINE_BATCH_MEMORY_FLOOR_MB"
+ADMIT_MB = 6000
+FLOOR_MB = 4000
+EVICT_MB = 2000
+ADMIT_STAGGER_SECONDS = 20
+
+
+def available_mb() -> Optional[float]:
+    """The runner's MemAvailable in MB, or None off Linux."""
+    try:
+        with open("/proc/meminfo") as meminfo:
+            for line in meminfo:
+                if line.startswith("MemAvailable:"):
+                    return int(line.split()[1]) / 1024
+    except (OSError, ValueError, IndexError):
+        return None
+    return None
+
+
 # Child-side half of the memory budget. policyengine-core calls
 # pytest.main(..., plugins=[...]) through the pytest module, so wrapping it
 # adds this plugin without changing Core.
 MEMORY_GUARD = """
 budget_mb = os.environ.get("POLICYENGINE_BATCH_MEMORY_BUDGET_MB")
 remainder_path = os.environ.get("POLICYENGINE_BATCH_REMAINDER")
+floor_mb = os.environ.get("POLICYENGINE_BATCH_MEMORY_FLOOR_MB")
 if budget_mb and remainder_path:
     import pytest
+
+    def runner_available_mb():
+        try:
+            with open("/proc/meminfo") as meminfo:
+                for line in meminfo:
+                    if line.startswith("MemAvailable:"):
+                        return int(line.split()[1]) / 1024
+        except OSError:
+            pass
+        return None
 
     def peak_mb():
         try:
@@ -577,7 +631,10 @@ if budget_mb and remainder_path:
             if nextitem is None or nextitem.path == item.path:
                 return result
             peak = peak_mb()
-            if peak < float(budget_mb):
+            low = runner_available_mb() if floor_mb else None
+            if low is not None and low >= float(floor_mb):
+                low = None
+            if peak < float(budget_mb) and low is None:
                 return result
             items = item.session.items
             remaining = list(
@@ -585,9 +642,14 @@ if budget_mb and remainder_path:
             )
             with open(remainder_path, "w") as handle:
                 handle.write("\\n".join(remaining))
+            reason = (
+                "peak %.0f MB" % peak
+                if low is None
+                else "runner available %.0f MB (own peak %.0f MB)" % (low, peak)
+            )
             pytest.exit(
-                "memory budget: peak %.0f MB after %s; %d files continue in a "
-                "fresh subprocess" % (peak, item.path.name, len(remaining)),
+                "memory budget: %s after %s; %d files continue in a "
+                "fresh subprocess" % (reason, item.path.name, len(remaining)),
                 returncode=1 if item.session.testsfailed else 0,
             )
 
@@ -698,6 +760,147 @@ def report_mtime(path: Optional[str]) -> Optional[int]:
         return None
 
 
+class Admission:
+    """Starts batch subprocesses only while the runner has memory for them.
+
+    One subprocess may always run, so a run never stalls. An evicted part
+    reruns exclusively: no new subprocess starts while it waits or runs.
+    """
+
+    def __init__(self, admit_mb: float = ADMIT_MB, evict_mb: float = EVICT_MB):
+        self.admit_mb = admit_mb
+        self.evict_mb = evict_mb
+        self.cond = threading.Condition()
+        self.running: Dict[int, list] = {}
+        self.evicted: set = set()
+        self.pending_exclusive: set = set()
+        self.exclusive_waiting = 0
+        self.exclusive_holder: Optional[int] = None
+        self.last_admit = 0.0
+        self.waits = 0
+        self.evictions = 0
+        self.stopped = False
+        threading.Thread(target=self.watch, daemon=True).start()
+
+    def may_admit(self) -> bool:
+        if (
+            self.exclusive_holder is not None
+            or self.exclusive_waiting
+            or self.pending_exclusive
+        ):
+            return False
+        if not self.running:
+            return True
+        if time.time() - self.last_admit < ADMIT_STAGGER_SECONDS:
+            return False
+        avail = available_mb()
+        return avail is not None and avail >= self.admit_mb
+
+    def acquire(self, exclusive: bool) -> None:
+        ident = threading.get_ident()
+        with self.cond:
+            if exclusive:
+                self.exclusive_waiting = self.exclusive_waiting + 1
+                self.pending_exclusive.discard(ident)
+                while self.running or self.exclusive_holder is not None:
+                    self.cond.wait(1)
+                self.exclusive_waiting = self.exclusive_waiting - 1
+                self.exclusive_holder = ident
+            elif not self.may_admit():
+                self.waits = self.waits + 1
+                while not self.may_admit():
+                    self.cond.wait(1)
+            self.running[ident] = [None, time.time()]
+            self.last_admit = time.time()
+
+    def started(self, process) -> None:
+        with self.cond:
+            entry = self.running.get(threading.get_ident())
+            if entry is not None:
+                entry[0] = process
+
+    def finished(self) -> None:
+        """The part reported or exited: stop treating it as live."""
+        self.started(None)
+
+    def forget(self) -> None:
+        """Drop this thread's rerun reservation, if it will not rerun."""
+        with self.cond:
+            self.pending_exclusive.discard(threading.get_ident())
+            self.cond.notify_all()
+
+    def release(self) -> bool:
+        ident = threading.get_ident()
+        with self.cond:
+            self.running.pop(ident, None)
+            evicted = ident in self.evicted
+            self.evicted.discard(ident)
+            if self.exclusive_holder == ident:
+                self.exclusive_holder = None
+            self.cond.notify_all()
+        return evicted
+
+    def watch(self) -> None:
+        while not self.stopped:
+            time.sleep(0.2)
+            avail = available_mb()
+            if avail is None or avail >= self.evict_mb:
+                continue
+            with self.cond:
+                live = [
+                    (entry[1], ident, entry[0])
+                    for ident, entry in self.running.items()
+                    if entry[0] is not None and ident not in self.evicted
+                ]
+                if len(live) < 2:
+                    continue
+                _, ident, process = max(live, key=lambda item: item[0])
+                self.evicted.add(ident)
+                self.pending_exclusive.add(ident)
+                self.evictions = self.evictions + 1
+            print(
+                f"[memory] runner available {avail:.0f} MB < {self.evict_mb:.0f} MB "
+                f"with {len(live)} subprocesses; stopping the newest and "
+                "rerunning its files alone",
+                flush=True,
+            )
+            try:
+                process.kill()
+            except OSError:
+                pass
+            time.sleep(2)
+
+
+ADMISSION: Optional[Admission] = None
+
+
+def fill_workers(batches: List[List[str]], workers: int) -> List[List[str]]:
+    """Split batches, whole files only, until there is one per worker."""
+    if not batches:
+        return batches
+    expanded = []
+    for batch in batches:
+        files = [
+            str(f)
+            for p in batch
+            for f in (yaml_files(Path(p)) if Path(p).is_dir() else [Path(p)])
+        ]
+        expanded.append(files or list(batch))
+    splittable = [
+        len(b) > 1 and all(p.endswith(YAML_SUFFIXES) for p in b) for b in expanded
+    ]
+    while len(expanded) < workers and any(splittable):
+        largest = max(
+            (i for i in range(len(expanded)) if splittable[i]),
+            key=lambda i: len(expanded[i]),
+        )
+        files = expanded[largest]
+        half = len(files) // 2
+        expanded[largest : largest + 1] = [files[:half], files[half:]]
+        splittable[largest : largest + 1] = [half > 1, len(files) - half > 1]
+    return expanded
+
+
 def run_batch(
     test_paths: List[str],
     batch_name: str,
@@ -707,8 +910,10 @@ def run_batch(
     """Run a batch, continuing past the memory budget in fresh subprocesses.
 
     Each part runs through run_subprocess. A part that reaches
-    MEMORY_BUDGET_MB between files writes the files it has not started to a
-    remainder file and exits; they continue in the next part. The batch passes
+    MEMORY_BUDGET_MB between files (or, when subprocesses share the runner,
+    finds less than FLOOR_MB available) writes the files it has not started to
+    a remainder file and exits; they continue in the next part. A part stopped
+    mid-file for runner memory is discarded and rerun alone. The batch passes
     only if every part passes. Each part rewrites an inherited --junitxml file,
     so the parts' suites are merged back into it.
     """
@@ -717,14 +922,40 @@ def run_batch(
     suites: List[ElementTree.Element] = []
     parts: List[Dict] = []
     paths = test_paths
+    exclusive = False
+    discarded = ""
     while paths:
         handle, remainder = tempfile.mkstemp(prefix="batch-remainder-")
         os.close(handle)
         os.unlink(remainder)
         name = batch_name if not parts else f"{batch_name} (part {len(parts) + 1})"
         env = dict(os.environ, **{MEMORY_BUDGET_ENV: budget, REMAINDER_ENV: remainder})
+        if ADMISSION is not None:
+            env[FLOOR_ENV] = str(FLOOR_MB)
         written = report_mtime(report)
-        parts.append(run_subprocess(paths, name, stream, command, env))
+        if ADMISSION is not None:
+            ADMISSION.acquire(exclusive)
+        try:
+            part = run_subprocess(paths, name, stream, command, env)
+        finally:
+            evicted = ADMISSION.release() if ADMISSION is not None else False
+        if evicted and not part.get("reported"):
+            note = (
+                f"    [memory] {name} stopped mid-file for runner memory; "
+                f"rerunning its {batch_cost(paths)} files alone"
+            )
+            if stream:
+                print(note, flush=True)
+            discarded = discarded + part["output"] + note + "\n"
+            if os.path.exists(remainder):
+                os.unlink(remainder)
+            exclusive = True
+            continue
+        if evicted:
+            # Stopped only after it reported: keep its result.
+            ADMISSION.forget()
+        exclusive = False
+        parts.append(part)
         command = None
         if report_mtime(report) not in (None, written):
             suites.extend(ElementTree.parse(report).getroot().iter("testsuite"))
@@ -735,8 +966,11 @@ def run_batch(
         except FileNotFoundError:
             paths = []
         if paths:
+            limit = f"Memory budget ({budget} MB)"
+            if ADMISSION is not None:
+                limit = f"{limit} or runner floor ({FLOOR_MB} MB available)"
             note = (
-                f"    Memory budget ({budget} MB) reached; continuing "
+                f"    {limit} reached; continuing "
                 f"{len(paths)} files in a fresh subprocess"
             )
             if stream:
@@ -757,7 +991,7 @@ def run_batch(
         "returncode": failed[0]["returncode"] if failed else 0,
         "peak_rss_mb": max(peaks) if peaks else None,
         "parts": len(parts),
-        "output": "".join(part["output"] for part in parts),
+        "output": discarded + "".join(part["output"] for part in parts),
     }
 
 
@@ -810,6 +1044,8 @@ def run_subprocess(
         bufsize=0,
         env=env,
     )
+    if ADMISSION is not None:
+        ADMISSION.started(process)
 
     def sample_rss() -> None:
         # VmHWM is monotonic, so keeping only the latest reading preserves
@@ -867,6 +1103,8 @@ def run_subprocess(
                 poll_result = process.poll()
                 if poll_result is not None:
                     # Process terminated
+                    if ADMISSION is not None:
+                        ADMISSION.finished()
                     break
                 give_up = overdue()
                 if give_up is not None:
@@ -938,6 +1176,8 @@ def run_subprocess(
             marker_match = BATCH_EXIT_PATTERN.search(output_text)
             if marker_match:
                 reported_returncode = int(marker_match.group(1))
+                if ADMISSION is not None:
+                    ADMISSION.finished()
                 emit(
                     "\n    Runner reported "
                     f"{describe_exit_status(reported_returncode)}; "
@@ -997,6 +1237,7 @@ def run_subprocess(
             }
 
         status = batch_status(returncode)
+        reported = reported_returncode is not None
         if test_completed and summary_reported_pass and status != "passed":
             # The case that used to be reported as a pass: pytest printed no
             # failure count (e.g. "1 passed, 1 error") yet finished nonzero.
@@ -1016,6 +1257,7 @@ def run_subprocess(
             "returncode": returncode,
             "peak_rss_mb": peak_rss_mb,
             "output": "".join(buf),
+            "reported": reported,
         }
 
     except Exception as e:
@@ -1069,9 +1311,18 @@ def run_batches_concurrently(batches: List[List[str]], workers: int) -> List:
         name = f"Batch {idx}"
         with in_flight_lock:
             in_flight[name] = time.time()
+        # Output is buffered until the batch ends, so record where each batch
+        # starts: a job timeout or lost runner otherwise leaves no trace of it.
+        print(
+            f"[Batch {idx}/{total}] started: {batch_cost(batch_paths)} files "
+            f"from {batch_paths[0]}",
+            flush=True,
+        )
         try:
             return run_batch(batch_paths, name, stream=False)
         finally:
+            if ADMISSION is not None:
+                ADMISSION.forget()
             with in_flight_lock:
                 in_flight.pop(name, None)
 
@@ -1179,6 +1430,9 @@ def main():
     )
 
     args = parser.parse_args()
+    scheduled = bool(os.environ.get(WORKERS_ENV))
+    if scheduled:
+        args.workers = int(os.environ[WORKERS_ENV])
     exclude_list = [x.strip() for x in args.exclude.split(",") if x.strip()]
 
     shard_idx = shard_count = None
@@ -1235,6 +1489,13 @@ def main():
             f"({len(batches)} of {all_batch_count} batches)"
         )
 
+    global ADMISSION
+    if scheduled and args.workers > 1:
+        if len(batches) < args.workers:
+            batches = fill_workers(batches, args.workers)
+            print(f"Split into {len(batches)} batches for {args.workers} workers")
+        ADMISSION = Admission()
+
     if len(batches) != args.batches:
         print(f"Actual batches: {len(batches)} (optimized for {total_tests} files)")
     else:
@@ -1277,6 +1538,12 @@ def main():
             f"{result['status']}"
         )
     print(f"Workers: {args.workers}")
+    if ADMISSION is not None:
+        ADMISSION.stopped = True
+        print(
+            f"[memory] admission waits: {ADMISSION.waits}, "
+            f"evictions: {ADMISSION.evictions}"
+        )
     print(f"Total time: {total_elapsed:.1f}s")
     if args.workers > 1:
         print(f"Wall time: {time.time() - run_start:.1f}s")
