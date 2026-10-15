@@ -1,35 +1,51 @@
-description: The Centers for Medicare and Medicaid Services (CMS) projects these per-capita out-of-pocket health payments.
+description: The Centers for Medicare and Medicaid Services (CMS) reports and projects this out-of-pocket health spending per capita.
 metadata:
   unit: currency-USD
-  label: Per-capita MOOP
+  label: CMS out-of-pocket health spending per capita
   reference:
-  # Data underlying figures:
-  # https://www.cms.gov/files/zip/nhe-projections-tables.zip
-  # Table03 National Health Expenditures by Sources of Funds
-  # Retrieved 2025-02-17.
-  - title: NHE Projections
-    href: https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/projected
+  # Table03 National Health Expenditures by Sources of Funds, "Per Capita
+  # Amount" block, "Out-of-Pocket Payments" column: historical estimates for
+  # 2018-2024 and projections for 2025-2034. ZIP Last-Modified 2026-09-03,
+  # sha256 264f822618a5e1829138aea57cc6c8bf45bbaf072a72898fef5547f7ece6cd70,
+  # retrieved 2026-10-11 from
+  # https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/projected
+  - title: CMS National Health Expenditure Projections 2025-2034, Table 3
+    href: https://www.cms.gov/files/zip/nhe-projections-tables.zip
+  # 2015-2017 are before Table03's first year. Each is that year's per-capita
+  # national health expenditures (Table01 of the projections ZIP above) times
+  # out-of-pocket spending's share of national health expenditures (NHE2024.csv
+  # rows "Out of pocket" and "Total National Health Expenditures", millions),
+  # rounded to the dollar. The same rule reproduces every published 2018-2024
+  # value. ZIP Last-Modified 2026-01-13, sha256
+  # b6a9e26774ca36931d42add46204947d6335fc4898011780563196898f964746,
+  # retrieved 2026-10-11 from
+  # https://www.cms.gov/data-research/statistics-trends-and-reports/national-health-expenditure-data/historical
+  - title: CMS National Health Expenditures by Type of Service and Source of Funds, Calendar Years 1960-2024
+    href: https://www.cms.gov/files/zip/national-health-expenditures-type-service-source-funds-cy-1960-2024.zip
 values:
-  # Historical.
-  2016-01-01: 1_130
-  2017-01-01: 1_139
-  2018-01-01: 1_181
-  2019-01-01: 1_227
-  2020-01-01: 1_210
-  2021-01-01: 1_341
-  2022-01-01: 1_425
-  # Projections.
-  2023-01-01: 1_528
-  2024-01-01: 1_619
-  2025-01-01: 1_669
-  2026-01-01: 1_720
-  2027-01-01: 1_786
-  2028-01-01: 1_851
-  2029-01-01: 1_917
-  2030-01-01: 1_985
-  2031-01-01: 2_057
-  2032-01-01: 2_131
-  # Applying the same growth rate as 2031-2032.
-  2033-01-01: 2_208 # 2_131 * (2_131 / 2_057)
-  2034-01-01: 2_287 # 2_131 * (2_131 / 2_057)^2
-  2035-01-01: 2_369 # 2_131 * (2_131 / 2_057)^3
+  # Computed from CMS's historical accounts; see the second reference.
+  2015-01-01: 1_119
+  2016-01-01: 1_155
+  2017-01-01: 1_177
+  # Historical Estimates.
+  2018-01-01: 1_223
+  2019-01-01: 1_269
+  2020-01-01: 1_239
+  2021-01-01: 1_372
+  2022-01-01: 1_468
+  2023-01-01: 1_555
+  2024-01-01: 1_632
+  # Projected.
+  2025-01-01: 1_721
+  2026-01-01: 1_826
+  2027-01-01: 1_892
+  2028-01-01: 1_974
+  2029-01-01: 2_053
+  2030-01-01: 2_139
+  2031-01-01: 2_223
+  2032-01-01: 2_314
+  2033-01-01: 2_412
+  2034-01-01: 2_512
+  # 2035 to 2100 grow at the 2033-2034 rate (2_512 / 2_412, 4.1% a year)
+  # and later years hold the 2100 value; see set_all_uprating_parameters in
+  # uprating_extensions.py.

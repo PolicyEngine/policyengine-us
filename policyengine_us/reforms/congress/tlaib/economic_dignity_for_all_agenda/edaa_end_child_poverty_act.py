@@ -138,7 +138,7 @@ def create_ecpa_only() -> Reform:
                 "tanf",
                 "high_efficiency_electric_home_rebate",
                 "residential_efficiency_electrification_rebate",
-                "unemployment_compensation",
+                "total_unemployment_compensation",
                 "ak_energy_relief",
                 "basic_income",
                 "trump_dividend",
