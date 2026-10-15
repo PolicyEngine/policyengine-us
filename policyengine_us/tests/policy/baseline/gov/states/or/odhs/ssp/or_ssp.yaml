@@ -522,3 +522,21 @@
     # person1: 773 - (1,200 - 1,118.72) = 691.72. person2 has no liability,
     # and 773 - 1,200 < 0.
     or_ssp: [691.72, 0]
+
+- name: Case 34, partial-month days entered for one month leave the next month full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: OR
+    age: 65
+    or_ssp_category: IN_HOME
+    or_ssp_partial_month_days:
+      2026-01: 16
+  output:
+    or_ssp_partial_month_days:
+      2026-01: 16
+      2026-02: 0
+    # January: 22 * 16 / 31 = 11.35; February is a full month: 22.
+    or_ssp:
+      2026-01: 11.354838709677419
+      2026-02: 22
