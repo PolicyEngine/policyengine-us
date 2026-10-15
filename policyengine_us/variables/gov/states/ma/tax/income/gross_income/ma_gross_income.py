@@ -48,8 +48,7 @@ class ma_gross_income(Variable):
             period,
             [
                 "taxable_public_pension_income",
-                "military_retirement_pay",
-                "military_retirement_pay_survivors",
+                "military_retirement_income",
             ],
         )
         deductions = social_security_in_agi + salt_refund_income + public_pension

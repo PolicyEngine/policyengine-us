@@ -1,11 +1,14 @@
-description: California maximum military retirement and SBP exclusion amount per category per person under R&TC §§ 17132.9 and 17132.10.
+description: California maximum military retirement and SBP exclusion amount per category per return under R&TC §§ 17132.9 and 17132.10.
 values:
   2021-01-01: 0
-  2025-01-01: 20000
+  2025-01-01: 20_000
   2030-01-01: 0
 metadata:
   unit: currency-USD
   period: year
+  label: California military retirement and survivor benefit exclusion cap
   reference:
-    - title: Cal. Rev. & Tax. Code §§ 17132.9, 17132.10
+    - title: Cal. Rev. & Tax. Code § 17132.9
       href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17132.9.&lawCode=RTC
+    - title: Cal. Rev. & Tax. Code § 17132.10
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17132.10.&lawCode=RTC

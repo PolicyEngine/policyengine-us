@@ -16,10 +16,8 @@ class or_retirement_credit(Variable):
         # Line 1, retirement income
         person = tax_unit.members
         eligible = person("or_retirement_credit_eligible_person", period)
-        pension = (
-            person("taxable_pension_income", period)
-            + person("military_retirement_pay", period)
-            + person("military_retirement_pay_survivors", period)
+        pension = person("taxable_pension_income", period) + person(
+            "military_retirement_income", period
         )
         retirement_income = eligible * pension
         total_retirement_income = tax_unit.sum(retirement_income)

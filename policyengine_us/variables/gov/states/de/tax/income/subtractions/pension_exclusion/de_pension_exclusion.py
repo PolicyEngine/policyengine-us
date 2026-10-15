@@ -26,8 +26,7 @@ class de_pension_exclusion(Variable):
 
         eligible_pension_income = (
             person("taxable_pension_income", period)
-            + person("military_retirement_pay", period)
-            + person("military_retirement_pay_survivors", period)
+            + person("military_retirement_income", period)
         ) * head_or_spouse
 
         eligible_retirement_income = (

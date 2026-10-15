@@ -35,8 +35,7 @@ class mi_interest_dividends_capital_gains_deduction(Variable):
             person,
             period,
             [
-                "military_retirement_pay",
-                "military_retirement_pay_survivors",
+                "military_retirement_income",
                 "taxable_pension_income",
             ],
         )

@@ -22,11 +22,16 @@ class ca_military_retirement_exclusion(Variable):
 
         person = tax_unit.members
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        # R&TC § 17132.9 excludes up to $20,000 of retired pay.
-        # R&TC § 17132.10 excludes up to $20,000 of SBP survivor benefits.
-        capped_retiree = min_(p.cap, person("military_retirement_pay", period))
-        capped_survivors = min_(
-            p.cap, person("military_retirement_pay_survivors", period)
+        # R&TC § 17132.9 excludes up to $20,000 of retired pay per return.
+        # R&TC § 17132.10 excludes up to $20,000 of SBP survivor benefits per return.
+        # The exclusion is capped at $20,000 for each payment category on a joint return,
+        # surviving spouse, or any other individual (Schedule CA (540) line 5a/5b).
+        retiree_pay = tax_unit.sum(
+            person("military_retirement_pay", period) * head_or_spouse
         )
-        total_person = (capped_retiree + capped_survivors) * head_or_spouse
-        return eligible * tax_unit.sum(total_person)
+        survivor_pay = tax_unit.sum(
+            person("military_retirement_pay_survivors", period) * head_or_spouse
+        )
+        capped_retiree = min_(p.cap, retiree_pay)
+        capped_survivors = min_(p.cap, survivor_pay)
+        return eligible * (capped_retiree + capped_survivors)

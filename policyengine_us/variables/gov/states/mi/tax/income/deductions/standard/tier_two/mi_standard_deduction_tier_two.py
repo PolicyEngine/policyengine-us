@@ -33,8 +33,7 @@ class mi_standard_deduction_tier_two(Variable):
             person,
             period,
             [
-                "military_retirement_pay",
-                "military_retirement_pay_survivors",
+                "military_retirement_income",
                 "military_service_income",
             ],
         )
