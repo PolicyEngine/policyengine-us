@@ -29,6 +29,7 @@
         age: 40
       person3:
         age: 65
+        personal_property: 50
     households:
       household:
         members: [person1, person2, person3]
@@ -38,8 +39,9 @@
       spm_unit:
         members: [person1, person2, person3]
   output:
-    # 4,850 - 4,650 vehicle exemption.
-    ca_riv_general_relief_countable_property_value: 200
+    # 4,850 - 4,650 vehicle exemption + 50 personal property.
+    # The old Person variable returned [200, 200, 250], not the unit total.
+    ca_riv_general_relief_countable_property_value: 250
 
 - name: Case 3, each member's cash and personal property are summed.
   period: 2024
@@ -64,3 +66,28 @@
   output:
     # Cash 150 + 200, vehicle 4,700 - 4,650 = 50, personal property 50 + 75.
     ca_riv_general_relief_countable_property_value: 525
+
+- name: Case 4, combined property remains a stock in a monthly request.
+  period: 2024-01
+  input:
+    people:
+      person1:
+        age: 30
+        bank_account_assets: 300
+        personal_property: 50
+      person2:
+        age: 65
+        bank_account_assets: 100
+        personal_property: 25
+    households:
+      household:
+        members: [person1, person2]
+        in_riv: true
+        household_vehicles_value: 4_675
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+  output:
+    # Cash 300 + 100, countable vehicles 25, member property 50 + 25.
+    # Assert the stock amount without choosing eligibility at exactly $500.
+    ca_riv_general_relief_countable_property_value: 500
