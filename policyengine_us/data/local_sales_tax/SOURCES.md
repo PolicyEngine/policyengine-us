@@ -73,6 +73,29 @@ October 2022 snapshot, within that tolerance of its statutory 7%.
 | New York | New York State Department of Taxation and Finance, [Publication 718](https://www.tax.ny.gov/pdf/publications/sales/pub718.pdf) (2/25), "New York State Sales and Use Tax Rates by Jurisdiction, Effective March 1, 2025", for the combined rate of each county and city; [Publication 718-A](https://www.tax.ny.gov/pdf/publications/sales/pub718a.pdf) (12/25) for the rate history (Suffolk County's rate rose from 8⅝% to 8¾% on March 1, 2025; no other combined rate changed from 2022) | `scripts/local_sales_tax_rates/ny_pub718.csv` transcribes Publication 718; the build checks each rate and reporting code against the publication's text | No licence is attached. The Department's [website disclaimer](https://www.tax.ny.gov/help/tech/disclaimer.htm) provides the site "as a public service" and states no reuse restriction. The rates are facts set by the Tax Law. |
 | Virginia | Virginia Department of Taxation, [Sales and Use Tax Rates by Locality by Date](https://www.tax.virginia.gov/sites/default/files/inline-files/sales-and-use-tax-rates-by-locality-by-date.xlsx), the "General Sales" rate of each county and independent city for each period | The workbook as downloaded | No licence is attached. The [website disclaimer](https://www.tax.virginia.gov/website-disclaimer) offers the site's information "as a public service to the taxpayers of the Commonwealth"; the site footer reads "Copyright © 2019 Virginia Department of Taxation. All rights reserved." The rates are facts set by Code of Virginia title 58.1. |
 
+## Rebuilding and parser audits
+
+`--download` retrieves the files currently posted by each agency, including
+replacement SST quarterly files. A later download can change both future
+and historical rows; it does not reproduce this build merely by using the
+same URLs. Exact reproduction requires retaining source files whose hashes
+match the manifest. Hashes verify retained files but cannot recover files
+the agencies have replaced. Compare rebuilt historical rates with the
+previous CSVs and explain changes in the build log before replacing them.
+
+Boundary parsing audits the full 89-field SST record before selecting
+columns. Harmless trailing blank fields are allowed. A single missing final
+type field is padded only when its special-district code is blank, with a
+separate audit count. This preserves South Dakota's 489 such records and
+matches the legacy parser's selected fields and collapsed record counts.
+Other malformed widths are skipped with a visible warning, counts and
+sample line numbers under each file's `boundary_audit` manifest entry.
+Unrecoverable CSV quoting aborts the
+build. Collapsed boundary records and their audit are cached under the
+checkout's ignored `_build/local_sales_tax_rates/` directory. Cache schema
+3 pins both the source SHA-256 and the cached data SHA-256, and restores the
+same row counts on a cached build. Older unaudited v2 caches are ignored.
+
 ## Places and populations
 
 | Source | Files | Terms |

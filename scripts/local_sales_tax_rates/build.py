@@ -28,13 +28,16 @@ and pdftotext (poppler).
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
 import io
 import json
 import re
 import subprocess
 import urllib.request
+import warnings
 import zipfile
+from contextlib import ExitStack
 from datetime import date, datetime, timezone
 from pathlib import Path
 
@@ -44,6 +47,9 @@ import pandas as pd
 REPO = Path(__file__).resolve().parents[2]
 HERE = Path(__file__).resolve().parent
 OUTPUT = REPO / "policyengine_us" / "data" / "local_sales_tax"
+# Build caches belong to this checkout, never to the retained source files.
+BOUNDARY_CACHE = REPO / "_build" / "local_sales_tax_rates"
+BOUNDARY_CACHE_VERSION = 3
 
 # Rates are evaluated on the first day of each quarter from 2022 through 2026
 # (SSUTA section 305 makes local rate and boundary changes effective only
@@ -235,52 +241,167 @@ SIGNATURE = [
 RECORD_TYPE_PRIORITY = {"A": 0, "4": 1, "Z": 2}
 
 
-def load_sst_boundary(sources: Path, abbr: str) -> pd.DataFrame:
-    """SST boundary file, keeping the columns that locate a record's taxing
-    jurisdictions (SST Technology Guide, chapter 5, boundary table columns
-    A-C, W-Z and AD-CK), collapsed to one row per distinct combination with
-    its number of records. The collapsed file is cached next to the
-    sources."""
-    path = sst_file(sources, "boundary", abbr)
-    cache = sources / "sst" / "cache" / f"{path.name.split('.')[0]}-v2.pkl"
-    if cache.exists():
-        return pd.read_pickle(cache)
-    parts = []
-    reader = read_sst_csv(
-        path,
-        header=None,
-        dtype=str,
-        keep_default_na=False,
-        encoding="latin-1",
-        usecols=list(BOUNDARY_COLUMNS),
-        on_bad_lines="skip",
-        chunksize=200_000,
+def sst_boundary_chunks(path: Path, audit: dict, chunksize: int = 200_000):
+    """Read SST columns A-CK, auditing record widths before selecting fields.
+
+    The SST Technology Guide specifies 89 boundary fields. Some files append
+    empty fields (Washington has a trailing comma); these are harmless.
+    A missing final district-type field is padded only when its district
+    code is empty (South Dakota omits this unused field in some records).
+    Other short rows and nonempty extensions are skipped with counts and
+    example line numbers. Broken CSV quoting aborts the build because the
+    next record boundary cannot be determined reliably.
+    """
+    field_count = max(BOUNDARY_COLUMNS) + 1
+    selected = list(BOUNDARY_COLUMNS)
+    audit.update(
+        {
+            "expected_fields": field_count,
+            "input_rows": 0,
+            "accepted_rows": 0,
+            "skipped_rows": 0,
+            "blank_rows": 0,
+            "trailing_blank_rows": 0,
+            "padded_trailing_type_rows": 0,
+            "skipped_row_examples": [],
+        }
     )
-    for chunk in reader:
-        chunk = chunk.rename(columns=BOUNDARY_COLUMNS).drop(columns="state")
-        for column in chunk.columns:
-            chunk[column] = chunk[column].str.strip()
-        # Some files start with a UTF-8 byte order mark.
-        chunk["rtype"] = chunk["rtype"].str.replace("ï»¿", "").str.upper()
-        chunk["city"] = chunk["city"].str.upper()
-        chunk = chunk[chunk.rtype.isin(list(RECORD_TYPE_PRIORITY))]
-        # The record's 5-digit ZIP code: column P for address records,
-        # column R (zip code low) for ZIP records.
-        chunk["zip"] = chunk["zip"].where(chunk.rtype == "A", chunk.zip_low).str[:5]
-        chunk = chunk.drop(columns="zip_low")
-        for code, kind in SPECIALS:
-            chunk[kind] = chunk[kind].str.zfill(2).where(chunk[code] != "", "")
-        parts.append(chunk.groupby(SIGNATURE).size().rename("records").reset_index())
-    df = pd.concat(parts).groupby(SIGNATURE).records.sum().reset_index()
-    df["begin"] = sst_dates(df["begin"])
-    df["end"] = sst_dates(df["end"])
-    cache.parent.mkdir(exist_ok=True)
-    df.to_pickle(cache)
+    with ExitStack() as stack:
+        if path.suffix.lower() == ".zip":
+            archive = stack.enter_context(zipfile.ZipFile(path))
+            names = [n for n in archive.namelist() if n.lower().endswith(".csv")]
+            if len(names) != 1:
+                raise ValueError(f"{path.name}: expected one CSV member, got {names}")
+            binary = stack.enter_context(archive.open(names[0]))
+            stream = stack.enter_context(
+                io.TextIOWrapper(binary, encoding="latin-1", newline="")
+            )
+        else:
+            stream = stack.enter_context(path.open(encoding="latin-1", newline=""))
+        reader = csv.reader(stream, strict=True)
+        rows = []
+        try:
+            for fields in reader:
+                if not fields or (len(fields) == 1 and not fields[0].strip()):
+                    audit["blank_rows"] += 1
+                    continue
+                audit["input_rows"] += 1
+                if len(fields) == field_count - 1 and not fields[-1].strip():
+                    # The final type has no meaning without a district code.
+                    fields.append("")
+                    audit["padded_trailing_type_rows"] += 1
+                if len(fields) < field_count or any(
+                    field.strip() for field in fields[field_count:]
+                ):
+                    audit["skipped_rows"] += 1
+                    if len(audit["skipped_row_examples"]) < 10:
+                        audit["skipped_row_examples"].append(
+                            {"line": reader.line_num, "fields": len(fields)}
+                        )
+                    continue
+                audit["accepted_rows"] += 1
+                if len(fields) > field_count:
+                    audit["trailing_blank_rows"] += 1
+                rows.append([fields[column] for column in selected])
+                if len(rows) >= chunksize:
+                    yield pd.DataFrame(rows, columns=selected)
+                    rows = []
+        except csv.Error as error:
+            raise ValueError(
+                f"{path.name}: malformed CSV near line {reader.line_num}: {error}"
+            ) from error
+        if rows:
+            yield pd.DataFrame(rows, columns=selected)
+
+
+def load_sst_boundary(
+    sources: Path, abbr: str, boundary_audits: dict | None = None
+) -> pd.DataFrame:
+    """Load collapsed boundary records with an input-pinned audit cache.
+
+    Cache schema 3 stores the source and pickle hashes beside the row audit.
+    A cached load restores the same audit into the build manifest. Old v2
+    caches have no row audit and are deliberately ignored. Cache files stay
+    under the checkout's ignored _build directory, leaving sources untouched.
+    """
+    path = sst_file(sources, "boundary", abbr)
+    source_key = str(path.relative_to(sources))
+    source_hash = sha256(path)
+    stem = f"{path.stem}-{source_hash[:16]}-v{BOUNDARY_CACHE_VERSION}"
+    cache = BOUNDARY_CACHE / f"{stem}.pkl"
+    sidecar = BOUNDARY_CACHE / f"{stem}.audit.json"
+    audit = None
+    if cache.exists() and sidecar.exists():
+        try:
+            metadata = json.loads(sidecar.read_text())
+        except (OSError, ValueError):
+            metadata = {}
+        if (
+            metadata.get("schema_version") == BOUNDARY_CACHE_VERSION
+            and metadata.get("source_sha256") == source_hash
+            and metadata.get("cache_sha256") == sha256(cache)
+            and isinstance(metadata.get("audit"), dict)
+            and "padded_trailing_type_rows" in metadata["audit"]
+        ):
+            audit = metadata["audit"]
+            df = pd.read_pickle(cache)
+    if audit is None:
+        audit = {"source_sha256": source_hash}
+        parts = []
+        for chunk in sst_boundary_chunks(path, audit):
+            chunk = chunk.rename(columns=BOUNDARY_COLUMNS).drop(columns="state")
+            for column in chunk.columns:
+                chunk[column] = chunk[column].str.strip()
+            # Some files start with a UTF-8 byte order mark.
+            chunk["rtype"] = chunk["rtype"].str.replace("ï»¿", "").str.upper()
+            chunk["city"] = chunk["city"].str.upper()
+            chunk = chunk[chunk.rtype.isin(list(RECORD_TYPE_PRIORITY))]
+            # Column P is the address ZIP, column R the ZIP range's low end.
+            chunk["zip"] = chunk["zip"].where(chunk.rtype == "A", chunk.zip_low).str[:5]
+            chunk = chunk.drop(columns="zip_low")
+            for code, kind in SPECIALS:
+                chunk[kind] = chunk[kind].str.zfill(2).where(chunk[code] != "", "")
+            parts.append(
+                chunk.groupby(SIGNATURE).size().rename("records").reset_index()
+            )
+        if not parts or not any(len(part) for part in parts):
+            raise ValueError(
+                f"{path.name}: no usable boundary records; "
+                f"{audit['skipped_rows']} malformed rows skipped"
+            )
+        df = pd.concat(parts).groupby(SIGNATURE).records.sum().reset_index()
+        df["begin"] = sst_dates(df["begin"])
+        df["end"] = sst_dates(df["end"])
+        BOUNDARY_CACHE.mkdir(parents=True, exist_ok=True)
+        temporary = cache.with_suffix(".pkl.tmp")
+        df.to_pickle(temporary)
+        metadata = {
+            "schema_version": BOUNDARY_CACHE_VERSION,
+            "source_sha256": source_hash,
+            "cache_sha256": sha256(temporary),
+            "audit": audit,
+        }
+        temporary.replace(cache)
+        temporary_sidecar = sidecar.with_suffix(".json.tmp")
+        temporary_sidecar.write_text(json.dumps(metadata, indent=1) + "\n")
+        temporary_sidecar.replace(sidecar)
+    if boundary_audits is not None:
+        boundary_audits[source_key] = audit
+    if audit["skipped_rows"]:
+        warnings.warn(
+            f"{path.name}: skipped {audit['skipped_rows']} malformed boundary rows; "
+            "see manifest boundary_audit for counts and example line numbers",
+            stacklevel=2,
+        )
     return df
 
 
 def sst_unit_rates(
-    sources: Path, abbr: str, dates: list[pd.Timestamp], log: list
+    sources: Path,
+    abbr: str,
+    dates: list[pd.Timestamp],
+    log: list,
+    boundary_audits: dict | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Combined rate of each SST taxing unit at each date.
 
@@ -305,7 +426,17 @@ def sst_unit_rates(
     state_fips = SST_STATES[abbr]
     entities = census_entities(sources, state_fips)
     rates = load_sst_rates(sources, abbr)
-    boundary = load_sst_boundary(sources, abbr)
+    if boundary_audits is None:
+        boundary_audits = {}
+    boundary = load_sst_boundary(sources, abbr, boundary_audits)
+    source_key = str(sst_file(sources, "boundary", abbr).relative_to(sources))
+    audit = boundary_audits[source_key]
+    log.append(
+        f"{abbr}: boundary {source_key}: {audit['input_rows']} rows, "
+        f"{audit['accepted_rows']} accepted, "
+        f"{audit['skipped_rows']} malformed skipped, "
+        f"{audit['padded_trailing_type_rows']} omitted empty final types padded"
+    )
     dates = change_dates(dates, [rates, boundary])
     # Files of states without county taxes may leave the county code empty;
     # such units are keyed by their place code alone (county "").
@@ -988,6 +1119,7 @@ def assemble(table: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
 def build(sources: Path, only: list[str] | None = None) -> None:
     dates = evaluation_dates()
     log: list[str] = []
+    boundary_audits: dict = {}
     tables = []
     states = [s for s in SST_STATES if s not in NO_LOCAL_TAX] + ["NY", "VA"]
     if only:
@@ -1005,7 +1137,7 @@ def build(sources: Path, only: list[str] | None = None) -> None:
         elif abbr == "VA":
             units = va_unit_rates(sources, dates, log)
         else:
-            units, state = sst_unit_rates(sources, abbr, dates, log)
+            units, state = sst_unit_rates(sources, abbr, dates, log, boundary_audits)
         blocks = census_blocks(sources, abbr)
         place_county_tables.append(place_principal_counties(blocks))
         by_place = place_rates(abbr, blocks, units, log)
@@ -1051,6 +1183,7 @@ def build(sources: Path, only: list[str] | None = None) -> None:
             and p.relative_to(sources).parts[0] in {"sst", "ny", "va", "census"}
             and "x" not in p.relative_to(sources).parts
         },
+        "boundary_audit": boundary_audits,
         "log": log,
     }
     (HERE / "manifest.json").write_text(json.dumps(manifest, indent=1) + "\n")
