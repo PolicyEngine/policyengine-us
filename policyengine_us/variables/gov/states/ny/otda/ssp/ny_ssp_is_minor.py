@@ -9,6 +9,7 @@ class ny_ssp_is_minor(Variable):
     entity = Person
     label = "Minor for New York State Supplement Program living arrangements"
     definition_period = YEAR
+    defined_for = StateCode.NY
     reference = (
         # 18 NYCRR 398-2.1(t)
         "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-2.1",

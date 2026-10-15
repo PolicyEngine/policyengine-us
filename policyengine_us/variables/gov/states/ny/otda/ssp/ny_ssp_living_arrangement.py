@@ -2,6 +2,9 @@ from policyengine_us.model_api import *
 from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
     SSIFederalLivingArrangement,
 )
+from policyengine_us.variables.gov.states.ny.otda.ssp.ny_ssp_care_setting import (
+    NYSSPCareSetting,
+)
 
 
 class NYSSPLivingArrangement(Enum):
@@ -10,8 +13,10 @@ class NYSSPLivingArrangement(Enum):
     FAMILY_CARE = "Certified congregate care level I"
     RESIDENTIAL_CARE = "Certified congregate care level II"
     ENHANCED_RESIDENTIAL_CARE = "Certified congregate care level III"
-    NURSING_FACILITY = "Department of Health licensed nursing facility"
-    OTHER_MEDICAL_FACILITY = "Other qualifying Medicaid medical facility"
+    RESIDENTIAL_HEALTH_CARE_FACILITY = "Residential health care facility"
+    DEVELOPMENTAL_OR_MENTAL_HEALTH_FACILITY = (
+        "OPWDD intermediate care facility or OMH hospital"
+    )
     NONE = "No eligible New York living arrangement"
 
 
@@ -23,34 +28,57 @@ class ny_ssp_living_arrangement(Variable):
     defined_for = StateCode.NY
     possible_values = NYSSPLivingArrangement
     default_value = NYSSPLivingArrangement.NONE
-    reference = "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-4.5"
+    reference = (
+        "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-4.5",
+        "https://www.law.cornell.edu/regulations/new-york/18-NYCRR-398-3.4",
+    )
     documentation = """
-    Set certified care categories explicitly. Family and residential care for
-    minors require the authorized placements specified in 18 NYCRR 398-4.5.
-    The formula uses household membership; set LIVING_ALONE explicitly for
-    qualifying separate-food, room-and-board, foster-child or attendant cases.
-    The household count includes a spouse who lives in a medical facility,
-    because temporary and permanent absence are not modeled, so set the
-    arrangement of the spouse at home explicitly. Use NONE for excluded public
-    facilities and emergency shelters. Residents of medical facilities where
-    Medicaid pays more than half the cost default to OTHER_MEDICAL_FACILITY,
-    the lower personal needs allowance; residents of Department of Health
-    licensed nursing homes receive the higher allowance only when
-    NURSING_FACILITY is set explicitly. Set SSI claim status explicitly for
-    institutional couples after their month of entry.
+    Care levels and designated facilities come from ny_ssp_care_setting.
+    Residents of medical facilities where Medicaid pays more than half the
+    cost default to a residential health care facility (nursing home). Set
+    this variable for every member of the household only for the separate-food,
+    room-and-board, homemaker, family care resident or aide cases that
+    18 NYCRR 398-4.5(a)(1) counts as living alone.
     """
 
     def formula(person, period, parameters):
         la = NYSSPLivingArrangement
+        care = person("ny_ssp_care_setting", period)
         federal = person("ssi_federal_living_arrangement", period)
         medical = federal == SSIFederalLivingArrangement.MEDICAL_TREATMENT_FACILITY
-        excluded = person("ssi_lives_in_medical_treatment_facility", period) & ~medical
+        in_facility = person("ssi_lives_in_medical_treatment_facility", period)
+        designated = care == NYSSPCareSetting.DEVELOPMENTAL_OR_MENTAL_HEALTH_FACILITY
+        excluded = (care == NYSSPCareSetting.EXCLUDED) | (
+            (in_facility | designated) & ~medical
+        )
         other = federal == SSIFederalLivingArrangement.ANOTHER_PERSONS_HOUSEHOLD
         joint = person("ssi_couple_computation_applies", period)
-        alone = person.household.nb_persons() == where(joint, 2, 1)
+        # 18 NYCRR 398-4.5(a) defines living alone by the private household.
+        # Foster children do not end it ((a)(1)(vi), (a)(2)(ii)), and a member
+        # living in a medical facility is not part of the household.
+        household_member = ~person("is_in_foster_care", period) & ~in_facility
+        alone = person.household.sum(household_member) == where(
+            joint, person.marital_unit.sum(household_member), 1
+        )
         minor = person("ny_ssp_is_minor", period.this_year)
         return select(
-            [excluded, medical, other | minor | ~alone],
-            [la.NONE, la.OTHER_MEDICAL_FACILITY, la.LIVING_WITH_OTHERS],
+            [
+                excluded,
+                medical & designated,
+                medical,
+                care == NYSSPCareSetting.FAMILY_CARE,
+                care == NYSSPCareSetting.RESIDENTIAL_CARE,
+                care == NYSSPCareSetting.ENHANCED_RESIDENTIAL_CARE,
+                other | minor | ~alone,
+            ],
+            [
+                la.NONE,
+                la.DEVELOPMENTAL_OR_MENTAL_HEALTH_FACILITY,
+                la.RESIDENTIAL_HEALTH_CARE_FACILITY,
+                la.FAMILY_CARE,
+                la.RESIDENTIAL_CARE,
+                la.ENHANCED_RESIDENTIAL_CARE,
+                la.LIVING_WITH_OTHERS,
+            ],
             default=la.LIVING_ALONE,
         )

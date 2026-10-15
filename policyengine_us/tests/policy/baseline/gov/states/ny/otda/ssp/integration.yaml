@@ -22,16 +22,18 @@
     ny_ssp: [52, 52]
 
 - name: Case 2, family care couple.
+  # Social Services Law 209(2)(c): two times the 1_260.48 downstate individual
+  # standard is 2_520.96, less the 1_491 couple FBR = 1_029.96, or 514.98 each.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 65
-        ny_ssp_living_arrangement: FAMILY_CARE
+        ny_ssp_care_setting: FAMILY_CARE
       person2:
         age: 65
-        ny_ssp_living_arrangement: FAMILY_CARE
+        ny_ssp_care_setting: FAMILY_CARE
     marital_units:
       couple:
         members: [person1, person2]
@@ -46,17 +48,19 @@
   output:
     ny_ssp: [514.98, 514.98]
 
-- name: Case 3, residential care couple.
+- name: Case 3, residential care couple in a small non-institutional facility.
+  # 18 NYCRR 398-4.5(d): couple status continues where the facility is not an
+  # institution for SSI. 2 * 1_399 - 1_491 = 1_307, or 653.50 each.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 65
-        ny_ssp_living_arrangement: RESIDENTIAL_CARE
+        ny_ssp_care_setting: RESIDENTIAL_CARE
       person2:
         age: 65
-        ny_ssp_living_arrangement: RESIDENTIAL_CARE
+        ny_ssp_care_setting: RESIDENTIAL_CARE
     marital_units:
       couple:
         members: [person1, person2]
@@ -71,17 +75,18 @@
   output:
     ny_ssp: [653.5, 653.5]
 
-- name: Case 4, enhanced residential care couple.
+- name: Case 4, enhanced residential care couple in a small non-institutional facility.
+  # 18 NYCRR 398-4.5(e): 2 * 1_688 - 1_491 = 1_885, or 942.50 each.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     people:
       person1:
         age: 65
-        ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
+        ny_ssp_care_setting: ENHANCED_RESIDENTIAL_CARE
       person2:
         age: 65
-        ny_ssp_living_arrangement: ENHANCED_RESIDENTIAL_CARE
+        ny_ssp_care_setting: ENHANCED_RESIDENTIAL_CARE
     marital_units:
       couple:
         members: [person1, person2]
@@ -119,7 +124,7 @@
   output:
     ny_ssp: [23, 0]
 
-- name: Case 6, spouse deemed income reduces state payment.
+- name: Case 6, spouse deemed income above the standard of need leaves no state payment.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -152,10 +157,9 @@
     ssi: [0, 0]
     # The ineligible spouse makes a two-person household.
     ny_ssp_living_arrangement: [LIVING_WITH_OTHERS, LIVING_WITH_OTHERS]
-    # Own-income path: 23 - max(0 - 994, 0) = 23.
-    # Deemed path: couple rate 46 - excess (1_530 - 1_491 = 39) = 7.
-    # The lesser path pays 7.
-    ny_ssp: [7, 0]
+    # 18 NYCRR 398-4.4(b): standard 994 + 23 = 1_017 minus the greater of the
+    # 994 FBR or countable income 1_530 is below zero, so no state payment.
+    ny_ssp: [0, 0]
 
 - name: Case 7, annual benefit and SNAP income.
   period: 2026
@@ -168,6 +172,10 @@
     household_state_benefits: 1_044
     snap_unearned_income: 12_972
     hud_unearned_income: 12_972
+    # SNAP with the 877 utility allowance: 168 a month in January to September
+    # (298 - 130) and 180 in October to December (306 - 126), 2_052 a year.
+    # SSI 11_928 + 1_044 + 2_052 = 15_024.
+    spm_unit_benefits: 15_024
 
 - name: Case 8, part-time earnings reduce SSI but not the state payment.
   period: 2026-01
@@ -204,3 +212,96 @@
     ny_ssp_living_arrangement: LIVING_ALONE
     # Excess countable income max(650.83 - 994, 0) = 0: living alone rate 87 - 0 = 87.
     ny_ssp: 87
+
+- name: Case 9, residential care spouses claim as individuals after the month of entry.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        ny_ssp_care_setting: RESIDENTIAL_CARE
+      person2:
+        age: 65
+        ny_ssp_care_setting: RESIDENTIAL_CARE
+    # 18 NYCRR 398-4.5(d): after the month of entry into an institutional level
+    # II facility, the spouses are two individuals, entered as separate units.
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+        county: ALBANY_COUNTY_NY
+  output:
+    ssi: [994, 994]
+    ny_ssp: [405, 405]
+
+- name: Case 10, enhanced residential care spouses claim as individuals after the month of entry.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        ny_ssp_care_setting: ENHANCED_RESIDENTIAL_CARE
+      person2:
+        age: 65
+        ny_ssp_care_setting: ENHANCED_RESIDENTIAL_CARE
+    # 18 NYCRR 398-4.5(e) applies the same rule to level III.
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+        county: ALBANY_COUNTY_NY
+  output:
+    ssi: [994, 994]
+    ny_ssp: [694, 694]
+
+- name: Case 11, spouse with part-time earnings leaves the state payment unchanged under deeming.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+      person2:
+        age: 63
+        # 20 hours a week at the 2026 minimum wage outside New York City,
+        # Long Island and Westchester ($16.00, https://dol.ny.gov/minimum-wage-0):
+        # 16 * 20 * 52 = 16_640.
+        employment_income: 16_640
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NY
+        county: ALBANY_COUNTY_NY
+  output:
+    # Spouse earnings 16_640 / 12 = 1_386.67 > 497, so deeming applies.
+    is_ssi_spousal_deeming_applies: [true, false]
+    # (1_386.67 - 20 - 65) / 2 = 650.83.
+    ssi_countable_income: [650.83, 0]
+    # Couple FBR 1_491 - 650.83 = 840.17.
+    ssi: [840.17, 0]
+    # 18 NYCRR 398-4.4(b): 1_017 - max(994, 650.83) = 23.
+    ny_ssp: [23, 0]
