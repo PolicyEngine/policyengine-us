@@ -2,9 +2,10 @@
 # FY2025 matrix: bases of 1_000/750/550/400. Both years add 100 for a member
 # age 60 or older, 100 for a disabled member and 150 for a child age 5 or
 # younger, each once per household. Manual page 23 bases the payment on the
-# matrix, not the actual bill. Categorical households with income above the
-# table receive the smallest base as a documented estimate; the sources give
-# no express instruction for that case.
+# matrix, not the actual bill. Categorical households, and households of 15 or
+# more protected by the federal 110% poverty floor, with income above the table
+# receive the smallest base as a documented estimate; the sources give no
+# express instruction for that case.
 
 - name: Case 1, published income band tops include exact amounts and the next cent starts the next band.
   period: 2026
@@ -36,15 +37,6 @@
     - CITIZEN
     - CITIZEN
     - CITIZEN
-    is_full_time_student:
-    - false
-    - false
-    - false
-    - false
-    - false
-    - false
-    - false
-    - false
     ssi:
     - 0
     - 0
@@ -127,11 +119,6 @@
     - CITIZEN
     - CITIZEN
     - CITIZEN
-    is_full_time_student:
-    - false
-    - false
-    - false
-    - false
     ssi:
     - 0
     - 0
@@ -180,12 +167,10 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
       person2:
         age: 5
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
     spm_units:
       spm_unit:
@@ -207,12 +192,10 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
       person2:
         age: 6
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
     spm_units:
       spm_unit:
@@ -234,29 +217,24 @@
       person1:
         age: 65
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         is_disabled: true
       person2:
         age: 64
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         is_disabled: true
       person3:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
       person4:
         age: 5
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
       person5:
         age: 3
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
     spm_units:
       spm_unit:
@@ -280,13 +258,11 @@
       person1:
         age: 40
         immigration_status: UNDOCUMENTED
-        is_full_time_student: false
         ssi: 0
         employment_income: 30_000
       person2:
         age: 5
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
     spm_units:
       spm_unit:
@@ -312,8 +288,6 @@
     - 40
     immigration_status:
     - CITIZEN
-    is_full_time_student:
-    - false
     ssi:
     - 0
     fl_tca:
@@ -341,8 +315,6 @@
     - 40
     immigration_status:
     - CITIZEN
-    is_full_time_student:
-    - false
     ssi:
     - 0
     fl_tca:
@@ -379,10 +351,6 @@
     - CITIZEN
     - CITIZEN
     - CITIZEN
-    is_full_time_student:
-    - false
-    - false
-    - false
     ssi:
     - 0
     - 0
@@ -438,11 +406,6 @@
     - CITIZEN
     - CITIZEN
     - CITIZEN
-    is_full_time_student:
-    - false
-    - false
-    - false
-    - false
     ssi:
     - 0
     - 0
@@ -490,7 +453,6 @@
     state_code: [FL, FL]
     age: [40, 40]
     immigration_status: [CITIZEN, CITIZEN]
-    is_full_time_student: [false, false]
     ssi: [0, 0]
     fl_tca: [0, 0]
     snap: [0, 0]
@@ -513,12 +475,10 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
       person2:
         age: 5.5
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
     spm_units:
       spm_unit:
@@ -546,7 +506,6 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 10_000
     spm_units:
@@ -579,7 +538,6 @@
     state_code: [FL, FL, FL, FL, FL, FL, FL, FL]
     age: [40, 40, 40, 40, 40, 40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
-    is_full_time_student: [false, false, false, false, false, false, false, false]
     ssi: [0, 0, 0, 0, 0, 0, 0, 0]
     fl_tca: [0, 0, 0, 0, 0, 0, 0, 0]
     snap: [0, 0, 0, 0, 0, 0, 0, 0]
@@ -638,7 +596,6 @@
     state_code: [FL, FL, FL, FL, FL, FL, FL, FL]
     age: [40, 40, 40, 40, 40, 40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
-    is_full_time_student: [false, false, false, false, false, false, false, false]
     ssi: [0, 0, 0, 0, 0, 0, 0, 0]
     fl_tca: [0, 0, 0, 0, 0, 0, 0, 0]
     snap: [0, 0, 0, 0, 0, 0, 0, 0]
@@ -660,7 +617,6 @@
     state_code: [FL, FL, FL, FL, FL, FL]
     age: [40, 40, 40, 40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
-    is_full_time_student: [false, false, false, false, false, false]
     ssi: [0, 0, 0, 0, 0, 0]
     fl_tca: [0, 0, 0, 0, 0, 0]
     snap: [0, 0, 0, 0, 0, 0]
@@ -683,7 +639,6 @@
     state_code: [FL, FL]
     age: [50, 62]
     immigration_status: [CITIZEN, CITIZEN]
-    is_full_time_student: [false, false]
     ssi: [0, 0]
     fl_tca: [0, 0]
     snap: [0, 0]
@@ -708,7 +663,6 @@
     state_code: [FL, FL]
     age: [40, 40]
     immigration_status: [CITIZEN, CITIZEN]
-    is_full_time_student: [false, false]
     ssi: [0, 0]
     fl_tca: [0, 0]
     snap: [0, 0]
@@ -736,14 +690,12 @@
       person1:
         age: 66
         immigration_status: CITIZEN
-        is_full_time_student: false
         is_disabled: true
         ssi: 0
         social_security: 14_400
       person2:
         age: 4
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
     spm_units:
       spm_unit:
@@ -775,7 +727,6 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 14_820
     spm_units:
@@ -810,7 +761,6 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 14_820
     spm_units:
@@ -855,25 +805,55 @@
     fl_liheap_eligible: [true, true, false]
     fl_liheap: [350, 350, 0]
 
-# FY2026 printed size-13 payment row: first band ends at 78_843, second at
-# 110_380 and third at 134_033. Eligibility remains the plan's 60%-SMI rule,
-# 94_610. SNAP receipt waives the income eligibility test, allowing checks of
-# the higher printed band boundaries without inventing a higher income limit.
-- name: Case 24, thirteen-person published payment bands remain distinct from income eligibility.
+# FY2026, size 13: the matrix footnote's 60% of state median income gives
+# floor(61_837 x 1.53) = 94_610; the printed 157_686 row (100% of state median
+# income) is not followed. Band tops round half up: 94_610 x 50% = 47_305,
+# x 70% = 66_227 and x 85% = 80_418.5, so 80_419. 60_000 is in band 2 (300), as
+# at sizes 12 (46_379-64_929) and 14 (48_234-67_526). Income above 94_610 is
+# ineligible without receipt (the 110% floor for 13 is 89_815); SNAP receipt
+# waives the test and income above the table pays the 200 base.
+- name: Case 24, thirteen-person bands follow the sixty percent state median income limit.
   period: 2026
   absolute_error_margin: 0.01
   input:
-    state_code: [FL, FL, FL, FL, FL, FL, FL, FL, FL]
-    age: [40, 40, 40, 40, 40, 40, 40, 40, 40]
-    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
-    fl_liheap_household_size: [13, 13, 13, 13, 13, 13, 13, 13, 13]
-    fl_liheap_countable_income: [60_000, 78_843, 78_843.01, 94_610, 94_610.01, 110_380, 110_380.01, 134_033, 134_033.01]
-    snap: [0, 0, 0, 0, 0, 1, 1, 1, 1]
-    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0]
-    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
-    heating_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
+    state_code: [FL, FL, FL, FL, FL, FL, FL, FL, FL, FL]
+    age: [40, 40, 40, 40, 40, 40, 40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    fl_liheap_household_size: [13, 13, 13, 13, 13, 13, 13, 13, 13, 13]
+    fl_liheap_countable_income: [47_305, 47_305.01, 60_000, 66_227, 66_227.01, 80_419, 80_419.01, 94_610, 94_610.01, 100_000]
+    snap: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+    tanf: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ssi: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY]
+    heating_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
   output:
-    fl_liheap_income_limit: [94_610, 94_610, 94_610, 94_610, 94_610, 94_610, 94_610, 94_610, 94_610]
-    fl_liheap_eligible: [true, true, true, true, false, true, true, true, true]
-    fl_liheap: [350, 350, 300, 300, 0, 300, 250, 250, 200]
+    fl_liheap_income_limit: [94_610, 94_610, 94_610, 94_610, 94_610, 94_610, 94_610, 94_610, 94_610, 94_610]
+    fl_liheap_eligible: [true, true, true, true, true, true, true, true, false, true]
+    fl_liheap: [350, 300, 300, 300, 250, 250, 200, 200, 0, 200]
+
+# Federal 110% poverty floor: 42 U.S.C. 8624(b)(2)(B), repeated in the accepted
+# FY2026 plan assurances (page 45) and contract G(8)e, bars excluding a
+# household on income below 110 percent of the poverty level. Period 2026 uses
+# the 2025 guideline: size 15 is 15_650 + 14 x 5_500 = 92_650 (floor 101_915),
+# size 16 is 98_150 (floor 107_965). The FY2026 limits are
+# floor(61_837 x 1.59) = 98_320 and floor(61_837 x 1.62) = 100_175. Incomes
+# between each limit and floor stay eligible in band 4 (200); 101_915.01 is
+# excluded.
+- name: Case 25, households of fifteen or more below 110 percent of the poverty guideline remain income eligible.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [FL, FL, FL, FL]
+    age: [40, 40, 40, 40]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    ssi: [0, 0, 0, 0]
+    fl_tca: [0, 0, 0, 0]
+    snap: [0, 0, 0, 0]
+    employment_income: [100_000, 105_000, 101_914.99, 101_915.01]
+    fl_liheap_household_size: [15, 16, 15, 15]
+    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
+    heating_expense: [1_200, 1_200, 1_200, 1_200]
+  output:
+    fl_liheap_income_limit: [98_320, 100_175, 98_320, 98_320]
+    fl_liheap_eligible: [true, true, true, false]
+    fl_liheap: [200, 200, 200, 0]

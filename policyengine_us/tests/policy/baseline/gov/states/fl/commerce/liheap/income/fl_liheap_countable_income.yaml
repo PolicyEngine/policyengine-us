@@ -10,7 +10,6 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 12_000
         self_employment_income: 2_400
@@ -20,8 +19,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -42,7 +39,6 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 12_000
         self_employment_income: -6_000
@@ -50,8 +46,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -70,15 +64,12 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 1_200
         self_employment_income: -6_000
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -99,7 +90,6 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 30_000
         unemployment_compensation: 6_000
@@ -107,8 +97,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 6_000
     households:
@@ -129,7 +117,6 @@
       person1:
         age: 45
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 12_000
       person2:
@@ -146,8 +133,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -167,7 +152,6 @@
       person1:
         age: 45
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 12_000
       person2:
@@ -184,8 +168,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -205,7 +187,6 @@
       person1:
         age: 45
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 12_000
       person2:
@@ -222,8 +203,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -243,7 +222,6 @@
       person1:
         age: 45
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 12_000
       person2:
@@ -260,8 +238,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -281,7 +257,6 @@
       person1:
         age: 45
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 12_000
       person2:
@@ -298,8 +273,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -321,7 +294,6 @@
       person1:
         age: 45
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 12_000
       person2:
@@ -338,8 +310,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -360,7 +330,6 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 30_000
         rental_income: 1_200
@@ -369,8 +338,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -394,7 +361,6 @@
       person1:
         age: 67
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 1_200
         social_security: 18_000
         pension_income: 2_400
@@ -412,8 +378,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -434,15 +398,12 @@
       person1:
         age: 67
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         social_security: 24_000
         medicare_part_b_premium: 2_400
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -463,20 +424,16 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 6_000
       person2:
         age: 8
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         social_security: 1_200
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 3_600
         snap: 0
     households:
@@ -497,20 +454,16 @@
       person1:
         age: 40
         immigration_status: UNDOCUMENTED
-        is_full_time_student: false
         ssi: 0
         employment_income: 20_000
       person2:
         age: 8
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         social_security: 1_200
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -531,15 +484,12 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         gambling_winnings: 40_000
         gambling_losses: 30_000
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -559,15 +509,12 @@
     state_code: [FL, FL, FL]
     age: [40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN]
-    is_full_time_student: [false, false, false]
     ssi: [0, 0, 0]
     fl_tca: [0, 0, 0]
     snap: [0, 0, 0]
     employment_income: [1_200, 1_200, 1_200]
     gambling_winnings: [4_000, 4_000, 4_000]
     gambling_losses: [4_000, 5_000, 10_000]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    gas_expense: [1_200, 1_200, 1_200]
   output:
     fl_liheap_countable_income: [1_200, 1_200, 1_200]
 
@@ -583,21 +530,17 @@
       person1:
         age: 58
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         military_retirement_pay: 24_000
         taxable_private_pension_income: 6_000
       person2:
         age: 63
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         railroad_benefits: 18_000
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -620,7 +563,6 @@
       person1:
         age: 45
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 30_000
         farm_operations_income: -2_500
@@ -628,7 +570,6 @@
       person2:
         age: 44
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         self_employment_income: -8_000
         partnership_s_corp_income: -1_000
@@ -638,8 +579,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -667,15 +606,11 @@
     spm_units:
       spm_unit1:
         members: [person1, person2, person3]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 3_636
         takes_up_tanf_if_eligible: true
         snap: 0
       spm_unit2:
         members: [person4, person5, person6]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 3_636
         takes_up_tanf_if_eligible: false
         snap: 0

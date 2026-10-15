@@ -1,4 +1,4 @@
-description: Florida counts these person-level unearned income sources subject to its age and student-status rule under the Low Income Home Energy Assistance Program.
+description: Florida uses these sources as unearned income of members aged 18 and older under the Low Income Home Energy Assistance Program.
 values:
   2024-10-01:
     - social_security
@@ -26,7 +26,13 @@ values:
     - alimony_income
 # Net gambling and lottery winnings are counted in the formula, with losses
 # offsetting only winnings.
-# The FY2025 and FY2026 plans exclude unemployment compensation and cash gifts.
+# The FY2025 and FY2026 plans (section 1.9) and the portal FAQ exclude
+# unemployment compensation and cash gifts.
+# Florida Optional State Supplementation (fl_oss) is not listed: it pays
+# residents of assisted living facilities, adult family-care homes and mental
+# health residential treatment facilities, whom manual 900.02B (page 39,
+# residence paid through a state residential program) and 900.03B(1) (page
+# 40, institutions) exclude from LIHEAP households.
 # Pension/SSA subcomponents are not counted twice; TANF is counted once in
 # household.yaml.
 metadata:
@@ -36,7 +42,9 @@ metadata:
   reference:
     - title: "Florida FY2026 LIHEAP State Plan, section 1.9 (included and excluded income sources) #page 5-7"
       href: https://liheapch.acf.gov/docs/2026/state-plans/FL_Plan_2026.pdf#page=5
-    - title: "Florida LIHEAP Policies and Procedures Manual, May 27 2022, part 1200 #page 49-51"
-      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=49
+    - title: "Florida LIHEAP Policies and Procedures Manual, May 27 2022, parts 900 and 1200 #page 39-40,49-51"
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/FL_PolicyManual_2023.pdf#page=39
     - title: "Florida FY2025 LIHEAP State Plan, Section 1.9 #page 5-7"
       href: https://liheapch.acf.gov/docs/2025/state-plans/FL_Plan_2025.pdf#page=5
+    - title: Florida statewide LIHEAP portal, What qualifies as income
+      href: https://floridaliheap.com/faq

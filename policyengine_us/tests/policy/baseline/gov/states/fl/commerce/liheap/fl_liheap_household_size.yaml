@@ -1,4 +1,4 @@
-# Florida independent household income and categorical-income components; no final program eligibility or award is asserted.
+# Florida LIHEAP household size counts citizens and qualified noncitizens; no final program eligibility or award is asserted.
 
 # Manual pages 41-42 count citizens and qualified noncitizens and exclude
 # nonqualified people from the size; SNAP-specific waiting periods do not apply.
@@ -9,33 +9,26 @@
       person1:
         age: 40
         immigration_status: LEGAL_PERMANENT_RESIDENT
-        is_full_time_student: false
         ssi: 0
       person2:
         age: 8
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
       person3:
         age: 35
         immigration_status: ASYLEE
-        is_full_time_student: false
         ssi: 0
       person4:
         age: 22
         immigration_status: DACA
-        is_full_time_student: false
         ssi: 0
       person5:
         age: 39
         immigration_status: UNDOCUMENTED
-        is_full_time_student: false
         ssi: 0
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -46,7 +39,8 @@
     fl_liheap_household_size: 3
 
 # Manual pages 41-42 require at least one qualified member for final program
-# eligibility; this size component returns 0.
+# eligibility; this size component returns 0, and the income limit is masked to
+# 0 (the SMI size factor would otherwise treat size 0 as one person, 32_155).
 - name: Case 2, only nonqualified members produce a zero household size.
   period: 2026
   input:
@@ -54,13 +48,10 @@
       person1:
         age: 40
         immigration_status: UNDOCUMENTED
-        is_full_time_student: false
         ssi: 0
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -69,3 +60,4 @@
         state_code: FL
   output:
     fl_liheap_household_size: 0
+    fl_liheap_income_limit: 0

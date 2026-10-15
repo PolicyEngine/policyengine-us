@@ -16,6 +16,8 @@ class fl_liheap_income_limit(Variable):
         "https://liheapch.acf.gov/delivery/income_eligibility.htm",
         "https://liheapch.acf.gov/docs/2025/state-plans/FL_Plan_2025.pdf#page=8",
         "https://liheapch.acf.gov/docs/2025/benefits-matricies/FL_BenefitMatrix_2025.pdf",
+        "https://www.law.cornell.edu/uscode/text/42/8624",
+        "https://floridaliheap.com/faq",
     )
 
     def formula(spm_unit, period, parameters):
@@ -36,12 +38,17 @@ class fl_liheap_income_limit(Variable):
         # (page 8) and matrix use 60% of SMI for every size, and the manual
         # says to follow DEO's current benefit matrix (page 9), so FY2026
         # follows the matrix.
-        # The printed FY2026 size-13 maximum, $157,686, equals 100% of SMI.
-        # Apply the plan's explicit 60% eligibility rule ($94,610); payment
-        # bands remain the published matrix row in fl_liheap. The federal
-        # table restricts its 150%-FPG large-household exception to
-        # cooling/crisis. Larger sizes follow the federal factors without table
-        # verification.
+        # The printed FY2026 size-13 row tops out at $157,686, which is 100% of
+        # SMI (103,063 x 1.53), and the portal FAQ prints $13,141 a month
+        # (157,686 / 12). The matrix footnote says 60% of SMI, plan item 2.1
+        # (page 8) lists 60% for sizes 1-9, and 42 U.S.C. 8624(b)(2)(B) caps
+        # eligibility at the greater of 150% of poverty and 60% of SMI, which
+        # the printed row exceeds. Size 13 therefore uses 60% of SMI ($94,610)
+        # for both this limit and the payment bands. The federal table
+        # restricts its 150%-FPG large-household exception to cooling/crisis.
+        # Larger sizes follow the federal factors without table verification;
+        # from 15 people the 110%-of-poverty floor in fl_liheap_eligible
+        # exceeds this limit.
         state_group = spm_unit.household("state_group_str", period)
         guideline = fpg(size, state_group, period, parameters, year_lag=p.fpg_year_lag)
         limit = max_(smi_limit, guideline * p.fpg_rate)

@@ -10,14 +10,11 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 100_000
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 1_200
     households:
@@ -36,18 +33,14 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
       person2:
         age: 8
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 3_600
         snap: 0
     households:
@@ -67,19 +60,15 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         employment_income: 12_000
       person2:
         age: 8
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 1_200
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -100,14 +89,11 @@
       person1:
         age: 67
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
         is_ssi_eligible: true
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 0
     households:
@@ -126,13 +112,10 @@
       person1:
         age: 40
         immigration_status: CITIZEN
-        is_full_time_student: false
         ssi: 0
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 0
         snap: 1_200
     households:
@@ -161,15 +144,11 @@
     spm_units:
       spm_unit1:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 2_160
         takes_up_tanf_if_eligible: true
         snap: 0
       spm_unit2:
         members: [person3, person4]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         fl_tca: 2_160
         takes_up_tanf_if_eligible: false
         snap: 0

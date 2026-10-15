@@ -1,6 +1,7 @@
 # FY2026 matrix, sizes 1-12 as printed. Its stated 60% of state median income
-# rule gives 94_610 at size 13; the printed 157_686 is treated as an anomaly,
-# not a separate 100% of state median income category.
+# rule gives floor(61_837 x 1.53) = 94_610 at size 13, which the model uses for
+# both the limit and the payment bands; the printed 157_686 is 100% of state
+# median income and exceeds the federal ceiling of 42 U.S.C. 8624(b)(2)(B).
 
 - name: Case 1, all twelve consistent published heating limits match the current matrix.
   period: 2026
@@ -44,19 +45,6 @@
     - CITIZEN
     - CITIZEN
     - CITIZEN
-    is_full_time_student:
-    - false
-    - false
-    - false
-    - false
-    - false
-    - false
-    - false
-    - false
-    - false
-    - false
-    - false
-    - false
     ssi:
     - 0
     - 0
@@ -109,32 +97,6 @@
     - 0
     - 0
     - 0
-    heating_type:
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    - NATURAL_GAS
-    heating_expense:
-    - 1_200
-    - 1_200
-    - 1_200
-    - 1_200
-    - 1_200
-    - 1_200
-    - 1_200
-    - 1_200
-    - 1_200
-    - 1_200
-    - 1_200
-    - 1_200
     fl_liheap_household_size:
     - 1
     - 2
@@ -172,8 +134,6 @@
     - 40
     immigration_status:
     - CITIZEN
-    is_full_time_student:
-    - false
     ssi:
     - 0
     fl_tca:
@@ -182,10 +142,6 @@
     - 0
     employment_income:
     - 0
-    heating_type:
-    - NATURAL_GAS
-    heating_expense:
-    - 1_200
     fl_liheap_household_size:
     - 13
   output:
@@ -207,13 +163,10 @@
     state_code: [FL, FL, FL, FL, FL, FL, FL, FL]
     age: [40, 40, 40, 40, 40, 40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
-    is_full_time_student: [false, false, false, false, false, false, false, false]
     ssi: [0, 0, 0, 0, 0, 0, 0, 0]
     fl_tca: [0, 0, 0, 0, 0, 0, 0, 0]
     snap: [0, 0, 0, 0, 0, 0, 0, 0]
     employment_income: [0, 0, 0, 0, 0, 0, 0, 0]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    heating_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
     fl_liheap_household_size: [1, 2, 4, 6, 8, 9, 12, 20]
   output:
     fl_liheap_income_limit: [30_587.856, 39_999.504, 58_822.8, 77_646.096, 81_175.464, 87_150, 111_360, 175_920]

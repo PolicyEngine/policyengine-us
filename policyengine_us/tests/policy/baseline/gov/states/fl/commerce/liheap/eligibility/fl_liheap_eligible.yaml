@@ -15,9 +15,6 @@
     immigration_status:
     - CITIZEN
     - CITIZEN
-    is_full_time_student:
-    - false
-    - false
     ssi:
     - 0
     - 0
@@ -61,11 +58,6 @@
     - CITIZEN
     - CITIZEN
     - CITIZEN
-    is_full_time_student:
-    - false
-    - false
-    - false
-    - false
     ssi:
     - 0
     - 0
@@ -120,11 +112,6 @@
     - UNDOCUMENTED
     - CITIZEN
     - CITIZEN
-    is_full_time_student:
-    - false
-    - false
-    - false
-    - false
     ssi:
     - 0
     - 0
@@ -188,12 +175,6 @@
     - CITIZEN
     - CITIZEN
     - CITIZEN
-    is_full_time_student:
-    - false
-    - false
-    - false
-    - false
-    - false
     ssi:
     - 0
     - 0
@@ -273,9 +254,6 @@
     immigration_status:
     - CITIZEN
     - CITIZEN
-    is_full_time_student:
-    - false
-    - false
     ssi:
     - 0
     - 0
@@ -315,7 +293,6 @@
     state_code: [FL, FL, FL, FL]
     age: [40, 40, 40, 40]
     immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN]
-    is_full_time_student: [false, false, false, false]
     ssi: [0, 0, 0, 0]
     fl_tca: [0, 0, 0, 0]
     snap: [0, 0, 0, 0]
@@ -325,3 +302,25 @@
     heating_expense: [1_200, 1_200, 1_200, 1_200]
   output:
     fl_liheap_eligible: [true, false, true, false]
+
+# Outside rent, has_heating_expense is the heating obligation (manual 900.01A,
+# page 39; 1100.04A, page 47). It defaults to true when the primary fuel's bill
+# is positive; an explicit false is respected even with a 1_200 gas bill.
+# Part-time Florida minimum-wage earnings: 20 x (39 x 14 + 13 x 15) = 14_820,
+# under the 32_155 one-person limit.
+- name: Case 7, an explicit absence of a heating obligation outside rent is respected despite a fuel bill.
+  period: 2026
+  input:
+    state_code: [FL, FL]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    fl_tca: [0, 0]
+    snap: [0, 0]
+    employment_income: [14_820, 14_820]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+    heat_expense_included_in_rent: [false, false]
+    has_heating_expense: [true, false]
+  output:
+    fl_liheap_eligible: [true, false]

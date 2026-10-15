@@ -1,0 +1,11 @@
+description: The US Department of Health and Human Services limits income-based exclusion to households with income of at least this percentage of the poverty guideline under the Low Income Home Energy Assistance Program.
+# Pub. L. 98-558, section 605(a)(2), added the floor for fiscal year 1986 and later.
+values:
+  1985-10-01: 1.1
+metadata:
+  period: year
+  unit: /1
+  label: LIHEAP poverty guideline income floor
+  reference:
+    - title: 42 U.S.C. 8624(b)(2)(B)
+      href: https://www.law.cornell.edu/uscode/text/42/8624
