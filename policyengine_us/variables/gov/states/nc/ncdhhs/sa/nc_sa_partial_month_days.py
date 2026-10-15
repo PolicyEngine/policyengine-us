@@ -15,3 +15,7 @@ class nc_sa_partial_month_days(Variable):
         # PDF pages 42-43
         "https://policies.ncdhhs.gov/wp-content/uploads/Special-Assistance-In-Home-Program-Manual-Rev-June-2026.pdf#page=42",
     )
+
+    def formula(person, period, parameters):
+        # A formula stops a one-month input from carrying into later months.
+        return 0
