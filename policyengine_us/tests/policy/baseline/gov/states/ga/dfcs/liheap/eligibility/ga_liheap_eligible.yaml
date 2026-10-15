@@ -167,3 +167,38 @@
     pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 0, 1_200]
   output:
     ga_liheap_eligible: [true, true, true, true, false, false]
+
+# Manual page 4: "Renters who live in subsidized housing are eligible for assistance
+# if their utility bill is in their name". Each household is one adult with $12,000
+# of wages (under the $34,549 limit), natural gas heat in rent, a subsidized tenant
+# share of $3,000 ($250 a month), and tenant_pays_utilities false.
+# Household 1: the $1,200 electric bill is the bill in the household's name, even
+# though tenant_pays_utilities says utilities are in rent; the bill resolves the
+# contradictory flag. The household is on the electric-vendor route, and the
+# subsidy bars the direct-payment route. Natural gas Level II is $560; $12,000 is
+# at or below the $13,589 Level I cutoff, so $560 + $100 = $660.
+# Household 2: no bill. Page 4 ("Subsidized housing residents whose fuel cost is
+# included in their rental payment are not eligible for assistance unless the
+# applicant can verify an energy burden") and page 82 ("resides in subsidized
+# housing and the rent includes utilities": "not eligible for the program") make it
+# ineligible.
+- name: Case 9, a subsidized heat in rent renter with an electric bill qualifies when utilities are flagged as in rent.
+  period: 2026
+  input:
+    state_code: [GA, GA]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [12_000, 12_000]
+    ssi: [0, 0]
+    ga_tanf: [0, 0]
+    rent: [3_000, 3_000]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    heat_expense_included_in_rent: [true, true]
+    tenant_pays_utilities: [false, false]
+    receives_housing_assistance: [true, true]
+    is_in_public_housing: [false, false]
+    gas_expense: [0, 0]
+    pre_subsidy_electricity_expense: [1_200, 0]
+  output:
+    ga_liheap_eligible: [true, false]
+    ga_liheap: [660, 0]

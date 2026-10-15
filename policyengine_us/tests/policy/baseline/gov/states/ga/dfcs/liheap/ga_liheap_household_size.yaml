@@ -30,14 +30,11 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5]
-        heating_type: ELECTRICITY
-        pre_subsidy_electricity_expense: 1_200
         ga_tanf: 0
     households:
       household:
         members: [person1, person2, person3, person4, person5]
         state_code: GA
-        hud_utility_allowance: 0
   output:
     ga_liheap_household_size: 3
 
@@ -58,13 +55,10 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: ELECTRICITY
-        pre_subsidy_electricity_expense: 1_200
         ga_tanf: 0
     households:
       household:
         members: [person1, person2]
         state_code: GA
-        hud_utility_allowance: 0
   output:
     ga_liheap_household_size: 0

@@ -7,11 +7,6 @@
   absolute_error_margin: 0.01
   input:
     state_code: [GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA, GA]
-    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
-      ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY, ELECTRICITY,
-      ELECTRICITY]
-    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
-      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
     ga_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
   output:
     ga_liheap_income_limit: [34_549, 45_179, 55_810, 66_441, 77_071, 87_702, 89_695, 91_688, 93_681,
@@ -24,8 +19,6 @@
   absolute_error_margin: 0.01
   input:
     state_code: [GA, AL]
-    heating_type: [ELECTRICITY, ELECTRICITY]
-    pre_subsidy_electricity_expense: [1_200, 1_200]
     ga_liheap_household_size: [1, 1]
   output:
     ga_liheap_income_limit: [34_549, 0]
@@ -40,8 +33,18 @@
   absolute_error_margin: 0.01
   input:
     state_code: [GA, GA, GA]
-    heating_type: [ELECTRICITY, ELECTRICITY, ELECTRICITY]
-    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200]
     ga_liheap_household_size: [1, 4, 16]
   output:
     ga_liheap_income_limit: [33_038, 63_535, 102_926]
+
+# A unit with no qualified member has no Georgia income limit. Without the size-0
+# mask, the HHS size factor at size 0 (0.52) would give floor($66,441 x 0.52 =
+# $34,549.32) = $34,549.
+- name: Case 4, a unit with no qualified member has a zero income limit.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: GA
+    ga_liheap_household_size: 0
+  output:
+    ga_liheap_income_limit: 0

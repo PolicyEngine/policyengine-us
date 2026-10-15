@@ -1,4 +1,5 @@
 from policyengine_us.model_api import *
+from policyengine_us.variables.gov.hhs.tax_unit_fpg import fpg
 from policyengine_us.variables.gov.states.ga.dfcs.liheap.eligibility._ga_liheap_housing import (
     ga_liheap_has_direct_payment_route,
     ga_liheap_has_electric_vendor_route,
@@ -14,22 +15,37 @@ class ga_liheap_eligible(Variable):
     reference = (
         # PDF pages 5, 8-9, 30
         "https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=5",
-        # PDF pages 3-4, 50, 56-57, 75, 89
+        # PDF pages 3-4, 50, 56-57, 75, 82, 89
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=3",
+        "https://pamms.dhs.ga.gov/dfcs/_exports/liheap.pdf#page=4",
+        "https://www.law.cornell.edu/uscode/text/42/8624",
     )
 
     def formula(spm_unit, period, parameters):
+        p = parameters(period).gov.states.ga.dfcs.liheap.eligibility
+        p_hhs = parameters(period).gov.hhs.liheap
         size = spm_unit("ga_liheap_household_size", period)
         income = spm_unit("ga_liheap_income", period)
         limit = spm_unit("ga_liheap_income_limit", period)
+        # 42 U.S.C. 8624(b)(2)(B) bars excluding a household on income below 110%
+        # of the poverty guideline. The 60% SMI limit falls below that floor from
+        # household size 16 in FY2025 and FY2026; the limit keeps the printed table.
+        state_group = spm_unit.household("state_group_str", period)
+        guideline = fpg(size, state_group, period, parameters, year_lag=p.fpg_year_lag)
+        income_eligible = (income <= limit) | (income < p_hhs.fpg_floor * guideline)
         heating_type = spm_unit("heating_type", period)
         heating_expense = spm_unit("heating_expense", period)
         # Explicit heating responsibility can qualify with no current bill.
         # A positive primary bill also establishes burden with heat in rent,
-        # including subsidized housing. Heat-in-rent renters also qualify when
-        # billed directly for electric, subsidized or not (manual pages 4 and
-        # 89), or when unsubsidized with all utilities in rent (page 89). The
-        # rent flag alone is insufficient.
+        # including subsidized housing (PAMMS chapter 100: "a vendor
+        # bill/statement for the main heating source"). Heat-in-rent renters
+        # also qualify when billed directly for electric, subsidized or not
+        # (manual pages 4 and 89), or when unsubsidized with all utilities in
+        # rent (page 89). The rent flag alone is insufficient.
+        # FY2026 plan item 2.3 (page 8) answers No to additional or differing
+        # eligibility policies for subsidized renters and renters with utilities in
+        # rent, while the manual applies energy-burden rules to both (pages 4, 57,
+        # 82 and 89); this follows the manual.
         energy_burden = (
             spm_unit("has_heating_expense", period)
             | (heating_expense > 0)
@@ -46,7 +62,7 @@ class ga_liheap_eligible(Variable):
         # see the manual conflict noted in ga_liheap_household_size.
         return (
             (size > 0)
-            & (income <= limit)
+            & income_eligible
             & energy_burden
             & (heating_type != heating_type.possible_values.NONE)
         )

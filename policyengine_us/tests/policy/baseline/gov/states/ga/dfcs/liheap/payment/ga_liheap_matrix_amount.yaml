@@ -13,12 +13,6 @@
       NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
       NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
       NATURAL_GAS]
-    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
-      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
-      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
-    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
-      1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
-      1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
     ga_liheap_household_size: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11,
       12, 12, 13, 13, 14, 14, 15, 15, 16, 16]
     ga_liheap_income: [13_589, 13589.01, 17_770, 17770.01, 21_952, 21952.01, 25_469, 25469.01, 30_315,
@@ -39,12 +33,6 @@
     state_code: [GA, GA, GA, GA, GA, GA, GA, GA, GA, GA]
     heating_type: [ELECTRICITY, NATURAL_GAS, FUEL_OIL, PROPANE, WOOD, ELECTRICITY, NATURAL_GAS, FUEL_OIL,
       PROPANE, WOOD]
-    pre_subsidy_electricity_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200,
-      1_200]
-    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
-    fuel_oil_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
-    bottled_gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
-    wood_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
     ga_liheap_household_size: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ga_liheap_income: [0, 0, 0, 0, 0, 13589.01, 13589.01, 13589.01, 13589.01, 13589.01]
   output:
@@ -58,7 +46,6 @@
   input:
     state_code: GA
     heating_type: NATURAL_GAS
-    pre_subsidy_electricity_expense: 1_200
     gas_expense: 50
     ga_liheap_household_size: 1
     ga_liheap_income: 0
@@ -73,7 +60,6 @@
   input:
     state_code: GA
     heating_type: NONE
-    pre_subsidy_electricity_expense: 1_200
     ga_liheap_household_size: 1
     ga_liheap_income: 0
   output:
@@ -109,7 +95,6 @@
   input:
     state_code: [GA, GA, GA, GA, GA, GA]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
     ga_liheap_household_size: [1, 1, 4, 4, 16, 16]
     ga_liheap_income: [12_995, 12_995.01, 24_355, 24_355.01, 40_485, 40_485.01]
   output:
@@ -124,7 +109,6 @@
   input:
     state_code: [GA, GA, GA]
     heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    gas_expense: [1_200, 1_200, 1_200]
     ga_liheap_household_size: [17, 17, 25]
     ga_liheap_income: [42_336, 42_336.01, 42_336]
   output:

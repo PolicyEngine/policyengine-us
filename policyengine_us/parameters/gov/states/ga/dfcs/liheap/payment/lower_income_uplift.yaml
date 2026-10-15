@@ -1,4 +1,7 @@
-description: Georgia increases the heating payment by this amount for households in income Level I under the Low Income Home Energy Assistance Program.
+description: Georgia provides this additional heating payment to households in income Level I under the Low Income Home Energy Assistance Program.
+# Inferred: every printed Level I heating amount is the Level II amount plus
+# $100 on the FY2025 and FY2026 matrices; the matrices print both columns,
+# not this rule. Encode the printed Level I column if a matrix breaks the pattern.
 values:
   2025-10-01: 100
 metadata:
@@ -6,5 +9,7 @@ metadata:
   period: year
   label: Georgia LIHEAP lower income heating payment increase
   reference:
+    - title: Georgia Benefit Matrix, FY2025 income guidelines, step 2 (difference between Level I and Level II heating amounts)
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/GA_BenefitMatrix_2025.pdf
     - title: Georgia Benefit Matrix, FY2026 income guidelines, step 2 (difference between Level I and Level II heating amounts)
       href: https://liheapch.acf.gov/docs/2026/benefits-matricies/GA_BenefitMatrix_Heat-Cool_2026.pdf

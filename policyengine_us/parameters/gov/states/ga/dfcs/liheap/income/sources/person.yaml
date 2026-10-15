@@ -1,4 +1,4 @@
-description: Georgia counts these income sources of adult household members under the Low Income Home Energy Assistance Program.
+description: Georgia uses these sources as countable income of adult household members under the Low Income Home Energy Assistance Program.
 # Interest is calculated separately after its disregard. TANF is counted once
 # at SPM-unit level. Each source is floored at zero in the formula, so a loss
 # in one source cannot offset another; net business inputs have no extra
@@ -10,7 +10,7 @@ values:
     - sstb_self_employment_income
     - farm_operations_income
     - partnership_s_corp_income
-    - unemployment_compensation
+    - total_unemployment_compensation
     # Social Security is counted in the formula, net of the Medicare Part B
     # premium.
     - ssi
@@ -54,7 +54,7 @@ metadata:
   reference:
     - title: "Georgia LIHEAP Policy Manual, January 2022, sections 1200.1-1200.7 and application item 12 #page 62-69,83"
       href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/2023/manuals/GA_PolicyManual_2023.pdf#page=62
-    - title: "Georgia FY2026 LIHEAP State Plan, section 1.9 (current included and excluded sources) #page 5-6"
+    - title: "Georgia FY2026 LIHEAP State Plan, section 1.9 (current included and excluded sources) #page 5-7"
       href: https://liheapch.acf.gov/docs/2026/state-plans/GA_Plan_2026.pdf#page=5
     - title: Georgia FY2022 LIHEAP State Plan, section 1.9 (contemporaneous unchecked gifts, lottery and insurance categories)
       href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/GA_Plan_2022.pdf#page=6
