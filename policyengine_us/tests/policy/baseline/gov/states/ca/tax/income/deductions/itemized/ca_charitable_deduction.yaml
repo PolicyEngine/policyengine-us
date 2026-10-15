@@ -1,0 +1,113 @@
+- name: California 2016 pre-TCJA conformity - 50% limit org cash
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    employment_income: 60_000
+    charitable_cash_donations_50_pct: 40_000
+  output:
+    charitable_deduction: 30_000
+    ca_charitable_deduction: 30_000
+
+- name: California 2016 pre-TCJA conformity - non-50% limit org cash (30% cap)
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    employment_income: 60_000
+    charitable_cash_donations_non_50_pct: 25_000
+  output:
+    charitable_deduction: 18_000
+    ca_charitable_deduction: 18_000
+
+- name: California 2016 pre-TCJA conformity - 50% limit org capital gain property (30% cap)
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    employment_income: 60_000
+    charitable_capital_gain_donations_50_pct: 25_000
+  output:
+    charitable_deduction: 18_000
+    ca_charitable_deduction: 18_000
+
+- name: California 2016 pre-TCJA conformity - non-50% limit org capital gain property (20% cap)
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    employment_income: 60_000
+    charitable_capital_gain_donations_non_50_pct: 15_000
+  output:
+    charitable_deduction: 12_000
+    ca_charitable_deduction: 12_000
+
+- name: California 2016 pre-TCJA conformity - 5-tier stacking across all categories
+  period: 2016
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    employment_income: 60_000
+    charitable_cash_donations_50_pct: 10_000
+    charitable_non_cash_donations_50_pct: 10_000
+    charitable_cash_donations_non_50_pct: 10_000
+    charitable_capital_gain_donations_50_pct: 10_000
+    charitable_capital_gain_donations_non_50_pct: 10_000
+  output:
+    charitable_deduction: 30_000
+    ca_charitable_deduction: 30_000
+
+- name: California 2024 TCJA decoupling - 50% CA cash cap vs 60% federal cash cap
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    employment_income: 60_000
+    charitable_cash_donations_50_pct: 50_000
+  output:
+    charitable_deduction: 36_000
+    ca_charitable_deduction: 30_000
+
+- name: California 2024 TCJA - 30% capital gain property to 50% orgs matches federal
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    employment_income: 60_000
+    charitable_capital_gain_donations_50_pct: 25_000
+  output:
+    charitable_deduction: 18_000
+    ca_charitable_deduction: 18_000
+
+- name: California 2020 CARES Act decoupling - 50% CA cap vs 100% federal qualified cash election
+  period: 2020
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    employment_income: 60_000
+    charitable_cash_donations_50_pct: 60_000
+  output:
+    charitable_deduction: 60_000
+    ca_charitable_deduction: 30_000
+
+- name: California 2026 OBBBA decoupling - California does not adopt federal 0.5% deduction floor
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    employment_income: 60_000
+    charitable_cash_donations_50_pct: 500
+  output:
+    charitable_deduction: 200
+    ca_charitable_deduction: 500
+
+- name: California 2026 OBBBA decoupling - California does not adopt federal floor on 30% non-50% cash
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    employment_income: 60_000
+    charitable_cash_donations_non_50_pct: 25_000
+  output:
+    charitable_deduction: 17_700
+    ca_charitable_deduction: 18_000
