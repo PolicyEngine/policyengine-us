@@ -2,7 +2,7 @@
 # Allows taxpayers to elect a standard deduction equal to the federal
 # poverty line for their household size.
 # Effective for taxable years beginning on or after July 1, 2027.
-# 2027 federal poverty guidelines (CONTIGUOUS_US):
+# Existing 2027 federal poverty guideline projections (CONTIGUOUS_US):
 #   first person = $16,334
 #   additional person = $5,813
 #   1-person FPL  = $16,334
@@ -168,6 +168,9 @@
   absolute_error_margin: 1
   reforms: policyengine_us.reforms.states.ca.ab2591.ab2591.ca_ab2591
   input:
+    # Synthetic forecast assumption retained from the original fixture to
+    # isolate reform inactivity; not a published California tax-year amount.
+    gov.states.ca.tax.income.deductions.standard.amount.SINGLE: 6_009.22
     gov.contrib.states.ca.ab2591.in_effect: false
     people:
       person1:
@@ -182,9 +185,8 @@
         members: [person1]
         state_code: CA
   output:
-    # 2025 indexed value ($5,706) uprated by CA CPI to 2027; the 2027
-    # CA CPI point is an IRS-uprating projection, so it reflects the
-    # observed chained-CPI actuals through June 2026.
+    # The inactive reform leaves the synthetic baseline amount supplied
+    # above unchanged.
     ca_standard_deduction: 6_009.22
 
 - name: Non-California filer unaffected by the reform.

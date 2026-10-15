@@ -39,3 +39,39 @@
     state_code: CA
   output:
     ca_exemptions: 658
+
+# Published 2026 amounts: FTB Tax News, October 2026, 2026 Indexing.
+# https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/#article1
+
+- name: California 2026 published single personal credit
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    aged_blind_count: 0
+    adjusted_gross_income: 1
+    tax_unit_dependents: 0
+  output:
+    ca_exemptions: 158
+
+- name: California 2026 published joint personal credit
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: JOINT
+    aged_blind_count: 0
+    adjusted_gross_income: 1
+    tax_unit_dependents: 0
+  output:
+    ca_exemptions: 316
+
+- name: California 2026 published joint personal and dependent credits
+  period: 2026
+  input:
+    state_code: CA
+    filing_status: JOINT
+    aged_blind_count: 0
+    adjusted_gross_income: 1
+    tax_unit_dependents: 1
+  output:
+    ca_exemptions: 807

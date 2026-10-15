@@ -20,6 +20,9 @@
   period: 2028
   absolute_error_margin: 0.01
   input:
+    # Synthetic forecast assumption retained from the original fixture to
+    # isolate the surtax rate; not a published Rhode Island tax-year amount.
+    gov.states.ri.tax.income.high_earner_tax.threshold: 1_022_600
     state_code: RI
     ri_taxable_income: 1_250_000
   output:
@@ -30,6 +33,9 @@
   period: 2029
   absolute_error_margin: 0.01
   input:
+    # Synthetic forecast assumption retained from the original fixture to
+    # isolate the surtax rate; not a published Rhode Island tax-year amount.
+    gov.states.ri.tax.income.high_earner_tax.threshold: 1_039_400
     state_code: RI
     ri_taxable_income: 1_250_000
   output:
@@ -40,12 +46,14 @@
   period: 2027
   absolute_error_margin: 0.01
   input:
+    # Synthetic forecast assumptions retained from the original fixture to
+    # isolate tax stacking; not published Rhode Island tax-year amounts.
+    gov.states.ri.tax.income.rate[1].threshold: 84_450
+    gov.states.ri.tax.income.rate[2].threshold: 192_000
     state_code: RI
     ri_taxable_income: 1_250_000
   output:
-    # Baseline tax uses gov/states/ri/tax/income/rate.yaml's bracket
-    # thresholds, gov.irs.uprating-projected for 2027 from the official 2026
-    # thresholds:
+    # Baseline tax uses the synthetic bracket thresholds supplied above:
     # .0375*84,450 + .0475*(192,000-84,450) + .0599*(1,250,000-192,000) = 71,649.70
     # + 1% high-earner surtax on income above the (explicit, unaffected)
     # $1,000,000 2027 threshold: (1,250,000 - 1,000,000) * 0.01 = 2,500

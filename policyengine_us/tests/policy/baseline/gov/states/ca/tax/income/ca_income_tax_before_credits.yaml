@@ -21,3 +21,72 @@
   output:
   # 82_046.3 + (12.30% of (1_000_000 - 850_503)) = 100_434.131
     ca_income_tax_before_credits: 100_434.131
+
+# Published 2026 amounts: FTB Tax News, October 2026, 2026 Indexing.
+# https://www.ftb.ca.gov/about-ftb/newsroom/tax-news/#article1
+
+- name: California 2026 published single schedule at taxable income 25_000
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_taxable_income: 25_000
+  output:
+    # 114.56 + .02 * (25_000 - 11_456) = 385.44
+    ca_income_tax_before_credits: 385.44
+
+- name: California 2026 published separate schedule at taxable income 25_000
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    filing_status: SEPARATE
+    ca_taxable_income: 25_000
+  output:
+    # 114.56 + .02 * (25_000 - 11_456) = 385.44
+    ca_income_tax_before_credits: 385.44
+
+- name: California 2026 published joint schedule at taxable income 50_000
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    filing_status: JOINT
+    ca_taxable_income: 50_000
+  output:
+    # 229.12 + .02 * (50_000 - 22_912) = 770.88
+    ca_income_tax_before_credits: 770.88
+
+- name: California 2026 published surviving spouse schedule at taxable income 50_000
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    filing_status: SURVIVING_SPOUSE
+    ca_taxable_income: 50_000
+  output:
+    # 229.12 + .02 * (50_000 - 22_912) = 770.88
+    ca_income_tax_before_credits: 770.88
+
+- name: California 2026 published head of household schedule at taxable income 60_000
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    filing_status: HEAD_OF_HOUSEHOLD
+    ca_taxable_income: 60_000
+  output:
+    # 857.05 + .04 * (60_000 - 54_316) = 1_084.41
+    ca_income_tax_before_credits: 1_084.41
+
+- name: California 2026 published single schedule at taxable income 1_000_000
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: CA
+    filing_status: SINGLE
+    ca_taxable_income: 1_000_000
+  output:
+    # 74_675.27 + .123 * (1_000_000 - 768_213) = 103_185.071
+    ca_income_tax_before_credits: 103_185.07
