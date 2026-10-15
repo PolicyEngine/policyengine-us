@@ -27,12 +27,20 @@ class sd_ssp_independent(Variable):
         student = person("is_full_time_student", period.this_year) | person(
             "is_part_time_college_student", period.this_year
         )
+        setting = person("sd_ssp_care_setting", period)
+        in_care = (
+            (setting != setting.possible_values.NONE)
+            | person("sd_ssp_care_certified", period)
+            | person("ssi_lives_in_medical_treatment_facility", period)
+        )
         qualifies = (
             receives_ssi
             & independent
             & (person("age", period.this_year) >= p.minimum_age)
             & ~student
-            & ~person("sd_ssp_care_certified", period)
+            # ARSD 67:12:14:02(4) and POMS DEN01415.011 B: institutionalized,
+            # assisted living and adult foster care residents are not eligible.
+            & ~in_care
         )
         # NOTE: ARSD 67:12:14 and POMS DEN01415.011 B.5 are silent on a
         # married recipient whose spouse does not qualify; that recipient is
@@ -40,6 +48,10 @@ class sd_ssp_independent(Variable):
         # NOTE: the couple split requires ssi_claim_is_joint, so a couple
         # whose SSI receipt is given only by receives_ssi needs both spouses'
         # aged, blind or disabled inputs to be paid as a couple.
+        # NOTE: an eligible couple's other income is pooled. POMS SI DEN01415.011
+        # B.5.b pays "individuals and couples ... who have no other income";
+        # ARSD 67:12:14:03(2) reads per person ("The person is receiving other
+        # income").
         couple = person("ssi_claim_is_joint", period.this_year) & (
             person.marital_unit.sum(qualifies) > 1
         )

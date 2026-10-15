@@ -25,6 +25,7 @@
     state_code: SD
   output:
     sd_ssp: 180
+    household_state_benefits: 180
     snap_unearned_income: 12_108
     hud_unearned_income: 12_108
 
@@ -148,7 +149,7 @@
     sd_ssp_care: [1_000, 1_400]
     sd_ssp: [1_000, 1_400]
 
-- name: Case 7, joint entry within the pooled limit qualifies both spouses.
+- name: Case 7, joint entry within the pooled limit shares the couple's income equally.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -181,11 +182,11 @@
     # > 1_491 / 2 = 745.50, so SSI is 0.
     ssi: [0, 0]
     sd_ssp_independent: [0, 0]
-    # Pooled 2_100 + 800 = 2_900 <= 3_000 joint entry limit;
-    # min(2_200, 31 x 77.16 = 2_391.96) less own income:
-    # 2_200 - 14_400 / 12 = 1_000; 2_200 - 9_600 / 12 = 1_400.
-    sd_ssp_care: [1_000, 1_400]
-    sd_ssp: [1_000, 1_400]
+    # Pooled 2_100 + 800 = 2_900 <= 3_000 joint entry limit. ARSD
+    # 67:46:04:10(6) shares the income equally in the month of entry:
+    # (1_200 + 800) / 2 = 1_000 each; min(2_200, 2_391.96) - 1_000 = 1_200.
+    sd_ssp_care: [1_200, 1_200]
+    sd_ssp: [1_200, 1_200]
 
 - name: Case 8, same couple without joint entry faces the individual limit.
   period: 2026-01
@@ -222,3 +223,164 @@
     # person2 800 <= 2_000: min(2_200, 2_391.96) - 9_600 / 12 = 1_400.
     sd_ssp_care: [0, 1_400]
     sd_ssp: [0, 1_400]
+
+- name: Case 9, joint entry sharing keeps a spouse with high income eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 30_000
+        ssi_countable_resources: 1_000
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+        sd_ssp_care_joint_entry: true
+      person2:
+        age: 68
+        social_security_retirement: 6_000
+        ssi_countable_resources: 1_000
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+        sd_ssp_care_joint_entry: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    ssi: [0, 0]
+    # (2_500 + 500) / 2 = 1_500 each; 2_200 - 1_500 = 700. Person1's own
+    # 2_500 would exceed the care rate.
+    sd_ssp_care: [700, 700]
+
+- name: Case 10, partial-month days for one resident leave another resident's full month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+        sd_ssp_care_partial_month_days: 10
+      person2:
+        age: 65
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # person1: min(2_200, 10 x 77.16) = 771.60 with no income applied.
+    # person2: 2_200 - SSI 994 = 1_206.
+    sd_ssp_care: [771.6, 1_206]
+
+- name: Case 11, death or transfer for one partial-month resident leaves another's.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+        sd_ssp_care_partial_month_days: 20
+        sd_ssp_care_died_or_transferred: true
+      person2:
+        age: 65
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+        sd_ssp_care_partial_month_days: 10
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # person1: min(2_200, 20 x 77.16 = 1_543.20) - SSI 994 = 549.20.
+    # person2: income not applied, so 771.60.
+    sd_ssp_care: [549.2, 771.6]
+
+- name: Case 12, joint entry shares income before each spouse's own deductions.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 30_000
+        ssi_countable_resources: 1_000
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+        sd_ssp_care_joint_entry: true
+        sd_ssp_care_income_deductions: 100
+      person2:
+        age: 68
+        social_security_retirement: 6_000
+        ssi_countable_resources: 1_000
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+        sd_ssp_care_joint_entry: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # (2_500 + 500) / 2 = 1_500 each; person1 2_200 - (1_500 - 100) = 800;
+    # person2 2_200 - 1_500 = 700.
+    sd_ssp_care: [800, 700]
+
+- name: Case 13, joint entry flagged for only one spouse budgets each spouse alone.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        social_security_retirement: 30_000
+        ssi_countable_resources: 1_000
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+        sd_ssp_care_joint_entry: true
+      person2:
+        age: 68
+        social_security_retirement: 6_000
+        ssi_countable_resources: 1_000
+        sd_ssp_care_certified: true
+        sd_ssp_approved_care_cost: 2_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: SD
+  output:
+    # Own income: person1 2_500 > 2_200, so 0; person2 2_200 - 500 = 1_700.
+    sd_ssp_care: [0, 1_700]

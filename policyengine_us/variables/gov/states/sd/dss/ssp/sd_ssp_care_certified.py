@@ -7,4 +7,4 @@ class sd_ssp_care_certified(Variable):
     label = "Certified for South Dakota nonwaiver optional supplemental care"
     definition_period = MONTH
     reference = "https://sdlegislature.gov/Rules/Administrative/67:46:04:15"
-    documentation = "Approved placement, care needs, benefit pursuit and nonfinancial program requirements; excludes Medicaid waiver services."
+    documentation = "Approved placement, care needs, pursuit of benefits other than SSI and nonfinancial program requirements; excludes Medicaid waiver services. SSI pursuit is tested separately through takes_up_ssi_if_eligible (ARSD 67:46:01:14)."

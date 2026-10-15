@@ -1,4 +1,4 @@
-description: South Dakota caps its state optional assisted living reimbursement at this daily amount, including room and board.
+description: South Dakota limits the assisted living payment to this daily rate, including room and board, under the State Optional Supplemental Assisted Living program.
 values:
   2026-01-01: 77.16
 
@@ -6,6 +6,14 @@ metadata:
   unit: currency-USD
   period: day
   label: South Dakota SSP assisted living daily rate
+  # The LTSS fee schedule (note 2) adjusts this rate each January by the
+  # Social Security cost-of-living adjustment; the published rate replaces the
+  # projection.
+  uprating:
+    parameter: gov.ssa.uprating
+    rounding:
+      type: nearest
+      interval: 0.01
   reference:
     - title: LTSS fee schedule effective January 2026, State Optional Supplemental Assisted Living (08054), note 2
       href: https://dhs.sd.gov/content/dam/digital/united-states/south-dakota/sdo/pdf/long-term-services-and-supports/provider-portal/fee-schedules/LTSS-Fee-Schedule-and-In-Home-Services-Fee-Schedule-Effective-1-1-26.pdf
