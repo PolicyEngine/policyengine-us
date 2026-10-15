@@ -24,6 +24,12 @@ class nd_renters_refund_income(Variable):
 
     def formula(tax_unit, period, parameters):
         p = parameters(period).gov.states.nd.tax.property.renters_refund
+        # NDCC 57-02-08.1(5)(c) excludes income excluded by federal or state
+        # law. market_income includes wages before payroll deductions, so
+        # subtract the separate pretax premium input once from this base.
+        # These premiums are disjoint from itemized_medical_expenses,
+        # whose medical definition follows state income tax law.
+        excluded_premiums = add(tax_unit, period, ["pre_tax_health_insurance_premiums"])
         # Restore only premiums excluded from a computed federal subtotal.
         medical_expenses = add(
             tax_unit,
@@ -34,6 +40,8 @@ class nd_renters_refund_income(Variable):
             ],
         )
         return max_(
-            add(tax_unit, period, p.income_sources) - medical_expenses,
+            add(tax_unit, period, p.income_sources)
+            - excluded_premiums
+            - medical_expenses,
             0,
         )

@@ -3,6 +3,13 @@ from policyengine_us.variables.household.demographic.tax_unit.filing_status impo
     FilingStatus,
 )
 
+# The wage and self-employment sources in gov.irs.gross_income.sources.
+EARNED_GROSS_INCOME_SOURCES = [
+    "irs_employment_income",
+    "self_employment_income",
+    "sstb_self_employment_income",
+]
+
 
 class medicaid_person_is_required_to_file(Variable):
     value_type = bool
@@ -12,6 +19,7 @@ class medicaid_person_is_required_to_file(Variable):
     reference = (
         "https://www.law.cornell.edu/cfr/text/42/435.603#d_2",
         "https://www.irs.gov/publications/p501",
+        "https://www.irs.gov/pub/irs-prior/p501--2025.pdf#page=4",
     )
 
     def formula(person, period, parameters):
@@ -19,7 +27,14 @@ class medicaid_person_is_required_to_file(Variable):
         filing_requirement = parameters(period).gov.irs.income.filing_requirement
         gross_income = person("medicaid_irs_gross_income", period)
         earned_income = person("earned_income", period)
-        unearned_income = gross_income - earned_income
+        # Unearned income is gross income other than wages and self-employment
+        # earnings (IRS Pub. 501, Table 2). Gross income counts each source's
+        # positive amount, so subtract those sources' positive amounts: a
+        # business loss does not turn other income into unearned income.
+        earned_gross_income = 0
+        for source in EARNED_GROSS_INCOME_SOURCES:
+            earned_gross_income += max_(0, person(source, period))
+        unearned_income = max_(0, gross_income - earned_gross_income)
 
         married = person.marital_unit.nb_persons() == 2
         filing_status = where(married, FilingStatus.SEPARATE, FilingStatus.SINGLE)

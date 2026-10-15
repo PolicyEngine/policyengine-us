@@ -4,7 +4,7 @@
     state_code: NM
     age: 64
     other_medical_expenses: 30_000
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_medical_expense_credit: 0
 
@@ -17,8 +17,9 @@
     health_insurance_premiums: 6_000
     other_medical_expenses: 22_000
     self_employed_health_insurance_ald: 1_000
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
+    # Federal: 6,000 + 22,000 - 1,000 = 27,000. NM: 27,000 + 1,000 = 28,000.
     itemized_medical_expenses: 27_000
     nm_medical_expense_credit: 2_800
 
@@ -29,7 +30,7 @@
     age: 65
     medicare_enrolled: false
     itemized_medical_expenses: 28_000
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_medical_expense_credit: 2_800
 
@@ -41,7 +42,7 @@
     medicare_enrolled: false
     itemized_medical_expenses: 27_999
     self_employed_health_insurance_ald: 1_000
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_medical_expense_credit: 0
 
@@ -53,7 +54,7 @@
     medicare_enrolled: false
     other_medical_expenses: 27_999
     filing_status: JOINT
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_medical_expense_credit: 0
 
@@ -64,7 +65,7 @@
     age: 65
     other_medical_expenses: 28_000
     filing_status: JOINT
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_medical_expense_credit: 2_800
 
@@ -75,7 +76,7 @@
     age: 65
     other_medical_expenses: 28_000
     filing_status: SEPARATE
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_medical_expense_credit: 1_400
 
@@ -86,7 +87,7 @@
     age: 65
     other_medical_expenses: 40_000
     filing_status: SINGLE
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
   output:
     nm_medical_expense_credit: 2_800
 
@@ -97,9 +98,244 @@
     age: 65
     other_medical_expenses: 40_000
     filing_status: SINGLE
-    head_is_dependent_elsewhere: true
+    claimed_as_dependent_on_another_return: true
   output:
     nm_medical_expense_credit: 0
+
+- name: An independent senior household cannot qualify a senior claimed elsewhere in another household
+  period: 2025
+  input:
+    people:
+      independent_senior:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        medicare_enrolled: false
+        claimed_as_dependent_on_another_return: false
+        other_medical_expenses: 28_000
+      claimed_senior:
+        age: 65
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        medicare_enrolled: false
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 17
+        is_tax_unit_head: false
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: true
+        medicare_enrolled: false
+        other_medical_expenses: 28_000
+    tax_units:
+      independent_unit:
+        members: [independent_senior]
+        filing_status: SINGLE
+        self_employed_health_insurance_ald: 0
+      claimed_unit:
+        members: [claimed_senior, child]
+        filing_status: SINGLE
+        self_employed_health_insurance_ald: 0
+    households:
+      independent_household:
+        members: [independent_senior]
+        state_code: NM
+      claimed_household:
+        members: [claimed_senior, child]
+        state_code: NM
+  output:
+    itemized_medical_expenses: [28_000, 28_000]
+    itemized_medical_expenses_applied_exclusion: [0, 0]
+    head_is_dependent_elsewhere: [false, true]
+    head_or_spouse_is_dependent_elsewhere: [false, true]
+    # NMSA 7-2-18.13(A): age 65 and 28,000 of costs are insufficient
+    # when the SINGLE filer is a dependent of another taxpayer.
+    nm_medical_expense_credit: [2_800, 0]
+
+- name: Joint return where only one spouse is a dependent of another taxpayer (the claimable spouse is the head)
+  period: 2023
+  input:
+    people:
+      person_a:
+        age: 66
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 66
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    # A spouse who is not a dependent may still qualify (PIT-RC instructions).
+    nm_medical_expense_credit: 2_800
+
+- name: Joint return where only one spouse is a dependent of another taxpayer (the claimable spouse is the spouse)
+  period: 2023
+  input:
+    people:
+      person_b:
+        age: 66
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 66
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    # A spouse who is not a dependent may still qualify (PIT-RC instructions).
+    nm_medical_expense_credit: 2_800
+
+- name: Joint return where both spouses are a dependent of another taxpayer
+  period: 2023
+  input:
+    people:
+      person_a:
+        age: 66
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 66
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    nm_medical_expense_credit: 0
+
+- name: Joint return where only the claimable spouse is 65 or older (the claimable spouse is the head)
+  period: 2023
+  input:
+    people:
+      person_a:
+        age: 70
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 60
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    # NMSA 7-2-18.13(A): the taxpayer who is 65 or older must also not be a dependent.
+    nm_medical_expense_credit: 0
+
+- name: Joint return where only the claimable spouse is 65 or older (the claimable spouse is the spouse)
+  period: 2023
+  input:
+    people:
+      person_b:
+        age: 60
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 70
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    # NMSA 7-2-18.13(A): the taxpayer who is 65 or older must also not be a dependent.
+    nm_medical_expense_credit: 0
+
+- name: Joint return where the spouse who is not claimable is 65 or older (the claimable spouse is the head)
+  period: 2023
+  input:
+    people:
+      person_a:
+        age: 60
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 70
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: NM
+  output:
+    nm_medical_expense_credit: 2_800
+
+- name: Joint return where the spouse who is not claimable is 65 or older (the claimable spouse is the spouse)
+  period: 2023
+  input:
+    people:
+      person_b:
+        age: 70
+        claimed_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 60
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+        itemized_medical_expenses: 28_000
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: NM
+  output:
+    nm_medical_expense_credit: 2_800
 
 - name: New Mexico supplied subtotal and SE premiums do not create senior credit eligibility
   period: 2025
@@ -107,13 +343,82 @@
     state_code: NM
     age: 65
     medicare_enrolled: false
-    head_is_dependent_elsewhere: false
+    claimed_as_dependent_on_another_return: false
     itemized_medical_expenses: 27_999
     health_insurance_premiums: 6_000
     self_employed_health_insurance_ald: 1_000
   output:
+    # Supplied subtotal: 27,999 + 0 applied exclusion < 28,000, so no credit.
     itemized_medical_expenses: 27_999
     itemized_medical_expenses_excluded_premiums: 1_000
     itemized_medical_expenses_applied_exclusion: 0
     nm_medical_expense_credit: 0
     nm_medical_expense_exemption: 0
+
+- name: Independent aged spouse qualifies with computed medical expenses after the federal premium exclusion (claimable spouse is head)
+  period: 2025
+  input:
+    people:
+      claimable_spouse:
+        age: 60
+        medicare_enrolled: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      independent_spouse:
+        age: 70
+        medicare_enrolled: false
+        claimable_as_dependent_on_another_return: false
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        health_insurance_premiums: 6_000
+        other_medical_expenses: 22_000
+    tax_units:
+      tax_unit:
+        members: [claimable_spouse, independent_spouse]
+        filing_status: JOINT
+        self_employed_health_insurance_ald: 1_000
+    households:
+      household:
+        members: [claimable_spouse, independent_spouse]
+        state_code: NM
+  output:
+    # Federal: 6,000 + 22,000 - 1,000 = 27,000; NM restores 1,000 to reach 28,000.
+    # The independent spouse is 70 >= 65, so the joint credit is 2,800 / 1 = 2,800.
+    itemized_medical_expenses: 27_000
+    itemized_medical_expenses_applied_exclusion: 1_000
+    nm_medical_expense_credit: 2_800
+
+- name: Independent aged spouse qualifies with computed medical expenses after the federal premium exclusion (claimable spouse is spouse)
+  period: 2025
+  input:
+    people:
+      independent_spouse:
+        age: 70
+        medicare_enrolled: false
+        claimable_as_dependent_on_another_return: false
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        health_insurance_premiums: 6_000
+        other_medical_expenses: 22_000
+      claimable_spouse:
+        age: 60
+        medicare_enrolled: false
+        claimable_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [independent_spouse, claimable_spouse]
+        filing_status: JOINT
+        self_employed_health_insurance_ald: 1_000
+    households:
+      household:
+        members: [independent_spouse, claimable_spouse]
+        state_code: NM
+  output:
+    # Federal: 6,000 + 22,000 - 1,000 = 27,000; NM restores 1,000 to reach 28,000.
+    # The independent spouse is 70 >= 65, so the joint credit is 2,800 / 1 = 2,800.
+    itemized_medical_expenses: 27_000
+    itemized_medical_expenses_applied_exclusion: 1_000
+    nm_medical_expense_credit: 2_800

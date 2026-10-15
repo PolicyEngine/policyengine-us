@@ -1,3 +1,173 @@
+## [2.42.14] - 2026-10-15
+
+### Fixed
+
+- Stop the second Rest shard when a CI run is cancelled; run at most 6 Baseline groups at once and start Contrib (also at most 6) once Baseline passes, so the Pull request workflow runs at most 11 jobs at a time instead of about 25; run two YAML batch subprocesses per Baseline and Contrib runner while its free memory allows, cutting their runner time by about a third; and continue YAML test batches in a fresh subprocess once one passes an 8 GB memory budget, so batches no longer need re-splitting by hand as tests grow.
+
+
+## [2.42.13] - 2026-10-14
+
+### Fixed
+
+- Project the Medicaid long-term care home equity limits with CMS's method (the September-to-September CPI-U increase rounded to 0.1%, effective each January 1) instead of stepping the agricultural limit each February 1, drop their unpublished 2027 and 2028 values, and correct the CMS bulletin citations.
+
+
+## [2.42.12] - 2026-10-14
+
+### Fixed
+
+- Document disjoint pretax and non-pretax health premium inputs, include employee-paid pretax premiums in applicable benefit and New Jersey medical deductions, exclude pretax premiums from SSI wages and North Dakota renter-refund income. Preserve Minnesota Supplemental Aid gross income for eligibility and guardian fees while applying SSI salary-reduction exclusions to countable income.
+
+
+## [2.42.11] - 2026-10-14
+
+### Fixed
+
+- The federal standard deduction and the New York, Michigan, Oregon, Virginia, Missouri, New Mexico, Maine and Hawaii rules for a filer claimed as a dependent elsewhere no longer depend on which spouse is labelled head; each follows its jurisdiction's rule for a joint return where one spouse can be claimed. New York's $3,100 dependent standard deduction now applies only to single filers; Hawaii now limits the standard deduction of a filer who can be claimed as a dependent; the federal EITC without a qualifying child now requires that no filer can be claimed as a dependent; and New Mexico's medical care credit requires a filer who is both 65 or older and not a dependent when a filer is a dependent elsewhere. Separate actual dependency claims from claimability and the nonrequired claimant filing exception, preserving dependent deduction limits while restoring EITC and lawful own-dependent counts. Exclude externally claimable children from Hawaii food/excise ordinary exemptions.
+
+
+## [2.42.10] - 2026-10-14
+
+### Fixed
+
+- Apply Hawaii refundable credits before nonrefundable credits, limiting nonrefundable credits (including the 2018-2022 Hawaii EITC) to the adjusted tax liability on Form N-11, line 34.
+
+
+## [2.42.9] - 2026-10-14
+
+### Fixed
+
+- Stop testing every filer's unearned income against $500 in the federal filing requirement (26 U.S.C. 6012): the unearned income test now applies only to a head or spouse who can be claimed as a dependent on another return, uses the section 63(c)(5)(A) amount for the year ($1,350 in 2025) plus that person's own additional standard deduction for age or blindness, and counts that person's gross income other than wages, business income and farm income (the earned income of the IRS dependent worksheet), so a self-employment loss no longer counts as unearned income.
+- Medicaid MAGI household income now nets one household member's negative MAGI-based income, such as a spouse's business loss on a joint return, against the others' income and floors only the household's total at zero (42 CFR 435.603(d)(1); Form 8962, line 3). Each person's Medicaid AGI now subtracts their own above-the-line deductions, and a self-employment loss no longer counts as unearned income in the Medicaid filing-requirement test.
+- Apply the 26 U.S.C. 6012(a)(1) federal filing requirement from 2026, when section 6012(f) expires: for a tax unit nobody can claim as a dependent, the threshold is the basic standard deduction plus the additions for age but not blindness, and gross income equal to it requires a return.
+
+
+## [2.42.8] - 2026-10-14
+
+### Fixed
+
+- Measure a branch's or clone's labor-supply and capital-gains responses against baseline policy applied to its own inputs, and give each simulation its own measurement cache. A branch of a reform simulation made before anything was calculated (and, on policyengine-core before #587, such a clone) measured against a new branch under the reform policy and reported no response, and a clone given other inputs reused its source's measurements.
+  Preserve zero responses without a reform, make capital-gains marginal tax rates independent of calculation order while reusing household measurements, and discard incompatible holders when applying baseline policy to measurement branches.
+  Forget deleted pre-response input records on Core 3.32.8 so fully calculated clones remeasure changed earnings, while retaining explicit overrides and the baseline household's inputs.
+
+
+## [2.42.7] - 2026-10-14
+
+### Fixed
+
+- Correct CRFB expanded surtax premium addbacks to use employer-paid coverage and employee pretax premiums without double-counting after-tax employee premiums.
+
+
+## [2.42.6] - 2026-10-14
+
+### Fixed
+
+- Montana's elderly homeowner/renter credit now counts each person's capital gains without losses netted on the same return or carried over from a prior year, and counts Social Security once when a person is input as both a tax unit dependent and the head or spouse.
+
+
+## [2.42.5] - 2026-10-14
+
+### Fixed
+
+- Stop testing every filer's unearned income against $500 in the federal filing requirement (26 U.S.C. 6012): the unearned income test now applies only to a head or spouse who can be claimed as a dependent on another return, uses the section 63(c)(5)(A) amount for the year ($1,350 in 2025) plus that person's own additional standard deduction for age or blindness, and counts that person's gross income other than wages, business income and farm income (the earned income of the IRS dependent worksheet), so a self-employment loss no longer counts as unearned income.
+
+
+## [2.42.4] - 2026-10-14
+
+### Changed
+
+- Use DHCS Title 21 child cost estimates for California CCHIP net and gross benefit values in model years 2026 and 2027, retaining the existing MCAP valuation.
+
+### Fixed
+
+- Fix the deduction determinism test fixture and health-expense uprating expectations to reflect the current unemployment-compensation and premium inputs.
+
+
+## [2.42.3] - 2026-10-14
+
+### Fixed
+
+- North Carolina's $20,000 cap on mortgage interest and real estate taxes is now shared by spouses filing separately, including a spouse in another state, prorated by the share each paid or, for joint-account payments, by each spouse's income (G.S. 105-153.5(a)(2)b).
+
+
+## [2.42.2] - 2026-10-13
+
+### Fixed
+
+- Count a tax unit that takes up the ACA premium tax credit as filing a return to claim it (26 CFR 1.6011-8(a)), so the filing gate on aca_ptc and on the California, Maryland and New Mexico premium programs no longer zeroes the credit of a tax unit that takes it up but would not otherwise file; a tax unit that neither files nor takes up the credit still gets none.
+
+
+## [2.42.1] - 2026-10-13
+
+### Fixed
+
+- Split the Rest CI suite into two sequential Python shards, folding variables YAML and the legacy aggregate check into those runners to avoid the 90-minute timeout while increasing the PR runner budget from 26 to 27. Retain isolated test processes and timing reports.
+
+
+## [2.42.0] - 2026-10-13
+
+### Added
+
+- Integrated modeled Alabama, New Jersey, New York, Oklahoma, Pennsylvania, and Utah unemployment insurance into unemployment compensation income flows, including federal and state taxes, SNAP, TANF, SSI, WIC, school meals, Head Start, HUD, child care, and other means-tested program income sources.
+
+### Changed
+
+- Uprate premium inputs by premium series instead of CMS out-of-pocket spending per capita, which excludes premiums: reported and other health insurance premiums follow CMS's employer-sponsored insurance premium per enrollee (the series pre-tax premiums follow), directly supplied premiums follow a new CMS direct purchase premium per enrollee series, long-term care premiums follow a new CPI-U medical care series (BLS and CBO), and reported Medicare Part B premiums follow a new Part B standard premium series (Medicare Trustees Report).
+
+### Fixed
+
+- Require Arkansas married couples to file jointly when either spouse has a negative total income, and compute Arkansas regular income tax from the published tax table bands below the table threshold.
+- Give each spouse their own above-the-line deductions in per-person AGI on a joint return (IRA, capped educator expenses, early withdrawal penalty, student loan interest, alimony paid, business and capital losses, and the rest), instead of splitting every deduction other than the self-employment ones 50/50; attribute HSA deductions using person amounts when provided, and divide deductions recorded only at tax-unit level equally. This changes the state taxes and benefits that read each spouse's AGI (Kentucky, Montana through 2023, Delaware, Virginia and DC separate filing, Ohio's joint filing credit, West Virginia's senior deduction, state withholding, Illinois Family Planning). DC spouses who file separately on the same return each deduct their own capital losses up to their own capital gains plus $1,500. Montana divides nothing between spouses from 2024, when filing separately on the same form ended.
+- Avoid reallocating spouses' business and capital losses twice in Kentucky AGI after federal person AGI assigns their own deductions.
+- Correct eight Vermont renter credit income limits for 2021, 2023, 2024 and 2025 to HUD's limits and the department's tables, including Washington County's 2025 seven-person partial-credit limit ($88,990; the TY2025 booklet prints $88,880).
+- Apply the federal mortgage debt limits by loan vintage: grandfathered debt incurred on or before October 13, 1987 is no longer capped and reduces the other limits, and older debt larger than the $750,000 limit no longer shrinks the qualified balance of two mortgages to $750,000 (26 U.S.C. 163(h)(3)(D) and (F), Publication 936 Table 1).
+- New Mexico net capital gains deduction now gives each married-filing-separately spouse half of the deduction computed on the couple's combined net capital gain, per NMSA 7-2-34(B).
+- Virginia now subtracts only taxable unemployment compensation (tax year 2020 changes), and Hawaii child care assistance now counts strike benefits.
+- Fixed Arkansas gross income to include partnership and S-corporation income and to let one spouse's loss offset the other's income on a joint return; Montana's capital gain credit to be zero rather than negative on net losses, dependent exemptions to cover non-child dependents whose own Montana gross income (excluding unemployment compensation; only taxable Social Security) is at or below the exemption amount, and permanently and totally disabled adult children to count as qualifying children, and Montana joint AGI to leave out a dependent's Montana additions and subtractions, which are not on the filer's return; and New Mexico's net capital gains deduction to exclude short-term gains in every year, following the IRC Section 1222(11) definition that New Mexico law has used since 2019, and to include capital gain distributions.
+- Cap Montana's 2021 income tax rebate at each column's 2021 Form 2 line 20 and pay it as a refundable amount outside the separate-vs-joint election, with no rebate in other years (taxsim #1189). 2021 Montana tax rises for some two-earner couples who file separately (status 2a), for qualifying surviving spouses (now capped at $1,250) and for filers claimed as a dependent on another return, and it never falls; the rebate no longer carries into 2015-2020.
+
+
+## [2.41.4] - 2026-10-13
+
+### Fixed
+
+- Count Indiana's 2020 automatic taxpayer refund in Indiana refundable credits, so it now reaches Indiana income tax and household net income, by reading the refundable-credit list parameter in `in_refundable_credits`.
+- Count employment disability benefits and unemployment compensation excluded from federal AGI (the 2020 IRC 85(c) exclusion) in Montana's elderly homeowner/renter credit gross household income.
+- Add California's 2026 SSI/SSP payment standards (effective January 1, 2026) so 2026 no longer reuses the 2025 amounts.
+
+
+## [2.41.3] - 2026-10-13
+
+### Fixed
+
+- Deduct a Schedule C loss in one SSTB category from AGI when the same person has Schedule C profit in the other category, and treat the two categories separately in the Wisconsin homestead loss add-back and the Kentucky and Maryland spouse loss allocations.
+- Match the Vermont Department of Taxes' published renter credit base amounts for Franklin and Grand Isle in 2022, 2023 and 2025, and round both the base amount before the income phase-out and the final credit half up to whole dollars, including exact 50-cent ties.
+- Add the excess business loss back to Massachusetts 5.0% income for tax years 2022 through 2028 (Schedule X, line 6), measured from 2026 against a Massachusetts threshold that does not adopt the OBBBA reset, with new excess_business_loss and net_business_loss variables.
+- Count 18-year-old qualifying children, students or not, as qualifying older children for the Minnesota working family credit.
+- Compute the New York child and dependent care credit as Form IT-216 does: New York expense caps on qualified expenses less excluded employer dependent care benefits (Worksheet 1), the line 10 table decimal, and no 2021 ARPA rates.
+
+
+## [2.41.2] - 2026-10-13
+
+### Fixed
+
+- The alternative minimum tax no longer applies the IRC 59(j) child exemption limitation from 2018, as required by IRC 55(d)(4)(A)(iii). From 2018, taxable excess also uses alternative minimum taxable income instead of the legacy substitution of regular taxable income for young filers.
+
+
+## [2.41.1] - 2026-10-13
+
+### Changed
+
+- - Publish to PyPI with trusted publishing instead of the organisation-wide PyPI token.
+- Update CMS out-of-pocket health spending per capita, the uprater for health expense inputs, to the NHE projections 2025-2034 release (2018-2034 from Table 3, 2015-2017 from the historical accounts), and extend it from 2034 at the 2033-2034 growth rate instead of hand-extended 2033-2035 values.
+
+### Fixed
+
+- Montana's elderly homeowner/renter credit now counts SSI, TANF, workers' compensation and guaranteed income payments received by household members in gross household income (MCA 15-30-2337(9)(a); Schedule 2EC line 16).
+- Stop the one-time Colorado TABOR cash back, Montana property tax rebate, Delaware relief rebate and Indiana automatic taxpayer refund amounts from carrying into years outside their programs, which removes a phantom Colorado refundable credit from 2015-2020 Colorado income tax and a phantom Montana property tax rebate before 2022.
+- Run selectively chosen contributed reform test folders one file per process to bound CI memory while preserving coverage.
+
+
 ## [2.41.0] - 2026-10-12
 
 ### Added

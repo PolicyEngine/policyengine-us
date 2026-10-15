@@ -68,6 +68,10 @@ def build_situation(households):
                         "taxable_pension_income": {YEAR: adult["pension"]},
                         "taxable_interest_income": {YEAR: adult["interest"]},
                         "social_security_retirement": {YEAR: adult["social_security"]},
+                        # The model would compute SSI for an adult with
+                        # little income; SSI has its own tests (government
+                        # assistance), so the reference leaves it out.
+                        "ssi": {YEAR: 0},
                         "is_tax_unit_dependent": {YEAR: False},
                     }
                     unit_members.append(person)
