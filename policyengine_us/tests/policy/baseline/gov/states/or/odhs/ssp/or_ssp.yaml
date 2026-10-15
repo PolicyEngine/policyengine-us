@@ -1,0 +1,542 @@
+- name: Case 1, no certified services.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+  output:
+    or_ssp: 0
+
+- name: Case 2, approved in-home SSI-only recipient.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: IN_HOME
+  output:
+    or_ssp: 22
+
+- name: Case 3, Social Security income disqualifies the in-home supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: IN_HOME
+    # $500 a month.
+    social_security_retirement: 6_000
+  output:
+    # SSI: 994 - (500 - 20) = 514; countable income 514 + 500 = 1,014.
+    # 1,014 is not SSI alone, so no in-home supplement.
+    or_ssp: 0
+
+- name: Case 4, part-time earnings disqualify the in-home supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: IN_HOME
+    # 10 hours a week at Oregon's $15.05 standard minimum wage (July 2025):
+    # 15.05 * 10 * 52 = 7,826 a year, or 652.17 a month.
+    employment_income: 7_826
+  output:
+    # SSI: 994 - (652.17 - 20 - 65) * 0.5 = 994 - 283.58 = 710.42.
+    # Countable income 710.42 + 652.17 = 1,362.58 is not SSI alone, so 0.
+    or_ssp: 0
+
+- name: Case 5, excluded bank interest does not disqualify.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: IN_HOME
+    interest_income: 120
+  output:
+    or_ssp: 22
+
+- name: Case 6, in-home supplement requires SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: IN_HOME
+    ssi: 0
+  output:
+    or_ssp: 0
+
+- name: Case 7, disability interim assistance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 40
+    or_ssp_category: DISABILITY_INTERIM
+    ssi: 0
+  output:
+    or_ssp: 994
+
+- name: Case 8, interim amount uses countable not adjusted income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 40
+    or_ssp_category: DISABILITY_INTERIM
+    ssi: 0
+    employment_income: 1_200
+  output:
+    or_ssp: 894
+
+- name: Case 9, SSI restored after institutional payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: SSI_RESTORATION
+    ssi: 30
+  output:
+    or_ssp: 964
+
+- name: Case 10, full SSI ends restoration gap.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: SSI_RESTORATION
+  output:
+    or_ssp: 0
+
+- name: Case 11, reduced VA pension restoration.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: VA_RESTORATION
+    ssi: 0
+    veterans_benefits: 1_080
+  output:
+    or_ssp: 904
+
+- name: Case 12, pursuing naturalization after SSI time limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: NATURALIZATION
+    ssi: 0
+  output:
+    or_ssp: 994
+
+- name: Case 13, suspended SSI gets room and board only.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: SUSPENDED_SSI
+    ssi: 0
+  output:
+    or_ssp: 773
+
+- name: Case 14, suspension allowance ends when SSI restarts.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: SUSPENDED_SSI
+  output:
+    or_ssp: 0
+
+- name: Case 15, January sixteen day restoration grant.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: SSI_RESTORATION
+    ssi: 30
+    or_ssp_partial_month_days: 16
+  output:
+    or_ssp: 497.5483870967742
+
+- name: Case 16, February fourteen day interim grant.
+  period: 2026-02
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 40
+    or_ssp_category: DISABILITY_INTERIM
+    ssi: 0
+    or_ssp_partial_month_days: 14
+  output:
+    or_ssp: 497
+
+- name: Case 17, eligible days covering the whole month pay the full amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: IN_HOME
+    or_ssp_partial_month_days: 31
+  output:
+    or_ssp: 22
+
+- name: Case 18, spousal diversion includes income shortfall.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: SPOUSAL_DIVERSION
+    ssi: 0
+    social_security_retirement: 9_600
+    or_ssp_spousal_diversion_difference: 100
+  output:
+    or_ssp: 294
+
+- name: Case 19, spousal diversion above standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: SPOUSAL_DIVERSION
+    ssi: 0
+    social_security_retirement: 14_400
+    or_ssp_spousal_diversion_difference: 100
+  output:
+    or_ssp: 100
+
+- name: Case 20, temporary absence uses income available after care liability.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: ROOM_BOARD_ABSENCE
+    # $1,200 a month, so no SSI.
+    social_security_retirement: 14_400
+    # 1,200 less the $81.28 nursing facility personal needs allowance
+    # (OEP-PT-25-045; OAR 461-155-0250(4)(b)).
+    or_ssp_care_liability: 1_118.72
+  output:
+    # 773 - (1,200 - 1,118.72) = 691.72.
+    or_ssp: 691.72
+
+- name: Case 21, incapacity payment uses accessible income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: ROOM_BOARD_INCAPACITY
+    # $1,200 a month of Social Security that cannot be accessed.
+    social_security_retirement: 14_400
+    or_ssp_inaccessible_income: 1_200
+  output:
+    # SSI is 0, and the inaccessible income is not countable.
+    or_ssp_countable_income: 0
+    or_ssp: 773
+
+- name: Case 22, approved initial placement room and board.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: INITIAL_ROOM_BOARD
+    or_ssp_approved_initial_room_board: 500
+  output:
+    or_ssp: 500
+
+- name: Case 23, initial placement payment capped at published amount.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: INITIAL_ROOM_BOARD
+    or_ssp_approved_initial_room_board: 900
+  output:
+    or_ssp: 773
+
+- name: Case 24, nonresident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: WA
+    age:
+      2026: 65
+    or_ssp_category: IN_HOME
+  output:
+    or_ssp: 0
+
+- name: Case 25, reported SSI receipt qualifies for the in-home supplement when modeled SSI is zero.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: IN_HOME
+    ssi: 0
+    receives_ssi: true
+  output:
+    # Reported receipt meets the SSI condition; countable income 0 equals SSI 0.
+    or_ssp: 22
+
+- name: Case 26, reported SSI receipt is not a suspended SSI payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: SUSPENDED_SSI
+    ssi: 0
+    receives_ssi: true
+  output:
+    # SSI is reported as received, so it is not suspended and the 773
+    # room and board allowance (Case 13) does not apply.
+    or_ssp: 0
+
+- name: Case 27, unmarried community care recipient gets no couple payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: COMMUNITY_CARE
+  output:
+    # OAR 461-155-0630(3) covers only spouses who each receive SSI.
+    ssi: 994
+    or_ssp: 0
+
+- name: Case 28, spouses paid SSI as individuals get no couple payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        or_ssp_category: COMMUNITY_CARE
+      person2:
+        age: 65
+        or_ssp_category: COMMUNITY_CARE
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: OR
+      household2:
+        members: [person2]
+        state_code: OR
+  output:
+    # Living apart, each receives the individual rate, so countable income
+    # equals the 994 standard.
+    ssi: [994, 994]
+    or_ssp: [0, 0]
+
+- name: Case 29, nursing facility resident on SSI receives the personal incidentals payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 80
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ssi: 30
+    # OAR 461-155-0250(4)(c): 79.07 - 30 = 49.07.
+    or_ssp: 49.07
+
+- name: Case 30, nursing facility resident with Social Security above the payment standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 80
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    # $1,200 a month.
+    social_security_retirement: 14_400
+  output:
+    ssi: 0
+    or_ssp: 0
+
+- name: Case 31, nursing facility resident with a reduced $90 VA pension.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 80
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    # OAR 461-155-0250(4)(a): $90 a month.
+    veterans_benefits: 1_080
+    # POMS SI 00830.308 B: the reduced $90 pension is not SSI income.
+    ssi: 30
+  output:
+    # 461-155-0250(4)(c) covers only (4)(b) residents, and countable income
+    # 30 + 90 = 120 exceeds 79.07, so 0.
+    or_ssp_countable_income: 120
+    or_ssp: 0
+
+- name: Case 32, partial-month days for one resident leave another resident's full month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        or_ssp_category: SSI_RESTORATION
+        ssi: 30
+        or_ssp_partial_month_days: 16
+      person2:
+        age: 65
+        or_ssp_category: SSI_RESTORATION
+        ssi: 30
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # 964 * 16 / 31 = 497.55 and the full 964.
+    or_ssp: [497.5483870967742, 964]
+
+- name: Case 33, care liability for one absent resident leaves another resident's income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        or_ssp_category: ROOM_BOARD_ABSENCE
+        social_security_retirement: 14_400
+        or_ssp_care_liability: 1_118.72
+      person2:
+        age: 65
+        or_ssp_category: ROOM_BOARD_ABSENCE
+        social_security_retirement: 14_400
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # person1: 773 - (1,200 - 1,118.72) = 691.72. person2 has no liability,
+    # and 773 - 1,200 < 0.
+    or_ssp: [691.72, 0]
+
+- name: Case 34, partial-month days entered for one month leave the next month full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: OR
+    age: 65
+    or_ssp_category: IN_HOME
+    or_ssp_partial_month_days:
+      2026-01: 16
+  output:
+    or_ssp_partial_month_days:
+      2026-01: 16
+      2026-02: 0
+    # January: 22 * 16 / 31 = 11.35; February is a full month: 22.
+    or_ssp:
+      2026-01: 11.354838709677419
+      2026-02: 22
