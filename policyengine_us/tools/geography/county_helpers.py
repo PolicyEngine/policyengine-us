@@ -14,6 +14,26 @@ COUNTY_FIPS_DATASET_FILENAME = "county_fips_2020.csv.gz"
 COUNTY_FIPS_PACKAGE = "policyengine_us.data"
 
 
+def county_has_state_suffix(county: np.ndarray, state_code: str) -> np.ndarray:
+    """Match county suffixes without ASCII-decoding UTF-8 byte inputs.
+
+    Core can store bytes inside object arrays, so match each value with a
+    suffix of the same type and leave the county lookup keys unchanged.
+    """
+    suffix = f"_{state_code}"
+    byte_suffix = suffix.encode("utf-8")
+    return np.fromiter(
+        (
+            value.endswith(byte_suffix)
+            if isinstance(value, bytes)
+            else str(value).endswith(suffix)
+            for value in county
+        ),
+        dtype=bool,
+        count=len(county),
+    )
+
+
 def _read_county_fips_dataset(dataset_file) -> pd.DataFrame:
     return pd.read_csv(
         dataset_file,
