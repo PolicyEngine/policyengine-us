@@ -27,16 +27,9 @@ class mi_household_resources(Variable):
         "&hash=AF396E577B1932DF55BFD7F22D7EF06A#page=8",
         # 2025 MI-1040 book: "Total Household Resources" (pages 26 and 27)
         # and MI-1040CR lines 14 to 17 (page 31) and 18 to 31 (pages 32 and 33).
+        # PDF pages 26-27, 31-33.
         "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
         "Forms/IIT/TY2025/MI-1040-Book.pdf#page=26",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
-        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=27",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
-        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=31",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
-        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=32",
-        "https://www.michigan.gov/taxes/-/media/Project/Websites/taxes/"
-        "Forms/IIT/TY2025/MI-1040-Book.pdf#page=33",
     )
 
     def formula(tax_unit, period, parameters):
