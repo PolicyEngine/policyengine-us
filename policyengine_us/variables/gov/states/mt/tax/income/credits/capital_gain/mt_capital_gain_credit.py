@@ -13,6 +13,7 @@ class mt_capital_gain_credit(Variable):
     def formula(person, period, parameters):
         p = parameters(period).gov.states.mt.tax.income.credits.capital_gain
 
-        net_capital_gain = person("capital_gains", period)
-        # The net capital gain variable is capped at 0
+        # The credit is 2% of net capital gains (Form 2 instructions, Line 1),
+        # so a net capital loss produces no credit rather than a negative one.
+        net_capital_gain = max_(person("capital_gains", period), 0)
         return p.percentage * net_capital_gain
