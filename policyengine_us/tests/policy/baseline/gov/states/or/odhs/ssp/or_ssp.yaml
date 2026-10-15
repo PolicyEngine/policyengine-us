@@ -100,7 +100,7 @@
     state_code:
       2026: OR
     age:
-      2026: 65
+      2026: 40
     or_ssp_category: DISABILITY_INTERIM
     ssi: 0
     employment_income: 1_200
@@ -194,7 +194,7 @@
       2026: 65
     or_ssp_category: SSI_RESTORATION
     ssi: 30
-    or_ssp_days_eligible: 16
+    or_ssp_partial_month_days: 16
   output:
     or_ssp: 497.5483870967742
 
@@ -205,14 +205,14 @@
     state_code:
       2026: OR
     age:
-      2026: 65
+      2026: 40
     or_ssp_category: DISABILITY_INTERIM
     ssi: 0
-    or_ssp_days_eligible: 14
+    or_ssp_partial_month_days: 14
   output:
     or_ssp: 497
 
-- name: Case 17, zero eligible days.
+- name: Case 17, eligible days covering the whole month pay the full amount.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -221,9 +221,9 @@
     age:
       2026: 65
     or_ssp_category: IN_HOME
-    or_ssp_days_eligible: 0
+    or_ssp_partial_month_days: 31
   output:
-    or_ssp: 0
+    or_ssp: 22
 
 - name: Case 18, spousal diversion includes income shortfall.
   period: 2026-01
@@ -264,9 +264,14 @@
     age:
       2026: 65
     or_ssp_category: ROOM_BOARD_ABSENCE
-    or_ssp_available_room_board_income: 200
+    # $1,200 a month, so no SSI.
+    social_security_retirement: 14_400
+    # 1,200 less the $81.28 nursing facility personal needs allowance
+    # (OEP-PT-25-045; OAR 461-155-0250(4)(b)).
+    or_ssp_care_liability: 1_118.72
   output:
-    or_ssp: 573
+    # 773 - (1,200 - 1,118.72) = 691.72.
+    or_ssp: 691.72
 
 - name: Case 21, incapacity payment uses accessible income.
   period: 2026-01
@@ -277,8 +282,12 @@
     age:
       2026: 65
     or_ssp_category: ROOM_BOARD_INCAPACITY
-    or_ssp_available_room_board_income: 0
+    # $1,200 a month of Social Security that cannot be accessed.
+    social_security_retirement: 14_400
+    or_ssp_inaccessible_income: 1_200
   output:
+    # SSI is 0, and the inaccessible income is not countable.
+    or_ssp_countable_income: 0
     or_ssp: 773
 
 - name: Case 22, approved initial placement room and board.
@@ -349,3 +358,167 @@
     # SSI is reported as received, so it is not suspended and the 773
     # room and board allowance (Case 13) does not apply.
     or_ssp: 0
+
+- name: Case 27, unmarried community care recipient gets no couple payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 65
+    or_ssp_category: COMMUNITY_CARE
+  output:
+    # OAR 461-155-0630(3) covers only spouses who each receive SSI.
+    ssi: 994
+    or_ssp: 0
+
+- name: Case 28, spouses paid SSI as individuals get no couple payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        or_ssp_category: COMMUNITY_CARE
+      person2:
+        age: 65
+        or_ssp_category: COMMUNITY_CARE
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      household1:
+        members: [person1]
+        state_code: OR
+      household2:
+        members: [person2]
+        state_code: OR
+  output:
+    # Living apart, each receives the individual rate, so countable income
+    # equals the 994 standard.
+    ssi: [994, 994]
+    or_ssp: [0, 0]
+
+- name: Case 29, nursing facility resident on SSI receives the personal incidentals payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 80
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    ssi: 30
+    # OAR 461-155-0250(4)(c): 79.07 - 30 = 49.07.
+    or_ssp: 49.07
+
+- name: Case 30, nursing facility resident with Social Security above the payment standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 80
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    # $1,200 a month.
+    social_security_retirement: 14_400
+  output:
+    ssi: 0
+    or_ssp: 0
+
+- name: Case 31, nursing facility resident with a reduced $90 VA pension.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code:
+      2026: OR
+    age:
+      2026: 80
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    # OAR 461-155-0250(4)(a): $90 a month.
+    veterans_benefits: 1_080
+    # POMS SI 00830.308 B: the reduced $90 pension is not SSI income.
+    ssi: 30
+  output:
+    # 461-155-0250(4)(c) covers only (4)(b) residents, and countable income
+    # 30 + 90 = 120 exceeds 79.07, so 0.
+    or_ssp_countable_income: 120
+    or_ssp: 0
+
+- name: Case 32, partial-month days for one resident leave another resident's full month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        or_ssp_category: SSI_RESTORATION
+        ssi: 30
+        or_ssp_partial_month_days: 16
+      person2:
+        age: 65
+        or_ssp_category: SSI_RESTORATION
+        ssi: 30
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # 964 * 16 / 31 = 497.55 and the full 964.
+    or_ssp: [497.5483870967742, 964]
+
+- name: Case 33, care liability for one absent resident leaves another resident's income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        or_ssp_category: ROOM_BOARD_ABSENCE
+        social_security_retirement: 14_400
+        or_ssp_care_liability: 1_118.72
+      person2:
+        age: 65
+        or_ssp_category: ROOM_BOARD_ABSENCE
+        social_security_retirement: 14_400
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: OR
+  output:
+    # person1: 773 - (1,200 - 1,118.72) = 691.72. person2 has no liability,
+    # and 773 - 1,200 < 0.
+    or_ssp: [691.72, 0]

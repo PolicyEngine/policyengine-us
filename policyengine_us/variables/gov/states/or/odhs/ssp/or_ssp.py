@@ -8,13 +8,20 @@ class or_ssp(Variable):
     definition_period = MONTH
     unit = USD
     reference = (
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0250.pdf#page=1",
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0575.pdf",
+        # ORS 411.704(1)(b), 411.706(1)
+        "https://www.oregonlegislature.gov/bills_laws/ors/ors411.html",
+        # PDF pages 1-2
+        "https://ch461rules.odhs.oregon.gov/rules/461-155-0250.pdf#page=1",
+        "https://ch461rules.odhs.oregon.gov/rules/461-155-0575.pdf",
         # PDF pages 1-3
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0630.pdf#page=1",
+        "https://ch461rules.odhs.oregon.gov/rules/461-155-0630.pdf#page=1",
         # PDF pages 1-3
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0700.pdf#page=1",
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-160-0070.pdf",
+        "https://ch461rules.odhs.oregon.gov/rules/461-155-0700.pdf#page=1",
+        "https://ch461rules.odhs.oregon.gov/rules/461-160-0070.pdf",
+        # 461-101-0010(17) defines OSIP as these special need payments.
+        "https://ch461rules.odhs.oregon.gov/rules/461-101-0010.pdf#page=3",
+        # DHS 2818 (10/2026)
+        "https://sharedsystems.dhsoha.state.or.us/DHSForms/Served/de2818.pdf#page=583",
     )
     defined_for = StateCode.OR
 
@@ -51,34 +58,50 @@ class or_ssp(Variable):
         )
         suspended = (category == c.SUSPENDED_SSI) & ~receives_ssi
         diversion = max_(person("or_ssp_spousal_diversion_difference", period), 0)
-        available = max_(person("or_ssp_available_room_board_income", period), 0)
-        room_board = (category == c.ROOM_BOARD_ABSENCE) | (
-            category == c.ROOM_BOARD_INCAPACITY
-        )
+        absence = category == c.ROOM_BOARD_ABSENCE
+        incapacity = category == c.ROOM_BOARD_INCAPACITY
+        # 461-155-0630(2)(b)(A)(iv): a temporary absence uses the income left
+        # after contributing to the care liability.
+        liability = max_(person("or_ssp_care_liability", period), 0)
+        room_board_income = where(absence, max_(income - liability, 0), income)
+        # 461-155-0250(4)(c): an OSIPM nursing facility or ICF-ID resident
+        # receives the payment standard minus countable income (including
+        # SSI). A $90 VA pension already exceeds it.
+        # NOTE: SSI receipt stands in for OSIPM eligibility, so residents
+        # without SSI whose countable income is $50 to $79.07 are not modeled.
+        # The SSI medical treatment facility arrangement also includes
+        # hospitals, and OSIPM-EPD residents are not excluded. A temporary
+        # absence from community-based care pays only the room and board
+        # payment.
+        arrangement = person("ssi_federal_living_arrangement", period)
+        nursing_facility = (
+            arrangement == arrangement.possible_values.MEDICAL_TREATMENT_FACILITY
+        ) & receives_ssi
         amount = select(
             [
                 in_home,
                 care & couple,
                 interim | restoring_ssi | restoring_va,
-                suspended,
+                suspended | absence | incapacity,
                 category == c.SPOUSAL_DIVERSION,
-                room_board,
+                nursing_facility,
             ],
             [
                 p.in_home_amount,
                 couple_payment,
                 max_(standard - income, 0),
-                max_(p.room_and_board - income, 0),
+                max_(p.room_and_board - room_board_income, 0),
                 diversion + max_(standard - income, 0),
-                max_(p.room_and_board - available, 0),
+                max_(p.nursing_facility_payment_standard - income, 0),
             ],
             default=0,
         )
-        days = clip(person("or_ssp_days_eligible", period), 0, period.days)
+        days = person("or_ssp_partial_month_days", period)
+        partial_month = (days > 0) & (days < period.days)
         # 461-160-0070 uses actual calendar days and does not round the result.
-        prorated = amount * days / period.days
+        prorated = where(partial_month, amount * days / period.days, amount)
         initial = min_(
             max_(person("or_ssp_approved_initial_room_board", period), 0),
             p.room_and_board,
         )
-        return where(category == c.INITIAL_ROOM_BOARD, initial * (days > 0), prorated)
+        return where(category == c.INITIAL_ROOM_BOARD, initial, prorated)

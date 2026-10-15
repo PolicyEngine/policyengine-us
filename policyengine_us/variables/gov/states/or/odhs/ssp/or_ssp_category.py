@@ -30,11 +30,11 @@ class or_ssp_category(Variable):
     possible_values = ORSSPCategory
     default_value = ORSSPCategory.NONE
     reference = (
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0575.pdf",
+        "https://ch461rules.odhs.oregon.gov/rules/461-155-0575.pdf",
         # PDF pages 1-3
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0630.pdf#page=1",
+        "https://ch461rules.odhs.oregon.gov/rules/461-155-0630.pdf#page=1",
         # PDF pages 1-3
-        "https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0700.pdf#page=1",
+        "https://ch461rules.odhs.oregon.gov/rules/461-155-0700.pdf#page=1",
     )
     documentation = """
     Select only after OSIPM financial eligibility, placement/service authorization,

@@ -1,6 +1,6 @@
-description: Oregon permits the restoration supplement for recipients leaving a nursing facility with a Veterans benefit no larger than this amount.
+description: Oregon limits the nursing-facility restoration payment to recipients whose reduced Veterans pension is at most this amount under the State Supplemental Payment program.
 values:
-  2024-10-01: 90
+  2020-01-01: 90
 
 metadata:
   unit: currency-USD
@@ -8,4 +8,6 @@ metadata:
   label: Oregon SSP reduced VA pension limit
   reference:
     - title: OAR 461-155-0700(1)(b)
-      href: https://odhsssprulesprdwu1st01.blob.core.windows.net/rules/461-155-0700.pdf#page=1
+      href: https://ch461rules.odhs.oregon.gov/rules/461-155-0700.pdf#page=1
+    - title: OAR 461-155-0700 history, version effective 1-01-20
+      href: https://ch461rules.odhs.oregon.gov/historical/461-155-0700_history.pdf#page=7

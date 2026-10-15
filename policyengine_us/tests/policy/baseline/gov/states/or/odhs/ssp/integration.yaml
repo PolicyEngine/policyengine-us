@@ -61,7 +61,7 @@
       person2:
         age: 65
         or_ssp_category: COMMUNITY_CARE
-        ssi: 0
+        takes_up_ssi_if_eligible: false
     marital_units:
       couple:
         members: [person1, person2]
@@ -70,6 +70,7 @@
         members: [person1, person2]
         state_code: OR
   output:
+    # person2 does not receive SSI, so OAR 461-155-0630(3) does not apply.
     or_ssp: [0, 0]
 
 - name: Case 4, both spouses must have community care.
@@ -93,7 +94,7 @@
   output:
     or_ssp: [0, 0]
 
-- name: Case 5, in-home reimbursement excluded from SNAP income.
+- name: Case 5, in-home reimbursement excluded from SNAP and HUD income.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -102,10 +103,11 @@
     or_ssp_category: IN_HOME
   output:
     or_ssp: 264
+    household_state_benefits: 264
     snap_unearned_income: 11_928
     hud_unearned_income: 11_928
 
-- name: Case 6, community care payment counts as SNAP and HUD unearned income.
+- name: Case 6, community care payment counts as HUD but not SNAP unearned income.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -130,15 +132,16 @@
     ssi: [1_866, 1_866]
     # person2: 477 * 12 = 5,724.
     or_ssp: [0, 5_724]
-    # Community care is not the in-home reimbursement, so the full payment counts.
-    or_ssp_excluding_in_home_supplement: [0, 5_724]
-    # 12 * (1,200 Social Security + 311 SSI + 477 SSP) = 12 * 1,988 = 23,856.
-    snap_unearned_income: 23_856
+    # Community care is not the in-home reimbursement, so HUD counts it.
+    or_ssp_countable_for_hud: [0, 5_724]
+    # OAR 461-145-0410(7)(c)(D) excludes the special need from SNAP:
+    # 12 * (1,200 Social Security + 311 SSI) = 18,132.
+    snap_unearned_income: 18_132
     # person1: 14,400 Social Security + 1,866 SSI = 16,266.
     # person2: 1,866 SSI + 5,724 SSP = 7,590.
     hud_unearned_income: [16_266, 7_590]
 
-- name: Case 7, temporary absence counts all countable income as available by default.
+- name: Case 7, temporary absence without a care liability counts all countable income.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -152,7 +155,6 @@
     ssi: 514
     # 514 SSI + 500 Social Security = 1,014.
     or_ssp_countable_income: 1_014
-    # No liability override, so available income equals countable income.
-    or_ssp_available_room_board_income: 1_014
+    # No care liability, so all 1,014 is available for room and board.
     # 773 room and board standard - 1,014 < 0, so no payment.
     or_ssp: 0
