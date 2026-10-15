@@ -1100,7 +1100,9 @@ programs:
         notes: >-
           Models 2026 regular State SSI Supplement, certified Exceptional
           Expense (SSI-E) and Caretaker Supplement payments, including the May
-          2026 increase. Grandfathered state-only SSI recipients are not modeled.
+          2026 regular and SSI-E rate increase. Grandfathered state-only SSI recipients are not modeled;
+          without parent IDs the Caretaker Supplement pays one SSI parent per
+          family, and groups over 12 need a supplied net income limit.
 
   - id: social_security
     name: Social Security

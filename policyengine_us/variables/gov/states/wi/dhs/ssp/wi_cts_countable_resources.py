@@ -10,7 +10,9 @@ class wi_cts_countable_resources(Variable):
     quantity_type = STOCK
     # PDF pages 31-32
     reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf#page=31"
-    documentation = "Default covers modeled SSI liquid resources. Override with the CTS asset budget when it differs: include retirement assets, life insurance, nonhome real estate and vehicle equity after the one-vehicle equity exemption; exclude the home, approved burial assets, student loans and protected tax refunds. SSI recipients are excluded at the group calculation."
+    documentation = "SSI countable resources plus other CTS countable resources. SSI recipients are excluded at the group calculation."
 
     def formula(person, period, parameters):
-        return person("ssi_countable_resources", period.this_year)
+        return person("ssi_countable_resources", period.this_year) + person(
+            "wi_cts_other_countable_resources", period
+        )

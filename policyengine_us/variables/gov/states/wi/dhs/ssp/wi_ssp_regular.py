@@ -1,7 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.variables.gov.ssa.ssi.eligibility.status.ssi_federal_living_arrangement import (
-    SSIFederalLivingArrangement,
-)
 
 
 class wi_ssp_regular(Variable):
@@ -26,7 +23,7 @@ class wi_ssp_regular(Variable):
         ) > 0
         arrangement = person("ssi_federal_living_arrangement", period)
         other_household = (
-            arrangement == SSIFederalLivingArrangement.ANOTHER_PERSONS_HOUSEHOLD
+            arrangement == arrangement.possible_values.ANOTHER_PERSONS_HOUSEHOLD
         )
         with_ineligible_spouse = where(
             other_household,

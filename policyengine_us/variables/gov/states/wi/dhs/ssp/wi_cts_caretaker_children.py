@@ -12,7 +12,7 @@ class wi_cts_caretaker_children(Variable):
         # PDF pages 20, 68-71
         "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf#page=20",
     )
-    documentation = "Each eligible child counts for one co-resident SSI parent. A child in common counts for the parent with more eligible children, and ties go to the lower person_id. Without parent links one SSI parent per family receives the award. Override with the agency's caretaker coding when it differs."
+    documentation = "Each eligible child counts for one co-resident SSI parent. A child in common counts for the parent with more eligible children, and ties go to the lower person_id. Without parent links one SSI parent per family receives the award."
 
     def formula(person, period, parameters):
         first, second, linked, receipt, _, _ = cts_relationships(person, period)

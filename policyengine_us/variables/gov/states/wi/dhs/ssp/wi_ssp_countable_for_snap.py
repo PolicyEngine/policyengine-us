@@ -7,6 +7,7 @@ class wi_ssp_countable_for_snap(Variable):
     label = "Wisconsin state SSI supplements countable for FoodShare"
     definition_period = MONTH
     unit = USD
+    defined_for = StateCode.WI
     reference = "https://www.emhandbooks.wisconsin.gov/fsh/policy_files/4/43/4.3.4.htm"
     # The current FoodShare income manual explicitly excludes SSI-E.
     # The SSI-E handbook's older FoodShare discussion says otherwise;

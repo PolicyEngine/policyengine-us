@@ -7,7 +7,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -37,7 +36,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -79,7 +77,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -110,7 +107,6 @@
         age: 40
         person_id: 1
         ssi: 0
-        wi_ssp_regular: 0
         social_security_disability: 12_000
       person2:
         age: 8
@@ -176,7 +172,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 18
         person_id: 2
@@ -207,7 +202,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 18
         person_id: 2
@@ -239,7 +233,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 19
         person_id: 2
@@ -271,7 +264,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -302,7 +294,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -333,7 +324,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -364,7 +354,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -398,7 +387,6 @@
         # or 628.33 a month. SSI countable earnings = (628.33 - 20 - 65) / 2
         # = 271.67, so SSI = 994 - 271.67 = 722.33.
         ssi: 722.33
-        wi_ssp_regular: 83.78
         employment_income: 7_540
         # Below the $2,000 SSI resource limit, above the $1,000 CTS limit.
         ssi_countable_resources: 1_500
@@ -434,12 +422,11 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        wi_cts_countable_resources: 1_000
+        bank_account_assets: 1_000
     marital_units:
       parent:
         members: [person1]
@@ -465,12 +452,11 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        wi_cts_countable_resources: 1_001
+        bank_account_assets: 1_001
     marital_units:
       parent:
         members: [person1]
@@ -496,7 +482,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 16
         person_id: 2
@@ -529,7 +514,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 16
         person_id: 2
@@ -561,7 +545,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 16
         person_id: 2
@@ -597,7 +580,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 16
         person_id: 2
@@ -631,7 +613,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 17
         person_id: 2
@@ -667,7 +648,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -703,7 +683,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -712,8 +691,7 @@
       person3:
         age: 40
         person_id: 20
-        ssi: 745.5
-        wi_ssp_regular: 66.03
+        ssi: 994
     marital_units:
       parent:
         members: [person1]
@@ -741,7 +719,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -771,7 +748,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -802,7 +778,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -833,7 +808,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 10
         person_id: 2
@@ -877,7 +851,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 10
         person_id: 2
@@ -921,7 +894,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 16
         person_id: 2
@@ -962,7 +934,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -993,12 +964,11 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
         parent_1_id: 1
-        wi_cts_countable_resources: 1_001
+        bank_account_assets: 1_001
     marital_units:
       parent:
         members: [person1]
@@ -1024,7 +994,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -1126,7 +1095,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -1229,12 +1197,10 @@
         age: 38
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 36
         person_id: 2
         ssi: 994
-        wi_ssp_regular: 83.78
       person3:
         age: 12
         person_id: 3
@@ -1285,14 +1251,12 @@
       person1:
         age: 38
         person_id: 1
-        # SSI couple: 1,491 / 2 = 745.50 each; SSP couple: 132.05 / 2.
+        # SSI couple: 1,491 / 2 = 745.50 each.
         ssi: 745.5
-        wi_ssp_regular: 66.025
       person2:
         age: 36
         person_id: 2
         ssi: 745.5
-        wi_ssp_regular: 66.025
       person3:
         age: 12
         person_id: 3
@@ -1339,12 +1303,10 @@
         age: 36
         person_id: 2
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 38
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person3:
         age: 6
         person_id: 4
@@ -1394,12 +1356,10 @@
         age: 38
         person_id: 1
         ssi: 745.5
-        wi_ssp_regular: 66.025
       person2:
         age: 36
         person_id: 2
         ssi: 745.5
-        wi_ssp_regular: 66.025
       person3:
         age: 12
         person_id: 3
@@ -1449,12 +1409,10 @@
         age: 38
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 36
         person_id: 2
         ssi: 994
-        wi_ssp_regular: 83.78
       person3:
         age: 12
         person_id: 3
@@ -1504,7 +1462,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 16
         person_id: 2
@@ -1555,7 +1512,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -1588,7 +1544,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 8
         person_id: 2
@@ -1615,7 +1570,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 17
         person_id: 2
@@ -1655,7 +1609,6 @@
       person1:
         age: 34
         ssi: 994
-        wi_ssp_regular: 83.78
         own_children_in_household: 2
       person2:
         age: 9
@@ -1694,7 +1647,6 @@
         age: 45
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 18
         person_id: 2
@@ -1739,7 +1691,6 @@
         age: 42
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 16
         person_id: 2
@@ -1786,7 +1737,6 @@
         age: 38
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 17
         person_id: 2
@@ -1832,7 +1782,6 @@
         age: 40
         person_id: 1
         ssi: 994
-        wi_ssp_regular: 83.78
       person2:
         age: 10
         person_id: 2
@@ -1873,3 +1822,368 @@
     # stay in the group. Group of 3: gross 200 + 500 = 700 <= 1,197; net
     # 700 - 85 = 615 <= 647, so Mary gets $275 for Jill.
     wi_cts: [275, 0, 0, 0]
+
+- name: Case 47, Incarcerated child of an SSI parent is not eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        ssi: 994
+      person2:
+        age: 16
+        person_id: 2
+        parent_1_id: 1
+        is_incarcerated: true
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+    families:
+      unit:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # Handbook 3.1.6: a person incarcerated in jail or prison is not in a
+    # CTS qualified living arrangement. Without is_incarcerated the parent
+    # would receive $275 for this child, as in Case 1.
+    wi_cts_child_eligible: [false, false]
+    wi_cts: [0, 0]
+    # The parent keeps the January 2026 individual rate only.
+    wi_ssp: [83.78, 0]
+
+- name: Case 48, Additional one-third disregard input gives an 18-year-old senior 30 dollars and one-third.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 45
+        person_id: 1
+        ssi: 994
+      person2:
+        age: 18
+        person_id: 2
+        parent_1_id: 1
+        is_in_secondary_school: true
+        wi_cts_graduates_before_19: true
+        wi_cts_additional_fraction_disregard: true
+        # 20 hours a week at the $7.25 minimum wage: 7.25 * 20 * 52 = 7,540.
+        employment_income: 7_540
+      person3:
+        age: 14
+        person_id: 3
+        parent_1_id: 1
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+    families:
+      unit:
+        members: [person1, person2, person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # An 18-year-old is not a continuing minor, so only the input applies
+    # $30 and one-third: 7,540 / 12 = 628.33;
+    # (628.33 - 90 - 30) * (1 - 1/3) = 508.33 * 2 / 3 = 338.89.
+    wi_cts_net_income: [0, 338.89, 0]
+    # Size 2: gross 628.33 <= 1,018 and net 338.89 <= 550, so 275 + 165.
+    wi_cts: [440, 0, 0]
+    # 83.78 + 440 = 523.78.
+    wi_ssp: [523.78, 0, 0]
+
+- name: Case 49, Dependent care deduction cannot reduce unearned income when no one in the group works.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        ssi: 994
+      person2:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        # 600 a month.
+        social_security_survivors: 7_200
+      person3:
+        age: 1
+        person_id: 3
+        parent_1_id: 1
+        # 600 a month.
+        pre_subsidy_childcare_expenses: 7_200
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+    families:
+      unit:
+        members: [person1, person2, person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    wi_cts_dependent_care_deduction: [0, 0, 200]
+    wi_cts_net_income: [0, 600, 0]
+    # Size 2, Area I: gross 600 <= 1,018. No earned income absorbs the care
+    # deduction (45 CFR 233.20(a)(11)(i)(D)), so net 600 > 550.
+    wi_cts: [0, 0, 0]
+
+- name: Case 50, Tribal Area I input for one household leaves the other household's area unchanged.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        ssi: 994
+      person2:
+        age: 16
+        person_id: 2
+        parent_1_id: 1
+      person3:
+        age: 40
+        person_id: 3
+        ssi: 994
+      person4:
+        age: 16
+        person_id: 4
+        parent_1_id: 3
+    marital_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+      parent2:
+        members: [person3]
+      child2:
+        members: [person4]
+    families:
+      family1:
+        members: [person1, person2]
+      family2:
+        members: [person3, person4]
+    spm_units:
+      unit1:
+        members: [person1, person2]
+      unit2:
+        members: [person3, person4]
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+    households:
+      home1:
+        members: [person1, person2]
+        state_code: WI
+        county: PORTAGE_COUNTY_WI
+        wi_cts_tribal_area_i: true
+      home2:
+        members: [person3, person4]
+        state_code: WI
+        county: MILWAUKEE_COUNTY_WI
+  output:
+    # Portage is Area II, so home1 needs the tribal input; Milwaukee is an
+    # Area I county by formula.
+    wi_cts_area_i: [true, true, true, true]
+    wi_cts: [275, 0, 275, 0]
+
+- name: Case 51, Other qualifying status for one child does not reset a citizen sibling or another family.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        ssi: 994
+      person2:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        immigration_status: UNDOCUMENTED
+        wi_cts_other_qualifying_immigration_status: true
+      person3:
+        age: 6
+        person_id: 3
+        parent_1_id: 1
+      person4:
+        age: 40
+        person_id: 4
+        ssi: 994
+      person5:
+        age: 8
+        person_id: 5
+        parent_1_id: 4
+    marital_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+      child2:
+        members: [person3]
+      parent2:
+        members: [person4]
+      child3:
+        members: [person5]
+    families:
+      family1:
+        members: [person1, person2, person3]
+      family2:
+        members: [person4, person5]
+    spm_units:
+      unit1:
+        members: [person1, person2, person3]
+      unit2:
+        members: [person4, person5]
+    tax_units:
+      tax_unit1:
+        members: [person1, person2, person3]
+      tax_unit2:
+        members: [person4, person5]
+    households:
+      home1:
+        members: [person1, person2, person3]
+        state_code: WI
+        county: DANE_COUNTY_WI
+      home2:
+        members: [person4, person5]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # The enum has no PRUCOL value. This child has approved PRUCOL evidence
+    # (Handbook 3.1.4 item 4), for example an indefinite stay of
+    # deportation, so the input makes the child eligible; the citizen
+    # sibling and the second family keep the formula.
+    wi_cts_child_eligible: [false, true, true, false, true]
+    # 275 + 165 = 440 for the first family; 275 for the second.
+    wi_cts: [440, 0, 0, 275, 0]
+
+- name: Case 52, Other countable resources for one child do not reset another family's bank balance.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        ssi: 994
+      person2:
+        age: 8
+        person_id: 2
+        parent_1_id: 1
+        wi_cts_other_countable_resources: 500
+      person3:
+        age: 40
+        person_id: 3
+        ssi: 994
+      person4:
+        age: 8
+        person_id: 4
+        parent_1_id: 3
+        bank_account_assets: 1_500
+    marital_units:
+      parent1:
+        members: [person1]
+      child1:
+        members: [person2]
+      parent2:
+        members: [person3]
+      child2:
+        members: [person4]
+    families:
+      family1:
+        members: [person1, person2]
+      family2:
+        members: [person3, person4]
+    spm_units:
+      unit1:
+        members: [person1, person2]
+      unit2:
+        members: [person3, person4]
+    tax_units:
+      tax_unit1:
+        members: [person1, person2]
+      tax_unit2:
+        members: [person3, person4]
+    households:
+      home1:
+        members: [person1, person2]
+        state_code: WI
+        county: DANE_COUNTY_WI
+      home2:
+        members: [person3, person4]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    # 500 <= 1,000 for the first family; the second family's 1,500 bank
+    # balance still exceeds the 1,000 limit (Handbook 3.2.2).
+    wi_cts_countable_resources: [0, 500, 0, 1_500]
+    wi_cts: [275, 0, 0, 0]
+
+- name: Case 53, Dependent care deduction is limited to the earned income left after the 90 dollar disregard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        person_id: 1
+        ssi: 994
+      person2:
+        age: 17
+        person_id: 2
+        parent_1_id: 1
+        # 5 hours a week at the $7.25 minimum wage: 7.25 * 5 * 52 = 1,885.
+        employment_income: 1_885
+      person3:
+        age: 1
+        person_id: 3
+        parent_1_id: 1
+        # 600 a month each.
+        social_security_survivors: 7_200
+        pre_subsidy_childcare_expenses: 7_200
+    marital_units:
+      parent:
+        members: [person1]
+      child0:
+        members: [person2]
+      child1:
+        members: [person3]
+    families:
+      unit:
+        members: [person1, person2, person3]
+    households:
+      home:
+        members: [person1, person2, person3]
+        state_code: WI
+        county: DANE_COUNTY_WI
+  output:
+    wi_cts_dependent_care_deduction: [0, 0, 200]
+    wi_cts_net_income: [0, 67.08, 600]
+    # 157.08 - 90 = 67.08 earned income is left, so care is capped at 67.08:
+    # net 67.08 + 600 - 67.08 = 600 > 550. An uncapped $200 would give
+    # 467.08 and pay 440.
+    wi_cts: [0, 0, 0]

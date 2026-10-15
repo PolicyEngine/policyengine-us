@@ -9,7 +9,7 @@ class wi_cts_buening_member(Variable):
     definition_period = MONTH
     # PDF pages 33-34
     reference = "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf#page=33"
-    documentation = "The non-SSI co-parent and children whose needs must be tested separately under Buening. Parent links identify ordinary two-parent blended families; override for more complex configurations or when links are absent."
+    documentation = "The non-SSI co-parent and children whose needs must be tested separately under Buening. Requires parent IDs."
 
     def formula(person, period, parameters):
         _, _, subgroup = cts_filing_unit(person, period)

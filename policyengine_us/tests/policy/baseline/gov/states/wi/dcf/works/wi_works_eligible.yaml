@@ -227,3 +227,65 @@
     # The grandmother is the parent of an adult, not a custodial parent of
     # a dependent child; the only custodial parent receives SSI.
     wi_works_eligible: false
+
+- name: Case 12, Without parent IDs a parent on SSI cannot receive W-2.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        is_disabled: true
+        ssi: 994
+        own_children_in_household: 1
+      person2:
+        age: 3
+        ssi: 0
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # No member has a parent ID, as in microsimulation, so every parent
+    # (own_children_in_household > 0) counts as custodial. The only
+    # custodial parent receives SSI (Wis. Stat. 49.145(2)(i)).
+    wi_works_eligible: false
+
+- name: Case 13, Without parent IDs a parent not on SSI remains W-2 eligible.
+  period: 2026-01
+  input:
+    people:
+      person1:
+        age: 30
+        ssi: 0
+        own_children_in_household: 1
+      person2:
+        age: 3
+        ssi: 0
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    spm_units:
+      unit:
+        members: [person1, person2]
+        wi_works_income_eligible: true
+        wi_works_resources_eligible: true
+    households:
+      household:
+        members: [person1, person2]
+        state_code: WI
+  output:
+    # The same fallback parent does not receive SSI, so the exclusion
+    # does not apply.
+    wi_works_eligible: true

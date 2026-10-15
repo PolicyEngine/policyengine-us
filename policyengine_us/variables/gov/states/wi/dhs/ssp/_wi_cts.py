@@ -19,6 +19,10 @@ def cts_relationships(person, period):
     ssi_parents = ((first >= 0) & receipt[first]).astype(int) + (
         (second >= 0) & receipt[second]
     )
+    # Without parent IDs (as in microsimulation) every is_parent member of the
+    # family, from own_children_in_household, is a parent of every child: a
+    # family with any non-SSI parent has no eligible child, and one SSI parent
+    # receives the whole award.
     is_parent = person("is_parent", period.this_year)
     parents = where(linked, parents, person.family.sum(is_parent))
     ssi_parents = where(linked, ssi_parents, person.family.sum(is_parent & receipt))
@@ -121,16 +125,22 @@ def cts_financial_test(person, period, parameters, unit, group, large_group_limi
         + pregnant * p.pregnancy_allowance,
         large_group_limit,
     )
-    gross = cts_unit_sum(unit, group * person("wi_cts_gross_income", period))
-    net = cts_unit_sum(
-        unit,
-        group
-        * (
-            person("wi_cts_net_income", period)
-            - person("wi_cts_dependent_care_deduction", period)
-            - max_(person("child_support_expense", period), 0)
-        ),
+    income = person("wi_cts_gross_income", period)
+    gross = cts_unit_sum(unit, group * income)
+    net_income = person("wi_cts_net_income", period)
+    # AFDC disregards dependent care from earned income, after the other
+    # disregards (42 USC 602(a)(8)(A)(iii) as amended in 1988; 45 CFR
+    # 233.20(a)(11)(i)(D)), so the group's care deduction is capped at its
+    # earned income left after the $90, $30 and one-third disregards. AFDC
+    # took the care disregard from each earner's own earned income; the model
+    # pools the group's remaining earnings because it does not know who pays
+    # for care.
+    care = min_(
+        cts_unit_sum(unit, group * person("wi_cts_dependent_care_deduction", period)),
+        cts_unit_sum(unit, group * person("wi_cts_countable_earned_income", period)),
     )
+    support_paid = max_(person("child_support_expense", period), 0)
+    net = cts_unit_sum(unit, group * (net_income - support_paid)) - care
     assets = cts_unit_sum(
         unit, group * max_(person("wi_cts_countable_resources", period), 0)
     )

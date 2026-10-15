@@ -15,7 +15,7 @@ class wi_cts_child_eligible(Variable):
         # PDF pages 19-20
         "https://www.dhs.wisconsin.gov/publications/p23131-25-01.pdf#page=19",
     )
-    documentation = "Override for verified PRUCOL or other lawful statuses absent from the immigration enum, and certified Huber Law childcare release. Both co-resident natural/adoptive parents must receive Wisconsin state SSI."
+    documentation = "Both co-resident parents named by parent IDs must receive Wisconsin state SSI. The Huber Law childcare-release exception (Handbook 3.1.6) is not modeled."
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.wi.dhs.ssp.cts
@@ -26,6 +26,9 @@ class wi_cts_child_eligible(Variable):
             & ~cts_ssi_recipient(person, period)
             & (ssi_parents > 0)
             & (parents == ssi_parents)
-            & np.isin(status, p.eligible_immigration_statuses)
+            & (
+                np.isin(status, p.eligible_immigration_statuses)
+                | person("wi_cts_other_qualifying_immigration_status", period)
+            )
             & ~person("is_incarcerated", period)
         )
