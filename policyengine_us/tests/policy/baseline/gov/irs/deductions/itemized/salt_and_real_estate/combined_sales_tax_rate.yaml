@@ -200,3 +200,33 @@
     block_geoid: "500219627001000"
   output:
     combined_sales_tax_rate: 0.0621733014
+
+- name: New York City accepts a state-prefixed place GEOID
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "3651000"
+  output:
+    combined_sales_tax_rate: 0.08875
+
+- name: Atlanta in DeKalb accepts a short place code
+  period: 2024
+  input:
+    state_code: GA
+    county_fips: "13089"
+    place_fips: "4000"
+  output:
+    combined_sales_tax_rate: 0.089
+
+- name: DeWitt Arkansas accepts a short county code
+  # ARR2026Q4AUG28: state code 05 at 6.5%, county 001 at 1%, city 18790
+  # at 3.5% throughout 2025; total 6.5 + 1 + 3.5 = 11%. The Census county
+  # FIPS 05001 is supplied without its leading zero as 5001.
+  period: 2025
+  input:
+    state_code: AR
+    county_fips: "5001"
+    place_fips: "18790"
+  output:
+    combined_sales_tax_rate: 0.11

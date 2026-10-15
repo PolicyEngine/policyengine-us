@@ -641,3 +641,31 @@
     county_fips: "13089"
   output:
     local_sales_tax_table: D
+
+- name: New York City selector accepts a state-prefixed place GEOID
+  period: 2025
+  input:
+    state_code: NY
+    county_fips: "36047"
+    place_fips: "3651000"
+  output:
+    local_sales_tax_table: A
+
+- name: Atlanta in DeKalb selector accepts a short place code
+  period: 2024
+  input:
+    state_code: GA
+    county_fips: "13089"
+    place_fips: "4000"
+  output:
+    local_sales_tax_table: B
+
+- name: Arapahoe County selector accepts a short county code
+  # 2022 Instructions for Schedule A PDF p. 17: Arapahoe County selects B;
+  # Colorado's other-locality row selects A, so this detects failed padding.
+  period: 2022
+  input:
+    state_code: CO
+    county_fips: "8005"
+  output:
+    local_sales_tax_table: B
