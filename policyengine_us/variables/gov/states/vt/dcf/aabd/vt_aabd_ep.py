@@ -7,7 +7,7 @@ class vt_aabd_ep(Variable):
     label = "Vermont state-administered Essential Person grant"
     definition_period = MONTH
     unit = USD
-    # PDF pages 36, 44-45, 49-50
+    # PDF pages 36, 43-45, 49-50
     reference = "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf#page=36"
     defined_for = StateCode.VT
 
@@ -22,14 +22,21 @@ class vt_aabd_ep(Variable):
         other = arrangement == la.HOUSEHOLD_OF_ANOTHER
         spouse = person("vt_aabd_ep_is_spouse", period)
         valid_level = (level != levels.NONE) & ~(spouse & (level == levels.PARTIAL_34))
-        person_eligible = (
-            valid_level
-            & person("is_ssi_aged_blind_disabled", period.this_year)
+        # vt_aabd_ep_resources_eligible already tests the whole marital unit.
+        abd_eligible = (
+            person("is_ssi_aged_blind_disabled", period.this_year)
             & (independent | (other & spouse))
             & person("vt_aabd_ep_resources_eligible", period)
             & ~person("is_incarcerated", period)
             & person("takes_up_ssi_if_eligible", period.this_year)
         )
+        # Rules 2780(A), 2783.1 and 2784(C): an eligible couple receives one
+        # grant for a shared essential person. The rules do not address
+        # different levels for each spouse; use the highest level certified for
+        # either spouse.
+        certified = abd_eligible & valid_level
+        person_eligible = abd_eligible & person.marital_unit.any(certified)
+        rate = person.marital_unit.max(where(certified, p.ep.rate[level], 0))
         count = person.marital_unit.sum(person_eligible)
         couple = count > 1
         # Rule 2784(B)-(C): the individual maximum is the combined couple
@@ -55,7 +62,7 @@ class vt_aabd_ep(Variable):
             ),
         )
         # Derive the partial levels from rule 2784(A) and round to cents.
-        standard = np.round(base + p.ep.rate[level] * (maximum - base), 2)
+        standard = np.round(base + rate * (maximum - base), 2)
         amount = max_(standard - person("vt_aabd_ep_countable_income", period), 0)
         # NOTE: The rule 2784 application-month proration is not modeled.
         eligible = person_eligible & (independent | ~couple)

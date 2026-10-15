@@ -8,10 +8,14 @@ class vt_aabd_ep_is_spouse(Variable):
     definition_period = MONTH
     # PDF pages 38, 44
     reference = "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf#page=38"
-    documentation = "Set on the aged, blind or disabled recipient. Defaults to true when the recipient's marital unit includes a spouse who is not aged, blind or disabled; override when a nonspouse is the essential person."
+    documentation = "True for an aged, blind or disabled recipient whose marital unit includes a spouse who is not aged, blind or disabled, unless vt_aabd_ep_nonspouse_essential_person is set."
 
     def formula(person, period, parameters):
         abd = person("is_ssi_aged_blind_disabled", period.this_year)
         # A marital unit has at most two members, so a non-ABD member of an
         # ABD person's marital unit is that person's spouse.
-        return abd & person.marital_unit.any(~abd)
+        return (
+            abd
+            & person.marital_unit.any(~abd)
+            & ~person("vt_aabd_ep_nonspouse_essential_person", period)
+        )

@@ -50,14 +50,27 @@
   period: 2026-01
   absolute_error_margin: 0.01
   input:
-    state_code: VT
-    age: 70
-    ssi: 994
-    vt_aabd_federal: 55.68
-    vt_aabd_ep_level: PARTIAL_34
-    vt_aabd_ep_is_spouse: true
+    people:
+      person1:
+        age: 70
+        vt_aabd_ep_level: PARTIAL_34
+      person2:
+        age: 60
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: VT
   output:
-    vt_aabd_ep: 0
+    # person2 (60, not blind or disabled) is the ineligible spouse.
+    vt_aabd_ep_is_spouse: [true, false]
+    # No spouse income, so no deeming.
+    ssi: [994, 0]
+    vt_aabd_federal: [55.68, 0]
+    # Rule 2784(A)(3) pays the 34 percent level only for a nonspouse.
+    vt_aabd_ep: [0, 0]
 
 - name: Case 6, Prorated nonspouse essential-person net income counts.
   period: 2026-01
@@ -81,22 +94,43 @@
     ssi: 994
     vt_aabd_federal: 55.68
     vt_aabd_ep_level: FULL
-    vt_aabd_ep_countable_income: 1_596.8
+    vt_aabd_ep_additional_countable_income: 547.12
   output:
+    # SSI 994 + AABD 55.68 + 547.12 additional = 1,596.80, the payment maximum.
+    vt_aabd_ep_countable_income: 1_596.8
     vt_aabd_ep: 0
 
-- name: Case 8, Countable-income override applies to specialized dependent allocations.
+- name: Case 8, Additional countable income for one of two unrelated recipients stays with that recipient.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
-    state_code: VT
-    age: 70
-    ssi: 994
-    vt_aabd_federal: 55.68
-    vt_aabd_ep_level: FULL
-    vt_aabd_ep_countable_income: 1_000
+    people:
+      person1:
+        age: 70
+        vt_aabd_ep_level: FULL
+        vt_aabd_ep_additional_countable_income: 100
+      person2:
+        age: 70
+        vt_aabd_ep_level: FULL
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
   output:
-    vt_aabd_ep: 596
+    # SSI 994 + AABD 55.68 = 1,049.68, plus 100 additional for person1 only.
+    vt_aabd_ep_countable_income: [1_149.68, 1_049.68]
+    # floor(1,596.80 - 1,149.68) = 447; floor(1,596.80 - 1,049.68) = 547.
+    vt_aabd_ep: [447, 547]
 
 - name: Case 9, A spouse who is not aged, blind or disabled defaults as the essential person in another household.
   period: 2026-01
@@ -139,11 +173,11 @@
   input:
     state_code: VT
     age: 70
-    ssi: 994
-    vt_aabd_federal: 55.68
     vt_aabd_ep_level: FULL
-    vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_III
+    vt_aabd_care_setting: RESIDENTIAL_CARE_LEVEL_III
   output:
+    vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_III
+    vt_aabd_federal: 51.77
     vt_aabd_ep: 0
 
 - name: Case 11, Nonspouse essential person cannot qualify in another household.
@@ -152,26 +186,48 @@
   input:
     state_code: VT
     age: 70
-    ssi: 994
-    vt_aabd_federal: 55.68
     vt_aabd_ep_level: FULL
-    vt_aabd_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    ssi_lives_in_another_persons_household: true
+    ssi_receives_shelter_from_others_in_household: true
+    ssi_others_pay_all_meals: true
   output:
+    vt_aabd_living_arrangement: HOUSEHOLD_OF_ANOTHER
+    # 994 * (1 - 1/3) = 662.67 reduced FBR.
+    ssi: 662.67
+    vt_aabd_federal: 42.05
+    # Rule 2783.2 excludes a nonspouse essential person in another's household.
     vt_aabd_ep: 0
 
-- name: Case 12, Ineligible spouse qualifies in another household.
+- name: Case 12, Ineligible spouse qualifies at 67 percent in another household.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
-    state_code: VT
-    age: 70
-    ssi: 662.67
-    vt_aabd_federal: 42.05
-    vt_aabd_ep_level: FULL
-    vt_aabd_living_arrangement: HOUSEHOLD_OF_ANOTHER
-    vt_aabd_ep_is_spouse: true
+    people:
+      person1:
+        age: 70
+        vt_aabd_ep_level: PARTIAL_67
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person2:
+        age: 50
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: VT
   output:
-    vt_aabd_ep: 344
+    vt_aabd_ep_is_spouse: [true, false]
+    ssi: [662.67, 0]
+    vt_aabd_federal: [42.05, 0]
+    # P2740B 67 percent another's-household maximum 935.84;
+    # floor(935.84 - (662.67 + 42.05)) = floor(231.12) = 231.
+    vt_aabd_ep: [231, 0]
 
 - name: Case 13, Non-SSI recipient requires verified resource eligibility.
   period: 2026-01
@@ -199,13 +255,14 @@
     state_code: VT
     age: 70
     vt_aabd_ep_level: FULL
-    vt_aabd_ep_resources_eligible: true
+    vt_aabd_ep_passes_state_resource_test: true
     # Same scaled low earner Social Security benefit as Case 13: $1,305.42 a month.
     social_security_retirement: 15_665
   output:
     # SSI countable 1,285.42 > 994 FBR and 291.42 excess > 55.68 supplement.
     ssi: 0
     vt_aabd_federal: 0
+    vt_aabd_ep_resources_eligible: true
     # 1,305.42 - 20 general exclusion = 1,285.42.
     vt_aabd_ep_countable_income: 1_285.42
     # Maximum 1,491 + 105.80 = 1,596.80; floor(1,596.80 - 1,285.42) = floor(311.38) = 311.
@@ -218,7 +275,7 @@
     state_code: VT
     age: 70
     vt_aabd_ep_level: FULL
-    vt_aabd_ep_resources_eligible: true
+    vt_aabd_ep_passes_state_resource_test: true
     # Full time at Vermont's 2026 minimum wage: $14.42 * 2,080 hours = $29,993.60,
     # $2,499.47 a month.
     employment_income: 29_993.6
@@ -239,7 +296,7 @@
     state_code: VT
     age: 70
     vt_aabd_ep_level: FULL
-    vt_aabd_ep_resources_eligible: true
+    vt_aabd_ep_passes_state_resource_test: true
     # VA pension MAPR for a veteran with no dependents from December 1, 2025:
     # $17,441 a year, $1,453.42 a month, with no other income.
     veterans_benefits: 17_441
@@ -264,3 +321,180 @@
     vt_aabd_ep_level: FULL
   output:
     vt_aabd_ep: 0
+
+- name: Case 18, A nonspouse essential person qualifies at 34 percent next to an ineligible spouse.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        vt_aabd_ep_level: PARTIAL_34
+        vt_aabd_ep_nonspouse_essential_person: true
+      person2:
+        age: 45
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # The certified essential person is not the spouse (rules 2781(E), 2782).
+    vt_aabd_ep_is_spouse: [false, false]
+    # SSI 994 + AABD 55.68; the spouse has no income.
+    vt_aabd_ep_countable_income: [1_049.68, 1_049.68]
+    # 1,049.68 + 0.34 * (1,596.80 - 1,049.68) = 1,235.70;
+    # floor(1,235.70 - 1,049.68) = floor(186.02) = 186.
+    vt_aabd_ep: [186, 0]
+    # 55.68 AABD + 186 Essential Person grant = 241.68.
+    vt_aabd: [241.68, 0]
+
+- name: Case 19, A state resource determination for one of two unrelated recipients stays with that recipient.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        vt_aabd_ep_level: FULL
+        vt_aabd_ep_passes_state_resource_test: true
+        # Same scaled low earner Social Security benefit as Case 13: $1,305.42 a month.
+        social_security_retirement: 15_665
+      person2:
+        age: 70
+        vt_aabd_ep_level: FULL
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # person1 passes the state test; person2 receives SSI.
+    vt_aabd_ep_resources_eligible: [true, true]
+    # floor(1,596.80 - 1,285.42) = 311; floor(1,596.80 - 1,049.68) = 547.
+    vt_aabd_ep: [311, 547]
+    # person2: 55.68 AABD + 547 = 602.68.
+    vt_aabd: [311, 602.68]
+
+- name: Case 20, A nonspouse flag on one recipient leaves another recipient's spouse as the essential person.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        vt_aabd_ep_nonspouse_essential_person: true
+      person2:
+        age: 70
+        vt_aabd_ep_level: FULL
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+      person3:
+        age: 60
+        ssi_lives_in_another_persons_household: true
+        ssi_receives_shelter_from_others_in_household: true
+        ssi_others_pay_all_meals: true
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2, person3]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2, person3]
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: VT
+  output:
+    vt_aabd_ep_is_spouse: [false, true, false]
+    # person2: floor(1,049.68 - (662.67 + 42.05)) = floor(344.96) = 344.
+    vt_aabd_ep: [0, 344, 0]
+    # person1: 55.68 independent rate; person2: 42.05 + 344 = 386.05.
+    vt_aabd: [55.68, 386.05, 0]
+
+- name: Case 21, One certified essential person for an eligible couple uses the couple maximum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        vt_aabd_ep_level: FULL
+      person2:
+        age: 70
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Rules 2780(A), 2783.1 and 2784(C): one grant for the couple.
+    # Couple maximum 1,491 + 105.80 + 183.84 = 1,780.64; countable SSI 745.50 * 2
+    # + AABD 52.90 * 2 = 1,596.80; floor(183.84) = 183 / 2 = 91.50 each.
+    vt_aabd_ep: [91.5, 91.5]
+
+- name: Case 22, An eligible couple certified at different levels uses the higher 67 percent couple level.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        vt_aabd_ep_level: PARTIAL_67
+      person2:
+        age: 70
+        vt_aabd_ep_level: PARTIAL_34
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # P2740B 67 percent couple maximum 1,719.97; countable SSI 745.50 * 2
+    # + AABD 52.90 * 2 = 1,596.80; floor(123.17) = 123 / 2 = 61.50 each.
+    vt_aabd_ep: [61.5, 61.5]
+
+- name: Case 23, A spouse in a Medicaid facility is left out of the at-home spouse's group income.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        ssi_lives_in_medical_treatment_facility: true
+        ssi_medicaid_pays_majority_of_care: true
+        social_security_retirement: 15_665
+      person2:
+        age: 70
+        vt_aabd_ep_level: FULL
+    marital_units:
+      couple:
+        members: [person1, person2]
+    households:
+      home:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    # Rule 2782: only household members count; the at-home spouse has SSI
+    # 994 + AABD 55.68 = 1,049.68 against the 1,596.80 individual maximum.
+    vt_aabd_ep_countable_income: [1_049.68, 1_049.68]
+    vt_aabd_ep: [0, 547]

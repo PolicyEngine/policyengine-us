@@ -9,20 +9,34 @@ class vt_aabd_ep_countable_income(Variable):
     unit = USD
     # PDF pages 48-51
     reference = "https://outside.vermont.gov/dept/DCF/Shared%20Documents/ESD/Rules/2700-AABD.pdf#page=48"
-    documentation = "Whole marital-group income plus the verified net allocation for nonspouse essential persons/parents. Override for Reach Up income sources/exclusions absent from SSI inputs or an agency allocation of the shared general disregard."
+    documentation = """
+    Income of the marital unit's household members under rule 2786 plus
+    vt_aabd_ep_additional_countable_income.
+    NOTE: Reach Up income sources or exclusions without an SSI input are not
+    modeled.
+    """
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.vt.dcf.aabd.ep
         exclusions = parameters(period).gov.ssa.ssi.income.exclusions
         abd = person("is_ssi_aged_blind_disabled", period.this_year)
-        earned = max_(person("ssi_earned_income", period) - p.employment_expense, 0)
+        arrangement = person("vt_aabd_living_arrangement", period)
+        la = arrangement.possible_values
+        # Rule 2782: the group includes only members living in the same
+        # household, so a spouse in a facility is left out.
+        in_household = (arrangement == la.INDEPENDENT) | (
+            arrangement == la.HOUSEHOLD_OF_ANOTHER
+        )
+        earned = in_household * max_(
+            person("ssi_earned_income", period) - p.employment_expense, 0
+        )
         abd_earned = person.marital_unit.sum(earned * abd)
         other_earned = person.marital_unit.sum(earned * ~abd)
         # NOTE: Rule 2786 withholds the $20 exclusion from VA pension only; with
         # no pension-specific input, all veterans benefits are treated as pension.
         veterans = max_(person("veterans_benefits", period), 0)
         unearned = person.marital_unit.sum(
-            max_(person("ssi_unearned_income", period) - veterans, 0)
+            in_household * max_(person("ssi_unearned_income", period) - veterans, 0)
         )
         general = exclusions.general
         remaining_general = max_(general - unearned, 0)
@@ -35,7 +49,8 @@ class vt_aabd_ep_countable_income(Variable):
             1 - exclusions.earned_share
         )
         needs_based = person.marital_unit.sum(
-            veterans + person("ssi", period) + person("vt_aabd_federal", period)
+            in_household
+            * (veterans + person("ssi", period) + person("vt_aabd_federal", period))
         )
         additional = person.marital_unit.max(
             max_(person("vt_aabd_ep_additional_countable_income", period), 0)

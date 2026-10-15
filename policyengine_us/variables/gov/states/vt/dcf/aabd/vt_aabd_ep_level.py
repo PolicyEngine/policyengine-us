@@ -23,6 +23,8 @@ class vt_aabd_ep_level(Variable):
     homemaker services; 67 percent for a younger spouse unable to work who
     provides qualifying care, or a nonspouse providing four to six services;
     34 percent for a nonspouse providing one to three services. Certification
-    includes benefit pursuit and care preventing institutionalization. Set
-    both eligible spouses to the same level for a shared nonspouse caregiver.
+    includes benefit pursuit and care preventing institutionalization. Set it
+    on the aged, blind or disabled recipient, not on the essential person; for
+    an eligible couple, set it on either spouse and the couple's grant uses the
+    highest level set on either spouse.
     """

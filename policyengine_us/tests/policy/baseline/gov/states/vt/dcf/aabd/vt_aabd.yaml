@@ -5,8 +5,8 @@
   input:
     state_code: VT
     age: 65
-    vt_aabd_living_arrangement: INDEPENDENT
   output:
+    vt_aabd_living_arrangement: INDEPENDENT
     vt_aabd: 55.68
 
 - name: Case 2, residential care level iii individual.
@@ -15,7 +15,7 @@
   input:
     state_code: VT
     age: 65
-    vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_III
+    vt_aabd_care_setting: RESIDENTIAL_CARE_LEVEL_III
   output:
     vt_aabd: 51.77
 
@@ -25,7 +25,7 @@
   input:
     state_code: VT
     age: 65
-    vt_aabd_living_arrangement: RESIDENTIAL_CARE_LEVEL_IV
+    vt_aabd_care_setting: RESIDENTIAL_CARE_LEVEL_IV
   output:
     vt_aabd: 239.62
 
@@ -35,7 +35,7 @@
   input:
     state_code: VT
     age: 65
-    vt_aabd_living_arrangement: CUSTODIAL_CARE
+    vt_aabd_care_setting: CUSTODIAL_CARE
   output:
     vt_aabd: 105.6
 
@@ -68,23 +68,29 @@
     # No countable income: 49.93 rate - 0 excess over the $30 facility FBR = 49.93.
     vt_aabd: 49.93
 
-- name: Case 7, none individual.
+- name: Case 7, a recipient who declines SSI gets no supplement.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: VT
     age: 65
-    vt_aabd_living_arrangement: NONE
+    takes_up_ssi_if_eligible: false
   output:
+    # 33 V.S.A. § 1301(3) requires SSI receipt if eligible.
+    ssi: 0
     vt_aabd: 0
 
-- name: Case 8, automatic independent classification.
+- name: Case 8, Chittenden County independent living uses the same rate as the rest of the state.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
     state_code: VT
+    county: CHITTENDEN_COUNTY_VT
     age: 65
   output:
+    # POMS SI 01415.058 M.2.a: OS code B (Chittenden County) and code A both
+    # pay 55.68.
+    vt_aabd_living_arrangement: INDEPENDENT
     vt_aabd: 55.68
 
 - name: Case 9, income above federal SSI standard.
@@ -144,3 +150,47 @@
     age: 65
   output:
     vt_aabd: 0
+
+- name: Case 15, a care setting for one of two unrelated people leaves the other independent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        vt_aabd_care_setting: CUSTODIAL_CARE
+      person2:
+        age: 70
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VT
+  output:
+    vt_aabd_living_arrangement: [CUSTODIAL_CARE, INDEPENDENT]
+    # Individual rates with no income: 105.60 custodial care and 55.68 independent.
+    vt_aabd: [105.6, 55.68]
+
+- name: Case 16, a Title XIX facility precedes a care setting.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+    vt_aabd_care_setting: RESIDENTIAL_CARE_LEVEL_III
+  output:
+    # POMS SI 01415.058 M.2.a uses code I with federal arrangement D.
+    vt_aabd_living_arrangement: MEDICAID_INSTITUTION
+    # 49.93 rate - 0 excess over the $30 facility FBR = 49.93.
+    vt_aabd: 49.93
