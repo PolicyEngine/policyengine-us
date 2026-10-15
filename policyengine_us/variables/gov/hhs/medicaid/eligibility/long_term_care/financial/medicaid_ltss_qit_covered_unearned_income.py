@@ -9,6 +9,8 @@ class medicaid_ltss_qit_covered_unearned_income(Variable):
     definition_period = MONTH
     default_value = 0
     documentation = (
+        "For Texas, report only non-exempt income: exclude interest and "
+        "dividends already exempt under MEPD E-3331.1 and E-3331.2. "
         "Actual monthly unearned income from the sources identified in the "
         "qualified income trust instrument, such as the applicant's private "
         "pension. This is a source amount before deposits, and a subset of "

@@ -1635,3 +1635,82 @@
   output:
     medicaid_ltss_impairment_related_work_expenses: [400, 0, 500]
     medicaid_ltss_countable_income: [2485, 2685, 2435]
+
+
+- name: Texas excludes qualifying investment returns but counts pensions and other-resource returns.
+  period: 2026-07
+  input:
+    people:
+      annual_interest:
+        pension_income: {2026: 34200}
+        interest_income: {2026: 2400}
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+      pension_only:
+        pension_income: {2026: 36600}
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+      monthly_dividends:
+        medicaid_ltss_reported_gross_unearned_income: 3250
+        medicaid_ltss_reported_dividend_income: 400
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+      other_resource_interest:
+        medicaid_ltss_reported_gross_unearned_income: 3050
+        medicaid_ltss_reported_interest_income: 200
+        tx_medicaid_ltss_countable_interest_and_dividends: 200
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+      countable_pension_qit:
+        medicaid_ltss_reported_gross_unearned_income: 3600
+        medicaid_ltss_reported_interest_income: 200
+        medicaid_ltss_unearned_income_deposited_to_qit: 500
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+    households:
+      household:
+        members: [annual_interest, pension_only, monthly_dividends, other_resource_interest, countable_pension_qit]
+        state_code: {2026: TX}
+  output:
+    # 34,200 / 12 + 2,400 / 12 = 3,050; eligibility excludes the 200 interest.
+    # 3,250 - 400 = 2,850; E-3331.3 keeps the other-resource 200 countable.
+    # A valid 500 pension deposit gives 3,600 - 500 - 200 = 2,900.
+    tx_medicaid_ltss_excluded_interest_and_dividends: [200, 0, 400, 0, 200]
+    medicaid_ltss_individual_countable_income: [2850, 3050, 2850, 3050, 2900]
+    is_medicaid_ltss_income_eligible: [true, false, true, false, true]
+    is_medicaid_ltss_financial_threshold_eligible: [true, false, true, false, true]
+
+- name: Texas couple budgets exclude each spouses qualifying investment receipts.
+  period: 2026-07
+  input:
+    people:
+      spouse_one:
+        medicaid_ltss_reported_gross_unearned_income: 3200
+        medicaid_ltss_reported_interest_income: 200
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+      spouse_two:
+        medicaid_ltss_reported_gross_unearned_income: 3064
+        medicaid_ltss_reported_dividend_income: 100
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+    marital_units:
+      couple:
+        members: [spouse_one, spouse_two]
+    households:
+      household:
+        members: [spouse_one, spouse_two]
+        state_code: {2026: TX}
+  output:
+    # 3,200 + 3,064 - 200 - 100 = 5,964, the 2026 Texas couple SIL.
+    tx_medicaid_ltss_excluded_interest_and_dividends: [200, 100]
+    medicaid_ltss_couple_countable_income: [5964, 5964]
+    medicaid_ltss_countable_income: [5964, 5964]
+    is_medicaid_ltss_income_eligible: [true, true]

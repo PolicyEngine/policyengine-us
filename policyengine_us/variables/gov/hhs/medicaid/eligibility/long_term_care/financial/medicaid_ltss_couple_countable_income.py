@@ -18,9 +18,11 @@ class medicaid_ltss_couple_countable_income(Variable):
         "20240.1 and 20240.3; 20 CFR 416.1112(c)(4)-(7)). Each person's "
         "expenses are limited to their own earnings before aggregation. "
         "Other modeled states use the combined income remaining "
-        "outside qualified income trusts without exclusions."
+        "outside qualified income trusts. Texas also excludes qualifying "
+        "interest and dividends under MEPD E-3331.1 and E-3331.2."
     )
     reference = (
+        "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/e-3300-sources-unearned-income",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=9",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=10",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=67",
@@ -59,6 +61,11 @@ class medicaid_ltss_couple_countable_income(Variable):
             * p.de.income.earned_income_countable_rate
         )
         delaware_budget = unearned - unearned_disregard + countable_earned
+        texas_excluded = person.marital_unit.sum(
+            person("tx_medicaid_ltss_excluded_interest_and_dividends", period)
+        )
         return where(
-            state == state.possible_values.DE, delaware_budget, earned + unearned
+            state == state.possible_values.DE,
+            delaware_budget,
+            max_(earned + unearned - texas_excluded, 0),
         )

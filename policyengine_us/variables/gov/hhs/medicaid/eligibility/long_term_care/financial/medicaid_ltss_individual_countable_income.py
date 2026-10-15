@@ -19,9 +19,11 @@ class medicaid_ltss_individual_countable_income(Variable):
         "$20 exclusion (DSSM 20990). Washington removes representable "
         "WAC 182-513-1340 source exclusions before the SIL comparison "
         "and income budget. Texas uses income remaining outside the "
-        "qualified income trust."
+        "qualified income trust, excluding qualifying interest and dividends "
+        "under MEPD E-3331.1 and E-3331.2."
     )
     reference = (
+        "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/e-3300-sources-unearned-income",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=9",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=10",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=71",
@@ -66,8 +68,11 @@ class medicaid_ltss_individual_countable_income(Variable):
             ordinary_budget,
         )
         washington_excluded = person("medicaid_ltss_wa_excluded_income", period)
+        texas_excluded = person(
+            "tx_medicaid_ltss_excluded_interest_and_dividends", period
+        )
         return where(
             state == state.possible_values.DE,
             delaware_budget,
-            max_(gross - washington_excluded, 0),
+            max_(gross - washington_excluded - texas_excluded, 0),
         )

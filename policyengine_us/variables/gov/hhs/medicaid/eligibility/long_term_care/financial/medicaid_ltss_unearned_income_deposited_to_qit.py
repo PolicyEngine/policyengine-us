@@ -9,6 +9,8 @@ class medicaid_ltss_unearned_income_deposited_to_qit(Variable):
     definition_period = MONTH
     default_value = 0
     documentation = (
+        "For Texas, report only non-exempt income: exclude interest and "
+        "dividends already exempt under MEPD E-3331.1 and E-3331.2. "
         "Each person's own monthly unearned income validly deposited "
         "into a qualified income trust. Defaults to no deposits. The "
         "model excludes these deposits from gross unearned income without "
