@@ -13,8 +13,11 @@ class pa_ssp(Variable):
     defined_for = StateCode.PA
     reference = (
         "https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter299/s299.1.html",
+        "https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter299/s299.21.html",
         "https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter299/s299.36.html",
+        # POMS SI 01415.058 K.1-K.2
         "https://secure.ssa.gov/poms.nsf/lnx/0501415058#k",
+        "http://services.dpw.state.pa.us/oimpolicymanuals/ma/387_SSI/387_Appendix_A.htm",
         "http://services.dpw.state.pa.us/oimpolicymanuals/ltc/450_Income/450_2_Countable_Income.htm#450.243_SSI_Benefits",
     )
 
@@ -25,6 +28,9 @@ class pa_ssp(Variable):
         care = (arrangement == arrangements.DOMICILIARY_CARE) | (
             arrangement == arrangements.PERSONAL_CARE
         )
+        # In the household of another, income reduces the supplement only above
+        # the one-third-reduced FBR that the helper uses (662.67 in 2026; MA
+        # Handbook 387 Appendix A: $688.20 = 662.67 + 25.53).
         individual = p.amount.individual[arrangement]
         couple = p.amount.couple[arrangement]
         payment = ssi_state_supplement(

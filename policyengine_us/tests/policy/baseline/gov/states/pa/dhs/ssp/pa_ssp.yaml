@@ -18,6 +18,8 @@
     ssi_receives_shelter_from_others_in_household: true
     ssi_others_pay_all_meals: true
   output:
+    # One-third-reduced FBR: 994 * 2 / 3 = 662.67.
+    ssi: 662.67
     pa_ssp: 25.53
 
 - name: Case 3, certified domiciliary care.
@@ -26,7 +28,7 @@
   input:
     state_code: PA
     age: 65
-    pa_ssp_living_arrangement: DOMICILIARY_CARE
+    pa_ssp_care_home: DOMICILIARY_CARE
   output:
     pa_ssp: 634.3
 
@@ -36,7 +38,7 @@
   input:
     state_code: PA
     age: 65
-    pa_ssp_living_arrangement: PERSONAL_CARE
+    pa_ssp_care_home: PERSONAL_CARE
   output:
     pa_ssp: 639.3
 
@@ -47,7 +49,7 @@
     state_code: PA
     age: 17
     meets_ssi_disability_criteria: true
-    pa_ssp_living_arrangement: PERSONAL_CARE
+    pa_ssp_care_home: PERSONAL_CARE
   output:
     pa_ssp: 0
 
@@ -60,6 +62,7 @@
     ssi_lives_in_medical_treatment_facility: true
     ssi_medicaid_pays_majority_of_care: true
   output:
+    ssi: 30
     pa_ssp: 22.1
 
 - name: Case 7, SSI exhausted but state payment remains.
@@ -155,7 +158,7 @@
   input:
     state_code: PA
     age: 65
-    pa_ssp_living_arrangement: PERSONAL_CARE
+    pa_ssp_care_home: PERSONAL_CARE
     social_security_retirement: 19_836
   output:
     # 19,836 / 12 = 1,653; countable 1,653 - 20 = 1,633 exceeds the 994 FBR.
@@ -195,3 +198,79 @@
     # Reported receipt meets the SSI gate; the state-issued Supplement for
     # Personal Needs is the individual MEDICAID_INSTITUTION rate, 22.10.
     pa_ssp: 22.1
+
+- name: Case 18, disabled child living with a working parent gets the independent supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 40
+        # Full-time work at the $7.25 Pennsylvania minimum wage.
+        employment_income: 15_080
+        own_children_in_household: 1
+      person2:
+        age: 10
+        meets_ssi_disability_criteria: true
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: PA
+  output:
+    # SSA 2011: "Blind and disabled children are eligible for optional
+    # supplementation." The parent's (1,256.67 - 85) / 2 = 585.83 is below the
+    # 994 parental allocation, so nothing is deemed.
+    ssi_unearned_income_deemed_from_ineligible_parent: [0, 0]
+    ssi: [0, 994]
+    pa_ssp: [0, 22.1]
+
+- name: Case 19, private medical facility where Medicaid pays half or less counts as independent.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: PA
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: false
+  output:
+    ssi: 994
+    pa_ssp: 22.1
+
+- name: Case 20, a care home input for one person does not reset another person's arrangement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        pa_ssp_care_home: PERSONAL_CARE
+      person2:
+        age: 70
+    marital_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    tax_units:
+      unit1:
+        members: [person1]
+      unit2:
+        members: [person2]
+    households:
+      home1:
+        members: [person1]
+        state_code: PA
+      home2:
+        members: [person2]
+        state_code: PA
+  output:
+    pa_ssp_living_arrangement: [PERSONAL_CARE, INDEPENDENT]
+    pa_ssp: [639.3, 22.1]

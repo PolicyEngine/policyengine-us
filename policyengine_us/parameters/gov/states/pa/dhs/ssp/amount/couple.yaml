@@ -1,4 +1,4 @@
-description: Pennsylvania provides these monthly state supplementary payment rates for an eligible couple.
+description: Pennsylvania provides these amounts as the monthly couple payment under the State Supplementary Payment program.
 
 metadata:
   unit: currency-USD
@@ -9,8 +9,10 @@ metadata:
   reference:
     - title: 55 Pa. Code § 299.37, Optional SSP levels
       href: https://www.pacodeandbulletin.gov/secure/pacode/data/055/chapter299/s299.37.html
-    - title: POMS SI 01415.058 K, Federally administered January 2026 payment levels
-      href: https://secure.ssa.gov/poms.nsf/lnx/0501415058#k
+    - title: POMS SI 01415.058 K.2.b, Couple payment levels for Pennsylvania (January 2026)
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501415058#k2b
+    - title: Pennsylvania Medical Assistance Eligibility Handbook 387 Appendix A, SSI Payment Levels (January 1, 2026)
+      href: http://services.dpw.state.pa.us/oimpolicymanuals/ma/387_SSI/387_Appendix_A.htm
     - title: Pennsylvania Long-Term Care Handbook 450.243, SSI Benefits
       href: http://services.dpw.state.pa.us/oimpolicymanuals/ltc/450_Income/450_2_Countable_Income.htm#450.243_SSI_Benefits
 
@@ -20,6 +22,9 @@ INDEPENDENT:
 HOUSEHOLD_OF_ANOTHER:
   2026-01-01: 38.44
 
+# 55 Pa. Code § 299.37 still prints the pre-increase care home couple levels
+# ($947.40 domiciliary, $957.40 personal care); POMS K.2.b and Handbook 387
+# Appendix A give the 2026 levels.
 DOMICILIARY_CARE:
   2026-01-01: 1_347.4
 

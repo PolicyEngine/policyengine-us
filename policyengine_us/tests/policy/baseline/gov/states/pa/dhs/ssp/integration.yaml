@@ -20,7 +20,7 @@
   output:
     pa_ssp: [16.65, 16.65]
 
-- name: Case 2, household_of_another couple.
+- name: Case 2, household of another couple.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -67,10 +67,10 @@
     people:
       person1:
         age: 65
-        pa_ssp_living_arrangement: DOMICILIARY_CARE
+        pa_ssp_care_home: DOMICILIARY_CARE
       person2:
         age: 65
-        pa_ssp_living_arrangement: DOMICILIARY_CARE
+        pa_ssp_care_home: DOMICILIARY_CARE
     marital_units:
       couple:
         members: [person1, person2]
@@ -98,11 +98,11 @@
     people:
       person1:
         age: 65
-        pa_ssp_living_arrangement: PERSONAL_CARE
+        pa_ssp_care_home: PERSONAL_CARE
         ssi_claim_is_joint: false
       person2:
         age: 65
-        pa_ssp_living_arrangement: PERSONAL_CARE
+        pa_ssp_care_home: PERSONAL_CARE
         ssi_claim_is_joint: false
     marital_units:
       couple:
@@ -132,10 +132,9 @@
     people:
       person1:
         age: 65
-        pa_ssp_living_arrangement: INDEPENDENT
       person2:
         age: 65
-        pa_ssp_living_arrangement: PERSONAL_CARE
+        pa_ssp_care_home: PERSONAL_CARE
     marital_units:
       couple:
         members: [person1, person2]
