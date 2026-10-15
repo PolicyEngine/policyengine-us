@@ -1,0 +1,245 @@
+- name: Case 1, full SSI gets maximum supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+  output:
+    ok_ssp: 40
+
+- name: Case 2, small cash income gets maximum supplement.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    social_security_retirement: 240
+  output:
+    ok_ssp: 40
+
+- name: Case 3, state only payment above SSI limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    social_security_retirement: 12_240
+  output:
+    ok_ssp: 34
+
+- name: Case 4, income at state need standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    social_security_retirement: 12_648
+  output:
+    ok_ssp: 0
+
+- name: Case 5, earnings without special blind exclusion.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    employment_income: 30_000
+  output:
+    ok_ssp: 0
+
+- name: Case 6, extra five hundred dollar exclusion for blind earnings.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    employment_income: 30_000
+    is_blind: true
+  output:
+    ok_ssp: 40
+
+- name: Case 7, income sources round before exclusions.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    social_security_retirement: 12_245.88
+  output:
+    ok_ssp: 34
+
+- name: Case 8, half dollar source rounds upward.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    social_security_retirement: 12_246
+  output:
+    ok_ssp: 33
+
+- name: Case 9, interest from resources is excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    social_security_retirement: 12_240
+    interest_income: 1_200
+  output:
+    ok_ssp: 34
+
+- name: Case 10, countable resources at limit.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    ssi_countable_resources: 2_000
+  output:
+    ok_ssp: 40
+
+- name: Case 11, excess countable resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    ssi_countable_resources: 2_001
+  output:
+    ok_ssp: 0
+
+- name: Case 12, blind child is eligible.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 34
+        person_id: 1
+        employment_income: 15_080
+      person2:
+        age: 10
+        person_id: 2
+        parent_1_id: 1
+        is_blind: true
+    marital_units:
+      parent:
+        members: [person1]
+      child:
+        members: [person2]
+    households:
+      hh:
+        members: [person1, person2]
+        state_code: OK
+  output:
+    # Parent works full time at 7.25 an hour: (1_256.67 - 85) / 2 = 585.83
+    # is below the 994 parent allocation, so nothing is deemed.
+    # Child SSI 994; min(1_034 - 994, 40) = 40.
+    ok_ssp: [0, 40]
+
+- name: Case 13, nonresident.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: TX
+    age: 65
+  output:
+    ok_ssp: 0
+
+- name: Case 14, not aged blind or disabled.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 40
+  output:
+    ok_ssp: 0
+
+- name: Case 15, opt out.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    takes_up_ssi_if_eligible: false
+  output:
+    ok_ssp: 0
+
+- name: Case 16, incarcerated person cannot get SSP.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    is_incarcerated: true
+  output:
+    # Incarceration fails ok_ssp_eligible.
+    ok_ssp: 0
+
+- name: Case 17, excluded facility or sanction.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    ok_ssp_is_excluded: true
+  output:
+    ok_ssp: 0
+
+- name: Case 18, institutional SSI is outside optional community program.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    ssi_lives_in_medical_treatment_facility: true
+    ssi_medicaid_pays_majority_of_care: true
+  output:
+    # Living in a medical treatment facility fails ok_ssp_eligible.
+    ok_ssp: 0
+
+- name: Case 19, VTR does not increase the forty dollar maximum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    ssi_federal_living_arrangement: ANOTHER_PERSONS_HOUSEHOLD
+  output:
+    ok_ssp: 40
+
+- name: Case 20, facility living arrangement alone bars SSP.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 65
+    ssi_federal_living_arrangement: MEDICAL_TREATMENT_FACILITY
+  output:
+    # Aged, 0 resources <= 2_000, citizen: otherwise SSI-eligible.
+    is_ssi_eligible: true
+    # The facility booleans stay false, but the arrangement is
+    # MEDICAL_TREATMENT_FACILITY, so in_facility is true.
+    ok_ssp_eligible: false
+    # defined_for ok_ssp_eligible, so 0.
+    ok_ssp: 0
+
+- name: Case 21, pre-tax health premiums are not counted as wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 45
+    meets_ssi_disability_criteria: true
+    # Full-time work at the $7.25 Oklahoma minimum wage: 7.25 x 40 x 52.
+    employment_income: 15_080
+    pre_tax_health_insurance_premiums: 1_200
+  output:
+    # Federal: (15_080 - 1_200) / 12 = 1_156.67; (1_156.67 - 85) / 2 = 535.83;
+    # SSI 994 - 535.83 = 458.17.
+    ssi: 458.17
+    # 317:35-5-42(i): wages net of premiums round to 1_157;
+    # (1_157 - 85) / 2 = 536 + 458.17 = 994.17; min(1_034 - 994.17, 40) = 39.83.
+    ok_ssp_own_countable_income: 994.17
+    ok_ssp: 39.83
