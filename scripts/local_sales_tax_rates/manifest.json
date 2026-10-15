@@ -337,9 +337,13 @@
   "VT: place code (no county)/17800 (300 records, 2022-01-01 to 2022-10-01) recoded to Census 17875 (the successor code of its records)",
   "VT: place code (no county)/42700 (1473 records, 2022-01-01 to 2022-10-01) recoded to Census 42850 (the successor code of its records)",
   "VT: place code (no county)/44275 (1981 records, 2022-01-01 to 2022-10-01) recoded to Census 44350 (Middlebury town, county subdivision, named like postal city MIDDLEBURY)",
+  "VT: place code (no county)/61225 (1156 records, 2022-01-01 to 2022-10-01) recoded to Census 61300 (Rutland town; explicit pre-2023 correction checked against Vermont local-option dates)",
   "VT: place code (no county)/70740 (74 records, 2022-01-01 to 2022-10-01) recoded to Census 70750 (the successor code of its records)",
   "VT: place code (no county)/84400 (2297 records, 2022-01-01 to 2022-10-01) recoded to Census 84475 (Williston town, county subdivision, named like postal city WILLISTON)",
   "VT: place code (no county)/84625 (368 records, 2022-01-01 to 2022-10-01) recoded to Census 84700 (Wilmington town, county subdivision, named like postal city WILMINGTON)",
+  "VT 2022-10-01: coded unit 03175 record-weighted rate 0.069976841 differs from official 0.070000 by less than one basis point",
+  "VT: checked 480 coded municipal unit/date rates against https://tax.vermont.gov/business/local-option-tax and its effective dates (vt_local_option.csv)",
+  "VT: official local-option municipality Montgomery has no coded SST unit from 2022-10-01 to 2025-07-01; its residents retain the documented uncoded/county-remainder limit",
   "WI: place code (no county)/04725 (1 records, 2024-07-01 to 2026-05-01) recoded to Census 03225 (Ashland city, place, named like postal city ASHLAND)",
   "WI: place code (no county)/19575 (2 records, 2024-07-01 to 2024-10-01) recoded to Census 88150 (Wisconsin Dells city, place, named like postal city WISCONSIN DELLS)",
   "WI: place code (no county)/62700 (1 records, 2024-07-01 to 2026-05-01) recoded to Census 03225 (Ashland city, place, named like postal city ASHLAND)",
@@ -965,5 +969,8 @@
   "WI: place code 55141/82375 matches no Census place or county subdivision (2 records, 2023-10-01 to 2025-06-01, rate 0.05500-0.05500); its blocks take their own place's or county's rate",
   "WY: place code 56039/02291 (1 records, 2022-01-01 to 2026-10-01) recoded to Census 01985 (Alta CDP, place, named like postal city ALTA)",
   "WY: place code 56039/02290 matches no Census place or county subdivision (8 records, 2022-01-01 to 2026-10-01, rate 0.06000-0.07000); its blocks take their own place's or county's rate"
- ]
+ ],
+ "build_inputs": {
+  "vt_local_option.csv": "f45135f066c32567fe1cdf7b9d94242bdbcd0b0f206de4958d128da61d79a910"
+ }
 }

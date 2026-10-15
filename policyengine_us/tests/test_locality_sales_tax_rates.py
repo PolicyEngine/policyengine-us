@@ -40,6 +40,7 @@ Invariants, each tested below:
 
 from datetime import date, timedelta
 from pathlib import Path
+import runpy
 
 import numpy as np
 import pandas as pd
@@ -343,3 +344,63 @@ def test_l7_selector_lists(year):
                     assert code in counties, code
                 else:
                     assert len(code) == 7 and code.isdigit(), code
+
+
+def _rate_builder():
+    """Load build tooling without constructing another policy model."""
+    return runpy.run_path(
+        str(REPO.parent / "scripts" / "local_sales_tax_rates" / "build.py")
+    )
+
+
+def test_vermont_rutland_alias_overrides_a_resolving_city_code():
+    """The obsolete town code collides with a valid Census city code."""
+    builder = _rate_builder()
+    entities = pd.DataFrame(
+        {
+            "county": ["50021", "50021"],
+            "code": ["61225", "61300"],
+            "name": ["Rutland city", "Rutland town"],
+            "classfp": ["C5", "T1"],
+        }
+    )
+    census = builder["CensusEntities"](entities.iloc[:1], entities, towns=True)
+    assert census.resolves("", "61225")
+    frame = pd.DataFrame(
+        {"county": [""], "code": ["61225"], "city": ["RUTLAND"], "records": [1156]}
+    )
+    frame.attrs["date"] = pd.Timestamp("2022-01-01")
+    aliases = {}
+    recoded = builder["alias_units"]("VT", frame, census, {}, aliases)
+    assert recoded.code.tolist() == ["61300"]
+    assert aliases[("", "61225")][0] == "61300"
+
+
+@pytest.mark.parametrize(
+    "code,when,rate",
+    [
+        ("61225", "2023-06-30", 0.06),
+        ("61225", "2023-07-01", 0.07),
+        ("45850", "2025-09-30", 0.07),
+        ("45850", "2025-10-01", 0.06),
+    ],
+)
+def test_vermont_unit_cross_check_effective_dates(code, when, rate):
+    """The official commencement and rescission dates bound the 1% tax."""
+    instant = pd.Timestamp(when)
+    units = pd.DataFrame(
+        {"county": [""], "code": [code], "rate": [rate], "date": [instant]}
+    )
+    state = pd.DataFrame({"effective_from": [instant], "rate": [0.06]})
+    _rate_builder()["check_vermont_unit_rates"](units, state, [])
+
+
+def test_vermont_unit_cross_check_rejects_early_rutland_city_tax():
+    """A resolving Census code cannot silently bypass the source audit."""
+    instant = pd.Timestamp("2022-01-01")
+    units = pd.DataFrame(
+        {"county": [""], "code": ["61225"], "rate": [0.07], "date": [instant]}
+    )
+    state = pd.DataFrame({"effective_from": [instant], "rate": [0.06]})
+    with pytest.raises(AssertionError, match="61225"):
+        _rate_builder()["check_vermont_unit_rates"](units, state, [])

@@ -74,6 +74,7 @@ NY_URLS = {
     "pub718.pdf": "https://www.tax.ny.gov/pdf/publications/sales/pub718.pdf",
     "pub718a.pdf": "https://www.tax.ny.gov/pdf/publications/sales/pub718a.pdf",
 }
+VT_LOCAL_OPTION_URL = "https://tax.vermont.gov/business/local-option-tax"
 # The state general sales tax rates of New York (Tax Law section 1105) and
 # Virginia (Code of Virginia section 58.1-603), the same
 # throughout 2022-2026 and equal to their IRS heading rates.
@@ -389,6 +390,27 @@ def sst_unit_rates(
         units = (weighted / records).rename("rate").to_frame()
         units["records"] = records
         units = units.reset_index()
+        if abbr == "VT" and d < pd.Timestamp("2023-01-01"):
+            # The records recoded below belong to Rutland town. Rutland city
+            # had no local option sales tax until July 2023. Give the city
+            # its known state-only rate rather than the uncoded statewide
+            # unit, which includes a small share of local-option records.
+            units = pd.concat(
+                [
+                    units,
+                    pd.DataFrame(
+                        [
+                            {
+                                "county": "",
+                                "code": "61225",
+                                "rate": state_rate,
+                                "records": 0,
+                            }
+                        ]
+                    ),
+                ],
+                ignore_index=True,
+            )
         units["date"] = d
         out.append(units)
         state_rates.append((d, state_rate))
@@ -418,7 +440,66 @@ def sst_unit_rates(
             f"take their own place's or county's rate"
         )
     state = pd.DataFrame(state_rates, columns=["effective_from", "rate"])
+    if abbr == "VT":
+        check_vermont_unit_rates(units, state, log)
     return units, state
+
+
+def check_vermont_unit_rates(
+    units: pd.DataFrame, state_rates: pd.DataFrame, log: list
+) -> None:
+    """Check every coded Vermont unit against the Department's complete
+    local-option sales-tax list and effective dates, transcribed in
+    vt_local_option.csv. Uncoded records remain the documented SST limit.
+    A listed municipality with no coded SST unit is logged explicitly.
+    SST record-weighted rates may differ by up to one basis point; every
+    such difference is logged, while larger differences fail the build.
+    """
+    official = pd.read_csv(
+        HERE / "vt_local_option.csv", dtype=str, keep_default_na=False
+    )
+    assert not official.census_code.duplicated().any()
+    official["effective_from"] = pd.to_datetime(official.effective_from)
+    official["effective_to"] = pd.to_datetime(
+        official.effective_to, errors="coerce"
+    ).fillna(pd.Timestamp.max)
+    missing = []
+    checked = 0
+    for when, at_date in units.groupby("date"):
+        base = state_rates.loc[state_rates.effective_from == when, "rate"].item()
+        active = official[
+            (official.effective_from <= when) & (when < official.effective_to)
+        ]
+        active_codes = set(active.census_code)
+        coded = at_date[at_date.code != ""]
+        expected = base + coded.code.isin(active_codes).astype(float) * 0.01
+        wrong = ~np.isclose(coded.rate, expected, rtol=0, atol=0.0001)
+        assert not wrong.any(), (
+            f"Vermont units disagree with {VT_LOCAL_OPTION_URL} on {when.date()}: "
+            f"{coded.loc[wrong, ['county', 'code', 'rate']].to_dict('records')}"
+        )
+        rounded = ~np.isclose(coded.rate, expected, rtol=0, atol=1e-9)
+        for index in coded.index[rounded]:
+            log.append(
+                f"VT {when.date()}: coded unit {coded.loc[index, 'code']} "
+                f"record-weighted rate {coded.loc[index, 'rate']:.9f} differs "
+                f"from official {expected.loc[index]:.6f} by less than one basis point"
+            )
+        checked += len(coded)
+        for row in active[~active.census_code.isin(coded.code)].itertuples():
+            missing.append((row.municipality, when))
+    log.append(
+        f"VT: checked {checked} coded municipal unit/date rates against "
+        f"{VT_LOCAL_OPTION_URL} and its effective dates (vt_local_option.csv)"
+    )
+    if missing:
+        frame = pd.DataFrame(missing, columns=["municipality", "date"])
+        for name, group in frame.groupby("municipality"):
+            log.append(
+                f"VT: official local-option municipality {name} has no coded "
+                f"SST unit from {group.date.min().date()} to {group.date.max().date()}; "
+                "its residents retain the documented uncoded/county-remainder limit"
+            )
 
 
 class CensusEntities:
@@ -571,6 +652,23 @@ def alias_units(
     entity named like most of their records' postal city, else to their
     successor code, unless the target has records of its own on the date.
     Records `aliases` for the log."""
+    when = frame.attrs.get("date")
+    if abbr == "VT" and when < pd.Timestamp("2023-01-01"):
+        # Vermont's pre-2023 Rutland town records use the code of the 2020
+        # Census city, so the unresolved-code heuristics cannot identify it.
+        mask = (frame.county == "") & (frame.code == "61225")
+        if mask.any():
+            frame = frame.copy()
+            frame.loc[mask, "code"] = "61300"
+            previous = aliases.get(("", "61225"))
+            n = int(frame.records[mask].sum())
+            aliases[("", "61225")] = (
+                "61300",
+                "Rutland town; explicit pre-2023 correction checked against Vermont local-option dates",
+                previous[2] if previous else when,
+                when,
+                max(n, previous[4]) if previous else n,
+            )
     codes = set(zip(frame.county, frame.code))
     unresolved = {
         (county, code)
@@ -580,7 +678,6 @@ def alias_units(
     if not unresolved:
         return frame
     frame = frame.copy()
-    when = frame.attrs.get("date")
     for county, code in sorted(unresolved):
         mask = (frame.county == county) & (frame.code == code)
         cities = frame[mask & (frame.city != "")].groupby("city").records.sum()
@@ -898,6 +995,7 @@ def build(sources: Path, only: list[str] | None = None) -> None:
     retrieved = sources / "retrieved_at.txt"
     manifest = {
         "retrieved_at": retrieved.read_text().strip() if retrieved.exists() else None,
+        "build_inputs": {"vt_local_option.csv": sha256(HERE / "vt_local_option.csv")},
         "sha256": {
             str(p.relative_to(sources)): sha256(p)
             for p in sorted(sources.rglob("*"))

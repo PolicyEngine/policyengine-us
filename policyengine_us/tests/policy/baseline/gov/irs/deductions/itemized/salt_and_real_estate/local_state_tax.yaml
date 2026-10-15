@@ -246,3 +246,39 @@
     state_sales_tax: 1_000
   output:
     local_sales_tax: 0
+
+- name: Rutland city has no local sales tax in 2022
+  # The city's tax began in July 2023. The 2022 SST code belonged to the town.
+  period: 2022
+  input:
+    state_code: VT
+    county_fips: "50021"
+    place_fips: "61225"
+    employment_income: 85_000
+  output:
+    state_sales_tax: 572
+    local_sales_tax: 0
+
+- name: Backdating the corrected Rutland city rate gives no local tax in 2019
+  period: 2019
+  input:
+    state_code: VT
+    county_fips: "50021"
+    place_fips: "61225"
+    employment_income: 85_000
+  output:
+    state_sales_tax: 525
+    local_sales_tax: 0
+
+- name: Rutland city local tax begins during 2023
+  # 766 x ((184 / 365) x 1) / 6 = 64.35799.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    state_code: VT
+    county_fips: "50021"
+    place_fips: "61225"
+    employment_income: 85_000
+  output:
+    state_sales_tax: 766
+    local_sales_tax: 64.36

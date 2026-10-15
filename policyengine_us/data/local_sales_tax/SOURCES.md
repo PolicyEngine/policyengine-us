@@ -18,6 +18,17 @@ not the sources' files.
 Retrieved 2026-10-06 (from 11:00 UTC). `scripts/local_sales_tax_rates/manifest.json` lists the
 SHA-256 of every input file and the build log.
 
+Vermont's coded municipal units are also checked against the Department of
+Taxes' [Local Option Tax list](https://tax.vermont.gov/business/local-option-tax),
+including effective dates and Montgomery's October 2025 rescission. The
+short factual transcription is `scripts/local_sales_tax_rates/vt_local_option.csv`
+(checked October 14, 2026); it distinguishes Rutland City (July 2023) from
+Rutland Town (April 2009). Essex Junction uses its 2020 Census place code;
+the other entries use county-subdivision codes.
+The cross-check logs every difference and rejects any over one basis point;
+the existing record-weighted method puts Barre City at 6.9976841% in the
+October 2022 snapshot, within that tolerance of its statutory 7%.
+
 ## Rates
 
 | States | Source | Files | Terms |
@@ -55,6 +66,10 @@ SHA-256 of every input file and the build log.
   codes it replaced in 2023. `manifest.json` logs every recoding and every
   code left unmatched; an unmatched code's area takes the rate of the place
   or county around it.
+  Vermont's 2022 code 61225 is explicitly recoded to Rutland town 61300 even
+  though the old code resolves to Rutland city. The city receives its known
+  6% state-only rate in 2022, before its July 2023 local-option tax, with zero
+  synthetic records so record-weighted averages do not change.
 - **Blocks to places.** Each 2020 Census block takes the rate of its place's
   unit, else its county subdivision's, else its county's unit without a
   place code. A place's rate is the population-weighted mean of its blocks'
@@ -74,3 +89,8 @@ SHA-256 of every input file and the build log.
   Wisconsin's file added address records in late 2023; before then its
   ZIP+4 records apply the lowest rate in each ZIP+4 area, as SSUTA section 305
   requires.
+  Vermont's uncoded 2022 statewide SST unit also includes a small share of
+  local-option records, giving 6.0059% (6.0091% from October) where that unit
+  applies. The build checks every coded municipality against the official
+  list and logs municipalities with no coded unit, including Montgomery;
+  these uncoded and county-remainder limits remain.

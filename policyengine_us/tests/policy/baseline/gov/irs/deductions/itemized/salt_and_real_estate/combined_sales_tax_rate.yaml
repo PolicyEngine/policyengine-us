@@ -157,3 +157,46 @@
     county_fips: "53033"
   output:
     combined_sales_tax_rate: 0.0625
+
+- name: Rutland city, Vermont, before its local option sales tax
+  # Vermont Department of Taxes: Rutland City began its 1% tax in July 2023;
+  # Rutland Town's tax began in April 2009. They are separate municipalities.
+  period: 2022
+  input:
+    state_code: VT
+    county_fips: "50021"
+    place_fips: "61225"
+  output:
+    combined_sales_tax_rate: 0.06
+
+- name: Rutland city, Vermont, July 2023 local option sales tax, day-weighted
+  # 181 days at 6% and 184 days at 7%: (181 x 6 + 184 x 7) / 365.
+  period: 2023
+  absolute_error_margin: 0.00000001
+  input:
+    state_code: VT
+    county_fips: "50021"
+    place_fips: "61225"
+  output:
+    combined_sales_tax_rate: 0.0650410959
+
+- name: Rutland city, Vermont, full year of local option sales tax
+  period: 2024
+  input:
+    state_code: VT
+    county_fips: "50021"
+    place_fips: "61225"
+  output:
+    combined_sales_tax_rate: 0.07
+
+- name: Rutland town outside Census places contributes to its county remainder
+  # The 2022 taxed records map to Rutland town, not the city. The documented
+  # county-remainder average remains: 273 days at 6.2167%, then 92 at 6.2192%.
+  period: 2022
+  absolute_error_margin: 0.00000001
+  input:
+    state_code: VT
+    county_fips: "50021"
+    block_geoid: "500219627001000"
+  output:
+    combined_sales_tax_rate: 0.0621733014
