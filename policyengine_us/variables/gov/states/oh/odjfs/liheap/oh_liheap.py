@@ -11,7 +11,7 @@ class oh_liheap(Variable):
     defined_for = "oh_liheap_eligible"
     reference = (
         # Final 2021 workbook.
-        # PDF pages 1, 8-9, 11
+        # PDF pages 1, 8-11, 15-16, 19-20
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/OH_BenefitMatrix_2022.pdf#page=1",
         # Factors, counties and formula.
         # PDF pages 1, 8-11, 15-16, 19-20, 29
@@ -21,7 +21,10 @@ class oh_liheap(Variable):
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/OH_BenefitMatrix_2026.pdf#page=1",
         # January 2025 customer FAQ: 75% PIPP reduction, not currently modeled.
         "https://wofb.org/wp-content/uploads/2025/01/ATTACHMENT-2025-5-HEAP-FAQ-for-Customers.pdf#page=1",
+        # FY2027 draft plan items 2.5-2.6: FY2026 matrix range.
+        "https://dam.assets.ohio.gov/image/upload/v1783702985/jfs.ohio.gov/Energy%20and%20Community%20Assistance/2026-2027_Draft_HEAP_State_Plan.pdf#page=9",
         # Sections E-1, E-2, E-2.10 and E-4: income, disability and heating facts.
+        # PDF pages 5-6, 10-12
         "https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=5",
     )
 
@@ -44,8 +47,9 @@ class oh_liheap(Variable):
         )
         # Final 2021 and 2023 regional tables label their terminal row 150+;
         # eligibility can extend to 175%, but payments stop decreasing at 150%.
-        # Later coefficients are estimates reconstructed from cover figures;
-        # the 2025 estimates carry into 2026 and later without verification.
+        # Later coefficients are estimates: 2024-2025 from the draft covers and
+        # 2026 from the FY2026 matrix range in the FY2027 draft plan; the 2026
+        # estimate carries into 2027 and later without verification.
         # Annual income approximates the favorable 30-day/12-month comparison.
         # Guidelines still follow the requested year and state lag.
         base = max_(
@@ -93,11 +97,15 @@ class oh_liheap(Variable):
         # No existing input identifies PIPP enrollment: estimate the non-PIPP
         # award and leave its 75% reduction unmodeled. Unpriced fuel or an
         # explicit UNKNOWN or non-Ohio county returns an unsupported zero, not a
-        # finding of legal ineligibility. An omitted county cannot be detected:
-        # the county input then defaults to the state's alphabetically first
-        # county, Adams, a southern county, so the estimate uses the 6% southern
-        # reduction.
-        # The 2023 gas ratio has four decimals; some 2023 table cells differ by
-        # $1. Final half-up rounding matches the other printed fuel calculations;
-        # do not round a component before the regional and targeted adjustments.
+        # finding of legal ineligibility: SOLAR and OTHER have no workbook
+        # column, and UNSPECIFIED pays $0 (see #9754 for the default fuel).
+        # An omitted county cannot be detected: the county input then defaults
+        # to the state's alphabetically first county, Adams, a southern county,
+        # so the estimate uses the 6% southern reduction.
+        # The workbooks print four-decimal coefficients. With the printed 2021
+        # slope and fuel ratios, 36 printed 2021 cells (every fuel) differ by $1,
+        # and with the printed 2023 gas ratio, 19 printed 2023 gas and
+        # electricity cells do. Final half-up rounding matches the other printed
+        # fuel calculations; do not round a component before the regional and
+        # targeted adjustments.
         return np.floor(base * fuel_ratio * regional_factor * multiplier + 0.5)

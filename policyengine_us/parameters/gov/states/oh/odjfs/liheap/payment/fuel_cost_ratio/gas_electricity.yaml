@@ -1,10 +1,11 @@
 description: Ohio uses this fuel cost ratio for natural gas and electricity under the Home Energy Assistance Program.
-# Uses the published four-decimal ratios. Some printed 2023 gas/electric
-# dollar cells differ by $1 from this formula; unprinted precision is not
-# inferred. The 2024 and 2025 draft workbooks do not print the ratio: any
-# ratio from 0.7236 to 0.7247 reproduces their gas/electric maximums
-# ($587 and $319) against the propane maximums ($811 and $441), so the
-# shortest value in that range is used and carried forward.
+# Uses the published four-decimal ratios. With the printed 0.5523 ratio, 19
+# printed 2023 gas/electric cells differ by $1 from this formula (the 2021
+# workbook's printed slope and ratios leave 36 cells of every fuel $1 off);
+# unprinted precision is not inferred. The 2024 and 2025 draft workbooks do
+# not print the ratio: any ratio from 0.7236 to 0.7247 reproduces their
+# gas/electric maximums ($587 and $319) against the propane maximums ($811 and
+# $441), so the shortest value in that range is used and carried forward.
 values:
   2021-01-01: 0.5882
   2023-01-01: 0.5523

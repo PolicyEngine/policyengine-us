@@ -1,6 +1,7 @@
 # Ohio income and eligibility components only; no payment schedule or final award is asserted.
 
-# Manual p8:12000+6000+600+1200+1200=21000; existing net-business inputs need no added work-expense calculation.
+# Guidelines E-2.3 (p8): 12,000 + 6,000 + 600 + 1,200 + 1,200 = 21,000; the net business
+# inputs need no further expense deduction.
 - name: Case 1, adult wages and existing net business sources count without another deduction.
   period: 2026
   absolute_error_margin: 0.01
@@ -19,8 +20,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
     households:
       household:
         members: [person1]
@@ -28,7 +27,8 @@
   output:
     oh_liheap_countable_income: 21_000
 
-# Current plan p6 and manual pp73–74:2400rent+1200farmrent+600survivor+1200pension+2400SSA+1200SSI=9000.
+# FY2026 plan p6 and Guidelines pp73-74: 2,400 rent + 1,200 farm rent + 600 survivor +
+# 1,200 pension + 2,400 Social Security + 1,200 SSI = 9,000.
 - name: Case 2, independent rental retirement survivor and SSI receipts all count once.
   period: 2026
   absolute_error_margin: 0.01
@@ -47,8 +47,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
     households:
       household:
         members: [person1]
@@ -56,7 +54,7 @@
   output:
     oh_liheap_countable_income: 9_000
 
-# Manual p74 explicitly lists IRA withdrawals, estate/trust settlements, lottery, interest, dividends and capital gain; current plan includes lump sums. Existing source inputs are disjoint.
+# Guidelines p74 explicitly lists IRA withdrawals, estate/trust settlements, lottery, interest, dividends and capital gain; current plan includes lump sums. Existing source inputs are disjoint.
 - name: Case 3, withdrawals estate receipts lottery winnings gains interest and dividends count.
   period: 2026
   absolute_error_margin: 0.01
@@ -76,8 +74,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
     households:
       household:
         members: [person1]
@@ -110,8 +106,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
     households:
       household:
         members: [person1, person2]
@@ -143,8 +137,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
     households:
       household:
         members: [person1, person2]
@@ -176,8 +168,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
     households:
       household:
         members: [person1, person2]
@@ -185,7 +175,8 @@
   output:
     oh_liheap_countable_income: 22_800
 
-# Manual p8 directs reported business losses to0:12000wages+600positive business+1200SSI=13800; losses do not offset other sources.
+# Guidelines E-2.3 (p8) enters a reported business loss as 0: 12,000 wages + 600 positive
+# business + 1,200 SSI = 13,800; losses do not offset other sources.
 - name: Case 7, each business loss is floored before wages and positive income are added.
   period: 2026
   absolute_error_margin: 0.01
@@ -203,8 +194,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
     households:
       household:
         members: [person1]
@@ -238,8 +227,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         tanf: 3_600
         snap: 6_000
     households:
@@ -249,7 +236,7 @@
   output:
     oh_liheap_countable_income: 14_400
 
-# Current FY2026 application physical p7 and manual physical p74 deduct child support paid. 30,000 - 3,600 = 26,400, below the one-person ceiling of 27,387.
+# Current FY2026 application physical p7 and Guidelines p74 deduct child support paid. 30,000 - 3,600 = 26,400, below the one-person ceiling of 27,387.
 - name: Case 9, child support paid changes an otherwise over limit household to eligible.
   period: 2026
   input:
@@ -323,8 +310,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
     households:
       household:
         members: [person1, person2]
@@ -350,8 +335,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
     households:
       household:
         members: [person1]
@@ -463,8 +446,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
     households:
       household:
         members: [person1]
@@ -472,12 +453,13 @@
   output:
     oh_liheap_countable_income: 12_600
 
-# Guidelines Appendix XXIII (pp72-74) counts unemployment, Workers' Compensation, employment
+# Guidelines Appendix XXIII (pp73-74) counts unemployment, Workers' Compensation, employment
 # disability payouts, strike benefits and VA pensions; the FY2026 plan (p7) counts VA
 # pension but not VA disability. Workers earn Ohio's 2026 $11.00 minimum wage (Commerce
 # poster) for 40 hours = 440 a week; each household reports one source:
 # Unemployment: 26 weeks x 440 = 11,440 + 26 weeks x 220 (half the weekly wage,
-#   ORC 4141.30(B)(3)) = 5,720 -> 17,160.
+#   ORC 4141.30(B)(3)) = 5,720 -> 17,160
+#   (total_unemployment_compensation uses the reported amount).
 # Strike: 46 weeks x 440 = 20,240 + 6 weeks x 500 UAW strike assistance (uaw.org strike
 #   FAQ) = 3,000 -> 23,240.
 # VA pension: a disabled veteran under 65 with no other income receives the full MAPR
@@ -504,16 +486,14 @@
     veterans_benefits: [0, 0, 17_441, 0, 0]
     workers_compensation: [0, 0, 0, 5_124, 0]
     disability_benefits: [0, 0, 0, 0, 3_432]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
   output:
     oh_liheap_countable_income: [17_160, 23_240, 17_441, 22_724, 20_592]
 
-# Guidelines Appendix XXIII (p74) and the 2025-2026 application (p7) deduct health, dental
-# and vision premiums. Full-time at Ohio's 2026 $11.00 minimum wage: 11 x 2,080 = 22,880.
-# KFF 2025 average worker contribution for single coverage is 1,440:
-# 22,880 - 1,440 = 21,440.
-- name: Case 18, an employee health insurance premium is deducted from wages.
+# Guidelines Appendix XXIII (p74) deducts health premiums, and Appendix XII (p57) shows
+# them as pre-tax pay stub deductions. Full-time at Ohio's 2026 $11.00 minimum wage:
+# 11 x 2,080 = 22,880. KFF 2025 average worker contribution for single coverage, withheld
+# pretax: 1,440. 22,880 - 1,440 = 21,440.
+- name: Case 18, a health insurance premium withheld from pay before tax is deducted from wages.
   period: 2026
   absolute_error_margin: 0.01
   input:
@@ -524,12 +504,10 @@
         is_tax_unit_dependent: false
         ssi: 0
         employment_income: 22_880
-        health_insurance_premiums_without_medicare_part_b: 1_440
+        pre_tax_health_insurance_premiums: 1_440
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
     households:
       household:
         members: [person1]
@@ -557,8 +535,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
     households:
       household:
         members: [person1]

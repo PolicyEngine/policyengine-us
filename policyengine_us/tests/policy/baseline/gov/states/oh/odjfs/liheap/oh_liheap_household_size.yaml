@@ -1,6 +1,6 @@
-# Ohio income and eligibility components only; no payment schedule or final award is asserted.
+# Ohio qualified household size; Case 2 also checks that a unit with no qualified member is ineligible and unpaid.
 
-# Manual pp7,10: count qualified members including minors; no SNAP-specific waiting bar.
+# Guidelines E-2.1 and E-2.8 (pp7, 10): count qualified members including minors; no SNAP-specific waiting bar.
 - name: Case 1, citizen minors and qualified adults count but nonqualified members do not.
   period: 2026
   absolute_error_margin: 0.01
@@ -34,8 +34,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
     households:
       household:
         members: [person1, person2, person3, person4, person5]
@@ -43,10 +41,11 @@
   output:
     oh_liheap_household_size: 3
 
-# Manual p10: nonqualified members are excluded from household membership used for eligibility.
+# Guidelines E-2.8 (p10): a household needs at least one citizen or qualified member. With
+# no qualified member and no income, the size gate alone blocks eligibility (limit 0,
+# income 0), so no award is paid.
 - name: Case 2, all nonqualified members produce a zero qualified size.
   period: 2026
-  absolute_error_margin: 0.01
   input:
     people:
       person1:
@@ -70,3 +69,5 @@
         state_code: OH
   output:
     oh_liheap_household_size: 0
+    oh_liheap_eligible: false
+    oh_liheap: 0

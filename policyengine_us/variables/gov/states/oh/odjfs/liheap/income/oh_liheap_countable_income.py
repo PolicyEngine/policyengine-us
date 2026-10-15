@@ -9,8 +9,8 @@ class oh_liheap_countable_income(Variable):
     label = "Ohio HEAP annual countable household income"
     defined_for = StateCode.OH
     reference = (
-        # Sections E-2.2-2.3 and Appendix XXIII.
-        # PDF pages 7-8, 73-74
+        # Sections E-2.2-2.3 and Appendices XII and XXIII.
+        # PDF pages 7-8, 57, 73-74
         "https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=7",
         # Current income-source checklist.
         # PDF pages 5-6
@@ -47,17 +47,10 @@ class oh_liheap_countable_income(Variable):
         # nonretirement investment draws, royalties, or legal settlements.
         # Guidelines Appendix XXIII (page 74) and the application (page 7)
         # deduct child support paid and health, dental, vision, prescription
-        # plan, and Medicare premiums; the FY2026 plan (page 6) counts Social
-        # Security "Excluding MediCare deduction". The non-Part-B premium input
-        # excludes the Part B premium, so no premium is deducted twice.
-        # Spenddown, disability premium, and legal-fee deductions have no input.
-        deductions = add(
-            spm_unit,
-            period,
-            [
-                "child_support_expense",
-                "health_insurance_premiums_without_medicare_part_b",
-                "medicare_part_b_premium",
-            ],
-        )
+        # plan, and Medicare premiums, including premiums withheld before tax
+        # (Appendix XII, page 57); the FY2026 plan (page 6) counts Social
+        # Security "Excluding MediCare deduction". The premium inputs are
+        # disjoint, so no premium is deducted twice. Spenddown, disability
+        # premium, and legal-fee deductions have no input.
+        deductions = add(spm_unit, period, p.deductions)
         return max_(spm_unit.sum(counted) - deductions, 0)

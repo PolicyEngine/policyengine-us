@@ -1,14 +1,12 @@
 # Ohio income and eligibility components only; no payment schedule or final award is asserted.
 
-# 2025–2026 application p1 literal HEAP limits; whole-dollar175%of2025FPG, not the adjacent200%HWAP column.
+# 2025-2026 application p1 HEAP limits: whole-dollar 175% of the 2025 FPG, not the adjacent
+# 200% HWAP column.
 - name: Case 1, all eight current published annual FPG limits match exactly.
   period: 2026
   absolute_error_margin: 0.01
   input:
     state_code: [OH, OH, OH, OH, OH, OH, OH, OH]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS,
-      NATURAL_GAS]
-    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
     oh_liheap_household_size: [1, 2, 3, 4, 5, 6, 7, 8]
   output:
     oh_liheap_income_limit: [27_387, 37_012, 46_637, 56_262, 65_887, 75_512, 85_137, 94_762]
@@ -23,8 +21,6 @@
   absolute_error_margin: 0.01
   input:
     state_code: [OH, OH, OH, OH]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    gas_expense: [1_200, 1_200, 1_200, 1_200]
     oh_liheap_household_size: [1, 7, 8, 9]
   output:
     oh_liheap_income_limit: [26_355, 82_845, 90_515, 92_483]
@@ -35,20 +31,16 @@
   absolute_error_margin: 0.01
   input:
     state_code: OH
-    heating_type: NATURAL_GAS
-    gas_expense: 1_200
     oh_liheap_household_size: 0
   output:
     oh_liheap_income_limit: 0
 
-# JFS00330 (07/2026), physical p1: seven literal annual HEAP limits for July2026-May2027.
+# JFS 00330 (07/2026), p1: the seven annual HEAP limits for July 2026-May 2027.
 - name: Case 4, all seven published 2027 FPG household limits match the operative application.
   period: 2027
   absolute_error_margin: 0.01
   input:
     state_code: [OH, OH, OH, OH, OH, OH, OH]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200, 1_200, 1_200]
     oh_liheap_household_size: [1, 2, 3, 4, 5, 6, 7]
   output:
     oh_liheap_income_limit: [27_930, 37_870, 47_810, 57_750, 67_690, 77_630, 87_570]
@@ -64,8 +56,6 @@
   absolute_error_margin: 0.01
   input:
     state_code: [OH, OH, OH, OH, OH]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
     oh_liheap_household_size: [8, 9, 10, 11, 12]
   output:
     oh_liheap_income_limit: [94_881, 96_944, 99_007, 101_069, 103_132]
@@ -78,22 +68,18 @@
   absolute_error_margin: 0.01
   input:
     state_code: [OH, OH, OH, OH]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    gas_expense: [1_200, 1_200, 1_200, 1_200]
     oh_liheap_household_size: [1, 8, 9, 10]
   output:
     oh_liheap_income_limit: [23_782, 81_602, 89_862, 98_122]
 
-# No 2023-2024 rule was found, so model year 2024 keeps the all-sizes rule with the 2023
-# FPG: 14,580 x 1.75 = 25,515; (14,580 + 7 x 5,140) x 1.75 = 88,480;
-# (14,580 + 8 x 5,140) x 1.75 = 97,475.
+# July 2023-May 2024 application p1: 175% of the 2023 FPG for every size: 14,580 x 1.75 =
+# 25,515; size 8 prints 88,480 ((14,580 + 7 x 5,140) x 1.75); each added member adds 8,995:
+# 97,475.
 - name: Case 7, the 2024 limits keep the poverty guideline rule for large households.
   period: 2024
   absolute_error_margin: 0.01
   input:
     state_code: [OH, OH, OH]
-    heating_type: [NATURAL_GAS, NATURAL_GAS, NATURAL_GAS]
-    gas_expense: [1_200, 1_200, 1_200]
     oh_liheap_household_size: [1, 8, 9]
   output:
     oh_liheap_income_limit: [25_515, 88_480, 97_475]
@@ -106,8 +92,6 @@
   absolute_error_margin: 0.01
   input:
     state_code: [OH, OH]
-    heating_type: [NATURAL_GAS, NATURAL_GAS]
-    gas_expense: [1_200, 1_200]
     oh_liheap_household_size: [8, 9]
   output:
     oh_liheap_income_limit: [94_762, 96_944]

@@ -1,7 +1,7 @@
-description: Ohio counts these unearned income sources, except for dependent minors, under the Home Energy Assistance Program.
+description: Ohio uses these sources as unearned income under the Home Energy Assistance Program.
 values:
   2025-07-01:
-    - unemployment_compensation
+    - total_unemployment_compensation
     - strike_benefits
     # Social Security is counted in the formula, including a dependent
     # minor's benefit paid to an adult payee (Guidelines section E-2.2).
@@ -36,7 +36,7 @@ values:
     - capital_gains
     - gambling_winnings
 # Retirement account withdrawals are distinct from pension income in the model.
-# The manual explicitly counts capital gains and estate/trust settlements, not
+# The Guidelines explicitly count capital gains and estate/trust settlements, not
 # merely asset sale proceeds. Those inputs do not capture every principal payout.
 # TANF, child support received and gifts are excluded (Guidelines pages 75-76;
 # unchecked in the FY2026 plan).

@@ -1,6 +1,7 @@
 # Ohio income and eligibility components only; no payment schedule or final award is asserted.
 
-# Application p1 limit27387 is inclusive; current plan/manual has no asset test.
+# 2025-2026 application p1: the $27,387 limit is inclusive; the FY2026 plan and the
+# Guidelines have no asset test.
 - name: Case 1, exact one person income ceiling qualifies without an asset test.
   period: 2026
   input:
@@ -24,7 +25,8 @@
   output:
     oh_liheap_eligible: true
 
-# One dollar above27387fails even with categorical-benefit receipts; current plan categoricalNo.
+# One dollar above $27,387 fails even with TANF and SNAP receipts; FY2026 plan item 1.4
+# answers No to categorical eligibility.
 - name: Case 2, TANF and SNAP receipts do not bypass income above the limit.
   period: 2026
   input:
@@ -95,7 +97,8 @@
   output:
     oh_liheap_eligible: false
 
-# Application p1 energy household includes undesignated heating in rent; flag represents verified arrangement in the contract.
+# Application p1 counts undesignated heat payments in rent; Guidelines E-4 (p12) does not
+# require the bill in a member's name for HEAP.
 - name: Case 5, verified nonsubsidized heat in rent qualifies without a separate bill.
   period: 2026
   input:
@@ -144,7 +147,7 @@
   output:
     oh_liheap_eligible: false
 
-# Positive primary gas bill is the approved proxy for the tenant own portion; no guessed benefit amount.
+# A positive primary gas bill stands in for the subsidized tenant's own portion.
 - name: Case 7, reported heating portion restores subsidized heat in rent eligibility.
   period: 2026
   input:
@@ -194,7 +197,7 @@
   output:
     oh_liheap_eligible: false
 
-# Manual p10 requires an eligible citizen/qualified member; size0must not pass a safe fallback limit.
+# Guidelines E-2.8 (p10) requires at least one citizen or qualified member; a size-0 unit fails.
 - name: Case 9, no qualified household member fails eligibility.
   period: 2026
   input:
@@ -217,7 +220,8 @@
   output:
     oh_liheap_eligible: false
 
-# Manual pp7,10: parent excluded from size, not income. Full28000 exceeds size1limit27387; headcount proration would incorrectly approve.
+# Guidelines E-2.1 and E-2.8 (pp7, 10): the parent is excluded from size, not income. The
+# full 28,000 exceeds the size-1 limit of 27,387; prorating by headcount would approve.
 - name: Case 10, nonqualified adult income is counted in full against citizen child size.
   period: 2026
   input:

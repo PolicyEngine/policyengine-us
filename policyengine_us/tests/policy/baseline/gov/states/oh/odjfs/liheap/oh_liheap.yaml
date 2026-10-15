@@ -1,8 +1,9 @@
 # Final 2021 workbook (also used for 2022) and final 2023 workbook: page 1 factors,
 # page 8 counties, pages 9-11 formula/tables, pages 16 and 20 terminal 150+ rows.
-# 2024-2025 use coefficients estimated from draft covers; these are carried
-# forward to 2026-2027. PIPP enrollment/reduction remains unmodeled. Every case
-# gives heating_type. Case 11 uses the explicit .5523 gas factor: printed amounts are
+# 2024-2025 use coefficients estimated from draft covers; 2026 uses coefficients
+# fitted to the FY2026 matrix range ($31-$546) in the FY2027 draft plan, carried
+# to 2027. PIPP enrollment/reduction remains unmodeled. Every case gives
+# heating_type. Case 11 uses the explicit .5523 gas factor: printed amounts are
 # 334 and 579 instead.
 - name: Case 1, published ordinary fuel amounts are not capped at a small reported heating bill.
   period: 2023
@@ -188,9 +189,9 @@
     heating_expense: [1, 1, 1, 1, 1]
   output:
     oh_liheap: [665, 665, 664, 599, 532]
-# 2025 draft values carried to 2026: 251.75 - 0.285 x poverty percent, 2025 FPG 15,650.
-# The historical 150+ payment cap also carries forward: eligible income at or
-# above 150% gives 209; 27,388 is above the 27,387 income limit and gives 0.
+# 2026 estimate: 306.375 - 0.2375 x poverty percent, 2025 FPG 15,650. The historical
+# 150+ payment cap also carries forward: eligible income at or above 150% gives
+# 306.375 - 35.625 = 270.75 -> 271; 27,388 is above the 27,387 income limit and gives 0.
 - name: Case 5, estimated later awards carry forward the historical payment cap while ordinary eligibility applies.
   period: 2026
   input:
@@ -205,9 +206,9 @@
     heating_expense: [1, 1, 1, 1, 1]
   output:
     oh_liheap_eligible: [true, true, true, true, false]
-    oh_liheap: [209, 209, 209, 209, 0]
-# 15,650 / 2025 FPG 15,650 = 100%: 251.75 - 28.5 = 223.25 -> 223.
-- name: Case 6, the 2026 estimate carries payment values forward but updates the lagged poverty guideline.
+    oh_liheap: [271, 271, 271, 271, 0]
+# 15,650 / 2025 FPG 15,650 = 100%: 306.375 - 23.75 = 282.625 -> 283.
+- name: Case 6, the 2026 estimate uses the lagged 2025 poverty guideline.
   period: 2026
   input:
     state_code: [OH]
@@ -220,9 +221,10 @@
     heating_type: [PROPANE]
     heating_expense: [1]
   output:
-    oh_liheap: [223]
-# 15,960 / 2026 FPG 15,960 = 100%: 251.75 - 28.5 = 223.25 -> 223.
-- name: Case 7, the 2027 estimate carries payment values forward but updates the lagged poverty guideline.
+    oh_liheap: [283]
+# 15,960 / 2026 FPG 15,960 = 100%: 306.375 - 23.75 = 282.625 -> 283. The FY2027 draft
+# plan estimates FY2027 at the FY2026 range.
+- name: Case 7, the 2027 estimate carries the 2026 coefficients forward with the lagged 2026 poverty guideline.
   period: 2027
   input:
     state_code: [OH]
@@ -235,10 +237,12 @@
     heating_type: [PROPANE]
     heating_expense: [1]
   output:
-    oh_liheap: [223]
-# $0 income uses the 50% floor: 251.75 - 14.25 = 237.5. Fuel oil in northern Ashtabula
-# (avoids the exact 237.5 central tie): 237.5 x 1.06 = 251.75 -> 252. Subsidized gas
-# tenant with an electric bill: 237.5 x 0.724 = 171.95 -> 172.
+    oh_liheap: [283]
+# $0 income uses the 50% floor: 306.375 - 11.875 = 294.5. Fuel oil in northern Ashtabula
+# (avoids the exact 294.5 central tie): 294.5 x 1.06 = 312.17 -> 312. Subsidized gas
+# tenant with an electric bill: 294.5 x 0.724 = 213.22 -> 213.
+# UNSPECIFIED with heat in unsubsidized rent is eligible but has no fuel column ($0;
+# see #9754); NONE is ineligible.
 - name: Case 8, eligible heat-in-rent households use their reported primary fuel and existing liability
     rules.
   period: 2026
@@ -257,7 +261,10 @@
     is_in_public_housing: [false, false, false, false, false]
     electricity_expense: [0, 1200, 0, 0, 0]
   output:
-    oh_liheap: [252, 172, 0, 0, 0]
+    oh_liheap_eligible: [true, true, false, true, false]
+    oh_liheap: [312, 213, 0, 0, 0]
+# Eligible with a $0 estimate: no workbook column for SOLAR, OTHER or UNSPECIFIED (#9754),
+# and no region for UNKNOWN or non-Ohio counties; Pennsylvania is outside Ohio.
 - name: Case 9, unpriced fuels and unknown or foreign counties have unsupported zero estimates.
   period: 2026
   input:
@@ -272,6 +279,7 @@
     heating_type: [SOLAR, OTHER, UNSPECIFIED, NATURAL_GAS, NATURAL_GAS, PROPANE]
     heating_expense: [1, 1, 1, 1, 1, 1]
   output:
+    oh_liheap_eligible: [true, true, true, true, true, false]
     oh_liheap: [0, 0, 0, 0, 0, 0]
 - name: Case 10, rounding follows all regional and targeted adjustments rather than rounding intermediate
     payments.
@@ -451,7 +459,7 @@
 
 # A 70-year-old with $28,000 of Social Security and the 2026 standard Part B premium
 # ($202.90 x 12 = $2,434.80) counts 25,565.20, within the 27,387 limit. 25,565.20 / 15,650
-# = 163.36%, capped at 150% for the estimated payment: 209 x 1.75 = 365.75 -> 366.
+# = 163.36%, capped at 150% for the estimated payment: 270.75 x 1.75 = 473.81 -> 474.
 # Without a premium, 28,000 is over the limit and the payment is 0.
 - name: Case 18, the Medicare Part B premium deduction makes an elderly Social Security recipient eligible.
   period: 2026
@@ -469,11 +477,11 @@
     heating_expense: [1_200, 1_200]
   output:
     oh_liheap_eligible: [true, false]
-    oh_liheap: [366, 0]
+    oh_liheap: [474, 0]
 
 # With no county or county_fips input, county falls back to the state's alphabetically
-# first county, Adams (southern, -6%): propane 237.5 x 0.94 = 223.25 -> 223; gas
-# 237.5 x 0.724 x 0.94 = 161.63 -> 162. This documents the fallback; it is not a policy rule.
+# first county, Adams (southern, -6%): propane 294.5 x 0.94 = 276.83 -> 277; gas
+# 294.5 x 0.724 x 0.94 = 200.42 -> 200. This documents the fallback; it is not a policy rule.
 - name: Case 19, an omitted county uses the documented Adams County fallback.
   period: 2026
   input:
@@ -487,7 +495,7 @@
     heating_expense: [1_200, 1_200]
   output:
     county: [ADAMS_COUNTY_OH, ADAMS_COUNTY_OH]
-    oh_liheap: [223, 162]
+    oh_liheap: [277, 200]
 
 # An explicit UNKNOWN county matches no regional list, so the regional factor is 0.
 - name: Case 20, an explicit unknown county returns an unsupported zero estimate.
@@ -507,7 +515,7 @@
 
 # Undocumented adult is excluded from size but not income: size 2, income 18,000 + 12,000
 # = 30,000 <= 37,012. Poverty uses the size-2 2025 FPG 21,150: 141.84%;
-# 251.75 - 40.43 = 211.32 -> 211 (SPM size 3 would give 220; size 1, 209). Not targeted.
+# 306.375 - 33.69 = 272.69 -> 273 (SPM size 3 would give 280; size 1, 271). Not targeted.
 - name: Case 21, a mixed status family payment uses qualified household size with counted income.
   period: 2026
   input:
@@ -544,11 +552,11 @@
     oh_liheap_countable_income: 30_000
     oh_liheap_income_limit: 37_012
     oh_liheap_eligible: true
-    oh_liheap: 211
+    oh_liheap: 273
 
-# Row 1: a business loss floors to 0, so the 50% floor applies: 237.5 x 0.724 = 171.95
-# -> 172. Row 2: wages 15,650 with rental and capital losses still count 15,650 (100%):
-# 223.25 x 0.724 = 161.63 -> 162; letting the losses offset would give 172.
+# Row 1: a business loss floors to 0, so the 50% floor applies: 294.5 x 0.724 = 213.22
+# -> 213. Row 2: wages 15,650 with rental and capital losses still count 15,650 (100%):
+# 282.625 x 0.724 = 204.62 -> 205; letting the losses offset would give 213.
 - name: Case 22, losses do not raise the payment or offset other income.
   period: 2026
   input:
@@ -565,7 +573,7 @@
     heating_type: [NATURAL_GAS, NATURAL_GAS]
     heating_expense: [1_200, 1_200]
   output:
-    oh_liheap: [172, 162]
+    oh_liheap: [213, 205]
 
 # Final 2021 workbook, Tables 2B and 2C, physical pages 16 and 20: the last
 # row is explicitly 150+, including the displayed weighted awards. Test actual
@@ -604,3 +612,28 @@
   output:
     oh_liheap_eligible: [true, true, true, true, true, true, false]
     oh_liheap: [564, 564, 500, 500, 987, 875, 0]
+
+# 42 U.S.C. 8624(b)(2)(B): a state may not exclude a household on income below 110% of the
+# poverty level. Size 20 (set directly) in 2026: 60% of FFY2026 SMI is
+# floor(floor(0.6 x 114,593) x 1.74) = floor(68,755 x 1.74) = 119,633, below the 2025
+# guideline 15,650 + 19 x 5,500 = 120,150. Income at 100% of the guideline exceeds the
+# printed limit but is below 1.1 x 120,150 = 132,165, so the household stays eligible:
+# 306.375 - 0.2375 x 100 = 282.625 -> 283. Income of exactly 132,165 is not below 110%
+# and fails.
+- name: Case 25, the federal 110 percent poverty floor keeps a large household eligible above the state median income limit.
+  period: 2026
+  input:
+    state_code: [OH, OH]
+    county: [FRANKLIN_COUNTY_OH, FRANKLIN_COUNTY_OH]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    is_tax_unit_dependent: [false, false]
+    ssi: [0, 0]
+    oh_liheap_household_size: [20, 20]
+    employment_income: [120_150, 132_165]
+    heating_type: [PROPANE, PROPANE]
+    heating_expense: [1_200, 1_200]
+  output:
+    oh_liheap_income_limit: [119_633, 119_633]
+    oh_liheap_eligible: [true, false]
+    oh_liheap: [283, 0]

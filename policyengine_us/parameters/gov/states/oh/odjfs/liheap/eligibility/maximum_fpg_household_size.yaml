@@ -1,9 +1,10 @@
 description: Ohio uses the federal poverty guideline income limit through this household size before switching to state median income under the Home Energy Assistance Program.
 # The 2022-2023 Guidelines apply 175% FPG to every household size; the FY2023
 # plan's section 2.1 lists 60% SMI for all sizes, but the Guidelines govern.
-# No 2023-2024 rule was found, so that season keeps the 2022-2023 rule. The
-# 2024-2025 application prints FPG limits through size seven, and the FY2025
-# plan's section 2.1 puts size eight on 60% SMI.
+# The July 2023-May 2024 application prints 175% FPG limits through size eight
+# and adds $8,995 per added member, so that season keeps the all-sizes rule.
+# The 2024-2025 application prints FPG limits through size seven, and the
+# FY2025 plan's section 2.1 puts size eight on 60% SMI.
 values:
   2022-07-01: .inf
   2024-07-01: 7
@@ -18,6 +19,8 @@ metadata:
       href: https://irp.cdn-website.com/aa88b0b1/files/uploaded/2022-24%20ATTACHMENT%202022-2023%20EAP%20Guidelines%20%281%29.pdf#page=7
     - title: Ohio FY2023 LIHEAP State Plan, section 2.1
       href: https://liheapch.acf.gov/docs/2023/state-plans/OH_Plan_2023.pdf#page=8
+    - title: Ohio Energy Assistance Programs Application, July 2023-May 2024
+      href: https://dam.assets.ohio.gov/image/upload/development.ohio.gov/individual/energyassistance/2023-2024-Heap-Application-ES-BW.pdf#page=1
     - title: Ohio Energy Assistance Programs Application, July 2024-May 2025
       href: https://clevelandohio.gov/sites/clevelandohio/files/aging/2024-2025_HEAP_application_B_W_1.pdf#page=1
     - title: Ohio FY2025 LIHEAP State Plan, section 2.1
