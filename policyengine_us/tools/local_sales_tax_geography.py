@@ -12,7 +12,7 @@ from policyengine_us.tools.geography.county_helpers import (
     state_fips_by_state_code,
 )
 from policyengine_us.tools.local_sales_tax_rates import locality_place_counties
-from policyengine_us.tools.period_branch import _input_keys
+from policyengine_us.tools.period_branch import _input_keys, _is_known
 
 
 @dataclass(frozen=True)
@@ -22,6 +22,26 @@ class SalesTaxLocation:
     place_fips: pd.Series
     place_geoid: pd.Series
     block_known: pd.Series
+
+
+def _stored_input(simulation, holder, period, keys):
+    """Whether the first readable stored value is a supplied input."""
+    name = holder.variable.name
+    for branch in simulation._get_visible_branch_names():
+        if holder._get_array_from_storage(period, branch) is None:
+            continue
+        # Match get_array's first live branch: a nearer calculated cache
+        # must not acquire the provenance of an ancestor's supplied input.
+        if (name, branch, period) not in keys:
+            return False
+        # Newer Core also distinguishes a cache write that replaced an input
+        # at the same key. The registry and exact stored value are available
+        # throughout the supported Core versions.
+        is_input = getattr(holder, "_is_input", None)
+        if is_input is not None and not is_input(period, branch):
+            return False
+        return True
+    return False
 
 
 def _supplied_input(household, period, name):
@@ -39,20 +59,33 @@ def _supplied_input(household, period, name):
     if not holder.variable.formulas:
         return values
     keys = _input_keys(simulation)
-    for branch in simulation._get_visible_branch_names():
-        if holder._get_array_from_storage(period, branch) is None:
-            continue
-        # Match get_array's first live branch: a nearer calculated cache
-        # must not acquire the provenance of an ancestor's supplied input.
-        if (name, branch, period) not in keys:
-            return None
-        # Newer Core also distinguishes a cache write that replaced an input
-        # at the same key. The registry and exact stored value are available
-        # throughout the supported Core versions.
-        is_input = getattr(holder, "_is_input", None)
-        if is_input is not None and not is_input(period, branch):
-            return None
+    if _stored_input(simulation, holder, period, keys):
         return values
+    if name == "county" and simulation.is_over_dataset:
+        # The county formula carries stored county data into later dataset
+        # years. Core caches that result as calculated, not as a new input.
+        # A calculated value shadowing an input for this year still wins.
+        if any(
+            key_name == name and key_period == period
+            for key_name, _, key_period in keys
+        ):
+            return None
+        source_periods = sorted(
+            {
+                p
+                for key_name, _, p in keys
+                if key_name == name and p.start < period.start
+            },
+            key=lambda p: (p.start, p.stop, str(p)),
+            reverse=True,
+        )
+        for source_period in source_periods:
+            if not _is_known(simulation, name, source_period):
+                continue
+            if not _stored_input(simulation, holder, source_period, keys):
+                return None
+            supplied = household(name, source_period)
+            return values if np.array_equal(values, supplied) else None
     return None
 
 
