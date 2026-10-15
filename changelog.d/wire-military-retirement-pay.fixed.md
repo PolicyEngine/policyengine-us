@@ -5,4 +5,5 @@ Wire military retirement pay and military retirement pay survivors to federal gr
 - Model Indiana military retirement deduction under IC 6-3-2-4.
 - Model DC survivor benefits exclusion for age 62+ under D.C. Code § 47-1803.02(a)(2)(N)(ii).
 - Update Michigan retirement worksheets to account for military survivor benefits.
+- Restrict military retirement and survivor deductions/subtractions in DC, IN, PA, and WI to tax unit filers to prevent dependent income leakage.
 - Update variable docstrings and references referencing IRC § 61(a)(10) and IRS Pubs 525/575.
