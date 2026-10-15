@@ -1,0 +1,63 @@
+# Universal free breakfast by state, read on January 1. Every case lists AR,
+# DE, DC, PA, CT, SC and FL.
+# DC: D.C. Law 18-209, from 2010-08-01. PA: 24 P.S. 13-1337.1(c.2), from
+# 2023-07-01. AR (Act 123 of 2025) and DE (85 Del. Laws c. 110 and c. 65,
+# section 33): from 2025-07-01. CT: STABLE (2023-07-01 to 2024-06-30) and
+# RISE (2026-07-01 to 2027-06-30). SC: Proviso 1.103(B), 2026-07-01 to
+# 2027-06-30. FL has no universal free breakfast.
+
+- name: No state has universal free breakfast in 2010.
+  period: 2010
+  input:
+    state_code: [AR, DE, DC, PA, CT, SC, FL]
+  output:
+    state_has_universal_free_school_breakfast: [false, false, false, false, false, false, false]
+
+- name: The District of Columbia has universal free breakfast from 2011.
+  period: 2011
+  input:
+    state_code: [AR, DE, DC, PA, CT, SC, FL]
+  output:
+    state_has_universal_free_school_breakfast: [false, false, true, false, false, false, false]
+
+- name: Only the District of Columbia has universal free breakfast in 2023.
+  period: 2023
+  input:
+    state_code: [AR, DE, DC, PA, CT, SC, FL]
+  output:
+    state_has_universal_free_school_breakfast: [false, false, true, false, false, false, false]
+
+- name: Pennsylvania and Connecticut add universal free breakfast in 2024.
+  period: 2024
+  input:
+    state_code: [AR, DE, DC, PA, CT, SC, FL]
+  output:
+    state_has_universal_free_school_breakfast: [false, false, true, true, true, false, false]
+
+- name: Connecticut has no universal free breakfast in 2025.
+  period: 2025
+  input:
+    state_code: [AR, DE, DC, PA, CT, SC, FL]
+  output:
+    state_has_universal_free_school_breakfast: [false, false, true, true, false, false, false]
+
+- name: Arkansas and Delaware add universal free breakfast in 2026.
+  period: 2026
+  input:
+    state_code: [AR, DE, DC, PA, CT, SC, FL]
+  output:
+    state_has_universal_free_school_breakfast: [true, true, true, true, false, false, false]
+
+- name: Connecticut and South Carolina add universal free breakfast in 2027.
+  period: 2027
+  input:
+    state_code: [AR, DE, DC, PA, CT, SC, FL]
+  output:
+    state_has_universal_free_school_breakfast: [true, true, true, true, true, true, false]
+
+- name: Connecticut and South Carolina universal free breakfast ends before 2028.
+  period: 2028
+  input:
+    state_code: [AR, DE, DC, PA, CT, SC, FL]
+  output:
+    state_has_universal_free_school_breakfast: [true, true, true, true, false, false, false]

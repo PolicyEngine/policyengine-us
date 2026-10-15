@@ -198,3 +198,394 @@
     free_school_meals: 0
     # 180 days * (6.10 - 0.81 paid-tier subsidy)
     reduced_price_school_meals: 952.20
+
+# State coverage scenarios. One adult working full time at $15 per hour
+# (2,080 hours * $15 = $31,200) unless noted; children age 5-17 are in K-12;
+# no categorical eligibility. Annual periods read parameters on January 1.
+
+# Arizona covers the reduced-price copay for both meals (state funds; first in
+# force on 2023-01-01). 2026 guideline for two people: 15,960 + 5,680 =
+# 21,640; 31,200 / 21,640 = 1.4418, in the reduced-price band.
+- name: Arizona household in the reduced-price income band gets free breakfast and lunch in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 31_200
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AZ
+  output:
+    school_meal_countable_income: 31_200
+    spm_unit_fpg: 21_640
+    school_meal_fpg_ratio: 1.4418
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+    school_meal_daily_subsidy: 7.06  # NSLP 4.60 + SBP 2.46 (SY 2025-26 rates)
+    school_meal_paid_daily_subsidy: 0.84  # NSLP 0.44 + SBP 0.40
+    # 180 days * (7.06 - 0.84) = 1,119.60
+    school_meal_net_subsidy: 1_119.60
+    free_school_meals: 1_119.60
+    reduced_price_school_meals: 0
+
+# Texas covered only the reduced-price breakfast copay from 2023-09-01 to
+# 2025-08-31 (GAA 2024-25, Art. IX, section 17.19(b)). 2025 guideline for two
+# people: 15,650 + 5,500 = 21,150; 31,200 / 21,150 = 1.4752.
+- name: Texas household in the reduced-price income band gets free breakfast and reduced-price lunch in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 31_200
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: TX
+  output:
+    school_meal_countable_income: 31_200
+    spm_unit_fpg: 21_150
+    school_meal_fpg_ratio: 1.4752
+    school_meal_tier: REDUCED
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: REDUCED
+    school_meal_daily_subsidy: 6.40  # SBP FREE 2.37 + NSLP REDUCED 4.03
+    school_meal_paid_daily_subsidy: 0.81  # NSLP 0.42 + SBP 0.39
+    # 180 * (6.40 - 0.81) = 1,006.20
+    school_meal_net_subsidy: 1_006.20
+    # Breakfast: 180 * (2.37 - 0.39) = 356.40
+    free_school_meals: 356.40
+    # Lunch: 180 * (4.03 - 0.42) = 649.80
+    reduced_price_school_meals: 649.80
+
+# From 2025-09-01 Texas covers the reduced-price copay for both meals (GAA
+# 2026-27, Art. VI, riders 29 and 31), so calendar 2026 has both meals free.
+# 2026 guideline for three people: 15,960 + 2 * 5,680 = 27,320;
+# 40,000 / 27,320 = 1.4641.
+- name: Texas household with two children in the reduced-price income band gets free breakfast and lunch in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 40_000
+      person2:
+        age: 7
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: TX
+  output:
+    school_meal_countable_income: 40_000
+    spm_unit_fpg: 27_320
+    school_meal_fpg_ratio: 1.4641
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+    school_meal_daily_subsidy: 7.06  # NSLP 4.60 + SBP 2.46
+    school_meal_paid_daily_subsidy: 0.84  # NSLP 0.44 + SBP 0.40
+    # 2 children * 180 days * (7.06 - 0.84) = 2,239.20
+    school_meal_net_subsidy: 2_239.20
+    free_school_meals: 2_239.20
+    reduced_price_school_meals: 0
+
+# Utah covers only the reduced-price lunch copay from 2025-07-01 (Utah Code
+# section 53F-2-423). 31,200 / 21,640 = 1.4418.
+- name: Utah household in the reduced-price income band gets reduced-price breakfast and free lunch in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 31_200
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: UT
+  output:
+    school_meal_countable_income: 31_200
+    spm_unit_fpg: 21_640
+    school_meal_fpg_ratio: 1.4418
+    school_meal_tier: REDUCED
+    school_meal_breakfast_tier: REDUCED
+    school_meal_lunch_tier: FREE
+    school_meal_daily_subsidy: 6.76  # SBP REDUCED 2.16 + NSLP FREE 4.60
+    school_meal_paid_daily_subsidy: 0.84  # NSLP 0.44 + SBP 0.40
+    # 180 * (6.76 - 0.84) = 1,065.60
+    school_meal_net_subsidy: 1_065.60
+    # Lunch: 180 * (4.60 - 0.44) = 748.80
+    free_school_meals: 748.80
+    # Breakfast: 180 * (2.16 - 0.40) = 316.80
+    reduced_price_school_meals: 316.80
+
+# Arkansas offers free breakfast to every public school student from
+# 2025-07-01 (A.C.A. section 6-18-722(f)). 60,000 / 21,640 = 2.7726, above
+# 185% of FPG, so lunch stays at the paid rate.
+- name: Arkansas household above 185% of FPG gets free breakfast and pays for lunch in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 60_000
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: AR
+  output:
+    school_meal_countable_income: 60_000
+    spm_unit_fpg: 21_640
+    school_meal_fpg_ratio: 2.7726
+    state_has_universal_free_school_breakfast: true
+    school_meal_tier: PAID
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: PAID
+    school_meal_daily_subsidy: 2.90  # SBP FREE 2.46 + NSLP PAID 0.44
+    school_meal_paid_daily_subsidy: 0.84  # NSLP 0.44 + SBP 0.40
+    # 180 * (2.90 - 0.84) = 370.80
+    school_meal_net_subsidy: 370.80
+    free_school_meals: 370.80
+    reduced_price_school_meals: 0
+
+# Massachusetts universal free meals start 2022-07-01 (St. 2022, c. 126, item
+# 7053-1925), so calendar 2023 is universal. 2023 guideline for two people:
+# 14,580 + 5,140 = 19,720; 3 * 19,720 = 59,160.
+- name: Massachusetts household at 300% of FPG gets free meals in 2023.
+  period: 2023
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 59_160
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MA
+  output:
+    school_meal_countable_income: 59_160
+    spm_unit_fpg: 19_720
+    school_meal_fpg_ratio: 3
+    state_has_universal_free_school_meals: true
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+    school_meal_daily_subsidy: 6.04  # NSLP 3.93 + SBP 2.11 (SY 2022-23 rates)
+    school_meal_paid_daily_subsidy: 0.72  # NSLP 0.37 + SBP 0.35
+    # 180 * (6.04 - 0.72) = 957.60
+    school_meal_net_subsidy: 957.60
+    free_school_meals: 957.60
+    reduced_price_school_meals: 0
+
+# New Jersey's free-meal income limit is 224% of FPG from 2024-07-01
+# (P.L.2023, c.336). 2 * 21,150 = 42,300; 42,300 / 21,150 = 2.00, above the
+# federal 185% reduced-price limit but within New Jersey's 224%.
+- name: New Jersey household at 200% of FPG gets free meals under the state income limit in 2025.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 42_300
+      person2:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2]
+        state_code: NJ
+  output:
+    school_meal_countable_income: 42_300
+    spm_unit_fpg: 21_150
+    school_meal_fpg_ratio: 2
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+    school_meal_daily_subsidy: 6.80  # NSLP 4.43 + SBP 2.37 (SY 2024-25 rates)
+    school_meal_paid_daily_subsidy: 0.81  # NSLP 0.42 + SBP 0.39
+    # 180 * (6.80 - 0.81) = 1,078.20
+    school_meal_net_subsidy: 1_078.20
+    free_school_meals: 1_078.20
+    reduced_price_school_meals: 0
+
+# Edge cases: a large family with mixed meal tiers, and households in the
+# non-contiguous state groups.
+
+# New Hampshire covers only the reduced-price breakfast copay (RSA 189:11-a,
+# VII(b)). Two adults and six children aged 3 to 17; the 3-year-old is not in
+# K-12, so five children count. 2026 guideline for eight people:
+# 15,960 + 7 * 5,680 = 55,720; 90,000 / 55,720 = 1.6152, in the
+# reduced-price band.
+- name: New Hampshire family of eight in the reduced-price income band gets free breakfast and reduced-price lunch for five school-age children in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 90_000
+      person2:
+        age: 33
+      person3:
+        age: 3
+      person4:
+        age: 5
+      person5:
+        age: 8
+      person6:
+        age: 11
+      person7:
+        age: 14
+      person8:
+        age: 17
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2, person3, person4, person5, person6, person7, person8]
+        state_code: NH
+  output:
+    is_in_k12_school: [false, false, false, true, true, true, true, true]
+    school_meal_countable_income: 90_000
+    spm_unit_fpg: 55_720
+    school_meal_fpg_ratio: 1.6152
+    school_meal_tier: REDUCED
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: REDUCED
+    school_meal_daily_subsidy: 6.66  # SBP FREE 2.46 + NSLP REDUCED 4.20
+    school_meal_paid_daily_subsidy: 0.84  # NSLP 0.44 + SBP 0.40
+    # 5 children * 180 days * (6.66 - 0.84) = 5,238.00
+    school_meal_net_subsidy: 5_238
+    # Breakfast: 5 * 180 * (2.46 - 0.40) = 1,854.00
+    free_school_meals: 1_854
+    # Lunch: 5 * 180 * (4.20 - 0.44) = 3,384.00
+    reduced_price_school_meals: 3_384
+
+# Hawaii covers the reduced-price copay for both meals from 2025-07-01
+# (HRS 302A-404(b)), and Hawaii households are measured against the Hawaii
+# guideline. 2026 Hawaii guideline for three people: 18,360 + 2 * 6,530 =
+# 31,420; 1.85 * 31,420 = 58,127, exactly at the federal reduced-price limit.
+# Against the contiguous guideline (27,320) the ratio would be 2.13 and the
+# tier PAID. Hawaii's 300% limit first applies in calendar 2027.
+- name: Hawaii household with two children exactly at 185% of the Hawaii guideline gets free meals at Hawaii rates in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 58_127
+      person2:
+        age: 7
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: HI
+  output:
+    school_meal_countable_income: 58_127
+    spm_unit_fpg: 31_420
+    school_meal_fpg_ratio: 1.85
+    school_meal_tier: FREE
+    school_meal_breakfast_tier: FREE
+    school_meal_lunch_tier: FREE
+    school_meal_daily_subsidy: 9.16  # HI SBP FREE 3.18 + NSLP FREE 5.98
+    school_meal_paid_daily_subsidy: 1.08  # HI NSLP 0.57 + SBP 0.51
+    # 2 children * 180 days * (9.16 - 1.08) = 2,908.80
+    school_meal_net_subsidy: 2_908.80
+    free_school_meals: 2_908.80
+    reduced_price_school_meals: 0
+
+# Alaska has no state school meal policy, but Alaska households are measured
+# against the Alaska guideline and receive Alaska rates. 2026 Alaska guideline
+# for three people: 19,950 + 2 * 7,100 = 34,150; 51,225 / 34,150 = 1.50.
+# Against the contiguous guideline (27,320) the ratio would be 1.875 and the
+# tier PAID.
+- name: Alaska household with two children at 150% of the Alaska guideline gets reduced-price meals at Alaska rates in 2026.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 35
+        employment_income_before_lsr: 51_225
+      person2:
+        age: 7
+      person3:
+        age: 10
+    spm_units:
+      spm_unit:
+        members: [person1, person2, person3]
+        meets_school_meal_categorical_eligibility: false
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: AK
+  output:
+    school_meal_countable_income: 51_225
+    spm_unit_fpg: 34_150
+    school_meal_fpg_ratio: 1.5
+    school_meal_tier: REDUCED
+    school_meal_breakfast_tier: REDUCED
+    school_meal_lunch_tier: REDUCED
+    school_meal_daily_subsidy: 10.70  # AK SBP REDUCED 3.65 + NSLP REDUCED 7.05
+    school_meal_paid_daily_subsidy: 1.33  # AK NSLP 0.71 + SBP 0.62
+    # 2 children * 180 days * (10.70 - 1.33) = 3,373.20
+    school_meal_net_subsidy: 3_373.20
+    free_school_meals: 0
+    reduced_price_school_meals: 3_373.20
