@@ -10,7 +10,7 @@
   input:
     people:
       person1:
-        age: 60
+        age: 55
         is_tax_unit_head: true
         military_retirement_pay: 30_000
     tax_units:
@@ -28,14 +28,14 @@
     household_market_income: 30_000
     snap_unearned_income: 30_000
     ssi_unearned_income: 30_000
-    household_net_income: 28_915
+    household_net_income: 28_384
 
 - name: Case 2, Military retirement pay survivors flows into federal gross income, AGI, and taxable income.
   period: 2024
   input:
     people:
       person1:
-        age: 60
+        age: 55
         is_tax_unit_head: true
         military_retirement_pay_survivors: 24_000
     tax_units:

@@ -23,16 +23,11 @@ class md_pension_subtraction_amount(Variable):
         # (Worksheet 13A, line 1), military retirement income exceeding the
         # § 10-207(q) military retirement subtraction qualifies for the
         # general pension exclusion.
-        p_mil = p.military_retirement
-        military_income = person("military_retirement_pay", period) + person(
-            "military_retirement_pay_survivors", period
+        military_income = person("military_retirement_income", period)
+        military_subtraction = person(
+            "md_military_retirement_subtraction_amount", period
         )
-        mil_cap = where(
-            elderly,
-            p_mil.max_amount.at_or_above_age_threshold,
-            p_mil.max_amount.under_age_threshold,
-        )
-        excess_military = max_(0, military_income - mil_cap)
+        excess_military = max_(0, military_income - military_subtraction)
 
         # calculate pension subtraction amount for each person
         peninc = add(person, period, p.pension.sources) + excess_military

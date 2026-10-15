@@ -23,12 +23,7 @@ class in_military_retirement_deduction(Variable):
         # Dependents' income is not in federal AGI; they report it on their
         # own return.
         head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        military_retirement = (
-            person("military_retirement_pay", period)
-            + person("military_retirement_pay_survivors", period)
-        ) * head_or_spouse
+        military_retirement = person("military_retirement_income", period)
         excess = max_(0, military_retirement - p.base)
-        person_deduction = (
-            min_(military_retirement, p.base) + p.excess_rate * excess
-        ) * head_or_spouse
-        return tax_unit.sum(person_deduction)
+        person_deduction = min_(military_retirement, p.base) + p.excess_rate * excess
+        return tax_unit.sum(person_deduction * head_or_spouse)

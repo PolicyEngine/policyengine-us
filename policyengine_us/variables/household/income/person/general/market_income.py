@@ -27,7 +27,6 @@ class market_income(Variable):
             "alimony_income",
             "strike_benefits",
             "retirement_distributions",
-            "military_retirement_pay",
-            "military_retirement_pay_survivors",
+            "military_retirement_income",
         ]
         return add(person, period, COMPONENTS)

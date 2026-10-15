@@ -36,8 +36,7 @@ class ks_agi_subtractions(Variable):
             period,
             [
                 "taxable_public_pension_income",
-                "military_retirement_pay",
-                "military_retirement_pay_survivors",
+                "military_retirement_income",
             ],
         )
         return (

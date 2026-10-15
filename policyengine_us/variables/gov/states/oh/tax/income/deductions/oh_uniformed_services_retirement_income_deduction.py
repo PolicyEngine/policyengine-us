@@ -15,7 +15,5 @@ class oh_uniformed_services_retirement_income_deduction(Variable):
 
     def formula(person, period, parameters):
         is_head_or_spouse = person("is_tax_unit_head_or_spouse", period)
-        military_retirement = person("military_retirement_pay", period) + person(
-            "military_retirement_pay_survivors", period
-        )
+        military_retirement = person("military_retirement_income", period)
         return is_head_or_spouse * military_retirement

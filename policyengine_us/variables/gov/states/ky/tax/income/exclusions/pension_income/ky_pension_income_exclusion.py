@@ -18,8 +18,7 @@ class ky_pension_income_exclusion(Variable):
             period,
             [
                 "taxable_pension_income",
-                "military_retirement_pay",
-                "military_retirement_pay_survivors",
+                "military_retirement_income",
             ],
         )
 

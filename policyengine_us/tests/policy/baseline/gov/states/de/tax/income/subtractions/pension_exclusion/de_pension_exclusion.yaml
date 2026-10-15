@@ -137,11 +137,11 @@
   period: 2024
   input:
     age: 50
-    military_retirement_pay_survivors: 1_500
+    military_retirement_pay_survivors: 3_000
     is_tax_unit_head_or_spouse: true
     state_code: DE
   output:
-    de_pension_exclusion: 1_500
+    de_pension_exclusion: 2_000
 
 - name: DE 60+ filer with military retirement and survivor benefits in retirement basket
   period: 2024
@@ -153,5 +153,3 @@
     state_code: DE
   output:
     de_pension_exclusion: 12_500
-
-

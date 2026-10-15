@@ -24,10 +24,9 @@ class ne_military_retirement_subtraction(Variable):
         age = person("age", period)
         age_eligible = age >= p.age_threshold
         military_retirement_pay = person("military_retirement_pay", period)
-        if p.survivors_eligible:
-            survivor_pay = person("military_retirement_pay_survivors", period)
-        else:
-            survivor_pay = 0
+        survivor_pay = (
+            person("military_retirement_pay_survivors", period) * p.survivors_eligible
+        )
         military_retirement_benefit = military_retirement_pay + survivor_pay
         # Dependents' income is not in federal AGI; they report it on their
         # own return.

@@ -8,9 +8,9 @@ values:
     - salt_refund_income
     # N.Y. Tax Law § 612(c)(3) / Form IT-201 Line 26: subtracts pensions paid by NY state,
     # local governments, or the federal government. Pensions from other states are not exempt.
+    # PolicyEngine subtracts taxable_public_pension_income as an in-state/federal proxy.
     - taxable_public_pension_income
-    - military_retirement_pay
-    - military_retirement_pay_survivors
+    - military_retirement_income
 metadata:
   unit: list
   period: year

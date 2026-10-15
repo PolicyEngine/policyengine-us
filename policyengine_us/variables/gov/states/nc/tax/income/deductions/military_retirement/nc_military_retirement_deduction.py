@@ -38,9 +38,8 @@ class nc_military_retirement_deduction(Variable):
         # eligibility, which needs the recipient's service or medical record.
         own_pay_eligible = eligible & (~survivor | own_record_eligible)
         military_pay_eligible = where(survivor_pay > 0, own_pay_eligible, eligible)
-        # With no separate survivor amount, military_retirement_pay can instead
-        # contain only survivor benefits, as its documentation permits. Mixed
-        # own and survivor pay must be split between the two income inputs.
+        # When survivor_pay is 0, eligible applies to military_retirement_pay directly.
+        # Mixed own and survivor pay must be split between the two income inputs.
         qualifying_pay = (
             person("military_retirement_pay", period) * military_pay_eligible
             + survivor_pay * survivor * eligible
