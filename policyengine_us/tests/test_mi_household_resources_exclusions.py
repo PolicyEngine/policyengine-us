@@ -25,9 +25,9 @@ So for every household:
    most $300, and when they were positive they rise by the change in
    winnings over $300.
 3. The same holds for gifts.
-4. A reform that drops the self-employed health insurance deduction from the
-   federal list moves those premiums from line 30 to line 31 and leaves
-   household resources unchanged.
+4. A reform that drops the self-employed health insurance deduction from
+   either the federal list or Michigan's line-30 list moves those premiums
+   from line 30 to line 31 and leaves household resources unchanged.
 
 The households have a head, an optional spouse and an optional dependent, who
 may be self-employed and pay premiums. SSI and the Family Independence
@@ -218,14 +218,17 @@ def test_self_employed_premiums_subtracted_once():
     assert_premiums_subtracted_once(households)
 
 
-def without_self_employed_health_insurance_ald():
-    """A reform that removes the self-employed health insurance deduction
-    from gov.irs.ald.deductions."""
+def without_self_employed_health_insurance_ald(michigan_only=False):
+    """Remove the deduction from the federal or Michigan line-30 list."""
 
     class reform(Reform):
         def apply(self):
             def modify(parameters):
-                deductions = parameters.gov.irs.ald.deductions
+                deductions = (
+                    parameters.gov.states.mi.tax.income.household_resources_adjustments
+                    if michigan_only
+                    else parameters.gov.irs.ald.deductions
+                )
                 values = [
                     d
                     for d in deductions(f"{YEAR}-01-01")
@@ -243,10 +246,10 @@ def without_self_employed_health_insurance_ald():
     return reform
 
 
-def test_premiums_move_to_line_31_without_the_federal_deduction():
-    """Without the federal deduction, line 30 no longer subtracts the
-    premiums, so line 31 does: household resources are unchanged, and the
-    premiums still come off once."""
+@pytest.mark.parametrize("michigan_only", [False, True])
+def test_premiums_move_to_line_31_without_the_line_30_deduction(michigan_only):
+    """Removing the deduction from either list moves premiums to line 31.
+    Removing it only from Michigan's list leaves federal AGI unchanged."""
     households = [
         {"head": person(self_employment_income=50_000, **{PREMIUMS: 5_000})},
         {
@@ -262,15 +265,20 @@ def test_premiums_move_to_line_31_without_the_federal_deduction():
     situation = build_situation(households)
     baseline = Simulation(situation=situation)
     reformed = Simulation(
-        situation=situation, reform=without_self_employed_health_insurance_ald()
+        situation=situation,
+        reform=without_self_employed_health_insurance_ald(michigan_only),
     )
-    # The reform takes the deduction (5,000 and 3,000) out of federal AGI.
+    # The deduction is still computed under either list reform.
     deduction = baseline.calculate("self_employed_health_insurance_ald", YEAR)
     assert deduction == pytest.approx([5_000, 3_000], abs=TOLERANCE)
     agi_change = reformed.calculate("adjusted_gross_income", YEAR) - baseline.calculate(
         "adjusted_gross_income", YEAR
     )
-    assert agi_change == pytest.approx(deduction, abs=TOLERANCE)
+    expected_agi_change = np.zeros_like(deduction) if michigan_only else deduction
+    assert agi_change == pytest.approx(expected_agi_change, abs=TOLERANCE)
+    assert reformed.calculate(
+        "self_employed_health_insurance_ald", YEAR
+    ) == pytest.approx(deduction, abs=TOLERANCE)
     expected = baseline.calculate("mi_household_resources", YEAR)
     result = reformed.calculate("mi_household_resources", YEAR)
     assert result == pytest.approx(expected, abs=TOLERANCE)
