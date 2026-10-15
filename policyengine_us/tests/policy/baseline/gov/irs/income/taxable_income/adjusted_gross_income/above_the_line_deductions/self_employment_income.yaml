@@ -54,3 +54,32 @@
     sstb_self_employment_income_behavioral_response: 1_000
     self_employment_income: 0
     sstb_self_employment_income: -9_000
+
+- name: Non-SSTB Schedule C loss offsets SSTB Schedule C profit in AGI
+  # Two Schedules C: line 31 of (5,000) and 5,000 both go to Schedule 1
+  # line 3, which is 0, so Form 1040 line 11 AGI is 0.
+  period: 2024
+  input:
+    self_employment_income: -5_000
+    sstb_self_employment_income: 5_000
+  output:
+    adjusted_gross_income: 0
+
+- name: SSTB Schedule C loss offsets non-SSTB Schedule C profit in AGI
+  period: 2024
+  input:
+    self_employment_income: 5_000
+    sstb_self_employment_income: -5_000
+  output:
+    adjusted_gross_income: 0
+
+- name: Offsetting Schedule C results leave AGI equal to wages
+  # Form 1040 line 1z 50,000 plus Schedule 1 line 3 of 0 gives line 11 AGI
+  # of 50,000.
+  period: 2024
+  input:
+    employment_income: 50_000
+    self_employment_income: -5_000
+    sstb_self_employment_income: 5_000
+  output:
+    adjusted_gross_income: 50_000
