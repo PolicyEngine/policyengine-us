@@ -1,7 +1,11 @@
 description: Montana provides the following property tax rebate amount.
 values:
+  # The property tax rebate was first offered for tax year 2022, so it is
+  # zero before 2022.
+  2021-01-01: 0
   # Tax years 2022 and 2023: $500 (HB 222, Ch. 47, L. 2023) plus the $175
-  # bonus (HB 816, Ch. 764, L. 2023).
+  # bonus (HB 816, Ch. 764, L. 2023):
+  # $100,000,000 / 284,343 / 2 = 175.84, rounded down to $175.
   2022-01-01: 675
   # Tax year 2024: $400 (SB 542, Ch. 767, L. 2025, sec. 3).
   2024-01-01: 400
@@ -15,11 +19,17 @@ metadata:
   reference:
     - title: 2023 Montana Form 2 Individual Income Tax Instructions, What's New?, Property Tax Rebates
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2023_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=5
-    - title: 2022 Montana Property Tax Rebate Claim, Form MPTR22
-      href: https://web.archive.org/web/20231130173751/https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/08/2022-Montana-Property-Tax-Rebate-Form-MPTR22.pdf
+    - title: 2022 Montana Property Tax Rebate Claim, Form MPTR22, Part II
+      href: https://web.archive.org/web/20231130173751/https://mtrevenue.gov/wp-content/uploads/dlm_uploads/2023/08/2022-Montana-Property-Tax-Rebate-Form-MPTR22.pdf#page=1
     # The Legal code provides a lower rebate amount - applying the tax form instructions value
-    - title: 2023 Montana Legislature, House Bill 222
-      href: https://docs.legmt.gov/download-ticket?ticketId=ff6faf83-515f-4472-a079-c41a4a75e827#page=1
+    - title: 2023 Montana Legislature, House Bill 222, Section 2(1)
+      href: https://web.archive.org/web/2023/https://leg.mt.gov/bills/2023/billpdf/HB0222.pdf#page=2
+    - title: 2023 Montana Legislature, House Bill 816, Section 1
+      href: https://web.archive.org/web/20230607192457/https://leg.mt.gov/bills/2023/billpdf/HB0816.pdf#page=1
+    - title: 2023 Montana Legislature, House Bill 222, Section 10
+      href: https://web.archive.org/web/2023/https://leg.mt.gov/bills/2023/billpdf/HB0222.pdf#page=18
+    - title: 2023 Montana Legislature, House Bill 816, Section 10(2)
+      href: https://web.archive.org/web/20230607192457/https://leg.mt.gov/bills/2023/billpdf/HB0816.pdf#page=6
     - title: 2024 Montana Form 2 Instructions
       href: https://revenuefiles.mt.gov/files/Forms/Montana-Individual-Income-Tax-Return-Form-2-Instructions/2024_Montana_Individual_Income_Tax_Return_Form_2_Instructions.pdf#page=3
     - title: Montana Department of Revenue, Income tax and property tax rebate report, May 2024 (maximum rebate $675 in each of tax years 2022 and 2023)
