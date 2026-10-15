@@ -404,12 +404,16 @@ if hypothesis is not None:
             "dependent": draw(st.one_of(st.none(), a_person())),
         }
 
-    @hypothesis.settings(max_examples=40, deadline=None, suppress_health_check=SLOW)
+    @hypothesis.settings(
+        max_examples=40, deadline=None, derandomize=True, suppress_health_check=SLOW
+    )
     @hypothesis.given(st.lists(household(), min_size=1, max_size=15))
     def test_premiums_subtracted_once(households):
         assert_premiums_subtracted_once(households)
 
-    @hypothesis.settings(max_examples=40, deadline=None, suppress_health_check=SLOW)
+    @hypothesis.settings(
+        max_examples=40, deadline=None, derandomize=True, suppress_health_check=SLOW
+    )
     @hypothesis.given(
         st.lists(household(), min_size=1, max_size=15),
         st.sampled_from(["gambling_winnings", "financial_assistance"]),

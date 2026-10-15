@@ -488,12 +488,16 @@ if hypothesis is not None:
             "tanf": draw(st.one_of(st.just(0), AMOUNT)),
         }
 
-    @hypothesis.settings(max_examples=50, deadline=None, suppress_health_check=SLOW)
+    @hypothesis.settings(
+        max_examples=50, deadline=None, derandomize=True, suppress_health_check=SLOW
+    )
     @hypothesis.given(st.lists(household(), min_size=1, max_size=15))
     def test_properties(households):
         assert_properties(households)
 
-    @hypothesis.settings(max_examples=30, deadline=None, suppress_health_check=SLOW)
+    @hypothesis.settings(
+        max_examples=30, deadline=None, derandomize=True, suppress_health_check=SLOW
+    )
     @hypothesis.given(
         st.lists(household(), min_size=1, max_size=10),
         st.sampled_from(list(HOUSEHOLD_LINES)),
