@@ -78,6 +78,12 @@ October 2022 snapshot, within that tolerance of its statutory 7%.
   (address, else ZIP+4, else 5-digit ZIP). Rates are evaluated on every
   quarter start from 2022 through 2026 and on every other date in that window
   on which a state's files show a change.
+  This record-weighted mean can include a small special taxing district
+  within a city: Wichita (county 20173, place 79000), for example, is
+  7.506% in the shipped data, compared with the ordinary 7.5% rate from the
+  state and county. The build retains every applicable district; it applies no
+  minimum record-share cutoff. The resulting city estimate need not be
+  the rate at a particular address.
 - **Place codes.** A unit's place code is matched to the 2020 Census place
   or county subdivision of its county with that code (in Vermont, whose
   local option taxes are levied by towns, to the town). A code that matches
