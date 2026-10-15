@@ -1093,6 +1093,14 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: UT
+        status: complete
+        name: Utah SSP
+        full_name: Utah State Supplemental Payment
+        variable: ut_ssp
+        parameter_prefix: gov.states.ut.dhhs.ssp
+        verified_years: "2026"
+        notes: Models the 2026 $15 monthly payment to SSI recipients in Medicaid-funded medical institutions. Utah's former federally administered optional supplement is not modeled.
 
   - id: social_security
     name: Social Security
