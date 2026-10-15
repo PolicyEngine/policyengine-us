@@ -1106,7 +1106,8 @@
     # Line 16: Schedule C 50,000.
     # Line 30: deduction for self-employment tax, half of 50,000 x 0.9235 x
     # 15.3% = 3,532.39, plus the self-employed health insurance deduction,
-    # the lesser of the 5,000 premiums and the 50,000 net earnings = 5,000.
+    # 5,000 (the premiums are below both PolicyEngine's earnings limit and
+    # Form 7206's earnings limit after deductible self-employment tax).
     # 8,532.39 in all.
     # Line 31: premiums of 5,000, less the 5,000 deducted on line 30 = 0.
     # Line 33: 50,000 - 8,532.39 - 0 = 41,467.61. Subtracting the premiums
@@ -1124,12 +1125,18 @@
     state_code: MI
   output:
     # Line 14: 40,000. Line 16: 3,000.
-    # Line 30: deduction for self-employment tax, half of 3,000 x 0.9235 x
-    # 15.3% = 211.94, plus the self-employed health insurance deduction,
-    # limited to the 3,000 net earnings = 3,000. 3,211.94 in all.
+    # PolicyEngine's pre-existing federal simplification limits the health
+    # insurance deduction to net self-employment income before deductible
+    # self-employment tax: 3,000 here.
+    # Line 30 in PolicyEngine: self-employment tax deduction, half of 3,000 x
+    # 0.9235 x 15.3% = 211.94, plus health insurance 3,000 = 3,211.94.
     # Line 31: premiums of 5,000, less the 3,000 deducted on line 30 = 2,000.
     # Line 33: 43,000 - 3,211.94 - 2,000 = 37,788.06. The premiums come off
     # once in all: 3,000 on line 30 and 2,000 on line 31.
+    # 2025 Form 7206 lines 7-8 instead limit the health insurance deduction
+    # to 3,000 - 211.94 = 2,788.06. Then line 30 is 3,000 and line 31 is
+    # 5,000 - 2,788.06 = 2,211.94: 43,000 - 3,000 - 2,211.94 = 37,788.06.
+    # The Michigan total is unchanged because every premium comes off once.
     mi_household_resources: 37_788.06
   absolute_error_margin: 0.01
 
