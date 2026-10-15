@@ -27,10 +27,11 @@ class ar_liheap_eligible(Variable):
         # a verified excess charge. The general responsibility flag cannot
         # substitute for this surcharge. Unsubsidized rent needs no extra bill.
         rent_responsibility = ~subsidized | (expense > 0)
-        # For direct bills, reported heating costs are assumed to represent
-        # the household's remaining obligation after any utility allowance,
-        # not a gross bill already fully reimbursed. Verification is not modeled.
-        direct_responsibility = (expense > 0) | has_expense
+        # A direct bill or obligation counts through has_heating_expense, which
+        # defaults to a positive primary-fuel bill with heat not in rent. An
+        # explicit false (for example, a bill fully reimbursed through a utility
+        # allowance, plan item 2.3) is respected. Verification is not modeled.
+        direct_responsibility = has_expense
         heating_responsibility = where(
             heat_in_rent, rent_responsibility, direct_responsibility
         )

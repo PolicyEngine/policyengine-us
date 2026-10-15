@@ -43,6 +43,11 @@ class ar_liheap_matrix_amount(Variable):
         size_group = p.household_size_group.calc(max_(size, 1)).astype(int)
         fuel = spm_unit("heating_type", period)
         fuels = fuel.possible_values
+        # FY2025 cells follow AEO's matrices headed "(20% OVER BASE)", dated
+        # October 7, 2024 and posted before the season, not FY2025 plan item
+        # 2.6's $50 to $475 estimate. The Clearinghouse "2025" Arkansas matrix
+        # repeats the FY2024 base amounts; 1.2 times them, rounded, gives the
+        # FY2025 cells in the 35 rows from $0 through $2,250. The top rows differ.
         amount = select(
             [
                 fuel == fuels.ELECTRICITY,

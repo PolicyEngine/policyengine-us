@@ -1,6 +1,6 @@
 # Independent AR component tests; no final household eligibility or total benefit is asserted.
 
-# Plan p5:15000×0.8=12000 countable work income.
+# Plan p5: 15000 x 0.8 = 12000 countable work income.
 - name: Case 1, adult gross wages receive the twenty percent disregard.
   period: 2026
   absolute_error_margin: 0.01
@@ -27,7 +27,7 @@
 
 # Current application section III excludes work income of every full-time
 # student, without an adult age or dependency test. Only Social Security
-# 1_200 counts; under65 without SSDI there is no Part B premium to deduct.
+# 1_200 counts; under 65 without SSDI there is no Part B premium to deduct.
 - name: Case 2, a full time college student living alone has work excluded.
   period: 2026
   absolute_error_margin: 0.01
@@ -91,7 +91,7 @@
   output:
     ar_liheap_countable_income: 6_000
 
-# Exactly18 and not a full-time student makes wages countable, after20%disregard.
+# Exactly 18 and not a full-time student makes wages countable after the 20% disregard: 15000 x 0.8 = 12000.
 - name: Case 4, age eighteen nonstudent earnings are counted.
   period: 2026
   absolute_error_margin: 0.01
@@ -121,7 +121,7 @@
   output:
     ar_liheap_countable_income: 12_000
 
-# Countable adult existing earned inputs total20000; standard20%disregard gives16000, without a new business-expense calculation.
+# Countable adult existing earned inputs total 20000; the standard 20% disregard gives 16000, without a new business-expense calculation.
 # Manual p42 rounds MCI to whole dollars: 16000/12=1333.33 -> 1333; x12=15996.
 - name: Case 5, existing business sources receive the standard earned disregard.
   period: 2026
@@ -151,7 +151,7 @@
   output:
     ar_liheap_countable_income: 15_996
 
-# Contract specifies nonnegative earned sources: wages12000×0.8+pension1200=10800.
+# Manual 4.7.4 (p47) counts negative self-employment income as zero: wages 12000 x 0.8 = 9600 + pension 1200 = 10800.
 - name: Case 6, source losses do not offset wages or unearned receipts.
   period: 2026
   absolute_error_margin: 0.01
@@ -519,9 +519,9 @@
   output:
     ar_liheap_countable_income: [12_000, 12_000]
 
-# Current application section III excludes all minor earnings. A17-year-old
-# attending high school has6_000 wages and1_200 self-employment excluded;
-# SSI2_400 + child support3_600 =6_000 remains countable.
+# Current application section III excludes all minor earnings. A 17-year-old
+# attending high school has 6_000 wages and 1_200 self-employment excluded;
+# SSI 2_400 + child support 3_600 = 6_000 remains countable.
 - name: Case 19, a minor attending high school has work excluded.
   period: 2026
   absolute_error_margin: 0.01
@@ -552,7 +552,7 @@
     ar_liheap_countable_income: 6_000
 
 # Current application section III excludes all minor earnings, regardless of
-# part-time college attendance. Only SSI2_400 + child support3_600 counts.
+# part-time college attendance. Only SSI 2_400 + child support 3_600 counts.
 - name: Case 20, a minor attending college part time has work excluded.
   period: 2026
   absolute_error_margin: 0.01
@@ -583,7 +583,7 @@
     ar_liheap_countable_income: 6_000
 
 # Current application section III excludes all full-time students work income,
-# without a dependency requirement. Only the parent's24_000 x80% =19_200 counts.
+# without a dependency requirement. Only the parent's 24_000 x 80% = 19_200 counts.
 - name: Case 21, a dependent college student aged twenty two has work excluded.
   period: 2026
   absolute_error_margin: 0.01
@@ -615,7 +615,7 @@
     ar_liheap_countable_income: 19_200
 
 # Current application section III supplies no adult-student age ceiling.
-# The student's6_000 wages remain excluded; parent24_000 x80% =19_200.
+# The student's 6_000 wages remain excluded; parent 24_000 x 80% = 19_200.
 - name: Case 22, a dependent college student aged twenty three still has work excluded.
   period: 2026
   absolute_error_margin: 0.01
@@ -749,3 +749,29 @@
         state_code: AR
   output:
     ar_liheap_countable_income: 23_796
+
+# Plan 1.9 checks unemployment insurance, strike pay, "Interest, dividends, or royalties",
+# VA benefits and cash gifts; manual Appendix F counts unemployment (p144), strike pay
+# (p143), dividends (p133), retirement/veteran benefits (p141) and regular cash gifts (p132),
+# each in full. UI at Arkansas's $451 maximum weekly benefit for the 12-week maximum:
+# 451 x 12 = 5412 (MCI 451). Strike pay 6 weeks x $500 = 3000 (MCI 250). Dividends 1200
+# (MCI 100). 2026 VA compensation, 30%, veteran alone: 552.47 x 12 = 6629.64; MCI 552.47
+# rounds to 552; x12 = 6624. Regular cash gifts 150 x 12 = 1800 (MCI 150). Arkansas UI is
+# not modeled, so total_unemployment_compensation is the reported amount.
+- name: Case 26, unemployment strike pay dividends veterans benefits and regular cash gifts count in full.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [AR, AR, AR, AR, AR]
+    age: [45, 50, 58, 60, 35]
+    immigration_status: [CITIZEN, CITIZEN, CITIZEN, CITIZEN, CITIZEN]
+    is_full_time_student: [false, false, false, false, false]
+    ssi: [0, 0, 0, 0, 0]
+    ar_tea: [0, 0, 0, 0, 0]
+    unemployment_compensation: [5_412, 0, 0, 0, 0]
+    strike_benefits: [0, 3_000, 0, 0, 0]
+    qualified_dividend_income: [0, 0, 1_200, 0, 0]
+    veterans_benefits: [0, 0, 0, 6_629.64, 0]
+    financial_assistance: [0, 0, 0, 0, 1_800]
+  output:
+    ar_liheap_countable_income: [5_412, 3_000, 1_200, 6_624, 1_800]

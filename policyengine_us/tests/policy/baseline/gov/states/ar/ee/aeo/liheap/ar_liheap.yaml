@@ -1,4 +1,4 @@
-# Official FY2026 gas matrix: monthly370-429 gives227 for size1-2; monthly2130-2347 gives68; zero income gives308. Oil zero-income size5+ gives570. The 20 percent earned disregard applies before these lookups.
+# Official FY2026 gas matrix: monthly 370-429 gives 227 for size 1-2; monthly 2130-2347 gives 68; zero income gives 308. Oil zero-income size 5+ gives 570. The 20 percent earned disregard applies before these lookups.
 # TEA now counts through take-up-gated tanf, so Cases 1 and 3 pin ar_tea to 0 to keep their
 # household-size and zero-income checks; TEA counting is covered in ar_liheap_countable_income.yaml.
 
@@ -575,12 +575,12 @@
     ar_liheap_eligible: false
     ar_liheap: 0
 
-# Current application section III requests work income only from members18+
-# who are not full-time students, without age/dependency restrictions.
-# For an independent student earning48_000, counted earnings are zero and the
-# FY2026 one-person natural-gas matrix pays308. Nonstudent earnings after20%
-# disregard are38_400, above the28_164 limit, so the comparison gets zero.
-- name: Case 19, independent adult full-time students retain the regular heating award beyond age23.
+# Current application section III requests work income only from members 18+
+# who are not full-time students, without age or dependency restrictions.
+# For an independent student earning 48_000, counted earnings are zero and the
+# FY2026 one-person natural-gas matrix pays 308. Nonstudent earnings after the 20%
+# disregard are 38_400, above the 28_164 limit, so the comparison gets zero.
+- name: Case 19, independent adult full-time students retain the regular heating award beyond age 23.
   period: 2026
   input:
     state_code: [AR, AR, AR, AR]

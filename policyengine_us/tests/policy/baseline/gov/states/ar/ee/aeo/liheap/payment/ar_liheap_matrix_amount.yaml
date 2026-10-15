@@ -1,6 +1,6 @@
 # Independent AR component tests; no final household eligibility or total benefit is asserted.
 
-# Original two-page fuel matrix:39lower bounds×3size columns=117literal cell checks; no eligibility gate is expected in this intermediate.
+# Original two-page fuel matrix: 39 lower bounds x 3 size columns = 117 literal cell checks; no eligibility gate is expected in this intermediate.
 - name: Case 1, every published electric row and household column matches at its lower bound.
   period: 2026
   absolute_error_margin: 0.01
@@ -66,7 +66,7 @@
       60, 80, 90, 60, 76, 84, 60, 70, 79, 60, 64, 73, 0, 60, 67, 0, 60, 61, 0, 0, 60, 0, 0, 60]
 
 
-# Original two-page fuel matrix:39lower bounds×3size columns=117literal cell checks; no eligibility gate is expected in this intermediate.
+# Original two-page fuel matrix: 39 lower bounds x 3 size columns = 117 literal cell checks; no eligibility gate is expected in this intermediate.
 - name: Case 2, every published natgas row and household column matches at its lower bound.
   period: 2026
   absolute_error_margin: 0.01
@@ -124,7 +124,7 @@
       0, 60]
 
 
-# Original two-page fuel matrix:39lower bounds×3size columns=117literal cell checks; no eligibility gate is expected in this intermediate.
+# Original two-page fuel matrix: 39 lower bounds x 3 size columns = 117 literal cell checks; no eligibility gate is expected in this intermediate.
 - name: Case 3, every published propane row and household column matches at its lower bound.
   period: 2026
   absolute_error_margin: 0.01
@@ -187,7 +187,7 @@
       0, 0, 92, 0, 0, 83]
 
 
-# Original two-page fuel matrix:39lower bounds×3size columns=117literal cell checks; no eligibility gate is expected in this intermediate.
+# Original two-page fuel matrix: 39 lower bounds x 3 size columns = 117 literal cell checks; no eligibility gate is expected in this intermediate.
 - name: Case 4, every published fueloil row and household column matches at its lower bound.
   period: 2026
   absolute_error_margin: 0.01
@@ -251,7 +251,7 @@
       0, 0, 95, 0, 0, 86]
 
 
-# Original two-page fuel matrix:39lower bounds×3size columns=117literal cell checks; no eligibility gate is expected in this intermediate.
+# Original two-page fuel matrix: 39 lower bounds x 3 size columns = 117 literal cell checks; no eligibility gate is expected in this intermediate.
 - name: Case 5, every published other row and household column matches at its lower bound.
   period: 2026
   absolute_error_margin: 0.01
@@ -312,7 +312,7 @@
       0, 61]
 
 
-# Electric3–4column:69.99→288;70→276;1989.99→86;1990→80;2009.99→80;2010→76. Irregular20dollar band is preserved.
+# Electric 3-4 column: 69.99 -> 288; 70 -> 276; 1989.99 -> 86; 1990 -> 80; 2009.99 -> 80; 2010 -> 76. The irregular 20-dollar band is preserved.
 - name: Case 6, fractional income stays below the next published lower bound.
   period: 2026
   absolute_error_margin: 0.01
@@ -327,7 +327,7 @@
     ar_liheap_matrix_amount: [288, 276, 86, 80, 80, 76]
 
 
-# Propane0–69row groups1–2,3–4,5+; no fixed-matrix expense cap from a50annual bill.
+# Propane 0-69 row, groups 1-2, 3-4 and 5+; no fixed-matrix expense cap from a 50 annual bill.
 - name: Case 7, within group sizes and large households share published payment columns.
   period: 2026
   absolute_error_margin: 0.01

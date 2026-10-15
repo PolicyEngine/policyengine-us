@@ -1,0 +1,21 @@
+description: Arkansas excludes the earned income of household members younger than this age under the Low Income Home Energy Assistance Program.
+# Application Section III (FY2025 form R 01/FY2025 and current form R 11/2025)
+# requests work income only from members 18 and older, and the accepted plans
+# leave a child's earnings unchecked. Full-time students of any age are
+# excluded in the formula.
+values:
+  2024-10-01: 18
+
+metadata:
+  unit: year
+  period: year
+  label: Arkansas LIHEAP earned income minimum age
+  reference:
+    - title: Arkansas LIHEAP application, section III
+      href: https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2
+    - title: Arkansas LIHEAP application AEO 9495 R 01/FY2025, Section III (Wayback capture)
+      href: https://web.archive.org/web/20250104155015/https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2
+    - title: Arkansas FY2026 LIHEAP State Plan, section 1.9
+      href: https://liheapch.acf.gov/docs/2026/state-plans/AR_Plan_2026.pdf#page=6
+    - title: Arkansas FY2025 LIHEAP State Plan, section 1.9
+      href: https://liheapch.acf.gov/docs/2025/state-plans/AR_Plan_2025.pdf#page=6

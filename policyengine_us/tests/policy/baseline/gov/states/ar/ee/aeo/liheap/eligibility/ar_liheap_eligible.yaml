@@ -1,4 +1,4 @@
-# Accepted FY2026 plan physical pp5,9-10; literal income chart; qualified composition source hierarchy in the research report.
+# FY2026 plan items 1.4 and 2.1-2.3 (pp 5, 9-10) and the FY2026 income chart.
 
 - name: Case 1, the exact income ceiling is inclusive and does not impose an asset test.
   period: 2026
@@ -111,3 +111,29 @@
     ar_liheap_countable_income: [70_800, 71_016, 71_028]
   output:
     ar_liheap_eligible: [true, true, false]
+
+# FY2026 plan item 2.3 (p10): a household has an energy burden if it pays utilities
+# directly; one whose utilities are reimbursed through an allowance is not eligible unless
+# it shows an energy burden. has_heating_expense defaults to a positive primary-fuel bill
+# with heat not in rent, and an explicit false is respected. Wages 20 hours x 52 weeks x
+# $11.00 Arkansas minimum wage = 11440; x 0.8 = 9152; MCI 762.67 rounds to 763
+# (x12 = 9156); 763 <= 2347 one-person limit. Gas 730-789 pays 190 for 1&2; the second
+# unit has no heating obligation and gets 0.
+- name: Case 7, an explicit no heating cost flag overrides a reported direct bill.
+  period: 2026
+  input:
+    state_code: [AR, AR]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    ssi: [0, 0]
+    is_full_time_student: [false, false]
+    employment_income: [11_440, 11_440]
+    ar_tea: [0, 0]
+    heating_type: [NATURAL_GAS, NATURAL_GAS]
+    gas_expense: [1_200, 1_200]
+    has_heating_expense: [true, false]
+    heat_expense_included_in_rent: [false, false]
+  output:
+    ar_liheap_countable_income: [9_156, 9_156]
+    ar_liheap_eligible: [true, false]
+    ar_liheap: [190, 0]

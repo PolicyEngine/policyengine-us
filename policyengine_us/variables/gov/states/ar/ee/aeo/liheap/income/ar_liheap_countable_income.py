@@ -20,18 +20,24 @@ class ar_liheap_countable_income(Variable):
         "https://liheapch.acf.gov/sites/default/files/webfiles/docs/2025/manuals/AR_Manual%5Bdraft%5D_2025.pdf#page=41",
         # Application section III.
         "https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2",
+        # FY2025 application R 01/FY2025, section III (Wayback capture).
+        "https://web.archive.org/web/20250104155015/https://www.adeq.state.ar.us/energy/assistance/pdfs/fillable_aeo-9495_liheap-long-application.pdf#page=2",
     )
 
     def formula(spm_unit, period, parameters):
         p = parameters(period).gov.states.ar.ee.aeo.liheap.income
         person = spm_unit.members
         age = person("age", period)
-        # Current application Section III requests work income only from
-        # members 18 and older who are not full-time students. It states no
-        # adult-student age or dependency restriction. These operating rules
-        # supersede the narrower exclusions in the unadopted FY2025 draft.
-        # The accepted plans also exclude earnings of children under 18.
-        counted_worker = (age >= p.student_exclusion.child_age_limit) & ~person(
+        # Application Section III, in the FY2025 form (R 01/FY2025) and the
+        # current form (R 11/2025), requests work income only from members 18
+        # and older who are not full-time students, with no student age or
+        # dependency limit, so the earnings of every minor and of every
+        # full-time student at any age are excluded. Manual section 4.7.3
+        # (page 43) also exempts adult full-time students from the Zero Income
+        # Form, which fits this broad reading. The draft manual's narrower rules
+        # (page 41; Appendix F, pages 133-134) are not followed. The accepted
+        # plans leave a child's earnings unchecked.
+        counted_worker = (age >= p.earned_minimum_age) & ~person(
             "is_full_time_student", period
         )
         # Existing net business income approximates gross receipts. Additional

@@ -1,6 +1,6 @@
 # Independent AR component tests; no final household eligibility or total benefit is asserted.
 
-# Official2026income chart sizes1–20 plus explicit688monthly extra person at21; source limits are literal, independent of SMI/FPG formula.
+# Official 2026 income chart sizes 1-20 plus the printed 688 monthly amount for the extra person at 21; source limits are literal, independent of the SMI/FPG formula.
 - name: Case 1, all published household limits and the first additional person match.
   period: 2026
   absolute_error_margin: 0.01
@@ -18,8 +18,8 @@
       188_484]
 
 
-# FY2025 chart (2024 FPG 15060+5380 per extra person): size8 52720x1.5/12=6590; size20 117280x1.5/12=14660;
-# size21 adds the printed $672 (not the half-up 673): 14660+672=15332, x12=183984.
+# FY2025 chart (2024 FPG 15060 + 5380 per extra person): size 8 52720 x 1.5 / 12 = 6590; size 20 117280 x 1.5 / 12 = 14660;
+# size 21 adds the printed $672 (not the half-up 673): 14660 + 672 = 15332, x 12 = 183984.
 - name: Case 2, FY2025 poverty guideline rows and the printed additional person amount.
   period: 2025
   absolute_error_margin: 0.01
