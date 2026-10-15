@@ -157,6 +157,9 @@ class mi_household_resources(Variable):
         # (2025 MI-1040 book, page 33). Line 30 includes the self-employed
         # health insurance deduction (Schedule 1 line 17), so those premiums
         # leave line 31 and each premium dollar is subtracted once.
+        # A supplied tax-unit deduction is assumed to cover premiums also
+        # represented in health_insurance_premiums. The aggregate inputs do
+        # not identify the overlap if the deducted plan's premiums are omitted.
         # Line 21 nets out Medicare premiums withheld from Social Security or
         # railroad retirement benefits (MCL 206.510(1)(h)). Here line 21 has
         # gross benefits and line 31 the premiums, which subtracts them once

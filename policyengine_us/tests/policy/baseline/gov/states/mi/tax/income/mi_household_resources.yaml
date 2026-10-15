@@ -1356,6 +1356,45 @@
     # Line 33: 20,000 + 1,000 = 21,000.
     mi_household_resources: 21_000
 
+- name: Supplied health insurance deduction preserves the spouse's separate premiums
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 45
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        is_tax_unit_dependent: false
+        is_self_employed: false
+        employment_income_before_lsr: 40_000
+        health_insurance_premiums: 5_000
+      person2:
+        age: 44
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        is_tax_unit_dependent: false
+        is_self_employed: false
+        employment_income_before_lsr: 30_000
+        health_insurance_premiums: 2_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2]
+        self_employed_health_insurance_ald: 5_000
+    marital_units:
+      marital_unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MI
+  output:
+    # The supplied deduction and all related premiums are represented, even
+    # without the self-employment flags used to compute the federal deduction.
+    # Line 14: 70,000. Line 30: 5,000.
+    # Line 31: 7,000 - 5,000 = 2,000.
+    # Line 33: 70,000 - 5,000 - 2,000 = 63,000.
+    mi_household_resources: 63_000
+
 - name: A supplied self-employed health insurance deduction comes off line 30
   period: 2025
   input:
