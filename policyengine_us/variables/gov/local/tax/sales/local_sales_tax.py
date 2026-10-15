@@ -18,7 +18,7 @@ class local_sales_tax(Variable):
         "value)."
     )
     reference = (
-        # State and Local General Sales Tax Deduction Worksheet.
+        # State and Local General Sales Tax Deduction Worksheet and instructions.
         "https://www.irs.gov/pub/irs-prior/i1040sca--2015.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2016.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2017.pdf#page=5",
@@ -26,15 +26,14 @@ class local_sales_tax(Variable):
         "https://www.irs.gov/pub/irs-prior/i1040sca--2019.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2020.pdf#page=5",
         "https://www.irs.gov/pub/irs-prior/i1040sca--2021.pdf#page=5",
-        "https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=5",
-        "https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=5",
+        # PDF pages 4-6
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=4",
+        # PDF pages 4-6
+        "https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=4",
+        # PDF pages 4-6
         "https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=4",
+        # PDF pages 4-6
         "https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=4",
-        # Worksheet line 2 and 6 instructions.
-        "https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=6",
-        "https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=6",
-        "https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=5",
-        "https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=5",
     )
 
     def formula(tax_unit, period, parameters):
