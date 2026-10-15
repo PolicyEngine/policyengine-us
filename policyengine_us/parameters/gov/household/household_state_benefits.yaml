@@ -73,6 +73,8 @@ values:
     - tx_ssi_state_supplement
     # Virginia benefits
     - va_child_care_subsidies
+    # Wisconsin benefits
+    - wi_ssp
     # Massachusetts benefits
     - ma_eaedc
     # DC benefits
@@ -167,6 +169,8 @@ values:
     - va_child_care_subsidies
     # West Virginia benefits
     - wv_child_care_subsidies
+    # Wisconsin benefits
+    - wi_ssp
     # North Carolina benefits
     - nc_child_care_subsidies
     # South Carolina benefits
@@ -269,6 +273,8 @@ values:
     - va_child_care_subsidies
     # West Virginia benefits
     - wv_child_care_subsidies
+    # Wisconsin benefits
+    - wi_ssp
     # North Carolina benefits
     - nc_child_care_subsidies
     # South Carolina benefits
@@ -372,6 +378,8 @@ values:
     - va_child_care_subsidies
     # West Virginia benefits
     - wv_child_care_subsidies
+    # Wisconsin benefits
+    - wi_ssp
     # North Carolina benefits
     - nc_child_care_subsidies
     # South Carolina benefits
@@ -401,6 +409,7 @@ values:
     - nj_property_tax_relief
     # New York benefits
     - ny_child_care_subsidies
+
 metadata:
   unit: list
   period: year
