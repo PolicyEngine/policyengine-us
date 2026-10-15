@@ -33,34 +33,29 @@ class medicaid_ltss_individual_countable_income(Variable):
     )
 
     def formula_2026_01_01(person, period, parameters):
-        p = parameters(period).gov.hhs.medicaid.eligibility.long_term_care.financial
+        ssi_exclusions = parameters(period).gov.ssa.ssi.income.exclusions
         state = person.household("state_code", period)
         earned = person("medicaid_ltss_qit_adjusted_earned_income", period)
         unearned = person("medicaid_ltss_qit_adjusted_unearned_income", period)
         needs_based = person("medicaid_ltss_qit_adjusted_needs_based_income", period)
         unearned_disregard = min_(
-            max_(unearned - needs_based, 0), p.de.income.general_disregard
+            max_(unearned - needs_based, 0), ssi_exclusions.general
         )
-        unused_general_disregard = max_(
-            p.de.income.general_disregard - unearned_disregard, 0
-        )
+        unused_general_disregard = max_(ssi_exclusions.general - unearned_disregard, 0)
         impairment_expenses = person(
             "medicaid_ltss_excluded_impairment_related_work_expenses", period
         )
-        countable_earned = (
-            max_(
-                earned
-                - unused_general_disregard
-                - p.de.income.earned_disregard
-                - impairment_expenses,
-                0,
-            )
-            * p.de.income.earned_income_countable_rate
-        )
+        countable_earned = max_(
+            earned
+            - unused_general_disregard
+            - ssi_exclusions.earned
+            - impairment_expenses,
+            0,
+        ) * (1 - ssi_exclusions.earned_share)
         ordinary_budget = unearned - unearned_disregard + countable_earned
         gross = earned + unearned
         community_spouse_budget = gross - min_(
-            max_(gross - needs_based, 0), p.de.income.general_disregard
+            max_(gross - needs_based, 0), ssi_exclusions.general
         )
         delaware_budget = where(
             person("medicaid_ltss_has_community_spouse", period),

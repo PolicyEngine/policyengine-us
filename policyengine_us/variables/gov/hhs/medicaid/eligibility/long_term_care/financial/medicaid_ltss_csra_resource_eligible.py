@@ -25,6 +25,9 @@ class medicaid_ltss_csra_resource_eligible(Variable):
         "and the full jointly titled balance is tested against the individual limit, "
         "excluding spouse-sole resources. Those ownership balances are "
         "separate leaf inputs because attributed totals do not reveal title. "
+        "Both ownership balances must be reported as nonnegative amounts; "
+        "their minus-one defaults mark omitted facts and fail this historical "
+        "resource screen closed. Explicit zero balances remain valid. "
         "There is a new determination after a break of at least 30 consecutive "
         "days under WAC 182-513-1350(3)(b)(vi)(A). Texas uses the federal minimum as its "
         "floor; Delaware's $25,000 state spousal share (DSSM 20910.10) sits "
@@ -111,13 +114,21 @@ class medicaid_ltss_csra_resource_eligible(Variable):
         # WAC 182-513-1355(2)(a) counts one-half of the sum of applicant-sole
         # resources and the full joint balance, excluding spouse-sole resources. This
         # rule continues for pre-1989 periods at redeterminations as well.
+        solely_owned = person(
+            "wa_medicaid_ltss_solely_owned_countable_resources", period
+        )
+        jointly_owned = person(
+            "wa_medicaid_ltss_jointly_owned_countable_resources", period
+        )
+        ownership_facts_valid = (solely_owned >= 0) & (jointly_owned >= 0)
         pre_1989_resources = (
-            person("wa_medicaid_ltss_solely_owned_countable_resources", period)
-            + person("wa_medicaid_ltss_jointly_owned_countable_resources", period)
+            solely_owned + jointly_owned
         ) * p.wa.csra.pre_1989_resource_share
         community_spouse_eligible = where(
             (state == states.WA) & (onset < p.wa.csra.maximum_regime_start),
-            (assistance_unit_size == 1) & (pre_1989_resources <= resource_limit),
+            (assistance_unit_size == 1)
+            & ownership_facts_valid
+            & (pre_1989_resources <= resource_limit),
             community_spouse_eligible,
         ) & ((state != states.WA) | valid_onset)
         modeled_pathway = pathway != pathways.UNMODELED

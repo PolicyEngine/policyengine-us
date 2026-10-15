@@ -533,7 +533,7 @@
     people:
       applicant_1:
         medicaid_ltss_setting: INSTITUTIONAL
-        is_ssi_aged_blind_disabled: &id001
+        is_ssi_aged_blind_disabled:
           2026: true
         medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_reported_gross_unearned_income: 2000
@@ -546,7 +546,8 @@
         medicaid_ltss_non_delaware_community_spouse_countable_resources: 98000
       applicant_2:
         medicaid_ltss_setting: INSTITUTIONAL
-        is_ssi_aged_blind_disabled: *id001
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_reported_gross_unearned_income: 2000
         medicaid_ltss_has_community_spouse: true
@@ -558,7 +559,8 @@
         medicaid_ltss_non_delaware_community_spouse_countable_resources: 98000
       applicant_3:
         medicaid_ltss_setting: INSTITUTIONAL
-        is_ssi_aged_blind_disabled: *id001
+        is_ssi_aged_blind_disabled:
+          2026: true
         medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_reported_gross_unearned_income: 2000
         medicaid_ltss_has_community_spouse: true

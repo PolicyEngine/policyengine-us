@@ -1797,3 +1797,231 @@
     medicaid_ltss_csra: [50000, 0, 50000, 0, 50000, 0, 72529, 0, 72529, 0, 72529, 0]
     medicaid_ltss_csra_resource_eligible: [true, false, false, false, false, false, true, false, false, false, false, false]
     is_medicaid_ltss_financial_threshold_eligible: [true, false, false, false, false, false, true, false, false, false, false, false]
+
+
+- name: Case 32, Washington pre-1989 resource eligibility requires both ownership inventories and distinguishes explicit zero.
+  period: 2026-09
+  input:
+    people:
+      omitted_both:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_reported_gross_unearned_income: 2_500
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 98_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+      omitted_sole:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_reported_gross_unearned_income: 2_500
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 98_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+        wa_medicaid_ltss_jointly_owned_countable_resources: 0
+      omitted_joint:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_reported_gross_unearned_income: 2_500
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 98_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+        wa_medicaid_ltss_solely_owned_countable_resources: 4000
+      explicit_zero:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_reported_gross_unearned_income: 2_500
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 98_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+        wa_medicaid_ltss_solely_owned_countable_resources: 0
+        wa_medicaid_ltss_jointly_owned_countable_resources: 0
+      at_boundary:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_reported_gross_unearned_income: 2_500
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 98_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+        wa_medicaid_ltss_solely_owned_countable_resources: 4000
+        wa_medicaid_ltss_jointly_owned_countable_resources: 0
+      above_boundary:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_reported_gross_unearned_income: 2_500
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 98_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+        wa_medicaid_ltss_solely_owned_countable_resources: 4001
+        wa_medicaid_ltss_jointly_owned_countable_resources: 0
+      negative_ownership:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          2026: true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: true
+        medicaid_ltss_reported_gross_unearned_income: 2_500
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 1989
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 9
+        medicaid_ltss_individual_countable_resources: 2_000
+        medicaid_ltss_non_delaware_community_spouse_countable_resources: 98_000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
+        wa_medicaid_ltss_solely_owned_countable_resources: -2
+        wa_medicaid_ltss_jointly_owned_countable_resources: 0
+    marital_units:
+      omitted_both:
+        members: [omitted_both]
+      omitted_sole:
+        members: [omitted_sole]
+      omitted_joint:
+        members: [omitted_joint]
+      explicit_zero:
+        members: [explicit_zero]
+      at_boundary:
+        members: [at_boundary]
+      above_boundary:
+        members: [above_boundary]
+      negative_ownership:
+        members: [negative_ownership]
+    households:
+      household:
+        members: [omitted_both, omitted_sole, omitted_joint, explicit_zero, at_boundary, above_boundary, negative_ownership]
+        state_code:
+          2026: WA
+  output:
+    # The reviewer's $2,000 applicant and $98,000 spouse cannot establish
+    # legacy eligibility with omitted ownership. Explicit 0/0 counts $0.
+    # (4,000 + 0) / 2 = $2,000 passes; (4,001 + 0) / 2 = $2,000.50 fails.
+    wa_medicaid_ltss_solely_owned_countable_resources: [-1, -1, 4000, 0, 4000, 4001, -2]
+    wa_medicaid_ltss_jointly_owned_countable_resources: [-1, 0, -1, 0, 0, 0, 0]
+    medicaid_ltss_csra: [0, 0, 0, 0, 0, 0, 0]
+    medicaid_ltss_csra_resource_eligible: [false, false, false, true, true, false, false]
+    is_medicaid_ltss_financial_threshold_eligible: [false, false, false, true, true, false, false]
+
+
+- name: Case 33, TX modern continuing determinations exclude the represented community spouses inventory.
+  period: 2026-07
+  input:
+    people:
+      at_limit:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: false
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2026
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 1
+      at_limit_spouse:
+        medicaid_ltss_individual_countable_resources: 400000
+      above_limit:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: false
+        medicaid_ltss_individual_countable_resources: 2001
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2026
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 1
+      above_limit_spouse:
+        medicaid_ltss_individual_countable_resources: 400000
+    marital_units:
+      at_limit:
+        members: [at_limit, at_limit_spouse]
+      above_limit:
+        members: [above_limit, above_limit_spouse]
+    households:
+      household:
+        members: [at_limit, at_limit_spouse, above_limit, above_limit_spouse]
+        state_code: {2026: TX}
+  output:
+    # The 400,000 spouse inventory exceeds either CSRA but is unavailable
+    # after the initial determination. Own 2,000 passes; own 2,001 fails.
+    medicaid_ltss_community_spouse_countable_resources: [400000, 0, 400000, 0]
+    medicaid_ltss_csra_resource_eligible: [true, false, false, false]
+
+
+- name: Case 34, WA modern continuing determinations exclude the represented community spouses inventory.
+  period: 2026-07
+  input:
+    people:
+      at_limit:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: false
+        medicaid_ltss_individual_countable_resources: 2000
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2026
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 1
+      at_limit_spouse:
+        medicaid_ltss_individual_countable_resources: 400000
+      above_limit:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_has_community_spouse: true
+        medicaid_ltss_is_initial_eligibility_determination: false
+        medicaid_ltss_individual_countable_resources: 2001
+        medicaid_ltss_couple_countable_resources_at_first_institutionalization: 100000
+        wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100000
+        wa_medicaid_ltss_most_recent_institutionalization_start_year: 2026
+        wa_medicaid_ltss_most_recent_institutionalization_start_month: 1
+      above_limit_spouse:
+        medicaid_ltss_individual_countable_resources: 400000
+    marital_units:
+      at_limit:
+        members: [at_limit, at_limit_spouse]
+      above_limit:
+        members: [above_limit, above_limit_spouse]
+    households:
+      household:
+        members: [at_limit, at_limit_spouse, above_limit, above_limit_spouse]
+        state_code: {2026: WA}
+  output:
+    # The 400,000 spouse inventory exceeds either CSRA but is unavailable
+    # after the initial determination. Own 2,000 passes; own 2,001 fails.
+    medicaid_ltss_community_spouse_countable_resources: [400000, 0, 400000, 0]
+    medicaid_ltss_csra_resource_eligible: [true, false, false, false]

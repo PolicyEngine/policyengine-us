@@ -1205,16 +1205,18 @@ def test_more_nonrecurring_expense_never_raises_countable_income(allocate):
 
 def test_irwe_allocation_preserves_the_payment_month_rule_after_a_duration_reduction():
     # YAML inline parameter overrides apply a scalar across all test years.
-    # A dated reform is needed to distinguish a purchase's allocation rule
-    # from the current rule. This adds one isolated reform model, no dataset.
+    # A dated reform distinguishes each purchase's allocation rule. Clone
+    # loaded policy for this isolated reform, with no dataset or baseline branch.
     path = (
         "gov.hhs.medicaid.eligibility.long_term_care.financial."
         "federal.irwe.allocation_months"
     )
     reform = Reform.from_dict({path: {"2026-07-01": 6}})
+    reformed_system = system.clone()
+    reform.apply(reformed_system)
     assessment = "2026-09"
     simulation = Simulation(
-        reform=reform,
+        tax_benefit_system=reformed_system,
         situation={
             "people": {
                 "older_purchase": {
@@ -1256,3 +1258,4 @@ def test_irwe_allocation_preserves_the_payment_month_rule_after_a_duration_reduc
         ),
         [400, 800],
     )
+    assert system.parameters.get_child(path)(f"{assessment}-01") == 12

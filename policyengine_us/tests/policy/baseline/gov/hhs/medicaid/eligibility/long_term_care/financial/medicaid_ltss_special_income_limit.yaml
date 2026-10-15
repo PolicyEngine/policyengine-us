@@ -74,6 +74,11 @@
         medicaid_ltss_non_delaware_assistance_unit_size: 0
       three_person_unit:
         medicaid_ltss_non_delaware_assistance_unit_size: 3
+    marital_units:
+      no_unit:
+        members: [no_unit]
+      three_person_unit:
+        members: [three_person_unit]
     households:
       household:
         members: [no_unit, three_person_unit]

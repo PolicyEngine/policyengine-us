@@ -290,6 +290,15 @@
         medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: false
         medicaid_ltss_community_spouse_shelter_expenses: 2_000
+    marital_units:
+      delaware_above_cap:
+        members: [delaware_above_cap]
+      delaware_cent_above_cap:
+        members: [delaware_cent_above_cap]
+      texas_no_spouse:
+        members: [texas_no_spouse]
+      washington_no_spouse:
+        members: [washington_no_spouse]
     households:
       delaware:
         members: [delaware_above_cap, delaware_cent_above_cap]
@@ -334,6 +343,13 @@
         medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_has_community_spouse: true
         medicaid_ltss_community_spouse_shelter_expenses: 1_000
+    marital_units:
+      texas:
+        members: [texas]
+      delaware_base:
+        members: [delaware_base]
+      washington_excess_shelter:
+        members: [washington_excess_shelter]
     households:
       texas:
         members: [texas]

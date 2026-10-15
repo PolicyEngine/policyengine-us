@@ -1,4 +1,4 @@
-- name: Delaware combines married co-owners' interests in their retained home.
+- name: Case 1, Delaware combines married co-owners' interests in their retained home.
   period: 2026-07
   input:
     people:
@@ -39,7 +39,7 @@
     # Combined interests are $1m (fail), $752k (pass), and $750k (pass).
     medicaid_ltss_home_equity_eligible: [false, false, true, true, true, true]
 
-- name: Delaware married ownership remains combined under individual budgets.
+- name: Case 2, Delaware married ownership remains combined under individual budgets.
   period: 2026-07
   input:
     people:
@@ -58,7 +58,7 @@
   output:
     medicaid_ltss_home_equity_eligible: [false, false]
 
-- name: Case 1, Texas home-equity cap includes the exact boundary.
+- name: Case 3, Texas home-equity cap includes the exact boundary.
   period: 2026-07
   input:
     people:
@@ -133,7 +133,7 @@
   output:
     medicaid_ltss_home_equity_eligible: [true, true, false]
 
-- name: Case 2, Washington home-equity cap includes the exact boundary.
+- name: Case 4, Washington home-equity cap includes the exact boundary.
   period: 2026-07
   input:
     people:
@@ -208,7 +208,7 @@
   output:
     medicaid_ltss_home_equity_eligible: [true, true, false]
 
-- name: Case 3, a resident spouse exception applies above the Texas cap.
+- name: Case 5, a resident spouse exception applies above the Texas cap.
   period: 2026-07
   input:
     state_code:
@@ -225,7 +225,7 @@
   output:
     medicaid_ltss_home_equity_eligible: true
 
-- name: Case 4, a resident child under age 21 exception applies above the Texas cap.
+- name: Case 6, a resident child under age 21 exception applies above the Texas cap.
   period: 2026-07
   input:
     state_code:
@@ -242,7 +242,7 @@
   output:
     medicaid_ltss_home_equity_eligible: true
 
-- name: Case 5, a resident blind or disabled child exception applies above the Texas cap.
+- name: Case 7, a resident blind or disabled child exception applies above the Texas cap.
   period: 2026-07
   input:
     state_code:
@@ -259,7 +259,7 @@
   output:
     medicaid_ltss_home_equity_eligible: true
 
-- name: Case 6, a granted hardship waiver applies above the Texas cap.
+- name: Case 8, a granted hardship waiver applies above the Texas cap.
   period: 2026-07
   input:
     state_code:
@@ -276,7 +276,7 @@
   output:
     medicaid_ltss_home_equity_eligible: true
 
-- name: Case 7, Delaware applies the federal-minimum cap at the exact boundary.
+- name: Case 9, Delaware applies the federal-minimum cap at the exact boundary.
   period: 2026-07
   input:
     people:
@@ -350,7 +350,7 @@
       [SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME]
     medicaid_ltss_home_equity_eligible: [true, true, false]
 
-- name: Case 8, a Delaware non-homeowner passes the home-equity screen.
+- name: Case 10, a Delaware non-homeowner passes the home-equity screen.
   period: 2026-07
   input:
     state_code:
@@ -366,7 +366,7 @@
     medicaid_ltss_financial_pathway: SPECIAL_INCOME
     medicaid_ltss_home_equity_eligible: true
 
-- name: Case 9, encumbrances land exactly at the Texas cap.
+- name: Case 11, encumbrances land exactly at the Texas cap.
   period: 2026-07
   input:
     people:
@@ -410,7 +410,7 @@
   output:
     medicaid_ltss_home_equity_eligible: [true, false]
 
-- name: Case 10, invalid ownership shares fail closed.
+- name: Case 12, invalid ownership shares fail closed.
   period: 2026-07
   input:
     people:
@@ -454,7 +454,7 @@
   output:
     medicaid_ltss_home_equity_eligible: [false, false]
 
-- name: Case 11, an unmodeled state passes at the federal minimum and fails closed above it.
+- name: Case 13, an unmodeled state passes at the federal minimum and fails closed above it.
   period: 2026-07
   input:
     people:
@@ -531,7 +531,7 @@
     medicaid_ltss_home_equity_eligible: [true, true, false]
     is_medicaid_ltss_financial_threshold_eligible: [false, false, false]
 
-- name: Case 12, resident exceptions and hardship waivers pass despite an invalid ownership share.
+- name: Case 14, resident exceptions and hardship waivers pass despite an invalid ownership share.
   period: 2026-07
   input:
     people:
@@ -543,6 +543,11 @@
         medicaid_ltss_home_market_value: 2_000_000
         medicaid_ltss_home_ownership_share: -0.5
         medicaid_ltss_home_equity_hardship_waiver: true
+    marital_units:
+      spouse_exception:
+        members: [spouse_exception]
+      hardship_waiver:
+        members: [hardship_waiver]
     households:
       household:
         members: [spouse_exception, hardship_waiver]
@@ -551,7 +556,7 @@
   output:
     medicaid_ltss_home_equity_eligible: [true, true]
 
-- name: Case 13, a zero ownership share and negative equity both pass.
+- name: Case 15, a zero ownership share and negative equity both pass.
   period: 2026-07
   input:
     people:
@@ -562,6 +567,11 @@
         medicaid_ltss_home_market_value: 500_000
         medicaid_ltss_home_encumbrances: 900_000
         medicaid_ltss_home_ownership_share: 1
+    marital_units:
+      zero_share:
+        members: [zero_share]
+      negative_equity:
+        members: [negative_equity]
     households:
       household:
         members: [zero_share, negative_equity]
@@ -570,7 +580,7 @@
   output:
     medicaid_ltss_home_equity_eligible: [true, true]
 
-- name: Case 14, resident-child exceptions apply above the Delaware and Washington caps.
+- name: Case 16, resident-child exceptions apply above the Delaware and Washington caps.
   period: 2026-07
   input:
     people:
@@ -585,6 +595,13 @@
       washington_no_exception:
         medicaid_ltss_home_market_value: 2_000_000
         medicaid_ltss_home_ownership_share: 1
+    marital_units:
+      delaware_child_under_21:
+        members: [delaware_child_under_21]
+      washington_disabled_child:
+        members: [washington_disabled_child]
+      washington_no_exception:
+        members: [washington_no_exception]
     households:
       delaware:
         members: [delaware_child_under_21]

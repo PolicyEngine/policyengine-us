@@ -24,5 +24,10 @@ class medicaid_ltss_gross_earned_income(Variable):
 
     def formula(person, period, parameters):
         reported = person("medicaid_ltss_reported_gross_earned_income", period)
-        annual_default = max_(person("ssi_earned_income", period.this_year) / 12, 0)
-        return where(reported == -1, annual_default, max_(reported, 0))
+        use_annual = reported == -1
+        if not use_annual.any():
+            return max_(reported, 0)
+        annual_default = max_(
+            person("ssi_earned_income", period.this_year) / MONTHS_IN_YEAR, 0
+        )
+        return where(use_annual, annual_default, max_(reported, 0))

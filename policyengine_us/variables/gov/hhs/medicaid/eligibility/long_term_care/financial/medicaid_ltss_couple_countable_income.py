@@ -31,7 +31,7 @@ class medicaid_ltss_couple_countable_income(Variable):
     )
 
     def formula_2026_01_01(person, period, parameters):
-        p = parameters(period).gov.hhs.medicaid.eligibility.long_term_care.financial
+        ssi_exclusions = parameters(period).gov.ssa.ssi.income.exclusions
         state = person.household("state_code", period)
         earned = person.marital_unit.sum(
             person("medicaid_ltss_qit_adjusted_earned_income", period)
@@ -42,24 +42,19 @@ class medicaid_ltss_couple_countable_income(Variable):
             person("medicaid_ltss_qit_adjusted_needs_based_income", period)
         )
         unearned_disregard = min_(
-            max_(unearned - needs_based, 0), p.de.income.general_disregard
+            max_(unearned - needs_based, 0), ssi_exclusions.general
         )
-        unused_general_disregard = max_(
-            p.de.income.general_disregard - unearned_disregard, 0
-        )
+        unused_general_disregard = max_(ssi_exclusions.general - unearned_disregard, 0)
         impairment_expenses = person.marital_unit.sum(
             person("medicaid_ltss_excluded_impairment_related_work_expenses", period)
         )
-        countable_earned = (
-            max_(
-                earned
-                - unused_general_disregard
-                - p.de.income.earned_disregard
-                - impairment_expenses,
-                0,
-            )
-            * p.de.income.earned_income_countable_rate
-        )
+        countable_earned = max_(
+            earned
+            - unused_general_disregard
+            - ssi_exclusions.earned
+            - impairment_expenses,
+            0,
+        ) * (1 - ssi_exclusions.earned_share)
         delaware_budget = unearned - unearned_disregard + countable_earned
         texas_excluded = person.marital_unit.sum(
             person("tx_medicaid_ltss_excluded_interest_and_dividends", period)

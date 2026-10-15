@@ -629,7 +629,7 @@
     medicaid_ltss_financial_pathway: [INSTITUTIONAL_MEDICALLY_NEEDY, INSTITUTIONAL_MEDICALLY_NEEDY]
     is_medicaid_ltss_income_eligible: [true, false]
 
-- name: Washington COPES medically needy income level follows SSI uprating in 2027.
+- name: Case 13, Washington COPES medically needy income level follows SSI uprating in 2027.
   period: 2027-01
   input:
     state_code:
@@ -646,7 +646,7 @@
     medicaid_ltss_financial_pathway: INSTITUTIONAL_MEDICALLY_NEEDY
     is_medicaid_ltss_income_eligible: true
 
-- name: Case 13, Delaware computes ordered exclusions from raw earnings.
+- name: Case 14, Delaware computes ordered exclusions from raw earnings.
   period: 2026-07
   input:
     people:
@@ -698,7 +698,7 @@
     is_medicaid_ltss_income_eligible: [true, false, false, true, false]
     medicaid_ltss_countable_income: [2485, 2486, 5035, 2485, 9980]
 
-- name: Delaware excludes ordinary unearned income before halving earnings
+- name: Case 15, Delaware excludes ordinary unearned income before halving earnings.
   period: 2026-07
   input:
     state_code:
@@ -714,7 +714,7 @@
     medicaid_ltss_countable_income: 547.5
     is_medicaid_ltss_income_eligible: true
 
-- name: Delaware carries unused general exclusion to earnings before the earned exclusion
+- name: Case 16, Delaware carries unused general exclusion to earnings before the earned exclusion.
   period: 2026-07
   input:
     state_code:
@@ -730,7 +730,7 @@
     medicaid_ltss_countable_income: 462.5
     is_medicaid_ltss_income_eligible: true
 
-- name: Delaware does not apply general exclusion to needs-based unearned income
+- name: Case 17, Delaware does not apply general exclusion to needs-based unearned income.
   period: 2026-07
   input:
     state_code:
@@ -746,7 +746,7 @@
     medicaid_ltss_countable_income: 557.5
     is_medicaid_ltss_income_eligible: true
 
-- name: Delaware clips small earnings after ordered exclusions
+- name: Case 18, Delaware clips small earnings after ordered exclusions.
   period: 2026-07
   input:
     state_code:
@@ -762,7 +762,7 @@
     medicaid_ltss_countable_income: 0
     is_medicaid_ltss_income_eligible: true
 
-- name: Raw earned and unearned components default to existing annual income sources
+- name: Case 19, Raw earned and unearned components default to existing annual income sources.
   period: 2026-07
   input:
     state_code:
@@ -779,7 +779,7 @@
     medicaid_ltss_gross_unearned_income: 100
     medicaid_ltss_countable_income: 547.5
 
-- name: Source-specific QIT deposits precede Delaware income exclusions
+- name: Case 20, Source-specific QIT deposits precede Delaware income exclusions.
   period: 2026-07
   input:
     state_code:
@@ -795,7 +795,7 @@
     medicaid_ltss_qit_adjusted_income: 1100
     medicaid_ltss_countable_income: 547.5
 
-- name: Delaware couple raw earnings include the exact limit after one set of exclusions
+- name: Case 21, Delaware couple raw earnings include the exact limit after one set of exclusions.
   period: 2026-07
   input:
     people:
@@ -827,7 +827,7 @@
     medicaid_ltss_countable_income: [3727.5, 3727.5]
     is_medicaid_ltss_income_eligible: [true, true]
 
-- name: Delaware couple raw earnings above the limit fail after one set of exclusions
+- name: Case 22, Delaware couple raw earnings above the limit fail after one set of exclusions.
   period: 2026-07
   input:
     people:
@@ -860,7 +860,7 @@
     medicaid_ltss_countable_income: [3728.5, 3728.5]
     is_medicaid_ltss_income_eligible: [false, false]
 
-- name: Delaware mixed-income couple shares one general and earned exclusion
+- name: Case 23, Delaware mixed-income couple shares one general and earned exclusion.
   period: 2026-07
   input:
     people:
@@ -892,7 +892,7 @@
     medicaid_ltss_countable_income: [3747.5, 3747.5]
     is_medicaid_ltss_income_eligible: [false, false]
 
-- name: Delaware derives remaining needs-based income from raw QIT source deposits
+- name: Case 24, Delaware derives remaining needs-based income from raw QIT source deposits.
   period: 2026-07
   input:
     state_code:
@@ -910,7 +910,7 @@
     medicaid_ltss_qit_adjusted_needs_based_income: 50
     medicaid_ltss_countable_income: 547.5
 
-- name: Delaware preserves the needs-based carve-out when QIT classifications are incomplete
+- name: Case 25, Delaware preserves the needs-based carve-out when QIT classifications are incomplete.
   period: 2026-07
   input:
     state_code:
@@ -928,7 +928,7 @@
     medicaid_ltss_qit_adjusted_needs_based_income: 100
     medicaid_ltss_countable_income: 557.5
 
-- name: Reported monthly income preserves other people's annual-source defaults
+- name: Case 26, Reported monthly income preserves other people's annual-source defaults.
   period: 2026-07
   input:
     people:
@@ -984,7 +984,7 @@
     is_medicaid_ltss_income_eligible: [true, false, false]
     is_medicaid_ltss_financial_threshold_eligible: [true, false, false]
 
-- name: Delaware deducts impairment-related work expenses before halving earnings
+- name: Case 27, Delaware deducts impairment-related work expenses before halving earnings.
   period: 2026-07
   input:
     state_code:
@@ -1007,7 +1007,7 @@
     is_medicaid_ltss_income_eligible: true
     is_medicaid_ltss_financial_threshold_eligible: true
 
-- name: Delaware combines each disabled spouse's work expenses before halving
+- name: Case 28, Delaware combines each disabled spouse's work expenses before halving.
   period: 2026-07
   input:
     people:
@@ -1050,7 +1050,7 @@
     medicaid_ltss_countable_income: [3727.5, 3727.5]
     is_medicaid_ltss_income_eligible: [true, true]
 
-- name: Texas QIT opening month excludes a covered pension despite a partial deposit
+- name: Case 29, Texas QIT opening month excludes a covered pension despite a partial deposit.
   period: 2026-07
   input:
     state_code:
@@ -1074,7 +1074,7 @@
     is_medicaid_ltss_income_eligible: true
     is_medicaid_ltss_financial_threshold_eligible: true
 
-- name: Texas QIT later month subtracts actual deposits rather than the whole source
+- name: Case 30, Texas QIT later month subtracts actual deposits rather than the whole source.
   period: 2026-08
   input:
     state_code:
@@ -1096,7 +1096,7 @@
     medicaid_ltss_countable_income: 3500
     is_medicaid_ltss_income_eligible: false
 
-- name: Texas QIT opening month also excludes a covered earnings source
+- name: Case 31, Texas QIT opening month also excludes a covered earnings source.
   period: 2026-07
   input:
     state_code:
@@ -1119,8 +1119,7 @@
     medicaid_ltss_countable_income: 0
     is_medicaid_ltss_income_eligible: true
 
-- name: Delaware impairment expense applicability follows disability blindness age and community spouse
-    facts
+- name: Case 32, Delaware impairment expense applicability follows disability blindness age and community spouse facts.
   period: 2026-07
   input:
     people:
@@ -1228,9 +1227,11 @@
         state_code:
           '2026': DE
   output:
+    # The community-spouse applicant has qualified expenses available, but
+    # DSSM 20990's selected budget below applies only the $20 exclusion.
+    medicaid_ltss_excluded_impairment_related_work_expenses: [400, 0, 400, 0, 0, 400, 100]
     medicaid_ltss_individual_countable_income: [2485, 2685, 2485, 2685, 2685, 5435, 480]
-- name: Texas QIT opening source exclusion requires complete dated and verified facts and avoids overlapping
-    deposits
+- name: Case 33, Texas QIT opening source exclusion requires complete dated and verified facts and avoids overlapping deposits.
   period: 2026-07
   input:
     people:
@@ -1338,7 +1339,7 @@
     medicaid_ltss_qit_adjusted_unearned_income: [4000, 3500, 4000, 3500, 3500, 3500, 1500]
     tx_medicaid_ltss_qit_opening_month_exclusion_applies: [false, false, false, false, false, false, true]
     tx_medicaid_ltss_qit_opening_month_deposit_invalid: [true, false, false, false, false, false, false]
-- name: Texas QIT opening exclusion covers both identified sources with one partial source deposit
+- name: Case 34, Texas QIT opening exclusion covers both identified sources with one partial source deposit.
   period: 2026-07
   input:
     state_code:
@@ -1356,7 +1357,7 @@
     medicaid_ltss_qit_adjusted_earned_income: 0
     medicaid_ltss_qit_adjusted_unearned_income: 0
     medicaid_ltss_countable_income: 0
-- name: Washington monthly source reports preserve other applicants annual defaults
+- name: Case 35, Washington monthly source reports preserve other applicants annual defaults.
   period: 2026-07
   input:
     people:
@@ -1404,7 +1405,7 @@
     is_medicaid_ltss_income_eligible: [true, true]
 
 
-- name: Delaware derives work expenses from payment facts and the allocation election
+- name: Case 36, Delaware derives work expenses from payment facts and the allocation election.
   period: 2026-07
   input:
     people:
@@ -1564,7 +1565,7 @@
     is_medicaid_ltss_income_eligible: [true, false, true, true, false, false, false]
 
 
-- name: Delaware allocation crosses years ends after twelve months and combines purchases
+- name: Case 37, Delaware allocation crosses years ends after twelve months and combines purchases.
   period: 2027-06
   input:
     people:
@@ -1639,7 +1640,7 @@
     medicaid_ltss_countable_income: [2485, 2685, 2435]
 
 
-- name: Texas excludes qualifying investment returns but counts pensions and other-resource returns.
+- name: Case 38, Texas excludes qualifying investment returns but counts pensions and other-resource returns.
   period: 2026-07
   input:
     people:
@@ -1674,6 +1675,17 @@
         medicaid_ltss_non_delaware_assistance_unit_size: 1
         medicaid_ltss_setting: INSTITUTIONAL
         is_ssi_aged_blind_disabled: {2026: true}
+    marital_units:
+      annual_interest:
+        members: [annual_interest]
+      pension_only:
+        members: [pension_only]
+      monthly_dividends:
+        members: [monthly_dividends]
+      other_resource_interest:
+        members: [other_resource_interest]
+      countable_pension_qit:
+        members: [countable_pension_qit]
     households:
       household:
         members: [annual_interest, pension_only, monthly_dividends, other_resource_interest, countable_pension_qit]
@@ -1687,7 +1699,7 @@
     is_medicaid_ltss_income_eligible: [true, false, true, false, true]
     is_medicaid_ltss_financial_threshold_eligible: [true, false, true, false, true]
 
-- name: Texas couple budgets exclude each spouses qualifying investment receipts.
+- name: Case 39, Texas couple budgets exclude each spouses qualifying investment receipts.
   period: 2026-07
   input:
     people:
@@ -1718,7 +1730,7 @@
     is_medicaid_ltss_income_eligible: [true, true]
 
 
-- name: Case 28, the work-expense allocation parameter controls the monthly divisor and final allocated month.
+- name: Case 40, the work-expense allocation parameter controls the monthly divisor and final allocated month.
   period: 2026-07
   input:
     gov.hhs.medicaid.eligibility.long_term_care.financial.federal.irwe.allocation_months: 6
@@ -1977,3 +1989,97 @@
     is_medicaid_ltss_income_eligible: [true, true, false, true, false, true, true, true]
     medicaid_ltss_csra_resource_eligible: [true, true, true, true, true, true, true, true]
     is_medicaid_ltss_financial_threshold_eligible: [true, true, false, true, false, true, true, true]
+
+
+- name: Case 43, Delaware budgets reuse the SSI general earned and excluded-share parameters.
+  period: 2026-07
+  input:
+    gov.ssa.ssi.income.exclusions.general: 25
+    gov.ssa.ssi.income.exclusions.earned: 75
+    gov.ssa.ssi.income.exclusions.earned_share: 0.75
+    people:
+      earned_only:
+        medicaid_ltss_reported_gross_earned_income: 5055
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+      mixed:
+        medicaid_ltss_reported_gross_earned_income: 1000
+        medicaid_ltss_reported_gross_unearned_income: 20
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+    marital_units:
+      earned_only:
+        members: [earned_only]
+      mixed:
+        members: [mixed]
+    households:
+      household:
+        members: [earned_only, mixed]
+        state_code: {2026: DE}
+  output:
+    # (5,055 - 25 - 75) x (1 - 0.75) = 1,238.75.
+    # The 20 unearned uses 20 of the 25 general disregard, leaving 5:
+    # (1,000 - 5 - 75) x 0.25 = 230.
+    medicaid_ltss_individual_countable_income: [1238.75, 230]
+    is_medicaid_ltss_income_eligible: [true, true]
+
+
+- name: Case 44, Actual monthly gross uses zero unspecified investment sources and accepts explicit receipts.
+  period: 2026-07
+  input:
+    people:
+      tx_unspecified:
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+        medicaid_ltss_reported_gross_unearned_income: 3050
+        dividend_income: {2026: 24000}
+        interest_income: {2026: 12000}
+      tx_explicit:
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+        medicaid_ltss_reported_gross_unearned_income: 3050
+        dividend_income: {2026: 24000}
+        interest_income: {2026: 12000}
+        medicaid_ltss_reported_dividend_income: 150
+        medicaid_ltss_reported_interest_income: 50
+      wa_unspecified:
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+        medicaid_ltss_reported_gross_unearned_income: 3050
+        dividend_income: {2026: 24000}
+        interest_income: {2026: 12000}
+      wa_explicit:
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled: {2026: true}
+        medicaid_ltss_reported_gross_unearned_income: 3050
+        dividend_income: {2026: 24000}
+        interest_income: {2026: 12000}
+        medicaid_ltss_reported_dividend_income: 150
+        medicaid_ltss_reported_interest_income: 50
+    marital_units:
+      tx_unspecified:
+        members: [tx_unspecified]
+      tx_explicit:
+        members: [tx_explicit]
+      wa_unspecified:
+        members: [wa_unspecified]
+      wa_explicit:
+        members: [wa_explicit]
+    households:
+      tx:
+        members: [tx_unspecified, tx_explicit]
+        state_code: {2026: TX}
+      wa:
+        members: [wa_unspecified, wa_explicit]
+        state_code: {2026: WA}
+  output:
+    # Annual 2,000 dividends and 1,000 interest cannot reduce reported 3,050.
+    # Explicit monthly sources reduce 3,050 - 150 - 50 = 2,850.
+    medicaid_ltss_dividend_income: [0, 150, 0, 150]
+    medicaid_ltss_interest_income: [0, 50, 0, 50]
+    medicaid_ltss_countable_income: [3050, 2850, 3050, 2850]
+    is_medicaid_ltss_income_eligible: [false, true, false, true]

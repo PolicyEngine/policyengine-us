@@ -266,6 +266,11 @@
           2026: true
         medicaid_ltss_waiver: NONE
         medicaid_ltss_non_delaware_assistance_unit_size: -1
+    marital_units:
+      three_person_unit:
+        members: [three_person_unit]
+      negative_unit:
+        members: [negative_unit]
     households:
       household:
         members: [three_person_unit, negative_unit]
@@ -291,6 +296,11 @@
           2026: true
         medicaid_ltss_waiver: WA_NEW_FREEDOM
         medicaid_ltss_non_delaware_assistance_unit_size: 1
+    marital_units:
+      copes:
+        members: [copes]
+      new_freedom:
+        members: [new_freedom]
     households:
       household:
         members: [copes, new_freedom]

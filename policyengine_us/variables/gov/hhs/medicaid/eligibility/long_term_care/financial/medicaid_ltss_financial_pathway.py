@@ -53,11 +53,7 @@ class medicaid_ltss_financial_pathway(Variable):
         waiver = person("medicaid_ltss_waiver", period)
         waivers = waiver.possible_values
         assistance_unit_size = person("medicaid_ltss_assistance_unit_size", period)
-        income = max_(
-            person("medicaid_ltss_qit_adjusted_income", period)
-            - person("wa_medicaid_ltss_excluded_income", period),
-            0,
-        )
+        income = person("medicaid_ltss_individual_countable_income", period)
         special_income_limit = person("medicaid_ltss_special_income_limit", period)
         aged_blind_disabled = person("is_ssi_aged_blind_disabled", period.this_year)
 

@@ -8,7 +8,7 @@ class wa_medicaid_ltss_solely_owned_countable_resources(Variable):
     unit = USD
     quantity_type = STOCK
     definition_period = MONTH
-    default_value = 0
+    default_value = -1
     documentation = (
         "Current countable resources held solely in the institutionalized applicant's name. "
         "This ownership fact is needed for continuous periods beginning "
@@ -18,7 +18,12 @@ class wa_medicaid_ltss_solely_owned_countable_resources(Variable):
         "the full joint balance rather than the applicant's attributed share. "
         "These ownership amounts are separate from the current attributed "
         "resource input used for modern periods; the model cannot infer "
-        "legal title from that input. Applicable asset exclusions remain "
+        "legal title from that input. The default minus one means ownership "
+        "was not reported. The pre-October-1989 resource screen requires "
+        "both ownership inputs to be nonnegative and fails closed when "
+        "either is omitted or negative. Report zero explicitly when "
+        "there are no resources in this ownership category. "
+        "Applicable asset exclusions remain "
         "the caller's resource-inventory responsibility."
     )
     reference = "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1355"

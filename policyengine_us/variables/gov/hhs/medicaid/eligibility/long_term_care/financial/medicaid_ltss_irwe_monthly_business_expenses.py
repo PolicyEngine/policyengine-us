@@ -19,6 +19,7 @@ class medicaid_ltss_irwe_monthly_business_expenses(Variable):
     reference = "https://www.ssa.gov/OP_Home/cfr20/416/416-0976.htm"
 
     def formula(person, period, parameters):
+        # Formula-backed transaction facts are omitted from API input metadata.
         # Transaction facts apply only to the explicitly reported month.
         # A zero fallback prevents Core from carrying or uprating past inputs.
         return person.empty_array()
