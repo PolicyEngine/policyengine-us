@@ -26,21 +26,27 @@ class ok_liheap_eligible(Variable):
         fuel = spm_unit("heating_type", period)
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
         # OAC 340:20-1-19(d)(1) pays "renters, roomers, and boarders who pay a
-        # surcharge for utilities included in their rent", and (d)(2) verifies
-        # "the surcharge" by a landlord statement, a lease, or "a rent receipt
-        # designating that the fuel cost is separate from the total shelter
-        # payment". 340:20-1-10(h) denies households that do not verify
-        # responsibility for energy costs. The FY2026 plan, item 2.3 (page 9),
-        # agrees: heat-in-rent renters "must verify that a specific portion of
-        # the rent is for utilities or be charged a surcharge". A positive
-        # primary fuel bill represents that charge for every heat-in-rent
-        # renter or roomer, subsidized or not; the flag alone does not.
+        # surcharge for utilities included in their rent", and 340:20-1-19(d)(2)
+        # and 340:20-1-13(2)(B)-(C) verify "the surcharge" by a landlord
+        # statement, a lease, or "a rent receipt designating that the fuel cost
+        # is separate from the total shelter payment". 340:20-1-10(h) denies
+        # households that do not verify responsibility for energy costs. The
+        # FY2026 plan, item 2.3 (page 9), agrees: heat-in-rent renters "must
+        # verify that a specific portion of the rent is for utilities or be
+        # charged a surcharge". A positive primary fuel bill represents that
+        # charge for every heat-in-rent renter or roomer, subsidized or not;
+        # the flag alone does not.
         # NOTE: 340:20-1-10(c) counts "undesignated payments for energy in the
         # form of rent", and 340:20-1-10(f)(3) names only "subsidized
         # households whose heating or cooling costs are included in the rent"
         # as non-vulnerable. Reading those to pay an unsubsidized renter with
         # no surcharge is not followed: (c) defines the household unit and
         # (f) lists examples.
+        # Directly billed OTHER and SOLAR fuels have no Appendix C-7-A column
+        # (solar is not an approved main energy source under 340:20-1-10(b)(1));
+        # they stay eligible with a $0 matrix amount, a documented coverage
+        # limit. UNSPECIFIED carries no bill, so a heat-in-rent household with
+        # an unknown fuel is paid $0 (default fuel: #9754).
         has_bill = spm_unit("heating_expense", period) > 0
         # A direct obligation may be reported with the flag; it represents the
         # household's remaining cost after any utility allowance.

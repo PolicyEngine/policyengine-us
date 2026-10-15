@@ -1,5 +1,4 @@
-# Source-derived Oklahoma ordinary heating cases under contract v1.3.
-# Current C1 need and C7 earned amounts are tested in2027.
+# Oklahoma LIHEAP regular heating cases.
 
 # OAC 340:20-1-10(h)(3) excludes ineligible members from the income standard and the benefit size. In January 2027
 # only the citizen qualifies: the refugee is off the narrowed SNAP list, the permanent resident has 4 of 5 qualified
@@ -71,7 +70,7 @@
     ok_liheap_immigration_eligible: [true, false, false, false]
     ok_liheap_household_size: 1
 
-# Current340:20-1-10(h)(3) requires at least one eligible member; zero size has no one-person income allowance.
+# Current OAC 340:20-1-10(h)(3) requires at least one eligible member; zero size has no one-person income allowance.
 - name: Case 2, a household without any qualified member has zero size and is ineligible.
   period: 2027
   input:

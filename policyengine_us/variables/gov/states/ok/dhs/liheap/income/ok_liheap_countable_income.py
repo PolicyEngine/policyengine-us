@@ -27,13 +27,5 @@ class ok_liheap_countable_income(Variable):
             # SSI is monthly; ADD annualizes it exactly once here. Other
             # listed streams are disjoint annual personal income inputs.
             income = income + max_(add(person, period, [source], options=[ADD]), 0)
-        # Plan Section 1.9 checks "Excluding MediCare deduction" for Social
-        # Security in FY2025-FY2027, so the benefit is counted net of the
-        # Part B premium the person pays. medicare_part_b_premium is zero for
-        # a person who is not enrolled and excludes the share a Medicare
-        # Savings Program pays. OAC 340:20-1-11(a) uses gross income before
-        # recoupment or garnishment and is silent on premium withholding.
-        premium = person("medicare_part_b_premium", period)
-        social_security = max_(person("social_security", period) - premium, 0)
         # TANF is an SPM aggregate and is counted separately once.
-        return income + social_security
+        return income

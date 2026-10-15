@@ -12,7 +12,8 @@ class ok_liheap_countable_earned_income(Variable):
         # OAC 340:20-1-11(a)-(b), effective September 15, 2025.
         # PDF pages 576-578
         "https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=576",
-        "https://www.law.cornell.edu/regulations/oklahoma/OAC-340-50-7-22",
+        # OAC 340:50-7-22(9), incorporated SNAP student earnings exclusion.
+        "https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html",
     )
 
     def formula(person, period, parameters):

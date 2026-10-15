@@ -11,7 +11,7 @@ class ok_liheap(Variable):
     reference = (
         # OAC 340:20-1-10(i)(1), 340:20-1-11(d).
         "https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html",
-        "https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7-a.pdf",
+        "https://oklahoma.gov/content/dam/ok/en/okdhs/documents/searchcenter/okdhsformresults/c-7-a.pdf#page=1",
     )
 
     def formula(spm_unit, period, parameters):

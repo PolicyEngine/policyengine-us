@@ -1,7 +1,8 @@
-description: Oklahoma excludes earned income of secondary-school students under adult control below this age under the Low Income Home Energy Assistance Program.
+description: Oklahoma excludes earned income of elementary or high school students under adult control below this age under the Low Income Home Energy Assistance Program.
 # The current LIHEAP rule incorporates program-dependent exclusions and
-# defaults to Oklahoma SNAP exclusions. Tax dependency approximates control;
-# separate elementary attendance and excluded training income are unavailable.
+# defaults to Oklahoma SNAP exclusions. is_in_k12_school represents elementary
+# or high school attendance and tax dependency approximates adult control;
+# excluded training income is not separately identified.
 values:
   2025-09-15: 18
 
@@ -13,4 +14,4 @@ metadata:
     - title: OAC 340:20-1-11(b), September 2025 permanent adoption
       href: https://oklahoma.gov/content/dam/ok/en/omma/content/rulemaking-process/rules/Register_Volume-42_Issue-20.pdf#page=578
     - title: OAC 340:50-7-22(9), Child earnings
-      href: https://www.law.cornell.edu/regulations/oklahoma/OAC-340-50-7-22
+      href: https://prod-ok-administrativerules.tecuity.com/api/BlobStorageGetFile?storageContainer=TitleHtml&name=Title_340.html
