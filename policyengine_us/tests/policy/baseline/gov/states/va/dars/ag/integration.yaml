@@ -6,14 +6,16 @@
       person1:
         age: 65
         va_ag_certified: true
-        ssi_claim_is_joint: false
       person2:
         age: 65
-        ssi_claim_is_joint: false
         va_ag_certified: true
+    # After the entry month spouses sharing a facility are individuals for
+    # SSI (POMS SI 00501.154 B), so they sit in separate marital units.
     marital_units:
-      couple:
-        members: [person1, person2]
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
     tax_units:
       unit:
         members: [person1, person2]
@@ -22,6 +24,7 @@
         members: [person1, person2]
         state_code: VA
   output:
+    ssi: [994, 994]
     va_ag: [1_223, 1_223]
 
 - name: Case 2, joint SSI couple claim.
