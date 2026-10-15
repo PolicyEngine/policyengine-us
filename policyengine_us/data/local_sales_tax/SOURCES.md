@@ -6,6 +6,26 @@ PolicyEngine has no official locality rates, it applies no local rate: the
 combined rate defaults to the state rate in the IRS state table heading, and
 users can enter their own combined or local rate.
 
+**Coverage regression against main.** The 16 states with local general sales
+taxes but no official rate file in this build are AL, AK, AZ, CA, CO, FL,
+HI, ID, IL, LA, MO, MS, NM, PA, SC and TX. Without a user-entered combined
+or local rate, their modeled local amount is now $0; main approximated it
+as 20% of the state table amount. This represents missing locality data,
+not an assertion that those localities impose no sales tax. For example,
+a Houston single filer with $85,000 of wages in 2025 has a state table
+amount of $849: main's local amount was $849 × 0.20 = $169.80, and this
+build's default is $0. At Houston's 8.25% combined rate, the worksheet gives
+$849 × (8.25 − 6.25) / 6.25 = $271.68.
+
+The household example does not establish aggregate deduction or tax
+impacts, which also depend on the income-tax election, itemization and the
+SALT limit. Houston's combined rate is documented in its
+[FY2025 adopted budget, Sales Tax (PDF p. 8)](https://www.houstontx.gov/budget/25budadopt/II_GFR.pdf#page=8).
+
+Official follow-up sources consistent with the official-files requirement
+include Florida DOR's [DR-15DSS county discretionary sales surtax table](https://floridarevenue.com/Forms_library/current/dr15dss.pdf)
+and the California CDTFA [city and county sales and use tax rates and downloadable rate files](https://www.cdtfa.ca.gov/taxes-and-fees/sales-use-tax-rates.htm).
+
 `rates.csv` holds the combined state and local general sales tax rate
 (general intrastate rate) of each county's places with their own rate and of
 the county's area outside them, from 2022, and `populations.csv` the 2020
