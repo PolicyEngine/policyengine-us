@@ -236,9 +236,10 @@ test-yaml-reform:
 	# ~8 GB file runs solo with ~8 GB spare); new reform files auto-route.
 	$(BATCH) $(TESTS)/policy/reform --mode per-file --workers 1
 test-yaml-no-structural-other-hhs:
-	# hhs (~2.7 GB peak) rides along with the baseline-contrib runner,
-	# which has spare headroom.
-	$(BATCH) $(TESTS)/policy/baseline/gov/hhs --batches 1
+	# One subprocess per hhs subfolder + trailing batch for loose yamls.
+	# As a single process, hhs peaked at 15.1 GB on the 16 GB runner (CI
+	# run 38656284185).
+	$(BATCH) $(TESTS)/policy/baseline/gov/hhs --mode per-subdir --workers 1
 # baseline contrib + gov/hhs form one make target. policy/reform stays a
 # separate target (per-file peaks ~5.5-8 GB): CI runs contrib-hhs, irs and
 # reform as sequential steps on one runner, so only one peak is resident.
