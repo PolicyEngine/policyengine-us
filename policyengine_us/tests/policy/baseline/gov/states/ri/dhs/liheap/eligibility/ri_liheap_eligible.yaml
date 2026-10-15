@@ -39,3 +39,26 @@
     gas_expense: [1_200, 1_200, 1_200, 1_200, 1_200]
   output:
     ri_liheap_eligible: [true, false, false, false, false]
+
+# Manual page 12 counts only citizens, permanent residents and qualified aliens, so the
+# size is 0 and the limit is 0. Income 0 <= 0 passes, the gas bill meets the energy
+# burden and the fuel is not NONE, so only the size gate (size > 0) makes the household
+# ineligible.
+- name: Case 3, a household with no qualified member and no income is ineligible.
+  period: 2026
+  input:
+    state_code: RI
+    age: 40
+    immigration_status: UNDOCUMENTED
+    employment_income: 0
+    ssi: 0
+    tanf: 0
+    childcare_expenses: 0
+    child_care_subsidies: 0
+    heating_type: NATURAL_GAS
+    gas_expense: 1_200
+  output:
+    ri_liheap_household_size: 0
+    ri_liheap_income: 0
+    ri_liheap_income_limit: 0
+    ri_liheap_eligible: false

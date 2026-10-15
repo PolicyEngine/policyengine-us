@@ -12,8 +12,8 @@ class ri_liheap_income_limit(Variable):
     reference = (
         "https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=8",
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf",
-        # DHS FY2027 sheet, linked by the administering provider EBCAP.
-        "https://9e947cb6.delivery.rocketcdn.me/wp-content/uploads/2026/09/LIHEAP-Income-Eligibilty-FFY-2027.pdf",
+        # DHS FFY2027 income eligibility sheet.
+        "https://dhs.ri.gov/media/12266/download?language=en",
     )
 
     def formula(spm_unit, period, parameters):

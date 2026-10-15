@@ -24,8 +24,8 @@
     ri_liheap_income: [10_000, 10_000, 10_000]
     ri_liheap: [582, 743, 861]
 
-# FY2026 row F uses the lowest fuel payment when subsidized households pay
-# their own primary heating bill: gas 159 + 350, electric 268 + 350, oil 657.
+# FY2026 row F (subsidized housing with a primary heating bill) prints the row E cells at
+# any income: gas 159 + 350, electric 268 + 350, oil 657.
 - name: Case 2, subsidized households with direct primary bills use the subsidized schedule.
   period: 2026
   absolute_error_margin: 0.01
@@ -68,7 +68,7 @@
   output:
     ri_liheap: [509, 0, 0, 0, 0, 0]
 
-# FY2026 rows G and I: direct grant400; subsidized secondary electric50 +350.
+# FY2026 rows G and I: direct grant 400; subsidized secondary electric 50 + 350.
 # A qualifying secondary utility account receiving the grant is assumed.
 - name: Case 4, eligible heat-in-rent households receive their regular grants.
   period: 2026
@@ -91,8 +91,9 @@
     ri_liheap_eligible: [true, true, true]
     ri_liheap: [400, 400, 400]
 
-# Earlier years backfill the researched FY2026 schedule under the all-state
-# convention. This is an unverified historical estimate, not a FY2025 policy test.
+# Period 2025 backfills the FY2026 schedule (undated formulas, parameter backfilling).
+# FY2025 plan item 2.6 gives a $64 minimum and $1,148 maximum benefit, so 861 checks
+# the backfill only; it is not FY2025 policy.
 - name: Case 5, earlier years backfill an unverified heating award estimate.
   period: 2025
   absolute_error_margin: 0.01
@@ -225,8 +226,8 @@
     ri_liheap_income_band: [4]
     ri_liheap: [704]
 
-# FY2026 matrix G-I, manual II.B, and DHS October2025 DIV1-1: HIR direct400,
-# secondary electric80 +350, subsidized secondary electric50 +350. The primary
+# FY2026 matrix rows G-I, manual II.B and DHS DIV 1-1 (October 2025): heat-in-rent direct 400,
+# secondary electric 80 + 350, subsidized secondary electric 50 + 350. The primary
 # heating fuel does not change a grant routed to the separate electric account.
 - name: Case 10, heat-in-rent routes use existing electric bills and housing flags.
   period: 2026
@@ -252,7 +253,8 @@
     ri_liheap_eligible: [true, true, true, true, true, true, false, false]
     ri_liheap: [400, 400, 400, 430, 400, 400, 0, 0]
 
-# Backfilling is an estimate; it must not imply that LIHEAP began in FY2026.
+# Period 2025 backfills the FY2026 heat-in-rent grants and $350 enhancement. No FY2025
+# matrix or enhancement amount was located, so 430 checks the backfill only.
 - name: Case 11, earlier heat-in-rent awards backfill without claiming verified history.
   period: 2025
   input:
@@ -268,3 +270,31 @@
     is_in_public_housing: false
   output:
     ri_liheap: 430
+
+# FY2026 row G prints $400 under Deliverables, Natural Gas and Other and leaves the
+# Electric cell blank. Wages are the 2026 Rhode Island minimum wage: 16 x 40 x 52 =
+# 33,280 <= 42,252 (size 1), and heat in unsubsidized rent meets the energy burden.
+# Unit 1 has no separate electric bill, so row G applies: blank Electric cell, 0, and
+# no enhancement because no utility account receives a grant. Unit 2 has an electric
+# bill, so row H applies: 80 + 350 enhancement (DIV 1-1) = 430.
+- name: Case 12, electric heat included in unsubsidized rent follows the blank row G cell.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: [RI, RI]
+    age: [40, 40]
+    immigration_status: [CITIZEN, CITIZEN]
+    employment_income: [33_280, 33_280]
+    ssi: [0, 0]
+    tanf: [0, 0]
+    childcare_expenses: [0, 0]
+    child_care_subsidies: [0, 0]
+    heating_type: [ELECTRICITY, ELECTRICITY]
+    pre_subsidy_electricity_expense: [0, 1_200]
+    heat_expense_included_in_rent: [true, true]
+    receives_housing_assistance: [false, false]
+    is_in_public_housing: [false, false]
+  output:
+    ri_liheap_eligible: [true, true]
+    ri_liheap_base_payment: [0, 430]
+    ri_liheap: [0, 430]

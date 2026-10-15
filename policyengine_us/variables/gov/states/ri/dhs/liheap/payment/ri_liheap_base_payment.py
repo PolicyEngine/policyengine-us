@@ -12,13 +12,14 @@ class ri_liheap_base_payment(Variable):
         "and the state enhancement when the grant reaches a qualifying gas "
         "or electric utility account. For heat in rent, a reported separate "
         "electric bill selects the secondary-electric route; otherwise the "
-        "grant is paid directly. Utility-provider and account ownership "
+        "grant is paid directly, except that electric heat gets none because "
+        "row G's Electric cell is blank. Utility-provider and account ownership "
         "requirements are assumed satisfied. Final eligibility is separate."
     )
     defined_for = StateCode.RI
     reference = (
         "https://liheapch.acf.gov/docs/2026/benefits-matricies/RI_BenefitMatrix_2026.pdf",
-        "https://dhs.ri.gov/media/9696/download?language=en",
+        "https://dhs.ri.gov/media/9696/download?language=en#page=1",
         # PDF pages 5-6: heat-in-rent payment and subsidized utility burden.
         "https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=5",
         "https://webserver.rilegislature.gov/Statutes/TITLE39/39-1/39-1-27.12.htm",
@@ -37,8 +38,10 @@ class ri_liheap_base_payment(Variable):
         primary_bill = spm_unit("has_heating_expense", period) | (
             spm_unit("heating_expense", period) > 0
         )
-        # Matrix row F uses the lowest payment for subsidized households
-        # responsible for their primary heating bill, regardless of income band.
+        # Row F (subsidized housing with a primary heating bill) applies at any
+        # income. The FY2026 matrix prints the same cells for rows E and F, so row F
+        # reads row E's band; a matrix with different row F cells would need its own
+        # amounts.
         band = where(subsidized & primary_bill, len(p.fpg_rates) + 1, band)
         fuel = spm_unit("heating_type", period)
         fuels = fuel.possible_values
@@ -55,9 +58,10 @@ class ri_liheap_base_payment(Variable):
                 p.amount.natural_gas[band],
                 p.amount.electricity[band],
             ],
-            # NONE means no heating. No supported schedule mapping was found
-            # for COAL, OTHER, SOLAR or UNSPECIFIED; their zero is an unverified
-            # estimate, not a legal denial of assistance.
+            # NONE means no heating. The Other column is blank in rows A-F, so OTHER,
+            # COAL and SOLAR (the landlord form has no coal or solar box) receive no
+            # primary amount; UNSPECIFIED receives none because heating_type is a
+            # required input.
             default=0,
         )
         heat_in_rent = spm_unit("heat_expense_included_in_rent", period)
@@ -66,13 +70,14 @@ class ri_liheap_base_payment(Variable):
         secondary_electric_payment = where(
             subsidized, hir.subsidized_secondary_electric, hir.secondary_electric
         )
-        # Rows H-I apply to the secondary electric account. Row G is the
-        # direct grant when there is no separate electric bill to credit.
-        # Subsidized tenants without a utility burden are ineligible.
+        # Rows H-I apply to the secondary electric account. Row G is the direct grant
+        # when there is no separate electric bill to credit; it prints $400 under
+        # Deliverables, Natural Gas and Other but leaves the Electric cell blank, so
+        # electric heat receives no row G grant. Subsidized tenants without a utility
+        # burden are ineligible.
+        direct_payment = where(subsidized | (fuel == fuels.ELECTRICITY), 0, hir.direct)
         heat_in_rent_payment = where(
-            separate_electric_bill,
-            secondary_electric_payment,
-            where(subsidized, 0, hir.direct),
+            separate_electric_bill, secondary_electric_payment, direct_payment
         )
         amount = where(heat_in_rent, heat_in_rent_payment, amount)
         utility_fuel = (fuel == fuels.NATURAL_GAS) | (fuel == fuels.ELECTRICITY)

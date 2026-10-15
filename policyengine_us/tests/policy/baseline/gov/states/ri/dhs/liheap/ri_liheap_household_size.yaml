@@ -1,6 +1,4 @@
-# Rhode Island independent income and primary-bill matrix components; no final award is asserted.
-
-# Manual pp12-13 counts citizens and qualified noncitizens; all three qualifying members count regardless of age.
+# Manual pages 12-13 count citizens and qualified noncitizens; all three qualifying members count regardless of age.
 - name: Case 1, qualified adults and children count while nonqualified residents do not.
   period: 2026
   input:
@@ -33,8 +31,6 @@
     spm_units:
       spm_unit:
         members: [person1, person2, person3, person4, person5]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         tanf: 0
         childcare_expenses: 0
         child_care_subsidies: 0
@@ -58,8 +54,6 @@
     spm_units:
       spm_unit:
         members: [person1]
-        heating_type: NATURAL_GAS
-        gas_expense: 1_200
         tanf: 0
         childcare_expenses: 0
         child_care_subsidies: 0

@@ -26,9 +26,16 @@ class ri_liheap_eligible(Variable):
         )
         separate_electric_bill = spm_unit("pre_subsidy_electricity_expense", period) > 0
         # Reported obligations and rental terms are assumed verified.
+        # Manual II.B (page 6): "Subsidized renters with no utility burden are
+        # ineligible for this program." FY2026 plan item 2.3 (page 8) answers No to
+        # differing policies for "Renters Living in subsidized housing?". This
+        # follows the manual.
         energy_burden = where(
             heat_in_rent, ~subsidized | separate_electric_bill, primary_obligation
         )
+        # Electric heat in unsubsidized rent with no electric bill (blank row G
+        # cell), and COAL, OTHER and SOLAR outside heat in rent, stay eligible but
+        # have no matrix amount, so ri_liheap pays $0.
         heating_type = spm_unit("heating_type", period)
         return (
             (size > 0)

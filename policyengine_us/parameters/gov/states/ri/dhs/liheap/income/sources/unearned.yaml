@@ -1,4 +1,4 @@
-description: Rhode Island counts these unearned income sources under the Low Income Home Energy Assistance Program.
+description: Rhode Island uses these sources as unearned income under the Low Income Home Energy Assistance Program.
 # Interest and rental receipts have separate allowances, and TANF (RI Works)
 # is added once through the SPM-unit tanf aggregate, so none of those
 # sources is duplicated here. Each listed source is floored at zero.
@@ -9,7 +9,7 @@ description: Rhode Island counts these unearned income sources under the Low Inc
 # settlements also lack sufficiently specific existing inputs.
 values:
   2025-10-01:
-    - unemployment_compensation
+    - total_unemployment_compensation
     - strike_benefits
     - social_security
     - ssi
@@ -35,9 +35,10 @@ values:
     - veterans_benefits
     # Manual Section III.E, Estate or Trust Income, page 17.
     - estate_income
-    # Manual Section III.E, page 17, lists "Cash Prizes and Lottery Winnings"
-    # as income; FY2026 plan Section 1.9, page 6, leaves "winnings from
-    # lotteries" unchecked. This follows the manual.
+    # Manual Section III.E, page 17, lists "Cash Prizes and Lottery Winnings" as
+    # income. FY2026 plan Section 1.9, page 6, leaves "winnings from lotteries"
+    # unchecked, and DHS's FY2026 and draft FFY2027 plan summaries and the
+    # application instructions do not list them. This follows the manual.
     - gambling_winnings
 
 metadata:
@@ -45,9 +46,9 @@ metadata:
   period: year
   label: Rhode Island LIHEAP unearned income sources
   reference:
-    - title: Rhode Island LIHEAP Manual, Sections III.E-G Income Verification and Exclusions
+    - title: "Rhode Island LIHEAP Manual, Sections III.E-G Income Verification and Exclusions #page 14-20"
       href: https://ripuc.ri.gov/eventsactions/docket/4290-DHS-DR-PUC%203-6%20attachment%20LIHEAP%20Manual%202020%20-%20Final.pdf#page=14
-    - title: Rhode Island FY2026 State Plan, Sections 1.8 and 1.9
+    - title: "Rhode Island FY2026 State Plan, Sections 1.8 and 1.9 #page 5-7"
       href: https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=5
     - title: Rhode Island FY2026 Application Instructions, Proof of Income
-      href: https://dhs.ri.gov/media/9671/download?language=en
+      href: https://dhs.ri.gov/media/9671/download?language=en#page=2

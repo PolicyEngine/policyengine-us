@@ -15,9 +15,12 @@ class ri_liheap_income(Variable):
         # Plan sections 1.8-1.9
         # PDF pages 5-7
         "https://liheapch.acf.gov/docs/2026/state-plans/RI_Plan_2026.pdf#page=5",
-        "https://dhs.ri.gov/media/9671/download?language=en",
-        "https://dhs.ri.gov/media/9701/download?language=en",
-        "https://westbaycap.org/wp-content/uploads/2025/08/Appendix-H-Application-Instructions-FY-26.pdf#page=2",
+        # Application instructions (Appendix H), May 2025 (FY2026) and
+        # July 2026 (FY2027)
+        "https://dhs.ri.gov/media/9671/download?language=en#page=2",
+        "https://dhs.ri.gov/media/12306/download?language=en#page=2",
+        # Rental Income Reported Form (Appendix M), May 2025
+        "https://dhs.ri.gov/media/9701/download?language=en#page=1",
     )
 
     def formula(spm_unit, period, parameters):
@@ -25,7 +28,7 @@ class ri_liheap_income(Variable):
         person = spm_unit.members
         age = person("age", period)
         # The FY2026 (Appendix H) and FY2027 application instructions (p2)
-        # exclude the income of every full-time student aged 18-23. The 2020
+        # exclude the income of every full-time student aged 18-23. The 2019
         # manual (III.G p20) excluded only a child who was not the household
         # head; the current instructions govern.
         exempt_student = (age < p.student_age_limit) & person(
