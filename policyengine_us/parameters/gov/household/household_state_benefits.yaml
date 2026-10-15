@@ -90,6 +90,7 @@ values:
     # Washington benefits
     - wa_child_care_subsidies
     # New York benefits
+    - ny_ssp
     - ny_child_care_subsidies
   2024-01-01:
     # Delaware benefits
@@ -192,6 +193,7 @@ values:
     # Washington child care subsidies
     - wa_child_care_subsidies
     # New York benefits
+    - ny_ssp
     - ny_child_care_subsidies
   2025-01-01:
     # Delaware benefits
@@ -295,6 +297,7 @@ values:
     # Washington child care subsidies
     - wa_child_care_subsidies
     # New York benefits
+    - ny_ssp
     - ny_child_care_subsidies
   2026-01-01:
     # Delaware benefits
@@ -400,7 +403,9 @@ values:
     # New Jersey benefits
     - nj_property_tax_relief
     # New York benefits
+    - ny_ssp
     - ny_child_care_subsidies
+
 metadata:
   unit: list
   period: year
