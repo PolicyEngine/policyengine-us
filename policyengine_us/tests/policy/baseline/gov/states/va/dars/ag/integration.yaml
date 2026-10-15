@@ -1,4 +1,4 @@
-- name: Case 1, separate institutional SSI claims.
+- name: Case 1, separate SSI claims.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -24,7 +24,7 @@
   output:
     va_ag: [1_223, 1_223]
 
-- name: Case 2, initial couple computation.
+- name: Case 2, joint SSI couple claim.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -32,11 +32,9 @@
       person1:
         age: 65
         va_ag_certified: true
-        va_ag_is_joint_initial_month: true
       person2:
         age: 65
         va_ag_certified: true
-        va_ag_is_joint_initial_month: true
     marital_units:
       couple:
         members: [person1, person2]
@@ -48,9 +46,15 @@
         members: [person1, person2]
         state_code: VA
   output:
+    # Both aged spouses claim SSI jointly: 1,491 / 2 = 745.50 each.
+    ssi_claim_is_joint: [true, true]
+    ssi: [745.5, 745.5]
+    # Chapter D: SSA's gross SSI plus net income, 745.50 + 0.
+    va_ag_countable_income: [745.5, 745.5]
+    # 2,130 + 87 - 745.50 = 1,471.50, rounded up to 1,472.
     va_ag: [1_472, 1_472]
 
-- name: Case 3, non SSI spouse income is not deemed in ongoing care.
+- name: Case 3, spouse at home has income deemed in the resident's entry month.
   period: 2026-01
   absolute_error_margin: 0.01
   input:
@@ -58,7 +62,6 @@
       person1:
         age: 65
         va_ag_certified: true
-        is_ssi_spousal_deeming_applies: false
       person2:
         age: 63
         social_security_retirement: 18_000
@@ -73,13 +76,16 @@
         members: [person1, person2]
         state_code: VA
   output:
-    # No deeming: person1 has no income, so SSI is 994 - 0 = 994.
-    # person2 (63, not disabled) is not SSI-eligible.
-    # Deeming would count 1,500 - 20 = 1,480 and cut SSI to 1,491 - 1,480 = 11.
-    ssi: [994, 0]
-    # Countable income 0 + 994 = 994; 2,217 - 994 = 1,223.
-    # With deeming it would be 2,217 - (1,480 + 11) = 726.
-    va_ag: [1_223, 0]
+    # In the entry month the spouses are still one marital unit, and
+    # 20 CFR 416.1163(f)(2) stops deeming only from the following month
+    # (Case 6). person2 (63, not disabled) is not SSI-eligible, so SSI
+    # deems 1,500 - 20 = 1,480: 1,491 - 1,480 = 11.
+    ssi: [11, 0]
+    # Chapter D (p. 126) uses SSA's amounts: 1,480 + 11 = 1,491.
+    # person2's own non-SSI budget is 1,500 - 20 = 1,480.
+    va_ag_countable_income: [1_491, 1_480]
+    # 2,130 + 87 - 1,491 = 726; person2 is not certified.
+    va_ag: [726, 0]
 
 - name: Case 4, initial couple resource limit.
   period: 2026-01
@@ -206,3 +212,114 @@
     va_ag_countable_income: [1_590, 1_590]
     # 2,130 + 87 - 1,590 = 627 each (637 without the joint flag).
     va_ag: [627, 627]
+
+- name: Case 8, asymmetric non SSI couple budgets separately after the initial month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        va_ag_certified: true
+        social_security_retirement: 30_000
+      person2:
+        age: 70
+        va_ag_certified: true
+        social_security_retirement: 18_000
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # After the initial month SSA treats spouses sharing a facility as
+    # individuals (POMS SI 00501.154 B): 2,500 - 20 = 2,480 and
+    # 1,500 - 20 = 1,480, both above 994, so no SSI.
+    ssi_countable_income: [2_480, 1_480]
+    ssi: [0, 0]
+    va_ag_eligible: [true, true]
+    # Chapter B section 6: after the initial month each spouse is a separate unit.
+    # 2,500 - 20 = 2,480 and 1,500 - 20 = 1,480.
+    va_ag_countable_income: [2_480, 1_480]
+    # 2,217 - 2,480 is below 0, so 0; 2,217 - 1,480 = 737.
+    va_ag: [0, 737]
+
+- name: Case 9, asymmetric non SSI couple pools income in the initial month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+        social_security_retirement: 30_000
+      person2:
+        age: 70
+        va_ag_certified: true
+        va_ag_is_joint_initial_month: true
+        social_security_retirement: 18_000
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    ssi_claim_is_joint: [true, true]
+    ssi_couple_computation_applies: [true, true]
+    ssi_countable_income: [1_990, 1_990]
+    # 745.50 - 1,990 = -1,244.50, so no SSI.
+    uncapped_ssi: [-1_244.5, -1_244.5]
+    ssi: [0, 0]
+    va_ag_eligible: [true, true]
+    # Both entered care on January 1, so the month is not prorated.
+    # The pooled 4,000 gets one 20 exclusion and is halved: (4,000 - 20) / 2 = 1,990.
+    va_ag_countable_income: [1_990, 1_990]
+    # 2,130 + 87 - 1,990 = 227 each (separate budgets give [0, 737]).
+    va_ag: [227, 227]
+
+- name: Case 10, initial-month couple flag entered for January budgets the spouses separately in February.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 70
+        va_ag_certified: true
+        va_ag_is_joint_initial_month:
+          2026-01: true
+        social_security_retirement: 19_200
+      person2:
+        age: 70
+        va_ag_certified: true
+        va_ag_is_joint_initial_month:
+          2026-01: true
+        social_security_retirement: 19_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # January pools the couple (Case 7): 2,217 - 1,590 = 627 each.
+    # February: each spouse is a separate unit: 2,217 - (1,600 - 20) = 637.
+    va_ag:
+      2026-01: [627, 627]
+      2026-02: [637, 637]

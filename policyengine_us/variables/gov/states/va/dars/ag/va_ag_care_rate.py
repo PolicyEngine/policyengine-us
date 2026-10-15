@@ -8,7 +8,8 @@ class va_ag_care_rate(Variable):
     definition_period = MONTH
     unit = USD
     reference = "https://www.dss.virginia.gov/media/vdss/licensing/documents/assisted-living-facilities/additional-resources/ARC2026_ag_rate_letter.pdf"
-    documentation = "Defaults to the published locality maximum. Use the approved provider rate when it is below that maximum."
 
     def formula(person, period, parameters):
-        return person("va_ag_maximum_care_rate", period)
+        maximum = person("va_ag_maximum_care_rate", period)
+        facility_rate = person("va_ag_facility_rate", period)
+        return where(facility_rate > 0, min_(facility_rate, maximum), maximum)

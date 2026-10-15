@@ -77,7 +77,7 @@
     age: 65
     va_ag_certified: true
     county: ARLINGTON_COUNTY_VA
-    va_ag_days_eligible: 14
+    va_ag_partial_month_days: 14
   output:
     # Entry on January 18 gives 14 days: 2,450 / 30 * 14 = 1,143.33.
     # Need 1,143.33 + 87 = 1,230.33; SSI 994 makes countable income 994.
@@ -181,20 +181,24 @@
     state_code: VA
     age: 65
     va_ag_certified: true
-    va_ag_days_eligible: 15
+    va_ag_partial_month_days: 15
   output:
     va_ag: 158
 
-- name: Case 17, zero eligible days.
-  period: 2026-01
+- name: Case 17, partial-month days equal to the month length are a full month.
+  period: 2026-02
   absolute_error_margin: 0.01
   input:
-    state_code: VA
-    age: 65
+    state_code:
+      2026: VA
+    age:
+      2026: 65
     va_ag_certified: true
-    va_ag_days_eligible: 0
+    va_ag_partial_month_days: 28
   output:
-    va_ag: 0
+    # 28 days covers all of February, so the rate is not prorated:
+    # 2,130 + 87 - 994 = 1,223.
+    va_ag: 1_223
 
 - name: Case 18, first month community expenses.
   period: 2026-01
@@ -203,7 +207,7 @@
     state_code: VA
     age: 65
     va_ag_certified: true
-    va_ag_days_eligible: 15
+    va_ag_partial_month_days: 15
     va_ag_allowable_income_exclusions: 400
   output:
     va_ag: 558
@@ -226,7 +230,7 @@
     state_code: VA
     age: 65
     va_ag_certified: true
-    va_ag_care_rate: 1_500
+    va_ag_facility_rate: 1_500
   output:
     va_ag: 593
 
@@ -245,3 +249,158 @@
     # The AG budget excludes it: 2,000 - 20 = 1,980 (resources 2,000 at the limit).
     # 2,217 - 1,980 = 237; counting the interest would give 232.
     va_ag: 237
+
+- name: Case 22, noncitizen who is not a qualified alien.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    immigration_status: UNDOCUMENTED
+  output:
+    # Chapter C section 9.4 limits eligibility to qualified aliens.
+    # SSI is also 0, so without the gate the non-SSI budget would pay 2,217.
+    ssi: 0
+    va_ag_eligible: false
+    va_ag: 0
+
+- name: Case 23, incarcerated person.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    is_incarcerated: true
+  output:
+    va_ag_eligible: false
+    va_ag: 0
+
+- name: Case 24, approved facility rate above the maximum is capped.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    va_ag_facility_rate: 2_500
+  output:
+    va_ag_maximum_care_rate: 2_130
+    va_ag_care_rate: 2_130
+    # 2,500 is capped at 2,130: 2,130 + 87 - 994 = 1,223 (uncapped 1,593).
+    va_ag: 1_223
+
+- name: Case 25, applicant who appears eligible for SSI but does not apply is denied.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    takes_up_ssi_if_eligible: false
+  output:
+    # With no income the applicant meets SSI income standards (uncapped SSI
+    # 994), so Chapter C 8.2.2 requires an SSI application and 8.2.2.2.1
+    # denies the grant without one; otherwise the grant would pay 2,217.
+    uncapped_ssi: 994
+    ssi: 0
+    va_ag_eligible: false
+    va_ag: 0
+
+- name: Case 26, applicant over the SSI income limit need not apply for SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    takes_up_ssi_if_eligible: false
+    social_security_retirement: 24_000
+  output:
+    # 994 - (2,000 - 20) = -986, so Chapter C 8.2.1 does not require an SSI
+    # application: 2,217 - 1,980 = 237.
+    uncapped_ssi: -986
+    va_ag_eligible: true
+    va_ag: 237
+
+- name: Case 27, unrelated residents with a facility rate and a partial month.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        va_ag_certified: true
+        va_ag_facility_rate: 1_500
+      person2:
+        age: 65
+        va_ag_certified: true
+        va_ag_partial_month_days: 15
+    marital_units:
+      marital_unit1:
+        members: [person1]
+      marital_unit2:
+        members: [person2]
+    tax_units:
+      tax_unit1:
+        members: [person1]
+      tax_unit2:
+        members: [person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: VA
+  output:
+    # Each input applies only to its own resident.
+    va_ag_care_rate: [1_500, 2_130]
+    # person1: 1,500 + 87 - 994 = 593.
+    # person2: 2,130 / 30 * 15 = 1,065; 1,065 + 87 - 994 = 158.
+    va_ag: [593, 158]
+
+- name: Case 28, partial-month days do not carry into the next month.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    va_ag_partial_month_days:
+      2026-02: 27
+  output:
+    # February: 2,130 / 30 * 27 = 1,917; 1,917 + 87 - 994 = 1,010.
+    # March is a full month again: 2,130 + 87 - 994 = 1,223.
+    va_ag:
+      2026-02: 1_010
+      2026-03: 1_223
+
+- name: Case 29, standard rate follows the federal benefit rate in 2027.
+  period: 2027-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+  output:
+    # The maximum rate is the federal benefit rate plus 1,136, so for an
+    # SSI-only resident the grant stays 1,136 + 87 = 1,223 whatever the FBR.
+    va_ag: 1_223
+
+- name: Case 30, entry-month community expenses do not carry into the next month.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: VA
+    age: 65
+    va_ag_certified: true
+    va_ag_partial_month_days:
+      2026-01: 15
+    va_ag_allowable_income_exclusions:
+      2026-01: 400
+  output:
+    # January: 2,130 / 30 * 15 = 1,065; countable income 994 - 400 = 594;
+    # 1,065 + 87 - 594 = 558.
+    # February has no exclusion and a full month: 2,130 + 87 - 994 = 1,223.
+    va_ag:
+      2026-01: 558
+      2026-02: 1_223

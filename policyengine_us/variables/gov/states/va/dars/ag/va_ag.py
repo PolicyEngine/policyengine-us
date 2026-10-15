@@ -9,6 +9,7 @@ class va_ag(Variable):
     unit = USD
     defined_for = "va_ag_eligible"
     reference = (
+        "https://law.lis.virginia.gov/vacode/title51.5/chapter14/section51.5-160/",
         "https://law.lis.virginia.gov/admincode/title22/agency30/chapter80/section50/",
         # PDF pages 519-520, 522, 524
         "https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=519",
@@ -16,12 +17,10 @@ class va_ag(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.va.dars.ag
-        rate = min_(
-            max_(person("va_ag_care_rate", period), 0),
-            person("va_ag_maximum_care_rate", period),
-        )
-        days = clip(person("va_ag_days_eligible", period), 0, period.days)
-        rate = where(days == period.days, rate, rate / p.proration_days * days)
+        rate = person("va_ag_care_rate", period)
+        days = person("va_ag_partial_month_days", period)
+        partial_month = (days > 0) & (days < period.days)
+        rate = where(partial_month, rate / p.proration_days * days, rate)
         need = rate + p.personal_needs_allowance
         deficiency = max_(need - person("va_ag_countable_income", period), 0)
-        return (days > 0) * np.floor(deficiency + 0.5)
+        return np.floor(deficiency + 0.5)

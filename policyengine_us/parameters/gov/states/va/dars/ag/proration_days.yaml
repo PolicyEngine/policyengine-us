@@ -1,9 +1,10 @@
-description: Virginia divides the monthly care rate by this number of days when prorating an initial partial month.
+description: Virginia divides the monthly care rate by this number of days to prorate the entry month under the Auxiliary Grant program.
 values:
   2017-07-01: 30
 
 metadata:
   unit: day
+  period: month
   label: Virginia Auxiliary Grant proration days
   reference:
     - title: Virginia Auxiliary Grant Manual, Chapter J section 3.3

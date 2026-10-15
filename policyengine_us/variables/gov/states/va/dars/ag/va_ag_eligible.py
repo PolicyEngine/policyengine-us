@@ -7,7 +7,7 @@ class va_ag_eligible(Variable):
     label = "Virginia Auxiliary Grant non-income eligibility"
     definition_period = MONTH
     defined_for = StateCode.VA
-    # PDF pages 75-78, 93, 125, 152
+    # PDF pages 75-78, 93-96, 102-103, 125, 152
     reference = "https://townhall.virginia.gov/l/GetFile.cfm?File=C:%5CTownHall%5Cdocroot%5CGuidanceDocs%5C262%5CGDoc_DARS_5346_v2.pdf#page=75"
 
     def formula(person, period, parameters):
@@ -20,8 +20,15 @@ class va_ag_eligible(Variable):
         resources = person("ssi_countable_resources", period.this_year)
         resources = where(joint, person.marital_unit.sum(resources), resources)
         limits = parameters(period).gov.ssa.ssi.eligibility.resources.limit
-        resource_eligible = (person("ssi", period) > 0) | (
+        receives_ssi = (person("ssi", period) > 0) | person("receives_ssi", period)
+        resource_eligible = receives_ssi | (
             resources <= where(joint, limits.couple, limits.individual)
+        )
+        # Chapter C 8.2.2: an applicant who appears to meet SSI income standards
+        # must apply for SSI, and 8.2.2.2.1 denies AG otherwise; 8.2.1 exempts
+        # an applicant over income for SSI.
+        pursues_ssi = person("takes_up_ssi_if_eligible", period.this_year) | (
+            person("uncapped_ssi", period) <= 0
         )
         return (
             person("va_ag_certified", period)
@@ -29,4 +36,5 @@ class va_ag_eligible(Variable):
             & (citizen | immigrant)
             & resource_eligible
             & ~person("is_incarcerated", period)
+            & pursues_ssi
         )

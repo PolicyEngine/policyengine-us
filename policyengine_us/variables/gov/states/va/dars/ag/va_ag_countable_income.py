@@ -15,11 +15,7 @@ class va_ag_countable_income(Variable):
     documentation = """
     SSI recipients use SSA's net countable income plus the SSI payment. After
     the initial month each spouse in care is a separate case and a spouse's
-    income is not deemed. The model's federal SSI deems an ineligible spouse's
-    income across the marital unit without checking the household, so set
-    ssi_claim_is_joint to false when both spouses are SSI-eligible; otherwise
-    use separate marital units or set is_ssi_spousal_deeming_applies to false
-    for the recipient.
+    income is not deemed.
     """
 
     def formula(person, period, parameters):
@@ -27,6 +23,9 @@ class va_ag_countable_income(Variable):
         joint = (
             person.marital_unit.sum(person("va_ag_is_joint_initial_month", period)) == 2
         )
+        # NOTE: AG Manual Chapter H's exclusion list (p. 370) does not name the
+        # SSI student earned income exclusion, while Chapter D (p. 123)
+        # requires SSI policy; the model keeps the SSI exclusion.
         earned = max_(
             person("ssi_earned_income", period)
             - person("ssi_blind_or_disabled_working_student_exclusion", period),
@@ -49,6 +48,10 @@ class va_ag_countable_income(Variable):
         ssi = person("ssi", period)
         # Chapter D uses SSA's verified net income for current SSI recipients;
         # non-SSI institutional recipients have individual income budgets.
+        # NOTE: in the entry month of a resident whose spouse stays home, SSA
+        # still deems the spouse's income and Chapter D uses SSA's amounts,
+        # although Chapter B section 6 makes the assistance unit the applicant
+        # only.
         countable = where(
             ssi > 0, person("ssi_countable_income", period) + ssi, non_ssi_countable
         )

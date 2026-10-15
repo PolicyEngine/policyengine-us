@@ -16,4 +16,9 @@ class va_ag_allowable_income_exclusions(Variable):
     amount, not total expenses. These adjustments are additional to federal
     SSI exclusions. A percentage guardianship fee that includes the grant is
     calculated using the grant before that fee, as in Chapter D section 6.4.1.2.2.
+    Key each amount to its month; a yearly entry is spread evenly over the months.
     """
+
+    def formula(person, period, parameters):
+        # A formula stops a one-month input from carrying into later months.
+        return 0

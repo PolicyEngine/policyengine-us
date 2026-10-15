@@ -16,8 +16,15 @@ class va_ag_maximum_care_rate(Variable):
 
     def formula(person, period, parameters):
         p = parameters(period).gov.states.va.dars.ag
+        fbr = parameters(period).gov.ssa.ssi.amount.individual
+        standard = fbr + p.rate.fbr_offset
+        # The published $2,450 Planning District Eight rate is 2,130 x 1.15
+        # rounded to the nearest dollar; the rounding is inferred.
+        northern_rate = np.floor(
+            standard * (1 + p.rate.northern_virginia_differential) + 0.5
+        )
         northern = np.isin(
             person.household("county_str", period.this_year),
             p.northern_virginia_localities,
         )
-        return where(northern, p.rate.northern_virginia, p.rate.standard)
+        return where(northern, northern_rate, standard)
