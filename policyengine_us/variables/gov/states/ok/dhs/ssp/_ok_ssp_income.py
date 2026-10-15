@@ -10,7 +10,13 @@ def ok_ssp_income(person, period, parameters, *, combined):
     # 317:35-5-42(i) rounds each monthly source before applying exclusions.
     earned = 0
     for source in ssi.income.sources.earned:
-        earned = earned + np.floor(max_(person(source, period), 0) + 0.5)
+        amount = max_(person(source, period), 0)
+        if source == "employment_income":
+            # As in ssi_earned_income, salary-reduction health premiums are
+            # not wages (POMS SI 00820.102).
+            premiums = max_(person("pre_tax_health_insurance_premiums", period), 0)
+            amount = amount - min_(amount, premiums)
+        earned = earned + np.floor(amount + 0.5)
     unearned = 0
     for source in ssi.income.sources.unearned:
         if source not in p.excluded_unearned_sources:

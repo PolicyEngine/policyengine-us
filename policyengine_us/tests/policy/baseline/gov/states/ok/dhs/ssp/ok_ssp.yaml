@@ -224,3 +224,22 @@
     ok_ssp_eligible: false
     # defined_for ok_ssp_eligible, so 0.
     ok_ssp: 0
+
+- name: Case 21, pre-tax health premiums are not counted as wages.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: OK
+    age: 45
+    meets_ssi_disability_criteria: true
+    # Full-time work at the $7.25 Oklahoma minimum wage: 7.25 x 40 x 52.
+    employment_income: 15_080
+    pre_tax_health_insurance_premiums: 1_200
+  output:
+    # Federal: (15_080 - 1_200) / 12 = 1_156.67; (1_156.67 - 85) / 2 = 535.83;
+    # SSI 994 - 535.83 = 458.17.
+    ssi: 458.17
+    # 317:35-5-42(i): wages net of premiums round to 1_157;
+    # (1_157 - 85) / 2 = 536 + 458.17 = 994.17; min(1_034 - 994.17, 40) = 39.83.
+    ok_ssp_own_countable_income: 994.17
+    ok_ssp: 39.83
