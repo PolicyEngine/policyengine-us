@@ -405,6 +405,12 @@ def test_social_security_parameters_include_latest_official_2027_values():
     assert ssa.sga.non_blind("2027-01-01") == 1_770
     assert ssa.sga.blind("2027-01-01") == 2_950
 
+    # SSA's published 2025 AWI sets the 2027 PIA bend points.
+    assert ssa.nawi("2025-01-01") == 72_800.33
+    pia = social_security.pia.formula_factors("2027-01-01")
+    assert pia.thresholds[1] == 1_340
+    assert pia.thresholds[2] == 8_077
+
 
 def test_social_security_wage_indexed_parameters_follow_statutory_rounding():
     """Wage-indexed benefit parameters should use lagged NAWI and statutory rounding."""
