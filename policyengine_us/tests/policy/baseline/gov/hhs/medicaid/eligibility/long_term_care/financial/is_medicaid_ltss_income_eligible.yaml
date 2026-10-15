@@ -1335,7 +1335,9 @@
         state_code:
           '2026': TX
   output:
-    medicaid_ltss_qit_adjusted_unearned_income: [3500, 3500, 4000, 3500, 3500, 3500, 1500]
+    medicaid_ltss_qit_adjusted_unearned_income: [4000, 3500, 4000, 3500, 3500, 3500, 1500]
+    tx_medicaid_ltss_qit_opening_month_exclusion_applies: [false, false, false, false, false, false, true]
+    tx_medicaid_ltss_qit_opening_month_deposit_invalid: [true, false, false, false, false, false, false]
 - name: Texas QIT opening exclusion covers both identified sources with one partial source deposit
   period: 2026-07
   input:
@@ -1766,3 +1768,212 @@
     medicaid_ltss_excluded_impairment_related_work_expenses: [600, 0]
     # (5,455 - 20 - 65 - 600) / 2 = 2,385; without IRWE it is 2,685.
     medicaid_ltss_countable_income: [2_385, 2_685]
+
+# F-6820: $3,400 - $500 would be $2,900 <= the $2,982 SIL, but an
+# unverified partial opening deposit instead counts all $3,400. In a mixed
+# trust, restoring both streams counts $3,400 + $1,000 = $4,400.
+
+
+- name: Case 41, Texas unverified partial opening deposits invalidate the whole trust while full deposits remain excluded.
+  period: 2026-07
+  input:
+    people:
+      partial_unverified:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 3400
+        medicaid_ltss_individual_countable_resources: 1000
+        medicaid_ltss_reported_gross_earned_income: 0
+        medicaid_ltss_unearned_income_deposited_to_qit: 500
+        medicaid_ltss_earned_income_deposited_to_qit: 0
+        medicaid_ltss_qit_opening_year: 2026
+        medicaid_ltss_qit_opening_month: 7
+        medicaid_ltss_qit_covered_unearned_income: 3400
+        medicaid_ltss_qit_covered_unearned_income_deposited: 500
+        medicaid_ltss_qit_covered_earned_income: 0
+        medicaid_ltss_qit_covered_earned_income_deposited: 0
+        medicaid_ltss_qit_subsequent_full_deposits_verified: false
+      partial_verified:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 3400
+        medicaid_ltss_individual_countable_resources: 1000
+        medicaid_ltss_reported_gross_earned_income: 0
+        medicaid_ltss_unearned_income_deposited_to_qit: 500
+        medicaid_ltss_earned_income_deposited_to_qit: 0
+        medicaid_ltss_qit_opening_year: 2026
+        medicaid_ltss_qit_opening_month: 7
+        medicaid_ltss_qit_covered_unearned_income: 3400
+        medicaid_ltss_qit_covered_unearned_income_deposited: 500
+        medicaid_ltss_qit_covered_earned_income: 0
+        medicaid_ltss_qit_covered_earned_income_deposited: 0
+        medicaid_ltss_qit_subsequent_full_deposits_verified: true
+      full_unverified:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 3400
+        medicaid_ltss_individual_countable_resources: 1000
+        medicaid_ltss_reported_gross_earned_income: 0
+        medicaid_ltss_unearned_income_deposited_to_qit: 3400
+        medicaid_ltss_earned_income_deposited_to_qit: 0
+        medicaid_ltss_qit_opening_year: 2026
+        medicaid_ltss_qit_opening_month: 7
+        medicaid_ltss_qit_covered_unearned_income: 3400
+        medicaid_ltss_qit_covered_unearned_income_deposited: 3400
+        medicaid_ltss_qit_covered_earned_income: 0
+        medicaid_ltss_qit_covered_earned_income_deposited: 0
+        medicaid_ltss_qit_subsequent_full_deposits_verified: false
+      mixed_unverified:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 3400
+        medicaid_ltss_individual_countable_resources: 1000
+        medicaid_ltss_reported_gross_earned_income: 1000
+        medicaid_ltss_unearned_income_deposited_to_qit: 500
+        medicaid_ltss_earned_income_deposited_to_qit: 1000
+        medicaid_ltss_qit_opening_year: 2026
+        medicaid_ltss_qit_opening_month: 7
+        medicaid_ltss_qit_covered_unearned_income: 3400
+        medicaid_ltss_qit_covered_unearned_income_deposited: 500
+        medicaid_ltss_qit_covered_earned_income: 1000
+        medicaid_ltss_qit_covered_earned_income_deposited: 1000
+        medicaid_ltss_qit_subsequent_full_deposits_verified: false
+      later_month:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_non_delaware_assistance_unit_size: 1
+        medicaid_ltss_reported_gross_unearned_income: 3400
+        medicaid_ltss_individual_countable_resources: 1000
+        medicaid_ltss_reported_gross_earned_income: 0
+        medicaid_ltss_unearned_income_deposited_to_qit: 500
+        medicaid_ltss_earned_income_deposited_to_qit: 0
+        medicaid_ltss_qit_opening_year: 2026
+        medicaid_ltss_qit_opening_month: 6
+        medicaid_ltss_qit_covered_unearned_income: 3400
+        medicaid_ltss_qit_covered_unearned_income_deposited: 500
+        medicaid_ltss_qit_covered_earned_income: 0
+        medicaid_ltss_qit_covered_earned_income_deposited: 0
+        medicaid_ltss_qit_subsequent_full_deposits_verified: false
+    marital_units:
+      partial_unverified:
+        members: [partial_unverified]
+      partial_verified:
+        members: [partial_verified]
+      full_unverified:
+        members: [full_unverified]
+      mixed_unverified:
+        members: [mixed_unverified]
+      later_month:
+        members: [later_month]
+    households:
+      household:
+        members: [partial_unverified, partial_verified, full_unverified, mixed_unverified, later_month]
+        state_code:
+          '2026': TX
+  output:
+    tx_medicaid_ltss_qit_opening_month_deposit_invalid: [true, false, false, true, false]
+    tx_medicaid_ltss_qit_opening_month_exclusion_applies: [false, true, false, false, false]
+    medicaid_ltss_qit_adjusted_unearned_income: [3400, 0, 0, 3400, 2900]
+    medicaid_ltss_qit_adjusted_earned_income: [0, 0, 0, 1000, 0]
+    medicaid_ltss_countable_income: [3400, 0, 0, 4400, 2900]
+    is_medicaid_ltss_income_eligible: [false, true, true, false, true]
+    is_medicaid_ltss_financial_threshold_eligible: [false, true, true, false, true]
+
+# G-6120: $2,982 + $2,982 = $5,964 is a valid couple budget. Adding
+# $1 gives $5,965, so individual $2,983/$2,982 budgets fail/pass. The
+# $5,000 + $1,500 = $6,500 couple also falls back to fail/pass. Resources
+# $1,500.50 + $1,500.50 = $3,001 exceed the $3,000 couple limit, so each
+# $1,500.50 individual inventory passes the $2,000 limit after fallback.
+
+
+- name: Case 42, Texas retests each spouse individually when the candidate couple fails either financial limit.
+  period: 2026-07
+  input:
+    people:
+      income_at_a:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_reported_gross_unearned_income: 2982
+        medicaid_ltss_individual_countable_resources: 1500
+      income_at_b:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_reported_gross_unearned_income: 2982
+        medicaid_ltss_individual_countable_resources: 1500
+      income_above_a:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_reported_gross_unearned_income: 2983
+        medicaid_ltss_individual_countable_resources: 1500
+      income_above_b:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_reported_gross_unearned_income: 2982
+        medicaid_ltss_individual_countable_resources: 1500
+      uneven_a:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_reported_gross_unearned_income: 5000
+        medicaid_ltss_individual_countable_resources: 1000
+      uneven_b:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_reported_gross_unearned_income: 1500
+        medicaid_ltss_individual_countable_resources: 1000
+      resources_above_a:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_reported_gross_unearned_income: 1000
+        medicaid_ltss_individual_countable_resources: 1500.5
+      resources_above_b:
+        medicaid_ltss_setting: INSTITUTIONAL
+        is_ssi_aged_blind_disabled:
+          '2026': true
+        medicaid_ltss_non_delaware_assistance_unit_size: 2
+        medicaid_ltss_reported_gross_unearned_income: 1000
+        medicaid_ltss_individual_countable_resources: 1500.5
+    marital_units:
+      income_at:
+        members: [income_at_a, income_at_b]
+      income_above:
+        members: [income_above_a, income_above_b]
+      uneven:
+        members: [uneven_a, uneven_b]
+      resources_above:
+        members: [resources_above_a, resources_above_b]
+    households:
+      household:
+        members: [income_at_a, income_at_b, income_above_a, income_above_b, uneven_a, uneven_b, resources_above_a, resources_above_b]
+        state_code:
+          '2026': TX
+  output:
+    medicaid_ltss_assistance_unit_size: [2, 2, 1, 1, 1, 1, 1, 1]
+    medicaid_ltss_special_income_limit: [5964, 5964, 2982, 2982, 2982, 2982, 2982, 2982]
+    medicaid_ltss_countable_income: [5964, 5964, 2983, 2982, 5000, 1500, 1000, 1000]
+    medicaid_ltss_countable_resources: [3000, 3000, 1500, 1500, 1000, 1000, 1500.5, 1500.5]
+    is_medicaid_ltss_income_eligible: [true, true, false, true, false, true, true, true]
+    medicaid_ltss_csra_resource_eligible: [true, true, true, true, true, true, true, true]
+    is_medicaid_ltss_financial_threshold_eligible: [true, true, false, true, false, true, true, true]

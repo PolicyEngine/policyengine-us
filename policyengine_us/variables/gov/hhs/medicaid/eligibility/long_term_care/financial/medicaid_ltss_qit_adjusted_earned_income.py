@@ -14,7 +14,11 @@ class medicaid_ltss_qit_adjusted_earned_income(Variable):
         "excludes entire identified sources in the trust's opening month "
         "after a partial covered-source deposit and verification of "
         "subsequent full deposits. The deposited covered-source component "
-        "is subtracted from that extension to avoid a duplicate exclusion."
+        "is subtracted from that extension to avoid a duplicate exclusion. "
+        "Under F-6820, an unverified partial opening-month deposit "
+        "invalidates the trust for this screen: neither income stream "
+        "receives a deposited-income exclusion. Full covered deposits "
+        "retain their actual-deposit exclusion without that verification."
     )
     reference = (
         "https://fhb.hhs.texas.gov/handbooks/medicaid-elderly-people-disabilities-handbook/f-6800-qualified-income-trust",
@@ -41,4 +45,11 @@ class medicaid_ltss_qit_adjusted_earned_income(Variable):
             "tx_medicaid_ltss_qit_opening_month_exclusion_applies", period
         )
         additional_exclusion = where(opening_month, covered - covered_deposits, 0)
-        return max_(income - deposits - additional_exclusion, 0)
+        invalid_opening_deposit = person(
+            "tx_medicaid_ltss_qit_opening_month_deposit_invalid", period
+        )
+        return where(
+            invalid_opening_deposit,
+            income,
+            max_(income - deposits - additional_exclusion, 0),
+        )

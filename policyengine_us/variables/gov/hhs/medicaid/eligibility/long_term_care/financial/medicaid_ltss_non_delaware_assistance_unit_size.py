@@ -8,10 +8,15 @@ class medicaid_ltss_non_delaware_assistance_unit_size(Variable):
     definition_period = MONTH
     default_value = 0
     documentation = (
-        "Explicit assistance-unit size for states outside Delaware. Use two "
-        "only where the state budgets both spouses as a couple, including "
-        "Texas spouses in the same institutional setting, and one for an "
-        "individual applicant. Zero and unsupported sizes fail closed. "
+        "Candidate assistance-unit size for states outside Delaware. Report "
+        "two for Texas spouses in the same institutional setting who must "
+        "be tested as a couple first. Under G-6120, the derived unit falls "
+        "back to one for each spouse if the couple exceeds either its "
+        "income or resource limit. Report one for spouses in separate "
+        "institutional settings and individual applicants. A community "
+        "spouse is inconsistent with a couple unit and prevents that "
+        "fallback, preserving the resource screen's fail-closed result. "
+        "Zero and unsupported sizes fail closed. "
         "Delaware ignores this input and derives the unit from the spouses' "
         "service, location, and duration facts. A separate input preserves "
         "Delaware derivation in mixed-state populations: providing values "

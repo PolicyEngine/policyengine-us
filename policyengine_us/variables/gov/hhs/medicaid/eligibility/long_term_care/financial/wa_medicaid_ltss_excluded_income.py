@@ -1,7 +1,7 @@
 from policyengine_us.model_api import *
 
 
-class medicaid_ltss_wa_excluded_income(Variable):
+class wa_medicaid_ltss_excluded_income(Variable):
     value_type = float
     entity = Person
     label = "Washington Medicaid LTSS modeled income exclusions"

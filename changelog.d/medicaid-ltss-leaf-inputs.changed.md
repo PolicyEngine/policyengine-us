@@ -1,1 +1,0 @@
-Compute Medicaid LTSS income exclusions and Delaware couple budgets from each spouse's own gross income, trust deposits, resources, service locations, and duration; select the favorable institutional budget after six months.

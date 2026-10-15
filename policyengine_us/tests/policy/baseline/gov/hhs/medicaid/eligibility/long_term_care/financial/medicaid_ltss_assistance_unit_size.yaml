@@ -271,12 +271,12 @@
         members: [high_income, low_income]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 6
-        medicaid_ltss_de_post_six_month_budget_election: INDIVIDUAL
+        de_medicaid_ltss_post_six_month_budget_election: INDIVIDUAL
       reversed_individual_election:
         members: [reversed_low_income, reversed_high_income]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 6
-        medicaid_ltss_de_post_six_month_budget_election: INDIVIDUAL
+        de_medicaid_ltss_post_six_month_budget_election: INDIVIDUAL
     households:
       delaware:
         members: [high_income, low_income, reversed_low_income, reversed_high_income]
@@ -336,17 +336,17 @@
         members: [income_a, income_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 6
-        medicaid_ltss_de_post_six_month_budget_election: COUPLE
+        de_medicaid_ltss_post_six_month_budget_election: COUPLE
       resources:
         members: [resources_a, resources_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 6
-        medicaid_ltss_de_post_six_month_budget_election: COUPLE
+        de_medicaid_ltss_post_six_month_budget_election: COUPLE
       tie:
         members: [tie_a, tie_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 6
-        medicaid_ltss_de_post_six_month_budget_election: COUPLE
+        de_medicaid_ltss_post_six_month_budget_election: COUPLE
     households:
       delaware:
         members: [income_a, income_b, resources_a, resources_b, tie_a, tie_b]
@@ -446,7 +446,7 @@
         members: [not_supplied_couple_a, not_supplied_couple_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 6
-        medicaid_ltss_de_post_six_month_budget_election: NOT_SUPPLIED
+        de_medicaid_ltss_post_six_month_budget_election: NOT_SUPPLIED
       omitted_individual:
         members: [omitted_individual_a, omitted_individual_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
@@ -455,7 +455,7 @@
         members: [not_supplied_individual_a, not_supplied_individual_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 6
-        medicaid_ltss_de_post_six_month_budget_election: NOT_SUPPLIED
+        de_medicaid_ltss_post_six_month_budget_election: NOT_SUPPLIED
       omitted_tie:
         members: [omitted_tie_a, omitted_tie_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
@@ -464,7 +464,7 @@
         members: [not_supplied_tie_a, not_supplied_tie_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 6
-        medicaid_ltss_de_post_six_month_budget_election: NOT_SUPPLIED
+        de_medicaid_ltss_post_six_month_budget_election: NOT_SUPPLIED
     households:
       delaware:
         members:
@@ -472,7 +472,7 @@
         state_code:
           2026: DE
   output:
-    medicaid_ltss_de_post_six_month_budget_election:
+    de_medicaid_ltss_post_six_month_budget_election:
       [NOT_SUPPLIED, NOT_SUPPLIED, NOT_SUPPLIED, NOT_SUPPLIED, NOT_SUPPLIED, NOT_SUPPLIED]
     medicaid_ltss_assistance_unit_size: [2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1]
     medicaid_ltss_countable_income:
@@ -532,16 +532,16 @@
         members: [five_month_individual_a, five_month_individual_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 5
-        medicaid_ltss_de_post_six_month_budget_election: INDIVIDUAL
+        de_medicaid_ltss_post_six_month_budget_election: INDIVIDUAL
       five_month_couple:
         members: [five_month_couple_a, five_month_couple_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 5
-        medicaid_ltss_de_post_six_month_budget_election: COUPLE
+        de_medicaid_ltss_post_six_month_budget_election: COUPLE
       duration_unspecified:
         members: [duration_unspecified_a, duration_unspecified_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
-        medicaid_ltss_de_post_six_month_budget_election: INDIVIDUAL
+        de_medicaid_ltss_post_six_month_budget_election: INDIVIDUAL
     households:
       delaware:
         members:
@@ -609,22 +609,22 @@
         members: [hcbs_a, hcbs_b]
         medicaid_ltss_spouses_requesting_or_receiving_hcbs_at_same_address: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 12
-        medicaid_ltss_de_post_six_month_budget_election: INDIVIDUAL
+        de_medicaid_ltss_post_six_month_budget_election: INDIVIDUAL
       different_facilities:
         members: [different_facilities_a, different_facilities_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: false
         medicaid_ltss_spouses_months_in_same_institutional_facility: 12
-        medicaid_ltss_de_post_six_month_budget_election: COUPLE
+        de_medicaid_ltss_post_six_month_budget_election: COUPLE
       single:
         members: [single]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 12
-        medicaid_ltss_de_post_six_month_budget_election: COUPLE
+        de_medicaid_ltss_post_six_month_budget_election: COUPLE
       texas:
         members: [texas_a, texas_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 12
-        medicaid_ltss_de_post_six_month_budget_election: COUPLE
+        de_medicaid_ltss_post_six_month_budget_election: COUPLE
     households:
       delaware:
         members: [hcbs_a, hcbs_b, different_facilities_a, different_facilities_b, single]
@@ -665,12 +665,12 @@
         members: [before_a, before_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 2
-        medicaid_ltss_de_post_six_month_budget_election: INDIVIDUAL
+        de_medicaid_ltss_post_six_month_budget_election: INDIVIDUAL
       boundary:
         members: [boundary_a, boundary_b]
         medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
         medicaid_ltss_spouses_months_in_same_institutional_facility: 3
-        medicaid_ltss_de_post_six_month_budget_election: INDIVIDUAL
+        de_medicaid_ltss_post_six_month_budget_election: INDIVIDUAL
     households:
       household:
         members: [before_a, before_b, boundary_a, boundary_b]

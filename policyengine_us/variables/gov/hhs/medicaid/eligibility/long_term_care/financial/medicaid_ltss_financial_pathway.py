@@ -55,7 +55,7 @@ class medicaid_ltss_financial_pathway(Variable):
         assistance_unit_size = person("medicaid_ltss_assistance_unit_size", period)
         income = max_(
             person("medicaid_ltss_qit_adjusted_income", period)
-            - person("medicaid_ltss_wa_excluded_income", period),
+            - person("wa_medicaid_ltss_excluded_income", period),
             0,
         )
         special_income_limit = person("medicaid_ltss_special_income_limit", period)

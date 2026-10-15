@@ -27,7 +27,7 @@ class medicaid_ltss_individual_countable_income(Variable):
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=9",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=10",
         "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=71",
-        "https://regulations.delaware.gov/api/AdminCode/title16/20000/13aee487-1cd1-4726-addf-63603af28a78#page=6",
+        "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=5",
         "https://www.ssa.gov/OP_Home/cfr20/416/416-1112.htm",
         "https://app.leg.wa.gov/wac/default.aspx?cite=182-513-1340",
     )
@@ -67,7 +67,7 @@ class medicaid_ltss_individual_countable_income(Variable):
             community_spouse_budget,
             ordinary_budget,
         )
-        washington_excluded = person("medicaid_ltss_wa_excluded_income", period)
+        washington_excluded = person("wa_medicaid_ltss_excluded_income", period)
         texas_excluded = person(
             "tx_medicaid_ltss_excluded_interest_and_dividends", period
         )

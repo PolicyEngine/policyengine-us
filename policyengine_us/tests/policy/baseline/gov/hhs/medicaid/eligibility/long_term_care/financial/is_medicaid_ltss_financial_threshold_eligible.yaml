@@ -451,6 +451,11 @@
         wa_medicaid_ltss_couple_countable_resources_at_most_recent_institutionalization: 100_000
         medicaid_ltss_individual_countable_resources: 2_000
         medicaid_ltss_non_delaware_community_spouse_countable_resources: 72_530
+    marital_units:
+      at_state_standard:
+        members: [at_state_standard]
+      above_state_standard:
+        members: [above_state_standard]
     households:
       at_household:
         members: [at_state_standard]
@@ -461,6 +466,7 @@
         state_code:
           2026: WA
   output:
+    medicaid_ltss_community_spouse_countable_resources: [72_529, 72_530]
     medicaid_ltss_financial_pathway: [SPECIAL_INCOME, SPECIAL_INCOME]
     is_medicaid_ltss_income_eligible: [true, true]
     medicaid_ltss_csra_resource_eligible: [true, false]

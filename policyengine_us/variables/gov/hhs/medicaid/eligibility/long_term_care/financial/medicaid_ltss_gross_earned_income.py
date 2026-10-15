@@ -20,7 +20,7 @@ class medicaid_ltss_gross_earned_income(Variable):
         "spouse reports their own income; the model combines it when "
         "couple budgeting applies."
     )
-    reference = "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=5"
+    reference = "https://regulations.delaware.gov/api/AdminCode/title16/20000/61c317a6-5b56-4745-83ff-60107295dd03#page=6"
 
     def formula(person, period, parameters):
         reported = person("medicaid_ltss_reported_gross_earned_income", period)

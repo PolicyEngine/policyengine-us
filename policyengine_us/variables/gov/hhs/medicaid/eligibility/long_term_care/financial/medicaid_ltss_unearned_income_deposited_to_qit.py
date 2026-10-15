@@ -16,8 +16,11 @@ class medicaid_ltss_unearned_income_deposited_to_qit(Variable):
         "model excludes these deposits from gross unearned income without "
         "allowing a negative remainder. The Texas opening-month rule can "
         "also exclude an entire identified source after verification of "
-        "subsequent full deposits. Trust legality, irrevocability, "
-        "funding, payback terms, and the validity of a deposit are unmodeled."
+        "subsequent full deposits. An unverified partial opening-month "
+        "deposit invalidates the Texas trust for this screen, restoring "
+        "both income streams including their deposits. Other trust "
+        "legality, irrevocability, funding, payback terms, and deposit "
+        "validity remain unmodeled."
     )
     reference = (
         "https://www.law.cornell.edu/uscode/text/42/1396p#d_4_B",

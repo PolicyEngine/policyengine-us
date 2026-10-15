@@ -14,7 +14,7 @@ class medicaid_ltss_assistance_unit_size(Variable):
         "unit requesting or receiving services in the same facility must "
         "use couple budgeting until six completed months there; at six "
         "months the couple's reported "
-        "medicaid_ltss_de_post_six_month_budget_election selects individual "
+        "de_medicaid_ltss_post_six_month_budget_election selects individual "
         "or couple budgeting. When that election is NOT_SUPPLIED, the "
         "model uses whichever budget allows more spouses to pass both "
         "income and resource thresholds, choosing individual budgets in "
@@ -27,9 +27,14 @@ class medicaid_ltss_assistance_unit_size(Variable):
         "unit independently of whether a financial pathway is modeled. "
         "Outside Delaware, supply the separate "
         "medicaid_ltss_non_delaware_assistance_unit_size input: use two only "
-        "where both spouses are budgeted as a couple, including Texas "
-        "spouses in the same institutional setting, and one for an "
-        "individual applicant. The outside-Delaware default zero and "
+        "where both spouses are candidates for a couple budget. Texas "
+        "spouses in the same institutional setting are tested as a "
+        "couple first; G-6120 requires individual budgets when that "
+        "couple exceeds either its income or resource limit. Report one "
+        "for separate institutional settings or an individual applicant. "
+        "A couple-sized unit with a community-spouse flag is inconsistent "
+        "and remains a couple unit so the resource screen fails closed. "
+        "The outside-Delaware default zero and "
         "unsupported sizes fail closed. Income and resources are supplied "
         "for each person and combined internally for a couple budget."
     )
@@ -77,7 +82,7 @@ class medicaid_ltss_assistance_unit_size(Variable):
         couple_eligible_spouses = 2 * couple_passes
         favorable_couple_budget = couple_eligible_spouses > individual_eligible_spouses
         election = person.marital_unit(
-            "medicaid_ltss_de_post_six_month_budget_election", period
+            "de_medicaid_ltss_post_six_month_budget_election", period
         )
         election_values = election.possible_values
         elected_couple_budget = select(
@@ -95,8 +100,26 @@ class medicaid_ltss_assistance_unit_size(Variable):
             | elected_couple_budget
         )
         delaware_unit = where(same_address_hcbs | institutional_couple, 2, 1)
+        reported_unit = person(
+            "medicaid_ltss_non_delaware_assistance_unit_size", period
+        )
+        texas_couple_limit = (
+            p.tx.special_income_limit.rate
+            * fbr.individual
+            * p.tx.special_income_limit.couple_multiplier
+        )
+        texas_couple_passes = (couple_income <= texas_couple_limit) & (
+            couple_resources <= resources_limit.couple
+        )
+        # G-6120: an ineligible institutional couple receives two individual
+        # budgets. A community-spouse flag contradicts that couple contract.
+        texas_fallback = (
+            (state == state.possible_values.TX)
+            & (reported_unit == 2)
+            & ~person("medicaid_ltss_has_community_spouse", period)
+            & ~texas_couple_passes
+        )
+        outside_delaware_unit = where(texas_fallback, 1, reported_unit)
         return where(
-            state == state.possible_values.DE,
-            delaware_unit,
-            person("medicaid_ltss_non_delaware_assistance_unit_size", period),
+            state == state.possible_values.DE, delaware_unit, outside_delaware_unit
         )

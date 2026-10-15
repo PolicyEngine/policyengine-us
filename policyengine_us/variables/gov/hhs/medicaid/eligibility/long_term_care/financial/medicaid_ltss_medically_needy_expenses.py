@@ -15,7 +15,7 @@ class medicaid_ltss_medically_needy_expenses(Variable):
         "applicable expense categories, ordering, and documentation; the "
         "model does not adjudicate expenses or calculate a spenddown budget "
         "period. Omit source receipts already removed by "
-        "medicaid_ltss_wa_excluded_income, including modeled interest, "
+        "wa_medicaid_ltss_excluded_income, including modeled interest, "
         "dividends, SSI, and state public assistance, to avoid a duplicate "
         "deduction."
     )

@@ -10,11 +10,13 @@ class medicaid_ltss_community_spouse_countable_resources(Variable):
     definition_period = MONTH
     default_value = 0
     documentation = (
-        "Delaware derives the community spouse's own current countable "
+        "Texas, Delaware, and Washington derive the community spouse's own current countable "
         "resources from the other person's resource inventory within their "
         "two-person marital unit. Supply each spouse's own "
         "medicaid_ltss_individual_countable_resources rather than a "
-        "pre-attributed community-spouse total. Outside Delaware it reads "
+        "pre-attributed community-spouse total. For Texas or Washington "
+        "applicants whose community spouse is outside the simulation, "
+        "the singleton marital unit instead reads "
         "medicaid_ltss_non_delaware_community_spouse_countable_resources, "
         "the spouse's own current comprehensive countable-resource "
         "inventory after applicable ownership and exclusion rules. Combined "
@@ -32,14 +34,14 @@ class medicaid_ltss_community_spouse_countable_resources(Variable):
         own_resources = person("medicaid_ltss_individual_countable_resources", period)
         spouse_resources = person.marital_unit.sum(own_resources) - own_resources
         has_spouse = person("medicaid_ltss_has_community_spouse", period)
-        delaware_resources = where(
-            has_spouse & (person.marital_unit.nb_persons() == 2), spouse_resources, 0
+        represented_spouse = person.marital_unit.nb_persons() == 2
+        external_spouse_resources = person(
+            "medicaid_ltss_non_delaware_community_spouse_countable_resources",
+            period,
         )
-        return where(
-            state == state.possible_values.DE,
-            delaware_resources,
-            person(
-                "medicaid_ltss_non_delaware_community_spouse_countable_resources",
-                period,
-            ),
+        resources = where(
+            represented_spouse,
+            spouse_resources,
+            where(state == state.possible_values.DE, 0, external_spouse_resources),
         )
+        return where(has_spouse, resources, 0)

@@ -7,7 +7,7 @@ class MedicaidLTSSDEPostSixMonthBudgetElection(Enum):
     NOT_SUPPLIED = "Not supplied"
 
 
-class medicaid_ltss_de_post_six_month_budget_election(Variable):
+class de_medicaid_ltss_post_six_month_budget_election(Variable):
     value_type = Enum
     possible_values = MedicaidLTSSDEPostSixMonthBudgetElection
     default_value = MedicaidLTSSDEPostSixMonthBudgetElection.NOT_SUPPLIED

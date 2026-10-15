@@ -1,1 +1,0 @@
-Apply Washington Medicaid LTSS source income exclusions before the special income limit and medically needy payment thresholds, with monthly interest, dividend, SSI, and state public-assistance receipt facts.

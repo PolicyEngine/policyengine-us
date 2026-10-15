@@ -402,15 +402,66 @@ def test_delaware_independent_applicants_derive_individual_units(population):
     _, column, base, shifted = population
     delaware = column("state") == "DE"
     assert (base["medicaid_ltss_assistance_unit_size"][delaware] == 1).all()
+    # Texas can switch its candidate unit after a couple budget fails;
+    # every other independent-applicant unit remains unchanged.
+    unchanged = column("state") != "TX"
     for results in shifted.values():
         np.testing.assert_array_equal(
-            results["medicaid_ltss_assistance_unit_size"],
-            base["medicaid_ltss_assistance_unit_size"],
+            results["medicaid_ltss_assistance_unit_size"][unchanged],
+            base["medicaid_ltss_assistance_unit_size"][unchanged],
         )
     np.testing.assert_allclose(
         base["medicaid_ltss_countable_resources"][delaware],
         column("resources")[delaware],
     )
+
+
+def test_texas_independent_candidate_units_follow_the_failed_couple_budget(population):
+    _, column, base, shifted = population
+    texas = column("state") == "TX"
+    candidate = column("unit_size")
+    inconsistent_spouse = column("has_community_spouse")
+    for results in [base, *shifted.values()]:
+        # G-6120 uses individual budgets once the candidate couple exceeds
+        # either published 2026 limit, $5,964 income or $3,000 resources.
+        # These singleton candidate rows retain the existing caller contract;
+        # the paired-spouse property below covers actual combined budgets.
+        couple_passes = (
+            results["medicaid_ltss_individual_countable_income"] <= 5_964
+        ) & (results["medicaid_ltss_countable_resources"] <= 3_000)
+        expected = np.where(
+            (candidate == 2) & ~inconsistent_spouse & ~couple_passes, 1, candidate
+        )
+        np.testing.assert_array_equal(
+            results["medicaid_ltss_assistance_unit_size"][texas], expected[texas]
+        )
+
+
+def test_texas_actual_couple_fallback_uses_both_financial_limits(election_couples):
+    people, base, elected, _ = election_couples
+    texas = np.repeat([couple["state"] == "TX" for couple in people], 2)
+    expected_units = []
+    expected_eligible = []
+    for couple in people:
+        incomes = couple["earned"] + couple["unearned"]
+        resources = couple["resources"]
+        # G-6120: inclusive coupled standards, then each individual's budget.
+        coupled = sum(incomes) <= 5_964 and sum(resources) <= 3_000
+        expected_units.extend([2 if coupled else 1] * 2)
+        expected_eligible.extend(
+            [True, True] if coupled else (incomes <= 2_982) & (resources <= 2_000)
+        )
+    assert texas.any()
+    assert (np.array(expected_units)[texas] == 1).any()
+    for results in [base, *elected.values()]:
+        np.testing.assert_array_equal(
+            results["medicaid_ltss_assistance_unit_size"][texas],
+            np.array(expected_units)[texas],
+        )
+        np.testing.assert_array_equal(
+            results["is_medicaid_ltss_financial_threshold_eligible"][texas],
+            np.array(expected_eligible)[texas],
+        )
 
 
 def test_washington_dated_allocation_and_ownership_rules(population):
@@ -524,7 +575,7 @@ def _couple_results(couples, raised_spouse=None, reverse=False, election=None):
         }
         if election is not None:
             situation["marital_units"][f"couple_{index}"][
-                "medicaid_ltss_de_post_six_month_budget_election"
+                "de_medicaid_ltss_post_six_month_budget_election"
             ] = month(election)
         for spouse, name in enumerate(names):
             situation["people"][name] = {
@@ -1076,7 +1127,7 @@ def test_dividend_exclusion_never_exceeds_dividends_counted_in_gross(source):
     simulation = Simulation(situation=situation)
     counted_dividends = simulation.calculate("dividend_income", YEAR) / 12
     gross = simulation.calculate("medicaid_ltss_gross_unearned_income", PERIOD)
-    excluded = simulation.calculate("medicaid_ltss_wa_excluded_income", PERIOD)
+    excluded = simulation.calculate("wa_medicaid_ltss_excluded_income", PERIOD)
     np.testing.assert_allclose(gross, 2_900 + counted_dividends, atol=0.001)
     assert (excluded <= counted_dividends + 0.001).all()
     np.testing.assert_allclose(excluded, counted_dividends, atol=0.001)
