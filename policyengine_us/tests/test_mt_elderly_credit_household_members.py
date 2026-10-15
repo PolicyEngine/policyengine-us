@@ -79,6 +79,9 @@ def build_situation(cases):
                 "social_security_retirement": {YEAR: c["claimant_ss"]},
                 "real_estate_taxes": {YEAR: c["property_tax"]},
                 "rent": {YEAR: c["rent"]},
+                # The model would compute SSI for a claimant with little
+                # income; SSI has its own tests (government assistance).
+                "ssi": {YEAR: 0},
             }
             people[member] = {
                 "age": {YEAR: c["member_age"]},
