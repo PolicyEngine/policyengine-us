@@ -114,9 +114,9 @@ class medicaid_ltss_csra_resource_eligible(Variable):
         pre_1989_resources = (
             person("wa_medicaid_ltss_solely_owned_countable_resources", period)
             + person("wa_medicaid_ltss_jointly_owned_countable_resources", period)
-        ) / 2
+        ) * p.wa.csra.pre_1989_resource_share
         community_spouse_eligible = where(
-            (state == states.WA) & (onset < 198910),
+            (state == states.WA) & (onset < p.wa.csra.maximum_regime_start),
             (assistance_unit_size == 1) & (pre_1989_resources <= resource_limit),
             community_spouse_eligible,
         ) & ((state != states.WA) | valid_onset)

@@ -91,7 +91,8 @@ class medicaid_ltss_assistance_unit_size(Variable):
         # DSSM 20810 allows an election only after six completed months in
         # the same facility; mandatory institutional and HCBS units prevail.
         institutional_couple = same_facility & (
-            (months_together < 6) | elected_couple_budget
+            (months_together < p.de.assistance_unit.same_facility_election_months)
+            | elected_couple_budget
         )
         delaware_unit = where(same_address_hcbs | institutional_couple, 2, 1)
         return where(

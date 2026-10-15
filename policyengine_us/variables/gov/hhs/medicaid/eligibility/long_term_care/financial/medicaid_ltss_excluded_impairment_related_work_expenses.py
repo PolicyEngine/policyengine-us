@@ -28,11 +28,12 @@ class medicaid_ltss_excluded_impairment_related_work_expenses(Variable):
     def formula_2026_01_01(person, period, parameters):
         disabled = person("meets_ssi_disability_criteria", period.this_year)
         blind = person("is_blind", period.this_year)
-        under_65 = person("age", period.this_year) < 65
+        aged_threshold = parameters(period).gov.ssa.ssi.eligibility.aged_threshold
+        below_aged_threshold = person("age", period.this_year) < aged_threshold
         qualifying_prior_receipt = person(
             "medicaid_ltss_received_disability_payments_before_age_65", period
         )
-        eligible = disabled & ~blind & (under_65 | qualifying_prior_receipt)
+        eligible = disabled & ~blind & (below_aged_threshold | qualifying_prior_receipt)
         expenses = max_(
             person("medicaid_ltss_impairment_related_work_expenses", period), 0
         )

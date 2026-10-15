@@ -641,3 +641,45 @@
     medicaid_ltss_financial_pathway:
       [UNMODELED, UNMODELED, SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME, SPECIAL_INCOME]
     is_medicaid_ltss_financial_threshold_eligible: [false, false, true, true, true, true, true]
+
+
+- name: Case 9, the same-facility election duration parameter controls the individual-budget election boundary.
+  period: 2026-09
+  input:
+    gov.hhs.medicaid.eligibility.long_term_care.financial.de.assistance_unit.same_facility_election_months: 3
+    people:
+      before_a:
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 1_000
+      before_b:
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 1_000
+      boundary_a:
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 1_000
+      boundary_b:
+        medicaid_ltss_reported_gross_unearned_income: 2_000
+        medicaid_ltss_individual_countable_resources: 1_000
+    marital_units:
+      before:
+        members: [before_a, before_b]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 2
+        medicaid_ltss_de_post_six_month_budget_election: INDIVIDUAL
+      boundary:
+        members: [boundary_a, boundary_b]
+        medicaid_ltss_spouses_requesting_or_receiving_institutional_services_in_same_facility: true
+        medicaid_ltss_spouses_months_in_same_institutional_facility: 3
+        medicaid_ltss_de_post_six_month_budget_election: INDIVIDUAL
+    households:
+      household:
+        members: [before_a, before_b, boundary_a, boundary_b]
+        state_code:
+          2026: DE
+  output:
+    # The three-month reform makes the reported individual election effective
+    # at month three, while month two still uses the compulsory couple budget.
+    medicaid_ltss_assistance_unit_size: [2, 2, 1, 1]
+    # A couple shares one $20 exclusion: 4,000 - 20 = 3,980.
+    # Each individual receives $20: 2,000 - 20 = 1,980.
+    medicaid_ltss_countable_income: [3_980, 3_980, 1_980, 1_980]

@@ -1714,3 +1714,55 @@
     medicaid_ltss_couple_countable_income: [5964, 5964]
     medicaid_ltss_countable_income: [5964, 5964]
     is_medicaid_ltss_income_eligible: [true, true]
+
+
+- name: Case 28, the work-expense allocation parameter controls the monthly divisor and final allocated month.
+  period: 2026-07
+  input:
+    gov.hhs.medicaid.eligibility.long_term_care.financial.federal.irwe.allocation_months: 6
+    people:
+      sixth_month:
+        age:
+          2026: 60
+        meets_ssi_disability_criteria:
+          2026: true
+        medicaid_ltss_reported_gross_earned_income:
+          2026-02: 5_455
+          2026-07: 5_455
+        medicaid_ltss_irwe_nonrecurring_payment:
+          2026-02: 3_600
+        medicaid_ltss_irwe_allocate_over_12_months:
+          2026-02: true
+        medicaid_ltss_irwe_working_when_paid:
+          2026-02: true
+      seventh_month:
+        age:
+          2026: 60
+        meets_ssi_disability_criteria:
+          2026: true
+        medicaid_ltss_reported_gross_earned_income:
+          2026-01: 5_455
+          2026-07: 5_455
+        medicaid_ltss_irwe_nonrecurring_payment:
+          2026-01: 3_600
+        medicaid_ltss_irwe_allocate_over_12_months:
+          2026-01: true
+        medicaid_ltss_irwe_working_when_paid:
+          2026-01: true
+    marital_units:
+      sixth_month:
+        members: [sixth_month]
+      seventh_month:
+        members: [seventh_month]
+    households:
+      household:
+        members: [sixth_month, seventh_month]
+        state_code:
+          2026: DE
+  output:
+    # A $3,600 purchase allocated over six months gives $600 in the sixth
+    # month and $0 in the seventh. The standard unreformed divisor is twelve.
+    medicaid_ltss_impairment_related_work_expenses: [600, 0]
+    medicaid_ltss_excluded_impairment_related_work_expenses: [600, 0]
+    # (5,455 - 20 - 65 - 600) / 2 = 2,385; without IRWE it is 2,685.
+    medicaid_ltss_countable_income: [2_385, 2_685]

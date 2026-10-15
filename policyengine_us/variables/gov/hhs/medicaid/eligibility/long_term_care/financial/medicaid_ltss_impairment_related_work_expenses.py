@@ -45,9 +45,19 @@ class medicaid_ltss_impairment_related_work_expenses(Variable):
         if (working & (monthly > 0)).any():
             received_earnings = person("medicaid_ltss_gross_earned_income", period) > 0
             expenses = where(working & received_earnings, monthly, 0)
-        # 416.976(e)(2): payment month plus the following eleven months.
-        for months_ago in range(12):
+        # 416.976(e)(2): the allocation begins in the payment month.
+        allocation_parameter = parameters.gov.hhs.medicaid.eligibility.long_term_care.financial.federal.irwe.allocation_months
+        # A shorter new allocation rule must not truncate older purchases.
+        # Future policy values do not extend the current lookback.
+        allocation_months = max(
+            int(value.value)
+            for value in allocation_parameter.values_list
+            if value.instant_str <= str(period.start) and value.value is not None
+        )
+        for months_ago in range(allocation_months):
             paid_month = period.offset(-months_ago)
+            # Keep each purchase on the allocation rule in its payment month.
+            paid_allocation_months = int(allocation_parameter(paid_month.start))
             allocated = person("medicaid_ltss_irwe_allocate_over_12_months", paid_month)
             paid_while_working = person(
                 "medicaid_ltss_irwe_working_when_paid", paid_month
@@ -66,7 +76,8 @@ class medicaid_ltss_impairment_related_work_expenses(Variable):
                 ),
                 0,
             )
-            applies = paid_while_working & (allocated | (months_ago == 0))
+            allocated_month = allocated & (months_ago < paid_allocation_months)
+            applies = paid_while_working & (allocated_month | (months_ago == 0))
             # No earnings history is needed for months with no usable payment.
             if not (applies & (net_payment > 0)).any():
                 continue
@@ -74,7 +85,9 @@ class medicaid_ltss_impairment_related_work_expenses(Variable):
                 person("medicaid_ltss_gross_earned_income", paid_month) > 0
             )
             deduction = where(
-                allocated, net_payment / 12, net_payment if months_ago == 0 else 0
+                allocated_month,
+                net_payment / paid_allocation_months,
+                net_payment if months_ago == 0 else 0,
             )
             expenses += where(paid_while_working & paid_with_earnings, deduction, 0)
         return expenses

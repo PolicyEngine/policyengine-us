@@ -53,7 +53,10 @@ class medicaid_ltss_csra(Variable):
                 period,
             ),
         )
-        modern = min_(max_(snapshot / 2, floor), p.federal.csra.maximum)
+        modern = min_(
+            max_(snapshot * p.federal.csra.snapshot_share, floor),
+            p.federal.csra.maximum,
+        )
         start_year = person(
             "wa_medicaid_ltss_most_recent_institutionalization_start_year", period
         )
@@ -64,7 +67,10 @@ class medicaid_ltss_csra(Variable):
         # WAC 182-513-1355(2)(a), (3)(a), and (3)(b). Both statutory
         # boundaries are the first day of the month, so year/month suffices.
         allowance = select(
-            [washington & (onset < 198910), washington & (onset < 200308)],
+            [
+                washington & (onset < p.wa.csra.maximum_regime_start),
+                washington & (onset < p.wa.csra.snapshot_regime_start),
+            ],
             [0, p.federal.csra.maximum],
             default=modern,
         )

@@ -9,6 +9,8 @@ limits agree with the parameters they are derived from.
 import numpy as np
 import pytest
 
+from policyengine_core.reforms import Reform
+
 from policyengine_us import Simulation
 from policyengine_us.system import system
 
@@ -1152,3 +1154,58 @@ def test_more_nonrecurring_expense_never_raises_countable_income(allocate):
     )
     assert (changed <= base + 0.001).all()
     assert (changed < base - 0.001).any()
+
+
+def test_irwe_allocation_preserves_the_payment_month_rule_after_a_duration_reduction():
+    # YAML inline parameter overrides apply a scalar across all test years.
+    # A dated reform is needed to distinguish a purchase's allocation rule
+    # from the current rule. This adds one isolated reform model, no dataset.
+    path = (
+        "gov.hhs.medicaid.eligibility.long_term_care.financial."
+        "federal.irwe.allocation_months"
+    )
+    reform = Reform.from_dict({path: {"2026-07-01": 6}})
+    assessment = "2026-09"
+    simulation = Simulation(
+        reform=reform,
+        situation={
+            "people": {
+                "older_purchase": {
+                    "medicaid_ltss_reported_gross_earned_income": {
+                        "2026-02": 10_000,
+                        assessment: 10_000,
+                    },
+                    "medicaid_ltss_irwe_nonrecurring_payment": {"2026-02": 4_800},
+                    "medicaid_ltss_irwe_allocate_over_12_months": {"2026-02": True},
+                    "medicaid_ltss_irwe_working_when_paid": {"2026-02": True},
+                },
+                "newer_purchase": {
+                    "medicaid_ltss_reported_gross_earned_income": {
+                        "2026-07": 10_000,
+                        assessment: 10_000,
+                    },
+                    "medicaid_ltss_irwe_nonrecurring_payment": {"2026-07": 4_800},
+                    "medicaid_ltss_irwe_allocate_over_12_months": {"2026-07": True},
+                    "medicaid_ltss_irwe_working_when_paid": {"2026-07": True},
+                },
+            },
+            "marital_units": {
+                "older": {"members": ["older_purchase"]},
+                "newer": {"members": ["newer_purchase"]},
+            },
+            "households": {
+                "household": {
+                    "members": ["older_purchase", "newer_purchase"],
+                    "state_code": {"2026": "DE"},
+                },
+            },
+        },
+    )
+    # February's purchase remains allocated through its eighth month at
+    # $4,800 / 12 = $400. July's purchase uses the new $4,800 / 6 = $800.
+    np.testing.assert_allclose(
+        simulation.calculate(
+            "medicaid_ltss_impairment_related_work_expenses", assessment
+        ),
+        [400, 800],
+    )
