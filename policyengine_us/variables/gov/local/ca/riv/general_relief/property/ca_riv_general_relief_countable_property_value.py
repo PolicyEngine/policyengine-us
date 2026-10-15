@@ -9,6 +9,7 @@ class ca_riv_general_relief_countable_property_value(Variable):
     definition_period = YEAR
     quantity_type = STOCK
     defined_for = "in_riv"
+    reference = "https://web.archive.org/web/20210713051521/http://dpss.co.riverside.ca.us/files/pdf/dpss-general-assistance.pdf#page=1"
 
     # The property limit applies to the unit's combined property. The sources
     # mix unit-level amounts (cash assets, countable vehicle value), which are
