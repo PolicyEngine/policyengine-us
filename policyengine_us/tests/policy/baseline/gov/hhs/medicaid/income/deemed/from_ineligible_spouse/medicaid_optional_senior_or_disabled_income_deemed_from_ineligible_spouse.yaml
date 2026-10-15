@@ -84,3 +84,39 @@
     # 1,450 - 20 = 1,430 monthly, or 17,160 annually.
     medicaid_optional_senior_or_disabled_countable_income: 17_160
     is_optional_senior_or_disabled_income_eligible: false
+
+- name: Optional Medicaid spouse deeming inherits the SSI exclusion for qualified pretax premiums.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      recipient:
+        age: 70
+        is_tax_unit_head: true
+      spouse:
+        age: 60
+        is_tax_unit_spouse: true
+        employment_income: 24_000
+        pre_tax_health_insurance_premiums: 2_400
+      child:
+        age: 14
+        employment_income: 2_400
+        pre_tax_health_insurance_premiums: 1_200
+    tax_units:
+      tax_unit:
+        members: [recipient, spouse, child]
+    marital_units:
+      marital_unit:
+        members: [recipient, spouse]
+    households:
+      household:
+        members: [recipient, spouse, child]
+        state_code: NC
+  output:
+    # 42 USC 1396a(m) uses SSI methodology for this optional pathway.
+    # POMS SI 00820.102C.2: spouse wages 21,600; child wages 1,200.
+    # 20 CFR 416.1163(b), (d): allocation = (1,450 - 967) * 12
+    # - 1,200 = 4,596; remaining spouse wages = 17,004 > 5,796.
+    # (17,004 - 20 * 12 - 65 * 12) / 2 = 7,992 deemed and countable.
+    medicaid_optional_senior_or_disabled_income_deemed_from_ineligible_spouse: [7_992, 0, 0]
+    medicaid_optional_senior_or_disabled_countable_income: [7_992, 0, 0]
