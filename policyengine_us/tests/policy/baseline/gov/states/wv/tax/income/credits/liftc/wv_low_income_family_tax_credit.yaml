@@ -58,3 +58,84 @@
     # 450< wv_low_income_family_tax_credit_agi-fpg = = 12000-11515= 485 <600 60% x the amount of tax owed
     # 1_000 * 0.6 
     wv_low_income_family_tax_credit: 0
+
+# 2025 IT-140 Family Tax Credit Tables (page 12 of the booklet): each row is
+# "greater than ... equal to or less than", so the upper endpoint gets the
+# higher percentage. Family size 1 limits are $15,650 (Table 1) and $7,825
+# (Table 2, married filing separately).
+- name: 2025 single filer at exactly the 100% upper endpoint gets 100%.
+  period: 2025
+  input:
+    wv_low_income_family_tax_credit_agi: 15_650
+    wv_low_income_family_tax_credit_fpg: 15_650
+    wv_low_income_family_tax_credit_eligible: true
+    filing_status: SINGLE
+    wv_income_tax_before_non_refundable_credits: 1_000
+  output:
+    wv_low_income_family_tax_credit: 1_000
+
+- name: 2025 single filer one dollar above the 100% upper endpoint gets 90%.
+  period: 2025
+  input:
+    wv_low_income_family_tax_credit_agi: 15_651
+    wv_low_income_family_tax_credit_fpg: 15_650
+    wv_low_income_family_tax_credit_eligible: true
+    filing_status: SINGLE
+    wv_income_tax_before_non_refundable_credits: 1_000
+  output:
+    wv_low_income_family_tax_credit: 900
+
+- name: 2025 head of household at exactly the 90% upper endpoint gets 90%.
+  period: 2025
+  input:
+    wv_low_income_family_tax_credit_agi: 15_950
+    wv_low_income_family_tax_credit_fpg: 15_650
+    wv_low_income_family_tax_credit_eligible: true
+    filing_status: HEAD_OF_HOUSEHOLD
+    wv_income_tax_before_non_refundable_credits: 1_000
+  output:
+    wv_low_income_family_tax_credit: 900
+
+- name: 2025 joint filers at exactly the 10% upper endpoint get 10%.
+  period: 2025
+  input:
+    wv_low_income_family_tax_credit_agi: 23_850
+    wv_low_income_family_tax_credit_fpg: 21_150
+    wv_low_income_family_tax_credit_eligible: true
+    filing_status: JOINT
+    wv_income_tax_before_non_refundable_credits: 1_000
+  output:
+    wv_low_income_family_tax_credit: 100
+
+- name: 2025 joint filers one dollar above the 10% upper endpoint get no credit.
+  period: 2025
+  input:
+    wv_low_income_family_tax_credit_agi: 23_851
+    wv_low_income_family_tax_credit_fpg: 21_150
+    wv_low_income_family_tax_credit_eligible: true
+    filing_status: JOINT
+    wv_income_tax_before_non_refundable_credits: 1_000
+  output:
+    wv_low_income_family_tax_credit: 0
+
+- name: 2025 separate filer at exactly the Table 2 100% upper endpoint gets 100%.
+  period: 2025
+  input:
+    wv_low_income_family_tax_credit_agi: 7_825
+    wv_low_income_family_tax_credit_fpg: 15_650
+    wv_low_income_family_tax_credit_eligible: true
+    filing_status: SEPARATE
+    wv_income_tax_before_non_refundable_credits: 1_000
+  output:
+    wv_low_income_family_tax_credit: 1_000
+
+- name: 2025 separate filer at exactly the Table 2 90% upper endpoint gets 90%.
+  period: 2025
+  input:
+    wv_low_income_family_tax_credit_agi: 7_975
+    wv_low_income_family_tax_credit_fpg: 15_650
+    wv_low_income_family_tax_credit_eligible: true
+    filing_status: SEPARATE
+    wv_income_tax_before_non_refundable_credits: 1_000
+  output:
+    wv_low_income_family_tax_credit: 900

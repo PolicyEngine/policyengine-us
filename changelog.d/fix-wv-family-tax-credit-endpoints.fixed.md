@@ -1,0 +1,1 @@
+Give the West Virginia Family Tax Credit percentage at each table's upper endpoint (e.g. 100% at modified AGI of exactly $15,650 for a family of one in 2025), as the IT-140 Family Tax Credit Tables provide.
