@@ -23,4 +23,4 @@
     dc_tanf_gross_earned_income: 4_020
     is_tanf_enrolled: true
   output:
-    dc_tanf_earned_income_after_disregard_person: 693 # $160 * 12 and additional two thirds disregard
+    dc_tanf_earned_income_after_disregard_person: 700 # (4_020 / 12 - 160) * (1 - 2/3) * 12 = 175 / 3 * 12 = 700
