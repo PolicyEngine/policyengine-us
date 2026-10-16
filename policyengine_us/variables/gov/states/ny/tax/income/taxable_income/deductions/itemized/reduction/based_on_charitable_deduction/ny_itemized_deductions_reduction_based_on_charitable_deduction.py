@@ -18,5 +18,7 @@ class ny_itemized_deductions_reduction_based_on_charitable_deduction(Variable):
         charitable_deduction = tax_unit("charitable_deduction", period)
         applicable_rate = p.charitable_deduction_rate.calc(agi)
         max_deduction = tax_unit("ny_itemized_deductions_max", period)
+        phase_out = tax_unit("ny_itemized_deductions_phase_out", period)
+        pre_reduction_deductions = max_(0, max_deduction - phase_out)
         total_reduction_amount = charitable_deduction * applicable_rate
-        return max_(max_deduction - total_reduction_amount, 0)
+        return max_(pre_reduction_deductions - total_reduction_amount, 0)

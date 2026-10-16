@@ -81,3 +81,37 @@
     state_code: NY
   output:
     ny_itemized_deductions_reduction: 50
+
+- name: High-income NY filer ($1.5M AGI) capped at 50% of charitable deduction under § 615(g)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    employment_income: 1_500_000
+    interest_deduction: 50_000
+    charitable_cash_donations_50_pct_orgs: 60_000
+  output:
+    charitable_deduction: 60_000
+    ny_itemized_deductions_max: 110_000
+    ny_itemized_deductions_phase_out: 35_094
+    ny_itemized_deductions_reduction: 44_906
+    ny_itemized_deductions: 30_000
+
+- name: Ultra-high-income NY filer ($12M AGI) capped at 25% of charitable deduction under § 615(g)
+  period: 2024
+  absolute_error_margin: 1
+  input:
+    state_code: NY
+    filing_status: SINGLE
+    employment_income: 12_000_000
+    interest_deduction: 50_000
+    charitable_cash_donations_50_pct_orgs: 80_000
+    charitable_cash_donations_non_50_pct_orgs: 20_000
+  output:
+    charitable_deduction: 100_000
+    ny_itemized_deductions_max: 150_000
+    ny_itemized_deductions_phase_out: 120_000
+    ny_itemized_deductions_reduction: 5_000
+    ny_itemized_deductions: 25_000
+
