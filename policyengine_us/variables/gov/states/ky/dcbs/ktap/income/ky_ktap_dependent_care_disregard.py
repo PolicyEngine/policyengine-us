@@ -7,7 +7,10 @@ class ky_ktap_dependent_care_disregard(Variable):
     label = "Kentucky K-TAP dependent care disregard"
     unit = USD
     definition_period = MONTH
-    reference = "https://apps.legislature.ky.gov/law/kar/titles/921/002/016/"
+    reference = (
+        "https://apps.legislature.ky.gov/law/kar/titles/921/002/016/",
+        "https://www.chfs.ky.gov/agencies/dcbs/dfs/Documents/OMVOLIII.pdf",
+    )
     defined_for = StateCode.KY
 
     def formula(spm_unit, period, parameters):
@@ -31,4 +34,17 @@ class ky_ktap_dependent_care_disregard(Variable):
         total_max_disregard = spm_unit.sum(max_per_person)
         childcare_expenses = spm_unit("childcare_expenses", period)
         adult_care_expenses = add(spm_unit, period, ["care_expenses"])
-        return min_(childcare_expenses + adult_care_expenses, total_max_disregard)
+        disregard_with_child_care = min_(
+            childcare_expenses + adult_care_expenses, total_max_disregard
+        )
+        # Per Section 5(3)(b)1.c and MS 2840 B.1, child care counts only for a
+        # case that is otherwise ineligible without it; CCAP pays child care
+        # for a case that remains eligible. The month-of-application case
+        # (Section 5(3)(b)1.d) is not modeled.
+        child_care_counts = spm_unit(
+            "ky_ktap_ineligible_without_child_care_disregard", period
+        )
+        adult_care_disregard = spm_unit(
+            "ky_ktap_incapacitated_adult_care_disregard", period
+        )
+        return where(child_care_counts, disregard_with_child_care, adult_care_disregard)

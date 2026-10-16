@@ -161,3 +161,70 @@
     # Benefit: min(0.55 * $481, $524) = min($264.55, $524) = $264.55/month
     # Annual: $264.55 * 12 = $3,174.60
     ky_ktap: 264.55 * 12
+
+- name: Case 5, child care does not raise the benefit of a case eligible without it.
+  period: 2025-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        tanf_gross_earned_income: 1_000
+      child1:
+        age: 5
+      child2:
+        age: 2
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        # $1,530/month
+        childcare_expenses: 18_360
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: KY
+  output:
+    # Monthly period. Without the child care disregard, countable income is
+    # (1,000 - 175) x 0.5 = 412.50 < 631 standard of need (size 3), so the
+    # case is eligible without it and the child care is not disregarded
+    # (921 KAR 2:016 Section 5(3)(b)1.c; MS 2840 B.1).
+    ky_ktap_dependent_care_disregard: 0
+    ky_ktap_countable_income: 412.5
+    # Benefit: min(0.55 x (631 - 412.50), 524) = 120.175
+    ky_ktap: 120.175
+
+- name: Case 6, child care disregard for a case otherwise ineligible.
+  period: 2024-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      parent:
+        age: 30
+        tanf_gross_earned_income: 400
+        tanf_gross_unearned_income: 550
+      child1:
+        age: 5
+      child2:
+        age: 1
+    spm_units:
+      spm_unit:
+        members: [parent, child1, child2]
+        # $300/month
+        childcare_expenses: 3_600
+        spm_unit_cash_assets: 0
+    households:
+      household:
+        members: [parent, child1, child2]
+        state_code: KY
+  output:
+    # Monthly period. Without child care: (400 - 175) x 0.5 + 550 = 662.50
+    # >= 631 standard of need (size 3), ineligible; so the child care
+    # disregard applies: min(300, 175 + 200) = 300.
+    ky_ktap_dependent_care_disregard: 300
+    # Earned: max(400 - 175 - 300, 0) = 0; countable: 0 + 550 = 550
+    ky_ktap_countable_income: 550
+    # Gross income 950 <= 631 x 1.85 = 1,167.35
+    ky_ktap_eligible: true
+    # Benefit: min(0.55 x (631 - 550), 524) = 44.55
+    ky_ktap: 44.55
