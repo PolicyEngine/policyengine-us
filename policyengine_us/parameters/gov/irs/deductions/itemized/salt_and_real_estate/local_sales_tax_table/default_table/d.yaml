@@ -1,0 +1,28 @@
+description: PolicyEngine assigns residents of these states to Optional Local Sales Tax Table D unless their locality's table is given.
+metadata:
+  unit: list
+  period: year
+  label: States defaulting to Optional Local Sales Tax Table D
+  reference:
+    - title: 2022 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2022.pdf#page=17
+    - title: 2023 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2023.pdf#page=17
+    - title: 2024 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2024.pdf#page=16
+    - title: 2025 Instructions for Schedule A (Form 1040), Which Optional Local Sales Tax Table Should I Use?
+      href: https://www.irs.gov/pub/irs-prior/i1040sca--2025.pdf#page=18
+# Each state's default is the table in the selector row for "Any locality that
+# imposes a local sales tax" or "... or any other locality that imposes a
+# local sales tax". Residents of the localities the IRS names in other rows
+# use those rows' tables (the county and place lists).
+# New York's "Any other locality that imposes a local sales tax" row names
+# Table D, with the note "* Note: Local Table D is just 25% of the NY
+# State table."
+values:
+  2022-01-01:
+    - NY
+  2023-01-01:
+    - NY
+  2024-01-01:
+    - NY
