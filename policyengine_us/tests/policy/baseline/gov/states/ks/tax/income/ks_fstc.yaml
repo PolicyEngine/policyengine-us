@@ -41,3 +41,450 @@
     state_code: KS
   output:
     ks_fstc: 0  # income ineligible
+
+
+- name: 2022 single filer who can be claimed as a dependent gets no food sales tax credit
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 60
+        employment_income: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: KS
+  output:
+    # Line E is the total Kansas exemptions, which is "0" for a claimed filer
+    # (2022 K-40 instructions, p.6).
+    ks_fstc: 0
+
+- name: 2022 single filer who cannot be claimed gets the food sales tax credit
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 60
+        employment_income: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: KS
+  output:
+    # Age 60 qualifies; AGI $1,000 <= $30,615; 1 x $125.
+    ks_fstc: 125
+
+- name: 2022 joint return with one claimable spouse gets no food sales tax credit (the claimable spouse is the head)
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 60
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: KS
+  output:
+    # The joint return's total exemptions are 0 when either spouse is claimable.
+    ks_fstc: 0
+
+- name: 2022 joint return with one claimable spouse gets no food sales tax credit (the claimable spouse is the spouse)
+  period: 2022
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 60
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: KS
+  output:
+    ks_fstc: 0
+
+- name: 2022 joint return with both spouses claimable gets no food sales tax credit
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 60
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: KS
+  output:
+    ks_fstc: 0
+
+- name: 2022 joint return with no claimable spouse gets the food sales tax credit for both spouses
+  period: 2022
+  input:
+    people:
+      person_a:
+        age: 60
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: KS
+  output:
+    # 2 x $125 = $250.
+    ks_fstc: 250
+
+- name: 2024 single filer who can be claimed as a dependent keeps the food sales tax credit for the filer
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 60
+        employment_income: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+    tax_units:
+      tax_unit:
+        members: [person_a]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a]
+        state_code: KS
+  output:
+    # From 2024 the filing-status exemption stays; only the dependents box is
+    # "0" (2024 K-40 instructions, p.6). 1 x $125.
+    ks_fstc: 125
+
+- name: 2024 joint return with one claimable spouse keeps the food sales tax credit for both spouses (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 60
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: KS
+  output:
+    # 2 filing-status exemptions x $125 = $250.
+    ks_fstc: 250
+
+- name: 2024 joint return with one claimable spouse keeps the food sales tax credit for both spouses (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 60
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: KS
+  output:
+    ks_fstc: 250
+
+- name: 2024 joint return with both spouses claimable keeps the food sales tax credit for both spouses
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 60
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: KS
+  output:
+    ks_fstc: 250
+
+- name: 2024 joint return with no claimable spouse gets the food sales tax credit for both spouses
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 60
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: KS
+  output:
+    ks_fstc: 250
+
+- name: 2024 single filer who can be claimed as a dependent with a child gets no food sales tax credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: KS
+  output:
+    # No child is claimed "as a personal exemption" (IRC 152(b)(1)) and no
+    # filer is 55 or older, so no route to the credit.
+    ks_fstc: 0
+
+- name: 2024 single filer who cannot be claimed with a child gets the food sales tax credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: KS
+  output:
+    # Child under 18 qualifies; 2 exemptions x $125 = $250.
+    ks_fstc: 250
+
+- name: 2024 joint return with one claimable spouse and a child gets no food sales tax credit (the claimable spouse is the head)
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 25
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: KS
+  output:
+    # No dependent child and nobody 55 or older.
+    ks_fstc: 0
+
+- name: 2024 joint return with one claimable spouse and a child gets no food sales tax credit (the claimable spouse is the spouse)
+  period: 2024
+  input:
+    people:
+      person_b:
+        age: 25
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 25
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: KS
+  output:
+    ks_fstc: 0
+
+- name: 2024 joint return with both spouses claimable and a child gets no food sales tax credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 25
+        employment_income: 500
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: KS
+  output:
+    ks_fstc: 0
+
+- name: 2024 joint return with no claimable spouse and a child gets the food sales tax credit
+  period: 2024
+  input:
+    people:
+      person_a:
+        age: 25
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 25
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: KS
+  output:
+    # 3 exemptions x $125 = $375.
+    ks_fstc: 375

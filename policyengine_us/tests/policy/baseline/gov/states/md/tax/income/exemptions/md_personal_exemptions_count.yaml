@@ -1,0 +1,239 @@
+
+
+- name: 2025 single filer who can be claimed has no Maryland exemptions
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 23
+        employment_income: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MD
+  output:
+    # Filing status 6: "You do not get an exemption for yourself"; IRC
+    # 152(b)(1) leaves no dependents.
+    md_personal_exemptions_count: 0
+
+- name: 2025 single filer whose claimant meets the filing exception has an exemption for the child only
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 23
+        employment_income: 1000
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, child]
+        filing_status: SINGLE
+    households:
+      household:
+        members: [person_a, child]
+        state_code: MD
+  output:
+    # Still filing status 6 ("can be claimed"), so no own exemption; the
+    # filing exception keeps the dependent: 1 x $3,200.
+    md_personal_exemptions_count: 1
+    md_total_personal_exemptions: 3200
+
+- name: 2025 joint return with one claimable spouse counts only the other spouse (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 23
+        employment_income: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 23
+        employment_income: 1000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MD
+  output:
+    # Each spouse claims their own exemption on a separate Maryland
+    # return; the federal return has no dependents.
+    md_personal_exemptions_count: 1
+
+- name: 2025 joint return with one claimable spouse counts only the other spouse (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 23
+        employment_income: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 23
+        employment_income: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MD
+  output:
+    md_personal_exemptions_count: 1
+
+- name: 2025 joint return whose claimable spouse's claimant meets the filing exception counts the other spouse and the child (the claimable spouse is the head)
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 23
+        employment_income: 1000
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 23
+        employment_income: 1000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MD
+  output:
+    # The would-be claimant meets the filing exception (Publication 501,
+    # Dependent Taxpayer Test), so the return keeps its dependents.
+    # 1 own + 1 dependent = 2 x $3,200.
+    md_personal_exemptions_count: 2
+    md_total_personal_exemptions: 6400
+
+- name: 2025 joint return whose claimable spouse's claimant meets the filing exception counts the other spouse and the child (the claimable spouse is the spouse)
+  period: 2025
+  input:
+    people:
+      person_b:
+        age: 23
+        employment_income: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 23
+        employment_income: 1000
+        claimable_as_dependent_on_another_return: true
+        dependent_claimant_filing_exception: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: MD
+  output:
+    md_personal_exemptions_count: 2
+    md_total_personal_exemptions: 6400
+
+- name: 2025 joint return with both spouses claimable has no Maryland exemptions
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 23
+        employment_income: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 23
+        employment_income: 1000
+        claimed_as_dependent_on_another_return: true
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MD
+  output:
+    md_personal_exemptions_count: 0
+
+- name: 2025 joint return with no claimable spouse counts every member
+  period: 2025
+  input:
+    people:
+      person_a:
+        age: 23
+        employment_income: 1000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 23
+        employment_income: 1000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 4
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: MD
+  output:
+    # 2 filers + 1 child.
+    md_personal_exemptions_count: 3
