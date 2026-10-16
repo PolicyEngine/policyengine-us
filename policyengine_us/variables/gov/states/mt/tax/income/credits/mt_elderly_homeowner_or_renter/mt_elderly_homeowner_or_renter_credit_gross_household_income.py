@@ -53,16 +53,20 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
             person("dependent_gross_income", period) - own_deductions
         )
         # The income above counts only the taxable portion of Social
-        # Security: a filer's in federal AGI, a dependent's in their own
-        # gross income. Add the untaxed portion so all SS is counted per
-        # § 15-30-2337(9)(a)(viii).
+        # Security: a filer's in federal AGI (irs_gross_income counts people
+        # who are not dependents), a dependent's in their own gross income
+        # (dependent_gross_income counts people who are not the head or
+        # spouse). Subtract only the part one of them counted, then add the
+        # rest, so all SS is counted once per § 15-30-2337(9)(a)(viii) even
+        # when a person is input as both a dependent and the head.
         social_security = person("social_security", period)
-        taxable_social_security = add(
-            person,
-            period,
-            ["taxable_social_security", "dependent_taxable_social_security"],
+        head_or_spouse = person("is_tax_unit_head_or_spouse", period)
+        counted_social_security = where(
+            is_dependent,
+            ~head_or_spouse * person("dependent_taxable_social_security", period),
+            person("taxable_social_security", period),
         )
-        untaxed_social_security = max_(social_security - taxable_social_security, 0)
+        untaxed_social_security = max_(social_security - counted_social_security, 0)
         # Income is federal AGI "without regard to loss" (§ 15-30-2337(9)(a)),
         # so the business and capital losses deducted in computing federal
         # AGI are added back (2023 Elderly Homeowner/Renter Credit Schedule,
@@ -70,4 +74,59 @@ class mt_elderly_homeowner_or_renter_credit_gross_household_income(Variable):
         # losses."). The return's losses are added once, to the head.
         head = person("is_tax_unit_head", period)
         losses = head * person.tax_unit("loss_ald", period)
-        return sources + dependent_income + untaxed_social_security + losses
+        # Count each person's capital gains without losses, as 2024 Schedule
+        # 2EC line 7 requires ("do not include any capital losses"). Two
+        # losses reduce the gains the income paths count without reaching
+        # loss_ald, which holds only the capital loss deducted in AGI:
+        # - a short-term loss netted against the same person's long-term gain
+        #   (or the reverse) inside capital_gains;
+        # - the prior-year long-term capital loss carryover, which
+        #   long_term_capital_gains already includes as a loss, as Schedule D
+        #   line 15 does. Adding it back gives the year's own long-term gain
+        #   (as az_property_tax_credit_capital_gains does); only the gain it
+        #   hid is restored, never the unused loss.
+        # The long-term and short-term parts, when either is nonzero, decide
+        # the gains: max(0, long-term + carryover) + max(0, short-term).
+        # capital_gains can disagree with them: once it is an input for
+        # anyone in a simulation, everyone without one holds its default of
+        # zero, not the sum of their parts. Without parts, capital_gains is a
+        # net amount supplied directly, and the gain is max(0, net +
+        # carryover); the carryover is never counted as a gain the parts did
+        # not show.
+        carryover = max_(0, person("long_term_capital_loss_carryover", period))
+        long_term_capital_gains = person("long_term_capital_gains", period)
+        short_term_capital_gains = person("short_term_capital_gains", period)
+        short_term_gains = max_(0, short_term_capital_gains)
+        capital_gains = person("capital_gains", period)
+        parts_supplied = (long_term_capital_gains != 0) | (
+            short_term_capital_gains != 0
+        )
+        gains_without_losses = where(
+            parts_supplied,
+            max_(0, long_term_capital_gains + carryover) + short_term_gains,
+            max_(0, capital_gains + carryover),
+        )
+        # The gains each income path already counted: irs_gross_income
+        # floors the net, dependent_gross_income floors each part. The
+        # difference replaces them with the gains above; it is negative only
+        # when an inconsistent capital_gains input exceeds the parts. A person
+        # input as both a dependent and the head is counted by neither path,
+        # so nothing is restored for them.
+        counted_gains = where(
+            is_dependent,
+            ~head_or_spouse
+            * max_(
+                max_(0, long_term_capital_gains) + short_term_gains,
+                capital_gains,
+            ),
+            max_(0, capital_gains),
+        )
+        counted_by_a_path = ~(is_dependent & head_or_spouse)
+        lost_capital_gains = counted_by_a_path * (gains_without_losses - counted_gains)
+        return (
+            sources
+            + dependent_income
+            + untaxed_social_security
+            + losses
+            + lost_capital_gains
+        )

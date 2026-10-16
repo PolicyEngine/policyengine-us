@@ -1,1 +1,0 @@
-- Publish to PyPI with trusted publishing instead of the organisation-wide PyPI token.
