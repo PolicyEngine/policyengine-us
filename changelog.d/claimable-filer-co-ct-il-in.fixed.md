@@ -1,0 +1,1 @@
+Apply Colorado, Connecticut, Illinois and Indiana rules for a filer who can be claimed as a dependent: no dependent-based credits, exemptions or deductions on such a return, and no childless EITC through the state ITIN and age extensions.

@@ -51,3 +51,176 @@
     greater_age_head_spouse: 64
   output:
     ct_property_tax_credit_eligible: true
+
+
+- name: 2021 single filer who can be claimed as a dependent, no 2021 property tax credit through the dependent route
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 10_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [filer, child]
+    households:
+      household:
+        members: [filer, child]
+        state_code: CT
+  output:
+    # C.G.S. 12-704c(b)(2): under 65, only by validly claiming
+    # a dependent; a return with a claimable filer has none.
+    ct_property_tax_credit_eligible: false
+
+- name: 2021 joint return with one spouse who can be claimed as a dependent, no 2021 property tax credit through the dependent route (the claimable spouse is the head)
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CT
+  output:
+    ct_property_tax_credit_eligible: false
+
+- name: 2021 joint return with one spouse who can be claimed as a dependent, no 2021 property tax credit through the dependent route (the claimable spouse is the spouse)
+  period: 2021
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_b, person_a, child]
+        state_code: CT
+  output:
+    ct_property_tax_credit_eligible: false
+
+- name: 2021 joint return with both spouses claimable as dependents, no 2021 property tax credit through the dependent route
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CT
+  output:
+    ct_property_tax_credit_eligible: false
+
+- name: 2021 joint return with neither spouse claimable, no 2021 property tax credit through the dependent route
+  period: 2021
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 5_000
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+      child:
+        age: 5
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b, child]
+        filing_status: JOINT
+    households:
+      household:
+        members: [person_a, person_b, child]
+        state_code: CT
+  output:
+    ct_property_tax_credit_eligible: true
+
+- name: 2021 single filer aged 65 who can be claimed as a dependent qualifies for the property tax credit by age
+  period: 2021
+  input:
+    people:
+      filer:
+        age: 65
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: CT
+  output:
+    ct_property_tax_credit_eligible: true
+
+- name: 2022 single filer who can be claimed as a dependent qualifies for the property tax credit with no age or dependent test
+  period: 2022
+  input:
+    people:
+      filer:
+        age: 30
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: CT
+  output:
+    ct_property_tax_credit_eligible: true

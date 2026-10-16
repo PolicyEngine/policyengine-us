@@ -209,3 +209,176 @@
     # A parent fails the IRC 152(c)(2) relationship test: 20% x the childless
     # federal-like credit of 649.
     il_eitc: 129.8
+
+
+- name: 2025 single filer who can be claimed as a dependent, no Illinois EITC without a qualifying child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 30
+        employment_income: 1_000
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+    spm_units:
+      spm_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: IL
+  output:
+    # The age and ITIN extensions keep the IRC 32(c)(1)(A)(ii)(III)
+    # bar on a childless filer who can be claimed.
+    il_eitc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, no Illinois EITC without a qualifying child (the claimable spouse is the head)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person_a, person_b]
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: IL
+  output:
+    il_eitc: 0
+
+- name: 2025 joint return with one spouse who can be claimed as a dependent, no Illinois EITC without a qualifying child (the claimable spouse is the spouse)
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_a:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_b, person_a]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person_b, person_a]
+    households:
+      household:
+        members: [person_b, person_a]
+        state_code: IL
+  output:
+    il_eitc: 0
+
+- name: 2025 joint return with both spouses claimable as dependents, no Illinois EITC without a qualifying child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+        claimed_as_dependent_on_another_return: true
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person_a, person_b]
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: IL
+  output:
+    il_eitc: 0
+
+- name: 2025 joint return with neither spouse claimable, no Illinois EITC without a qualifying child
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person_a:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: true
+        is_tax_unit_spouse: false
+      person_b:
+        age: 30
+        employment_income: 500
+        is_tax_unit_head: false
+        is_tax_unit_spouse: true
+    tax_units:
+      tax_unit:
+        members: [person_a, person_b]
+        filing_status: JOINT
+    spm_units:
+      spm_unit:
+        members: [person_a, person_b]
+    households:
+      household:
+        members: [person_a, person_b]
+        state_code: IL
+  output:
+    # 0.0765 x 1,000 = 76.50 x 20% = 15.30
+    il_eitc: 15.3
+
+- name: 2025 single filer aged 19 who can be claimed as a dependent gets no Illinois EITC through the under-25 extension
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      filer:
+        age: 19
+        employment_income: 1_000
+        is_tax_unit_head: true
+        claimed_as_dependent_on_another_return: true
+    tax_units:
+      tax_unit:
+        members: [filer]
+        filing_status: SINGLE
+    spm_units:
+      spm_unit:
+        members: [filer]
+    households:
+      household:
+        members: [filer]
+        state_code: IL
+  output:
+    # Without the claim this filer gets 15.30.
+    il_eitc: 0
