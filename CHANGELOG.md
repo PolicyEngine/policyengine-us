@@ -1,3 +1,14 @@
+## [2.49.0] - 2026-10-16
+
+### Added
+
+- Add California Proposition 3 (2026) as a contributed reform, toggled by gov.contrib.states.ca.prop3.in_effect, that keeps the rates above 9.3% from 2031 onward.
+
+### Fixed
+
+- Encode the expiry of California's 10.3%, 11.3% and 12.3% income tax rates after tax year 2030 in all five filing-status schedules (Cal. Const. art. XIII, § 36(f)(2)-(3)).
+
+
 ## [2.48.0] - 2026-10-16
 
 ### Added
