@@ -808,8 +808,15 @@ programs:
     category: Benefits
     agency: HHS
     status: partial
-    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OR, TX
+    coverage: DC, Riverside County, MA, IL, IN, KS, KY, MD, MS, NC, NE, NJ, NY, OH, OR, TX
     state_implementations:
+      - state: OH
+        status: partial
+        name: Ohio HEAP
+        full_name: Ohio Home Energy Assistance Program
+        variable: oh_liheap
+        parameter_prefix: gov.states.oh.odjfs.liheap
+        notes: Regular heating only, without the PIPP reduction; crisis, cooling and weatherization assistance are out of scope. Payment coefficients after 2023 are estimates from workbook covers and published benefit ranges, so no full benefit year is verified.
       - state: DC
         status: complete
         name: DC LIHEAP

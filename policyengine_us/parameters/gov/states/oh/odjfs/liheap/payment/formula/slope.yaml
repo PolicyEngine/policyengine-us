@@ -1,0 +1,30 @@
+description: Ohio sets this payment reduction per federal poverty percentage point under the Home Energy Assistance Program.
+# The 2021 values carry through 2022; no final 2022 workbook was found.
+# For 2024 and 2025, these estimates use (46% - 38%) / 100 x $950 = 0.76
+# and (25% - 22%) / 100 x $950 = 0.285, applying the final 2023 workbook's
+# method and winter cost to draft cover percentages. No current formula
+# sheet or interior award table verifies those assumptions. For 2026,
+# (31% - 28.5%) / 100 x $950 = 0.2375, fitted to the FY2026 matrix range (see
+# the intercept); it carries into 2027 and later without extending verified
+# coverage.
+values:
+  2021-01-01: 0.9813
+  2023-01-01: 1.33
+  2024-01-01: 0.76
+  2025-01-01: 0.285
+  2026-01-01: 0.2375
+metadata:
+  unit: currency-USD
+  period: year
+  label: Ohio HEAP payment reduction per poverty percentage point
+  reference:
+    - title: Ohio 2021 FINAL HEAP Benefit Matrix
+      href: https://liheapch.acf.gov/sites/default/files/webfiles/docs/OH_BenefitMatrix_2022.pdf#page=11
+    - title: Ohio 2023 FINAL LIHEAP Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2024/benefits-matricies/OH_BenefitMatrix_2024.pdf#page=11
+    - title: Ohio 2024 DRAFT LIHEAP Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2025/benefits-matricies/OH_BenefitMatrix_2025.pdf#page=1
+    - title: Ohio 2025 DRAFT LIHEAP Benefit Matrix
+      href: https://liheapch.acf.gov/docs/2026/benefits-matricies/OH_BenefitMatrix_2026.pdf#page=1
+    - title: Ohio FY2027 HEAP State Plan draft (July 2026), sections 2.5-2.6
+      href: https://dam.assets.ohio.gov/image/upload/v1783702985/jfs.ohio.gov/Energy%20and%20Community%20Assistance/2026-2027_Draft_HEAP_State_Plan.pdf#page=9

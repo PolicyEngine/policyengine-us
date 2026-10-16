@@ -1,0 +1,28 @@
+description: Ohio uses state median income from this many years before the modeled benefit year under the Home Energy Assistance Program.
+# Inferred from the federal cap, not stated: 42 USC 8624(b)(2)(B) caps
+# eligibility at the greater of 150% of poverty and 60% of SMI, so Ohio's
+# printed switch from 175% FPG to 60% SMI shows which SMI year it used.
+# The 2024-25 application prints 175% FPG through size 7 ($82,845): only
+# the FFY2025 SMI ($109,319) fits, because with FFY2024 the size-7 175% FPG
+# limit exceeds the cap. The 2025-26 application prints 175% FPG through
+# size 8 ($94,762): only the FFY2026 SMI ($114,593) fits. Those seasons
+# therefore use no lag. The 2026-27 Consumers' Counsel fact sheet's limits
+# for sizes 8, 11 and 12 equal the HHS FFY2026 60% SMI amounts (sizes 9 and
+# 10 are $2-3 higher), so that season reuses FFY2026 (a one-year lag, also
+# inferred).
+values:
+  2024-07-01: 0
+  2026-07-01: 1
+metadata:
+  unit: year
+  period: year
+  label: Ohio HEAP state median income year lag
+  reference:
+    - title: 42 USC 8624(b)(2)(B)
+      href: https://www.law.cornell.edu/uscode/text/42/8624
+    - title: Ohio Energy Assistance Programs Application, July 2024-May 2025
+      href: https://clevelandohio.gov/sites/clevelandohio/files/aging/2024-2025_HEAP_application_B_W_1.pdf#page=1
+    - title: Ohio Energy Assistance Programs Application, July 2025-May 2026
+      href: https://www.clevelandohio.gov/sites/clevelandohio/files/aging/Home%20repair%20Applications/2025-2026_HEAP_application_B_W.pdf#page=1
+    - title: Ohio Consumers' Counsel, Home Energy Assistance Program (HEAP) fact sheet, 2026-2027
+      href: https://occ.ohio.gov/sites/default/files/2026-08/OCC-Home-Energy-Assistance-Program-HEAP_0.pdf#page=1
