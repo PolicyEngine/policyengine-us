@@ -1,3 +1,10 @@
+## [2.46.0] - 2026-10-16
+
+### Added
+
+- Add Wyoming's State Supplemental Payment for residents whose sole income is SSI, verified for 2026.
+
+
 ## [2.45.1] - 2026-10-16
 
 ### Fixed

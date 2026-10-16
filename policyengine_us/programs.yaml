@@ -1117,6 +1117,16 @@ programs:
           homes, plus the institutional Supplement for Personal Needs.
           Mandatory grandfathered and essential-person supplements and
           ancillary facility subsidies are not modeled.
+      - state: WY
+        status: partial
+        name: Wyoming SSP
+        full_name: Wyoming State Supplemental Payment
+        variable: wy_ssp
+        parameter_prefix: gov.states.wy.health.ssp
+        verified_years: "2026"
+        notes: >-
+          Models the 2026 flat payment for Wyoming residents who receive SSI
+          and have no other income.
 
   - id: social_security
     name: Social Security
