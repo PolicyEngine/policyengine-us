@@ -1,18 +1,28 @@
 description: The IRS limits the amount of dependent care assistance excludable from gross income to this amount, based on filing status.
 SINGLE:
   2018-01-01: 5_000
+  2021-01-01: 10_500
+  2022-01-01: 5_000
   2026-01-01: 7_500
 JOINT:
   2018-01-01: 5_000
+  2021-01-01: 10_500
+  2022-01-01: 5_000
   2026-01-01: 7_500
 SEPARATE:
   2018-01-01: 2_500
+  2021-01-01: 5_250
+  2022-01-01: 2_500
   2026-01-01: 3_750
 HEAD_OF_HOUSEHOLD:
   2018-01-01: 5_000
+  2021-01-01: 10_500
+  2022-01-01: 5_000
   2026-01-01: 7_500
 SURVIVING_SPOUSE:
   2018-01-01: 5_000
+  2021-01-01: 10_500
+  2022-01-01: 5_000
   2026-01-01: 7_500
 metadata:
   propagate_metadata_to_children: true
@@ -22,5 +32,13 @@ metadata:
   reference:
     - title: 26 U.S. Code § 129(a)(2)(A)
       href: https://www.law.cornell.edu/uscode/text/26/129#a_2_A
+    - title: 26 U.S. Code § 129(a)(2)(D) # Substitutes $10,500 ($5,250 for a separate return) for taxable years beginning in 2021.
+      href: https://www.law.cornell.edu/uscode/text/26/129#a_2_D
+    - title: American Rescue Plan Act of 2021, Pub. L. No. 117-2, § 9632 # Adds § 129(a)(2)(D).
+      href: https://www.govinfo.gov/content/pkg/PLAW-117publ2/pdf/PLAW-117publ2.pdf#page=158
+    - title: 2021 Form 2441, Part III, line 21
+      href: https://www.irs.gov/pub/irs-prior/f2441--2021.pdf#page=2
+    - title: 2022 Form 2441, Part III, line 21 # The cap returns to $5,000 ($2,500).
+      href: https://www.irs.gov/pub/irs-prior/f2441--2022.pdf#page=2
     - title: One Big Beautiful Bill Act, Pub. L. No. 119-21, § 70404 (2025) # Raises the § 129(a)(2)(A) exclusion cap to $7,500 ($3,750 MFS) for tax years beginning after 2025-12-31.
       href: https://www.govinfo.gov/content/pkg/PLAW-119publ21/html/PLAW-119publ21.htm
