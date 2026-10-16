@@ -70,14 +70,16 @@ class ssi_countable_income(Variable):
         # Add spousal deemed income (only relevant when one spouse is ineligible)
         spousal_deemed = person("ssi_income_deemed_from_ineligible_spouse", period)
 
-        # Check if person is eligible (either as individual OR as eligible spouse)
-        is_eligible_individual = person("is_ssi_eligible_individual", period)
-        is_eligible_spouse = person("is_ssi_eligible_spouse", period)
-        is_eligible = is_eligible_individual | is_eligible_spouse
+        # People who are not aged, blind, or disabled have no countable income
+        # of their own; a spouse's income is deemed to the other spouse
+        # instead. SSI's noncitizen test is applied in is_ssi_eligible, so it
+        # does not zero the income that Medicaid and state programs count
+        # with SSI methodology.
+        is_aged_blind_disabled = person("is_ssi_aged_blind_disabled", period)
 
         # Calculate final countable income
         return where(
-            ~is_eligible,
+            ~is_aged_blind_disabled,
             0,
             where(
                 both_eligible,

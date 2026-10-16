@@ -1,0 +1,1 @@
+Count the own income of aged, blind, or disabled people who fail SSI's noncitizen test in SSI-methodology countable income, so Medicaid's optional aged, blind, and disabled and medically needy income tests, CAPI, and other programs no longer treat it as zero.

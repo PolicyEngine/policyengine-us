@@ -50,3 +50,39 @@
     state_code: MA
   output:
     is_medically_needy_for_medicaid: false
+
+- name: Case 3, aged permanent resident without 40 SSI quarters has pension counted.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    ssi_qualifying_quarters_earnings: 20
+    pension_income: 60_000
+    is_in_medicaid_medically_needy_category: true
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_medically_needy_medical_expenses: 6_000
+    ssi_countable_resources: 1_000
+    state_code: MA
+  output:
+    # 60,000 - 20 x 12 = 59,760; 59,760 - 6,000 = 53,760 > 522 x 12 = 6,264.
+    is_medically_needy_for_medicaid: false
+
+- name: Case 4, aged permanent resident without 40 SSI quarters qualifies after medical spenddown.
+  period: 2026
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    ssi_qualifying_quarters_earnings: 20
+    pension_income: 18_000
+    is_in_medicaid_medically_needy_category: true
+    is_adult_for_medicaid: false
+    is_optional_senior_or_disabled_for_medicaid: false
+    medicaid_medically_needy_medical_expenses: 12_000
+    ssi_countable_resources: 1_000
+    state_code: MA
+  output:
+    # 18,000 - 20 x 12 = 17,760; 17,760 - 12,000 = 5,760 <= 522 x 12 = 6,264.
+    is_medically_needy_for_medicaid: true

@@ -314,3 +314,48 @@
     medicaid_category: SECTION_1115_MEC_ADULT
     is_medicaid_work_requirement_applicable_adult: true
     is_medicaid_eligible: true
+
+- name: Case 17, aged permanent resident without 40 SSI quarters is over the Massachusetts income limit.
+  period: 2025
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    ssi_qualifying_quarters_earnings: 20
+    pension_income: 60_000
+    state_code: MA
+  output:
+    # The optional aged, blind, and disabled pathway counts 59,760 of
+    # income, above 100% of the poverty guideline, even though the person
+    # fails SSI's 40-quarter test.
+    is_medicaid_immigration_status_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_medicaid_eligible: false
+
+- name: Case 18, aged permanent resident without 40 SSI quarters with a small pension is eligible.
+  period: 2025
+  input:
+    age: 70
+    immigration_status: LEGAL_PERMANENT_RESIDENT
+    years_since_us_entry: 10
+    ssi_qualifying_quarters_earnings: 20
+    pension_income: 12_000
+    state_code: MA
+  output:
+    # 12,000 - 20 x 12 = 11,760, under 100% of the poverty guideline.
+    is_optional_senior_or_disabled_for_medicaid: true
+    is_medicaid_eligible: true
+
+- name: Case 19, aged undocumented resident of the District of Columbia is over the income limit.
+  period: 2025
+  input:
+    age: 70
+    immigration_status: UNDOCUMENTED
+    pension_income: 60_000
+    state_code: DC
+  output:
+    # The District covers undocumented residents, but the optional aged,
+    # blind, and disabled pathway still counts 59,760 of income.
+    is_medicaid_immigration_status_eligible: true
+    is_optional_senior_or_disabled_for_medicaid: false
+    is_medicaid_eligible: false
