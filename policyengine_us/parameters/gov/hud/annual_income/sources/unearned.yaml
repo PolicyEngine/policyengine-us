@@ -19,6 +19,7 @@ values:
     - strike_benefits
     - social_security
     - ssi
+    - ia_ssa_countable_for_snap
     - general_assistance
     - total_unemployment_compensation
     - child_support_received
@@ -29,10 +30,11 @@ values:
     - disability_benefits
     - survivor_benefits
     - financial_assistance
+
 metadata:
   unit: list
   period: year
   label: HUD unearned income sources
   reference:
-    - title: 24 CFR § 5.609(a)(1), (a)(2)
+    - title: 24 CFR § 5.609(a)(1), (a)(2), (b)(6), (b)(19)
       href: https://www.law.cornell.edu/cfr/text/24/5.609

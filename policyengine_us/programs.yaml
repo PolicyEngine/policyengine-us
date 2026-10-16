@@ -993,9 +993,21 @@ programs:
         variable: hi_oss
         parameter_prefix: gov.states.hi.dhs.oss
       - state: IA
-        status: in_progress
-        name: Iowa SSP
-        full_name: Iowa State Supplemental Payment
+        status: partial
+        name: Iowa SSA
+        full_name: Iowa State Supplementary Assistance
+        variable: ia_ssa
+        parameter_prefix: gov.states.ia.hhs.ssa
+        verified_years: '2026'
+        notes: 2026 blind, dependent-person, family-life home, residential care, in-home health-related
+          care and SMME. Special categories require certification. Selected dependent budgets,
+          specialized parental/entry-month deeming, care deductions and SMME Medicaid-category
+          income require explicit inputs. Mandatory grandfathered and conditional resource payments
+          excluded. Ordinary child resource budgets include linked co-resident parents
+          and eligible-sibling allocation. Certified deeming exceptions, step-only
+          households and other state-only sibling eligibility require deemed-resource
+          inputs for each affected child. Mixed-blind dependent couple rate follows the state manual and SSA per-blind-person
+          definition rather than inconsistent C rows in the federal table.
       - state: ID
         status: complete
         name: Idaho AABD
