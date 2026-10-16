@@ -116,3 +116,194 @@
       household: {members: [parent], state_fips: 18}
   output:
     in_eitc: 61.20
+
+- name: Indiana EITC TY2025 uses the 2025 investment income limit for eligibility
+  # IC 6-3.1-21-6(a) and (e): section 32 as in effect on January 1, 2023
+  # indexes its amounts to the taxable year (26 U.S.C. 32(j)(1)).
+  # Rev. Proc. 2024-40 sec. 2.06: TY2025 investment income limit $11,950;
+  # two children: maximum credit $7,152, phaseout threshold $23,350, rate 21.06%.
+  # Interest $11,500 is above the TY2023 limit ($11,000) but within $11,950.
+  # AGI = 20,000 + 11,500 = 31,500.
+  # Federal EITC = 7,152 - 21.06% x (31,500 - 23,350) = 7,152 - 1,716.39 = 5,435.61.
+  # Indiana EITC = 10% x 5,435.61 = 543.56.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 11_500
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: IN
+  output:
+    eitc: 5_435.61
+    in_eitc_eligible: true
+    in_eitc: 543.56
+
+- name: Indiana EITC TY2025 childless filer past the TY2023 completed phaseout
+  # Rev. Proc. 2024-40 sec. 2.06: TY2025 no children: maximum credit $649,
+  # phaseout threshold $10,620, rate 7.65% (completed phaseout $19,104).
+  # Wages $18,000 are past the TY2023 completed phaseout ($17,640).
+  # Federal EITC = 649 - 7.65% x (18,000 - 10,620) = 649 - 564.57 = 84.43.
+  # Indiana EITC = 10% x 84.43 = 8.44.
+  period: 2025
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 18_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    eitc: 84.43
+    in_eitc_eligible: true
+    in_eitc: 8.44
+
+- name: Indiana EITC TY2024 uses the 2024 investment income limit for eligibility
+  # Rev. Proc. 2023-34 sec. 3.06: TY2024 investment income limit $11,600;
+  # two children: maximum credit $6,960, phaseout threshold $22,720, rate 21.06%.
+  # Interest $11,300 is above the TY2023 limit ($11,000) but within $11,600.
+  # AGI = 20,000 + 11,300 = 31,300.
+  # Federal EITC = 6,960 - 21.06% x (31,300 - 22,720) = 6,960 - 1,806.95 = 5,153.05.
+  # Indiana EITC = 10% x 5,153.05 = 515.31.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 11_300
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: IN
+  output:
+    eitc: 5_153.05
+    in_eitc_eligible: true
+    in_eitc: 515.31
+
+- name: Indiana EITC TY2024 childless filer past the TY2023 completed phaseout
+  # Rev. Proc. 2023-34 sec. 3.06: TY2024 no children: maximum credit $632,
+  # phaseout threshold $10,330, rate 7.65% (completed phaseout $18,591).
+  # Federal EITC = 632 - 7.65% x (18,000 - 10,330) = 632 - 586.76 = 45.24.
+  # Indiana EITC = 10% x 45.24 = 4.52.
+  period: 2024
+  absolute_error_margin: 0.01
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 18_000
+    tax_units:
+      tax_unit:
+        members: [head]
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: IN
+  output:
+    eitc: 45.24
+    in_eitc_eligible: true
+    in_eitc: 4.52
+
+- name: Indiana EITC TY2023 control, interest above the TY2023 limit
+  # Rev. Proc. 2022-38 sec. 3.06: TY2023 investment income limit $11,000.
+  # Interest $11,500 exceeds it, so no federal EITC and no Indiana EITC.
+  period: 2023
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 11_500
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: IN
+  output:
+    eitc: 0
+    in_eitc_eligible: false
+    in_eitc: 0
+
+- name: Indiana EITC TY2025 control, interest above the TY2025 limit
+  # Interest $11,951 exceeds the TY2025 limit of $11,950 (Rev. Proc. 2024-40
+  # sec. 2.06(2)), so no federal EITC and no Indiana EITC.
+  period: 2025
+  input:
+    people:
+      head:
+        age: 30
+        employment_income: 20_000
+        taxable_interest_income: 11_951
+      child1:
+        age: 5
+        is_tax_unit_dependent: true
+      child2:
+        age: 6
+        is_tax_unit_dependent: true
+    tax_units:
+      tax_unit:
+        members: [head, child1, child2]
+    spm_units:
+      spm_unit:
+        members: [head, child1, child2]
+    households:
+      household:
+        members: [head, child1, child2]
+        state_code: IN
+  output:
+    eitc: 0
+    in_eitc_eligible: false
+    in_eitc: 0

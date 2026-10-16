@@ -1,8 +1,4 @@
 from policyengine_us.model_api import *
-from policyengine_us.tools.state_eitc_helpers import (
-    calculate_eitc_demographic_eligibility,
-    calculate_eitc_like_amount,
-)
 
 
 class in_eitc_eligible(Variable):
@@ -21,38 +17,21 @@ class in_eitc_eligible(Variable):
         if not p.credits.earned_income.decoupled:
             return gets_federal_eitc
         if p.credits.earned_income.static_conformity_in_effect:
-            # IC 6-3-1-11 (Indiana's IRC definition for IC 6-3.1-21):
-            #   - TY 2023 through 2025: IRC as in effect on January 1, 2023.
-            #   - TY 2026 onward: IRC as in effect on January 1, 2026, per
-            #     Indiana SEA 243 (2025).
-            # The snapshot dates are statutory literals; policyengine-core
-            # parameters do not support date-valued types, so they appear
-            # here rather than in the parameter tree.
-            snapshot_date = "2026-01-01" if period.start.year >= 2026 else "2023-01-01"
-            frozen_eitc = parameters.gov.irs.credits.eitc(snapshot_date)
-            child_count = tax_unit("eitc_child_count", period)
-            demographic_eligible = calculate_eitc_demographic_eligibility(
-                tax_unit, period, frozen_eitc, child_count
-            )
-            filer_identification_eligible = tax_unit(
-                "filer_meets_eitc_identification_requirements", period
-            )
-            investment_income_eligible = (
-                tax_unit("eitc_relevant_investment_income", period)
-                <= frozen_eitc.phase_out.max_investment_income
-            )
-            frozen_federal_eitc = calculate_eitc_like_amount(
-                tax_unit,
-                period,
-                parameters,
-                child_count,
-                demographic_eligible,
-                filer_identification_eligible,
-                separate_filer_eligible=frozen_eitc.eligibility.separate_filer,
-                eitc_parameters=frozen_eitc,
-                investment_income_eligible=investment_income_eligible,
-            )
-            return frozen_federal_eitc > 0
+            # IC 6-3.1-21-6(a) allows the credit to an individual "eligible
+            # for an earned income tax credit under Section 32 of the
+            # Internal Revenue Code as in effect on January 1, 2023" (IC
+            # 6-3-1-11; January 1, 2026 from TY2026 per SEA 243 (2025)).
+            # Section 32 as in effect on that date indexes its earned income,
+            # phaseout and investment income amounts to the calendar year in
+            # which the taxable year begins (26 U.S.C. 32(j)(1)), and
+            # IC 6-3.1-21-6(e) applies the same cost of living adjustments.
+            # Section 32 has not been amended since, so eligibility under
+            # the conformity-date text is eligibility for the current-year
+            # federal credit, not for the credit with the snapshot date's
+            # dollar amounts. The IT-40 booklet (Schedule 5, line 6) also
+            # requires that the filer "be eligible for and have claimed an
+            # EIC on your federal tax return".
+            return gets_federal_eitc
         # if Indiana EITC is decoupled from federal EITC
         # ... check separate filing status
         filing_status = tax_unit("filing_status", period)
