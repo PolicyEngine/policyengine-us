@@ -14,6 +14,6 @@ class ms_tanf_countable_income(Variable):
     )
     # NOTE: Mississippi has 6-month and 3-month total earned income disregards
     # that cannot be tracked in PolicyEngine. This simplified implementation
-    # uses gross income without those time-limited disregards.
+    # does not apply those time-limited disregards.
 
-    adds = ["tanf_gross_earned_income", "tanf_gross_unearned_income"]
+    adds = ["ms_tanf_countable_earned_income", "tanf_gross_unearned_income"]

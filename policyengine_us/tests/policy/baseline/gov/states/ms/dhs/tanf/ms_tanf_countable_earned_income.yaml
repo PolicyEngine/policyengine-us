@@ -1,0 +1,131 @@
+# Mississippi TANF countable earned income
+# MDHS TANF Policy Manual, Volume III, pages 6025-6026: deduct from each
+# earner's monthly earnings (a) $90 for work expenses, then (b) the actual
+# cost of dependent care.
+
+- name: Case 1, no earnings.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    ms_tanf_countable_earned_income: 0
+
+- name: Case 2, one earner, $90 work expense deduction.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 2_400
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    # 2_400 / 12 - 90 = 200 - 90 = 110
+    ms_tanf_countable_earned_income: 110
+
+- name: Case 3, one earner with child care costs.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 2_400
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 600
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    # 200 - 90 - 600 / 12 = 200 - 90 - 50 = 60
+    ms_tanf_countable_earned_income: 60
+
+- name: Case 4, two earners each get the $90 deduction.
+  period: 2026-01
+  input:
+    people:
+      parent1:
+        age: 30
+        employment_income_before_lsr: 6_000
+      parent2:
+        age: 32
+        employment_income_before_lsr: 3_600
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent1, parent2, child]
+        childcare_expenses: 1_200
+    households:
+      household:
+        members: [parent1, parent2, child]
+        state_code: MS
+  output:
+    # (500 - 90) + (300 - 90) - 1_200 / 12 = 410 + 210 - 100 = 520
+    ms_tanf_countable_earned_income: 520
+
+- name: Case 5, earnings below $90 are fully deducted.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 720
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    # max(60 - 90, 0) = 0
+    ms_tanf_countable_earned_income: 0
+
+- name: Case 6, dependent care above earnings does not reduce unearned income.
+  period: 2026-01
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income_before_lsr: 2_400
+        alimony_income: 600
+      child:
+        age: 5
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+        childcare_expenses: 3_600
+    households:
+      household:
+        members: [parent, child]
+        state_code: MS
+  output:
+    # max(200 - 90 - 300, 0) = 0
+    ms_tanf_countable_earned_income: 0
+    # 0 earned + 600 / 12 unearned
+    ms_tanf_countable_income: 50
