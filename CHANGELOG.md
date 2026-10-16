@@ -1,3 +1,10 @@
+## [2.47.0] - 2026-10-16
+
+### Added
+
+- Add North Carolina State-County Special Assistance for 2026.
+
+
 ## [2.46.0] - 2026-10-16
 
 ### Added
