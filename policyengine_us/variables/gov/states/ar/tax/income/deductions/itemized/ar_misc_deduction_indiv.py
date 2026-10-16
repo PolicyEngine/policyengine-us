@@ -10,6 +10,8 @@ class ar_misc_deduction_indiv(Variable):
     reference = (
         # Ark. Code § 26-51-437(a), enacted by Act 382 of 1987, § 28
         "https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F1987R%2FPublic%2F&file=382.pdf&ddBienniumSession=1987%2F1987R#page=9",
+        # Ark. Code § 26-51-457, enacted by Act 1284 of 2013
+        "https://www.arkleg.state.ar.us/Acts/FTPDocument?path=%2FACTS%2F2013R%2FPublic%2F&file=1284.pdf&ddBienniumSession=2013%2F2013R#page=1",
         # 2025 Form AR3 instructions, Lines 20-25
         "https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=21",
         "https://www.dfa.arkansas.gov/wp-content/uploads/2025_AR1000F_and_AR1000NR_Instructions.pdf#page=22",
@@ -20,6 +22,6 @@ class ar_misc_deduction_indiv(Variable):
         # Arkansas did not adopt the federal suspension of miscellaneous
         # itemized deductions, so start from the expenses, not misc_deduction.
         p = parameters(period).gov.states.ar.tax.income.deductions.itemized.misc
-        expenses = tax_unit("total_misc_deductions", period)
+        expenses = add(tax_unit, period, p.sources)
         agi = add(tax_unit, period, ["ar_agi_indiv"])
         return max_(0, expenses - p.income_floor * agi)
