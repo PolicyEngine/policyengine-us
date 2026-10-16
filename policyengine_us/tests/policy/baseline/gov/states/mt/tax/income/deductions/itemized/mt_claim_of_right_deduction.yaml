@@ -1,0 +1,112 @@
+# 2023 Form 2 instructions, itemized deductions line 18: "These deductions
+# are the same deductions that are allowed on your federal Form 1040,
+# Schedule A, line 16."
+- name: Case 1, Montana follows the federal deduction through 2023.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        claim_of_right_deduction: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_claim_of_right_deduction: 5_000
+    mt_misc_deductions: 5_000
+
+- name: Case 2, no Montana deduction when the federal deduction is zero.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 40
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        claim_of_right_deduction: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_claim_of_right_deduction: 0
+
+- name: Case 3, each spouse deducts their own repayment and a dependent's is left out.
+  period: 2023
+  input:
+    people:
+      person1:
+        age: 45
+        claim_of_right_repayment: 3_000
+      person2:
+        age: 44
+        claim_of_right_repayment: 1_500
+      person3:
+        age: 20
+        is_tax_unit_dependent: true
+        claim_of_right_repayment: 9_000
+    tax_units:
+      tax_unit:
+        members: [person1, person2, person3]
+        claim_of_right_deduction: 4_500
+    households:
+      household:
+        members: [person1, person2, person3]
+        state_code: MT
+  output:
+    mt_claim_of_right_deduction: [3_000, 1_500, 0]
+
+# 2024 Form 2 instructions, line 2, Worksheet A line 1: "Enter your total
+# federal itemized deductions from Form 1040, line 12", which includes
+# Schedule A line 16.
+- name: Case 4, from 2024 Montana keeps the deduction within federal itemized deductions.
+  period: 2024
+  input:
+    people:
+      person1:
+        age: 40
+        claim_of_right_repayment: 5_000
+    tax_units:
+      tax_unit:
+        members: [person1]
+        claim_of_right_deduction: 5_000
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    mt_claim_of_right_deduction: 5_000
+    mt_misc_deductions: 5_000
+
+- name: Case 5, the 2025 deduction reaches Montana itemized deductions.
+  period: 2025
+  input:
+    people:
+      person1:
+        age: 40
+        claim_of_right_repayment: 5_000
+        investment_interest_expense: 0
+        deductible_mortgage_interest: 0
+        mt_medical_expense_deduction_joint: 0
+        mt_salt_deduction: 0
+    tax_units:
+      tax_unit:
+        members: [person1]
+        claim_of_right_deduction: 5_000
+        charitable_deduction: 0
+        mt_child_dependent_care_expense_deduction_joint: 0
+        mt_federal_income_tax_deduction_unit: 0
+    households:
+      household:
+        members: [person1]
+        state_code: MT
+  output:
+    # Interest 0 + charity 0 + miscellaneous 5,000 + medical 0 + SALT 0.
+    mt_itemized_deductions_joint: 5_000
