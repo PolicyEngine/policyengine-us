@@ -25,9 +25,14 @@ class fl_tca_countable_earned_income(Variable):
 
         # Step 3: The remainder of the $200 and 1/2 disregard is subtracted only
         # "if eligible" (2620.0111.01 Step 3). Per 2420.0314-.0315 the $200 and
-        # 1/2 disregard is granted when income after the $90 disregard is below
-        # the payment standard (condition 2); otherwise only the $90 applies.
+        # 1/2 disregard is granted to a recent recipient or when income after
+        # the $90 disregard is below the payment standard; otherwise only the
+        # $90 applies.
         eligible = spm_unit("fl_tca_200_and_half_disregard_eligible", period)
-        remaining_after_first = max_(after_standard - p.first_amount, 0)
+        # Per 2420.0315, the $90 standard disregard "is included in the first
+        # $200 earned income disregard", so only the remaining $110 is
+        # subtracted here, "for a total of $200".
+        remainder_of_first_amount = p.first_amount - p.standard_disregard
+        remaining_after_first = max_(after_standard - remainder_of_first_amount, 0)
         countable_with_full_disregard = remaining_after_first * (1 - p.remaining_rate)
         return where(eligible, countable_with_full_disregard, after_standard)
