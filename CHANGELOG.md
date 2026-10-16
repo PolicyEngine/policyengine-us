@@ -1,3 +1,10 @@
+## [2.45.0] - 2026-10-16
+
+### Added
+
+- Add Pennsylvania optional state SSI supplements and institutional payments, verified for 2026, and count half of the supplement in Pennsylvania Property Tax/Rent Rebate income.
+
+
 ## [2.44.0] - 2026-10-16
 
 ### Added
