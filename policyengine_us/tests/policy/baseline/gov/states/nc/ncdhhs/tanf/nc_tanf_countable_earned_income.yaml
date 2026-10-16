@@ -7,29 +7,71 @@
   output:
     nc_tanf_countable_earned_income: 0
 
-- name: Earned employee income $500, self-employment income $500, $1000 per year
+- name: Earned employee income $500, self-employment income $500, $725 per year
   period: 2024
   input:
     state_code: NC
     employment_income: 500
     self_employment_income: 500
   output:
-    nc_tanf_countable_earned_income: 1_000
+    nc_tanf_countable_earned_income: 725  # 1_000 * (1 - 0.275)
 
-- name: Earned employee income $500, no self-employment income, $500 per year
+- name: Earned employee income $500, no self-employment income, $362.50 per year
   period: 2024
   input:
     state_code: NC
     employment_income: 500
     self_employment_income: 0
   output:
-    nc_tanf_countable_earned_income: 500
+    nc_tanf_countable_earned_income: 362.5  # 500 * (1 - 0.275)
 
-- name: Earned employee income $0, self-employment income $500, $500 per year
+- name: Earned employee income $0, self-employment income $500, $362.50 per year
   period: 2024
   input:
     state_code: NC
     employment_income: 0
     self_employment_income: 500
   output:
-    nc_tanf_countable_earned_income: 500
+    nc_tanf_countable_earned_income: 362.5  # 500 * (1 - 0.275)
+
+- name: A child's earnings are not counted.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 30
+        employment_income: 6_000
+      child:
+        age: 16
+        employment_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [parent, child]
+    households:
+      household:
+        members: [parent, child]
+        state_code: NC
+  output:
+    # Only the parent's earnings count: 6_000 * (1 - 0.275) = 4_350
+    nc_tanf_countable_earned_income: 4_350
+
+- name: Earnings of an 18-year-old member are counted.
+  period: 2024
+  input:
+    people:
+      parent:
+        age: 40
+        employment_income: 0
+      adult_child:
+        age: 18
+        employment_income: 3_000
+    spm_units:
+      spm_unit:
+        members: [parent, adult_child]
+    households:
+      household:
+        members: [parent, adult_child]
+        state_code: NC
+  output:
+    # Age 18 is not below the age limit of 18: 3_000 * (1 - 0.275) = 2_175
+    nc_tanf_countable_earned_income: 2_175
