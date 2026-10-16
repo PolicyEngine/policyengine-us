@@ -1,0 +1,1 @@
+Apply the $10 minimum payment in Michigan FIP (BEM 518 issuance deficit test), Virginia TANF (TANF Manual 502.1 A, with the payment rounded down to whole dollars), South Carolina TANF (S.C. Code Regs. 114-1140(A)(5)) and Maryland TCA (COMAR 07.03.03.13 E(2)).
