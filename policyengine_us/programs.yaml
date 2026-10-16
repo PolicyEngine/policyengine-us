@@ -1093,6 +1093,17 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: MT
+        status: partial
+        name: Montana SSP
+        full_name: Montana State Supplementary Payment
+        variable: mt_ssp
+        parameter_prefix: gov.states.mt.dphhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models optional supplements for state-certified care settings,
+          including the out-of-state legal-custody exception and section 1619
+          exclusion. Mandatory grandfathered supplementation is not modeled.
 
   - id: social_security
     name: Social Security

@@ -1,0 +1,160 @@
+- name: Case 1, joint payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      person2:
+        age: 65
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ssp: [96.5, 96.5]
+
+- name: Case 2, mixed certified settings share the joint payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      person2:
+        age: 65
+        mt_ssp_payment_category: FOSTER_CARE
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ssp: [75.88, 75.88]
+
+- name: Case 3, joint income reduces the supplement after federal SSI.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+        social_security_retirement: 19_200
+      person2:
+        age: 65
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ssp: [52, 52]
+
+- name: Case 4, ineligible spouse deeming capped at individual rate.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      person2:
+        age: 40
+        mt_ssp_payment_category: NONE
+        social_security_retirement: 19_200
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ssp: [94, 0]
+
+- name: Case 5, ineligible spouse income reduces state payment.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      person2:
+        age: 40
+        mt_ssp_payment_category: NONE
+        social_security_retirement: 20_400
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ssp: [4, 0]
+
+- name: Case 6, ineligible spouse combined cutoff.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    people:
+      person1:
+        age: 65
+        mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+      person2:
+        age: 40
+        mt_ssp_payment_category: NONE
+        social_security_retirement: 20_448
+    marital_units:
+      couple:
+        members: [person1, person2]
+    tax_units:
+      unit:
+        members: [person1, person2]
+    households:
+      household:
+        members: [person1, person2]
+        state_code: MT
+  output:
+    mt_ssp: [0, 0]
+
+- name: Case 7, annual benefit and SNAP income aggregation.
+  period: 2026
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+  output:
+    mt_ssp: 1_128
+    household_state_benefits: 1_128
+    snap_unearned_income: 13_056
+    hud_unearned_income: 13_056

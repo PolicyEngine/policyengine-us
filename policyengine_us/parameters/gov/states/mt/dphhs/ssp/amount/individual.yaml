@@ -1,0 +1,28 @@
+description: Montana provides this amount as the individual state supplement payment under the State Supplementation program.
+
+metadata:
+  unit: currency-USD
+  period: month
+  label: Montana SSP individual payment amount
+  breakdown:
+    - mt_ssp_payment_category
+  reference:
+    - title: POMS SI 01415.058 H.2, Montana payment levels for January 2026
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501415058#h
+    - title: POMS SI DEN01415.010, Montana supplementary payments
+      href: https://secure.ssa.gov/poms.nsf/lnx/0501415010DEN
+
+ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME:
+  2026-01-01: 94
+
+FOSTER_CARE:
+  2026-01-01: 52.75
+
+TRANSITIONAL_LIVING:
+  2026-01-01: 26
+
+NONE:
+  2026-01-01: 0
+
+CATEGORY_B_ASSISTED_LIVING:
+  2026-01-01: 0

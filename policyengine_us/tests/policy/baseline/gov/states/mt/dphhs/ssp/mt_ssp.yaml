@@ -1,0 +1,148 @@
+# Sources: POMS SI 01415.058 H, SI DEN01415.010, and MCA 52-1-104.
+- name: Case 1, certified personal care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+  output:
+    mt_ssp: 94
+
+- name: Case 2, certified foster care.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: FOSTER_CARE
+  output:
+    mt_ssp: 52.75
+
+- name: Case 3, certified transitional services.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: TRANSITIONAL_LIVING
+  output:
+    mt_ssp: 26
+
+- name: Case 4, no approved setting.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: NONE
+  output:
+    mt_ssp: 0
+
+- name: Case 5, state payment continues after federal SSI is exhausted.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    social_security_retirement: 12_768
+  output:
+    ssi: 0
+    mt_ssp: 44
+
+- name: Case 6, income at combined standard.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    social_security_retirement: 13_296
+  output:
+    mt_ssp: 0
+
+- name: Case 7, positive payment below one dollar receives the federal minimum.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    social_security_retirement: 13_295.88
+  output:
+    mt_ssp: 1
+
+- name: Case 8, excess resources.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    ssi_countable_resources: 2_001
+  output:
+    mt_ssp: 0
+
+- name: Case 9, no aged blind or disabled category.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 30
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+  output:
+    mt_ssp: 0
+
+- name: Case 10, excluded category B assisted living.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: CATEGORY_B_ASSISTED_LIVING
+  output:
+    mt_ssp: 0
+
+- name: Case 11, section 1619 benefits excluded.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    mt_ssp_receives_section_1619_benefits: true
+  output:
+    mt_ssp: 0
+
+- name: Case 12, out of state custody exception.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    mt_ssp_in_state_custody: true
+  output:
+    mt_ssp: 94
+
+- name: Case 13, out of state without Montana custody.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: WY
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+  output:
+    mt_ssp: 0
+
+- name: Case 14, SSI application takeup required.
+  period: 2026-01
+  absolute_error_margin: 0.01
+  input:
+    state_code: MT
+    age: 65
+    mt_ssp_payment_category: ASSISTED_LIVING_OR_GROUP_OR_COMMUNITY_HOME
+    takes_up_ssi_if_eligible: false
+  output:
+    mt_ssp: 0
