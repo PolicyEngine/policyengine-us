@@ -2,6 +2,10 @@ description: Colorado provides this family affordability tax credit base amount 
 values:
   2024-01-01: 3_200
   2025-01-01: 3_273
+  # C.R.S. 39-22-130(6)(f): with forecast revenue growth "LESS THAN THREE
+  # PERCENT, NO CREDIT IS ALLOWED"; the Department of Revenue pauses the credit
+  # for tax year 2026.
+  2026-01-01: 0
 metadata:
   period: year
   unit: currency-USD
@@ -11,5 +15,9 @@ metadata:
       href: https://leg.colorado.gov/bills/hb24-1311
     - title: 2024 Colorado Child Tax Credit Instructions, Section C
       href: https://tax.colorado.gov/sites/tax/files/documents/DR0104CN_2024.pdf#page=3
-    - title: 2025 Colorado Individual Tax Filing Guide 104 Book, Section C
-      href: https://tax.colorado.gov/sites/tax/files/documents/Book104_2025.pdf#page=27
+    - title: 2025 Colorado Child Tax Credit Instructions, Section C
+      href: https://tax.colorado.gov/sites/tax/files/documents/DR_0104CN_2025.pdf#page=3
+    - title: House Bill 24-1311, C.R.S. 39-22-130(6)(f)
+      href: https://leg.colorado.gov/sites/default/files/2024a_1311_signed.pdf#page=10
+    - title: Colorado Department of Revenue, Child Tax Credit and EITC FAQs (tax year 2026 pause)
+      href: https://tax.colorado.gov/ctc-eitc-faqs
