@@ -7,7 +7,7 @@ values:
      # (home-equity) mortgage interest not used to buy, build, or improve the home,
      # mirroring federal Form 6251. PolicyEngine's deductible_mortgage_interest is
      # entirely acquisition interest, so there is no line 4 add-back.
-     - misc_deduction # line 5 Miscellaneous itemized deductions
+     - ca_misc_deduction # line 5: Schedule CA Part II line 25
 
 
 metadata:
@@ -23,3 +23,5 @@ metadata:
       href: https://www.ftb.ca.gov/forms/2024/2024-540-p.pdf#page=1
     - title: 2025 Schedule P (540) Alternative Minimum Tax and Credit Limitations - Residents
       href: https://www.ftb.ca.gov/forms/2025/2025-540-p.pdf#page=1
+    - title: 2025 Schedule P (540) Instructions, Part I line 5
+      href: https://www.ftb.ca.gov/forms/2025/2025-540-p-instructions.html

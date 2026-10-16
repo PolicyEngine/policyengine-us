@@ -21,3 +21,35 @@
     is_blind: true
   output:
     ssi_engaged_in_sga: false
+
+- name: Pretax health premiums remain in SGA earnings across the threshold.
+  period: 2026
+  input:
+    employment_income: 21_600
+    pre_tax_health_insurance_premiums: 2_400
+    is_blind: false
+  output:
+    # SSI payment wages are 1,600 monthly; SGA earnings remain 1,800.
+    ssi_earned_income: 19_200
+    ssi_engaged_in_sga: true
+
+- name: After-tax health premiums also remain in SGA earnings.
+  period: 2026
+  input:
+    employment_income: 21_600
+    health_insurance_premiums: 2_400
+    is_blind: false
+  output:
+    ssi_earned_income: 21_600
+    ssi_engaged_in_sga: true
+
+- name: Excess pretax premiums cannot raise SGA earnings above gross wages.
+  period: 2026
+  input:
+    employment_income: 12_000
+    pre_tax_health_insurance_premiums: 24_000
+    is_blind: false
+  output:
+    # Only 12,000 of excluded wages is restored, below the SGA threshold.
+    ssi_earned_income: 0
+    ssi_engaged_in_sga: false
