@@ -47,10 +47,13 @@ values:
     - mo_ssp
     - nc_sa
     - ne_aabd
+    - nj_ssp
     - nm_ssi_state_supplement
+    - pa_ssp
     - sc_ssi_state_supplement
     - tx_ssi_state_supplement
     - wa_ssp
+    - wy_ssp
     # Listed elsewhere: ca_state_supplement is an SPM unit variable with no
     # person-level counterpart. policyengine-core projects a group value onto
     # every member, so listing it here would count it once per person in the

@@ -1093,6 +1093,40 @@ programs:
           tracks. Unmodeled paths: grandfathered medically-needy-in-medical-
           institution recipients per WAC 388-478-0055(2)(b); DDA-determined /
           PVL track per (2)(f); and foster child in BRS per (2)(g).
+      - state: NJ
+        status: partial
+        name: New Jersey SSP
+        full_name: New Jersey State Supplementary Payment
+        variable: nj_ssp
+        parameter_prefix: gov.states.nj.njdhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 New Jersey optional supplement rates by living
+          arrangement, including the ineligible-spouse variation. Mandatory
+          grandfathered supplementation is not modeled.
+      - state: PA
+        status: partial
+        name: Pennsylvania SSP
+        full_name: Pennsylvania State Supplementary Payment
+        variable: pa_ssp
+        parameter_prefix: gov.states.pa.dhs.ssp
+        verified_years: "2026"
+        notes: >-
+          Models 2026 optional supplements for independent living, the
+          household of another and certified domiciliary and personal care
+          homes, plus the institutional Supplement for Personal Needs.
+          Mandatory grandfathered and essential-person supplements and
+          ancillary facility subsidies are not modeled.
+      - state: WY
+        status: partial
+        name: Wyoming SSP
+        full_name: Wyoming State Supplemental Payment
+        variable: wy_ssp
+        parameter_prefix: gov.states.wy.health.ssp
+        verified_years: "2026"
+        notes: >-
+          Models the 2026 flat payment for Wyoming residents who receive SSI
+          and have no other income.
       - state: NC
         status: partial
         name: North Carolina SA
