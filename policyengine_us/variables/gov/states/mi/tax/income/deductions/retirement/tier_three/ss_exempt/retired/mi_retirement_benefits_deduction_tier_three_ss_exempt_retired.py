@@ -78,10 +78,8 @@ class mi_retirement_benefits_deduction_tier_three_ss_exempt_retired(Variable):
         # the tier one or tier three deduction amount
         # Worksheet 3.1 counts only military retirement pay on the filer's Schedule 1, line 11,
         # which excludes a dependent's pay (not in the filer's AGI).
-        military_retirement_pay_eligible = (
-            tax_unit.sum(person("military_retirement_pay", period) * is_head_or_spouse)
-            > 0
-        )
+        military_pay = person("military_retirement_income", period) * is_head_or_spouse
+        military_retirement_pay_eligible = tax_unit.sum(military_pay) > 0
         # Line 8
         tier_one_amount = tax_unit(
             "mi_retirement_benefits_deduction_tier_one_amount",

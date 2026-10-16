@@ -1,0 +1,17 @@
+- name: Military pension benefits are excluded from PA tax forgiveness eligibility income per PA-40 SP
+  period: 2025
+  input:
+    state_code: PA
+    employment_income: 5_000
+    military_retirement_pay: 30_000
+  output:
+    pa_eligibility_income: 5_000
+
+- name: Military retirement survivor benefits are included in PA tax forgiveness eligibility income per PA-40 SP
+  period: 2025
+  input:
+    state_code: PA
+    employment_income: 5_000
+    military_retirement_pay_survivors: 10_000
+  output:
+    pa_eligibility_income: 15_000

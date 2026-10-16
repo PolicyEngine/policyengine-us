@@ -1,0 +1,38 @@
+description: Federal AGI limit to qualify for California military retirement and SBP exclusion under R&TC §§ 17132.9 and 17132.10.
+metadata:
+  unit: currency-USD
+  period: year
+  label: California military retirement and survivor benefit exclusion federal AGI limit
+  breakdown:
+    - filing_status
+  reference:
+    - title: Cal. Rev. & Tax. Code § 17132.9
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17132.9.&lawCode=RTC
+    - title: Cal. Rev. & Tax. Code § 17132.10
+      href: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?sectionNum=17132.10.&lawCode=RTC
+
+SINGLE:
+  values:
+    2021-01-01: 0
+    2025-01-01: 125_000
+    2030-01-01: 0
+JOINT:
+  values:
+    2021-01-01: 0
+    2025-01-01: 250_000
+    2030-01-01: 0
+SEPARATE:
+  values:
+    2021-01-01: 0
+    2025-01-01: 125_000
+    2030-01-01: 0
+HEAD_OF_HOUSEHOLD:
+  values:
+    2021-01-01: 0
+    2025-01-01: 125_000
+    2030-01-01: 0
+SURVIVING_SPOUSE:
+  values:
+    2021-01-01: 0
+    2025-01-01: 250_000
+    2030-01-01: 0

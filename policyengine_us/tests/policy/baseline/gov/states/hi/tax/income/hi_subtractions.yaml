@@ -119,3 +119,33 @@
     # $40,000 - $16,000 joint standard deduction - 5 exemptions x $1,144
     # (3 people plus 2 aged exemptions) = $18,280.
     hi_taxable_income: 18_280
+
+- name: Hawaii subtracts military retirement pay and survivor benefits on line 13
+  period: 2024
+  input:
+    people:
+      head:
+        age: 60
+        employment_income: 30_000
+        military_retirement_pay: 20_000
+        military_retirement_pay_survivors: 10_000
+        is_tax_unit_head: true
+    tax_units:
+      tax_unit:
+        members: [head]
+        filing_status: SINGLE
+    marital_units:
+      marital_unit:
+        members: [head]
+    spm_units:
+      spm_unit:
+        members: [head]
+    households:
+      household:
+        members: [head]
+        state_code: HI
+  output:
+    adjusted_gross_income: 60_000
+    hi_subtractions: 30_000
+    hi_agi: 30_000
+

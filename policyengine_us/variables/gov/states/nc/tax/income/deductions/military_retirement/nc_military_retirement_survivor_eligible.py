@@ -18,9 +18,6 @@ class nc_military_retirement_survivor_eligible(Variable):
         "In that case, supply the recipient's years_in_military or "
         "is_permanently_disabled_veteran record: setting the combined "
         "nc_military_retirement_deduction_eligible input to true alone "
-        "does not establish eligibility for their own pay. "
-        "If military_retirement_pay_survivors is zero, this flag also allows "
-        "military_retirement_pay to contain qualifying survivor benefits. "
         "Do not record the same survivor benefits in both income inputs."
     )
     definition_period = YEAR

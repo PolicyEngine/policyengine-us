@@ -4,23 +4,7 @@ values:
     # Line 1B
     - us_govt_interest
     # Dividends from federal securities
-    # Line 5B 
-    - taxable_social_security
-    # Line 6B
-    - military_service_income
-    # Line 7B
-    - ia_pension_exclusion
-    # Railroad unemployment income
-    # Bonus Depreciation
-    # Iowa Health Insurance Deduction
-    # Iowa capital gains deduction
-    - ia_529_plan_subtraction
-  2024-01-01: # military_retirement_pay added in 2024.
-    # Line 1B
-    - us_govt_interest
-    # Dividends from federal securities
-    # Line 4B
-    - military_retirement_pay 
+    - military_retirement_income
     # Line 5B 
     - taxable_social_security
     # Line 6B

@@ -43,8 +43,13 @@ class ma_gross_income(Variable):
         salt_refund_income = tax_unit_non_dep_sum(
             "salt_refund_income", tax_unit, period
         )
-        public_pension = tax_unit_non_dep_sum(
-            "taxable_public_pension_income", tax_unit, period
+        public_pension = tax_unit_non_dep_add(
+            tax_unit,
+            period,
+            [
+                "taxable_public_pension_income",
+                "military_retirement_income",
+            ],
         )
         deductions = social_security_in_agi + salt_refund_income + public_pension
         return max_(
